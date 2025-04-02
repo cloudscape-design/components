@@ -351,16 +351,21 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         'funnelStepStart',
         'funnelSubStepStart',
         'funnelSubStepError',
-        'funnelSubStepError', // FIXME: Missing funnelStepError?
-        'funnelError',
+        'funnelSubStepError',
+        'funnelStepError',
         'funnelSubStepComplete',
       ]);
       const funnelErrorEvent = funnelLog[5];
-      expect(funnelErrorEvent.props).toEqual({
-        funnelInteractionId: FUNNEL_INTERACTION_ID,
-        funnelIdentifier: FUNNEL_IDENTIFIER,
-        funnelErrorContext: null,
-      });
+      expect(funnelErrorEvent.props).toEqual(
+        expect.objectContaining({
+          funnelInteractionId: FUNNEL_INTERACTION_ID,
+          funnelIdentifier: FUNNEL_IDENTIFIER,
+          stepIdentifier: 'single-page-demo',
+          stepName: 'Form Header',
+          subStepAllSelector: '[data-analytics-funnel-substep]',
+          totalSubSteps: 3,
+        })
+      );
     })
   );
 

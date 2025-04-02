@@ -353,20 +353,31 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   );
 
   test(
-    'Emits a funnelError when an error is shown on the last step',
+    'Emits a funnelStepError when an error is shown on the last step',
     setupTest(async page => {
       const nextButton = wrapper.findWizard().findPrimaryButton().toSelector();
       await page.click(nextButton); // Step 1 -> Step 2
       await page.click(nextButton); // Step 2 -> Step 3 (Last step)
 
       const { funnelLog, actions } = await page.getFunnelLog();
-      const funnelErrorIndex = actions.findIndex(entry => entry === 'funnelError');
-      const funnelErrorEvent = funnelLog[funnelErrorIndex];
-      expect(funnelErrorEvent.props).toEqual({
-        funnelIdentifier: FUNNEL_IDENTIFIER,
-        funnelInteractionId: FUNNEL_INTERACTION_ID,
-        funnelErrorContext: null,
-      });
+      const funnelStepErrorIndex = actions.findIndex(entry => entry === 'funnelStepError');
+      const funnelStepErrorEvent = funnelLog[funnelStepErrorIndex];
+
+      expect(funnelStepErrorEvent.props).toEqual(
+        expect.objectContaining({
+          funnelIdentifier: FUNNEL_IDENTIFIER,
+          funnelInteractionId: FUNNEL_INTERACTION_ID,
+          stepErrorContext: null,
+          stepErrorSelector: expect.stringContaining('#wizard-error-'),
+          stepIdentifier: 'step-3',
+          stepName: 'Step 3',
+          stepNameSelector: '[data-analytics-funnel-key="step-name"]',
+          stepNumber: 3,
+          subStepAllSelector: '[data-analytics-funnel-substep]',
+          subStepConfiguration: null,
+          totalSubSteps: 0,
+        })
+      );
     })
   );
 
