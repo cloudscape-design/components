@@ -489,7 +489,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         <SkeletonLayout
           ref={useMergeRefs(intersectionObserverRef, rootRef)}
           isNested={isNested}
-          drawerFocusMode={!!expandedDrawerId}
+          drawerExpandedMode={!!expandedDrawerId}
           style={{
             paddingBlockEnd: splitPanelOffsets.mainContentPaddingBlockEnd,
             ...(hasToolbar || !isNested

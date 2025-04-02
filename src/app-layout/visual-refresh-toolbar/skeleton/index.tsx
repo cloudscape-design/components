@@ -41,7 +41,7 @@ interface SkeletonLayoutProps
   globalToolsOpen?: boolean;
   navigationAnimationDisabled?: boolean;
   isNested?: boolean;
-  drawerFocusMode: boolean;
+  drawerExpandedMode: boolean;
 }
 
 export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutProps>(
@@ -70,7 +70,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       globalToolsOpen,
       navigationAnimationDisabled,
       isNested,
-      drawerFocusMode,
+      drawerExpandedMode,
     },
     ref
   ) => {
@@ -83,7 +83,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
         className={clsx(styles.root, testutilStyles.root, {
           [styles['has-adaptive-widths-default']]: !contentTypeCustomWidths.includes(contentType),
           [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
-          [styles['drawer-focus-mode']]: drawerFocusMode,
+          [styles['drawer-expanded-mode']]: drawerExpandedMode,
         })}
         style={{
           minBlockSize: isNested ? '100%' : `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
@@ -100,7 +100,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
               !navigationOpen && styles['panel-hidden'],
               toolsOpen && styles['unfocusable-mobile'],
               !navigationAnimationDisabled && sharedStyles['with-motion-horizontal'],
-              drawerFocusMode && styles.hidden
+              drawerExpandedMode && styles.hidden
             )}
           >
             {navigation}
@@ -110,7 +110,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
           className={clsx(
             styles['main-landmark'],
             isMobile && anyPanelOpen && styles['unfocusable-mobile'],
-            drawerFocusMode && styles.hidden
+            drawerExpandedMode && styles.hidden
           )}
         >
           {notifications && (
@@ -147,7 +147,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             sharedStyles['with-motion-horizontal'],
             navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
             toolsOpen && styles['tools-open'],
-            drawerFocusMode && styles.hidden
+            drawerExpandedMode && styles.hidden
           )}
         >
           {tools}

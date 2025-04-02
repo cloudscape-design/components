@@ -1349,8 +1349,8 @@ describe('toolbar mode only features', () => {
       });
     });
 
-    describe('focus mode for global drawers', () => {
-      test('should set a drawer to focus mode by clicking on "focus mode" button', async () => {
+    describe('expanded mode for global drawers', () => {
+      test('should set a drawer to expanded mode by clicking on "expanded mode" button', async () => {
         const drawerId = 'global-drawer';
         awsuiPlugins.appLayout.registerDrawer({
           ...drawerDefaults,
@@ -1363,13 +1363,13 @@ describe('toolbar mode only features', () => {
         await delay();
 
         wrapper.findDrawerTriggerById(drawerId)!.click();
-        expect(globalDrawersWrapper.findFocusModeButtonByActiveDrawerId(drawerId)!.getElement()).toBeInTheDocument();
-        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInFocusMode()).toBe(false);
-        globalDrawersWrapper.findFocusModeButtonByActiveDrawerId(drawerId)!.click();
-        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInFocusMode()).toBe(true);
+        expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()).toBeInTheDocument();
+        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
+        globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
       });
 
-      test('should switch focus mode between two global drawers', async () => {
+      test('should switch expanded mode between two global drawers', async () => {
         const drawerId1 = 'global-drawer1';
         const drawerId2 = 'global-drawer2';
         awsuiPlugins.appLayout.registerDrawer({
@@ -1392,19 +1392,19 @@ describe('toolbar mode only features', () => {
         wrapper.findDrawerTriggerById(drawerId2)!.click();
         expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isActive()).toBe(true);
         expect(globalDrawersWrapper.findDrawerById(drawerId2)!.isActive()).toBe(true);
-        expect(globalDrawersWrapper.isLayoutInFocusMode()).toBe(false);
-        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInFocusMode()).toBe(false);
-        expect(globalDrawersWrapper.findDrawerById(drawerId2)!.isDrawerInFocusMode()).toBe(false);
-        globalDrawersWrapper.findFocusModeButtonByActiveDrawerId(drawerId1)!.click();
-        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInFocusMode()).toBe(true);
-        expect(globalDrawersWrapper.findDrawerById(drawerId2)!.isDrawerInFocusMode()).toBe(false);
-        globalDrawersWrapper.findFocusModeButtonByActiveDrawerId(drawerId2)!.click();
-        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInFocusMode()).toBe(false);
-        expect(globalDrawersWrapper.findDrawerById(drawerId2)!.isDrawerInFocusMode()).toBe(true);
-        expect(globalDrawersWrapper.isLayoutInFocusMode()).toBe(true);
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
+        expect(globalDrawersWrapper.findDrawerById(drawerId2)!.isDrawerInExpandedMode()).toBe(false);
+        globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById(drawerId2)!.isDrawerInExpandedMode()).toBe(false);
+        globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId2)!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
+        expect(globalDrawersWrapper.findDrawerById(drawerId2)!.isDrawerInExpandedMode()).toBe(true);
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
       });
 
-      test('should quit focus mode when a drawer in focus mode is closed', async () => {
+      test('should quit expanded mode when a drawer in focus mode is closed', async () => {
         const drawerId = 'global-drawer';
         awsuiPlugins.appLayout.registerDrawer({
           ...drawerDefaults,
@@ -1417,11 +1417,11 @@ describe('toolbar mode only features', () => {
         await delay();
 
         wrapper.findDrawerTriggerById(drawerId)!.click();
-        globalDrawersWrapper.findFocusModeButtonByActiveDrawerId(drawerId)!.click();
-        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInFocusMode()).toBe(true);
-        expect(globalDrawersWrapper.isLayoutInFocusMode()).toBe(true);
+        globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
         wrapper.findDrawerTriggerById(drawerId)!.click();
-        expect(globalDrawersWrapper.isLayoutInFocusMode()).toBe(false);
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
       });
     });
   });

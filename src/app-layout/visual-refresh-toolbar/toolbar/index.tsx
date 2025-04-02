@@ -92,7 +92,7 @@ export function AppLayoutToolbarImplementation({
   } = toolbarProps;
   // TODO: expose configuration property
   const pinnedToolbar = true;
-  const drawerFocusMode = !!expandedDrawerId;
+  const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
   useResizeObserver(ref, entry => setToolbarHeight(entry.borderBoxHeight));
   useEffect(() => {
@@ -174,7 +174,7 @@ export function AppLayoutToolbarImplementation({
                 onNavigationToggle?.(!navigationOpen);
               }}
               ref={navigationFocusRef}
-              selected={!drawerFocusMode && navigationOpen}
+              selected={!drawerExpandedMode && navigationOpen}
               disabled={anyPanelOpenInMobile}
             />
           </nav>
@@ -203,7 +203,7 @@ export function AppLayoutToolbarImplementation({
               globalDrawers={globalDrawers?.filter(item => !!item.trigger) ?? []}
               activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
               onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
-              drawerFocusMode={drawerFocusMode}
+              drawerExpandedMode={drawerExpandedMode}
               setExpandedDrawerId={setExpandedDrawerId}
             />
           </div>

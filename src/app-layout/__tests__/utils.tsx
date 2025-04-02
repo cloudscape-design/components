@@ -169,7 +169,7 @@ class AppLayoutDrawerWrapper extends ComponentWrapper {
     return this.element.classList.contains(testutilStyles['active-drawer']);
   }
 
-  isDrawerInFocusMode(): boolean {
+  isDrawerInExpandedMode(): boolean {
     return this.element.classList.contains(globalDrawerStyles['drawer-expanded']);
   }
 }
@@ -201,14 +201,14 @@ export const getGlobalDrawersTestUtils = (wrapper: AppLayoutWrapper) => {
       );
     },
 
-    findFocusModeButtonByActiveDrawerId(id: string): ElementWrapper | null {
+    findExpandedModeButtonByActiveDrawerId(id: string): ElementWrapper | null {
       return wrapper.find(
-        `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['active-drawer-focus-mode-button']}`
+        `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['active-drawer-expanded-mode-button']}`
       );
     },
 
-    isLayoutInFocusMode(): boolean {
-      return !!wrapper.matches(`.${visualRefreshToolbarStyles['drawer-focus-mode']}`);
+    isLayoutInDrawerExpandedMode(): boolean {
+      return !!wrapper.matches(`.${visualRefreshToolbarStyles['drawer-expanded-mode']}`);
     },
   };
 };

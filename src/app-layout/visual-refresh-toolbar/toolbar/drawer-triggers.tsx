@@ -37,7 +37,7 @@ interface DrawerTriggersProps {
   globalDrawersFocusControl?: FocusControlMultipleStates;
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
   onActiveGlobalDrawersChange?: (newDrawerId: string, params: OnChangeParams) => void;
-  drawerFocusMode?: boolean;
+  drawerExpandedMode?: boolean;
   setExpandedDrawerId: (value: string | undefined) => void;
 
   splitPanelOpen?: boolean;
@@ -64,7 +64,7 @@ export function DrawerTriggers({
   globalDrawers,
   globalDrawersFocusControl,
   onActiveGlobalDrawersChange,
-  drawerFocusMode,
+  drawerExpandedMode,
   setExpandedDrawerId,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
@@ -134,7 +134,7 @@ export function DrawerTriggers({
             <TriggerButton
               ariaLabel={splitPanelToggleProps.ariaLabel}
               ariaControls={splitPanelToggleProps.controlId}
-              ariaExpanded={!drawerFocusMode && splitPanelToggleProps.active}
+              ariaExpanded={!drawerExpandedMode && splitPanelToggleProps.active}
               className={clsx(
                 styles['drawers-trigger'],
                 testutilStyles['drawers-trigger'],
@@ -147,7 +147,7 @@ export function DrawerTriggers({
                 }
                 onSplitPanelToggle?.();
               }}
-              selected={!drawerFocusMode && splitPanelToggleProps.active}
+              selected={!drawerExpandedMode && splitPanelToggleProps.active}
               ref={splitPanelResolvedPosition === 'side' ? splitPanelFocusRef : undefined}
               hasTooltip={true}
               isMobile={isMobile}
@@ -159,7 +159,7 @@ export function DrawerTriggers({
         )}
         {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
           const isForPreviousActiveDrawer = previousActiveLocalDrawerId?.current === item.id;
-          const selected = !drawerFocusMode && item.id === activeDrawerId;
+          const selected = !drawerExpandedMode && item.id === activeDrawerId;
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -175,7 +175,7 @@ export function DrawerTriggers({
               key={item.id}
               onClick={() => {
                 setExpandedDrawerId(undefined);
-                if (drawerFocusMode && activeDrawerId === item.id) {
+                if (drawerExpandedMode && activeDrawerId === item.id) {
                   return;
                 }
                 onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true });

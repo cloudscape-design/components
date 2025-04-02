@@ -136,10 +136,10 @@ function AppLayoutGlobalDrawerImplementation({
               data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
             >
               {activeGlobalDrawer?.isExpandable && (
-                <div className={styles['drawer-focus-mode-button']}>
+                <div className={styles['drawer-expanded-mode-button']}>
                   <InternalButton
-                    ariaLabel={activeGlobalDrawer?.ariaLabels?.focusModeButton}
-                    className={testutilStyles['active-drawer-focus-mode-button']}
+                    ariaLabel={activeGlobalDrawer?.ariaLabels?.expandedModeButton}
+                    className={testutilStyles['active-drawer-expanded-mode-button']}
                     formAction="none"
                     ariaExpanded={isExpanded}
                     iconName={isExpanded ? 'shrink' : 'expand'}
