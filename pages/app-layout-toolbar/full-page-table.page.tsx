@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
 
-import { AppLayoutToolbar, Button, Header, Link, Table } from '~components';
+import { AppLayoutToolbar, Button, Header, Link, Select, Table } from '~components';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Footer, Navigation, Notifications, Tools } from '../app-layout/utils/content-blocks';
@@ -26,6 +26,8 @@ export default function () {
     setSelectedTool(article);
   }
 
+  const [selectedOption, setSelectedOption] = React.useState({ label: 'Option 1', value: '1' });
+
   return (
     <ScreenshotArea gutters={false}>
       <AppLayoutToolbar
@@ -40,6 +42,23 @@ export default function () {
         stickyNotifications={urlParams.stickyNotifications}
         content={
           <Table<Instance>
+            filter={
+              <Select
+                selectedOption={selectedOption}
+                onChange={({ detail }) =>
+                  setSelectedOption({
+                    label: detail.selectedOption.label || '',
+                    value: detail.selectedOption.value || '',
+                  })
+                }
+                options={[
+                  { label: 'Option 1', value: '1' },
+                  { label: 'Option 2', value: '2' },
+                  { label: 'Option 3', value: '3' },
+                ]}
+                inlineLabelText="Engine"
+              />
+            }
             header={
               <Header
                 variant="awsui-h1-sticky"
