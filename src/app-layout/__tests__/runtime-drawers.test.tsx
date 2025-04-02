@@ -8,6 +8,7 @@ import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
+import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import {
   describeEachAppLayout,
@@ -1417,8 +1418,7 @@ describe('toolbar mode only features', () => {
         expect(wrapper.findNavigationToggle()!.getElement()).not.toHaveClass(toolbarTriggerStyles.selected);
       });
 
-      // test.each(['expanded', 'global-drawer', 'local-drawer', 'nav'] as const)('%s', theme => {});
-      test.each(['expanded', 'global-drawer', 'local-drawer', 'nav'] as const)(
+      test.each(['expanded', 'split-panel', 'global-drawer', 'local-drawer', 'nav'] as const)(
         'should return panels to their initial state after leaving expanded mode by clicking on %s button',
         async triggerName => {
           const drawerId1 = 'global-drawer1';
@@ -1441,7 +1441,11 @@ describe('toolbar mode only features', () => {
             id: drawerId3Local,
           });
           const { wrapper, globalDrawersWrapper } = await renderComponent(
-            <AppLayout navigationOpen={true} navigation={<div>nav</div>} />
+            <AppLayout
+              navigationOpen={true}
+              navigation={<div>nav</div>}
+              splitPanel={<SplitPanel header="test header">test content</SplitPanel>}
+            />
           );
 
           await delay();
@@ -1449,12 +1453,14 @@ describe('toolbar mode only features', () => {
           wrapper.findDrawerTriggerById(drawerId1)!.click();
           wrapper.findDrawerTriggerById(drawerId2)!.click();
           wrapper.findDrawerTriggerById(drawerId3Local)!.click();
+          wrapper.findSplitPanelOpenButton()!.click();
 
           expect(wrapper.findDrawerTriggerById(drawerId1)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
           expect(wrapper.findDrawerTriggerById(drawerId2)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
           expect(wrapper.findDrawerTriggerById(drawerId3Local)!.getElement()).toHaveClass(
             toolbarTriggerStyles.selected
           );
+          expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
           expect(wrapper.findNavigationToggle()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
           expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
           expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
@@ -1468,6 +1474,7 @@ describe('toolbar mode only features', () => {
             toolbarTriggerStyles.selected
           );
           expect(wrapper.findNavigationToggle()!.getElement()).not.toHaveClass(toolbarTriggerStyles.selected);
+          expect(wrapper.findSplitPanelOpenButton()!.getElement()).not.toHaveClass(toolbarTriggerStyles.selected);
 
           if (triggerName === 'expanded') {
             globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
@@ -1477,6 +1484,8 @@ describe('toolbar mode only features', () => {
             wrapper.findDrawerTriggerById(drawerId3Local)!.click();
           } else if (triggerName === 'nav') {
             wrapper.findNavigationToggle()!.click();
+          } else if (triggerName === 'split-panel') {
+            wrapper.findSplitPanelOpenButton()!.click();
           }
 
           expect(wrapper.findDrawerTriggerById(drawerId1)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
@@ -1485,6 +1494,7 @@ describe('toolbar mode only features', () => {
             toolbarTriggerStyles.selected
           );
           expect(wrapper.findNavigationToggle()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+          expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
           expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
           expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
         }

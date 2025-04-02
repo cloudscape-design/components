@@ -145,6 +145,9 @@ export function DrawerTriggers({
                 if (setExpandedDrawerId) {
                   setExpandedDrawerId(undefined);
                 }
+                if (!!expandedDrawerId && splitPanelToggleProps.active) {
+                  return;
+                }
                 onSplitPanelToggle?.();
               }}
               selected={!expandedDrawerId && splitPanelToggleProps.active}
