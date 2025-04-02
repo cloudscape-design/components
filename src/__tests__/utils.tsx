@@ -1,5 +1,3 @@
-/* eslint-env node */
-/* eslint-disable header/header */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
@@ -62,7 +60,7 @@ function wrap({ default: Component }: { default: React.ComponentType }, Wrapper:
 
 export function requireComponent(componentName: string): any {
   if (componentName === 'split-panel') {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     return wrap(require(path.join(componentsDir, 'split-panel')), WrappedSplitPanel);
   }
   // eslint-disable-next-line @typescript-eslint/no-require-imports
