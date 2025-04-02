@@ -23,8 +23,8 @@
 .alert {
   @include styles.styles-reset;
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: row;
   border-block: awsui.$border-width-alert solid;
   border-inline: awsui.$border-width-alert solid;
   border-start-start-radius: awsui.$border-radius-alert;
@@ -34,21 +34,13 @@
   padding-block: awsui.$space-alert-vertical;
   padding-inline: awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;
+}
 
-  &.with-dismiss,
-  &.with-action {
-    grid-template-columns: 1fr auto;
-  }
-  &.with-action.with-dismiss {
-    grid-template-columns: 1fr auto auto;
-  }
-  // Below the breakpoint, arrange actions below the content
-  &.breakpoint-default.with-action {
-    grid-template-columns: 1fr auto;
-  }
-  &.breakpoint-default:not(.with-dismiss) {
-    grid-template-columns: 1fr;
-  }
+.alert-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .hidden {
@@ -67,7 +59,28 @@
 
 .action {
   white-space: nowrap;
-  margin-inline-start: awsui.$space-alert-action-left;
+}
+
+$medium-icon-gap: calc(#{awsui.$size-icon-medium} + #{awsui.$space-xs});
+.icon-size-medium > .alert-wrapper {
+  column-gap: calc(#{awsui.$space-alert-action-left} - #{$medium-icon-gap});
+  > .action {
+    margin-inline-start: $medium-icon-gap;
+  }
+}
+$big-icon-gap: calc(#{awsui.$size-icon-big} + #{awsui.$space-xs});
+.icon-size-big > .alert-wrapper {
+  column-gap: calc(#{awsui.$space-alert-action-left} - #{$big-icon-gap});
+  > .action {
+    margin-inline-start: $big-icon-gap;
+  }
+}
+$normal-icon-gap: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
+.icon-size-normal > .alert-wrapper {
+  column-gap: calc(#{awsui.$space-alert-action-left} - #{$normal-icon-gap});
+  > .action {
+    margin-inline-start: $normal-icon-gap;
+  }
 }
 
 .action-slot,
@@ -76,6 +89,9 @@
 }
 
 .alert-focus-wrapper {
+  flex: 1;
+  min-inline-size: 70%; // fallback for browsers that don't support calc-size
+  min-inline-size: calc-size(max-content, min(size, 70%));
   display: grid;
   grid-template-columns: min-content auto;
 
@@ -99,25 +115,6 @@
   }
   &.message {
     margin-inline-end: awsui.$space-alert-message-right;
-  }
-}
-
-.breakpoint-default {
-  // Below the breakpoint, arrange actions below the content
-  > .action {
-    grid-row: 2;
-    margin-block-end: awsui.$space-xxs;
-  }
-
-  // Indent actions according to the size of the alert icon
-  &.icon-size-medium > .action {
-    margin-inline-start: calc(#{awsui.$size-icon-medium} + #{awsui.$space-xs});
-  }
-  &.icon-size-big > .action {
-    margin-inline-start: calc(#{awsui.$size-icon-big} + #{awsui.$space-xs});
-  }
-  &.icon-size-normal > .action {
-    margin-inline-start: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
   }
 }
 
@@ -160,7 +157,7 @@ $_text-colors: (
   .type-#{$type} {
     border-color: #{map.get($_border-colors, $type)};
     background-color: #{map.get($_background-colors, $type)};
-    > .alert-focus-wrapper > .icon {
+    > .alert-wrapper > .alert-focus-wrapper > .icon {
       color: #{map.get($_text-colors, $type)};
     }
   }

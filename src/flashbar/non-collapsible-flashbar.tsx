@@ -17,7 +17,7 @@ import { FlashbarProps } from './interfaces';
 import styles from './styles.css.js';
 
 export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProps }: FlashbarProps) {
-  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
+  const { allItemsHaveId, baseProps, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
     items,
     ...restProps,
   });
@@ -122,11 +122,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
   }
 
   return (
-    <div
-      {...baseProps}
-      className={clsx(baseProps.className, styles.flashbar, styles[`breakpoint-${breakpoint}`])}
-      ref={mergedRef}
-    >
+    <div {...baseProps} className={clsx(baseProps.className, styles.flashbar)} ref={mergedRef}>
       {renderFlatItemsWithTransitions()}
       {renderFlatItemsWithoutTransitions()}
     </div>

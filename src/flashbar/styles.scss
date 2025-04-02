@@ -29,7 +29,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  padding-block: awsui.$space-scaled-xs;
+  padding-block: awsui.$space-flashbar-vertical;
   padding-inline: awsui.$space-flashbar-horizontal;
   border-start-start-radius: awsui.$border-radius-flashbar;
   border-start-end-radius: awsui.$border-radius-flashbar;
@@ -60,16 +60,20 @@
   }
 }
 
+$normal-icon-gap: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
 .flash-body {
   display: flex;
+  flex-wrap: wrap;
   flex-grow: 1;
   min-inline-size: 0;
+  column-gap: calc(#{awsui.$space-flashbar-action-left} - #{$normal-icon-gap});
 }
 
 .flash-focus-container {
   display: flex;
   flex: 1;
-  min-inline-size: 0;
+  min-inline-size: 70%; // fallback for browsers that don't support calc-size
+  min-inline-size: calc-size(max-content, min(size, 70%));
 
   &:focus {
     outline: none;
@@ -122,16 +126,7 @@
 
 .action-button-wrapper {
   white-space: nowrap;
-  margin-inline-start: awsui.$space-flashbar-action-left;
-}
-
-.flashbar.breakpoint-default > .flash-list > .flash-list-item > .flash > .flash-body {
-  display: block;
-  & > .action-button-wrapper {
-    margin-inline-start: awsui.$space-l;
-    padding-inline-start: awsui.$space-xxs;
-    margin-block-end: awsui.$space-xxs;
-  }
+  margin-inline-start: $normal-icon-gap;
 }
 
 .action-button,
