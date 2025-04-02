@@ -32,7 +32,7 @@ describe('Striped rows', () => {
     wrapper.findTriggerButton().click();
     isChecked(wrapper);
   });
-  test('displays as checked when value specified in preferences property is true', () => {
+  test('does not display as checked when value specified in preferences property is false', () => {
     const wrapper = renderWithStripedRows({ preferences: { stripedRows: false }, onConfirm: () => {} });
     wrapper.findTriggerButton().click();
     isChecked(wrapper, false);
