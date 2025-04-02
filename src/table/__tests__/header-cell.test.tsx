@@ -25,13 +25,11 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   },
 }));
 
-const tableRole = 'table';
+interface TestItem {
+  test: string;
+}
 
-const testItem = {
-  test: 'test',
-};
-
-const column: TableProps.ColumnDefinition<typeof testItem> = {
+const column: TableProps.ColumnDefinition<TestItem> = {
   id: 'test',
   header: 'Test',
   sortingField: 'test',
@@ -59,9 +57,9 @@ function TableWrapper({ children }: { children: React.ReactNode }) {
   );
 }
 
-function TestComponent(props: Partial<TableHeaderCellProps<typeof testItem>>) {
+function TestComponent(props: Partial<TableHeaderCellProps<TestItem>>) {
   return (
-    <TableHeaderCell<typeof testItem>
+    <TableHeaderCell<TestItem>
       column={column}
       colIndex={0}
       tabIndex={0}
@@ -71,7 +69,7 @@ function TestComponent(props: Partial<TableHeaderCellProps<typeof testItem>>) {
       stickyState={result.current}
       columnId="id"
       cellRef={() => {}}
-      tableRole={tableRole}
+      tableRole="table"
       variant="container"
       {...props}
     />

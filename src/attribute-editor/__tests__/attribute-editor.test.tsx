@@ -487,6 +487,29 @@ describe('Attribute Editor', () => {
       expectRowErrorTextContent(wrapper, 0, ['Error with key 0']);
       expect(wrapper.findRow(1)!.findFields()[0].findWarning()).toBe(null);
     });
+
+    test('should warn if no layout supplied for >6 attributes', () => {
+      render(<AttributeEditor {...defaultProps} definition={new Array(7)} />);
+      expect(console.warn).toHaveBeenCalledWith(
+        'AttributeEditor',
+        '`gridLayout` is required for more than 6 attributes. Cannot render.'
+      );
+    });
+    test('should warn if no grid layout found for current breakpoint', () => {
+      containerQueryBreakpoint = 'm';
+      render(<AttributeEditor {...defaultProps} gridLayout={[{ breakpoint: 'xl', rows: [] }]} />);
+      expect(console.warn).toHaveBeenCalledWith(
+        'AttributeEditor',
+        'No `gridLayout` entry found for breakpoint m. Cannot render.'
+      );
+    });
+    test('should warn if grid layout does not match definition', () => {
+      render(<AttributeEditor {...defaultProps} gridLayout={[{ rows: [[1]] }]} />);
+      expect(console.warn).toHaveBeenCalledWith(
+        'AttributeEditor',
+        'Incorrect number of columns in layout (1) for definition (3). Cannot render.'
+      );
+    });
   });
 
   describe('form submission', () => {
@@ -668,31 +691,6 @@ describe('Attribute Editor', () => {
         />
       );
       expect(useContainerQuery).toHaveBeenCalledWith(expect.any(Function), ['default,xl,s']);
-    });
-  });
-
-  describe('warnings', () => {
-    test('should warn if no layout supplied for >6 attributes', () => {
-      render(<AttributeEditor {...defaultProps} definition={new Array(7)} />);
-      expect(console.warn).toHaveBeenCalledWith(
-        'AttributeEditor',
-        '`gridLayout` is required for more than 6 attributes. Cannot render.'
-      );
-    });
-    test('should warn if no grid layout found for current breakpoint', () => {
-      containerQueryBreakpoint = 'm';
-      render(<AttributeEditor {...defaultProps} gridLayout={[{ breakpoint: 'xl', rows: [] }]} />);
-      expect(console.warn).toHaveBeenCalledWith(
-        'AttributeEditor',
-        'No `gridLayout` entry found for breakpoint m. Cannot render.'
-      );
-    });
-    test('should warn if grid layout does not match definition', () => {
-      render(<AttributeEditor {...defaultProps} gridLayout={[{ rows: [[1]] }]} />);
-      expect(console.warn).toHaveBeenCalledWith(
-        'AttributeEditor',
-        'Incorrect number of columns in layout (1) for definition (3). Cannot render.'
-      );
     });
   });
 });
