@@ -15,7 +15,6 @@ interface HorizontalLayoutInput {
   splitPanelSize: number;
   isMobile: boolean;
   activeGlobalDrawersSizes: Record<string, number>;
-  expandedDrawerId?: string;
 }
 
 export const CONTENT_PADDING = 2 * 24; // space-xl
@@ -31,7 +30,6 @@ export function computeHorizontalLayout({
   splitPanelSize,
   isMobile,
   activeGlobalDrawersSizes,
-  expandedDrawerId,
 }: HorizontalLayoutInput) {
   const activeNavigationWidth = navigationOpen ? navigationWidth : 0;
 
@@ -53,20 +51,6 @@ export function computeHorizontalLayout({
   const maxDrawerSize = resizableSpaceAvailable - totalActiveGlobalDrawersSize;
   const maxGlobalDrawersSizes: Record<string, number> = Object.keys(activeGlobalDrawersSizes).reduce(
     (acc, drawerId) => {
-      if (drawerId === expandedDrawerId) {
-        return {
-          ...acc,
-          [drawerId]: placement.inlineSize,
-        };
-      }
-      if (expandedDrawerId && drawerId !== expandedDrawerId) {
-        if (drawerId === expandedDrawerId) {
-          return {
-            ...acc,
-            [drawerId]: resizableSpaceAvailable,
-          };
-        }
-      }
       return {
         ...acc,
         [drawerId]:

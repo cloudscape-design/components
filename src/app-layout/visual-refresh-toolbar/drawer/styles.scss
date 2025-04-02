@@ -75,6 +75,8 @@ $global-drawer-gap-size: 8px;
   }
 
   &.drawer-expanded {
+    inline-size: 100%;
+
     @include desktop-only {
       border-inline-start: none;
 

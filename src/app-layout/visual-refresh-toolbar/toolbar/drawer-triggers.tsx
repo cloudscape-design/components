@@ -37,7 +37,7 @@ interface DrawerTriggersProps {
   globalDrawersFocusControl?: FocusControlMultipleStates;
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
   onActiveGlobalDrawersChange?: (newDrawerId: string, params: OnChangeParams) => void;
-  drawerExpandedMode?: boolean;
+  expandedDrawerId?: string;
   setExpandedDrawerId: (value: string | undefined) => void;
 
   splitPanelOpen?: boolean;
@@ -64,7 +64,7 @@ export function DrawerTriggers({
   globalDrawers,
   globalDrawersFocusControl,
   onActiveGlobalDrawersChange,
-  drawerExpandedMode,
+  expandedDrawerId,
   setExpandedDrawerId,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
@@ -134,7 +134,7 @@ export function DrawerTriggers({
             <TriggerButton
               ariaLabel={splitPanelToggleProps.ariaLabel}
               ariaControls={splitPanelToggleProps.controlId}
-              ariaExpanded={!drawerExpandedMode && splitPanelToggleProps.active}
+              ariaExpanded={!expandedDrawerId && splitPanelToggleProps.active}
               className={clsx(
                 styles['drawers-trigger'],
                 testutilStyles['drawers-trigger'],
@@ -147,7 +147,7 @@ export function DrawerTriggers({
                 }
                 onSplitPanelToggle?.();
               }}
-              selected={!drawerExpandedMode && splitPanelToggleProps.active}
+              selected={!expandedDrawerId && splitPanelToggleProps.active}
               ref={splitPanelResolvedPosition === 'side' ? splitPanelFocusRef : undefined}
               hasTooltip={true}
               isMobile={isMobile}
@@ -159,7 +159,7 @@ export function DrawerTriggers({
         )}
         {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
           const isForPreviousActiveDrawer = previousActiveLocalDrawerId?.current === item.id;
-          const selected = !drawerExpandedMode && item.id === activeDrawerId;
+          const selected = !expandedDrawerId && item.id === activeDrawerId;
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -175,7 +175,7 @@ export function DrawerTriggers({
               key={item.id}
               onClick={() => {
                 setExpandedDrawerId(undefined);
-                if (drawerExpandedMode && activeDrawerId === item.id) {
+                if (!!expandedDrawerId && activeDrawerId === item.id) {
                   return;
                 }
                 onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true });
@@ -198,11 +198,13 @@ export function DrawerTriggers({
         )}
         {visibleItems.slice(globalDrawersStartIndex).map(item => {
           const isForPreviousActiveDrawer = previousActiveGlobalDrawersIds?.current.includes(item.id);
+          const selected =
+            activeGlobalDrawersIds.includes(item.id) && (!expandedDrawerId || item.id === expandedDrawerId);
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
-              ariaExpanded={activeGlobalDrawersIds.includes(item.id)}
-              ariaControls={activeGlobalDrawersIds.includes(item.id) ? item.id : undefined}
+              ariaExpanded={selected}
+              ariaControls={selected ? item.id : undefined}
               className={clsx(
                 styles['drawers-trigger'],
                 testutilStyles['drawers-trigger'],
@@ -212,10 +214,14 @@ export function DrawerTriggers({
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => {
+                setExpandedDrawerId(undefined);
+                if (!!expandedDrawerId && item.id !== expandedDrawerId && activeGlobalDrawersIds.includes(item.id)) {
+                  return;
+                }
                 onActiveGlobalDrawersChange?.(item.id, { initiatedByUserAction: true });
               }}
               ref={globalDrawersFocusControl?.refs[item.id]?.toggle}
-              selected={activeGlobalDrawersIds.includes(item.id)}
+              selected={selected}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
               hasTooltip={true}

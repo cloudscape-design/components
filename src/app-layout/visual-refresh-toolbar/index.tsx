@@ -268,7 +268,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelPosition: splitPanelPreferences?.position,
       isMobile,
       activeGlobalDrawersSizes,
-      expandedDrawerId,
     });
 
     const { ref: intersectionObserverRef, isIntersecting } = useIntersectionObserver({ initialState: true });

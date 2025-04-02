@@ -203,7 +203,7 @@ export function AppLayoutToolbarImplementation({
               globalDrawers={globalDrawers?.filter(item => !!item.trigger) ?? []}
               activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
               onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
-              drawerExpandedMode={drawerExpandedMode}
+              expandedDrawerId={expandedDrawerId}
               setExpandedDrawerId={setExpandedDrawerId}
             />
           </div>
