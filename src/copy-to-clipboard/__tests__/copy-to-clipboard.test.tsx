@@ -87,10 +87,8 @@ describe('CopyToClipboard', () => {
     expect(wrapper.findTextToCopy()!.getElement().textContent).toBe('Copy test content');
 
     // Assert content written to the clipboard
-    act(() => wrapper.findCopyButton().click());
+    wrapper.findCopyButton().click();
     expect(mockedWriteText).toHaveBeenCalledWith('Text to copy');
-
-    jest.resetAllMocks();
   });
 
   describe.each([false, true])('popoverRenderWithPortal set to %s', (popoverRenderWithPortal: boolean) => {
