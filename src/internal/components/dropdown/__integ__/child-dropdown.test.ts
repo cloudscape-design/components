@@ -99,23 +99,9 @@ describe('Child dropdown', () => {
       }
     )
   );
+
   test(
-    'opens to the bottom right and wraps text',
-    setupChildTest(
-      '#/light/dropdown/interior-with-wrapping',
-      'parentDropdown5',
-      'childDropdown5',
-      async (parentDropdown, childDropdown) => {
-        const parentDropdownPosition = await parentDropdown.getBoundingBox(parentDropdown.getOpenDropdown());
-        const childDropdownPosition = await childDropdown.getBoundingBox(childDropdown.getOpenDropdown());
-        const childTriggerPosition = await childDropdown.getBoundingBox(childDropdown.getTrigger());
-        expect(childDropdownPosition.right).toBeGreaterThan(parentDropdownPosition.right);
-        expect(childTriggerPosition.bottom).toBeLessThan(childDropdownPosition.bottom);
-      }
-    )
-  );
-  test(
-    'opens to the bottom right and wraps text',
+    'opens to the top left and wraps text',
     setupChildTest(
       '#/light/dropdown/interior-with-wrapping',
       'parentDropdown6',

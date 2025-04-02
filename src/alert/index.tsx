@@ -9,6 +9,7 @@ import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytic
 import { getSubStepAllSelector, getTextFromSelector } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { GeneratedAnalyticsMetadataAlertComponent } from './analytics-metadata/interfaces';
 import { AlertProps } from './interfaces';
@@ -31,8 +32,11 @@ const Alert = React.forwardRef(
 
     const { funnelIdentifier, funnelInteractionId, funnelErrorContext, submissionAttempt, funnelState, errorCount } =
       useFunnel();
-    const { stepNumber, stepNameSelector, stepIdentifier } = useFunnelStep();
+    const { stepNumber, stepNameSelector, stepIdentifier, subStepCount, stepErrorContext, subStepConfiguration } =
+      useFunnelStep();
     const { subStepSelector, subStepNameSelector, subStepIdentifier, subStepErrorContext } = useFunnelSubStep();
+
+    const messageSlotId = useUniqueId('alert-');
 
     useEffect(() => {
       if (funnelInteractionId && visible && type === 'error' && funnelState.current !== 'complete') {
@@ -59,6 +63,21 @@ const Alert = React.forwardRef(
               subStepAllSelector: getSubStepAllSelector(),
               subStepIdentifier,
               subStepErrorContext,
+            });
+          } else if (stepNameSelector) {
+            FunnelMetrics.funnelStepError({
+              funnelInteractionId,
+              stepNumber,
+              stepNameSelector,
+              stepName,
+              stepIdentifier,
+              currentDocument: baseComponentProps.__internalRootRef.current?.ownerDocument,
+              totalSubSteps: subStepCount.current,
+              funnelIdentifier,
+              subStepAllSelector: getSubStepAllSelector(),
+              stepErrorContext,
+              subStepConfiguration: subStepConfiguration.current?.get(stepNumber),
+              stepErrorSelector: '#' + messageSlotId,
             });
           } else {
             FunnelMetrics.funnelError({
@@ -93,6 +112,7 @@ const Alert = React.forwardRef(
         {...props}
         {...baseComponentProps}
         ref={ref}
+        messageSlotId={messageSlotId}
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
       />
     );
