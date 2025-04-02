@@ -13,7 +13,19 @@ const permutations = createPermutations<ButtonProps>([
   {
     disabled: [false, true],
     loading: [false, true],
-    iconName: [undefined, 'settings'],
+    children: [
+      'Button',
+      <>
+        <em>Custom</em> content
+      </>,
+    ],
+    href: [undefined, '/choco/home'],
+    variant: ['normal', 'primary'],
+  },
+  {
+    disabled: [false, true],
+    loading: [false, true],
+    iconName: ['settings'],
     iconAlign: ['left', 'right'],
     children: [
       'Button',
@@ -85,7 +97,13 @@ const permutations = createPermutations<ButtonProps>([
   },
   {
     variant: ['inline-link'],
-    iconName: [undefined, 'download'],
+    children: ['Inline link'],
+    loading: [false, true],
+    disabled: [false, true],
+  },
+  {
+    variant: ['inline-link'],
+    iconName: ['download'],
     iconAlign: ['left', 'right'],
     children: ['Inline link'],
     loading: [false, true],
