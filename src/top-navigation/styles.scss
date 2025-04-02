@@ -6,10 +6,12 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/foundation/breakpoints' as breakpoints;
 
 .top-navigation {
   @include styles.styles-reset;
   background: awsui.$color-background-container-content;
+  container-type: inline-size;
 
   > .padding-box {
     display: flex;
@@ -22,18 +24,52 @@
     padding-inline-start: awsui.$space-xxl;
   }
 
-  &.medium > .padding-box,
-  &.narrow > .padding-box {
-    padding-inline-start: awsui.$space-l;
+  // Large container (width ≥ 912px)
+  @include breakpoints.container-breakpoint-up(breakpoints.$container-breakpoint-s) {
+    > .padding-box {
+      > .utilities > .utility-wrapper:last-of-type {
+        padding-inline-end: 0;
+
+        // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+        .utility-menu-dropdown-button {
+          margin-inline-end: awsui.$space-xl;
+        }
+      }
+    }
   }
 
-  &.medium > .padding-box {
-    block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
-    padding-inline-end: 0;
+  // Medium container (width < 912px)
+  @include breakpoints.container-breakpoint-down(breakpoints.$container-breakpoint-s) {
+    > .padding-box {
+      block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
+      padding-inline-start: awsui.$space-l;
+
+      > .utilities > .utility-wrapper:last-of-type {
+        padding-inline-end: 0;
+
+        // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+        .utility-menu-dropdown-button {
+          margin-inline-end: awsui.$space-s;
+        }
+      }
+    }
   }
 
-  &.narrow > .padding-box {
-    block-size: awsui.$space-xxxl;
+  // Narrow container (width < 465px)
+  @include breakpoints.container-breakpoint-down(breakpoints.$container-breakpoint-xxs) {
+    > .padding-box {
+      block-size: awsui.$space-xxxl;
+      padding-inline-start: awsui.$space-l;
+
+      > .utilities {
+        padding-inline-start: 0;
+      }
+
+      // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+      .logo {
+        max-block-size: awsui.$space-xl;
+      }
+    }
   }
 }
 
@@ -87,10 +123,6 @@
 
   // Setting an arbitrary min-width here discourages browser from lazy rendering
   min-inline-size: 10px;
-
-  &.narrow {
-    max-block-size: awsui.$space-xl;
-  }
 }
 
 .title {
@@ -129,11 +161,6 @@
 
   // Expand height of utilies fully so that the dropdown is anchored directly underneath it.
   block-size: 100%;
-
-  .medium > .padding-box > &,
-  .narrow > .padding-box > & {
-    padding-inline-start: 0;
-  }
 }
 
 .utility-wrapper {
@@ -170,11 +197,6 @@
   padding-block: 0;
   padding-inline: awsui.$space-s;
   align-items: stretch;
-
-  &:not(.narrow):last-of-type,
-  &:not(.medium):last-of-type {
-    padding-inline-end: 0;
-  }
 }
 
 .utility-type-button-primary-button {
@@ -192,18 +214,6 @@
 
 .utility-button-external-icon {
   display: inline-block;
-}
-
-.offset-right-none {
-  margin-inline-end: 0;
-}
-
-.offset-right-l {
-  margin-inline-end: awsui.$space-xxs;
-}
-
-.offset-right-xxl {
-  margin-inline-end: awsui.$space-m;
 }
 
 /* Overflow Menu */
