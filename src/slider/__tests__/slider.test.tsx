@@ -326,7 +326,7 @@ describe('Slider i18n', () => {
 });
 
 describe('Slider a11y', () => {
-  test('Validatees a11y', () => {
+  test('Validates a11y', () => {
     const wrapper = renderSlider({
       min: 0,
       max: 100,
