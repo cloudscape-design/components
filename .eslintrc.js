@@ -27,7 +27,7 @@ module.exports = {
     'jest',
   ],
   rules: {
-    '@typescript-eslint/no-unused-expressions': 'off',
+    '@typescript-eslint/no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-namespace': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
