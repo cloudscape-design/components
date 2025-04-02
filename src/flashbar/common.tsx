@@ -6,9 +6,7 @@ import { useReducedMotion, warnOnce } from '@cloudscape-design/component-toolkit
 
 import { getBaseProps } from '../internal/base-component';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { focusFlashById } from './flash';
 import { FlashbarProps } from './interfaces';
@@ -25,16 +23,12 @@ export function useFlashbar({
   onItemsRemoved?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsChanged?: (options?: { allItemsHaveId?: boolean; isReducedMotion?: boolean }) => void;
 }) {
-  const { __internalRootRef } = useBaseComponent('Flashbar', {
-    props: { stackItems: restProps.stackItems },
-  });
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
   const baseProps = getBaseProps(restProps);
   const ref = useRef<HTMLDivElement | null>(null);
   const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
-  const mergedRef = useMergeRefs(ref, breakpointRef, __internalRootRef);
+  const mergedRef = useMergeRefs(ref, breakpointRef);
   const isReducedMotion = useReducedMotion(ref);
-  const isVisualRefresh = useVisualRefresh();
   const [previousItems, setPreviousItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>(items);
   const [nextFocusId, setNextFocusId] = useState<string | null>(null);
 
@@ -76,7 +70,6 @@ export function useFlashbar({
     baseProps,
     breakpoint,
     isReducedMotion,
-    isVisualRefresh,
     mergedRef,
     ref,
   };

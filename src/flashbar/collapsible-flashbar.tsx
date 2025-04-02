@@ -15,14 +15,16 @@ import { Transition } from '../internal/components/transition';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { throttle } from '../internal/utils/throttle';
 import { GeneratedAnalyticsMetadataFlashbarExpand } from './analytics-metadata/interfaces';
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
 import { useFlashbar } from './common';
 import { Flash, focusFlashById } from './flash';
-import { FlashbarProps } from './interfaces';
+import { FlashbarProps, InternalFlashbarProps } from './interfaces';
 import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils';
 
 import styles from './styles.css.js';
@@ -33,10 +35,11 @@ const maxNonCollapsibleItems = 1;
 
 const resizeListenerThrottleDelay = 100;
 
-export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps) {
+export default function CollapsibleFlashbar({ __internalRootRef, items, ...restProps }: InternalFlashbarProps) {
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
+  const isVisualRefresh = useVisualRefresh();
 
   const getElementsToAnimate = useCallback(() => {
     const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
@@ -48,7 +51,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setInitialAnimationState(rects);
   }, [getElementsToAnimate]);
 
-  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const { baseProps, breakpoint, isReducedMotion, mergedRef, ref } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
@@ -308,7 +311,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         isFlashbarStackExpanded && styles.expanded,
         isVisualRefresh && styles['visual-refresh']
       )}
-      ref={mergedRef}
+      ref={useMergeRefs(mergedRef, __internalRootRef)}
       {...getAnalyticsMetadataAttribute(getComponentsAnalyticsMetadata(items.length, true, isFlashbarStackExpanded))}
     >
       {isFlashbarStackExpanded && renderList()}
