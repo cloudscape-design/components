@@ -76,3 +76,5 @@ export function requireDesignTokensFile(fileName: string): any {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   return require(path.join(designTokensDir, fileName));
 }
+
+export const testIf = (condition: boolean) => (condition ? test : test.skip);
