@@ -2,16 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import ts from 'typescript';
 
+import { extractDeclaration } from './type-utils.js';
+
 export function extractDefaultValues(exportSymbol: ts.Symbol, checker: ts.TypeChecker) {
   // Find the component function
-  let declaration: ts.Node = exportSymbol.getDeclarations()[0];
+  let declaration: ts.Node = extractDeclaration(exportSymbol);
   if (ts.isExportAssignment(declaration)) {
     // Traverse from "export default Something;" to the actual "Something"
     const symbol = checker.getSymbolAtLocation(declaration.expression);
     if (!symbol) {
       throw new Error('Cannot resolve symbol');
     }
-    declaration = symbol.getDeclarations()[0];
+    declaration = extractDeclaration(symbol);
   }
   // Extract "Something" from "const Component = Something"
   if (ts.isVariableDeclaration(declaration) && declaration.initializer) {
@@ -54,10 +56,15 @@ export function extractDefaultValues(exportSymbol: ts.Symbol, checker: ts.TypeCh
   return values;
 }
 
-export function validateExports(componentName: string, exportSymbols: Array<ts.Symbol>, checker: ts.TypeChecker) {
+export function validateExports(
+  componentName: string,
+  exportSymbols: Array<ts.Symbol>,
+  checker: ts.TypeChecker,
+  extraExports: Record<string, Array<string>>
+) {
   for (const exportSymbol of exportSymbols) {
     if (exportSymbol.name === 'default') {
-      const declaration = exportSymbol.getDeclarations()[0];
+      const declaration = extractDeclaration(exportSymbol);
       let type: ts.Type;
       if (ts.isExportAssignment(declaration)) {
         // export default Something;
@@ -70,21 +77,17 @@ export function validateExports(componentName: string, exportSymbols: Array<ts.S
       }
       if (
         // React.forwardRef
-        type.getSymbol().name !== 'ForwardRefExoticComponent' &&
+        type.getSymbol()?.name !== 'ForwardRefExoticComponent' &&
         // Plain function returning JSX
         type.getCallSignatures().some(signature => signature.getReturnType().getSymbol()?.getName() !== 'Element')
       ) {
         throw new Error(`Unknown default export type ${checker.typeToString(type)}`);
       }
     } else if (exportSymbol.name !== `${componentName}Props`) {
-      if (
-        (componentName === 'FileDropzone' && exportSymbol.name === 'useFilesDragging') ||
-        (componentName === 'TagEditor' && exportSymbol.name === 'getTagsDiff')
-      ) {
-        // known exceptions
+      if (extraExports[componentName]?.includes(exportSymbol.name)) {
         continue;
       }
-      throw new Error(`Component ${componentName} exports ${exportSymbol.name} which is not ${componentName}Props`);
+      throw new Error(`Unexpected export ${exportSymbol.name} from ${componentName}`);
     }
   }
 }

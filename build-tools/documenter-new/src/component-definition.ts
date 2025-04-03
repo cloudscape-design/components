@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import ts from 'typescript';
 
-import { isOptional, stringifyType } from './type-utils.ts';
+import { extractDeclaration, isOptional, stringifyType } from './type-utils.js';
 import type {
   ComponentDefinition,
   ComponentFunction,
@@ -12,17 +12,13 @@ import type {
   FunctionDefinition,
   ObjectDefinition,
   UnionTypeDefinition,
-} from './types.ts';
+} from './types.js';
 
 export interface ExpandedProp {
   name: string;
   type: string;
   isOptional: boolean;
   rawType: ts.Type;
-  // expandedType?: {
-  //   name: string;
-  //   description: string;
-  // }[];
   description: {
     text: string;
     tags: Array<{ name: string; text: string | undefined }>;
@@ -73,7 +69,7 @@ export function buildComponentDefinition(
           .getCallSignatures()[0]
           .getParameters()
           .map((param): ComponentFunction['parameters'][0] => {
-            const paramType = checker.getTypeAtLocation(param.getDeclarations()[0]);
+            const paramType = checker.getTypeAtLocation(extractDeclaration(param));
             return {
               name: param.name,
               type: stringifyType(paramType, checker),
@@ -168,7 +164,7 @@ function getObjectDefinition(
       properties: realType
         .getProperties()
         .map(prop => {
-          const propType = checker.getTypeAtLocation(prop.getDeclarations()[0]);
+          const propType = checker.getTypeAtLocation(extractDeclaration(prop));
           return {
             name: prop.getName(),
             type: stringifyType(propType, checker),
@@ -189,7 +185,7 @@ function getObjectDefinition(
       type: 'function',
       returnType: stringifyType(signature.getReturnType(), checker),
       parameters: signature.getParameters().map(param => {
-        const paramType = checker.getTypeAtLocation(param.getDeclarations()[0]);
+        const paramType = checker.getTypeAtLocation(extractDeclaration(param));
         return {
           name: param.getName(),
           type: stringifyType(paramType, checker),

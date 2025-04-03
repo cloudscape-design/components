@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 /* eslint-disable @typescript-eslint/no-require-imports */
+
 const path = require('path');
 const { paramCase } = require('change-case');
 const { documentTestUtils } = require('@cloudscape-design/documenter');
+const { compileTypescript } = require('./typescript');
 const { writeFile } = require('../utils/files');
 const { listPublicItems } = require('../utils/files');
 const workspace = require('../utils/workspace');
@@ -25,9 +27,19 @@ function validatePublicFiles(definitionFiles) {
 }
 
 async function componentDocs() {
-  const { documentComponents } = await import('../documenter-new/index.ts');
+  await compileTypescript({
+    name: 'documenter',
+    tsConfigPath: 'build-tools/documenter-new/tsconfig.json',
+    outputPath: 'lib/documenter-new',
+  })();
+  const { documentComponents } = require('../../lib/documenter-new/index.js');
   // const { documentComponents } = require('@cloudscape-design/documenter');
-  const definitions = documentComponents(require.resolve('../../tsconfig.json'), 'src/*/index.tsx');
+  const definitions = documentComponents(require.resolve('../../tsconfig.json'), 'src/*/index.tsx', {
+    extraExports: {
+      FileDropzone: ['useFilesDragging'],
+      TagEditor: ['getTagsDiff'],
+    },
+  });
   const outDir = path.join(workspace.apiDocsPath, 'components');
   const fileNames = definitions
     .filter(definition => {
