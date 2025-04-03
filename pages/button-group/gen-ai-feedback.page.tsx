@@ -8,7 +8,6 @@ import { Box, Button, ButtonGroup, ButtonGroupProps, Header, SpaceBetween, Statu
 export default function ButtonGroupPage() {
   const [feedback, setFeedback] = useState<string>('');
   const [feedbackSubmitting, setFeedbackSubmitting] = useState<string>('');
-  const [popoverFeedback, setPopoverFeedback] = useState<React.ReactNode>('Feedback sending');
 
   const items: ButtonGroupProps.ItemOrGroup[] = [
     {
@@ -19,21 +18,39 @@ export default function ButtonGroupPage() {
           type: 'icon-button',
           id: 'helpful',
           iconName: feedback === 'helpful' ? 'thumbs-up-filled' : 'thumbs-up',
-          text: feedback === 'helpful' ? 'Helpful. Feedback submitted.' : 'Helpful',
-          disabled: feedback === 'not-helpful' || feedbackSubmitting === 'helpful',
-          disabledReason: feedbackSubmitting.length ? '' : 'Helpful. Unavailable after feedback is submitted.',
+          text: 'Helpful',
+          disabled: !!feedback.length || feedbackSubmitting === 'not-helpful',
+          disabledReason: feedbackSubmitting.length
+            ? ''
+            : feedback === 'helpful'
+              ? '“Helpful” feedback has been submitted.'
+              : 'Helpful option is unavailable after “not helpful” feedback submitted.',
           loading: feedbackSubmitting === 'helpful',
-          popoverFeedback: popoverFeedback,
+          popoverFeedback:
+            feedback === 'helpful' ? (
+              <StatusIndicator type="success">Feedback submitted</StatusIndicator>
+            ) : (
+              'Submitting feedback'
+            ),
         },
         {
           type: 'icon-button',
           id: 'not-helpful',
-          iconName: 'thumbs-down',
-          text: feedback === 'not-helpful' ? 'Helpful. Feedback submitted.' : 'Not helpful',
-          disabled: feedback === 'helpful' || feedbackSubmitting === 'not-helpful',
-          disabledReason: feedbackSubmitting.length ? '' : 'Not helpful. Unavailable after feedback is submitted.',
+          iconName: feedback === 'not-helpful' ? 'thumbs-down-filled' : 'thumbs-down',
+          text: 'Not helpful',
+          disabled: !!feedback.length || feedbackSubmitting === 'helpful',
+          disabledReason: feedbackSubmitting.length
+            ? ''
+            : feedback === 'not-helpful'
+              ? '“Not helpful” feedback has been submitted.'
+              : '“Not helpful” option is unavailable after “helpful” feedback submitted.',
           loading: feedbackSubmitting === 'not-helpful',
-          popoverFeedback: popoverFeedback,
+          popoverFeedback:
+            feedback === 'helpful' ? (
+              <StatusIndicator type="success">Feedback submitted</StatusIndicator>
+            ) : (
+              'Submitting feedback'
+            ),
         },
       ],
     },
@@ -57,18 +74,11 @@ export default function ButtonGroupPage() {
           variant="icon"
           items={items}
           onItemClick={({ detail }) => {
-            if (feedback.length) {
-              setPopoverFeedback(
-                `${feedback === 'helpful' ? 'Helpful' : 'Not helpful'}. Feedback submitted. Vote cannot be taken back.`
-              );
-              return;
-            }
             setFeedbackSubmitting(detail.id);
 
             setTimeout(() => {
               setFeedback(detail.id);
               setFeedbackSubmitting('');
-              setPopoverFeedback(<StatusIndicator type="success">Feedback sent</StatusIndicator>);
             }, 2000);
           }}
         />

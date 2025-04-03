@@ -41,7 +41,8 @@ const feedbackGroup: ButtonGroupProps.Group = {
       id: 'helpful',
       iconName: 'thumbs-up-filled',
       text: 'Helpful',
-      popoverFeedback: 'Already voted popover feedback',
+      disabled: true,
+      disabledReason: 'Already voted popover feedback',
     },
     {
       type: 'icon-button',
