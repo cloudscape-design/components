@@ -240,7 +240,7 @@ export function DrawerTriggers({
           <OverflowMenu
             items={overflowItems.map(item => ({
               ...item,
-              active: activeGlobalDrawersIds.includes(item.id),
+              active: activeGlobalDrawersIds.includes(item.id) && (!expandedDrawerId || item.id === expandedDrawerId),
             }))}
             ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
             customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => {
@@ -264,9 +264,16 @@ export function DrawerTriggers({
             }}
             onItemClick={event => {
               const id = event.detail.id;
+              setExpandedDrawerId(undefined);
               if (globalDrawers.find(drawer => drawer.id === id)) {
+                if (!!expandedDrawerId && id !== expandedDrawerId && activeGlobalDrawersIds.includes(id)) {
+                  return;
+                }
                 onActiveGlobalDrawersChange?.(id, { initiatedByUserAction: true });
               } else {
+                if (!!expandedDrawerId && activeDrawerId === id) {
+                  return;
+                }
                 onActiveDrawerChange?.(event.detail.id, { initiatedByUserAction: true });
               }
             }}
