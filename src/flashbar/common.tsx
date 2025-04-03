@@ -5,7 +5,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useReducedMotion, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -31,8 +30,7 @@ export function useFlashbar({
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
   const baseProps = getBaseProps(restProps);
   const ref = useRef<HTMLDivElement | null>(null);
-  const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
-  const mergedRef = useMergeRefs(ref, breakpointRef, __internalRootRef);
+  const mergedRef = useMergeRefs(ref, __internalRootRef);
   const isReducedMotion = useReducedMotion(ref);
   const isVisualRefresh = useVisualRefresh();
   const [previousItems, setPreviousItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>(items);
@@ -74,7 +72,6 @@ export function useFlashbar({
   return {
     allItemsHaveId,
     baseProps,
-    breakpoint,
     isReducedMotion,
     isVisualRefresh,
     mergedRef,

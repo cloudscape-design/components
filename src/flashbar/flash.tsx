@@ -22,6 +22,7 @@ import { isDevelopment } from '../internal/is-development';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
 import { throttle } from '../internal/utils/throttle';
+import useContainerWidth from '../internal/utils/use-container-width';
 import InternalLiveRegion from '../live-region/internal';
 import InternalSpinner from '../spinner/internal';
 import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
@@ -121,8 +122,9 @@ export const Flash = React.forwardRef(
     const analyticsMetadata = getAnalyticsMetadataProps(
       props as BasePropsWithAnalyticsMetadata & FlashbarProps.MessageDefinition
     );
+    const [containerWidth, containerMeasureRef] = useContainerWidth();
     const elementRef = useComponentMetadata('Flash', PACKAGE_VERSION, { ...analyticsMetadata });
-    const mergedRef = useMergeRefs(ref, elementRef);
+    const mergedRef = useMergeRefs(ref, elementRef, containerMeasureRef);
     const flashIconId = useUniqueId('flash-icon');
     const flashMessageId = useUniqueId('flash-message');
 
@@ -239,6 +241,8 @@ export const Flash = React.forwardRef(
             discoveredActions={discoveredActions}
             buttonText={buttonText}
             onButtonClick={onButtonClick}
+            containerWidth={containerWidth}
+            wrappedClass={styles['action-wrapped']}
           />
         </div>
         {dismissible && dismissButton(dismissLabel, onDismiss)}
