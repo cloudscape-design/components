@@ -271,9 +271,6 @@ export function DrawerTriggers({
                 }
                 onActiveGlobalDrawersChange?.(id, { initiatedByUserAction: true });
               } else {
-                if (!!expandedDrawerId && activeDrawerId === id) {
-                  return;
-                }
                 onActiveDrawerChange?.(event.detail.id, { initiatedByUserAction: true });
               }
             }}
