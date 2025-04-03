@@ -29,7 +29,6 @@ const mapDrawerToItem = (drawer: Drawer) => ({
   iconName: drawer.trigger!.iconName,
   iconSvg: drawer.trigger!.iconSvg,
   badge: drawer.badge,
-  itemType: 'checkbox' as ButtonDropdownProps.ItemType,
   checked: drawer.active,
 });
 
