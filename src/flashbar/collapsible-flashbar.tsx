@@ -48,7 +48,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setInitialAnimationState(rects);
   }, [getElementsToAnimate]);
 
-  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const { baseProps, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
@@ -301,7 +301,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       className={clsx(
         baseProps.className,
         styles.flashbar,
-        styles[`breakpoint-${breakpoint}`],
         styles.stack,
         isCollapsible && styles.collapsible,
         items.length === 2 && styles['short-list'],

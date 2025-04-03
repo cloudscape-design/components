@@ -669,6 +669,7 @@ export type SpacingTokenName =
   | 'spaceFlashbarActionLeft'
   | 'spaceFlashbarDismissRight'
   | 'spaceFlashbarHorizontal'
+  | 'spaceFlashbarVertical'
   | 'spaceGridGutter'
   | 'spaceKeyValueGap'
   | 'spaceLayoutContentBottom'
