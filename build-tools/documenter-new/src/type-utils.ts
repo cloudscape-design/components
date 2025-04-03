@@ -52,3 +52,14 @@ export function stringifyType(type: ts.Type, checker: ts.TypeChecker) {
     )
   );
 }
+
+export function extractDeclaration(symbol: ts.Symbol) {
+  const declarations = symbol.getDeclarations();
+  if (!declarations || declarations.length === 0) {
+    throw new Error(`No declaration found for symbol: ${symbol.getName()}`);
+  }
+  if (declarations.length > 1) {
+    throw new Error(`Multiple declarations found for symbol: ${symbol.getName()}`);
+  }
+  return declarations[0];
+}

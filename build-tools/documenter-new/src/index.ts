@@ -6,10 +6,10 @@ import { pascalCase } from 'change-case';
 import glob from 'glob';
 import ts from 'typescript';
 
-import { buildComponentDefinition, type ExpandedProp } from './component-definition.ts';
-import { extractDefaultValues, validateExports } from './extractor.ts';
-import { isOptional, stringifyType, unwrapNamespaceDeclaration } from './type-utils.ts';
-import type { ComponentDefinition } from './types.ts';
+import { buildComponentDefinition, type ExpandedProp } from './component-definition.js';
+import { extractDefaultValues, validateExports } from './extractor.js';
+import { extractDeclaration, isOptional, stringifyType, unwrapNamespaceDeclaration } from './type-utils.js';
+import type { ComponentDefinition } from './types.js';
 
 /**
  * TODO
@@ -46,16 +46,17 @@ function extractMemberComments(type: ts.Type) {
     }
     return type.types.find(t => !(t.flags & ts.TypeFlags.Undefined))?.aliasSymbol;
   }
-  const actualType = type.aliasSymbol ?? unwrapUndefined(type.origin);
+  const actualType = type.aliasSymbol ?? unwrapUndefined((type as any).origin);
   if (!actualType) {
     return [];
   }
-  const maybeList = actualType.getDeclarations()[0].type.getChildren()[0];
+  // @ts-expect-error todo find proper type
+  const maybeList = extractDeclaration(actualType).type.getChildren()[0];
   // https://github.com/TypeStrong/typedoc/blob/6090b3e31471cea3728db1b03888bca5703b437e/src/lib/converter/symbols.ts#L406-L438
   if (maybeList.kind !== ts.SyntaxKind.SyntaxList) {
     return [];
   }
-  const members = [];
+  const members: Array<string> = [];
   let memberIndex = 0;
   for (const child of maybeList.getChildren()) {
     const text = child.getFullText();
@@ -83,7 +84,7 @@ function extractProps(propsSymbol: ts.Symbol, checker: ts.TypeChecker) {
   return exportType
     .getProperties()
     .map((value): ExpandedProp => {
-      const declaration = value.getDeclarations()[0];
+      const declaration = extractDeclaration(value);
       const type = checker.getTypeAtLocation(declaration);
       // const unwrappedType = unwrapUndefined(type);
       return {
@@ -119,7 +120,7 @@ function extractFunctions(propsSymbol: ts.Symbol, checker: ts.TypeChecker) {
   return refType
     .getProperties()
     .map((value): ExpandedProp => {
-      const declaration = value.getDeclarations()[0];
+      const declaration = extractDeclaration(value);
       const type = checker.getTypeAtLocation(declaration);
       return {
         name: value.name,
@@ -152,7 +153,15 @@ function componentNameFromPath(componentPath: string) {
   return pascalCase(path.basename(directoryName));
 }
 
-export function documentComponents(tsconfigPath: string, componentsGlob: string): Array<ComponentDefinition> {
+interface DocumenterOptions {
+  extraExports?: Record<string, Array<string>>;
+}
+
+export function documentComponents(
+  tsconfigPath: string,
+  componentsGlob: string,
+  options?: DocumenterOptions
+): Array<ComponentDefinition> {
   const tsconfig = loadTSConfig(tsconfigPath);
   const program = ts.createProgram(tsconfig.fileNames, tsconfig.options);
   const checker = program.getTypeChecker();
@@ -165,15 +174,15 @@ export function documentComponents(tsconfigPath: string, componentsGlob: string)
 
   return glob.sync(componentsGlob).map(componentPath => {
     const name = componentNameFromPath(componentPath);
-    const sourceFile = program.getSourceFile(componentPath);
+    const sourceFile = program.getSourceFile(componentPath)!;
     const moduleSymbol = checker.getSymbolAtLocation(sourceFile);
 
     if (!moduleSymbol) {
       throw new Error(`Unable to resolve module: ${componentPath}`);
     }
     const exportSymbols = checker.getExportsOfModule(moduleSymbol);
-    validateExports(name, exportSymbols, checker);
-    const propsSymbol = exportSymbols.find(symbol => symbol.getName() === `${name}Props`);
+    validateExports(name, exportSymbols, checker, options?.extraExports ?? {});
+    const propsSymbol = exportSymbols.find(symbol => symbol.getName() === `${name}Props`)!;
     const defaultExport = exportSymbols.find(symbol => symbol.getName() === 'default')!;
     const props = extractProps(propsSymbol, checker);
     const defaultValues = extractDefaultValues(defaultExport, checker);

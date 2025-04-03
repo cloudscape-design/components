@@ -1,11 +1,13 @@
 {
+  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "nodenext",
     "esModuleInterop": true,
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "strict": true
-  }
+    "strict": true,
+    "declaration": true,
+    "incremental": true
+  },
+  "include": ["src"]
 }

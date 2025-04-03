@@ -32,21 +32,25 @@ function unwrapUndefined(type: ts.Type) {
 }
 
 function extractMemberComments(type: ts.Type) {
+  // @ts-expect-error poc
   const actualType = type.aliasSymbol ?? unwrapUndefined(type.origin);
   // TODO support .origin prop
   if (!actualType) {
     return [];
   }
+  // @ts-expect-error poc
   const maybeList = actualType.getDeclarations()[0].type.getChildren()[0];
   // https://github.com/TypeStrong/typedoc/blob/6090b3e31471cea3728db1b03888bca5703b437e/src/lib/converter/symbols.ts#L406-L438
   if (maybeList.kind !== ts.SyntaxKind.SyntaxList) {
     return [];
   }
+  // @ts-expect-error poc
   const members = [];
   let memberIndex = 0;
   for (const child of maybeList.getChildren()) {
     const text = child.getFullText();
     if (text.includes('/**')) {
+      // @ts-expect-error poc
       members[memberIndex] = (members[memberIndex] ?? '') + child.getFullText();
     }
 
@@ -59,9 +63,6 @@ function extractMemberComments(type: ts.Type) {
 
 function expandType(name: ts.__String, type: ts.Type) {
   if (type.isUnionOrIntersection()) {
-    if (name === 'variant') {
-      debugger;
-    }
     const comments = extractMemberComments(type);
 
     return type.types
@@ -92,8 +93,11 @@ function extractExports(sourceFile: ts.SourceFile, checker: ts.TypeChecker): Exp
     const symbolType = checker.getDeclaredTypeOfSymbol(symbol);
 
     if (name.endsWith('Props')) {
+      // @ts-expect-error poc
       const members = [];
+      // @ts-expect-error poc
       symbolType.getSymbol().members.forEach((value, key) => {
+        // @ts-expect-error poc
         const type = checker.getTypeAtLocation(value.getDeclarations()[0]);
         members.push({
           name: key,
@@ -102,8 +106,10 @@ function extractExports(sourceFile: ts.SourceFile, checker: ts.TypeChecker): Exp
           description: value.getDocumentationComment(checker),
         });
       });
+      // @ts-expect-error poc
       exports.push({ name, type: checker.typeToString(symbolType), members });
     } else if (name === 'default') {
+      // @ts-expect-error poc
       const declaration = symbol.getDeclarations()[0];
       if (ts.isExportAssignment(declaration)) {
         const type = checker.getTypeAtLocation(declaration.expression);
