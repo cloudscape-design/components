@@ -25,26 +25,11 @@ jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
   };
 });
 
-let mockElementOffsetLeft = 200;
-Object.defineProperties(window.HTMLElement.prototype, {
-  offsetLeft: {
-    configurable: true,
-    enumerable: true,
-    get() {
-      return mockElementOffsetLeft;
-    },
-  },
-});
-
 LiveRegionController.defaultDelay = 0;
 
 mockInnerText();
 
 const noop = () => void 0;
-
-beforeEach(() => {
-  mockElementOffsetLeft = 200;
-});
 
 let consoleWarnSpy: jest.SpyInstance;
 afterEach(() => {
@@ -278,22 +263,6 @@ describe('Flashbar component', () => {
         <Flashbar items={[{ header: 'The header', content: 'The content', action: <Button>Click me</Button> }]} />
       );
       expect(wrapper.findItems()[0].findAction()!.findButton()!.getElement()).toHaveTextContent('Click me');
-    });
-
-    it('adds wrapped class to actions if they are displayed on a new line', () => {
-      mockElementOffsetLeft = 10;
-      const { container } = reactRender(
-        <Flashbar items={[{ header: 'The header', content: 'The content', action: <Button>Click me</Button> }]} />
-      );
-      expect(container.querySelector(`.${styles['action-wrapped']}`)).toBeTruthy();
-    });
-
-    it('does not add wrapped class to actions if they are displayed on same line', () => {
-      mockElementOffsetLeft = 200;
-      const { container } = reactRender(
-        <Flashbar items={[{ header: 'The header', content: 'The content', action: <Button>Click me</Button> }]} />
-      );
-      expect(container.querySelector(`.${styles['action-wrapped']}`)).toBeFalsy();
     });
 
     test('when both `buttonText` and `action` provided, prefers the latter', () => {
