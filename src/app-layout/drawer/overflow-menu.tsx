@@ -23,12 +23,13 @@ interface OverflowMenuProps {
   globalDrawersStartIndex?: number;
 }
 
-const mapDrawerToItem = (drawer: Drawer) => ({
+const mapDrawerToItem = (drawer: Drawer, isTypeCheckbox: boolean) => ({
   id: drawer.id,
   text: drawer.ariaLabels.drawerName,
   iconName: drawer.trigger!.iconName,
   iconSvg: drawer.trigger!.iconSvg,
   badge: drawer.badge,
+  itemType: isTypeCheckbox ? ('checkbox' as ButtonDropdownProps.ItemType) : undefined,
   checked: drawer.active,
 });
 
@@ -39,9 +40,12 @@ export default function OverflowMenu({
   ariaLabel,
   globalDrawersStartIndex,
 }: OverflowMenuProps) {
-  const itemsFlatList = drawers.map(mapDrawerToItem);
+  const hasGlobalDrawers = globalDrawersStartIndex !== undefined;
+  const itemsFlatList = drawers.map((item, index) =>
+    mapDrawerToItem(item, hasGlobalDrawers && index >= globalDrawersStartIndex)
+  );
   let items: ReadonlyArray<InternalItemOrGroup>;
-  if (globalDrawersStartIndex !== undefined && globalDrawersStartIndex > 0) {
+  if (hasGlobalDrawers) {
     items = [
       { items: itemsFlatList.slice(0, globalDrawersStartIndex) },
       { items: itemsFlatList.slice(globalDrawersStartIndex) },
