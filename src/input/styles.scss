@@ -84,7 +84,7 @@
     @include styles.form-invalid-control();
     &.input-has-icon-left {
       padding-inline-start: calc(
-        #{styles.$control-icon-horizontal-padding} - (#{styles.$invalid-control-left-border} - #{styles.$control-border-width})
+        #{styles.$control-icon-horizontal-padding} - (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
       );
     }
   }
@@ -93,7 +93,7 @@
     @include styles.form-warning-control();
     &.input-has-icon-left {
       padding-inline-start: calc(
-        #{styles.$control-icon-horizontal-padding} - (#{styles.$invalid-control-left-border} - #{styles.$control-border-width})
+        #{styles.$control-icon-horizontal-padding} - (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
       );
     }
   }
