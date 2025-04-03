@@ -211,6 +211,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the dialog.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -230,13 +237,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#f2f3f3",
-          },
-        },
-        "color-background-feedback-dialog": {
-          "$description": "The background color of the feedback dialog.",
-          "$value": {
-            "dark": "#12293b",
-            "light": "#f1faff",
           },
         },
         "color-background-home-header": {
@@ -533,6 +533,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-border-dialog": {
+          "$description": "The border color of the dialog.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-border-divider-default": {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": {
@@ -559,13 +566,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
-          },
-        },
-        "color-border-feedback-dialog": {
-          "$description": "The border color of the feedback dialog.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
           },
         },
         "color-border-input-default": {
@@ -2750,6 +2750,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the dialog.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -2769,13 +2776,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#f2f3f3",
-          },
-        },
-        "color-background-feedback-dialog": {
-          "$description": "The background color of the feedback dialog.",
-          "$value": {
-            "dark": "#12293b",
-            "light": "#f1faff",
           },
         },
         "color-background-home-header": {
@@ -3072,6 +3072,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-border-dialog": {
+          "$description": "The border color of the dialog.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-border-divider-default": {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": {
@@ -3098,13 +3105,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
-          },
-        },
-        "color-border-feedback-dialog": {
-          "$description": "The border color of the feedback dialog.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
           },
         },
         "color-border-input-default": {
@@ -5289,6 +5289,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the dialog.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -5308,13 +5315,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#f2f3f3",
-          },
-        },
-        "color-background-feedback-dialog": {
-          "$description": "The background color of the feedback dialog.",
-          "$value": {
-            "dark": "#12293b",
-            "light": "#f1faff",
           },
         },
         "color-background-home-header": {
@@ -5611,6 +5611,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-border-dialog": {
+          "$description": "The border color of the dialog.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-border-divider-default": {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": {
@@ -5637,13 +5644,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
-          },
-        },
-        "color-border-feedback-dialog": {
-          "$description": "The border color of the feedback dialog.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
           },
         },
         "color-border-input-default": {
@@ -7828,6 +7828,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the dialog.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -7847,13 +7854,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#f2f3f3",
-          },
-        },
-        "color-background-feedback-dialog": {
-          "$description": "The background color of the feedback dialog.",
-          "$value": {
-            "dark": "#12293b",
-            "light": "#f1faff",
           },
         },
         "color-background-home-header": {
@@ -8150,6 +8150,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-border-dialog": {
+          "$description": "The border color of the dialog.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-border-divider-default": {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": {
@@ -8176,13 +8183,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
-          },
-        },
-        "color-border-feedback-dialog": {
-          "$description": "The border color of the feedback dialog.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
           },
         },
         "color-border-input-default": {
@@ -10367,6 +10367,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the dialog.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -10386,13 +10393,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#f2f3f3",
-          },
-        },
-        "color-background-feedback-dialog": {
-          "$description": "The background color of the feedback dialog.",
-          "$value": {
-            "dark": "#12293b",
-            "light": "#f1faff",
           },
         },
         "color-background-home-header": {
@@ -10689,6 +10689,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-border-dialog": {
+          "$description": "The border color of the dialog.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-border-divider-default": {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": {
@@ -10715,13 +10722,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
-          },
-        },
-        "color-border-feedback-dialog": {
-          "$description": "The border color of the feedback dialog.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
           },
         },
         "color-border-input-default": {
@@ -12906,6 +12906,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#414750",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the dialog.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#12293b",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -12925,13 +12932,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#414750",
-          },
-        },
-        "color-background-feedback-dialog": {
-          "$description": "The background color of the feedback dialog.",
-          "$value": {
-            "dark": "#12293b",
-            "light": "#12293b",
           },
         },
         "color-background-home-header": {
@@ -13228,6 +13228,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-border-dialog": {
+          "$description": "The border color of the dialog.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
         "color-border-divider-default": {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": {
@@ -13254,13 +13261,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
-          },
-        },
-        "color-border-feedback-dialog": {
-          "$description": "The border color of the feedback dialog.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#00a1c9",
           },
         },
         "color-border-input-default": {
@@ -15445,6 +15445,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#d5dbdb",
       },
     },
+    "color-background-dialog": {
+      "$description": "The background color of the dialog.",
+      "$value": {
+        "dark": "#12293b",
+        "light": "#f1faff",
+      },
+    },
     "color-background-dropdown-item-default": {
       "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
       "$value": {
@@ -15464,13 +15471,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#414750",
         "light": "#f2f3f3",
-      },
-    },
-    "color-background-feedback-dialog": {
-      "$description": "The background color of the feedback dialog.",
-      "$value": {
-        "dark": "#12293b",
-        "light": "#f1faff",
       },
     },
     "color-background-home-header": {
@@ -15767,6 +15767,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#687078",
       },
     },
+    "color-border-dialog": {
+      "$description": "The border color of the dialog.",
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
     "color-border-divider-default": {
       "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
       "$value": {
@@ -15793,13 +15800,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#879596",
         "light": "#879596",
-      },
-    },
-    "color-border-feedback-dialog": {
-      "$description": "The border color of the feedback dialog.",
-      "$value": {
-        "dark": "#00a1c9",
-        "light": "#0073bb",
       },
     },
     "color-border-input-default": {
@@ -17989,6 +17989,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -18008,13 +18015,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#131920",
             "light": "#f3f3f7",
-          },
-        },
-        "color-background-feedback-dialog": {
-          "$description": "The background color of the feedback dialog.",
-          "$value": {
-            "dark": "#001129",
-            "light": "#f0fbff",
           },
         },
         "color-background-home-header": {
@@ -18311,6 +18311,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-border-dialog": {
+          "$description": "The border color of the dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-border-divider-default": {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": {
@@ -18337,13 +18344,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#8c8c94",
-          },
-        },
-        "color-border-feedback-dialog": {
-          "$description": "The border color of the feedback dialog.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
           },
         },
         "color-border-input-default": {
@@ -20528,6 +20528,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#333843",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -20547,13 +20554,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#131920",
             "light": "#131920",
-          },
-        },
-        "color-background-feedback-dialog": {
-          "$description": "The background color of the feedback dialog.",
-          "$value": {
-            "dark": "#001129",
-            "light": "#001129",
           },
         },
         "color-background-home-header": {
@@ -20850,6 +20850,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-border-dialog": {
+          "$description": "The border color of the dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-border-divider-default": {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": {
@@ -20876,13 +20883,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#656871",
-          },
-        },
-        "color-border-feedback-dialog": {
-          "$description": "The border color of the feedback dialog.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
           },
         },
         "color-border-input-default": {
@@ -23067,6 +23067,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -23086,13 +23093,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#131920",
             "light": "#f3f3f7",
-          },
-        },
-        "color-background-feedback-dialog": {
-          "$description": "The background color of the feedback dialog.",
-          "$value": {
-            "dark": "#001129",
-            "light": "#f0fbff",
           },
         },
         "color-background-home-header": {
@@ -23389,6 +23389,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-border-dialog": {
+          "$description": "The border color of the dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-border-divider-default": {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": {
@@ -23415,13 +23422,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#8c8c94",
-          },
-        },
-        "color-border-feedback-dialog": {
-          "$description": "The border color of the feedback dialog.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
           },
         },
         "color-border-input-default": {
@@ -25606,6 +25606,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -25625,13 +25632,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#131920",
             "light": "#f3f3f7",
-          },
-        },
-        "color-background-feedback-dialog": {
-          "$description": "The background color of the feedback dialog.",
-          "$value": {
-            "dark": "#001129",
-            "light": "#f0fbff",
           },
         },
         "color-background-home-header": {
@@ -25928,6 +25928,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-border-dialog": {
+          "$description": "The border color of the dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-border-divider-default": {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": {
@@ -25954,13 +25961,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#8c8c94",
-          },
-        },
-        "color-border-feedback-dialog": {
-          "$description": "The border color of the feedback dialog.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
           },
         },
         "color-border-input-default": {
@@ -28145,6 +28145,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -28164,13 +28171,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#131920",
             "light": "#f3f3f7",
-          },
-        },
-        "color-background-feedback-dialog": {
-          "$description": "The background color of the feedback dialog.",
-          "$value": {
-            "dark": "#001129",
-            "light": "#f0fbff",
           },
         },
         "color-background-home-header": {
@@ -28467,6 +28467,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-border-dialog": {
+          "$description": "The border color of the dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-border-divider-default": {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": {
@@ -28493,13 +28500,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#8c8c94",
-          },
-        },
-        "color-border-feedback-dialog": {
-          "$description": "The border color of the feedback dialog.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
           },
         },
         "color-border-input-default": {
@@ -30684,6 +30684,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#333843",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -30703,13 +30710,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#131920",
             "light": "#131920",
-          },
-        },
-        "color-background-feedback-dialog": {
-          "$description": "The background color of the feedback dialog.",
-          "$value": {
-            "dark": "#001129",
-            "light": "#001129",
           },
         },
         "color-background-home-header": {
@@ -31006,6 +31006,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-border-dialog": {
+          "$description": "The border color of the dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-border-divider-default": {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": {
@@ -31032,13 +31039,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#656871",
-          },
-        },
-        "color-border-feedback-dialog": {
-          "$description": "The border color of the feedback dialog.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
           },
         },
         "color-border-input-default": {
@@ -33223,6 +33223,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#333843",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -33242,13 +33249,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#131920",
             "light": "#131920",
-          },
-        },
-        "color-background-feedback-dialog": {
-          "$description": "The background color of the feedback dialog.",
-          "$value": {
-            "dark": "#001129",
-            "light": "#001129",
           },
         },
         "color-background-home-header": {
@@ -33545,6 +33545,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-border-dialog": {
+          "$description": "The border color of the dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-border-divider-default": {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": {
@@ -33571,13 +33578,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#656871",
-          },
-        },
-        "color-border-feedback-dialog": {
-          "$description": "The border color of the feedback dialog.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
           },
         },
         "color-border-input-default": {
@@ -35762,6 +35762,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#dedee3",
       },
     },
+    "color-background-dialog": {
+      "$description": "The background color of the dialog.",
+      "$value": {
+        "dark": "#001129",
+        "light": "#f0fbff",
+      },
+    },
     "color-background-dropdown-item-default": {
       "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
       "$value": {
@@ -35781,13 +35788,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#131920",
         "light": "#f3f3f7",
-      },
-    },
-    "color-background-feedback-dialog": {
-      "$description": "The background color of the feedback dialog.",
-      "$value": {
-        "dark": "#001129",
-        "light": "#f0fbff",
       },
     },
     "color-background-home-header": {
@@ -36084,6 +36084,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#8c8c94",
       },
     },
+    "color-border-dialog": {
+      "$description": "The border color of the dialog.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
     "color-border-divider-default": {
       "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
       "$value": {
@@ -36110,13 +36117,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#656871",
         "light": "#8c8c94",
-      },
-    },
-    "color-border-feedback-dialog": {
-      "$description": "The border color of the feedback dialog.",
-      "$value": {
-        "dark": "#42b4ff",
-        "light": "#006ce0",
       },
     },
     "color-border-input-default": {
