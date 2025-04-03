@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
@@ -10,25 +10,6 @@ import InternalButton, { InternalButtonProps } from '../../button/internal';
 import { GeneratedAnalyticsMetadataAlertButtonClick } from '../analytics-metadata/interfaces';
 
 import styles from './styles.css.js';
-
-export const useActionsWrappingDetection = (containerWidth: number, style: string) => {
-  const actionsRef = React.useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => {
-    if (!actionsRef.current) {
-      return;
-    }
-    const isRtl = getIsRtl(actionsRef.current);
-    const { offsetWidth, offsetLeft } = actionsRef.current;
-    const start = isRtl ? containerWidth - offsetWidth - offsetLeft : offsetLeft;
-    // if the action slot is towards the left (right in RTL) of its container
-    if (start < 100) {
-      actionsRef.current.classList.add(style);
-    } else {
-      actionsRef.current.classList.remove(style);
-    }
-  }, [containerWidth, style]);
-  return actionsRef;
-};
 
 function createActionButton(
   testUtilClasses: ActionsWrapperProps['testUtilClasses'],
@@ -58,21 +39,42 @@ interface ActionsWrapperProps {
   action: React.ReactNode;
   discoveredActions: Array<React.ReactNode>;
   buttonText: React.ReactNode;
+  wrappedClass?: string;
+  containerWidth?: number;
   onButtonClick: InternalButtonProps['onClick'];
 }
 
-export const ActionsWrapper = forwardRef<HTMLDivElement, ActionsWrapperProps>(
-  ({ className, testUtilClasses, action, discoveredActions, buttonText, onButtonClick }, ref) => {
-    const actionButton = createActionButton(testUtilClasses, action, buttonText, onButtonClick);
-    if (!actionButton && discoveredActions.length === 0) {
-      return null;
+export const ActionsWrapper = ({
+  className,
+  testUtilClasses,
+  action,
+  discoveredActions,
+  buttonText,
+  wrappedClass,
+  containerWidth,
+  onButtonClick,
+}: ActionsWrapperProps) => {
+  const [wrapped, setWrapped] = useState(false);
+  const ref = React.useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (!ref.current || !containerWidth || !wrappedClass) {
+      return;
     }
-
-    return (
-      <div ref={ref} className={clsx(styles.root, className)}>
-        {actionButton}
-        {discoveredActions}
-      </div>
-    );
+    const isRtl = getIsRtl(ref.current);
+    const { offsetWidth, offsetLeft } = ref.current;
+    const start = isRtl ? containerWidth - offsetWidth - offsetLeft : offsetLeft;
+    // if the action slot is towards the left (right in RTL) of its container
+    setWrapped(start < 100);
+  }, [containerWidth, wrappedClass]);
+  const actionButton = createActionButton(testUtilClasses, action, buttonText, onButtonClick);
+  if (!actionButton && discoveredActions.length === 0) {
+    return null;
   }
-);
+
+  return (
+    <div ref={ref} className={clsx(styles.root, className, wrapped && wrappedClass)}>
+      {actionButton}
+      {discoveredActions}
+    </div>
+  );
+};

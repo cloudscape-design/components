@@ -22,7 +22,7 @@ import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
 import { SomeRequired } from '../internal/types';
 import useContainerWidth from '../internal/utils/use-container-width';
-import { ActionsWrapper, useActionsWrappingDetection } from './actions-wrapper';
+import { ActionsWrapper } from './actions-wrapper';
 import { GeneratedAnalyticsMetadataAlertDismiss } from './analytics-metadata/interfaces';
 import { AlertProps } from './interfaces';
 
@@ -86,8 +86,6 @@ const InternalAlert = React.forwardRef(
     const containerRef = useMergeRefs(containerMeasureRef, __internalRootRef);
     const headerRef = useMergeRefs(headerRefAction, headerRefContent);
     const contentRef = useMergeRefs(contentRefAction, contentRefContent);
-
-    const actionsRef = useActionsWrappingDetection(containerWidth, styles['action-wrapped']);
 
     const isRefresh = useVisualRefresh();
     const size = isRefresh
@@ -173,7 +171,6 @@ const InternalAlert = React.forwardRef(
                   </div>
                 </div>
                 <ActionsWrapper
-                  ref={actionsRef}
                   className={styles.action}
                   testUtilClasses={{
                     actionSlot: styles['action-slot'],
@@ -183,6 +180,8 @@ const InternalAlert = React.forwardRef(
                   discoveredActions={discoveredActions}
                   buttonText={buttonText}
                   onButtonClick={() => fireNonCancelableEvent(onButtonClick)}
+                  containerWidth={containerWidth}
+                  wrappedClass={styles['action-wrapped']}
                 />
               </div>
               {dismissible && (

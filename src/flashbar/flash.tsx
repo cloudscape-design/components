@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useComponentMetadata, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { ActionsWrapper, useActionsWrappingDetection } from '../alert/actions-wrapper';
+import { ActionsWrapper } from '../alert/actions-wrapper';
 import { InternalButton } from '../button/internal';
 import InternalIcon from '../icon/internal';
 import {
@@ -144,8 +144,6 @@ export const Flash = React.forwardRef(
     const headerRef = useMergeRefs(headerRefAction, headerRefContent, headerRefObject);
     const contentRef = useMergeRefs(contentRefAction, contentRefContent, contentRefObject);
 
-    const actionsRef = useActionsWrappingDetection(containerWidth, styles['action-wrapped']);
-
     const statusIconAriaLabel =
       props.statusIconAriaLabel ||
       i18nStrings?.[`${loading || type === 'in-progress' ? 'inProgress' : type}IconAriaLabel`];
@@ -234,7 +232,6 @@ export const Flash = React.forwardRef(
             </div>
           </div>
           <ActionsWrapper
-            ref={actionsRef}
             className={styles['action-button-wrapper']}
             testUtilClasses={{
               actionSlot: styles['action-slot'],
@@ -244,6 +241,8 @@ export const Flash = React.forwardRef(
             discoveredActions={discoveredActions}
             buttonText={buttonText}
             onButtonClick={onButtonClick}
+            containerWidth={containerWidth}
+            wrappedClass={styles['action-wrapped']}
           />
         </div>
         {dismissible && dismissButton(dismissLabel, onDismiss)}
