@@ -82,6 +82,21 @@ describeEachAppLayout(({ size, theme }) => {
     );
   });
 
+  test('overflow menu item have aria-role set to `menuitem`', () => {
+    const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
+    const buttonDropdown = wrapper.findDrawersOverflowTrigger();
+
+    buttonDropdown!.openDropdown();
+
+    const countItems = buttonDropdown!.findItems();
+    const countRoleMenuItemRole = buttonDropdown!
+      .findOpenDropdown()!
+      .find('[role="menu"]')!
+      .findAll('[role="menuitem"]');
+
+    expect(countItems.length).toBe(countRoleMenuItemRole.length);
+  });
+
   test('renders aria-labels', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
