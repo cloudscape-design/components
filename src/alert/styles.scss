@@ -69,8 +69,7 @@
 
 .alert-focus-wrapper {
   flex: 1;
-  min-inline-size: 70%; // fallback for browsers that don't support calc-size
-  min-inline-size: calc-size(max-content, min(size, 70%));
+  min-inline-size: 70%;
   display: grid;
   grid-template-columns: min-content auto;
 
