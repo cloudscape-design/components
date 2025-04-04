@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import { useReaction } from '../../../lib/components/area-chart/async-store';
 import { AreaChartProps } from '../../../lib/components/area-chart/interfaces';
 import { ChartModel } from '../../../lib/components/area-chart/model';
 import useChartModel, { UseChartModelProps } from '../../../lib/components/area-chart/model/use-chart-model';
@@ -60,8 +59,8 @@ function RenderChartModelHook(props: UseChartModelProps<ChartDataTypes>) {
     popoverRef,
   });
 
-  useReaction(interactions, state => state.highlightedPoint, setHighlightedPoint);
-  useReaction(interactions, state => state.highlightedX, setHighlightedX);
+  useLayoutEffect(() => interactions.subscribe(s => s.highlightedPoint, setHighlightedPoint), [interactions]);
+  useLayoutEffect(() => interactions.subscribe(s => s.highlightedX, setHighlightedX), [interactions]);
 
   useImperativeHandle(refs.plot, () => ({
     svg: svgRef.current!,

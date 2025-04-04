@@ -10,8 +10,8 @@ import InlineStartLabels from '../internal/components/cartesian-chart/inline-sta
 import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
 import ChartPlot from '../internal/components/chart-plot';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useSelector } from '../internal/utils/async-store';
 import useContainerWidth from '../internal/utils/use-container-width';
-import { useSelector } from './async-store';
 import AreaChartPopover from './elements/chart-popover';
 import AreaDataSeries from './elements/data-series';
 import AreaHighlightedPoint from './elements/highlighted-point';
