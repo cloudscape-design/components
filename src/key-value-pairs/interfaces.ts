@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 
 export interface KeyValuePairsProps extends BaseComponentProps {
@@ -52,6 +53,7 @@ export interface KeyValuePairsProps extends BaseComponentProps {
 
 export namespace KeyValuePairsProps {
   export type Item = Group | Pair;
+  export type IconAlign = 'start' | 'end';
 
   export interface Group {
     type: 'group';
@@ -64,5 +66,8 @@ export namespace KeyValuePairsProps {
     label: string;
     value: React.ReactNode;
     info?: React.ReactNode;
+    iconName?: IconProps.Name;
+    iconAlign?: KeyValuePairsProps.IconAlign;
+    iconAlt?: string;
   }
 }

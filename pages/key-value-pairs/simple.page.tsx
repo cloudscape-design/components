@@ -3,6 +3,7 @@
 import React from 'react';
 
 import KeyValuePairs from '~components/key-value-pairs';
+import Link from '~components/link';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -26,6 +27,24 @@ export default function () {
                 {
                   label: 'Label for key',
                   value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                  iconName: 'status-info',
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                  iconName: 'external',
+                  iconAlign: 'end',
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                  iconName: 'external',
+                  iconAlign: 'end',
+                  info: <Link>Info</Link>,
                 },
               ],
             },
