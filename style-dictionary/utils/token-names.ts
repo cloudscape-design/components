@@ -494,7 +494,8 @@ export type ColorsTokenName =
   | 'colorDropzoneTextDefault'
   | 'colorDropzoneTextHover'
   | 'colorDropzoneBorderDefault'
-  | 'colorDropzoneBorderHover';
+  | 'colorDropzoneBorderHover'
+  | 'colorGapGlobalDrawer';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'

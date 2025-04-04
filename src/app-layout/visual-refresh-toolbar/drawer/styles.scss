@@ -19,6 +19,8 @@
   }
 }
 
+$global-drawer-gap-size: 8px;
+
 .drawer {
   position: sticky;
   z-index: constants.$drawer-z-index;
@@ -48,8 +50,21 @@
   }
 
   &.drawer-global {
+    @include desktop-only {
+      padding-inline-start: 10px;
+
+      &:before {
+        content: '';
+        position: absolute;
+        block-size: 100%;
+        inline-size: $global-drawer-gap-size;
+        background: awsui.$color-gap-global-drawer;
+        border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
+    }
+
     @include mobile-only {
-      &:not(.last-opened) {
+      &:not(.last-opened):not(.drawer-expanded) {
         display: none;
       }
     }
@@ -57,6 +72,24 @@
 
   &.drawer-hidden {
     display: none;
+  }
+
+  &.drawer-expanded {
+    inline-size: 100%;
+
+    @include desktop-only {
+      border-inline-start: none;
+
+      &:after {
+        content: '';
+        position: absolute;
+        block-size: 100%;
+        inline-size: $global-drawer-gap-size;
+        inset-inline-end: 0;
+        background: awsui.$color-gap-global-drawer;
+        border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
+    }
   }
 
   > .drawer-content-container {
@@ -72,6 +105,15 @@
       grid-row: 2;
       z-index: 1;
       align-self: start;
+    }
+
+    > .drawer-expanded-mode-button {
+      grid-column: 2;
+      grid-row: 2;
+      z-index: 1;
+      align-self: start;
+      display: flex;
+      justify-content: end;
     }
 
     > .drawer-content {
