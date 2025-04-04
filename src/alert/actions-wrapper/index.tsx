@@ -60,12 +60,21 @@ export const ActionsWrapper = ({
     if (!ref.current || !containerWidth || !wrappedClass) {
       return;
     }
-    const isRtl = getIsRtl(ref.current);
-    const { offsetWidth, offsetLeft } = ref.current;
-    const start = isRtl ? containerWidth - offsetWidth - offsetLeft : offsetLeft;
-    // if the action slot is towards the left (right in RTL) of its container
-    setWrapped(start < 100);
-  }, [containerWidth, wrappedClass]);
+    function check() {
+      const isRtl = getIsRtl(ref.current);
+      const { offsetWidth, offsetLeft } = ref.current!;
+      const start = isRtl ? containerWidth! - offsetWidth - offsetLeft : offsetLeft;
+      // if the action slot is towards the left (right in RTL) of its container
+      setWrapped(start < 100);
+    }
+
+    // Discovered actions are rendered by their plugin, so don't cause a
+    // re-render of our React tree. So we observe for changes.
+    const observer = new MutationObserver(check);
+    observer.observe(ref.current, { attributes: false, childList: true, subtree: true });
+    check();
+    return () => observer.disconnect();
+  });
   const actionButton = createActionButton(testUtilClasses, action, buttonText, onButtonClick);
   if (!actionButton && discoveredActions.length === 0) {
     return null;
