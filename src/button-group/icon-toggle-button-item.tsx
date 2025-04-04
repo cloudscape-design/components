@@ -49,6 +49,7 @@ const IconToggleButtonItem = forwardRef(
           loading={item.loading}
           loadingText={item.loadingText}
           disabled={item.disabled}
+          disabledReason={showFeedback ? undefined : item.disabledReason} // don't show disabled reason when popover feedback is shown
           iconName={hasIcon ? item.iconName : 'close'}
           iconUrl={item.iconUrl}
           iconSvg={item.iconSvg}

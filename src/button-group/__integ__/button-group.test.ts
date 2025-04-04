@@ -14,6 +14,12 @@ const sendButton = buttonGroup.findButtonById('send');
 const actionsMenu = buttonGroup.findMenuById('more-actions');
 const fileInput = buttonGroup.findFileInputById('file-input').findNativeInput();
 
+const feedbackHelpfulButton = buttonGroup.findButtonById('helpful');
+
+const disabledReasonIconButton = buttonGroup.findButtonById('icon-button-disabled-reason');
+const disabledReasonIconToggleButton = buttonGroup.findToggleButtonById('icon-toggle-button-disabled-reason');
+const disabledReasonMenuDropdown = buttonGroup.findMenuById('menu-dropdown-disabled-reason');
+
 function setup(options: { dropdownExpandToViewport?: boolean }, testFn: (page: BasePageObject) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
@@ -53,7 +59,7 @@ test.each([false, true])(
       await page.keys(['Tab']);
       await expect(page.isFocused(fileInput.toSelector())).resolves.toBe(true);
 
-      await page.keys(range(9).map(() => 'ArrowRight'));
+      await page.keys(range(11).map(() => 'ArrowRight'));
       await expect(page.isFocused(actionsMenu.find('button').toSelector())).resolves.toBe(true);
 
       await page.keys(['Enter']);
@@ -78,7 +84,7 @@ test(
   'shows tooltip when a button is focused',
   setup({}, async page => {
     await page.click(likeButton.toSelector());
-    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked');
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked - Toggle');
 
     await page.click(createWrapper().find('[data-testid="focus-on-copy"]').toSelector());
     await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
@@ -93,7 +99,7 @@ test(
   'hides popover after clicking outside',
   setup({}, async page => {
     await page.click(likeButton.toSelector());
-    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked');
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked - Toggle');
 
     await page.click(createWrapper().find('#log').toSelector());
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
@@ -121,7 +127,7 @@ test(
     await page.keys(['Tab']);
     await expect(page.isFocused(fileInput.toSelector())).resolves.toBe(true);
 
-    await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight']);
+    await page.keys(range(7).map(() => 'ArrowRight'));
     await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
     await expect(page.getElementsCount(buttonGroup.findTooltip().toSelector())).resolves.toBe(1);
     await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Copy');
@@ -144,10 +150,10 @@ test(
   'keeps showing tooltip after clicking on a button with no popover feedback',
   setup({}, async page => {
     await page.hoverElement(likeButton.toSelector());
-    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Like');
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Like - Toggle');
 
     await page.click(likeButton.toSelector());
-    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked');
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked - Toggle');
   })
 );
 
@@ -204,5 +210,55 @@ test(
     await page.keys(['Tab']);
     await expect(page.getFocusedElementText()).resolves.toBe('Focus on copy');
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
+  })
+);
+
+test(
+  'shows disabled reason in tooltip while hovering on a disabled icon-button',
+  setup({}, async page => {
+    await page.hoverElement(disabledReasonIconButton.toSelector());
+    await expect(page.getText(disabledReasonIconButton.findDisabledReason().toSelector())).resolves.toBe(
+      'Disabled reason icon-button'
+    );
+  })
+);
+
+test(
+  'shows disabled reason in tooltip while hovering on a disabled icon-toggle-button',
+  setup({}, async page => {
+    await page.hoverElement(disabledReasonIconToggleButton.toSelector());
+    await expect(page.getText(disabledReasonIconToggleButton.findDisabledReason().toSelector())).resolves.toBe(
+      'Disabled reason icon-toggle-button'
+    );
+  })
+);
+
+test(
+  'shows disabled reason in tooltip while hovering on a disabled menu-dropdown',
+  setup({}, async page => {
+    await page.hoverElement(disabledReasonMenuDropdown.toSelector());
+    await expect(
+      page.getText(disabledReasonMenuDropdown.findTriggerButton().findDisabledReason().toSelector())
+    ).resolves.toBe('Disabled reason menu-dropdown');
+  })
+);
+
+test(
+  "doesn't show disabled reason when popover feedback is shown",
+  setup({}, async page => {
+    await page.click(feedbackHelpfulButton.toSelector());
+    await page.waitForVisible(buttonGroup.findTooltip().toSelector());
+    await page.hoverElement(feedbackHelpfulButton.toSelector());
+
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Submitted');
+    await expect(page.isExisting(feedbackHelpfulButton.findDisabledReason().toSelector())).resolves.toBe(false);
+
+    // click outside to dismiss popover
+    await page.click(createWrapper().find('#log').toSelector());
+
+    await page.hoverElement(feedbackHelpfulButton.toSelector());
+    await expect(page.getText(feedbackHelpfulButton.findDisabledReason().toSelector())).resolves.toBe(
+      'Already submitted'
+    );
   })
 );

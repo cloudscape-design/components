@@ -108,7 +108,9 @@ export const InternalButton = React.forwardRef(
     const isAnchor = Boolean(href);
     const target = targetOverride ?? (external ? '_blank' : undefined);
     const isNotInteractive = loading || disabled;
-    const isDisabledWithReason = (variant === 'normal' || variant === 'primary') && !!disabledReason && disabled;
+    const isDisabledWithReason =
+      (variant === 'normal' || variant === 'primary' || variant === 'icon') && !!disabledReason && disabled;
+
     const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || isDisabledWithReason;
     const shouldHaveContent =
       children &&

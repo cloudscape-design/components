@@ -178,7 +178,7 @@ describe('Button Component', () => {
     });
   });
 
-  describe.each(['primary', 'normal'] as const)('disabled with reason %s variant', variant => {
+  describe.each(['primary', 'normal', 'icon'] as const)('disabled with reason %s variant', variant => {
     describe.each([true, false] as const)('with href %s', withHref => {
       const defaultProps = {
         variant,
@@ -620,16 +620,20 @@ describe('Button Component', () => {
 
     test.each(buttonTargetExpectations)('"target" property %s', (props, expectation) => {
       const wrapper = renderButton({ ...props });
-      expectation
-        ? expect(wrapper.getElement()).toHaveAttribute('target', expectation)
-        : expect(wrapper.getElement()).not.toHaveAttribute('target');
+      if (expectation) {
+        expect(wrapper.getElement()).toHaveAttribute('target', expectation);
+      } else {
+        expect(wrapper.getElement()).not.toHaveAttribute('target');
+      }
     });
 
     test.each(buttonRelExpectations)('"rel" property %s', (props, expectation) => {
       const wrapper = renderButton({ ...props });
-      expectation
-        ? expect(wrapper.getElement()).toHaveAttribute('rel', expectation)
-        : expect(wrapper.getElement()).not.toHaveAttribute('rel');
+      if (expectation) {
+        expect(wrapper.getElement()).toHaveAttribute('rel', expectation);
+      } else {
+        expect(wrapper.getElement()).not.toHaveAttribute('rel');
+      }
     });
 
     test('can add a download attribute if it is a link', () => {

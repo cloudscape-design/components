@@ -52,6 +52,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderToggleButtonNormalPressed: { light: '{colorGrey600}', dark: '{colorGrey500}' },
   colorBorderButtonNormalDisabled: { light: '{colorGrey300}', dark: '{colorGrey650}' },
   colorTextButtonNormalDisabled: { light: '{colorGrey500}', dark: '{colorGrey500}' },
+  colorTextButtonIconDisabled: { light: '{colorGrey500}', dark: '{colorGrey500}' },
   colorBorderButtonNormalHover: { light: '{colorGrey900}', dark: '{colorGrey400}' },
   colorBorderButtonPrimaryDisabled: { light: '{colorGrey300}', dark: '{colorGrey650}' },
   colorTextButtonPrimaryDisabled: { light: '{colorGrey500}', dark: '{colorGrey500}' },

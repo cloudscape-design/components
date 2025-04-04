@@ -112,6 +112,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderButtonNormalDisabled: { light: '{colorGrey400}', dark: '{colorGrey550}' },
   colorTextButtonNormalDisabled: { light: '{colorGrey500}', dark: '{colorGrey500}' },
   colorBorderButtonNormalHover: { light: '{colorBlue800}', dark: '{colorBlue400}' },
+  colorTextButtonIconDisabled: { light: '{colorGrey500}', dark: '{colorGrey500}' },
   colorBorderButtonPrimaryDisabled: '{colorBackgroundButtonPrimaryDisabled}',
   colorTextButtonPrimaryDisabled: { light: '{colorGrey500}', dark: '{colorGrey500}' },
   colorBorderCalendarGrid: 'transparent',
