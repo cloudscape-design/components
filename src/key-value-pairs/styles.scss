@@ -33,6 +33,20 @@
 
 .key-label {
   @include styles.info-link-spacing;
+
+  > .icon-left {
+    position: relative;
+    // margin-left was breaking layout on firefox
+    inset-inline-start: calc(-1 * #{awsui.$space-xxs});
+    margin-inline-end: awsui.$space-xxs;
+  }
+
+  > .icon-right {
+    position: relative;
+    // margin-right was breaking layout on firefox
+    inset-inline-end: calc(-1 * #{awsui.$space-xxs});
+    margin-inline-start: awsui.$space-xxs;
+  }
 }
 
 .detail {
@@ -46,4 +60,10 @@
   display: inline-flex;
   padding-inline-start: awsui.$space-xs;
   border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+.icon {
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+  inset-inline: 0;
 }

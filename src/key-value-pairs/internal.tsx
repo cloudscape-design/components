@@ -3,28 +3,60 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+
 import Box from '../box/internal';
 import ColumnLayout from '../column-layout/internal';
+import InternalIcon from '../icon/internal';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import InternalSpaceBetween from '../space-between/internal';
 import { KeyValuePairsProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-const InternalKeyValuePair = ({ label, info, value, id }: KeyValuePairsProps.Pair) => {
+const InternalKeyValuePair = ({
+  label,
+  info,
+  value,
+  iconName,
+  iconAlign = 'start',
+  iconAlt,
+  id,
+}: KeyValuePairsProps.Pair) => {
   const kvPairId = useUniqueId('kv-pair-');
 
-  return (
-    <>
-      <dt className={styles.term}>
-        <label className={styles['key-label']} id={id || kvPairId}>
-          {label}
-        </label>
+  const getLabelWithIcon = () => {
+    const icon = iconName && (
+      <InternalIcon alt={iconAlt} name={iconName} className={clsx(styles.icon, styles[`icon-${iconAlign}`])} />
+    );
+    const labelComponent = (
+      <label className={styles['key-label']} id={id || kvPairId}>
+        {label}
+      </label>
+    );
+
+    let iconAndLabelPair: React.ReactNode[] = [];
+    if (getIsRtl(document.body)) {
+      iconAndLabelPair = iconAlign === 'start' ? [labelComponent, icon] : [icon, labelComponent];
+    } else {
+      iconAndLabelPair = iconAlign === 'start' ? [icon, labelComponent] : [labelComponent, icon];
+    }
+
+    return (
+      <InternalSpaceBetween size={'xxs'} direction={'horizontal'} alignItems={'center'}>
+        {iconAndLabelPair}
         <InfoLinkLabelContext.Provider value={id || kvPairId}>
           {info && <span className={styles.info}>{info}</span>}
         </InfoLinkLabelContext.Provider>
-      </dt>
+      </InternalSpaceBetween>
+    );
+  };
+
+  return (
+    <>
+      <dt className={styles.term}>{getLabelWithIcon()}</dt>
       <dd className={styles.detail}>{value}</dd>
     </>
   );
