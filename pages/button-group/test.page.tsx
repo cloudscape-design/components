@@ -27,7 +27,8 @@ export default function ButtonGroupPage() {
   } = useContext(AppContext as PageContext);
 
   const ref = React.useRef<ButtonGroupProps.Ref>(null);
-  const [feedback, setFeedback] = useState<'none' | 'like' | 'dislike'>('none');
+  const [feedback, setFeedback] = useState<'helpful' | 'not-helpful' | null>(null);
+  const [toggleFeedback, setToggleFeedback] = useState<'none' | 'like' | 'dislike'>('none');
   const [isFavorite, setFavorite] = useState(false);
   const [useExperimentalFeatures, setUseExperimentalFeatures] = useState(false);
   const [loadingId, setLoading] = useState<null | string>(null);
@@ -36,8 +37,8 @@ export default function ButtonGroupPage() {
   const [files, setFiles] = useState<File[]>([]);
 
   const toggleTexts = {
-    like: ['Like', 'Liked'],
-    dislike: ['Dislike', 'Disliked'],
+    like: ['Like - Toggle', 'Liked - Toggle'],
+    dislike: ['Dislike - Toggle', 'Disliked - Toggle'],
     favorite: ['Add to favorites', 'Added to favorites'],
   };
 
@@ -50,16 +51,41 @@ export default function ButtonGroupPage() {
         id: 'like',
         iconName: 'thumbs-up',
         pressedIconName: 'thumbs-up-filled',
-        text: feedback === 'like' ? toggleTexts.like[1] : toggleTexts.like[0],
-        pressed: feedback === 'like',
+        text: toggleFeedback === 'like' ? toggleTexts.like[1] : toggleTexts.like[0],
+        pressed: toggleFeedback === 'like',
       },
       {
         type: 'icon-toggle-button',
         id: 'dislike',
         iconName: 'thumbs-down',
         pressedIconName: 'thumbs-down-filled',
-        text: feedback === 'dislike' ? toggleTexts.dislike[1] : toggleTexts.dislike[0],
-        pressed: feedback === 'dislike',
+        text: toggleFeedback === 'dislike' ? toggleTexts.dislike[1] : toggleTexts.dislike[0],
+        pressed: toggleFeedback === 'dislike',
+      },
+    ],
+  };
+
+  const feedbackGroup: ButtonGroupProps.Group = {
+    type: 'group',
+    text: 'Feedback group',
+    items: [
+      {
+        type: 'icon-button',
+        id: 'helpful',
+        iconName: 'thumbs-up',
+        text: 'Helpful',
+        disabled: feedback !== null,
+        disabledReason: 'Already submitted',
+        popoverFeedback: <StatusIndicator type="success">Submitted</StatusIndicator>,
+      },
+      {
+        type: 'icon-button',
+        id: 'not-helpful',
+        iconName: 'thumbs-down',
+        text: 'Not helpful',
+        disabled: feedback !== null,
+        disabledReason: 'Already submitted',
+        popoverFeedback: <StatusIndicator type="success">Submitted</StatusIndicator>,
       },
     ],
   };
@@ -233,6 +259,7 @@ export default function ButtonGroupPage() {
   }
   const items = [
     fileGroup,
+    feedbackGroup,
     toggleFeedbackGroup,
     favoriteGroup,
     sendGroup,
@@ -271,9 +298,12 @@ export default function ButtonGroupPage() {
     }
 
     switch (detail.id) {
+      case 'helpful':
+      case 'not-helpful':
+        return syncAction(() => setFeedback(detail.id as 'helpful' | 'not-helpful'));
       case 'like':
       case 'dislike':
-        return syncAction(() => setFeedback(detail.pressed ? (detail.id as 'like' | 'dislike') : 'none'));
+        return syncAction(() => setToggleFeedback(detail.pressed ? (detail.id as 'like' | 'dislike') : 'none'));
       case 'favorite':
         return asyncAction(() => setFavorite(!!detail.pressed));
       case 'send':
