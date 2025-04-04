@@ -88,8 +88,8 @@ $inlineLabel-border-radius: 2px;
     min-inline-size: max-content;
     block-size: 18px;
 
-    border-block: awsui.$border-width-field solid awsui.$color-border-item-selected;
-    border-inline: awsui.$border-width-field solid awsui.$color-border-item-selected;
+    border-block: awsui.$border-width-token solid awsui.$color-border-item-selected;
+    border-inline: awsui.$border-width-token solid awsui.$color-border-item-selected;
     padding-block: 0;
     padding-inline: awsui.$space-xxs;
     background: awsui.$color-background-item-selected;
@@ -132,7 +132,7 @@ $inlineLabel-border-radius: 2px;
 }
 
 .inline-label {
-  background: awsui.$color-background-container-header;
+  background: linear-gradient(to bottom, awsui.$color-background-layout-main, awsui.$color-background-input-default);
   border-start-start-radius: $inlineLabel-border-radius;
   border-start-end-radius: $inlineLabel-border-radius;
   border-end-start-radius: $inlineLabel-border-radius;

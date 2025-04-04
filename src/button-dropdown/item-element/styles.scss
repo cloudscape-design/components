@@ -15,7 +15,7 @@
   padding-block: 0;
   padding-inline: 0;
   color: awsui.$color-text-dropdown-item-default;
-  margin-block-start: calc(-1 * #{styles.$control-border-width});
+  margin-block-start: calc(-1 * #{awsui.$border-width-dropdown});
   cursor: pointer;
 
   &.disabled {

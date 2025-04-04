@@ -19,6 +19,7 @@ export type ColorPaletteTokenName =
   | 'colorGreen600'
   | 'colorGreen700'
   | 'colorGreen900'
+  | 'colorGrey50'
   | 'colorGrey100'
   | 'colorGrey125'
   | 'colorGrey150'
@@ -585,7 +586,10 @@ export type BordersTokenName =
   | 'borderLinkFocusRingShadowSpread'
   | 'borderWidthAlert'
   | 'borderWidthField'
-  | 'borderWidthPopover';
+  | 'borderWidthButton'
+  | 'borderWidthToken'
+  | 'borderWidthPopover'
+  | 'borderWidthDropdown';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'
