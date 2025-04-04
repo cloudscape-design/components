@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 
 import { Button } from '../../../lib/components';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
@@ -20,6 +20,7 @@ import {
 } from './utils';
 
 import triggerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
+import skeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.selectors.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
 import iconStyles from '../../../lib/components/icon/styles.selectors.js';
@@ -1581,6 +1582,50 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
         wrapper.findDrawerTriggerById(drawerId)!.click();
         expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+      });
+
+      describe('nested app layouts', () => {
+        test('should apply expanded drawer mode only for inner AppLayout and hide nav for the outer AppLayout', async () => {
+          const drawerId = 'global-drawer';
+          awsuiPlugins.appLayout.registerDrawer({
+            ...drawerDefaults,
+            id: drawerId,
+            type: 'global',
+            isExpandable: true,
+          });
+          await renderComponent(
+            <AppLayout
+              data-testid="first"
+              navigation="testing nav"
+              content={<AppLayout navigationHide={true} data-testid="second" tools="testing tools" />}
+            />
+          );
+
+          const outerLayout = createWrapper().find('[data-testid="first"]')!.findAppLayout()!;
+          const innerLayout = createWrapper().find('[data-testid="second"]')!.findAppLayout()!;
+          const innerGlobalDrawers = getGlobalDrawersTestUtils(outerLayout);
+          const outerGlobalDrawers = getGlobalDrawersTestUtils(innerLayout);
+
+          await delay();
+
+          outerLayout.findDrawerTriggerById(drawerId)!.click();
+
+          await waitFor(() =>
+            expect(outerLayout.findDrawerTriggerById(drawerId)!.getElement()).toHaveClass(toolbarTriggerStyles.selected)
+          );
+          expect(outerLayout.findNavigationToggle()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+          expect(innerGlobalDrawers.isLayoutInDrawerExpandedMode()).toBe(false);
+          expect(innerGlobalDrawers.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
+
+          innerGlobalDrawers.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
+
+          expect(innerGlobalDrawers.isLayoutInDrawerExpandedMode()).toBe(false);
+          expect(outerGlobalDrawers.isLayoutInDrawerExpandedMode()).toBe(true);
+
+          await waitFor(() =>
+            expect(outerLayout.find(`.${skeletonStyles.navigation}`)!.getElement()).toHaveClass(skeletonStyles.hidden)
+          );
+        });
       });
     });
   });

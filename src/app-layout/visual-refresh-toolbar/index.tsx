@@ -298,6 +298,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         },
         splitPanelFocusRef: splitPanelFocusControl.refs.toggle,
         onSplitPanelToggle: onSplitPanelToggleHandler,
+        expandedDrawerId,
+        setExpandedDrawerId,
       },
       isIntersecting
     );
@@ -488,6 +490,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         <SkeletonLayout
           ref={useMergeRefs(intersectionObserverRef, rootRef)}
           isNested={isNested}
+          // Why not use drawerExpandedMode={!!expandedDrawerId || !!toolbarProps?.expandedDrawerId} instead?
+          // Because in nested layouts, the parent layout hides its main content area,
+          // which means the child layout isn't rendered at all in that case
+          drawerExpandedModeInChildLayout={!!toolbarProps?.expandedDrawerId}
           drawerExpandedMode={!!expandedDrawerId}
           style={{
             paddingBlockEnd: splitPanelOffsets.mainContentPaddingBlockEnd,

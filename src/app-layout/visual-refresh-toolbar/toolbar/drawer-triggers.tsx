@@ -177,7 +177,9 @@ export function DrawerTriggers({
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => {
-                setExpandedDrawerId(undefined);
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(undefined);
+                }
                 if (!!expandedDrawerId && activeDrawerId === item.id) {
                   return;
                 }
@@ -217,7 +219,9 @@ export function DrawerTriggers({
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => {
-                setExpandedDrawerId(undefined);
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(undefined);
+                }
                 if (!!expandedDrawerId && item.id !== expandedDrawerId && activeGlobalDrawersIds.includes(item.id)) {
                   return;
                 }
@@ -264,7 +268,9 @@ export function DrawerTriggers({
             }}
             onItemClick={event => {
               const id = event.detail.id;
-              setExpandedDrawerId(undefined);
+              if (setExpandedDrawerId) {
+                setExpandedDrawerId(undefined);
+              }
               if (globalDrawers.find(drawer => drawer.id === id)) {
                 if (!!expandedDrawerId && id !== expandedDrawerId && activeGlobalDrawersIds.includes(id)) {
                   return;

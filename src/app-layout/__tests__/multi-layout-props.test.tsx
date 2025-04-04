@@ -9,6 +9,7 @@ describe('mergeMultiAppLayoutProps', () => {
   const mockParentActiveDrawerChange = jest.fn();
   const mockParentActiveGlobalDrawerChange = jest.fn();
   const mockParentSplitPanelToggle = jest.fn();
+  const mockSetExpandedDrawerId = jest.fn();
   const ownProps: SharedProps = {
     forceDeduplicationType: 'primary',
     ariaLabels: {
@@ -43,6 +44,7 @@ describe('mergeMultiAppLayoutProps', () => {
     },
     splitPanelFocusRef: React.createRef(),
     onSplitPanelToggle: mockParentSplitPanelToggle,
+    setExpandedDrawerId: mockSetExpandedDrawerId,
   };
 
   const additionalPropsBase: Partial<SharedProps>[] = [

@@ -42,6 +42,7 @@ interface SkeletonLayoutProps
   navigationAnimationDisabled?: boolean;
   isNested?: boolean;
   drawerExpandedMode: boolean;
+  drawerExpandedModeInChildLayout: boolean;
 }
 
 export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutProps>(
@@ -71,6 +72,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       navigationAnimationDisabled,
       isNested,
       drawerExpandedMode,
+      drawerExpandedModeInChildLayout,
     },
     ref
   ) => {
@@ -100,7 +102,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
               !navigationOpen && styles['panel-hidden'],
               toolsOpen && styles['unfocusable-mobile'],
               !navigationAnimationDisabled && sharedStyles['with-motion-horizontal'],
-              drawerExpandedMode && styles.hidden
+              (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden
             )}
           >
             {navigation}

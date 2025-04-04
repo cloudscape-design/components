@@ -47,6 +47,9 @@ export interface ToolbarProps {
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   activeGlobalDrawersIds?: ReadonlyArray<string>;
   onActiveGlobalDrawersChange?: ((drawerId: string, params: OnChangeParams) => void) | undefined;
+
+  expandedDrawerId?: string;
+  setExpandedDrawerId?: (value: string | undefined) => void;
 }
 
 export interface AppLayoutToolbarImplementationProps {
@@ -68,8 +71,6 @@ export function AppLayoutToolbarImplementation({
     toolbarState,
     setToolbarState,
     setToolbarHeight,
-    expandedDrawerId,
-    setExpandedDrawerId,
   } = appLayoutInternals;
   const {
     ariaLabels,
@@ -89,6 +90,8 @@ export function AppLayoutToolbarImplementation({
     splitPanelFocusRef,
     splitPanelToggleProps,
     onSplitPanelToggle,
+    expandedDrawerId,
+    setExpandedDrawerId,
   } = toolbarProps;
   // TODO: expose configuration property
   const pinnedToolbar = true;
@@ -204,7 +207,7 @@ export function AppLayoutToolbarImplementation({
               activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
               onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
               expandedDrawerId={expandedDrawerId}
-              setExpandedDrawerId={setExpandedDrawerId}
+              setExpandedDrawerId={setExpandedDrawerId!}
             />
           </div>
         )}
