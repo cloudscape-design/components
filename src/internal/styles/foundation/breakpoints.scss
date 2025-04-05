@@ -3,7 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-// Breakpoints
+// Media query breakpoints
 $breakpoint-xxx-small: 0;
 $breakpoint-xx-small: 576px;
 $breakpoint-x-small: 688px;
@@ -15,6 +15,18 @@ $breakpoint-xx-large: 2540px;
 
 $_smallest_breakpoint: $breakpoint-xxx-small;
 $_largest_breakpoint: $breakpoint-x-large;
+
+// Container breakpoints, matching the Grid component
+$container-breakpoint-default: -1;
+$container-breakpoint-xxs: 465px;
+$container-breakpoint-xs: 688px;
+$container-breakpoint-s: 912px;
+$container-breakpoint-m: 1120px;
+$container-breakpoint-l: 1320px;
+$container-breakpoint-xl: 1840px;
+
+$_container_smallest_breakpoint: $container-breakpoint-default;
+$_container_largest_breakpoint: $container-breakpoint-xl;
 
 // Media of at least the minimum breakpoint width. No query for the smallest breakpoint.
 // Makes the @content apply to the wider than given breakpoint.
@@ -33,6 +45,30 @@ $_largest_breakpoint: $breakpoint-x-large;
 @mixin media-breakpoint-down($breakpoint) {
   @if $breakpoint != $_largest_breakpoint {
     @media (max-width: $breakpoint) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+// Container query for widths greater than the given breakpoint.
+// Matches the behavior of getMatchingBreakpoint in breakpoints.ts
+@mixin container-breakpoint-up($breakpoint) {
+  @if $breakpoint != $_container_smallest_breakpoint {
+    @container (min-width: #{$breakpoint + 1px}) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+// Container query for widths less than or equal to the given breakpoint.
+// Matches the behavior of matchBreakpointMapping in breakpoints.ts
+@mixin container-breakpoint-down($breakpoint) {
+  @if $breakpoint != $_container_largest_breakpoint {
+    @container (max-width: #{$breakpoint}) {
       @content;
     }
   } @else {
