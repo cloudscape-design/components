@@ -136,21 +136,20 @@ function ChartPopover(
         keepPosition={true}
         allowVerticalOverflow={true}
         allowScrollToFit={isPinned}
+        hoverArea={true}
       >
-        <div className={styles['hover-area']}>
-          <PopoverBody
-            dismissButton={dismissButton}
-            dismissAriaLabel={dismissAriaLabel}
-            header={<span className={testClasses.header}>{title}</span>}
-            onDismiss={onDismiss}
-            overflowVisible="content"
-            className={styles['popover-body']}
-            variant="chart"
-          >
-            <div className={testClasses.body}>{children}</div>
-            {footer && <div className={clsx(testClasses.footer, styles.footer)}>{footer}</div>}
-          </PopoverBody>
-        </div>
+        <PopoverBody
+          dismissButton={dismissButton}
+          dismissAriaLabel={dismissAriaLabel}
+          header={<span className={testClasses.header}>{title}</span>}
+          onDismiss={onDismiss}
+          overflowVisible="content"
+          className={styles['popover-body']}
+          variant="chart"
+        >
+          <div className={testClasses.body}>{children}</div>
+          {footer && <div className={clsx(testClasses.footer, styles.footer)}>{footer}</div>}
+        </PopoverBody>
       </PopoverContainer>
     </div>
   );

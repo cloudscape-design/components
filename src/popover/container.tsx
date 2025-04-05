@@ -42,6 +42,7 @@ interface PopoverContainerProps {
   allowVerticalOverflow?: boolean;
   // Whether the popover should be hidden when the trigger is scrolled away.
   hideOnOverscroll?: boolean;
+  hoverArea?: boolean;
   className?: string;
 }
 
@@ -61,6 +62,7 @@ export default function PopoverContainer({
   allowScrollToFit,
   allowVerticalOverflow,
   hideOnOverscroll,
+  hoverArea,
   className,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
@@ -165,7 +167,13 @@ export default function PopoverContainer({
           [styles[`container-body-variant-${variant}`]]: variant,
         })}
       >
-        <div ref={contentRef}>{children}</div>
+        {hoverArea ? (
+          <div className={styles['hover-area']}>
+            <div ref={contentRef}>{children}</div>
+          </div>
+        ) : (
+          <div ref={contentRef}>{children}</div>
+        )}
       </div>
     </div>
   );
