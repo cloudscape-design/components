@@ -123,7 +123,7 @@ function SubItems({
           className={clsx(
             styles['inner-list-item'],
             styles['key-value-pair'],
-            (expanded || !expandable) && styles.announced
+            (expanded || !expandable) && 'awsui-screenreader-text'
           )}
         >
           <span className={styles.key}>{key}</span>
@@ -168,7 +168,7 @@ function ExpandableSeries({
 function NonExpandableSeries({ itemKey, value, subItems, markerType, color }: ListItemProps) {
   return (
     <>
-      <div className={clsx(styles['key-value-pair'], styles.announced)}>
+      <div className={clsx(styles['key-value-pair'], 'awsui-screenreader-text')}>
         <div className={styles.key}>
           {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
           <span>{itemKey}</span>

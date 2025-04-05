@@ -19,7 +19,7 @@ export default function usePopoverPosition({
   popoverRef,
   bodyRef,
   arrowRef,
-  trackRef,
+  getTrack,
   contentRef,
   allowScrollToFit,
   allowVerticalOverflow,
@@ -31,7 +31,7 @@ export default function usePopoverPosition({
   popoverRef: React.RefObject<HTMLDivElement | null>;
   bodyRef: React.RefObject<HTMLDivElement | null>;
   arrowRef: React.RefObject<HTMLDivElement | null>;
-  trackRef: React.RefObject<HTMLElement | SVGElement | null>;
+  getTrack: () => null | HTMLElement | SVGElement;
   contentRef: React.RefObject<HTMLDivElement | null>;
   allowScrollToFit?: boolean;
   allowVerticalOverflow?: boolean;
@@ -52,7 +52,8 @@ export default function usePopoverPosition({
 
   const updatePositionHandler = useCallback(
     (onContentResize = false) => {
-      if (!trackRef.current || !popoverRef.current || !bodyRef.current || !contentRef.current || !arrowRef.current) {
+      const track = getTrack();
+      if (!track || !popoverRef.current || !bodyRef.current || !contentRef.current || !arrowRef.current) {
         return;
       }
 
@@ -61,7 +62,6 @@ export default function usePopoverPosition({
       const body = bodyRef.current;
       const arrow = arrowRef.current;
       const document = popover.ownerDocument;
-      const track = trackRef.current;
 
       // If the popover body isn't being rendered for whatever reason (e.g. "display: none" or JSDOM),
       // or track does not belong to the document - bail on calculating dimensions.
@@ -168,14 +168,18 @@ export default function usePopoverPosition({
         scrollRectangleIntoView(rect, scrollableParent);
       }
 
-      if (hideOnOverscroll && trackRef.current instanceof HTMLElement) {
-        const scrollableContainer = getFirstScrollableParent(trackRef.current);
+      if (hideOnOverscroll && track instanceof HTMLElement) {
+        const scrollableContainer = getFirstScrollableParent(track);
         if (scrollableContainer) {
           scrollableContainerRectRef.current = getLogicalBoundingClientRect(scrollableContainer);
         }
       }
 
       positionHandlerRef.current = () => {
+        const track = getTrack();
+        if (!track) {
+          return;
+        }
         const trackRect = getLogicalBoundingClientRect(track);
 
         const newTrackOffset = toRelativePosition(
@@ -197,7 +201,7 @@ export default function usePopoverPosition({
       };
     },
     [
-      trackRef,
+      getTrack,
       popoverRef,
       bodyRef,
       contentRef,

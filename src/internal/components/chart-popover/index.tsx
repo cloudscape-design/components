@@ -14,13 +14,15 @@ import { nodeBelongs } from '../../utils/node-belongs';
 
 import popoverStyles from '../../../popover/styles.css.js';
 import styles from './styles.css.js';
+import testClasses from './test-classes/styles.css.js';
 
-interface ChartPopoverProps extends PopoverProps {
+export interface ChartPopoverProps extends PopoverProps {
   /** Title of the popover */
   title?: React.ReactNode;
 
   /** References the element the container is positioned against. */
-  trackRef: React.RefObject<HTMLElement | SVGElement>;
+  trackRef?: React.RefObject<HTMLElement | SVGElement>;
+  getTrack?: () => null | HTMLElement | SVGElement;
   /**
     Used to update the container position in case track or track position changes:
     
@@ -48,6 +50,9 @@ interface ChartPopoverProps extends PopoverProps {
 
   /** Popover content */
   children?: React.ReactNode;
+
+  /** Popover footer */
+  footer?: React.ReactNode;
 }
 
 export default React.forwardRef(ChartPopover);
@@ -61,9 +66,11 @@ function ChartPopover(
     dismissAriaLabel,
 
     children,
+    footer,
 
     title,
     trackRef,
+    getTrack,
     trackKey,
     onDismiss,
     container,
@@ -118,6 +125,7 @@ function ChartPopover(
         fixedWidth={fixedWidth}
         position={position}
         trackRef={trackRef}
+        getTrack={getTrack}
         trackKey={trackKey}
         arrow={position => (
           <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
@@ -128,19 +136,20 @@ function ChartPopover(
         keepPosition={true}
         allowVerticalOverflow={true}
         allowScrollToFit={isPinned}
+        hoverArea={true}
       >
-        <div className={styles['hover-area']}>
-          <PopoverBody
-            dismissButton={dismissButton}
-            dismissAriaLabel={dismissAriaLabel}
-            header={title}
-            onDismiss={onDismiss}
-            overflowVisible="content"
-            className={styles['popover-body']}
-          >
-            {children}
-          </PopoverBody>
-        </div>
+        <PopoverBody
+          dismissButton={dismissButton}
+          dismissAriaLabel={dismissAriaLabel}
+          header={<span className={testClasses.header}>{title}</span>}
+          onDismiss={onDismiss}
+          overflowVisible="content"
+          className={styles['popover-body']}
+          variant="chart"
+        >
+          <div className={testClasses.body}>{children}</div>
+          {footer && <div className={clsx(testClasses.footer, styles.footer)}>{footer}</div>}
+        </PopoverBody>
       </PopoverContainer>
     </div>
   );
