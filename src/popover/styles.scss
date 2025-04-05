@@ -89,3 +89,11 @@ $trigger-underline-offset: 0.25em;
 .popover-inline-content {
   display: inline;
 }
+
+.hover-area {
+  pointer-events: none;
+  padding-block: awsui.$space-static-s;
+  padding-inline: awsui.$space-static-s;
+  margin-block: calc(-1 * #{awsui.$space-static-s});
+  margin-inline: calc(-1 * #{awsui.$space-static-s});
+}
