@@ -68,6 +68,6 @@ export namespace KeyValuePairsProps {
     info?: React.ReactNode;
     iconName?: IconProps.Name;
     iconAlign?: KeyValuePairsProps.IconAlign;
-    iconAlt?: string;
+    iconAriaLabel?: string;
   }
 }

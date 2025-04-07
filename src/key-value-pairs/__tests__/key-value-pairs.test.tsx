@@ -7,6 +7,8 @@ import KeyValuePairs from '../../../lib/components/key-value-pairs';
 import Link from '../../../lib/components/link';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+import styles from '../../../lib/components/key-value-pairs/styles.css.js';
+
 function renderKeyValuePairs(jsx: React.ReactElement) {
   const { container, ...rest } = render(jsx);
   return { wrapper: createWrapper(container).findKeyValuePairs()!, ...rest };
@@ -53,6 +55,38 @@ describe('KeyValuePairs', () => {
         labelId
       );
       expect(wrapper.findItems()[0]!.findInfo()!.getElement()).toHaveTextContent('Info');
+    });
+
+    test('renders label with icons correctly', () => {
+      const { wrapper } = renderKeyValuePairs(
+        <KeyValuePairs
+          items={[
+            {
+              label: 'Label for key',
+              value: 'Value',
+              iconName: 'status-info',
+              iconAlign: 'start',
+              iconAriaLabel: 'info icon at the start',
+            },
+            {
+              label: 'Label for key',
+              value: 'Value',
+              iconName: 'external',
+              iconAlign: 'end',
+              iconAriaLabel: 'external icon at the end',
+            },
+          ]}
+        />
+      );
+
+      expect(wrapper.findItems()[0]!.findIcon()?.getElement()).toHaveClass(styles['icon-start']);
+      expect(wrapper.findItems()[0]!.findIcon()?.getElement()).toHaveAttribute('aria-label', 'info icon at the start');
+
+      expect(wrapper.findItems()[1]!.findIcon()?.getElement()).toHaveClass(styles['icon-end']);
+      expect(wrapper.findItems()[1]!.findIcon()?.getElement()).toHaveAttribute(
+        'aria-label',
+        'external icon at the end'
+      );
     });
   });
 

@@ -19,6 +19,10 @@ class KeyValuePairsPairWrapper extends ComponentWrapper {
   findInfo(): ElementWrapper | null {
     return this.findByClassName(styles.info);
   }
+
+  findIcon(): ElementWrapper | null {
+    return this.findByClassName(styles.icon);
+  }
 }
 
 class KeyValuePairsItemWrapper extends KeyValuePairsPairWrapper {
