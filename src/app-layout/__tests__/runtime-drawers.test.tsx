@@ -1415,7 +1415,7 @@ describe('toolbar mode only features', () => {
 
         // Regular drawers should have role=menuitem
         const menuItems = menu.findAll('[role="menuitem"]');
-        expect(menuItems).toHaveLength(99);
+        expect(menuItems).toHaveLength(manyDrawers.length);
       });
 
       test('assigns menuitemcheckbox role to global drawers in overflow menu', async () => {
