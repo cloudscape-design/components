@@ -79,11 +79,11 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-button": {
           "$description": "The border width of buttons.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
@@ -95,7 +95,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-token": {
           "$description": "The border width of tokens.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -2616,11 +2616,11 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-button": {
           "$description": "The border width of buttons.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
@@ -2632,7 +2632,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-token": {
           "$description": "The border width of tokens.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -5153,11 +5153,11 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-button": {
           "$description": "The border width of buttons.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
@@ -5169,7 +5169,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-token": {
           "$description": "The border width of tokens.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -7690,11 +7690,11 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-button": {
           "$description": "The border width of buttons.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
@@ -7706,7 +7706,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-token": {
           "$description": "The border width of tokens.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -10227,11 +10227,11 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-button": {
           "$description": "The border width of buttons.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
@@ -10243,7 +10243,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-token": {
           "$description": "The border width of tokens.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -12764,11 +12764,11 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-button": {
           "$description": "The border width of buttons.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
@@ -12780,7 +12780,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-token": {
           "$description": "The border width of tokens.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -15301,11 +15301,11 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-width-button": {
       "$description": "The border width of buttons.",
-      "$value": "2px",
+      "$value": "1px",
     },
     "border-width-dropdown": {
       "$description": "The border width of dropdowns.",
-      "$value": "2px",
+      "$value": "1px",
     },
     "border-width-field": {
       "$description": "The border width of form fields.",
@@ -15317,7 +15317,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-width-token": {
       "$description": "The border width of tokens.",
-      "$value": "2px",
+      "$value": "1px",
     },
     "color-background-avatar-default": {
       "$description": "The default background color of avatars.",
