@@ -81,6 +81,7 @@ export interface PromptInputProps
 
   /**
    * Specifies the maximum number of lines of text the textarea will expand to.
+   * Defaults to 3. Use -1 for infinite rows.
    */
   maxRows?: number;
 
