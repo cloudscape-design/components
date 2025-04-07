@@ -77,12 +77,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "1px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "1px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "1px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -2602,12 +2614,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "1px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "1px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "1px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -5127,12 +5151,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "1px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "1px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "1px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -7652,12 +7688,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "1px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "1px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "1px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -10177,12 +10225,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "1px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "1px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "1px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -12702,12 +12762,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "1px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "1px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "1px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -15227,12 +15299,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The border width of alerts.",
       "$value": "1px",
     },
+    "border-width-button": {
+      "$description": "The border width of buttons.",
+      "$value": "1px",
+    },
+    "border-width-dropdown": {
+      "$description": "The border width of dropdowns.",
+      "$value": "1px",
+    },
     "border-width-field": {
       "$description": "The border width of form fields.",
       "$value": "1px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",
+      "$value": "1px",
+    },
+    "border-width-token": {
+      "$description": "The border width of tokens.",
       "$value": "1px",
     },
     "color-background-avatar-default": {
@@ -17757,12 +17841,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -20282,12 +20378,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -22807,12 +22915,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -25332,12 +25452,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -27857,12 +27989,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -30382,12 +30526,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -32907,12 +33063,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -35432,12 +35600,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The border width of alerts.",
       "$value": "2px",
     },
+    "border-width-button": {
+      "$description": "The border width of buttons.",
+      "$value": "2px",
+    },
+    "border-width-dropdown": {
+      "$description": "The border width of dropdowns.",
+      "$value": "2px",
+    },
     "border-width-field": {
       "$description": "The border width of form fields.",
       "$value": "2px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",
+      "$value": "2px",
+    },
+    "border-width-token": {
+      "$description": "The border width of tokens.",
       "$value": "2px",
     },
     "color-background-avatar-default": {

@@ -114,6 +114,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthButton: {
+    description: 'The border width of buttons.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthDropdown: {
+    description: 'The border width of dropdowns.',
+    public: true,
+    themeable: true,
+  },
   borderWidthField: {
     description: 'The border width of form fields.',
     public: true,
@@ -121,6 +131,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   borderWidthPopover: {
     description: 'The border width of popovers.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthToken: {
+    description: 'The border width of tokens.',
     public: true,
     themeable: true,
   },
