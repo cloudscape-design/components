@@ -116,7 +116,6 @@ const InternalPromptInput = React.forwardRef(
         const minTextareaHeight = `calc(${LINE_HEIGHT} +  ${tokens.spaceScaledXxs} * 2)`; // the min height of Textarea with 1 row
 
         if (maxRows === -1) {
-          /* istanbul ignore next: clientHeight and scrollHeight tested in integ, not possible to test in unit */
           const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
           textareaRef.current.style.height = `max(${scrollHeight}, ${minTextareaHeight})`;
         } else {
