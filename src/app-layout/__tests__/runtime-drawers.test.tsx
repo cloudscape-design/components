@@ -1411,11 +1411,12 @@ describe('toolbar mode only features', () => {
 
         const menu = buttonDropdown!.findOpenDropdown()!.find('[role="menu"]')!;
         // Global drawers should have role=menuitemcheckbox
-        expect(menu.findAll('[role="menuitemcheckbox"]')).toHaveLength(2);
+        const menuItemCheckboxesLength = menu.findAll('[role="menuitemcheckbox"]').length;
+        expect(menuItemCheckboxesLength).toBe(2);
 
         // Regular drawers should have role=menuitem
-        const menuItems = menu.findAll('[role="menuitem"]');
-        expect(menuItems).toHaveLength(manyDrawers.length);
+        const menuItemsLength = menu.findAll('[role="menuitem"]').length;
+        expect(menuItemsLength).toBe(manyDrawers.length - menuItemCheckboxesLength);
       });
 
       test('assigns menuitemcheckbox role to global drawers in overflow menu', async () => {
