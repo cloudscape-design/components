@@ -45,7 +45,7 @@ export interface ComponentFunction {
   returnType: string;
 }
 
-type TypeDefinition = ObjectDefinition | FunctionDefinition | UnionTypeDefinition;
+export type TypeDefinition = ObjectDefinition | FunctionDefinition | UnionTypeDefinition;
 
 export interface ObjectDefinition {
   name: string;

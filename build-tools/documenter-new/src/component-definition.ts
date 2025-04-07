@@ -65,11 +65,12 @@ export function buildComponentDefinition(
           }),
       })
     ),
-    properties: onlyProps.map(
-      (property): ComponentProperty => ({
+    properties: onlyProps.map((property): ComponentProperty => {
+      const { type, inlineType } = getObjectDefinition(property.type, property.rawType, checker);
+      return {
         name: property.name,
-        type: property.type,
-        inlineType: getObjectDefinition(property.rawType, checker),
+        type: type,
+        inlineType: inlineType,
         optional: property.isOptional,
         description: property.description.text,
         defaultValue: defaultValues[property.name],
@@ -77,8 +78,8 @@ export function buildComponentDefinition(
         deprecatedTag: getCommentTag(property, 'deprecated'),
         analyticsTag: getCommentTag(property, 'analytics'),
         i18nTag: castI18nTag(getCommentTag(property, 'i18n')),
-      })
-    ),
+      };
+    }),
     events: events.map((event): EventHandler => {
       const { detailType, detailInlineType, cancelable } = extractEventDetails(event.rawType, checker);
       return {
@@ -102,9 +103,10 @@ function extractEventDetails(type: ts.Type, checker: ts.TypeChecker) {
   const cancelable = handlerName === 'CancelableEventHandler';
   const detailType = realType.aliasTypeArguments?.[0];
   if (detailType && detailType.getProperties().length > 0) {
+    const { type, inlineType } = getObjectDefinition(stringifyType(detailType, checker), detailType, checker);
     return {
-      detailType: stringifyType(detailType, checker),
-      detailInlineType: getObjectDefinition(detailType, checker),
+      detailType: type,
+      detailInlineType: inlineType,
       cancelable,
     };
   }
