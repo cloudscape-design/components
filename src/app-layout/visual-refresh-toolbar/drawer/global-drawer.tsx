@@ -39,6 +39,8 @@ function AppLayoutGlobalDrawerImplementation({
     activeGlobalDrawersSizes,
     verticalOffsets,
     drawersOpenQueue,
+    expandedDrawerId,
+    setExpandedDrawerId,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeGlobalDrawer?.id ?? '';
@@ -65,6 +67,7 @@ function AppLayoutGlobalDrawerImplementation({
   const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
   const hasTriggerButton = !!activeGlobalDrawer?.trigger;
   const animationDisabled = activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id);
+  const isExpanded = activeGlobalDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
 
   return (
     <Transition nodeRef={drawerRef} in={show} appear={show} timeout={0}>
@@ -81,8 +84,9 @@ function AppLayoutGlobalDrawerImplementation({
               !animationDisabled && sharedStyles['with-motion-horizontal'],
               {
                 [styles['drawer-hidden']]: !show,
-                [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
+                [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
                 [testutilStyles['active-drawer']]: show,
+                [styles['drawer-expanded']]: isExpanded,
               }
             )}
             ref={drawerRef}
@@ -109,7 +113,7 @@ function AppLayoutGlobalDrawerImplementation({
             }}
             data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
           >
-            {!isMobile && activeGlobalDrawer?.resizable && (
+            {!isMobile && activeGlobalDrawer?.resizable && !isExpanded && (
               <div className={styles['drawer-slider']}>
                 <PanelResizeHandle
                   ref={refs?.slider}
@@ -126,6 +130,19 @@ function AppLayoutGlobalDrawerImplementation({
               className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
               data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
             >
+              {!isMobile && activeGlobalDrawer?.isExpandable && (
+                <div className={styles['drawer-expanded-mode-button']}>
+                  <InternalButton
+                    ariaLabel={activeGlobalDrawer?.ariaLabels?.expandedModeButton}
+                    className={testutilStyles['active-drawer-expanded-mode-button']}
+                    formAction="none"
+                    ariaExpanded={isExpanded}
+                    iconName={isExpanded ? 'shrink' : 'expand'}
+                    onClick={() => setExpandedDrawerId(isExpanded ? undefined : activeDrawerId)}
+                    variant="icon"
+                  />
+                </div>
+              )}
               <div className={clsx(styles['drawer-close-button'])}>
                 <InternalButton
                   ariaLabel={computedAriaLabels.closeButton}

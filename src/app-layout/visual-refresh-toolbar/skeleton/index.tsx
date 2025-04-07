@@ -41,6 +41,8 @@ interface SkeletonLayoutProps
   globalToolsOpen?: boolean;
   navigationAnimationDisabled?: boolean;
   isNested?: boolean;
+  drawerExpandedMode: boolean;
+  drawerExpandedModeInChildLayout: boolean;
 }
 
 export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutProps>(
@@ -69,6 +71,8 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       globalToolsOpen,
       navigationAnimationDisabled,
       isNested,
+      drawerExpandedMode,
+      drawerExpandedModeInChildLayout,
     },
     ref
   ) => {
@@ -81,6 +85,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
         className={clsx(styles.root, testutilStyles.root, {
           [styles['has-adaptive-widths-default']]: !contentTypeCustomWidths.includes(contentType),
           [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
+          [styles['drawer-expanded-mode']]: drawerExpandedMode,
         })}
         style={{
           minBlockSize: isNested ? '100%' : `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
@@ -96,13 +101,20 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
               styles.navigation,
               !navigationOpen && styles['panel-hidden'],
               toolsOpen && styles['unfocusable-mobile'],
-              !navigationAnimationDisabled && sharedStyles['with-motion-horizontal']
+              !navigationAnimationDisabled && sharedStyles['with-motion-horizontal'],
+              (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden
             )}
           >
             {navigation}
           </div>
         )}
-        <main className={clsx(styles['main-landmark'], isMobile && anyPanelOpen && styles['unfocusable-mobile'])}>
+        <main
+          className={clsx(
+            styles['main-landmark'],
+            isMobile && anyPanelOpen && styles['unfocusable-mobile'],
+            drawerExpandedMode && styles.hidden
+          )}
+        >
           {notifications && (
             <div
               className={clsx(
@@ -136,7 +148,8 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             !toolsOpen && styles['panel-hidden'],
             sharedStyles['with-motion-horizontal'],
             navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
-            toolsOpen && styles['tools-open']
+            toolsOpen && styles['tools-open'],
+            drawerExpandedMode && styles.hidden
           )}
         >
           {tools}

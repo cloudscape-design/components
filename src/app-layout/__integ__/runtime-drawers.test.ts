@@ -8,6 +8,7 @@ import { Theme } from '../../__integ__/utils.js';
 import { viewports } from './constants';
 import { getUrlParams } from './utils';
 
+import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.selectors.js';
 import vrDrawerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import vrToolbarDrawerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/drawer/styles.selectors.js';
 
@@ -17,6 +18,12 @@ const findDrawerById = (wrapper: AppLayoutWrapper, id: string) => {
 };
 const findDrawerContentById = (wrapper: AppLayoutWrapper, id: string) => {
   return wrapper.find(`[data-testid="awsui-app-layout-drawer-content-${id}"]`);
+};
+
+const findExpandedModeButtonByActiveDrawerId = (wrapper: AppLayoutWrapper, id: string) => {
+  return wrapper.find(
+    `[data-testid="awsui-app-layout-drawer-${id}"] .${testUtilsStyles['active-drawer-expanded-mode-button']}`
+  );
 };
 
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
@@ -331,6 +338,28 @@ describe('Visual refresh toolbar only', () => {
       await page.elementScrollTo(scrollableContainer, { top: 100 });
       await expect(getScrollPosition()).resolves.toEqual(scrollBefore);
       await expect(page.isDisplayed('[data-testid="drawer-sticky-header"]')).resolves.toBe(true);
+    })
+  );
+
+  test(
+    'should show only expanded drawer and hide all other panels if expanded mode for a drawer is active',
+    setupTest(async page => {
+      await page.setWindowSize({ ...viewports.desktop, width: 1600 });
+      await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
+      await page.click(wrapper.findDrawerTriggerById('circle3-global').toSelector());
+      await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
+
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle-global')!.toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle3-global')!.toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle')!.toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(wrapper.findOpenNavigationPanel().toSelector())).resolves.toBe(true);
+
+      await page.click(findExpandedModeButtonByActiveDrawerId(wrapper, 'circle-global').toSelector());
+
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle-global')!.toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle3-global')!.toSelector())).resolves.toBe(false);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle')!.toSelector())).resolves.toBe(false);
+      await expect(page.isClickable(wrapper.findOpenNavigationPanel().toSelector())).resolves.toBe(false);
     })
   );
 });
