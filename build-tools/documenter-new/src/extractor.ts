@@ -2,10 +2,26 @@
 // SPDX-License-Identifier: Apache-2.0
 import ts from 'typescript';
 
-import { extractDeclaration } from './type-utils.js';
+import {
+  extractDeclaration,
+  getDescription,
+  isOptional,
+  stringifyType,
+  unwrapNamespaceDeclaration,
+} from './type-utils';
+
+export interface ExpandedProp {
+  name: string;
+  type: string;
+  isOptional: boolean;
+  rawType: ts.Type;
+  description: {
+    text: string | undefined;
+    tags: Array<{ name: string; text: string | undefined }>;
+  };
+}
 
 export function extractDefaultValues(exportSymbol: ts.Symbol, checker: ts.TypeChecker) {
-  // Find the component function
   let declaration: ts.Node = extractDeclaration(exportSymbol);
   if (ts.isExportAssignment(declaration)) {
     // Traverse from "export default Something;" to the actual "Something"
@@ -38,6 +54,9 @@ export function extractDefaultValues(exportSymbol: ts.Symbol, checker: ts.TypeCh
     ts.isFunctionExpression(declaration) ||
     ts.isArrowFunction(declaration)
   ) {
+    if (declaration.parameters.length === 0) {
+      return {};
+    }
     argument = declaration.parameters[0].name;
   }
   if (!argument) {
@@ -56,38 +75,114 @@ export function extractDefaultValues(exportSymbol: ts.Symbol, checker: ts.TypeCh
   return values;
 }
 
-export function validateExports(
+export function extractProps(propsSymbol: ts.Symbol, checker: ts.TypeChecker) {
+  const exportType = checker.getDeclaredTypeOfSymbol(propsSymbol);
+
+  return exportType
+    .getProperties()
+    .map((value): ExpandedProp => {
+      const declaration = extractDeclaration(value);
+      const type = checker.getTypeAtLocation(declaration);
+      return {
+        name: value.name,
+        type: stringifyType(type, checker),
+        rawType: type,
+        isOptional: isOptional(type),
+        description: getDescription(value.getDocumentationComment(checker), declaration),
+      };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export function extractFunctions(propsSymbol: ts.Symbol, checker: ts.TypeChecker) {
+  const propsName = propsSymbol.getName();
+  const namespaceDeclaration = checker
+    .getDeclaredTypeOfSymbol(propsSymbol)
+    .getSymbol()
+    ?.getDeclarations()
+    ?.find(decl => decl.kind === ts.SyntaxKind.ModuleDeclaration);
+  const refType = unwrapNamespaceDeclaration(namespaceDeclaration)
+    .map(child => checker.getTypeAtLocation(child))
+    .find(type => (type.getSymbol() ?? type.aliasSymbol)?.getName() === 'Ref');
+
+  if (!refType) {
+    return [];
+  }
+  return refType
+    .getProperties()
+    .map((value): ExpandedProp => {
+      const declaration = extractDeclaration(value);
+      const type = checker.getTypeAtLocation(declaration);
+      const realType = type.getNonNullableType();
+      if (realType.getCallSignatures().length === 0) {
+        throw new Error(
+          `${propsName}.Ref should contain only methods, "${value.name}" has a "${stringifyType(type, checker)}" type`
+        );
+      }
+      return {
+        name: value.name,
+        type: stringifyType(realType, checker),
+        rawType: realType,
+        isOptional: isOptional(type),
+        description: getDescription(value.getDocumentationComment(checker), declaration),
+      };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export function extractExports(
   componentName: string,
-  exportSymbols: Array<ts.Symbol>,
+  exportSymbols: ts.Symbol[],
   checker: ts.TypeChecker,
   extraExports: Record<string, Array<string>>
 ) {
+  let componentSymbol;
+  let propsSymbol;
+  const unknownExports: Array<string> = [];
   for (const exportSymbol of exportSymbols) {
     if (exportSymbol.name === 'default') {
-      const declaration = extractDeclaration(exportSymbol);
-      let type: ts.Type;
-      if (ts.isExportAssignment(declaration)) {
-        // export default Something;
-        type = checker.getTypeAtLocation(declaration.expression);
-      } else if (ts.isFunctionDeclaration(declaration)) {
-        // export default function Something() {...}
-        type = checker.getTypeAtLocation(declaration);
-      } else {
-        throw new Error(`Unknown default export for ${componentName}`);
-      }
-      if (
-        // React.forwardRef
-        type.getSymbol()?.name !== 'ForwardRefExoticComponent' &&
-        // Plain function returning JSX
-        type.getCallSignatures().some(signature => signature.getReturnType().getSymbol()?.getName() !== 'Element')
-      ) {
-        throw new Error(`Unknown default export type ${checker.typeToString(type)}`);
-      }
-    } else if (exportSymbol.name !== `${componentName}Props`) {
-      if (extraExports[componentName]?.includes(exportSymbol.name)) {
-        continue;
-      }
-      throw new Error(`Unexpected export ${exportSymbol.name} from ${componentName}`);
+      validateComponentType(componentName, exportSymbol, checker);
+      componentSymbol = exportSymbol;
+    } else if (exportSymbol.name === `${componentName}Props`) {
+      propsSymbol = exportSymbol;
+    } else if (!extraExports[componentName] || !extraExports[componentName].includes(exportSymbol.name)) {
+      unknownExports.push(exportSymbol.name);
     }
+  }
+  // disabled until migration is complete
+  // if (unknownExports.length > 0) {
+  // throw new Error(`Unexpected exports in ${componentName}: ${unknownExports.join(', ')}`);
+  // }
+  if (!componentSymbol) {
+    throw new Error(`Missing default export for ${componentName}`);
+  }
+  if (!propsSymbol) {
+    throw new Error(`Missing ${componentName}Props export`);
+  }
+  return { componentSymbol, propsSymbol };
+}
+
+function validateComponentType(componentName: string, symbol: ts.Symbol, checker: ts.TypeChecker) {
+  const declaration = extractDeclaration(symbol);
+  let type: ts.Type;
+  if (ts.isExportAssignment(declaration)) {
+    // export default Something;
+    type = checker.getTypeAtLocation(declaration.expression);
+  } else if (ts.isFunctionDeclaration(declaration)) {
+    // export default function Something() {...}
+    type = checker.getTypeAtLocation(declaration);
+  } else {
+    throw new Error(`Unknown default export for ${componentName}`);
+  }
+  if (
+    // React.forwardRef
+    type.getSymbol()?.name !== 'ForwardRefExoticComponent' &&
+    // Plain function returning JSX
+    type.getCallSignatures().some(signature => {
+      const returnTypeName = checker.typeToString(signature.getReturnType());
+      return returnTypeName !== 'Element' && returnTypeName !== 'ReactPortal';
+    })
+  ) {
+    throw new Error(`Unknown default export type ${checker.typeToString(type)}`);
   }
 }

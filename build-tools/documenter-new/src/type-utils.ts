@@ -9,23 +9,10 @@ export function isOptional(type: ts.Type) {
   return !!type.types.find(t => t.flags & ts.TypeFlags.Undefined);
 }
 
-export function unwrapUndefined(type: ts.Type) {
-  if (!type.isUnionOrIntersection()) {
-    return type;
+export function unwrapNamespaceDeclaration(declaration: ts.Declaration | undefined) {
+  if (!declaration) {
+    return [];
   }
-  // TODO: maybe use type.getNonNullableType()
-  const undefinedType = type.types.find(t => t.flags & ts.TypeFlags.Undefined);
-
-  if (!undefinedType) {
-    return type;
-  }
-
-  const realTypes = type.types.filter(t => t !== undefinedType);
-  // NB there is still undefined sometimes
-  return realTypes.length === 1 ? realTypes[0] : type;
-}
-
-export function unwrapNamespaceDeclaration(declaration: ts.Declaration) {
   const namespaceBlock = declaration.getChildren().find(node => node.kind === ts.SyntaxKind.ModuleBlock);
   if (!namespaceBlock) {
     return [];
@@ -51,6 +38,20 @@ export function stringifyType(type: ts.Type, checker: ts.TypeChecker) {
         ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope
     )
   );
+}
+
+function expandTags(extraTags: ReadonlyArray<ts.JSDocTag>) {
+  return extraTags.map(tag => ({
+    name: tag.tagName.text,
+    text: ts.getTextOfJSDocComment(tag.comment),
+  }));
+}
+
+export function getDescription(docComment: Array<ts.SymbolDisplayPart>, declaration: ts.Node) {
+  return {
+    text: docComment.length > 0 ? ts.displayPartsToString(docComment) : undefined,
+    tags: expandTags(ts.getJSDocTags(declaration)),
+  };
 }
 
 export function extractDeclaration(symbol: ts.Symbol) {

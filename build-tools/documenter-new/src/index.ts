@@ -1,156 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import path from 'node:path';
-
 import { pascalCase } from 'change-case';
-import glob from 'glob';
-import ts from 'typescript';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { matcher } from 'micromatch';
+import pathe from 'pathe';
 
-import { buildComponentDefinition, type ExpandedProp } from './component-definition.js';
-import { extractDefaultValues, validateExports } from './extractor.js';
-import { extractDeclaration, isOptional, stringifyType, unwrapNamespaceDeclaration } from './type-utils.js';
-import type { ComponentDefinition } from './types.js';
-
-/**
- * TODO
- * 1. ~Inherited props~
- * 2. ~Strip undefined, render optional flag~
- * 3. ~Render ref functions~
- * 4. ~Render inline detail type~
- * 5. ~Render enum values~
- * 6. ~Render detail types~
- * 4. ~Detect default values~
- * 1. Resolve type names nicer - todo later
- */
-
-function loadTSConfig(tsconfigPath: string): ts.ParsedCommandLine {
-  const configFile = ts.readConfigFile(tsconfigPath, ts.sys.readFile);
-  if (configFile.error) {
-    throw new Error('Failed to read tsconfig.json');
-  }
-  const config = ts.parseJsonConfigFileContent(configFile.config, ts.sys, path.dirname(tsconfigPath));
-  if (config.errors.length > 0) {
-    throw new Error('Failed to parse tsconfig.json');
-  }
-  // suppress warning
-  config.options.incremental = false;
-  return config;
-}
-
-// TODO future feature
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function extractMemberComments(type: ts.Type) {
-  function unwrapUndefined(type: ts.Type) {
-    if (!type || !type.isUnion()) {
-      return type;
-    }
-    return type.types.find(t => !(t.flags & ts.TypeFlags.Undefined))?.aliasSymbol;
-  }
-  const actualType = type.aliasSymbol ?? unwrapUndefined((type as any).origin);
-  if (!actualType) {
-    return [];
-  }
-  // @ts-expect-error todo find proper type
-  const maybeList = extractDeclaration(actualType).type.getChildren()[0];
-  // https://github.com/TypeStrong/typedoc/blob/6090b3e31471cea3728db1b03888bca5703b437e/src/lib/converter/symbols.ts#L406-L438
-  if (maybeList.kind !== ts.SyntaxKind.SyntaxList) {
-    return [];
-  }
-  const members: Array<string> = [];
-  let memberIndex = 0;
-  for (const child of maybeList.getChildren()) {
-    const text = child.getFullText();
-    if (text.includes('/**')) {
-      members[memberIndex] = (members[memberIndex] ?? '') + child.getFullText();
-    }
-
-    if (child.kind !== ts.SyntaxKind.BarToken) {
-      ++memberIndex;
-    }
-  }
-  return members;
-}
-
-function expandTags(extraTags: ReadonlyArray<ts.JSDocTag>) {
-  return extraTags.map(tag => ({
-    name: tag.tagName.text,
-    text: ts.getTextOfJSDocComment(tag.comment),
-  }));
-}
-
-function extractProps(propsSymbol: ts.Symbol, checker: ts.TypeChecker) {
-  const exportType = checker.getDeclaredTypeOfSymbol(propsSymbol);
-
-  return exportType
-    .getProperties()
-    .map((value): ExpandedProp => {
-      const declaration = extractDeclaration(value);
-      const type = checker.getTypeAtLocation(declaration);
-      // const unwrappedType = unwrapUndefined(type);
-      return {
-        name: value.name,
-        type: stringifyType(type, checker),
-        rawType: type,
-        isOptional: isOptional(type),
-        description: {
-          text: ts.displayPartsToString(value.getDocumentationComment(checker)),
-          tags: expandTags(ts.getJSDocTags(declaration)),
-        },
-      };
-    })
-    .sort((a, b) => a.name.localeCompare(b.name));
-}
-
-function extractFunctions(propsSymbol: ts.Symbol, checker: ts.TypeChecker) {
-  const namespaceDeclaration = checker
-    .getDeclaredTypeOfSymbol(propsSymbol)
-    .getSymbol()
-    ?.getDeclarations()
-    ?.find(decl => decl.kind === ts.SyntaxKind.ModuleDeclaration);
-  if (!namespaceDeclaration) {
-    return [];
-  }
-  const refType = unwrapNamespaceDeclaration(namespaceDeclaration)
-    .map(child => checker.getTypeAtLocation(child))
-    .find(type => (type.getSymbol() ?? type.aliasSymbol)?.getName() === 'Ref');
-
-  if (!refType) {
-    return [];
-  }
-  return refType
-    .getProperties()
-    .map((value): ExpandedProp => {
-      const declaration = extractDeclaration(value);
-      const type = checker.getTypeAtLocation(declaration);
-      return {
-        name: value.name,
-        type: stringifyType(type, checker),
-        rawType: type,
-        isOptional: isOptional(type),
-        description: {
-          text: ts.displayPartsToString(value.getDocumentationComment(checker)),
-          tags: expandTags(ts.getJSDocTags(declaration)),
-        },
-      };
-    })
-    .sort((a, b) => a.name.localeCompare(b.name));
-}
-
-function printDiagnostics(diagnostics: readonly ts.Diagnostic[]): void {
-  for (const diagnostic of diagnostics) {
-    const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
-    if (diagnostic.file) {
-      const { line, character } = ts.getLineAndCharacterOfPosition(diagnostic.file, diagnostic.start!);
-      console.error(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
-    } else {
-      console.error(message);
-    }
-  }
-}
+import { buildComponentDefinition } from './component-definition';
+import { extractDefaultValues, extractExports, extractFunctions, extractProps } from './extractor';
+import type { ComponentDefinition } from './interfaces';
+import { bootstrapTypescriptProject } from './typescript';
 
 function componentNameFromPath(componentPath: string) {
-  const directoryName = path.dirname(componentPath);
-  return pascalCase(path.basename(directoryName));
+  const directoryName = pathe.dirname(componentPath);
+  return pascalCase(pathe.basename(directoryName));
 }
 
 interface DocumenterOptions {
@@ -159,35 +22,37 @@ interface DocumenterOptions {
 
 export function documentComponents(
   tsconfigPath: string,
-  componentsGlob: string,
+  publicFilesGlob: string,
+  // deprecated, now unused
+  additionalInputFilePaths?: Array<string>,
   options?: DocumenterOptions
 ): Array<ComponentDefinition> {
-  const tsconfig = loadTSConfig(tsconfigPath);
-  const program = ts.createProgram(tsconfig.fileNames, tsconfig.options);
+  const program = bootstrapTypescriptProject(tsconfigPath);
   const checker = program.getTypeChecker();
 
-  const diagnostics = ts.getPreEmitDiagnostics(program);
-  if (diagnostics.length > 0) {
-    printDiagnostics(diagnostics);
-    throw new Error('Compilation failed');
-  }
+  const isMatch = matcher(pathe.resolve(publicFilesGlob));
 
-  return glob.sync(componentsGlob).map(componentPath => {
-    const name = componentNameFromPath(componentPath);
-    const sourceFile = program.getSourceFile(componentPath)!;
-    const moduleSymbol = checker.getSymbolAtLocation(sourceFile);
+  return program
+    .getSourceFiles()
+    .filter(file => isMatch(file.fileName))
+    .map(sourceFile => {
+      const moduleSymbol = checker.getSymbolAtLocation(sourceFile);
+      const name = componentNameFromPath(sourceFile.fileName);
 
-    if (!moduleSymbol) {
-      throw new Error(`Unable to resolve module: ${componentPath}`);
-    }
-    const exportSymbols = checker.getExportsOfModule(moduleSymbol);
-    validateExports(name, exportSymbols, checker, options?.extraExports ?? {});
-    const propsSymbol = exportSymbols.find(symbol => symbol.getName() === `${name}Props`)!;
-    const defaultExport = exportSymbols.find(symbol => symbol.getName() === 'default')!;
-    const props = extractProps(propsSymbol, checker);
-    const defaultValues = extractDefaultValues(defaultExport, checker);
+      if (!moduleSymbol) {
+        throw new Error(`Unable to resolve module: ${sourceFile.fileName}`);
+      }
+      const exportSymbols = checker.getExportsOfModule(moduleSymbol);
+      const { propsSymbol, componentSymbol } = extractExports(
+        name,
+        exportSymbols,
+        checker,
+        options?.extraExports ?? {}
+      );
+      const props = extractProps(propsSymbol, checker);
+      const functions = extractFunctions(propsSymbol, checker);
+      const defaultValues = extractDefaultValues(componentSymbol, checker);
 
-    const functions = extractFunctions(propsSymbol, checker);
-    return buildComponentDefinition(name, props, functions, defaultValues, checker);
-  });
+      return buildComponentDefinition(name, props, functions, defaultValues, checker);
+    });
 }
