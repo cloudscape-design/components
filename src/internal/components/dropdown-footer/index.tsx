@@ -16,7 +16,11 @@ interface DropdownFooter {
 
 const DropdownFooter: React.FC<DropdownFooter> = ({ content, id, hasItems = true }: DropdownFooter) => (
   <div className={clsx(styles.root, { [styles.hidden]: content === null, [styles['no-items']]: !hasItems })}>
-    <InternalLiveRegion id={id}>{content && <DropdownStatus>{content}</DropdownStatus>}</InternalLiveRegion>
+    {content && (
+      <InternalLiveRegion id={id}>
+        <DropdownStatus>{content}</DropdownStatus>
+      </InternalLiveRegion>
+    )}
   </div>
 );
 
