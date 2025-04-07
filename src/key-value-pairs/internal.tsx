@@ -22,14 +22,23 @@ const InternalKeyValuePair = ({
   value,
   iconName,
   iconAlign = 'start',
-  iconAlt,
+  iconAriaLabel,
   id,
 }: KeyValuePairsProps.Pair) => {
   const kvPairId = useUniqueId('kv-pair-');
 
   const getLabelWithIcon = () => {
+    let rtlIconAlign = iconAlign;
+    if (getIsRtl(document.body)) {
+      rtlIconAlign = iconAlign === 'start' ? 'end' : 'start';
+    }
+
     const icon = iconName && (
-      <InternalIcon alt={iconAlt} name={iconName} className={clsx(styles.icon, styles[`icon-${iconAlign}`])} />
+      <InternalIcon
+        ariaLabel={iconAriaLabel}
+        name={iconName}
+        className={clsx(styles.icon, styles[`icon-${rtlIconAlign}`])}
+      />
     );
     const labelComponent = (
       <label className={styles['key-label']} id={id || kvPairId}>
@@ -37,12 +46,7 @@ const InternalKeyValuePair = ({
       </label>
     );
 
-    let iconAndLabelPair: React.ReactNode[] = [];
-    if (getIsRtl(document.body)) {
-      iconAndLabelPair = iconAlign === 'start' ? [labelComponent, icon] : [icon, labelComponent];
-    } else {
-      iconAndLabelPair = iconAlign === 'start' ? [icon, labelComponent] : [labelComponent, icon];
-    }
+    const iconAndLabelPair = rtlIconAlign === 'start' ? [icon, labelComponent] : [labelComponent, icon];
 
     return (
       <InternalSpaceBetween size={'xxs'} direction={'horizontal'} alignItems={'center'}>
