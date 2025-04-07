@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link, SpaceBetween, TextContent } from '~components';
+import { SpaceBetween, TextContent } from '~components';
 import Alert from './alert';
 import Badge from './badge';
 import Button from './button';
 import CheckboxField from './checkbox-field';
 import Flashbar from './flashbar';
 import Input from './input';
+import Link from './link';
 import Modal from './modal';
 import Select from './select';
 import Table from './table';

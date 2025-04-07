@@ -12,7 +12,7 @@
 @use '../../link/constants.scss' as constants;
 
 @mixin link-variant-style($variant) {
-  color: map.get($variant, 'text-color-default');
+  color: var(--theme-color, map.get($variant, 'text-color-default'));
   font-weight: map.get($variant, 'font-weight');
   letter-spacing: map.get($variant, 'letter-spacing');
   text-decoration-line: map.get($variant, 'decoration-line');
