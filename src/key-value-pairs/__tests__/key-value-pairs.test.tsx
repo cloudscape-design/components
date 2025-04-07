@@ -66,26 +66,59 @@ describe('KeyValuePairs', () => {
               value: 'Value',
               iconName: 'status-info',
               iconAlign: 'start',
-              iconAriaLabel: 'info icon at the start',
+              iconAriaLabel: 'info icon on the left',
             },
             {
               label: 'Label for key',
               value: 'Value',
               iconName: 'external',
               iconAlign: 'end',
-              iconAriaLabel: 'external icon at the end',
+              iconAriaLabel: 'external icon on the right',
             },
           ]}
         />
       );
 
       expect(wrapper.findItems()[0]!.findIcon()?.getElement()).toHaveClass(styles['icon-start']);
-      expect(wrapper.findItems()[0]!.findIcon()?.getElement()).toHaveAttribute('aria-label', 'info icon at the start');
+      expect(wrapper.findItems()[0]!.findIcon()?.getElement()).toHaveAttribute('aria-label', 'info icon on the left');
 
       expect(wrapper.findItems()[1]!.findIcon()?.getElement()).toHaveClass(styles['icon-end']);
       expect(wrapper.findItems()[1]!.findIcon()?.getElement()).toHaveAttribute(
         'aria-label',
-        'external icon at the end'
+        'external icon on the right'
+      );
+    });
+
+    test('renders label with icons correctly, rtl', () => {
+      document.body.style.direction = 'rtl';
+      const { wrapper } = renderKeyValuePairs(
+        <KeyValuePairs
+          items={[
+            {
+              label: 'Label for key',
+              value: 'Value',
+              iconName: 'status-info',
+              iconAlign: 'start',
+              iconAriaLabel: 'info icon on the right',
+            },
+            {
+              label: 'Label for key',
+              value: 'Value',
+              iconName: 'external',
+              iconAlign: 'end',
+              iconAriaLabel: 'external icon on the left',
+            },
+          ]}
+        />
+      );
+
+      expect(wrapper.findItems()[0]!.findIcon()?.getElement()).toHaveClass(styles['icon-end']);
+      expect(wrapper.findItems()[0]!.findIcon()?.getElement()).toHaveAttribute('aria-label', 'info icon on the right');
+
+      expect(wrapper.findItems()[1]!.findIcon()?.getElement()).toHaveClass(styles['icon-start']);
+      expect(wrapper.findItems()[1]!.findIcon()?.getElement()).toHaveAttribute(
+        'aria-label',
+        'external icon on the left'
       );
     });
   });
