@@ -3,8 +3,6 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
-
 import Box from '../box/internal';
 import ColumnLayout from '../column-layout/internal';
 import InternalIcon from '../icon/internal';
@@ -28,25 +26,15 @@ const InternalKeyValuePair = ({
   const kvPairId = useUniqueId('kv-pair-');
 
   const getLabelWithIcon = () => {
-    let rtlIconAlign = iconAlign;
-    if (getIsRtl(document.body)) {
-      rtlIconAlign = iconAlign === 'start' ? 'end' : 'start';
-    }
-
-    const icon = iconName && (
-      <InternalIcon
-        ariaLabel={iconAriaLabel}
-        name={iconName}
-        className={clsx(styles.icon, styles[`icon-${rtlIconAlign}`])}
-      />
-    );
+    const icon = iconName && <InternalIcon ariaLabel={iconAriaLabel} name={iconName} className={styles.icon} />;
     const labelComponent = (
       <label className={styles['key-label']} id={id || kvPairId}>
         {label}
       </label>
     );
 
-    const iconAndLabelPair = rtlIconAlign === 'start' ? [icon, labelComponent] : [labelComponent, icon];
+    // Order the icon and label according to alignment
+    const iconAndLabelPair = iconAlign === 'start' ? [icon, labelComponent] : [labelComponent, icon];
 
     return (
       <InternalSpaceBetween size={'xxs'} direction={'horizontal'} alignItems={'center'}>

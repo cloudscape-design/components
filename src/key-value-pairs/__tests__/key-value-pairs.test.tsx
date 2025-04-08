@@ -7,8 +7,6 @@ import KeyValuePairs from '../../../lib/components/key-value-pairs';
 import Link from '../../../lib/components/link';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-import styles from '../../../lib/components/key-value-pairs/styles.css.js';
-
 function renderKeyValuePairs(jsx: React.ReactElement) {
   const { container, ...rest } = render(jsx);
   return { wrapper: createWrapper(container).findKeyValuePairs()!, ...rest };
@@ -57,70 +55,48 @@ describe('KeyValuePairs', () => {
       expect(wrapper.findItems()[0]!.findInfo()!.getElement()).toHaveTextContent('Info');
     });
 
-    test('renders label with icons correctly', () => {
-      const { wrapper } = renderKeyValuePairs(
-        <KeyValuePairs
-          items={[
-            {
-              label: 'Label for key',
-              value: 'Value',
-              iconName: 'status-info',
-              iconAlign: 'start',
-              iconAriaLabel: 'info icon on the left',
-            },
-            {
-              label: 'Label for key',
-              value: 'Value',
-              iconName: 'external',
-              iconAlign: 'end',
-              iconAriaLabel: 'external icon on the right',
-            },
-          ]}
-        />
-      );
+    it.each<string>(['ltr', 'rtl'])(
+      'renders label with icons correctly, maintaining logical order, %s',
+      (direction: string) => {
+        document.body.style.direction = direction;
+        const { wrapper } = renderKeyValuePairs(
+          <KeyValuePairs
+            items={[
+              {
+                label: 'Label at the end',
+                value: 'Value',
+                iconName: 'status-info',
+                iconAlign: 'start',
+                iconAriaLabel: 'info icon at the start',
+              },
+              {
+                label: 'Label at the start',
+                value: 'Value',
+                iconName: 'external',
+                iconAlign: 'end',
+                iconAriaLabel: 'external icon at the end',
+              },
+            ]}
+          />
+        );
 
-      expect(wrapper.findItems()[0]!.findIcon()?.getElement()).toHaveClass(styles['icon-start']);
-      expect(wrapper.findItems()[0]!.findIcon()?.getElement()).toHaveAttribute('aria-label', 'info icon on the left');
+        const nextSibling = wrapper.findItems()[0]!.findIcon()?.getElement().parentElement?.nextElementSibling;
+        expect(nextSibling?.firstChild).toBeInstanceOf(HTMLLabelElement);
+        expect(nextSibling?.textContent).toBe('Label at the end');
+        expect(wrapper.findItems()[0]!.findIcon()?.getElement()).toHaveAttribute(
+          'aria-label',
+          'info icon at the start'
+        );
 
-      expect(wrapper.findItems()[1]!.findIcon()?.getElement()).toHaveClass(styles['icon-end']);
-      expect(wrapper.findItems()[1]!.findIcon()?.getElement()).toHaveAttribute(
-        'aria-label',
-        'external icon on the right'
-      );
-    });
-
-    test('renders label with icons correctly, rtl', () => {
-      document.body.style.direction = 'rtl';
-      const { wrapper } = renderKeyValuePairs(
-        <KeyValuePairs
-          items={[
-            {
-              label: 'Label for key',
-              value: 'Value',
-              iconName: 'status-info',
-              iconAlign: 'start',
-              iconAriaLabel: 'info icon on the right',
-            },
-            {
-              label: 'Label for key',
-              value: 'Value',
-              iconName: 'external',
-              iconAlign: 'end',
-              iconAriaLabel: 'external icon on the left',
-            },
-          ]}
-        />
-      );
-
-      expect(wrapper.findItems()[0]!.findIcon()?.getElement()).toHaveClass(styles['icon-end']);
-      expect(wrapper.findItems()[0]!.findIcon()?.getElement()).toHaveAttribute('aria-label', 'info icon on the right');
-
-      expect(wrapper.findItems()[1]!.findIcon()?.getElement()).toHaveClass(styles['icon-start']);
-      expect(wrapper.findItems()[1]!.findIcon()?.getElement()).toHaveAttribute(
-        'aria-label',
-        'external icon on the left'
-      );
-    });
+        const previousSibling = wrapper.findItems()[1]!.findIcon()?.getElement().parentElement?.previousElementSibling;
+        expect(previousSibling?.firstChild).toBeInstanceOf(HTMLLabelElement);
+        expect(previousSibling?.textContent).toBe('Label at the start');
+        expect(wrapper.findItems()[1]!.findIcon()?.getElement()).toHaveAttribute(
+          'aria-label',
+          'external icon at the end'
+        );
+      }
+    );
   });
 
   describe('column layout', () => {
