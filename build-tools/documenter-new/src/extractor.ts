@@ -96,11 +96,12 @@ export function extractProps(propsSymbol: ts.Symbol, checker: ts.TypeChecker) {
 
 export function extractFunctions(propsSymbol: ts.Symbol, checker: ts.TypeChecker) {
   const propsName = propsSymbol.getName();
-  const namespaceDeclaration = checker
-    .getDeclaredTypeOfSymbol(propsSymbol)
-    .getSymbol()
-    ?.getDeclarations()
-    ?.find(decl => decl.kind === ts.SyntaxKind.ModuleDeclaration);
+  const namespaceDeclaration = [
+    // if we got the namespace directly
+    ...(propsSymbol.getDeclarations() ?? []),
+    // find namespace declaration from the interface with the same name
+    ...(checker.getDeclaredTypeOfSymbol(propsSymbol).getSymbol()?.getDeclarations() ?? []),
+  ].find(decl => decl.kind === ts.SyntaxKind.ModuleDeclaration);
   const refType = unwrapNamespaceDeclaration(namespaceDeclaration)
     .map(child => checker.getTypeAtLocation(child))
     .find(type => (type.getSymbol() ?? type.aliasSymbol)?.getName() === 'Ref');
