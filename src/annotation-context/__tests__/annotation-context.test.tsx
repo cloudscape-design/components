@@ -16,7 +16,7 @@ function renderAnnotationContext(children: React.ReactElement, tutorial?: Tutori
   const currentTutorial = tutorial ?? getTutorial();
   const onStepChange = jest.fn();
 
-  const { container, rerender: originalRerender } = render(
+  const { rerender: originalRerender } = render(
     <AnnotationContext
       onStartTutorial={noop}
       onExitTutorial={noop}
@@ -41,7 +41,7 @@ function renderAnnotationContext(children: React.ReactElement, tutorial?: Tutori
       </AnnotationContext>
     );
 
-  const wrapper = createWrapper(container);
+  const wrapper = createWrapper();
 
   return { rerender, wrapper, currentTutorial, onStepChange };
 }
