@@ -2,7 +2,8 @@
   "compilerOptions": {
     "strict": true,
     "incremental": true,
-    "module": "CommonJS",
+    "module": "ES2015",
+    "moduleResolution": "node",
     "target": "ES2015",
     "lib": ["ES2020", "DOM"],
     "declaration": true,
