@@ -48,7 +48,7 @@ $arrow-height: 10px;
     &::before {
       inset-block: 0;
       inset-inline-start: -$arrow-height;
-      block-size: $arrow-height;
+      inline-size: $arrow-height;
     }
   }
 
@@ -57,7 +57,7 @@ $arrow-height: 10px;
     &::before {
       inset-block: 0;
       inset-inline-end: -$arrow-height;
-      block-size: $arrow-height;
+      inline-size: $arrow-height;
     }
   }
 }

@@ -1,11 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import InternalIcon from '../../icon/internal';
 import Tooltip from '../../internal/components/tooltip';
-import { registerTooltip } from '../../internal/components/tooltip/registry';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { BreadcrumbGroupProps, BreadcrumbItemProps } from '../interfaces';
 import { getEventDetail } from '../utils';
@@ -28,40 +27,29 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
   itemAttributes,
   children,
 }: BreadcrumbItemWithPopoverProps<T>) => {
-  const [showPopover, setShowPopover] = useState(false);
-  const textRef = useRef<HTMLElement>(null);
-  const popoverContent = (
-    <Tooltip trackRef={textRef} value={item.text} size="medium" onDismiss={() => setShowPopover(false)} />
-  );
-
-  useEffect(() => {
-    if (showPopover) {
-      return registerTooltip(() => {
-        setShowPopover(false);
-      });
-    }
-  }, [showPopover]);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const textRef = useRef<HTMLElement | null>(null);
 
   return (
-    <>
-      <Item
-        ref={textRef}
-        isLast={isLast}
-        onFocus={() => {
-          setShowPopover(true);
-        }}
-        onBlur={() => setShowPopover(false)}
-        onMouseEnter={() => {
-          setShowPopover(true);
-        }}
-        onMouseLeave={() => setShowPopover(false)}
-        anchorAttributes={anchorAttributes}
-        {...itemAttributes}
-      >
-        {children}
-      </Item>
-      {showPopover && popoverContent}
-    </>
+    <Item
+      ref={textRef}
+      isLast={isLast}
+      onFocus={() => {
+        setShowTooltip(true);
+      }}
+      onBlur={() => setShowTooltip(false)}
+      onMouseEnter={() => {
+        setShowTooltip(true);
+      }}
+      onMouseLeave={() => setShowTooltip(false)}
+      anchorAttributes={anchorAttributes}
+      {...itemAttributes}
+    >
+      {children}
+      {showTooltip && (
+        <Tooltip trackRef={textRef} value={item.text} size="medium" onDismiss={() => setShowTooltip(false)} />
+      )}
+    </Item>
   );
 };
 
