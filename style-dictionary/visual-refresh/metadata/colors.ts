@@ -228,7 +228,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   colorBackgroundDialog: {
-    description: 'The background color of the dialog.',
+    description: 'The background color of the feedback/input dialogue box.',
     public: true,
     themeable: true,
   },
@@ -427,7 +427,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   colorBorderDialog: {
-    description: 'The border color of the dialog.',
+    description: 'The border color of the feedback/input dialogue box.',
     public: true,
     themeable: true,
   },
