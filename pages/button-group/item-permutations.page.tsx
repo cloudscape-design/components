@@ -29,6 +29,15 @@ const itemPermutations = createPermutations<ButtonGroupProps.Item>([
     loading: [false, true],
     popoverFeedback: ['Text feedback'],
   },
+  // Disabled reason
+  {
+    type: ['icon-button'],
+    id: ['test'],
+    iconName: ['settings'],
+    text: ['Settings'],
+    disabled: [true],
+    disabledReason: ['Disabled reason'],
+  },
   // Popover feedback
   {
     type: ['icon-button'],
@@ -50,6 +59,17 @@ const itemPermutations = createPermutations<ButtonGroupProps.Item>([
     pressedIconName: ['star-filled'],
     text: ['Add to favorites'],
     pressed: [false, true],
+  },
+  // Disabled reason
+  {
+    type: ['icon-toggle-button'],
+    id: ['test'],
+    iconName: ['star'],
+    pressedIconName: ['star-filled'],
+    text: ['Add to favorites'],
+    pressed: [false, true],
+    disabled: [true],
+    disabledReason: ['Disabled reason'],
   },
 ]);
 
@@ -83,6 +103,23 @@ const menuDropdownPermutations = createPermutations<ButtonGroupProps.MenuDropdow
             { id: 'open', iconName: 'file-open', text: 'Open' },
             { id: 'search', iconName: 'search', text: 'Search' },
           ],
+        },
+      ],
+    ],
+  },
+  // Disabled reason
+  {
+    type: ['menu-dropdown'],
+    id: ['more-actions'],
+    text: ['More actions'],
+    disabled: [true],
+    disabledReason: ['Disabled reason'],
+    items: [
+      [
+        {
+          id: 'cut',
+          iconName: 'delete-marker',
+          text: 'Cut',
         },
       ],
     ],

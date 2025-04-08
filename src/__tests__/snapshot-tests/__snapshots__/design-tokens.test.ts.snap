@@ -1826,6 +1826,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -4375,6 +4382,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#687078",
             "light": "#687078",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-text-button-normal-active": {
@@ -6928,6 +6942,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -9477,6 +9498,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#687078",
             "light": "#687078",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-text-button-normal-active": {
@@ -12030,6 +12058,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -14581,6 +14616,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -17130,6 +17172,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#687078",
         "light": "#687078",
+      },
+    },
+    "color-text-button-icon-disabled": {
+      "$description": "The color of icon buttons in disabled state.",
+      "$value": {
+        "dark": "#879596",
+        "light": "#879596",
       },
     },
     "color-text-button-normal-active": {
@@ -19688,6 +19737,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -22239,6 +22295,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -24787,6 +24850,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color used for the icon delimiter between breadcrumb items.",
           "$value": {
             "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
             "light": "#8c8c94",
           },
         },
@@ -27341,6 +27411,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -29889,6 +29966,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color used for the icon delimiter between breadcrumb items.",
           "$value": {
             "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
             "light": "#8c8c94",
           },
         },
@@ -32443,6 +32527,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -34994,6 +35085,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -37542,6 +37640,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The color used for the icon delimiter between breadcrumb items.",
       "$value": {
         "dark": "#656871",
+        "light": "#8c8c94",
+      },
+    },
+    "color-text-button-icon-disabled": {
+      "$description": "The color of icon buttons in disabled state.",
+      "$value": {
+        "dark": "#8c8c94",
         "light": "#8c8c94",
       },
     },
