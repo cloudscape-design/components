@@ -97,7 +97,8 @@ export function AnnotationPopover({
       trackKey={taskLocalStepIndex}
       variant="annotation"
       arrow={arrow}
-      zIndex={1000}
+      zIndex={7000}
+      renderWithPortal={true}
     >
       <PopoverBody
         dismissButton={true}
