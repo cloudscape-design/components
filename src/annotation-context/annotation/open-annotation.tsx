@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 
 import { HotspotProps } from '../../hotspot/interfaces';
+import Portal from '../../internal/components/portal';
 import { AnnotationContextProps } from '../interfaces';
 import { AnnotationPopover } from './annotation-popover';
 import AnnotationTrigger from './annotation-trigger';
@@ -70,25 +71,26 @@ export function OpenAnnotation({
         totalLocalSteps={totalLocalSteps}
         taskLocalStepIndex={taskLocalStepIndex}
       />
-
-      <AnnotationPopover
-        trackRef={trackRef}
-        previousButtonEnabled={previousButtonEnabled}
-        showPreviousButton={showPreviousButton}
-        showFinishButton={showFinishButton}
-        totalLocalSteps={totalLocalSteps}
-        i18nStrings={i18nStrings}
-        nextButtonEnabled={nextButtonEnabled}
-        onDismiss={onDismiss}
-        onFinish={onFinish}
-        onNextButtonClick={onNextButtonClick}
-        onPreviousButtonClick={onPreviousButtonClick}
-        taskLocalStepIndex={taskLocalStepIndex}
-        direction={direction}
-        title={title}
-        content={content}
-        alert={alert}
-      />
+      <Portal>
+        <AnnotationPopover
+          trackRef={trackRef}
+          previousButtonEnabled={previousButtonEnabled}
+          showPreviousButton={showPreviousButton}
+          showFinishButton={showFinishButton}
+          totalLocalSteps={totalLocalSteps}
+          i18nStrings={i18nStrings}
+          nextButtonEnabled={nextButtonEnabled}
+          onDismiss={onDismiss}
+          onFinish={onFinish}
+          onNextButtonClick={onNextButtonClick}
+          onPreviousButtonClick={onPreviousButtonClick}
+          taskLocalStepIndex={taskLocalStepIndex}
+          direction={direction}
+          title={title}
+          content={content}
+          alert={alert}
+        />
+      </Portal>
     </>
   );
 }
