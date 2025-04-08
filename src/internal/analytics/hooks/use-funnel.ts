@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 
 import { nodeBelongs } from '../../utils/node-belongs';
 import { FunnelMetrics } from '../';
@@ -177,6 +177,16 @@ export const useFunnelSubStep = () => {
 export const useFunnelStep = () => {
   const context = useContext(FunnelStepContext);
   return context;
+};
+
+/**
+ * This function provides a stable React ref to the current funnel step information.
+ */
+export const useFunnelStepRef = () => {
+  const funnelStep = useFunnelStep();
+  const funnelStepRef = useRef<ReturnType<typeof useFunnelStep>>(funnelStep);
+  funnelStepRef.current = funnelStep;
+  return funnelStepRef;
 };
 
 /**

@@ -6,35 +6,15 @@ import { act, render } from '@testing-library/react';
 import Container from '../../../lib/components/container';
 import Form from '../../../lib/components/form';
 import Header from '../../../lib/components/header';
-import { FunnelMetrics, setFunnelMetrics } from '../../../lib/components/internal/analytics';
+import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 import { FUNNEL_KEY_STEP_NAME, getFunnelKeySelector } from '../../../lib/components/internal/analytics/selectors';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
-import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
+import { mockFunnelMetrics, mockInnerText } from '../../internal/analytics/__tests__/mocks';
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
 
-const mockedFunnelInteractionId = 'mocked-funnel-id';
-function mockFunnelMetrics() {
-  setFunnelMetrics({
-    funnelStart: jest.fn(() => mockedFunnelInteractionId),
-    funnelError: jest.fn(),
-    funnelComplete: jest.fn(),
-    funnelSuccessful: jest.fn(),
-    funnelCancelled: jest.fn(),
-    funnelChange: jest.fn(),
-    funnelStepChange: jest.fn(),
-    funnelStepStart: jest.fn(),
-    funnelStepComplete: jest.fn(),
-    funnelStepNavigation: jest.fn(),
-    funnelStepError: jest.fn(),
-    funnelSubStepStart: jest.fn(),
-    funnelSubStepComplete: jest.fn(),
-    funnelSubStepError: jest.fn(),
-    helpPanelInteracted: jest.fn(),
-    externalLinkInteracted: jest.fn(),
-  });
-}
+let mockedFunnelMetrics: ReturnType<typeof mockFunnelMetrics>;
 
 mockInnerText();
 
@@ -42,7 +22,7 @@ describe('Wizard Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
-    mockFunnelMetrics();
+    mockedFunnelMetrics = mockFunnelMetrics();
   });
   afterEach(() => {
     act(() => void jest.runAllTimers());
@@ -313,22 +293,29 @@ describe('Wizard Analytics', () => {
     );
   });
 
-  test('sends a funnelError metric when an error is rendered', () => {
+  test('sends a funnelStepError metric when an error is rendered', () => {
     const steps: WizardProps['steps'] = [
       {
         ...DEFAULT_STEPS[0],
-        errorText: 'Error',
+        errorText: 'This is the error text for the wizard step.',
       },
     ];
 
-    render(<Wizard steps={steps} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    const { container } = render(<Wizard steps={steps} i18nStrings={DEFAULT_I18N_SETS[0]} />);
     act(() => void jest.runAllTimers());
 
-    expect(FunnelMetrics.funnelError).toHaveBeenCalledTimes(1);
-    expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
+    expect(FunnelMetrics.funnelStepError).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepError).toHaveBeenCalledWith(
       expect.objectContaining({
         funnelInteractionId: expect.any(String),
+        stepNumber: 1,
+        stepNameSelector: '[data-analytics-funnel-key="step-name"]',
       })
+    );
+
+    const stepErrorSelector = mockedFunnelMetrics.funnelStepError.mock.calls[0][0].stepErrorSelector;
+    expect(container.ownerDocument.querySelector(stepErrorSelector)).toHaveTextContent(
+      'This is the error text for the wizard step.'
     );
   });
 

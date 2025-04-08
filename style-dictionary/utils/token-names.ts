@@ -311,6 +311,7 @@ export type ColorsTokenName =
   | 'colorBackgroundSliderWarningPressed'
   | 'colorBackgroundStatusError'
   | 'colorBackgroundStatusInfo'
+  | 'colorBackgroundDialog'
   | 'colorBackgroundStatusSuccess'
   | 'colorBackgroundStatusWarning'
   | 'colorBackgroundTableHeader'
@@ -377,6 +378,7 @@ export type ColorsTokenName =
   | 'colorBorderStatusInfo'
   | 'colorBorderStatusSuccess'
   | 'colorBorderStatusWarning'
+  | 'colorBorderDialog'
   | 'colorBorderDividerInteractiveDefault'
   | 'colorBorderTabsDivider'
   | 'colorBorderTabsShadow'
@@ -585,8 +587,11 @@ export type BordersTokenName =
   | 'borderLinkFocusRingOutline'
   | 'borderLinkFocusRingShadowSpread'
   | 'borderWidthAlert'
+  | 'borderWidthButton'
+  | 'borderWidthDropdown'
   | 'borderWidthField'
-  | 'borderWidthPopover';
+  | 'borderWidthPopover'
+  | 'borderWidthToken';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'
@@ -670,6 +675,7 @@ export type SpacingTokenName =
   | 'spaceFlashbarActionLeft'
   | 'spaceFlashbarDismissRight'
   | 'spaceFlashbarHorizontal'
+  | 'spaceFlashbarVertical'
   | 'spaceGridGutter'
   | 'spaceKeyValueGap'
   | 'spaceLayoutContentBottom'

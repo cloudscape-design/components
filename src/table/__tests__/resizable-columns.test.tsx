@@ -433,8 +433,8 @@ describe('column header content', () => {
   test('resizable columns can be queries with columnheader role', () => {
     renderTable(<Table {...defaultProps} />);
 
-    expect(screen.getByRole('columnheader', { name: 'Id' }));
-    expect(screen.getByRole('columnheader', { name: 'Description' }));
+    expect(screen.getByRole('columnheader', { name: 'Id' })).toBeTruthy();
+    expect(screen.getByRole('columnheader', { name: 'Description' })).toBeTruthy();
   });
 
   test('resize handles have expected accessible names', () => {

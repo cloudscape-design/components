@@ -19,6 +19,7 @@ import styles from './styles.css.js';
 
 type InternalFormProps = {
   __injectAnalyticsComponentMetadata?: boolean;
+  __errorSlotId?: string;
 } & FormProps &
   InternalBaseComponentProps;
 
@@ -31,6 +32,7 @@ export default function InternalForm({
   secondaryActions,
   __internalRootRef,
   __injectAnalyticsComponentMetadata,
+  __errorSlotId,
   ...props
 }: InternalFormProps) {
   const baseProps = getBaseProps(props);
@@ -57,7 +59,9 @@ export default function InternalForm({
       {errorText && (
         <InternalBox margin={{ top: 'l' }}>
           <InternalAlert type="error" statusIconAriaLabel={errorIconAriaLabel}>
-            <div className={styles.error}>{errorText}</div>
+            <div className={styles.error} id={__errorSlotId}>
+              {errorText}
+            </div>
           </InternalAlert>
         </InternalBox>
       )}

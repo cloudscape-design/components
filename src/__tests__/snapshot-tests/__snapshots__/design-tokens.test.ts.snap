@@ -77,12 +77,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "1px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "1px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "1px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -209,6 +221,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -524,6 +543,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#687078",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-divider-default": {
@@ -2609,12 +2635,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "1px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "1px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "1px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -2741,6 +2779,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -3056,6 +3101,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#687078",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-divider-default": {
@@ -5141,12 +5193,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "1px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "1px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "1px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -5273,6 +5337,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -5588,6 +5659,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#687078",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-divider-default": {
@@ -7673,12 +7751,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "1px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "1px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "1px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -7805,6 +7895,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -8120,6 +8217,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#687078",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-divider-default": {
@@ -10205,12 +10309,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "1px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "1px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "1px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -10337,6 +10453,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -10652,6 +10775,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#687078",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-divider-default": {
@@ -12737,12 +12867,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "1px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "1px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "1px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -12869,6 +13011,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#414750",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#12293b",
           },
         },
         "color-background-dropdown-item-default": {
@@ -13184,6 +13333,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
           },
         },
         "color-border-divider-default": {
@@ -15269,12 +15425,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The border width of alerts.",
       "$value": "1px",
     },
+    "border-width-button": {
+      "$description": "The border width of buttons.",
+      "$value": "1px",
+    },
+    "border-width-dropdown": {
+      "$description": "The border width of dropdowns.",
+      "$value": "1px",
+    },
     "border-width-field": {
       "$description": "The border width of form fields.",
       "$value": "1px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",
+      "$value": "1px",
+    },
+    "border-width-token": {
+      "$description": "The border width of tokens.",
       "$value": "1px",
     },
     "color-background-avatar-default": {
@@ -15401,6 +15569,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#414750",
         "light": "#d5dbdb",
+      },
+    },
+    "color-background-dialog": {
+      "$description": "The background color of the feedback/input dialogue box.",
+      "$value": {
+        "dark": "#12293b",
+        "light": "#f1faff",
       },
     },
     "color-background-dropdown-item-default": {
@@ -15716,6 +15891,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#879596",
         "light": "#687078",
+      },
+    },
+    "color-border-dialog": {
+      "$description": "The border color of the feedback/input dialogue box.",
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
       },
     },
     "color-border-divider-default": {
@@ -17806,12 +17988,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -17938,6 +18132,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#dedee3",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -18253,6 +18454,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-border-divider-default": {
@@ -20338,12 +20546,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -20470,6 +20690,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#333843",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
           },
         },
         "color-background-dropdown-item-default": {
@@ -20785,6 +21012,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-border-divider-default": {
@@ -22870,12 +23104,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -23002,6 +23248,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#dedee3",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -23317,6 +23570,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-border-divider-default": {
@@ -25402,12 +25662,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -25534,6 +25806,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#dedee3",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -25849,6 +26128,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-border-divider-default": {
@@ -27934,12 +28220,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -28066,6 +28364,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#dedee3",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -28381,6 +28686,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-border-divider-default": {
@@ -30466,12 +30778,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -30598,6 +30922,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#333843",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
           },
         },
         "color-background-dropdown-item-default": {
@@ -30913,6 +31244,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-border-divider-default": {
@@ -32998,12 +33336,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -33130,6 +33480,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#333843",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
           },
         },
         "color-background-dropdown-item-default": {
@@ -33445,6 +33802,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-border-divider-default": {
@@ -35530,12 +35894,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The border width of alerts.",
       "$value": "2px",
     },
+    "border-width-button": {
+      "$description": "The border width of buttons.",
+      "$value": "2px",
+    },
+    "border-width-dropdown": {
+      "$description": "The border width of dropdowns.",
+      "$value": "2px",
+    },
     "border-width-field": {
       "$description": "The border width of form fields.",
       "$value": "2px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",
+      "$value": "2px",
+    },
+    "border-width-token": {
+      "$description": "The border width of tokens.",
       "$value": "2px",
     },
     "color-background-avatar-default": {
@@ -35662,6 +36038,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#333843",
         "light": "#dedee3",
+      },
+    },
+    "color-background-dialog": {
+      "$description": "The background color of the feedback/input dialogue box.",
+      "$value": {
+        "dark": "#001129",
+        "light": "#f0fbff",
       },
     },
     "color-background-dropdown-item-default": {
@@ -35977,6 +36360,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#8c8c94",
         "light": "#8c8c94",
+      },
+    },
+    "color-border-dialog": {
+      "$description": "The border color of the feedback/input dialogue box.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
       },
     },
     "color-border-divider-default": {

@@ -313,7 +313,7 @@ describe('value', () => {
       expect(id1).not.toBe(id2);
     });
 
-    test('generates a own unique ids for setting up label relations when controlId is not set', () => {
+    test('generates a own unique ids for setting up label relations when controlId is partially set', () => {
       const id1 = 'control-id-1';
 
       const { wrapper } = renderRadioGroup(
