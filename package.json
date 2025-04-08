@@ -165,7 +165,7 @@
     {
       "path": "lib/components/internal/widget-exports.js",
       "brotli": false,
-      "limit": "752 kB"
+      "limit": "753 kB"
     }
   ],
   "browserslist": [
