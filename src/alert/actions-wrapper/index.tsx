@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import clsx from 'clsx';
 
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalButton, { InternalButtonProps } from '../../button/internal';
@@ -38,6 +39,8 @@ interface ActionsWrapperProps {
   action: React.ReactNode;
   discoveredActions: Array<React.ReactNode>;
   buttonText: React.ReactNode;
+  wrappedClass?: string;
+  containerWidth?: number;
   onButtonClick: InternalButtonProps['onClick'];
 }
 
@@ -47,15 +50,38 @@ export const ActionsWrapper = ({
   action,
   discoveredActions,
   buttonText,
+  wrappedClass,
+  containerWidth,
   onButtonClick,
 }: ActionsWrapperProps) => {
+  const [wrapped, setWrapped] = useState(false);
+  const ref = React.useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (!ref.current || !containerWidth || !wrappedClass) {
+      return;
+    }
+    function check() {
+      const isRtl = getIsRtl(ref.current);
+      const { offsetWidth, offsetLeft } = ref.current!;
+      const start = isRtl ? containerWidth! - offsetWidth - offsetLeft : offsetLeft;
+      // if the action slot is towards the left (right in RTL) of its container
+      setWrapped(start < 100);
+    }
+
+    // Discovered actions are rendered by their plugin, so don't cause a
+    // re-render of our React tree. So we observe for changes.
+    const observer = new MutationObserver(check);
+    observer.observe(ref.current, { attributes: false, childList: true, subtree: true });
+    check();
+    return () => observer.disconnect();
+  });
   const actionButton = createActionButton(testUtilClasses, action, buttonText, onButtonClick);
   if (!actionButton && discoveredActions.length === 0) {
     return null;
   }
 
   return (
-    <div className={clsx(styles.root, className)}>
+    <div ref={ref} className={clsx(styles.root, className, wrapped && wrappedClass)}>
       {actionButton}
       {discoveredActions}
     </div>

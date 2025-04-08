@@ -15,11 +15,13 @@ import { mockFunnelMetrics, mockGetBoundingClientRect } from '../../internal/ana
 
 mockGetBoundingClientRect();
 
+let mockedFunnelMetrics: ReturnType<typeof mockFunnelMetrics>;
+
 describe('Alert Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
-    mockFunnelMetrics();
+    mockedFunnelMetrics = mockFunnelMetrics();
   });
 
   test('sends funnelSubStepError metric when the alert is placed inside a substep', () => {
@@ -48,8 +50,8 @@ describe('Alert Analytics', () => {
     );
   });
 
-  test('sends funnelError metric when the alert is placed inside a step', () => {
-    render(
+  test('sends funnelStepError metric when the alert is placed inside a step', () => {
+    const { container } = render(
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
         <AnalyticsFunnelStep stepNumber={2} stepNameSelector=".step-name-selector">
           <Alert type="error">This is the error text</Alert>
@@ -59,13 +61,20 @@ describe('Alert Analytics', () => {
     act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelError).not.toHaveBeenCalled();
 
-    expect(FunnelMetrics.funnelError).toHaveBeenCalledTimes(1);
-    expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
+    expect(FunnelMetrics.funnelStepError).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepError).toHaveBeenCalledWith(
       expect.objectContaining({
         funnelInteractionId: 'mocked-funnel-id',
+        stepNumber: 2,
+        stepNameSelector: '.step-name-selector',
       })
     );
+
+    const stepErrorSelector = mockedFunnelMetrics.funnelStepError.mock.calls[0][0].stepErrorSelector;
+
+    expect(container.ownerDocument.querySelector(stepErrorSelector)).toHaveTextContent('This is the error text');
   });
 
   test('does not send any error metric when the alert is invisible', () => {
@@ -169,7 +178,7 @@ describe('Alert Analytics', () => {
     expect(FunnelMetrics.funnelError).not.toHaveBeenCalled();
   });
 
-  test('does not send multiple funnelError metrics on rerender', () => {
+  test('does not send multiple funnelStepError metrics on rerender', () => {
     const { rerender } = render(
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
         <AnalyticsFunnelStep stepNumber={2} stepNameSelector=".step-name-selector">
@@ -188,7 +197,7 @@ describe('Alert Analytics', () => {
     );
     act(() => void jest.runAllTimers());
 
-    expect(FunnelMetrics.funnelError).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepError).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
   });
 });

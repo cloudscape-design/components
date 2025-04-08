@@ -293,6 +293,12 @@ describe('min and max rows', () => {
     const { wrapper } = renderPromptInput({ value: '', maxRows: 4 });
     expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('rows', '1');
   });
+
+  test('does not update when max rows is set to -1', () => {
+    const ref = React.createRef<HTMLTextAreaElement>();
+    const { wrapper } = renderPromptInput({ value: '', maxRows: -1, ref });
+    expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('rows', '1');
+  });
 });
 
 describe('secondary actions', () => {

@@ -39,6 +39,7 @@ $trigger-underline-offset: 0.25em;
 }
 
 .trigger-type-text-inline {
+  @include styles.default-text-style;
   border-block: 0;
   /*
     This transparent border is necessary to maintain space between the trigger and the bottom-positioned popover.

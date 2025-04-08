@@ -15,6 +15,9 @@ export function checkSafeUrl(component: string, url: string | undefined | null):
   let parsedUrl: URL;
   try {
     parsedUrl = new URL(url);
+
+    // Consumers in the past have not always been able to support not specifiying the value so we keep and ignore
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     // If the URL cannot be parsed by the browser, it likely does not pose a security risk.
     return;

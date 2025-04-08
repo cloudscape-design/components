@@ -30,7 +30,7 @@ describe('AppLayoutToolbar component', () => {
   test('throws an error when use in classic theme', () => {
     globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => false;
 
-    expect(() => render(<AppLayoutToolbar content={<div></div>} />)).toThrowError(
+    expect(() => render(<AppLayoutToolbar content={<div></div>} />)).toThrow(
       'AppLayoutToolbar component is not supported in the Classic theme. Please switch to the Refresh theme. For more details, refer to the documentation.'
     );
   });
