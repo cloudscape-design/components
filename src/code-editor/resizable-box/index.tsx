@@ -44,10 +44,12 @@ export function ResizableBox({
     switch (event.key) {
       case 'ArrowDown':
       case 'ArrowRight':
+        event.preventDefault(); // Prevent page scroll
         onResizeStable(height + KEYBOARD_STEP_SIZE);
         break;
       case 'ArrowUp':
       case 'ArrowLeft':
+        event.preventDefault(); // Prevent page scroll
         onResizeStable(Math.max(height - KEYBOARD_STEP_SIZE, minHeight));
         break;
     }
