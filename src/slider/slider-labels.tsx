@@ -83,8 +83,7 @@ export default function SliderLabels({
 
   return (
     <>
-      <div
-        role="list"
+      <ul
         aria-hidden={!valueFormatter && !referenceValues ? 'true' : undefined}
         className={clsx(styles.labels, {
           [styles['labels-noref']]: getVisibleReferenceValues().length === 0,
@@ -94,19 +93,17 @@ export default function SliderLabels({
         }}
         id={!ariaDescription ? labelsId : undefined}
       >
-        <span
-          role="listitem"
+        <li
           className={clsx(styles.label, styles['labels-min'])}
           style={{
             [customCssProps.sliderMinEnd]: getLabelPosition(0).min,
           }}
         >
           {valueFormatter ? valueFormatter(min) : min}
-        </span>
+        </li>
         {getVisibleReferenceValues().map(step => {
           return (
-            <span
-              role="listitem"
+            <li
               key={step}
               style={{
                 [customCssProps.sliderReferenceColumn]: getLabelPosition(step).posStart,
@@ -115,19 +112,18 @@ export default function SliderLabels({
               className={clsx(styles.label, styles['labels-reference'])}
             >
               {valueFormatter ? valueFormatter(step) : step}
-            </span>
+            </li>
           );
         })}
-        <span
-          role="listitem"
+        <li
           className={clsx(styles.label, styles['labels-max'])}
           style={{
             [customCssProps.sliderMaxStart]: !referenceValues ? 2 : getLabelPosition(0).max,
           }}
         >
           {valueFormatter ? valueFormatter(max) : max}
-        </span>
-      </div>
+        </li>
+      </ul>
       {ariaDescription && (
         <div className={styles['labels-aria-description']} id={labelsId}>
           {ariaDescription}
