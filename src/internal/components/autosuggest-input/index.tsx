@@ -286,7 +286,7 @@ const AutosuggestInput = React.forwardRef(
           footer={
             dropdownFooterRef && (
               <div ref={dropdownFooterRef} className={styles['dropdown-footer']}>
-                {dropdownFooter}
+                {open && dropdownFooter ? dropdownFooter : null}
               </div>
             )
           }
