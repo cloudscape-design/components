@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 type Callback = (inViewport: boolean) => void;
-let map = new WeakMap<Element, Callback>();
+const map = new WeakMap<Element, Callback>();
 
-const MAX_DELAY_MS = 1000;
-const MANUAL_TRIGGER_DELAY = 100;
+const MANUAL_TRIGGER_DELAY = 150;
 
 /**
  * This function determines whether an element is in the viewport. The callback
@@ -13,14 +12,13 @@ const MANUAL_TRIGGER_DELAY = 100;
  * performance.
  */
 export function isInViewport(element: Element, callback: Callback) {
-  const mapSnapshot = map;
-
   let resolve = (value: boolean) => {
     resolve = () => {}; // Prevent multiple execution
     callback(value);
   };
 
-  mapSnapshot.set(element, inViewport => resolve(inViewport));
+  map.set(element, inViewport => resolve(inViewport));
+  observer.observe(element);
 
   /*
 	 If the IntersectionObserver does not fire in reasonable time (for example
@@ -30,12 +28,10 @@ export function isInViewport(element: Element, callback: Callback) {
 	 */
   const timeoutHandle = setTimeout(() => resolve(false), MANUAL_TRIGGER_DELAY);
 
-  observer.observe(element);
-
   // Cleanup
   return () => {
     clearTimeout(timeoutHandle);
-    mapSnapshot.delete(element);
+    map.delete(element);
     observer.unobserve(element);
   };
 }
@@ -51,28 +47,9 @@ function createIntersectionObserver(callback: IntersectionObserverCallback) {
 }
 
 const observer = createIntersectionObserver(function isInViewportObserver(entries) {
-  // This avoids interference when the IntersectionObserver is called again during the delay.
-  const mapSnapshot = map;
-  map = new Map();
-
-  // We only want the first run of the observer.
   for (const entry of entries) {
-    observer.unobserve(entry.target);
+    observer.unobserve(entry.target); // We only want the first run of the observer for each element.
+    map.get(entry.target)?.(entry.isIntersecting);
+    map.delete(entry.target);
   }
-
-  // We yield the event loop, since these events are low priority and not time critical.
-  defer(() => {
-    for (const entry of entries) {
-      mapSnapshot.get(entry.target)?.(entry.isIntersecting);
-    }
-  }, MAX_DELAY_MS);
 });
-
-function defer(callback: () => void, maxDelayMs: number) {
-  if (typeof requestIdleCallback === 'function') {
-    requestIdleCallback(callback, { timeout: maxDelayMs });
-  } else {
-    // requestIdleCallback is not supported in Safari
-    setTimeout(callback, maxDelayMs);
-  }
-}

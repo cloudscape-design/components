@@ -55,20 +55,6 @@ describe('isInViewport', () => {
     expect(callback).toHaveBeenCalledWith(false);
   });
 
-  it('calls the callback with a delay', () => {
-    const callback = jest.fn();
-    const element = document.createElement('div');
-
-    isInViewport(element, callback);
-
-    runAllIntersectionObservers([{ target: element, isIntersecting: false }]);
-
-    expect(callback).not.toHaveBeenCalled();
-
-    jest.runAllTimers();
-    expect(callback).toHaveBeenCalled();
-  });
-
   it('calls different callbacks for different elements', () => {
     const callback1 = jest.fn();
     const element1 = document.createElement('div');
@@ -95,9 +81,9 @@ describe('isInViewport', () => {
 
     const cleanup = isInViewport(element, callback);
 
-    runAllIntersectionObservers([{ target: element, isIntersecting: false }]);
-
     cleanup();
+
+    runAllIntersectionObservers([{ target: element, isIntersecting: false }]);
 
     jest.runAllTimers();
 
