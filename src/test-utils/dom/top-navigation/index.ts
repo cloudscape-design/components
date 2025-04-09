@@ -101,10 +101,10 @@ export class TopNavigationMenuDropdownWrapper extends ButtonDropdownWrapper {
   }
 
   findTitle(): ElementWrapper | null {
-    return this.findByClassName(buttonDropdownStyles.title);
+    return createWrapper().findComponent(`.${buttonDropdownStyles.title}`, ElementWrapper);
   }
 
   findDescription(): ElementWrapper | null {
-    return this.findByClassName(buttonDropdownStyles.description);
+    return createWrapper().findComponent(`.${buttonDropdownStyles.description}`, ElementWrapper);
   }
 }
