@@ -9,6 +9,7 @@ import Dropdown from '../internal/components/dropdown';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useFormFieldContext } from '../internal/context/form-field-context';
+import { CancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SomeRequired } from '../internal/types';
@@ -28,7 +29,15 @@ type InternalMultiselectProps = SomeRequired<
   MultiselectProps,
   'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'keepOpen' | 'hideTokens'
 > &
-  InternalBaseComponentProps;
+  InternalBaseComponentProps & { customTriggerBuilder?: (props: CustomTriggerProps) => React.ReactNode };
+interface CustomTriggerProps {
+  triggerRef: React.Ref<HTMLElement>;
+  ariaLabel: string | undefined;
+  disabled: boolean;
+  isOpen: boolean;
+  onClick: CancelableEventHandler;
+  ariaExpanded: boolean;
+}
 
 const InternalMultiselect = React.forwardRef(
   (
@@ -54,6 +63,7 @@ const InternalMultiselect = React.forwardRef(
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
       __internalRootRef = null,
+      customTriggerBuilder,
       autoFocus,
       enableSelectAll,
       ...restProps
@@ -99,12 +109,22 @@ const InternalMultiselect = React.forwardRef(
       />
     );
 
-    const trigger = (
+    const triggerProps = multiselectProps.getTriggerProps(disabled, autoFocus);
+    const trigger = customTriggerBuilder ? (
+      customTriggerBuilder({
+        ariaExpanded: multiselectProps.isOpen,
+        onClick: triggerProps.onMouseDown!,
+        triggerRef: triggerProps.ref,
+        ariaLabel,
+        disabled: !!disabled,
+        isOpen: multiselectProps.isOpen,
+      })
+    ) : (
       <Trigger
         placeholder={placeholder}
         disabled={disabled}
         readOnly={readOnly}
-        triggerProps={multiselectProps.getTriggerProps(disabled, autoFocus)}
+        triggerProps={triggerProps}
         selectedOption={null}
         selectedOptions={selectedOptions}
         triggerVariant={inlineTokens ? 'tokens' : 'placeholder'}
