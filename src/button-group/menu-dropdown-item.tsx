@@ -62,6 +62,7 @@ const MenuDropdownItem = React.forwardRef(
               loading={item.loading}
               loadingText={item.loadingText}
               disabled={item.disabled}
+              disabledReason={item.disabledReason}
               onClick={onClick}
               __title=""
             />

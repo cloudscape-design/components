@@ -9,7 +9,7 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
-const feedbackGroup: ButtonGroupProps.Group = {
+const toggleFeedbackGroup: ButtonGroupProps.Group = {
   type: 'group',
   text: 'Vote',
   items: [
@@ -18,7 +18,7 @@ const feedbackGroup: ButtonGroupProps.Group = {
       id: 'like',
       iconName: 'thumbs-up',
       pressedIconName: 'thumbs-up-filled',
-      text: 'Like',
+      text: 'Like - toggleable',
       pressed: true,
     },
     {
@@ -26,8 +26,56 @@ const feedbackGroup: ButtonGroupProps.Group = {
       id: 'dislike',
       iconName: 'thumbs-down',
       pressedIconName: 'thumbs-down-filled',
-      text: 'Dislike',
+      text: 'Dislike - toggleable',
       pressed: false,
+    },
+  ],
+};
+
+const feedbackGroup: ButtonGroupProps.Group = {
+  type: 'group',
+  text: 'Vote',
+  items: [
+    {
+      type: 'icon-button',
+      id: 'helpful',
+      iconName: 'thumbs-up-filled',
+      text: 'Helpful',
+      disabled: true,
+      disabledReason: 'Already voted popover feedback',
+    },
+    {
+      type: 'icon-button',
+      id: 'not-helpful',
+      iconName: 'thumbs-down',
+      text: 'Not helpful',
+      disabled: true,
+      disabledReason: 'Disabled reason',
+    },
+  ],
+};
+
+const disabledReasonGroup: ButtonGroupProps.Group = {
+  type: 'group',
+  text: 'Disabled reason group',
+  items: [
+    {
+      type: 'icon-button',
+      id: 'icon-button-disabled-reason',
+      iconName: 'thumbs-up',
+      text: 'Helpful',
+      disabled: true,
+      disabledReason: 'Disabled reason icon-button',
+    },
+    {
+      type: 'icon-toggle-button',
+      id: 'icon-toggle-button-disabled-reason',
+      iconName: 'thumbs-down',
+      pressedIconName: 'thumbs-down-filled',
+      text: 'Not helpful',
+      pressed: false,
+      disabled: true,
+      disabledReason: 'Disabled reason icon-toggle-button',
     },
   ],
 };
@@ -73,6 +121,15 @@ const moreActionsMenu: ButtonGroupProps.MenuDropdown = {
   items: [cut],
 };
 
+const moreActionsMenuDisabledReason: ButtonGroupProps.MenuDropdown = {
+  type: 'menu-dropdown',
+  id: 'menu-dropdown-disabled-reason',
+  text: 'More actions',
+  disabled: true,
+  disabledReason: 'Disabled reason menu-dropdown',
+  items: [cut],
+};
+
 const actionsGroupsWithMenu: ButtonGroupProps.Group = {
   type: 'group',
   text: 'Actions',
@@ -90,7 +147,11 @@ const buttonGroupPermutations = createPermutations<ButtonGroupProps>([
       [feedbackGroup, copy],
       [feedbackGroup, actionsGroup],
       [feedbackGroup, copy, actionsGroup],
+      [toggleFeedbackGroup, copy],
+      [toggleFeedbackGroup, actionsGroup],
+      [toggleFeedbackGroup, copy, actionsGroup],
       [actionsGroupsWithMenu, copy],
+      [disabledReasonGroup, moreActionsMenuDisabledReason],
     ],
   },
 ]);

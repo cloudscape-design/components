@@ -43,6 +43,7 @@ const IconButtonItem = forwardRef(
           loading={item.loading}
           loadingText={item.loadingText}
           disabled={item.disabled}
+          disabledReason={showFeedback ? undefined : item.disabledReason} // don't show disabled reason when popover feedback is shown
           __focusable={canShowFeedback}
           iconName={hasIcon ? item.iconName : 'close'}
           iconUrl={item.iconUrl}

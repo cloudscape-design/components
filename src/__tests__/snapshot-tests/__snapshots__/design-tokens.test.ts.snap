@@ -223,6 +223,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -536,6 +543,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#687078",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-divider-default": {
@@ -1810,6 +1824,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#687078",
             "light": "#687078",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-text-button-normal-active": {
@@ -2760,6 +2781,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -3073,6 +3101,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#687078",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-divider-default": {
@@ -4347,6 +4382,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#687078",
             "light": "#687078",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-text-button-normal-active": {
@@ -5297,6 +5339,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -5610,6 +5659,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#687078",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-divider-default": {
@@ -6884,6 +6940,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#687078",
             "light": "#687078",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-text-button-normal-active": {
@@ -7834,6 +7897,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -8147,6 +8217,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#687078",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-divider-default": {
@@ -9421,6 +9498,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#687078",
             "light": "#687078",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-text-button-normal-active": {
@@ -10371,6 +10455,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -10684,6 +10775,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#687078",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-divider-default": {
@@ -11958,6 +12056,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#687078",
             "light": "#687078",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-text-button-normal-active": {
@@ -12908,6 +13013,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#414750",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#12293b",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -13221,6 +13333,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
           },
         },
         "color-border-divider-default": {
@@ -14497,6 +14616,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -15445,6 +15571,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#d5dbdb",
       },
     },
+    "color-background-dialog": {
+      "$description": "The background color of the feedback/input dialogue box.",
+      "$value": {
+        "dark": "#12293b",
+        "light": "#f1faff",
+      },
+    },
     "color-background-dropdown-item-default": {
       "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
       "$value": {
@@ -15758,6 +15891,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#879596",
         "light": "#687078",
+      },
+    },
+    "color-border-dialog": {
+      "$description": "The border color of the feedback/input dialogue box.",
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
       },
     },
     "color-border-divider-default": {
@@ -17034,6 +17174,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#687078",
       },
     },
+    "color-text-button-icon-disabled": {
+      "$description": "The color of icon buttons in disabled state.",
+      "$value": {
+        "dark": "#879596",
+        "light": "#879596",
+      },
+    },
     "color-text-button-normal-active": {
       "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
       "$value": {
@@ -17987,6 +18134,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -18300,6 +18454,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-border-divider-default": {
@@ -19573,6 +19734,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color used for the icon delimiter between breadcrumb items.",
           "$value": {
             "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
             "light": "#8c8c94",
           },
         },
@@ -20524,6 +20692,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#333843",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -20837,6 +21012,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-border-divider-default": {
@@ -22113,6 +22295,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -23061,6 +23250,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -23374,6 +23570,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-border-divider-default": {
@@ -24647,6 +24850,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color used for the icon delimiter between breadcrumb items.",
           "$value": {
             "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
             "light": "#8c8c94",
           },
         },
@@ -25598,6 +25808,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -25911,6 +26128,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-border-divider-default": {
@@ -27184,6 +27408,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color used for the icon delimiter between breadcrumb items.",
           "$value": {
             "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
             "light": "#8c8c94",
           },
         },
@@ -28135,6 +28366,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -28448,6 +28686,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-border-divider-default": {
@@ -29721,6 +29966,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color used for the icon delimiter between breadcrumb items.",
           "$value": {
             "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
             "light": "#8c8c94",
           },
         },
@@ -30672,6 +30924,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#333843",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -30985,6 +31244,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-border-divider-default": {
@@ -32259,6 +32525,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#656871",
+          },
+        },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-normal-active": {
@@ -33209,6 +33482,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#333843",
           },
         },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
         "color-background-dropdown-item-default": {
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
@@ -33522,6 +33802,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-border-divider-default": {
@@ -34798,6 +35085,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -35746,6 +36040,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#dedee3",
       },
     },
+    "color-background-dialog": {
+      "$description": "The background color of the feedback/input dialogue box.",
+      "$value": {
+        "dark": "#001129",
+        "light": "#f0fbff",
+      },
+    },
     "color-background-dropdown-item-default": {
       "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
       "$value": {
@@ -36059,6 +36360,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#8c8c94",
         "light": "#8c8c94",
+      },
+    },
+    "color-border-dialog": {
+      "$description": "The border color of the feedback/input dialogue box.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
       },
     },
     "color-border-divider-default": {
@@ -37332,6 +37640,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The color used for the icon delimiter between breadcrumb items.",
       "$value": {
         "dark": "#656871",
+        "light": "#8c8c94",
+      },
+    },
+    "color-text-button-icon-disabled": {
+      "$description": "The color of icon buttons in disabled state.",
+      "$value": {
+        "dark": "#8c8c94",
         "light": "#8c8c94",
       },
     },
