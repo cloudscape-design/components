@@ -37,8 +37,11 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderLinkFocusRingOutline: '5px auto Highlight',
   borderLinkFocusRingShadowSpread: '0px',
   borderWidthAlert: '1px',
+  borderWidthButton: '1px',
+  borderWidthDropdown: '1px',
   borderWidthField: '1px',
   borderWidthPopover: '1px',
+  borderWidthToken: '1px',
 };
 
 const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);

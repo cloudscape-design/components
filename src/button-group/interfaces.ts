@@ -41,6 +41,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick` handler and to focus the button using `ref.focus(id)`.
    * * `text` (string) - The name shown as a tooltip for this button.
    * * `disabled` (optional, boolean) - The disabled state indication for this button.
+   * * `disabledReason` (optional, boolean) - Provides a reason why the button is disabled (only when `disabled` is `true`). If provided, the button becomes focusable.
    * * `loading` (optional, boolean) - The loading state indication for this button.
    * * `loadingText` (optional, string) - The loading text announced to screen readers.
    * * `iconName` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
@@ -55,6 +56,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `pressed` (boolean) - The toggle button pressed state.
    * * `text` (string) - The name shown as a tooltip for this button.
    * * `disabled` (optional, boolean) - The disabled state indication for this button.
+   * * `disabledReason` (optional, boolean) - Provides a reason why the button is disabled (only when `disabled` is `true`). If provided, the button becomes focusable.
    * * `loading` (optional, boolean) - The loading state indication for this button.
    * * `loadingText` (optional, string) - The loading text announced to screen readers.
    * * `iconName` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
@@ -78,6 +80,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick`.
    * * `text` (string) - The name of the menu button shown as a tooltip.
    * * `disabled` (optional, boolean) - The disabled state indication for the menu button.
+   * * `disabledReason` (optional, boolean) - Provides a reason why the button is disabled (only when `disabled` is `true`). If provided, the button becomes focusable.
    * * `loading` (optional, boolean) - The loading state indication for the menu button.
    * * `loadingText` (optional, string) - The loading text announced to screen readers.
    * * `items` (ButtonDropdownProps.ItemOrGroup[]) - The array of dropdown items that belong to this menu.
@@ -113,6 +116,7 @@ export namespace ButtonGroupProps {
     id: string;
     text: string;
     disabled?: boolean;
+    disabledReason?: string;
     loading?: boolean;
     loadingText?: string;
     iconName?: IconProps.Name;
@@ -128,6 +132,7 @@ export namespace ButtonGroupProps {
     text: string;
     pressed: boolean;
     disabled?: boolean;
+    disabledReason?: string;
     loading?: boolean;
     loadingText?: string;
     iconName?: IconProps.Name;
@@ -153,6 +158,7 @@ export namespace ButtonGroupProps {
     id: string;
     text: string;
     disabled?: boolean;
+    disabledReason?: string;
     loading?: boolean;
     loadingText?: string;
     items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;

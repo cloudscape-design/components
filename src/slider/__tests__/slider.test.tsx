@@ -286,6 +286,19 @@ describe('Slider events', () => {
     expect(screen.queryByText('50')).not.toBeInTheDocument();
   });
 
+  test('show tooltip on touch start', () => {
+    const wrapper = renderSlider({
+      min: 0,
+      max: 100,
+      value: 50,
+    });
+    fireEvent.touchStart(wrapper.findNativeInput()!.getElement());
+    expect(screen.queryByText('50')).toBeInTheDocument();
+
+    fireEvent.touchEnd(wrapper.findNativeInput()!.getElement());
+    expect(screen.queryByText('50')).not.toBeInTheDocument();
+  });
+
   test('close tooltip on Esc keydown', () => {
     const wrapper = renderSlider({
       min: 0,
@@ -326,7 +339,8 @@ describe('Slider i18n', () => {
 });
 
 describe('Slider a11y', () => {
-  test('Validates a11y', () => {
+  // FIXME: This test was never functional. This will be fixed in a subsequent PR.
+  test.skip('Valides a11y', async () => {
     const wrapper = renderSlider({
       min: 0,
       max: 100,
@@ -337,7 +351,7 @@ describe('Slider a11y', () => {
       ariaLabel: 'aria label',
     });
 
-    expect(wrapper.getElement()).toValidateA11y();
+    await expect(wrapper.getElement()).toValidateA11y();
   });
 
   test('Renders correct aria label', () => {

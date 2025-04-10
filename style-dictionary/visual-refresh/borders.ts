@@ -42,9 +42,9 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderLinkFocusRingOutline: '0',
   borderLinkFocusRingShadowSpread: '2px',
   borderWidthAlert: '2px',
-  borderWidthField: '1px',
   borderWidthButton: '2px',
-  borderWidthToken: '2px',
-  borderWidthPopover: '2px',
   borderWidthDropdown: '2px',
+  borderWidthField: '2px',
+  borderWidthPopover: '2px',
+  borderWidthToken: '2px',
 };

@@ -312,6 +312,7 @@ export type ColorsTokenName =
   | 'colorBackgroundSliderWarningPressed'
   | 'colorBackgroundStatusError'
   | 'colorBackgroundStatusInfo'
+  | 'colorBackgroundDialog'
   | 'colorBackgroundStatusSuccess'
   | 'colorBackgroundStatusWarning'
   | 'colorBackgroundTableHeader'
@@ -331,6 +332,7 @@ export type ColorsTokenName =
   | 'colorBorderToggleButtonNormalPressed'
   | 'colorBorderButtonNormalDisabled'
   | 'colorTextButtonNormalDisabled'
+  | 'colorTextButtonIconDisabled'
   | 'colorBorderButtonNormalHover'
   | 'colorBorderButtonPrimaryDisabled'
   | 'colorTextButtonPrimaryDisabled'
@@ -377,6 +379,7 @@ export type ColorsTokenName =
   | 'colorBorderStatusInfo'
   | 'colorBorderStatusSuccess'
   | 'colorBorderStatusWarning'
+  | 'colorBorderDialog'
   | 'colorBorderDividerInteractiveDefault'
   | 'colorBorderTabsDivider'
   | 'colorBorderTabsShadow'
@@ -585,11 +588,11 @@ export type BordersTokenName =
   | 'borderLinkFocusRingOutline'
   | 'borderLinkFocusRingShadowSpread'
   | 'borderWidthAlert'
-  | 'borderWidthField'
   | 'borderWidthButton'
-  | 'borderWidthToken'
+  | 'borderWidthDropdown'
+  | 'borderWidthField'
   | 'borderWidthPopover'
-  | 'borderWidthDropdown';
+  | 'borderWidthToken';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'

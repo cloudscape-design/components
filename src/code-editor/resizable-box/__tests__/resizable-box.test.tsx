@@ -58,24 +58,21 @@ test('Emits resize events on mouse resizing', () => {
   expect(onResize).toHaveBeenCalledWith(150);
 });
 
-test('Emits resize events on keyboard resizing', () => {
+test.each([
+  ['ArrowDown', 20],
+  ['ArrowRight', 20],
+  ['ArrowUp', -20],
+  ['ArrowLeft', -20],
+])('Emits resize events on keydown press: %s', (key, expectedChange) => {
+  const initialHeight = 100;
   const onResize = jest.fn();
-  render(<ResizableBox {...defaultProps} height={100} onResize={onResize} />);
-  // Arrow keys resize by 20px
-  fireEvent.keyDown(findHandle(), { key: 'ArrowDown' });
-  expect(onResize).toHaveBeenCalledWith(120);
 
-  onResize.mockClear();
-  fireEvent.keyDown(findHandle(), { key: 'ArrowRight' });
-  expect(onResize).toHaveBeenCalledWith(120);
+  render(<ResizableBox {...defaultProps} height={initialHeight} onResize={onResize} />);
 
-  onResize.mockClear();
-  fireEvent.keyDown(findHandle(), { key: 'ArrowUp' });
-  expect(onResize).toHaveBeenCalledWith(80);
-
-  onResize.mockClear();
-  fireEvent.keyDown(findHandle(), { key: 'ArrowLeft' });
-  expect(onResize).toHaveBeenCalledWith(80);
+  const keydownEvent = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
+  fireEvent(findHandle(), keydownEvent);
+  expect(keydownEvent.defaultPrevented).toBe(true);
+  expect(onResize).toHaveBeenCalledWith(initialHeight + expectedChange);
 });
 
 test('Emits resize events when direction buttons are pressed', () => {
