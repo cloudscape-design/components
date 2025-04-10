@@ -20,7 +20,14 @@ export default class CopyToClipboardWrapper extends ComponentWrapper {
     });
   }
 
+  /**
+   * @deprecated Use `findTextToDisplay` instead.
+   */
   findTextToCopy(): null | ElementWrapper {
-    return this.findByClassName(testStyles.content);
+    return this.findByClassName(testStyles['text-to-copy']);
+  }
+
+  findTextToDisplay(): null | ElementWrapper {
+    return this.findByClassName(testStyles['text-to-display']);
   }
 }

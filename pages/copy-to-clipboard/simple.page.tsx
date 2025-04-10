@@ -66,7 +66,7 @@ export default function DateInputScenario() {
             variant="inline"
             copyButtonAriaLabel="Copy lorem ipsum sentence"
             textToCopy={sentence}
-            content={'Custom text: copy the lorem ipsum sentence'}
+            textToDisplay={'Custom text: copy the lorem ipsum sentence'}
             copySuccessText="Lorem ipsum sentence copied"
             copyErrorText="Lorem ipsum sentence failed to copy"
           />

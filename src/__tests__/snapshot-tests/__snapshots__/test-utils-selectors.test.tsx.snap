@@ -200,8 +200,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_secondary-header_64tge",
   ],
   "copy-to-clipboard": [
-    "awsui_content_ljpwc",
     "awsui_root_ljpwc",
+    "awsui_text-to-copy_ljpwc",
+    "awsui_text-to-display_ljpwc",
   ],
   "date-input": [
     "awsui_root_yodkx",

@@ -70,7 +70,7 @@ describe('CopyToClipboard', () => {
     expect(wrapper.findTextToCopy()!.getElement().textContent).toBe('Text to copy');
   });
 
-  test('renders an inline button with custom content and separate text to copy', () => {
+  test('renders an inline button with custom text to display and separate text to copy', () => {
     const mockedWriteText = jest.fn().mockResolvedValue(act(() => new Promise(() => {}))); // The act here is just to prevent console warnings when tests run
 
     Object.assign(global.navigator, {
@@ -79,12 +79,14 @@ describe('CopyToClipboard', () => {
       },
     });
 
-    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" content="Copy test content" />);
+    const { container } = render(
+      <CopyToClipboard {...defaultProps} variant="inline" textToDisplay="Copy test content" />
+    );
     const wrapper = createWrapper(container).findCopyToClipboard()!;
 
     expect(wrapper.findCopyButton().getElement().textContent).toBe('');
     expect(wrapper.findCopyButton().getElement()).toHaveAccessibleName('Copy');
-    expect(wrapper.findTextToCopy()!.getElement().textContent).toBe('Copy test content');
+    expect(wrapper.findTextToDisplay()!.getElement().textContent).toBe('Copy test content');
 
     // Assert content written to the clipboard
     wrapper.findCopyButton().click();

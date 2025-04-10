@@ -31,6 +31,11 @@ export interface CopyToClipboardProps extends BaseComponentProps {
   textToCopy: string;
 
   /**
+   * The text content to display next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
+   */
+  textToDisplay?: string;
+
+  /**
    * The message shown when the text is copied successfully.
    */
   copySuccessText: string;
@@ -48,11 +53,6 @@ export interface CopyToClipboardProps extends BaseComponentProps {
    * Enable this setting if you need the popover to ignore its parent stacking context.
    */
   popoverRenderWithPortal?: boolean;
-
-  /**
-   * The content to display next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
-   */
-  content?: string;
 }
 
 export namespace CopyToClipboardProps {

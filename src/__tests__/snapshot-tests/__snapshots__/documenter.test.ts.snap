@@ -7107,12 +7107,6 @@ exports[`Documenter definition for copy-to-clipboard matches the snapshot: copy-
       "type": "string",
     },
     {
-      "description": "The content to display next to the copy button when \`variant="inline"\`. If not provided, \`textToCopy\` will be displayed instead.",
-      "name": "content",
-      "optional": true,
-      "type": "string",
-    },
-    {
       "description": "Adds \`aria-label\` to the copy button. Use this to provide an accessible name for buttons that don't have visible text,
 and to distinguish between multiple buttons with identical visible text. The text will also be added to the \`title\` attribute of the button.",
       "name": "copyButtonAriaLabel",
@@ -7164,7 +7158,13 @@ Enable this setting if you need the popover to ignore its parent stacking contex
       "type": "string",
     },
     {
-      "defaultValue": "'button'",
+      "description": "The text content to display next to the copy button when \`variant="inline"\`. If not provided, \`textToCopy\` will be displayed instead.",
+      "name": "textToDisplay",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": ""button"",
       "description": "Determines the general styling of the copy button as follows:
 
 * \`button\` to display a standalone secondary button with an icon, and \`copyButtonText\` as text.
