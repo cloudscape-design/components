@@ -65,8 +65,8 @@ $gutter: awsui.$space-tile-gutter;
   }
 
   &.disabled {
-    border-block: styles.$control-border-width solid awsui.$color-border-tiles-disabled;
-    border-inline: styles.$control-border-width solid awsui.$color-border-tiles-disabled;
+    border-block: awsui.$border-width-field solid awsui.$color-border-tiles-disabled;
+    border-inline: awsui.$border-width-field solid awsui.$color-border-tiles-disabled;
     background: awsui.$color-background-tiles-disabled;
   }
 

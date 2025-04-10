@@ -145,7 +145,7 @@ $inlineLabel-border-radius: 2px;
   line-height: 14px;
   letter-spacing: awsui.$letter-spacing-body-s;
   position: relative;
-  inset-inline-start: calc(styles.$control-border-width + awsui.$space-field-horizontal - awsui.$space-scaled-xxs);
+  inset-inline-start: calc(awsui.$border-width-field + awsui.$space-field-horizontal - awsui.$space-scaled-xxs);
   margin-block-start: awsui.$space-scaled-xs;
   padding-block-end: 2px;
   padding-inline: awsui.$space-scaled-xxs;
