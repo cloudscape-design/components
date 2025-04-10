@@ -25,6 +25,7 @@ function getComponentsExports() {
     './internal/tooltip-do-not-use': './internal/tooltip-do-not-use/index.js',
     './internal/do-not-use/button-dropdown': './internal/do-not-use/button-dropdown.js',
     './internal/do-not-use/chart-filter': './internal/do-not-use/chart-filter.js',
+    './internal/do-not-use/chart-filter-legacy': './internal/do-not-use/chart-filter-legacy.js',
     './internal/do-not-use/chart-tooltip': './internal/do-not-use/chart-tooltip.js',
     './internal/do-not-use/expandable-section': './internal/do-not-use/expandable-section.js',
     './internal/do-not-use/i18n': './internal/do-not-use/i18n.js',
