@@ -62,7 +62,7 @@ function expectFooterContent(expectedText: string, expandToViewport = false) {
   expect(wrapper.findDropdown({ expandToViewport }).find('ul')!.getElement()).toHaveAccessibleDescription(expectedText);
 }
 
-function expectLiveAnnouncement(expectedText: string) {
+function expectLiveRegionText(expectedText: string) {
   const liveRegion = createWrapper().findLiveRegion()!.getElement();
   expect(liveRegion).toHaveTextContent(expectedText);
 }
@@ -140,7 +140,7 @@ describe.each([true, false])('footer live announcements [expandToViewport=%s]', 
     focusInput();
     expectDropdown(expandToViewport);
     expectFooterContent('error!', expandToViewport);
-    expectLiveAnnouncement('error!');
+    expectLiveRegionText('error!');
   });
 
   test('live announces error text on dropdown toggle', () => {
@@ -148,7 +148,7 @@ describe.each([true, false])('footer live announcements [expandToViewport=%s]', 
     focusInput();
     expectDropdown(expandToViewport);
     expectFooterContent('error!', expandToViewport);
-    expectLiveAnnouncement('error!');
+    expectLiveRegionText('error!');
 
     wrapper.findNativeInput().keydown(KeyCode.enter);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
@@ -157,7 +157,7 @@ describe.each([true, false])('footer live announcements [expandToViewport=%s]', 
     wrapper.findNativeInput().keydown(KeyCode.down);
     expectDropdown(expandToViewport);
     expectFooterContent('error!', expandToViewport);
-    expectLiveAnnouncement('error!');
+    expectLiveRegionText('error!');
   });
 });
 
