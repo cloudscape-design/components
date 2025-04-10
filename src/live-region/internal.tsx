@@ -133,7 +133,7 @@ export function extractTextContent(node: HTMLElement): string {
   // This only extracts text content from the node including all its children which is enough for now.
   // To make it more powerful, it is possible to create a more sophisticated extractor with respect to
   // ARIA properties to ignore aria-hidden nodes and read ARIA labels from the live content.
-  if (!node || !node.childNodes) {
+  if (!node || !node?.childNodes?.length) {
     return '';
   }
 

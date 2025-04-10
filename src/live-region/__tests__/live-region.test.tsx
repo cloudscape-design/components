@@ -138,6 +138,12 @@ describe('text extractor', () => {
     expect(extractTextContent(el)).toBe('');
   });
 
+  it('extracts text from an empty element with a comment', () => {
+    const el = document.createElement('div');
+    el.innerHTML = '<!-- comment -->';
+    expect(extractTextContent(el)).toBe('');
+  });
+
   it('extracts text from a single element', () => {
     const el = document.createElement('div');
     el.textContent = 'Hello';
