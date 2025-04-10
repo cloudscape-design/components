@@ -459,6 +459,55 @@ describe('Dropdown states', () => {
   });
 });
 
+describe.each([true, false])('footer live announcements [expandToViewport=%s]', (expandToViewport: boolean) => {
+  test('live announces footer text on initial dropdown render', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        selectedOptions={[]}
+        options={defaultOptions}
+        statusType="error"
+        errorText="Test error text"
+        errorIconAriaLabel="Test error text"
+        recoveryText="Retry"
+        expandToViewport={expandToViewport}
+        keepOpen={false}
+      />
+    );
+    expect(createWrapper().findLiveRegion()).toBeNull();
+
+    wrapper.openDropdown();
+    expect(wrapper.findDropdown({ expandToViewport }).findFooterRegion()!.getElement()).toHaveTextContent(
+      'Test error text'
+    );
+    expect(createWrapper().findLiveRegion()!.getElement()).toHaveTextContent('Test error text');
+  });
+
+  test('live announce footer text on dropdown toggle', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        selectedOptions={[]}
+        options={defaultOptions}
+        statusType="error"
+        errorText="Test error text"
+        errorIconAriaLabel="Test error text"
+        recoveryText="Retry"
+        expandToViewport={expandToViewport}
+        keepOpen={false}
+      />
+    );
+    expect(createWrapper().findLiveRegion()).toBeNull();
+
+    wrapper.openDropdown();
+    expect(createWrapper().findLiveRegion()!.getElement()).toHaveTextContent('Test error text');
+
+    wrapper.closeDropdown({ expandToViewport });
+    expect(createWrapper().findLiveRegion()).toBeNull();
+
+    wrapper.openDropdown();
+    expect(createWrapper().findLiveRegion()!.getElement()).toHaveTextContent('Test error text');
+  });
+});
+
 test('fires a change event when user selects a group option from the dropdown', () => {
   const onChange = jest.fn();
   const { wrapper } = renderMultiselect(
