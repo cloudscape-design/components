@@ -9,6 +9,7 @@ export interface FilterRef {
 export interface PaginationRef {
   currentPageIndex?: number;
   totalPageCount?: number;
+  openEnd?: boolean;
 }
 interface TableComponentsContextProps {
   filterRef: RefObject<FilterRef>;

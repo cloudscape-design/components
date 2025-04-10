@@ -177,7 +177,7 @@ export interface IPerformanceMetrics {
 
 type JSONValue = string | number | boolean | null | undefined;
 export interface JSONObject {
-  [key: string]: JSONObject | JSONValue;
+  [key: string]: JSONObject | JSONValue | JSONValue[];
 }
 
 interface ComponentMountedProps {

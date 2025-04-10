@@ -229,6 +229,13 @@ const InternalTable = React.forwardRef(
     const getComponentConfiguration = () => {
       const filterData = filterRef.current;
       const paginationData = paginationRef.current;
+      const resourcesPerPage = allRows?.length || 0;
+      const totalNumberOfPages = paginationData.totalPageCount;
+      const totalNumberOfResources = totalNumberOfPages ? resourcesPerPage * totalNumberOfPages : undefined;
+
+      const visibleColumns = visibleColumnDefinitions.map(visibleColumnDefinition =>
+        visibleColumnDefinition.header?.toString()
+      );
 
       return {
         variant,
@@ -241,9 +248,15 @@ const InternalTable = React.forwardRef(
           sortingOrder: sortingColumn ? (sortingDescending ? 'desc' : 'asc') : undefined,
         },
         filtered: Boolean(filterData?.filterText),
-        currentPageIndex: paginationData.currentPageIndex,
-        totalNumberOfResources: paginationData.totalPageCount,
-        resourcesPerPage: allRows?.length || 0,
+        tablePreferences: {
+          visibleColumns: visibleColumns,
+          resourcesPerPage: resourcesPerPage,
+        },
+        pagination: {
+          currentPageIndex: paginationData.currentPageIndex,
+          openEnd: paginationData.openEnd,
+        },
+        totalNumberOfResources: totalNumberOfResources,
         resourcesSelected: selectedItems?.length > 0,
       };
     };

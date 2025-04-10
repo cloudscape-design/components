@@ -54,6 +54,12 @@ export function useTableInteractionMetrics({
       return;
     }
 
+    console.log('componentMounted', {
+      taskInteractionId,
+      componentName: 'table',
+      componentConfiguration: metadata.current.getComponentConfiguration(),
+    });
+
     ComponentMetrics.componentMounted({
       taskInteractionId,
       componentName: 'table',
@@ -88,6 +94,13 @@ export function useTableInteractionMetrics({
       });
 
       if (!isInFunnel) {
+        console.log('componentUpdated', {
+          taskInteractionId,
+          componentName: 'table',
+          actionType: capturedUserAction.current ?? '',
+          componentConfiguration: metadata.current.getComponentConfiguration(),
+        });
+
         ComponentMetrics.componentUpdated({
           taskInteractionId,
           componentName: 'table',
