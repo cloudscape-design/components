@@ -14,93 +14,93 @@
 
 @mixin default-text-style {
   @include font-body-m;
-  color: awsui.$color-text-body-default;
-  font-weight: constants.$font-weight-normal;
+  color: var(--theme-color, awsui.$color-text-body-default);
+  font-weight: var(--theme-font-weight, constants.$font-weight-normal);
   font-family: constants.$font-family-base;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
 }
 
 @mixin font-body-s {
-  font-size: awsui.$font-size-body-s;
-  line-height: awsui.$line-height-body-s;
+  font-size: var(--theme-font-size, awsui.$font-size-body-s);
+  line-height: var(--theme-line-height, awsui.$line-height-body-s);
   letter-spacing: awsui.$letter-spacing-body-s;
 }
 
 @mixin font-body-m {
-  font-size: awsui.$font-size-body-m;
-  line-height: awsui.$line-height-body-m;
+  font-size: var(--theme-font-size, awsui.$font-size-body-m);
+  line-height: var(--theme-line-height, awsui.$line-height-body-m);
 }
 
 @mixin font-heading-xs($weight: true) {
-  font-size: awsui.$font-size-heading-xs;
-  line-height: awsui.$line-height-heading-xs;
+  font-size: var(--theme-font-size, awsui.$font-size-heading-xs);
+  line-height: var(--theme-line-height, awsui.$line-height-heading-xs);
   @if $weight {
-    font-weight: awsui.$font-weight-heading-xs;
+    font-weight: var(--theme-font-weight, awsui.$font-weight-heading-xs);
     @include font-smoothing;
   }
 }
 
 @mixin font-heading-s($weight: true) {
-  font-size: awsui.$font-size-heading-s;
-  line-height: awsui.$line-height-heading-s;
+  font-size: var(--theme-font-size, awsui.$font-size-heading-s);
+  line-height: var(--theme-line-height, awsui.$line-height-heading-s);
   letter-spacing: awsui.$letter-spacing-heading-s;
   @if $weight {
-    font-weight: awsui.$font-weight-heading-s;
+    font-weight: var(--theme-font-weight, awsui.$font-weight-heading-s);
     @include font-smoothing;
   }
 }
 
 @mixin font-heading-m($weight: true) {
-  font-size: awsui.$font-size-heading-m;
-  line-height: awsui.$line-height-heading-m;
+  font-size: var(--theme-font-size, awsui.$font-size-heading-m);
+  line-height: var(--theme-line-height, awsui.$line-height-heading-m);
   letter-spacing: awsui.$letter-spacing-heading-m;
   @if $weight {
-    font-weight: awsui.$font-weight-heading-m;
+    font-weight: var(--theme-font-weight, awsui.$font-weight-heading-m);
     @include font-smoothing;
   }
 }
 
 @mixin font-heading-l($weight: true) {
-  font-size: awsui.$font-size-heading-l;
-  line-height: awsui.$line-height-heading-l;
+  font-size: var(--theme-font-size, awsui.$font-size-heading-l);
+  line-height: var(--theme-line-height, awsui.$line-height-heading-l);
   letter-spacing: awsui.$letter-spacing-heading-l;
   @if $weight {
-    font-weight: awsui.$font-weight-heading-l;
+    font-weight: var(--theme-font-weight, awsui.$font-weight-heading-l);
     @include font-smoothing;
   }
 }
 
 @mixin font-heading-xl($weight: true) {
-  font-size: awsui.$font-size-heading-xl;
-  line-height: awsui.$line-height-heading-xl;
+  font-size: var(--theme-font-size, awsui.$font-size-heading-xl);
+  line-height: var(--theme-line-height, awsui.$line-height-heading-xl);
   letter-spacing: awsui.$letter-spacing-heading-xl;
   @if $weight {
-    font-weight: awsui.$font-weight-heading-xl;
+    font-weight: var(--theme-font-weight, awsui.$font-weight-heading-xl);
     @include font-smoothing;
   }
 }
 
 @mixin font-display-l {
-  font-size: awsui.$font-size-display-l;
-  line-height: awsui.$line-height-display-l;
+  font-size: var(--theme-font-size, awsui.$font-size-display-l);
+  line-height: var(--theme-line-height, awsui.$line-height-display-l);
   letter-spacing: awsui.$letter-spacing-display-l;
 }
 
 @mixin font-inherit {
-  font-size: inherit;
-  line-height: inherit;
+  font-size: var(--theme-font-size, inherit);
+  line-height: var(--theme-line-height, inherit);
   letter-spacing: inherit;
 }
 
 @mixin font-button {
-  font-weight: awsui.$font-weight-button;
+  font-weight: var(--theme-font-weight, awsui.$font-weight-button);
   @include font-smoothing;
 }
 
 @mixin font-label {
   @include font-body-m();
-  font-weight: awsui.$font-display-label-weight;
+  font-weight: var(--theme-font-weight, awsui.$font-display-label-weight);
 }
 
 @mixin font-panel-header {

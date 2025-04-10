@@ -18,6 +18,7 @@ export default function InternalSegmentedControl({
   label,
   ariaLabelledby,
   onChange,
+  theme,
 }: SegmentedControlProps) {
   const segmentByIdRef = useRef<{ [id: string]: HTMLButtonElement }>({});
   const selectedOptions = (options || []).filter(option => {
@@ -75,6 +76,7 @@ export default function InternalSegmentedControl({
               text={option.text}
               isActive={isActive}
               tabIndex={tabIndex}
+              theme={theme}
               ref={node => {
                 if (node) {
                   segmentByIdRef.current[option.id] = node;

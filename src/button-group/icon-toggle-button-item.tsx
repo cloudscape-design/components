@@ -20,11 +20,12 @@ interface IconToggleButtonItemProps {
   showFeedback: boolean;
   onTooltipDismiss: () => void;
   onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+  orientation?: ButtonGroupProps.Orientation;
 }
 
 const IconToggleButtonItem = forwardRef(
   (
-    { item, showTooltip, showFeedback, onTooltipDismiss, onItemClick }: IconToggleButtonItemProps,
+    { item, showTooltip, showFeedback, onTooltipDismiss, onItemClick, orientation }: IconToggleButtonItemProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -74,6 +75,7 @@ const IconToggleButtonItem = forwardRef(
             }
             className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
             onDismiss={onTooltipDismiss}
+            position={orientation === 'horizontal' ? 'top' : 'right'}
           />
         )}
       </div>

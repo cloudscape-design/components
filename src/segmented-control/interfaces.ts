@@ -5,6 +5,7 @@ import React from 'react';
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { ThemeProps } from '../theming/component/interfaces';
 
 export interface SegmentedControlProps extends BaseComponentProps {
   /**
@@ -43,6 +44,10 @@ export interface SegmentedControlProps extends BaseComponentProps {
    * Called when the user selects a different segment.
    */
   onChange?: NonCancelableEventHandler<SegmentedControlProps.ChangeDetail>;
+
+  theme?: {
+    segment?: ThemeProps;
+  };
 }
 
 export namespace SegmentedControlProps {

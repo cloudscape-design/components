@@ -98,8 +98,8 @@
   }
 
   &.button-no-text {
-    padding-inline-start: awsui.$space-button-icon-only-horizontal;
-    padding-inline-end: awsui.$space-button-icon-only-horizontal;
+    padding-inline-start: var(--theme-padding-inline, awsui.$space-button-icon-only-horizontal);
+    padding-inline-end: var(--theme-padding-inline, awsui.$space-button-icon-only-horizontal);
   }
 
   &.button-no-wrap {
@@ -117,7 +117,7 @@
   &.variant-flashbar-icon {
     // Icon has vertical padding, but no horizontal, we need to conpensate this
     // in order to have equal height and width
-    padding-inline: awsui.$space-xxs;
+    padding-inline: var(--theme-padding-inline, awsui.$space-xxs);
   }
 
   &.variant-modal-dismiss {

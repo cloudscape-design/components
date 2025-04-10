@@ -25,15 +25,17 @@
 .segment-part {
   display: -ms-inline-grid;
   display: inline-grid;
-  border-inline: solid awsui.$border-width-field awsui.$color-border-input-default;
-  border-block: solid awsui.$border-width-field awsui.$color-border-input-default;
-  border-start-start-radius: awsui.$border-radius-button;
-  border-start-end-radius: awsui.$border-radius-button;
-  border-end-start-radius: awsui.$border-radius-button;
-  border-end-end-radius: awsui.$border-radius-button;
+  border-inline: solid var(--theme-border-width, awsui.$border-width-field)
+    var(--theme-border-color, awsui.$color-border-input-default);
+  border-block: solid var(--theme-border-width, awsui.$border-width-field)
+    var(--theme-border-color, awsui.$color-border-input-default);
+  border-start-start-radius: var(--theme-border-radius, awsui.$border-radius-button);
+  border-start-end-radius: var(--theme-border-radius, awsui.$border-radius-button);
+  border-end-start-radius: var(--theme-border-radius, awsui.$border-radius-button);
+  border-end-end-radius: var(--theme-border-radius, awsui.$border-radius-button);
   align-items: center;
   min-block-size: calc(awsui.$line-height-body-m + awsui.$space-static-xxs);
-  padding-inline: awsui.$space-static-xxxs;
+  padding-inline: var(--theme-padding-inline, awsui.$space-static-xxxs);
   gap: calc(#{seg.$segment-gap} * 2 + #{seg.$segment-divider-width});
 
   &:not(.refresh) {

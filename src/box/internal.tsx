@@ -72,7 +72,7 @@ const getTag = (variant: BoxProps.Variant, tagOverride: BoxProps['tagOverride'])
     return 'span';
   }
 
-  if (variant === 'awsui-key-label' || variant === 'awsui-gen-ai-label') {
+  if (variant === 'awsui-key-label' || variant === 'awsui-gen-ai-label' || variant === 'awsui-gradient-text') {
     return 'div';
   }
 

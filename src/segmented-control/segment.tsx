@@ -8,6 +8,7 @@ import Tooltip from '../internal/components/tooltip';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import Theme from '../theming/component';
 import { SegmentedControlProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -17,6 +18,7 @@ interface SegmentProps extends SegmentedControlProps.Option {
   onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => void;
   isActive: boolean;
   tabIndex: number;
+  theme?: any;
 }
 
 export const Segment = React.forwardRef(
@@ -34,6 +36,7 @@ export const Segment = React.forwardRef(
       onKeyDown,
       tabIndex,
       id,
+      theme,
     }: SegmentProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
@@ -45,55 +48,57 @@ export const Segment = React.forwardRef(
     const isVisualRefresh = useVisualRefresh();
 
     return (
-      <button
-        className={clsx(
-          styles.segment,
-          { [styles.disabled]: !!disabled },
-          { [styles.selected]: isActive },
-          { [styles.refresh]: isVisualRefresh }
-        )}
-        ref={useMergeRefs(ref, buttonRef)}
-        onClick={onClick}
-        onKeyDown={onKeyDown}
-        disabled={disabled && !disabledReason}
-        aria-disabled={isDisabledWithReason ? 'true' : undefined}
-        type="button"
-        tabIndex={tabIndex}
-        aria-pressed={isActive ? 'true' : 'false'}
-        aria-label={!text ? iconAlt : undefined}
-        onFocus={isDisabledWithReason ? () => setShowTooltip(true) : undefined}
-        onBlur={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
-        onMouseEnter={isDisabledWithReason ? () => setShowTooltip(true) : undefined}
-        onMouseLeave={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
-        {...(isDisabledWithReason ? targetProps : {})}
-        data-testid={id}
-      >
-        {(iconName || iconUrl || iconSvg) && (
-          <InternalIcon
-            className={clsx(styles.icon, text ? styles['with-text'] : styles['with-no-text'])}
-            name={iconName}
-            url={iconUrl}
-            svg={iconSvg}
-            alt={iconAlt}
-            variant={disabled ? 'disabled' : 'normal'}
-          />
-        )}
-        <span>{text}</span>
+      <Theme {...theme?.segment}>
+        <button
+          className={clsx(
+            styles.segment,
+            { [styles.disabled]: !!disabled },
+            { [styles.selected]: isActive },
+            { [styles.refresh]: isVisualRefresh }
+          )}
+          ref={useMergeRefs(ref, buttonRef)}
+          onClick={onClick}
+          onKeyDown={onKeyDown}
+          disabled={disabled && !disabledReason}
+          aria-disabled={isDisabledWithReason ? 'true' : undefined}
+          type="button"
+          tabIndex={tabIndex}
+          aria-pressed={isActive ? 'true' : 'false'}
+          aria-label={!text ? iconAlt : undefined}
+          onFocus={isDisabledWithReason ? () => setShowTooltip(true) : undefined}
+          onBlur={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
+          onMouseEnter={isDisabledWithReason ? () => setShowTooltip(true) : undefined}
+          onMouseLeave={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
+          {...(isDisabledWithReason ? targetProps : {})}
+          data-testid={id}
+        >
+          {(iconName || iconUrl || iconSvg) && (
+            <InternalIcon
+              className={clsx(styles.icon, text ? styles['with-text'] : styles['with-no-text'])}
+              name={iconName}
+              url={iconUrl}
+              svg={iconSvg}
+              alt={iconAlt}
+              variant={disabled ? 'disabled' : 'normal'}
+            />
+          )}
+          <span>{text}</span>
 
-        {isDisabledWithReason && (
-          <>
-            {descriptionEl}
-            {showTooltip && (
-              <Tooltip
-                className={styles['disabled-reason-tooltip']}
-                trackRef={buttonRef}
-                value={disabledReason!}
-                onDismiss={() => setShowTooltip(false)}
-              />
-            )}
-          </>
-        )}
-      </button>
+          {isDisabledWithReason && (
+            <>
+              {descriptionEl}
+              {showTooltip && (
+                <Tooltip
+                  className={styles['disabled-reason-tooltip']}
+                  trackRef={buttonRef}
+                  value={disabledReason!}
+                  onDismiss={() => setShowTooltip(false)}
+                />
+              )}
+            </>
+          )}
+        </button>
+      </Theme>
     );
   }
 );

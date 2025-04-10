@@ -135,6 +135,7 @@ export namespace BoxProps {
     | 'samp'
     | 'awsui-key-label'
     | 'awsui-gen-ai-label'
+    | 'awsui-gradient-text'
     | 'awsui-value-large';
 
   export type Display = 'block' | 'inline' | 'inline-block' | 'none';

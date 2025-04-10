@@ -8,7 +8,7 @@
 @use '../internal/styles/tokens' as awsui;
 
 $_variant-colors: (
-  'normal': currentColor,
+  'normal': var(--theme-fill, currentColor),
   'disabled': awsui.$color-text-interactive-disabled,
   'inverted': awsui.$color-text-inverted,
   'subtle': awsui.$color-text-icon-subtle,
@@ -99,7 +99,7 @@ $_icon-sizes: (
     fill: none;
 
     * {
-      stroke: currentColor;
+      stroke: var(--theme-fill, currentColor);
     }
 
     // Designers count on these class names when exporting the new svgs
@@ -114,7 +114,7 @@ $_icon-sizes: (
         stroke-linecap: round;
       }
       .filled {
-        fill: currentColor;
+        fill: var(--theme-fill, currentColor);
       }
       .no-stroke {
         stroke: none;

@@ -10,14 +10,14 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $segment-properties: (
-  'default-background': awsui.$color-background-segment-default,
-  'default-color': awsui.$color-text-segment-default,
-  'hover-background': awsui.$color-background-segment-hover,
-  'hover-color': awsui.$color-text-segment-hover,
-  'active-background': awsui.$color-background-segment-active,
-  'disabled-background': awsui.$color-background-segment-disabled,
-  'disabled-border-color': awsui.$color-border-segment-disabled,
-  'disabled-color': awsui.$color-text-interactive-disabled,
+  'default-background': var(--theme-background-color, awsui.$color-background-segment-default),
+  'default-color': var(--theme-color, awsui.$color-text-segment-default),
+  'hover-background': var(--theme-background-color-hover, awsui.$color-background-segment-hover),
+  'hover-color': var(--theme-color-hover, awsui.$color-text-segment-hover),
+  'active-background': var(--theme-background-color-active, awsui.$color-background-segment-active),
+  'disabled-background': var(--theme-background-color-disabled, awsui.$color-background-segment-disabled),
+  'disabled-border-color': var(--theme-border-color-disabled, awsui.$color-border-segment-disabled),
+  'disabled-color': var(--theme-color-disabled, awsui.$color-text-interactive-disabled),
 );
 
 $default-background: map.get($segment-properties, 'default-background');
@@ -30,9 +30,9 @@ $disabled-background: map.get($segment-properties, 'disabled-background');
 $disabled-border-color: map.get($segment-properties, 'disabled-border-color');
 $disabled-color: map.get($segment-properties, 'disabled-color');
 $selected-background: map.get($segment-properties, 'active-background');
-$selected-border-color: awsui.$color-border-segment-active;
-$selected-color: awsui.$color-text-segment-active;
-$segment-gap: awsui.$space-static-xxs;
+$selected-border-color: var(--theme-border-color-active, awsui.$color-border-segment-active);
+$selected-color: var(--theme-color-active, awsui.$color-text-segment-active);
+$segment-gap: var(--theme-gap-inline, awsui.$space-static-xxs);
 $segment-divider-width: 1px;
 
 .segment {
@@ -40,20 +40,20 @@ $segment-divider-width: 1px;
   @include styles.text-flex-wrapping;
   @include styles.font-button;
   letter-spacing: 0.25px;
-  padding-block: styles.$control-padding-vertical;
+  padding-block: var(--theme-padding-block, styles.$control-padding-vertical);
   padding-inline: calc(awsui.$space-button-horizontal - $segment-gap);
 
   background: $default-background;
   color: $default-color;
   overflow: visible;
 
-  border-start-start-radius: awsui.$border-radius-button;
-  border-start-end-radius: awsui.$border-radius-button;
-  border-end-start-radius: awsui.$border-radius-button;
-  border-end-end-radius: awsui.$border-radius-button;
+  border-start-start-radius: var(--theme-border-radius, awsui.$border-radius-button);
+  border-start-end-radius: var(--theme-border-radius, awsui.$border-radius-button);
+  border-end-start-radius: var(--theme-border-radius, awsui.$border-radius-button);
+  border-end-end-radius: var(--theme-border-radius, awsui.$border-radius-button);
 
   position: relative;
-  block-size: calc(100% - $segment-gap);
+  block-size: var(--theme-height, calc(100% - $segment-gap));
   display: flex;
   align-items: center;
 
@@ -92,12 +92,12 @@ $segment-divider-width: 1px;
     inset-inline-end: calc(-1 * $segment-gap);
   }
 
-  @for $i from 1 through 6 {
-    &:nth-child(#{$i}) {
-      grid-column: $i;
-      -ms-grid-column: $i;
-    }
-  }
+  // @for $i from 1 through 6 {
+  //   &:nth-child(#{$i}) {
+  //     // grid-column: $i;
+  //     // -ms-grid-column: $i;
+  //   }
+  // }
 
   &.selected {
     background: $selected-background;

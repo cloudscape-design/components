@@ -31,6 +31,7 @@ const InternalButtonGroup = forwardRef(
       onFilesChange,
       ariaLabel,
       dropdownExpandToViewport,
+      orientation = 'horizontal',
       __internalRootRef = null,
       ...props
     }: InternalButtonGroupProps,
@@ -135,7 +136,7 @@ const InternalButtonGroup = forwardRef(
     return (
       <div
         {...baseProps}
-        className={clsx(styles.root, testUtilStyles['button-group'], baseProps.className)}
+        className={clsx(styles.root, testUtilStyles['button-group'], baseProps.className, styles[orientation])}
         ref={containerRef}
         role="toolbar"
         aria-label={ariaLabel}

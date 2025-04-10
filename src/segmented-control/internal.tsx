@@ -22,6 +22,7 @@ export default function InternalSegmentedControl({
   ariaLabelledby,
   onChange,
   __internalRootRef = null,
+  theme,
   ...props
 }: InternalSegmentedControlProps) {
   const baseProps = getBaseProps(props);
@@ -51,6 +52,7 @@ export default function InternalSegmentedControl({
         label={label}
         ariaLabelledby={ariaLabelledby}
         onChange={onChange}
+        theme={theme}
       />
       <div className={styles.select}>
         {ariaLabelledby && <InternalSelect {...selectProps} ariaLabelledby={ariaLabelledby} />}

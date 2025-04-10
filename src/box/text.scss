@@ -48,6 +48,12 @@
       font-style: italic;
       color: awsui.$color-text-label-gen-ai;
     }
+    &.gradient-text-variant {
+      background: var(--theme-color, awsui.$color-text-body-default);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
     &.value-large-variant {
       @include styles.font-display-l;
       font-weight: awsui.$font-box-value-large-weight;

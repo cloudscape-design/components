@@ -88,6 +88,8 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `items` ((ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown)[]) - The array of items that belong to this group.
    */
   items: ReadonlyArray<ButtonGroupProps.ItemOrGroup>;
+
+  orientation?: ButtonGroupProps.Orientation;
   /**
    * Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.
    */
@@ -107,7 +109,7 @@ export namespace ButtonGroupProps {
 
   export type ItemOrGroup = Item | Group;
   export type Item = IconButton | IconToggleButton | IconFileInput | MenuDropdown;
-
+  export type Orientation = 'horizontal' | 'vertical';
   export interface IconButton {
     type: 'icon-button';
     id: string;

@@ -8,10 +8,17 @@
 .root {
   @include styles.styles-reset;
 
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: awsui.$space-scaled-xs;
+  &.horizontal {
+    flex-direction: row;
+    gap: var(--theme-gap-inline, awsui.$space-scaled-xs);
+  }
+  &.vertical {
+    flex-direction: column;
+    gap: var(--theme-gap-block, awsui.$space-scaled-xs);
+  }
 }
 
 .item-wrapper {
@@ -25,5 +32,5 @@
 .divider {
   background-color: awsui.$color-border-divider-default;
   inline-size: awsui.$border-divider-section-width;
-  margin-block: awsui.$space-static-xs;
+  margin-block: var(--theme-gap, awsui.$space-static-xs);
 }

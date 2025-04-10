@@ -6,13 +6,13 @@
 @use '../internal/styles/tokens' as awsui;
 
 .variant-normal.pressed {
-  background: awsui.$color-background-toggle-button-normal-pressed;
-  border-color: awsui.$color-border-toggle-button-normal-pressed;
-  color: awsui.$color-text-toggle-button-normal-pressed;
+  background: var(--theme-background-color-active, awsui.$color-background-toggle-button-normal-pressed);
+  border-color: var(--theme-border-color-active, awsui.$color-border-toggle-button-normal-pressed);
+  color: var(--theme-color-active, awsui.$color-text-toggle-button-normal-pressed);
 }
 
 .variant-icon.pressed {
-  background: transparent;
-  border-color: transparent;
-  color: awsui.$color-text-toggle-button-icon-pressed;
+  background: var(--theme-background-color-active, transparent);
+  border-color: var(--theme-border-color-active, transparent);
+  color: var(--theme-color-active, awsui.$color-text-toggle-button-icon-pressed);
 }

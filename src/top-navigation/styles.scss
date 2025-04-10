@@ -9,7 +9,7 @@
 
 .top-navigation {
   @include styles.styles-reset;
-  background: awsui.$color-background-container-content;
+  background: var(--theme-background-color, awsui.$color-background-container-content);
 
   > .padding-box {
     display: flex;
