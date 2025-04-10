@@ -412,13 +412,13 @@ describe('resize with keyboard', () => {
     mockWidth = 80;
     const { wrapper } = renderTable(<Table {...defaultProps} />);
     const columnResizerWrapper = wrapper.findColumnResizer(1)!;
-    const columnResizerSeparatorWrapper = wrapper.findColumnHeaders()[0].find('[role="separator"]')!;
+    const columnResizerSliderWrapper = wrapper.findColumnHeaders()[0].find('[role="slider"]')!;
 
     columnResizerWrapper.focus();
     columnResizerWrapper.keydown(KeyCode.enter);
     columnResizerWrapper.keydown(KeyCode.left);
 
-    expect(columnResizerSeparatorWrapper.getElement()).toHaveAttribute('aria-valuenow', '80');
+    expect(columnResizerSliderWrapper.getElement()).toHaveAttribute('aria-valuenow', '80');
   });
 });
 
