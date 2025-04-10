@@ -86,7 +86,7 @@ describe('CopyToClipboard', () => {
 
     expect(wrapper.findCopyButton().getElement().textContent).toBe('');
     expect(wrapper.findCopyButton().getElement()).toHaveAccessibleName('Copy');
-    expect(wrapper.findTextToDisplay()!.getElement().textContent).toBe('Copy test content');
+    expect(wrapper.findDisplayedText()!.getElement().textContent).toBe('Copy test content');
 
     // Assert content written to the clipboard
     wrapper.findCopyButton().click();

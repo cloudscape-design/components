@@ -27,7 +27,11 @@ export default class CopyToClipboardWrapper extends ComponentWrapper {
     return this.findByClassName(testStyles['text-to-copy']);
   }
 
-  findTextToDisplay(): null | ElementWrapper {
+  /**
+   * Used to get the text displayed next to the copy icon button when `variant='inline'`.
+   * Returns either the `textToCopy` value or the `textToDisplay` value if it has been set.
+   */
+  findDisplayedText(): null | ElementWrapper {
     return this.findByClassName(testStyles['text-to-display']);
   }
 }
