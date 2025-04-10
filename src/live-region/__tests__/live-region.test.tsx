@@ -133,6 +133,11 @@ describe('LiveRegion', () => {
 });
 
 describe('text extractor', () => {
+  it('extracts text from an empty element', () => {
+    const el = document.createElement('div');
+    expect(extractTextContent(el)).toBe('');
+  });
+
   it('extracts text from a single element', () => {
     const el = document.createElement('div');
     el.textContent = 'Hello';
@@ -146,6 +151,7 @@ describe('text extractor', () => {
         <p>World</p>
         <span>inline</span>
         <span>content</span>
+        <span></span>
     `;
     expect(extractTextContent(el)).toBe('Hello World inline content');
   });
