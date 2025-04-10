@@ -17998,7 +17998,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "1px",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -20556,7 +20556,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "1px",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -23104,12 +23104,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-button": {
+          "$description": "The border width of buttons.",
+          "$value": "2px",
+        },
+        "border-width-dropdown": {
+          "$description": "The border width of dropdowns.",
+          "$value": "2px",
+        },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "1px",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
+          "$value": "2px",
+        },
+        "border-width-token": {
+          "$description": "The border width of tokens.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -23236,6 +23248,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#dedee3",
+          },
+        },
+        "color-background-dialog": {
+          "$description": "The background color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -23551,6 +23570,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-dialog": {
+          "$description": "The border color of the feedback/input dialogue box.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-border-divider-default": {
@@ -24827,6 +24853,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-icon-disabled": {
+          "$description": "The color of icon buttons in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -25639,7 +25672,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "1px",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -28197,7 +28230,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "1px",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -30755,7 +30788,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "1px",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -33313,7 +33346,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "1px",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -35871,7 +35904,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "1px",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -38429,7 +38462,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "border-width-field": {
       "$description": "The border width of form fields.",
-      "$value": "1px",
+      "$value": "2px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",
