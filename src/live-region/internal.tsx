@@ -137,7 +137,7 @@ export function extractTextContent(node: HTMLElement): string {
     return '';
   }
 
-  return Array.from(node.childNodes).map(processNode).join(' ').replace(/\s+/g, ' ').trim();
+  return Array.from(node.childNodes, processNode).join(' ').replace(/\s+/g, ' ').trim();
 }
 
 function getSourceContent(source: ReadonlyArray<string | React.RefObject<HTMLElement> | undefined>): string {
