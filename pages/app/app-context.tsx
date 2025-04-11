@@ -6,8 +6,6 @@ import mapValues from 'lodash/mapValues';
 
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
-import { THEME } from '~components/internal/environment';
-
 interface AppUrlParams {
   density: Density;
   direction: 'ltr' | 'rtl';
@@ -30,7 +28,7 @@ const appContextDefaults: AppContextType = {
   urlParams: {
     density: Density.Comfortable,
     direction: 'ltr',
-    visualRefresh: THEME === 'default',
+    visualRefresh: true,
     motionDisabled: false,
     appLayoutWidget: false,
   },
