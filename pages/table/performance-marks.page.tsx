@@ -5,10 +5,15 @@ import React, { useState } from 'react';
 import { Button, Header, Link, Modal, SpaceBetween, Table, Tabs } from '~components';
 import Box from '~components/box';
 
+import { useAppContext } from '../app/app-context';
+
 const EVALUATE_COMPONENT_VISIBILITY_EVENT = 'awsui-evaluate-component-visibility';
 
 export default function TablePerformanceMarkPage() {
   const [loading, setLoading] = useState(true);
+
+  const { outsideOfViewport } = useAppContext<'outsideOfViewport'>().urlParams;
+
   const dispatchEvaluateVisibilityEvent = () => {
     const event = new CustomEvent(EVALUATE_COMPONENT_VISIBILITY_EVENT);
     setTimeout(() => {
@@ -29,6 +34,20 @@ export default function TablePerformanceMarkPage() {
             Dispatch EvaluateVisibility Event
           </Button>
         </label>
+
+        {outsideOfViewport && (
+          <div
+            style={{
+              margin: 3,
+              padding: 10,
+              border: '1px solid rgba(128 128 128 / 50%)',
+              background: 'rgba(128 128 128 / 10%)',
+              height: '100vh',
+            }}
+          >
+            The Table is rendered below the viewport
+          </div>
+        )}
 
         <Table
           items={[]}

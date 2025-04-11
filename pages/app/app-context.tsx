@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { createContext } from 'react';
+import React, { createContext, useContext } from 'react';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import mapValues from 'lodash/mapValues';
 
@@ -41,6 +41,10 @@ const appContextDefaults: AppContextType = {
 const AppContext = createContext<AppContextType>(appContextDefaults);
 
 export default AppContext;
+
+export function useAppContext<T extends keyof any>() {
+  return useContext(AppContext as React.Context<AppContextType<Record<T, string | boolean>>>);
+}
 
 export function parseQuery(query: string) {
   const queryParams: Record<string, any> = { ...appContextDefaults.urlParams };
