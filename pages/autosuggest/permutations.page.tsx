@@ -127,7 +127,7 @@ const permutations = createPermutations<AutosuggestProps>([
         {
           value: 'option1',
           label: 'Option 1',
-          iconAlt: 'amazon-logo',
+          iconAriaLabel: 'amazon-logo',
           iconUrl: img,
         },
         {
