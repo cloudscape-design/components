@@ -118,6 +118,7 @@ function AppLayoutGlobalDrawerImplementation({
                   ariaLabel={activeGlobalDrawer?.ariaLabels?.resizeHandle}
                   ariaValuenow={resizeProps.relativeSize}
                   onKeyDown={resizeProps.onKeyDown}
+                  onDirectionClick={resizeProps.onDirectionClick}
                   onPointerDown={resizeProps.onPointerDown}
                 />
               </div>

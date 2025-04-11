@@ -48,7 +48,7 @@ export const ResizableDrawer = ({
   };
 
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
-  const onKeyDown = useKeyboardEvents(sizeControlProps);
+  const { onKeyDown, onDirectionClick } = useKeyboardEvents(sizeControlProps);
 
   return (
     <Drawer
@@ -67,6 +67,7 @@ export const ResizableDrawer = ({
             ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
             ariaValuenow={relativeSize}
             onKeyDown={onKeyDown}
+            onDirectionClick={onDirectionClick}
             onPointerDown={onSliderPointerDown}
           />
         )

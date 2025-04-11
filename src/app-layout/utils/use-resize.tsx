@@ -66,7 +66,7 @@ function useResize(
   };
 
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
-  const onKeyDown = useKeyboardEvents(sizeControlProps);
+  const { onKeyDown, onDirectionClick } = useKeyboardEvents(sizeControlProps);
 
   const resizeHandle = (
     <PanelResizeHandle
@@ -76,6 +76,7 @@ function useResize(
       ariaValuenow={relativeSize}
       className={testutilStyles['drawers-slider']}
       onKeyDown={onKeyDown}
+      onDirectionClick={onDirectionClick}
       onPointerDown={onSliderPointerDown}
     />
   );
