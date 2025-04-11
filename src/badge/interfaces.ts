@@ -23,4 +23,14 @@ export interface BadgeProps extends BaseComponentProps {
    * Text displayed inside the badge.
    */
   children?: React.ReactNode;
+
+  style?: {
+    root?: {
+      backgroundColor?: string;
+      borderRadius?: string;
+      borderWidth?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    }
+  };
 }

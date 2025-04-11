@@ -116,10 +116,27 @@ export interface AlertProps extends BaseComponentProps {
    * @i18n
    */
   i18nStrings?: AlertProps.I18nStrings;
+<<<<<<< HEAD
   /**
    * Specifies additional analytics-related metadata.
    * * `errorContext` - Identifies the error category and sub-category.
    * @analytics
    */
   analyticsMetadata?: AlertProps.AnalyticsMetadata;
+=======
+
+  style?: {
+    root?: {
+      backgroundColor?: string;
+      borderRadius?: string;
+      borderWidth?: string;
+    }, 
+    header?: {
+      color?: string;
+    },
+    icon?: {
+      color?: string;
+    }
+  };
+>>>>>>> be4233f9f (Amplify WIP.)
 }

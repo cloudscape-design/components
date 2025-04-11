@@ -1,54 +1,63 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Badge as CloudscapeBadge } from '~components';
-import Theme from '~components/theming/component/index';
+import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 import { palette } from './theme';
 
-export default function Badge(props: any) {
+interface AmplifyBadgeProps {
+  children?: React.ReactNode;
+  variation: 'default' | 'error' | 'info' | 'warning' | 'success';
+}
+
+export default function Badge({ children, variation }: AmplifyBadgeProps) {
+  const mode = useCurrentMode(useRef(document.body));
+  const backgroundColor = backgroundColors[mode][variation];
+  const color = colors[mode][variation];
+
   return (
-    <Theme
-      backgroundColor={backgroundColors[props.variation as keyof typeof backgroundColors]}
-      borderRadius="32px"
-      borderWidth="0px"
-      color={colors[props.variation as keyof typeof colors]}
-      fontWeight="600"
-      lineHeight="14px"
-      onDarkMode={{
-        backgroundColor: darkModeBackgroundColors[props.variation as keyof typeof darkModeBackgroundColors],
-        color: darkModeColors[props.variation as keyof typeof darkModeColors],
-      }}
-      paddingBlock="8px"
-      paddingInline="12px"
-    >
-      <CloudscapeBadge>{props.children}</CloudscapeBadge>
-    </Theme>
+    <CloudscapeBadge
+      style={{
+        root: {
+          backgroundColor,
+          borderRadius: '32px',
+          borderWidth: '0px',
+          paddingBlock: '5px',
+          paddingInline: '12px'
+        }
+      }}>
+        <span style={{ color, fontWeight: 600}}>
+          {children}
+        </span>
+    </CloudscapeBadge>
   );
 }
 
-const backgroundColors = {
-  default: palette.neutral20, 
-  error: palette.red10,
-  info: palette.blue10,
-  success: palette.green10,
-  warning: palette.orange10,
-};
-
 const colors = {
-  default: palette.neutral100,
-  error: palette.red100,
-  info: palette.blue100,
-  success: palette.green100,
-  warning: palette.orange100,
-}
-
-const darkModeBackgroundColors = {
-  ...colors,
-  default: palette.neutral80,
+  light: {
+    default: palette.neutral100,
+    error: palette.red100,
+    info: palette.blue100,
+    success: palette.green100,
+    warning: palette.orange100
+  },
+  dark: {
+    default: palette.neutral40,
+    error: palette.red20,
+    info: palette.blue20,
+    success: palette.green20,
+    warning: palette.orange20,
+  }
 };
 
-const darkModeColors = {
-  default: palette.neutral40,
-  error: palette.red20,
-  info: palette.blue20,
-  success: palette.green20,
-  warning: palette.orange20,
+const backgroundColors = {
+  light: {
+    default: palette.neutral20, 
+    error: palette.red10,
+    info: palette.blue10,
+    success: palette.green10,
+    warning: palette.orange10,
+  },
+  dark: {
+    ...colors.light,
+    default: palette.neutral80,
+  }
 };

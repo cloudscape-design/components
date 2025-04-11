@@ -100,6 +100,30 @@ export interface BaseButtonProps {
    * @i18n
    */
   i18nStrings?: ButtonProps.I18nStrings;
+
+  style?: {
+    root?: {
+      backgroundColor?: string | {
+        active?: string,
+        default?: string,
+        disabled?: string,
+        hover?: string,
+      };
+      borderColor?: string | {
+        active?: string,
+        default?: string,
+        disabled?: string,
+        hover?: string,
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    },
+    outline?: {
+      boxShadow?: string;
+    }
+  };
 }
 
 export interface ButtonProps extends BaseComponentProps, BaseButtonProps {

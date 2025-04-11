@@ -10,9 +10,9 @@
 @use './constants' as constants;
 
 @mixin adjust-for-variant($variant) {
-  background: var(--theme-background-color, map.get($variant, 'default-background'));
+  background: var(--style-root-background-color-default, map.get($variant, 'default-background'));
   color: var(--theme-color, #{map.get($variant, 'default-color')});
-  border-color: var(--theme-border-color, #{map.get($variant, 'default-border-color')});
+  border-color: var(--style-root-border-color-default, #{map.get($variant, 'default-border-color')});
   border-block-width: map.get($variant, 'border-width');
   border-inline-width: map.get($variant, 'border-width');
   position: relative;
@@ -22,22 +22,22 @@
   font-weight: map.get($variant, 'font-weight');
 
   &:hover {
-    background: var(--theme-background-color-hover, map.get($variant, 'hover-background'));
-    color: var(--theme-color-hover, map.get($variant, 'hover-color'));
-    border-color: var(--theme-border-color-hover, map.get($variant, 'hover-border-color'));
+    background: var(--style-root-background-color-hover, map.get($variant, 'hover-background'));
+    color: var(--style-root-color-hover, map.get($variant, 'hover-color'));
+    border-color: var(--style-root-border-color-hover, map.get($variant, 'hover-border-color'));
     text-decoration: none;
   }
 
   &:active {
-    background: var(--theme-background-color-active, map.get($variant, 'active-background'));
-    color: var(--theme-color-active, map.get($variant, 'active-color'));
-    border-color: var(--theme-border-color-active, map.get($variant, 'active-border-color'));
+    background: var(--style-root-background-color-active, map.get($variant, 'active-background'));
+    color: var(--style-root-color-active, map.get($variant, 'active-color'));
+    border-color: var(--style-root-border-color-active, map.get($variant, 'active-border-color'));
   }
 
   &.disabled {
-    background: var(--theme-background-color-disabled, map.get($variant, 'disabled-background'));
-    border-color: var(--theme-border-color-disabled, map.get($variant, 'disabled-border-color'));
-    color: var(--theme-color-disabled, map.get($variant, 'disabled-color'));
+    background: var(--style-root-background-color-disabled, map.get($variant, 'disabled-background'));
+    border-color: var(--style-root-border-color-disabled, map.get($variant, 'disabled-border-color'));
+    color: var(--style-root-color-disabled, map.get($variant, 'disabled-color'));
     text-decoration: none;
     cursor: auto;
   }
@@ -78,7 +78,7 @@
   }
 
   @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter, $box-shadow: var(--style-outline-box-shadow));
 
     &.variant-icon,
     &.variant-modal-dismiss,

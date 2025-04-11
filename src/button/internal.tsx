@@ -91,6 +91,7 @@ export const InternalButton = React.forwardRef(
       fullWidth,
       badge,
       i18nStrings,
+      style,
       __nativeAttributes,
       __internalRootRef = null,
       __focusable = false,
@@ -322,11 +323,36 @@ export const InternalButton = React.forwardRef(
     return (
       <>
         <button
+          data-test='5'
           {...buttonProps}
           type={formAction === 'none' ? 'button' : 'submit'}
           disabled={disabled && !__focusable && !isDisabledWithReason}
           aria-disabled={hasAriaDisabled ? true : undefined}
           {...disabledReasonProps}
+          style={{
+            ...(typeof style?.root?.backgroundColor === 'string' && 
+                { ['backgroundColor']: style?.root?.backgroundColor }),
+            ...(typeof style?.root?.backgroundColor === 'object' && {
+              '--style-root-background-color-active': style?.root?.backgroundColor?.active,
+              '--style-root-background-color-default': style?.root?.backgroundColor?.default,
+              '--style-root-background-color-disabled': style?.root?.backgroundColor?.disabled,
+              '--style-root-background-color-hover': style?.root?.backgroundColor?.hover,
+            }),
+            ...(typeof style?.root?.borderColor === 'string' && 
+                { ['backgroundColor']: style?.root?.borderColor }),
+            ...(typeof style?.root?.borderColor === 'object' && {
+              '--style-root-border-color-active': style?.root?.borderColor?.active,
+              '--style-root-border-color-default': style?.root?.borderColor?.default,
+              '--style-root-border-color-disabled': style?.root?.borderColor?.disabled,
+              
+            }),
+            borderRadius: style?.root?.borderRadius,
+            borderWidth: style?.root?.borderWidth,
+            // @ts-ignore
+            '--style-outline-box-shadow': style?.outline?.boxShadow,
+            paddingBlock: style?.root?.paddingBlock,
+            paddingInline: style?.root?.paddingInline,
+          }}
         >
           {buttonContent}
           {isDisabledWithReason && disabledReasonContent}

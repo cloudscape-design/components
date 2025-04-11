@@ -60,7 +60,11 @@ const InternalAlert = React.forwardRef(
       __internalRootRef = null,
       statusIconAriaLabel: deprecatedStatusIconAriaLabel,
       dismissAriaLabel: deprecatedDismissAriaLabel,
+<<<<<<< HEAD
       messageSlotId,
+=======
+      style,
+>>>>>>> be4233f9f (Amplify WIP.)
       ...rest
     }: InternalAlertProps,
     ref: React.Ref<AlertProps.Ref>
@@ -132,11 +136,28 @@ const InternalAlert = React.forwardRef(
                 hasAction && styles['with-action'],
                 dismissible && styles['with-dismiss']
               )}
+              style={{ 
+                backgroundColor: style?.root?.backgroundColor,
+                borderRadius: style?.root?.borderRadius,
+                borderWidth: style?.root?.borderWidth,
+              }}
             >
-              <div className={styles['alert-wrapper']}>
-                <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
-                  <div className={clsx(styles.icon, styles.text)}>
-                    <InternalIcon name={typeToIcon[type]} size={size} ariaLabel={statusIconAriaLabel} />
+              <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
+                <div className={clsx(styles.icon, styles.text)} style={{ color: style?.icon?.color }}>
+                  <InternalIcon name={typeToIcon[type]} size={size} ariaLabel={statusIconAriaLabel} />
+                </div>
+                <div className={clsx(styles.message, styles.text)}>
+                  <div
+                    className={clsx(
+                      header && styles.header,
+                      headerReplacementType !== 'original' ? styles.hidden : analyticsSelectors.header
+                    )}
+                    ref={headerRef}
+                    style={{
+                      color: style?.header?.color
+                    }}
+                  >
+                    {header}
                   </div>
                   <div className={clsx(styles.message, styles.text)} id={messageSlotId}>
                     <div
