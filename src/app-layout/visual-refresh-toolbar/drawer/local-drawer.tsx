@@ -106,6 +106,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
                 ariaValuenow={resizeProps.relativeSize}
                 onKeyDown={resizeProps.onKeyDown}
                 onPointerDown={resizeProps.onPointerDown}
+                onDirectionClick={resizeProps.onDirectionClick}
               />
             </div>
           )}
