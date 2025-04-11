@@ -32,6 +32,16 @@
         .map(([key, value]) => `${key} ${value}`)
         .join('; ');
 
+        (function() {
+          'use strict';
+          const awsuiGlobalFlagsSymbol = Symbol.for('awsui-global-flags');
+          if (!window[awsuiGlobalFlagsSymbol]) {
+            window[awsuiGlobalFlagsSymbol] = {};
+          }
+          window[awsuiGlobalFlagsSymbol].analyticsMetadata = true;
+        })();
+
+
       document.write('<meta http-equiv="Content-Security-Policy" content="' + cspString + '" />');
     </script>
   </head>

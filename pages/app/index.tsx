@@ -7,6 +7,8 @@ import { createHashHistory } from 'history';
 
 import { applyDensity, applyMode, disableMotion } from '@cloudscape-design/global-styles';
 
+import { scanPage } from '~components/internal/page-scanner';
+
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
 import Header from './components/header';
 import IndexPage from './components/index-page';
@@ -28,6 +30,7 @@ const awsuiGlobalFlagsSymbol = Symbol.for('awsui-global-flags');
 interface ExtendedWindow extends Window {
   [awsuiVisualRefreshFlag]?: () => boolean;
   [awsuiGlobalFlagsSymbol]?: GlobalFlags;
+  scanPage: () => any;
 }
 declare const window: ExtendedWindow;
 
@@ -95,6 +98,8 @@ if (!window[awsuiGlobalFlagsSymbol]) {
 }
 window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
+
+window.scanPage = scanPage;
 
 // Apply the direction value to the HTML element dir attribute
 document.documentElement.setAttribute('dir', direction);

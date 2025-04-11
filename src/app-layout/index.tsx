@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
@@ -120,7 +121,16 @@ const AppLayout = React.forwardRef(
     const baseProps = getBaseProps(rest);
 
     return (
-      <div ref={useMergeRefs(__internalRootRef, rootRef)} {...baseProps}>
+      <div
+        ref={useMergeRefs(__internalRootRef, rootRef)}
+        {...baseProps}
+        {...getAnalyticsMetadataAttribute({
+          component: {
+            name: 'awsui.AppLayout',
+            label: { root: 'body', selector: 'h1' },
+          },
+        })}
+      >
         <AppLayoutInternal ref={ref} {...props} />
       </div>
     );

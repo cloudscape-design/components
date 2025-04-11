@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { applyDefaults } from '../app-layout/defaults';
 import { AppLayoutProps } from '../app-layout/interfaces';
@@ -128,7 +129,16 @@ const AppLayoutToolbar = React.forwardRef(
 
     return (
       <AppLayoutToolbarPublicContext.Provider value={true}>
-        <div ref={useMergeRefs(__internalRootRef, rootRef)} {...baseProps}>
+        <div
+          ref={useMergeRefs(__internalRootRef, rootRef)}
+          {...baseProps}
+          {...getAnalyticsMetadataAttribute({
+            component: {
+              name: 'awsui.AppLayoutToolbar',
+              label: { root: 'body', selector: 'h1' },
+            },
+          })}
+        >
           <AppLayoutToolbarInternal ref={ref} {...props} />
         </div>
       </AppLayoutToolbarPublicContext.Provider>
