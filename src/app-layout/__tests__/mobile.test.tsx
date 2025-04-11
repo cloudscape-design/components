@@ -604,4 +604,13 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
     const drawersToolbar = findDrawersContainer(wrapper)!.getElement();
     expect(drawersToolbar).toHaveAttribute('role', 'toolbar');
   });
+
+  test('side navigation toggle button renders aria label on closed side navigation', () => {
+    const { wrapper } = renderComponent(
+      <AppLayout navigationOpen={false} onNavigationChange={() => {}} ariaLabels={{ navigation: 'Navigation Label' }} />
+    );
+    const toolbar = findMobileToolbar(wrapper)!.getElement();
+    const toggleButton = toolbar.querySelector('nav');
+    expect(toggleButton).toHaveAttribute('aria-label', 'Navigation Label');
+  });
 });
