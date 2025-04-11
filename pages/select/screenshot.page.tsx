@@ -10,11 +10,12 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 const options: SelectProps.Options = [
   { value: 'first', label: 'Simple' },
-  { value: 'second', label: 'With small icon', iconName: 'folder' },
+  { value: 'second', label: 'With small icon', iconAriaLabel: 'folder icon alt label', iconName: 'folder' },
   {
     value: 'third',
     label: 'With big icon icon',
     description: 'Very big option',
+    iconAriaLabel: 'very big option icon alt label',
     iconSvg: (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" focusable="false">
         <circle cx="8" cy="8" r="7" />
