@@ -54,6 +54,49 @@ describe('KeyValuePairs', () => {
       );
       expect(wrapper.findItems()[0]!.findInfo()!.getElement()).toHaveTextContent('Info');
     });
+
+    it.each<string>(['ltr', 'rtl'])(
+      'renders label with icons correctly, maintaining logical order, %s',
+      (direction: string) => {
+        document.body.style.direction = direction;
+        const { wrapper } = renderKeyValuePairs(
+          <KeyValuePairs
+            items={[
+              {
+                label: 'Label at the end',
+                value: 'Value',
+                iconName: 'status-info',
+                iconAlign: 'start',
+                iconAriaLabel: 'info icon at the start',
+              },
+              {
+                label: 'Label at the start',
+                value: 'Value',
+                iconName: 'external',
+                iconAlign: 'end',
+                iconAriaLabel: 'external icon at the end',
+              },
+            ]}
+          />
+        );
+
+        const nextSibling = wrapper.findItems()[0]!.findIcon()?.getElement().parentElement?.nextElementSibling;
+        expect(nextSibling?.firstChild).toBeInstanceOf(HTMLLabelElement);
+        expect(nextSibling?.textContent).toBe('Label at the end');
+        expect(wrapper.findItems()[0]!.findIcon()?.getElement()).toHaveAttribute(
+          'aria-label',
+          'info icon at the start'
+        );
+
+        const previousSibling = wrapper.findItems()[1]!.findIcon()?.getElement().parentElement?.previousElementSibling;
+        expect(previousSibling?.firstChild).toBeInstanceOf(HTMLLabelElement);
+        expect(previousSibling?.textContent).toBe('Label at the start');
+        expect(wrapper.findItems()[1]!.findIcon()?.getElement()).toHaveAttribute(
+          'aria-label',
+          'external icon at the end'
+        );
+      }
+    );
   });
 
   describe('column layout', () => {
