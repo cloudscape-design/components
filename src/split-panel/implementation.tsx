@@ -81,7 +81,7 @@ export function SplitPanelImplementation({
     onResize,
   };
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
-  const onKeyDown = useKeyboardEvents(sizeControlProps);
+  const { onKeyDown, onDirectionClick } = useKeyboardEvents(sizeControlProps);
 
   const contentStyle = {
     [globalVars.stickyVerticalTopOffset]: topOffset,
@@ -142,6 +142,7 @@ export function SplitPanelImplementation({
     <PanelResizeHandle
       ref={refs.slider}
       className={testUtilStyles.slider}
+      tooltipText={i18nStrings.resizeHandleTooltipText}
       ariaLabel={i18nStrings.resizeHandleAriaLabel}
       // Allows us to use the logical left/right keys to move the slider left/right,
       // but match aria keyboard behavior of using left/right to decrease/increase
@@ -150,6 +151,7 @@ export function SplitPanelImplementation({
       position={position}
       onKeyDown={onKeyDown}
       onPointerDown={onSliderPointerDown}
+      onDirectionClick={onDirectionClick}
     />
   );
 
