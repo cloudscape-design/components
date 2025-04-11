@@ -236,6 +236,7 @@ export function Resizer({
         id={separatorId}
         role="slider"
         tabIndex={-1}
+        aria-labelledby={ariaLabelledby}
         aria-hidden={!isKeyboardDragging}
         aria-valuemin={minWidth}
         // aria-valuemax is needed because the slider is inoperable in VoiceOver without it
