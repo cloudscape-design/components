@@ -14379,6 +14379,14 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
       "type": "string",
     },
     {
+      "defaultValue": "false",
+      "description": "If fixedOperations it set, the indicator of the operation (that is, \`and\` or \`or\`) is shown, but the
+operation cannot be changed. This is also supported for nested tokens when \`enableTokenGroups=true\`.",
+      "name": "fixedOperations",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "An object configuring the operators for free text filtering, which has the following properties:
 
 * operators [Array]: A list of all operators supported for free text filtering. If you omit the contains operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list.
@@ -14408,7 +14416,7 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
       "description": "If hideOperations it set, the indicator of the operation (that is, \`and\` or \`or\`) and the selection of operations
 (applied to the property and value token) are hidden from the user. Only use when you have a custom
 filtering logic which combines tokens in different way than the default one. When used, ensure that
-operations are communicated to the user in another way.
+operations are communicated to the user in another way, or use \`fixedOperations\`.
 
 This property cannot be set when \`enableTokenGroups=true\`.",
       "name": "hideOperations",
