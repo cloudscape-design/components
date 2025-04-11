@@ -111,4 +111,18 @@ export interface AlertProps extends BaseComponentProps {
    * @i18n
    */
   i18nStrings?: AlertProps.I18nStrings;
+
+  style?: {
+    root?: {
+      backgroundColor?: string;
+      borderRadius?: string;
+      borderWidth?: string;
+    }, 
+    header?: {
+      color?: string;
+    },
+    icon?: {
+      color?: string;
+    }
+  };
 }

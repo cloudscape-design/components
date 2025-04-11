@@ -1,58 +1,67 @@
-import React from 'react';
-import Theme from '~components/theming/component/index';
+import React, { useRef } from 'react';
 import { Alert as CloudscapeAlert } from '~components';
+import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 import { palette } from './theme';
 
-export default function Alert(props:any) {
+interface AmplifyAlertProps {
+  children?: React.ReactNode;
+  heading?: string;
+  variation: 'default' | 'error' | 'info' | 'warning' | 'success';
+}
+
+export default function Alert({ children, heading, variation }: AmplifyAlertProps) {
+  const mode = useCurrentMode(useRef(document.body));
+  const backgroundColor = backgroundColors[mode][variation];
+  const color = colors[mode][variation];
+
   return (
-    <Theme 
-      backgroundColor={backgroundColors[props.variation as keyof typeof backgroundColors]}
-      borderRadius="0px"
-      borderWidth="0px"
-      color={colors[props.variation as keyof typeof colors]}
-      fill={colors[props.variation as keyof typeof colors]}
-      onDarkMode={{
-        backgroundColor: darkModeBackgroundColors[props.variation as keyof typeof darkModeBackgroundColors],
-        color: darkModeColors[props.variation as keyof typeof darkModeColors],
-        fill: darkModeColors[props.variation as keyof typeof darkModeColors],
+    <CloudscapeAlert 
+      header={heading} 
+      type={variation === 'default' ? 'info' : variation}
+      style={{
+        root: {
+          backgroundColor,
+          borderRadius: '0px',
+          borderWidth: '0px',
+        },
+        header: { color },
+        icon: { color }
       }}
     >
-      <CloudscapeAlert 
-        action={props.action}
-        header={props.heading} 
-        type={props.variation === 'default' ? 'info' : props.variation}
-      >
-        {props.children}
-      </CloudscapeAlert>
-    </Theme>
+      <span style={{ color }}>
+        {children}
+      </span>
+    </CloudscapeAlert>
   );
 };
 
-const backgroundColors = {
-  default: palette.neutral20, 
-  error: palette.red10,
-  info: palette.blue10,
-  success: palette.green10,
-  warning: palette.orange10,
-};
-
 const colors = {
-  default: palette.neutral100,
-  error: palette.red100,
-  info: palette.blue100,
-  success: palette.green100,
-  warning: palette.orange100,
-}
-
-const darkModeBackgroundColors = {
-  ...colors,
-  default: palette.neutral80,
+  light: {
+    default: palette.neutral100,
+    error: palette.red100,
+    info: palette.blue100,
+    success: palette.green100,
+    warning: palette.orange100,
+  },
+  dark: {
+    default: palette.neutral40,
+    error: palette.red20,
+    info: palette.blue20,
+    success: palette.green20,
+    warning: palette.orange20,
+  }
 };
 
-const darkModeColors = {
-  default: palette.neutral40,
-  error: palette.red20,
-  info: palette.blue20,
-  success: palette.green20,
-  warning: palette.orange20,
+const backgroundColors = {
+  light: {
+    default: palette.neutral20, 
+    error: palette.red10,
+    info: palette.blue10,
+    success: palette.green10,
+    warning: palette.orange10,
+  },
+  dark: {
+    ...colors.light,
+    default: palette.neutral80,
+  }
 };

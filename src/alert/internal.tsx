@@ -57,6 +57,7 @@ const InternalAlert = React.forwardRef(
       __internalRootRef = null,
       statusIconAriaLabel: deprecatedStatusIconAriaLabel,
       dismissAriaLabel: deprecatedDismissAriaLabel,
+      style,
       ...rest
     }: InternalAlertProps,
     ref: React.Ref<AlertProps.Ref>
@@ -130,9 +131,14 @@ const InternalAlert = React.forwardRef(
                 dismissible && styles['with-dismiss'],
                 styles[`breakpoint-${breakpoint}`]
               )}
+              style={{ 
+                backgroundColor: style?.root?.backgroundColor,
+                borderRadius: style?.root?.borderRadius,
+                borderWidth: style?.root?.borderWidth,
+              }}
             >
               <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
-                <div className={clsx(styles.icon, styles.text)}>
+                <div className={clsx(styles.icon, styles.text)} style={{ color: style?.icon?.color }}>
                   <InternalIcon name={typeToIcon[type]} size={size} ariaLabel={statusIconAriaLabel} />
                 </div>
                 <div className={clsx(styles.message, styles.text)}>
@@ -142,6 +148,9 @@ const InternalAlert = React.forwardRef(
                       headerReplacementType !== 'original' ? styles.hidden : analyticsSelectors.header
                     )}
                     ref={headerRef}
+                    style={{
+                      color: style?.header?.color
+                    }}
                   >
                     {header}
                   </div>
