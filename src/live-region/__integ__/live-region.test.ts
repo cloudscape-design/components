@@ -26,7 +26,7 @@ describe('Live region', () => {
     setupTest(async page => {
       // Wait for live region to debounce after page load
       await new Promise(resolve => setTimeout(resolve, 2000));
-      await expect(page.getInnerHTML('[aria-live]')).resolves.toBe('&lt;p&gt;Testing&lt;/p&gt;Testing');
+      await expect(page.getInnerHTML('[aria-live]')).resolves.toBe('&lt;p&gt;Testing&lt;/p&gt; Testing');
     })
   );
 });
