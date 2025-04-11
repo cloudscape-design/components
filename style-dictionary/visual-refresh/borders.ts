@@ -44,7 +44,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderWidthAlert: '2px',
   borderWidthButton: '2px',
   borderWidthDropdown: '2px',
-  borderWidthField: '2px',
+  borderWidthField: '1px',
   borderWidthPopover: '2px',
   borderWidthToken: '2px',
 };

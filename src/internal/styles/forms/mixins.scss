@@ -121,7 +121,7 @@
   border-end-start-radius: $border-radius;
   border-end-end-radius: $border-radius;
 
-  box-shadow: inset foundation.$box-shadow-focused-light;
+  box-shadow: foundation.$box-shadow-focused-light;
 }
 
 @mixin form-disabled-element {
