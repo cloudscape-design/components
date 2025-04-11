@@ -19,7 +19,6 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   hideCaret?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
-  showAsLabel?: boolean;
   invalid?: boolean;
   warning?: boolean;
   inFilteringToken?: 'root' | 'nested';
@@ -45,7 +44,6 @@ const ButtonTrigger = (
     hideCaret = false,
     disabled = false,
     readOnly = false,
-    showAsLabel = false,
     invalid = false,
     warning = false,
     inlineTokens,
@@ -78,7 +76,7 @@ const ButtonTrigger = (
       disabled && styles.disabled,
       invalid && styles.invalid,
       warning && !invalid && styles.warning,
-      !hideCaret && !showAsLabel && styles['has-caret'],
+      !hideCaret && styles['has-caret'],
       readOnly && styles.readonly,
       inFilteringToken && styles['in-filtering-token'],
       inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
@@ -118,10 +116,6 @@ const ButtonTrigger = (
       expanded: `${!pressed}`,
     },
   };
-
-  if (showAsLabel) {
-    return <span className={attributes.className}>{children}</span>;
-  }
 
   return (
     <button

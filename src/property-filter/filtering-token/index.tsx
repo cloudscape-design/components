@@ -300,7 +300,6 @@ function OperationSelector({
   return (
     <InternalSelect
       __inFilteringToken={parent ? 'root' : 'nested'}
-      __showAsLabel={fixedOperations}
       className={clsx(
         parent
           ? clsx(styles.select, testUtilStyles['filtering-token-select'])
@@ -313,6 +312,7 @@ function OperationSelector({
       selectedOption={{ value: operation, label: operation === 'and' ? andText : orText }}
       onChange={e => onChange(e.detail.selectedOption.value as FilteringTokenProps.Operation)}
       disabled={disabled}
+      readOnly={fixedOperations}
       ariaLabel={ariaLabel}
     />
   );
