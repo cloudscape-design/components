@@ -26,7 +26,6 @@ import { FlashbarProps } from './interfaces';
 import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils';
 
 import styles from './styles.css.js';
-import Theme from '../theming/component';
 
 // If the number of items is equal or less than this value,
 // the toggle element will not be displayed and the Flashbar will look like a regular single-item Flashbar.
@@ -34,7 +33,7 @@ const maxNonCollapsibleItems = 1;
 
 const resizeListenerThrottleDelay = 100;
 
-export default function CollapsibleFlashbar({ items, theme, ...restProps }: FlashbarProps) {
+export default function CollapsibleFlashbar({ items, style, ...restProps }: FlashbarProps) {
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
@@ -285,6 +284,7 @@ export default function CollapsibleFlashbar({ items, theme, ...restProps }: Flas
                     ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
                     transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
                     i18nStrings={iconAriaLabels}
+                    style={style}
                     {...item}
                   />
                 )}
@@ -314,7 +314,6 @@ export default function CollapsibleFlashbar({ items, theme, ...restProps }: Flas
     >
       {isFlashbarStackExpanded && renderList()}
       {isCollapsible && (
-        <Theme {...theme?.notificationBar}>
           <div
             className={clsx(
               styles['notification-bar'],
@@ -333,6 +332,9 @@ export default function CollapsibleFlashbar({ items, theme, ...restProps }: Flas
                 expanded: `${!isFlashbarStackExpanded}`,
               },
             } as GeneratedAnalyticsMetadataFlashbarExpand)}
+            style={{
+              borderRadius: style?.notificationBar?.borderRadius
+            }}
           >
             <span aria-live="polite" className={styles.status} role="status" id={itemCountElementId}>
               {notificationBarText && <h2 className={styles.header}>{notificationBarText}</h2>}
@@ -357,7 +359,6 @@ export default function CollapsibleFlashbar({ items, theme, ...restProps }: Flas
               <InternalIcon className={styles.icon} size="normal" name="angle-down" />
             </button>
           </div>
-        </Theme>
       )}
       {!isFlashbarStackExpanded && renderList()}
     </div>

@@ -78,6 +78,7 @@ interface FlashProps extends FlashbarProps.MessageDefinition {
   className: string;
   transitionState?: string;
   i18nStrings?: FlashbarProps.I18nStrings;
+  style?: any;
 }
 
 export const Flash = React.forwardRef(
@@ -97,6 +98,7 @@ export const Flash = React.forwardRef(
       transitionState,
       ariaRole,
       i18nStrings,
+      style,
       type = 'info',
       ...props
     }: FlashProps,
@@ -189,6 +191,11 @@ export const Flash = React.forwardRef(
           initialHidden && styles['initial-hidden']
         )}
         {...analyticsAttributes}
+        style={{
+          backgroundColor: style?.root?.backgroundColor[type],
+          borderRadius: style?.root?.borderRadius,
+          color: style?.root?.color[type]
+        }}
       >
         <div className={styles['flash-body']}>
           <div

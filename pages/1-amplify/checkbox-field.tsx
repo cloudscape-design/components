@@ -10,7 +10,7 @@ interface AmplifyCheckboxFieldProps {
   label?: string;
   onChange?: any;
   readOnly?: boolean;
-}
+};
 
 export default function CheckboxField({
   checked,
