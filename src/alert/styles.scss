@@ -34,6 +34,12 @@
   padding-block: awsui.$space-alert-vertical;
   padding-inline: awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;
+
+  &:hover {
+    .dismiss-button {
+      --awsui-button-button-color: var(--awsui-alert-hover-button-color);
+    }
+  }
 }
 
 .alert-wrapper {
@@ -147,10 +153,19 @@ $_text-colors: (
 
 @each $type in map.keys($_text-colors) {
   .type-#{$type} {
-    border-color: #{map.get($_border-colors, $type)};
-    background-color: #{map.get($_background-colors, $type)};
+    border-color: var(--awsui-alert-alert-border, #{map.get($_border-colors, $type)});
+    background-color: var(--awsui-alert-alert-bg, #{map.get($_background-colors, $type)});
+    color: var(--awsui-alert-alert-color);
     > .alert-wrapper > .alert-focus-wrapper > .icon {
-      color: #{map.get($_text-colors, $type)};
+      color: var(--awsui-alert-icon-color, #{map.get($_text-colors, $type)});
+    }
+    &:hover {
+      border-color: var(--awsui-alert-hover-alert-border, #{map.get($_border-colors, $type)});
+      background-color: var(--awsui-alert-hover-alert-bg, #{map.get($_background-colors, $type)});
+      color: var(--awsui-alert-hover-alert-color);
+      > .alert-wrapper > .alert-focus-wrapper > .icon {
+        color: var(--awsui-alert-hover-icon-color, #{map.get($_text-colors, $type)});
+      }
     }
   }
 }
