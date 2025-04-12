@@ -73,6 +73,31 @@ export interface BaseInputProps {
    * The event `detail` contains the current value of the field.
    */
   onChange?: NonCancelableEventHandler<InputProps.ChangeDetail>;
+
+  style?: {
+    root?: {
+      backgroundColor?: string | {
+        default?: string,
+        disabled?: string,
+      };
+      borderColor?: string | {
+        default?: string,
+        disabled?: string,
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      color?: string | {
+        default?: string,
+        disabled?: string,
+      };
+      fontSize?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    },
+    outline?: {
+      boxShadow?: string;
+    }
+  };
 }
 
 export interface InputAutoCorrect {

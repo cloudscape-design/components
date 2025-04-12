@@ -41,6 +41,7 @@ const Input = React.forwardRef(
       warning,
       controlId,
       clearAriaLabel,
+      style,
       ...rest
     }: InputProps,
     ref: Ref<InputProps.Ref>
@@ -96,6 +97,7 @@ const Input = React.forwardRef(
           warning,
           controlId,
           clearAriaLabel,
+          style,
         }}
         className={clsx(styles.root, baseProps.className)}
         __inheritFormFieldProps={true}
