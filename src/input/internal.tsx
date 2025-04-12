@@ -79,6 +79,7 @@ function InternalInput(
     __onBlurWithDetail,
     onBlur,
     onFocus,
+    style,
     __nativeAttributes,
     __internalRootRef,
     __inheritFormFieldProps,
@@ -189,7 +190,33 @@ function InternalInput(
           <InternalIcon name={__leftIcon} variant={disabled || readOnly ? 'disabled' : __leftIconVariant} />
         </span>
       )}
-      <input ref={mergedRef} {...attributes} />
+      <input ref={mergedRef} {...attributes} 
+        style={{
+          ...(typeof style?.root?.backgroundColor === 'string' && 
+              { ['backgroundColor']: style?.root?.backgroundColor }),
+          ...(typeof style?.root?.backgroundColor === 'object' && {
+            '--style-background-color': style?.root?.backgroundColor?.default,
+            '--style-background-color-disabled': style?.root?.backgroundColor?.disabled,
+          }),
+          ...(typeof style?.root?.borderColor === 'string' && 
+              { ['borderColor']: style?.root?.borderColor }),
+          ...(typeof style?.root?.borderColor === 'object' && {
+            '--style-border-color-default': style?.root?.borderColor?.default,
+            '--style-border-color-disabled': style?.root?.borderColor?.disabled,
+          }),
+          borderRadius: style?.root?.borderRadius,
+          borderWidth: style?.root?.borderWidth,
+          ...(typeof style?.root?.color === 'string' && 
+            { ['color']: style?.root?.color }),
+          ...(typeof style?.root?.color === 'object' && {
+            '--style-color-default': style?.root?.color?.default,
+            '--style-color-disabled': style?.root?.color?.disabled,
+          }),
+          fontSize: style?.root?.fontSize,
+          paddingBlock: style?.root?.paddingBlock,
+          paddingInline: style?.root?.paddingInline,
+        }}
+      />
       {__rightIcon && (
         <span
           className={styles['input-icon-right']}

@@ -39,24 +39,20 @@
 
 .input {
   @include styles.styles-reset;
-  padding-block: var(--theme-padding-block, styles.$control-padding-vertical);
-  padding-inline: var(--theme-padding-inline, styles.$control-padding-horizontal);
-  color: var(--theme-color, awsui.$color-text-body-default);
+  padding-block: var(--style-padding-block, styles.$control-padding-vertical);
+  padding-inline: var(--style-padding-inline, styles.$control-padding-horizontal);
+  color: var(--style-color-default, awsui.$color-text-body-default);
   inline-size: var(--theme-width, 100%);
   cursor: text;
   box-sizing: border-box;
-  background-color: var(--theme-background-color, awsui.$color-background-input-default);
-  border-start-start-radius: var(--theme-border-radius, styles.$control-border-radius);
-  border-start-end-radius: var(--theme-border-radius, styles.$control-border-radius);
-  border-end-start-radius: var(--theme-border-radius, styles.$control-border-radius);
-  border-end-end-radius: var(--theme-border-radius, styles.$control-border-radius);
+  background-color: var(--style-background-color, awsui.$color-background-input-default);
+  border-start-start-radius: var(--style-border-radius, styles.$control-border-radius);
+  border-start-end-radius: var(--style-border-radius, styles.$control-border-radius);
+  border-end-start-radius: var(--style-border-radius, styles.$control-border-radius);
+  border-end-end-radius: var(--style-border-radius, styles.$control-border-radius);
   border-block: var(--theme-border-width, styles.$control-border-width) solid var(--theme-border-color, awsui.$color-border-input-default);
   border-inline: var(--theme-border-width, styles.$control-border-width) solid var(--theme-border-color, awsui.$color-border-input-default);
   @include styles.font-body-m;
-  block-size: var(--theme-height, awsui.$size-vertical-input);
-  box-shadow: var(--theme-box-shadow);
-  font-size: var(--theme-font-size);
-  background-color: var(--theme-background-color);
 
   &.input-readonly {
     @include styles.form-readonly-element;

@@ -1,70 +1,81 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Input as CloudscapeInput } from '~components';
-import Theme from '~components/theming/component/index';
+import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 import { palette } from './theme';
 
-export default function Input(props: any) {
+interface AmplifyInputProps {
+  isDisabled?: boolean;
+  placeholder?: string;
+  value?: any;
+}
+
+export default function AmplifyInputProps({
+  isDisabled,
+  placeholder,
+  value,
+}: AmplifyInputProps) {
+  const mode = useCurrentMode(useRef(document.body));
+  const backgroundColor = backgroundColors[mode];
+  const borderColor = borderColors[mode];
+  const boxShadow = boxShadows[mode];
+  const color = colors[mode];
+
   return (
-    <Theme
-      backgroundColor={backgroundColors}
-      borderColor={borderColors}
-      borderRadius="4px"
-      borderWidth="1px"
-      boxShadow={boxShadows}
-      color={colors}
-      fontSize="16px"
-      fontStyle="normal"
-      height="42px"
-      onDarkMode={{
-        backgroundColor: darkModeBackgroundColors,
-        borderColor: darkModeBorderColors,
-        color: darkModeColors,
+    <CloudscapeInput 
+      disabled={isDisabled}
+      placeholder={placeholder}
+      value={value}
+      style={{
+        root: {
+          backgroundColor,
+          borderColor,
+          borderRadius: '4px',
+          borderWidth: '1px',
+          color,
+          fontSize: '16px',
+          paddingBlock: '8px',
+          paddingInline: '16px',
+        },
+        outline: { boxShadow }
       }}
-      paddingInline="16px"
-      width="300px"
-    >
-      <CloudscapeInput 
-        disabled={props.isDisabled}
-        placeholder={props.placeholder}
-        value={props.value} 
-      />
-    </Theme>
+    />
   );
 };
 
 const backgroundColors = {
-  default: 'transparent',
-  disabled: palette.neutral20,
+  light: {
+    default: 'transparent',
+    disabled: palette.neutral20,
+  },
+  dark: {
+    default: 'transparent',
+    disabled: palette.neutral80,
+  }
 }; 
 
 const borderColors = {
-  default: palette.neutral60,
-  focus: palette.teal90,
-};
-
-const boxShadows = {
-  default: 'none',
-  focus: `0px 0px 0px 2px ${palette.teal90}`,
+  light: {
+    default: palette.neutral60,
+    focus: palette.teal90,
+  },
+  dark: {
+    default: palette.neutral80,
+    focus: palette.white,
+  }
 };
 
 const colors = {
-  default: palette.neutral100,
-  disabled: palette.neutral60,
-  empty: palette.neutral60,
+  light: {
+    default: palette.neutral100,
+    disabled: palette.neutral60,
+  },
+  dark: {
+    disabled: palette.neutral60,
+    default: palette.white,
+  }
 };
 
-const darkModeBackgroundColors = {
-  default: 'transparent',
-  disabled: palette.neutral80,
-}; 
-
-const darkModeBorderColors = {
-  default: palette.neutral80,
-  focus: palette.white,
+const boxShadows = {
+  light: `${palette.teal90} 0px 0px 0px 2px`, 
+  dark: 'rgb(233, 249, 252) 0px 0px 0px 2px',
 };
-
-const darkModeColors = {
-  default: palette.white,
-  disabled: palette.neutral60,
-  empty: palette.neutral80,
-}
