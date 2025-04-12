@@ -46,6 +46,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       tabIndex: explicitTabIndex,
       showOutline,
       ariaControls,
+      style,
       __internalRootRef,
       __injectAnalyticsComponentMetadata = false,
       ...rest
@@ -93,6 +94,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         ariaDescribedby={ariaDescribedby}
         ariaControls={ariaControls}
         showOutline={showOutline}
+        style={style}
         nativeControl={nativeControlProps => (
           <input
             {...nativeControlProps}
@@ -118,7 +120,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
           );
         }}
         styledControl={
-          <CheckboxIcon checked={checked} indeterminate={indeterminate} disabled={disabled} readOnly={readOnly} />
+          <CheckboxIcon checked={checked} indeterminate={indeterminate} disabled={disabled} readOnly={readOnly} style={style} />
         }
         __internalRootRef={__internalRootRef}
         {...getAnalyticsMetadataAttribute(analyticsMetadata)}

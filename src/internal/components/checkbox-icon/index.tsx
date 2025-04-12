@@ -13,6 +13,7 @@ interface CheckboxIconProps extends BaseComponentProps {
   indeterminate?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
+  style?: any;
 }
 interface Dimension {
   viewBox: string;
@@ -48,6 +49,7 @@ const CheckboxIcon = ({
   indeterminate,
   disabled = false,
   readOnly = false,
+  style,
   ...restProps
 }: CheckboxIconProps) => {
   const baseProps = getBaseProps(restProps);
@@ -68,6 +70,24 @@ const CheckboxIcon = ({
         ry={dimensions.r}
         width={dimensions.size}
         height={dimensions.size}
+        style={{
+          ...(typeof style?.root?.backgroundColor === 'string' && 
+              { ['backgroundColor']: style?.root?.backgroundColor }),
+          ...(typeof style?.root?.backgroundColor === 'object' && {
+            '--style-background-color-checked': style?.root?.backgroundColor?.checked,
+            '--style-background-color-default': style?.root?.backgroundColor?.default,
+            '--style-background-color-disabled': style?.root?.backgroundColor?.disabled,
+            '--style-background-color-indeterminate': style?.root?.backgroundColor?.indeterminate,
+          }),
+          ...(typeof style?.root?.borderColor === 'string' && 
+              { ['borderColor']: style?.root?.borderColor }),
+          ...(typeof style?.root?.borderColor === 'object' && {
+            '--style-border-color-checked': style?.root?.borderColor?.checked,
+            '--style-border-color-default': style?.root?.borderColor?.default,
+            '--style-border-color-disabled': style?.root?.borderColor?.disabled,
+            '--style-border-color-indeterminate': style?.root?.borderColor?.indeterminate,
+          }),
+        }}
       />
       {checked || indeterminate ? (
         <polyline

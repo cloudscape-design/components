@@ -23,20 +23,20 @@
         stroke awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
     }
     &-checked{
-      fill: var(--theme-background-color-checked, awsui.$color-background-control-checked);
-      stroke: var(--theme-border-color-checked, awsui.$color-border-control-checked);
+      fill: var(--style-background-color-checked, awsui.$color-background-control-checked);
+      stroke: var(--style-border-color-checked, awsui.$color-border-control-checked);
     }
     &-indeterminate {
-      fill: var(--theme-background-color-indeterminate, awsui.$color-background-control-checked);
-      stroke: var(--theme-border-color-indeterminate, awsui.$color-border-control-checked);
+      fill: var(--style-background-color-indeterminate, awsui.$color-background-control-checked);
+      stroke: var(--style-border-color-indeterminate, awsui.$color-border-control-checked);
     }
     &-disabled {
-      fill: var(--theme-background-color-disabled, awsui.$color-background-control-disabled);
-      stroke: var(--theme-border-color-disabled, awsui.$color-border-control-disabled);
+      fill: var(--style-background-color-disabled, awsui.$color-background-control-disabled);
+      stroke: var(--style-border-color-disabled, awsui.$color-border-control-disabled);
     }
     &-readonly {
-      fill: var(--theme-background-color-read-only, awsui.$color-background-control-disabled);
-      stroke: var(--theme-border-color-read-only, awsui.$color-border-control-disabled);
+      fill: var(--style-background-color-read-only, awsui.$color-background-control-disabled);
+      stroke: var(--style-border-color-read-only, awsui.$color-border-control-disabled);
     }
   }
 
