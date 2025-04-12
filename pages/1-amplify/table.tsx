@@ -1,7 +1,6 @@
 import React from 'react';
 import { Table as CloudscapeTable } from '~components';
 import Theme from '~components/theming/component/index';
-import { theme as selectionControlTheme } from './checkbox-field';
 import { palette } from './theme';
 
 export default function Table(props: any) {
@@ -20,9 +19,6 @@ export default function Table(props: any) {
         columnDisplay={props.columnDisplay}
         items={props.items}
         selectionType={props.selectionType}
-        theme={{
-          selectionControl: selectionControlTheme,
-        }}
         trackBy={props.trackBy}
         variant={props.variant}
       />

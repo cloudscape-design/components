@@ -31,6 +31,7 @@ export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, 
   ariaDescribedby?: string;
   ariaControls?: string;
   onClick: () => void;
+  style?: any;
 }
 
 function joinString(values: (string | undefined)[]) {
@@ -54,6 +55,7 @@ export default function AbstractSwitch({
   ariaDescribedby,
   ariaControls,
   onClick,
+  style,
   __internalRootRef,
   ...rest
 }: AbstractSwitchProps) {
@@ -112,7 +114,10 @@ export default function AbstractSwitch({
             'aria-label': ariaLabel,
             'aria-controls': ariaControls,
           })}
-          <span className={clsx(styles.outline, outlineClassName, showOutline && styles['show-outline'])} />
+          <span 
+            className={clsx(styles.outline, outlineClassName, showOutline && styles['show-outline'])}
+            style={{ '--style-outline-box-shadow': style?.outline?.boxShadow}}
+          />
         </span>
         <span className={clsx(styles.content, !label && !description && styles['empty-content'])}>
           {label && (

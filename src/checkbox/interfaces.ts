@@ -28,6 +28,26 @@ export interface CheckboxProps extends BaseCheckboxProps {
    * Specifies whether to add `aria-required` to the native control.
    */
   ariaRequired?: boolean;
+
+  style?: {
+    root?: {
+      backgroundColor?: string | {
+        checked?: string,
+        default?: string,
+        disabled?: string,
+        indeterminate?: string,
+      };
+      borderColor?: string | {
+        checked?: string,
+        default?: string,
+        disabled?: string,
+        indeterminate?: string,
+      };
+    },
+    outline?: {
+      boxShadow?: string;
+    };
+  }
 }
 
 export namespace CheckboxProps {

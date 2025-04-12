@@ -1,58 +1,81 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Checkbox as CloudscapeCheckbox } from '~components';
-import Theme from '~components/theming/component/index';
+import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 import { palette } from './theme';
 
-export default function CheckboxField(props: any) {
+interface AmplifyCheckboxFieldProps {
+  checked: boolean;
+  isDisabled?: boolean;
+  isIndeterminate?: boolean;
+  label?: string;
+  onChange?: any;
+  readOnly?: boolean;
+}
+
+export default function CheckboxField({
+  checked,
+  isDisabled,
+  isIndeterminate, 
+  label,
+  onChange,
+  readOnly,
+}: AmplifyCheckboxFieldProps) {
+  const mode = useCurrentMode(useRef(document.body));
+  const backgroundColor = backgroundColors[mode];
+  const borderColor = borderColors[mode];
+  const boxShadow = boxShadows[mode];
+
   return (
-    <Theme {...theme}>
-      <CloudscapeCheckbox 
-        checked={props.checked}
-        disabled={props.isDisabled}
-        indeterminate={props.isIndeterminate}
-        onChange={props.onChange} 
-        readOnly={props.readOnly}
-      > 
-        {props.label}
-      </CloudscapeCheckbox>
-    </Theme>
+    <CloudscapeCheckbox 
+      checked={checked}
+      disabled={isDisabled}
+      indeterminate={isIndeterminate}
+      onChange={onChange} 
+      readOnly={readOnly}
+      style={{
+        root: {
+          backgroundColor,
+          borderColor,
+        },
+        outline: { boxShadow }
+      }}
+    > 
+      <span style={{ fontSize: '16px' }}>
+        {label}
+      </span>
+    </CloudscapeCheckbox>
   );
 };
 
-export const theme = {
-  backgroundColor: {
+const backgroundColors = {
+  light: {
     checked: palette.teal80,
     indeterminate: palette.teal80,
     disabled: palette.neutral20,
   },
-  borderColor: {
+  dark: {
+    checked: palette.teal40,
+    indeterminate: palette.teal40,
+    disabled: palette.neutral80,
+  }
+};
+
+const borderColors = {
+  light: {
     default: palette.neutral60,
     checked: palette.teal80,
     indeterminate: palette.teal80,
     disabled: palette.neutral20,
   },
-  borderWidth: "2px",
-  color: {
-    default: palette.neutral100,
-    disabled: palette.neutral60,
-  },
-  fontSize: "16px",
-  onDarkMode: {
-    backgroundColor: {
-      checked: palette.teal40,
-      indeterminate: palette.teal40,
-      disabled: palette.neutral80,
-    },
-    borderColor: {
-      checked: palette.teal40,
-      default: palette.neutral10,
-      disabled: palette.neutral80,
-      indeterminate: palette.teal40,
-    },
-    color: {
-      default: palette.neutral10,
-      disabled: palette.neutral60,
-    },
-    outline: palette.neutral10,  
+  dark: {
+    checked: palette.teal40,
+    default: palette.neutral10,
+    disabled: palette.neutral80,
+    indeterminate: palette.teal40,
   }
+};
+
+const boxShadows = {
+  light: 'rgb(0, 64, 77) 0px 0px 0px 2px', 
+  dark: 'rgb(233, 249, 252) 0px 0px 0px 2px',
 };

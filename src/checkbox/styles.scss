@@ -21,5 +21,5 @@ $checkbox-width: var(--theme-width, awsui.$size-control);
 }
 
 .outline {
-  @include styles.focus-highlight(2px);
+  @include styles.focus-highlight(2px, $box-shadow: var(--style-outline-box-shadow));
 }
