@@ -5,7 +5,6 @@ import React from 'react';
 import { ButtonProps } from '../button/interfaces';
 import { ErrorContext } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
-import { ThemeProps } from '../theming/component/interfaces';
 
 export namespace FlashbarProps {
   export interface MessageDefinition {
@@ -102,7 +101,29 @@ export interface FlashbarProps extends BaseComponentProps {
    */
   i18nStrings?: FlashbarProps.I18nStrings;
 
-  theme?: {
-    notificationBar?: ThemeProps,
-  };
+  style?: {
+    root?: {
+      backgroundColor?: string | {
+        error?: string,
+        info?: string,
+        success?: string,
+        warning?: string,
+      };
+      borderRadius?: string;
+      color?: string | {
+        error?: string,
+        info?: string,
+        success?: string,
+        warning?: string,
+      };
+    },
+    notificationBar?: {
+      backgroundColor?: string | {
+        active?: string,
+        default?: string,
+        hover?: string,
+      };
+      borderRadius?: string;
+    }
+  }
 }
