@@ -20286,6 +20286,27 @@ The following properties are supported across all utility types:
 }
 `;
 
+exports[`Documenter definition for tree-view matches the snapshot: tree-view 1`] = `
+{
+  "events": [],
+  "functions": [],
+  "name": "TreeView",
+  "properties": [
+    {
+      "defaultValue": "[]",
+      "name": "items",
+      "optional": false,
+      "type": "Array<{ text: string; }>",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
+}
+`;
+
 exports[`Documenter definition for tutorial-panel matches the snapshot: tutorial-panel 1`] = `
 {
   "events": [
