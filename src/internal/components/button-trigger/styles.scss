@@ -37,6 +37,8 @@ $padding-block-inner-filtering-token: 0px;
   &.in-filtering-token-nested {
     padding-block: $padding-block-inner-filtering-token;
     padding-inline: $padding-inline-inner-filtering-token;
+    border-block-width: awsui.$border-width-token;
+    border-inline-width: awsui.$border-width-token;
 
     border-color: tokenGroup.$token-border-color;
     border-start-end-radius: 0;

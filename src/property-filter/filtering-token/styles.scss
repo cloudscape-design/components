@@ -40,8 +40,8 @@ $border-radius-inner-token: calc(#{awsui.$border-radius-token} / 2);
 
 .token,
 .inner-token {
-  border-block: awsui.$border-width-field solid constants.$token-border-color;
-  border-inline: awsui.$border-width-field solid constants.$token-border-color;
+  border-block: awsui.$border-width-token solid constants.$token-border-color;
+  border-inline: awsui.$border-width-token solid constants.$token-border-color;
   display: flex;
   align-items: stretch;
   background: constants.$token-background;
