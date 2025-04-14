@@ -81,7 +81,7 @@ export default React.forwardRef(function RadioButton(
               [styles['styled-circle-disabled']]: disabled,
               [styles['styled-circle-readonly']]: readOnly,
             })}
-            strokeWidth={6.5}
+            strokeWidth={6.25}
             cx={50}
             cy={50}
             r={46}
