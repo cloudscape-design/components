@@ -116,12 +116,28 @@ export default React.forwardRef(function InternalLiveRegion(
   );
 });
 
-function extractTextContent(node: HTMLElement): string {
+const processNode = (childNode: Node): string => {
+  if (childNode.nodeType === Node.TEXT_NODE) {
+    return childNode.textContent || '';
+  }
+
+  if (childNode.nodeType === Node.ELEMENT_NODE) {
+    return extractTextContent(childNode as HTMLElement);
+  }
+
+  return '';
+};
+
+export function extractTextContent(node: HTMLElement): string {
   // We use the text content of the node as the announcement text.
   // This only extracts text content from the node including all its children which is enough for now.
   // To make it more powerful, it is possible to create a more sophisticated extractor with respect to
   // ARIA properties to ignore aria-hidden nodes and read ARIA labels from the live content.
-  return (node.textContent || '').replace(/\s+/g, ' ').trim();
+  if (!node || !node?.childNodes?.length) {
+    return '';
+  }
+
+  return Array.from(node.childNodes, processNode).join(' ').replace(/\s+/g, ' ').trim();
 }
 
 function getSourceContent(source: ReadonlyArray<string | React.RefObject<HTMLElement> | undefined>): string {

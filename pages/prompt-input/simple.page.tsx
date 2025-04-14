@@ -31,6 +31,7 @@ type DemoContext = React.Context<
     hasText: boolean;
     hasSecondaryContent: boolean;
     hasSecondaryActions: boolean;
+    hasInfiniteMaxRows: boolean;
   }>
 >;
 
@@ -43,8 +44,17 @@ export default function PromptInputPage() {
   const [files, setFiles] = useState<File[]>([]);
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
-  const { isDisabled, isReadOnly, isInvalid, hasWarning, hasText, hasSecondaryActions, hasSecondaryContent } =
-    urlParams;
+  const {
+    isDisabled,
+    isReadOnly,
+    isInvalid,
+    hasWarning,
+    hasText,
+    hasSecondaryActions,
+    hasSecondaryContent,
+    hasInfiniteMaxRows,
+  } = urlParams;
+
   const [items, setItems] = React.useState([
     { label: 'Item 1', dismissLabel: 'Remove item 1', disabled: isDisabled },
     { label: 'Item 2', dismissLabel: 'Remove item 2', disabled: isDisabled },
@@ -131,6 +141,16 @@ export default function PromptInputPage() {
               >
                 Secondary actions
               </Checkbox>
+              <Checkbox
+                checked={hasInfiniteMaxRows}
+                onChange={() =>
+                  setUrlParams({
+                    hasInfiniteMaxRows: !hasInfiniteMaxRows,
+                  })
+                }
+              >
+                Infinite max rows
+              </Checkbox>
             </FormField>
             <button id="placeholder-text-button" onClick={() => setUrlParams({ hasText: true })}>
               Fill with placeholder text
@@ -164,7 +184,7 @@ export default function PromptInputPage() {
                   onChange={(event: any) => setTextareaValue(event.detail.value)}
                   onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
                   placeholder="Ask a question"
-                  maxRows={4}
+                  maxRows={hasInfiniteMaxRows ? -1 : 4}
                   disabled={isDisabled}
                   readOnly={isReadOnly}
                   invalid={isInvalid || textareaValue.length > MAX_CHARS}

@@ -71,8 +71,7 @@
 .flash-focus-container {
   display: flex;
   flex: 1;
-  min-inline-size: 70%; // fallback for browsers that don't support calc-size
-  min-inline-size: calc-size(max-content, min(size, 70%));
+  min-inline-size: 70%;
 
   &:focus {
     outline: none;

@@ -26,6 +26,11 @@ const defaultOptions: SelectProps.Options = [
   },
 ];
 
+function expectLiveRegionText(expectedText: string) {
+  const liveRegion = createWrapper().findLiveRegion()!.getElement();
+  expect(liveRegion).toHaveTextContent(expectedText);
+}
+
 describe.each([false, true])('expandToViewport=%s', expandToViewport => {
   const defaultProps = {
     options: defaultOptions,
@@ -77,5 +82,35 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
       .map(labelId => wrapper.getElement().querySelector(`#${labelId}`)!.textContent)
       .join(' ');
     expect(label).toBe('select First');
+  });
+
+  test('live announces footer text on initial dropdown render', () => {
+    const { wrapper } = renderSelect({
+      selectedOption: { label: 'First', value: '1' },
+      statusType: 'error',
+      errorText: 'Test error text',
+    });
+    expect(createWrapper().findLiveRegion()).toBeNull();
+
+    wrapper.openDropdown();
+    expectLiveRegionText('Test error text');
+  });
+
+  test('live announce footer text on dropdown toggle', () => {
+    const { wrapper } = renderSelect({
+      selectedOption: { label: 'First', value: '1' },
+      statusType: 'error',
+      errorText: 'Test error text',
+    });
+    expect(createWrapper().findLiveRegion()).toBeNull();
+
+    wrapper.openDropdown();
+    expectLiveRegionText('Test error text');
+
+    wrapper.closeDropdown({ expandToViewport });
+    expect(createWrapper().findLiveRegion()).toBeNull();
+
+    wrapper.openDropdown();
+    expectLiveRegionText('Test error text');
   });
 });
