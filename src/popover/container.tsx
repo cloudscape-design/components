@@ -26,6 +26,7 @@ interface PopoverContainerProps {
     </>)
   */
   trackKey?: string | number;
+  minHeight?: number;
   position: PopoverProps.Position;
   zIndex?: React.CSSProperties['zIndex'];
   arrow: (position: InternalPosition | null) => React.ReactNode;
@@ -51,6 +52,7 @@ export default function PopoverContainer({
   trackRef,
   getTrack: externalGetTrack,
   trackKey,
+  minHeight,
   arrow,
   children,
   zIndex,
@@ -96,6 +98,7 @@ export default function PopoverContainer({
       renderWithPortal,
       keepPosition,
       hideOnOverscroll,
+      minHeight,
     });
 
   // Recalculate position when properties change.
