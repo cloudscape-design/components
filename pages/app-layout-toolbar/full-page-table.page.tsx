@@ -5,7 +5,7 @@ import React, { useContext, useState } from 'react';
 import { AppLayoutToolbar, Button, Header, Link, Select, Table } from '~components';
 
 import AppContext, { AppContextType } from '../app/app-context';
-import { Breadcrumbs, Footer, Navigation, Notifications, Tools } from '../app-layout/utils/content-blocks';
+import { Breadcrumbs, Navigation, Notifications, Tools } from '../app-layout/utils/content-blocks';
 import labels from '../app-layout/utils/labels';
 import * as toolsContent from '../app-layout/utils/tools-content';
 import { generateItems, Instance } from '../table/generate-data';
@@ -81,7 +81,6 @@ export default function () {
           />
         }
       />
-      <Footer legacyConsoleNav={false} />
     </ScreenshotArea>
   );
 }

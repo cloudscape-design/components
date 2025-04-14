@@ -10,7 +10,7 @@ import Header from '~components/header';
 import Link from '~components/link';
 
 import * as toolsContent from '../app-layout//utils/tools-content';
-import { Breadcrumbs, Footer, Navigation, Notifications, Tools } from '../app-layout/utils/content-blocks';
+import { Breadcrumbs, Navigation, Notifications, Tools } from '../app-layout/utils/content-blocks';
 import labels from '../app-layout/utils/labels';
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -104,7 +104,6 @@ export default function () {
           />
         }
       />
-      <Footer legacyConsoleNav={false} />
     </ScreenshotArea>
   );
 }

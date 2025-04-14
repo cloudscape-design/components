@@ -20,6 +20,7 @@ import labels from '../app-layout/utils/labels';
 import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
+import { i18nStrings } from '../wizard/common';
 
 type DemoContext = React.Context<
   AppContextType<{ hasBreadcrumbs: boolean; hasNotifications: boolean; disableOverlap: boolean }>
@@ -34,22 +35,13 @@ export default function () {
   return (
     <ScreenshotArea gutters={false}>
       <AppLayoutToolbar
+        contentType="wizard"
         ariaLabels={labels}
         navigationHide={false}
         breadcrumbs={urlParams.hasBreadcrumbs && <Breadcrumbs />}
         content={
           <Wizard
-            i18nStrings={{
-              stepNumberLabel: stepNumber => `Step ${stepNumber}`,
-              collapsedStepsLabel: (stepNumber, stepsCount) => `Step ${stepNumber} of ${stepsCount}`,
-              skipToButtonLabel: step => `Skip to ${step.title}`,
-              navigationAriaLabel: 'Steps',
-              cancelButton: 'Cancel',
-              previousButton: 'Previous',
-              nextButton: 'Next',
-              submitButton: 'Launch instance',
-              optional: 'optional',
-            }}
+            i18nStrings={i18nStrings}
             onNavigate={({ detail }) => setActiveStepIndex(detail.requestedStepIndex)}
             activeStepIndex={activeStepIndex}
             allowSkipTo={true}
@@ -100,7 +92,6 @@ export default function () {
             ]}
           />
         }
-        contentType="wizard"
       />
     </ScreenshotArea>
   );
