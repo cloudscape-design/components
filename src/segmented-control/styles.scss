@@ -25,15 +25,16 @@
 .segment-part {
   display: -ms-inline-grid;
   display: inline-grid;
-  border-inline: solid awsui.$border-width-button awsui.$color-border-input-default;
-  border-block: solid awsui.$border-width-button awsui.$color-border-input-default;
+  border-inline: solid awsui.$border-width-field awsui.$color-border-input-default;
+  border-block: solid awsui.$border-width-field awsui.$color-border-input-default;
   border-start-start-radius: awsui.$border-radius-button;
   border-start-end-radius: awsui.$border-radius-button;
   border-end-start-radius: awsui.$border-radius-button;
   border-end-end-radius: awsui.$border-radius-button;
   align-items: center;
   min-block-size: calc(awsui.$line-height-body-m + awsui.$space-static-xxs);
-  padding-inline: awsui.$space-static-xxxs;
+  padding-block: calc(seg.$segment-gap / 2 - awsui.$border-width-field);
+  padding-inline: calc(seg.$segment-gap - 1px);
   gap: calc(#{seg.$segment-gap} * 2 + #{seg.$segment-divider-width});
 
   &:not(.refresh) {
