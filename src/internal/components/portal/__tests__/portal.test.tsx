@@ -193,18 +193,16 @@ describe('Portal', () => {
   });
 
   describe('when a container is not provided', () => {
-    test('renders to a div under body', () => {
+    test('renders content under body', () => {
       renderPortal({ children: <p>Hello!</p> });
-      expect(document.querySelector('body > div > p')).toHaveTextContent('Hello!');
+      expect(document.querySelector('body > p')).toHaveTextContent('Hello!');
     });
 
     test('removes container element when unmounted', () => {
       const { unmount } = renderPortal({ children: <p>Hello!</p> });
-      // The extra <div> is a wrapper element that react-testing-library creates.
-      expect(document.querySelectorAll('body > div').length).toBe(2);
+      expect(document.querySelectorAll('body > p').length).toBe(1);
       unmount();
-      expect(document.querySelectorAll('body > div').length).toBe(1);
-      expect(document.querySelector('body > div')).toBeEmptyDOMElement();
+      expect(document.querySelectorAll('body > p').length).toBe(0);
     });
   });
 });
