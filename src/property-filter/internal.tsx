@@ -51,7 +51,12 @@ import styles from './styles.css.js';
 
 type PropertyFilterInternalProps = SomeRequired<
   PropertyFilterProps,
-  'filteringOptions' | 'customGroupsText' | 'enableTokenGroups' | 'disableFreeTextFiltering' | 'hideOperations'
+  | 'filteringOptions'
+  | 'customGroupsText'
+  | 'enableTokenGroups'
+  | 'disableFreeTextFiltering'
+  | 'hideOperations'
+  | 'readOnlyOperations'
 > &
   InternalBaseComponentProps;
 
@@ -62,6 +67,7 @@ const PropertyFilterInternal = React.forwardRef(
       countText,
       query,
       hideOperations,
+      readOnlyOperations,
       onChange,
       filteringProperties,
       filteringOptions,
@@ -444,6 +450,7 @@ const PropertyFilterInternal = React.forwardRef(
                     i18nStrings={i18nStrings}
                     asyncProperties={asyncProperties}
                     hideOperations={hideOperations}
+                    readOnlyOperations={readOnlyOperations}
                     customGroupsText={customGroupsText}
                     freeTextFiltering={internalFreeText}
                     disabled={disabled}

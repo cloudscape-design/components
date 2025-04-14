@@ -29,6 +29,7 @@ export interface FilteringTokenProps {
   operation: FilteringTokenProps.Operation;
   groupOperation: FilteringTokenProps.Operation;
   showOperation: boolean;
+  readOnlyOperations: boolean;
   andText: string;
   orText: string;
   groupAriaLabel: string;
@@ -62,6 +63,7 @@ const FilteringToken = forwardRef(
     {
       tokens,
       showOperation,
+      readOnlyOperations,
       operation,
       groupOperation,
       andText,
@@ -122,6 +124,7 @@ const FilteringToken = forwardRef(
               andText={andText}
               orText={orText}
               parent={true}
+              readOnlyOperations={readOnlyOperations}
               disabled={disabled}
             />
           )
@@ -171,6 +174,7 @@ const FilteringToken = forwardRef(
                         andText={andText}
                         orText={orText}
                         parent={false}
+                        readOnlyOperations={readOnlyOperations}
                         disabled={disabled}
                       />
                     )
@@ -281,6 +285,7 @@ function OperationSelector({
   andText,
   orText,
   parent,
+  readOnlyOperations,
   disabled,
 }: {
   operation: FilteringTokenProps.Operation;
@@ -289,6 +294,7 @@ function OperationSelector({
   orText: string;
   ariaLabel: string;
   parent: boolean;
+  readOnlyOperations: boolean;
   disabled?: boolean;
 }) {
   return (
@@ -306,6 +312,7 @@ function OperationSelector({
       selectedOption={{ value: operation, label: operation === 'and' ? andText : orText }}
       onChange={e => onChange(e.detail.selectedOption.value as FilteringTokenProps.Operation)}
       disabled={disabled}
+      readOnly={readOnlyOperations}
       ariaLabel={ariaLabel}
     />
   );
