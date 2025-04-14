@@ -14379,14 +14379,6 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
       "type": "string",
     },
     {
-      "defaultValue": "false",
-      "description": "If readOnlyOperations it set, the indicator of the operation (that is, \`and\` or \`or\`) is shown, but the
-operation cannot be changed. This is also supported for nested tokens when \`enableTokenGroups=true\`.",
-      "name": "readOnlyOperations",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
       "description": "An object configuring the operators for free text filtering, which has the following properties:
 
 * operators [Array]: A list of all operators supported for free text filtering. If you omit the contains operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list.
@@ -14696,6 +14688,14 @@ Each token has the following properties:
       "name": "query",
       "optional": false,
       "type": "PropertyFilterQuery",
+    },
+    {
+      "defaultValue": "false",
+      "description": "If readOnlyOperations it set, the indicator of the operation (that is, \`and\` or \`or\`) is shown, but the
+operation cannot be changed. This is also supported for nested tokens when \`enableTokenGroups=true\`.",
+      "name": "readOnlyOperations",
+      "optional": true,
+      "type": "boolean",
     },
     {
       "description": "Specifies the maximum number of displayed tokens. If the property isn't set, all of the tokens are displayed.",
