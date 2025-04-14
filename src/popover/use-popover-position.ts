@@ -27,6 +27,7 @@ export default function usePopoverPosition({
   renderWithPortal,
   keepPosition,
   hideOnOverscroll,
+  minHeight,
 }: {
   popoverRef: React.RefObject<HTMLDivElement | null>;
   bodyRef: React.RefObject<HTMLDivElement | null>;
@@ -39,6 +40,7 @@ export default function usePopoverPosition({
   renderWithPortal?: boolean;
   keepPosition?: boolean;
   hideOnOverscroll?: boolean;
+  minHeight?: number;
 }) {
   const previousInternalPositionRef = useRef<InternalPosition | null>(null);
   const [popoverStyle, setPopoverStyle] = useState<Partial<Offset>>({});
@@ -130,6 +132,7 @@ export default function usePopoverPosition({
         viewport: viewportRect,
         renderWithPortal,
         allowVerticalOverflow,
+        minHeight,
       });
 
       // Get the position of the popover relative to the containing block.
@@ -212,6 +215,7 @@ export default function usePopoverPosition({
       allowVerticalOverflow,
       allowScrollToFit,
       hideOnOverscroll,
+      minHeight,
     ]
   );
   return { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef, isOverscrolling };

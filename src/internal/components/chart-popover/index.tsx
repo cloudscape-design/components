@@ -33,6 +33,7 @@ export interface ChartPopoverProps extends PopoverProps {
     </>)
   */
   trackKey?: string | number;
+  minHeight?: number;
 
   /** Optional container element that prevents any clicks in there from dismissing the popover */
   container: Element | null;
@@ -53,6 +54,9 @@ export interface ChartPopoverProps extends PopoverProps {
 
   /** Popover footer */
   footer?: React.ReactNode;
+
+  hoverDismissButton?: boolean;
+  allowScrollToFit?: boolean;
 }
 
 export default React.forwardRef(ChartPopover);
@@ -63,6 +67,8 @@ function ChartPopover(
     size = 'medium',
     fixedWidth = false,
     dismissButton = false,
+    hoverDismissButton = false,
+    allowScrollToFit = false,
     dismissAriaLabel,
 
     children,
@@ -74,6 +80,7 @@ function ChartPopover(
     trackKey,
     onDismiss,
     container,
+    minHeight,
 
     onMouseEnter,
     onMouseLeave,
@@ -127,6 +134,7 @@ function ChartPopover(
         trackRef={trackRef}
         getTrack={getTrack}
         trackKey={trackKey}
+        minHeight={minHeight}
         arrow={position => (
           <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
             <div className={popoverStyles['arrow-outer']} />
@@ -135,11 +143,12 @@ function ChartPopover(
         )}
         keepPosition={true}
         allowVerticalOverflow={true}
-        allowScrollToFit={isPinned}
+        allowScrollToFit={isPinned || allowScrollToFit}
         hoverArea={true}
       >
         <PopoverBody
-          dismissButton={dismissButton}
+          dismissButton={dismissButton || hoverDismissButton}
+          autoFocusDismissButton={!(hoverDismissButton === true)}
           dismissAriaLabel={dismissAriaLabel}
           header={<span className={testClasses.header}>{title}</span>}
           onDismiss={onDismiss}
