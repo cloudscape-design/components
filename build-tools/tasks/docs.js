@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 const path = require('path');
-const { paramCase } = require('change-case');
 const { documentComponents, documentTestUtils } = require('@cloudscape-design/documenter');
 const { writeFile } = require('../utils/files');
 const { listPublicItems } = require('../utils/files');
@@ -24,32 +23,26 @@ function validatePublicFiles(definitionFiles) {
 }
 
 function componentDocs() {
-  const definitions = documentComponents(require.resolve('../../tsconfig.json'), 'src/*/index.tsx', undefined, {
+  const definitions = documentComponents({
+    tsconfigPath: require.resolve('../../tsconfig.json'),
+    publicFilesGlob: 'src/*/index.tsx',
     extraExports: {
       FileDropzone: ['useFilesDragging'],
       TagEditor: ['getTagsDiff'],
     },
   });
   const outDir = path.join(workspace.apiDocsPath, 'components');
-  const fileNames = definitions
-    .filter(definition => {
-      const fileName = paramCase(definition.name);
-      if (!publicDirs.includes(fileName)) {
-        console.warn(`Excluded "${fileName}" from components definitions.`);
-        return false;
-      }
-      return true;
-    })
-    .map(definition => {
-      const fileName = paramCase(definition.name);
-      writeFile(path.join(outDir, fileName + '.js'), `module.exports = ${JSON.stringify(definition, null, 2)};`);
-      return fileName;
-    });
-  validatePublicFiles(fileNames);
+  for (const definition of definitions) {
+    writeFile(
+      path.join(outDir, definition.dashCaseName + '.js'),
+      `module.exports = ${JSON.stringify(definition, null, 2)};`
+    );
+  }
   const indexContent = `module.exports = {
-    ${fileNames.map(name => `${JSON.stringify(name)}:require('./${name}')`).join(',\n')}
+    ${definitions.map(definition => `${JSON.stringify(definition.dashCaseName)}:require('./${definition.dashCaseName}')`).join(',\n')}
   }`;
   writeFile(path.join(outDir, 'index.js'), indexContent);
+  validatePublicFiles(definitions.map(def => def.dashCaseName));
 }
 
 function testUtilDocs() {
