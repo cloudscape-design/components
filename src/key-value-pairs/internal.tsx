@@ -26,9 +26,11 @@ const InternalKeyValuePair = ({
   const kvPairId = useUniqueId('kv-pair-');
 
   const getLabelWithIcon = () => {
-    const icon = iconName && <InternalIcon ariaLabel={iconAriaLabel} name={iconName} className={styles.icon} />;
+    const icon = iconName && (
+      <InternalIcon key={`${label}-icon`} ariaLabel={iconAriaLabel} name={iconName} className={styles.icon} />
+    );
     const labelComponent = (
-      <label className={styles['key-label']} id={id || kvPairId}>
+      <label key={`${label}-label`} className={styles['key-label']} id={id || kvPairId}>
         {label}
       </label>
     );
@@ -39,7 +41,7 @@ const InternalKeyValuePair = ({
     return (
       <InternalSpaceBetween size={'xxs'} direction={'horizontal'} alignItems={'center'}>
         {iconAndLabelPair}
-        <InfoLinkLabelContext.Provider value={id || kvPairId}>
+        <InfoLinkLabelContext.Provider key={`${label}-info-link`} value={id || kvPairId}>
           {info && <span className={styles.info}>{info}</span>}
         </InfoLinkLabelContext.Provider>
       </InternalSpaceBetween>
