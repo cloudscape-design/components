@@ -7,7 +7,6 @@ import { ButtonProps } from '../../../../button/interfaces';
 import { IconProps } from '../../../../icon/interfaces';
 import Icon from '../../../../icon/internal';
 import Tooltip from '../../../../internal/components/tooltip';
-import { registerTooltip } from '../../../../internal/components/tooltip/registry';
 
 import testutilStyles from '../../../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -185,15 +184,6 @@ function TriggerButton(
     }
   }, [containerRef, hasTooltip, tooltipValue]);
 
-  useEffect(() => {
-    if (tooltipVisible) {
-      return registerTooltip(() => {
-        setShowTooltip(false);
-        setSupressTooltip(false);
-      });
-    }
-  }, [tooltipVisible]);
-
   return (
     <div
       ref={containerRef}
@@ -238,7 +228,10 @@ function TriggerButton(
           trackRef={containerRef}
           value={tooltipValue}
           className={testutilStyles['trigger-tooltip']}
-          onDismiss={() => setShowTooltip(false)}
+          onDismiss={() => {
+            setShowTooltip(false);
+            setSupressTooltip(false);
+          }}
         />
       )}
     </div>

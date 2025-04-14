@@ -24,7 +24,12 @@ function validatePublicFiles(definitionFiles) {
 }
 
 function componentDocs() {
-  const definitions = documentComponents(require.resolve('../../tsconfig.json'), 'src/*/index.tsx');
+  const definitions = documentComponents(require.resolve('../../tsconfig.json'), 'src/*/index.tsx', undefined, {
+    extraExports: {
+      FileDropzone: ['useFilesDragging'],
+      TagEditor: ['getTagsDiff'],
+    },
+  });
   const outDir = path.join(workspace.apiDocsPath, 'components');
   const fileNames = definitions
     .filter(definition => {

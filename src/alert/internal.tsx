@@ -14,7 +14,6 @@ import { getBaseProps } from '../internal/base-component';
 import VisualContext from '../internal/components/visual-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { fireNonCancelableEvent } from '../internal/events';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -22,6 +21,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
 import { SomeRequired } from '../internal/types';
+import useContainerWidth from '../internal/utils/use-container-width';
 import { ActionsWrapper } from './actions-wrapper';
 import { GeneratedAnalyticsMetadataAlertDismiss } from './analytics-metadata/interfaces';
 import { AlertProps } from './interfaces';
@@ -36,7 +36,10 @@ const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   info: 'status-info',
 };
 
-type InternalAlertProps = SomeRequired<AlertProps, 'type'> & InternalBaseComponentProps<HTMLDivElement>;
+type InternalAlertProps = SomeRequired<AlertProps, 'type'> &
+  InternalBaseComponentProps<HTMLDivElement> & {
+    messageSlotId?: string;
+  };
 
 const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.alert.onActionRegistered);
 const useDiscoveredContent = createUseDiscoveredContent('alert', awsuiPluginsInternal.alertContent);
@@ -57,6 +60,7 @@ const InternalAlert = React.forwardRef(
       __internalRootRef = null,
       statusIconAriaLabel: deprecatedStatusIconAriaLabel,
       dismissAriaLabel: deprecatedDismissAriaLabel,
+      messageSlotId,
       ...rest
     }: InternalAlertProps,
     ref: React.Ref<AlertProps.Ref>
@@ -66,9 +70,6 @@ const InternalAlert = React.forwardRef(
 
     const focusRef = useRef<HTMLDivElement>(null);
     useForwardFocus(ref, focusRef);
-
-    const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
-    const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
 
     const { discoveredActions, headerRef: headerRefAction, contentRef: contentRefAction } = useDiscoveredAction(type);
     const {
@@ -81,6 +82,8 @@ const InternalAlert = React.forwardRef(
       replacementContentRef,
     } = useDiscoveredContent({ type, header, children });
 
+    const [containerWidth, containerMeasureRef] = useContainerWidth();
+    const containerRef = useMergeRefs(containerMeasureRef, __internalRootRef);
     const headerRef = useMergeRefs(headerRefAction, headerRefContent);
     const contentRef = useMergeRefs(contentRefAction, contentRefContent);
 
@@ -117,7 +120,7 @@ const InternalAlert = React.forwardRef(
           { [styles.hidden]: !visible, [styles['initial-hidden']]: initialHidden },
           baseProps.className
         )}
-        ref={mergedRef}
+        ref={containerRef}
       >
         <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
           <VisualContext contextName="alert">
@@ -127,57 +130,60 @@ const InternalAlert = React.forwardRef(
                 styles[`type-${type}`],
                 styles[`icon-size-${size}`],
                 hasAction && styles['with-action'],
-                dismissible && styles['with-dismiss'],
-                styles[`breakpoint-${breakpoint}`]
+                dismissible && styles['with-dismiss']
               )}
             >
-              <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
-                <div className={clsx(styles.icon, styles.text)}>
-                  <InternalIcon name={typeToIcon[type]} size={size} ariaLabel={statusIconAriaLabel} />
-                </div>
-                <div className={clsx(styles.message, styles.text)}>
-                  <div
-                    className={clsx(
-                      header && styles.header,
-                      headerReplacementType !== 'original' ? styles.hidden : analyticsSelectors.header
-                    )}
-                    ref={headerRef}
-                  >
-                    {header}
+              <div className={styles['alert-wrapper']}>
+                <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
+                  <div className={clsx(styles.icon, styles.text)}>
+                    <InternalIcon name={typeToIcon[type]} size={size} ariaLabel={statusIconAriaLabel} />
                   </div>
-                  <div
-                    className={clsx(
-                      styles['header-replacement'],
-                      headerReplacementType !== 'replaced' ? styles.hidden : analyticsSelectors.header
-                    )}
-                    ref={replacementHeaderRef}
-                  ></div>
-                  <div
-                    className={clsx(styles.content, contentReplacementType !== 'original' && styles.hidden)}
-                    ref={contentRef}
-                  >
-                    {children}
+                  <div className={clsx(styles.message, styles.text)} id={messageSlotId}>
+                    <div
+                      className={clsx(
+                        header && styles.header,
+                        headerReplacementType !== 'original' ? styles.hidden : analyticsSelectors.header
+                      )}
+                      ref={headerRef}
+                    >
+                      {header}
+                    </div>
+                    <div
+                      className={clsx(
+                        styles['header-replacement'],
+                        headerReplacementType !== 'replaced' ? styles.hidden : analyticsSelectors.header
+                      )}
+                      ref={replacementHeaderRef}
+                    ></div>
+                    <div
+                      className={clsx(styles.content, contentReplacementType !== 'original' && styles.hidden)}
+                      ref={contentRef}
+                    >
+                      {children}
+                    </div>
+                    <div
+                      className={clsx(
+                        styles['content-replacement'],
+                        contentReplacementType !== 'replaced' && styles.hidden
+                      )}
+                      ref={replacementContentRef}
+                    ></div>
                   </div>
-                  <div
-                    className={clsx(
-                      styles['content-replacement'],
-                      contentReplacementType !== 'replaced' && styles.hidden
-                    )}
-                    ref={replacementContentRef}
-                  ></div>
                 </div>
+                <ActionsWrapper
+                  className={styles.action}
+                  testUtilClasses={{
+                    actionSlot: styles['action-slot'],
+                    actionButton: styles['action-button'],
+                  }}
+                  action={action}
+                  discoveredActions={discoveredActions}
+                  buttonText={buttonText}
+                  onButtonClick={() => fireNonCancelableEvent(onButtonClick)}
+                  containerWidth={containerWidth}
+                  wrappedClass={styles['action-wrapped']}
+                />
               </div>
-              <ActionsWrapper
-                className={styles.action}
-                testUtilClasses={{
-                  actionSlot: styles['action-slot'],
-                  actionButton: styles['action-button'],
-                }}
-                action={action}
-                discoveredActions={discoveredActions}
-                buttonText={buttonText}
-                onButtonClick={() => fireNonCancelableEvent(onButtonClick)}
-              />
               {dismissible && (
                 <div
                   className={styles.dismiss}

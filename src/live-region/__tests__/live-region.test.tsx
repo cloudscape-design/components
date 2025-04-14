@@ -3,13 +3,16 @@
 import React, { createRef } from 'react';
 import { render, waitFor } from '@testing-library/react';
 
-import InternalLiveRegion, { InternalLiveRegionRef } from '../../../lib/components/live-region/internal.js';
+import InternalLiveRegion, {
+  extractTextContent,
+  InternalLiveRegionRef,
+} from '../../../lib/components/live-region/internal.js';
 
 import styles from '../../../lib/components/live-region/test-classes/styles.css.js';
 
 const renderLiveRegion = async (jsx: React.ReactElement) => {
   const { container } = render(jsx);
-  await waitFor(() => expect(document.querySelector('[aria-live=polite]')));
+  await waitFor(() => expect(document.querySelector('[aria-live]')).toBeTruthy());
   jest.runAllTimers();
 
   return {
@@ -126,5 +129,36 @@ describe('LiveRegion', () => {
 
     ref.current?.reannounce();
     expect(politeRegion).toHaveTextContent('Announcement');
+  });
+});
+
+describe('text extractor', () => {
+  it('extracts text from an empty element', () => {
+    const el = document.createElement('div');
+    expect(extractTextContent(el)).toBe('');
+  });
+
+  it('extracts text from an empty element with a comment', () => {
+    const el = document.createElement('div');
+    el.innerHTML = '<!-- comment -->';
+    expect(extractTextContent(el)).toBe('');
+  });
+
+  it('extracts text from a single element', () => {
+    const el = document.createElement('div');
+    el.textContent = 'Hello';
+    expect(extractTextContent(el)).toBe('Hello');
+  });
+
+  it('extracts text from nested elements', () => {
+    const el = document.createElement('article');
+    el.innerHTML = `
+        <h1>Hello</h1>
+        <p>World</p>
+        <span>inline</span>
+        <span>content</span>
+        <span></span>
+    `;
+    expect(extractTextContent(el)).toBe('Hello World inline content');
   });
 });

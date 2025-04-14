@@ -291,7 +291,7 @@ describe('Date range picker', () => {
 
         wrapper.findDropdown()!.findApplyButton().click();
         expect(wrapper.findDropdown()!.findValidationError()?.getElement()).toHaveTextContent('10 is not allowed.');
-        expect(createWrapper().findAll('[aria-live]')[1]!.getElement()).toHaveTextContent('10 is not allowed.');
+        expect(createWrapper().findLiveRegion()!.getElement()).toHaveTextContent('10 is not allowed.');
       });
 
       test('after rendering the error once, displays subsequent errors in real time', () => {
@@ -360,7 +360,7 @@ describe('Date range picker', () => {
         wrapper.findDropdown()?.findDateAt('left', 1, 1).click();
         wrapper.findDropdown()!.findApplyButton().click();
 
-        const liveRegion = document.querySelectorAll('[aria-live=polite]')![3];
+        const liveRegion = document.querySelectorAll('[aria-live=polite]')![2];
 
         // announces first validation error
         await waitFor(() => expect(liveRegion).toHaveTextContent('You must provide an end date'));
@@ -372,7 +372,7 @@ describe('Date range picker', () => {
 
         wrapper.findDropdown()!.findApplyButton().click();
 
-        // reannounces second validation error
+        // re-announces second validation error, indicated by the trailing dot.
         await waitFor(() => expect(liveRegion).toHaveTextContent('The range cannot start before 2020.'));
 
         Mockdate.reset();

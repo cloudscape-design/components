@@ -16,7 +16,7 @@
     "test:integ": "gulp test:integ",
     "test:motion": "gulp test:motion",
     "lint": "npm-run-all --parallel lint:*",
-    "lint:eslint": "exit 0",
+    "lint:eslint": "eslint --ignore-path .gitignore --ext ts,tsx,js .",
     "lint:stylelint": "stylelint --ignore-path .gitignore --fix '{src,pages}/**/*.{css,scss}'",
     "start": "npm-run-all --parallel start:watch start:dev",
     "start:watch": "gulp watch",
@@ -46,8 +46,7 @@
     "weekstart": "^1.1.0"
   },
   "peerDependencies": {
-    "react": "^16.8 || ^17 || ^18",
-    "react-dom": "^16.8 || ^17 || ^18"
+    "react": ">=16.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.7",
@@ -165,7 +164,8 @@
     {
       "path": "lib/components/internal/widget-exports.js",
       "brotli": false,
-      "limit": "750 kB"
+      "limit": "753 kB",
+      "ignore": "react-dom"
     }
   ],
   "browserslist": [

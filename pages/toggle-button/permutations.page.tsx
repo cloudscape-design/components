@@ -26,6 +26,15 @@ const permutations = createPermutations<ToggleButtonProps>([
     pressed: [false, true],
     disabled: [false, true],
   },
+  {
+    variant: ['icon', 'normal'],
+    iconName: ['star'],
+    ariaLabel: ['Favorite'],
+    pressedIconName: ['star-filled'],
+    pressed: [false, true],
+    disabled: [true],
+    disabledReason: ['disabled reason'],
+  },
 ]);
 
 export default function ToggleButtonPermutations() {

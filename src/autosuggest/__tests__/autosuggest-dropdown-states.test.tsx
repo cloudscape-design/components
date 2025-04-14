@@ -4,6 +4,8 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+
 import '../../__a11y__/to-validate-a11y';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -38,9 +40,9 @@ function focusInput() {
   createWrapper().findAutosuggest()!.focus();
 }
 
-function expectDropdown() {
+function expectDropdown(expandToViewport = false) {
   const wrapper = createWrapper().findAutosuggest()!;
-  expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+  expect(wrapper.findDropdown({ expandToViewport }).findOpenDropdown()).not.toBe(null);
   expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'true');
 }
 
@@ -53,11 +55,16 @@ function expectFooterSticky(isSticky: boolean) {
   expect(Boolean(dropdown.findByClassName(styles['list-bottom']))).toBe(!isSticky);
 }
 
-function expectFooterContent(expectedText: string) {
+function expectFooterContent(expectedText: string, expandToViewport = false) {
   const wrapper = createWrapper().findAutosuggest()!;
-  expect(wrapper.findDropdown().findFooterRegion()!).not.toBe(null);
-  expect(wrapper.findDropdown().findFooterRegion()!.getElement()).toHaveTextContent(expectedText);
-  expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(expectedText);
+  expect(wrapper.findDropdown({ expandToViewport }).findFooterRegion()!).not.toBe(null);
+  expect(wrapper.findDropdown({ expandToViewport }).findFooterRegion()!.getElement()).toHaveTextContent(expectedText);
+  expect(wrapper.findDropdown({ expandToViewport }).find('ul')!.getElement()).toHaveAccessibleDescription(expectedText);
+}
+
+function expectLiveRegionText(expectedText: string) {
+  const liveRegion = createWrapper().findLiveRegion()!.getElement();
+  expect(liveRegion).toHaveTextContent(expectedText);
 }
 
 function expectFooterImage(expectedText: string) {
@@ -124,6 +131,33 @@ describe('footer types', () => {
     expectFooterSticky(true);
     expectFooterContent('3 items');
     await expectA11y();
+  });
+});
+
+describe.each([true, false])('footer live announcements [expandToViewport=%s]', (expandToViewport: boolean) => {
+  test('live announces error text on initial dropdown render', () => {
+    renderAutosuggest({ statusType: 'error', expandToViewport });
+    focusInput();
+    expectDropdown(expandToViewport);
+    expectFooterContent('error!', expandToViewport);
+    expectLiveRegionText('error!');
+  });
+
+  test('live announces error text on dropdown toggle', () => {
+    const { wrapper } = renderAutosuggest({ statusType: 'error', expandToViewport });
+    focusInput();
+    expectDropdown(expandToViewport);
+    expectFooterContent('error!', expandToViewport);
+    expectLiveRegionText('error!');
+
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    expect(createWrapper().findLiveRegion()).toBeNull();
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expectDropdown(expandToViewport);
+    expectFooterContent('error!', expandToViewport);
+    expectLiveRegionText('error!');
   });
 });
 

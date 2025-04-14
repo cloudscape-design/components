@@ -210,7 +210,7 @@ describe('Date range picker calendar with month granularity', () => {
         expect(findFocusableMonthText(wrapper)).toBe('Feb');
       });
 
-      test('should go to the previous year via left', () => {
+      test('should go to the previous year via up', () => {
         Mockdate.set(new Date('2018-03-01T12:30:20'));
 
         const { wrapper } = renderDateRangePicker({ ...defaultProps, value: null });

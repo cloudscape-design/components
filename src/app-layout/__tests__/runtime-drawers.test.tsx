@@ -14,6 +14,7 @@ import {
   findActiveDrawerLandmark,
   getActiveDrawerWidth,
   getGlobalDrawersTestUtils,
+  manyDrawers,
   testDrawer,
 } from './utils';
 
@@ -1385,6 +1386,59 @@ describe('toolbar mode only features', () => {
       expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
       globalDrawersWrapper.findCloseButtonByActiveDrawerId(drawerIdWithToggle)!.click();
       expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
+    });
+
+    describe('global drawers aria role in overflow menu', () => {
+      const registerGlobalDrawers = (count: number) => {
+        for (let i = 1; i <= count; i++) {
+          awsuiPlugins.appLayout.registerDrawer({
+            ...drawerDefaults,
+            id: `global-drawer${i}`,
+            type: 'global',
+          });
+        }
+      };
+
+      test('assigns correct ARIA roles when mixing global and regular drawers', async () => {
+        registerGlobalDrawers(2);
+        const { wrapper } = await renderComponent(<AppLayout drawers={manyDrawers} />);
+        const buttonDropdown = wrapper.findDrawersOverflowTrigger();
+
+        buttonDropdown!.openDropdown();
+
+        expect(buttonDropdown!.findItemById('global-drawer1')).toBeTruthy();
+        expect(buttonDropdown!.findItemById('global-drawer2')).toBeTruthy();
+
+        const menu = buttonDropdown!.findOpenDropdown()!.find('[role="menu"]')!;
+        // Global drawers should have role=menuitemcheckbox
+        const menuItemCheckboxesLength = menu.findAll('[role="menuitemcheckbox"]').length;
+        expect(menuItemCheckboxesLength).toBe(2);
+
+        // Regular drawers should have role=menuitem
+        const menuItemsLength = menu.findAll('[role="menuitem"]').length;
+        expect(menuItemsLength).toBe(manyDrawers.length - menuItemCheckboxesLength);
+      });
+
+      test('assigns menuitemcheckbox role to global drawers in overflow menu', async () => {
+        registerGlobalDrawers(3);
+
+        // In mobile view, two drawers are visible in the toolbar, the others are placed in the overflow menu
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+        const buttonDropdown = wrapper.findDrawersOverflowTrigger();
+
+        expect(globalDrawersWrapper.findDrawerById('global-drawer2')).toBeFalsy();
+        expect(globalDrawersWrapper.findDrawerById('global-drawer3')).toBeFalsy();
+
+        buttonDropdown!.openDropdown();
+
+        const menuItemCheckboxItemsLength = buttonDropdown!
+          .findOpenDropdown()!
+          .find('[role="menu"]')!
+          .findAll('[role="menuitemcheckbox"]').length;
+        expect(menuItemCheckboxItemsLength).toBe(2);
+        expect(buttonDropdown!.findItemById('global-drawer2')).toBeTruthy();
+        expect(buttonDropdown!.findItemById('global-drawer3')).toBeTruthy();
+      });
     });
   });
 });
