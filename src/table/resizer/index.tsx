@@ -234,14 +234,14 @@ export function Resizer({
         data-awsui-table-suppress-navigation={true}
         ref={resizerSeparatorRef}
         id={separatorId}
-        role="separator"
+        role="slider"
         tabIndex={-1}
+        aria-labelledby={ariaLabelledby}
         aria-hidden={!isKeyboardDragging}
-        aria-orientation="vertical"
-        aria-valuenow={headerCellWidth}
-        // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
-        aria-valuetext={headerCellWidth.toFixed(0)}
         aria-valuemin={minWidth}
+        // aria-valuemax is needed because the slider is inoperable in VoiceOver without it
+        aria-valuemax={Number.MAX_SAFE_INTEGER}
+        aria-valuenow={headerCellWidth}
         data-focus-id={focusId}
         onBlur={() => {
           setResizerHasFocus(false);
