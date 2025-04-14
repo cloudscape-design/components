@@ -70,16 +70,16 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * If hideOperations it set, the indicator of the operation (that is, `and` or `or`) and the selection of operations
    * (applied to the property and value token) are hidden from the user. Only use when you have a custom
    * filtering logic which combines tokens in different way than the default one. When used, ensure that
-   * operations are communicated to the user in another way, or use `fixedOperations`.
+   * operations are communicated to the user in another way, or use `readOnlyOperations`.
    *
    * This property cannot be set when `enableTokenGroups=true`.
    */
   hideOperations?: boolean;
   /**
-   * If fixedOperations it set, the indicator of the operation (that is, `and` or `or`) is shown, but the
+   * If readOnlyOperations it set, the indicator of the operation (that is, `and` or `or`) is shown, but the
    * operation cannot be changed. This is also supported for nested tokens when `enableTokenGroups=true`.
    */
-  fixedOperations?: boolean;
+  readOnlyOperations?: boolean;
   /**
    * Activates token grouping mechanism to support token nesting (up to one level).
    * When `true`, the `query.tokens` property is ignored and `query.tokenGroups` is used instead.

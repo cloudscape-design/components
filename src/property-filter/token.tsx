@@ -43,7 +43,7 @@ interface TokenProps {
   filteringProperties: readonly InternalFilteringProperty[];
   filteringOptions: readonly InternalFilteringOption[];
   hideOperations?: boolean;
-  fixedOperations?: boolean;
+  readOnlyOperations?: boolean;
   i18nStrings: I18nStringsInternal;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   enableTokenGroups: boolean;
@@ -62,7 +62,7 @@ export const TokenButton = ({
   i18nStrings,
   asyncProperties,
   hideOperations,
-  fixedOperations,
+  readOnlyOperations,
   customGroupsText,
   disabled,
   freeTextFiltering,
@@ -107,7 +107,7 @@ export const TokenButton = ({
         };
       })}
       showOperation={!first && !hideOperations}
-      fixedOperations={!!fixedOperations}
+      readOnlyOperations={!!readOnlyOperations}
       operation={operation}
       andText={i18nStrings.operationAndText ?? ''}
       orText={i18nStrings.operationOrText ?? ''}

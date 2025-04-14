@@ -14380,9 +14380,9 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
     },
     {
       "defaultValue": "false",
-      "description": "If fixedOperations it set, the indicator of the operation (that is, \`and\` or \`or\`) is shown, but the
+      "description": "If readOnlyOperations it set, the indicator of the operation (that is, \`and\` or \`or\`) is shown, but the
 operation cannot be changed. This is also supported for nested tokens when \`enableTokenGroups=true\`.",
-      "name": "fixedOperations",
+      "name": "readOnlyOperations",
       "optional": true,
       "type": "boolean",
     },
@@ -14416,7 +14416,7 @@ operation cannot be changed. This is also supported for nested tokens when \`ena
       "description": "If hideOperations it set, the indicator of the operation (that is, \`and\` or \`or\`) and the selection of operations
 (applied to the property and value token) are hidden from the user. Only use when you have a custom
 filtering logic which combines tokens in different way than the default one. When used, ensure that
-operations are communicated to the user in another way, or use \`fixedOperations\`.
+operations are communicated to the user in another way, or use \`readOnlyOperations\`.
 
 This property cannot be set when \`enableTokenGroups=true\`.",
       "name": "hideOperations",

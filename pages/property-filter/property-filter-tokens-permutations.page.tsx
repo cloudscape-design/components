@@ -33,7 +33,7 @@ const tokenProps: FilteringTokenProps = {
   operation: 'and',
   groupOperation: 'or',
   showOperation: false,
-  fixedOperations: false,
+  readOnlyOperations: false,
   andText: 'and',
   orText: 'or',
   groupAriaLabel: 'filter group with 0 tokens',
@@ -100,7 +100,7 @@ const tokenPermutations = createPermutations<Partial<FilteringTokenProps>>([
     operation: ['and'],
     groupOperation: ['or'],
     showOperation: [true],
-    fixedOperations: [true],
+    readOnlyOperations: [true],
   },
 ]);
 

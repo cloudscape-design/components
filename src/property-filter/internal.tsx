@@ -56,7 +56,7 @@ type PropertyFilterInternalProps = SomeRequired<
   | 'enableTokenGroups'
   | 'disableFreeTextFiltering'
   | 'hideOperations'
-  | 'fixedOperations'
+  | 'readOnlyOperations'
 > &
   InternalBaseComponentProps;
 
@@ -67,7 +67,7 @@ const PropertyFilterInternal = React.forwardRef(
       countText,
       query,
       hideOperations,
-      fixedOperations,
+      readOnlyOperations,
       onChange,
       filteringProperties,
       filteringOptions,
@@ -450,7 +450,7 @@ const PropertyFilterInternal = React.forwardRef(
                     i18nStrings={i18nStrings}
                     asyncProperties={asyncProperties}
                     hideOperations={hideOperations}
-                    fixedOperations={fixedOperations}
+                    readOnlyOperations={readOnlyOperations}
                     customGroupsText={customGroupsText}
                     freeTextFiltering={internalFreeText}
                     disabled={disabled}

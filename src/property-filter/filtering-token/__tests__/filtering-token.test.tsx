@@ -36,7 +36,7 @@ const defaultProps: FilteringTokenProps = {
   operation: 'and',
   groupOperation: 'or',
   showOperation: false,
-  fixedOperations: false,
+  readOnlyOperations: false,
   andText: 'und',
   orText: 'oder',
   groupAriaLabel: 'filter group with 0 tokens',
@@ -216,12 +216,12 @@ test('moved focus to adjacent element when inner token is removed', () => {
   expect(token.find('button')!.getElement()).toHaveFocus();
 });
 
-test('tokens operations are not clickable when fixedOperations=true', () => {
+test('tokens operations are not clickable when readOnlyOperations=true', () => {
   const onChangeGroupOperation = jest.fn();
   const token = renderToken({
     tokens: [token1, token2],
     showOperation: true,
-    fixedOperations: true,
+    readOnlyOperations: true,
     onChangeGroupOperation,
   });
 

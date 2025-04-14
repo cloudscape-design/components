@@ -29,7 +29,7 @@ export interface FilteringTokenProps {
   operation: FilteringTokenProps.Operation;
   groupOperation: FilteringTokenProps.Operation;
   showOperation: boolean;
-  fixedOperations: boolean;
+  readOnlyOperations: boolean;
   andText: string;
   orText: string;
   groupAriaLabel: string;
@@ -63,7 +63,7 @@ const FilteringToken = forwardRef(
     {
       tokens,
       showOperation,
-      fixedOperations,
+      readOnlyOperations,
       operation,
       groupOperation,
       andText,
@@ -124,7 +124,7 @@ const FilteringToken = forwardRef(
               andText={andText}
               orText={orText}
               parent={true}
-              fixedOperations={fixedOperations}
+              readOnlyOperations={readOnlyOperations}
               disabled={disabled}
             />
           )
@@ -174,7 +174,7 @@ const FilteringToken = forwardRef(
                         andText={andText}
                         orText={orText}
                         parent={false}
-                        fixedOperations={fixedOperations}
+                        readOnlyOperations={readOnlyOperations}
                         disabled={disabled}
                       />
                     )
@@ -285,7 +285,7 @@ function OperationSelector({
   andText,
   orText,
   parent,
-  fixedOperations,
+  readOnlyOperations,
   disabled,
 }: {
   operation: FilteringTokenProps.Operation;
@@ -294,7 +294,7 @@ function OperationSelector({
   orText: string;
   ariaLabel: string;
   parent: boolean;
-  fixedOperations: boolean;
+  readOnlyOperations: boolean;
   disabled?: boolean;
 }) {
   return (
@@ -312,7 +312,7 @@ function OperationSelector({
       selectedOption={{ value: operation, label: operation === 'and' ? andText : orText }}
       onChange={e => onChange(e.detail.selectedOption.value as FilteringTokenProps.Operation)}
       disabled={disabled}
-      readOnly={fixedOperations}
+      readOnly={readOnlyOperations}
       ariaLabel={ariaLabel}
     />
   );
