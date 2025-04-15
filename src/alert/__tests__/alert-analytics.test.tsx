@@ -200,4 +200,36 @@ describe('Alert Analytics', () => {
     expect(FunnelMetrics.funnelStepError).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
   });
+  test('passes through errorContext to funnelError when outside of a step and substep', () => {
+    render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <Alert
+          type="error"
+          analyticsMetadata={{
+            errorContext: {
+              errorCategory: 'api_specific',
+              errorSubCategory: 'access_control',
+              errorMessage: 'This is an error text from errorContext',
+            },
+          }}
+        >
+          This is the error text
+        </Alert>
+      </AnalyticsFunnel>
+    );
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelError).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepError).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
+
+    expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
+      expect.objectContaining({
+        errorContext: {
+          errorCategory: 'api_specific',
+          errorSubCategory: 'access_control',
+          errorMessage: 'This is an error text from errorContext',
+        },
+      })
+    );
+  });
 });
