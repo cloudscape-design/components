@@ -7176,9 +7176,15 @@ Enable this setting if you need the popover to ignore its parent stacking contex
       "type": "boolean",
     },
     {
-      "description": "The text content to be copied. It is displayed next to the copy button when \`variant="inline"\`, and is not shown otherwise.",
+      "description": "The text content to be copied. It is displayed next to the copy button when \`variant="inline"\` unless when \`content\` is specified, and is not shown otherwise.",
       "name": "textToCopy",
       "optional": false,
+      "type": "string",
+    },
+    {
+      "description": "The text content to display next to the copy button when \`variant="inline"\`. If not provided, \`textToCopy\` will be displayed instead.",
+      "name": "textToDisplay",
+      "optional": true,
       "type": "string",
     },
     {
