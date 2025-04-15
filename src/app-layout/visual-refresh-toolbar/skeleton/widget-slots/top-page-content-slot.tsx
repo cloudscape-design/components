@@ -5,12 +5,16 @@ import clsx from 'clsx';
 
 import { highContrastHeaderClassName } from '../../../../internal/utils/content-header-utils';
 import { createWidgetizedComponent } from '../../../../internal/widgets';
+import { AppLayoutNotificationsImplementation as AppLayoutNotifications } from '../../notifications';
 import { SkeletonLayoutProps } from '../index';
 
 import styles from '../styles.css.js';
 
 const TopPageContentSlot = (props: SkeletonLayoutProps) => {
-  const { notifications, headerVariant } = props;
+  const {
+    appLayoutProps: { headerVariant, notifications },
+    appLayoutState: { appLayoutInternals },
+  } = props;
   return (
     <>
       {notifications && (
@@ -21,7 +25,9 @@ const TopPageContentSlot = (props: SkeletonLayoutProps) => {
           )}
         ></div>
       )}
-      {notifications}
+      {notifications && (
+        <AppLayoutNotifications appLayoutInternals={appLayoutInternals}>{notifications}</AppLayoutNotifications>
+      )}
     </>
   );
 };

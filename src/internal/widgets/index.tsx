@@ -27,10 +27,10 @@ export function createWidgetizedComponent<Component extends FunctionComponent<an
   };
 }
 
-export function createWidgetizedFunction<F extends (props?: any) => any>(fn: F): () => F {
+export function createWidgetizedFunction<F extends (...args: any[]) => any>(fn: F): () => F {
   return (): F => {
-    return ((props?: Parameters<F>[0]): ReturnType<F> => {
-      return fn(props);
+    return ((...args: Parameters<F>): ReturnType<F> => {
+      return fn(...args);
     }) as F;
   };
 }

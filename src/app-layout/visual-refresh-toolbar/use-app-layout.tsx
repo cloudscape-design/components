@@ -12,6 +12,7 @@ import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
 import globalVars from '../../internal/styles/global-vars';
+import { createWidgetizedFunction } from '../../internal/widgets';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
@@ -475,3 +476,5 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
     splitPanelInternals,
   };
 };
+
+export const createWidgetizedUseAppLayout = createWidgetizedFunction(useAppLayout);

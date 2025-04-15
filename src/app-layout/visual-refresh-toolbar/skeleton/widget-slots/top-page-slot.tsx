@@ -4,26 +4,39 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { createWidgetizedComponent } from '../../../../internal/widgets';
+import { AppLayoutNavigationImplementation as AppLayoutNavigation } from '../../navigation';
+import { AppLayoutToolbarImplementation as AppLayoutToolbar } from '../../toolbar';
 import { SkeletonLayoutProps } from '../index';
 
 import sharedStyles from '../../../resize/styles.css.js';
 import styles from '../styles.css.js';
 
 const TopPageSlot = (props: SkeletonLayoutProps) => {
-  const { toolbar, navigation, navigationOpen, toolsOpen, navigationAnimationDisabled } = props;
+  const {
+    appLayoutState: {
+      resolvedNavigationOpen,
+      navigationAnimationDisabled,
+      activeDrawer,
+      hasToolbar,
+      appLayoutInternals,
+      toolbarProps,
+      resolvedNavigation,
+    },
+  } = props;
+  const toolsOpen = !!activeDrawer;
   return (
     <>
-      {toolbar}
-      {navigation && (
+      {hasToolbar && <AppLayoutToolbar appLayoutInternals={appLayoutInternals} toolbarProps={toolbarProps!} />}
+      {resolvedNavigation && (
         <div
           className={clsx(
             styles.navigation,
-            !navigationOpen && styles['panel-hidden'],
+            !resolvedNavigationOpen && styles['panel-hidden'],
             toolsOpen && styles['unfocusable-mobile'],
             !navigationAnimationDisabled && sharedStyles['with-motion-horizontal']
           )}
         >
-          {navigation}
+          {resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
         </div>
       )}
     </>

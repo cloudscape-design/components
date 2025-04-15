@@ -13,6 +13,7 @@ import {
   createWidgetizedAppLayoutSplitPanelDrawerSide,
 } from './split-panel';
 import { createWidgetizedAppLayoutToolbar } from './toolbar';
+import { createWidgetizedUseAppLayout } from './use-app-layout';
 
 export const AppLayoutNavigation = createWidgetizedAppLayoutNavigation();
 export const AppLayoutDrawer = createWidgetizedAppLayoutDrawer();
@@ -27,3 +28,4 @@ export const AppLayoutSkeletonTopContentSlot = createWidgetizedAppLayoutTopPageC
 export const AppLayoutSkeletonBottomContentSlot = createWidgetizedAppLayoutBottomPageContentSlot();
 
 export const useSkeletonSlotsAttributes = createWidgetizedUseSkeletonSlotsAttrributes();
+export const useAppLayout = createWidgetizedUseAppLayout();

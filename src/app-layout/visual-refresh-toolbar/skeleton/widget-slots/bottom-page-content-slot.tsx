@@ -3,17 +3,23 @@
 import React from 'react';
 
 import { createWidgetizedComponent } from '../../../../internal/widgets';
+import { AppLayoutSplitPanelDrawerBottomImplementation as AppLayoutSplitPanelBottom } from '../../split-panel';
 import { SkeletonLayoutProps } from '../index';
 
 import styles from '../styles.css.js';
 
 const BottomPageContentSlot = (props: SkeletonLayoutProps) => {
-  const { bottomSplitPanel, placement } = props;
+  const {
+    appLayoutState: { splitPanelPosition, appLayoutInternals, splitPanelInternals },
+    appLayoutProps: { placement, splitPanel },
+  } = props;
   return (
     <>
-      {bottomSplitPanel && (
+      {splitPanelPosition === 'bottom' && (
         <div className={styles['split-panel-bottom']} style={{ insetBlockEnd: placement.insetBlockEnd }}>
-          {bottomSplitPanel}
+          <AppLayoutSplitPanelBottom appLayoutInternals={appLayoutInternals} splitPanelInternals={splitPanelInternals}>
+            {splitPanel}
+          </AppLayoutSplitPanelBottom>
         </div>
       )}
     </>

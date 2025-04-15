@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { AppLayoutPropsWithDefaults } from '../../interfaces';
+import { AppLayoutInternalProps } from '../interfaces';
 import {
   AppLayoutSkeletonBottomContentSlot,
   AppLayoutSkeletonSideSlot,
@@ -10,39 +10,17 @@ import {
   AppLayoutSkeletonTopSlot,
   useSkeletonSlotsAttributes,
 } from '../internal';
+import { useAppLayout } from '../use-app-layout';
 
-export interface SkeletonLayoutProps
-  extends Pick<
-    AppLayoutPropsWithDefaults,
-    | 'notifications'
-    | 'headerVariant'
-    | 'contentHeader'
-    | 'content'
-    | 'contentType'
-    | 'maxContentWidth'
-    | 'disableContentPaddings'
-    | 'navigation'
-    | 'navigationOpen'
-    | 'navigationWidth'
-    | 'tools'
-    | 'toolsOpen'
-    | 'toolsWidth'
-    | 'placement'
-  > {
-  style?: React.CSSProperties;
-  toolbar?: React.ReactNode;
-  splitPanelOpen?: boolean;
-  sideSplitPanel?: React.ReactNode;
-  bottomSplitPanel?: React.ReactNode;
-  globalTools?: React.ReactNode;
-  globalToolsOpen?: boolean;
-  navigationAnimationDisabled?: boolean;
-  isNested?: boolean;
-  rootRef?: React.Ref<HTMLDivElement>;
+export interface SkeletonLayoutProps {
+  appLayoutProps: AppLayoutInternalProps;
+  appLayoutState: ReturnType<typeof useAppLayout>;
 }
 
 export const SkeletonLayout = (props: SkeletonLayoutProps) => {
-  const { contentHeader, content } = props;
+  const { appLayoutProps, appLayoutState } = props;
+  const { registered } = appLayoutState;
+  const { contentHeader, content } = appLayoutProps;
   const {
     wrapperElAttributes,
     mainElAttributes,
@@ -58,7 +36,8 @@ export const SkeletonLayout = (props: SkeletonLayoutProps) => {
         <AppLayoutSkeletonTopContentSlot {...props} />
         <div {...contentWrapperElAttributes}>
           {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
-          <div {...contentElAttributes}>{content}</div>
+          {/*delay rendering the content until registration of this instance is complete*/}
+          <div {...contentElAttributes}>{registered ? content : null}</div>
         </div>
         <AppLayoutSkeletonBottomContentSlot {...props} />
       </main>
