@@ -46,7 +46,11 @@ function renderWizard(props: Partial<WizardProps> = {}) {
   return createWrapper(renderResult.container).findWizard()!;
 }
 
-const getMetadata = (activeStepIndex: number, label = '', analyticsMetadata: WizardProps['analyticsMetadata'] = {}) => {
+const getMetadata = (
+  activeStepIndex: number,
+  label = '',
+  { errorContext, ...analyticsMetadata }: WizardProps['analyticsMetadata'] = {}
+) => {
   const metadata: GeneratedAnalyticsMetadataFragment = {
     contexts: [
       {
@@ -58,6 +62,7 @@ const getMetadata = (activeStepIndex: number, label = '', analyticsMetadata: Wiz
             activeStepIndex: `${activeStepIndex}`,
             activeStepLabel: steps[activeStepIndex].title,
             stepsCount: '3',
+            ...errorContext,
             ...analyticsMetadata,
           },
         },

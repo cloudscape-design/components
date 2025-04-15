@@ -28,6 +28,25 @@ when the \`dismissible\` property is set to \`true\`.",
   "name": "Alert",
   "properties": [
     {
+      "analyticsTag": "",
+      "description": "Specifies additional analytics-related metadata.
+* \`errorContext\` - Error category and error sub-category specific metadata.",
+      "inlineType": {
+        "name": "AlertProps.AnalyticsMetadata",
+        "properties": [
+          {
+            "name": "errorContext",
+            "optional": true,
+            "type": "ErrorContext",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "AlertProps.AnalyticsMetadata",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -9409,10 +9428,16 @@ exports[`Documenter definition for form matches the snapshot: form 1`] = `
       "description": "Specifies additional analytics-related metadata.
 * \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
 * \`flowType\` - Identifies the type of flow represented by the component.
-* \`resourceType\` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.",
+* \`resourceType\` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.
+* \`errorContext\` - Error category and error sub-category specific metadata.",
       "inlineType": {
         "name": "FormProps.AnalyticsMetadata",
         "properties": [
+          {
+            "name": "errorContext",
+            "optional": true,
+            "type": "ErrorContext",
+          },
           {
             "name": "flowType",
             "optional": true,
@@ -9518,10 +9543,16 @@ exports[`Documenter definition for form-field matches the snapshot: form-field 1
     {
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
-* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.",
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
+* \`errorContext\` - Error category and error sub-category specific metadata.",
       "inlineType": {
         "name": "FormFieldProps.AnalyticsMetadata",
         "properties": [
+          {
+            "name": "errorContext",
+            "optional": true,
+            "type": "ErrorContext",
+          },
           {
             "name": "instanceIdentifier",
             "optional": true,
@@ -20690,6 +20721,11 @@ Defaults to \`false\`.",
       "inlineType": {
         "name": "WizardProps.AnalyticsMetadata",
         "properties": [
+          {
+            "name": "errorContext",
+            "optional": true,
+            "type": "ErrorContext",
+          },
           {
             "name": "flowType",
             "optional": true,

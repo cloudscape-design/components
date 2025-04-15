@@ -339,9 +339,8 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         stepNumber: 1,
         subStepName: 'Container 1 - header',
         subStepIdentifier: 'step1-container1',
-        fieldErrorContext: null,
+        errorContext: null,
         fieldIdentifier: null,
-        subStepErrorContext: null,
       });
 
       expect(funnelSubStepErrorEvent.resolvedProps).toEqual({
@@ -368,7 +367,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         expect.objectContaining({
           funnelIdentifier: FUNNEL_IDENTIFIER,
           funnelInteractionId: FUNNEL_INTERACTION_ID,
-          stepErrorContext: null,
+          errorContext: null,
           stepErrorSelector: expect.stringContaining('#wizard-error-'),
           stepIdentifier: 'step-3',
           stepName: 'Step 3',

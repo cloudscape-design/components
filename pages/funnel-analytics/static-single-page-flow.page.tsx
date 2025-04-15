@@ -8,8 +8,11 @@ import {
   Button,
   Container,
   ExpandableSection,
+  Flashbar,
   Form,
   FormField,
+  FormFieldProps,
+  FormProps,
   Header,
   Input,
   Link,
@@ -38,6 +41,10 @@ export default function StaticSinglePageCreatePage() {
   const [validationError, setValidationError] = useState<string | undefined>();
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [resource, setResource] = useState<S3ResourceSelectorProps.Resource>({ uri: '' });
+  const [fieldError, setFieldError] = useState('');
+  const [funnelErrorContext, setFunnelErrorContext] = useState<FormProps.AnalyticsMetadata['errorContext']>();
+  const [fieldErrorContext, setFieldErrorContext] =
+    useState<FormFieldProps.AnalyticsMetadata['errorContext']>(undefined);
 
   function wrapWithErrorHandler<T extends (...args: any[]) => Promise<unknown>>(callback: T): T {
     return ((...args) => {
@@ -75,6 +82,27 @@ export default function StaticSinglePageCreatePage() {
     <AppLayout
       ariaLabels={labels}
       contentType="form"
+      notifications={
+        <Flashbar
+          items={[
+            {
+              analyticsMetadata: {
+                errorContext: {
+                  errorCategory: 'api_specific',
+                  errorSubCategory: 'access_control',
+                  errorMessage: 'This is a dismissible error message.',
+                },
+              },
+              header: 'Failed to update 4 instances',
+              type: 'error',
+              content: 'This is a dismissible error message.',
+              dismissible: true,
+              dismissLabel: 'Dismiss message',
+              id: 'message_1',
+            },
+          ]}
+        />
+      }
       breadcrumbs={
         <BreadcrumbGroup
           items={[
@@ -94,6 +122,7 @@ export default function StaticSinglePageCreatePage() {
             analyticsMetadata={{
               instanceIdentifier: 'single-page-demo',
               flowType: 'create',
+              errorContext: funnelErrorContext,
             }}
             errorText={errorText}
             actions={
@@ -117,10 +146,17 @@ export default function StaticSinglePageCreatePage() {
                   variant="primary"
                   onClick={() => {
                     if (value === 'error') {
+                      const errorMessage = 'There is an error';
                       setErrorText('There is an error');
+                      setFunnelErrorContext({
+                        errorCategory: 'api_request',
+                        errorSubCategory: 'permission',
+                        errorMessage,
+                      });
                     } else {
                       setErrorText('');
                       setMounted(false);
+                      setFunnelErrorContext(undefined);
                     }
                   }}
                 >
@@ -136,26 +172,27 @@ export default function StaticSinglePageCreatePage() {
           >
             <SpaceBetween size="m">
               <Container
+                analyticsMetadata={{
+                  instanceIdentifier: 'container-1',
+                }}
                 header={
                   <Header variant="h2" description="Container 1 - description">
                     Container 1 - header
                   </Header>
                 }
-                analyticsMetadata={{
-                  instanceIdentifier: 'container-1',
-                }}
               >
                 <SpaceBetween size="s">
                   <FormField
                     analyticsMetadata={{
                       instanceIdentifier: 'field1',
+                      errorContext: fieldErrorContext,
                     }}
                     info={
                       <Link data-testid="external-link" external={true} href="#">
                         Learn more
                       </Link>
                     }
-                    errorText={value === 'error' ? 'Trigger error' : ''}
+                    errorText={fieldError}
                     label="This is an ordinary text field"
                   >
                     <Input
@@ -163,6 +200,19 @@ export default function StaticSinglePageCreatePage() {
                       value={value}
                       onChange={event => {
                         setValue(event.detail.value);
+
+                        if (event.detail.value === 'error') {
+                          const errorMessage = 'Trigger error';
+                          setFieldError(errorMessage);
+                          setFieldErrorContext({
+                            errorCategory: 'parameter_validation',
+                            errorSubCategory: 'input_validation',
+                            errorMessage,
+                          });
+                        } else {
+                          setFieldError('');
+                          setFieldErrorContext(undefined);
+                        }
                       }}
                     />
                   </FormField>

@@ -25,6 +25,7 @@ export default function FormField({ stretch = false, ...props }: FormFieldProps)
       },
       metadata: {
         hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
+        hasErrorContext: Boolean(analyticsMetadata?.errorContext),
       },
     },
     analyticsMetadata

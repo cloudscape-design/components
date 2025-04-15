@@ -18,7 +18,7 @@ import {
 } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { PACKAGE_VERSION } from '../internal/environment';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { InternalBaseComponentProps, transformAnalyticsMetadata } from '../internal/hooks/use-base-component';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { WizardProps } from './interfaces';
@@ -48,7 +48,11 @@ export default function WizardFormWithAnalytics(props: WizardFormProps) {
   const analyticsMetadata = getAnalyticsMetadataProps(
     props.steps[props.activeStepIndex] as BasePropsWithAnalyticsMetadata
   );
-  const __internalRootRef = useComponentMetadata('WizardForm', PACKAGE_VERSION, { ...analyticsMetadata });
+
+  // TODO: Update component-toolkit types
+  const metadata = transformAnalyticsMetadata(analyticsMetadata);
+
+  const __internalRootRef = useComponentMetadata('WizardForm', PACKAGE_VERSION, { ...metadata });
   const stepHeaderRef = useRef<HTMLDivElement | null>(null);
 
   useEffectOnUpdate(() => {
@@ -115,7 +119,7 @@ function WizardForm({
         totalSubSteps: funnelStepInfo.current.subStepCount.current,
         funnelIdentifier,
         subStepAllSelector: getSubStepAllSelector(),
-        stepErrorContext: funnelStepInfo.current.stepErrorContext,
+        errorContext: funnelStepInfo.current.stepErrorContext,
         subStepConfiguration: funnelStepInfo.current.subStepConfiguration.current?.get(
           funnelStepInfo.current.stepNumber
         ),

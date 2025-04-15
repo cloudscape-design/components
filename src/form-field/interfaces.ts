@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { CSSProperties } from 'react';
 
-import { AnalyticsMetadata } from '../internal/analytics/interfaces';
+import { AnalyticsMetadata, ErrorContext } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
@@ -83,6 +83,7 @@ export interface FormFieldProps extends BaseComponentProps {
   /**
    * Specifies additional analytics-related metadata.
    * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * * `errorContext` - Error category and error sub-category specific metadata.
    * @analytics
    */
   analyticsMetadata?: FormFieldProps.AnalyticsMetadata;
@@ -91,6 +92,7 @@ export interface FormFieldProps extends BaseComponentProps {
 export namespace FormFieldProps {
   export interface AnalyticsMetadata {
     instanceIdentifier?: string;
+    errorContext?: ErrorContext;
   }
 
   export interface I18nStrings {

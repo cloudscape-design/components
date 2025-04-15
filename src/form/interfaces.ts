@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { FlowType } from '../internal/analytics/interfaces';
+import { ErrorContext, FlowType } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 
 export namespace FormProps {
@@ -10,6 +10,7 @@ export namespace FormProps {
     instanceIdentifier?: string;
     flowType?: FlowType;
     resourceType?: string;
+    errorContext?: ErrorContext;
   }
 }
 
@@ -58,6 +59,7 @@ export interface FormProps extends BaseComponentProps {
    * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
    * * `flowType` - Identifies the type of flow represented by the component.
    * * `resourceType` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.
+   * * `errorContext` - Error category and error sub-category specific metadata.
    * @analytics
    */
   analyticsMetadata?: FormProps.AnalyticsMetadata;

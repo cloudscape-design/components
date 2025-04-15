@@ -16,6 +16,20 @@ export interface InternalBaseComponentProps<T = any> {
   __internalRootRef?: MutableRefObject<T | null> | null;
 }
 
+export function transformAnalyticsMetadata(analyticsMetadata?: AnalyticsMetadata) {
+  if (!analyticsMetadata) {
+    return undefined;
+  }
+
+  const transformedAnalyticsMetadata = {
+    instanceIdentifier: analyticsMetadata.instanceIdentifier,
+    flowType: analyticsMetadata.flowType,
+    resourceType: analyticsMetadata.resourceType,
+  };
+
+  return transformedAnalyticsMetadata;
+}
+
 /**
  * This hook is used for components which are exported to customers. The returned __internalRootRef needs to be
  * attached to the (internal) component's root DOM node. The hook takes care of attaching the metadata to this
@@ -28,6 +42,8 @@ export default function useBaseComponent<T = any>(
 ) {
   useTelemetry(componentName, config);
   useFocusVisible();
-  const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION, { ...analyticsMetadata });
+
+  const metadata = transformAnalyticsMetadata(analyticsMetadata);
+  const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION, metadata);
   return { __internalRootRef: elementRef };
 }

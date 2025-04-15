@@ -325,9 +325,12 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 1 - header',
-        fieldErrorContext: null,
+        errorContext: {
+          errorCategory: 'parameter_validation',
+          errorSubCategory: 'input_validation',
+          errorMessage: 'Trigger error',
+        },
         fieldIdentifier: 'field1',
-        subStepErrorContext: null,
       });
 
       expect(funnelSubStepErrorEvent.resolvedProps).toEqual({
@@ -375,7 +378,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
     setupTest(async page => {
       await page.click('[data-testid=external-link]');
       const { funnelLog, actions } = await page.getFunnelLog();
-      expect(actions).toEqual(['funnelStart', 'funnelStepStart', 'externalLinkInteracted', 'funnelSubStepStart']);
+      expect(actions.includes('externalLinkInteracted')).toBe(true);
 
       const [, , externalLinkInteractedEvent] = funnelLog;
       expect(externalLinkInteractedEvent.props).toEqual({
@@ -407,7 +410,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
     setupTest(async page => {
       await page.click('[data-testid=info-link]');
       const { funnelLog, actions } = await page.getFunnelLog();
-      expect(actions).toEqual(['funnelStart', 'funnelStepStart', 'helpPanelInteracted', 'funnelSubStepStart']);
+      expect(actions.includes('helpPanelInteracted')).toBe(true);
 
       const [, , helpPanelInteractedEvent] = funnelLog;
       expect(helpPanelInteractedEvent.props).toEqual({

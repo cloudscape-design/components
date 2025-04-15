@@ -3,10 +3,46 @@
 
 export type FunnelType = 'single-page' | 'multi-page' | 'modal';
 export type FlowType = 'create' | 'edit' | 'delete' | 'home' | 'dashboard' | 'view-resource';
+
+type ErrorSubCategory =
+  | (string & {})
+  | 'data_format'
+  | 'parameter_validation'
+  | 'access_control'
+  | 'identity_management'
+  | 'resource_state'
+  | 'resource_capacity'
+  | 'connection'
+  | 'network_config'
+  | 'resource_limit'
+  | 'service_quota'
+  | 'service_integration'
+  | 'resource_config'
+  | 'service_operations'
+  | 'api_request'
+  | 'other';
+
+type ErrorCategory =
+  | (string & {})
+  | 'input_validation'
+  | 'permission'
+  | 'resource_availability'
+  | 'network'
+  | 'service_limits'
+  | 'configuration'
+  | 'api_specific'
+  | 'other';
+
+export interface ErrorContext {
+  errorCategory: ErrorCategory;
+  errorSubCategory: ErrorSubCategory;
+  errorMessage: string;
+}
+
 export interface AnalyticsMetadata {
   instanceIdentifier?: string;
   flowType?: FlowType;
-  errorContext?: string;
+  errorContext?: ErrorContext;
   resourceType?: string;
 }
 
@@ -18,7 +54,7 @@ interface BaseFunnelProps {
 }
 
 interface FunnelErrorProps extends BaseFunnelProps {
-  funnelErrorContext?: string;
+  errorContext?: AnalyticsMetadata['errorContext'];
 }
 
 export interface FunnelStartProps extends Omit<BaseFunnelProps, 'funnelInteractionId'> {
@@ -82,7 +118,7 @@ interface FunnelStepNavigationProps extends FunnelStepProps {
 }
 
 interface FunnelStepErrorProps extends FunnelStepProps {
-  stepErrorContext?: string;
+  errorContext?: AnalyticsMetadata['errorContext'];
   stepErrorSelector: string;
 }
 
@@ -95,9 +131,9 @@ interface FunnelSubStepProps extends FunnelStepProps {
 }
 
 interface OptionalFunnelSubStepErrorProps extends FunnelSubStepProps {
-  subStepErrorContext?: string;
+  subStepErrorContext?: AnalyticsMetadata['errorContext'];
   fieldIdentifier?: string;
-  fieldErrorContext?: string;
+  errorContext?: AnalyticsMetadata['errorContext'];
   fieldLabelSelector?: string;
   fieldErrorSelector?: string;
 }
