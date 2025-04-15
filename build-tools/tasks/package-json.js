@@ -29,6 +29,7 @@ function getComponentsExports() {
     './internal/do-not-use/chart-tooltip': './internal/do-not-use/chart-tooltip.js',
     './internal/do-not-use/expandable-section': './internal/do-not-use/expandable-section.js',
     './internal/do-not-use/i18n': './internal/do-not-use/i18n.js',
+    './internal/do-not-use/sortable-area': './internal/do-not-use/sortable-area.js',
     './internal/do-not-use/tooltip': './internal/do-not-use/tooltip.js',
     './internal/widget-exports': './internal/widget-exports.js',
     './test-utils/dom/internal/tooltip': './test-utils/dom/internal/tooltip.js',
