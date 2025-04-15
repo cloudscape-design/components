@@ -3,10 +3,16 @@
 
 export type FunnelType = 'single-page' | 'multi-page' | 'modal';
 export type FlowType = 'create' | 'edit' | 'delete' | 'home' | 'dashboard' | 'view-resource';
+
+export interface ErrorContext {
+  errorCategory: string;
+  errorSubCategory: string;
+  errorMessage: string;
+}
 export interface AnalyticsMetadata {
   instanceIdentifier?: string;
   flowType?: FlowType;
-  errorContext?: string;
+  errorContext?: ErrorContext;
   resourceType?: string;
 }
 
@@ -18,7 +24,7 @@ interface BaseFunnelProps {
 }
 
 interface FunnelErrorProps extends BaseFunnelProps {
-  funnelErrorContext?: string;
+  funnelErrorContext?: AnalyticsMetadata['errorContext'];
 }
 
 export interface FunnelStartProps extends Omit<BaseFunnelProps, 'funnelInteractionId'> {
@@ -82,7 +88,7 @@ interface FunnelStepNavigationProps extends FunnelStepProps {
 }
 
 interface FunnelStepErrorProps extends FunnelStepProps {
-  stepErrorContext?: string;
+  stepErrorContext?: AnalyticsMetadata['errorContext'];
   stepErrorSelector: string;
 }
 
@@ -95,9 +101,9 @@ interface FunnelSubStepProps extends FunnelStepProps {
 }
 
 interface OptionalFunnelSubStepErrorProps extends FunnelSubStepProps {
-  subStepErrorContext?: string;
+  subStepErrorContext?: AnalyticsMetadata['errorContext'];
   fieldIdentifier?: string;
-  fieldErrorContext?: string;
+  fieldErrorContext?: AnalyticsMetadata['errorContext'];
   fieldLabelSelector?: string;
   fieldErrorSelector?: string;
 }
