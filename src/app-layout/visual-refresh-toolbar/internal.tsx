@@ -4,6 +4,7 @@ import { createWidgetizedAppLayoutDrawer, createWidgetizedAppLayoutGlobalDrawers
 import { createWidgetizedAppLayoutNavigation } from './navigation';
 import { createWidgetizedAppLayoutNotifications } from './notifications';
 import { createWidgetizedSkeletonLayout } from './skeleton';
+import { createWidgetizedUseSkeletonSlotsAttrributes } from './skeleton/widget-slots';
 import {
   createWidgetizedAppLayoutSplitPanelDrawerBottom,
   createWidgetizedAppLayoutSplitPanelDrawerSide,
@@ -18,3 +19,5 @@ export const AppLayoutToolbar = createWidgetizedAppLayoutToolbar();
 export const AppLayoutSplitPanelBottom = createWidgetizedAppLayoutSplitPanelDrawerBottom();
 export const AppLayoutSplitPanelSide = createWidgetizedAppLayoutSplitPanelDrawerSide();
 export const AppLayoutSkeletonLayout = createWidgetizedSkeletonLayout();
+
+export const useSkeletonSlotsAttributes = createWidgetizedUseSkeletonSlotsAttrributes();
