@@ -4,9 +4,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalDateInput from '../../date-input/internal';
 import InternalFormField from '../../form-field/internal';
 import { useInternalI18n } from '../../i18n/context.js';
+//eslint-disable-next-line @cloudscape-design/ban-files
+import Input from '../../input';
 import { BaseComponentProps } from '../../internal/base-component';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
@@ -86,12 +87,12 @@ export default function RangeInputs({
               isMonthPicker ? i18nStrings?.startMonthLabel : i18nStrings?.startDateLabel
             )}
           >
-            <InternalDateInput
+            <Input
               value={startDate}
               className={clsx(testutilStyles['start-date-input'], isMonthPicker && testutilStyles['start-month-input'])}
               onChange={event => onChangeStartDate(event.detail.value)}
               placeholder={dateInputPlaceholder}
-              granularity={granularity}
+              // granularity={granularity}
             />
           </InternalFormField>
           {showTimeInput && (
@@ -115,12 +116,12 @@ export default function RangeInputs({
               isMonthPicker ? i18nStrings?.endMonthLabel : i18nStrings?.endDateLabel
             )}
           >
-            <InternalDateInput
+            <Input
               value={endDate}
               className={clsx(testutilStyles['end-date-input'], isMonthPicker && testutilStyles['end-month-picker'])}
               onChange={event => onChangeEndDate(event.detail.value)}
               placeholder={dateInputPlaceholder}
-              granularity={granularity}
+              // granularity={granularity}
             />
           </InternalFormField>
           {showTimeInput && (

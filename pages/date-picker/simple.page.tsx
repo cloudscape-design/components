@@ -28,7 +28,7 @@ export default function DateInputScenario() {
   const [value, setValue] = useState<DatePickerProps['value']>('');
 
   useEffect(() => {
-    const initValue = monthOnly ? '2025-02' : '2025-02-00';
+    const initValue = monthOnly ? '2025-02' : '2025-02-14';
     if (hasValue) {
       setValue(initValue);
     } else {
@@ -50,7 +50,7 @@ export default function DateInputScenario() {
         </SpaceBetween>
         <Link id="focus-dismiss-helper">Focusable element before the date picker</Link>
         <br />
-        <FormField label="Certificate expiry date" constraintText={`Use YYYY/MM${monthOnly ? '' : '/DD'} format.`}>
+        <FormField label="Long localized" constraintText={`Use Month Day, Year format.`}>
           <DatePicker
             value={value}
             name={'date-picker-name'}
@@ -60,7 +60,7 @@ export default function DateInputScenario() {
             openCalendarAriaLabel={selectedDate =>
               'Choose certificate expiry date' + (selectedDate ? `, selected date is ${selectedDate}` : '')
             }
-            placeholder={monthOnly ? 'YYYY/MM' : 'YYYY/MM/DD'}
+            placeholder={monthOnly ? 'YYYY-MM' : 'Month Day, Year'}
             onChange={e => setValue(e.detail.value)}
           />
         </FormField>

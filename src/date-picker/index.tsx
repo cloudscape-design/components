@@ -7,8 +7,11 @@ import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import InternalCalendar from '../calendar/internal';
 import { useFormFieldContext } from '../contexts/form-field.js';
-import InternalDateInput from '../date-input/internal';
 import { useLocale } from '../i18n/context.js';
+// import InternalDateInput from '../date-input/internal';
+// import DateInput from '../date-input/internal';
+//eslint-disable-next-line @cloudscape-design/ban-files
+import Input from '../input';
 import { InputProps } from '../input/interfaces';
 import { getBaseProps } from '../internal/base-component';
 import Dropdown from '../internal/components/dropdown';
@@ -131,7 +134,7 @@ const DatePicker = React.forwardRef(
     const trigger = (
       <div className={styles['date-picker-trigger']}>
         <div className={styles['date-picker-input']}>
-          <InternalDateInput
+          <Input
             name={name}
             invalid={invalid}
             warning={warning}
@@ -149,7 +152,7 @@ const DatePicker = React.forwardRef(
             ref={internalInputRef}
             autoFocus={autoFocus}
             onFocus={onDropdownCloseHandler}
-            granularity={granularity}
+            // granularity={granularity}
           />
         </div>
         <div>

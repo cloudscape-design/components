@@ -60,13 +60,19 @@ function SimpleForm() {
 }
 
 export default function InputsPage() {
+  const [inputValue, setInputValue] = useState('');
   return (
     <div style={{ padding: 10 }}>
       <h1>Inputs demo</h1>
       <Inputs />
       <SimpleForm />
-      <FormField description="This is a description." label="Form field label" id="formfield-with-input">
-        <Input value={''} onChange={() => {}} />
+      <FormField
+        description="Enter month granularity date in iso format."
+        label="ISO date"
+        constraintText="Enter YYYY-MM"
+        id="formfield-with-input"
+      >
+        <Input value={inputValue} onChange={event => setInputValue(event.detail.value)} />
       </FormField>
     </div>
   );
