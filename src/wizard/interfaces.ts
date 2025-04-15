@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { FlowType } from '../internal/analytics/interfaces';
+import { ErrorContext, FlowType } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
@@ -11,6 +11,7 @@ export namespace WizardProps {
     instanceIdentifier?: string;
     flowType?: FlowType;
     resourceType?: string;
+    errorContext?: ErrorContext;
   }
 }
 
@@ -133,6 +134,7 @@ export interface WizardProps extends BaseComponentProps {
 export namespace WizardProps {
   export interface StepAnalyticsMetadata {
     instanceIdentifier?: string;
+    errorContext?: ErrorContext;
   }
   export interface Step {
     title: string;

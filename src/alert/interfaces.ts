@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { ErrorContext } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
@@ -41,6 +42,10 @@ export namespace AlertProps {
      * @property {string} [dismissAriaLabel] - optional
      */
     dismissAriaLabel?: string;
+  }
+
+  export interface AnalyticsMetadata {
+    errorContext?: ErrorContext;
   }
 }
 
@@ -111,4 +116,10 @@ export interface AlertProps extends BaseComponentProps {
    * @i18n
    */
   i18nStrings?: AlertProps.I18nStrings;
+  /**
+   * Specifies additional analytics-related metadata.
+   * * `errorContext` - Identifies the error category and sub-category.
+   * @analytics
+   */
+  analyticsMetadata?: AlertProps.AnalyticsMetadata;
 }
