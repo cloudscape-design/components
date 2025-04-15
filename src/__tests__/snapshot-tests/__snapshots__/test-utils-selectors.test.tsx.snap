@@ -654,6 +654,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_utility-wrapper_1ca1i",
     "awsui_utility-wrapper_k5dlb",
   ],
+  "tree-view": [
+    "awsui_root_1js4f",
+  ],
   "tutorial-panel": [
     "awsui_collapse-button_ig8mp",
     "awsui_completed_ig8mp",
