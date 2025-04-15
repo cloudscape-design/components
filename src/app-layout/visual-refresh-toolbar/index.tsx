@@ -14,11 +14,11 @@ import {
   AppLayoutGlobalDrawers,
   AppLayoutNavigation,
   AppLayoutNotifications,
-  AppLayoutSkeletonLayout,
   AppLayoutSplitPanelBottom,
   AppLayoutSplitPanelSide,
   AppLayoutToolbar,
 } from './internal';
+import { SkeletonLayout } from './skeleton';
 import { useAppLayout } from './use-app-layout';
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
@@ -66,7 +66,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       <AppLayoutVisibilityContext.Provider value={isIntersecting}>
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
         {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
-        <AppLayoutSkeletonLayout
+        <SkeletonLayout
           rootRef={useMergeRefs(intersectionObserverRef, rootRef)}
           isNested={isNested}
           style={{
