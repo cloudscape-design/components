@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
+import createWrapper from '../index';
 import { AnnotationWrapper } from '../index.js';
 
 import annotationStyles from '../../../annotation-context/annotation/styles.selectors.js';
@@ -15,6 +16,6 @@ export default class HotspotWrapper extends ComponentWrapper {
   }
 
   findAnnotation(): AnnotationWrapper | null {
-    return this.findComponent(`.${annotationStyles.annotation}`, AnnotationWrapper);
+    return createWrapper().findComponent(`.${annotationStyles.annotation}`, AnnotationWrapper)!;
   }
 }
