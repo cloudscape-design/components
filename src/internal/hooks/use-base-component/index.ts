@@ -7,6 +7,7 @@ import {
   useComponentMetadata,
   useFocusVisible,
 } from '@cloudscape-design/component-toolkit/internal';
+import { AnalyticsMetadata as UseComponentMetadataAnalytics } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
 
 import { AnalyticsMetadata } from '../../analytics/interfaces';
 import { PACKAGE_VERSION } from '../../environment';
@@ -14,6 +15,23 @@ import { useTelemetry } from '../use-telemetry';
 
 export interface InternalBaseComponentProps<T = any> {
   __internalRootRef?: MutableRefObject<T | null> | null;
+}
+
+// TODO: Update component-toolkit types to allow nesting objects
+export function transformAnalyticsMetadata(
+  analyticsMetadata?: AnalyticsMetadata
+): UseComponentMetadataAnalytics | undefined {
+  if (!analyticsMetadata) {
+    return undefined;
+  }
+
+  const transformedAnalyticsMetadata: UseComponentMetadataAnalytics = {
+    instanceIdentifier: analyticsMetadata.instanceIdentifier,
+    flowType: analyticsMetadata.flowType,
+    resourceType: analyticsMetadata.resourceType,
+  };
+
+  return transformedAnalyticsMetadata;
 }
 
 /**
@@ -28,6 +46,8 @@ export default function useBaseComponent<T = any>(
 ) {
   useTelemetry(componentName, config);
   useFocusVisible();
-  const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION, { ...analyticsMetadata });
+
+  const metadata = transformAnalyticsMetadata(analyticsMetadata);
+  const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION, metadata);
   return { __internalRootRef: elementRef };
 }

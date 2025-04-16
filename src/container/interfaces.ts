@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { ErrorContext } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 
 export interface ContainerProps extends BaseComponentProps {
   /**
    * Specifies additional analytics-related metadata.
    * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * * `errorContext` - Additional context to describe why an error is shown.
    * @analytics
    */
   analyticsMetadata?: ContainerProps.AnalyticsMetadata;
@@ -80,6 +82,7 @@ export interface ContainerProps extends BaseComponentProps {
 export namespace ContainerProps {
   export interface AnalyticsMetadata {
     instanceIdentifier?: string;
+    errorContext?: ErrorContext;
   }
   export interface Media {
     /**

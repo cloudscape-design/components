@@ -6842,10 +6842,16 @@ exports[`Documenter definition for container matches the snapshot: container 1`]
     {
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
-* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.",
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
+* \`errorContext\` - Additional context to describe why an error is shown.",
       "inlineType": {
         "name": "ContainerProps.AnalyticsMetadata",
         "properties": [
+          {
+            "name": "errorContext",
+            "optional": true,
+            "type": "ErrorContext",
+          },
           {
             "name": "instanceIdentifier",
             "optional": true,
@@ -9409,10 +9415,16 @@ exports[`Documenter definition for form matches the snapshot: form 1`] = `
       "description": "Specifies additional analytics-related metadata.
 * \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
 * \`flowType\` - Identifies the type of flow represented by the component.
-* \`resourceType\` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.",
+* \`resourceType\` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.
+* \`errorContext\` - Additional context to describe why an error is shown.",
       "inlineType": {
         "name": "FormProps.AnalyticsMetadata",
         "properties": [
+          {
+            "name": "errorContext",
+            "optional": true,
+            "type": "ErrorContext",
+          },
           {
             "name": "flowType",
             "optional": true,
@@ -9518,10 +9530,16 @@ exports[`Documenter definition for form-field matches the snapshot: form-field 1
     {
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
-* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.",
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
+* \`errorContext\` - Additional context to describe why an error is shown.",
       "inlineType": {
         "name": "FormFieldProps.AnalyticsMetadata",
         "properties": [
+          {
+            "name": "errorContext",
+            "optional": true,
+            "type": "ErrorContext",
+          },
           {
             "name": "instanceIdentifier",
             "optional": true,
