@@ -42,6 +42,12 @@ class PopoverInternalWrapper extends PopoverWrapper {
     }
     return this.findByClassName(styles.body);
   }
+  findContainer({ renderWithPortal } = { renderWithPortal: false }): ElementWrapper | null {
+    if (renderWithPortal) {
+      return createWrapper().findByClassName(styles.container);
+    }
+    return this.findByClassName(styles.container);
+  }
 }
 
 function renderPopover(props: PopoverProps & { ref?: React.Ref<PopoverProps.Ref> }) {
@@ -414,4 +420,91 @@ test('does not add portal to the body unless visible', () => {
   unmount();
 
   expect(document.querySelectorAll('body > div')).toHaveLength(1);
+});
+
+describe('inside shadow DOM', () => {
+  // React below v17 does not dispatch events to components inside Shadow DOM, so to make clicking
+  // on a Popover trigger work inside Shadow DOM we need to catch the click event on the topmost
+  // node inside Shadow DOM, look back through all the nodes it bubbled through, find React component
+  // instances corresponding to those nodes, and manually call onClick on them. See
+  // https://github.com/facebook/react/issues/10422#issuecomment-674928774
+  function retargetClicks(root: HTMLElement) {
+    function findReactComponent(item: EventTarget) {
+      for (const key in item) {
+        if (Object.prototype.hasOwnProperty.call(item, key) && key.indexOf('_reactInternal') !== -1) {
+          return item[key as keyof typeof item] as any;
+        }
+      }
+    }
+
+    root.addEventListener('click', event => {
+      const eventPath = event.composedPath();
+      for (const i in eventPath) {
+        const item = eventPath[i];
+
+        const internalComponent = findReactComponent(item);
+        if (internalComponent && internalComponent.memoizedProps) {
+          internalComponent.memoizedProps.onClick?.(event);
+          break;
+        }
+
+        if (item === root) {
+          break;
+        }
+      }
+    });
+  }
+
+  function renderPopoverInShadowDom(props: PopoverProps & { ref?: React.Ref<PopoverProps.Ref> }) {
+    const shadowContainer = document.createElement('div');
+    shadowContainer.setAttribute('id', 'shadow-container');
+    shadowContainer.attachShadow({ mode: 'open' });
+
+    const shadowChild = document.createElement('div');
+    shadowChild.setAttribute('id', 'shadow-child');
+    shadowContainer.shadowRoot!.appendChild(shadowChild);
+
+    document.body.appendChild(shadowContainer);
+
+    retargetClicks(shadowChild);
+
+    const { container } = render(<Popover {...props} />, { container: shadowChild });
+
+    return new PopoverInternalWrapper(container);
+  }
+
+  afterEach(() => {
+    // cleanup test container after each test
+    document.getElementById('shadow-container')?.remove();
+  });
+
+  it('renders text trigger correctly', () => {
+    const wrapper = renderPopoverInShadowDom({ children: 'Trigger', triggerAriaLabel: 'Test aria label' });
+    expect(wrapper.findTrigger().getElement().tagName).toBe('BUTTON');
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Trigger');
+    expect(wrapper.findTrigger().getElement()).toHaveAccessibleName('Test aria label');
+  });
+
+  it('renders the popover header correctly', () => {
+    const wrapper = renderPopoverInShadowDom({ children: 'Trigger', header: 'Memory error' });
+    wrapper.findTrigger().click();
+
+    expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Memory error');
+    // this assertion fails if Popover bails early on calculating its position
+    expect(wrapper.findContainer()!.getElement()).toHaveAttribute(
+      'style',
+      'inset-block-start: 0; inset-inline-start: 13px;'
+    );
+  });
+
+  it('renders the popover header correctly with portal', () => {
+    const wrapper = renderPopoverInShadowDom({ children: 'Trigger', header: 'Memory error', renderWithPortal: true });
+    wrapper.findTrigger().click();
+    expect(wrapper.findHeader({ renderWithPortal: true })!.getElement()).toHaveTextContent('Memory error');
+    // this assertion fails if Popover bails early on calculating its position
+    expect(wrapper.findContainer({ renderWithPortal: true })!.getElement()).toHaveAttribute(
+      'style',
+      'z-index: 7000; inset-block-start: 18px; inset-inline-start: 10px;'
+    );
+  });
 });
