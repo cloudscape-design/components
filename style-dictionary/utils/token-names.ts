@@ -338,6 +338,7 @@ export type ColorsTokenName =
   | 'colorTextButtonPrimaryDisabled'
   | 'colorBorderCalendarGrid'
   | 'colorBorderCalendarGridSelectedFocusRing'
+  | 'colorBorderCellShaded'
   | 'colorBorderCodeEditorAceActiveLineLightTheme'
   | 'colorBorderCodeEditorAceActiveLineDarkTheme'
   | 'colorBorderCodeEditorDefault'

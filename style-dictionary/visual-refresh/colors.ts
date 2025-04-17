@@ -118,6 +118,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonPrimaryDisabled: { light: '{colorGrey500}', dark: '{colorGrey500}' },
   colorBorderCalendarGrid: 'transparent',
   colorBorderCalendarGridSelectedFocusRing: { light: '{colorGrey100}', dark: '{colorGrey800}' },
+  colorBorderCellShaded: { light: '{colorGrey300}', dark: '{colorGrey650}' },
   colorBorderCodeEditorAceActiveLineLightTheme: '{colorGrey300}',
   colorBorderCodeEditorAceActiveLineDarkTheme: '{colorGrey550}',
   colorBorderCodeEditorDefault: { light: '{colorGrey300}', dark: '{colorGrey550}' },
