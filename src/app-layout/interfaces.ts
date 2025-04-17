@@ -317,6 +317,7 @@ export namespace AppLayoutProps {
     closeButton?: string;
     triggerButton?: string;
     resizeHandle?: string;
+    expandedModeButton?: string;
   }
 
   export interface Labels {
