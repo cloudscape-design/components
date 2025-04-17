@@ -202,6 +202,7 @@ exports[`test-utils selectors 1`] = `
   "copy-to-clipboard": [
     "awsui_root_ljpwc",
     "awsui_text-to-copy_ljpwc",
+    "awsui_text-to-display_ljpwc",
   ],
   "date-input": [
     "awsui_root_yodkx",
