@@ -5,6 +5,7 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 function setupTest(
+  inViewport: boolean,
   testFn: (parameters: {
     page: BasePageObject;
     getMarks: () => Promise<PerformanceMark[]>;
@@ -13,8 +14,9 @@ function setupTest(
 ) {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/table/performance-marks');
+    await browser.url(`#/light/table/performance-marks${!inViewport ? '?outsideOfViewport=true' : ''}`);
     const getMarks = async () => {
+      await new Promise(r => setTimeout(r, 200));
       const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);
       return marks.filter(m => m.detail?.source === 'awsui');
     };
@@ -25,10 +27,10 @@ function setupTest(
   });
 }
 
-describe('Table', () => {
+describe.each([true, false])(`Table (in viewport: %p)`, inViewport => {
   test(
     'Emits a mark only for visible tables which are loaded completely',
-    setupTest(async ({ getMarks, isElementPerformanceMarkExisting }) => {
+    setupTest(inViewport, async ({ getMarks, isElementPerformanceMarkExisting }) => {
       const marks = await getMarks();
 
       expect(marks).toHaveLength(1);
@@ -37,6 +39,7 @@ describe('Table', () => {
         source: 'awsui',
         instanceIdentifier: expect.any(String),
         loading: false,
+        inViewport,
         header: 'A table without the Header component',
       });
       await expect(isElementPerformanceMarkExisting(marks[0].detail.instanceIdentifier)).resolves.toBeTruthy();
@@ -45,7 +48,7 @@ describe('Table', () => {
 
   test(
     'Emits a mark when properties change',
-    setupTest(async ({ page, getMarks, isElementPerformanceMarkExisting }) => {
+    setupTest(inViewport, async ({ page, getMarks, isElementPerformanceMarkExisting }) => {
       await page.click('#loading');
       const marks = await getMarks();
 
@@ -55,6 +58,7 @@ describe('Table', () => {
         source: 'awsui',
         instanceIdentifier: expect.any(String),
         loading: false,
+        inViewport,
         header: 'This is my table',
       });
       await expect(isElementPerformanceMarkExisting(marks[1].detail.instanceIdentifier)).resolves.toBeTruthy();
@@ -63,7 +67,7 @@ describe('Table', () => {
 
   test(
     'Emits a mark for loaded table components when evaluateComponentVisibility event is emitted',
-    setupTest(async ({ page, getMarks, isElementPerformanceMarkExisting }) => {
+    setupTest(inViewport, async ({ page, getMarks, isElementPerformanceMarkExisting }) => {
       let marks = await getMarks();
       expect(marks).toHaveLength(1);
       expect(marks[0].name).toBe('tableRendered');
@@ -71,6 +75,7 @@ describe('Table', () => {
         source: 'awsui',
         instanceIdentifier: expect.any(String),
         loading: false,
+        inViewport,
         header: 'A table without the Header component',
       });
 
@@ -84,6 +89,7 @@ describe('Table', () => {
         source: 'awsui',
         instanceIdentifier: expect.any(String),
         loading: false,
+        inViewport,
         header: 'A table without the Header component',
       });
     })

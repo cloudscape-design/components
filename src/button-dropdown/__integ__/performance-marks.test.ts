@@ -15,6 +15,7 @@ function setupTest(
     const page = new BasePageObject(browser);
     await browser.url(`#/light/button-dropdown/${pageName}`);
     const getMarks = async () => {
+      await new Promise(r => setTimeout(r, 200));
       const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);
       return marks.filter(m => m.detail?.source === 'awsui');
     };
@@ -37,6 +38,7 @@ describe('ButtonDropdown', () => {
         instanceIdentifier: expect.any(String),
         loading: false,
         disabled: false,
+        inViewport: true,
         text: 'Launch instance',
       });
 

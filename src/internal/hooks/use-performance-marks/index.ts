@@ -7,6 +7,7 @@ import { useModalContext } from '../../context/modal-context';
 import { useDOMAttribute } from '../use-dom-attribute';
 import { useEffectOnUpdate } from '../use-effect-on-update';
 import { useRandomId } from '../use-unique-id';
+import { isInViewport } from './is-in-viewport';
 
 const EVALUATE_COMPONENT_VISIBILITY_EVENT = 'awsui-evaluate-component-visibility';
 
@@ -50,6 +51,7 @@ export function usePerformanceMarks(
   const { isInModal } = useModalContext();
   const attributes = useDOMAttribute(elementRef, 'data-analytics-performance-mark', id);
   const evaluateComponentVisibility = useEvaluateComponentVisibility();
+
   useEffect(() => {
     if (!enabled() || !elementRef.current || isInModal) {
       return;
@@ -63,14 +65,22 @@ export function usePerformanceMarks(
       return;
     }
 
-    const renderedMarkName = `${name}Rendered`;
-    performance.mark(renderedMarkName, {
-      detail: {
-        source: 'awsui',
-        instanceIdentifier: id,
-        ...getDetails(),
-      },
+    const timestamp = performance.now();
+
+    const cleanup = isInViewport(elementRef.current, inViewport => {
+      performance.mark(`${name}Rendered`, {
+        startTime: timestamp,
+        detail: {
+          source: 'awsui',
+          instanceIdentifier: id,
+          inViewport,
+          ...getDetails(),
+        },
+      });
     });
+
+    return cleanup;
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -86,14 +96,22 @@ export function usePerformanceMarks(
     if (!elementVisible) {
       return;
     }
-    const updatedMarkName = `${name}Updated`;
-    performance.mark(updatedMarkName, {
-      detail: {
-        source: 'awsui',
-        instanceIdentifier: id,
-        ...getDetails(),
-      },
+
+    const timestamp = performance.now();
+
+    const cleanup = isInViewport(elementRef.current, inViewport => {
+      performance.mark(`${name}Updated`, {
+        startTime: timestamp,
+        detail: {
+          source: 'awsui',
+          instanceIdentifier: id,
+          inViewport,
+          ...getDetails(),
+        },
+      });
     });
+    return cleanup;
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [evaluateComponentVisibility, ...dependencies]);
 
