@@ -39,7 +39,33 @@ const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
 type InternalAlertProps = SomeRequired<AlertProps, 'type'> &
   InternalBaseComponentProps<HTMLDivElement> & {
     messageSlotId?: string;
+    style?: Style;
   };
+
+interface Style {
+  alert?: { css?: StyleAlertCss };
+  'alert:hover'?: {
+    css?: StyleAlertCss;
+    icon?: { css?: StyleAlertIconCss };
+    dismissButton?: { css?: StyleAlertDismissIconCss };
+  };
+  icon?: { css?: StyleAlertIconCss };
+  dismissButton?: { css?: StyleAlertDismissIconCss };
+}
+
+interface StyleAlertCss {
+  backgroundColor?: string;
+  borderColor?: string;
+  color?: string;
+}
+
+interface StyleAlertIconCss {
+  color?: string;
+}
+
+interface StyleAlertDismissIconCss {
+  color?: string;
+}
 
 const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.alert.onActionRegistered);
 const useDiscoveredContent = createUseDiscoveredContent('alert', awsuiPluginsInternal.alertContent);
@@ -61,6 +87,7 @@ const InternalAlert = React.forwardRef(
       statusIconAriaLabel: deprecatedStatusIconAriaLabel,
       dismissAriaLabel: deprecatedDismissAriaLabel,
       messageSlotId,
+      style,
       ...rest
     }: InternalAlertProps,
     ref: React.Ref<AlertProps.Ref>
@@ -132,6 +159,19 @@ const InternalAlert = React.forwardRef(
                 hasAction && styles['with-action'],
                 dismissible && styles['with-dismiss']
               )}
+              style={{
+                '--awsui-alert-alert-bg': style?.alert?.css?.backgroundColor ?? '',
+                '--awsui-alert-hover-alert-bg':
+                  style?.['alert:hover']?.css?.backgroundColor ?? style?.alert?.css?.backgroundColor ?? '',
+                '--awsui-alert-alert-color': style?.alert?.css?.color ?? '',
+                '--awsui-alert-hover-alert-color': style?.['alert:hover']?.css?.color ?? style?.alert?.css?.color ?? '',
+                '--awsui-alert-alert-border': style?.alert?.css?.borderColor ?? '',
+                '--awsui-alert-hover-alert-border':
+                  style?.['alert:hover']?.css?.borderColor ?? style?.alert?.css?.borderColor ?? '',
+                '--awsui-alert-icon-color': style?.icon?.css?.color ?? '',
+                '--awsui-alert-hover-icon-color':
+                  style?.['alert:hover']?.icon?.css?.color ?? style?.icon?.css?.color ?? '',
+              }}
             >
               <div className={styles['alert-wrapper']}>
                 <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
@@ -190,6 +230,11 @@ const InternalAlert = React.forwardRef(
                   {...getAnalyticsMetadataAttribute({
                     action: 'dismiss',
                   } as Partial<GeneratedAnalyticsMetadataAlertDismiss>)}
+                  style={{
+                    '--awsui-button-button-color': style?.dismissButton?.css?.color ?? '',
+                    '--awsui-alert-hover-button-color':
+                      style?.['alert:hover']?.dismissButton?.css?.color ?? style?.dismissButton?.css?.color ?? '',
+                  }}
                 >
                   <InternalButton
                     className={styles['dismiss-button']}
