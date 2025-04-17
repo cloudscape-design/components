@@ -4,6 +4,7 @@ import { ThemeBuilder } from '@cloudscape-design/theming-build';
 
 import {
   createAlertContext,
+  createAppLayoutToolbarContext,
   createCompactTableContext,
   createFlashbarContext,
   createFlashbarWarningContext,
@@ -45,6 +46,7 @@ export async function buildVisualRefresh(builder: ThemeBuilder) {
   builder.addContext(createFlashbarContext((await import('./contexts/flashbar.js')).tokens));
   builder.addContext(createFlashbarWarningContext((await import('./contexts/flashbar-warning.js')).tokens));
   builder.addContext(createAlertContext((await import('./contexts/alert.js')).tokens));
+  builder.addContext(createAppLayoutToolbarContext((await import('./contexts/app-layout-toolbar.js')).tokens));
   builder.addContext({
     id: 'alert-header',
     selector: '.awsui-context-content-header .awsui-context-alert',
