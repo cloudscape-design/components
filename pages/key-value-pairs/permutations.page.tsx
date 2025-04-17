@@ -3,8 +3,10 @@
 import React from 'react';
 
 import { CopyToClipboard, ProgressBar } from '~components';
+import Icon from '~components/icon';
 import KeyValuePairs, { KeyValuePairsProps } from '~components/key-value-pairs';
 import Link from '~components/link';
+import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
 
 import createPermutations from '../utils/permutations';
@@ -352,6 +354,41 @@ const permutations = createPermutations<KeyValuePairsProps>([
               Value with external link
             </Link>
           ),
+        },
+      ],
+    ],
+  },
+  {
+    columns: [3],
+    items: [
+      [
+        {
+          label: (
+            <SpaceBetween size={'xxs'} direction={'horizontal'} alignItems={'center'}>
+              <Icon key={'icon'} name={'status-info'} />
+              <div key={'label'}>Label for key</div>
+            </SpaceBetween>
+          ),
+          value: 'Info icon at the start',
+        },
+        {
+          label: (
+            <SpaceBetween size={'xxs'} direction={'horizontal'} alignItems={'center'}>
+              <div key={'label'}>Label for key</div>
+              <Icon key={'icon'} name={'external'} />
+            </SpaceBetween>
+          ),
+          value: 'External icon at the end',
+        },
+        {
+          label: (
+            <SpaceBetween size={'xxs'} direction={'horizontal'} alignItems={'center'}>
+              <div key={'label'}>Label for key</div>
+              <Icon key={'icon'} name={'external'} />
+            </SpaceBetween>
+          ),
+          value: 'External icon at the end with info link',
+          info: <Link>Info</Link>,
         },
       ],
     ],

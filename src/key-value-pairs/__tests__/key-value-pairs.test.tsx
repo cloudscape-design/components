@@ -3,9 +3,11 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
+import Icon from '../../../lib/components/icon';
 import KeyValuePairs from '../../../lib/components/key-value-pairs';
 import Link from '../../../lib/components/link';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import SpaceBetween from '../../../lib/components/space-between';
+import createWrapper, { IconWrapper } from '../../../lib/components/test-utils/dom';
 
 function renderKeyValuePairs(jsx: React.ReactElement) {
   const { container, ...rest } = render(jsx);
@@ -28,6 +30,43 @@ describe('KeyValuePairs', () => {
 
       expect(wrapper.findItems()[0]!.findLabel()!.getElement()).toHaveTextContent('Label for key');
       expect(wrapper.findItems()[0]!.findValue()!.getElement()).toHaveTextContent('Value');
+    });
+
+    test('renders correctly with ReactNode label', () => {
+      const { wrapper } = renderKeyValuePairs(
+        <KeyValuePairs
+          items={[
+            {
+              label: (
+                <SpaceBetween size={'xxs'} direction={'horizontal'} alignItems={'center'}>
+                  <Icon name={'status-info'} />
+                  Label after icon
+                </SpaceBetween>
+              ),
+              value: 'Value',
+            },
+            {
+              label: (
+                <SpaceBetween size={'xxs'} direction={'horizontal'} alignItems={'center'}>
+                  Label before icon
+                  <Icon name={'external'} />
+                </SpaceBetween>
+              ),
+              value: 'Value',
+            },
+          ]}
+        />
+      );
+
+      const firstLabel = wrapper.findItems()[0]!.findLabel();
+      expect(firstLabel!.getElement().firstElementChild!.children).toHaveLength(2);
+      expect(firstLabel!.findIcon()).toBeInstanceOf(IconWrapper);
+      expect(firstLabel!.getElement()).toHaveTextContent('Label after icon');
+
+      const secondLabel = wrapper.findItems()[1]!.findLabel();
+      expect(secondLabel!.getElement().firstElementChild!.children).toHaveLength(2);
+      expect(secondLabel!.findIcon()).toBeInstanceOf(IconWrapper);
+      expect(secondLabel!.getElement()).toHaveTextContent('Label before icon');
     });
 
     test('renders label with info correctly', () => {
