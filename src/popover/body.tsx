@@ -16,12 +16,13 @@ import styles from './styles.css.js';
 
 export interface PopoverBodyProps {
   dismissButton: boolean;
+  autoFocusDismissButton?: boolean;
   dismissAriaLabel: string | undefined;
   onDismiss: (() => void) | undefined;
 
   header: React.ReactNode | undefined;
   children: React.ReactNode;
-  variant?: 'annotation';
+  variant?: 'annotation' | 'chart';
   overflowVisible?: 'content' | 'both';
 
   className?: string;
@@ -32,6 +33,7 @@ export interface PopoverBodyProps {
 
 export default function PopoverBody({
   dismissButton: showDismissButton,
+  autoFocusDismissButton = true,
   dismissAriaLabel,
   header,
   children,
@@ -61,11 +63,11 @@ export default function PopoverBody({
   // because we also want to focus the dismiss button when it
   // is added dynamically (e.g. in chart popovers)
   useEffect(() => {
-    if (showDismissButton && !dismissButtonFocused.current) {
+    if (showDismissButton && !dismissButtonFocused.current && autoFocusDismissButton) {
       dismissButtonRef.current?.focus({ preventScroll: true });
     }
     dismissButtonFocused.current = showDismissButton;
-  }, [showDismissButton]);
+  }, [showDismissButton, autoFocusDismissButton]);
 
   const dismissButton = (showDismissButton ?? null) && (
     <div
@@ -96,7 +98,7 @@ export default function PopoverBody({
 
   return (
     <div
-      className={clsx(styles.body, className, {
+      className={clsx(styles.body, styles[`body-variant-${variant}`], className, {
         [styles['body-overflow-visible']]: overflowVisible === 'both',
       })}
       onKeyDown={onKeyDown}

@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { memo, useCallback } from 'react';
-import clsx from 'clsx';
 
-import InternalFormField from '../../../form-field/internal';
+import React, { memo, useCallback } from 'react';
+
+import InternalButton from '../../../button/internal';
 import { useInternalI18n } from '../../../i18n/context';
 import { MultiselectProps } from '../../../multiselect/interfaces';
 import InternalMultiselect from '../../../multiselect/internal';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { BaseComponentProps } from '../../base-component';
 import { NonCancelableEventHandler } from '../../events';
 import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
 
@@ -35,9 +35,7 @@ export interface ChartFilterProps<T> extends BaseComponentProps {
 
 export default memo(ChartFilter) as typeof ChartFilter;
 
-function ChartFilter<T>({ series, i18nStrings, selectedSeries, onChange, ...restProps }: ChartFilterProps<T>) {
-  const baseProps = getBaseProps(restProps);
-  const className = clsx(baseProps.className, styles.root);
+function ChartFilter<T>({ series, i18nStrings, selectedSeries, onChange }: ChartFilterProps<T>) {
   const i18n = useInternalI18n('[charts]');
 
   const defaultOptions = series.map((d, i) => ({
@@ -64,25 +62,31 @@ function ChartFilter<T>({ series, i18nStrings, selectedSeries, onChange, ...rest
   );
 
   return (
-    <InternalFormField
-      {...baseProps}
-      label={i18n('i18nStrings.filterLabel', i18nStrings?.filterLabel)}
-      className={className}
-    >
-      <InternalMultiselect
-        placeholder={i18n('i18nStrings.filterPlaceholder', i18nStrings?.filterPlaceholder)}
-        options={defaultOptions}
-        selectedOptions={selectedOptions}
-        onChange={updateSelection}
-        className={styles['chart-filter']}
-        selectedAriaLabel={i18nStrings?.filterSelectedAriaLabel}
-        filteringType="none"
-        statusType="finished"
-        keepOpen={true}
-        hideTokens={true}
-        enableSelectAll={true}
-        i18nStrings={{ selectAllText: 'Select all' }}
-      />
-    </InternalFormField>
+    <InternalMultiselect
+      ariaLabel={i18n('i18nStrings.filterLabel', i18nStrings?.filterLabel)}
+      placeholder={i18n('i18nStrings.filterPlaceholder', i18nStrings?.filterPlaceholder)}
+      options={defaultOptions}
+      selectedOptions={selectedOptions}
+      onChange={updateSelection}
+      className={styles['chart-filter']}
+      selectedAriaLabel={i18nStrings?.filterSelectedAriaLabel}
+      filteringType="auto"
+      statusType="finished"
+      keepOpen={true}
+      hideTokens={true}
+      enableSelectAll={true}
+      i18nStrings={{ selectAllText: 'Select all' }}
+      customTriggerBuilder={props => (
+        <InternalButton
+          variant="icon"
+          iconName="filter"
+          ref={props.triggerRef}
+          ariaLabel={props.ariaLabel}
+          ariaExpanded={props.ariaExpanded}
+          disabled={props.disabled}
+          onClick={props.onClick}
+        />
+      )}
+    />
   );
 }
