@@ -63,10 +63,14 @@ export default function usePopoverPosition({
       const document = popover.ownerDocument;
       const track = trackRef.current;
 
+      const rootNode = popover.getRootNode();
+      const isInShadowDom = rootNode !== document && rootNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE;
+
       // If the popover body isn't being rendered for whatever reason (e.g. "display: none" or JSDOM),
       // or track does not belong to the document - bail on calculating dimensions.
       const { offsetWidth, offsetHeight } = getOffsetDimensions(popover);
-      if (offsetWidth === 0 || offsetHeight === 0 || !nodeContains(document.body, track)) {
+
+      if (offsetWidth === 0 || offsetHeight === 0 || !nodeContains(isInShadowDom ? rootNode : document.body, track)) {
         return;
       }
 
