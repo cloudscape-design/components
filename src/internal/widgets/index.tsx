@@ -26,3 +26,11 @@ export function createWidgetizedComponent<Component extends FunctionComponent<an
     }) as Component;
   };
 }
+
+export function createWidgetizedFunction<F extends (...args: any[]) => any>(fn: F): () => F {
+  return (): F => {
+    return ((...args: Parameters<F>): ReturnType<F> => {
+      return fn(...args);
+    }) as F;
+  };
+}
