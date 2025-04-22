@@ -27,7 +27,6 @@ export function createWidgetizedComponent<Component extends FunctionComponent<an
   };
 }
 
-// export default function useImportedHook(importPromise, slots, args, defaultReturn) {
 export default function useImportedHook(importPromise: any, args: any, defaultReturn: any) {
   const [loaded, setLoaded] = useState(false);
   const isLoading = useRef(false);
