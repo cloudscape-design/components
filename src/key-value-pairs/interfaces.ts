@@ -61,7 +61,7 @@ export namespace KeyValuePairsProps {
 
   export interface Pair extends BaseComponentProps {
     type?: 'pair';
-    label: string;
+    label: React.ReactNode;
     value: React.ReactNode;
     info?: React.ReactNode;
   }
