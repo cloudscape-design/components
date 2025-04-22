@@ -10,6 +10,7 @@ export interface DragHandleProps {
   variant?: DragHandleProps.Variant;
   size?: DragHandleProps.Size;
   ariaLabel?: string;
+  ariaLabelledBy?: string;
   ariaDescribedby?: string;
   ariaValue?: DragHandleProps.AriaValue;
   disabled?: boolean;
