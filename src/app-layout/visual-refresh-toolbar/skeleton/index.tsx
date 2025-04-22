@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import VisualContext from '../../../internal/components/visual-context';
 import { AppLayoutInternalProps } from '../interfaces';
 import {
   AppLayoutSkeletonBottomContentSlot,
@@ -33,18 +34,20 @@ export const SkeletonLayout = (props: SkeletonLayoutProps) => {
   const isAppLayoutStateLoading = Object.keys(appLayoutState).length === 0;
 
   return (
-    <div {...wrapperElAttributes}>
-      {!isAppLayoutStateLoading && <AppLayoutSkeletonTopSlot {...props} />}
-      <main {...mainElAttributes}>
-        {!isAppLayoutStateLoading && <AppLayoutSkeletonTopContentSlot {...props} />}
-        <div {...contentWrapperElAttributes}>
-          {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
-          {/*delay rendering the content until registration of this instance is complete*/}
-          <div {...contentElAttributes}>{isAppLayoutStateLoading || registered ? content : null}</div>
-        </div>
-        {!isAppLayoutStateLoading && <AppLayoutSkeletonBottomContentSlot {...props} />}
-      </main>
-      {!isAppLayoutStateLoading && <AppLayoutSkeletonSideSlot {...props} />}
-    </div>
+    <VisualContext contextName="app-layout-toolbar">
+      <div {...wrapperElAttributes}>
+        {!isAppLayoutStateLoading && <AppLayoutSkeletonTopSlot {...props} />}
+        <main {...mainElAttributes}>
+          {!isAppLayoutStateLoading && <AppLayoutSkeletonTopContentSlot {...props} />}
+          <div {...contentWrapperElAttributes}>
+            {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
+            {/*delay rendering the content until registration of this instance is complete*/}
+            <div {...contentElAttributes}>{isAppLayoutStateLoading || registered ? content : null}</div>
+          </div>
+          {!isAppLayoutStateLoading && <AppLayoutSkeletonBottomContentSlot {...props} />}
+        </main>
+        {!isAppLayoutStateLoading && <AppLayoutSkeletonSideSlot {...props} />}
+      </div>
+    </VisualContext>
   );
 };

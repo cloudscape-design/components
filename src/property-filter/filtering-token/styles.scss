@@ -29,7 +29,7 @@ $border-radius-inner-token: calc(#{awsui.$border-radius-token} / 2);
     min-block-size: calc(2px + #{awsui.$size-vertical-input});
 
     &.compact-mode {
-      min-block-size: calc(2px + 2 * #{styles.$control-border-width} + #{awsui.$size-vertical-input});
+      min-block-size: calc(2px + 2 * #{awsui.$border-width-token} + #{awsui.$size-vertical-input});
     }
   }
 }
@@ -40,8 +40,8 @@ $border-radius-inner-token: calc(#{awsui.$border-radius-token} / 2);
 
 .token,
 .inner-token {
-  border-block: awsui.$border-width-field solid constants.$token-border-color;
-  border-inline: awsui.$border-width-field solid constants.$token-border-color;
+  border-block: awsui.$border-width-token solid constants.$token-border-color;
+  border-inline: awsui.$border-width-token solid constants.$token-border-color;
   display: flex;
   align-items: stretch;
   background: constants.$token-background;
@@ -116,7 +116,7 @@ $border-radius-inner-token: calc(#{awsui.$border-radius-token} / 2);
   padding-inline: awsui.$space-xxs;
   color: awsui.$color-text-interactive-default;
   background-color: transparent;
-  border-inline-start: styles.$control-border-width solid constants.$token-border-color;
+  border-inline-start: awsui.$border-width-button solid constants.$token-border-color;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(awsui.$space-filtering-token-dismiss-button-focus-outline-gutter);
