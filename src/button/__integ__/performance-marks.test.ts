@@ -15,6 +15,7 @@ function setupTest(
     const page = new BasePageObject(browser);
     await browser.url(`#/light/button/${pageName}`);
     const getMarks = async () => {
+      await new Promise(r => setTimeout(r, 200));
       const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);
       return marks.filter(m => m.detail?.source === 'awsui');
     };
@@ -37,6 +38,7 @@ describe('Button', () => {
         instanceIdentifier: expect.any(String),
         loading: false,
         disabled: false,
+        inViewport: true,
         text: 'Primary button',
       });
 
@@ -57,6 +59,7 @@ describe('Button', () => {
         instanceIdentifier: marks[0].detail.instanceIdentifier,
         loading: false,
         disabled: false,
+        inViewport: true,
         text: 'Primary button',
       });
 
@@ -68,6 +71,7 @@ describe('Button', () => {
         instanceIdentifier: marks[1].detail.instanceIdentifier,
         loading: false,
         disabled: false,
+        inViewport: true,
         text: 'Primary button with loading and disabled props',
       });
 
@@ -109,6 +113,7 @@ describe('Button', () => {
         instanceIdentifier: marks[0].detail.instanceIdentifier,
         loading: false,
         disabled: false,
+        inViewport: true,
         text: 'Primary button',
       });
 
@@ -120,6 +125,7 @@ describe('Button', () => {
         instanceIdentifier: marks[1].detail.instanceIdentifier,
         loading: false,
         disabled: false,
+        inViewport: true,
         text: 'Primary button',
       });
 
