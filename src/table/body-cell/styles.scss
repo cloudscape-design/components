@@ -213,7 +213,7 @@ $cell-negative-space-vertical: 2px;
   &-shaded {
     background: awsui.$color-background-cell-shaded;
   }
-  &.has-striped-rows:not(.body-cell-selected) {
+  &.has-striped-rows:not(.body-cell-selected):not(.body-cell-last-row) {
     border-block-end-color: awsui.$color-border-cell-shaded;
   }
   &-selected {
