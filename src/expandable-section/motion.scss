@@ -9,8 +9,7 @@
 .content {
   &-enter {
     @include styles.with-motion {
-      animation: awsui-motion-fade-in tokens.$motion-duration-expandable-section
-        tokens.$motion-easing-expandable-section;
+      animation: awsui-motion-fade-in tokens.$motion-duration-show-paced tokens.$motion-easing-show-paced;
       @include styles.animation-fade-in;
     }
   }
@@ -19,14 +18,13 @@
 .trigger {
   &-expanded {
     @include styles.with-motion {
-      transition: border-bottom-color tokens.$motion-duration-expandable-section
-        tokens.$motion-easing-expandable-section;
+      transition: border-bottom-color tokens.$motion-duration-show-paced tokens.$motion-easing-show-paced;
     }
   }
 }
 
 .icon {
   @include styles.with-motion {
-    transition: transform tokens.$motion-duration-expand-toggle tokens.$motion-easing-expand-toggle;
+    transition: transform tokens.$motion-duration-rotate-90 tokens.$motion-easing-rotate-90;
   }
 }

@@ -80,8 +80,6 @@ function ChartFilter<T>({ series, i18nStrings, selectedSeries, onChange, ...rest
         statusType="finished"
         keepOpen={true}
         hideTokens={true}
-        enableSelectAll={true}
-        i18nStrings={{ selectAllText: 'Select all' }}
       />
     </InternalFormField>
   );

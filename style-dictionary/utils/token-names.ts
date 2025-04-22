@@ -633,11 +633,7 @@ export type MotionTokenName =
   | 'motionKeyframesFadeIn'
   | 'motionKeyframesFadeOut'
   | 'motionKeyframesStatusIconError'
-  | 'motionKeyframesScalePopup'
-  | 'motionDurationExpandableSection'
-  | 'motionEasingExpandableSection'
-  | 'motionDurationExpandToggle'
-  | 'motionEasingExpandToggle';
+  | 'motionKeyframesScalePopup';
 export type SizesTokenName =
   | 'sizeCalendarGridWidth'
   | 'sizeControl'

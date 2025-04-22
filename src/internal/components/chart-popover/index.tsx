@@ -54,9 +54,6 @@ export interface ChartPopoverProps extends PopoverProps {
 
   /** Popover footer */
   footer?: React.ReactNode;
-
-  hoverDismissButton?: boolean;
-  allowScrollToFit?: boolean;
 }
 
 export default React.forwardRef(ChartPopover);
@@ -67,8 +64,6 @@ function ChartPopover(
     size = 'medium',
     fixedWidth = false,
     dismissButton = false,
-    hoverDismissButton = false,
-    allowScrollToFit = false,
     dismissAriaLabel,
 
     children,
@@ -143,12 +138,11 @@ function ChartPopover(
         )}
         keepPosition={true}
         allowVerticalOverflow={true}
-        allowScrollToFit={isPinned || allowScrollToFit}
+        allowScrollToFit={isPinned}
         hoverArea={true}
       >
         <PopoverBody
-          dismissButton={dismissButton || hoverDismissButton}
-          autoFocusDismissButton={!(hoverDismissButton === true)}
+          dismissButton={dismissButton}
           dismissAriaLabel={dismissAriaLabel}
           header={<span className={testClasses.header}>{title}</span>}
           onDismiss={onDismiss}

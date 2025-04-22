@@ -4,7 +4,7 @@
 import React from 'react';
 
 import { Box } from '~components';
-import ChartFilter from '~components/internal/components/chart-filter-mini';
+import ChartFilter from '~components/internal/components/chart-filter';
 import {
   colorChartsPaletteCategorical1,
   colorChartsPaletteCategorical2,

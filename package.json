@@ -22,8 +22,7 @@
     "start:watch": "gulp watch",
     "start:dev": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.js",
     "start:integ": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.integ.js",
-    "prepare": "husky",
-    "postinstall": "node ./scripts/install-peer-dependency.js theming-core:expose-size-tokens"
+    "prepare": "husky"
   },
   "dependencies": {
     "@cloudscape-design/collection-hooks": "^1.0.0",
@@ -165,7 +164,7 @@
     {
       "path": "lib/components/internal/widget-exports.js",
       "brotli": false,
-      "limit": "753 kB",
+      "limit": "764 kB",
       "ignore": "react-dom"
     }
   ],
