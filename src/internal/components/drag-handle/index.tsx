@@ -15,6 +15,7 @@ const InternalDragHandle = forwardRef(
       variant,
       size,
       ariaLabel,
+      ariaLabelledBy,
       ariaDescribedby,
       tooltipText,
       ariaValue,
@@ -41,6 +42,7 @@ const InternalDragHandle = forwardRef(
           variant={variant}
           size={size}
           ariaLabel={ariaLabel}
+          ariaLabelledBy={ariaLabelledBy}
           ariaDescribedby={ariaDescribedby}
           ariaValue={ariaValue}
           disabled={disabled}
