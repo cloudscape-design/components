@@ -18,6 +18,7 @@ const DragHandleButton = forwardRef(
       size = 'normal',
       className,
       ariaLabel,
+      ariaLabelledBy,
       ariaDescribedby,
       ariaValue,
       disabled,
@@ -62,6 +63,7 @@ const DragHandleButton = forwardRef(
           disabled && styles['handle-disabled']
         )}
         aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
         aria-describedby={ariaDescribedby}
         aria-disabled={disabled}
         aria-valuemax={ariaValue?.valueMax}
