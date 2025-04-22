@@ -17,11 +17,28 @@ export function createWidgetizedComponent<Component extends FunctionComponent<an
 ) {
   return (Loader?: Component): Component => {
     return (props => {
+      const [mounted, setMounted] = useState(false);
       const isRefresh = useVisualRefresh();
       if (isRefresh && getGlobalFlag('appLayoutWidget') && Loader) {
         return <Loader Skeleton={Skeleton} {...(props as any)} />;
       }
 
+      useEffect(() => {
+        if (mounted) {
+          return;
+        }
+
+        const timeoutId = setTimeout(() => {
+          setMounted(true);
+        }, 1000);
+
+        return () => {
+          clearTimeout(timeoutId);
+        };
+      }, [mounted, setMounted]);
+
+      // uncomment if you want to test async behaviour for widgets
+      // return mounted ? <Implementation {...(props as any)} /> : <div />;
       return <Implementation {...(props as any)} />;
     }) as Component;
   };
