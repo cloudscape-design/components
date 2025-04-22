@@ -42,6 +42,17 @@ test('assigns aria label and aria description', () => {
   expect(document.querySelector(`.${styles.handle}`)).toHaveAccessibleDescription('handle');
 });
 
+test('assigns aria-labelledby attribute', () => {
+  render(
+    <div>
+      <div id="label-element">custom label</div>
+      <DragHandleButton ariaLabelledBy="label-element" />
+    </div>
+  );
+  expect(document.querySelector(`.${styles.handle}`)).toHaveAttribute('aria-labelledby', 'label-element');
+  expect(document.querySelector(`.${styles.handle}`)).toHaveAccessibleName('custom label');
+});
+
 test('has role="button" by default', () => {
   render(<DragHandleButton ariaLabel="drag handle" />);
 
