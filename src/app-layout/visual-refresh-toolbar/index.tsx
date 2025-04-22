@@ -1,27 +1,57 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { ForwardedRef, useState } from 'react';
+import * as portals from 'react-reverse-portal';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { AppLayoutProps } from '../interfaces';
 import { AppLayoutVisibilityContext } from './contexts';
 import { AppLayoutInternalProps } from './interfaces';
-import { useAppLayout } from './internal';
+import { AppLayoutState } from './internal';
 import { SkeletonLayout } from './skeleton';
+import { useAppLayout } from './use-app-layout';
+
+const AppLayoutStateParent = (props: {
+  props: AppLayoutInternalProps;
+  forwardRef: ForwardedRef<AppLayoutProps.Ref>;
+  children: (state: ReturnType<typeof useAppLayout>) => React.ReactNode;
+  node: portals.HtmlPortalNode;
+  stateMounted: boolean;
+}) => {
+  if (!props.stateMounted) {
+    return <>{props.children({} as any)}</>;
+  }
+
+  return <portals.OutPortal {...props} />;
+};
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
   (props, forwardRef) => {
-    const { breadcrumbs } = props;
-
-    const appLayoutState = useAppLayout(props, forwardRef);
-    const { isIntersecting, hasToolbar } = appLayoutState;
+    const [stateMounted, setStateMounted] = useState(false);
+    const portalNode = React.useMemo(() => (typeof window !== 'undefined' ? portals.createHtmlPortalNode() : null), []);
 
     return (
-      <AppLayoutVisibilityContext.Provider value={isIntersecting}>
-        {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
-        {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
-        <SkeletonLayout appLayoutProps={props} appLayoutState={appLayoutState} />
-      </AppLayoutVisibilityContext.Provider>
+      <>
+        <portals.InPortal node={portalNode!}>
+          <AppLayoutState props={props} forwardRef={forwardRef} onMount={() => setStateMounted(true)}>
+            {() => <></>}
+          </AppLayoutState>
+        </portals.InPortal>
+        <AppLayoutStateParent props={props} forwardRef={forwardRef} node={portalNode!} stateMounted={stateMounted}>
+          {appLayoutState => {
+            return (
+              <AppLayoutVisibilityContext.Provider value={appLayoutState?.isIntersecting ?? true}>
+                {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
+                {!appLayoutState?.hasToolbar && props.breadcrumbs ? (
+                  <ScreenreaderOnly>{props.breadcrumbs}</ScreenreaderOnly>
+                ) : null}
+
+                <SkeletonLayout appLayoutProps={props} appLayoutState={appLayoutState} />
+              </AppLayoutVisibilityContext.Provider>
+            );
+          }}
+        </AppLayoutStateParent>
+      </>
     );
   }
 );

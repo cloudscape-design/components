@@ -41,6 +41,7 @@
     "intl-messageformat": "^10.3.1",
     "mnth": "^2.0.0",
     "react-keyed-flatten-children": "^2.2.1",
+    "react-reverse-portal": "^2.3.0",
     "react-transition-group": "^4.4.2",
     "tslib": "^2.4.0",
     "weekstart": "^1.1.0"

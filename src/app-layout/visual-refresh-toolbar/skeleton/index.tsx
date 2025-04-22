@@ -8,7 +8,6 @@ import {
   AppLayoutSkeletonSideSlot,
   AppLayoutSkeletonTopContentSlot,
   AppLayoutSkeletonTopSlot,
-  useSkeletonSlotsAttributes,
 } from '../internal';
 import { useAppLayout } from '../use-app-layout';
 
@@ -16,6 +15,8 @@ export interface SkeletonLayoutProps {
   appLayoutProps: AppLayoutInternalProps;
   appLayoutState: ReturnType<typeof useAppLayout>;
 }
+
+import { useSkeletonSlotsAttributes } from './widget-slots';
 
 export const SkeletonLayout = (props: SkeletonLayoutProps) => {
   const { appLayoutProps, appLayoutState } = props;
@@ -29,19 +30,21 @@ export const SkeletonLayout = (props: SkeletonLayoutProps) => {
     contentElAttributes,
   } = useSkeletonSlotsAttributes(props) ?? {};
 
+  const isAppLayoutStateLoading = Object.keys(appLayoutState).length === 0;
+
   return (
     <div {...wrapperElAttributes}>
-      <AppLayoutSkeletonTopSlot {...props} />
+      {!isAppLayoutStateLoading && <AppLayoutSkeletonTopSlot {...props} />}
       <main {...mainElAttributes}>
-        <AppLayoutSkeletonTopContentSlot {...props} />
+        {!isAppLayoutStateLoading && <AppLayoutSkeletonTopContentSlot {...props} />}
         <div {...contentWrapperElAttributes}>
           {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
           {/*delay rendering the content until registration of this instance is complete*/}
-          <div {...contentElAttributes}>{registered ? content : null}</div>
+          <div {...contentElAttributes}>{isAppLayoutStateLoading || registered ? content : null}</div>
         </div>
-        <AppLayoutSkeletonBottomContentSlot {...props} />
+        {!isAppLayoutStateLoading && <AppLayoutSkeletonBottomContentSlot {...props} />}
       </main>
-      <AppLayoutSkeletonSideSlot {...props} />
+      {!isAppLayoutStateLoading && <AppLayoutSkeletonSideSlot {...props} />}
     </div>
   );
 };

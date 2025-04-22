@@ -35,8 +35,15 @@ function createWidgetizedComponentMock(Implementation: React.ComponentType) {
   };
 }
 
+function createWidgetizedFunctionMock(fn: (args: any[]) => any) {
+  return () => {
+    return (...args: any[]) => fn(args);
+  };
+}
+
 jest.mock('../../../lib/components/internal/widgets', () => ({
   createWidgetizedComponent: createWidgetizedComponentMock,
+  createWidgetizedFunction: createWidgetizedFunctionMock,
 }));
 jest.mock('../../../lib/components/internal/hooks/use-unique-id', () => {
   let counter = 0;

@@ -17,12 +17,12 @@ import visualRefreshStyles from '../../../lib/components/app-layout/visual-refre
 import visualRefreshToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 
 export function renderComponent(jsx: React.ReactElement) {
-  const { container, rerender } = render(jsx);
+  const { container, rerender, ...rest } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
 
   const isUsingGridLayout = wrapper.getElement().classList.contains(visualRefreshStyles.layout);
 
-  return { wrapper, rerender, isUsingGridLayout, container };
+  return { wrapper, rerender, isUsingGridLayout, container, ...rest };
 }
 
 type Theme = 'refresh' | 'refresh-toolbar' | 'classic';

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
 
@@ -27,10 +27,51 @@ export function createWidgetizedComponent<Component extends FunctionComponent<an
   };
 }
 
-export function createWidgetizedFunction<F extends (...args: any[]) => any>(fn: F): () => F {
+// export default function useImportedHook(importPromise, slots, args, defaultReturn) {
+export default function useImportedHook(importPromise: any, args: any, defaultReturn: any) {
+  const [loaded, setLoaded] = useState(false);
+  const isLoading = useRef(false);
+  const importedHook = useRef<((props: any) => void) | null>(null);
+  const isMounted = useRef(true);
+  useEffect(
+    () => () => {
+      isMounted.current = false;
+    },
+    []
+  );
+
+  if (importPromise && !loaded && !isLoading.current) {
+    isLoading.current = true;
+    importPromise.then((module: any) => {
+      if (isMounted.current) {
+        importedHook.current = module;
+        setLoaded(true);
+      }
+    });
+  }
+
+  if (!loaded) {
+    return defaultReturn;
+  }
+
+  return importedHook.current?.(args);
+}
+
+export function createWidgetizedFunction<F extends (...args: any[]) => any>(
+  fn: F,
+  defaultFn: F = (() => null) as F
+): () => F {
   return (): F => {
     return ((...args: Parameters<F>): ReturnType<F> => {
-      return fn(...args);
+      return useImportedHook(
+        new Promise(resolve => {
+          setTimeout(() => {
+            return resolve(fn);
+          }, 0);
+        }),
+        args,
+        defaultFn(...args)
+      );
     }) as F;
   };
 }

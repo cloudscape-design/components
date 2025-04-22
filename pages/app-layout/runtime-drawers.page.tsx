@@ -31,6 +31,7 @@ type DemoContext = React.Context<
 >;
 
 export default function WithDrawers() {
+  const [counter, setCounter] = useState(0);
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const [helpPathSlug, setHelpPathSlug] = useState<string>('default');
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
@@ -94,14 +95,14 @@ export default function WithDrawers() {
               </Header>
 
               <SpaceBetween size="xs">
+                <div>Counter {counter}</div>
+                <button onClick={() => setCounter(prev => prev + 1)}>+1</button>
                 <Toggle checked={hasTools} onChange={({ detail }) => setUrlParams({ hasTools: detail.checked })}>
                   Use Tools
                 </Toggle>
-
                 <Toggle checked={hasDrawers} onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}>
                   Use Drawers
                 </Toggle>
-
                 <Button
                   onClick={() => awsuiPlugins.appLayout.openDrawer('circle4-global')}
                   data-testid="open-drawer-button"

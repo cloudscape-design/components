@@ -16,7 +16,7 @@ import styles from '../styles.css.js';
 
 const contentTypeCustomWidths: Array<string | undefined> = ['dashboard', 'cards', 'table'];
 
-const useSkeletonSlotsAttributes = ({ appLayoutProps, appLayoutState }: SkeletonLayoutProps) => {
+export const useSkeletonSlotsAttributes = ({ appLayoutProps, appLayoutState }: SkeletonLayoutProps) => {
   const {
     intersectionObserverRef,
     rootRef,
@@ -27,11 +27,11 @@ const useSkeletonSlotsAttributes = ({ appLayoutProps, appLayoutState }: Skeleton
     hasToolbar,
     verticalOffsets,
     activeDrawer,
-  } = appLayoutState;
+  } = appLayoutState ?? {};
   const { contentType, placement, maxContentWidth, navigationWidth, minContentWidth, disableContentPaddings } =
     appLayoutProps;
-  const ref = useMergeRefs(intersectionObserverRef, rootRef);
   const isMobile = useMobile();
+  const ref = useMergeRefs(intersectionObserverRef, rootRef);
   const toolsOpen = !!activeDrawer;
   const anyPanelOpen = resolvedNavigationOpen || toolsOpen;
   const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
@@ -56,11 +56,11 @@ const useSkeletonSlotsAttributes = ({ appLayoutProps, appLayoutState }: Skeleton
   const contentWrapperElAttributes = {
     className: clsx(styles.main, { [styles['main-disable-paddings']]: disableContentPaddings }),
     style: {
-      paddingBlockEnd: splitPanelOffsets.mainContentPaddingBlockEnd,
+      paddingBlockEnd: splitPanelOffsets?.mainContentPaddingBlockEnd,
       ...(hasToolbar || !isNested
         ? {
-            [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
-            [globalVars.stickyVerticalBottomOffset]: `${splitPanelOffsets.stickyVerticalBottomOffset}px`,
+            [globalVars.stickyVerticalTopOffset]: `${verticalOffsets?.header}px`,
+            [globalVars.stickyVerticalBottomOffset]: `${splitPanelOffsets?.stickyVerticalBottomOffset}px`,
           }
         : {}),
       ...(!isMobile ? { minWidth: `${minContentWidth}px` } : {}),

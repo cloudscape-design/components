@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { createWidgetizedAppLayoutState } from './app-layout-state';
 import { createWidgetizedAppLayoutDrawer, createWidgetizedAppLayoutGlobalDrawers } from './drawer';
 import { createWidgetizedAppLayoutNavigation } from './navigation';
 import { createWidgetizedAppLayoutNotifications } from './notifications';
@@ -26,6 +27,7 @@ export const AppLayoutSkeletonTopSlot = createWidgetizedAppLayoutTopPageSlot();
 export const AppLayoutSkeletonSideSlot = createWidgetizedAppLayoutSidePageSlot();
 export const AppLayoutSkeletonTopContentSlot = createWidgetizedAppLayoutTopPageContentSlot();
 export const AppLayoutSkeletonBottomContentSlot = createWidgetizedAppLayoutBottomPageContentSlot();
+export const AppLayoutState = createWidgetizedAppLayoutState();
 
 export const useSkeletonSlotsAttributes = createWidgetizedUseSkeletonSlotsAttrributes();
 export const useAppLayout = createWidgetizedUseAppLayout();
