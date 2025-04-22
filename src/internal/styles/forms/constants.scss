@@ -6,7 +6,6 @@
 @use '../utils/theming' as theming;
 @use '../tokens' as awsui;
 
-$control-border-width: awsui.$border-width-field;
 $control-border-radius: awsui.$border-radius-input;
 
 // Use for options in dropdowns
@@ -26,7 +25,7 @@ $control-padding: $control-padding-vertical $control-padding-horizontal;
 
 $invalid-control-left-border: awsui.$border-invalid-width;
 $invalid-control-left-padding: calc(
-  #{$control-padding-horizontal} - (#{$invalid-control-left-border} - #{$control-border-width})
+  #{$control-padding-horizontal} - (#{$invalid-control-left-border} - #{awsui.$border-width-field})
 );
 
 $control-icon-vertical-offset: calc(50% - #{awsui.$line-height-body-m} / 2);
