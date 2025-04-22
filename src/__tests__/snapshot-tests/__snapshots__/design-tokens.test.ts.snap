@@ -18480,8 +18480,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
-            "dark": "#dedee3",
-            "light": "#424650",
+            "dark": "#424650",
+            "light": "#161d26",
           },
         },
         "color-border-dropdown-item-hover": {
@@ -21038,8 +21038,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
-            "dark": "#dedee3",
-            "light": "#dedee3",
+            "dark": "#424650",
+            "light": "#424650",
           },
         },
         "color-border-dropdown-item-hover": {
@@ -23596,8 +23596,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
-            "dark": "#dedee3",
-            "light": "#424650",
+            "dark": "#424650",
+            "light": "#161d26",
           },
         },
         "color-border-dropdown-item-hover": {
@@ -26154,8 +26154,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
-            "dark": "#dedee3",
-            "light": "#424650",
+            "dark": "#424650",
+            "light": "#161d26",
           },
         },
         "color-border-dropdown-item-hover": {
@@ -28712,8 +28712,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
-            "dark": "#dedee3",
-            "light": "#424650",
+            "dark": "#424650",
+            "light": "#161d26",
           },
         },
         "color-border-dropdown-item-hover": {
@@ -31270,8 +31270,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
-            "dark": "#dedee3",
-            "light": "#dedee3",
+            "dark": "#424650",
+            "light": "#424650",
           },
         },
         "color-border-dropdown-item-hover": {
@@ -33828,8 +33828,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
-            "dark": "#dedee3",
-            "light": "#dedee3",
+            "dark": "#424650",
+            "light": "#424650",
           },
         },
         "color-border-dropdown-item-hover": {
@@ -36386,8 +36386,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-border-dropdown-item-focused": {
       "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
       "$value": {
-        "dark": "#dedee3",
-        "light": "#424650",
+        "dark": "#424650",
+        "light": "#161d26",
       },
     },
     "color-border-dropdown-item-hover": {
