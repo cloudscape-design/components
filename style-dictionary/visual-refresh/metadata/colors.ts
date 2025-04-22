@@ -815,16 +815,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: false,
     public: false,
   },
-  colorShadowDefault: {
-    description: 'The shadow color used in popover and annotation context',
-    themeable: false,
-    public: true,
-  },
-  colorBorderPopover: {
-    description: 'The border color used in popover and annotation context',
-    themeable: false,
-    public: true,
-  },
 };
 
 export default metadata;

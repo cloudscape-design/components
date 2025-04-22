@@ -16,7 +16,6 @@ import styles from './styles.css.js';
 
 export interface PopoverBodyProps {
   dismissButton: boolean;
-  autoFocusDismissButton?: boolean;
   dismissAriaLabel: string | undefined;
   onDismiss: (() => void) | undefined;
 
@@ -33,7 +32,6 @@ export interface PopoverBodyProps {
 
 export default function PopoverBody({
   dismissButton: showDismissButton,
-  autoFocusDismissButton = true,
   dismissAriaLabel,
   header,
   children,
@@ -63,11 +61,11 @@ export default function PopoverBody({
   // because we also want to focus the dismiss button when it
   // is added dynamically (e.g. in chart popovers)
   useEffect(() => {
-    if (showDismissButton && !dismissButtonFocused.current && autoFocusDismissButton) {
+    if (showDismissButton && !dismissButtonFocused.current) {
       dismissButtonRef.current?.focus({ preventScroll: true });
     }
     dismissButtonFocused.current = showDismissButton;
-  }, [showDismissButton, autoFocusDismissButton]);
+  }, [showDismissButton]);
 
   const dismissButton = (showDismissButton ?? null) && (
     <div

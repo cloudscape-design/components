@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import ChartPopover from '../internal/components/chart-popover';
-import ChartPopoverFooter from '../internal/components/chart-popover-footer';
 import ChartSeriesDetails, { ExpandedSeries } from '../internal/components/chart-series-details';
 import { Transition } from '../internal/components/transition';
 import { HighlightDetails } from './format-highlighted';
@@ -67,6 +66,7 @@ function MixedChartPopover<T extends ChartDataTypes>(
               onMouseEnter={onMouseEnter}
               onMouseLeave={onMouseLeave}
               onBlur={onBlur}
+              footer={footer}
             >
               <ChartSeriesDetails
                 key={highlightDetails.position}
@@ -88,7 +88,6 @@ function MixedChartPopover<T extends ChartDataTypes>(
                   })
                 }
               />
-              {footer && <ChartPopoverFooter>{footer}</ChartPopoverFooter>}
             </ChartPopover>
           )}
         </div>

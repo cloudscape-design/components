@@ -50,11 +50,6 @@ const tokens: StyleDictionary.MotionDictionary = {
   motionKeyframesFadeOut: 'awsui-fade-out-' + tokenStylesSuffix,
   motionKeyframesStatusIconError: 'awsui-status-icon-error-' + tokenStylesSuffix,
   motionKeyframesScalePopup: 'awsui-scale-popup-' + tokenStylesSuffix,
-
-  motionDurationExpandableSection: '{motionDurationTransitionShowPaced}',
-  motionEasingExpandableSection: '{motionEasingShowPaced}',
-  motionDurationExpandToggle: '{motionDurationRotate90}',
-  motionEasingExpandToggle: '{motionEasingRotate90}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedMotionScopeDictionary = expandMotionDictionary(tokens);

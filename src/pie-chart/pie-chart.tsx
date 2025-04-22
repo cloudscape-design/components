@@ -10,7 +10,6 @@ import InternalBox from '../box/internal';
 import { useInternalI18n } from '../i18n/context';
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import ChartPopover from '../internal/components/chart-popover';
-import ChartPopoverFooter from '../internal/components/chart-popover-footer';
 import SeriesDetails from '../internal/components/chart-series-details';
 import SeriesMarker from '../internal/components/chart-series-marker';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
@@ -391,9 +390,9 @@ export default <T extends PieChartProps.Datum>({
           size={detailPopoverSize}
           onMouseLeave={checkMouseLeave}
           onBlur={onApplicationBlur}
+          footer={detailPopoverFooterContent}
         >
           {popoverContent}
-          {detailPopoverFooterContent && <ChartPopoverFooter>{detailPopoverFooterContent}</ChartPopoverFooter>}
         </ChartPopover>
       )}
       <InternalLiveRegion sources={[popoverContentRef]} />

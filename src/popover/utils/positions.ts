@@ -267,13 +267,15 @@ export function calculatePosition({
       ? getIntersection([rect, viewport])
       : getIntersection([rect, viewport, container]);
 
+    // When min height is set, the popover is considered fitting the container if the available space
+    // is the same or larger than min height, even if it means the scrollbar is needed.
     const fitsBlockSize =
       minHeight === undefined
         ? visibleArea && visibleArea.blockSize === body.blockSize
         : visibleArea && visibleArea.blockSize >= minHeight;
-    const fitsWithoutOverflow = visibleArea && visibleArea.inlineSize === body.inlineSize && fitsBlockSize;
+    const fitsInlineSize = visibleArea && visibleArea.inlineSize === body.inlineSize;
 
-    if (fitsWithoutOverflow) {
+    if (fitsBlockSize && fitsInlineSize) {
       const scrollable = visibleArea && visibleArea.blockSize < body.blockSize;
       return { internalPosition, rect: scrollable ? fitIntoContainer(rect, viewport) : rect, scrollable };
     }
