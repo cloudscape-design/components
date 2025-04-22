@@ -141,6 +141,7 @@ const InternalMultiselect = React.forwardRef(
 
     const dropdownStatus = multiselectProps.dropdownStatus;
     const dropdownProps = multiselectProps.getDropdownProps();
+    const hasFilteredOptions = multiselectProps.filteredOptions.length > 0;
 
     return (
       <div
@@ -182,7 +183,7 @@ const InternalMultiselect = React.forwardRef(
             useInteractiveGroups={true}
             screenReaderContent={multiselectProps.announcement}
             highlightType={multiselectProps.highlightType}
-            firstOptionSticky={enableSelectAll}
+            firstOptionSticky={hasFilteredOptions && enableSelectAll}
           />
         </Dropdown>
 
