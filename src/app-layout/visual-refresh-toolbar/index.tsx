@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ForwardedRef, useState } from 'react';
-import * as portals from 'react-reverse-portal';
+import React, { useState } from 'react';
+import { createHtmlPortalNode, HtmlPortalNode, InPortal, OutPortal } from 'react-reverse-portal';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { AppLayoutProps } from '../interfaces';
@@ -12,32 +12,30 @@ import { SkeletonLayout } from './skeleton';
 import { useAppLayout } from './use-app-layout';
 
 const AppLayoutStateParent = (props: {
-  props: AppLayoutInternalProps;
-  forwardRef: ForwardedRef<AppLayoutProps.Ref>;
   children: (state: ReturnType<typeof useAppLayout>) => React.ReactNode;
-  node: portals.HtmlPortalNode;
+  node: HtmlPortalNode;
   stateMounted: boolean;
 }) => {
   if (!props.stateMounted) {
     return <>{props.children({} as any)}</>;
   }
 
-  return <portals.OutPortal {...props} />;
+  return <OutPortal {...props} />;
 };
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
   (props, forwardRef) => {
     const [stateMounted, setStateMounted] = useState(false);
-    const portalNode = React.useMemo(() => (typeof window !== 'undefined' ? portals.createHtmlPortalNode() : null), []);
+    const portalNode = React.useMemo(() => (typeof window !== 'undefined' ? createHtmlPortalNode() : null), []);
 
     return (
       <>
-        <portals.InPortal node={portalNode!}>
+        <InPortal node={portalNode!}>
           <AppLayoutState props={props} forwardRef={forwardRef} onMount={() => setStateMounted(true)}>
             {() => <></>}
           </AppLayoutState>
-        </portals.InPortal>
-        <AppLayoutStateParent props={props} forwardRef={forwardRef} node={portalNode!} stateMounted={stateMounted}>
+        </InPortal>
+        <AppLayoutStateParent node={portalNode!} stateMounted={stateMounted}>
           {appLayoutState => {
             return (
               <AppLayoutVisibilityContext.Provider value={appLayoutState?.isIntersecting ?? true}>
