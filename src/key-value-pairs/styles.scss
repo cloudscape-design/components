@@ -27,12 +27,12 @@
 
 .term {
   @include styles.font-label;
-  display: inline-flex;
   color: awsui.$color-text-label;
   margin-block-end: awsui.$space-key-value-gap;
 }
 
 .key-label {
+  display: inline-flex;
   @include styles.info-link-spacing;
 }
 
