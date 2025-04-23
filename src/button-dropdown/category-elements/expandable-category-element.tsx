@@ -8,6 +8,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalIcon from '../../icon/internal';
 import Dropdown from '../../internal/components/dropdown';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { GeneratedAnalyticsMetadataButtonDropdownExpand } from '../analytics-metadata/interfaces.js';
 import { CategoryProps } from '../interfaces';
 import ItemsList from '../items-list';
@@ -55,6 +56,8 @@ const ExpandableCategoryElement = ({
     highlightItem(item);
   };
 
+  const isVisualRefresh = useVisualRefresh();
+
   const isDisabledWithReason = !!item.disabledReason && item.disabled;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
   const trigger = item.text && (
@@ -63,6 +66,7 @@ const ExpandableCategoryElement = ({
         [styles.disabled]: disabled,
         [styles.highlighted]: highlighted,
         [styles['is-focused']]: isKeyboardHighlighted,
+        [styles['visual-refresh']]: isVisualRefresh,
       })}
       // We are using the roving tabindex technique to manage the focus state of the dropdown.
       // The current element will always have tabindex=0 which means that it can be tabbed to,
