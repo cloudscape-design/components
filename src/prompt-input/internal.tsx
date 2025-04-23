@@ -113,7 +113,7 @@ const InternalPromptInput = React.forwardRef(
         // this is required so the scrollHeight becomes dynamic, otherwise it will be locked at the highest value for the size it reached e.g. 500px
         textareaRef.current.style.height = 'auto';
 
-        const minTextareaHeight = `calc(${LINE_HEIGHT} +  ${tokens.spaceScaledXxs} * 2 + 2px)`; // the min height of Textarea with 1 row
+        const minTextareaHeight = `calc(${LINE_HEIGHT} +  ${tokens.spaceScaledXxs} * 2)`; // the min height of Textarea with 1 row
 
         if (maxRows === -1) {
           const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
