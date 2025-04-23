@@ -48,6 +48,9 @@ $gutter: awsui.$space-tile-gutter;
   &.refresh {
     padding-block: awsui.$space-xs;
     padding-inline: awsui.$space-s;
+    &.selected:not(.disabled):not(.readonly) {
+      box-shadow: inset 0 0 0 awsui.$border-width-field awsui.$color-border-item-focused;
+    }
   }
 
   &.has-metadata {
@@ -61,7 +64,6 @@ $gutter: awsui.$space-tile-gutter;
     border-block: awsui.$border-width-field solid awsui.$color-border-item-selected;
     border-inline: awsui.$border-width-field solid awsui.$color-border-item-selected;
     background: awsui.$color-background-item-selected;
-    box-shadow: inset 0 0 0 awsui.$border-width-field awsui.$color-border-item-focused;
   }
 
   &.disabled {

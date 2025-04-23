@@ -84,7 +84,7 @@ $padding-block-inner-filtering-token: 0px;
   }
 
   &.disabled {
-    @include styles.form-disabled-element;
+    @include styles.button-trigger-disabled-element;
 
     > .arrow {
       color: awsui.$color-text-button-inline-icon-disabled;
@@ -102,7 +102,7 @@ $padding-block-inner-filtering-token: 0px;
   // read-only in-filtering-token (i.e. for property filter readOnlyOperations)
   // should retain standard borders, only the icon changes
   &.readonly:not(&.disabled):not(&.in-filtering-token) {
-    @include styles.form-readonly-element;
+    @include styles.button-trigger-readonly-element;
   }
 
   &:focus {

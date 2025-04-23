@@ -103,14 +103,17 @@ describe('Multiselect with "select all" control', () => {
     expect(dropdown.findOptionByValue('1')).toBeNull();
   });
 
-  test('is hidden when there are no options to select', () => {
-    const wrapper = renderMultiselectWithSelectAll({ options: [] });
-    wrapper.openDropdown();
-    const dropdown = wrapper.findDropdown();
-    const options = dropdown.findOptions();
-    expect(options.length).toBe(0);
-    expect(dropdown.findSelectAll()).toBe(null);
-  });
+  test.each([false, true])(
+    'is hidden when there are no options to select [virtuaScroll=%s]',
+    (virtualScroll: boolean) => {
+      const wrapper = renderMultiselectWithSelectAll({ options: [], virtualScroll });
+      wrapper.openDropdown();
+      const dropdown = wrapper.findDropdown();
+      const options = dropdown.findOptions();
+      expect(options.length).toBe(0);
+      expect(dropdown.findSelectAll()).toBe(null);
+    }
+  );
 
   describe('with filtering', () => {
     test('does not select non-visible options', () => {
