@@ -11,6 +11,7 @@ import {
 import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import { useDropdownContext } from '../../internal/components/dropdown/context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode/index.js';
 import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
 import { InternalCheckboxItem, InternalItem, ItemProps, LinkItem } from '../interfaces';
 import Tooltip from '../tooltip';
@@ -53,6 +54,8 @@ const ItemElement = ({
     highlightItem(item);
   };
 
+  const isVisualRefresh = useVisualRefresh();
+
   return (
     <li
       className={clsx(styles['item-element'], styles[`variant-${variant}`], {
@@ -62,6 +65,7 @@ const ItemElement = ({
         [styles['has-checkmark']]: isCheckbox,
         [styles['show-divider']]: showDivider,
         [styles['is-focused']]: isKeyboardHighlighted,
+        [styles['visual-refresh']]: isVisualRefresh,
       })}
       role="presentation"
       data-testid={item.id}
