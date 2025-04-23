@@ -21,26 +21,24 @@ test('throws when neither trackRef nor getTrack is provided', () => {
   );
 });
 
-test('accepts track element with trackRef', () => {
-  const element = document.createElement('div');
+test.each([null, document.createElement('div')])('accepts track element with trackRef, track = %s', track => {
   render(
-    <PopoverContainer {...defaultProps} trackRef={{ current: element }}>
+    <PopoverContainer {...defaultProps} trackRef={{ current: track }}>
       content
     </PopoverContainer>
   );
 
   const getTrack = usePopoverPositionSpy.mock.calls[0][0].getTrack;
-  expect(getTrack()).toBe(element);
+  expect(getTrack()).toBe(track);
 });
 
-test('accepts track element with getTrack', () => {
-  const element = document.createElement('div');
+test.each([null, document.createElement('div')])('accepts track element with getTrack, track = %s', track => {
   render(
-    <PopoverContainer {...defaultProps} getTrack={() => element}>
+    <PopoverContainer {...defaultProps} getTrack={() => track}>
       content
     </PopoverContainer>
   );
 
   const getTrack = usePopoverPositionSpy.mock.calls[0][0].getTrack;
-  expect(getTrack()).toBe(element);
+  expect(getTrack()).toBe(track);
 });
