@@ -3,5 +3,4 @@
 
 import InternalExpandableSection from '../../expandable-section/internal';
 export type { InternalExpandableSectionProps } from '../../expandable-section/internal';
-
 export { InternalExpandableSection };

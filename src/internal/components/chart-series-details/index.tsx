@@ -7,7 +7,7 @@ import InternalExpandableSection from '../../../expandable-section/internal';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
 import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
-import getSeriesDetailsText from './series-details-text';
+import getSeriesDetailsText, { screenReaderTextClass } from './series-details-text';
 
 import styles from './styles.css.js';
 
@@ -123,7 +123,7 @@ function SubItems({
           className={clsx(
             styles['inner-list-item'],
             styles['key-value-pair'],
-            (expanded || !expandable) && 'awsui-screenreader-text'
+            (expanded || !expandable) && screenReaderTextClass
           )}
         >
           <span className={styles.key}>{key}</span>
@@ -168,7 +168,7 @@ function ExpandableSeries({
 function NonExpandableSeries({ itemKey, value, subItems, markerType, color }: ListItemProps) {
   return (
     <>
-      <div className={clsx(styles['key-value-pair'], 'awsui-screenreader-text')}>
+      <div className={clsx(styles['key-value-pair'], screenReaderTextClass)}>
         <div className={styles.key}>
           {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
           <span>{itemKey}</span>
