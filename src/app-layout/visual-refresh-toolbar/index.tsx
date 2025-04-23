@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { createHtmlPortalNode, HtmlPortalNode, InPortal, OutPortal } from 'react-reverse-portal';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { AppLayoutProps } from '../interfaces';
 import { AppLayoutVisibilityContext } from './contexts';
 import { AppLayoutInternalProps } from './interfaces';
 import { AppLayoutState } from './internal';
+import { createHtmlPortalNode, HtmlPortalNode, InPortal, OutPortal } from './reverse-portal';
 import { SkeletonLayout } from './skeleton';
 import { useAppLayout } from './use-app-layout';
 
