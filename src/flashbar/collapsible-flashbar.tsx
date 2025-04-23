@@ -18,7 +18,10 @@ import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { throttle } from '../internal/utils/throttle';
-import { GeneratedAnalyticsMetadataFlashbarExpand } from './analytics-metadata/interfaces';
+import {
+  GeneratedAnalyticsMetadataFlashbarCollapse,
+  GeneratedAnalyticsMetadataFlashbarExpand,
+} from './analytics-metadata/interfaces';
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
 import { useFlashbar } from './common';
 import { Flash, focusFlashById } from './flash';
@@ -324,12 +327,11 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
           onClick={toggleCollapseExpand}
           ref={notificationBarRef}
           {...getAnalyticsMetadataAttribute({
-            action: 'expand',
+            action: !isFlashbarStackExpanded ? 'expand' : 'collapse',
             detail: {
               label: 'h2',
-              expanded: `${!isFlashbarStackExpanded}`,
             },
-          } as GeneratedAnalyticsMetadataFlashbarExpand)}
+          } as GeneratedAnalyticsMetadataFlashbarExpand | GeneratedAnalyticsMetadataFlashbarCollapse)}
         >
           <span aria-live="polite" className={styles.status} role="status" id={itemCountElementId}>
             {notificationBarText && <h2 className={styles.header}>{notificationBarText}</h2>}
