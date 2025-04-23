@@ -221,7 +221,7 @@ const InternalButtonDropdown = React.forwardRef(
       const { text, iconName, iconAlt, iconSvg, iconUrl, external, externalIconAriaLabel, ...mainActionProps } =
         mainAction;
       const mainActionIconProps = external
-        ? ({ iconName: 'external', iconAlign: 'right' } as const)
+        ? ({ iconName: 'external', iconAlign: 'right', target: '_blank', rel: 'noopener noreferrer' } as const)
         : ({ iconName, iconAlt, iconSvg, iconUrl } as const);
       const mainActionAriaLabel = externalIconAriaLabel
         ? `${mainAction.ariaLabel ?? mainAction.text} ${mainAction.externalIconAriaLabel}`
