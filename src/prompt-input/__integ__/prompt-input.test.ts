@@ -40,7 +40,7 @@ describe('Prompt input', () => {
     setupTest({}, async page => {
       await expect(page.getPromptInputHeight()).resolves.toEqual(32);
       await page.click('#placeholder-text-button');
-      await expect(page.getPromptInputHeight()).resolves.toEqual(94);
+      await expect(page.getPromptInputHeight()).resolves.toEqual(96);
 
       const clientHeight = await page.getElementProperty(
         getPromptInputWrapper().findNativeTextarea().toSelector(),
