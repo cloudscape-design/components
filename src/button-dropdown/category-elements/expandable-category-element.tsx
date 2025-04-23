@@ -8,7 +8,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalIcon from '../../icon/internal';
 import Dropdown from '../../internal/components/dropdown';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode/index.js';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { GeneratedAnalyticsMetadataButtonDropdownExpand } from '../analytics-metadata/interfaces.js';
 import { CategoryProps } from '../interfaces';
 import ItemsList from '../items-list';
