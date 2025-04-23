@@ -38,6 +38,7 @@ const Multiselect = React.forwardRef(
         tokenLimit: restProps.tokenLimit,
         virtualScroll: restProps.virtualScroll,
         readOnly: restProps.readOnly,
+        enableSelectAll: restProps.enableSelectAll,
       },
       metadata: {
         hasDisabledReasons: options.some(option => Boolean(option.disabledReason)),
