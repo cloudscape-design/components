@@ -38,7 +38,8 @@
   gap: calc(#{seg.$segment-gap} * 2 + #{seg.$segment-divider-width});
 
   &:not(.refresh) {
-    padding-inline: calc(awsui.$space-static-xxxs + 1px);
+    padding-inline: calc(awsui.$space-static-xxxs + awsui.$border-width-field);
+    padding-block: 0;
     gap: calc(#{seg.$segment-gap} * 2 - #{seg.$segment-divider-width});
   }
 
