@@ -57,11 +57,3 @@ export const createAppLayoutToolsDrawerTriggerContext = (tokens: TokenCategory<s
     tokens,
   };
 };
-
-export const createAppLayoutToolbarContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
-  return {
-    id: 'app-layout-toolbar',
-    selector: '.awsui-context-app-layout-toolbar',
-    tokens,
-  };
-};

@@ -61,8 +61,8 @@
 }
 
 .button-wrapper {
-  margin-block: calc(-1 * #{awsui.$space-xxs} - #{awsui.$border-width-button});
-  margin-inline: calc(-1 * #{awsui.$space-xxs} - #{awsui.$border-width-button});
+  margin-block: calc(-1 * #{awsui.$space-xxs} - #{styles.$control-border-width});
+  margin-inline: calc(-1 * #{awsui.$space-xxs} - #{styles.$control-border-width});
 }
 
 .start {

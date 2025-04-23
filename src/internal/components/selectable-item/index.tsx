@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
 import { getBaseProps } from '../../base-component';
 import { getAnalyticsSelectActionMetadata } from './analytics-metadata/utils';
 import { SelectableItemProps } from './interfaces';
@@ -43,7 +42,6 @@ const SelectableItem = (
   }: SelectableItemProps,
   ref: React.Ref<HTMLDivElement>
 ) => {
-  const isVisualRefresh = useVisualRefresh();
   const { className, ...rest } = getBaseProps(restProps);
   const classNames = clsx(className, styles['selectable-item'], {
     [styles.selected]: selected,
@@ -62,7 +60,6 @@ const SelectableItem = (
     [styles.sticky]: sticky,
     [styles['after-header']]: !!afterHeader,
     [styles['with-scrollbar']]: withScrollbar,
-    [styles['visual-refresh']]: isVisualRefresh,
   });
 
   const contentRef = useRef<HTMLDivElement>(null);

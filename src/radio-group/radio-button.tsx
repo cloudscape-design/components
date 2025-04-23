@@ -9,6 +9,7 @@ import AbstractSwitch from '../internal/components/abstract-switch';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { RadioGroupProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -37,6 +38,7 @@ export default React.forwardRef(function RadioButton(
   }: RadioButtonProps,
   ref: React.Ref<HTMLInputElement>
 ) {
+  const isVisualRefresh = useVisualRefresh();
   const radioButtonRef = useRef<HTMLInputElement>(null);
   const mergedRefs = useMergeRefs(radioButtonRef, ref);
 
@@ -81,10 +83,10 @@ export default React.forwardRef(function RadioButton(
               [styles['styled-circle-disabled']]: disabled,
               [styles['styled-circle-readonly']]: readOnly,
             })}
-            strokeWidth={6.25}
+            strokeWidth={isVisualRefresh ? 12 : 8}
             cx={50}
             cy={50}
-            r={46}
+            r={isVisualRefresh ? 44 : 46}
           />
           <circle
             className={clsx(styles['styled-circle-fill'], {

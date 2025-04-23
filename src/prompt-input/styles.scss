@@ -20,8 +20,8 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 
   background-color: awsui.$color-background-input-default;
 
-  border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
-  border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+  border-block: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
 
   &.textarea-readonly {
     @include styles.form-readonly-element;

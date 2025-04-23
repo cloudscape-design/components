@@ -29,8 +29,8 @@ $gutter: awsui.$space-tile-gutter;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
-  border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+  border-block: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
   border-start-start-radius: awsui.$border-radius-tiles;
   border-start-end-radius: awsui.$border-radius-tiles;
   border-end-start-radius: awsui.$border-radius-tiles;
@@ -48,9 +48,6 @@ $gutter: awsui.$space-tile-gutter;
   &.refresh {
     padding-block: awsui.$space-xs;
     padding-inline: awsui.$space-s;
-    &.selected:not(.disabled):not(.readonly) {
-      box-shadow: inset 0 0 0 awsui.$border-width-field awsui.$color-border-item-focused;
-    }
   }
 
   &.has-metadata {
@@ -61,14 +58,14 @@ $gutter: awsui.$space-tile-gutter;
   }
 
   &.selected {
-    border-block: awsui.$border-width-field solid awsui.$color-border-item-selected;
-    border-inline: awsui.$border-width-field solid awsui.$color-border-item-selected;
+    border-block: styles.$control-border-width solid awsui.$color-border-item-selected;
+    border-inline: styles.$control-border-width solid awsui.$color-border-item-selected;
     background: awsui.$color-background-item-selected;
   }
 
   &.disabled {
-    border-block: awsui.$border-width-field solid awsui.$color-border-tiles-disabled;
-    border-inline: awsui.$border-width-field solid awsui.$color-border-tiles-disabled;
+    border-block: styles.$control-border-width solid awsui.$color-border-tiles-disabled;
+    border-inline: styles.$control-border-width solid awsui.$color-border-tiles-disabled;
     background: awsui.$color-background-tiles-disabled;
   }
 

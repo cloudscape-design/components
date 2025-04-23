@@ -56,8 +56,8 @@
   border-start-end-radius: awsui.$border-radius-button;
   border-end-start-radius: awsui.$border-radius-button;
   border-end-end-radius: awsui.$border-radius-button;
-  border-block: awsui.$border-width-button solid;
-  border-inline: awsui.$border-width-button solid;
+  border-block: styles.$control-border-width solid;
+  border-inline: styles.$control-border-width solid;
   padding-block: styles.$control-padding-vertical;
   padding-inline: awsui.$space-button-horizontal;
   display: inline-block; // for <a> as a button

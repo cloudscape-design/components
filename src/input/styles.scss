@@ -50,8 +50,8 @@
   border-start-end-radius: styles.$control-border-radius;
   border-end-start-radius: styles.$control-border-radius;
   border-end-end-radius: styles.$control-border-radius;
-  border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
-  border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+  border-block: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
   @include styles.font-body-m;
   block-size: awsui.$size-vertical-input;
 
@@ -84,7 +84,7 @@
     @include styles.form-invalid-control();
     &.input-has-icon-left {
       padding-inline-start: calc(
-        #{styles.$control-icon-horizontal-padding} - (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+        #{styles.$control-icon-horizontal-padding} - (#{styles.$invalid-control-left-border} - #{styles.$control-border-width})
       );
     }
   }
@@ -93,7 +93,7 @@
     @include styles.form-warning-control();
     &.input-has-icon-left {
       padding-inline-start: calc(
-        #{styles.$control-icon-horizontal-padding} - (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+        #{styles.$control-icon-horizontal-padding} - (#{styles.$invalid-control-left-border} - #{styles.$control-border-width})
       );
     }
   }
