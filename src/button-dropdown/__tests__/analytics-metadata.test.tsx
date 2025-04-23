@@ -74,7 +74,22 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       validateComponentNameAndLabels(nativeButton, labels);
       expect(getGeneratedAnalyticsMetadata(nativeButton)).toEqual({
         action: 'expand',
-        detail: { expanded: 'true', label },
+        detail: { label },
+        ...getMetadataContexts(label, 'normal'),
+      });
+    });
+    test('when expanded', () => {
+      const label = 'Action text';
+      const wrapper = renderButtonDropdown({
+        items,
+        children: label,
+      });
+      wrapper.findTriggerButton()?.click();
+      const nativeButton = wrapper.findTriggerButton()!.getElement();
+      validateComponentNameAndLabels(nativeButton, labels);
+      expect(getGeneratedAnalyticsMetadata(nativeButton)).toEqual({
+        action: 'collapse',
+        detail: { label },
         ...getMetadataContexts(label, 'normal'),
       });
     });
@@ -100,7 +115,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       validateComponentNameAndLabels(nativeButton, labels);
       expect(getGeneratedAnalyticsMetadata(nativeButton)).toEqual({
         action: 'expand',
-        detail: { expanded: 'true', label },
+        detail: { label },
         ...getMetadataContexts(label, 'icon'),
       });
     });
@@ -115,7 +130,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       validateComponentNameAndLabels(nativeButton, labels);
       expect(getGeneratedAnalyticsMetadata(nativeButton)).toEqual({
         action: 'expand',
-        detail: { expanded: 'true', label },
+        detail: { label },
         ...getMetadataContexts(label, 'primary'),
       });
     });
@@ -131,7 +146,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       validateComponentNameAndLabels(nativeButton, labels);
       expect(getGeneratedAnalyticsMetadata(nativeButton)).toEqual({
         action: 'expand',
-        detail: { expanded: 'true', label },
+        detail: { label },
         ...getMetadataContexts(label, 'primary'),
       });
       const mainAction = wrapper.findMainAction()!.getElement();
@@ -215,7 +230,14 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       validateComponentNameAndLabels(enabledCategory, labels);
       expect(getGeneratedAnalyticsMetadata(enabledCategory)).toEqual({
         action: 'expand',
-        detail: { label: 'Instances', id: 'instances', position: '3', expanded: 'true' },
+        detail: { label: 'Instances', id: 'instances', position: '3' },
+        ...getMetadataContexts(label, 'normal'),
+      });
+
+      wrapper.findExpandableCategoryById('instances')?.click();
+      expect(getGeneratedAnalyticsMetadata(enabledCategory)).toEqual({
+        action: 'collapse',
+        detail: { label: 'Instances', id: 'instances', position: '3' },
         ...getMetadataContexts(label, 'normal'),
       });
 
@@ -255,7 +277,6 @@ describe('Internal Button Dropdown', () => {
       action: 'expand',
       detail: {
         label: 'Action text',
-        expanded: 'true',
       },
     });
   });

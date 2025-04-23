@@ -19,7 +19,10 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { isDevelopment } from '../internal/is-development';
 import { spinWhenOpen } from '../internal/styles/motion/utils';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { GeneratedAnalyticsMetadataButtonDropdownExpand } from './analytics-metadata/interfaces.js';
+import {
+  GeneratedAnalyticsMetadataButtonDropdownCollapse,
+  GeneratedAnalyticsMetadataButtonDropdownExpand,
+} from './analytics-metadata/interfaces.js';
 import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
 import ItemsList from './items-list';
 import { useButtonDropdown } from './utils/use-button-dropdown';
@@ -192,12 +195,14 @@ const InternalButtonDropdown = React.forwardRef(
 
     let trigger: React.ReactNode = null;
 
-    const analyticsMetadata: GeneratedAnalyticsMetadataButtonDropdownExpand | Record<string, never> = disabled
+    const analyticsMetadata:
+      | GeneratedAnalyticsMetadataButtonDropdownExpand
+      | GeneratedAnalyticsMetadataButtonDropdownCollapse
+      | Record<string, never> = disabled
       ? {}
       : {
-          action: 'expand',
+          action: !isOpen ? 'expand' : 'collapse',
           detail: {
-            expanded: `${!isOpen}`,
             label: `.${analyticsSelectors['trigger-label']}`,
           },
         };
