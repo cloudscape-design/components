@@ -4,6 +4,7 @@ import React from 'react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import { getFunnelKeySelector } from '../../internal/analytics/selectors';
 import { describeEachAppLayout, renderComponent } from './utils';
 
@@ -52,8 +53,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     expect(wrapper.findContentRegion()).toBeTruthy();
   });
 
-  // TODO: fix later
-  describe.skip('in loading state', () => {
+  describe('in loading state', () => {
     beforeEach(() => {
       widgetMockEnabled = true;
     });
@@ -73,7 +73,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       expect(wrapper.findToolbar()).toBeFalsy();
       expect(wrapper.findNavigation()).toBeFalsy();
       expect(wrapper.findBreadcrumbs()).toBeFalsy();
-      expect(wrapper.find(getFunnelKeySelector('funnel-name'))).toBeTruthy();
+      expect(createWrapper().find(getFunnelKeySelector('funnel-name'))).toBeTruthy();
       expect(wrapper.findNotifications()).toBeFalsy();
       expect(wrapper.findTools()).toBeFalsy();
       expect(wrapper.findContentRegion()).toBeTruthy();
