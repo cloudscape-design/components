@@ -35,6 +35,27 @@ describe('calculatePosition', () => {
 
   (
     [
+      ['top', { insetBlockStart: 500, insetInlineStart: 500, blockSize: 25, inlineSize: 25 }],
+      ['bottom', { insetBlockStart: 500, insetInlineStart: 500, blockSize: 25, inlineSize: 25 }],
+    ] as const
+  ).forEach(([preferredPosition, trigger]) => {
+    test(`takes first vertical position for preferredPosition="${preferredPosition}" from priority mapping when matching min height`, () => {
+      const position = calculatePosition({
+        preferredPosition,
+        trigger,
+        arrow,
+        body: { inlineSize: 250, blockSize: 1000 },
+        minHeight: 250,
+        container: viewport,
+        viewport,
+      });
+      expect(position.internalPosition).toBe(PRIORITY_MAPPING[preferredPosition][0]);
+      expect(position.scrollable).toBe(true);
+    });
+  });
+
+  (
+    [
       ['top', { insetBlockStart: 500, insetInlineStart: 100, blockSize: 25, inlineSize: 25 }],
       ['right', { insetBlockStart: 800, insetInlineStart: 500, blockSize: 25, inlineSize: 25 }],
       ['bottom', { insetBlockStart: 500, insetInlineStart: 100, blockSize: 25, inlineSize: 25 }],
