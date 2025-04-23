@@ -23,23 +23,22 @@ afterEach(() => {
   clearVisualRefreshState();
 });
 
-// TODO: AppLayout widgetization does not properly work with SSR
-test.skip('should render classic app layout', () => {
+test('should render classic app layout', () => {
   const content = renderToStaticMarkup(<AppLayout />);
   expect(content).toContain(classicStyles.root);
 });
-test.skip('should render refresh app layout', () => {
+test('should render refresh app layout', () => {
   globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
   const content = renderToStaticMarkup(<AppLayout />);
   expect(content).toContain(refreshStyles.layout);
 });
-test.skip('should render refresh-toolbar app layout with the widget flag', () => {
+test('should render refresh-toolbar app layout with the widget flag', () => {
   globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
   globalWithFlags[Symbol.for('awsui-global-flags')] = { appLayoutWidget: true };
   const content = renderToStaticMarkup(<AppLayout />);
   expect(content).toContain(refreshToolbarStyles.root);
 });
-test.skip('should render refresh-toolbar app layout with the toolbar flag', () => {
+test('should render refresh-toolbar app layout with the toolbar flag', () => {
   globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
   globalWithFlags[Symbol.for('awsui-global-flags')] = { appLayoutToolbar: true };
   const content = renderToStaticMarkup(<AppLayout />);

@@ -141,7 +141,7 @@ class InPortal extends React.PureComponent<InPortalProps, { nodeProps: object }>
   constructor(props: InPortalProps) {
     super(props);
     this.state = {
-      nodeProps: this.props.node.getInitialPortalProps(),
+      nodeProps: this.props.node?.getInitialPortalProps() ?? {},
     };
   }
 
@@ -164,6 +164,10 @@ class InPortal extends React.PureComponent<InPortalProps, { nodeProps: object }>
 
   render() {
     const { children, node } = this.props;
+
+    if (!node) {
+      return null;
+    }
 
     return ReactDOM.createPortal(
       React.Children.map(children, child => {
