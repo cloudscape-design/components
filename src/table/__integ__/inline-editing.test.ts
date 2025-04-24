@@ -44,10 +44,11 @@ function cellSuccessIcon$(rowIndex: number, columnIndex: number) {
 interface TestOptions {
   enableKeyboardNavigation?: boolean;
   expandableRows?: boolean;
+  renderInModal?: boolean;
 }
 
 const setupTest = (
-  { enableKeyboardNavigation = false, expandableRows = false }: TestOptions,
+  { enableKeyboardNavigation = false, expandableRows = false, renderInModal = false }: TestOptions,
   testFn: (page: BasePageObject) => Promise<void>
 ) => {
   return useBrowser(async browser => {
@@ -56,6 +57,7 @@ const setupTest = (
     const query = new URLSearchParams({
       enableKeyboardNavigation: String(enableKeyboardNavigation),
       expandableRows: String(expandableRows),
+      renderInModal: String(renderInModal),
     });
     await browser.url(`#/light/table/editable?${query.toString()}`);
     await testFn(page);
@@ -84,19 +86,24 @@ test(
   })
 );
 
-test(
-  'disabled reason is displayed when click on disabled editable cell',
-  setupTest({ expandableRows: false }, async page => {
-    await expect(page.isDisplayed(cellExpandToggle$(distributionIdRow1[0]))).resolves.toBe(false);
+test.each([true, false])(
+  'disabled reason is displayed when click on disabled editable cell (renderInModal=%s)',
+  (renderInModal: boolean) => {
+    setupTest({ expandableRows: false, renderInModal }, async page => {
+      await expect(page.isDisplayed(cellExpandToggle$(distributionIdRow1[0]))).resolves.toBe(false);
 
-    // Click on cell with disabled inline edit
-    await page.click(cell$(...distributionIdRow2));
-    await expect(page.getText(liveRegion$)).resolves.toContain("You don't have the necessary permissions");
+      // Click on cell with disabled inline edit
+      await page.click(cell$(...distributionIdRow2));
+      await expect(page.getText(liveRegion$)).resolves.toContain("You don't have the necessary permissions");
 
-    // Dismiss with click outside
-    await page.click('[data-testid="focus"]');
-    await expect(page.getElementsCount(liveRegion$)).resolves.toBe(0);
-  })
+      // Dismiss with click in another editable column
+      await page.click(cell$(...domainNameRow2));
+
+      await expect(page.getElementsCount(liveRegion$)).resolves.not.toContain(
+        "You don't have the necessary permissions"
+      );
+    });
+  }
 );
 
 test(
