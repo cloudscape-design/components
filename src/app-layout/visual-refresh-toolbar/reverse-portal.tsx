@@ -196,7 +196,7 @@ class OutPortal<C extends Component<any>> extends React.PureComponent<OutPortalP
 
   passPropsThroughPortal() {
     const propsForTarget = Object.assign({}, this.props, { node: undefined });
-    this.props.node.setPortalProps(propsForTarget);
+    this.props.node?.setPortalProps?.(propsForTarget);
   }
 
   componentDidMount() {
@@ -204,6 +204,9 @@ class OutPortal<C extends Component<any>> extends React.PureComponent<OutPortalP
     this.currentPortalNode = node;
 
     const placeholder = this.placeholderNode.current!;
+    if (!placeholder) {
+      return;
+    }
     const parent = placeholder.parentNode!;
     node.mount(parent, placeholder);
     this.passPropsThroughPortal();
@@ -217,7 +220,7 @@ class OutPortal<C extends Component<any>> extends React.PureComponent<OutPortalP
     // If we're switching portal nodes, we need to clean up the current one first.
     if (this.currentPortalNode && node !== this.currentPortalNode) {
       this.currentPortalNode.unmount(this.placeholderNode.current!);
-      this.currentPortalNode.setPortalProps({} as ComponentProps<C>);
+      this.currentPortalNode?.setPortalProps?.({} as ComponentProps<C>);
       this.currentPortalNode = node;
     }
 
@@ -229,11 +232,18 @@ class OutPortal<C extends Component<any>> extends React.PureComponent<OutPortalP
 
   componentWillUnmount() {
     const node = this.props.node as AnyPortalNode<C>;
+    if (!node) {
+      return;
+    }
     node.unmount(this.placeholderNode.current!);
-    node.setPortalProps({} as ComponentProps<C>);
+    node.setPortalProps?.({} as ComponentProps<C>);
   }
 
   render() {
+    if (!this.props.node) {
+      return null;
+    }
+
     // Render a placeholder to the DOM, so we can get a reference into
     // our location in the DOM, and swap it out for the portaled node.
     const tagName = this.props.node.element.tagName;
