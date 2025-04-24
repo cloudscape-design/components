@@ -73,10 +73,10 @@
 
 .direction-button-wrapper-inline-start,
 .direction-button-wrapper-inline-end.direction-button-wrapper-rtl {
-  #{custom-props.$dragHandleAnimationInlineOffset}: -20px;
+  #{custom-props.$dragHandleAnimationInlineOffset}: 20px;
 }
 
 .direction-button-wrapper-inline-end,
 .direction-button-wrapper-inline-start.direction-button-wrapper-rtl {
-  #{custom-props.$dragHandleAnimationInlineOffset}: 20px;
+  #{custom-props.$dragHandleAnimationInlineOffset}: -20px;
 }
