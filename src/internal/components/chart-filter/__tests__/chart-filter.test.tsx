@@ -4,7 +4,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import ChartFilter, { ChartFilterProps } from '../../../../../lib/components/internal/components/chart-filter';
-import ChartSeriesMarker from '../../../../../lib/components/internal/components/chart-series-marker';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
 
 import tokenGroupStyles from '../../../../../lib/components/token-group/styles.selectors.js';
@@ -13,8 +12,8 @@ const datum0 = {};
 const datum1 = {};
 
 const series: ChartFilterProps<any>['series'] = [
-  { label: 'Chocolate', marker: <ChartSeriesMarker color="chocolate" type="line" />, datum: datum0 },
-  { label: 'Apples', marker: <ChartSeriesMarker color="red" type="rectangle" />, datum: datum1 },
+  { label: 'Chocolate', marker: <div />, datum: datum0 },
+  { label: 'Apples', marker: <div />, datum: datum1 },
 ];
 
 const i18nStrings = {
