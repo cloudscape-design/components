@@ -33,7 +33,7 @@ export interface ChartPopoverProps extends PopoverProps {
     </>)
   */
   trackKey?: string | number;
-  minHeight?: number;
+  minVisibleBlockSize?: number;
 
   /** Optional container element that prevents any clicks in there from dismissing the popover */
   container: Element | null;
@@ -75,7 +75,7 @@ function ChartPopover(
     trackKey,
     onDismiss,
     container,
-    minHeight,
+    minVisibleBlockSize,
 
     onMouseEnter,
     onMouseLeave,
@@ -129,7 +129,7 @@ function ChartPopover(
         trackRef={trackRef}
         getTrack={getTrack}
         trackKey={trackKey}
-        minVisibleBlockSize={minHeight}
+        minVisibleBlockSize={minVisibleBlockSize}
         arrow={position => (
           <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
             <div className={popoverStyles['arrow-outer']} />
