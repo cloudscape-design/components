@@ -96,7 +96,6 @@ export const useKeyboardEvents = ({ position, onResize, panelRef }: SizeControlP
 
       if (isEventHandled) {
         event.preventDefault();
-        event.stopPropagation();
       }
     },
   };
