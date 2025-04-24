@@ -6,8 +6,14 @@ import { LabelIdentifier } from '@cloudscape-design/component-toolkit/internal/a
 export interface GeneratedAnalyticsMetadataExpandableSectionExpand {
   action: 'expand';
   detail: {
-    label: LabelIdentifier;
-    expanded: string;
+    label: string | LabelIdentifier;
+  };
+}
+
+export interface GeneratedAnalyticsMetadataExpandableSectionCollapse {
+  action: 'collapse';
+  detail: {
+    label: string | LabelIdentifier;
   };
 }
 
