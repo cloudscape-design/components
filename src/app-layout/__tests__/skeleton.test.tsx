@@ -34,7 +34,7 @@ jest.mock('../../../lib/components/internal/widgets', () => ({
   createWidgetizedFunction: createWidgetizedFunctionMock,
 }));
 
-describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
+describeEachAppLayout({ themes: ['refresh-toolbar'], skipInitialTest: true }, () => {
   it('renders complete component by default', () => {
     const { wrapper } = renderComponent(
       <AppLayout

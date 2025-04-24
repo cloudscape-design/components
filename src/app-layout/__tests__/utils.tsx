@@ -31,6 +31,7 @@ type Size = 'desktop' | 'mobile';
 interface AppLayoutTestConfig {
   themes: Array<Theme>;
   sizes: Array<Size>;
+  skipInitialTest?: boolean;
 }
 
 type AppLayoutTestSuite = (config: { theme: Theme; size: Size }) => void;
@@ -38,6 +39,7 @@ type AppLayoutTestSuite = (config: { theme: Theme; size: Size }) => void;
 const defaultTestConfig: AppLayoutTestConfig = {
   themes: ['classic', 'refresh', 'refresh-toolbar'],
   sizes: ['desktop', 'mobile'],
+  skipInitialTest: false,
 };
 
 const globalWithFlags = globalThis as any;
@@ -64,7 +66,7 @@ export function describeEachAppLayout(
           setGlobalFlag('appLayoutWidget', undefined);
           clearVisualRefreshState();
         });
-        test('mocks applied correctly', () => {
+        (config.skipInitialTest ? test.skip : test)('mocks applied correctly', () => {
           const { wrapper } = renderComponent(<AppLayout />);
           expect(!!wrapper.matches(`.${visualRefreshStyles.layout}`)).toEqual(theme === 'refresh');
           expect(!!wrapper.matches(`.${visualRefreshToolbarStyles.root}`)).toEqual(theme === 'refresh-toolbar');

@@ -13,6 +13,8 @@ import {
 import { useAppLayout } from '../use-app-layout';
 import { useSkeletonSlotsAttributes } from './widget-slots/use-skeleton-slots-attributes';
 
+import testutilStyles from '../../test-classes/styles.css.js';
+
 export interface SkeletonLayoutProps {
   appLayoutProps: AppLayoutInternalProps;
   appLayoutState: ReturnType<typeof useAppLayout>;
@@ -38,14 +40,20 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
 
   return (
     <VisualContext contextName="app-layout-toolbar">
-      <div {...wrapperElAttributes}>
+      <div
+        {...wrapperElAttributes}
+        className={wrapperElAttributes?.className ?? testutilStyles.root}
+        data-testid="app-layout-toolbar-root"
+      >
         {!isAppLayoutStateLoading && <AppLayoutSkeletonTopSlot {...props} />}
         <main {...mainElAttributes}>
           {!isAppLayoutStateLoading && <AppLayoutSkeletonTopContentSlot {...props} />}
           <div {...contentWrapperElAttributes}>
             {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
             {/*delay rendering the content until registration of this instance is complete*/}
-            <div {...contentElAttributes}>{isAppLayoutStateLoading || registered ? content : null}</div>
+            <div {...contentElAttributes} className={contentElAttributes?.className ?? testutilStyles.content}>
+              {isAppLayoutStateLoading || registered ? content : null}
+            </div>
           </div>
           {!isAppLayoutStateLoading && <AppLayoutSkeletonBottomContentSlot {...props} />}
         </main>

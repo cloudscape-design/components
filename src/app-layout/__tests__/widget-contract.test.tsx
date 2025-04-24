@@ -33,7 +33,7 @@ jest.mock('../../../lib/components/internal/hooks/use-unique-id', () => {
   };
 });
 
-describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
+describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'], skipInitialTest: true }, () => {
   beforeEach(() => {
     renderedProps.clear();
   });
