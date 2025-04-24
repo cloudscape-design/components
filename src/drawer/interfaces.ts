@@ -24,6 +24,11 @@ export interface DrawerProps extends BaseComponentProps {
   loading?: boolean;
 
   /**
+   * Determines whether the drawer content has padding. If `true`, removes the default padding from the content area.
+   */
+  disableContentPaddings?: boolean;
+
+  /**
    * An object containing all the necessary localized strings required by the component.
    * @i18n
    */

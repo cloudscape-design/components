@@ -8399,6 +8399,12 @@ exports[`Documenter definition for drawer matches the snapshot: drawer 1`] = `
       "type": "string",
     },
     {
+      "description": "Determines whether the drawer content has padding. If \`true\`, removes the default padding from the content area.",
+      "name": "disableContentPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "An object containing all the necessary localized strings required by the component.",
       "i18nTag": true,
       "inlineType": {
