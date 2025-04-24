@@ -73,6 +73,7 @@ function useResize(
       ref={drawersRefs.slider}
       position="side"
       ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
+      tooltipText={activeDrawer?.ariaLabels?.resizeHandleTooltipText}
       ariaValuenow={relativeSize}
       className={testutilStyles['drawers-slider']}
       onKeyDown={onKeyDown}

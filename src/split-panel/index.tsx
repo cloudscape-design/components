@@ -31,6 +31,7 @@ export default function SplitPanel({
         closeButtonAriaLabel: i18n('i18nStrings.closeButtonAriaLabel', i18nStrings?.closeButtonAriaLabel),
         openButtonAriaLabel: i18n('i18nStrings.openButtonAriaLabel', i18nStrings?.openButtonAriaLabel),
         resizeHandleAriaLabel: i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel),
+        resizeHandleTooltipText: i18nStrings?.resizeHandleTooltipText,
         preferencesTitle: i18n('i18nStrings.preferencesTitle', i18nStrings?.preferencesTitle),
         preferencesConfirm: i18n('i18nStrings.preferencesConfirm', i18nStrings?.preferencesConfirm),
         preferencesCancel: i18n('i18nStrings.preferencesCancel', i18nStrings?.preferencesCancel),

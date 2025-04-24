@@ -65,6 +65,7 @@ export const ResizableDrawer = ({
             position="side"
             className={testutilStyles['drawers-slider']}
             ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
+            tooltipText={activeDrawer?.ariaLabels?.resizeHandleTooltipText}
             ariaValuenow={relativeSize}
             onKeyDown={onKeyDown}
             onDirectionClick={onDirectionClick}
