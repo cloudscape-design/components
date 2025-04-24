@@ -8,7 +8,6 @@ import customCssProps from '../../../../internal/generated/custom-css-properties
 import { useMergeRefs } from '../../../../internal/hooks/use-merge-refs';
 import { useMobile } from '../../../../internal/hooks/use-mobile';
 import globalVars from '../../../../internal/styles/global-vars';
-import { createWidgetizedFunction } from '../../../../internal/widgets';
 import { SkeletonLayoutProps } from '../index';
 
 import testutilStyles from '../../../test-classes/styles.css.js';
@@ -83,5 +82,3 @@ export const useSkeletonSlotsAttributes = ({ appLayoutProps, appLayoutState }: S
     contentElAttributes,
   };
 };
-
-export const createWidgetizedUseSkeletonSlotsAttrributes = createWidgetizedFunction(useSkeletonSlotsAttributes);

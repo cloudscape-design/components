@@ -11,16 +11,19 @@ import {
   AppLayoutSkeletonTopSlot,
 } from '../internal';
 import { useAppLayout } from '../use-app-layout';
+import { useSkeletonSlotsAttributes } from './widget-slots/use-skeleton-slots-attributes';
 
 export interface SkeletonLayoutProps {
   appLayoutProps: AppLayoutInternalProps;
   appLayoutState: ReturnType<typeof useAppLayout>;
 }
 
-import { useSkeletonSlotsAttributes } from './widget-slots';
+export interface RootSkeletonLayoutProps extends SkeletonLayoutProps {
+  skeletonSlotsAttributes: ReturnType<typeof useSkeletonSlotsAttributes>;
+}
 
-export const SkeletonLayout = (props: SkeletonLayoutProps) => {
-  const { appLayoutProps, appLayoutState } = props;
+export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
+  const { appLayoutProps, appLayoutState, skeletonSlotsAttributes } = props;
   const { registered } = appLayoutState;
   const { contentHeader, content } = appLayoutProps;
   const {
@@ -29,7 +32,7 @@ export const SkeletonLayout = (props: SkeletonLayoutProps) => {
     contentWrapperElAttributes,
     contentHeaderElAttributes,
     contentElAttributes,
-  } = useSkeletonSlotsAttributes(props) ?? {};
+  } = skeletonSlotsAttributes;
 
   const isAppLayoutStateLoading = Object.keys(appLayoutState).length === 0;
 

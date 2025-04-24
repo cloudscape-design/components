@@ -4,7 +4,6 @@ import { createWidgetizedAppLayoutState } from './app-layout-state';
 import { createWidgetizedAppLayoutDrawer, createWidgetizedAppLayoutGlobalDrawers } from './drawer';
 import { createWidgetizedAppLayoutNavigation } from './navigation';
 import { createWidgetizedAppLayoutNotifications } from './notifications';
-import { createWidgetizedUseSkeletonSlotsAttrributes } from './skeleton/widget-slots';
 import { createWidgetizedAppLayoutBottomPageContentSlot } from './skeleton/widget-slots/bottom-page-content-slot';
 import { createWidgetizedAppLayoutSidePageSlot } from './skeleton/widget-slots/side-page-slot';
 import { createWidgetizedAppLayoutTopPageContentSlot } from './skeleton/widget-slots/top-page-content-slot';
@@ -14,7 +13,6 @@ import {
   createWidgetizedAppLayoutSplitPanelDrawerSide,
 } from './split-panel';
 import { createWidgetizedAppLayoutToolbar } from './toolbar';
-import { createWidgetizedUseAppLayout } from './use-app-layout';
 
 export const AppLayoutNavigation = createWidgetizedAppLayoutNavigation();
 export const AppLayoutDrawer = createWidgetizedAppLayoutDrawer();
@@ -28,6 +26,3 @@ export const AppLayoutSkeletonSideSlot = createWidgetizedAppLayoutSidePageSlot()
 export const AppLayoutSkeletonTopContentSlot = createWidgetizedAppLayoutTopPageContentSlot();
 export const AppLayoutSkeletonBottomContentSlot = createWidgetizedAppLayoutBottomPageContentSlot();
 export const AppLayoutState = createWidgetizedAppLayoutState();
-
-export const useSkeletonSlotsAttributes = createWidgetizedUseSkeletonSlotsAttrributes();
-export const useAppLayout = createWidgetizedUseAppLayout();

@@ -9,15 +9,19 @@ import { AppLayoutInternalProps } from './interfaces';
 import { AppLayoutState } from './internal';
 import { createHtmlPortalNode, HtmlPortalNode, InPortal, OutPortal } from './reverse-portal';
 import { SkeletonLayout } from './skeleton';
+import { useSkeletonSlotsAttributes } from './skeleton/widget-slots/use-skeleton-slots-attributes';
 import { useAppLayout } from './use-app-layout';
 
 const AppLayoutStateParent = (props: {
-  children: (state: ReturnType<typeof useAppLayout>) => React.ReactNode;
+  children: (
+    state: ReturnType<typeof useAppLayout>,
+    skeletonSlotsAttributes: ReturnType<typeof useSkeletonSlotsAttributes>
+  ) => React.ReactNode;
   node: HtmlPortalNode;
   stateMounted: boolean;
 }) => {
   if (!props.stateMounted) {
-    return <>{props.children({} as any)}</>;
+    return <>{props.children({} as any, {} as any)}</>;
   }
 
   return <OutPortal {...props} />;
@@ -36,7 +40,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           </AppLayoutState>
         </InPortal>
         <AppLayoutStateParent node={portalNode!} stateMounted={stateMounted}>
-          {appLayoutState => {
+          {(appLayoutState, skeletonSlotsAttributes) => {
             return (
               <AppLayoutVisibilityContext.Provider value={appLayoutState?.isIntersecting ?? true}>
                 {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
@@ -44,7 +48,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
                   <ScreenreaderOnly>{props.breadcrumbs}</ScreenreaderOnly>
                 ) : null}
 
-                <SkeletonLayout appLayoutProps={props} appLayoutState={appLayoutState} />
+                <SkeletonLayout
+                  appLayoutProps={props}
+                  appLayoutState={appLayoutState}
+                  skeletonSlotsAttributes={skeletonSlotsAttributes}
+                />
               </AppLayoutVisibilityContext.Provider>
             );
           }}
