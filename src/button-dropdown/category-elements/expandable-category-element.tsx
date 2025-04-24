@@ -8,7 +8,10 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalIcon from '../../icon/internal';
 import Dropdown from '../../internal/components/dropdown';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
-import { GeneratedAnalyticsMetadataButtonDropdownExpand } from '../analytics-metadata/interfaces.js';
+import {
+  GeneratedAnalyticsMetadataButtonDropdownCollapse,
+  GeneratedAnalyticsMetadataButtonDropdownExpand,
+} from '../analytics-metadata/interfaces.js';
 import { CategoryProps } from '../interfaces';
 import ItemsList from '../items-list';
 import Tooltip from '../tooltip.js';
@@ -75,14 +78,13 @@ const ExpandableCategoryElement = ({
         disabled
           ? {}
           : ({
-              action: 'expand',
+              action: !expanded ? 'expand' : 'collapse',
               detail: {
                 position: position || '0',
                 label: { root: 'self' },
                 id: item.id || '',
-                expanded: `${!expanded}`,
               },
-            } as GeneratedAnalyticsMetadataButtonDropdownExpand)
+            } as GeneratedAnalyticsMetadataButtonDropdownExpand | GeneratedAnalyticsMetadataButtonDropdownCollapse)
       )}
     >
       {item.text}
