@@ -12,9 +12,9 @@ import createWrapper from '../../../../../lib/components/test-utils/dom';
 import styles from '../../../../../lib/components/internal/components/chart-legend/styles.selectors.js';
 
 const series = [
-  { label: 'Chocolate', color: 'chocolate', type: 'line', datum: { title: 's1' } },
-  { label: 'Apples', color: 'red', type: 'rectangle', datum: { title: 's2' } },
-  { label: 'Oranges', color: 'orange', type: 'rectangle', datum: { title: 's3' } },
+  { label: 'Chocolate', marker: <div />, datum: { title: 's1' } },
+  { label: 'Apples', marker: <div />, datum: { title: 's2' } },
+  { label: 'Oranges', marker: <div />, datum: { title: 's3' } },
 ] as const;
 
 function getTextContent(wrapper: ElementWrapper) {
