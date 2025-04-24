@@ -45,7 +45,7 @@ describe('calculatePosition', () => {
         trigger,
         arrow,
         body: { inlineSize: 250, blockSize: 1000 },
-        minHeight: 250,
+        minVisibleBlockSize: 250,
         container: viewport,
         viewport,
       });

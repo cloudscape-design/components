@@ -129,7 +129,7 @@ function ChartPopover(
         trackRef={trackRef}
         getTrack={getTrack}
         trackKey={trackKey}
-        minHeight={minHeight}
+        minVisibleBlockSize={minHeight}
         arrow={position => (
           <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
             <div className={popoverStyles['arrow-outer']} />
