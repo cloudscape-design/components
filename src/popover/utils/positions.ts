@@ -272,7 +272,7 @@ export function calculatePosition({
     const fitsBlockSize =
       minHeight === undefined
         ? visibleArea && visibleArea.blockSize === body.blockSize
-        : visibleArea && visibleArea.blockSize >= minHeight;
+        : visibleArea && visibleArea.blockSize >= Math.min(body.blockSize, minHeight);
     const fitsInlineSize = visibleArea && visibleArea.inlineSize === body.inlineSize;
 
     if (fitsBlockSize && fitsInlineSize) {
