@@ -9,8 +9,8 @@
 @mixin token-box-styles {
   position: relative;
   block-size: 100%;
-  border-block: awsui.$border-width-token solid constants.$token-border-color;
-  border-inline: awsui.$border-width-token solid constants.$token-border-color;
+  border-block: awsui.$border-width-field solid constants.$token-border-color;
+  border-inline: awsui.$border-width-field solid constants.$token-border-color;
   padding-block-start: styles.$control-padding-vertical;
   padding-block-end: styles.$control-padding-vertical;
   padding-inline-start: styles.$control-padding-horizontal;

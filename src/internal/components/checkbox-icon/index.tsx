@@ -37,9 +37,9 @@ const dimensionsByTheme: Record<NonNullable<'default' | 'refresh'>, Dimension> =
     viewBox: '0 0 16 16',
     indeterminate: '3.5,8 12.5,8',
     checked: '3.5,8 7,11 12,4',
-    xy: 0.5,
-    r: 3,
-    size: 15,
+    xy: 1,
+    r: 2,
+    size: 14,
   },
 };
 

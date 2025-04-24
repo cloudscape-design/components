@@ -11,6 +11,10 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 
 import Badge from '../../../lib/components/badge';
 import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation';
+import {
+  GeneratedAnalyticsMetadataSideNavigationCollapse,
+  GeneratedAnalyticsMetadataSideNavigationExpand,
+} from '../../../lib/components/side-navigation/analytics-metadata/interfaces';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
 
@@ -94,14 +98,21 @@ const getClickGeneratedMetadata = (label: string, position: string, href: string
   ...getMetadataContexts(),
 });
 
-const getExpandGeneratedMetadata = (label: string, expanded = 'false') => ({
-  action: 'expand',
-  detail: {
-    expanded,
-    label,
-  },
-  ...getMetadataContexts(),
-});
+const getExpandGeneratedMetadata = (label: string, expanded = false) => {
+  const partialMetadata:
+    | GeneratedAnalyticsMetadataSideNavigationExpand
+    | GeneratedAnalyticsMetadataSideNavigationCollapse = {
+    action: !expanded ? 'expand' : 'collapse',
+    detail: {
+      label,
+    },
+  };
+
+  return {
+    ...partialMetadata,
+    ...getMetadataContexts(),
+  };
+};
 
 beforeAll(() => {
   activateAnalyticsMetadata(true);
@@ -176,14 +187,14 @@ describe('Side Navigation renders correct analytics metadata', () => {
 
       const expandButton = wrapper.findItemByIndex(4)!.findSection()!.findExpandButton()!.getElement();
       validateComponentNameAndLabels(expandButton, labels);
-      expect(getGeneratedAnalyticsMetadata(expandButton)).toEqual(getExpandGeneratedMetadata('Section heading'));
+      expect(getGeneratedAnalyticsMetadata(expandButton)).toEqual(getExpandGeneratedMetadata('Section heading', true));
     });
     test('in expandable link group', () => {
       const wrapper = renderSideNavigation();
 
       const expandButton = wrapper.findItemByIndex(6)!.findExpandableLinkGroup()!.findExpandButton()!.getElement();
       validateComponentNameAndLabels(expandButton, labels);
-      expect(getGeneratedAnalyticsMetadata(expandButton)).toEqual(getExpandGeneratedMetadata('Parent page', 'true'));
+      expect(getGeneratedAnalyticsMetadata(expandButton)).toEqual(getExpandGeneratedMetadata('Parent page'));
     });
   });
 });

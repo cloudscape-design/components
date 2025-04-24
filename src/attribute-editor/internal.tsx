@@ -22,7 +22,8 @@ import { getGridTemplateColumns } from './utils';
 
 import styles from './styles.css.js';
 
-type InternalAttributeEditorProps<T> = SomeRequired<AttributeEditorProps<T>, 'items'> & InternalBaseComponentProps;
+type InternalAttributeEditorProps<T> = SomeRequired<AttributeEditorProps<T>, 'items' | 'addButtonVariant'> &
+  InternalBaseComponentProps;
 
 const InternalAttributeEditor = React.forwardRef(
   <T,>(
@@ -35,7 +36,7 @@ const InternalAttributeEditor = React.forwardRef(
       isItemRemovable = () => true,
       empty,
       addButtonText,
-      addButtonVariant = 'normal',
+      addButtonVariant,
       removeButtonText,
       removeButtonAriaLabel,
       customRowActions,
