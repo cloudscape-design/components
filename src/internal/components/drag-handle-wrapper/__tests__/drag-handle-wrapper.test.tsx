@@ -19,6 +19,7 @@ beforeAll(() => {
 });
 
 afterEach(() => {
+  delete document.body.dataset.awsuiFocusVisible;
   jest.restoreAllMocks();
 });
 
@@ -33,6 +34,10 @@ function renderDragHandle(props: Omit<DragHandleWrapperProps, 'children'>) {
 
   return {
     dragHandle: container.querySelector<HTMLButtonElement>('#drag-button')!,
+    showButtons: () => {
+      document.body.dataset.awsuiFocusVisible = 'true';
+      container.querySelector<HTMLButtonElement>('#drag-button')!.focus();
+    },
     getTooltip: () => document.querySelector(`.${tooltipStyles.root}`),
     getDirectionButton: (direction: Direction) => {
       return document.querySelector<HTMLButtonElement>(
@@ -131,12 +136,13 @@ test("doesn't show direction buttons by default", () => {
   expect(getDirectionButton('block-end')).not.toBeInTheDocument();
 });
 
-test('shows direction buttons when focus enters the button', () => {
+test('shows direction buttons when focus enters the button as result of a key input', () => {
   const { dragHandle, getDirectionButton } = renderDragHandle({
     directions: { 'block-start': 'active', 'block-end': 'active' },
     tooltipText: 'Click me!',
   });
 
+  document.body.dataset.awsuiFocusVisible = 'true';
   dragHandle.focus();
   expect(getDirectionButton('block-start')).toBeVisible();
   expect(getDirectionButton('block-end')).toBeVisible();
@@ -149,6 +155,7 @@ test('hides direction buttons when focus leaves the button', () => {
     tooltipText: 'Click me!',
   });
 
+  document.body.dataset.awsuiFocusVisible = 'true';
   fireEvent.focusIn(dragHandle, { relatedElement: document.body });
   fireEvent.focusOut(dragHandle, { relatedElement: document.body });
   expect(getDirectionButton('block-start')).not.toBeInTheDocument();
@@ -202,12 +209,12 @@ test("doesn't show direction buttons when dragged more than 3 pixels", () => {
 });
 
 test('hides direction buttons on Escape keypress', () => {
-  const { dragHandle, getDirectionButton } = renderDragHandle({
+  const { dragHandle, showButtons, getDirectionButton } = renderDragHandle({
     directions: { 'block-start': 'active' },
     tooltipText: 'Click me!',
   });
 
-  dragHandle.focus();
+  showButtons();
   fireEvent.keyDown(dragHandle, { key: 'Escape' });
   // This kicks off an exit transition which doesn't end in JSDOM, so we just listen
   // for the exiting classname instead.
@@ -216,33 +223,33 @@ test('hides direction buttons on Escape keypress', () => {
 });
 
 test('renders disabled direction buttons', () => {
-  const { dragHandle, getDirectionButton } = renderDragHandle({
+  const { showButtons, getDirectionButton } = renderDragHandle({
     directions: { 'block-start': 'active' },
     tooltipText: 'Click me!',
   });
 
-  dragHandle.focus();
+  showButtons();
   expect(getDirectionButton('block-start')).toBeVisible();
 });
 
 test("doesn't render direction buttons if value for direction is undefined", () => {
-  const { dragHandle, getDirectionButton } = renderDragHandle({
+  const { showButtons, getDirectionButton } = renderDragHandle({
     directions: { 'block-start': 'active', 'inline-start': undefined },
     tooltipText: 'Click me!',
   });
 
-  dragHandle.focus();
+  showButtons();
   expect(getDirectionButton('block-start')).toBeVisible();
   expect(getDirectionButton('inline-start')).not.toBeInTheDocument();
 });
 
 test('focus returns to drag button after direction button is clicked', () => {
-  const { dragHandle, getDirectionButton } = renderDragHandle({
+  const { dragHandle, showButtons, getDirectionButton } = renderDragHandle({
     directions: { 'block-start': 'active', 'inline-start': undefined },
     tooltipText: 'Click me!',
   });
 
-  dragHandle.focus();
+  showButtons();
   getDirectionButton('block-start')!.click();
   expect(dragHandle).toHaveFocus();
   expect(getDirectionButton('inline-start')).not.toBeInTheDocument();
@@ -250,13 +257,13 @@ test('focus returns to drag button after direction button is clicked', () => {
 
 test('calls onDirectionClick when direction button is pressed', () => {
   const onDirectionClick = jest.fn();
-  const { dragHandle, getDirectionButton } = renderDragHandle({
+  const { showButtons, getDirectionButton } = renderDragHandle({
     directions: { 'block-start': 'active', 'block-end': 'active', 'inline-start': 'active', 'inline-end': 'active' },
     tooltipText: 'Click me!',
     onDirectionClick,
   });
 
-  dragHandle.focus();
+  showButtons();
   fireEvent.click(getDirectionButton('block-start')!);
   expect(onDirectionClick).toHaveBeenCalledWith('block-start');
 
@@ -275,13 +282,13 @@ test('calls onDirectionClick when direction button is pressed', () => {
 
 test("doesn't call onDirectionClick when disabled direction button is pressed", () => {
   const onDirectionClick = jest.fn();
-  const { dragHandle, getDirectionButton } = renderDragHandle({
+  const { showButtons, getDirectionButton } = renderDragHandle({
     directions: { 'block-start': 'disabled' },
     tooltipText: 'Click me!',
     onDirectionClick,
   });
 
-  dragHandle.focus();
+  showButtons();
   fireEvent.click(getDirectionButton('block-start')!);
   expect(onDirectionClick).not.toHaveBeenCalled();
 });

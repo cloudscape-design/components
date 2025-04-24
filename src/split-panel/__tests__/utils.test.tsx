@@ -14,7 +14,7 @@ describe('use-keyboard-events, bottom position', () => {
   let div: HTMLDivElement;
 
   beforeEach(() => {
-    const onKeyDown = useKeyboardEvents({ ...sizeControlProps, position: 'bottom' });
+    const { onKeyDown } = useKeyboardEvents({ ...sizeControlProps, position: 'bottom' });
     div = document.createElement('div');
     div.addEventListener('keydown', event => onKeyDown(event as any));
   });
@@ -58,7 +58,7 @@ describe('use-keyboard-events, side position', () => {
   let div: HTMLDivElement;
 
   beforeEach(() => {
-    const onKeyDown = useKeyboardEvents({ ...sizeControlProps, position: 'side' });
+    const { onKeyDown } = useKeyboardEvents({ ...sizeControlProps, position: 'side' });
     div = document.createElement('div');
     div.addEventListener('keydown', event => onKeyDown(event as any));
   });
@@ -90,7 +90,7 @@ describe('use-keyboard-events, side position, rtl', () => {
   let div: HTMLDivElement;
 
   beforeEach(() => {
-    const onKeyDown = useKeyboardEvents({ ...sizeControlProps, position: 'side' });
+    const { onKeyDown } = useKeyboardEvents({ ...sizeControlProps, position: 'side' });
     div = document.createElement('div');
     div.addEventListener('keydown', event => onKeyDown(event as any));
     div.style.direction = 'rtl';

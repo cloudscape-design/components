@@ -20,7 +20,7 @@ import styles from '../../../lib/components/split-panel/styles.css.js';
 
 const onKeyDown = jest.fn();
 jest.mock('../../../lib/components/app-layout/utils/use-keyboard-events', () => ({
-  useKeyboardEvents: () => onKeyDown,
+  useKeyboardEvents: () => ({ onKeyDown }),
 }));
 
 const onSliderPointerDown = jest.fn();
