@@ -3,6 +3,7 @@
 import React, { memo, useMemo } from 'react';
 
 import ChartLegend from '../../internal/components/chart-legend';
+import ChartSeriesMarker from '../../internal/components/chart-series-marker';
 import { useSelector } from '../async-store';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
@@ -24,7 +25,7 @@ function AreaChartLegend<T extends AreaChartProps.DataTypes>({
     () =>
       model.series.map(s => {
         const { title, color, markerType } = model.getInternalSeries(s);
-        return { label: title, color, type: markerType, datum: s };
+        return { label: title, marker: <ChartSeriesMarker color={color} type={markerType} />, datum: s };
       }),
     [model]
   );
