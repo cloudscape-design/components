@@ -305,6 +305,7 @@ const TagEditor = React.forwardRef(
         removeButtonText={i18nStrings?.removeButton}
         disableAddButton={remainingTags <= 0}
         empty={i18n('i18nStrings.emptyTags', i18nStrings?.emptyTags)}
+        addButtonVariant="normal"
         additionalInfo={
           remainingTags < 0 ? (
             <FormFieldError errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>

@@ -9,14 +9,24 @@ import InternalAttributeEditor from './internal';
 
 const AttributeEditor = React.forwardRef(
   <T,>(
-    { items = [], isItemRemovable = () => true, ...props }: AttributeEditorProps<T>,
+    { items = [], addButtonVariant = 'normal', isItemRemovable = () => true, ...props }: AttributeEditorProps<T>,
     ref: React.Ref<AttributeEditorProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent('AttributeEditor');
+    const baseComponentProps = useBaseComponent('AttributeEditor', {
+      props: {
+        addButtonVariant: addButtonVariant,
+      },
+      metadata: {
+        definitionItems: props.definition?.length ?? null,
+        hasGridLayout: !!props.gridLayout,
+        hasCustomRowActions: !!props.customRowActions,
+      },
+    });
     return (
       <InternalAttributeEditor
         items={items}
         isItemRemovable={isItemRemovable}
+        addButtonVariant={addButtonVariant}
         {...props}
         {...baseComponentProps}
         ref={ref}
