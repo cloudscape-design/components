@@ -9,7 +9,6 @@ import { MultiselectProps } from '../../../multiselect/interfaces';
 import InternalMultiselect from '../../../multiselect/internal';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { NonCancelableEventHandler } from '../../events';
-import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
 
 import styles from './styles.css.js';
 
@@ -21,8 +20,7 @@ interface I18nStrings {
 
 interface ChartFilterItem<T> {
   label: string;
-  color: string;
-  type: ChartSeriesMarkerType;
+  marker: React.ReactNode;
   datum: T;
 }
 
@@ -44,11 +42,7 @@ function ChartFilter<T>({ series, i18nStrings, selectedSeries, onChange, ...rest
     label: d.label,
     value: '' + i,
     datum: d.datum,
-    __customIcon: (
-      <span className={styles['custom-icon-wrapper']}>
-        <SeriesMarker color={d.color} type={d.type} />
-      </span>
-    ),
+    __customIcon: <span className={styles['custom-icon-wrapper']}>{d.marker}</span>,
   }));
 
   const selectedOptions = defaultOptions.filter(option => selectedSeries?.indexOf(option.datum) !== -1);

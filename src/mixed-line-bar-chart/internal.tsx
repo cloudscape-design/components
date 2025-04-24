@@ -7,6 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import Filter from '../internal/components/chart-filter';
+import ChartSeriesMarker from '../internal/components/chart-series-marker';
 import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
 import { ChartWrapper } from '../internal/components/chart-wrapper';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -210,8 +211,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
 
   const filterItems = series.map(({ series, color }) => ({
     label: series.title,
-    type: chartLegendMap[series.type],
-    color,
+    marker: <ChartSeriesMarker type={chartLegendMap[series.type]} color={color} />,
     datum: series,
   }));
 

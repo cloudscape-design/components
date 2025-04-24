@@ -7,14 +7,12 @@ import InternalBox from '../../../box/internal';
 import { useInternalI18n } from '../../../i18n/context';
 import { KeyCode } from '../../keycode';
 import handleKey from '../../utils/handle-key';
-import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
 
 import styles from './styles.css.js';
 
 interface ChartLegendItem<T> {
   label: string;
-  color: string;
-  type: ChartSeriesMarkerType;
+  marker: React.ReactNode;
   datum: T;
 }
 
@@ -142,7 +140,7 @@ function ChartLegend<T>({
                 onMouseOver={() => handleMouseOver(s.datum)}
                 onMouseLeave={handleMouseLeave}
               >
-                <SeriesMarker color={s.color} type={s.type} /> {s.label}
+                {s.marker} {s.label}
               </div>
             );
           })}
