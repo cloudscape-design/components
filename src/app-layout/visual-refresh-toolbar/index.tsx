@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { AppLayoutProps } from '../interfaces';
@@ -18,28 +18,22 @@ const AppLayoutStateParent = (props: {
     skeletonSlotsAttributes: ReturnType<typeof useSkeletonSlotsAttributes>
   ) => React.ReactNode;
   node: HtmlPortalNode;
-  stateMounted: boolean;
 }) => {
-  if (!props.stateMounted) {
-    return <>{props.children({} as any, {} as any)}</>;
-  }
-
   return <OutPortal {...props} />;
 };
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
   (props, forwardRef) => {
-    const [stateMounted, setStateMounted] = useState(false);
     const portalNode = React.useMemo(() => (typeof window !== 'undefined' ? createHtmlPortalNode() : null), []);
 
     return (
       <>
         <InPortal node={portalNode!}>
-          <AppLayoutState props={props} forwardRef={forwardRef} onMount={() => setStateMounted(true)}>
+          <AppLayoutState props={props} forwardRef={forwardRef}>
             {() => <></>}
           </AppLayoutState>
         </InPortal>
-        <AppLayoutStateParent node={portalNode!} stateMounted={stateMounted}>
+        <AppLayoutStateParent node={portalNode!}>
           {(appLayoutState, skeletonSlotsAttributes) => {
             return (
               <AppLayoutVisibilityContext.Provider value={appLayoutState?.isIntersecting ?? true}>

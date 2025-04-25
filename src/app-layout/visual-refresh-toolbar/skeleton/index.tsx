@@ -40,11 +40,7 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
 
   return (
     <VisualContext contextName="app-layout-toolbar">
-      <div
-        {...wrapperElAttributes}
-        className={wrapperElAttributes?.className ?? testutilStyles.root}
-        data-testid="app-layout-toolbar-root"
-      >
+      <div {...wrapperElAttributes} className={wrapperElAttributes?.className ?? testutilStyles.root}>
         {!isAppLayoutStateLoading && <AppLayoutSkeletonTopSlot {...props} />}
         <main {...mainElAttributes}>
           {!isAppLayoutStateLoading && <AppLayoutSkeletonTopContentSlot {...props} />}

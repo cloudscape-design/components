@@ -5,7 +5,7 @@ Map {
   [Function] => {
     "children": [Function],
     "forwardRef": null,
-    "onMount": [Function],
+    "node": undefined,
     "props": {
       "ariaLabels": {
         "drawers": undefined,
@@ -43,7 +43,7 @@ Map {
   [Function] => {
     "children": [Function],
     "forwardRef": null,
-    "onMount": [Function],
+    "node": undefined,
     "props": {
       "ariaLabels": {
         "drawers": undefined,
@@ -99,7 +99,7 @@ Map {
   [Function] => {
     "children": [Function],
     "forwardRef": null,
-    "onMount": [Function],
+    "node": undefined,
     "props": {
       "activeDrawerId": "security",
       "ariaLabels": {

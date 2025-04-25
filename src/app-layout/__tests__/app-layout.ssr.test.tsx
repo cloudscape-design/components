@@ -35,11 +35,11 @@ test('should render refresh-toolbar app layout with the widget flag', () => {
   globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
   globalWithFlags[Symbol.for('awsui-global-flags')] = { appLayoutWidget: true };
   const content = renderToStaticMarkup(<AppLayout />);
-  expect(content.includes('data-testid="app-layout-toolbar-root"')).toBe(true);
+  expect(content).toBe('<div></div>');
 });
 test('should render refresh-toolbar app layout with the toolbar flag', () => {
   globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
   globalWithFlags[Symbol.for('awsui-global-flags')] = { appLayoutToolbar: true };
   const content = renderToStaticMarkup(<AppLayout />);
-  expect(content.includes('data-testid="app-layout-toolbar-root"')).toBe(true);
+  expect(content).toBe('<div></div>');
 });
