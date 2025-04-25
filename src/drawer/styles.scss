@@ -18,8 +18,6 @@
   padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
   // padding to make sure the header doesn't overlap with the close icon
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
-  margin-block-start: 0;
-  margin-block-end: awsui.$space-panel-content-top;
   .with-toolbar > & {
     border-color: transparent;
     margin-block-end: 0px;
@@ -38,7 +36,8 @@
   /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
 }
 
-.content:not(:empty) {
+.content-with-paddings:not(:empty) {
+  padding-block-start: awsui.$space-panel-content-top;
   padding-inline-start: awsui.$space-panel-side-left;
   padding-inline-end: awsui.$space-panel-side-right;
   padding-block-end: awsui.$space-panel-content-bottom;
