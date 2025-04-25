@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { LinkItem } from '../button-dropdown/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
-import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { CancelableEventHandler } from '../internal/events';
+import * as types from './types-public';
 
-export interface BreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>
-  extends BaseComponentProps {
+export * as BreadcrumbGroupProps from './types-public';
+
+export interface BreadcrumbGroupProps<T extends types.Item = types.Item> extends BaseComponentProps {
   /**
    * An array of breadcrumb items that describes the link hierarchy for this navigation.
    * Each option has the following properties:
@@ -33,48 +33,10 @@ export interface BreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = Brea
   /**
    * Called when the user clicks on a breadcrumb item.
    */
-  onClick?: CancelableEventHandler<BreadcrumbGroupProps.ClickDetail<T>>;
+  onClick?: CancelableEventHandler<types.ClickDetail<T>>;
   /**
    * Called when the user clicks on a breadcrumb item with the left mouse button
    * without pressing modifier keys (that is, CTRL, ALT, SHIFT, META).
    */
-  onFollow?: CancelableEventHandler<BreadcrumbGroupProps.ClickDetail<T>>;
-}
-
-export namespace BreadcrumbGroupProps {
-  export interface Item {
-    text: string;
-    href: string;
-  }
-
-  export interface ClickDetail<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>
-    extends BaseNavigationDetail {
-    item: T;
-    text: string;
-    href: string;
-  }
-}
-
-export type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item> =
-  BreadcrumbGroupProps<T> &
-    InternalBaseComponentProps & {
-      __injectAnalyticsComponentMetadata?: boolean;
-    };
-
-export interface BreadcrumbItemProps<T extends BreadcrumbGroupProps.Item> {
-  item: T;
-  itemIndex: number;
-  totalCount: number;
-  isTruncated?: boolean;
-  isGhost?: boolean;
-  onClick?: CancelableEventHandler<BreadcrumbGroupProps.ClickDetail<T>>;
-  onFollow?: CancelableEventHandler<BreadcrumbGroupProps.ClickDetail<T>>;
-}
-
-export interface EllipsisDropdownProps {
-  ariaLabel?: BreadcrumbGroupProps['expandAriaLabel'];
-  dropdownItems: ReadonlyArray<LinkItem>;
-  onDropdownItemClick: CancelableEventHandler<{ id: string }>;
-  onDropdownItemFollow: CancelableEventHandler<{ id: string }>;
-  visible?: boolean;
+  onFollow?: CancelableEventHandler<types.ClickDetail<T>>;
 }

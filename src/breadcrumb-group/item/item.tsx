@@ -6,13 +6,14 @@ import clsx from 'clsx';
 import InternalIcon from '../../icon/internal';
 import Tooltip from '../../internal/components/tooltip';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
-import { BreadcrumbGroupProps, BreadcrumbItemProps } from '../interfaces';
+import { BreadcrumbItemProps } from '../types-internal';
+import * as types from '../types-public';
 import { getEventDetail } from '../utils';
 import { FunnelBreadcrumbItem } from './funnel';
 
 import styles from './styles.css.js';
 
-interface BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> {
+interface BreadcrumbItemWithPopoverProps<T extends types.Item> {
   item: T;
   isLast: boolean;
   anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement>;
@@ -20,7 +21,7 @@ interface BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> {
   itemAttributes: React.HTMLAttributes<HTMLElement>;
 }
 
-const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
+const BreadcrumbItemWithPopover = <T extends types.Item>({
   item,
   isLast,
   anchorAttributes,
@@ -71,7 +72,7 @@ const Item = React.forwardRef<HTMLElement, ItemProps>(
   }
 );
 
-export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
+export function BreadcrumbItem<T extends types.Item>({
   item,
   itemIndex,
   totalCount,

@@ -8,6 +8,7 @@ import {
   BreadcrumbsSlotContext,
 } from '../../../app-layout/visual-refresh-toolbar/contexts';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
+import * as types from '../../../breadcrumb-group/types-public';
 import { awsuiPluginsInternal } from '../api';
 import { BreadcrumbsGlobalRegistration } from '../controllers/breadcrumbs';
 
@@ -43,7 +44,7 @@ function useSetGlobalBreadcrumbsImplementation({
   return registered;
 }
 
-export function useSetGlobalBreadcrumbs<T extends BreadcrumbGroupProps.Item>(props: BreadcrumbGroupProps<T>) {
+export function useSetGlobalBreadcrumbs<T extends types.Item>(props: BreadcrumbGroupProps<T>) {
   // avoid additional side effects when this feature is not active
   if (!useAppLayoutFlagEnabled()) {
     return false;

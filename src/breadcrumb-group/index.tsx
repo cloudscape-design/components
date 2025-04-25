@@ -8,10 +8,11 @@ import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { BreadcrumbGroupProps } from './interfaces';
 import { InternalBreadcrumbGroup } from './internal';
 import { BreadcrumbGroupSkeleton } from './skeleton';
+import * as types from './types-public';
 
 export { BreadcrumbGroupProps };
 
-export default function BreadcrumbGroup<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>({
+export default function BreadcrumbGroup<T extends types.Item = types.Item>({
   items = [],
   ...props
 }: BreadcrumbGroupProps<T>) {

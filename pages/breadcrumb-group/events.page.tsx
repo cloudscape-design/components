@@ -18,11 +18,11 @@ const defaultItems = [
 export default function ButtonDropdownPage() {
   const [onFollowMessage, setOnFollowMessage] = useState('');
   const [onClickMessage, setOnClickMessage] = useState('');
-  const onFollowCallback = (event: CustomEvent<BreadcrumbGroupProps.ClickDetail>) => {
+  const onFollowCallback: BreadcrumbGroupProps['onFollow'] = event => {
     setOnFollowMessage(`OnFollow: ${event.detail.text} item was selected`);
     event.preventDefault(); // prevent reloading to see updated message
   };
-  const onClickCallback = (event: CustomEvent<BreadcrumbGroupProps.ClickDetail>) => {
+  const onClickCallback: BreadcrumbGroupProps['onClick'] = event => {
     setOnClickMessage(`OnClick: ${event.detail.text} item was selected`);
   };
   const [items, setItems] = useState(defaultItems);

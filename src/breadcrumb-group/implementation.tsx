@@ -22,9 +22,10 @@ import {
   GeneratedAnalyticsMetadataBreadcrumbGroupClick,
   GeneratedAnalyticsMetadataBreadcrumbGroupComponent,
 } from './analytics-metadata/interfaces';
-import { BreadcrumbGroupProps, EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './interfaces';
 import { BreadcrumbItem } from './item/item';
 import { BreadcrumbGroupSkeleton } from './skeleton';
+import { EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './types-internal';
+import * as BreadcrumbGroupProps from './types-public';
 import { getEventDetail, getItemsDisplayProperties } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
