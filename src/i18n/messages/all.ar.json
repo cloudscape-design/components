@@ -343,7 +343,8 @@
     "i18nStrings.preferencesPositionBottom": "سُفلي",
     "i18nStrings.preferencesConfirm": "تأكيد",
     "i18nStrings.preferencesCancel": "إلغاء",
-    "i18nStrings.resizeHandleAriaLabel": "تغيير حجم اللوحة المنقسمة"
+    "i18nStrings.resizeHandleAriaLabel": "تغيير حجم اللوحة المنقسمة",
+    "i18nStrings.resizeHandleTooltipText": "قم بالسحب أو التحديد لتغيير الحجم"
   },
   "table": {
     "ariaLabels.resizerRoleDescription": "زر تغيير الحجم",

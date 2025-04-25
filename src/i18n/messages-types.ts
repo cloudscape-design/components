@@ -444,6 +444,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.preferencesConfirm": never;
     "i18nStrings.preferencesCancel": never;
     "i18nStrings.resizeHandleAriaLabel": never;
+    "i18nStrings.resizeHandleTooltipText": never;
   }
   "table": {
     "ariaLabels.resizerRoleDescription": never;

@@ -343,7 +343,8 @@
     "i18nStrings.preferencesPositionBottom": "Parte inferiore",
     "i18nStrings.preferencesConfirm": "Conferma",
     "i18nStrings.preferencesCancel": "Annulla",
-    "i18nStrings.resizeHandleAriaLabel": "Ridimensiona il pannello diviso"
+    "i18nStrings.resizeHandleAriaLabel": "Ridimensiona il pannello diviso",
+    "i18nStrings.resizeHandleTooltipText": "Trascina o seleziona per ridimensionare"
   },
   "table": {
     "ariaLabels.resizerRoleDescription": "pulsante di ridimensionamento",

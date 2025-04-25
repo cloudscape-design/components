@@ -343,7 +343,8 @@
     "i18nStrings.preferencesPositionBottom": "下",
     "i18nStrings.preferencesConfirm": "確認",
     "i18nStrings.preferencesCancel": "キャンセル",
-    "i18nStrings.resizeHandleAriaLabel": "分割パネルのサイズを変更"
+    "i18nStrings.resizeHandleAriaLabel": "分割パネルのサイズを変更",
+    "i18nStrings.resizeHandleTooltipText": "ドラッグまたは選択してリサイズする"
   },
   "table": {
     "ariaLabels.resizerRoleDescription": "[サイズを変更] ボタン",
