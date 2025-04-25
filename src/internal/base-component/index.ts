@@ -4,7 +4,7 @@
 import { initAwsUiVersions } from '@cloudscape-design/component-toolkit/internal';
 
 import { AnalyticsMetadata } from '../analytics/interfaces';
-import { PACKAGE_SOURCE, PACKAGE_VERSION } from '../environment';
+import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../environment';
 
 // these styles needed to be imported for every public component
 import './styles.css.js';
@@ -37,6 +37,22 @@ export function getBaseProps(props: BaseComponentProps) {
     }
   });
   return baseProps as BaseComponentProps;
+}
+
+export function validateProps(
+  componentName: string,
+  props: Record<string, any>,
+  excludedProps: Array<string>,
+  allowedEnums: Record<string, Array<string>>
+) {
+  for (const [prop, value] of Object.entries(props)) {
+    if (excludedProps.includes(prop)) {
+      throw new Error(`${componentName} does not support "${prop}" property when used in ${THEME} theme`);
+    }
+    if (allowedEnums[prop] && !allowedEnums[prop].includes(value)) {
+      throw new Error(`${componentName} does not support "${prop}" with value "${value}" when used in ${THEME} theme`);
+    }
+  }
 }
 
 export interface BasePropsWithAnalyticsMetadata {
