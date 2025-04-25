@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import { createHtmlPortalNode, InPortal, OutPortal } from '../visual-refresh-toolbar/reverse-portal';
@@ -13,7 +13,7 @@ describe('Reverse portal', () => {
   );
 
   it('should render content in InPortal and display it in OutPortal', () => {
-    const portalNode = createHtmlPortalNode();
+    const portalNode = createHtmlPortalNode({ containerElement: 'section' });
 
     render(
       <>
@@ -240,5 +240,93 @@ describe('Reverse portal', () => {
         </>
       );
     }).not.toThrow();
+  });
+
+  it('should set multiple attributes on element creation', () => {
+    const attributes = {
+      'data-testid': 'test-portal',
+      'aria-label': 'Test Portal',
+      class: 'portal-class',
+      role: 'dialog',
+    };
+
+    const portalNode = createHtmlPortalNode({
+      attributes,
+    });
+
+    for (const [key, value] of Object.entries(attributes)) {
+      expect(portalNode.element.getAttribute(key)).toBe(value);
+    }
+  });
+
+  it('should handle same placeholder mount attempts', () => {
+    const portalNode = createHtmlPortalNode();
+    const parent = document.createElement('div');
+    const placeholder = document.createElement('div');
+
+    parent.appendChild(placeholder);
+    document.body.appendChild(parent);
+
+    portalNode.mount(parent, placeholder);
+    const firstMountParent = portalNode.element.parentNode;
+
+    portalNode.mount(parent, placeholder);
+    const secondMountParent = portalNode.element.parentNode;
+
+    expect(firstMountParent).toBe(secondMountParent);
+
+    document.body.removeChild(parent);
+  });
+
+  it('should handle undefined node', () => {
+    expect(() => {
+      render(
+        <InPortal node={undefined as any}>
+          <div>Content</div>
+        </InPortal>
+      );
+    }).not.toThrow();
+  });
+
+  it('should handle non-React children correctly', () => {
+    const portalNode = createHtmlPortalNode();
+
+    const { container } = render(
+      <>
+        <InPortal node={portalNode}>123</InPortal>
+        <OutPortal node={portalNode} />
+      </>
+    );
+
+    expect(container.textContent).toContain('123');
+  });
+
+  it('should maintain props when switching portal nodes', () => {
+    const TestComponent = ({ count }: { count: number }) => <div>Count: {count}</div>;
+
+    const WrapperComponent = () => {
+      const [isNodesSwapped, setIsNodesSwapped] = useState(false);
+      const firstNode = createHtmlPortalNode();
+      const secondNode = createHtmlPortalNode();
+      return (
+        <>
+          <button data-testid="button" onClick={() => setIsNodesSwapped(true)}>
+            swap
+          </button>
+          <InPortal node={isNodesSwapped ? secondNode : firstNode}>
+            <TestComponent count={1} />
+          </InPortal>
+          <div id="portal-target">
+            <OutPortal node={isNodesSwapped ? secondNode : firstNode} />
+          </div>
+        </>
+      );
+    };
+
+    const { container } = render(<WrapperComponent />);
+
+    expect(container.textContent).toContain('Count: 1');
+    screen.getByTestId('button').click();
+    expect(container.textContent).toContain('Count: 1');
   });
 });
