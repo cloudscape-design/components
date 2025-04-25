@@ -18,6 +18,11 @@ $header-row-margin-block-end: awsui.$space-xs;
   &-overflow-visible {
     overflow: visible;
   }
+
+  &-variant-chart {
+    padding-block: awsui.$space-static-s;
+    padding-inline: awsui.$space-static-s;
+  }
 }
 
 .has-dismiss {

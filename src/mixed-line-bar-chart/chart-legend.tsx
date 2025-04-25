@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 
 import { ChartFilterProps } from '../internal/components/chart-filter';
 import ChartLegend from '../internal/components/chart-legend';
+import ChartSeriesMarker from '../internal/components/chart-series-marker';
 import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
 import { chartLegendMap } from './utils';
 
@@ -31,8 +32,7 @@ export default function InternalChartLegend<T extends number | string | Date>({
       .filter(s => visibleSeries.indexOf(s.series) !== -1)
       .map(({ series, color }) => ({
         label: series.title,
-        type: chartLegendMap[series.type],
-        color,
+        marker: <ChartSeriesMarker color={color} type={chartLegendMap[series.type]} />,
         datum: series,
       }));
   }, [series, visibleSeries]);

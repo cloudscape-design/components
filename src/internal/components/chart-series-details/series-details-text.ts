@@ -1,12 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import expandabeleSectionHeaderStyles from '../../../expandable-section/styles.css.js';
-import styles from './styles.css.js';
+
+export const screenReaderTextClass = 'awsui-screenreader-text';
 
 export default function getSeriesDetailsText(element: HTMLElement) {
-  const elementsWithText = Array.from(
-    element.querySelectorAll(`.${styles.announced},.${expandabeleSectionHeaderStyles.header}`)
-  );
+  const elementsWithText = Array.from(element.querySelectorAll(`.${screenReaderTextClass}`));
   return elementsWithText
     .map(element => {
       if (element instanceof HTMLElement) {

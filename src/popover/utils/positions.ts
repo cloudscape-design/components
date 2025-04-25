@@ -239,6 +239,7 @@ export function calculatePosition({
   // the popover is only bound by the viewport if it is rendered in a portal
   renderWithPortal,
   allowVerticalOverflow,
+  minVisibleBlockSize,
 }: {
   preferredPosition: PopoverProps.Position;
   fixedInternalPosition?: InternalPosition;
@@ -250,6 +251,7 @@ export function calculatePosition({
   // the popover is only bound by the viewport if it is rendered in a portal
   renderWithPortal?: boolean;
   allowVerticalOverflow?: boolean;
+  minVisibleBlockSize?: number;
 }): CalculatedPosition {
   let bestOption: CandidatePosition | null = null;
 
@@ -265,11 +267,17 @@ export function calculatePosition({
       ? getIntersection([rect, viewport])
       : getIntersection([rect, viewport, container]);
 
-    const fitsWithoutOverflow =
-      visibleArea && visibleArea.inlineSize === body.inlineSize && visibleArea.blockSize === body.blockSize;
+    // When min visible block size is set, the popover is considered fitting the container if the available space
+    // is the same or larger than min allowed, even if it means the scrollbar is needed.
+    const fitsBlockSize =
+      minVisibleBlockSize === undefined
+        ? visibleArea && visibleArea.blockSize === body.blockSize
+        : visibleArea && visibleArea.blockSize >= Math.min(body.blockSize, minVisibleBlockSize);
+    const fitsInlineSize = visibleArea && visibleArea.inlineSize === body.inlineSize;
 
-    if (fitsWithoutOverflow) {
-      return { internalPosition, rect };
+    if (fitsBlockSize && fitsInlineSize) {
+      const scrollable = visibleArea && visibleArea.blockSize < body.blockSize;
+      return { internalPosition, rect: scrollable ? fitIntoContainer(rect, viewport) : rect, scrollable };
     }
 
     const newOption = { rect, internalPosition, visibleArea };

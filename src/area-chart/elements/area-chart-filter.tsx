@@ -3,6 +3,7 @@
 import React, { memo } from 'react';
 
 import ChartFilter from '../../internal/components/chart-filter';
+import ChartSeriesMarker from '../../internal/components/chart-series-marker';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
 
@@ -21,7 +22,11 @@ function AreaChartFilter<T extends AreaChartProps.DataTypes>({
 }) {
   const filterItems = model.allSeries.map(s => {
     const { title, color, markerType } = model.getInternalSeries(s);
-    return { label: title, color, type: markerType, datum: s };
+    return {
+      label: title,
+      marker: <ChartSeriesMarker type={markerType} color={color} />,
+      datum: s,
+    };
   });
 
   return (
