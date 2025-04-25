@@ -14,7 +14,8 @@ import styles from './styles.css.js';
 
 interface PopoverContainerProps {
   /** References the element the container is positioned against. */
-  trackRef: React.RefObject<HTMLElement | SVGElement>;
+  trackRef?: React.RefObject<HTMLElement | SVGElement>;
+  getTrack?: () => null | HTMLElement | SVGElement;
   /**
     Used to update the container position in case track or track position changes:
     
@@ -25,6 +26,7 @@ interface PopoverContainerProps {
     </>)
   */
   trackKey?: string | number;
+  minVisibleBlockSize?: number;
   position: PopoverProps.Position;
   zIndex?: React.CSSProperties['zIndex'];
   arrow: (position: InternalPosition | null) => React.ReactNode;
@@ -41,13 +43,16 @@ interface PopoverContainerProps {
   allowVerticalOverflow?: boolean;
   // Whether the popover should be hidden when the trigger is scrolled away.
   hideOnOverscroll?: boolean;
+  hoverArea?: boolean;
   className?: string;
 }
 
 export default function PopoverContainer({
   position,
   trackRef,
+  getTrack: externalGetTrack,
   trackKey,
+  minVisibleBlockSize,
   arrow,
   children,
   zIndex,
@@ -59,6 +64,7 @@ export default function PopoverContainer({
   allowScrollToFit,
   allowVerticalOverflow,
   hideOnOverscroll,
+  hoverArea,
   className,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
@@ -68,13 +74,23 @@ export default function PopoverContainer({
 
   const isRefresh = useVisualRefresh();
 
+  const getTrack = useRef(() => {
+    if (trackRef) {
+      return trackRef.current;
+    }
+    if (externalGetTrack) {
+      return externalGetTrack();
+    }
+    throw new Error('Invariant violation: must provide either trackRef or getTrack.');
+  });
+
   // Updates the position handler.
   const { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef, isOverscrolling } =
     usePopoverPosition({
       popoverRef,
       bodyRef,
       arrowRef,
-      trackRef,
+      getTrack: getTrack.current,
       contentRef,
       allowScrollToFit,
       allowVerticalOverflow,
@@ -82,6 +98,7 @@ export default function PopoverContainer({
       renderWithPortal,
       keepPosition,
       hideOnOverscroll,
+      minVisibleBlockSize,
     });
 
   // Recalculate position when properties change.
@@ -109,7 +126,7 @@ export default function PopoverContainer({
         keepPosition ||
         // If the click was on the trigger, this will make the popover appear or disappear,
         // so no need to update its position either in this case.
-        nodeContains(trackRef.current, event.target)
+        nodeContains(getTrack.current(), event.target)
       ) {
         return;
       }
@@ -153,7 +170,13 @@ export default function PopoverContainer({
           [styles[`container-body-variant-${variant}`]]: variant,
         })}
       >
-        <div ref={contentRef}>{children}</div>
+        {hoverArea ? (
+          <div className={styles['hover-area']}>
+            <div ref={contentRef}>{children}</div>
+          </div>
+        ) : (
+          <div ref={contentRef}>{children}</div>
+        )}
       </div>
     </div>
   );

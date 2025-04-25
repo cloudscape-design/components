@@ -5,6 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
+import { screenReaderTextClass } from '../internal/components/chart-series-details/series-details-text';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
@@ -18,7 +19,7 @@ import { variantSupportsDescription } from './utils';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'variant'> &
+export type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'variant'> &
   InternalBaseComponentProps & {
     variant?: InternalVariant;
     __injectAnalyticsComponentMetadata?: boolean;
@@ -109,7 +110,7 @@ export default function InternalExpandableSection({
         <ExpandableSectionHeader
           id={triggerControlId}
           descriptionId={descriptionId}
-          className={clsx(styles.header, styles[`header-${baseVariant}`])}
+          className={clsx(styles.header, styles[`header-${baseVariant}`], screenReaderTextClass)}
           variant={baseVariant}
           expanded={!!expanded}
           header={header}

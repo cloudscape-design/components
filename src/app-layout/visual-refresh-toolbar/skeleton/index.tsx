@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import VisualContext from '../../../internal/components/visual-context';
 import { AppLayoutInternalProps } from '../interfaces';
 import {
   AppLayoutSkeletonBottomContentSlot,
@@ -38,24 +39,26 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
   const isAppLayoutStateLoading = Object.keys(appLayoutState).length === 0;
 
   return (
-    <div
-      {...wrapperElAttributes}
-      className={wrapperElAttributes?.className ?? testutilStyles.root}
-      data-testid="app-layout-toolbar-root"
-    >
-      {!isAppLayoutStateLoading && <AppLayoutSkeletonTopSlot {...props} />}
-      <main {...mainElAttributes}>
-        {!isAppLayoutStateLoading && <AppLayoutSkeletonTopContentSlot {...props} />}
-        <div {...contentWrapperElAttributes}>
-          {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
-          {/*delay rendering the content until registration of this instance is complete*/}
-          <div {...contentElAttributes} className={contentElAttributes?.className ?? testutilStyles.content}>
-            {isAppLayoutStateLoading || registered ? content : null}
+    <VisualContext contextName="app-layout-toolbar">
+      <div
+        {...wrapperElAttributes}
+        className={wrapperElAttributes?.className ?? testutilStyles.root}
+        data-testid="app-layout-toolbar-root"
+      >
+        {!isAppLayoutStateLoading && <AppLayoutSkeletonTopSlot {...props} />}
+        <main {...mainElAttributes}>
+          {!isAppLayoutStateLoading && <AppLayoutSkeletonTopContentSlot {...props} />}
+          <div {...contentWrapperElAttributes}>
+            {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
+            {/*delay rendering the content until registration of this instance is complete*/}
+            <div {...contentElAttributes} className={contentElAttributes?.className ?? testutilStyles.content}>
+              {isAppLayoutStateLoading || registered ? content : null}
+            </div>
           </div>
-        </div>
-        {!isAppLayoutStateLoading && <AppLayoutSkeletonBottomContentSlot {...props} />}
-      </main>
-      {!isAppLayoutStateLoading && <AppLayoutSkeletonSideSlot {...props} />}
-    </div>
+          {!isAppLayoutStateLoading && <AppLayoutSkeletonBottomContentSlot {...props} />}
+        </main>
+        {!isAppLayoutStateLoading && <AppLayoutSkeletonSideSlot {...props} />}
+      </div>
+    </VisualContext>
   );
 };

@@ -11,6 +11,7 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 
 import Button from '../../../lib/components/button';
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
+import { GeneratedAnalyticsMetadataFlashbarButtonClick } from '../../../lib/components/flashbar/analytics-metadata/interfaces';
 import {
   DATA_ATTR_ANALYTICS_FLASHBAR,
   DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS,
@@ -137,11 +138,15 @@ describe('Flashbar renders correct analytics metadata', () => {
 
       const embeddedButton = wrapper.findItems()[2].findActionButton()!.getElement();
       validateComponentNameAndLabels(embeddedButton, labels);
-      expect(getGeneratedAnalyticsMetadata(embeddedButton)).toEqual({
+
+      const buttonClickMetadata: GeneratedAnalyticsMetadataFlashbarButtonClick = {
         action: 'buttonClick',
         detail: {
           label: 'click me',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(embeddedButton)).toEqual({
+        ...buttonClickMetadata,
         ...getMetadata(3, stackItems, true),
       });
     });
@@ -192,7 +197,6 @@ describe('Flashbar renders correct analytics metadata', () => {
       action: 'expand',
       detail: {
         label: 'Notifications bar',
-        expanded: 'true',
       },
       ...getMetadata(undefined, true, false),
     });
@@ -200,10 +204,9 @@ describe('Flashbar renders correct analytics metadata', () => {
     act(() => toggleButtonWrapper.click());
 
     expect(getGeneratedAnalyticsMetadata(toggleButtonWrapper.getElement())).toEqual({
-      action: 'expand',
+      action: 'collapse',
       detail: {
         label: 'Notifications bar',
-        expanded: 'false',
       },
       ...getMetadata(undefined, true, true),
     });
