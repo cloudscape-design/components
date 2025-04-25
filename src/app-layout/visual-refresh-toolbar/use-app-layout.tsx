@@ -1,6 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ForwardedRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  ForwardedRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
@@ -8,6 +16,7 @@ import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-co
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
@@ -64,7 +73,13 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
   const [navigationAnimationDisabled, setNavigationAnimationDisabled] = useState(true);
   const [splitPanelAnimationDisabled, setSplitPanelAnimationDisabled] = useState(true);
   const [isNested, setIsNested] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const rootRefInternal = useRef<HTMLDivElement>(null);
+  // This workaround ensures the ref is defined before checking if the app layout is nested.
+  // On initial render, the ref might be undefined because this component loads asynchronously via the widget API.
+  const refDefinitionCallback = useCallback(node => {
+    setIsNested(getIsNestedInAppLayout(node));
+  }, []);
+  const rootRef = useMergeRefs(rootRefInternal, refDefinitionCallback);
 
   const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
     componentName: 'AppLayout',
@@ -438,7 +453,7 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
 
   useLayoutEffect(() => {
     if (!hasToolbar) {
-      setIsNested(getIsNestedInAppLayout(rootRef.current));
+      // setIsNested(getIsNestedInAppLayout(rootRef.current));
     }
   }, [hasToolbar]);
 
