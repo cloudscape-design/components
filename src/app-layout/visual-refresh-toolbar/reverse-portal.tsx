@@ -1,5 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+/**
+ * This file contains code copied from the npm package: https://www.npmjs.com/package/react-reverse-portal
+ *
+ * We don’t use the original package directly for the following reasons:
+ *
+ * - The original library throws errors during SSR, whereas this version returns `null` and degrades gracefully.
+ * - The original package has no test coverage, which makes it unreliable. This version is fully covered by unit tests.
+ *
+ * The implementation remains unchanged and uses class components, along with the original comments.
+ */
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 

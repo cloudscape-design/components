@@ -76,10 +76,10 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
   const rootRefInternal = useRef<HTMLDivElement>(null);
   // This workaround ensures the ref is defined before checking if the app layout is nested.
   // On initial render, the ref might be undefined because this component loads asynchronously via the widget API.
-  const refDefinitionCallback = useCallback(node => {
+  const onMountRootRef = useCallback(node => {
     setIsNested(getIsNestedInAppLayout(node));
   }, []);
-  const rootRef = useMergeRefs(rootRefInternal, refDefinitionCallback);
+  const rootRef = useMergeRefs(rootRefInternal, onMountRootRef);
 
   const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
     componentName: 'AppLayout',

@@ -16,13 +16,10 @@ const isObject = (value: any) => Object.prototype.toString.call(value) === '[obj
 // becomes
 // awsui_root awsui_root awsui_has-adaptive-widths-default
 function skipHashInClassnames(classNames: string): string {
-  return (
-    classNames
-      .split(' ')
-      // For each classname, take everything before the underscore followed by alphanumeric characters at the end
-      .map(className => className.replace(/_[a-z0-9]+_[a-z0-9]+_\d+$/i, ''))
-      .join(' ')
-  );
+  return classNames
+    .split(' ')
+    .map(className => className.replace(/_[a-z0-9]+_[a-z0-9]+_\d+$/i, ''))
+    .join(' ');
 }
 
 function sanitizeProps(props: any): any {
@@ -59,15 +56,8 @@ function createWidgetizedComponentMock(Implementation: React.ComponentType) {
   };
 }
 
-function createWidgetizedFunctionMock(fn: (args: any[]) => any) {
-  return () => {
-    return (...args: any[]) => fn(args);
-  };
-}
-
 jest.mock('../../../lib/components/internal/widgets', () => ({
   createWidgetizedComponent: createWidgetizedComponentMock,
-  createWidgetizedFunction: createWidgetizedFunctionMock,
 }));
 jest.mock('../../../lib/components/internal/hooks/use-unique-id', () => {
   let counter = 0;
