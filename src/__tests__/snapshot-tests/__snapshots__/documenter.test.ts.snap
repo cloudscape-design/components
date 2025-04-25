@@ -157,6 +157,11 @@ An \`onButtonClick\` event is fired when the user clicks it.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "I18nStrings": {},
+    "Ref": {},
+    "Type": {},
+  },
 }
 `;
 
@@ -294,6 +299,9 @@ Defaults to 0.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "Anchor": {},
+  },
 }
 `;
 
@@ -493,6 +501,14 @@ the page.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "I18nStrings": {},
+    "OpenChangeDetail": {},
+    "Step": {},
+    "StepChangeDetail": {},
+    "Task": {},
+    "Tutorial": {},
+  },
 }
 `;
 
@@ -1012,6 +1028,19 @@ Note: If provided, this property should be set to \`null\` or \`undefined\` if a
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "AnalyticsMetadata": {},
+    "ChangeDetail": {},
+    "ContentType": {},
+    "Drawer": {},
+    "DrawerAriaLabels": {},
+    "DrawerChangeDetail": {},
+    "Labels": {},
+    "Ref": {},
+    "SplitPanelPosition": {},
+    "SplitPanelPreferences": {},
+    "SplitPanelResizeDetail": {},
+  },
 }
 `;
 
@@ -1538,6 +1567,19 @@ Note: If provided, this property should be set to \`null\` or \`undefined\` if a
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "AnalyticsMetadata": {},
+    "ChangeDetail": {},
+    "ContentType": {},
+    "Drawer": {},
+    "DrawerAriaLabels": {},
+    "DrawerChangeDetail": {},
+    "Labels": {},
+    "Ref": {},
+    "SplitPanelPosition": {},
+    "SplitPanelPreferences": {},
+    "SplitPanelResizeDetail": {},
+  },
 }
 `;
 
@@ -1986,6 +2028,18 @@ Make sure to update the \`data\` property when any of your custom filters change
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "AreaSeries": {},
+    "DataTypes": {},
+    "Datum": {},
+    "FilterChangeDetail": {},
+    "HighlightChangeDetail": {},
+    "I18nStrings": {},
+    "Series": {},
+    "ThresholdSeries": {},
+    "TickFormatter": {},
+    "ValueFormatter": {},
+  },
 }
 `;
 
@@ -2242,6 +2296,18 @@ The display of a row is handled by the \`definition\` property.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "AddButtonVariant": {},
+    "Breakpoint": {},
+    "FieldDefinition": {},
+    "FieldRenderable": {},
+    "GridLayout": {},
+    "I18nStrings": {},
+    "IsItemRemovableFunction": {},
+    "Ref": {},
+    "RemoveButtonClickDetail": {},
+    "RowActionsProps": {},
+  },
 }
 `;
 
@@ -2839,6 +2905,20 @@ This is displayed when \`statusType\` is set to \`finished\` or it's not set at 
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "ContainingOptionAndGroupString": {},
+    "EnteredTextLabel": {},
+    "FilteringType": {},
+    "KeyDetail": {},
+    "LoadItemsDetail": {},
+    "Option": {},
+    "OptionGroup": {},
+    "Options": {},
+    "Ref": {},
+    "SelectDetail": {},
+    "StatusType": {},
+  },
 }
 `;
 
@@ -2896,6 +2976,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {},
 }
 `;
 
@@ -3366,6 +3447,7 @@ Make sure to update the \`data\` property when any of your custom filters change
     },
   ],
   "releaseStatus": "stable",
+  "types": {},
 }
 `;
 
@@ -3654,6 +3736,17 @@ Override the HTML tag by using property \`tagOverride\`.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "Color": {},
+    "Display": {},
+    "Float": {},
+    "FontSize": {},
+    "FontWeight": {},
+    "Spacing": {},
+    "SpacingSize": {},
+    "TextAlign": {},
+    "Variant": {},
+  },
 }
 `;
 
@@ -3930,6 +4023,10 @@ not a link.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "ClickDetail": {},
+    "Item": {},
+  },
 }
 `;
 
@@ -4425,6 +4522,15 @@ In most cases, they aren't needed, as the \`svg\` element inherits styles from t
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ClickDetail": {},
+    "FollowDetail": {},
+    "FormAction": {},
+    "I18nStrings": {},
+    "IconAlign": {},
+    "Ref": {},
+    "Variant": {},
+  },
 }
 `;
 
@@ -4797,6 +4903,18 @@ The main action also supports the following properties of the [button](/componen
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "CheckboxItem": {},
+    "Item": {},
+    "ItemClickDetails": {},
+    "ItemGroup": {},
+    "ItemOrGroup": {},
+    "ItemType": {},
+    "Items": {},
+    "MainAction": {},
+    "Ref": {},
+    "Variant": {},
+  },
 }
 `;
 
@@ -4979,6 +5097,19 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "FilesChangeDetails": {},
+    "Group": {},
+    "IconButton": {},
+    "IconFileInput": {},
+    "IconToggleButton": {},
+    "Item": {},
+    "ItemClickDetails": {},
+    "ItemOrGroup": {},
+    "MenuDropdown": {},
+    "Ref": {},
+    "Variant": {},
+  },
 }
 `;
 
@@ -5188,6 +5319,13 @@ By default the starting day of the week is defined by the locale, but you can us
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "DateDisabledReasonFunction": {},
+    "Granularity": {},
+    "I18nStrings": {},
+    "IsDateEnabledFunction": {},
+  },
 }
 `;
 
@@ -5554,6 +5692,19 @@ The order of \`id\`s doesn't influence the order of display of sections, which i
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "AriaLabels": {},
+    "CardDefinition": {},
+    "CardsLayout": {},
+    "IsItemDisabled": {},
+    "LiveAnnouncement": {},
+    "Ref": {},
+    "SectionDefinition": {},
+    "SelectionChangeDetail": {},
+    "SelectionState": {},
+    "SelectionType": {},
+    "TrackBy": {},
+  },
 }
 `;
 
@@ -5725,6 +5876,10 @@ If both \`readOnly\` and \`disabled\` are set, \`disabled\` takes precedence.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "Ref": {},
+  },
 }
 `;
 
@@ -6332,6 +6487,17 @@ least one dark theme. If not set explicitly, it will render all Ace themes avail
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "AvailableThemes": {},
+    "ChangeDetail": {},
+    "I18nStrings": {},
+    "Language": {},
+    "Preferences": {},
+    "Ref": {},
+    "ResizeDetail": {},
+    "Theme": {},
+    "ValidateDetail": {},
+  },
 }
 `;
 
@@ -6887,6 +7053,24 @@ You must set the current value in the \`preferences.wrapLines\` property.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ContentDensityPreference": {},
+    "ContentDisplayItem": {},
+    "ContentDisplayOption": {},
+    "ContentDisplayPreference": {},
+    "ContentDisplayPreferenceI18nStrings": {},
+    "PageSizeOption": {},
+    "PageSizePreference": {},
+    "Preferences": {},
+    "StickyColumnPreference": {},
+    "StickyColumns": {},
+    "StickyColumnsPreference": {},
+    "StripedRowsPreference": {},
+    "VisibleContentOption": {},
+    "VisibleContentOptionsGroup": {},
+    "VisibleContentPreference": {},
+    "WrapLinesPreference": {},
+  },
 }
 `;
 
@@ -6980,6 +7164,10 @@ and the maximum number of columns as defined by the \`columns\` property.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "Borders": {},
+    "Variant": {},
+  },
 }
 `;
 
@@ -7135,6 +7323,10 @@ If no height is provided, the media slot will be displayed at its full height.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "AnalyticsMetadata": {},
+    "Media": {},
+  },
 }
 `;
 
@@ -7264,6 +7456,7 @@ Note that the secondary header will not have a high-contrast treatement, even if
     },
   ],
   "releaseStatus": "stable",
+  "types": {},
 }
 `;
 
@@ -7363,6 +7556,9 @@ Defaults to \`button\`.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "Variant": {},
+  },
 }
 `;
 
@@ -7553,6 +7749,9 @@ with the input using \`ariaDescribedby\`.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "Ref": {},
+  },
 }
 `;
 
@@ -7911,6 +8110,13 @@ with the input using \`ariaDescribedby\`.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "I18nStrings": {},
+    "IsDateEnabledFunction": {},
+    "OpenCalendarAriaLabel": {},
+    "Ref": {},
+  },
 }
 `;
 
@@ -8531,6 +8737,29 @@ with the input using \`ariaDescribedby\`.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "AbsoluteFormat": {},
+    "AbsoluteRangeControl": {},
+    "AbsoluteValue": {},
+    "ChangeDetail": {},
+    "DateDisabledReasonFunction": {},
+    "DateTimeStrings": {},
+    "GetTimeOffsetFunction": {},
+    "Granularity": {},
+    "I18nStrings": {},
+    "InvalidRangeResult": {},
+    "IsDateEnabledFunction": {},
+    "PendingAbsoluteValue": {},
+    "RangeSelectorMode": {},
+    "Ref": {},
+    "RelativeOption": {},
+    "RelativeValue": {},
+    "TimeUnit": {},
+    "ValidRangeResult": {},
+    "ValidationFunction": {},
+    "ValidationResult": {},
+    "Value": {},
+  },
 }
 `;
 
@@ -8603,6 +8832,7 @@ It should contain the only \`h2\` used in the drawer.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {},
 }
 `;
 
@@ -8783,6 +9013,12 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "AnalyticsMetadata": {},
+    "ChangeDetail": {},
+    "HeadingTag": {},
+    "Variant": {},
+  },
 }
 `;
 
@@ -8837,6 +9073,9 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+  },
 }
 `;
 
@@ -8989,6 +9228,10 @@ If you want to clear the selection, use empty array.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "Ref": {},
+  },
 }
 `;
 
@@ -9160,6 +9403,12 @@ user from modifying the value. A read-only control is still focusable.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "Alignment": {},
+    "DismissDetail": {},
+    "I18nStrings": {},
+    "Item": {},
+  },
 }
 `;
 
@@ -9417,6 +9666,13 @@ If you want to clear the selection, use empty array.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "DismissDetail": {},
+    "FileTokenAlignment": {},
+    "I18nStrings": {},
+    "Ref": {},
+  },
 }
 `;
 
@@ -9551,6 +9807,13 @@ If the \`action\` property is set, this property is ignored. **Deprecated**, rep
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "AriaRole": {},
+    "I18nStrings": {},
+    "ItemAnalyticsMetadata": {},
+    "MessageDefinition": {},
+    "Type": {},
+  },
 }
 `;
 
@@ -9662,6 +9925,9 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "AnalyticsMetadata": {},
+  },
 }
 `;
 
@@ -9804,6 +10070,10 @@ non-empty string, it will render the form field in a warning state.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "AnalyticsMetadata": {},
+    "I18nStrings": {},
+  },
 }
 `;
 
@@ -9871,6 +10141,11 @@ property.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "Breakpoint": {},
+    "BreakpointMapping": {},
+    "ElementDefinition": {},
+  },
 }
 `;
 
@@ -9970,6 +10245,10 @@ HTML heading tag based on the specified \`variant\` or \`headingTagOverride\`.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "HeadingTag": {},
+    "Variant": {},
+  },
 }
 `;
 
@@ -10033,6 +10312,7 @@ It should contain the only \`h2\` used in the help panel.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {},
 }
 `;
 
@@ -10120,6 +10400,7 @@ checkbox's label.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {},
 }
 `;
 
@@ -10380,6 +10661,11 @@ In most cases, they aren't needed, as the \`svg\` element inherits styles from t
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "Name": {},
+    "Size": {},
+    "Variant": {},
+  },
 }
 `;
 
@@ -10778,6 +11064,14 @@ with the input using \`ariaDescribedby\`.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "InputMode": {},
+    "KeyDetail": {},
+    "Ref": {},
+    "Step": {},
+    "Type": {},
+  },
 }
 `;
 
@@ -10861,6 +11155,11 @@ If not set, defaults to 150.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "Group": {},
+    "Item": {},
+    "Pair": {},
+  },
 }
 `;
 
@@ -11315,6 +11614,7 @@ Make sure to update the \`data\` property when any of your custom filters change
     },
   ],
   "releaseStatus": "stable",
+  "types": {},
 }
 `;
 
@@ -11548,6 +11848,14 @@ The default is \`secondary\`, except inside the following components where it de
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ClickDetail": {},
+    "Color": {},
+    "FollowDetail": {},
+    "FontSize": {},
+    "Ref": {},
+    "Variant": {},
+  },
 }
 `;
 
@@ -11616,6 +11924,9 @@ assistive technologies.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "TagName": {},
+  },
 }
 `;
 
@@ -12087,6 +12398,25 @@ Make sure to update the \`data\` property when any of your custom filters change
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "BarDataSeries": {},
+    "ChartSeries": {},
+    "DataSeries": {},
+    "Datum": {},
+    "DetailPopoverSeriesContent": {},
+    "DetailPopoverSeriesData": {},
+    "DetailPopoverSeriesKeyValuePair": {},
+    "FilterChangeDetail": {},
+    "HighlightChangeDetail": {},
+    "I18nStrings": {},
+    "IDataSeries": {},
+    "LineDataSeries": {},
+    "ThresholdSeries": {},
+    "TickFormatter": {},
+    "ValueFormatter": {},
+    "XThresholdSeries": {},
+    "YThresholdSeries": {},
+  },
 }
 `;
 
@@ -12263,6 +12593,11 @@ Set this property to \`true\` to show them.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "AnalyticsMetadata": {},
+    "DismissDetail": {},
+    "Size": {},
+  },
 }
 `;
 
@@ -12809,6 +13144,16 @@ This is only shown when \`statusType\` is set to \`finished\` or not set at all.
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "DeselectAriaLabelFunction": {},
+    "I18nStrings": {},
+    "MultiselectChangeDetail": {},
+    "Option": {},
+    "OptionGroup": {},
+    "Options": {},
+    "Ref": {},
+    "TriggerVariant": {},
+  },
 }
 `;
 
@@ -12966,6 +13311,11 @@ never disabled. When the user clicks on it but there are no more items to show, 
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "Labels": {},
+    "PageClickDetail": {},
+  },
 }
 `;
 
@@ -13407,6 +13757,16 @@ Make sure you update the \`data\` property when any of your custom filters chang
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "Datum": {},
+    "DetailPopoverContentFunction": {},
+    "DetailPopoverFooter": {},
+    "FilterChangeDetail": {},
+    "HighlightChangeDetail": {},
+    "I18nStrings": {},
+    "PieChartData": {},
+    "SegmentDescriptionFunction": {},
+  },
 }
 `;
 
@@ -13565,6 +13925,12 @@ wrapping and truncates it with an ellipsis.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "Position": {},
+    "Ref": {},
+    "Size": {},
+    "TriggerType": {},
+  },
 }
 `;
 
@@ -13703,6 +14069,10 @@ Make sure that you always provide a label for accessibility.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "Status": {},
+    "Variant": {},
+  },
 }
 `;
 
@@ -14303,6 +14673,11 @@ In most cases, they aren't needed, as the \`svg\` element inherits styles from t
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ActionDetail": {},
+    "KeyDetail": {},
+    "Ref": {},
+  },
 }
 `;
 
@@ -14972,6 +15347,27 @@ This is only shown when \`statusType\` is set to \`finished\` or not set at all.
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ComparisonOperator": {},
+    "ExtendedOperator": {},
+    "ExtendedOperatorForm": {},
+    "ExtendedOperatorFormProps": {},
+    "ExtendedOperatorFormat": {},
+    "FilteringChangeDetail": {},
+    "FilteringOption": {},
+    "FilteringProperty": {},
+    "FormattedToken": {},
+    "FormattedTokenGroup": {},
+    "FreeTextFiltering": {},
+    "GroupText": {},
+    "I18nStrings": {},
+    "JoinOperation": {},
+    "LoadItemsDetail": {},
+    "Query": {},
+    "Ref": {},
+    "Token": {},
+    "TokenGroup": {},
+  },
 }
 `;
 
@@ -15116,6 +15512,11 @@ If you want to clear the selection, use \`null\`.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "RadioButtonDefinition": {},
+    "Ref": {},
+  },
 }
 `;
 
@@ -15766,6 +16167,16 @@ and 'Size'.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "Bucket": {},
+    "ChangeDetail": {},
+    "I18nStrings": {},
+    "Object": {},
+    "Ref": {},
+    "Resource": {},
+    "SelectableItems": {},
+    "Version": {},
+  },
 }
 `;
 
@@ -15849,6 +16260,10 @@ the label is visible and attached to the select component, unless \`ariaLabelled
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "Option": {},
+  },
 }
 `;
 
@@ -16394,6 +16809,17 @@ This is only shown when \`statusType\` is set to \`finished\` or not set at all.
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "ContainingOptionAndGroupString": {},
+    "FilteringType": {},
+    "LoadItemsDetail": {},
+    "Option": {},
+    "OptionGroup": {},
+    "Options": {},
+    "Ref": {},
+    "TriggerVariant": {},
+  },
 }
 `;
 
@@ -16628,6 +17054,19 @@ Object that represents an expandable group of links.
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "Divider": {},
+    "ExpandableLinkGroup": {},
+    "FollowDetail": {},
+    "Header": {},
+    "Item": {},
+    "Link": {},
+    "LinkGroup": {},
+    "Logo": {},
+    "Section": {},
+    "SectionGroup": {},
+  },
 }
 `;
 
@@ -16841,6 +17280,10 @@ with the input using \`ariaDescribedby\`.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "I18nStrings": {},
+  },
 }
 `;
 
@@ -16926,6 +17369,11 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "AlignItems": {},
+    "Direction": {},
+    "Size": {},
+  },
 }
 `;
 
@@ -16987,6 +17435,10 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "Size": {},
+    "Variant": {},
+  },
 }
 `;
 
@@ -17123,6 +17575,9 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "I18nStrings": {},
+  },
 }
 `;
 
@@ -17211,6 +17666,10 @@ and truncates it with an ellipsis.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "Color": {},
+    "Type": {},
+  },
 }
 `;
 
@@ -17273,6 +17732,10 @@ Each step definition has the following properties:
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "Status": {},
+    "Step": {},
+  },
 }
 `;
 
@@ -18108,6 +18571,38 @@ multiple lines instead of being truncated with an ellipsis.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "AnalyticsMetadata": {},
+    "AriaLabels": {},
+    "CellContext": {},
+    "ColumnDefinition": {},
+    "ColumnDisplayProperties": {},
+    "ColumnWidthsChangeDetail": {},
+    "EditConfig": {},
+    "ExpandableItemToggleDetail": {},
+    "ExpandableRows": {},
+    "GetLoadingStatus": {},
+    "IsItemDisabled": {},
+    "LabelData": {},
+    "LiveAnnouncement": {},
+    "LoadingStatus": {},
+    "OnExpandableItemToggle": {},
+    "OnRowClickDetail": {},
+    "OnRowContextMenuDetail": {},
+    "Ref": {},
+    "RenderLoaderDetail": {},
+    "RenderLoaderEmptyDetail": {},
+    "SelectionChangeDetail": {},
+    "SelectionState": {},
+    "SelectionType": {},
+    "SortingColumn": {},
+    "SortingState": {},
+    "StickyColumns": {},
+    "SubmitEditFunction": {},
+    "TrackBy": {},
+    "Variant": {},
+    "VerticalAlign": {},
+  },
 }
 `;
 
@@ -18304,6 +18799,12 @@ minimize the number of keyboard tab stops between the tab list and content.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "I18nStrings": {},
+    "Tab": {},
+    "Variant": {},
+  },
 }
 `;
 
@@ -18635,6 +19136,12 @@ You should return a rejected promise when the \`key\` parameter is an empty stri
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "I18nStrings": {},
+    "Ref": {},
+    "Tag": {},
+  },
 }
 `;
 
@@ -18671,6 +19178,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {},
 }
 `;
 
@@ -18838,6 +19346,10 @@ If set to \`true\`, the live announcement of countText by assistive technologies
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "Ref": {},
+  },
 }
 `;
 
@@ -19181,6 +19693,11 @@ with the input using \`ariaDescribedby\`.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "KeyDetail": {},
+    "Ref": {},
+  },
 }
 `;
 
@@ -19333,6 +19850,12 @@ If you want to clear the selection, use \`null\`.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "Breakpoint": {},
+    "ChangeDetail": {},
+    "Ref": {},
+    "TilesDefinition": {},
+  },
 }
 `;
 
@@ -19562,6 +20085,11 @@ with the input using \`ariaDescribedby\`.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "Format": {},
+    "Ref": {},
+  },
 }
 `;
 
@@ -19713,6 +20241,10 @@ If both \`readOnly\` and \`disabled\` are set, \`disabled\` takes precedence.",
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "Ref": {},
+  },
 }
 `;
 
@@ -20229,6 +20761,11 @@ In most cases, they aren't needed, as the \`svg\` element inherits styles from t
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "ChangeDetail": {},
+    "Ref": {},
+    "Variant": {},
+  },
 }
 `;
 
@@ -20368,6 +20905,12 @@ user from modifying the value. A read-only control is still focusable.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "Alignment": {},
+    "DismissDetail": {},
+    "I18nStrings": {},
+    "Item": {},
+  },
 }
 `;
 
@@ -20524,6 +21067,15 @@ The following properties are supported across all utility types:
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "BaseUtility": {},
+    "ButtonUtility": {},
+    "I18nStrings": {},
+    "Identity": {},
+    "Logo": {},
+    "MenuDropdownUtility": {},
+    "Utility": {},
+  },
 }
 `;
 
@@ -20546,6 +21098,7 @@ exports[`Documenter definition for tree-view matches the snapshot: tree-view 1`]
   "systemTags": [
     "core",
   ],
+  "types": {},
 }
 `;
 
@@ -20759,6 +21312,13 @@ specified in the \`i18nStrings\` property.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+  "types": {
+    "I18nStrings": {},
+    "Step": {},
+    "Task": {},
+    "Tutorial": {},
+    "TutorialDetail": {},
+  },
 }
 `;
 
@@ -21017,5 +21577,8 @@ Use this if you need to wait for a response from the server before the user can 
     },
   ],
   "releaseStatus": "stable",
+  "types": {
+    "AnalyticsMetadata": {},
+  },
 }
 `;
