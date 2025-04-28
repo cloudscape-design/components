@@ -8,7 +8,10 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalIcon from '../../../icon/internal';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { BaseKeyDetail, CancelableEventHandler, fireCancelableEvent, fireKeyboardEvent } from '../../events';
-import { GeneratedAnalyticsMetadataButtonTriggerExpand } from './analytics-metadata/interfaces';
+import {
+  GeneratedAnalyticsMetadataButtonTriggerCollapse,
+  GeneratedAnalyticsMetadataButtonTriggerExpand,
+} from './analytics-metadata/interfaces';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -109,11 +112,12 @@ const ButtonTrigger = (
     attributes['aria-invalid'] = invalid;
   }
 
-  const analyticsMetadata: GeneratedAnalyticsMetadataButtonTriggerExpand = {
-    action: 'expand',
+  const analyticsMetadata:
+    | GeneratedAnalyticsMetadataButtonTriggerExpand
+    | GeneratedAnalyticsMetadataButtonTriggerCollapse = {
+    action: !pressed ? 'expand' : 'collapse',
     detail: {
       label: { root: 'self' },
-      expanded: `${!pressed}`,
     },
   };
 
