@@ -21,6 +21,7 @@ export function DrawerImplementation({
   children,
   loading,
   i18nStrings,
+  disableContentPaddings,
   __internalRootRef,
   ...restProps
 }: DrawerInternalProps) {
@@ -42,7 +43,14 @@ export function DrawerImplementation({
   ) : (
     <div {...containerProps} ref={__internalRootRef}>
       {header && <div className={styles.header}>{header}</div>}
-      <div className={clsx(styles['test-utils-drawer-content'], styles.content)}>{children}</div>
+      <div
+        className={clsx(
+          styles['test-utils-drawer-content'],
+          !disableContentPaddings && styles['content-with-paddings']
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }

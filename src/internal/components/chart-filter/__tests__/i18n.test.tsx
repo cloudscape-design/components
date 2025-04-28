@@ -4,16 +4,16 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import TestI18nProvider from '../../../../../lib/components/i18n/testing';
-import ChartFilter from '../../../../../lib/components/internal/components/chart-filter';
+import ChartFilter, { ChartFilterProps } from '../../../../../lib/components/internal/components/chart-filter';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
 
 const datum0 = {};
 const datum1 = {};
 
-const series = [
-  { label: 'Chocolate', color: 'chocolate', type: 'line', datum: datum0 },
-  { label: 'Apples', color: 'red', type: 'rectangle', datum: datum1 },
-] as const;
+const series: ChartFilterProps<any>['series'] = [
+  { label: 'Chocolate', marker: <div />, datum: datum0 },
+  { label: 'Apples', marker: <div />, datum: datum1 },
+];
 
 const defaultProps = {
   series,

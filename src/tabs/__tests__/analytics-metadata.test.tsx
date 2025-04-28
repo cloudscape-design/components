@@ -168,7 +168,6 @@ describe('Tabs renders correct analytics metadata', () => {
     expect(getGeneratedAnalyticsMetadata(firstActions)).toEqual({
       action: 'expand',
       detail: {
-        expanded: 'true',
         label: 'Query actions for first tab',
       },
       contexts: [
@@ -214,7 +213,6 @@ describe('Tabs renders correct analytics metadata', () => {
     expect(getGeneratedAnalyticsMetadata(secondActions)).toEqual({
       action: 'expand',
       detail: {
-        expanded: 'true',
         label: 'Query actions for second tab',
       },
       contexts: [

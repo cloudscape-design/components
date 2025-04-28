@@ -7,6 +7,7 @@ import { pie } from 'd3-shape';
 import { getBaseProps } from '../internal/base-component';
 import Filter, { ChartFilterProps } from '../internal/components/chart-filter';
 import Legend, { ChartLegendProps } from '../internal/components/chart-legend';
+import ChartSeriesMarker from '../internal/components/chart-series-marker';
 import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
 import { ChartWrapper } from '../internal/components/chart-wrapper';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -105,8 +106,7 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
 
   const filterItems: ChartFilterProps<T>['series'] = data?.map(data => ({
     label: data.datum.title,
-    color: data.color,
-    type: 'rectangle',
+    marker: <ChartSeriesMarker color={data.color} type="rectangle" />,
     datum: data.datum,
   }));
 

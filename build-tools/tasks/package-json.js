@@ -23,9 +23,16 @@ function getComponentsExports() {
     './contexts/form-field': './contexts/form-field.js',
     // Public internal components
     './internal/tooltip-do-not-use': './internal/tooltip-do-not-use/index.js',
+    './internal/do-not-use/chart-filter': './internal/do-not-use/chart-filter.js',
+    './internal/do-not-use/chart-tooltip': './internal/do-not-use/chart-tooltip.js',
+    './internal/do-not-use/expandable-section': './internal/do-not-use/expandable-section.js',
+    './internal/do-not-use/i18n': './internal/do-not-use/i18n.js',
+    './internal/do-not-use/tooltip': './internal/do-not-use/tooltip.js',
     './internal/widget-exports': './internal/widget-exports.js',
     './test-utils/dom/internal/tooltip': './test-utils/dom/internal/tooltip.js',
     './test-utils/selectors/internal/tooltip': './test-utils/selectors/internal/tooltip.js',
+    './test-utils/dom/internal/chart-tooltip': './test-utils/dom/internal/chart-tooltip.js',
+    './test-utils/selectors/internal/chart-tooltip': './test-utils/selectors/internal/chart-tooltip.js',
   };
   let components = listPublicItems('src');
 

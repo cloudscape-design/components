@@ -241,6 +241,16 @@ describe('with main action', () => {
     expect(onFollow).not.toHaveBeenCalled();
   });
 
+  test('main action with external link opens link in a new tab', () => {
+    const wrapper = renderSplitButtonDropdown({
+      mainAction: { text: 'Main', href: 'https://external.com', external: true },
+    });
+
+    const mainActionElement = wrapper.findMainAction()!.getElement();
+    expect(mainActionElement).toHaveAttribute('target', '_blank');
+    expect(mainActionElement).toHaveAttribute('rel', 'noopener noreferrer');
+  });
+
   test('main action onFollow is triggered', () => {
     const onClick = jest.fn();
     const onFollow = jest.fn();

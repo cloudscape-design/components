@@ -108,7 +108,7 @@ export function DisabledInlineEditor<ItemType>({
                 trackRef={iconRef}
                 arrow={position => <Arrow position={position} />}
                 renderWithPortal={true}
-                zIndex={2000}
+                zIndex={7000} // When used in portal we need z-index to be higher than modal's
               >
                 <PopoverBody
                   dismissButton={false}

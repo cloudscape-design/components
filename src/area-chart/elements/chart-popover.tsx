@@ -3,7 +3,6 @@
 import React from 'react';
 
 import ChartPopover from '../../internal/components/chart-popover';
-import ChartPopoverFooter from '../../internal/components/chart-popover-footer';
 import ChartSeriesDetails from '../../internal/components/chart-series-details';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
@@ -47,11 +46,11 @@ export default function AreaChartPopover<T extends AreaChartProps.DataTypes>({
       dismissAriaLabel={dismissAriaLabel}
       size={size}
       onBlur={onBlur}
+      footer={footer}
     >
       <ChartSeriesDetails details={highlightDetails.seriesDetails} />
       <div className={styles['popover-divider']} />
       <ChartSeriesDetails details={highlightDetails.totalDetails} />
-      {footer && <ChartPopoverFooter>{footer}</ChartPopoverFooter>}
     </ChartPopover>
   );
 }

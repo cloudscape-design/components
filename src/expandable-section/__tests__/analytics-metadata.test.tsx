@@ -44,9 +44,8 @@ const getContextsMetadata = (label: string, variant: string, expanded: boolean) 
 
 const getExpandMetadata = (label: string, variant: string, expanded: boolean) => ({
   ...getContextsMetadata(label, variant, expanded),
-  action: 'expand',
+  action: !expanded ? 'expand' : 'collapse',
   detail: {
-    expanded: `${!expanded}`,
     label,
   },
 });
@@ -139,7 +138,6 @@ test('Internal ExpandableSection does not render "component" metadata', () => {
     action: 'expand',
     detail: {
       label: 'whatever',
-      expanded: 'true',
     },
   });
 });

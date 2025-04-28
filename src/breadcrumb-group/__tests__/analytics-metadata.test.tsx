@@ -7,6 +7,10 @@ import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
+import {
+  GeneratedAnalyticsMetadataBreadcrumbGroupCollapse,
+  GeneratedAnalyticsMetadataBreadcrumbGroupExpand,
+} from '../../../lib/components/breadcrumb-group/analytics-metadata/interfaces';
 import { getItemsDisplayProperties } from '../../../lib/components/breadcrumb-group/utils';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
@@ -98,22 +102,26 @@ describe('BreadcrumbGroup renders correct analytics metadata', () => {
     });
     const triggerButton = wrapper.findDropdown()!.findTriggerButton()!;
     validateComponentNameAndLabels(triggerButton.getElement(), labels);
-    expect(getGeneratedAnalyticsMetadata(triggerButton.getElement())).toEqual({
+    const expectedExpandMetadata: GeneratedAnalyticsMetadataBreadcrumbGroupExpand = {
       action: 'expand',
       detail: {
         label: '...',
-        expanded: 'true',
       },
+    };
+    expect(getGeneratedAnalyticsMetadata(triggerButton.getElement())).toEqual({
+      ...expectedExpandMetadata,
       contexts,
     });
 
     triggerButton.click();
-    expect(getGeneratedAnalyticsMetadata(triggerButton.getElement())).toEqual({
-      action: 'expand',
+    const expectedCollapseMetadata: GeneratedAnalyticsMetadataBreadcrumbGroupCollapse = {
+      action: 'collapse',
       detail: {
         label: '...',
-        expanded: 'false',
       },
+    };
+    expect(getGeneratedAnalyticsMetadata(triggerButton.getElement())).toEqual({
+      ...expectedCollapseMetadata,
       contexts,
     });
 

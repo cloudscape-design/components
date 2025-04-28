@@ -11,10 +11,10 @@ import tokenGroupStyles from '../../../../../lib/components/token-group/styles.s
 const datum0 = {};
 const datum1 = {};
 
-const series = [
-  { label: 'Chocolate', color: 'chocolate', type: 'line', datum: datum0 },
-  { label: 'Apples', color: 'red', type: 'rectangle', datum: datum1 },
-] as const;
+const series: ChartFilterProps<any>['series'] = [
+  { label: 'Chocolate', marker: <div />, datum: datum0 },
+  { label: 'Apples', marker: <div />, datum: datum1 },
+];
 
 const i18nStrings = {
   filterLabel: 'Filter displayed data',

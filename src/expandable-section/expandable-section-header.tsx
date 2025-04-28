@@ -9,7 +9,10 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalHeader, { Description as HeaderDescription } from '../header/internal';
 import InternalIcon from '../icon/internal';
 import { isDevelopment } from '../internal/is-development';
-import { GeneratedAnalyticsMetadataExpandableSectionExpand } from './analytics-metadata/interfaces';
+import {
+  GeneratedAnalyticsMetadataExpandableSectionCollapse,
+  GeneratedAnalyticsMetadataExpandableSectionExpand,
+} from './analytics-metadata/interfaces';
 import { ExpandableSectionProps, InternalVariant } from './interfaces';
 import {
   variantRequiresActionsDivider,
@@ -62,11 +65,12 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
 }
 
 const getExpandActionAnalyticsMetadataAttribute = (expanded: boolean) => {
-  const metadata: GeneratedAnalyticsMetadataExpandableSectionExpand = {
-    action: 'expand',
+  const metadata:
+    | GeneratedAnalyticsMetadataExpandableSectionExpand
+    | GeneratedAnalyticsMetadataExpandableSectionCollapse = {
+    action: !expanded ? 'expand' : 'collapse',
     detail: {
       label: { rootSelector: `.${analyticsSelectors.root}` },
-      expanded: `${!expanded}`,
     },
   };
   return getAnalyticsMetadataAttribute(metadata);

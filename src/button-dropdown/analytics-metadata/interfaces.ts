@@ -17,7 +17,15 @@ export interface GeneratedAnalyticsMetadataButtonDropdownExpand {
   action: 'expand';
   detail: {
     label: string | LabelIdentifier;
-    expanded: string;
+    position?: string;
+    id?: string;
+  };
+}
+
+export interface GeneratedAnalyticsMetadataButtonDropdownCollapse {
+  action: 'collapse';
+  detail: {
+    label: string | LabelIdentifier;
     position?: string;
     id?: string;
   };
