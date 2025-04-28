@@ -11,6 +11,10 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 
 import FormField from '../../../lib/components/form-field';
 import Select, { SelectProps } from '../../../lib/components/select';
+import {
+  GeneratedAnalyticsMetadataSelectCollapse,
+  GeneratedAnalyticsMetadataSelectExpand,
+} from '../../../lib/components/select/analytics-metadata/interfaces';
 import InternalSelect from '../../../lib/components/select/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
@@ -89,24 +93,28 @@ describe('Select renders correct analytics metadata', () => {
     const wrapper = renderSelect({});
     let trigger = wrapper.findTrigger()!.getElement();
     validateComponentNameAndLabels(trigger, labels);
-    expect(getGeneratedAnalyticsMetadata(trigger)).toEqual({
+    const expandMetadata: GeneratedAnalyticsMetadataSelectExpand = {
       action: 'expand',
       detail: {
         label: 'select with metadata',
-        expanded: 'true',
       },
+    };
+    expect(getGeneratedAnalyticsMetadata(trigger)).toEqual({
+      ...expandMetadata,
       ...getMetadataContexts(),
     });
 
     wrapper.openDropdown();
     trigger = wrapper.findTrigger()!.getElement();
     validateComponentNameAndLabels(trigger, labels);
-    expect(getGeneratedAnalyticsMetadata(trigger)).toEqual({
-      action: 'expand',
+    const collapseMetadata: GeneratedAnalyticsMetadataSelectCollapse = {
+      action: 'collapse',
       detail: {
         label: 'select with metadata',
-        expanded: 'false',
       },
+    };
+    expect(getGeneratedAnalyticsMetadata(trigger)).toEqual({
+      ...collapseMetadata,
       ...getMetadataContexts(),
     });
   });

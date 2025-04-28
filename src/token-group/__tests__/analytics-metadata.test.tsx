@@ -11,6 +11,10 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group';
+import {
+  GeneratedAnalyticsMetadataTokenGroupShowLess,
+  GeneratedAnalyticsMetadataTokenGroupShowMore,
+} from '../../../lib/components/token-group/analytics-metadata/interfaces';
 import InternalTokenGroup from '../../../lib/components/token-group/internal';
 
 function renderTokenGroup(props: TokenGroupProps) {
@@ -106,22 +110,26 @@ describe('Token Group renders correct analytics metadata', () => {
     });
 
     const tokenToggle = wrapper.findTokenToggle()!.getElement();
-    expect(getGeneratedAnalyticsMetadata(tokenToggle)).toEqual({
+    const showMoreMetadata: GeneratedAnalyticsMetadataTokenGroupShowMore = {
       action: 'showMore',
       detail: {
         label: 'show more',
-        expanded: 'true',
       },
+    };
+    expect(getGeneratedAnalyticsMetadata(tokenToggle)).toEqual({
+      ...showMoreMetadata,
       ...getMetadataContexts(),
     });
 
     wrapper.findTokenToggle()!.click();
-    expect(getGeneratedAnalyticsMetadata(wrapper.findTokenToggle()!.getElement())).toEqual({
-      action: 'showMore',
+    const showLessMetadata: GeneratedAnalyticsMetadataTokenGroupShowLess = {
+      action: 'showLess',
       detail: {
         label: 'show less',
-        expanded: 'false',
       },
+    };
+    expect(getGeneratedAnalyticsMetadata(wrapper.findTokenToggle()!.getElement())).toEqual({
+      ...showLessMetadata,
       ...getMetadataContexts(),
     });
   });

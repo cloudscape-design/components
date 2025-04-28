@@ -8,7 +8,10 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { useInternalI18n } from '../../../i18n/context';
 import InternalIcon from '../../../icon/internal';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
-import { GeneratedAnalyticsMetadataTokenListShowMore } from './analytics-metadata/interfaces';
+import {
+  GeneratedAnalyticsMetadataTokenListShowLess,
+  GeneratedAnalyticsMetadataTokenListShowMore,
+} from './analytics-metadata/interfaces';
 import { I18nStrings } from './interfaces';
 
 import styles from './styles.css.js';
@@ -45,11 +48,10 @@ export default function TokenLimitToggle({
     fireNonCancelableEvent(onClick, null);
   }, [onClick]);
 
-  const analyticsMetadata: GeneratedAnalyticsMetadataTokenListShowMore = {
-    action: 'showMore',
+  const analyticsMetadata: GeneratedAnalyticsMetadataTokenListShowMore | GeneratedAnalyticsMetadataTokenListShowLess = {
+    action: !expanded ? 'showMore' : 'showLess',
     detail: {
       label: { root: 'self' },
-      expanded: `${!expanded}`,
     },
   };
 

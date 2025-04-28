@@ -11,6 +11,12 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 
 import FormField from '../../../lib/components/form-field';
 import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
+import {
+  GeneratedAnalyticsMetadataMultiselectCollapse,
+  GeneratedAnalyticsMetadataMultiselectExpand,
+  GeneratedAnalyticsMetadataMultiselectShowLess,
+  GeneratedAnalyticsMetadataMultiselectShowMore,
+} from '../../../lib/components/multiselect/analytics-metadata/interfaces';
 import InternalMultiselect from '../../../lib/components/multiselect/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
@@ -118,24 +124,28 @@ describe('Multiselect renders correct analytics metadata', () => {
     const wrapper = renderMultiselect({});
     let trigger = wrapper.findTrigger()!.getElement();
     validateComponentNameAndLabels(trigger, labels);
-    expect(getGeneratedAnalyticsMetadata(trigger)).toEqual({
+    const expandMetadata: GeneratedAnalyticsMetadataMultiselectExpand = {
       action: 'expand',
       detail: {
         label: 'multiselect with metadata',
-        expanded: 'true',
       },
+    };
+    expect(getGeneratedAnalyticsMetadata(trigger)).toEqual({
+      ...expandMetadata,
       ...getMetadataContexts(),
     });
 
     wrapper.openDropdown();
     trigger = wrapper.findTrigger()!.getElement();
     validateComponentNameAndLabels(trigger, labels);
-    expect(getGeneratedAnalyticsMetadata(trigger)).toEqual({
-      action: 'expand',
+    const collapseMetadata: GeneratedAnalyticsMetadataMultiselectCollapse = {
+      action: 'collapse',
       detail: {
         label: 'multiselect with metadata',
-        expanded: 'false',
       },
+    };
+    expect(getGeneratedAnalyticsMetadata(trigger)).toEqual({
+      ...collapseMetadata,
       ...getMetadataContexts(),
     });
   });
@@ -277,22 +287,26 @@ describe('Multiselect renders correct analytics metadata', () => {
       });
 
       const tokenToggle = wrapper.findTokenToggle()!.getElement();
-      expect(getGeneratedAnalyticsMetadata(tokenToggle)).toEqual({
+      const showMoreMetadata: GeneratedAnalyticsMetadataMultiselectShowMore = {
         action: 'showMore',
         detail: {
           label: 'show more',
-          expanded: 'true',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(tokenToggle)).toEqual({
+        ...showMoreMetadata,
         ...getMetadataContexts(5),
       });
 
       wrapper.findTokenToggle()!.click();
-      expect(getGeneratedAnalyticsMetadata(wrapper.findTokenToggle()!.getElement())).toEqual({
-        action: 'showMore',
+      const showLessMetadata: GeneratedAnalyticsMetadataMultiselectShowLess = {
+        action: 'showLess',
         detail: {
           label: 'show less',
-          expanded: 'false',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(wrapper.findTokenToggle()!.getElement())).toEqual({
+        ...showLessMetadata,
         ...getMetadataContexts(5),
       });
     });

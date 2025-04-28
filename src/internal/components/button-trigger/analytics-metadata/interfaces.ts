@@ -6,7 +6,13 @@ import { LabelIdentifier } from '@cloudscape-design/component-toolkit/internal/a
 export interface GeneratedAnalyticsMetadataButtonTriggerExpand {
   action: 'expand';
   detail: {
-    label: LabelIdentifier;
-    expanded: string;
+    label: string | LabelIdentifier;
+  };
+}
+
+export interface GeneratedAnalyticsMetadataButtonTriggerCollapse {
+  action: 'collapse';
+  detail: {
+    label: string | LabelIdentifier;
   };
 }
