@@ -5,7 +5,13 @@ import { LabelIdentifier } from '@cloudscape-design/component-toolkit/internal/a
 export interface GeneratedAnalyticsMetadataTokenListShowMore {
   action: 'showMore';
   detail: {
-    label: LabelIdentifier;
-    expanded: string;
+    label: string | LabelIdentifier;
+  };
+}
+
+export interface GeneratedAnalyticsMetadataTokenListShowLess {
+  action: 'showLess';
+  detail: {
+    label: string | LabelIdentifier;
   };
 }

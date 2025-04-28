@@ -10,6 +10,15 @@ import {
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import PropertyFilter, { PropertyFilterProps } from '../../../lib/components/property-filter';
+import {
+  GeneratedAnalyticsMetadataPropertyEditClose,
+  GeneratedAnalyticsMetadataPropertyFilterCollapse,
+  GeneratedAnalyticsMetadataPropertyFilterDismiss,
+  GeneratedAnalyticsMetadataPropertyFilterExpand,
+  GeneratedAnalyticsMetadataPropertyFilterSelect,
+  GeneratedAnalyticsMetadataPropertyShowLess,
+  GeneratedAnalyticsMetadataPropertyShowMore,
+} from '../../../lib/components/property-filter/analytics-metadata/interfaces';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
 import { createDefaultProps } from './common';
@@ -151,7 +160,7 @@ describe('PropertyFilter renders correct analytics metadata', () => {
     act(() => wrapper.findNativeInput()!.focus());
     const propertiesItem = wrapper.findDropdown({ expandToViewport })!.findOptions()![0].getElement();
     validateComponentNameAndLabels(propertiesItem, labels);
-    expect(getGeneratedAnalyticsMetadata(propertiesItem)).toEqual({
+    const selectMetadata: GeneratedAnalyticsMetadataPropertyFilterSelect = {
       action: 'select',
       detail: {
         label: 'Instance ID',
@@ -159,6 +168,9 @@ describe('PropertyFilter renders correct analytics metadata', () => {
         value: 'Instance ID',
         groupLabel: 'Properties',
       },
+    };
+    expect(getGeneratedAnalyticsMetadata(propertiesItem)).toEqual({
+      ...selectMetadata,
       ...getMetadataContexts(),
     });
 
@@ -210,12 +222,15 @@ describe('PropertyFilter renders correct analytics metadata', () => {
 
       const dismissButton = wrapper.findTokens()[1]!.findRemoveButton()!.getElement();
       validateComponentNameAndLabels(dismissButton, labels);
-      expect(getGeneratedAnalyticsMetadata(dismissButton)).toEqual({
+      const dismissMetadata: GeneratedAnalyticsMetadataPropertyFilterDismiss = {
         action: 'dismiss',
         detail: {
           tokenLabel: 'Instance type != t3.small',
           tokenPosition: '2',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(dismissButton)).toEqual({
+        ...dismissMetadata,
         ...getMetadataContexts(4),
       });
     });
@@ -224,14 +239,16 @@ describe('PropertyFilter renders correct analytics metadata', () => {
 
       let operationSelectTrigger = wrapper.findTokens()[2]!.findTokenOperation()!.findTrigger()!.getElement();
       validateComponentNameAndLabels(operationSelectTrigger, labels);
-      expect(getGeneratedAnalyticsMetadata(operationSelectTrigger)).toEqual({
+      const expandMetadata: GeneratedAnalyticsMetadataPropertyFilterExpand = {
         action: 'expand',
         detail: {
           tokenLabel: 'Average latency > 981',
           tokenPosition: '3',
-          expanded: 'true',
           label: 'Boolean Operator',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(operationSelectTrigger)).toEqual({
+        ...expandMetadata,
         ...getMetadataContexts(4),
       });
 
@@ -239,14 +256,17 @@ describe('PropertyFilter renders correct analytics metadata', () => {
 
       operationSelectTrigger = wrapper.findTokens()[2]!.findTokenOperation()!.findTrigger()!.getElement();
       validateComponentNameAndLabels(operationSelectTrigger, labels);
-      expect(getGeneratedAnalyticsMetadata(operationSelectTrigger)).toEqual({
-        action: 'expand',
+
+      const collapseMetadata: GeneratedAnalyticsMetadataPropertyFilterCollapse = {
+        action: 'collapse',
         detail: {
           tokenLabel: 'Average latency > 981',
           tokenPosition: '3',
-          expanded: 'false',
           label: 'Boolean Operator',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(operationSelectTrigger)).toEqual({
+        ...collapseMetadata,
         ...getMetadataContexts(4),
       });
 
@@ -313,13 +333,16 @@ describe('PropertyFilter renders correct analytics metadata', () => {
 
       const closeButton = editPopoverWrapper.findDismissButton().getElement();
       validateComponentNameAndLabels(closeButton, labels);
-      expect(getGeneratedAnalyticsMetadata(closeButton)).toEqual({
+      const editCloseMetadata: GeneratedAnalyticsMetadataPropertyEditClose = {
         action: 'editClose',
         detail: {
           tokenLabel: 'Average latency > 981',
           tokenPosition: '3',
           label: 'Dismiss',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(closeButton)).toEqual({
+        ...editCloseMetadata,
         ...getMetadataContexts(4),
       });
     });
@@ -333,22 +356,26 @@ describe('PropertyFilter renders correct analytics metadata', () => {
       });
 
       const tokenToggle = wrapper.findTokenToggle()!.getElement();
-      expect(getGeneratedAnalyticsMetadata(tokenToggle)).toEqual({
+      const showMoreMetadata: GeneratedAnalyticsMetadataPropertyShowMore = {
         action: 'showMore',
         detail: {
           label: 'show more',
-          expanded: 'true',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(tokenToggle)).toEqual({
+        ...showMoreMetadata,
         ...getMetadataContexts(4),
       });
 
       wrapper.findTokenToggle()!.click();
-      expect(getGeneratedAnalyticsMetadata(wrapper.findTokenToggle()!.getElement())).toEqual({
-        action: 'showMore',
+      const showLessMetadata: GeneratedAnalyticsMetadataPropertyShowLess = {
+        action: 'showLess',
         detail: {
           label: 'show less',
-          expanded: 'false',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(wrapper.findTokenToggle()!.getElement())).toEqual({
+        ...showLessMetadata,
         ...getMetadataContexts(4),
       });
     });

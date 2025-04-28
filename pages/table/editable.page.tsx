@@ -23,6 +23,7 @@ type PageContext = React.Context<
     resizableColumns: boolean;
     enableKeyboardNavigation: boolean;
     expandableRows: boolean;
+    renderInModal: boolean;
   }>
 >;
 
@@ -329,7 +330,12 @@ const Demo = forwardRef(
 
 export default function () {
   const {
-    urlParams: { resizableColumns = true, enableKeyboardNavigation = false, expandableRows = false },
+    urlParams: {
+      resizableColumns = true,
+      enableKeyboardNavigation = false,
+      expandableRows = false,
+      renderInModal = false,
+    },
     setUrlParams,
   } = useContext(AppContext as PageContext);
   const [modalVisible, setModalVisible] = useState(false);
@@ -374,13 +380,23 @@ export default function () {
           <Checkbox checked={expandableRows} onChange={event => setUrlParams({ expandableRows: event.detail.checked })}>
             Expandable rows
           </Checkbox>
+
+          <Checkbox checked={renderInModal} onChange={event => setUrlParams({ renderInModal: event.detail.checked })}>
+            Render in Modal
+          </Checkbox>
         </SpaceBetween>
 
         <input data-testid="focus" aria-label="focus input" />
       </SpaceBetween>
 
       <ScreenshotArea disableAnimations={true}>
-        <Demo setModalVisible={setModalVisible} ref={tableRef} />
+        {renderInModal ? (
+          <Modal visible={true} onDismiss={() => setUrlParams({ renderInModal: false })}>
+            <Demo setModalVisible={setModalVisible} ref={tableRef} />
+          </Modal>
+        ) : (
+          <Demo setModalVisible={setModalVisible} ref={tableRef} />
+        )}
         <Modal
           visible={modalVisible}
           header="Discard changes"
