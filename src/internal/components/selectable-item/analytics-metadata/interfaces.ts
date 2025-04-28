@@ -5,9 +5,9 @@ import { LabelIdentifier } from '@cloudscape-design/component-toolkit/internal/a
 export interface GeneratedAnalyticsMetadataSelectableItemSelect {
   action: 'select';
   detail: {
-    label: LabelIdentifier;
+    label: string | LabelIdentifier;
     position?: string;
     value?: string;
-    groupLabel?: LabelIdentifier;
+    groupLabel?: string | LabelIdentifier;
   };
 }
