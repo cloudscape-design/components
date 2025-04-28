@@ -11,6 +11,10 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Toggle, { ToggleProps } from '../../../lib/components/toggle';
+import {
+  GeneratedAnalyticsMetadataToggleDeselect,
+  GeneratedAnalyticsMetadataToggleSelect,
+} from '../../../lib/components/toggle/analytics-metadata/interfaces';
 import InternalToggle from '../../../lib/components/toggle/internal';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
 
@@ -22,11 +26,10 @@ function renderToggle(props: ToggleProps) {
 }
 
 const getMetadata = (label: string, checked: boolean, disabled?: boolean) => {
-  const eventMetadata = {
-    action: 'select',
+  const eventMetadata: GeneratedAnalyticsMetadataToggleSelect | GeneratedAnalyticsMetadataToggleDeselect = {
+    action: !checked ? 'select' : 'deselect',
     detail: {
       label,
-      selected: `${!checked}`,
     },
   };
 
@@ -78,9 +81,8 @@ test('Internal Toggle does not render "component" metadata', () => {
   const element = createWrapper(renderResult.container).findToggle()!.findNativeInput()!.getElement();
   validateComponentNameAndLabels(element, labels);
   expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-    action: 'select',
+    action: 'deselect',
     detail: {
-      selected: 'false',
       label: 'toggle label',
     },
   });
