@@ -5,6 +5,7 @@ import { validateProps } from '../../../../lib/components/internal/base-componen
 test('should pass validation', () => {
   expect(() => validateProps('TestComponent', {}, [], {})).not.toThrow();
   expect(() => validateProps('TestComponent', { variant: 'foo' }, ['bar'], { variant: ['foo'] })).not.toThrow();
+  expect(() => validateProps('TestComponent', { variant: undefined }, ['bar'], { variant: ['foo'] })).not.toThrow();
 });
 
 test('should throw error when excluded prop is used', () => {
