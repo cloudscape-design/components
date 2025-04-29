@@ -3,6 +3,7 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
+import ButtonDropdown from '~components/button-dropdown';
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
 
@@ -153,13 +154,22 @@ awsuiPlugins.appLayout.registerDrawer({
 
   mountContent: (container, mountContext) => {
     ReactDOM.render(
-      <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
-        global widget content circle 1
-        {new Array(100).fill(null).map((_, index) => (
-          <div key={index}>{index}</div>
-        ))}
-        <div data-testid="circle-global-bottom-content">circle-global bottom content</div>
-      </AutoIncrementCounter>,
+      <Drawer
+        header={<h2>Global drawer</h2>}
+        headerActions={
+          <div style={{ marginTop: '-5px' }}>
+            <ButtonDropdown items={[{ id: 'settings', text: 'Settings' }]} ariaLabel="Control drawer" variant="icon" />
+          </div>
+        }
+      >
+        <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
+          global widget content circle 1
+          {new Array(100).fill(null).map((_, index) => (
+            <div key={index}>{index}</div>
+          ))}
+          <div data-testid="circle-global-bottom-content">circle-global bottom content</div>
+        </AutoIncrementCounter>
+      </Drawer>,
       container
     );
   },

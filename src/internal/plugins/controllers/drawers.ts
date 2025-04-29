@@ -53,6 +53,7 @@ export type UpdateDrawerConfig = { id: DrawerConfig['id'] } & Partial<
 >;
 
 type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
+type DrawersUpdateListener = (drawers: Array<DrawerConfig>) => void;
 
 export type DrawersToggledListener = (drawerId: string, params?: OpenCloseDrawerParams) => void;
 
@@ -72,6 +73,8 @@ export interface DrawersApiInternal {
   onDrawersRegistered(listener: DrawersRegistrationListener): () => void;
   onDrawerOpened(listener: DrawersToggledListener): () => void;
   onDrawerClosed(listener: DrawersToggledListener): () => void;
+  onDrawersUpdated(listener: DrawersUpdateListener): () => void;
+  getDrawersState(): Array<DrawerConfig>;
 }
 
 export class DrawersController {
@@ -79,9 +82,11 @@ export class DrawersController {
   private drawersRegistrationListener: DrawersRegistrationListener | null = null;
   private drawerOpenedListener: DrawersToggledListener | null = null;
   private drawerClosedListener: DrawersToggledListener | null = null;
+  private drawersUpdateListener: DrawersUpdateListener | null = null;
 
   scheduleUpdate = debounce(() => {
     this.drawersRegistrationListener?.(this.drawers);
+    this.drawersUpdateListener?.(this.drawers);
   }, 0);
 
   registerDrawer = (config: DrawerConfig) => {
@@ -166,6 +171,18 @@ export class DrawersController {
     this.drawerClosedListener?.(drawerId, params);
   };
 
+  onDrawersUpdated = (listener: DrawersUpdateListener) => {
+    this.drawersUpdateListener = listener;
+
+    return () => {
+      this.drawersUpdateListener = null;
+    };
+  };
+
+  getDrawersState = () => {
+    return this.drawers;
+  };
+
   installPublic(api: Partial<DrawersApiPublic> = {}): DrawersApiPublic {
     api.registerDrawer ??= this.registerDrawer;
     api.updateDrawer ??= this.updateDrawer;
@@ -179,6 +196,8 @@ export class DrawersController {
     internalApi.onDrawersRegistered ??= this.onDrawersRegistered;
     internalApi.onDrawerOpened ??= this.onDrawerOpened;
     internalApi.onDrawerClosed ??= this.onDrawerClosed;
+    internalApi.onDrawersUpdated ??= this.onDrawersUpdated;
+    internalApi.getDrawersState ??= this.getDrawersState;
     return internalApi as DrawersApiInternal;
   }
 }
