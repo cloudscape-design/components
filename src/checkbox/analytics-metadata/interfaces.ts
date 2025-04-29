@@ -7,7 +7,12 @@ export interface GeneratedAnalyticsMetadataCheckboxSelect {
   action: 'select';
   detail: {
     label: string;
-    selected: string;
+  };
+}
+export interface GeneratedAnalyticsMetadataCheckboxDeselect {
+  action: 'deselect';
+  detail: {
+    label: string;
   };
 }
 

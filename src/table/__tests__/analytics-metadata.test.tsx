@@ -13,6 +13,12 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 import ButtonDropdown from '../../../lib/components/button-dropdown';
 import Header from '../../../lib/components/header';
 import Table, { TableProps } from '../../../lib/components/table';
+import {
+  GeneratedAnalyticsMetadataTableDeselect,
+  GeneratedAnalyticsMetadataTableDeselectAll,
+  GeneratedAnalyticsMetadataTableSelect,
+  GeneratedAnalyticsMetadataTableSelectAll,
+} from '../../../lib/components/table/analytics-metadata/interfaces';
 import InternalTable from '../../../lib/components/table/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
@@ -125,11 +131,12 @@ describe('Table renders correct analytics metadata', () => {
 
       const firstSelectionArea = wrapper.findRowSelectionArea(1)!.find('input')!.getElement();
       validateComponentNameAndLabels(firstSelectionArea, labels);
+      const selectEvent: GeneratedAnalyticsMetadataTableSelect = {
+        action: 'select',
+        detail: { position: '1', item: 'first' },
+      };
       expect(getGeneratedAnalyticsMetadata(firstSelectionArea)).toEqual(
-        getMetadata({ selectedItemsCount: '1', selectionType: 'multi', variant: 'full-page' }, undefined, {
-          action: 'select',
-          detail: { position: '1', item: 'first', selected: 'true' },
-        })
+        getMetadata({ selectedItemsCount: '1', selectionType: 'multi', variant: 'full-page' }, undefined, selectEvent)
       );
 
       const disabledSelectionArea = wrapper.findRowSelectionArea(2)!.find('input')!.getElement();
@@ -140,20 +147,43 @@ describe('Table renders correct analytics metadata', () => {
 
       const thirdSelectionArea = wrapper.findRowSelectionArea(3)!.find('input')!.getElement();
       validateComponentNameAndLabels(thirdSelectionArea, labels);
+      const deselectEvent: GeneratedAnalyticsMetadataTableDeselect = {
+        action: 'deselect',
+        detail: { position: '3', item: 'third' },
+      };
       expect(getGeneratedAnalyticsMetadata(thirdSelectionArea)).toEqual(
-        getMetadata({ selectedItemsCount: '1', selectionType: 'multi', variant: 'full-page' }, undefined, {
-          action: 'select',
-          detail: { position: '3', item: 'third', selected: 'false' },
-        })
+        getMetadata({ selectedItemsCount: '1', selectionType: 'multi', variant: 'full-page' }, undefined, deselectEvent)
       );
 
       const selectAllArea = wrapper.findSelectAllTrigger()!.find('input')!.getElement();
       validateComponentNameAndLabels(selectAllArea, labels);
+      const selectAllEvent: GeneratedAnalyticsMetadataTableSelectAll = {
+        action: 'selectAll',
+        detail: { label: '' },
+      };
       expect(getGeneratedAnalyticsMetadata(selectAllArea)).toEqual(
-        getMetadata({ selectedItemsCount: '1', selectionType: 'multi', variant: 'full-page' }, undefined, {
-          action: 'selectAll',
-          detail: { selected: 'true' },
-        })
+        getMetadata(
+          { selectedItemsCount: '1', selectionType: 'multi', variant: 'full-page' },
+          undefined,
+          selectAllEvent
+        )
+      );
+    });
+    test('multiple with all items selected', () => {
+      const wrapper = renderTable({ selectionType: 'multi', selectedItems: items });
+
+      const selectAllArea = wrapper.findSelectAllTrigger()!.find('input')!.getElement();
+      validateComponentNameAndLabels(selectAllArea, labels);
+      const deselectAllEvent: GeneratedAnalyticsMetadataTableDeselectAll = {
+        action: 'deselectAll',
+        detail: { label: '' },
+      };
+      expect(getGeneratedAnalyticsMetadata(selectAllArea)).toEqual(
+        getMetadata(
+          { selectedItemsCount: '3', selectionType: 'multi', variant: 'container' },
+          undefined,
+          deselectAllEvent
+        )
       );
     });
     test('single', () => {
