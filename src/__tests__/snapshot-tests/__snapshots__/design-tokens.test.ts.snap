@@ -440,13 +440,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fafafa",
           },
         },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
-          },
-        },
         "color-background-status-error": {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": {
@@ -3003,13 +2996,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#21252c",
             "light": "#fafafa",
-          },
-        },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
           },
         },
         "color-background-status-error": {
@@ -5570,13 +5556,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fafafa",
           },
         },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
-          },
-        },
         "color-background-status-error": {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": {
@@ -8133,13 +8112,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#21252c",
             "light": "#fafafa",
-          },
-        },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
           },
         },
         "color-background-status-error": {
@@ -10700,13 +10672,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fafafa",
           },
         },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
-          },
-        },
         "color-background-status-error": {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": {
@@ -13265,13 +13230,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#21252c",
           },
         },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#232f3e",
-            "light": "#232f3e",
-          },
-        },
         "color-background-status-error": {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": {
@@ -15828,13 +15786,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#21252c",
         "light": "#fafafa",
-      },
-    },
-    "color-background-segment-wrapper": {
-      "$description": "The background color of segmented control wrapper.",
-      "$value": {
-        "dark": "#2a2e33",
-        "light": "#ffffff",
       },
     },
     "color-background-status-error": {
@@ -18400,13 +18351,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "rgba(0, 7, 22, 0.05)",
           },
         },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#161d26",
-            "light": "#ffffff",
-          },
-        },
         "color-background-status-error": {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": {
@@ -20963,13 +20907,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "rgba(255, 255, 255, 0.1)",
             "light": "rgba(255, 255, 255, 0.1)",
-          },
-        },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#161d26",
-            "light": "#161d26",
           },
         },
         "color-background-status-error": {
@@ -23530,13 +23467,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f0fbff",
           },
         },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#161d26",
-            "light": "#ffffff",
-          },
-        },
         "color-background-status-error": {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": {
@@ -26093,13 +26023,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#f0fbff",
-          },
-        },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#161d26",
-            "light": "#ffffff",
           },
         },
         "color-background-status-error": {
@@ -28660,13 +28583,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "rgba(0, 7, 22, 0.15)",
           },
         },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#161d26",
-            "light": "#ffffff",
-          },
-        },
         "color-background-status-error": {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": {
@@ -31223,13 +31139,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "rgba(0, 7, 22, 0.05)",
             "light": "rgba(0, 7, 22, 0.05)",
-          },
-        },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#161d26",
-            "light": "#ffffff",
           },
         },
         "color-background-status-error": {
@@ -33790,13 +33699,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#0f141a",
-            "light": "#0f141a",
-          },
-        },
         "color-background-status-error": {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": {
@@ -36355,13 +36257,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
-        "color-background-segment-wrapper": {
-          "$description": "The background color of segmented control wrapper.",
-          "$value": {
-            "dark": "#161d26",
-            "light": "#161d26",
-          },
-        },
         "color-background-status-error": {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": {
@@ -38918,13 +38813,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#1b232d",
         "light": "#f0fbff",
-      },
-    },
-    "color-background-segment-wrapper": {
-      "$description": "The background color of segmented control wrapper.",
-      "$value": {
-        "dark": "#161d26",
-        "light": "#ffffff",
       },
     },
     "color-background-status-error": {

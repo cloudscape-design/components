@@ -219,7 +219,7 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundSegmentWrapper: {
     description: 'The background color of segmented control wrapper.',
-    public: true,
+    public: false,
     themeable: true,
   },
   colorBackgroundStatusError: {
