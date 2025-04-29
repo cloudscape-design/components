@@ -82,6 +82,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundSegmentDefault: '{colorBackgroundButtonNormalDefault}',
   colorBackgroundSegmentDisabled: '{colorBackgroundButtonNormalDisabled}',
   colorBackgroundSegmentHover: '{colorBackgroundButtonNormalHover}',
+  colorBackgroundSegmentWrapper: '{colorBackgroundContainerContent}',
   colorBackgroundSliderHandleDefault: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBackgroundSliderHandleActive: { light: '{colorBlue700}', dark: '{colorBlue400}' },
   colorBackgroundSliderTrack: { light: '{colorGrey500}', dark: '{colorGrey550}' },
