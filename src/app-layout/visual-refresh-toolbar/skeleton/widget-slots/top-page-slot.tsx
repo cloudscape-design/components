@@ -4,14 +4,16 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { createWidgetizedComponent } from '../../../../internal/widgets';
+import { useMultiAppLayout } from '../../multi-layout';
 import { AppLayoutNavigationImplementation as AppLayoutNavigation } from '../../navigation';
 import { AppLayoutToolbarImplementation as AppLayoutToolbar } from '../../toolbar';
 import { SkeletonLayoutProps } from '../index';
+import { ToolbarSkeleton } from '../slot-skeletons';
 
 import sharedStyles from '../../../resize/styles.css.js';
 import styles from '../styles.css.js';
 
-const TopPageSlot = (props: SkeletonLayoutProps) => {
+export const TopPageSlot = (props: SkeletonLayoutProps) => {
   const {
     appLayoutState: {
       resolvedNavigationOpen,
@@ -43,4 +45,21 @@ const TopPageSlot = (props: SkeletonLayoutProps) => {
   );
 };
 
-export const createWidgetizedAppLayoutTopPageSlot = createWidgetizedComponent(TopPageSlot);
+export const TopPageSlotSkeleton = React.forwardRef<HTMLElement, SkeletonLayoutProps>((props, ref) => {
+  const { appLayoutProps } = props;
+  const { __embeddedViewMode: embeddedViewMode } = appLayoutProps as any;
+  const { toolbarProps } = useMultiAppLayout(appLayoutProps as any, true);
+  const hasToolbar = !embeddedViewMode && !!toolbarProps;
+  const resolvedNavigation = appLayoutProps?.navigationHide ? null : appLayoutProps?.navigation || <></>;
+  const resolvedNavigationOpen = !!resolvedNavigation && appLayoutProps?.navigationOpen;
+  return (
+    <>
+      {hasToolbar && (
+        <ToolbarSkeleton ref={ref as React.Ref<any>} toolbarProps={{} as any} appLayoutInternals={{} as any} />
+      )}
+      {resolvedNavigationOpen && <div className={styles.navigation} />}
+    </>
+  );
+});
+
+export const createWidgetizedAppLayoutTopPageSlot = createWidgetizedComponent(TopPageSlot, TopPageSlotSkeleton);

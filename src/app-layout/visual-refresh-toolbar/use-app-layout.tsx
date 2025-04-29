@@ -1,14 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, {
-  ForwardedRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { ForwardedRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
@@ -450,12 +442,6 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
 
     return false;
   };
-
-  useLayoutEffect(() => {
-    if (!hasToolbar) {
-      // setIsNested(getIsNestedInAppLayout(rootRef.current));
-    }
-  }, [hasToolbar]);
 
   const splitPanelOffsets = computeSplitPanelOffsets({
     placement,
