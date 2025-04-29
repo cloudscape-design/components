@@ -4,10 +4,8 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
-import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { GeneratedAnalyticsMetadataTableSelectAll } from './analytics-metadata/interfaces';
 import { TableHeaderCell } from './header-cell';
 import { TableProps } from './interfaces';
 import { focusMarkers, SelectionProps } from './selection';
@@ -112,9 +110,6 @@ const Thead = React.forwardRef(
               getSelectAllProps={getSelectAllProps}
               onFocusMove={onFocusMove}
               singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
-              {...getAnalyticsMetadataAttribute({
-                action: 'selectAll',
-              } as Partial<GeneratedAnalyticsMetadataTableSelectAll>)}
             />
           ) : null}
 

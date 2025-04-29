@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { TableTdElement, TableTdElementProps } from '../body-cell/td-element';
 import { TableThElement, TableThElementProps } from '../header-cell/th-element';
@@ -38,6 +40,9 @@ export function TableHeaderSelectionCell({
       colIndex={0}
       focusedComponent={focusedComponent}
       ariaLabel={selectAllProps?.selectionGroupLabel}
+      {...getAnalyticsMetadataAttribute({
+        action: selectAllProps?.checked ? 'deselectAll' : 'selectAll',
+      })}
     >
       {selectAllProps ? (
         <SelectionControl

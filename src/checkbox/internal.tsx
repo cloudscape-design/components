@@ -16,10 +16,7 @@ import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import {
-  GeneratedAnalyticsMetadataCheckboxComponent,
-  GeneratedAnalyticsMetadataCheckboxSelect,
-} from './analytics-metadata/interfaces';
+import { GeneratedAnalyticsMetadataCheckboxComponent } from './analytics-metadata/interfaces';
 import { CheckboxProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -76,9 +73,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       analyticsMetadata.component = analyticsComponentMetadata;
     }
     if (!disabled && !readOnly) {
-      analyticsMetadata.detail = {
-        selected: `${!checked}`,
-      } as Partial<GeneratedAnalyticsMetadataCheckboxSelect['detail']>;
+      analyticsMetadata.action = !checked ? 'select' : 'deselect';
     }
 
     return (

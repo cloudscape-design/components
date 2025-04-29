@@ -237,7 +237,6 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
         action: 'select',
         detail: {
           label: 'Wrap lines label',
-          selected: 'true',
         },
         ...getMetadata({}, 'wrapLines'),
       });
@@ -254,7 +253,6 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
         action: 'select',
         detail: {
           label: 'Striped rows label',
-          selected: 'true',
         },
         ...getMetadata({}, 'stripedRows'),
       });
@@ -271,7 +269,6 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
         action: 'select',
         detail: {
           label: 'Compact mode',
-          selected: 'true',
         },
         ...getMetadata({}, 'contentDensity'),
       });
