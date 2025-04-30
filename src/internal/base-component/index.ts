@@ -5,6 +5,7 @@ import { initAwsUiVersions } from '@cloudscape-design/component-toolkit/internal
 
 import { AnalyticsMetadata } from '../analytics/interfaces';
 import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../environment';
+import { isDevelopment } from '../is-development';
 
 // these styles needed to be imported for every public component
 import './styles.css.js';
@@ -45,11 +46,14 @@ export function validateProps(
   excludedProps: Array<string>,
   allowedEnums: Record<string, Array<string>>
 ) {
+  if (!isDevelopment) {
+    return;
+  }
   for (const [prop, value] of Object.entries(props)) {
     if (excludedProps.includes(prop)) {
       throw new Error(`${componentName} does not support "${prop}" property when used in ${THEME} theme`);
     }
-    if (allowedEnums[prop] && !allowedEnums[prop].includes(value)) {
+    if (value && allowedEnums[prop] && !allowedEnums[prop].includes(value)) {
       throw new Error(`${componentName} does not support "${prop}" with value "${value}" when used in ${THEME} theme`);
     }
   }
