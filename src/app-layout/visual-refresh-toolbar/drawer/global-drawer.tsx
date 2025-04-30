@@ -94,7 +94,7 @@ function AppLayoutGlobalDrawerImplementation({
       originalLeftPositionRef.current = rect.left;
       drawer.style.position = 'absolute';
       drawer.style.left = `${rect.left}px`;
-      drawer.style.transition = `left 0.4s ease-in-out`;
+      drawer.style.transition = `0.6s cubic-bezier(0.84, 0.00, 0.16, 1.00)`;
 
       console.log('1. Left position set to:', rect.left);
 
@@ -103,6 +103,7 @@ function AppLayoutGlobalDrawerImplementation({
         if (drawer) {
           drawer.classList.add(styles['drawer-expanded']);
           drawer.style.left = `0px`;
+          drawer.style.inlineSize = `100%`;
         }
       });
     } else {

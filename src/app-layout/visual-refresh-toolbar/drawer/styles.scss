@@ -91,8 +91,8 @@ $global-drawer-gap-size: 8px;
   }
 
   &.drawer-expanded {
-    inline-size: 100%;
-    //transition: ease-in-out 0.3s;
+    //inline-size: 100%;
+    //transition: left 0.4s ease-in-out, inline-size 0.4s ease-in-out;
 
     @include desktop-only {
       border-inline-start: none;
