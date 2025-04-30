@@ -36,6 +36,12 @@ $global-drawer-gap-size: 8px;
   pointer-events: auto;
   word-wrap: break-word;
 
+  @include styles.with-motion {
+    transition:
+      inline-size awsui.$motion-duration-transition-show-paced ease-in-out,
+      opacity awsui.$motion-duration-transition-show-paced ease-in-out;
+  }
+
   @include desktop-only {
     &:not(.legacy) {
       border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
@@ -70,12 +76,23 @@ $global-drawer-gap-size: 8px;
     }
   }
 
-  &.drawer-hidden {
-    display: none;
+  &.entered {
+    opacity: 1;
+  }
+
+  &.exiting {
+    opacity: 0;
+  }
+
+  &.exited {
+    opacity: 0;
+    inline-size: 0;
+    visibility: hidden;
   }
 
   &.drawer-expanded {
     inline-size: 100%;
+    //transition: ease-in-out 0.3s;
 
     @include desktop-only {
       border-inline-start: none;

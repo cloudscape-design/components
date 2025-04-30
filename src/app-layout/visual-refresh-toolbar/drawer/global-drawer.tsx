@@ -43,6 +43,7 @@ function AppLayoutGlobalDrawerImplementation({
     setExpandedDrawerId,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
+  const originalLeftPositionRef = useRef<number | null>(null);
   const activeDrawerId = activeGlobalDrawer?.id ?? '';
 
   const computedAriaLabels = {
@@ -69,9 +70,71 @@ function AppLayoutGlobalDrawerImplementation({
   const animationDisabled = activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id);
   const isExpanded = activeGlobalDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
 
+  React.useEffect(() => {
+    const drawer = drawerRef.current;
+    if (!drawer) {
+      return;
+    }
+
+    // Define transition end handler that will be used in both effect and cleanup
+    const onTransitionEnd = () => {
+      console.log('Transition ended');
+
+      if (drawer) {
+        drawer.removeEventListener('transitionend', onTransitionEnd);
+        drawer.classList.remove(styles['drawer-expanded']);
+        drawer.style.position = '';
+        drawer.style.left = '';
+        originalLeftPositionRef.current = null;
+      }
+    };
+
+    if (isExpanded) {
+      const rect = drawer.getBoundingClientRect();
+      originalLeftPositionRef.current = rect.left;
+      drawer.style.position = 'absolute';
+      drawer.style.left = `${rect.left}px`;
+      drawer.style.transition = `left 0.4s ease-in-out`;
+
+      console.log('1. Left position set to:', rect.left);
+
+      // Use requestAnimationFrame to ensure position is set before adding expanded class
+      requestAnimationFrame(() => {
+        if (drawer) {
+          drawer.classList.add(styles['drawer-expanded']);
+          drawer.style.left = `0px`;
+        }
+      });
+    } else {
+      // First set the left position back to original position
+      if (originalLeftPositionRef.current !== null) {
+        console.log('Setting left position back to original');
+        drawer.style.left = `${originalLeftPositionRef.current}px`;
+
+        const rect = drawer.getBoundingClientRect();
+        console.log('2. Left position set to:', rect.left);
+
+        // Wait for transition to complete before removing class
+        drawer.addEventListener('transitionend', onTransitionEnd);
+      }
+    }
+
+    // Cleanup event listener if component unmounts during transition
+    return () => {
+      drawer.removeEventListener('transitionend', onTransitionEnd);
+    };
+  }, [isExpanded]); // styles is not needed as a dependency since it's a module import
+
   return (
-    <Transition nodeRef={drawerRef} in={show} appear={show} timeout={0}>
+    <Transition
+      nodeRef={drawerRef}
+      //in={show}
+      in={show}
+      appear={show}
+      timeout={0}
+    >
       {state => {
+        console.log('Transition state:', state);
         return (
           <aside
             id={activeDrawerId}
@@ -86,7 +149,6 @@ function AppLayoutGlobalDrawerImplementation({
                 [styles['drawer-hidden']]: !show,
                 [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
                 [testutilStyles['active-drawer']]: show,
-                [styles['drawer-expanded']]: isExpanded,
               }
             )}
             ref={drawerRef}
