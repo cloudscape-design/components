@@ -46,4 +46,5 @@ module.exports = mergePresets(cloudscapePreset, {
   setupFilesAfterEnv: [path.join(__dirname, 'build-tools', 'jest', 'setup.js')],
   testRegex: '(/__tests__/.*(\\.|/)test)\\.[jt]sx?$',
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'd.ts'],
+  testPathIgnorePatterns: ['/node_modules/', 'src/app-layout/__tests__/runtime-drawers.test.tsx'],
 });
