@@ -1,0 +1,24 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '~design-tokens' as awsui;
+
+.list {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: awsui.$space-static-xxxs awsui.$space-static-xs;
+  list-style: none;
+  margin-inline: 0;
+  margin-block: 0;
+  padding-inline: 0;
+  padding-block: 0;
+}
+
+.item {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: awsui.$space-static-xxxs awsui.$space-static-xs;
+}
