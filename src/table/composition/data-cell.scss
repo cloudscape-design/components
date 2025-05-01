@@ -1,0 +1,21 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+
+.data-cell {
+  padding-block-end: awsui.$space-scaled-xs;
+  padding-inline-end: awsui.$space-l;
+  padding-block-start: awsui.$space-scaled-xs;
+  word-wrap: break-word;
+}
+
+.data-cell:first-child {
+  padding-inline-start: awsui.$space-xxs;
+}
+
+.data-cell:not(:first-child) {
+  padding-inline-start: awsui.$space-m;
+}
