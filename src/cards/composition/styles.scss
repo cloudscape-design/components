@@ -1,0 +1,149 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.card-container {
+  @include styles.styles-reset();
+  @include styles.default-text-style;
+
+  border-inline: 1px solid awsui.$color-border-divider-default;
+  border-block: 1px solid awsui.$color-border-divider-default;
+  border-start-start-radius: awsui.$border-radius-container;
+  border-start-end-radius: awsui.$border-radius-container;
+  border-end-start-radius: awsui.$border-radius-container;
+  border-end-end-radius: awsui.$border-radius-container;
+  overflow: auto;
+  background: awsui.$color-background-container-content;
+  display: flex;
+
+  &.fit-height {
+    block-size: 100%;
+  }
+
+  &.position-vertical {
+    flex-direction: column;
+  }
+  &.position-horizontal {
+    flex-direction: row;
+  }
+
+  &.position-vertical > :first-child,
+  & > :first-child {
+    border-start-start-radius: awsui.$border-radius-container;
+    border-start-end-radius: awsui.$border-radius-container;
+  }
+  &.position-vertical > :last-child,
+  & > :last-child {
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
+  }
+  &.position-horizontal > :first-child {
+    border-start-start-radius: awsui.$border-radius-container;
+    border-end-start-radius: awsui.$border-radius-container;
+  }
+  &.position-horizontal > :last-child {
+    border-start-end-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
+  }
+}
+
+.card-content,
+.card-header,
+.card-footer {
+  padding-block: 16px;
+  padding-inline: 20px;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.card-focus-highlight {
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+  border-end-start-radius: inherit;
+  border-end-end-radius: inherit;
+  opacity: 0;
+  background-color: currentcolor;
+  @include styles.with-motion {
+    transition-property: opacity;
+    transition-duration: awsui.$motion-duration-transition-show-paced;
+    transition-timing-function: awsui.$motion-easing-transition-show-paced;
+  }
+}
+
+.card-touch-area {
+  @include styles.styles-reset;
+  display: block;
+  text-align: inherit;
+  inline-size: 100%;
+  border-block: none;
+  border-inline: none;
+  outline: none;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+
+  &:first-child > :first-child {
+    border-start-start-radius: awsui.$border-radius-container;
+    border-start-end-radius: awsui.$border-radius-container;
+  }
+  &:last-child > :last-child {
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
+  }
+
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(-2px, inherit);
+  }
+
+  &:hover {
+    > .card-focus-highlight {
+      opacity: 0.03;
+    }
+  }
+}
+
+.card-media {
+  overflow: hidden;
+  flex-shrink: 0;
+  display: block;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  // stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type
+  img,
+  video,
+  picture {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  iframe {
+    inline-size: 100%;
+    block-size: 100%;
+    border-block: 0;
+    border-inline: 0;
+  }
+  // stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type
+}
