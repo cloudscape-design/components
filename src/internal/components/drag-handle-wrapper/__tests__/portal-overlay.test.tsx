@@ -22,6 +22,7 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
 }));
 
 afterEach(() => {
+  isRtl = false;
   jest.restoreAllMocks();
 });
 
@@ -96,7 +97,7 @@ test('resumes position updates when enabled after being disabled', async () => {
 
   rerender(<PortalOverlayWrapper isDisabled={false} />);
   await waitFor(() => {
-    expect(portalOverlay.style.translate).toBe('-2px 4px');
+    expect(portalOverlay.style.translate).toBe('2px 4px');
     expect(portalOverlay.style.width).toBe('10px');
     expect(portalOverlay.style.height).toBe('20px');
   });
