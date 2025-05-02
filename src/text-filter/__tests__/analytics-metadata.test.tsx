@@ -11,6 +11,7 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TextFilter, { TextFilterProps } from '../../../lib/components/text-filter';
+import { GeneratedAnalyticsMetadataTextFilterClearInput } from '../../../lib/components/text-filter/analytics-metadata/interfaces';
 import InternalTextFilter from '../../../lib/components/text-filter/internal';
 
 const label = 'text filter label';
@@ -52,11 +53,14 @@ describe('TextFilter renders correct analytics metadata', () => {
   test('on clearInput', () => {
     const wrapper = renderTextFilter();
     const clearButton = wrapper.findInput().findClearButton()!.getElement();
-    expect(getGeneratedAnalyticsMetadata(clearButton)).toEqual({
+    const clearInputMetadata: GeneratedAnalyticsMetadataTextFilterClearInput = {
       action: 'clearInput',
       detail: {
         label: 'clear',
       },
+    };
+    expect(getGeneratedAnalyticsMetadata(clearButton)).toEqual({
+      ...clearInputMetadata,
       ...getMetadata(),
     });
   });
