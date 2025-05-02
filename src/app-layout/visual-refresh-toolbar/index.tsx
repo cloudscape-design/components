@@ -38,7 +38,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
             return (
               <AppLayoutVisibilityContext.Provider value={appLayoutState?.isIntersecting ?? true}>
                 {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
-                {!appLayoutState?.hasToolbar && props.breadcrumbs ? (
+                {Object.keys(appLayoutState).length > 0 && !appLayoutState?.hasToolbar && props.breadcrumbs ? (
                   <ScreenreaderOnly>{props.breadcrumbs}</ScreenreaderOnly>
                 ) : null}
 

@@ -4,8 +4,6 @@ import React from 'react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { getFunnelKeySelector } from '../../internal/analytics/selectors';
 import { describeEachAppLayout, renderComponent } from './utils';
 
 let widgetMockEnabled = false;
@@ -40,7 +38,6 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], skipInitialTest: true }, ()
     expect(wrapper.findToolbar()).toBeTruthy();
     expect(wrapper.findNavigation()).toBeTruthy();
     expect(wrapper.findBreadcrumbs()).toBeTruthy();
-    expect(wrapper.find(getFunnelKeySelector('funnel-name'))).toBeTruthy();
     expect(wrapper.findNotifications()).toBeTruthy();
     expect(wrapper.findTools()).toBeTruthy();
     expect(wrapper.findContentRegion()).toBeTruthy();
@@ -66,7 +63,6 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], skipInitialTest: true }, ()
       expect(wrapper.findToolbar()).toBeFalsy();
       expect(wrapper.findNavigation()).toBeFalsy();
       expect(wrapper.findBreadcrumbs()).toBeFalsy();
-      expect(createWrapper().find(getFunnelKeySelector('funnel-name'))).toBeTruthy();
       expect(wrapper.findNotifications()).toBeFalsy();
       expect(wrapper.findTools()).toBeFalsy();
       expect(wrapper.findContentRegion()).toBeTruthy();
