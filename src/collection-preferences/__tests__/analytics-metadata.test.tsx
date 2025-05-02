@@ -10,6 +10,12 @@ import {
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import CollectionPreferences, { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
+import {
+  GeneratedAnalyticsMetadataCollectionPreferencesCancel,
+  GeneratedAnalyticsMetadataCollectionPreferencesConfirm,
+  GeneratedAnalyticsMetadataCollectionPreferencesDismiss,
+  GeneratedAnalyticsMetadataCollectionPreferencesOpen,
+} from '../../../lib/components/collection-preferences/analytics-metadata/interfaces';
 import { GeneratedAnalyticsMetadataCollectionPreferencesComponent } from '../../../lib/components/collection-preferences/analytics-metadata/interfaces';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
@@ -73,11 +79,14 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       const wrapper = renderCollectionPreferences();
       const triggerButton = wrapper.findTriggerButton().getElement();
       validateComponentNameAndLabels(triggerButton, labels);
-      expect(getGeneratedAnalyticsMetadata(triggerButton)).toEqual({
+      const openMetadata: GeneratedAnalyticsMetadataCollectionPreferencesOpen = {
         action: 'open',
         detail: {
           label: 'Preferences title',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(triggerButton)).toEqual({
+        ...openMetadata,
         ...getMetadata(),
       });
     });
@@ -86,11 +95,14 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       wrapper.findTriggerButton().click();
       const dismissButton = wrapper.findModal()!.findDismissButton().getElement();
       validateComponentNameAndLabels(dismissButton, labels);
-      expect(getGeneratedAnalyticsMetadata(dismissButton)).toEqual({
+      const dismissMetadata: GeneratedAnalyticsMetadataCollectionPreferencesDismiss = {
         action: 'dismiss',
         detail: {
           label: 'Cancel',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(dismissButton)).toEqual({
+        ...dismissMetadata,
         ...getMetadata(),
       });
     });
@@ -100,11 +112,14 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       wrapper.findTriggerButton().click();
       const cancelButton = wrapper.findModal()!.findCancelButton()!.getElement();
       validateComponentNameAndLabels(cancelButton, labels);
-      expect(getGeneratedAnalyticsMetadata(cancelButton)).toEqual({
+      const cancelMetadata: GeneratedAnalyticsMetadataCollectionPreferencesCancel = {
         action: 'cancel',
         detail: {
           label: 'Cancel',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(cancelButton)).toEqual({
+        ...cancelMetadata,
         ...getMetadata(),
       });
     });
@@ -114,11 +129,14 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       wrapper.findTriggerButton().click();
       const confirmButton = wrapper.findModal()!.findConfirmButton()!.getElement();
       validateComponentNameAndLabels(confirmButton, labels);
-      expect(getGeneratedAnalyticsMetadata(confirmButton)).toEqual({
+      const confirmMetadata: GeneratedAnalyticsMetadataCollectionPreferencesConfirm = {
         action: 'confirm',
         detail: {
           label: 'Confirm',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(confirmButton)).toEqual({
+        ...confirmMetadata,
         ...getMetadata(),
       });
     });

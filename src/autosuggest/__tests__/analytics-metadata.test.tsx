@@ -10,6 +10,10 @@ import {
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
+import {
+  GeneratedAnalyticsMetadataAutosuggestClearInput,
+  GeneratedAnalyticsMetadataAutosuggestSelect,
+} from '../../../lib/components/autosuggest/analytics-metadata/interfaces';
 import InternalAutosuggest from '../../../lib/components/autosuggest/internal';
 import FormField from '../../../lib/components/form-field';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -96,9 +100,12 @@ describe('Autosuggest renders correct analytics metadata', () => {
     const wrapper = renderAutosuggest({ value: 'something' });
     const clearButton = wrapper.findClearButton()!.getElement();
     validateComponentNameAndLabels(clearButton, labels);
-    expect(getGeneratedAnalyticsMetadata(clearButton)).toEqual({
+    const clearInputMetadata: GeneratedAnalyticsMetadataAutosuggestClearInput = {
       action: 'clearInput',
       detail: { label: 'clear content' },
+    };
+    expect(getGeneratedAnalyticsMetadata(clearButton)).toEqual({
+      ...clearInputMetadata,
       ...getMetadataContexts(),
     });
   });
@@ -114,13 +121,16 @@ describe('Autosuggest renders correct analytics metadata', () => {
 
     const simpleEnabledItemWithoutLabel = wrapper.findDropdown().findOptionByValue('value1')!.getElement();
     validateComponentNameAndLabels(simpleEnabledItemWithoutLabel, labels);
-    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithoutLabel)).toEqual({
+    const selectAction: GeneratedAnalyticsMetadataAutosuggestSelect = {
       action: 'select',
       detail: {
         label: 'value1',
         position: '1',
         value: 'value1',
       },
+    };
+    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithoutLabel)).toEqual({
+      ...selectAction,
       ...getMetadataContexts(),
     });
 
