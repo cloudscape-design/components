@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef, useState } from 'react';
 
-import { AppLayout, Button, Header, HelpPanel, Link, SplitPanel, Table } from '~components';
+import { AppLayout, Button, Header, HelpPanel, Link, SideNavigation, SplitPanel, Table } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 
-import './utils/external-widget';
+import './utils/external-widget-demo';
 import AppContext, { AppContextType } from '../app/app-context';
 import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
-import { Breadcrumbs, CustomDrawerContent } from './utils/content-blocks';
+import { Breadcrumbs } from './utils/content-blocks';
 import { drawerLabels } from './utils/drawers';
 import appLayoutLabels from './utils/labels';
 
@@ -22,52 +22,53 @@ type DemoContext = React.Context<
 >;
 
 export default function WithDrawers() {
-  const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
-  const [helpPathSlug] = useState<string>('default');
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const hasTools = urlParams.hasTools ?? false;
-  const hasDrawers = urlParams.hasDrawers ?? true;
-  const [isToolsOpen, setIsToolsOpen] = useState(false);
   const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
+
+  const [activeHref, setActiveHref] = useState('#/');
+  const [navigationOpen, setNavigationOpen] = useState(true);
+  const [toolsOpen, setToolsOpen] = useState(false);
 
   const items = generateItems(20);
 
-  const drawersProps: Pick<AppLayoutProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = !hasDrawers
-    ? null
-    : {
-        activeDrawerId: activeDrawerId,
-        drawers: [
-          {
-            ariaLabels: {
-              closeButton: 'ProHelp close button',
-              drawerName: 'ProHelp drawer content',
-              triggerButton: 'ProHelp trigger button',
-              resizeHandle: 'ProHelp resize handle',
-            },
-            content: <CustomDrawerContent />,
-            id: 'pro-help',
-            trigger: {
-              iconName: 'contact',
-            },
-          },
-        ],
-        onDrawerChange: event => {
-          setActiveDrawerId(event.detail.activeDrawerId);
-        },
-      };
+  function openHelp() {
+    setToolsOpen(true);
+  }
 
   return (
     <AppLayout
       ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
       breadcrumbs={<Breadcrumbs />}
       ref={appLayoutRef}
+      navigation={
+        <SideNavigation
+          activeHref={activeHref}
+          header={{ text: 'Navigation', href: '#/' }}
+          onFollow={e => {
+            e.preventDefault();
+            setActiveHref(e.detail.href);
+          }}
+          items={[
+            { type: 'link', text: 'Side nav menu A', href: '#/menu-a' },
+            { type: 'link', text: 'Side nav menu B', href: '#/menu-b' },
+            { type: 'link', text: 'Side nav menu C', href: '#/menu-c' },
+          ]}
+        />
+      }
+      navigationOpen={navigationOpen}
+      onNavigationChange={({ detail }) => setNavigationOpen(detail.open)}
       content={
         <Table<Instance>
           header={
             <Header
               variant="awsui-h1-sticky"
               description="Demo page with footer"
-              info={<Link variant="info">Long help text</Link>}
+              info={
+                <Link variant="info" onFollow={() => openHelp()}>
+                  Info
+                </Link>
+              }
               actions={<Button variant="primary">Create</Button>}
             >
               Sticky Scrollbar Example
@@ -105,17 +106,21 @@ export default function WithDrawers() {
         const { position } = event.detail;
         setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
       }}
-      onToolsChange={event => {
-        setIsToolsOpen(event.detail.open);
-      }}
-      tools={<Info helpPathSlug={helpPathSlug} />}
-      toolsOpen={isToolsOpen}
+      toolsOpen={toolsOpen}
       toolsHide={!hasTools}
-      {...drawersProps}
+      onToolsChange={({ detail }) => setToolsOpen(detail.open)}
+      tools={
+        <HelpPanel header={<h2>Help</h2>}>
+          <p>This is a demo page showcasing the AppLayout component with a sticky header and scrollable content.</p>
+          <h3>Features:</h3>
+          <ul>
+            <li>Responsive navigation sidebar</li>
+            <li>Sticky header with actions</li>
+            <li>Full-page table with sticky header</li>
+            <li>Split panel support</li>
+          </ul>
+        </HelpPanel>
+      }
     />
   );
-}
-
-function Info({ helpPathSlug }: { helpPathSlug: string }) {
-  return <HelpPanel header={<h2>Info</h2>}>Here is some info for you: {helpPathSlug}</HelpPanel>;
 }
