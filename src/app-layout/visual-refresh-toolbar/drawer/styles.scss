@@ -74,6 +74,10 @@ $global-drawer-gap-size: 8px;
     display: none;
   }
 
+  &.drawer-expandable:not(.drawer-expanded) {
+    min-inline-size: var(#{custom-props.$drawerSize});
+  }
+
   &.drawer-expanded {
     inline-size: 100%;
 
