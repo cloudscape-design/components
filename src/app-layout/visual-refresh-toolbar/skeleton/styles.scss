@@ -50,10 +50,12 @@
       'toolbar    toolbar      toolbar       toolbar   toolbar         toolbar  toolbar'
       'navigation .         notifications    .         sideSplitPanel  tools    global-tools'
       'navigation .             main         .         sideSplitPanel  tools    global-tools';
-    grid-template-columns: min-content minmax(#{awsui.$space-layout-content-horizontal}, 1fr) minmax(
+    grid-template-columns:
+      min-content minmax(#{awsui.$space-layout-content-horizontal}, 1fr) minmax(
         0,
         var(#{custom-props.$maxContentWidth})
-      ) minmax(#{awsui.$space-layout-content-horizontal}, 1fr) min-content min-content;
+      )
+      minmax(#{awsui.$space-layout-content-horizontal}, 1fr) min-content min-content;
     grid-template-rows: min-content min-content 1fr min-content;
 
     &.has-adaptive-widths-default {
@@ -74,12 +76,6 @@
         'global-tools global-tools global-tools  global-tools global-tools'
         'global-tools global-tools global-tools  global-tools global-tools';
       grid-template-rows: 1fr;
-
-      > .global-tools {
-        @include desktop-only {
-          justify-content: flex-end;
-        }
-      }
     }
   }
 }
@@ -131,6 +127,7 @@
   @include desktop-only {
     display: flex;
     grid-area: global-tools;
+    justify-content: flex-end;
   }
 }
 
