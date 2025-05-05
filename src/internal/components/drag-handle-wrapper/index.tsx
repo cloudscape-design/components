@@ -189,7 +189,7 @@ export default function DragHandleWrapper({
         )}
       </div>
 
-      <PortalOverlay track={dragHandleRef.current}>
+      <PortalOverlay track={dragHandleRef.current} isDisabled={!showButtons}>
         {directions['block-start'] && (
           <DirectionButton
             show={!isDisabled && showButtons}
