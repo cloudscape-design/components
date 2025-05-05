@@ -13,6 +13,11 @@ import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
+import {
+  GeneratedAnalyticsMetadataWizardCancel,
+  GeneratedAnalyticsMetadataWizardNavigate,
+  GeneratedAnalyticsMetadataWizardSubmit,
+} from '../../../lib/components/wizard/analytics-metadata/interfaces';
 import InternalWizard from '../../../lib/components/wizard/internal';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
 import { DEFAULT_I18N_SETS } from './common';
@@ -79,13 +84,16 @@ describe.each([true, false])('with visualrefresh=%s', isVR => {
       const wrapper = renderWizard();
       const nextButton = wrapper.findPrimaryButton().getElement();
       validateComponentNameAndLabels(nextButton, labels);
-      expect(getGeneratedAnalyticsMetadata(nextButton)).toEqual({
+      const navigateMetadata: GeneratedAnalyticsMetadataWizardNavigate = {
         action: 'navigate',
         detail: {
           label: 'Next',
           reason: 'next',
           targetStepIndex: '1',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(nextButton)).toEqual({
+        ...navigateMetadata,
         ...getMetadata(0),
       });
     });
@@ -93,11 +101,14 @@ describe.each([true, false])('with visualrefresh=%s', isVR => {
       const wrapper = renderWizard();
       const button = wrapper.findCancelButton().getElement();
       validateComponentNameAndLabels(button, labels);
-      expect(getGeneratedAnalyticsMetadata(button)).toEqual({
+      const cancelMetadata: GeneratedAnalyticsMetadataWizardCancel = {
         action: 'cancel',
         detail: {
           label: 'Cancel',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(button)).toEqual({
+        ...cancelMetadata,
         ...getMetadata(0),
       });
     });
@@ -105,11 +116,14 @@ describe.each([true, false])('with visualrefresh=%s', isVR => {
       const wrapper = renderWizard({ activeStepIndex: 2, onNavigate: () => {} });
       const button = wrapper.findPrimaryButton().getElement();
       validateComponentNameAndLabels(button, labels);
-      expect(getGeneratedAnalyticsMetadata(button)).toEqual({
+      const submitMetadata: GeneratedAnalyticsMetadataWizardSubmit = {
         action: 'submit',
         detail: {
           label: 'Create record',
         },
+      };
+      expect(getGeneratedAnalyticsMetadata(button)).toEqual({
+        ...submitMetadata,
         ...getMetadata(2),
       });
     });

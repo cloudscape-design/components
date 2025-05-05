@@ -6,8 +6,16 @@ import { LabelIdentifier } from '@cloudscape-design/component-toolkit/internal/a
 export interface GeneratedAnalyticsMetadataTableSelect {
   action: 'select';
   detail: {
-    label: string;
-    selected: string;
+    label?: string;
+    position: string;
+    item: string;
+  };
+}
+
+export interface GeneratedAnalyticsMetadataTableDeselect {
+  action: 'deselect';
+  detail: {
+    label?: string;
     position: string;
     item: string;
   };
@@ -17,7 +25,13 @@ export interface GeneratedAnalyticsMetadataTableSelectAll {
   action: 'selectAll';
   detail: {
     label: string;
-    selected: string;
+  };
+}
+
+export interface GeneratedAnalyticsMetadataTableDeselectAll {
+  action: 'deselectAll';
+  detail: {
+    label: string;
   };
 }
 
