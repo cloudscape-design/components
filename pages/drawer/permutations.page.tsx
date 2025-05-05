@@ -11,6 +11,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<DrawerProps>([
   {
+    loading: [false, true],
     disableContentPaddings: [true, false],
     header: [null, <h2 key="header">Header</h2>],
     children: [null, <>Dummy content</>],
@@ -21,7 +22,7 @@ export default function () {
   return (
     <>
       <h1>Drawer permutations</h1>
-      <ScreenshotArea>
+      <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={permutations}
           render={permutation => (
