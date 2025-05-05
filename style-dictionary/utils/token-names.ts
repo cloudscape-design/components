@@ -304,6 +304,7 @@ export type ColorsTokenName =
   | 'colorBackgroundSegmentDefault'
   | 'colorBackgroundSegmentDisabled'
   | 'colorBackgroundSegmentHover'
+  | 'colorBackgroundSegmentWrapper'
   | 'colorBackgroundSliderHandleDefault'
   | 'colorBackgroundSliderHandleActive'
   | 'colorBackgroundSliderTrack'

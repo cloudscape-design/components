@@ -10,7 +10,6 @@ import { SingleTabStopNavigationContext } from '../../internal/context/single-ta
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { KeyCode } from '../../internal/keycode';
 import RadioButton from '../../radio-group/radio-button';
-import { GeneratedAnalyticsMetadataTableSelect } from '../analytics-metadata/interfaces';
 import { SelectionProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -113,7 +112,7 @@ export function SelectionControl({
                 position: `${rowIndex + 1}`,
                 item: itemKey || '',
               },
-            } as Partial<GeneratedAnalyticsMetadataTableSelect>)
+            })
           : {})}
       >
         {selector}

@@ -33,6 +33,8 @@ function getComponentsExports() {
     './test-utils/selectors/internal/tooltip': './test-utils/selectors/internal/tooltip.js',
     './test-utils/dom/internal/chart-tooltip': './test-utils/dom/internal/chart-tooltip.js',
     './test-utils/selectors/internal/chart-tooltip': './test-utils/selectors/internal/chart-tooltip.js',
+    './test-utils/dom/internal/chart-filter': './test-utils/dom/internal/chart-filter.js',
+    './test-utils/selectors/internal/chart-filter': './test-utils/selectors/internal/chart-filter.js',
   };
   let components = listPublicItems('src');
 

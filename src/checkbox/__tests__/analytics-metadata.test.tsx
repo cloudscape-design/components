@@ -10,6 +10,10 @@ import {
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox';
+import {
+  GeneratedAnalyticsMetadataCheckboxDeselect,
+  GeneratedAnalyticsMetadataCheckboxSelect,
+} from '../../../lib/components/checkbox/analytics-metadata/interfaces';
 import InternalCheckbox from '../../../lib/components/checkbox/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
@@ -22,11 +26,10 @@ function renderCheckbox(props: CheckboxProps) {
 }
 
 const getMetadata = (label: string, checked: boolean, disabled?: boolean) => {
-  const eventMetadata = {
-    action: 'select',
+  const eventMetadata: GeneratedAnalyticsMetadataCheckboxSelect | GeneratedAnalyticsMetadataCheckboxDeselect = {
+    action: checked ? 'deselect' : 'select',
     detail: {
       label,
-      selected: `${!checked}`,
     },
   };
 
@@ -78,9 +81,9 @@ test('Internal Checkbox does not render "component" metadata', () => {
   const element = createWrapper(renderResult.container).findCheckbox()!.findNativeInput()!.getElement();
   validateComponentNameAndLabels(element, labels);
   expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-    action: 'select',
+    action: 'deselect',
     detail: {
-      selected: 'false',
+      label: '',
     },
   });
 });
