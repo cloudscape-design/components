@@ -33,7 +33,11 @@ export function DrawerImplementation({
     className: clsx(baseProps.className, styles.drawer, isToolbar && styles['with-toolbar']),
   };
   return loading ? (
-    <div {...containerProps} ref={__internalRootRef}>
+    <div
+      {...containerProps}
+      className={clsx(containerProps.className, styles['content-with-paddings'])}
+      ref={__internalRootRef}
+    >
       <InternalStatusIndicator type="loading">
         <InternalLiveRegion tagName="span">
           {i18n('i18nStrings.loadingText', i18nStrings?.loadingText)}
