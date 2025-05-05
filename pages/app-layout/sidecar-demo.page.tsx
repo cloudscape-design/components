@@ -78,6 +78,7 @@ export default function WithDrawers() {
           variant="full-page"
           columnDefinitions={columnsConfig}
           items={items}
+          selectionType="multi"
         />
       }
       splitPanel={
