@@ -2,7 +2,22 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef, useState } from 'react';
 
-import { AppLayout, Button, Header, HelpPanel, Link, SideNavigation, SplitPanel, Table } from '~components';
+import {
+  AppLayout,
+  Box,
+  Button,
+  CopyToClipboard,
+  Header,
+  HelpPanel,
+  KeyValuePairs,
+  Link,
+  ProgressBar,
+  SideNavigation,
+  SpaceBetween,
+  SplitPanel,
+  StatusIndicator,
+  Table,
+} from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 
 import './utils/external-widget-demo';
@@ -83,7 +98,7 @@ export default function WithDrawers() {
       }
       splitPanel={
         <SplitPanel
-          header="Split panel header"
+          header="Overview"
           i18nStrings={{
             preferencesTitle: 'Preferences',
             preferencesPositionLabel: 'Split panel position',
@@ -97,7 +112,73 @@ export default function WithDrawers() {
             resizeHandleAriaLabel: 'Slider',
           }}
         >
-          This is the Split Panel!
+          <SpaceBetween size="m">
+            <Box>
+              Receive real-time data insights to build process improvements, track key performance indicators, and
+              predict future business outcomes. Create a new Cloud Data Solution account to receive a 30 day free trial
+              of all Cloud Data Solution services.
+            </Box>
+            <KeyValuePairs
+              columns={2}
+              items={[
+                {
+                  type: 'group',
+                  items: [
+                    {
+                      label: 'Distribution ID',
+                      value: 'E1WG1ZNPRXT0D4',
+                    },
+                    {
+                      label: 'ARN',
+                      value: (
+                        <CopyToClipboard
+                          copyButtonAriaLabel="Copy ARN"
+                          copyErrorText="ARN failed to copy"
+                          copySuccessText="ARN copied"
+                          textToCopy="arn:service23G24::111122223333:distribution/23E1WG1ZNPRXT0D4"
+                          variant="inline"
+                        />
+                      ),
+                    },
+                    {
+                      label: 'Status',
+                      value: <StatusIndicator>Available</StatusIndicator>,
+                    },
+                  ],
+                },
+
+                {
+                  type: 'group',
+                  items: [
+                    {
+                      label: 'SSL Certificate',
+                      id: 'ssl-certificate-id',
+                      value: (
+                        <ProgressBar
+                          value={30}
+                          additionalInfo="Additional information"
+                          description="Progress bar description"
+                          ariaLabelledby="ssl-certificate-id"
+                        />
+                      ),
+                    },
+                    {
+                      label: 'Price class',
+                      value: 'Use only US, Canada, Europe',
+                    },
+                    {
+                      label: 'CNAMEs',
+                      value: (
+                        <Link external={true} href="#">
+                          abc.service23G24.xyz
+                        </Link>
+                      ),
+                    },
+                  ],
+                },
+              ]}
+            />
+          </SpaceBetween>
         </SplitPanel>
       }
       splitPanelPreferences={{

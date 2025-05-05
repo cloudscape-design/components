@@ -134,7 +134,7 @@ function Chats() {
   );
 }
 awsuiPlugins.appLayout.registerDrawer({
-  id: 'circle-global',
+  id: 'bolt-global',
   type: 'global',
   defaultActive: false,
   resizable: true,
@@ -167,9 +167,9 @@ awsuiPlugins.appLayout.registerDrawer({
   mountContent: container => {
     ReactDOM.render(
       <SpaceBetween size="l">
-        <Box padding={{ left: 'l', right: 'l', top: 'l' }} variant="h3">
-          Investigate Cold Start Chaser
-        </Box>
+        <div style={{ paddingBlockStart: '15px', paddingInlineStart: '20px', margin: 0 }}>
+          <Box variant="h3">Investigate Cold Start Chaser</Box>
+        </div>
         <Box padding={{ left: 'l', right: 'l' }}>
           <Details />
         </Box>
@@ -188,7 +188,7 @@ awsuiPlugins.appLayout.registerDrawer({
   defaultSize: 350,
   preserveInactiveContent: true,
 
-  isExpandable: false,
+  isExpandable: true,
 
   ariaLabels: {
     closeButton: 'Close button',
@@ -212,9 +212,9 @@ awsuiPlugins.appLayout.registerDrawer({
   mountContent: container => {
     ReactDOM.render(
       <SpaceBetween size="l">
-        <Box padding={{ left: 'l', right: 'l', top: 'l' }} variant="h3">
-          Amazon Q
-        </Box>
+        <div style={{ paddingBlockStart: '15px', paddingInlineStart: '20px', margin: 0 }}>
+          <Box variant="h3">Amazon Q</Box>
+        </div>
         <Box padding={{ left: 'l', right: 'l' }}>
           <Chats />
         </Box>
