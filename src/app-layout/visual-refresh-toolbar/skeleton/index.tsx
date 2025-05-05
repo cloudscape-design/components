@@ -140,7 +140,13 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             )}
           </main>
           {sideSplitPanel && (
-            <div className={clsx(styles['split-panel-side'], !splitPanelOpen && styles['panel-hidden'])}>
+            <div
+              className={clsx(
+                styles['split-panel-side'],
+                !splitPanelOpen && styles['panel-hidden'],
+                drawerExpandedMode && styles.hidden
+              )}
+            >
               {sideSplitPanel}
             </div>
           )}
