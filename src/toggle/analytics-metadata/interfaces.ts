@@ -7,7 +7,13 @@ export interface GeneratedAnalyticsMetadataToggleSelect {
   action: 'select';
   detail: {
     label: string;
-    selected: string;
+  };
+}
+
+export interface GeneratedAnalyticsMetadataToggleDeselect {
+  action: 'deselect';
+  detail: {
+    label: string;
   };
 }
 

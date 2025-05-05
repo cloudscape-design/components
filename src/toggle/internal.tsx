@@ -14,10 +14,7 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import {
-  GeneratedAnalyticsMetadataToggleComponent,
-  GeneratedAnalyticsMetadataToggleSelect,
-} from './analytics-metadata/interfaces';
+import { GeneratedAnalyticsMetadataToggleComponent } from './analytics-metadata/interfaces';
 import { ToggleProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -62,9 +59,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
     }
 
     if (!disabled && !readOnly) {
-      analyticsMetadata.detail = {
-        selected: `${!checked}`,
-      } as Partial<GeneratedAnalyticsMetadataToggleSelect['detail']>;
+      analyticsMetadata.action = !checked ? 'select' : 'deselect';
     }
     useForwardFocus(ref, checkboxRef);
 
