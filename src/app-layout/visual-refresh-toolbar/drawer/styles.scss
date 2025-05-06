@@ -74,20 +74,22 @@ $global-drawer-gap-size: 8px;
     display: none;
   }
 
-  &.drawer-expanded:not(:last-child) {
+  &.drawer-expanded {
     inline-size: 100%;
 
     @include desktop-only {
       border-inline-start: none;
 
-      &:after {
-        content: '';
-        position: absolute;
-        block-size: 100%;
-        inline-size: $global-drawer-gap-size;
-        inset-inline-end: 0;
-        background: awsui.$color-gap-global-drawer;
-        border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      &:not(:last-child) {
+        &:after {
+          content: '';
+          position: absolute;
+          block-size: 100%;
+          inline-size: $global-drawer-gap-size;
+          inset-inline-end: 0;
+          background: awsui.$color-gap-global-drawer;
+          border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+        }
       }
     }
   }
