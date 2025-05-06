@@ -11,11 +11,11 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<DrawerProps>([
   {
-    loading: [false, true],
     disableContentPaddings: [true, false],
     header: [null, <h2 key="header">Header</h2>],
     children: [null, <>Dummy content</>],
   },
+  { loading: [true], i18nStrings: [{ loadingText: 'Loading' }, {}] },
 ]);
 
 export default function () {
@@ -26,10 +26,13 @@ export default function () {
         <PermutationsView
           permutations={permutations}
           render={permutation => (
-            // add visible border to capture component paddings
-            <div style={{ border: '1px solid red' }}>
-              <Drawer {...permutation} />
-            </div>
+            <>
+              {!permutation.header && !permutation.children && !permutation.loading && <p>(empty permutation)</p>}
+              {/* add visible border to capture component paddings */}
+              <div style={{ border: '1px solid red' }}>
+                <Drawer {...permutation} />
+              </div>
+            </>
           )}
         />
       </ScreenshotArea>
