@@ -6,9 +6,8 @@ import {
   getIsRtl,
   getLogicalBoundingClientRect,
   getScrollInlineStart,
+  Portal,
 } from '@cloudscape-design/component-toolkit/internal';
-
-import Portal from '../portal';
 
 import styles from './styles.css.js';
 
