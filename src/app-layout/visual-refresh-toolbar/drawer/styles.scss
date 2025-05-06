@@ -20,6 +20,7 @@
 }
 
 $global-drawer-gap-size: 8px;
+$global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsui.$motion-easing-refresh-only-a};
 
 .drawer {
   position: sticky;
@@ -35,6 +36,11 @@ $global-drawer-gap-size: 8px;
   overscroll-behavior-y: contain;
   pointer-events: auto;
   word-wrap: break-word;
+  @include styles.with-motion {
+    transition:
+      inline-size #{$global-drawer-expanded-mode},
+      min-inline-size #{$global-drawer-expanded-mode};
+  }
 
   @include desktop-only {
     &:not(.legacy) {

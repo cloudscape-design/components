@@ -70,7 +70,7 @@ function AppLayoutGlobalDrawerImplementation({
   const isExpanded = activeGlobalDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
 
   return (
-    <Transition nodeRef={drawerRef} in={show} appear={show} timeout={0}>
+    <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={0}>
       {state => {
         return (
           <aside
@@ -86,6 +86,7 @@ function AppLayoutGlobalDrawerImplementation({
                 [styles['drawer-hidden']]: !show,
                 [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
                 [testutilStyles['active-drawer']]: show,
+                [styles['drawer-expandable']]: activeGlobalDrawer?.isExpandable,
                 [styles['drawer-expanded']]: isExpanded,
               }
             )}
@@ -108,7 +109,7 @@ function AppLayoutGlobalDrawerImplementation({
               blockSize: drawerHeight,
               insetBlockStart: drawerTopOffset,
               ...(!isMobile && {
-                [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
+                [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? (isExpanded ? '100%' : size + 'px') : 0}`,
               }),
             }}
             data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
