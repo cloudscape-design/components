@@ -80,11 +80,6 @@ $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsu
     display: none;
   }
 
-  &.drawer-expandable:not(.drawer-expanded) {
-    min-inline-size: var(#{custom-props.$drawerSize});
-  }
-
-  &.drawer-expanded {
     inline-size: 100%;
 
     @include desktop-only {
