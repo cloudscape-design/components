@@ -74,7 +74,7 @@ $global-drawer-gap-size: 8px;
     display: none;
   }
 
-  &.drawer-expanded {
+  &.drawer-expanded:not(:last-child) {
     inline-size: 100%;
 
     @include desktop-only {
