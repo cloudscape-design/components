@@ -94,6 +94,11 @@ export default function WithDrawers() {
           columnDefinitions={columnsConfig}
           items={items}
           selectionType="multi"
+          ariaLabels={{
+            selectionGroupLabel: 'Item selection',
+            allItemsSelectionLabel: () => 'Select all items',
+            itemSelectionLabel: (_, item) => `Select ${item.id}`,
+          }}
         />
       }
       splitPanel={
