@@ -11,7 +11,7 @@
 
 @mixin adjust-for-variant($variant) {
   background: map.get($variant, 'default-background');
-  color: map.get($variant, 'default-color');
+  color: var(--awsui-button-button-color, #{map.get($variant, 'default-color')});
   border-color: map.get($variant, 'default-border-color');
   border-block-width: map.get($variant, 'border-width');
   border-inline-width: map.get($variant, 'border-width');
@@ -23,21 +23,21 @@
 
   &:hover {
     background: map.get($variant, 'hover-background');
-    color: map.get($variant, 'hover-color');
+    color: var(--awsui-button-hover-button-color, #{map.get($variant, 'hover-color')});
     border-color: map.get($variant, 'hover-border-color');
     text-decoration: none;
   }
 
   &:active {
     background: map.get($variant, 'active-background');
-    color: map.get($variant, 'active-color');
+    color: var(--awsui-button-active-button-color, #{map.get($variant, 'active-color')});
     border-color: map.get($variant, 'active-border-color');
   }
 
   &.disabled {
     background: map.get($variant, 'disabled-background');
     border-color: map.get($variant, 'disabled-border-color');
-    color: map.get($variant, 'disabled-color');
+    color: var(--awsui-button-disabled-button-color, #{map.get($variant, 'disabled-color')});
     text-decoration: none;
     cursor: auto;
   }
