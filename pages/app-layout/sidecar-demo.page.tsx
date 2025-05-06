@@ -38,7 +38,7 @@ type DemoContext = React.Context<
 
 export default function WithDrawers() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
-  const hasTools = urlParams.hasTools ?? false;
+  const hasTools = urlParams.hasTools ?? true;
   const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
 
   const [activeHref, setActiveHref] = useState('#/');
