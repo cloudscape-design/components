@@ -146,7 +146,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderInputDisabled: '{colorBackgroundInputDisabled}',
   colorBorderInputFocused: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBorderItemFocused: { light: '{colorBlue600}', dark: '{colorBlue500}' },
-  colorBorderDropdownItemFocused: { light: '{colorGrey600}', dark: '{colorGrey300}' },
+  colorBorderDropdownItemFocused: { light: '{colorGrey800}', dark: '{colorGrey600}' },
   colorBorderItemPlaceholder: '{colorBorderItemSelected}',
   colorBorderItemSelected: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBorderLayout: { light: '{colorGrey350}', dark: '{colorGrey600}' },
