@@ -11,6 +11,7 @@ import styles from '../../../../../lib/components/internal/components/drag-handl
 let isRtl = false;
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   getIsRtl: jest.fn(() => isRtl),
   getLogicalBoundingClientRect: jest.fn().mockReturnValue({
     insetInlineStart: 2,
