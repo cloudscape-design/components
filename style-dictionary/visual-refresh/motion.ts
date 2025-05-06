@@ -15,7 +15,6 @@ const tokens: StyleDictionary.MotionDictionary = {
   motionDurationRefreshOnlySlow: { default: '250ms', disabled: '0ms' },
   motionDurationAvatarGenAiGradient: { default: '3600ms', disabled: '0ms' },
   motionDurationAvatarLoadingDots: { default: '1200ms', disabled: '0ms' },
-  motionDurationDrawerExpand: { default: '400ms', disabled: '0ms' },
   motionDurationRotate180: '{motionDurationModerate}',
   motionDurationRotate90: '{motionDurationModerate}',
   motionDurationShowPaced: '{motionDurationSlow}',
@@ -46,8 +45,6 @@ const tokens: StyleDictionary.MotionDictionary = {
   motionDurationResponsive: '{motionDurationRefreshOnlyFast}',
   motionDurationExpressive: '{motionDurationRefreshOnlyMedium}',
   motionDurationComplex: '{motionDurationRefreshOnlySlow}',
-
-  motionDelayDrawerExpand: { default: '200ms', disabled: '0ms' },
 
   motionKeyframesFadeIn: 'awsui-fade-in-' + tokenStylesSuffix,
   motionKeyframesFadeOut: 'awsui-fade-out-' + tokenStylesSuffix,

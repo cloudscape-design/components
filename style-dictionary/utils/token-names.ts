@@ -597,7 +597,6 @@ export type BordersTokenName =
   | 'borderWidthPopover'
   | 'borderWidthToken';
 export type MotionTokenName =
-  | 'motionDurationDrawerExpand'
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'
   | 'motionDurationFast'
@@ -635,7 +634,6 @@ export type MotionTokenName =
   | 'motionDurationResponsive'
   | 'motionDurationExpressive'
   | 'motionDurationComplex'
-  | 'motionDelayDrawerExpand'
   | 'motionKeyframesFadeIn'
   | 'motionKeyframesFadeOut'
   | 'motionKeyframesStatusIconError'
