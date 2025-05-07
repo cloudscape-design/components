@@ -173,6 +173,7 @@ export default function TabsDemoPage() {
       <input type="text" id="before" aria-label="before" />
       <form action="/">
         <Tabs
+          id="responsive-tabs"
           ariaLabel="General Tabs"
           tabs={tabs}
           activeTabId={selectedTab}

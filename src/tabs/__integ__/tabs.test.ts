@@ -37,7 +37,7 @@ class TabsPage extends BasePageObject {
   }
 
   paginationButton(direction: string, scrollable = false): string {
-    return `form .${styles[`pagination-button-${direction}${scrollable ? '-scrollable' : ''}`]}`;
+    return `#responsive-tabs .${styles[`pagination-button-${direction}${scrollable ? '-scrollable' : ''}`]}`;
   }
 
   async hasPaginationButtons(hasThem: boolean) {
