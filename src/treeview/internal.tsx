@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import clsx from 'clsx';
 
-// import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { TreeviewProps } from './interfaces';
@@ -24,7 +24,7 @@ const InternalTreeview = ({
   const baseProps = getBaseProps(rest);
 
   return (
-    <div ref={__internalRootRef} className={styles.root} {...baseProps}>
+    <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
       <ul role="tree" className={styles.tree}>
         {/* <ul role="tree" aria-label={ariaLabel}> */}
         {items.map((item, index) => (

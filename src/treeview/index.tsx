@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { getBaseProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
+// import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
 import { TreeviewProps } from './interfaces';
@@ -14,22 +14,21 @@ export { TreeviewProps };
 const Treeview = ({ items, ...rest }: TreeviewProps) => {
   const baseProps = getBaseProps(rest);
   //   TODO: analytics metadata?
-  const baseComponentProps = useBaseComponent('Treeview', {
-    props: {},
-    metadata: {
-      itemsCount: items?.length,
-    },
-  });
+  // const { __internalRootRef } = useBaseComponent('Treeview', {
+  //   props: {},
+  //   metadata: {
+  //     itemsCount: items?.length,
+  //   },
+  // });
   const externalProps = getExternalProps(rest);
 
   return (
     <InternalTreeview
       {...baseProps}
-      {...baseComponentProps}
       {...externalProps}
-      {...rest}
-      //   ref={ref}
+      //   ref={__internalRootRef}
       items={items}
+      {...rest}
     />
   );
 };
