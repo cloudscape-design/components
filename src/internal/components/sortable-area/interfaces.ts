@@ -11,6 +11,7 @@ export interface SortableAreaProps<Item> {
   onItemsChange?: NonCancelableEventHandler<SortableAreaProps.ItemsChangeDetail<Item>>;
   i18nStrings?: SortableAreaProps.DndAreaI18nStrings;
   disableReorder?: boolean;
+  dragOverlayClassName?: string;
 }
 
 export namespace SortableAreaProps {
@@ -26,7 +27,6 @@ export namespace SortableAreaProps {
     ref?: React.RefCallback<HTMLElement>;
     item: Item;
     style: React.CSSProperties;
-    className?: string;
     isDropPlaceholder: boolean;
     isSortingActive: boolean;
     isDragGhost: boolean;

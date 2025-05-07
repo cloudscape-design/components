@@ -36,8 +36,8 @@ export function ReorderableList({
         items={sortableOptions}
         itemDefinition={{ id: option => option.id, label: option => option.id }}
         onItemsChange={({ detail }) => onReorder([...staticOptions, ...detail.items])}
-        renderItem={({ item, ref, className, style, dragHandleProps, ...props }) => {
-          className = clsx(className, styles.option, props.isSortingActive && styles.sorting);
+        renderItem={({ item, ref, style, dragHandleProps, ...props }) => {
+          const className = clsx(styles.option, props.isSortingActive && styles.sorting);
           return (
             <li ref={ref} className={className} style={style}>
               <InstanceOption dragHandleProps={dragHandleProps} option={item} />

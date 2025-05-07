@@ -5,7 +5,6 @@ import React, { useEffect, useRef } from 'react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import clsx from 'clsx';
 
 import Portal from '../../components/portal';
 import { fireNonCancelableEvent } from '../../events';
@@ -13,8 +12,6 @@ import { joinStrings } from '../../utils/strings';
 import { SortableAreaProps } from './interfaces';
 import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
-
-import styles from './styles.css.js';
 
 export { SortableAreaProps };
 
@@ -24,6 +21,7 @@ export default function SortableArea<Item>({
   renderItem,
   onItemsChange,
   disableReorder,
+  dragOverlayClassName,
   i18nStrings,
 }: SortableAreaProps<Item>) {
   const { activeItemId, setActiveItemId, collisionDetection, handleKeyDown, sensors } = useDragAndDropReorder({
@@ -79,16 +77,11 @@ export default function SortableArea<Item>({
       <Portal container={portalContainer}>
         {/* Make sure that the drag overlay is above the modal  by assigning the z-index as inline style
             so that it prevails over dnd-kit's inline z-index of 999 */}
-        <DragOverlay
-          className={clsx(styles['drag-overlay'], styles[`drag-overlay-${getBorderRadiusVariant(itemDefinition)}`])}
-          dropAnimation={null}
-          style={{ zIndex: 5000 }}
-        >
+        <DragOverlay className={dragOverlayClassName} dropAnimation={null} style={{ zIndex: 5000 }}>
           {activeItem &&
             renderItem({
               item: activeItem,
               style: {},
-              className: styles.active,
               isDropPlaceholder: true,
               isSortingActive: false,
               isDragGhost: true,
@@ -149,17 +142,13 @@ function DraggableItem<Item>({
           }
         },
       };
-  const className = clsx(
-    isDragging && clsx(styles.placeholder, styles[`placeholder-${getBorderRadiusVariant(itemDefinition)}`]),
-    isSorting && styles.sorting
-  );
+
   return (
     <>
       {renderItem({
         item,
         ref: setNodeRef,
         style,
-        className,
         isDropPlaceholder: isDragging,
         isSortingActive: isSorting,
         isDragGhost: false,
@@ -172,10 +161,4 @@ function DraggableItem<Item>({
       })}
     </>
   );
-}
-
-export function getBorderRadiusVariant(
-  itemDefinition: SortableAreaProps.ItemDefinition<any>
-): SortableAreaProps.BorderRadiusVariant {
-  return itemDefinition.borderRadius ?? 'item';
 }

@@ -134,8 +134,13 @@ export default function ContentDisplayPreference({
           itemDefinition={{ id: item => item.id, label: item => item.label }}
           onItemsChange={({ detail }) => onChange(detail.items)}
           disableReorder={columnFilteringText.trim().length > 0}
-          renderItem={({ ref, item, style, className, dragHandleProps, isDragGhost }) => {
-            className = clsx(className, getOptionClassName());
+          dragOverlayClassName={styles['drag-overlay']}
+          renderItem={({ ref, item, style, dragHandleProps, isDragGhost, isDropPlaceholder, isSortingActive }) => {
+            const className = clsx(
+              isDropPlaceholder && styles['drag-placeholder'],
+              isSortingActive && styles['drag-sorting'],
+              getOptionClassName()
+            );
             const content = (
               <ContentDisplayOption ref={ref} option={item} onToggle={onToggle} dragHandleProps={dragHandleProps} />
             );

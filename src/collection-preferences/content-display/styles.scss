@@ -5,6 +5,7 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @import 'content-display-option';
 
@@ -31,4 +32,37 @@
   list-style: none;
   padding-block: 0;
   padding-inline: 0;
+}
+
+.drag-overlay {
+  box-shadow: awsui.$shadow-container-active;
+
+  border-start-start-radius: awsui.$border-radius-item;
+  border-start-end-radius: awsui.$border-radius-item;
+  border-end-start-radius: awsui.$border-radius-item;
+  border-end-end-radius: awsui.$border-radius-item;
+
+  @include focus-visible.when-visible-unfocused {
+    @include styles.focus-highlight(0px, awsui.$border-radius-item);
+  }
+}
+
+.drag-sorting {
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+  }
+}
+
+.drag-placeholder {
+  position: relative;
+  &:after {
+    content: ' ';
+    position: absolute;
+    inset: 0;
+    background: awsui.$color-drag-placeholder-hover;
+    border-start-start-radius: awsui.$border-radius-item;
+    border-start-end-radius: awsui.$border-radius-item;
+    border-end-start-radius: awsui.$border-radius-item;
+    border-end-end-radius: awsui.$border-radius-item;
+  }
 }
