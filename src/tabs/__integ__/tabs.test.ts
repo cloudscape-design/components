@@ -37,7 +37,7 @@ class TabsPage extends BasePageObject {
   }
 
   paginationButton(direction: string, scrollable = false): string {
-    return `.${styles[`pagination-button-${direction}${scrollable ? '-scrollable' : ''}`]}`;
+    return `form .${styles[`pagination-button-${direction}${scrollable ? '-scrollable' : ''}`]}`;
   }
 
   async hasPaginationButtons(hasThem: boolean) {
@@ -336,8 +336,8 @@ test(
   setupTest(
     async page => {
       const urlBefore = await page.getUrl();
-      await page.click(wrapper.find(page.paginationButton('left')).toSelector());
-      await page.click(wrapper.find(page.paginationButton('right')).toSelector());
+      await page.click(page.paginationButton('left'));
+      await page.click(page.paginationButton('right'));
       const urlAfter = await page.getUrl();
 
       expect(urlAfter).toEqual(urlBefore);
@@ -414,6 +414,29 @@ test(
 );
 
 test(
+  '(Keyboard) verifies focus moves from dismissible tab to next tab after 2 tabs are dismissed',
+  setupTest(async page => {
+    await page.click(dismissibleWrapper.findTabLinkByIndex(4).toSelector());
+    await page.navigateTabList(1);
+    await page.keys(['Enter']);
+    await page.navigateTabList(1);
+    await page.keys(['Enter']);
+    await expect(page.isFocused(dismissibleWrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  '(Mouse) verifies focus moves from dismissible tab to next tab after 2 tabs are dismissed',
+  setupTest(async page => {
+    await page.click(dismissibleWrapper.findTabLinkByIndex(4).toSelector());
+    await page.click(dismissibleWrapper.findActiveTabDismissibleButton().getElement());
+    await page.click(dismissibleWrapper.findTabLinkByIndex(3).toSelector());
+    await page.click(dismissibleWrapper.findActiveTabDismissibleButton().getElement());
+    await expect(page.isFocused(dismissibleWrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
   'Verifies focus remains on first active tab when dismiss fires',
   setupTest(async page => {
     await page.click(wrapper.findDismissibleButtonByTabIndex(6).toSelector());
@@ -427,7 +450,7 @@ test(
     await page.click(dismissibleWrapper.findTabLinkByIndex(3).toSelector());
     await page.navigateTabList(1);
     await page.keys(['Enter']);
-    await expect(page.isFocused(dismissibleWrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);
+    await expect(page.isFocused(dismissibleWrapper.findTabLinkByIndex(3).toSelector())).resolves.toBe(true);
   })
 );
 
