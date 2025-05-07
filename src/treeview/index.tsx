@@ -17,7 +17,7 @@ const Treeview = ({ items, ...rest }: TreeviewProps) => {
   const baseComponentProps = useBaseComponent('Treeview', {
     props: {},
     metadata: {
-      itemsCount: items.length,
+      itemsCount: items?.length,
     },
   });
   const externalProps = getExternalProps(rest);
