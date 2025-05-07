@@ -28,48 +28,50 @@ export default function () {
         notifications={<Notifications />}
         ariaLabels={labels}
         content={
-          <Box margin={{ bottom: 'l' }}>
-            <div className={styles.header}>
-              <Box padding={{ vertical: 'xxxl', horizontal: 's' }}>
+          <div style={{ overflow: 'auto' }}>
+            <Box margin={{ bottom: 'l' }}>
+              <div className={styles.header}>
+                <Box padding={{ vertical: 'xxxl', horizontal: 's' }}>
+                  <Grid
+                    gridDefinition={[
+                      { colspan: { xl: 6, l: 5, s: 6, xxs: 10 }, offset: { l: 2, xxs: 1 } },
+                      { colspan: { xl: 2, l: 3, s: 4, xxs: 10 }, offset: { s: 0, xxs: 1 } },
+                    ]}
+                  >
+                    <div className={styles['header-title']}>
+                      <Box variant="h1" fontWeight="heavy" fontSize="display-l" color="inherit">
+                        Service name
+                      </Box>
+                      <Box fontWeight="light" padding={{ bottom: 's' }} fontSize="display-l" color="inherit">
+                        Name sub-title
+                      </Box>
+                      <Box variant="p" fontWeight="light">
+                        <span className={styles['header-sub-title']}>Some information about this service</span>
+                      </Box>
+                    </div>
+                  </Grid>
+                </Box>
+              </div>
+              <Box padding={{ top: 'xxxl', horizontal: 's' }}>
                 <Grid
                   gridDefinition={[
                     { colspan: { xl: 6, l: 5, s: 6, xxs: 10 }, offset: { l: 2, xxs: 1 } },
                     { colspan: { xl: 2, l: 3, s: 4, xxs: 10 }, offset: { s: 0, xxs: 1 } },
                   ]}
                 >
-                  <div className={styles['header-title']}>
-                    <Box variant="h1" fontWeight="heavy" fontSize="display-l" color="inherit">
-                      Service name
+                  <div>
+                    <Box variant="h1" tagOverride="h2" padding={{ bottom: 's', top: 'n' }}>
+                      Features
                     </Box>
-                    <Box fontWeight="light" padding={{ bottom: 's' }} fontSize="display-l" color="inherit">
-                      Name sub-title
-                    </Box>
-                    <Box variant="p" fontWeight="light">
-                      <span className={styles['header-sub-title']}>Some information about this service</span>
-                    </Box>
+                    <Containers />
                   </div>
+                  <Container header={<Header>Getting started</Header>}>
+                    Some information to learn about this service
+                  </Container>
                 </Grid>
               </Box>
-            </div>
-            <Box padding={{ top: 'xxxl', horizontal: 's' }}>
-              <Grid
-                gridDefinition={[
-                  { colspan: { xl: 6, l: 5, s: 6, xxs: 10 }, offset: { l: 2, xxs: 1 } },
-                  { colspan: { xl: 2, l: 3, s: 4, xxs: 10 }, offset: { s: 0, xxs: 1 } },
-                ]}
-              >
-                <div>
-                  <Box variant="h1" tagOverride="h2" padding={{ bottom: 's', top: 'n' }}>
-                    Features
-                  </Box>
-                  <Containers />
-                </div>
-                <Container header={<Header>Getting started</Header>}>
-                  Some information to learn about this service
-                </Container>
-              </Grid>
             </Box>
-          </Box>
+          </div>
         }
       />
     </ScreenshotArea>

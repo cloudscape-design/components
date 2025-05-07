@@ -42,8 +42,8 @@ export function ReorderableContainers({
         borderRadius: 'container',
       }}
       onItemsChange={({ detail }) => onReorder(detail.items)}
-      renderItem={({ item, ref, className, style, dragHandleProps }) => (
-        <div ref={ref} className={clsx(className, styles.container)} style={style}>
+      renderItem={({ item, ref, style, dragHandleProps }) => (
+        <div ref={ref} className={clsx(styles.container)} style={style}>
           <Container
             header={
               <SpaceBetween size="xs" direction="horizontal" alignItems="center">

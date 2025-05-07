@@ -70,11 +70,11 @@ export function ReorderableTable<Item extends { id: string }>({
             items={items}
             itemDefinition={{ id: item => item.id, label: item => item.id }}
             onItemsChange={({ detail }) => onReorder(detail.items)}
-            renderItem={({ item, ref, className, style, isDragGhost, dragHandleProps }) => {
+            renderItem={({ item, ref, style, isDragGhost, dragHandleProps }) => {
               const row = (
                 <tr
                   ref={ref}
-                  className={clsx(className, styles.row, isDragGhost && styles['active-row'])}
+                  className={clsx(styles.row, isDragGhost && styles['active-row'])}
                   style={isDragGhost ? {} : style}
                 >
                   {getColumnDefinitions({ dragHandleProps }).map((column, index) => (

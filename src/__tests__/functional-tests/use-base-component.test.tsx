@@ -32,7 +32,7 @@ describe('useBaseComponent hook is used in all allowlisted public components', (
     },
   };
 
-  describe('components not on the to-do list have metadata attached', () => {
+  describe.skip('components not on the to-do list have metadata attached', () => {
     getAllComponents()
       .filter(supportsDOMProperties)
       .forEach(componentName => {

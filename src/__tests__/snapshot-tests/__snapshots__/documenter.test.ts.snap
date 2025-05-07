@@ -11401,6 +11401,35 @@ The default is \`secondary\`, except inside the following components where it de
 }
 `;
 
+exports[`Documenter definition for list matches the snapshot: list 1`] = `
+{
+  "dashCaseName": "list",
+  "events": [],
+  "functions": [],
+  "name": "List",
+  "properties": [
+    {
+      "name": "items",
+      "optional": true,
+      "type": "Array<StructuredItemProps>",
+    },
+  ],
+  "regions": [
+    {
+      "isDefault": true,
+      "name": "children",
+      "systemTags": [
+        "core",
+      ],
+    },
+  ],
+  "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
+}
+`;
+
 exports[`Documenter definition for live-region matches the snapshot: live-region 1`] = `
 {
   "dashCaseName": "live-region",
@@ -17128,6 +17157,50 @@ Each step definition has the following properties:
   ],
   "regions": [],
   "releaseStatus": "stable",
+}
+`;
+
+exports[`Documenter definition for structured-item matches the snapshot: structured-item 1`] = `
+{
+  "dashCaseName": "structured-item",
+  "events": [],
+  "functions": [],
+  "name": "StructuredItem",
+  "properties": [
+    {
+      "defaultValue": "false",
+      "name": "disableTypography",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "name": "percentageWrapping",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": [
+    {
+      "isDefault": false,
+      "name": "actions",
+    },
+    {
+      "isDefault": false,
+      "name": "description",
+    },
+    {
+      "isDefault": false,
+      "name": "icon",
+    },
+    {
+      "isDefault": false,
+      "name": "label",
+    },
+  ],
+  "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
 }
 `;
 
