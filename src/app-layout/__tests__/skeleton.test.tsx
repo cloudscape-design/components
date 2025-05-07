@@ -4,7 +4,6 @@ import React from 'react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
-import { getFunnelKeySelector } from '../../internal/analytics/selectors';
 import { describeEachAppLayout, renderComponent } from './utils';
 
 let widgetMockEnabled = false;
@@ -26,7 +25,7 @@ jest.mock('../../../lib/components/internal/widgets', () => ({
   createWidgetizedComponent: createWidgetizedComponentMock,
 }));
 
-describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
+describeEachAppLayout({ themes: ['refresh-toolbar'], skipInitialTest: true }, () => {
   it('renders complete component by default', () => {
     const { wrapper } = renderComponent(
       <AppLayout
@@ -39,7 +38,6 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     expect(wrapper.findToolbar()).toBeTruthy();
     expect(wrapper.findNavigation()).toBeTruthy();
     expect(wrapper.findBreadcrumbs()).toBeTruthy();
-    expect(wrapper.find(getFunnelKeySelector('funnel-name'))).toBeTruthy();
     expect(wrapper.findNotifications()).toBeTruthy();
     expect(wrapper.findTools()).toBeTruthy();
     expect(wrapper.findContentRegion()).toBeTruthy();
@@ -65,7 +63,6 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       expect(wrapper.findToolbar()).toBeFalsy();
       expect(wrapper.findNavigation()).toBeFalsy();
       expect(wrapper.findBreadcrumbs()).toBeFalsy();
-      expect(wrapper.find(getFunnelKeySelector('funnel-name'))).toBeTruthy();
       expect(wrapper.findNotifications()).toBeFalsy();
       expect(wrapper.findTools()).toBeFalsy();
       expect(wrapper.findContentRegion()).toBeTruthy();

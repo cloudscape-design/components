@@ -5,147 +5,73 @@ import clsx from 'clsx';
 
 import VisualContext from '../../../internal/components/visual-context';
 import customCssProps from '../../../internal/generated/custom-css-properties';
-import { useMobile } from '../../../internal/hooks/use-mobile';
-import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
-import { AppLayoutPropsWithDefaults } from '../../interfaces';
+import { AppLayoutInternalProps } from '../interfaces';
+import {
+  AppLayoutSkeletonBottomContentSlot,
+  AppLayoutSkeletonSideSlot,
+  AppLayoutSkeletonTopContentSlot,
+  AppLayoutSkeletonTopSlot,
+} from '../internal';
+import { useAppLayout } from '../use-app-layout';
+import { useSkeletonSlotsAttributes } from './widget-slots/use-skeleton-slots-attributes';
 
-import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
-const contentTypeCustomWidths: Array<string | undefined> = ['dashboard', 'cards', 'table'];
-
-interface SkeletonLayoutProps
-  extends Pick<
-    AppLayoutPropsWithDefaults,
-    | 'notifications'
-    | 'headerVariant'
-    | 'contentHeader'
-    | 'content'
-    | 'contentType'
-    | 'maxContentWidth'
-    | 'disableContentPaddings'
-    | 'navigation'
-    | 'navigationOpen'
-    | 'navigationWidth'
-    | 'tools'
-    | 'toolsOpen'
-    | 'toolsWidth'
-    | 'placement'
-  > {
-  style?: React.CSSProperties;
-  toolbar?: React.ReactNode;
-  splitPanelOpen?: boolean;
-  sideSplitPanel?: React.ReactNode;
-  bottomSplitPanel?: React.ReactNode;
-  globalTools?: React.ReactNode;
-  globalToolsOpen?: boolean;
-  navigationAnimationDisabled?: boolean;
-  isNested?: boolean;
+export interface SkeletonLayoutProps {
+  appLayoutProps: AppLayoutInternalProps;
+  appLayoutState: ReturnType<typeof useAppLayout>;
 }
 
-export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutProps>(
-  (
-    {
-      style,
-      notifications,
-      headerVariant,
-      contentHeader,
-      content,
-      navigation,
-      navigationOpen,
-      navigationWidth,
-      tools,
-      globalTools,
-      toolsOpen,
-      toolsWidth,
-      toolbar,
-      sideSplitPanel,
-      bottomSplitPanel,
-      splitPanelOpen,
-      placement,
-      contentType,
-      maxContentWidth,
-      disableContentPaddings,
-      globalToolsOpen,
-      navigationAnimationDisabled,
-      isNested,
-    },
-    ref
-  ) => {
-    const isMobile = useMobile();
-    const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
-    const anyPanelOpen = navigationOpen || toolsOpen;
-    return (
-      <VisualContext contextName="app-layout-toolbar">
-        <div
-          ref={ref}
-          className={clsx(styles.root, testutilStyles.root, {
-            [styles['has-adaptive-widths-default']]: !contentTypeCustomWidths.includes(contentType),
-            [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
-          })}
-          style={{
-            minBlockSize: isNested ? '100%' : `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
-            [customCssProps.maxContentWidth]: isMaxWidth ? '100%' : maxContentWidth ? `${maxContentWidth}px` : '',
+export interface RootSkeletonLayoutProps extends SkeletonLayoutProps {
+  skeletonSlotsAttributes: ReturnType<typeof useSkeletonSlotsAttributes>;
+}
+
+export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
+  const { appLayoutProps, appLayoutState, skeletonSlotsAttributes } = props;
+  const { registered } = appLayoutState;
+  const { contentHeader, content, navigationWidth } = appLayoutProps;
+  const {
+    wrapperElAttributes,
+    mainElAttributes,
+    contentWrapperElAttributes,
+    contentHeaderElAttributes,
+    contentElAttributes,
+  } = skeletonSlotsAttributes;
+
+  const isAppLayoutStateLoading = Object.keys(appLayoutState).length === 0;
+
+  return (
+    <VisualContext contextName="app-layout-toolbar">
+      <div
+        {...wrapperElAttributes}
+        className={wrapperElAttributes?.className ?? clsx(styles.root, testutilStyles.root)}
+        style={
+          wrapperElAttributes?.style ?? {
             [customCssProps.navigationWidth]: `${navigationWidth}px`,
-            [customCssProps.toolsWidth]: `${toolsWidth}px`,
-          }}
-        >
-          {toolbar}
-          {navigation && (
-            <div
-              className={clsx(
-                styles.navigation,
-                !navigationOpen && styles['panel-hidden'],
-                toolsOpen && styles['unfocusable-mobile'],
-                !navigationAnimationDisabled && sharedStyles['with-motion-horizontal']
-              )}
-            >
-              {navigation}
-            </div>
-          )}
-          <main className={clsx(styles['main-landmark'], isMobile && anyPanelOpen && styles['unfocusable-mobile'])}>
-            {notifications && (
-              <div
-                className={clsx(
-                  styles['notifications-background'],
-                  headerVariant === 'high-contrast' && highContrastHeaderClassName
-                )}
-              ></div>
-            )}
-            {notifications}
-            <div
-              className={clsx(styles.main, { [styles['main-disable-paddings']]: disableContentPaddings })}
-              style={style}
-            >
-              {contentHeader && <div className={styles['content-header']}>{contentHeader}</div>}
-              <div className={clsx(styles.content, testutilStyles.content)}>{content}</div>
-            </div>
-            {bottomSplitPanel && (
-              <div className={clsx(styles['split-panel-bottom'])} style={{ insetBlockEnd: placement.insetBlockEnd }}>
-                {bottomSplitPanel}
-              </div>
-            )}
-          </main>
-          {sideSplitPanel && (
-            <div className={clsx(styles['split-panel-side'], !splitPanelOpen && styles['panel-hidden'])}>
-              {sideSplitPanel}
-            </div>
-          )}
+          }
+        }
+      >
+        <AppLayoutSkeletonTopSlot {...props} />
+        <main {...mainElAttributes} className={mainElAttributes?.className ?? styles['main-landmark']}>
+          {!isAppLayoutStateLoading && <AppLayoutSkeletonTopContentSlot {...props} />}
           <div
-            className={clsx(
-              styles.tools,
-              !toolsOpen && styles['panel-hidden'],
-              sharedStyles['with-motion-horizontal'],
-              navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
-              toolsOpen && styles['tools-open']
-            )}
+            {...contentWrapperElAttributes}
+            className={
+              contentWrapperElAttributes?.className ??
+              clsx(styles.main, { [styles['main-disable-paddings']]: appLayoutProps.disableContentPaddings })
+            }
           >
-            {tools}
+            {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
+            {/*delay rendering the content until registration of this instance is complete*/}
+            <div {...contentElAttributes} className={contentElAttributes?.className ?? testutilStyles.content}>
+              {isAppLayoutStateLoading || registered ? content : null}
+            </div>
           </div>
-          <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>{globalTools}</div>
-        </div>
-      </VisualContext>
-    );
-  }
-);
+          {!isAppLayoutStateLoading && <AppLayoutSkeletonBottomContentSlot {...props} />}
+        </main>
+        {!isAppLayoutStateLoading && <AppLayoutSkeletonSideSlot {...props} />}
+      </div>
+    </VisualContext>
+  );
+};
