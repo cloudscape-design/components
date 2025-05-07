@@ -6,17 +6,24 @@ import {
   getIsRtl,
   getLogicalBoundingClientRect,
   getScrollInlineStart,
+  Portal,
 } from '@cloudscape-design/component-toolkit/internal';
-
-import Portal from '../portal';
 
 import styles from './styles.css.js';
 
-export default function PortalOverlay({ track, children }: { track: HTMLElement | null; children: React.ReactNode }) {
+export default function PortalOverlay({
+  track,
+  isDisabled,
+  children,
+}: {
+  track: HTMLElement | null;
+  isDisabled: boolean;
+  children: React.ReactNode;
+}) {
   const ref = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
-    if (track === null) {
+    if (track === null || isDisabled) {
       return;
     }
 
@@ -56,7 +63,7 @@ export default function PortalOverlay({ track, children }: { track: HTMLElement 
     return () => {
       cleanedUp = true;
     };
-  }, [track]);
+  }, [isDisabled, track]);
 
   if (track === null) {
     return null;

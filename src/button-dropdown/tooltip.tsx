@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { KeyboardEventHandler, useRef, useState } from 'react';
 
-import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
+import { Portal, useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
 
-import Portal from '../internal/components/portal';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
 import Arrow from '../popover/arrow';
 import PopoverBody from '../popover/body';

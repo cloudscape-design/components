@@ -3,6 +3,7 @@
 import { fireEvent } from '@testing-library/react';
 
 import { useKeyboardEvents } from '../../app-layout/utils/use-keyboard-events';
+import { Direction } from '../../internal/components/drag-handle-wrapper/interfaces';
 import { KeyCode } from '../../internal/keycode';
 
 const sizeControlProps: any = {
@@ -10,11 +11,11 @@ const sizeControlProps: any = {
   onResize: jest.fn(),
 };
 
-describe('use-keyboard-events, bottom position', () => {
+describe('useKeyboardEvents.onKeyDown, bottom position', () => {
   let div: HTMLDivElement;
 
   beforeEach(() => {
-    const onKeyDown = useKeyboardEvents({ ...sizeControlProps, position: 'bottom' });
+    const { onKeyDown } = useKeyboardEvents({ ...sizeControlProps, position: 'bottom' });
     div = document.createElement('div');
     div.addEventListener('keydown', event => onKeyDown(event as any));
   });
@@ -54,11 +55,35 @@ describe('use-keyboard-events, bottom position', () => {
   });
 });
 
-describe('use-keyboard-events, side position', () => {
+describe('useKeyboardEvents.onDirectionClick, bottom position', () => {
+  let onDirectionClick: (direction: Direction) => void;
+
+  beforeEach(() => {
+    ({ onDirectionClick } = useKeyboardEvents({ ...sizeControlProps, position: 'bottom' }));
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('bottom position, up button', () => {
+    onDirectionClick('block-start');
+    expect(sizeControlProps.onResize).toHaveBeenCalledTimes(1);
+    expect(sizeControlProps.onResize).toHaveBeenCalledWith(110);
+  });
+
+  test('bottom position, down button', () => {
+    onDirectionClick('block-end');
+    expect(sizeControlProps.onResize).toHaveBeenCalledTimes(1);
+    expect(sizeControlProps.onResize).toHaveBeenCalledWith(90);
+  });
+});
+
+describe('useKeyboardEvents.onKeyDown, side position', () => {
   let div: HTMLDivElement;
 
   beforeEach(() => {
-    const onKeyDown = useKeyboardEvents({ ...sizeControlProps, position: 'side' });
+    const { onKeyDown } = useKeyboardEvents({ ...sizeControlProps, position: 'side' });
     div = document.createElement('div');
     div.addEventListener('keydown', event => onKeyDown(event as any));
   });
@@ -86,11 +111,35 @@ describe('use-keyboard-events, side position', () => {
   });
 });
 
-describe('use-keyboard-events, side position, rtl', () => {
+describe('useKeyboardEvents.onDirectionClick, side position', () => {
+  let onDirectionClick: (direction: Direction) => void;
+
+  beforeEach(() => {
+    ({ onDirectionClick } = useKeyboardEvents({ ...sizeControlProps, position: 'side' }));
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('side position, inline-start button', () => {
+    onDirectionClick('inline-start');
+    expect(sizeControlProps.onResize).toHaveBeenCalledTimes(1);
+    expect(sizeControlProps.onResize).toHaveBeenCalledWith(110);
+  });
+
+  test('bottom position, inline-end button', () => {
+    onDirectionClick('inline-end');
+    expect(sizeControlProps.onResize).toHaveBeenCalledTimes(1);
+    expect(sizeControlProps.onResize).toHaveBeenCalledWith(90);
+  });
+});
+
+describe('useKeyboardEvents.onKeyDown, side position, rtl', () => {
   let div: HTMLDivElement;
 
   beforeEach(() => {
-    const onKeyDown = useKeyboardEvents({ ...sizeControlProps, position: 'side' });
+    const { onKeyDown } = useKeyboardEvents({ ...sizeControlProps, position: 'side' });
     div = document.createElement('div');
     div.addEventListener('keydown', event => onKeyDown(event as any));
     div.style.direction = 'rtl';

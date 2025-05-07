@@ -343,7 +343,8 @@
     "i18nStrings.preferencesPositionBottom": "하단",
     "i18nStrings.preferencesConfirm": "확인",
     "i18nStrings.preferencesCancel": "취소",
-    "i18nStrings.resizeHandleAriaLabel": "분할 패널 크기 조정"
+    "i18nStrings.resizeHandleAriaLabel": "분할 패널 크기 조정",
+    "i18nStrings.resizeHandleTooltipText": "드래그하거나 선택하여 크기 조정"
   },
   "table": {
     "ariaLabels.resizerRoleDescription": "크기 조정 버튼",

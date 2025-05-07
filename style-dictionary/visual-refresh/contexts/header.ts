@@ -18,6 +18,7 @@ const colorTokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundSegmentDefault: background,
   colorBackgroundSegmentDisabled: background,
   colorBackgroundTableHeader: background,
+  colorBackgroundSegmentWrapper: background,
 };
 
 const shadowsTokens: StyleDictionary.ShadowsDictionary = {

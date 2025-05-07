@@ -11,6 +11,7 @@ import styles from '../../../../../lib/components/internal/components/drag-handl
 let isRtl = false;
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   getIsRtl: jest.fn(() => isRtl),
   getLogicalBoundingClientRect: jest.fn().mockReturnValue({
     insetInlineStart: 2,
@@ -22,6 +23,7 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
 }));
 
 afterEach(() => {
+  isRtl = false;
   jest.restoreAllMocks();
 });
 
@@ -29,7 +31,7 @@ test('matches the position of the tracked element', async () => {
   const trackElement = document.createElement('span');
 
   render(
-    <PortalOverlay track={trackElement}>
+    <PortalOverlay track={trackElement} isDisabled={false}>
       <div id="overlay">Overlay</div>
     </PortalOverlay>
   );
@@ -47,7 +49,7 @@ test('matches the position of the tracked element in rtl', async () => {
   const trackElement = document.createElement('span');
 
   render(
-    <PortalOverlay track={trackElement}>
+    <PortalOverlay track={trackElement} isDisabled={false}>
       <div id="overlay">Overlay</div>
     </PortalOverlay>
   );
@@ -55,6 +57,48 @@ test('matches the position of the tracked element in rtl', async () => {
   const portalOverlay = document.querySelector<HTMLElement>(`.${styles['portal-overlay']}`)!;
   await waitFor(() => {
     expect(portalOverlay.style.translate).toBe('-2px 4px');
+    expect(portalOverlay.style.width).toBe('10px');
+    expect(portalOverlay.style.height).toBe('20px');
+  });
+});
+
+test('does not update position when disabled', async () => {
+  const trackElement = document.createElement('span');
+
+  render(
+    <PortalOverlay track={trackElement} isDisabled={true}>
+      <div id="overlay">Overlay</div>
+    </PortalOverlay>
+  );
+
+  const portalOverlay = document.querySelector<HTMLElement>(`.${styles['portal-overlay']}`)!;
+  await waitFor(() => {
+    expect(portalOverlay.style.translate).toBeUndefined();
+    expect(portalOverlay.style.width).toBe('');
+    expect(portalOverlay.style.height).toBe('');
+  });
+});
+
+test('resumes position updates when enabled after being disabled', async () => {
+  const trackElement = document.createElement('span');
+
+  const PortalOverlayWrapper = ({ isDisabled }: { isDisabled: boolean }) => (
+    <PortalOverlay track={trackElement} isDisabled={isDisabled}>
+      <div id="overlay">Overlay</div>
+    </PortalOverlay>
+  );
+
+  const { rerender } = render(<PortalOverlayWrapper isDisabled={true} />);
+  const portalOverlay = document.querySelector<HTMLElement>(`.${styles['portal-overlay']}`)!;
+  await waitFor(() => {
+    expect(portalOverlay.style.translate).toBeUndefined();
+    expect(portalOverlay.style.width).toBe('');
+    expect(portalOverlay.style.height).toBe('');
+  });
+
+  rerender(<PortalOverlayWrapper isDisabled={false} />);
+  await waitFor(() => {
+    expect(portalOverlay.style.translate).toBe('2px 4px');
     expect(portalOverlay.style.width).toBe('10px');
     expect(portalOverlay.style.height).toBe('20px');
   });

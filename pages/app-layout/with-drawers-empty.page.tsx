@@ -7,6 +7,7 @@ import { AppLayout, ContentLayout, Header, SplitPanel } from '~components';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import appLayoutLabels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
 
 export default function WithDrawers() {
   return (
@@ -29,21 +30,7 @@ export default function WithDrawers() {
           </ContentLayout>
         }
         splitPanel={
-          <SplitPanel
-            header="Split panel header"
-            i18nStrings={{
-              preferencesTitle: 'Preferences',
-              preferencesPositionLabel: 'Split panel position',
-              preferencesPositionDescription: 'Choose the default split panel position for the service.',
-              preferencesPositionSide: 'Side',
-              preferencesPositionBottom: 'Bottom',
-              preferencesConfirm: 'Confirm',
-              preferencesCancel: 'Cancel',
-              closeButtonAriaLabel: 'Close panel',
-              openButtonAriaLabel: 'Open panel',
-              resizeHandleAriaLabel: 'Slider',
-            }}
-          >
+          <SplitPanel header="Split panel header" i18nStrings={splitPaneli18nStrings}>
             This is the Split Panel!
           </SplitPanel>
         }
