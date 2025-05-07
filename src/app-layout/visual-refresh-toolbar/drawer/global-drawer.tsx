@@ -37,6 +37,7 @@ function AppLayoutGlobalDrawerImplementation({
     minGlobalDrawersSizes,
     maxGlobalDrawersSizes,
     activeGlobalDrawersSizes,
+    activeGlobalDrawers,
     verticalOffsets,
     drawersOpenQueue,
     expandedDrawerId,
@@ -86,8 +87,10 @@ function AppLayoutGlobalDrawerImplementation({
                 [styles['drawer-hidden']]: !show,
                 [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
                 [testutilStyles['active-drawer']]: show,
-                [styles['drawer-expandable']]: activeGlobalDrawer?.isExpandable,
                 [styles['drawer-expanded']]: isExpanded,
+                [styles['has-next-siblings']]:
+                  activeGlobalDrawers.findIndex(drawer => drawer.id === activeDrawerId) + 1 <
+                  activeGlobalDrawers.length,
               }
             )}
             ref={drawerRef}
