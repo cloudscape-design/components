@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import VisualContext from '../../../internal/components/visual-context';
 import customCssProps from '../../../internal/generated/custom-css-properties';
+import { useMergeRefs } from '../../../internal/hooks/use-merge-refs';
 import { AppLayoutInternalProps } from '../interfaces';
 import {
   AppLayoutSkeletonBottomContentSlot,
@@ -24,12 +25,12 @@ export interface SkeletonLayoutProps {
 }
 
 export interface RootSkeletonLayoutProps extends SkeletonLayoutProps {
-  skeletonSlotsAttributes: ReturnType<typeof useSkeletonSlotsAttributes>;
+  skeletonSlotsAttributes: ReturnType<typeof useSkeletonSlotsAttributes> | null;
 }
 
 export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
   const { appLayoutProps, appLayoutState, skeletonSlotsAttributes } = props;
-  const { registered } = appLayoutState;
+  const { registered } = appLayoutState ?? {};
   const { contentHeader, content, navigationWidth } = appLayoutProps;
   const {
     wrapperElAttributes,
@@ -37,9 +38,8 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
     contentWrapperElAttributes,
     contentHeaderElAttributes,
     contentElAttributes,
-  } = skeletonSlotsAttributes;
-
-  const isAppLayoutStateLoading = Object.keys(appLayoutState).length === 0;
+  } = skeletonSlotsAttributes ?? {};
+  const ref = useMergeRefs(appLayoutState.intersectionObserverRef, appLayoutState.rootRef);
 
   return (
     <VisualContext contextName="app-layout-toolbar">
@@ -51,10 +51,11 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
             [customCssProps.navigationWidth]: `${navigationWidth}px`,
           }
         }
+        ref={ref}
       >
         <AppLayoutSkeletonTopSlot {...props} />
         <main {...mainElAttributes} className={mainElAttributes?.className ?? styles['main-landmark']}>
-          {!isAppLayoutStateLoading && <AppLayoutSkeletonTopContentSlot {...props} />}
+          <AppLayoutSkeletonTopContentSlot {...props} />
           <div
             {...contentWrapperElAttributes}
             className={
@@ -65,12 +66,12 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
             {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
             {/*delay rendering the content until registration of this instance is complete*/}
             <div {...contentElAttributes} className={contentElAttributes?.className ?? testutilStyles.content}>
-              {isAppLayoutStateLoading || registered ? content : null}
+              {registered ? content : null}
             </div>
           </div>
-          {!isAppLayoutStateLoading && <AppLayoutSkeletonBottomContentSlot {...props} />}
+          <AppLayoutSkeletonBottomContentSlot {...props} />
         </main>
-        {!isAppLayoutStateLoading && <AppLayoutSkeletonSideSlot {...props} />}
+        <AppLayoutSkeletonSideSlot {...props} />
       </div>
     </VisualContext>
   );

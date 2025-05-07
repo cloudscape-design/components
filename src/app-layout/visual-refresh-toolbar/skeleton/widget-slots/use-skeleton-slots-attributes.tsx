@@ -5,7 +5,6 @@
 import clsx from 'clsx';
 
 import customCssProps from '../../../../internal/generated/custom-css-properties';
-import { useMergeRefs } from '../../../../internal/hooks/use-merge-refs';
 import { useMobile } from '../../../../internal/hooks/use-mobile';
 import globalVars from '../../../../internal/styles/global-vars';
 import { SkeletonLayoutProps } from '../index';
@@ -17,8 +16,6 @@ const contentTypeCustomWidths: Array<string | undefined> = ['dashboard', 'cards'
 
 export const useSkeletonSlotsAttributes = ({ appLayoutProps, appLayoutState }: SkeletonLayoutProps) => {
   const {
-    intersectionObserverRef,
-    rootRef,
     isNested,
     activeDrawerSize,
     resolvedNavigationOpen,
@@ -30,12 +27,10 @@ export const useSkeletonSlotsAttributes = ({ appLayoutProps, appLayoutState }: S
   const { contentType, placement, maxContentWidth, navigationWidth, minContentWidth, disableContentPaddings } =
     appLayoutProps;
   const isMobile = useMobile();
-  const ref = useMergeRefs(intersectionObserverRef, rootRef);
   const toolsOpen = !!activeDrawer;
   const anyPanelOpen = resolvedNavigationOpen || toolsOpen;
   const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
   const wrapperElAttributes = {
-    ref,
     className: clsx(styles.root, testutilStyles.root, {
       [styles['has-adaptive-widths-default']]: !contentTypeCustomWidths.includes(contentType),
       [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',

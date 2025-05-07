@@ -44,7 +44,7 @@ export function createAppLayoutPart({ Component }: { Component: React.JSXElement
     useEffect(() => {
       setTimeout(() => {
         setMount(true);
-      }, 1000);
+      }, 500);
     }, []);
 
     if (enableSyncComponents || (mount && enableDelayedComponents)) {

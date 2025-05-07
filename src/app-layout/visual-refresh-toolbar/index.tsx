@@ -1,56 +1,60 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { AppLayoutProps } from '../interfaces';
 import { AppLayoutVisibilityContext } from './contexts';
 import { AppLayoutInternalProps } from './interfaces';
 import { AppLayoutState } from './internal';
-import { createHtmlPortalNode, HtmlPortalNode, InPortal, OutPortal } from './reverse-portal';
 import { SkeletonLayout } from './skeleton';
 import { useSkeletonSlotsAttributes } from './skeleton/widget-slots/use-skeleton-slots-attributes';
 import { useAppLayout } from './use-app-layout';
 
-const AppLayoutStateParent = (props: {
-  children: (
-    state: ReturnType<typeof useAppLayout>,
-    skeletonSlotsAttributes: ReturnType<typeof useSkeletonSlotsAttributes>
-  ) => React.ReactNode;
-  node: HtmlPortalNode;
-}) => {
-  return <OutPortal {...props} />;
+const AppLayoutStateProvider: FC<{
+  children: (skeletonSlotsAttributes: ReturnType<typeof useSkeletonSlotsAttributes> | null) => React.ReactNode;
+  appLayoutStateChangeId: string;
+}> = ({ children, appLayoutStateChangeId }) => {
+  const [skeletonAttributes, setSkeletonAttributes] = useState(null);
+
+  useEffect(() => {
+    addEventListener(appLayoutStateChangeId, event => {
+      setSkeletonAttributes((event as any).detail.skeletonAttributes);
+    });
+  }, [appLayoutStateChangeId]);
+  return <>{children(skeletonAttributes)}</>;
 };
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
   (props, forwardRef) => {
-    const portalNode = React.useMemo(() => (typeof window !== 'undefined' ? createHtmlPortalNode() : null), []);
+    const appLayoutState = useAppLayout(props, forwardRef);
+    const appLayoutStateChangeId = useUniqueId('app-layout-state-change-');
 
     return (
       <>
-        <InPortal node={portalNode!}>
-          <AppLayoutState props={props} forwardRef={forwardRef}>
-            {() => <></>}
-          </AppLayoutState>
-        </InPortal>
-        <AppLayoutStateParent node={portalNode!}>
-          {(appLayoutState, skeletonSlotsAttributes) => {
-            return (
-              <AppLayoutVisibilityContext.Provider value={appLayoutState?.isIntersecting ?? true}>
-                {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
-                {Object.keys(appLayoutState).length > 0 && !appLayoutState?.hasToolbar && props.breadcrumbs ? (
-                  <ScreenreaderOnly>{props.breadcrumbs}</ScreenreaderOnly>
-                ) : null}
-
-                <SkeletonLayout
-                  appLayoutProps={props}
-                  appLayoutState={appLayoutState}
-                  skeletonSlotsAttributes={skeletonSlotsAttributes}
-                />
-              </AppLayoutVisibilityContext.Provider>
-            );
+        <AppLayoutState
+          props={props}
+          state={appLayoutState}
+          onChange={skeletonAttributes => {
+            dispatchEvent(new CustomEvent(appLayoutStateChangeId, { detail: { skeletonAttributes } }));
           }}
-        </AppLayoutStateParent>
+        />
+        <AppLayoutStateProvider appLayoutStateChangeId={appLayoutStateChangeId}>
+          {skeletonSlotsAttributes => (
+            <AppLayoutVisibilityContext.Provider value={appLayoutState.isIntersecting}>
+              {/*Rendering a hidden copy of breadcrumbs to trigger their deduplication*/}
+              {appLayoutState.hasToolbar && props.breadcrumbs ? (
+                <ScreenreaderOnly>{props.breadcrumbs}</ScreenreaderOnly>
+              ) : null}
+              <SkeletonLayout
+                appLayoutProps={props}
+                appLayoutState={appLayoutState}
+                skeletonSlotsAttributes={skeletonSlotsAttributes}
+              />
+            </AppLayoutVisibilityContext.Provider>
+          )}
+        </AppLayoutStateProvider>
       </>
     );
   }

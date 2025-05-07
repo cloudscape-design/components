@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
+import { useAppLayout } from './use-app-layout';
 
 interface BreadcrumbsSlotContextType {
   isInToolbar: boolean;
@@ -20,3 +21,8 @@ export const AppLayoutToolbarPublicContext = awsuiPluginsInternal.sharedReactCon
   React,
   'AppLayoutToolbarPublicContext'
 );
+
+export const AppLayoutStateContext = awsuiPluginsInternal.sharedReactContexts.createContext<{
+  state: ReturnType<typeof useAppLayout> | null;
+  setState: (value: ReturnType<typeof useAppLayout>) => void;
+}>(React, 'AppLayoutStateContext');
