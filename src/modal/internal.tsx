@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { Portal } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { InternalButton } from '../button/internal';
@@ -18,7 +19,6 @@ import {
 import { FunnelProps, useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getBaseProps } from '../internal/base-component';
 import FocusLock from '../internal/components/focus-lock';
-import Portal from '../internal/components/portal';
 import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
 import { ModalContext } from '../internal/context/modal-context';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
