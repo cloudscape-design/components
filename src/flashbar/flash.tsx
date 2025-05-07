@@ -13,9 +13,9 @@ import {
   DATA_ATTR_ANALYTICS_FLASHBAR,
   DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS,
 } from '../internal/analytics/selectors';
-import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { PACKAGE_VERSION } from '../internal/environment';
+import { transformAnalyticsMetadata } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development';
@@ -99,6 +99,7 @@ export const Flash = React.forwardRef(
       ariaRole,
       i18nStrings,
       type = 'info',
+      analyticsMetadata,
       ...props
     }: FlashProps,
     ref: React.Ref<HTMLDivElement>
@@ -119,11 +120,11 @@ export const Flash = React.forwardRef(
       }
     }
 
-    const analyticsMetadata = getAnalyticsMetadataProps(
-      props as BasePropsWithAnalyticsMetadata & FlashbarProps.MessageDefinition
-    );
     const [containerWidth, containerMeasureRef] = useContainerWidth();
-    const elementRef = useComponentMetadata('Flash', PACKAGE_VERSION, { ...analyticsMetadata });
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const elementRef = useComponentMetadata('Flash', PACKAGE_VERSION, transformAnalyticsMetadata(analyticsMetadata));
+
     const mergedRef = useMergeRefs(ref, elementRef, containerMeasureRef);
     const flashIconId = useUniqueId('flash-icon');
     const flashMessageId = useUniqueId('flash-message');
@@ -163,7 +164,7 @@ export const Flash = React.forwardRef(
       [DATA_ATTR_ANALYTICS_FLASHBAR]: effectiveType,
     };
 
-    if (analyticsMetadata.suppressFlowMetricEvents) {
+    if (analyticsMetadata?.suppressFlowMetricEvents) {
       analyticsAttributes[DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS] = 'true';
     }
 

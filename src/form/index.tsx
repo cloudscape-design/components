@@ -64,7 +64,7 @@ const FormWithAnalytics = ({
         totalSubSteps: funnelStepInfo.current.subStepCount.current,
         funnelIdentifier,
         subStepAllSelector: getSubStepAllSelector(),
-        stepErrorContext: funnelStepInfo.current.stepErrorContext,
+        errorContext: funnelStepInfo.current.stepErrorContext,
         subStepConfiguration: funnelStepInfo.current.subStepConfiguration.current?.get(
           funnelStepInfo.current.stepNumber
         ),
