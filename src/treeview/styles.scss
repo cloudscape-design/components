@@ -1,0 +1,124 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+
+.root {
+  @include styles.styles-reset;
+
+  font-family: awsui.$font-family-base;
+  font-size: awsui.$font-size-body-m;
+  line-height: awsui.$line-height-heading-m;
+}
+
+.tree,
+.parent-treeitem,
+.child-treeitem {
+  list-style-type: none;
+  padding-inline-start: 0;
+  margin-block: 0;
+}
+
+.child-treeitem {
+  display: flex;
+}
+
+.tree {
+  @include styles.styles-reset-ul;
+}
+
+.parent-treeitem {
+  padding-inline-start: 0;
+  margin-inline-start: 0;
+}
+
+.treeitem-guideline {
+  inline-size: 30px;
+  background-color: yellow;
+
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  padding-block-start: 6px;
+
+  position: relative;
+}
+
+.treeitem-guideline-horizontal {
+  block-size: 1px;
+  position: absolute;
+  inset-block-start: 14px;
+  inline-size: 39px;
+  background: red;
+  inset-inline-start: -14px;
+
+  &.expandable {
+    inline-size: 20px;
+  }
+}
+
+.treeitem-guideline-vertical {
+  &-root {
+    inline-size: 1px;
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 50%;
+    background-color: red;
+  }
+
+  &-root-end {
+    block-size: 16px;
+    inset-block: 0 unset;
+  }
+
+  &-expandable {
+    inset-block-start: 24px;
+  }
+
+  &-middle {
+    inline-size: 1px;
+    position: absolute;
+    inset-block: -10px 0px;
+    inset-inline-start: -14px;
+    background-color: red;
+  }
+
+  &-end {
+    inline-size: 1px;
+    position: absolute;
+    inset-block: 0 10px;
+    inset-inline-start: -14px;
+    background-color: red;
+  }
+}
+
+.treeitem-content {
+  position: relative;
+  padding-block-start: 2px;
+  flex: 1;
+}
+
+.treeitem-group {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.treeitem-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.treeitem-first-line {
+  display: flex;
+}
+
+.treeitem-actions {
+  // test
+}
+
+.treeitem-details {
+  // test
+}
