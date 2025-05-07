@@ -343,7 +343,8 @@
     "i18nStrings.preferencesPositionBottom": "底部",
     "i18nStrings.preferencesConfirm": "確認",
     "i18nStrings.preferencesCancel": "取消",
-    "i18nStrings.resizeHandleAriaLabel": "調整分割面板大小"
+    "i18nStrings.resizeHandleAriaLabel": "調整分割面板大小",
+    "i18nStrings.resizeHandleTooltipText": "拖曳或選取以調整大小"
   },
   "table": {
     "ariaLabels.resizerRoleDescription": "調整按鈕大小",

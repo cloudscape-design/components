@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * This file is only needed to generate the proper js ans scss files at build step generateCustomCssPropertiesMap
+ * This file is only needed to generate the proper js and scss files at build step generateCustomCssPropertiesMap
  */
 const customCssPropertiesList = [
   // AppLayout Custom Properties,
@@ -70,5 +70,8 @@ const customCssPropertiesList = [
   // Prompt input
   'promptInputMaxRows',
   'promptInputScrollHeight',
+  // Internal drag handle properties
+  'dragHandleAnimationInlineOffset',
+  'dragHandleAnimationBlockOffset',
 ];
 module.exports = customCssPropertiesList;

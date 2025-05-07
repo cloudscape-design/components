@@ -343,7 +343,8 @@
     "i18nStrings.preferencesPositionBottom": "Bottom",
     "i18nStrings.preferencesConfirm": "Confirm",
     "i18nStrings.preferencesCancel": "Cancel",
-    "i18nStrings.resizeHandleAriaLabel": "Resize split panel"
+    "i18nStrings.resizeHandleAriaLabel": "Resize split panel",
+    "i18nStrings.resizeHandleTooltipText": "Drag or select to resize"
   },
   "table": {
     "ariaLabels.resizerRoleDescription": "resize button",

@@ -7,6 +7,7 @@ import { FlashbarProps } from '~components/flashbar';
 
 import ScreenshotArea from '../utils/screenshot-area';
 import labels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
 
 export default function () {
   const [notifications, setNotifications] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
@@ -132,21 +133,7 @@ export default function () {
         splitPanelOpen={splitPanelOpen}
         onSplitPanelToggle={event => setSplitPanelOpen(event.detail.open)}
         splitPanel={
-          <SplitPanel
-            header={'Split Panel'}
-            i18nStrings={{
-              preferencesTitle: 'Split panel preferences',
-              preferencesPositionLabel: 'Split panel position',
-              preferencesPositionDescription: 'Choose the default split panel position for the service.',
-              preferencesPositionSide: 'Side',
-              preferencesPositionBottom: 'Bottom',
-              preferencesConfirm: 'Confirm',
-              preferencesCancel: 'Cancel',
-              closeButtonAriaLabel: 'Close panel',
-              openButtonAriaLabel: 'Open panel',
-              resizeHandleAriaLabel: 'Resize split panel',
-            }}
-          >
+          <SplitPanel header={'Split Panel'} i18nStrings={splitPaneli18nStrings}>
             <p>Split panel content</p>
           </SplitPanel>
         }

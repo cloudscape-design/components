@@ -343,7 +343,8 @@
     "i18nStrings.preferencesPositionBottom": "Bawah",
     "i18nStrings.preferencesConfirm": "Konfirmasikan",
     "i18nStrings.preferencesCancel": "Batalkan",
-    "i18nStrings.resizeHandleAriaLabel": "Ubah ukuran panel terpisah"
+    "i18nStrings.resizeHandleAriaLabel": "Ubah ukuran panel terpisah",
+    "i18nStrings.resizeHandleTooltipText": "Seret atau pilih untuk mengubah ukuran"
   },
   "table": {
     "ariaLabels.resizerRoleDescription": "tombol ubah ukuran",

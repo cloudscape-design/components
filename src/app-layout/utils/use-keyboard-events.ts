@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { Direction } from '../../internal/components/drag-handle-wrapper/interfaces';
 import handleKey from '../../internal/utils/handle-key';
 import { SizeControlProps } from './interfaces';
 
@@ -23,52 +24,79 @@ const getCurrentSize = (panelRef?: React.RefObject<HTMLDivElement>) => {
 };
 
 export const useKeyboardEvents = ({ position, onResize, panelRef }: SizeControlProps) => {
-  return (event: React.KeyboardEvent<HTMLElement>) => {
-    let currentSize: number;
-    let maxSize: number;
+  return {
+    onDirectionClick: (direction: Direction) => {
+      let currentSize: number;
 
-    const { panelHeight, panelWidth } = getCurrentSize(panelRef);
+      const { panelHeight, panelWidth } = getCurrentSize(panelRef);
 
-    if (position === 'side') {
-      currentSize = panelWidth;
-      // don't need the exact max size as it's constrained in the set size function
-      maxSize = window.innerWidth;
-    } else {
-      currentSize = panelHeight;
-      // don't need the exact max size as it's constrained in the set size function
-      maxSize = window.innerHeight;
-    }
+      if (position === 'side') {
+        currentSize = panelWidth;
+      } else {
+        currentSize = panelHeight;
+      }
 
-    let isEventHandled = true;
+      const singleStepUp = () => onResize(currentSize + KEYBOARD_SINGLE_STEP_SIZE);
+      const singleStepDown = () => onResize(currentSize - KEYBOARD_SINGLE_STEP_SIZE);
 
-    const singleStepUp = () => onResize(currentSize + KEYBOARD_SINGLE_STEP_SIZE);
-    const singleStepDown = () => onResize(currentSize - KEYBOARD_SINGLE_STEP_SIZE);
-    const multipleStepUp = () => onResize(currentSize + KEYBOARD_MULTIPLE_STEPS_SIZE);
-    const multipleStepDown = () => onResize(currentSize - KEYBOARD_MULTIPLE_STEPS_SIZE);
+      switch (direction) {
+        case 'block-start':
+        case 'inline-start':
+          singleStepUp();
+          break;
+        case 'block-end':
+        case 'inline-end':
+          singleStepDown();
+          break;
+      }
+    },
 
-    handleKey(event, {
-      onBlockStart: () => {
-        position === 'bottom' ? singleStepUp() : singleStepDown();
-      },
-      onBlockEnd: () => {
-        position === 'bottom' ? singleStepDown() : singleStepUp();
-      },
-      onInlineEnd: () => {
-        position === 'bottom' ? singleStepUp() : singleStepDown();
-      },
-      onInlineStart: () => {
-        position === 'bottom' ? singleStepDown() : singleStepUp();
-      },
-      onPageDown: () => multipleStepDown(),
-      onPageUp: () => multipleStepUp(),
-      onHome: () => onResize(maxSize),
-      onEnd: () => onResize(0),
-      onDefault: () => (isEventHandled = false),
-    });
+    onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
+      let currentSize: number;
+      let maxSize: number;
 
-    if (isEventHandled) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+      const { panelHeight, panelWidth } = getCurrentSize(panelRef);
+
+      if (position === 'side') {
+        currentSize = panelWidth;
+        // don't need the exact max size as it's constrained in the set size function
+        maxSize = window.innerWidth;
+      } else {
+        currentSize = panelHeight;
+        // don't need the exact max size as it's constrained in the set size function
+        maxSize = window.innerHeight;
+      }
+
+      let isEventHandled = true;
+
+      const singleStepUp = () => onResize(currentSize + KEYBOARD_SINGLE_STEP_SIZE);
+      const singleStepDown = () => onResize(currentSize - KEYBOARD_SINGLE_STEP_SIZE);
+      const multipleStepUp = () => onResize(currentSize + KEYBOARD_MULTIPLE_STEPS_SIZE);
+      const multipleStepDown = () => onResize(currentSize - KEYBOARD_MULTIPLE_STEPS_SIZE);
+
+      handleKey(event, {
+        onBlockStart: () => {
+          position === 'bottom' ? singleStepUp() : singleStepDown();
+        },
+        onBlockEnd: () => {
+          position === 'bottom' ? singleStepDown() : singleStepUp();
+        },
+        onInlineEnd: () => {
+          position === 'bottom' ? singleStepUp() : singleStepDown();
+        },
+        onInlineStart: () => {
+          position === 'bottom' ? singleStepDown() : singleStepUp();
+        },
+        onPageDown: () => multipleStepDown(),
+        onPageUp: () => multipleStepUp(),
+        onHome: () => onResize(maxSize),
+        onEnd: () => onResize(0),
+        onDefault: () => (isEventHandled = false),
+      });
+
+      if (isEventHandled) {
+        event.preventDefault();
+      }
+    },
   };
 };

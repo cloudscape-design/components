@@ -36,6 +36,7 @@ export default function () {
               closeButtonAriaLabel: 'Close panel',
               openButtonAriaLabel: 'Open panel',
               resizeHandleAriaLabel: 'Slider',
+              resizeHandleTooltipText: 'Drag or select to resize',
             }}
           >
             <div>
