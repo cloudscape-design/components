@@ -3,8 +3,9 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { Portal } from '@cloudscape-design/component-toolkit/internal';
+
 import { getBaseProps } from '../../internal/base-component';
-import Portal from '../../internal/components/portal';
 import VisualContext from '../../internal/components/visual-context';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { InternalBaseComponentProps } from '../../internal/hooks/use-base-component';

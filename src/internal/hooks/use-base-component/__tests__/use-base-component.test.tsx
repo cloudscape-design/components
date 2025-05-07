@@ -3,10 +3,9 @@
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
-import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal';
+import { COMPONENT_METADATA_KEY, Portal } from '@cloudscape-design/component-toolkit/internal';
 
 import { Button } from '../../../../../lib/components';
-import Portal from '../../../../../lib/components/internal/components/portal';
 import { PACKAGE_VERSION } from '../../../../../lib/components/internal/environment';
 import useBaseComponent, {
   InternalBaseComponentProps,
