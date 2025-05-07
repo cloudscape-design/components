@@ -13,7 +13,6 @@ import styles from './styles.css.js';
 
 type TreeItemProps = TreeviewProps.TreeItem & {
   isExpanded: boolean;
-  isExpandable?: boolean;
   onExpandableItemToggle: NonCancelableEventHandler<TreeviewProps.ExpandableItemToggleDetail>;
   expandedItems: ReadonlyArray<string>;
   level: number;
@@ -55,23 +54,24 @@ const GuideLine = ({
   if (level === 0) {
     return (
       <div
-        className={clsx(styles['treeitem-guideline-vertical-root'], {
-          [styles['treeitem-guideline-vertical-root-end']]: position === 'end',
-          [styles['treeitem-guideline-vertical-expandable']]: isExpandable,
-        })}
+        className={clsx(
+          styles['treeitem-guideline-vertical-root'],
+          position === 'end' && styles['treeitem-guideline-vertical-root-end'],
+          isExpandable && styles['treeitem-guideline-vertical-expandable']
+        )}
       ></div>
     );
   }
 
   return (
     <>
-      <div className={clsx(styles['treeitem-guideline-horizontal'], { [styles.expandable]: isExpandable })}></div>
+      <div className={clsx(styles['treeitem-guideline-horizontal'], isExpandable && [styles.expandable])}></div>
 
       {level > 1 && (position === 'start' || position === 'end') && (
-        <div className={clsx(styles['treeitem-guideline-vertical-end'])}></div>
+        <div className={styles['treeitem-guideline-vertical-end']}></div>
       )}
 
-      {level > 1 && position === 'middle' && <div className={clsx(styles['treeitem-guideline-vertical-middle'])}></div>}
+      {level > 1 && position === 'middle' && <div className={styles['treeitem-guideline-vertical-middle']}></div>}
     </>
   );
 };
@@ -82,13 +82,13 @@ const TreeItem = ({
   details,
   actions,
   isExpanded,
-  isExpandable,
   onExpandableItemToggle,
   items = [],
   expandedItems = [],
   level,
   position,
 }: TreeItemProps) => {
+  const isExpandable = items.length > 0;
   const isExpandableItemExpanded = isExpandable && isExpanded;
   const nextLevel = level + 1;
 
@@ -96,11 +96,8 @@ const TreeItem = ({
     <li
       id={id}
       role="treeitem"
-      className={clsx(styles['child-treeitem'], styles[`child-treeitem-level-${level}`], {
-        [styles.expandable]: isExpandable,
-        [styles.expanded]: isExpanded,
-      })}
-      aria-expanded={position === 'end' ? undefined : isExpandableItemExpanded}
+      className={clsx(styles['child-treeitem'], isExpandable && [styles.expandable], isExpanded && [styles.expanded])}
+      aria-expanded={isExpandable ? isExpandableItemExpanded : undefined}
       data-testid={id}
     >
       <div className={styles['treeitem-guideline']}>
@@ -108,8 +105,8 @@ const TreeItem = ({
           <ExpandToggleButton
             isExpanded={isExpanded}
             onExpandableItemToggle={() => fireNonCancelableEvent(onExpandableItemToggle, { id, expanded: !isExpanded })}
-            //   expandButtonLabel={expandButtonLabel}
-            //   collapseButtonLabel={collapseButtonLabel}
+            expandButtonLabel="Expand"
+            collapseButtonLabel="Collapse"
           />
         )}
 
@@ -123,8 +120,8 @@ const TreeItem = ({
           <ul role="group" className={styles['parent-treeitem']}>
             {items.map((item, index) => (
               <TreeItem
-                key={index}
                 {...item}
+                key={`${nextLevel}-${index}`}
                 level={nextLevel}
                 position={getItemPosition(index, items.length)}
                 isExpanded={expandedItems.includes(item.id)}

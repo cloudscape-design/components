@@ -6,7 +6,6 @@ import Badge from '~components/badge';
 import Box from '~components/box';
 import ButtonGroup from '~components/button-group';
 import Container from '~components/container';
-import Header from '~components/header';
 import Icon from '~components/icon';
 import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
@@ -232,20 +231,16 @@ function RdsAccessRoleTreeItemContent() {
         </div>
       </div>
 
-      <SpaceBetween size="s" direction="horizontal">
+      <div style={{ display: 'flex', gap: '10px' }}>
         <Box color="text-status-inactive">
-          <SpaceBetween size="xxs" direction="horizontal">
-            <Icon name="globe" />
-            us-east-1
-          </SpaceBetween>
+          <Icon name="globe" />
+          us-east-1
         </Box>
         <Box color="text-status-inactive">
-          <SpaceBetween size="xxs" direction="horizontal">
-            <Icon name="ticket" />
-            prod-eng-xyz-zip-f
-          </SpaceBetween>
+          <Icon name="ticket" />
+          prod-eng-xyz-zip-f
         </Box>
-      </SpaceBetween>
+      </div>
     </div>
   );
 }
@@ -254,26 +249,28 @@ export default function BasicTreeview() {
   const [expandedItems, setExpandedItems] = useState<Array<string>>(['1', '4.1']);
 
   return (
-    <Box padding="xl">
-      <Header variant="h2">Basic treeview</Header>
+    <>
+      <h1>Basic treeview</h1>
 
-      <div style={{ width: '60%' }}>
-        <Container>
-          <Treeview
-            items={items}
-            onExpandableItemToggle={({ detail }: any) => {
-              if (detail.expanded) {
-                return setExpandedItems(prev => [...prev, detail.id]);
-              } else {
-                return setExpandedItems(prev => prev.filter(id => id !== detail.id));
-              }
-            }}
-            expandedItems={expandedItems}
-          />
-        </Container>
-      </div>
+      <Box padding="xl">
+        <div style={{ width: '60%' }}>
+          <Container>
+            <Treeview
+              items={items}
+              onExpandableItemToggle={({ detail }: any) => {
+                if (detail.expanded) {
+                  return setExpandedItems(prev => [...prev, detail.id]);
+                } else {
+                  return setExpandedItems(prev => prev.filter(id => id !== detail.id));
+                }
+              }}
+              expandedItems={expandedItems}
+            />
+          </Container>
+        </div>
 
-      <div style={{ marginTop: '10px' }}>Expanded items: {expandedItems.map(id => `Item ${id}`).join(', ')}</div>
-    </Box>
+        <div style={{ marginTop: '10px' }}>Expanded items: {expandedItems.map(id => `Item ${id}`).join(', ')}</div>
+      </Box>
+    </>
   );
 }

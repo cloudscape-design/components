@@ -35,7 +35,6 @@ const InternalTreeview = ({
             position={getItemPosition(index, items.length)}
             expandedItems={expandedItems}
             isExpanded={expandedItems.includes(item.id)}
-            isExpandable={item.items && item.items.length > 0}
             onExpandableItemToggle={onExpandableItemToggle}
           />
         ))}
