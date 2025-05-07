@@ -23,6 +23,7 @@ export interface DesktopDrawerProps {
     closeLabel: string | undefined;
     openLabel: string | undefined;
     resizeHandle?: string;
+    resizeHandleTooltipText?: string;
   };
   children: React.ReactNode;
   hideOpenButton?: boolean;

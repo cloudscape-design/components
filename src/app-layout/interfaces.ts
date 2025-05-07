@@ -317,6 +317,7 @@ export namespace AppLayoutProps {
     closeButton?: string;
     triggerButton?: string;
     resizeHandle?: string;
+    resizeHandleTooltipText?: string;
     expandedModeButton?: string;
   }
 

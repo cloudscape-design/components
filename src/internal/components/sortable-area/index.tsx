@@ -7,7 +7,8 @@ import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } 
 import { CSS } from '@dnd-kit/utilities';
 import clsx from 'clsx';
 
-import Portal from '../../components/portal';
+import { Portal } from '@cloudscape-design/component-toolkit/internal';
+
 import { fireNonCancelableEvent } from '../../events';
 import { joinStrings } from '../../utils/strings';
 import { SortableAreaProps } from './interfaces';

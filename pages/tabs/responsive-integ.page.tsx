@@ -134,6 +134,19 @@ export default function TabsDemoPage() {
         </>
       ),
     },
+    {
+      label: 'Forth tab',
+      id: 'forth',
+      dismissible: true,
+      dismissLabel: 'Dismiss forth tab',
+      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.filter(tab => tab.id !== 'forth')),
+      content: (
+        <>
+          Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Stet clita kasd gubergren,
+          no sea takimata sanctus est Lorem ipsum dolor sit amet.,
+        </>
+      ),
+    },
   ]);
 
   const extraTab: TabsProps.Tab = {
@@ -160,6 +173,7 @@ export default function TabsDemoPage() {
       <input type="text" id="before" aria-label="before" />
       <form action="/">
         <Tabs
+          id="responsive-tabs"
           ariaLabel="General Tabs"
           tabs={tabs}
           activeTabId={selectedTab}

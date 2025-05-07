@@ -536,6 +536,7 @@ const ClassicAppLayout = React.forwardRef(
                 closeLabel: activeDrawer?.ariaLabels?.closeButton,
                 mainLabel: activeDrawer?.ariaLabels?.drawerName,
                 resizeHandle: activeDrawer?.ariaLabels?.resizeHandle,
+                resizeHandleTooltipText: activeDrawer?.ariaLabels?.resizeHandleTooltipText,
               }}
               minWidth={minDrawerSize}
               maxWidth={drawerMaxSize}

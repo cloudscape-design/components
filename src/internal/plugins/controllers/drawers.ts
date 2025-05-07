@@ -23,6 +23,7 @@ export interface DrawerConfig {
     closeButton?: string;
     triggerButton?: string;
     resizeHandle?: string;
+    resizeHandleTooltipText?: string;
   };
   isExpandable?: boolean;
   badge?: boolean;

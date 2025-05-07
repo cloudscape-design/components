@@ -124,8 +124,10 @@ function AppLayoutGlobalDrawerImplementation({
                   position="side"
                   className={testutilStyles['drawers-slider']}
                   ariaLabel={activeGlobalDrawer?.ariaLabels?.resizeHandle}
+                  tooltipText={activeGlobalDrawer?.ariaLabels?.resizeHandleTooltipText}
                   ariaValuenow={resizeProps.relativeSize}
                   onKeyDown={resizeProps.onKeyDown}
+                  onDirectionClick={resizeProps.onDirectionClick}
                   onPointerDown={resizeProps.onPointerDown}
                 />
               </div>

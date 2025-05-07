@@ -36,8 +36,4 @@ export namespace DragHandleProps {
     valueMax: number;
     valueNow: number;
   }
-
-  export interface Ref {
-    focus(options?: FocusOptions): void;
-  }
 }
