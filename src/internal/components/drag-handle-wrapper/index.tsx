@@ -25,11 +25,13 @@ export default function DragHandleWrapper({
   tooltipText,
   children,
   onDirectionClick,
+  interactionMode = 'focus',
+  showButtons: showButtonsOnRender = false,
 }: DragHandleWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const dragHandleRef = useRef<HTMLDivElement | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [showButtons, setShowButtons] = useState(false);
+  const [showButtons, setShowButtons] = useState(showButtonsOnRender);
 
   const isPointerDown = useRef(false);
   const initialPointerPosition = useRef<{ x: number; y: number } | undefined>();
@@ -49,7 +51,9 @@ export default function DragHandleWrapper({
     // if the action that triggered the focus move was the result of a keypress.
     if (document.body.dataset.awsuiFocusVisible && !nodeContains(wrapperRef.current, event.relatedTarget)) {
       setShowTooltip(false);
-      setShowButtons(true);
+      if (interactionMode === 'focus') {
+        setShowButtons(true);
+      }
     }
   };
 
@@ -151,6 +155,9 @@ export default function DragHandleWrapper({
     // the floating controls.
     if (event.key === 'Escape') {
       setShowButtons(false);
+    } else if (interactionMode === 'keyboard' && event.key === 'Enter') {
+      // toggle buttons when Enter is pressed in keyboard mode
+      setShowButtons(prevShowButtons => !prevShowButtons);
     } else if (event.key !== 'Alt' && event.key !== 'Control' && event.key !== 'Meta' && event.key !== 'Shift') {
       // Pressing any other key will display the focus-visible ring around the
       // drag handle if it's in focus, so we should also show the buttons now.
