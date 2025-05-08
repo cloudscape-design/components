@@ -3,10 +3,13 @@
 
 export type Direction = 'block-start' | 'block-end' | 'inline-start' | 'inline-end';
 export type DirectionState = 'active' | 'disabled';
+export type InteractionMode = 'focus' | 'keyboard';
 
 export interface DragHandleWrapperProps {
   directions: Partial<Record<Direction, DirectionState>>;
   onDirectionClick?: (direction: Direction) => void;
   tooltipText?: string;
   children: React.ReactNode;
+  interactionMode?: InteractionMode;
+  showButtons?: boolean;
 }
