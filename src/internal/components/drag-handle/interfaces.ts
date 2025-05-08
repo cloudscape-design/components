@@ -1,9 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { MutableRefObject, RefObject } from 'react';
+
 import {
   Direction as WrapperDirection,
   DirectionState as WrapperDirectionState,
+  InteractionMode as WrapperInteractionMode,
 } from '../drag-handle-wrapper/interfaces';
 
 export interface DragHandleProps {
@@ -21,6 +24,10 @@ export interface DragHandleProps {
   tooltipText?: string;
   directions?: Partial<Record<DragHandleProps.Direction, DragHandleProps.DirectionState>>;
   onDirectionClick?: (direction: DragHandleProps.Direction) => void;
+  interactionMode?: WrapperInteractionMode;
+  dragHandleWrapperRef?: MutableRefObject<HTMLDivElement> | null;
+  dragHandleButtonRef?: RefObject<HTMLDivElement> | null;
+  showButtons?: boolean;
 }
 
 export namespace DragHandleProps {
