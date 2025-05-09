@@ -25,6 +25,22 @@ test('renders header if it is provided', () => {
   expect(wrapper.findContent()!.getElement()).toHaveTextContent('there is a header above');
 });
 
+test('renders header actions if it is provided', () => {
+  const wrapper = renderDrawer(
+    <Drawer header="Bla bla" headerActions={<div>Header actions</div>}>
+      there is a header above
+    </Drawer>
+  );
+  expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Bla bla');
+  expect(wrapper.findHeaderActions()!.getElement()).toHaveTextContent('Header actions');
+  expect(wrapper.findContent()!.getElement()).toHaveTextContent('there is a header above');
+});
+
+test('does not render header actions if header is not provided', () => {
+  const wrapper = renderDrawer(<Drawer headerActions={<div>Header actions</div>}>there is a header above</Drawer>);
+  expect(wrapper.findHeaderActions()).toBeFalsy();
+});
+
 test('renders loading state', () => {
   const { container } = render(<Drawer loading={true} i18nStrings={{ loadingText: 'Loading content' }} />);
   expect(createWrapper(container).findStatusIndicator()!.getElement()).toHaveTextContent('Loading content');
