@@ -1444,16 +1444,33 @@ describe('toolbar mode only features', () => {
     });
 
     describe('runtime drawer context hook', () => {
+      const DrawerContent = () => {
+        const ref = useRef<HTMLDivElement>(null);
+        const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: ref });
+        return (
+          <div ref={ref}>
+            DrawerContent id: {runtimeDrawerContext?.id} resizable: {runtimeDrawerContext?.resizable ? 'true' : 'false'}
+          </div>
+        );
+      };
+      test('does not pass runtime context if rendered within a normal drawer', async () => {
+        const { wrapper } = await renderComponent(
+          <AppLayout
+            drawers={[
+              {
+                ...testDrawer,
+                id: 'test',
+                content: <DrawerContent />,
+              },
+            ]}
+          />
+        );
+
+        wrapper.findDrawerTriggerById('test')!.click();
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('DrawerContent id: resizable: false');
+      });
+
       test('passes runtime drawer context via the hook', async () => {
-        const DrawerContent = () => {
-          const ref = useRef<HTMLDivElement>(null);
-          const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: ref });
-          return (
-            <div ref={ref}>
-              DrawerContent {runtimeDrawerContext?.id} resizable: {runtimeDrawerContext?.resizable ? 'true' : 'false'}
-            </div>
-          );
-        };
         awsuiPlugins.appLayout.registerDrawer({
           id: 'test',
           ariaLabels: {},
@@ -1470,7 +1487,7 @@ describe('toolbar mode only features', () => {
 
         wrapper.findDrawerTriggerById('test')!.click();
         expect(globalDrawersWrapper.findDrawerById('test')!.getElement()).toHaveTextContent(
-          'DrawerContent test resizable: false'
+          'DrawerContent id: test resizable: false'
         );
 
         awsuiPlugins.appLayout.updateDrawer({
@@ -1481,7 +1498,7 @@ describe('toolbar mode only features', () => {
         await delay();
 
         expect(globalDrawersWrapper.findDrawerById('test')!.getElement()).toHaveTextContent(
-          'DrawerContent test resizable: true'
+          'DrawerContent id: test resizable: true'
         );
       });
     });
