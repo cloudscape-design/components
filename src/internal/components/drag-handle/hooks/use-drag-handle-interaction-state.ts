@@ -13,22 +13,27 @@ import type {
 
 export { UseDragHandleInteractionStateProps };
 
-const initialState: DragHandleInteractionState = {
-  state: null,
-};
+function getInitialState<T>(): DragHandleInteractionState<T> {
+  return {
+    state: null,
+  };
+}
 
-export function isIdle(state: DragHandleInteractionState): boolean {
+export function isIdle<T = void>(state: DragHandleInteractionState<T>): boolean {
   return state.state === null;
 }
 
-export function isDndState(state: DragHandleInteractionState): boolean {
+export function isDndState<T = void>(state: DragHandleInteractionState<T>): boolean {
   return state.state === 'dnd-start' || state.state === 'dnd-active' || state.state === 'dnd-end';
 }
 
-export function calculateNextState(state: DragHandleInteractionState, action: Action): DragHandleInteractionState {
+export function calculateNextState<T = void>(
+  state: DragHandleInteractionState<T>,
+  action: Action<T>
+): DragHandleInteractionState<T> {
   switch (action.type) {
     case 'POINTER_DOWN': {
-      const { button, nativeEvent } = action.payload;
+      const { button, nativeEvent, metadata } = action.payload;
       if (button !== 0) {
         return state;
       }
@@ -36,6 +41,7 @@ export function calculateNextState(state: DragHandleInteractionState, action: Ac
       return {
         state: 'dnd-start',
         eventData: nativeEvent,
+        metadata,
       };
     }
 
@@ -57,6 +63,7 @@ export function calculateNextState(state: DragHandleInteractionState, action: Ac
         if (dndSubStateBeforeUp === 'dnd-start') {
           return {
             state: 'keyboard-start',
+            metadata: state.metadata, // Preserve metadata when transitioning from dnd-start to keyboard-start
           };
         } else {
           return {
@@ -69,12 +76,13 @@ export function calculateNextState(state: DragHandleInteractionState, action: Ac
     }
 
     case 'KEY_DOWN': {
-      const { key } = action.payload;
+      const { key, metadata } = action.payload;
 
       if (key === 'Enter') {
         if (isIdle(state) || state.state === 'keyboard-end' || state.state === 'dnd-end') {
           return {
             state: 'keyboard-start',
+            metadata,
           };
         } else if (state.state === 'keyboard-start') {
           return {
@@ -83,6 +91,7 @@ export function calculateNextState(state: DragHandleInteractionState, action: Ac
         } else if (state.state === 'dnd-start' || state.state === 'dnd-active') {
           return {
             state: 'keyboard-start',
+            metadata,
           };
         }
       } else if (key === 'Escape') {
@@ -108,7 +117,7 @@ export function calculateNextState(state: DragHandleInteractionState, action: Ac
 
     case 'RESET_TO_IDLE':
       if (state.state === 'keyboard-end' || state.state === 'dnd-end' || isIdle(state)) {
-        return initialState;
+        return getInitialState<T>();
       }
       return state;
 
@@ -117,11 +126,11 @@ export function calculateNextState(state: DragHandleInteractionState, action: Ac
   }
 }
 
-export function getCallbacksForTransition(
-  prevState: DragHandleInteractionState,
-  nextState: DragHandleInteractionState
-): CallbackType[] {
-  const callbacks: CallbackType[] = [];
+export function getCallbacksForTransition<T = void>(
+  prevState: DragHandleInteractionState<T>,
+  nextState: DragHandleInteractionState<T>
+): CallbackType<T>[] {
+  const callbacks: CallbackType<T>[] = [];
 
   // Transitions from dnd-start or dnd-active to any other state
   if (
@@ -132,11 +141,6 @@ export function getCallbacksForTransition(
     callbacks.push({ type: 'onDndEnd' });
   }
 
-  // Transitions to keyboard-start
-  if (nextState.state === 'keyboard-start') {
-    callbacks.push({ type: 'onKeyboardStart' });
-  }
-
   // From keyboard-start to keyboard-end directly
   if (prevState.state === 'keyboard-start' && nextState.state === 'keyboard-end') {
     callbacks.push({ type: 'onKeyboardEnd' });
@@ -144,18 +148,36 @@ export function getCallbacksForTransition(
 
   // Transitions to dnd-start
   if (nextState.state === 'dnd-start') {
-    callbacks.push({ type: 'onDndStart', payload: nextState.eventData! });
+    callbacks.push({
+      type: 'onDndStart',
+      payload: nextState.eventData!,
+      metadata: nextState.metadata,
+    });
   }
 
   // Transitions to dnd-active
-  if (nextState.state === 'dnd-active') {
-    callbacks.push({ type: 'onDndActive', payload: nextState.eventData! });
+  if (nextState.state === 'dnd-active' && prevState.state === 'dnd-start') {
+    callbacks.push({
+      type: 'onDndActive',
+      payload: nextState.eventData!,
+    });
+  }
+
+  // Transitions to keyboard-start
+  if (nextState.state === 'keyboard-start') {
+    callbacks.push({
+      type: 'onKeyboardStart',
+      metadata: nextState.metadata,
+    });
   }
 
   return callbacks;
 }
 
-function interactionReducer(state: DragHandleInteractionState, action: Action): DragHandleInteractionState {
+function interactionReducer<T = void>(
+  state: DragHandleInteractionState<T>,
+  action: Action<T>
+): DragHandleInteractionState<T> {
   if (action.type === 'CLEAR_CALLBACKS') {
     return {
       ...state,
@@ -199,8 +221,8 @@ function interactionReducer(state: DragHandleInteractionState, action: Action): 
 }
 
 // TODO remove after all test have been added
-function useStateLogger(state: DragHandleInteractionState, debug: boolean = false) {
-  const prevStateRef = useRef<DragHandleInteractionState>(state);
+function useStateLogger<T = void>(state: DragHandleInteractionState<T>, debug: boolean = false) {
+  const prevStateRef = useRef<DragHandleInteractionState<T>>(state);
   useEffect(() => {
     if (state.state !== prevStateRef.current.state) {
       console.log(`State transition: ${prevStateRef.current.state} -> ${state.state}`, {
@@ -212,10 +234,10 @@ function useStateLogger(state: DragHandleInteractionState, debug: boolean = fals
   }, [state, debug]);
 }
 
-function useCallbackHandler(
-  pendingCallbacks: CallbackType[] | undefined,
-  props: UseDragHandleInteractionStateProps,
-  dispatch: React.Dispatch<Action>
+function useCallbackHandler<T = void>(
+  pendingCallbacks: CallbackType<T>[] | undefined,
+  props: UseDragHandleInteractionStateProps<T>,
+  dispatch: React.Dispatch<Action<T>>
 ) {
   useEffect(() => {
     if (!pendingCallbacks?.length) {
@@ -224,7 +246,7 @@ function useCallbackHandler(
     pendingCallbacks.forEach(callback => {
       switch (callback.type) {
         case 'onDndStart':
-          props.onDndStartAction?.(callback.payload);
+          props.onDndStartAction?.(callback.payload, callback.metadata);
           break;
         case 'onDndActive':
           props.onDndActiveAction?.(callback.payload);
@@ -233,7 +255,7 @@ function useCallbackHandler(
           props.onDndEndAction?.();
           break;
         case 'onKeyboardStart':
-          props.onKeyboardStartAction?.();
+          props.onKeyboardStartAction?.(callback.metadata);
           break;
         case 'onKeyboardEnd':
           props.onKeyboardEndAction?.();
@@ -245,12 +267,12 @@ function useCallbackHandler(
   }, [pendingCallbacks, props, dispatch]);
 }
 
-function useEventHandlers(dispatch: React.Dispatch<Action>) {
+function useEventHandlers<T = void>(dispatch: React.Dispatch<Action<T>>) {
   const processPointerDown = useCallback(
-    (event: PointerEvent) => {
+    (event: PointerEvent, metadata?: T) => {
       dispatch({
         type: 'POINTER_DOWN',
-        payload: { button: event.button, nativeEvent: event },
+        payload: { button: event.button, nativeEvent: event, metadata },
       });
     },
     [dispatch]
@@ -277,12 +299,12 @@ function useEventHandlers(dispatch: React.Dispatch<Action>) {
   );
 
   const processKeyDown = useCallback(
-    (event: React.KeyboardEvent<Element>) => {
+    (event: React.KeyboardEvent<Element>, metadata?: T) => {
       const key = event.key;
       if (key === 'Enter' || key === 'Escape') {
         dispatch({
           type: 'KEY_DOWN',
-          payload: { key },
+          payload: { key, metadata },
         });
       }
     },
@@ -307,14 +329,14 @@ function useEventHandlers(dispatch: React.Dispatch<Action>) {
   };
 }
 
-export const useDragHandleInteractionState = (
-  props: UseDragHandleInteractionStateProps = {},
+export function useDragHandleInteractionState<T = void>(
+  props: UseDragHandleInteractionStateProps<T> = {},
   options: { debug?: boolean } = {}
-) => {
-  const propsRef = useRef<UseDragHandleInteractionStateProps>(props);
+) {
+  const propsRef = useRef<UseDragHandleInteractionStateProps<T>>(props);
   propsRef.current = props;
 
-  const [interaction, dispatch] = useReducer(interactionReducer, initialState);
+  const [interaction, dispatch] = useReducer(interactionReducer<T>, { state: null } as DragHandleInteractionState<T>);
   const debugEnabled = options.debug || false;
   useStateLogger(interaction, debugEnabled);
   useCallbackHandler(interaction.pendingCallbacks, propsRef.current, dispatch);
@@ -323,4 +345,4 @@ export const useDragHandleInteractionState = (
     interaction,
     ...eventHandlers,
   };
-};
+}
