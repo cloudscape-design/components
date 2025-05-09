@@ -131,8 +131,8 @@ describe('Drag Handle Hooks', () => {
         expect(isIdle({ state: 'dnd-start' })).toBe(false);
         expect(isIdle({ state: 'dnd-active' })).toBe(false);
         expect(isIdle({ state: 'dnd-end' })).toBe(false);
-        expect(isIdle({ state: 'keyboard-start' })).toBe(false);
-        expect(isIdle({ state: 'keyboard-end' })).toBe(false);
+        expect(isIdle({ state: 'uap-action-start' })).toBe(false);
+        expect(isIdle({ state: 'uap-action-end' })).toBe(false);
       });
     });
 
@@ -145,8 +145,8 @@ describe('Drag Handle Hooks', () => {
 
       it('should return false for non-dnd states', () => {
         expect(isDndState({ state: null })).toBe(false);
-        expect(isDndState({ state: 'keyboard-start' })).toBe(false);
-        expect(isDndState({ state: 'keyboard-end' })).toBe(false);
+        expect(isDndState({ state: 'uap-action-start' })).toBe(false);
+        expect(isDndState({ state: 'uap-action-end' })).toBe(false);
       });
     });
 
@@ -208,7 +208,7 @@ describe('Drag Handle Hooks', () => {
         expect(nextState.eventData).toBe(moveEvent);
       });
 
-      it('should transition from dnd-start to keyboard-start on POINTER_UP', () => {
+      it('should transition from dnd-start to uap-action-start on POINTER_UP', () => {
         const state: DragHandleInteractionState = {
           state: 'dnd-start',
           eventData: mockPointerEvent,
@@ -219,7 +219,7 @@ describe('Drag Handle Hooks', () => {
         };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('keyboard-start');
+        expect(nextState.state).toBe('uap-action-start');
         expect(nextState.eventData).toBeUndefined();
       });
 
@@ -238,7 +238,7 @@ describe('Drag Handle Hooks', () => {
         expect(nextState.eventData).toBe(mockPointerEvent);
       });
 
-      it('should transition to keyboard-start on Enter key press from idle', () => {
+      it('should transition to uap-action-start on Enter key press from idle', () => {
         const state: DragHandleInteractionState = { state: null };
         const action: Action = {
           type: 'KEY_DOWN',
@@ -246,41 +246,41 @@ describe('Drag Handle Hooks', () => {
         };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('keyboard-start');
+        expect(nextState.state).toBe('uap-action-start');
       });
 
-      it('should transition from keyboard-start to keyboard-end on Enter key press', () => {
-        const state: DragHandleInteractionState = { state: 'keyboard-start' };
+      it('should transition from uap-action-start to uap-action-end on Enter key press', () => {
+        const state: DragHandleInteractionState = { state: 'uap-action-start' };
         const action: Action = {
           type: 'KEY_DOWN',
           payload: { key: 'Enter' },
         };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('keyboard-end');
+        expect(nextState.state).toBe('uap-action-end');
       });
 
-      it('should transition from keyboard-start to keyboard-end on Escape key press', () => {
-        const state: DragHandleInteractionState = { state: 'keyboard-start' };
+      it('should transition from uap-action-start to uap-action-end on Escape key press', () => {
+        const state: DragHandleInteractionState = { state: 'uap-action-start' };
         const action: Action = {
           type: 'KEY_DOWN',
           payload: { key: 'Escape' },
         };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('keyboard-end');
+        expect(nextState.state).toBe('uap-action-end');
       });
 
-      it('should transition from keyboard-start to keyboard-end on BLUR', () => {
-        const state: DragHandleInteractionState = { state: 'keyboard-start' };
+      it('should transition from uap-action-start to uap-action-end on BLUR', () => {
+        const state: DragHandleInteractionState = { state: 'uap-action-start' };
         const action: Action = { type: 'BLUR' };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('keyboard-end');
+        expect(nextState.state).toBe('uap-action-end');
       });
 
-      it('should reset to idle on RESET_TO_IDLE from keyboard-end', () => {
-        const state: DragHandleInteractionState = { state: 'keyboard-end' };
+      it('should reset to idle on RESET_TO_IDLE from uap-action-end', () => {
+        const state: DragHandleInteractionState = { state: 'uap-action-end' };
         const action: Action = { type: 'RESET_TO_IDLE' };
 
         const nextState = calculateNextState(state, action);
@@ -298,12 +298,12 @@ describe('Drag Handle Hooks', () => {
       it('should not reset to idle on RESET_TO_IDLE from active states', () => {
         const dndStartState: DragHandleInteractionState = { state: 'dnd-start' };
         const dndActiveState: DragHandleInteractionState = { state: 'dnd-active' };
-        const keyboardStartState: DragHandleInteractionState = { state: 'keyboard-start' };
+        const uapActionStartState: DragHandleInteractionState = { state: 'uap-action-start' };
         const action: Action = { type: 'RESET_TO_IDLE' };
 
         expect(calculateNextState(dndStartState, action)).toBe(dndStartState);
         expect(calculateNextState(dndActiveState, action)).toBe(dndActiveState);
-        expect(calculateNextState(keyboardStartState, action)).toBe(keyboardStartState);
+        expect(calculateNextState(uapActionStartState, action)).toBe(uapActionStartState);
       });
 
       it('should reset to idle on RESET_TO_IDLE from idle state', () => {
@@ -315,7 +315,7 @@ describe('Drag Handle Hooks', () => {
       });
 
       it('should return state on FOCUS action', () => {
-        const state: DragHandleInteractionState = { state: 'keyboard-start' };
+        const state: DragHandleInteractionState = { state: 'uap-action-start' };
         const action: Action = { type: 'FOCUS' };
 
         const nextState = calculateNextState(state, action);
@@ -331,14 +331,14 @@ describe('Drag Handle Hooks', () => {
       });
 
       it('should return state on unknown action type', () => {
-        const state: DragHandleInteractionState = { state: 'keyboard-start' };
+        const state: DragHandleInteractionState = { state: 'uap-action-start' };
         const action: Action = { type: 'UNKNOWN' as any };
 
         const nextState = calculateNextState(state, action);
         expect(nextState).toBe(state);
       });
 
-      it('should transition from dnd-start to keyboard-start on Enter key press', () => {
+      it('should transition from dnd-start to uap-action-start on Enter key press', () => {
         const state: DragHandleInteractionState = { state: 'dnd-start' };
         const action: Action = {
           type: 'KEY_DOWN',
@@ -346,10 +346,10 @@ describe('Drag Handle Hooks', () => {
         };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('keyboard-start');
+        expect(nextState.state).toBe('uap-action-start');
       });
 
-      it('should transition from dnd-active to keyboard-start on Enter key press', () => {
+      it('should transition from dnd-active to uap-action-start on Enter key press', () => {
         const state: DragHandleInteractionState = { state: 'dnd-active' };
         const action: Action = {
           type: 'KEY_DOWN',
@@ -357,7 +357,7 @@ describe('Drag Handle Hooks', () => {
         };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('keyboard-start');
+        expect(nextState.state).toBe('uap-action-start');
       });
     });
 
@@ -412,22 +412,22 @@ describe('Drag Handle Hooks', () => {
         expect(callbacks[0]).toEqual({ type: 'onDndEnd' });
       });
 
-      it('should generate onKeyboardStart callback for transition to keyboard-start', () => {
+      it('should generate onUapActionStart callback for transition to uap-action-start', () => {
         const prevState: DragHandleInteractionState = { state: null };
-        const nextState: DragHandleInteractionState = { state: 'keyboard-start' };
+        const nextState: DragHandleInteractionState = { state: 'uap-action-start' };
 
         const callbacks = getCallbacksForTransition(prevState, nextState);
         expect(callbacks).toHaveLength(1);
-        expect(callbacks[0]).toEqual({ type: 'onKeyboardStart' });
+        expect(callbacks[0]).toEqual({ type: 'onUapActionStart' });
       });
 
-      it('should generate onKeyboardEnd callback for transition from keyboard-start to keyboard-end', () => {
-        const prevState: DragHandleInteractionState = { state: 'keyboard-start' };
-        const nextState: DragHandleInteractionState = { state: 'keyboard-end' };
+      it('should generate onUapActionEnd callback for transition from uap-action-start to uap-action-end', () => {
+        const prevState: DragHandleInteractionState = { state: 'uap-action-start' };
+        const nextState: DragHandleInteractionState = { state: 'uap-action-end' };
 
         const callbacks = getCallbacksForTransition(prevState, nextState);
         expect(callbacks).toHaveLength(1);
-        expect(callbacks[0]).toEqual({ type: 'onKeyboardEnd' });
+        expect(callbacks[0]).toEqual({ type: 'onUapActionEnd' });
       });
 
       it('should generate multiple callbacks for complex transitions', () => {
@@ -435,12 +435,12 @@ describe('Drag Handle Hooks', () => {
           state: 'dnd-start',
           eventData: mockPointerEvent,
         };
-        const nextState: DragHandleInteractionState = { state: 'keyboard-start' };
+        const nextState: DragHandleInteractionState = { state: 'uap-action-start' };
 
         const callbacks = getCallbacksForTransition(prevState, nextState);
         expect(callbacks).toHaveLength(2);
         expect(callbacks).toContainEqual({ type: 'onDndEnd' });
-        expect(callbacks).toContainEqual({ type: 'onKeyboardStart' });
+        expect(callbacks).toContainEqual({ type: 'onUapActionStart' });
       });
     });
   });
@@ -509,7 +509,7 @@ describe('Drag Handle Hooks', () => {
           });
         });
 
-        expect(ref.current?.interaction.state).toBe('keyboard-start');
+        expect(ref.current?.interaction.state).toBe('uap-action-start');
       });
 
       it('should handle pointer up event after pointer move', () => {
@@ -547,43 +547,43 @@ describe('Drag Handle Hooks', () => {
 
         fireEvent.keyDown(element, { key: 'Enter' });
 
-        expect(ref.current?.interaction.state).toBe('keyboard-start');
+        expect(ref.current?.interaction.state).toBe('uap-action-start');
       });
 
-      it('should handle Enter key press in keyboard-start state', () => {
+      it('should handle Enter key press in uap-action-start state', () => {
         const ref = React.createRef<TestComponentRef>();
         const { getByTestId } = render(<TestComponent ref={ref} />);
         const element = getByTestId('drag-handle');
 
         fireEvent.keyDown(element, { key: 'Enter' });
-        expect(ref.current?.interaction.state).toBe('keyboard-start');
+        expect(ref.current?.interaction.state).toBe('uap-action-start');
 
         fireEvent.keyDown(element, { key: 'Enter' });
-        expect(ref.current?.interaction.state).toBe('keyboard-end');
+        expect(ref.current?.interaction.state).toBe('uap-action-end');
       });
 
-      it('should handle Escape key press in keyboard-start state', () => {
+      it('should handle Escape key press in uap-action-start state', () => {
         const ref = React.createRef<TestComponentRef>();
         const { getByTestId } = render(<TestComponent ref={ref} />);
         const element = getByTestId('drag-handle');
 
         fireEvent.keyDown(element, { key: 'Enter' });
-        expect(ref.current?.interaction.state).toBe('keyboard-start');
+        expect(ref.current?.interaction.state).toBe('uap-action-start');
 
         fireEvent.keyDown(element, { key: 'Escape' });
-        expect(ref.current?.interaction.state).toBe('keyboard-end');
+        expect(ref.current?.interaction.state).toBe('uap-action-end');
       });
 
-      it('should handle blur event in keyboard-start state', () => {
+      it('should handle blur event in uap-action-start state', () => {
         const ref = React.createRef<TestComponentRef>();
         const { getByTestId } = render(<TestComponent ref={ref} />);
         const element = getByTestId('drag-handle');
 
         fireEvent.keyDown(element, { key: 'Enter' });
-        expect(ref.current?.interaction.state).toBe('keyboard-start');
+        expect(ref.current?.interaction.state).toBe('uap-action-start');
 
         fireEvent.blur(element);
-        expect(ref.current?.interaction.state).toBe('keyboard-end');
+        expect(ref.current?.interaction.state).toBe('uap-action-end');
       });
 
       it('should handle focus event', () => {
@@ -702,27 +702,27 @@ describe('Drag Handle Hooks', () => {
         expect(onDndEndAction).toHaveBeenCalledTimes(1);
       });
 
-      it('should call onKeyboardStartAction on keyboard-start', () => {
-        const onKeyboardStartAction = jest.fn();
+      it('should call onUapActionStartAction on uap-action-start', () => {
+        const onUapActionStartAction = jest.fn();
         const ref = React.createRef<TestComponentRef>();
-        const { getByTestId } = render(<TestComponent ref={ref} onKeyboardStartAction={onKeyboardStartAction} />);
+        const { getByTestId } = render(<TestComponent ref={ref} onUapActionStartAction={onUapActionStartAction} />);
         const element = getByTestId('drag-handle');
 
         fireEvent.keyDown(element, { key: 'Enter' });
 
-        expect(onKeyboardStartAction).toHaveBeenCalledTimes(1);
-        expect(onKeyboardStartAction).toHaveBeenCalledWith(undefined);
+        expect(onUapActionStartAction).toHaveBeenCalledTimes(1);
+        expect(onUapActionStartAction).toHaveBeenCalledWith(undefined);
       });
 
-      it('should pass metadata to onKeyboardStartAction when transitioning from dnd-start', () => {
+      it('should pass metadata to onUapActionStartAction when transitioning from dnd-start', () => {
         interface TestMetadata {
           id: string;
         }
 
         const TestComponentWithMetadata = React.forwardRef(
-          (props: { onKeyboardStartAction?: (metadata?: TestMetadata) => void }, ref: React.Ref<any>) => {
+          (props: { onUapActionStartAction?: (metadata?: TestMetadata) => void }, ref: React.Ref<any>) => {
             const { processPointerDown, processPointerUp } = useDragHandleInteractionState<TestMetadata>({
-              onKeyboardStartAction: props.onKeyboardStartAction,
+              onUapActionStartAction: props.onUapActionStartAction,
             });
             useImperativeHandle(ref, () => ({
               processPointerDown,
@@ -732,13 +732,13 @@ describe('Drag Handle Hooks', () => {
           }
         );
 
-        const onKeyboardStartAction = jest.fn();
+        const onUapActionStartAction = jest.fn();
         const ref = React.createRef<{
           processPointerDown: (event: PointerEvent, metadata?: TestMetadata) => void;
           processPointerUp: (event: PointerEvent) => void;
         }>();
 
-        render(<TestComponentWithMetadata ref={ref} onKeyboardStartAction={onKeyboardStartAction} />);
+        render(<TestComponentWithMetadata ref={ref} onUapActionStartAction={onUapActionStartAction} />);
         const metadata: TestMetadata = { id: 'test-metadata' };
 
         act(() => {
@@ -746,26 +746,26 @@ describe('Drag Handle Hooks', () => {
           ref.current?.processPointerUp(createPointerEvent('pointerup'));
         });
 
-        expect(onKeyboardStartAction).toHaveBeenCalledTimes(1);
-        expect(onKeyboardStartAction).toHaveBeenCalledWith(metadata);
+        expect(onUapActionStartAction).toHaveBeenCalledTimes(1);
+        expect(onUapActionStartAction).toHaveBeenCalledWith(metadata);
       });
 
-      it('should call onKeyboardEndAction on keyboard-end', () => {
-        const onKeyboardEndAction = jest.fn();
+      it('should call onUapActionEndAction on uap-action-end', () => {
+        const onUapActionEndAction = jest.fn();
         const ref = React.createRef<TestComponentRef>();
-        const { getByTestId } = render(<TestComponent ref={ref} onKeyboardEndAction={onKeyboardEndAction} />);
+        const { getByTestId } = render(<TestComponent ref={ref} onUapActionEndAction={onUapActionEndAction} />);
         const element = getByTestId('drag-handle');
 
         fireEvent.keyDown(element, { key: 'Enter' });
         fireEvent.keyDown(element, { key: 'Enter' });
 
-        expect(onKeyboardEndAction).toHaveBeenCalledTimes(1);
+        expect(onUapActionEndAction).toHaveBeenCalledTimes(1);
       });
 
       it('should call multiple callbacks for complex transitions', () => {
         const onDndStartAction = jest.fn();
         const onDndEndAction = jest.fn();
-        const onKeyboardStartAction = jest.fn();
+        const onUapActionStartAction = jest.fn();
         const ref = React.createRef<TestComponentRef>();
 
         render(
@@ -773,11 +773,11 @@ describe('Drag Handle Hooks', () => {
             ref={ref}
             onDndStartAction={onDndStartAction}
             onDndEndAction={onDndEndAction}
-            onKeyboardStartAction={onKeyboardStartAction}
+            onUapActionStartAction={onUapActionStartAction}
           />
         );
 
-        // dnd-start -> keyboard-start transition
+        // dnd-start -> uap-action-start transition
         act(() => {
           ref.current?.dispatchAction({
             type: 'POINTER_DOWN',
@@ -794,7 +794,7 @@ describe('Drag Handle Hooks', () => {
 
         expect(onDndStartAction).toHaveBeenCalledTimes(1);
         expect(onDndEndAction).toHaveBeenCalledTimes(1);
-        expect(onKeyboardStartAction).toHaveBeenCalledTimes(1);
+        expect(onUapActionStartAction).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -840,7 +840,7 @@ describe('Drag Handle Hooks', () => {
       });
 
       it('should handle RESET_TO_IDLE action directly', () => {
-        const state: DragHandleInteractionState = { state: 'keyboard-end' };
+        const state: DragHandleInteractionState = { state: 'uap-action-end' };
         const action: Action = { type: 'RESET_TO_IDLE' };
         const nextState = calculateNextState(state, action);
         expect(nextState.state).toBeNull();

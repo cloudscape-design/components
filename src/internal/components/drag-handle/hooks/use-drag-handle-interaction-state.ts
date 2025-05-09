@@ -62,8 +62,8 @@ export function calculateNextState<T = void>(
         const dndSubStateBeforeUp = state.state;
         if (dndSubStateBeforeUp === 'dnd-start') {
           return {
-            state: 'keyboard-start',
-            metadata: state.metadata, // Preserve metadata when transitioning from dnd-start to keyboard-start
+            state: 'uap-action-start',
+            metadata: state.metadata, // Preserve metadata when transitioning from dnd-start to uap-action-start
           };
         } else {
           return {
@@ -79,25 +79,25 @@ export function calculateNextState<T = void>(
       const { key, metadata } = action.payload;
 
       if (key === 'Enter') {
-        if (isIdle(state) || state.state === 'keyboard-end' || state.state === 'dnd-end') {
+        if (isIdle(state) || state.state === 'uap-action-end' || state.state === 'dnd-end') {
           return {
-            state: 'keyboard-start',
+            state: 'uap-action-start',
             metadata,
           };
-        } else if (state.state === 'keyboard-start') {
+        } else if (state.state === 'uap-action-start') {
           return {
-            state: 'keyboard-end',
+            state: 'uap-action-end',
           };
         } else if (state.state === 'dnd-start' || state.state === 'dnd-active') {
           return {
-            state: 'keyboard-start',
+            state: 'uap-action-start',
             metadata,
           };
         }
       } else if (key === 'Escape') {
-        if (state.state === 'keyboard-start') {
+        if (state.state === 'uap-action-start') {
           return {
-            state: 'keyboard-end',
+            state: 'uap-action-end',
           };
         }
       }
@@ -108,15 +108,15 @@ export function calculateNextState<T = void>(
       return state;
 
     case 'BLUR':
-      if (state.state === 'keyboard-start') {
+      if (state.state === 'uap-action-start') {
         return {
-          state: 'keyboard-end',
+          state: 'uap-action-end',
         };
       }
       return state;
 
     case 'RESET_TO_IDLE':
-      if (state.state === 'keyboard-end' || state.state === 'dnd-end' || isIdle(state)) {
+      if (state.state === 'uap-action-end' || state.state === 'dnd-end' || isIdle(state)) {
         return getInitialState<T>();
       }
       return state;
@@ -141,9 +141,9 @@ export function getCallbacksForTransition<T = void>(
     callbacks.push({ type: 'onDndEnd' });
   }
 
-  // From keyboard-start to keyboard-end directly
-  if (prevState.state === 'keyboard-start' && nextState.state === 'keyboard-end') {
-    callbacks.push({ type: 'onKeyboardEnd' });
+  // From uap-action-start to uap-action-end directly
+  if (prevState.state === 'uap-action-start' && nextState.state === 'uap-action-end') {
+    callbacks.push({ type: 'onUapActionEnd' });
   }
 
   // Transitions to dnd-start
@@ -163,10 +163,10 @@ export function getCallbacksForTransition<T = void>(
     });
   }
 
-  // Transitions to keyboard-start
-  if (nextState.state === 'keyboard-start') {
+  // Transitions to uap-action-start
+  if (nextState.state === 'uap-action-start') {
     callbacks.push({
-      type: 'onKeyboardStart',
+      type: 'onUapActionStart',
       metadata: nextState.metadata,
     });
   }
@@ -254,11 +254,11 @@ function useCallbackHandler<T = void>(
         case 'onDndEnd':
           props.onDndEndAction?.();
           break;
-        case 'onKeyboardStart':
-          props.onKeyboardStartAction?.(callback.metadata);
+        case 'onUapActionStart':
+          props.onUapActionStartAction?.(callback.metadata);
           break;
-        case 'onKeyboardEnd':
-          props.onKeyboardEndAction?.();
+        case 'onUapActionEnd':
+          props.onUapActionEndAction?.();
           break;
       }
     });
