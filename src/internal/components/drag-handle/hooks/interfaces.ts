@@ -1,16 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export type KeyboardInteractionStateValue = 'keyboard-start' | 'keyboard-end';
+export type UapActionInteractionStateValue = 'uap-action-start' | 'uap-action-end';
 export type DndInteractionStateValue = 'dnd-start' | 'dnd-active' | 'dnd-end';
-export type InteractionStateValue = null | KeyboardInteractionStateValue | DndInteractionStateValue;
+export type InteractionStateValue = null | UapActionInteractionStateValue | DndInteractionStateValue;
 
 export type CallbackType<T = void> =
   | { type: 'onDndStart'; payload: PointerEvent; metadata?: T }
   | { type: 'onDndActive'; payload: PointerEvent }
   | { type: 'onDndEnd' }
-  | { type: 'onKeyboardStart'; metadata?: T }
-  | { type: 'onKeyboardEnd' };
+  | { type: 'onUapActionStart'; metadata?: T }
+  | { type: 'onUapActionEnd' };
 
 export interface DragHandleInteractionState<T = void> {
   state: InteractionStateValue;
@@ -23,8 +23,8 @@ export interface UseDragHandleInteractionStateProps<T = void> {
   onDndStartAction?: (event: PointerEvent, metadata?: T) => void;
   onDndActiveAction?: (event: PointerEvent) => void;
   onDndEndAction?: () => void;
-  onKeyboardStartAction?: (metadata?: T) => void;
-  onKeyboardEndAction?: () => void;
+  onUapActionStartAction?: (metadata?: T) => void;
+  onUapActionEndAction?: () => void;
 }
 
 interface PointerDownActionPayload<T = void> {

@@ -26,10 +26,10 @@ const TestBoardItemButton: React.FC = () => {
     onDndEndAction: () => {
       console.log('onDndEndAction triggered');
     },
-    onKeyboardStartAction: metadata => {
+    onUapActionStartAction: metadata => {
       console.log('onKeyboardStartAction triggered', metadata);
     },
-    onKeyboardEndAction: () => {
+    onUapActionEndAction: () => {
       console.log('onKeyboardEndAction triggered');
     },
   };
