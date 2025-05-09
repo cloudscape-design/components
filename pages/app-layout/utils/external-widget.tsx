@@ -157,9 +157,7 @@ awsuiPlugins.appLayout.registerDrawer({
       <Drawer
         header={<h2>Global drawer</h2>}
         headerActions={
-          <div style={{ marginTop: '-5px' }}>
-            <ButtonDropdown items={[{ id: 'settings', text: 'Settings' }]} ariaLabel="Control drawer" variant="icon" />
-          </div>
+          <ButtonDropdown items={[{ id: 'settings', text: 'Settings' }]} ariaLabel="Control drawer" variant="icon" />
         }
       >
         <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>

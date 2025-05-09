@@ -1,18 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { awsuiPluginsInternal } from '../internal/plugins/api';
-import { DrawerConfig } from '../internal/plugins/controllers/drawers';
+import { awsuiPluginsInternal } from '../../internal/plugins/api';
+import { DrawerConfig } from '../../internal/plugins/controllers/drawers';
 
-export const useRuntimeDrawerContext = ({ __internalRootRef }: InternalBaseComponentProps) => {
+export const useRuntimeDrawerContext = ({ rootRef }: { rootRef: RefObject<HTMLElement> }) => {
   const [drawerContext, setDrawerContext] = useState<DrawerConfig | null>(null);
 
   useEffect(() => {
-    // Determine if the drawer is inside a runtime drawer.
+    // Determine if the hook is inside a runtime drawer.
     // There’s no other reliable way to check this, since runtime drawers are separate applications rendered into specific DOM nodes.
-    const drawerId = __internalRootRef?.current?.parentNode?.dataset?.drawerId;
+    const drawerId = (rootRef?.current?.parentNode as HTMLElement)?.dataset?.drawerId;
 
     if (!drawerId) {
       return;
@@ -24,7 +23,7 @@ export const useRuntimeDrawerContext = ({ __internalRootRef }: InternalBaseCompo
     return awsuiPluginsInternal.appLayout.onDrawersUpdated(drawers => {
       setDrawerContext(drawers?.find(drawer => drawer.id === drawerId) ?? null);
     });
-  }, [__internalRootRef]);
+  }, [rootRef]);
 
   return drawerContext;
 };
