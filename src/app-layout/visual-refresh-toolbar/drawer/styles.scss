@@ -139,5 +139,6 @@ $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsu
     block-size: 100%;
     display: flex;
     align-items: center;
+    transform: translateX(-100%);
   }
 }

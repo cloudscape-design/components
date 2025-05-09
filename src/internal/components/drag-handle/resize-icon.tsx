@@ -21,7 +21,7 @@ export function ResizeIcon({ variant }: ResizeIconProps) {
       viewBox="0 0 16 16"
       aria-hidden={true}
     >
-      <path d="M2 10H14" strokeWidth="2" strokeLinecap="round" />
+      <path d="M2 8H14" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
