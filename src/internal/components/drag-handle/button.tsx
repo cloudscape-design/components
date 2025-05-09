@@ -24,7 +24,6 @@ const DragHandleButton = forwardRef(
       disabled,
       onPointerDown,
       onKeyDown,
-      dragHandleButtonRef,
     }: DragHandleProps,
     ref: React.Ref<Element>
   ) => {
@@ -51,7 +50,7 @@ const DragHandleButton = forwardRef(
       // Otherwise, we can't reliably catch keyboard events coming from the handle
       // when it is being dragged.
       <div
-        ref={useMergeRefs(ref, dragHandleRefObject, dragHandleButtonRef)}
+        ref={useMergeRefs(ref, dragHandleRefObject)}
         role={ariaValue ? 'slider' : 'button'}
         tabIndex={0}
         className={clsx(

@@ -25,7 +25,6 @@ const InternalDragHandle = forwardRef(
       onKeyDown,
       onDirectionClick,
       interactionMode,
-      dragHandleButtonRef = null,
       showButtons,
       ...rest
     }: DragHandleProps,
@@ -43,7 +42,6 @@ const InternalDragHandle = forwardRef(
       >
         <DragHandleButton
           ref={ref}
-          dragHandleButtonRef={dragHandleButtonRef}
           className={baseProps.className}
           variant={variant}
           size={size}
