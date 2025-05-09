@@ -155,8 +155,8 @@ export default function DragHandleWrapper({
     // the floating controls.
     if (event.key === 'Escape') {
       setShowButtons(false);
-    } else if (interactionMode === 'keyboard' && event.key === 'Enter') {
-      // toggle buttons when Enter is pressed in keyboard mode
+    } else if (interactionMode === 'controlled' && event.key === 'Enter') {
+      // toggle buttons when Enter is pressed in controlled mode
       setShowButtons(prevShowButtons => !prevShowButtons);
     } else if (event.key !== 'Alt' && event.key !== 'Control' && event.key !== 'Meta' && event.key !== 'Shift') {
       // Pressing any other key will display the focus-visible ring around the
