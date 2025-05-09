@@ -1,19 +1,24 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom'; // Adjust path as needed
+import { createPortal } from 'react-dom';
 
-import InternalDragHandle from '~components/internal/components/drag-handle'; // Adjust path as needed
+import InternalDragHandle from '~components/internal/components/drag-handle';
 import {
   useDragHandleInteractionState,
   UseDragHandleInteractionStateProps,
-} from '~components/internal/components/drag-handle/hooks/use-drag-handle-interaction-state'; // Adjust path as needed
+} from '~components/internal/components/drag-handle/hooks/use-drag-handle-interaction-state';
 
 const TestBoardItemButton: React.FC = () => {
   const [shouldRenderInPortal, setShouldRenderInPortal] = useState(true);
-  const hookProps: UseDragHandleInteractionStateProps = {
-    onDndStartAction: event => {
-      console.log('onDndStartAction triggered', event.clientX, event.clientY);
+
+  interface TestMetadata {
+    operation: 'drag' | 'resize';
+  }
+
+  const hookProps: UseDragHandleInteractionStateProps<TestMetadata> = {
+    onDndStartAction: (event, metadata) => {
+      console.log('onDndStartAction triggered', event.clientX, event.clientY, metadata);
     },
     onDndActiveAction: event => {
       console.log('onDndActiveAction triggered', event.clientX, event.clientY);
@@ -21,15 +26,15 @@ const TestBoardItemButton: React.FC = () => {
     onDndEndAction: () => {
       console.log('onDndEndAction triggered');
     },
-    onKeyboardStartAction: () => {
-      console.log('onKeyboardStartAction triggered');
+    onKeyboardStartAction: metadata => {
+      console.log('onKeyboardStartAction triggered', metadata);
     },
     onKeyboardEndAction: () => {
       console.log('onKeyboardEndAction triggered');
     },
   };
 
-  const hook = useDragHandleInteractionState(hookProps);
+  const hook = useDragHandleInteractionState<TestMetadata>(hookProps);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -50,7 +55,7 @@ const TestBoardItemButton: React.FC = () => {
     const handleWindowPointerDown = (event: PointerEvent) => {
       // Check if the pointerdown event originated from our button
       if (currentButton && currentButton.contains(event.target as Node)) {
-        hook.processPointerDown(event); // event is already native PointerEvent from window listener
+        hook.processPointerDown(event, { operation: 'drag' }); // event is already native PointerEvent from window listener
 
         // If pointerdown is the button, start listening for global move and up
         window.addEventListener('pointermove', handleGlobalPointerMove);
@@ -75,7 +80,7 @@ const TestBoardItemButton: React.FC = () => {
       <InternalDragHandle />
       <button
         ref={buttonRef}
-        onKeyDown={hook.processKeyDown}
+        onKeyDown={e => hook.processKeyDown(e, { operation: 'resize' })}
         onFocus={hook.processFocus}
         onBlur={hook.processBlur}
         style={{
@@ -98,11 +103,17 @@ const TestBoardItemButton: React.FC = () => {
       <hr />
       <div style={{ marginTop: '20px', fontFamily: 'monospace' }}>
         <p>Current State: {String(hook.interaction.state) || 'null'}</p>
-        {hook.interaction.eventData && (
-          <p>
-            DnD Event Coords (last): ({hook.interaction.eventData.clientX}, {hook.interaction.eventData.clientY})
-          </p>
-        )}
+        <p>Metadata: {JSON.stringify(hook.interaction.metadata)}</p>
+        <p>
+          DnD Event Coords (last):{' '}
+          {hook.interaction.eventData ? (
+            <>
+              ({hook.interaction.eventData?.clientX}, {hook.interaction.eventData?.clientY})
+            </>
+          ) : (
+            '-'
+          )}
+        </p>
       </div>
       <hr />
       {shouldRenderInPortal ? <div>{createPortal(buttonComp, document.body)}</div> : buttonComp}

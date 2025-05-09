@@ -40,7 +40,7 @@ const TestComponent = React.forwardRef((props: TestComponentProps, ref: React.Re
     dispatchAction: (action: Action) => {
       switch (action.type) {
         case 'POINTER_DOWN':
-          processPointerDown(action.payload.nativeEvent);
+          processPointerDown(action.payload.nativeEvent, action.payload.metadata);
           break;
         case 'POINTER_MOVE':
           processPointerMove(action.payload.nativeEvent);
@@ -49,7 +49,7 @@ const TestComponent = React.forwardRef((props: TestComponentProps, ref: React.Re
           processPointerUp(action.payload.nativeEvent);
           break;
         case 'KEY_DOWN':
-          processKeyDown({ key: action.payload.key } as React.KeyboardEvent);
+          processKeyDown({ key: action.payload.key } as React.KeyboardEvent, action.payload.metadata);
           break;
         case 'FOCUS':
           processFocus();
@@ -67,7 +67,7 @@ const TestComponent = React.forwardRef((props: TestComponentProps, ref: React.Re
     <div
       data-testid="drag-handle"
       tabIndex={0}
-      onPointerDown={e => processPointerDown(e.nativeEvent)}
+      onPointerDown={e => processPointerDown(e.nativeEvent, undefined)}
       onPointerMove={e => processPointerMove(e.nativeEvent)}
       onPointerUp={e => processPointerUp(e.nativeEvent)}
       onKeyDown={processKeyDown}
@@ -610,7 +610,44 @@ describe('Drag Handle Hooks', () => {
         });
 
         expect(onDndStartAction).toHaveBeenCalledTimes(1);
-        expect(onDndStartAction).toHaveBeenCalledWith(expect.any(MockPointerEvent));
+        expect(onDndStartAction).toHaveBeenCalledWith(expect.any(MockPointerEvent), undefined);
+      });
+
+      it('should pass metadata to onDndStartAction', () => {
+        interface TestMetadata {
+          id: string;
+        }
+
+        const TestComponentWithMetadata = React.forwardRef(
+          (
+            props: {
+              onDndStartAction?: (event: PointerEvent, metadata?: TestMetadata) => void;
+            },
+            ref: React.Ref<any>
+          ) => {
+            const { processPointerDown } = useDragHandleInteractionState<TestMetadata>({
+              onDndStartAction: props.onDndStartAction,
+            });
+            useImperativeHandle(ref, () => ({
+              processPointerDown,
+            }));
+            return <div data-testid="typed-drag-handle" />;
+          }
+        );
+
+        const onDndStartAction = jest.fn();
+        const ref = React.createRef<{ processPointerDown: (event: PointerEvent, metadata?: TestMetadata) => void }>();
+        render(<TestComponentWithMetadata ref={ref} onDndStartAction={onDndStartAction} />);
+
+        const metadata: TestMetadata = { id: 'test-metadata' };
+        const event = createPointerEvent('pointerdown');
+
+        act(() => {
+          ref.current?.processPointerDown(event, metadata);
+        });
+
+        expect(onDndStartAction).toHaveBeenCalledTimes(1);
+        expect(onDndStartAction).toHaveBeenCalledWith(expect.any(MockPointerEvent), metadata);
       });
 
       it('should call onDndActiveAction on dnd-active', () => {
@@ -674,6 +711,43 @@ describe('Drag Handle Hooks', () => {
         fireEvent.keyDown(element, { key: 'Enter' });
 
         expect(onKeyboardStartAction).toHaveBeenCalledTimes(1);
+        expect(onKeyboardStartAction).toHaveBeenCalledWith(undefined);
+      });
+
+      it('should pass metadata to onKeyboardStartAction when transitioning from dnd-start', () => {
+        interface TestMetadata {
+          id: string;
+        }
+
+        const TestComponentWithMetadata = React.forwardRef(
+          (props: { onKeyboardStartAction?: (metadata?: TestMetadata) => void }, ref: React.Ref<any>) => {
+            const { processPointerDown, processPointerUp } = useDragHandleInteractionState<TestMetadata>({
+              onKeyboardStartAction: props.onKeyboardStartAction,
+            });
+            useImperativeHandle(ref, () => ({
+              processPointerDown,
+              processPointerUp,
+            }));
+            return <div data-testid="typed-drag-handle" />;
+          }
+        );
+
+        const onKeyboardStartAction = jest.fn();
+        const ref = React.createRef<{
+          processPointerDown: (event: PointerEvent, metadata?: TestMetadata) => void;
+          processPointerUp: (event: PointerEvent) => void;
+        }>();
+
+        render(<TestComponentWithMetadata ref={ref} onKeyboardStartAction={onKeyboardStartAction} />);
+        const metadata: TestMetadata = { id: 'test-metadata' };
+
+        act(() => {
+          ref.current?.processPointerDown(createPointerEvent('pointerdown'), metadata);
+          ref.current?.processPointerUp(createPointerEvent('pointerup'));
+        });
+
+        expect(onKeyboardStartAction).toHaveBeenCalledTimes(1);
+        expect(onKeyboardStartAction).toHaveBeenCalledWith(metadata);
       });
 
       it('should call onKeyboardEndAction on keyboard-end', () => {

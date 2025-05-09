@@ -5,30 +5,32 @@ export type KeyboardInteractionStateValue = 'keyboard-start' | 'keyboard-end';
 export type DndInteractionStateValue = 'dnd-start' | 'dnd-active' | 'dnd-end';
 export type InteractionStateValue = null | KeyboardInteractionStateValue | DndInteractionStateValue;
 
-export type CallbackType =
-  | { type: 'onDndStart'; payload: PointerEvent }
+export type CallbackType<T = void> =
+  | { type: 'onDndStart'; payload: PointerEvent; metadata?: T }
   | { type: 'onDndActive'; payload: PointerEvent }
   | { type: 'onDndEnd' }
-  | { type: 'onKeyboardStart' }
+  | { type: 'onKeyboardStart'; metadata?: T }
   | { type: 'onKeyboardEnd' };
 
-export interface DragHandleInteractionState {
+export interface DragHandleInteractionState<T = void> {
   state: InteractionStateValue;
   eventData?: PointerEvent; // Only relevant for dnd states
-  pendingCallbacks?: CallbackType[];
+  metadata?: T;
+  pendingCallbacks?: CallbackType<T>[];
 }
 
-export interface UseDragHandleInteractionStateProps {
-  onDndStartAction?: (event: PointerEvent) => void;
+export interface UseDragHandleInteractionStateProps<T = void> {
+  onDndStartAction?: (event: PointerEvent, metadata?: T) => void;
   onDndActiveAction?: (event: PointerEvent) => void;
   onDndEndAction?: () => void;
-  onKeyboardStartAction?: () => void;
+  onKeyboardStartAction?: (metadata?: T) => void;
   onKeyboardEndAction?: () => void;
 }
 
-interface PointerDownActionPayload {
+interface PointerDownActionPayload<T = void> {
   button: number;
   nativeEvent: PointerEvent;
+  metadata?: T;
 }
 
 interface PointerMoveActionPayload {
@@ -39,15 +41,16 @@ interface PointerUpActionPayload {
   nativeEvent: PointerEvent;
 }
 
-interface KeyDownActionPayload {
+interface KeyDownActionPayload<T = void> {
   key: string;
+  metadata?: T;
 }
 
-export type Action =
-  | { type: 'POINTER_DOWN'; payload: PointerDownActionPayload }
+export type Action<T = void> =
+  | { type: 'POINTER_DOWN'; payload: PointerDownActionPayload<T> }
   | { type: 'POINTER_MOVE'; payload: PointerMoveActionPayload }
   | { type: 'POINTER_UP'; payload: PointerUpActionPayload }
-  | { type: 'KEY_DOWN'; payload: KeyDownActionPayload }
+  | { type: 'KEY_DOWN'; payload: KeyDownActionPayload<T> }
   | { type: 'FOCUS' }
   | { type: 'BLUR' }
   | { type: 'RESET_TO_IDLE' }
