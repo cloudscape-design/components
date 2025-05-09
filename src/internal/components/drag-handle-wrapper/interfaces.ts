@@ -3,7 +3,7 @@
 
 export type Direction = 'block-start' | 'block-end' | 'inline-start' | 'inline-end';
 export type DirectionState = 'active' | 'disabled';
-export type InteractionMode = 'focus' | 'keyboard';
+export type InteractionMode = 'focus' | 'controlled';
 
 export interface DragHandleWrapperProps {
   directions: Partial<Record<Direction, DirectionState>>;
