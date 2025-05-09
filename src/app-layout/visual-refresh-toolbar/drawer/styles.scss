@@ -19,6 +19,9 @@
   }
 }
 
+$global-drawer-gap-size: 8px;
+$global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsui.$motion-easing-refresh-only-a};
+
 .drawer {
   position: sticky;
   z-index: constants.$drawer-z-index;
@@ -28,11 +31,15 @@
   inline-size: var(#{custom-props.$drawerSize});
 
   block-size: 100%;
-  overflow: hidden;
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
   pointer-events: auto;
   word-wrap: break-word;
+  @include styles.with-motion {
+    transition:
+      inline-size #{$global-drawer-expanded-mode},
+      min-inline-size #{$global-drawer-expanded-mode};
+  }
 
   @include desktop-only {
     &:not(.legacy) {
@@ -48,8 +55,21 @@
   }
 
   &.drawer-global {
+    @include desktop-only {
+      padding-inline-start: 10px;
+
+      &:before {
+        content: '';
+        position: absolute;
+        block-size: 100%;
+        inline-size: $global-drawer-gap-size;
+        background: awsui.$color-gap-global-drawer;
+        border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
+    }
+
     @include mobile-only {
-      &:not(.last-opened) {
+      &:not(.last-opened):not(.drawer-expanded) {
         display: none;
       }
     }
@@ -59,6 +79,26 @@
     display: none;
   }
 
+  &.drawer-expanded {
+    inline-size: 100%;
+
+    @include desktop-only {
+      border-inline-start: none;
+
+      &.has-next-siblings {
+        &:after {
+          content: '';
+          position: absolute;
+          block-size: 100%;
+          inline-size: $global-drawer-gap-size;
+          inset-inline-end: 0;
+          background: awsui.$color-gap-global-drawer;
+          border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+        }
+      }
+    }
+  }
+
   > .drawer-content-container {
     grid-column: 1 / span 2;
     grid-row: 1;
@@ -66,12 +106,22 @@
     grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
     grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 1fr;
     overflow-y: auto;
+    min-inline-size: var(#{custom-props.$drawerSize});
 
     > .drawer-close-button {
       grid-column: 3;
       grid-row: 2;
       z-index: 1;
       align-self: start;
+    }
+
+    > .drawer-expanded-mode-button {
+      grid-column: 2;
+      grid-row: 2;
+      z-index: 1;
+      align-self: start;
+      display: flex;
+      justify-content: end;
     }
 
     > .drawer-content {
@@ -89,5 +139,6 @@
     block-size: 100%;
     display: flex;
     align-items: center;
+    transform: translateX(-100%);
   }
 }

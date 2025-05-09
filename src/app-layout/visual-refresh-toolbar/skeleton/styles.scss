@@ -22,6 +22,7 @@
 
 @mixin grid-column-full-content-width {
   grid-column: 1 / -1;
+
   @include desktop-only {
     grid-column: 2 / 5;
   }
@@ -40,10 +41,7 @@
     'toolbar    toolbar     toolbar'
     '.       notifications  .'
     '.           main       .';
-  grid-template-columns:
-    awsui.$space-layout-content-horizontal
-    minmax(0, 1fr)
-    awsui.$space-layout-content-horizontal;
+  grid-template-columns: awsui.$space-layout-content-horizontal minmax(0, 1fr) awsui.$space-layout-content-horizontal;
   grid-template-rows: min-content min-content 1fr;
 
   // desktop grid
@@ -53,12 +51,11 @@
       'navigation .         notifications    .         sideSplitPanel  tools    global-tools'
       'navigation .             main         .         sideSplitPanel  tools    global-tools';
     grid-template-columns:
-      min-content
-      minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
-      minmax(0, var(#{custom-props.$maxContentWidth}))
-      minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
-      min-content
-      min-content;
+      min-content minmax(#{awsui.$space-layout-content-horizontal}, 1fr) minmax(
+        0,
+        var(#{custom-props.$maxContentWidth})
+      )
+      minmax(#{awsui.$space-layout-content-horizontal}, 1fr) min-content min-content;
     grid-template-rows: min-content min-content 1fr min-content;
 
     &.has-adaptive-widths-default {
@@ -72,6 +69,14 @@
         }
       }
     }
+
+    &.drawer-expanded-mode {
+      grid-template-areas:
+        'toolbar      toolbar      toolbar       toolbar      toolbar     '
+        'global-tools global-tools global-tools  global-tools global-tools'
+        'global-tools global-tools global-tools  global-tools global-tools';
+      grid-template-rows: 1fr;
+    }
   }
 }
 
@@ -82,6 +87,8 @@
   grid-column: 1 / -1;
   background: awsui.$color-background-container-content;
   opacity: 1;
+  overflow-x: clip;
+
   @include mobile-only {
     inline-size: 100%;
   }
@@ -109,6 +116,7 @@
     /* stylelint-disable plugin/no-unsupported-browser-features */
     &:not(:has(> [data-testid])) {
       inline-size: var(#{custom-props.$toolsWidth});
+
       &.tools-open {
         border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
       }
@@ -120,6 +128,7 @@
   @include desktop-only {
     display: flex;
     grid-area: global-tools;
+    justify-content: flex-end;
   }
 }
 
@@ -144,6 +153,7 @@
   border-inline: none;
   opacity: 0;
   z-index: 0;
+
   &.navigation,
   &.tools,
   &.global-tools {
@@ -176,6 +186,7 @@
   grid-area: main;
   margin-block-start: awsui.$space-scaled-s;
   margin-block-end: awsui.$space-layout-content-bottom;
+
   &-disable-paddings {
     margin-block: 0;
     @include grid-column-full-content-width;
@@ -195,4 +206,8 @@
   @include mobile-only {
     visibility: hidden;
   }
+}
+
+.hidden {
+  display: none;
 }
