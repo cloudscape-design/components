@@ -14,6 +14,7 @@ const getAriaLabels = (title: string, badge: boolean) => {
     drawerName: `${title}`,
     triggerButton: `${title} trigger button${badge ? ' (Unread notifications)' : ''}`,
     resizeHandle: `${title} resize handle`,
+    resizeHandleTooltipText: 'Drag or select to resize',
   };
 };
 

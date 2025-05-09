@@ -26,7 +26,7 @@ const InternalDragHandle = forwardRef(
       onDirectionClick,
       ...rest
     }: DragHandleProps,
-    ref: React.Ref<DragHandleProps.Ref>
+    ref: React.Ref<Element>
   ) => {
     const baseProps = getBaseProps(rest);
 

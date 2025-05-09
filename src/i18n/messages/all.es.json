@@ -343,7 +343,8 @@
     "i18nStrings.preferencesPositionBottom": "Parte inferior",
     "i18nStrings.preferencesConfirm": "Confirmar",
     "i18nStrings.preferencesCancel": "Cancelar",
-    "i18nStrings.resizeHandleAriaLabel": "Cambiar el tamaño del panel dividido"
+    "i18nStrings.resizeHandleAriaLabel": "Cambiar el tamaño del panel dividido",
+    "i18nStrings.resizeHandleTooltipText": "Arrastre o seleccione para cambiar el tamaño"
   },
   "table": {
     "ariaLabels.resizerRoleDescription": "botón de redimensionamiento",

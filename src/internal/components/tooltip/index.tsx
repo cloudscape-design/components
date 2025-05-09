@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 
+import { Portal } from '@cloudscape-design/component-toolkit/internal';
+
 import PopoverArrow from '../../../popover/arrow';
 import PopoverBody from '../../../popover/body';
 import PopoverContainer from '../../../popover/container';
 import { PopoverProps } from '../../../popover/interfaces';
-import Portal from '../portal';
 import { Transition } from '../transition';
 
 import styles from './styles.css.js';

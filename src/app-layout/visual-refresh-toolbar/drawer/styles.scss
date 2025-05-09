@@ -85,7 +85,7 @@ $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsu
     @include desktop-only {
       border-inline-start: none;
 
-      &:not(:last-child) {
+      &.has-next-siblings {
         &:after {
           content: '';
           position: absolute;

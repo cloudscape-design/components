@@ -16949,6 +16949,11 @@ exports[`Documenter definition for split-panel matches the snapshot: split-panel
             "optional": true,
             "type": "string",
           },
+          {
+            "name": "resizeHandleTooltipText",
+            "optional": true,
+            "type": "string",
+          },
         ],
         "type": "object",
       },

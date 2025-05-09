@@ -37,6 +37,7 @@ function AppLayoutGlobalDrawerImplementation({
     minGlobalDrawersSizes,
     maxGlobalDrawersSizes,
     activeGlobalDrawersSizes,
+    activeGlobalDrawers,
     verticalOffsets,
     drawersOpenQueue,
     expandedDrawerId,
@@ -88,6 +89,9 @@ function AppLayoutGlobalDrawerImplementation({
                 [testutilStyles['active-drawer']]: show,
                 [styles['drawer-expandable']]: activeGlobalDrawer?.isExpandable,
                 [styles['drawer-expanded']]: isExpanded,
+                [styles['has-next-siblings']]:
+                  activeGlobalDrawers.findIndex(drawer => drawer.id === activeDrawerId) + 1 <
+                  activeGlobalDrawers.length,
               }
             )}
             ref={drawerRef}
@@ -121,8 +125,10 @@ function AppLayoutGlobalDrawerImplementation({
                   position="side"
                   className={testutilStyles['drawers-slider']}
                   ariaLabel={activeGlobalDrawer?.ariaLabels?.resizeHandle}
+                  tooltipText={activeGlobalDrawer?.ariaLabels?.resizeHandleTooltipText}
                   ariaValuenow={resizeProps.relativeSize}
                   onKeyDown={resizeProps.onKeyDown}
+                  onDirectionClick={resizeProps.onDirectionClick}
                   onPointerDown={resizeProps.onPointerDown}
                 />
               </div>

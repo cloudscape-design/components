@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { IconProps } from '../../../icon/interfaces';
 import InternalIcon from '../../../icon/internal';
-import useForwardFocus from '../../hooks/forward-focus';
+import { useMergeRefs } from '../../hooks/use-merge-refs';
 import { DragHandleProps } from './interfaces';
 import { ResizeIcon } from './resize-icon';
 
@@ -25,11 +25,9 @@ const DragHandleButton = forwardRef(
       onPointerDown,
       onKeyDown,
     }: DragHandleProps,
-    ref: React.Ref<DragHandleProps.Ref>
+    ref: React.Ref<Element>
   ) => {
     const dragHandleRefObject = useRef<HTMLDivElement>(null);
-
-    useForwardFocus(ref, dragHandleRefObject);
 
     const iconProps: IconProps = (() => {
       const shared = { variant: disabled ? ('disabled' as const) : undefined, size };
@@ -52,7 +50,7 @@ const DragHandleButton = forwardRef(
       // Otherwise, we can't reliably catch keyboard events coming from the handle
       // when it is being dragged.
       <div
-        ref={dragHandleRefObject}
+        ref={useMergeRefs(ref, dragHandleRefObject)}
         role={ariaValue ? 'slider' : 'button'}
         tabIndex={0}
         className={clsx(
