@@ -25,6 +25,7 @@ export interface DrawerConfig {
     resizeHandle?: string;
     resizeHandleTooltipText?: string;
   };
+  isExpandable?: boolean;
   badge?: boolean;
   resizable?: boolean;
   defaultSize?: number;
