@@ -71,6 +71,36 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         ariaLabels: {},
         trigger: { iconSvg: '' },
         mountContent: container => {
+          ReactDOM.render(<DrawerContent />, container);
+        },
+        unmountContent: container => unmountComponentAtNode(container),
+        type: 'global',
+      });
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+      wrapper.findDrawerTriggerById('test1')!.click();
+      expect(globalDrawersWrapper.findDrawerById('test1')!.getElement()).toHaveTextContent(
+        'DrawerContent id: test1 resizable: false'
+      );
+
+      awsuiPlugins.appLayout.updateDrawer({
+        id: 'test1',
+        resizable: true,
+      });
+
+      await delay();
+
+      expect(globalDrawersWrapper.findDrawerById('test1')!.getElement()).toHaveTextContent(
+        'DrawerContent id: test1 resizable: true'
+      );
+    });
+
+    test('should provide updated runtime context when multiple drawers are open', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        id: 'test1',
+        ariaLabels: {},
+        trigger: { iconSvg: '' },
+        mountContent: container => {
           ReactDOM.render(
             <div>
               <div>
@@ -102,12 +132,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 
       await delay();
 
-      // make sure that both drawers are open side-by-side
-      expect(globalDrawersWrapper.findCloseButtonByActiveDrawerId('test1')!.getElement()).toBeInTheDocument();
-      expect(globalDrawersWrapper.findCloseButtonByActiveDrawerId('test2')!.getElement()).toBeInTheDocument();
-
       expect(globalDrawersWrapper.findDrawerById('test1')!.getElement()).toHaveTextContent(
         'DrawerContent id: test1 resizable: false'
+      );
+      expect(globalDrawersWrapper.findDrawerById('test2')!.getElement()).toHaveTextContent(
+        'DrawerContent id: test2 resizable: false'
       );
 
       awsuiPlugins.appLayout.updateDrawer({
