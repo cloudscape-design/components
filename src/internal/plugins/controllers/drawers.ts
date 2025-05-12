@@ -83,7 +83,7 @@ export class DrawersController {
   private drawersRegistrationListener: DrawersRegistrationListener | null = null;
   private drawerOpenedListener: DrawersToggledListener | null = null;
   private drawerClosedListener: DrawersToggledListener | null = null;
-  private drawersUpdateListeners: Array<DrawersUpdateListener | null> = [];
+  private drawersUpdateListeners: Array<DrawersUpdateListener> = [];
 
   scheduleUpdate = debounce(() => {
     this.drawersRegistrationListener?.(this.drawers);
