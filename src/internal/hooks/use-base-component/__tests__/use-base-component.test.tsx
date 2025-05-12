@@ -3,18 +3,20 @@
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
-import { COMPONENT_METADATA_KEY, Portal } from '@cloudscape-design/component-toolkit/internal';
+import { COMPONENT_METADATA_KEY, Portal, useComponentMetrics } from '@cloudscape-design/component-toolkit/internal';
 
 import { Button } from '../../../../../lib/components';
 import { PACKAGE_VERSION } from '../../../../../lib/components/internal/environment';
 import useBaseComponent, {
   InternalBaseComponentProps,
 } from '../../../../../lib/components/internal/hooks/use-base-component';
-import { useTelemetry } from '../../../../../lib/components/internal/hooks/use-telemetry';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
 
-jest.mock('../../../../../lib/components/internal/hooks/use-telemetry', () => {
-  return { useTelemetry: jest.fn(() => null) };
+jest.mock('@cloudscape-design/component-toolkit/internal', () => {
+  return {
+    ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+    useComponentMetrics: jest.fn(() => {}),
+  };
 });
 
 type InternalDemoProps = InternalBaseComponentProps;
@@ -62,7 +64,11 @@ test('should attach the metadata to the returned root DOM node', () => {
 test('should call the useTelemetry hook passing down the given component name and its props', () => {
   jest.resetAllMocks();
   render(<Demo variant="default" />);
-  expect(useTelemetry).toHaveBeenCalledWith('DemoComponent', { props: { variant: 'default' } });
+  expect(useComponentMetrics).toHaveBeenCalledWith(
+    'DemoComponent',
+    expect.objectContaining({ packageVersion: PACKAGE_VERSION }),
+    { props: { variant: 'default' } }
+  );
 });
 
 test('metadata get attached on the Portal component root DOM node when elementRef is changing', () => {
