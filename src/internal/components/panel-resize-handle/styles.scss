@@ -11,8 +11,7 @@
   padding-block: 0;
   padding-inline: 0;
   cursor: ns-resize;
-  margin-block-start: 2px;
-  margin-block-end: 0;
+  margin-block: 0;
   margin-inline: 0;
   block-size: 18px;
   // Desktop Safari doesn't support touch events, but Safari on iOS does.
@@ -30,7 +29,5 @@
 
 .slider-side {
   cursor: ew-resize;
-  margin-block: 0;
-  margin-inline-start: 2px;
-  margin-inline-end: 0;
+  padding-inline-start: 2px;
 }
