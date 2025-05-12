@@ -21,6 +21,8 @@ export default function validateChildren(displayName: string, permittedContent: 
               ].join('\n')
             );
           }
+        } else {
+          return child;
         }
       })}
     </>
