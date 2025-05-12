@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import formatDateISO from '../format-date-iso';
+import { formatDateIso } from '../format-date-iso';
 import * as formatTimeOffsetModule from '../format-time-offset';
 
-describe('formatDateISO', () => {
+describe('formatDateIso', () => {
   let formatTimeOffsetISOMock: jest.SpyInstance;
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('formatDateISO', () => {
   });
 
   test('returns ISO date without offset when hideTimeOffset is true', () => {
-    const result = formatDateISO({
+    const result = formatDateIso({
       date: '2023-06-15T12:00:00',
       hideTimeOffset: true,
       isDateOnly: false,
@@ -27,7 +27,7 @@ describe('formatDateISO', () => {
   });
 
   test('returns ISO date without offset when isDateOnly is true', () => {
-    const result = formatDateISO({
+    const result = formatDateIso({
       date: '2023-06-15',
       isDateOnly: true,
       isMonthOnly: false,
@@ -38,7 +38,7 @@ describe('formatDateISO', () => {
   });
 
   test('returns ISO date without offset when isMonthOnly is true', () => {
-    const result = formatDateISO({
+    const result = formatDateIso({
       date: '2023-06',
       isDateOnly: false,
       isMonthOnly: true,
@@ -49,7 +49,7 @@ describe('formatDateISO', () => {
   });
 
   test('returns ISO date with offset when all flags are false', () => {
-    const result = formatDateISO({
+    const result = formatDateIso({
       date: '2023-06-15T12:00:00',
       isDateOnly: false,
       isMonthOnly: false,
@@ -60,7 +60,7 @@ describe('formatDateISO', () => {
   });
 
   test('passes timeOffset to formatTimeOffsetISO when provided', () => {
-    formatDateISO({
+    formatDateIso({
       date: '2023-06-15T12:00:00',
       isDateOnly: false,
       isMonthOnly: false,
@@ -73,7 +73,7 @@ describe('formatDateISO', () => {
   test('handles different time offsets', () => {
     formatTimeOffsetISOMock.mockReturnValue('-05:00');
 
-    const result = formatDateISO({
+    const result = formatDateIso({
       date: '2023-06-15T12:00:00',
       isDateOnly: false,
       isMonthOnly: false,

@@ -17,6 +17,9 @@ const permutations = createPermutations<DateInputProps>([
     invalid: [false, true],
     readOnly: [false, true],
     disabled: [false, true],
+    granularity: ['day', 'month'],
+    format: ['default', 'iso'],
+    displayFormat: ['default', 'iso', 'long-localized'],
   },
 ]);
 

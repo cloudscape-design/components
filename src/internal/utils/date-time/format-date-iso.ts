@@ -4,7 +4,7 @@ import { format, parseISO } from 'date-fns';
 
 import { formatTimeOffsetISO } from './format-time-offset';
 
-export default function ({
+export function formatDateIso({
   date: isoDate,
   hideTimeOffset,
   isDateOnly,

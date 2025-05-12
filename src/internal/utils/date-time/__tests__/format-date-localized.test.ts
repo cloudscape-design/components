@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import formatDateLocalized from '../format-date-localized';
+import { formatDateLocalized } from '../format-date-localized';
 import * as formatTimeOffsetModule from '../format-time-offset';
 
 describe('formatDateLocalized', () => {
