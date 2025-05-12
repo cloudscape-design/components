@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { RefObject, useCallback, useEffect, useState } from 'react';
 
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { DrawerConfig } from '../../internal/plugins/controllers/drawers';
 
@@ -25,7 +27,11 @@ export const useRuntimeDrawerContext = ({ rootRef }: { rootRef: RefObject<HTMLEl
   useEffect(() => {
     // Determine if the hook is inside a runtime drawer.
     // There’s no other reliable way to check this, since runtime drawers are separate applications rendered into specific DOM nodes.
-    const drawerId = getRuntimeDrawerId(rootRef?.current);
+    if (!rootRef?.current) {
+      return;
+    }
+    const runtimeDrawerWrapper = findUpUntil(rootRef?.current, node => !!node?.dataset?.awsuiRuntimeDrawerRootId);
+    const drawerId = runtimeDrawerWrapper?.dataset?.awsuiRuntimeDrawerRootId;
 
     if (!drawerId) {
       return;
