@@ -245,12 +245,17 @@ const InternalTable = React.forwardRef(
         totalPageCount: paginationData.totalPageCount,
         resourcesPerPage: allRows?.length || 0,
         resourcesSelected: selectedItems?.length > 0,
+        totalNumberOfResources:
+          allRows?.length > 0 && paginationData.totalPageCount
+            ? allRows.length * paginationData.totalPageCount
+            : undefined,
       };
     };
 
-    const { setLastUserAction, tableInteractionAttributes } = useTableInteractionMetrics({
+    const { setLastUserAction, tableInteractionAttributes } = useTableInteractionMetrics<T>({
       elementRef: tableRefObject,
       loading,
+      items,
       instanceIdentifier: analyticsMetadata?.instanceIdentifier,
       itemCount: items.length,
       getComponentIdentifier: getHeaderText,
