@@ -55,7 +55,7 @@ function RuntimeDrawerWrapper({ mountContent, unmountContent, id }: RuntimeConte
     visibilityChangeCallback.current?.(isVisible);
   }, [isVisible]);
 
-  return <div ref={ref} className={styles['runtime-content-wrapper']}></div>;
+  return <div ref={ref} className={styles['runtime-content-wrapper']} data-awsui-runtime-drawer-root-id={id}></div>;
 }
 
 const mapRuntimeConfigToDrawer = (
