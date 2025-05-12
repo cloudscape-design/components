@@ -97,9 +97,15 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       });
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
 
+      wrapper.findDrawerTriggerById('test1')!.click();
+      wrapper.findDrawerTriggerById('test2')!.click();
+
       await delay();
 
-      wrapper.findDrawerTriggerById('test1')!.click();
+      // make sure that both drawers are open side-by-side
+      expect(globalDrawersWrapper.findCloseButtonByActiveDrawerId('test1')!.getElement()).toBeInTheDocument();
+      expect(globalDrawersWrapper.findCloseButtonByActiveDrawerId('test2')!.getElement()).toBeInTheDocument();
+
       expect(globalDrawersWrapper.findDrawerById('test1')!.getElement()).toHaveTextContent(
         'DrawerContent id: test1 resizable: false'
       );
@@ -114,8 +120,6 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(globalDrawersWrapper.findDrawerById('test1')!.getElement()).toHaveTextContent(
         'DrawerContent id: test1 resizable: true'
       );
-
-      wrapper.findDrawerTriggerById('test2')!.click();
       expect(globalDrawersWrapper.findDrawerById('test2')!.getElement()).toHaveTextContent(
         'DrawerContent id: test2 resizable: false'
       );
