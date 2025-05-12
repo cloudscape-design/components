@@ -5,12 +5,14 @@ import { MutableRefObject } from 'react';
 import {
   ComponentConfiguration,
   useComponentMetadata,
+  useComponentMetrics,
   useFocusVisible,
 } from '@cloudscape-design/component-toolkit/internal';
 
 import { AnalyticsMetadata } from '../../analytics/interfaces';
-import { PACKAGE_VERSION } from '../../environment';
-import { useTelemetry } from '../use-telemetry';
+import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../../environment';
+import { getVisualTheme } from '../../utils/get-visual-theme';
+import { useVisualRefresh } from '../use-visual-mode';
 
 export interface InternalBaseComponentProps<T = any> {
   __internalRootRef?: MutableRefObject<T | null> | null;
@@ -26,8 +28,14 @@ export default function useBaseComponent<T = any>(
   config?: ComponentConfiguration,
   analyticsMetadata?: AnalyticsMetadata
 ) {
-  useTelemetry(componentName, config);
+  const isVisualRefresh = useVisualRefresh();
+  const theme = getVisualTheme(THEME, isVisualRefresh);
+  useComponentMetrics(componentName, { packageSource: PACKAGE_SOURCE, packageVersion: PACKAGE_VERSION, theme }, config);
   useFocusVisible();
-  const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION, { ...analyticsMetadata });
+  const elementRef = useComponentMetadata<T>(
+    componentName,
+    { packageName: PACKAGE_SOURCE, version: PACKAGE_VERSION, theme },
+    analyticsMetadata as any
+  );
   return { __internalRootRef: elementRef };
 }

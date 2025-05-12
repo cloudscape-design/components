@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { HotspotProps } from '../hotspot/interfaces';
 import { fireNonCancelableEvent } from '../internal/events';
-import { useTelemetry } from '../internal/hooks/use-telemetry';
+import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { ClosedAnnotation } from './annotation/closed-annotation';
 import { OpenAnnotation } from './annotation/open-annotation';
@@ -26,7 +26,7 @@ export default function AnnotationContext({
   onExitTutorial,
   i18nStrings,
 }: AnnotationContextProps): JSX.Element {
-  useTelemetry('AnnotationContext');
+  useBaseComponent('AnnotationContext');
 
   const [open, setOpen] = useState(true);
 
