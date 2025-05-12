@@ -65,6 +65,35 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('DrawerContent id: resizable: false');
     });
 
+    test('does not pass runtime context if a ref is not provided', async () => {
+      const DrawerContentWithoutRef = () => {
+        const ref = useRef<HTMLDivElement>(null);
+        const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: ref });
+        return (
+          <div>
+            DrawerContent id: {runtimeDrawerContext?.id} resizable: {runtimeDrawerContext?.resizable ? 'true' : 'false'}
+          </div>
+        );
+      };
+      awsuiPlugins.appLayout.registerDrawer({
+        id: 'test1',
+        ariaLabels: {},
+        trigger: { iconSvg: '' },
+        mountContent: container => {
+          ReactDOM.render(<DrawerContentWithoutRef />, container);
+        },
+        unmountContent: container => unmountComponentAtNode(container),
+        type: 'global',
+        resizable: true,
+      });
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+      wrapper.findDrawerTriggerById('test1')!.click();
+      expect(globalDrawersWrapper.findDrawerById('test1')!.getElement()).toHaveTextContent(
+        'DrawerContent id: resizable: false'
+      );
+    });
+
     test('passes runtime drawer context via the hook', async () => {
       awsuiPlugins.appLayout.registerDrawer({
         id: 'test1',
