@@ -12,10 +12,12 @@ test('passes ariaLabelledBy to DragHandleButton', () => {
   render(
     <div>
       <div id="label-element">custom label</div>
-      <InternalDragHandle ariaLabelledBy="label-element" />
+      <div id="description-element">custom description</div>
+      <InternalDragHandle ariaLabelledBy="label-element" ariaDescribedby="description-element" />
     </div>
   );
 
   expect(document.querySelector(`.${styles.handle}`)).toHaveAttribute('aria-labelledby', 'label-element');
   expect(document.querySelector(`.${styles.handle}`)).toHaveAccessibleName('custom label');
+  expect(document.querySelector(`.${styles.handle}`)).toHaveAccessibleDescription('custom description');
 });
