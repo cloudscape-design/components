@@ -74,7 +74,7 @@ export interface DrawersApiInternal {
   onDrawersRegistered(listener: DrawersRegistrationListener): () => void;
   onDrawerOpened(listener: DrawersToggledListener): () => void;
   onDrawerClosed(listener: DrawersToggledListener): () => void;
-  onDrawersUpdated(listener: DrawersUpdateListener): () => void;
+  onDrawersUpdated(listener: DrawersUpdateListener): void;
   getDrawersState(): Array<DrawerConfig>;
 }
 
@@ -127,6 +127,7 @@ export class DrawersController {
     this.scheduleUpdate();
     return () => {
       this.drawersRegistrationListener = null;
+      this.drawersUpdateListener = null;
     };
   };
 
@@ -174,10 +175,6 @@ export class DrawersController {
 
   onDrawersUpdated = (listener: DrawersUpdateListener) => {
     this.drawersUpdateListener = listener;
-
-    return () => {
-      this.drawersUpdateListener = null;
-    };
   };
 
   getDrawersState = () => {

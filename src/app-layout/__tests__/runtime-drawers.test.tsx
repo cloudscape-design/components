@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState } from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
 import { Button } from '../../../lib/components';
@@ -10,7 +9,6 @@ import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-dr
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { useRuntimeDrawerContext } from '../runtime-drawer/use-runtime-drawer-context';
 import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
@@ -1440,66 +1438,6 @@ describe('toolbar mode only features', () => {
         expect(menuItemCheckboxItemsLength).toBe(2);
         expect(buttonDropdown!.findItemById('global-drawer2')).toBeTruthy();
         expect(buttonDropdown!.findItemById('global-drawer3')).toBeTruthy();
-      });
-    });
-
-    describe('runtime drawer context hook', () => {
-      const DrawerContent = () => {
-        const ref = useRef<HTMLDivElement>(null);
-        const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: ref });
-        return (
-          <div ref={ref}>
-            DrawerContent id: {runtimeDrawerContext?.id} resizable: {runtimeDrawerContext?.resizable ? 'true' : 'false'}
-          </div>
-        );
-      };
-      test('does not pass runtime context if rendered within a normal drawer', async () => {
-        const { wrapper } = await renderComponent(
-          <AppLayout
-            drawers={[
-              {
-                ...testDrawer,
-                id: 'test',
-                content: <DrawerContent />,
-              },
-            ]}
-          />
-        );
-
-        wrapper.findDrawerTriggerById('test')!.click();
-        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('DrawerContent id: resizable: false');
-      });
-
-      test('passes runtime drawer context via the hook', async () => {
-        awsuiPlugins.appLayout.registerDrawer({
-          id: 'test',
-          ariaLabels: {},
-          trigger: { iconSvg: '' },
-          mountContent: container => {
-            ReactDOM.render(<DrawerContent />, container);
-          },
-          unmountContent: () => {},
-          type: 'global',
-        });
-        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
-
-        await delay();
-
-        wrapper.findDrawerTriggerById('test')!.click();
-        expect(globalDrawersWrapper.findDrawerById('test')!.getElement()).toHaveTextContent(
-          'DrawerContent id: test resizable: false'
-        );
-
-        awsuiPlugins.appLayout.updateDrawer({
-          id: 'test',
-          resizable: true,
-        });
-
-        await delay();
-
-        expect(globalDrawersWrapper.findDrawerById('test')!.getElement()).toHaveTextContent(
-          'DrawerContent id: test resizable: true'
-        );
       });
     });
   });
