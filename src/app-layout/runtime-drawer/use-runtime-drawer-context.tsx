@@ -34,7 +34,7 @@ export const useRuntimeDrawerContext = ({ rootRef }: { rootRef: RefObject<HTMLEl
     const drawers = awsuiPluginsInternal.appLayout.getDrawersState();
     setDrawerContext(drawers?.find(drawer => drawer.id === drawerId) ?? null);
 
-    awsuiPluginsInternal.appLayout.onDrawersUpdated(drawers => {
+    return awsuiPluginsInternal.appLayout.onDrawersUpdated(drawers => {
       setDrawerContext(drawers?.find(drawer => drawer.id === drawerId) ?? null);
     });
   }, [getRuntimeDrawerId, rootRef]);

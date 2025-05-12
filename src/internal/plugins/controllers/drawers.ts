@@ -83,11 +83,13 @@ export class DrawersController {
   private drawersRegistrationListener: DrawersRegistrationListener | null = null;
   private drawerOpenedListener: DrawersToggledListener | null = null;
   private drawerClosedListener: DrawersToggledListener | null = null;
-  private drawersUpdateListener: DrawersUpdateListener | null = null;
+  private drawersUpdateListeners: Array<DrawersUpdateListener | null> = [];
 
   scheduleUpdate = debounce(() => {
     this.drawersRegistrationListener?.(this.drawers);
-    this.drawersUpdateListener?.(this.drawers);
+    this.drawersUpdateListeners.forEach(drawersUpdateListeners => {
+      drawersUpdateListeners?.(this.drawers);
+    });
   }, 0);
 
   registerDrawer = (config: DrawerConfig) => {
@@ -127,7 +129,7 @@ export class DrawersController {
     this.scheduleUpdate();
     return () => {
       this.drawersRegistrationListener = null;
-      this.drawersUpdateListener = null;
+      this.drawersUpdateListeners = [];
     };
   };
 
@@ -174,7 +176,11 @@ export class DrawersController {
   };
 
   onDrawersUpdated = (listener: DrawersUpdateListener) => {
-    this.drawersUpdateListener = listener;
+    this.drawersUpdateListeners.push(listener);
+
+    return () => {
+      this.drawersUpdateListeners = this.drawersUpdateListeners.filter(item => item !== listener);
+    };
   };
 
   getDrawersState = () => {
