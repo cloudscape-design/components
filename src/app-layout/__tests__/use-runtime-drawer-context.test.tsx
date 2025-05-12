@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import { act, render } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
@@ -82,7 +82,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
             container
           );
         },
-        unmountContent: () => {},
+        unmountContent: container => unmountComponentAtNode(container),
         type: 'global',
       });
       awsuiPlugins.appLayout.registerDrawer({
@@ -92,7 +92,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         mountContent: container => {
           ReactDOM.render(<DrawerContent />, container);
         },
-        unmountContent: () => {},
+        unmountContent: container => unmountComponentAtNode(container),
         type: 'global',
       });
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
