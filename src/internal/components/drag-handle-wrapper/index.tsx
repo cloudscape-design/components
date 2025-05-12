@@ -13,6 +13,7 @@ import { Direction, DragHandleWrapperProps } from './interfaces';
 import PortalOverlay from './portal-overlay';
 
 import styles from './styles.css.js';
+import testStyles from './test-classes/styles.css.js';
 
 // The amount of distance after pointer down that the cursor is allowed to
 // jitter for a subsequent mouseup to still register as a "press" instead of
@@ -200,6 +201,7 @@ export default function DragHandleWrapper({
       <PortalOverlay track={dragHandleRef.current} isDisabled={!showButtons}>
         {directions['block-start'] && (
           <DirectionButton
+            className={clsx(testStyles['direction-button'], testStyles['direction-bock-start'])}
             show={!isDisabled && showButtons}
             direction="block-start"
             state={directions['block-start']}
@@ -208,6 +210,7 @@ export default function DragHandleWrapper({
         )}
         {directions['block-end'] && (
           <DirectionButton
+            className={clsx(testStyles['direction-button'], testStyles['direction-bock-end'])}
             show={!isDisabled && showButtons}
             direction="block-end"
             state={directions['block-end']}
@@ -216,6 +219,7 @@ export default function DragHandleWrapper({
         )}
         {directions['inline-start'] && (
           <DirectionButton
+            className={clsx(testStyles['direction-button'], testStyles['direction-inline-start'])}
             show={!isDisabled && showButtons}
             direction="inline-start"
             state={directions['inline-start']}
@@ -224,6 +228,7 @@ export default function DragHandleWrapper({
         )}
         {directions['inline-end'] && (
           <DirectionButton
+            className={clsx(testStyles['direction-button'], testStyles['direction-inline-end'])}
             show={!isDisabled && showButtons}
             direction="inline-end"
             state={directions['inline-end']}

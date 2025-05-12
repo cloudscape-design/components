@@ -28,10 +28,10 @@ function getComponentsExports() {
     './internal/do-not-use/expandable-section': './internal/do-not-use/expandable-section.js',
     './internal/do-not-use/i18n': './internal/do-not-use/i18n.js',
     './internal/do-not-use/tooltip': './internal/do-not-use/tooltip.js',
+    './internal/do-not-use/drag-handle': './internal/do-not-use/drag-handle.js',
     './internal/widget-exports': './internal/widget-exports.js',
-    './internal/components/drag-handle': './internal/components/drag-handle/index.js',
-    './internal/components/drag-handle/hooks/use-drag-handle-interaction-state':
-      './internal/components/drag-handle/hooks/use-drag-handle-interaction-state.js',
+    './test-utils/dom/internal/drag-handle': './test-utils/dom/internal/drag-handle.js',
+    './test-utils/selectors/internal/drag-handle': './test-utils/selectors/internal/drag-handle.js',
     './test-utils/dom/internal/tooltip': './test-utils/dom/internal/tooltip.js',
     './test-utils/selectors/internal/tooltip': './test-utils/selectors/internal/tooltip.js',
     './test-utils/dom/internal/chart-tooltip': './test-utils/dom/internal/chart-tooltip.js',

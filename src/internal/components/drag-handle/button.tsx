@@ -10,6 +10,7 @@ import { DragHandleProps } from './interfaces';
 import { ResizeIcon } from './resize-icon';
 
 import styles from './styles.css.js';
+import testStyles from './test-classes/styles.css.js';
 
 const DragHandleButton = forwardRef(
   (
@@ -55,6 +56,7 @@ const DragHandleButton = forwardRef(
         tabIndex={0}
         className={clsx(
           className,
+          testStyles.root,
           styles.handle,
           styles[`handle-${variant}`],
           styles[`handle-size-${size}`],

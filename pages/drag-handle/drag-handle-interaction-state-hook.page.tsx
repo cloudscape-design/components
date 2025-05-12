@@ -4,8 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import InternalDragHandle from '~components/internal/components/drag-handle';
-import {
-  useDragHandleInteractionState,
+import useDragHandleInteractionState, {
   UseDragHandleInteractionStateProps,
 } from '~components/internal/components/drag-handle/hooks/use-drag-handle-interaction-state';
 

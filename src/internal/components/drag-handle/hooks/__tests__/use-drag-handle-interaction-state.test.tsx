@@ -5,12 +5,11 @@ import React, { useImperativeHandle } from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
 import type { Action, DragHandleInteractionState, UseDragHandleInteractionStateProps } from '../interfaces';
-import {
+import useDragHandleInteractionState, {
   calculateNextState,
   getCallbacksForTransition,
   isDndState,
   isIdle,
-  useDragHandleInteractionState,
 } from '../use-drag-handle-interaction-state';
 
 interface TestComponentProps extends UseDragHandleInteractionStateProps {

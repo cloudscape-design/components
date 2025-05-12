@@ -329,7 +329,7 @@ function useEventHandlers<T = void>(dispatch: React.Dispatch<Action<T>>) {
   };
 }
 
-export function useDragHandleInteractionState<T = void>(
+export default function useDragHandleInteractionState<T = void>(
   props: UseDragHandleInteractionStateProps<T> = {},
   options: { debug?: boolean } = {}
 ) {

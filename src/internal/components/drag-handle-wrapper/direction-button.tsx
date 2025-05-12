@@ -26,9 +26,10 @@ interface DirectionButtonProps {
   state: DirectionState;
   onClick: React.MouseEventHandler;
   show: boolean;
+  className: string;
 }
 
-export default function DirectionButton({ direction, state, show, onClick }: DirectionButtonProps) {
+export default function DirectionButton({ direction, state, show, onClick, className }: DirectionButtonProps) {
   return (
     <Transition in={show}>
       {(transitionState, ref) => (
@@ -45,7 +46,11 @@ export default function DirectionButton({ direction, state, show, onClick }: Dir
           )}
         >
           <span
-            className={clsx(styles['direction-button'], state === 'disabled' && styles['direction-button-disabled'])}
+            className={clsx(
+              className,
+              styles['direction-button'],
+              state === 'disabled' && styles['direction-button-disabled']
+            )}
             onClick={state !== 'disabled' ? onClick : undefined}
             // This prevents focus from being lost to `document.body` on
             // mouse/pointer press. This allows us to listen to onClick while
