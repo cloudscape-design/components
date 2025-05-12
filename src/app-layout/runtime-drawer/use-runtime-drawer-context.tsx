@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { RefObject, useCallback, useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
@@ -9,20 +9,6 @@ import { DrawerConfig } from '../../internal/plugins/controllers/drawers';
 
 export const useRuntimeDrawerContext = ({ rootRef }: { rootRef: RefObject<HTMLElement> }) => {
   const [drawerContext, setDrawerContext] = useState<DrawerConfig | null>(null);
-
-  const getRuntimeDrawerId = useCallback((element: HTMLElement | null): string | null => {
-    if (!element) {
-      return null;
-    }
-
-    const drawerId = (element.parentNode as HTMLElement)?.dataset?.awsuiRuntimeDrawerRootId;
-
-    if (!drawerId) {
-      return getRuntimeDrawerId(element.parentElement);
-    }
-
-    return drawerId;
-  }, []);
 
   useEffect(() => {
     // Determine if the hook is inside a runtime drawer.
@@ -43,7 +29,7 @@ export const useRuntimeDrawerContext = ({ rootRef }: { rootRef: RefObject<HTMLEl
     return awsuiPluginsInternal.appLayout.onDrawersUpdated(drawers => {
       setDrawerContext(drawers?.find(drawer => drawer.id === drawerId) ?? null);
     });
-  }, [getRuntimeDrawerId, rootRef]);
+  }, [rootRef]);
 
   return drawerContext;
 };
