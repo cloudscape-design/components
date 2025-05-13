@@ -21,13 +21,14 @@
 
 $global-drawer-gap-size: 8px;
 $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsui.$motion-easing-refresh-only-a};
+$drawer-resize-handle-size: awsui.$space-m;
 
 .drawer {
   position: sticky;
   z-index: constants.$drawer-z-index;
   background-color: awsui.$color-background-container-content;
   display: grid;
-  grid-template-columns: awsui.$space-m 1fr;
+  grid-template-columns: $drawer-resize-handle-size 1fr;
   inline-size: var(#{custom-props.$drawerSize});
 
   block-size: 100%;
@@ -60,7 +61,7 @@ $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsu
     grid-column: 1 / span 2;
     grid-row: 1;
     display: grid;
-    grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
+    grid-template-columns: $drawer-resize-handle-size 1fr auto $drawer-resize-handle-size;
     grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 1fr;
     overflow-y: auto;
     min-inline-size: var(#{custom-props.$drawerSize});
@@ -84,7 +85,6 @@ $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsu
     > .drawer-content {
       grid-column: 1 / span 4;
       grid-row: 1 / span 2;
-
       &.drawer-content-hidden {
         display: none;
       }
@@ -102,10 +102,69 @@ $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsu
   &.drawer-global {
     display: block;
 
+    @include desktop-only {
+      min-inline-size: var(#{custom-props.$drawerSize});
+      inline-size: var(#{custom-props.$drawerSize});
+    }
+
+    @include mobile-only {
+      > .global-drawer-wrapper {
+        grid-template-columns: 1fr;
+      }
+
+      &:not(.last-opened):not(.drawer-expanded) {
+        display: none;
+      }
+    }
+
+    &.drawer-hidden {
+      display: none;
+    }
+
+    &.drawer-expanded {
+      inline-size: 100%;
+
+      @include desktop-only {
+        border-inline-start: none;
+
+        > .global-drawer-wrapper {
+          inline-size: 100%;
+          grid-template-columns: 8px 1fr;
+
+          > .drawer-content-container {
+            grid-column: 2;
+          }
+
+          > .drawer-gap {
+            grid-column: 1;
+            grid-row: 1;
+            block-size: 100%;
+            inline-size: $global-drawer-gap-size;
+            background: awsui.$color-gap-global-drawer;
+            border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+          }
+        }
+        &.has-next-siblings {
+          > .global-drawer-wrapper {
+            &:after {
+              content: '';
+              position: absolute;
+              block-size: 100%;
+              inline-size: $global-drawer-gap-size;
+              inset-inline-end: 0;
+              background: awsui.$color-gap-global-drawer;
+              border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+              box-sizing: border-box;
+            }
+          }
+        }
+      }
+    }
+
     > .global-drawer-wrapper {
       display: grid;
       min-inline-size: var(#{custom-props.$drawerSize});
-      grid-template-columns: $global-drawer-gap-size awsui.$space-m 1fr;
+      grid-template-columns: $global-drawer-gap-size $drawer-resize-handle-size 1fr;
       overflow: hidden;
 
       > .drawer-gap {
@@ -128,7 +187,7 @@ $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsu
         grid-column: 2 / span 2;
         grid-row: 1;
         display: grid;
-        grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
+        grid-template-columns: $drawer-resize-handle-size 1fr auto $drawer-resize-handle-size;
         grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 1fr;
         overflow-y: auto;
 
@@ -154,65 +213,6 @@ $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsu
 
           &.drawer-content-hidden {
             display: none;
-          }
-        }
-      }
-    }
-
-    @include desktop-only {
-      min-inline-size: var(#{custom-props.$drawerSize});
-      inline-size: var(#{custom-props.$drawerSize});
-    }
-
-    @include mobile-only {
-      > .global-drawer-wrapper {
-        grid-template-columns: 1fr;
-      }
-
-      &:not(.last-opened):not(.drawer-expanded) {
-        display: none;
-      }
-    }
-  }
-
-  &.drawer-hidden {
-    display: none;
-  }
-
-  &.drawer-expanded {
-    inline-size: 100%;
-
-    @include desktop-only {
-      border-inline-start: none;
-
-      > .global-drawer-wrapper {
-        inline-size: 100%;
-        grid-template-columns: 8px 1fr;
-
-        > .drawer-content-container {
-          grid-column: 2;
-        }
-
-        > .drawer-gap {
-          grid-column: 1;
-          grid-row: 1;
-          block-size: 100%;
-          inline-size: $global-drawer-gap-size;
-          background: awsui.$color-gap-global-drawer;
-          border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
-        }
-      }
-      &.has-next-siblings {
-        > .global-drawer-wrapper {
-          &:after {
-            content: '';
-            position: absolute;
-            block-size: 100%;
-            inline-size: $global-drawer-gap-size;
-            inset-inline-end: 0;
-            background: awsui.$color-gap-global-drawer;
-            border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
-            box-sizing: border-box;
           }
         }
       }
