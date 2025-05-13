@@ -24,7 +24,7 @@ const InternalDragHandle = forwardRef(
       onPointerDown,
       onKeyDown,
       onDirectionClick,
-      interactionMode,
+      uapTriggerMode,
       ...rest
     }: DragHandleProps,
     ref: React.Ref<Element>
@@ -36,7 +36,7 @@ const InternalDragHandle = forwardRef(
         directions={!disabled ? directions : {}}
         tooltipText={tooltipText}
         onDirectionClick={onDirectionClick}
-        interactionMode={interactionMode}
+        uapTriggerMode={uapTriggerMode}
       >
         <DragHandleButton
           ref={ref}

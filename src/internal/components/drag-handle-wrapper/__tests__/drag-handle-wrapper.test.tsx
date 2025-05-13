@@ -143,7 +143,7 @@ test("doesn't show direction buttons by default", () => {
   expect(getDirectionButton('block-end')).not.toBeInTheDocument();
 });
 
-describe('interactionMode = focus (default)', () => {
+describe('uapTriggerMode = focus (default)', () => {
   test('shows direction buttons when focus enters the button', () => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
@@ -174,11 +174,11 @@ describe('interactionMode = focus (default)', () => {
   });
 });
 
-describe('interactionMode = controlled', () => {
+describe('uapTriggerMode = enter', () => {
   test('does not show direction buttons when focus enters the button', () => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
-      interactionMode: 'controlled',
+      uapTriggerMode: 'enter',
     });
 
     document.body.dataset.awsuiFocusVisible = 'true';
@@ -192,7 +192,7 @@ describe('interactionMode = controlled', () => {
   test('show direction buttons when enter is pressed on the focused button', () => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
-      interactionMode: 'controlled',
+      uapTriggerMode: 'enter',
     });
 
     document.body.dataset.awsuiFocusVisible = 'true';
@@ -213,7 +213,7 @@ describe('interactionMode = controlled', () => {
   test('hides direction buttons when focus leaves the button', () => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
-      interactionMode: 'controlled',
+      uapTriggerMode: 'enter',
     });
 
     document.body.dataset.awsuiFocusVisible = 'true';
@@ -233,7 +233,7 @@ describe('interactionMode = controlled', () => {
   test('hides direction buttons when toggling enter key', () => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
-      interactionMode: 'controlled',
+      uapTriggerMode: 'enter',
     });
 
     document.body.dataset.awsuiFocusVisible = 'true';

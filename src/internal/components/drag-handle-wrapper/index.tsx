@@ -25,7 +25,7 @@ export default function DragHandleWrapper({
   tooltipText,
   children,
   onDirectionClick,
-  interactionMode = 'focus',
+  uapTriggerMode = 'focus',
 }: DragHandleWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const dragHandleRef = useRef<HTMLDivElement | null>(null);
@@ -50,7 +50,7 @@ export default function DragHandleWrapper({
     // if the action that triggered the focus move was the result of a keypress.
     if (document.body.dataset.awsuiFocusVisible && !nodeContains(wrapperRef.current, event.relatedTarget)) {
       setShowTooltip(false);
-      if (interactionMode === 'focus') {
+      if (uapTriggerMode === 'focus') {
         setShowButtons(true);
       }
     }
@@ -154,7 +154,7 @@ export default function DragHandleWrapper({
     // the floating controls.
     if (event.key === 'Escape') {
       setShowButtons(false);
-    } else if (interactionMode === 'controlled' && event.key === 'Enter') {
+    } else if (uapTriggerMode === 'enter' && event.key === 'Enter') {
       // toggle buttons when Enter is pressed in controlled mode
       setShowButtons(prevShowButtons => !prevShowButtons);
     } else if (event.key !== 'Alt' && event.key !== 'Control' && event.key !== 'Meta' && event.key !== 'Shift') {
