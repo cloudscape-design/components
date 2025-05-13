@@ -98,7 +98,7 @@ $drawer-resize-handle-size: awsui.$space-m;
 
       > .global-drawer-wrapper {
         inline-size: 100%;
-        grid-template-columns: 8px 1fr;
+        grid-template-columns: $global-drawer-gap-size 1fr;
 
         > .drawer-content-container {
           grid-column: 2;
