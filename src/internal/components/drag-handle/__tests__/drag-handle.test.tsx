@@ -19,3 +19,15 @@ test('passes ariaLabelledBy to DragHandleButton', () => {
   expect(document.querySelector(`.${styles.handle}`)).toHaveAttribute('aria-labelledby', 'label-element');
   expect(document.querySelector(`.${styles.handle}`)).toHaveAccessibleName('custom label');
 });
+
+test('passes ariaDescribedby to DragHandleButton', () => {
+  render(
+    <div>
+      <div id="describe-element">describe label</div>
+      <InternalDragHandle ariaDescribedby="describe-element" />
+    </div>
+  );
+
+  expect(document.querySelector(`.${styles.handle}`)).toHaveAttribute('aria-describedby', 'describe-element');
+  expect(document.querySelector(`.${styles.handle}`)).toHaveAccessibleDescription('describe label');
+});
