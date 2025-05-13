@@ -58,7 +58,8 @@ export function InlineEditor<ItemType>({
   }
 
   async function onSubmitClick(evt: React.FormEvent) {
-    evt.preventDefault();
+    evt.preventDefault(); // Prevents the form from navigating away
+    evt.stopPropagation(); // Prevents any outer form elements from submitting
     if (currentEditValue === undefined) {
       finishEdit();
       return;
