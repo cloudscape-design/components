@@ -17,7 +17,7 @@
   justify-content: space-between;
   color: awsui.$color-text-heading-default;
   padding-block: awsui.$space-panel-header-vertical;
-  padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-l} + #{awsui.$space-scaled-xxl});
+  padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
   // padding to make sure the header doesn't overlap with the close icon
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
 
