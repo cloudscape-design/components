@@ -17,7 +17,7 @@ export interface GridBaseProps {
   locale: string;
 }
 
-export interface GridProps extends GridBaseProps {
+export interface GridProps extends GridBaseProps, Required<Pick<CalendarProps, 'granularity'>> {
   rangeStartDate: Date | null;
   rangeEndDate: Date | null;
   focusedDateRef: React.RefObject<HTMLTableCellElement>;
@@ -34,7 +34,6 @@ export interface GridProps extends GridBaseProps {
   currentMonthAriaLabel?: string;
   startOfWeek?: DayIndex;
   todayAriaLabel?: string;
-  granularity: CalendarProps.Granularity;
 }
 
 export interface SelectGridProps extends GridBaseProps, Pick<CalendarProps, 'granularity'> {

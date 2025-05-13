@@ -4,11 +4,10 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
-import { CalendarProps } from '../../../calendar/interfaces';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 
-interface HeaderButtonProps extends Pick<CalendarProps, 'granularity'> {
+interface HeaderButtonProps {
   ariaLabel?: string;
   onChangePage: (n: number) => void;
 }
