@@ -150,6 +150,7 @@ awsuiPlugins.appLayout.registerDrawer({
     content: 'Content',
     triggerButton: 'Trigger button',
     resizeHandle: 'Resize handle',
+    expandedModeButton: 'Expanded mode button',
   },
   onToggle: event => {
     console.log('circle-global drawer on toggle', event.detail);
@@ -197,6 +198,7 @@ awsuiPlugins.appLayout.registerDrawer({
     content: 'Content',
     triggerButton: 'Trigger button',
     resizeHandle: 'Resize handle',
+    expandedModeButton: 'Expanded mode button',
   },
   onToggle: event => {
     console.log('g-global drawer on toggle', event.detail);
