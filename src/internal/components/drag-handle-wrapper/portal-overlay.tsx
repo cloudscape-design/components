@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import {
   getIsRtl,
@@ -21,6 +21,16 @@ export default function PortalOverlay({
   children: React.ReactNode;
 }) {
   const ref = useRef<HTMLSpanElement | null>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+
+  useLayoutEffect(() => {
+    if (track.current) {
+      const newContainer = track.current.ownerDocument.createElement('div');
+      track.current.ownerDocument.documentElement.appendChild(newContainer);
+      setContainer(newContainer);
+      return () => newContainer.remove();
+    }
+  }, [track]);
 
   useEffect(() => {
     if (track.current === null || isDisabled) {
@@ -73,7 +83,7 @@ export default function PortalOverlay({
   }
 
   return (
-    <Portal>
+    <Portal container={container}>
       <span ref={ref} className={styles['portal-overlay']}>
         <span className={styles['portal-overlay-contents']}>{children}</span>
       </span>
