@@ -32,6 +32,8 @@ export interface SharedProps {
   splitPanelToggleProps: SplitPanelToggleProps | undefined;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
   onSplitPanelToggle: () => void;
+  expandedDrawerId?: string;
+  setExpandedDrawerId: (value: string | undefined) => void;
 }
 
 function checkAlreadyExists(value: boolean, propName: string) {
@@ -86,6 +88,10 @@ export function mergeProps(
     }
     if (props.breadcrumbs && !checkAlreadyExists(!!toolbar.hasBreadcrumbsPortal, 'hasBreadcrumbsPortal')) {
       toolbar.hasBreadcrumbsPortal = true;
+    }
+    if (props.expandedDrawerId && !checkAlreadyExists(!!toolbar.expandedDrawerId, 'expandedDrawerId')) {
+      toolbar.expandedDrawerId = props.expandedDrawerId;
+      toolbar.setExpandedDrawerId = props.setExpandedDrawerId;
     }
   }
   // do not render toolbar if no fields are defined, except ariaLabels, which are always there
