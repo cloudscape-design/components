@@ -103,9 +103,11 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
                 position="side"
                 className={testutilStyles['drawers-slider']}
                 ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
+                tooltipText={activeDrawer?.ariaLabels?.resizeHandleTooltipText}
                 ariaValuenow={resizeProps.relativeSize}
                 onKeyDown={resizeProps.onKeyDown}
                 onPointerDown={resizeProps.onPointerDown}
+                onDirectionClick={resizeProps.onDirectionClick}
               />
             </div>
           )}

@@ -21,6 +21,7 @@ import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Containers, CustomDrawerContent } from './utils/content-blocks';
 import { drawerLabels } from './utils/drawers';
 import appLayoutLabels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -148,21 +149,7 @@ export default function WithDrawers() {
         </ContentLayout>
       }
       splitPanel={
-        <SplitPanel
-          header="Split panel header"
-          i18nStrings={{
-            preferencesTitle: 'Preferences',
-            preferencesPositionLabel: 'Split panel position',
-            preferencesPositionDescription: 'Choose the default split panel position for the service.',
-            preferencesPositionSide: 'Side',
-            preferencesPositionBottom: 'Bottom',
-            preferencesConfirm: 'Confirm',
-            preferencesCancel: 'Cancel',
-            closeButtonAriaLabel: 'Close panel',
-            openButtonAriaLabel: 'Open panel',
-            resizeHandleAriaLabel: 'Slider',
-          }}
-        >
+        <SplitPanel header="Split panel header" i18nStrings={splitPaneli18nStrings}>
           This is the Split Panel!
         </SplitPanel>
       }

@@ -13,6 +13,7 @@ import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs, Containers, Navigation, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
 import * as toolsContent from './utils/tools-content';
 
 type SplitPanelDemoContext = React.Context<
@@ -100,18 +101,7 @@ export default function () {
           splitPanelEnabled && (
             <SplitPanel
               header="Split panel header withlongwordthatshouldbesplitinsteadofmakingthepanelscroll"
-              i18nStrings={{
-                preferencesTitle: 'Preferences',
-                preferencesPositionLabel: 'Split panel position',
-                preferencesPositionDescription: 'Choose the default split panel position for the service.',
-                preferencesPositionSide: 'Side',
-                preferencesPositionBottom: 'Bottom',
-                preferencesConfirm: 'Confirm',
-                preferencesCancel: 'Cancel',
-                closeButtonAriaLabel: 'Close panel',
-                openButtonAriaLabel: 'Open panel',
-                resizeHandleAriaLabel: 'Slider',
-              }}
+              i18nStrings={splitPaneli18nStrings}
             >
               {DEMO_CONTENT}
             </SplitPanel>

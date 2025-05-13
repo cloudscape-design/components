@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 
+import { Portal } from '@cloudscape-design/component-toolkit/internal';
+
 import { HotspotProps } from '../../hotspot/interfaces';
-import Portal from '../../internal/components/portal';
 import { AnnotationContextProps } from '../interfaces';
 import { AnnotationPopover } from './annotation-popover';
 import AnnotationTrigger from './annotation-trigger';

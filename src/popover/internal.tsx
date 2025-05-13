@@ -3,10 +3,11 @@
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { Portal } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
-import Portal from '../internal/components/portal';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';

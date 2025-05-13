@@ -5,10 +5,10 @@ import fs from 'fs';
 import path from 'path';
 
 import { SplitPanelContextProvider } from '../../lib/components/internal/context/split-panel-context';
+import definitions from '../../lib/components-definitions/components';
 import { defaultSplitPanelContextProps } from './required-props-for-components';
 
 const componentsDir = path.resolve(__dirname, '../../lib/components');
-const definitionsDir = path.resolve(__dirname, '../../lib/components-definitions/components');
 const designTokensDir = path.resolve(__dirname, '../../lib/design-tokens');
 
 export function getAllComponents(): string[] {
@@ -67,9 +67,8 @@ export function requireComponent(componentName: string): any {
   return require(path.join(componentsDir, componentName));
 }
 
-export function requireComponentDefinition(componentName: string): any {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  return require(path.join(definitionsDir, componentName));
+export function requireComponentDefinition(componentName: string) {
+  return definitions[componentName];
 }
 
 export function requireDesignTokensFile(fileName: string): any {

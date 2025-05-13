@@ -1101,6 +1101,7 @@ Map {
       "preferencesPositionSide": undefined,
       "preferencesTitle": undefined,
       "resizeHandleAriaLabel": undefined,
+      "resizeHandleTooltipText": undefined,
     },
   },
   [Function] => {
@@ -2565,6 +2566,7 @@ Map {
       "preferencesPositionSide": undefined,
       "preferencesTitle": undefined,
       "resizeHandleAriaLabel": undefined,
+      "resizeHandleTooltipText": undefined,
     },
   },
   [Function] => {
