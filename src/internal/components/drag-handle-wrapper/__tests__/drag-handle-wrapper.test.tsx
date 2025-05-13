@@ -30,7 +30,7 @@ function getDirectionButton(direction: Direction) {
 }
 
 function expectDirectionButtonHidden(direction: Direction) {
-  // This kicks off an exit transition which doesn't end in JSDOM, so we just listen
+  // Direction buttons get hidden via transition which doesn't end in JSDOM, so we just listen
   // for the exiting classname instead.
   const motionExitingClass = styles['direction-button-wrapper-motion-exiting'];
   expect(getDirectionButton(direction)?.parentElement).toHaveClass(motionExitingClass);
