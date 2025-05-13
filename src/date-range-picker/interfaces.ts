@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { CalendarProps } from '../calendar/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
@@ -119,17 +120,13 @@ export interface DateRangePickerBaseProps {
    * Default: the user's current time offset as provided by the browser.
    */
   getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction;
-  /**
-   * Specifies the granularity at which users will be able to select a date range.
-   * Defaults to `day`.
-   */
-  granularity?: DateRangePickerProps.Granularity;
 }
 export interface DateRangePickerProps
   extends BaseComponentProps,
     FormFieldValidationControlProps,
     ExpandToViewport,
-    DateRangePickerBaseProps {
+    DateRangePickerBaseProps,
+    Pick<CalendarProps, 'granularity'> {
   /**
    * Specifies the placeholder text that is rendered when the value is empty.
    */
@@ -517,8 +514,6 @@ export namespace DateRangePickerProps {
   }
 
   export type AbsoluteFormat = 'iso' | 'long-localized';
-
-  export type Granularity = 'day' | 'month';
 }
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;

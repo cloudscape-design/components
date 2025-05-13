@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { CalendarProps } from '../../../calendar/interfaces';
 import { DateRangePickerProps, DayIndex } from '../../interfaces';
 
 export interface GridBaseProps {
@@ -16,7 +17,7 @@ export interface GridBaseProps {
   locale: string;
 }
 
-export interface GridProps extends GridBaseProps {
+export interface GridProps extends GridBaseProps, Required<Pick<CalendarProps, 'granularity'>> {
   rangeStartDate: Date | null;
   rangeEndDate: Date | null;
   focusedDateRef: React.RefObject<HTMLTableCellElement>;
@@ -33,10 +34,9 @@ export interface GridProps extends GridBaseProps {
   currentMonthAriaLabel?: string;
   startOfWeek?: DayIndex;
   todayAriaLabel?: string;
-  granularity: DateRangePickerProps.Granularity;
 }
 
-export interface SelectGridProps extends GridBaseProps {
+export interface SelectGridProps extends GridBaseProps, Pick<CalendarProps, 'granularity'> {
   /**
    * changes the page/view of the calendar. Doing so will change to another month or year
    * @param date
@@ -51,7 +51,6 @@ export interface SelectGridProps extends GridBaseProps {
    * not needed for grids with a month granularity
    */
   startOfWeek?: DayIndex;
-  granularity?: DateRangePickerProps.Granularity;
   todayAriaLabel?: string;
   currentMonthAriaLabel?: string;
 }

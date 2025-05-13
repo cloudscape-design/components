@@ -16,6 +16,7 @@ import {
   startOfYear,
 } from 'date-fns';
 
+import { CalendarProps } from '../../calendar/interfaces';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import { getBaseDay } from '../../calendar/utils/navigation-day';
 import { getBaseMonth } from '../../calendar/utils/navigation-month';
@@ -37,7 +38,7 @@ import { findDateToFocus, findMonthToDisplay, findMonthToFocus, findYearToDispla
 import styles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
-export interface DateRangePickerCalendarProps extends BaseComponentProps {
+export interface DateRangePickerCalendarProps extends BaseComponentProps, Pick<CalendarProps, 'granularity'> {
   value: DateRangePickerProps.PendingAbsoluteValue;
   setValue: React.Dispatch<React.SetStateAction<DateRangePickerProps.PendingAbsoluteValue>>;
   locale?: string;
@@ -48,7 +49,6 @@ export interface DateRangePickerCalendarProps extends BaseComponentProps {
   dateOnly?: boolean;
   timeInputFormat?: TimeInputProps.Format;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
-  granularity?: DateRangePickerProps.Granularity;
 }
 
 export default function DateRangePickerCalendar({

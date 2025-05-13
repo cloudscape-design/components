@@ -7979,10 +7979,10 @@ Default: the user's current time offset as provided by the browser.",
     },
     {
       "defaultValue": "'day'",
-      "description": "Specifies the granularity at which users will be able to select a date range.
+      "description": "Specifies the granularity at which users will be able to select a date.
 Defaults to \`day\`.",
       "inlineType": {
-        "name": "DateRangePickerProps.Granularity",
+        "name": "CalendarProps.Granularity",
         "type": "union",
         "values": [
           "day",
