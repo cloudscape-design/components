@@ -105,7 +105,6 @@ $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsu
     > .global-drawer-wrapper {
       display: grid;
       min-inline-size: var(#{custom-props.$drawerSize});
-      inline-size: var(#{custom-props.$drawerSize});
       grid-template-columns: $global-drawer-gap-size awsui.$space-m 1fr;
       overflow: hidden;
 
