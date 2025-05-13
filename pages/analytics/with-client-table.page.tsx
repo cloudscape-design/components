@@ -11,6 +11,7 @@ import {
   Header,
   Pagination,
   Table,
+  TableProps,
   TextFilter,
 } from '~components';
 
@@ -32,6 +33,7 @@ const allItems = generateItems();
 export default function TablePage() {
   useFunnelLogger();
 
+  const [selectedItems, setSelectedItems] = useState<TableProps['selectedItems']>([]);
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>(defaultPreferences);
   const { items, actions, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(
     allItems,
@@ -61,11 +63,13 @@ export default function TablePage() {
     <>
       <Table<Instance>
         {...collectionProps}
+        selectionType="multi"
         header={
           <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
             Instances
           </Header>
         }
+        selectedItems={selectedItems}
         columnDefinitions={columnsConfig}
         items={items}
         pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} openEnd={true} />}
@@ -99,6 +103,7 @@ export default function TablePage() {
           />
         }
         stickyHeader={true}
+        onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
       />
     </>
   );

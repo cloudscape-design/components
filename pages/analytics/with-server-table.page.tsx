@@ -13,6 +13,7 @@ import {
   Pagination,
   SpaceBetween,
   Table,
+  TableProps,
   TextFilter,
 } from '~components';
 
@@ -54,6 +55,7 @@ function useLoading() {
 export default function TablePage() {
   useFunnelLogger();
 
+  const [selectedItems, setSelectedItems] = useState<TableProps['selectedItems']>([]);
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>(defaultPreferences);
   const { loading, load } = useLoading();
 
@@ -88,9 +90,11 @@ export default function TablePage() {
           Refresh the table without user interaction
         </Button>
         <Table<Instance>
-          analyticsMetadata={{ instanceIdentifier: 'the-instances-table' }}
-          variant="full-page"
           {...collectionProps}
+          analyticsMetadata={{ instanceIdentifier: 'the-instances-table' }}
+          selectionType="single"
+          variant="full-page"
+          selectedItems={selectedItems}
           onSortingChange={e => {
             collectionProps.onSortingChange!(e);
             load();
@@ -150,6 +154,7 @@ export default function TablePage() {
             />
           }
           stickyHeader={true}
+          onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
         />
       </SpaceBetween>
     </Box>
