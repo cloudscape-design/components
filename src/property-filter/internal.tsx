@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
@@ -188,15 +188,11 @@ const PropertyFilterInternal = React.forwardRef(
     })();
 
     const tableComponentContext = useTableComponentsContext();
-
-    useEffect(() => {
-      if (tableComponentContext?.filterRef?.current) {
-        const tokens = tokenGroupToTokens<InternalToken>(internalQuery.tokens);
-        tableComponentContext.filterRef.current.filteredBy = tokens
-          .map(token => token.property?.propertyKey)
-          .filter(propertyKey => propertyKey !== null && propertyKey !== undefined);
-      }
-    }, [internalQuery.tokens, tableComponentContext?.filterRef]);
+    if (tableComponentContext?.filterRef?.current) {
+      tableComponentContext.filterRef.current.filteredBy = tokenGroupToTokens<InternalToken>(internalQuery.tokens)
+        .map(token => token.property?.propertyKey)
+        .filter((propertyKey): propertyKey is string => typeof propertyKey === 'string');
+    }
 
     const { addToken, updateToken, updateOperation, removeToken, removeAllTokens } = getQueryActions({
       query: internalQuery,

@@ -16,7 +16,12 @@ import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-compon
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { FilterRef, PaginationRef, TableComponentsContextProvider } from '../internal/context/table-component-context';
+import {
+  FilterRef,
+  PaginationRef,
+  PreferencesRef,
+  TableComponentsContextProvider,
+} from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -188,6 +193,7 @@ const InternalTable = React.forwardRef(
     const { cancelEdit, ...cellEditing } = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
     const paginationRef = useRef<PaginationRef>({});
     const filterRef = useRef<FilterRef>({});
+    const preferencesRef = useRef<PreferencesRef>({});
     /* istanbul ignore next: performance marks do not work in JSDOM */
     const getHeaderText = () =>
       toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
@@ -229,6 +235,7 @@ const InternalTable = React.forwardRef(
     const getComponentConfiguration = () => {
       const filterData = filterRef.current;
       const paginationData = paginationRef.current;
+      const preferencesData = preferencesRef.current;
 
       return {
         variant,
@@ -242,14 +249,20 @@ const InternalTable = React.forwardRef(
         },
         filtered: Boolean(filterData?.filterText) || (filterData?.filteredBy && filterData?.filteredBy?.length > 0),
         filteredBy: filterData?.filteredBy,
-        currentPageIndex: paginationData.currentPageIndex,
-        totalPageCount: paginationData.totalPageCount,
-        resourcesPerPage: allRows?.length || 0,
-        resourcesSelected: selectedItems?.length > 0,
+        tablePreferences: {
+          visibleColumns: preferencesData.visibleColumns,
+          resourcesPerPage: preferencesData.pageSize,
+        },
         totalNumberOfResources:
-          allRows?.length > 0 && paginationData.totalPageCount
+          (allRows?.length || preferencesData.pageSize || 0) > 0 && paginationData.totalPageCount
             ? allRows.length * paginationData.totalPageCount
             : undefined,
+        pagination: {
+          currentPageIndex: paginationData.currentPageIndex,
+          totalNumberOfPages: paginationData.openEnd ? null : paginationData.totalPageCount,
+          openEnd: Boolean(paginationData.openEnd),
+        },
+        resourcesSelected: selectedItems?.length > 0,
       };
     };
 
@@ -417,7 +430,7 @@ const InternalTable = React.forwardRef(
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <TableComponentsContextProvider value={{ paginationRef, filterRef }}>
+        <TableComponentsContextProvider value={{ paginationRef, filterRef, preferencesRef }}>
           <ColumnWidthsProvider
             visibleColumns={visibleColumnWidthsWithSelection}
             resizableColumns={resizableColumns}

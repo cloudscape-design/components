@@ -24,6 +24,7 @@ describe('Verify TableComponentsContext', () => {
             current: { totalPageCount: 10, currentPageIndex: 1 },
           },
           filterRef: { current: { filterText: 'test' } },
+          preferencesRef: { current: {} },
         }}
       >
         <ChildComponent />
@@ -60,6 +61,7 @@ describe('Verify TableComponentsContext', () => {
             current: { totalPageCount: 10, currentPageIndex: 1 },
           },
           filterRef: { current: { filterText: 'test' } },
+          preferencesRef: { current: {} },
         }}
       >
         <ChildComponent />

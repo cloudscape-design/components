@@ -68,7 +68,7 @@ export default function TablePage() {
         }
         columnDefinitions={columnsConfig}
         items={items}
-        pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
+        pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} openEnd={true} />}
         filter={
           <TextFilter
             {...filterProps!}
