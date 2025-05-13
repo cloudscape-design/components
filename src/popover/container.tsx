@@ -115,7 +115,9 @@ export default function PopoverContainer({
       }
 
       // Continuously update the popover position for one second to account for any layout changes
-      // and animations. This runs only while the CPU is otherwise idle.
+      // and animations. On browsers where `requestIdleCallback` is supported,
+      // this runs only while the CPU is otherwise idle. In other browsers (mainly Safari), we call it
+      // with a low frequency.
       const targetTime = performance.now() + 1_000;
 
       while (performance.now() < targetTime) {
@@ -124,7 +126,12 @@ export default function PopoverContainer({
         }
 
         updatePositionHandler();
-        await new Promise(r => requestIdleCallback(r));
+
+        if (typeof requestIdleCallback !== 'undefined') {
+          await new Promise(r => requestIdleCallback(r));
+        } else {
+          await new Promise(r => setTimeout(r, 50));
+        }
       }
     };
 
