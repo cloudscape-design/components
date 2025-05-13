@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
@@ -10,6 +10,7 @@ import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import TokenList from '../internal/components/token-list';
+import { useTableComponentsContext } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
@@ -44,6 +45,7 @@ import { PropertyEditorContentCustom, PropertyEditorContentEnum, PropertyEditorF
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import { TokenButton } from './token';
 import { useLoadItems } from './use-load-items';
+import { tokenGroupToTokens } from './utils';
 
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -184,6 +186,17 @@ const PropertyFilterInternal = React.forwardRef(
 
       return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery, internalFreeText };
     })();
+
+    const tableComponentContext = useTableComponentsContext();
+
+    useEffect(() => {
+      if (tableComponentContext?.filterRef?.current) {
+        const tokens = tokenGroupToTokens<InternalToken>(internalQuery.tokens);
+        tableComponentContext.filterRef.current.filteredBy = tokens
+          .map(token => token.property?.propertyKey)
+          .filter(propertyKey => propertyKey !== null && propertyKey !== undefined);
+      }
+    }, [internalQuery.tokens, tableComponentContext?.filterRef]);
 
     const { addToken, updateToken, updateOperation, removeToken, removeAllTokens } = getQueryActions({
       query: internalQuery,

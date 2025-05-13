@@ -89,15 +89,6 @@ export function useTableInteractionMetrics<T>({
         instanceIdentifier,
         noOfResourcesInTable: metadata.current.itemCount,
       });
-
-      if (!isInFunnel) {
-        ComponentMetrics.componentUpdated({
-          taskInteractionId,
-          componentName: 'table',
-          actionType: capturedUserAction.current ?? '',
-          componentConfiguration: metadata.current.getComponentConfiguration(),
-        });
-      }
     }
   }, [instanceIdentifier, loading, taskInteractionId, isInFunnel]);
 
@@ -105,18 +96,18 @@ export function useTableInteractionMetrics<T>({
     ComponentMetrics.componentUpdated({
       taskInteractionId,
       componentName: 'table',
-      actionType: capturedUserAction.current ?? '',
+      actionType: lastUserAction.current?.name ?? '',
       componentConfiguration: metadata.current.getComponentConfiguration(),
     });
   });
 
   useEffectOnUpdate(() => {
-    if (isInFunnel) {
+    if (isInFunnel || loading) {
       return;
     }
 
     debouncedUpdated();
-  }, [taskInteractionId, isInFunnel, items, debouncedUpdated]);
+  }, [taskInteractionId, isInFunnel, loading, items, debouncedUpdated]);
 
   return {
     tableInteractionAttributes,
