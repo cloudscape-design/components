@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { useComponentMetadata, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
 
 import { ActionsWrapper } from '../alert/actions-wrapper';
 import { InternalButton } from '../button/internal';
@@ -15,7 +16,6 @@ import {
 } from '../internal/analytics/selectors';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { PACKAGE_VERSION } from '../internal/environment';
-import { transformAnalyticsMetadata } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development';
@@ -122,8 +122,7 @@ export const Flash = React.forwardRef(
 
     const [containerWidth, containerMeasureRef] = useContainerWidth();
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const elementRef = useComponentMetadata('Flash', PACKAGE_VERSION, transformAnalyticsMetadata(analyticsMetadata));
+    const elementRef = useComponentMetadata('Flash', PACKAGE_VERSION, analyticsMetadata as AnalyticsMetadata);
 
     const mergedRef = useMergeRefs(ref, elementRef, containerMeasureRef);
     const flashIconId = useUniqueId('flash-icon');

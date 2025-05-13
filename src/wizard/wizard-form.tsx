@@ -4,6 +4,7 @@ import React, { MutableRefObject, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useComponentMetadata } from '@cloudscape-design/component-toolkit/internal';
+import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
 
 import InternalForm from '../form/internal';
 import InternalHeader from '../header/internal';
@@ -18,7 +19,7 @@ import {
 } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { PACKAGE_VERSION } from '../internal/environment';
-import { InternalBaseComponentProps, transformAnalyticsMetadata } from '../internal/hooks/use-base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { WizardProps } from './interfaces';
@@ -49,9 +50,7 @@ export default function WizardFormWithAnalytics(props: WizardFormProps) {
     props.steps[props.activeStepIndex] as BasePropsWithAnalyticsMetadata
   );
 
-  const metadata = transformAnalyticsMetadata(analyticsMetadata);
-
-  const __internalRootRef = useComponentMetadata('WizardForm', PACKAGE_VERSION, { ...metadata });
+  const __internalRootRef = useComponentMetadata('WizardForm', PACKAGE_VERSION, analyticsMetadata as AnalyticsMetadata);
   const stepHeaderRef = useRef<HTMLDivElement | null>(null);
 
   useEffectOnUpdate(() => {
