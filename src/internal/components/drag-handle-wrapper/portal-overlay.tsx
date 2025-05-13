@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import {
   getIsRtl,
@@ -21,6 +21,16 @@ export default function PortalOverlay({
   children: React.ReactNode;
 }) {
   const ref = useRef<HTMLSpanElement | null>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+
+  useLayoutEffect(() => {
+    if (track) {
+      const newContainer = track.ownerDocument.createElement('div');
+      track.ownerDocument.documentElement.appendChild(newContainer);
+      setContainer(newContainer);
+      return () => newContainer.remove();
+    }
+  }, [track]);
 
   useEffect(() => {
     if (track === null || isDisabled) {
@@ -37,6 +47,7 @@ export default function PortalOverlay({
       if (ref.current && document.body.contains(ref.current)) {
         const isRtl = getIsRtl(ref.current);
         const { insetInlineStart, insetBlockStart, inlineSize, blockSize } = getLogicalBoundingClientRect(track);
+
         // For simplicity, we just make all our calculations independent of
         // the browser's scrolling edge. When it comes to applying the changes,
         // translate is independent of writing direction, so we need to invert
@@ -71,7 +82,7 @@ export default function PortalOverlay({
   }
 
   return (
-    <Portal>
+    <Portal container={container}>
       <span ref={ref} className={styles['portal-overlay']}>
         <span className={styles['portal-overlay-contents']}>{children}</span>
       </span>
