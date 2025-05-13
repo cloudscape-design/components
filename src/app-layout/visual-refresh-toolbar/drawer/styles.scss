@@ -21,13 +21,14 @@
 
 $global-drawer-gap-size: 8px;
 $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsui.$motion-easing-refresh-only-a};
+$drawer-resize-handle-size: awsui.$space-m;
 
 .drawer {
   position: sticky;
   z-index: constants.$drawer-z-index;
   background-color: awsui.$color-background-container-content;
   display: grid;
-  grid-template-columns: awsui.$space-m 1fr;
+  grid-template-columns: $drawer-resize-handle-size 1fr;
   inline-size: var(#{custom-props.$drawerSize});
 
   block-size: 100%;
@@ -56,17 +57,10 @@ $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsu
   }
 
   &.drawer-global {
-    @include desktop-only {
-      padding-inline-start: 10px;
+    display: block;
 
-      &:before {
-        content: '';
-        position: absolute;
-        block-size: 100%;
-        inline-size: $global-drawer-gap-size;
-        background: awsui.$color-gap-global-drawer;
-        border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
-      }
+    @include desktop-only {
+      inline-size: var(#{custom-props.$drawerSize});
     }
 
     @include mobile-only {
@@ -87,14 +81,35 @@ $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsu
       border-inline-start: none;
 
       &.has-next-siblings {
-        &:after {
-          content: '';
-          position: absolute;
+        > .global-drawer-wrapper {
+          &:after {
+            content: '';
+            position: absolute;
+            block-size: 100%;
+            inline-size: $global-drawer-gap-size;
+            inset-inline-end: 0;
+            background: awsui.$color-gap-global-drawer;
+            border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+            box-sizing: border-box;
+          }
+        }
+      }
+
+      > .global-drawer-wrapper {
+        inline-size: 100%;
+        grid-template-columns: $global-drawer-gap-size 1fr;
+
+        > .drawer-content-container {
+          grid-column: 2;
+        }
+
+        > .drawer-gap {
+          grid-column: 1;
+          grid-row: 1;
           block-size: 100%;
           inline-size: $global-drawer-gap-size;
-          inset-inline-end: 0;
           background: awsui.$color-gap-global-drawer;
-          border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+          border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
         }
       }
     }
@@ -104,9 +119,10 @@ $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsu
     grid-column: 1 / span 2;
     grid-row: 1;
     display: grid;
-    grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
+    grid-template-columns: $drawer-resize-handle-size 1fr auto $drawer-resize-handle-size;
     grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 1fr;
     overflow-y: auto;
+    min-inline-size: var(#{custom-props.$drawerSize});
 
     > .drawer-close-button {
       grid-column: 3;
@@ -139,5 +155,66 @@ $global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsu
     block-size: 100%;
     display: flex;
     align-items: center;
+  }
+
+  > .global-drawer-wrapper {
+    display: grid;
+    min-inline-size: var(#{custom-props.$drawerSize});
+    grid-template-columns: $global-drawer-gap-size $drawer-resize-handle-size 1fr;
+    overflow: hidden;
+
+    @include mobile-only {
+      grid-template-columns: 1fr;
+    }
+
+    > .drawer-gap {
+      grid-column: 1;
+      grid-row: 1;
+      block-size: 100%;
+      inline-size: $global-drawer-gap-size;
+      background: awsui.$color-gap-global-drawer;
+      border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    }
+
+    > .drawer-slider {
+      grid-column: 2;
+      grid-row: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    > .drawer-content-container {
+      grid-column: 2 / span 2;
+      grid-row: 1;
+      display: grid;
+      grid-template-columns: $drawer-resize-handle-size 1fr auto $drawer-resize-handle-size;
+      grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 1fr;
+      overflow-y: auto;
+
+      > .drawer-close-button {
+        grid-column: 3;
+        grid-row: 2;
+        z-index: 1;
+        align-self: start;
+      }
+
+      > .drawer-expanded-mode-button {
+        grid-column: 2;
+        grid-row: 2;
+        z-index: 1;
+        align-self: start;
+        display: flex;
+        justify-content: end;
+      }
+
+      > .drawer-content {
+        grid-column: 1 / span 4;
+        grid-row: 1 / span 2;
+
+        &.drawer-content-hidden {
+          display: none;
+        }
+      }
+    }
   }
 }

@@ -158,8 +158,7 @@ awsuiPlugins.appLayout.registerDrawer({
 
   trigger: {
     iconSvg: `<svg viewBox="0 0 16 16" focusable="false" aria-hidden="true" role="presentation">
-<path stroke-width="2" stroke="currentColor" fill="none"  d="M13.8131 1H6.55C6.51852 1 6.48889 1.01482 6.47 1.04L2.12 6.84C2.07056 6.90592 2.1176 7 2.2 7H6.32902C6.4055 7 6.45367 7.08237 6.41617 7.14903L2.19647 14.6507C2.1454 14.7415 2.24981 14.8401 2.33753 14.784L14.2121 7.18423C14.2963 7.13037 14.2582 7 14.1582 7H10.1869C10.107 7 10.0593 6.91099 10.1036 6.84453L13.8964 1.15547C13.9407 1.08901 13.893 1 13.8131 1Z" />
-</svg>
+<path d="M11.5 1H6L2 9.5H6.4L7.4 15L14 6.26923L9 6.26923L11.5 1Z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/></svg>
 `,
   },
 
