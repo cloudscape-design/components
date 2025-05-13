@@ -13,6 +13,7 @@ import AppLayout from '../../../lib/components/app-layout';
 
 import classicStyles from '../../../lib/components/app-layout/styles.selectors.js';
 import refreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
+import refreshToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.selectors.js';
 
 const globalWithFlags = globalThis as any;
 
@@ -35,11 +36,11 @@ test('should render refresh-toolbar app layout with the widget flag', () => {
   globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
   globalWithFlags[Symbol.for('awsui-global-flags')] = { appLayoutWidget: true };
   const content = renderToStaticMarkup(<AppLayout />);
-  expect(content).toBe('<div></div>');
+  expect(content).toContain(refreshToolbarStyles.root);
 });
 test('should render refresh-toolbar app layout with the toolbar flag', () => {
   globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
   globalWithFlags[Symbol.for('awsui-global-flags')] = { appLayoutToolbar: true };
   const content = renderToStaticMarkup(<AppLayout />);
-  expect(content).toBe('<div></div>');
+  expect(content).toContain(refreshToolbarStyles.root);
 });

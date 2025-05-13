@@ -29,7 +29,7 @@ export const AppLayoutSkeletonTopSlot = createWidgetizedAppLayoutTopPageSlot(
 export const AppLayoutSkeletonSideSlot = createWidgetizedAppLayoutSidePageSlot();
 export const AppLayoutSkeletonTopContentSlot = createWidgetizedAppLayoutTopPageContentSlot();
 export const AppLayoutSkeletonBottomContentSlot = createWidgetizedAppLayoutBottomPageContentSlot();
-export const AppLayoutState = createWidgetizedAppLayoutState(
+export const AppLayoutWidgetizedState = createWidgetizedAppLayoutState(
   createAppLayoutPart({ Component: AppLayoutStateImplementation })
 );
 

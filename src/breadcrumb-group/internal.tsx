@@ -8,8 +8,8 @@ export const InternalBreadcrumbGroup = createWidgetizedBreadcrumbGroup(
   createAppLayoutPart({ Component: BreadcrumbGroupImplementation })
 );
 
-const enableDelayedComponents = true;
-const enableSyncComponents = false;
+const enableDelayedComponents = false;
+const enableSyncComponents = true;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createAppLayoutPart({ Component }: { Component: React.JSXElementConstructor<any> }) {
