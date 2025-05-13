@@ -159,9 +159,11 @@ test('restores content and header', async () => {
 
 describe('runReplacer arguments', () => {
   const runReplacer = jest.fn();
+  const initialCheck = jest.fn();
   beforeEach(() => {
     const plugin: AlertFlashContentConfig = {
       id: 'test-content',
+      initialCheck,
       runReplacer,
     };
     awsuiPlugins.flashContent.registerContentReplacer(plugin);
@@ -188,6 +190,18 @@ describe('runReplacer arguments', () => {
   test('type - custom', () => {
     render(<Flashbar items={[{ type: 'error' }]} />);
     expect(runReplacer.mock.lastCall[0].type).toBe('error');
+  });
+
+  test('persists instanceId between initial check and runtime replacement', () => {
+    const { rerender } = render(<Flashbar key={1} items={[{ content: 'Something' }]} />);
+    const initialId = initialCheck.mock.lastCall[0].instanceId;
+    expect(initialId).toEqual(expect.any(String));
+    expect(initialId).toEqual(runReplacer.mock.lastCall[0].instanceId);
+    initialCheck.mockClear();
+    runReplacer.mockClear();
+    rerender(<Flashbar key={2} items={[{ content: 'Something' }]} />);
+    expect(initialId).not.toEqual(initialCheck.mock.lastCall[0].instanceId);
+    expect(initialCheck.mock.lastCall[0].instanceId).toEqual(runReplacer.mock.lastCall[0].instanceId);
   });
 });
 

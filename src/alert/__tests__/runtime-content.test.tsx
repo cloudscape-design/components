@@ -171,9 +171,11 @@ test('removes styling if replacement is explicitly empty', () => {
 
 describe('runReplacer arguments', () => {
   const runReplacer = jest.fn();
+  const initialCheck = jest.fn();
   beforeEach(() => {
     const plugin: AlertFlashContentConfig = {
       id: 'test-content',
+      initialCheck,
       runReplacer,
     };
     awsuiPlugins.alertContent.registerContentReplacer(plugin);
@@ -194,6 +196,18 @@ describe('runReplacer arguments', () => {
   test('type - custom', () => {
     render(<Alert type="error" />);
     expect(runReplacer.mock.lastCall[0].type).toBe('error');
+  });
+
+  test('persists instanceId between initial check and runtime replacement', () => {
+    const { rerender } = render(<Alert key={1}>Alert content</Alert>);
+    const initialId = initialCheck.mock.lastCall[0].instanceId;
+    expect(initialId).toEqual(expect.any(String));
+    expect(initialId).toEqual(runReplacer.mock.lastCall[0].instanceId);
+    initialCheck.mockClear();
+    runReplacer.mockClear();
+    rerender(<Alert key={2}>Alert content</Alert>);
+    expect(initialId).not.toEqual(initialCheck.mock.lastCall[0].instanceId);
+    expect(initialCheck.mock.lastCall[0].instanceId).toEqual(runReplacer.mock.lastCall[0].instanceId);
   });
 });
 
