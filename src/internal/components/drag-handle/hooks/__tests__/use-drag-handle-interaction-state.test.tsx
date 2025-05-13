@@ -307,6 +307,17 @@ describe('Drag Handle Hooks', () => {
         const nextState = calculateNextState(state, action);
         expect(nextState.state).toBe('uap-action-start');
       });
+
+      test('should not change state on non-Enter/non-Escape key press in uap-action-end state', () => {
+        const state: DragHandleInteractionState = { state: 'uap-action-end' };
+        const action: Action = {
+          type: 'KEY_DOWN',
+          payload: { key: 'A' },
+        };
+
+        const nextState = calculateNextState(state, action);
+        expect(nextState).toBe(state);
+      });
     });
 
     describe('getCallbacksForTransition', () => {
@@ -764,6 +775,49 @@ describe('Drag Handle Hooks', () => {
         expect(ref.current?.interaction.state).toBeNull();
       });
 
+      test('should ignore non-Enter/Escape key presses in a non-null state', () => {
+        const ref = React.createRef<TestComponentRef>();
+        render(<TestComponent ref={ref} />);
+
+        act(() => {
+          ref.current?.dispatchAction({
+            type: 'POINTER_DOWN',
+            payload: { nativeEvent: createPointerEvent('pointerdown') },
+          });
+        });
+        expect(ref.current?.interaction.state).toBe('dnd-start');
+
+        // Dispatch a non-Enter/Escape key press
+        act(() => {
+          ref.current?.dispatchAction({
+            type: 'KEY_DOWN',
+            payload: { key: 'A' },
+          });
+        });
+        expect(ref.current?.interaction.state).toBe('dnd-start');
+      });
+
+      test('should ignore blur event in non-uap-action-start state', () => {
+        const ref = React.createRef<TestComponentRef>();
+        render(<TestComponent ref={ref} />);
+
+        // First set state to dnd-start
+        act(() => {
+          ref.current?.dispatchAction({
+            type: 'POINTER_DOWN',
+            payload: { nativeEvent: createPointerEvent('pointerdown') },
+          });
+        });
+        expect(ref.current?.interaction.state).toBe('dnd-start');
+
+        // Then dispatch a blur event
+        act(() => {
+          ref.current?.dispatchAction({ type: 'BLUR' });
+        });
+        // State should remain unchanged
+        expect(ref.current?.interaction.state).toBe('dnd-start');
+      });
+
       test('should handle RESET_TO_IDLE action directly', () => {
         const state: DragHandleInteractionState = { state: 'uap-action-end' };
         const action: Action = { type: 'RESET_TO_IDLE' };
@@ -837,6 +891,21 @@ describe('Drag Handle Hooks', () => {
         expect(ref.current?.interaction.state).toBe('dnd-active');
         expect(ref.current?.interaction.eventData).not.toBe(initialEventData);
         expect(ref.current?.interaction.eventData).toBe(newEventData);
+      });
+
+      test('should not update state when event data is the same', () => {
+        const mockEvent = createPointerEvent('pointermove');
+        const state: DragHandleInteractionState = {
+          state: 'dnd-active',
+          eventData: mockEvent,
+        };
+
+        const result = calculateNextState(state, {
+          type: 'POINTER_MOVE',
+          payload: { nativeEvent: mockEvent },
+        });
+        expect(result.state).toBe('dnd-active');
+        expect(result.eventData).toBe(mockEvent);
       });
     });
 
