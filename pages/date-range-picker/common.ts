@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { CalendarProps } from '~components/calendar';
 import { DateRangePickerProps } from '~components/date-range-picker';
 
 import { AppContextType } from '../app/app-context';
@@ -187,7 +188,7 @@ export function generateRelativeOptions(dateOnly: boolean, monthOnly: boolean) {
   return relativeOptions;
 }
 
-export const isValid = (granularity: DateRangePickerProps.Granularity) => {
+export const isValid = (granularity: CalendarProps.Granularity) => {
   const errorMessages = {
     durationBetweenOneAndTwenty: 'The amount part of the range needs to be between 1 and 20.',
     durationMissing: 'You need to provide a duration.',

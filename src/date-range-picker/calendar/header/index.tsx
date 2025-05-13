@@ -4,16 +4,16 @@ import React from 'react';
 import clsx from 'clsx';
 import { add } from 'date-fns';
 
+import { CalendarProps } from '../../../calendar/interfaces';
 import { renderMonthAndYear, renderYear } from '../../../calendar/utils/intl';
 import { useInternalI18n } from '../../../i18n/context.js';
 import InternalLiveRegion from '../../../live-region/internal';
-import { DateRangePickerProps } from '../../interfaces';
 import { NextPageButton, PrevPageButton } from './header-button';
 
 import styles from '../../styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
 
-interface CalendarHeaderProps {
+interface CalendarHeaderProps extends Pick<CalendarProps, 'granularity'> {
   baseDate: Date;
   locale: string;
   onChangePage: (n: number) => void;
@@ -21,7 +21,6 @@ interface CalendarHeaderProps {
   nextPageLabel?: string;
   isSingleGrid: boolean;
   headingIdPrefix: string;
-  granularity?: DateRangePickerProps.Granularity;
 }
 
 export default function CalendarHeader({
