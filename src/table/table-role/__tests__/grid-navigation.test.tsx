@@ -210,7 +210,7 @@ test('throws no error when focusing on incorrect target', () => {
               <td aria-colindex={2}>cell-1-2</td>
               <td aria-colindex={3}>cell-1-3</td>
             </tr>
-            <svg>
+            <svg focusable="false">
               <g tabIndex={0}>graphic</g>
             </svg>
           </tbody>

@@ -23,7 +23,7 @@ afterEach(() => {
   (warnOnce as jest.Mock).mockReset();
 });
 
-export const I18N_STRINGS: TopNavigationProps.I18nStrings = {
+const I18N_STRINGS: TopNavigationProps.I18nStrings = {
   searchIconAriaLabel: 'Search',
   searchDismissIconAriaLabel: 'Close search',
   overflowMenuTriggerText: 'More',

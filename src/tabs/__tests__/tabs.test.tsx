@@ -784,6 +784,7 @@ describe('Tabs', () => {
       expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
     });
 
+    // eslint-disable-next-line jest/no-done-callback
     test('prevents the default anchor behaviour when clicked', done => {
       expect.assertions(1);
       const wrapper = renderTabs(<Tabs tabs={defaultTabs} />).wrapper;
@@ -798,6 +799,7 @@ describe('Tabs', () => {
       wrapper.findTabLinkByIndex(2)!.click();
     });
 
+    // eslint-disable-next-line jest/no-done-callback
     test('does not prevent the default anchor behaviour when key modifier used', done => {
       const wrapper = renderTabs(<Tabs tabs={defaultTabs} />).wrapper;
 
@@ -811,6 +813,7 @@ describe('Tabs', () => {
       wrapper.findTabLinkByIndex(2)!.click({ ctrlKey: true });
     });
 
+    // eslint-disable-next-line jest/no-done-callback
     test('prevents the default anchor behaviour when key modifier used, but no href provided', done => {
       const wrapper = renderTabs(<Tabs tabs={defaultTabs} />).wrapper;
       const callback = (event: MouseEvent) => {

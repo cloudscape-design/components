@@ -188,6 +188,7 @@ test('automatically detects correct annotation when switching pages', () => {
   }
 });
 
+// eslint-disable-next-line jest/no-done-callback
 test('does not run into an endless loop in (un)registerHotspot when toggling Hotspot components in the DOM', done => {
   const ToggleExample = () => {
     const [isFirstHotspotVisible, setIsFirstHotspotVisible] = useState(true);

@@ -74,7 +74,7 @@ class AsyncDropdownPage extends BasePageObject {
   async reject() {
     await this.browser.execute(() => {
       const response = window.__pendingRequests.shift();
-      response && response.reject(new Error('Mock response failure'));
+      response?.reject(new Error('Mock response failure'));
     });
   }
 }

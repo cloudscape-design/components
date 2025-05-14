@@ -45,7 +45,9 @@ export const useAutosuggestLoadMore = ({
   };
 
   const fireLoadMoreOnScroll = () => {
-    options.length > 0 && statusType === 'pending' && fireLoadMore({ firstPage: false, samePage: false });
+    if (options.length > 0 && statusType === 'pending') {
+      fireLoadMore({ firstPage: false, samePage: false });
+    }
   };
 
   const fireLoadMoreOnRecoveryClick = () => fireLoadMore({ firstPage: false, samePage: true });

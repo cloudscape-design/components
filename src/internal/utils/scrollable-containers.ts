@@ -15,7 +15,9 @@ export const getOverflowParents = (element: HTMLElement): HTMLElement[] => {
   let node: HTMLElement | null = element;
 
   while ((node = node.parentElement) && node !== element.ownerDocument.body) {
-    getComputedStyle(node).overflow !== 'visible' && parents.push(node);
+    if (getComputedStyle(node).overflow !== 'visible') {
+      parents.push(node);
+    }
   }
   return parents;
 };
