@@ -44,6 +44,7 @@ export type Action<T = void> =
   | { type: 'POINTER_DOWN'; payload: PointerDownActionPayload<T> }
   | { type: 'POINTER_MOVE'; payload: DefaultActionPayload }
   | { type: 'POINTER_UP'; payload: DefaultActionPayload }
+  | { type: 'POINTER_CANCEL' }
   | { type: 'KEY_DOWN'; payload: KeyDownActionPayload<T> }
   | { type: 'FOCUS' }
   | { type: 'BLUR' }

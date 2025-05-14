@@ -26,6 +26,7 @@ const TestComponent = React.forwardRef((props: TestComponentProps, ref: React.Re
     processPointerDown,
     processPointerMove,
     processPointerUp,
+    processPointerCancel,
     processKeyDown,
     processFocus,
     processBlur,
@@ -44,6 +45,9 @@ const TestComponent = React.forwardRef((props: TestComponentProps, ref: React.Re
           break;
         case 'POINTER_UP':
           processPointerUp(action.payload.nativeEvent);
+          break;
+        case 'POINTER_CANCEL':
+          processPointerCancel();
           break;
         case 'KEY_DOWN':
           processKeyDown({ key: action.payload.key } as React.KeyboardEvent, action.payload.metadata);
@@ -65,6 +69,7 @@ const TestComponent = React.forwardRef((props: TestComponentProps, ref: React.Re
       onPointerDown={e => processPointerDown(e.nativeEvent, undefined)}
       onPointerMove={e => processPointerMove(e.nativeEvent)}
       onPointerUp={e => processPointerUp(e.nativeEvent)}
+      onPointerCancel={processPointerCancel}
       onKeyDown={processKeyDown}
       onFocus={processFocus}
       onBlur={processBlur}
@@ -140,6 +145,19 @@ describe('Drag Handle Hooks', () => {
         expect(nextState.eventData).toBe(moveEvent);
       });
 
+      test('should transition from dnd-start to dnd-end on POINTER_CANCEL', () => {
+        const state: DragHandleInteractionState = {
+          value: 'dnd-start',
+          eventData: mockPointerEvent,
+        };
+        const action: Action = {
+          type: 'POINTER_CANCEL',
+        };
+
+        const nextState = calculateNextState(state, action);
+        expect(nextState.value).toBe('dnd-end');
+      });
+
       test('should stay in dnd-active on POINTER_MOVE', () => {
         const state: DragHandleInteractionState = {
           value: 'dnd-active',
@@ -184,6 +202,19 @@ describe('Drag Handle Hooks', () => {
         const nextState = calculateNextState(state, action);
         expect(nextState.value).toBe('dnd-end');
         expect(nextState.eventData).toBe(mockPointerEvent);
+      });
+
+      test('should transition from dnd-active to dnd-end on POINTER_CANCEL', () => {
+        const state: DragHandleInteractionState = {
+          value: 'dnd-active',
+          eventData: mockPointerEvent,
+        };
+        const action: Action = {
+          type: 'POINTER_CANCEL',
+        };
+
+        const nextState = calculateNextState(state, action);
+        expect(nextState.value).toBe('dnd-end');
       });
 
       test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)(
@@ -249,7 +280,7 @@ describe('Drag Handle Hooks', () => {
         expect(nextState).toBe(state);
       });
 
-      test('should return state on unknown action type', () => {
+      test('should throw an error on unknown action type', () => {
         const state: DragHandleInteractionState = { value: 'uap-action-start' };
         const action: Action = { type: 'UNKNOWN' as any };
 
@@ -427,6 +458,26 @@ describe('Drag Handle Hooks', () => {
         expect(ref.current?.interaction.value).toBe('dnd-active');
       });
 
+      test('should handle pointer cancel event after pointer down', () => {
+        const ref = React.createRef<TestComponentRef>();
+        render(<TestComponent ref={ref} />);
+
+        act(() => {
+          ref.current?.dispatchAction({
+            type: 'POINTER_DOWN',
+            payload: { nativeEvent: createPointerEvent('pointerdown') },
+          });
+        });
+        expect(ref.current?.interaction.value).toBe('dnd-start');
+
+        act(() => {
+          ref.current?.dispatchAction({
+            type: 'POINTER_CANCEL',
+          });
+        });
+        expect(ref.current?.interaction.value).toBe('dnd-end');
+      });
+
       test('should handle pointer up event after pointer down', () => {
         const ref = React.createRef<TestComponentRef>();
         render(<TestComponent ref={ref} />);
@@ -472,6 +523,34 @@ describe('Drag Handle Hooks', () => {
           ref.current?.dispatchAction({
             type: 'POINTER_UP',
             payload: { nativeEvent: createPointerEvent('pointerup') },
+          });
+        });
+        expect(ref.current?.interaction.value).toBe('dnd-end');
+      });
+
+      test('should handle pointer cancel event after pointer move', () => {
+        const ref = React.createRef<TestComponentRef>();
+        render(<TestComponent ref={ref} />);
+
+        act(() => {
+          ref.current?.dispatchAction({
+            type: 'POINTER_DOWN',
+            payload: { nativeEvent: createPointerEvent('pointerdown') },
+          });
+        });
+        expect(ref.current?.interaction.value).toBe('dnd-start');
+
+        act(() => {
+          ref.current?.dispatchAction({
+            type: 'POINTER_MOVE',
+            payload: { nativeEvent: createPointerEvent('pointermove') },
+          });
+        });
+        expect(ref.current?.interaction.value).toBe('dnd-active');
+
+        act(() => {
+          ref.current?.dispatchAction({
+            type: 'POINTER_CANCEL',
           });
         });
         expect(ref.current?.interaction.value).toBe('dnd-end');

@@ -57,6 +57,15 @@ export function calculateNextState<T = void>(
       return state;
     }
 
+    case 'POINTER_CANCEL': {
+      if (state.value === 'dnd-start' || state.value === 'dnd-active') {
+        return {
+          value: 'dnd-end',
+        };
+      }
+      return state;
+    }
+
     case 'KEY_DOWN': {
       const { key, metadata } = action.payload;
 
@@ -290,6 +299,11 @@ export default function useDragHandleInteractionState<T = void>(
       dispatch({
         type: 'POINTER_UP',
         payload: { nativeEvent: event },
+      });
+    },
+    processPointerCancel: () => {
+      dispatch({
+        type: 'POINTER_CANCEL',
       });
     },
     processKeyDown: (event: React.KeyboardEvent<Element>, metadata?: T) => {

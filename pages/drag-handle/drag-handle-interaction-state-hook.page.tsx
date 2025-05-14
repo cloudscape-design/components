@@ -63,6 +63,13 @@ const TestBoardItemButton: React.FC = () => {
     window.removeEventListener('pointerup', handleGlobalPointerUp);
   };
 
+  const handlePointerCancel = () => {
+    hook.processPointerCancel();
+    // Clean up global listeners after interaction ends
+    window.removeEventListener('pointermove', handleGlobalPointerMove);
+    window.removeEventListener('pointerup', handleGlobalPointerUp);
+  };
+
   const handleOnPointerDown = (event: PointerEvent) => {
     hook.processPointerDown(event, { operation: 'drag' });
     if (urlParams.renderInPortal) {
@@ -78,6 +85,7 @@ const TestBoardItemButton: React.FC = () => {
     <button
       ref={buttonRef}
       onPointerDown={e => handleOnPointerDown(e.nativeEvent)}
+      onPointerCancel={handlePointerCancel}
       onKeyDown={e => hook.processKeyDown(e, { operation: 'resize' })}
       onFocus={hook.processFocus}
       onBlur={hook.processBlur}
@@ -108,7 +116,7 @@ const TestBoardItemButton: React.FC = () => {
 
         <Container>
           <Box variant="pre">
-            <p>Current State: {String(hook.interaction.state) || 'null'}</p>
+            <p>Current State: {String(hook.interaction.value) || 'null'}</p>
             <p>Metadata: {JSON.stringify(hook.interaction.metadata)}</p>
             <p>
               DnD Event Coords:{' '}
