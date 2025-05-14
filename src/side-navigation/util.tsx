@@ -47,7 +47,6 @@ export function checkDuplicateHrefs(items: ReadonlyArray<SideNavigationProps.Ite
   const queue = items.slice();
   while (queue.length > 0) {
     // We just checked that there's items in the queue.
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const item = queue.shift()!;
 
     // Check duplicated hrefs

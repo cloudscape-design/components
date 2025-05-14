@@ -10,7 +10,6 @@ import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { ariaLabels, Item } from './shared-configs';
 
-/* eslint-disable react/jsx-key */
 const permutations = createPermutations<TableProps<Item>>([
   {
     selectionType: ['single', undefined],
@@ -33,7 +32,6 @@ const permutations = createPermutations<TableProps<Item>>([
     ],
   },
 ]);
-/* eslint-enable react/jsx-key */
 
 export default function () {
   return (

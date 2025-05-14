@@ -221,8 +221,6 @@ const InternalLink = React.forwardRef(
     }
 
     return (
-      // we dynamically set proper rel in the code above
-      // eslint-disable-next-line react/jsx-no-target-blank
       <a
         {...sharedProps}
         tabIndex={tabIndex}

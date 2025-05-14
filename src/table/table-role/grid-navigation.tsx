@@ -39,7 +39,9 @@ export function GridNavigationProvider({ keyboardNavigation, pageSize, getTable,
   useEffect(() => {
     if (keyboardNavigation) {
       const table = getTableStable();
-      table && gridNavigation.init(table);
+      if (table) {
+        gridNavigation.init(table);
+      }
     }
     return () => gridNavigation.cleanup();
   }, [keyboardNavigation, gridNavigation, getTableStable]);
@@ -245,7 +247,7 @@ class GridNavigationProcessor {
     const from = this.focusedCell;
     event.preventDefault();
 
-    isEventLike(event) &&
+    if (isEventLike(event)) {
       handleKey(event, {
         onBlockStart: () => this.moveFocusBy(from, { y: -1, x: 0 }),
         onBlockEnd: () => this.moveFocusBy(from, { y: 1, x: 0 }),
@@ -262,6 +264,7 @@ class GridNavigationProcessor {
             ? this.moveFocusBy(from, { y: Infinity, x: Infinity })
             : this.moveFocusBy(from, { y: 0, x: Infinity }),
       });
+    }
   };
 
   private moveFocusBy(cell: FocusedCell, delta: { x: number; y: number }) {

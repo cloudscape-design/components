@@ -61,8 +61,6 @@ export default function InternalTopNavigation({
       <Wrapper
         ref={isVirtual ? virtualRef : ref}
         aria-hidden={isVirtual ? true : undefined}
-        // False positive, "Wrapper" is either a "div" or a "header"
-        // eslint-disable-next-line react/forbid-component-props
         className={clsx(styles['top-navigation'], {
           [styles.hidden]: isVirtual,
           [styles.narrow]: isNarrowViewport,
