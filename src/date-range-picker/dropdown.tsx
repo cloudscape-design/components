@@ -8,6 +8,7 @@ import InternalAlert from '../alert/internal';
 import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
+import { CalendarProps } from '../calendar/interfaces';
 import { useInternalI18n } from '../i18n/context';
 import FocusLock from '../internal/components/focus-lock';
 import InternalLiveRegion, { InternalLiveRegionRef } from '../live-region/internal';
@@ -47,13 +48,13 @@ interface DateRangePickerDropdownProps
       | 'i18nStrings'
       | 'customRelativeRangeUnits'
       | 'dateDisabledReason'
-    > {
+    >,
+    Pick<CalendarProps, 'granularity'> {
   onClear: () => void;
   onApply: (value: null | DateRangePickerProps.Value) => DateRangePickerProps.ValidationResult;
   onDropdownClose: () => void;
   isSingleGrid: boolean;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
-  granularity?: DateRangePickerProps.Granularity;
 }
 
 export function DateRangePickerDropdown({

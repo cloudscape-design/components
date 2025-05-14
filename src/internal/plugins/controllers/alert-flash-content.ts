@@ -12,12 +12,14 @@ interface RefShim<T> {
 }
 
 interface AlertFlashContentContext {
+  instanceId: string;
   type: string;
   headerRef: RefShim<HTMLElement>;
   contentRef: RefShim<HTMLElement>;
 }
 
 interface AlertFlashContentInitialContext {
+  instanceId: string;
   type: string;
   header?: ReactNode;
   content?: ReactNode;
