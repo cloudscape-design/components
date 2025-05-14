@@ -51,6 +51,7 @@ const InternalTextFilter = React.forwardRef(
     const tableComponentContext = useTableComponentsContext();
     if (tableComponentContext?.filterRef?.current) {
       tableComponentContext.filterRef.current.filterText = filteringText;
+      tableComponentContext.filterRef.current.countText = countText;
     }
 
     useDebounceSearchResultCallback({

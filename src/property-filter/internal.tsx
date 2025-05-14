@@ -189,6 +189,7 @@ const PropertyFilterInternal = React.forwardRef(
 
     const tableComponentContext = useTableComponentsContext();
     if (tableComponentContext?.filterRef?.current) {
+      tableComponentContext.filterRef.current.countText = countText;
       tableComponentContext.filterRef.current.filteredBy = tokenGroupToTokens<InternalToken>(internalQuery.tokens)
         .map(token => token.property?.propertyKey)
         .filter((propertyKey): propertyKey is string => typeof propertyKey === 'string');

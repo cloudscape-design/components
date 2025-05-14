@@ -236,6 +236,10 @@ const InternalTable = React.forwardRef(
       const filterData = filterRef.current;
       const paginationData = paginationRef.current;
       const preferencesData = preferencesRef.current;
+      const calculatedTotalNumberOfResources =
+        preferencesData?.pageSize && paginationData?.totalPageCount
+          ? preferencesData?.pageSize * paginationData?.totalPageCount
+          : allRows?.length;
 
       return {
         variant,
@@ -253,10 +257,8 @@ const InternalTable = React.forwardRef(
           visibleColumns: preferencesData.visibleColumns,
           resourcesPerPage: preferencesData.pageSize,
         },
-        totalNumberOfResources:
-          (allRows?.length || preferencesData.pageSize || 0) > 0 && paginationData.totalPageCount
-            ? allRows.length * paginationData.totalPageCount
-            : undefined,
+        totalNumberOfResourcesText: filterRef.current?.countText,
+        estimatedTotalNumberOfResources: calculatedTotalNumberOfResources,
         pagination: {
           currentPageIndex: paginationData.currentPageIndex,
           totalNumberOfPages: paginationData.openEnd ? null : paginationData.totalPageCount,
