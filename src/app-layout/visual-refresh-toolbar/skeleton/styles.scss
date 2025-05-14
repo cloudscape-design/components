@@ -41,7 +41,10 @@
     'toolbar    toolbar     toolbar'
     '.       notifications  .'
     '.           main       .';
-  grid-template-columns: awsui.$space-layout-content-horizontal minmax(0, 1fr) awsui.$space-layout-content-horizontal;
+  grid-template-columns:
+    awsui.$space-layout-content-horizontal
+    minmax(0, 1fr)
+    awsui.$space-layout-content-horizontal;
   grid-template-rows: min-content min-content 1fr;
 
   // desktop grid
@@ -51,11 +54,12 @@
       'navigation .         notifications    .         sideSplitPanel  tools    global-tools'
       'navigation .             main         .         sideSplitPanel  tools    global-tools';
     grid-template-columns:
-      min-content minmax(#{awsui.$space-layout-content-horizontal}, 1fr) minmax(
-        0,
-        var(#{custom-props.$maxContentWidth})
-      )
-      minmax(#{awsui.$space-layout-content-horizontal}, 1fr) min-content min-content;
+      min-content
+      minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
+      minmax(0, var(#{custom-props.$maxContentWidth}))
+      minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
+      min-content
+      min-content;
     grid-template-rows: min-content min-content 1fr min-content;
 
     &.has-adaptive-widths-default {
