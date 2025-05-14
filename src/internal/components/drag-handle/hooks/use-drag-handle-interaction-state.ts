@@ -21,7 +21,7 @@ export function calculateNextState<T = void>(
     case 'POINTER_DOWN': {
       const { nativeEvent, metadata } = action.payload;
       return {
-        state: 'dnd-start',
+        value: 'dnd-start',
         eventData: nativeEvent,
         metadata,
       };
@@ -29,10 +29,10 @@ export function calculateNextState<T = void>(
 
     case 'POINTER_MOVE': {
       const { nativeEvent } = action.payload;
-      if (state.state === 'dnd-start' || state.state === 'dnd-active') {
+      if (state.value === 'dnd-start' || state.value === 'dnd-active') {
         return {
           ...state,
-          state: 'dnd-active',
+          value: 'dnd-active',
           eventData: nativeEvent,
         };
       }
@@ -40,16 +40,16 @@ export function calculateNextState<T = void>(
     }
 
     case 'POINTER_UP': {
-      if (state.state === 'dnd-start' || state.state === 'dnd-active') {
-        const dndSubStateBeforeUp = state.state;
+      if (state.value === 'dnd-start' || state.value === 'dnd-active') {
+        const dndSubStateBeforeUp = state.value;
         if (dndSubStateBeforeUp === 'dnd-start') {
           return {
-            state: 'uap-action-start',
+            value: 'uap-action-start',
             metadata: state.metadata, // Preserve metadata when transitioning from dnd-start to uap-action-start
           };
         } else {
           return {
-            state: 'dnd-end',
+            value: 'dnd-end',
             eventData: state.eventData,
           };
         }
@@ -61,25 +61,25 @@ export function calculateNextState<T = void>(
       const { key, metadata } = action.payload;
 
       if (key === 'Enter' || key === ' ') {
-        if (state.state === null || state.state === 'uap-action-end' || state.state === 'dnd-end') {
+        if (state.value === null || state.value === 'uap-action-end' || state.value === 'dnd-end') {
           return {
-            state: 'uap-action-start',
+            value: 'uap-action-start',
             metadata,
           };
-        } else if (state.state === 'uap-action-start') {
+        } else if (state.value === 'uap-action-start') {
           return {
-            state: 'uap-action-end',
+            value: 'uap-action-end',
           };
-        } else if (state.state === 'dnd-start' || state.state === 'dnd-active') {
+        } else if (state.value === 'dnd-start' || state.value === 'dnd-active') {
           return {
-            state: 'uap-action-start',
+            value: 'uap-action-start',
             metadata,
           };
         }
       } else if (key === 'Escape') {
-        if (state.state === 'uap-action-start') {
+        if (state.value === 'uap-action-start') {
           return {
-            state: 'uap-action-end',
+            value: 'uap-action-end',
           };
         }
       }
@@ -90,17 +90,17 @@ export function calculateNextState<T = void>(
       return state;
 
     case 'BLUR':
-      if (state.state === 'uap-action-start') {
+      if (state.value === 'uap-action-start') {
         return {
-          state: 'uap-action-end',
+          value: 'uap-action-end',
         };
       }
       return state;
 
     case 'RESET_TO_IDLE':
-      if (state.state === 'uap-action-end' || state.state === 'dnd-end' || state.state === null) {
+      if (state.value === 'uap-action-end' || state.value === 'dnd-end' || state.value === null) {
         return {
-          state: null,
+          value: null,
         };
       }
       return state;
@@ -118,20 +118,20 @@ export function getCallbacksForTransition<T = void>(
 
   // Transitions from dnd-start or dnd-active to any other state
   if (
-    (prevState.state === 'dnd-start' || prevState.state === 'dnd-active') &&
-    nextState.state !== 'dnd-start' &&
-    nextState.state !== 'dnd-active'
+    (prevState.value === 'dnd-start' || prevState.value === 'dnd-active') &&
+    nextState.value !== 'dnd-start' &&
+    nextState.value !== 'dnd-active'
   ) {
     callbacks.push({ type: 'onDndEnd' });
   }
 
   // From uap-action-start to uap-action-end directly
-  if (prevState.state === 'uap-action-start' && nextState.state === 'uap-action-end') {
+  if (prevState.value === 'uap-action-start' && nextState.value === 'uap-action-end') {
     callbacks.push({ type: 'onUapActionEnd' });
   }
 
   // Transitions to dnd-start
-  if (nextState.state === 'dnd-start') {
+  if (nextState.value === 'dnd-start') {
     callbacks.push({
       type: 'onDndStart',
       payload: nextState.eventData!,
@@ -140,7 +140,7 @@ export function getCallbacksForTransition<T = void>(
   }
 
   // Transitions to dnd-active
-  if (nextState.state === 'dnd-active' && prevState.state === 'dnd-start') {
+  if (nextState.value === 'dnd-active' && prevState.value === 'dnd-start') {
     callbacks.push({
       type: 'onDndActive',
       payload: nextState.eventData!,
@@ -148,7 +148,7 @@ export function getCallbacksForTransition<T = void>(
   }
 
   // Transitions to uap-action-start
-  if (nextState.state === 'uap-action-start') {
+  if (nextState.value === 'uap-action-start') {
     callbacks.push({
       type: 'onUapActionStart',
       metadata: nextState.metadata,
@@ -188,9 +188,9 @@ function interactionReducer<T = void>(
 
   // Return current state if state didn't change
   const isDndState = (state: DragHandleInteractionState<T>) => {
-    return state.state === 'dnd-start' || state.state === 'dnd-active' || state.state === 'dnd-end';
+    return state.value === 'dnd-start' || state.value === 'dnd-active' || state.value === 'dnd-end';
   };
-  if (nextState.state === state.state) {
+  if (nextState.value === state.value) {
     if (isDndState(nextState) && isDndState(state)) {
       if (nextState.eventData === state.eventData) {
         return state;
@@ -210,8 +210,8 @@ function interactionReducer<T = void>(
 function useStateLogger<T = void>(state: DragHandleInteractionState<T>, isEnabled: boolean) {
   const prevStateRef = useRef<DragHandleInteractionState<T>>(state);
   useEffect(() => {
-    if (state.state !== prevStateRef.current.state && isEnabled) {
-      console.log(`State transition: ${prevStateRef.current.state} -> ${state.state}`, {
+    if (state.value !== prevStateRef.current.value && isEnabled) {
+      console.log(`State transition: ${prevStateRef.current.value} -> ${state.value}`, {
         prevState: prevStateRef.current,
         nextState: state,
       });
@@ -277,7 +277,7 @@ export default function useDragHandleInteractionState<T = void>(
   const propsRef = useRef<UseDragHandleInteractionStateProps<T>>(props);
   propsRef.current = props;
 
-  const [interaction, dispatch] = useReducer(interactionReducer<T>, { state: null } as DragHandleInteractionState<T>);
+  const [interaction, dispatch] = useReducer(interactionReducer<T>, { value: null } as DragHandleInteractionState<T>);
   useStateLogger(interaction, options.debug);
   useCallbackHandler(interaction.transitionCallbacks, propsRef.current, dispatch);
   return {

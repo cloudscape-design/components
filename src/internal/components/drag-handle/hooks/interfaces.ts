@@ -13,7 +13,7 @@ export type StateTransitionCallbacks<T = void> =
   | { type: 'onUapActionEnd' };
 
 export interface DragHandleInteractionState<T = void> {
-  state: InteractionState;
+  value: InteractionState;
   eventData?: PointerEvent; // Only relevant for dnd states
   metadata?: T;
   transitionCallbacks?: StateTransitionCallbacks<T>[];

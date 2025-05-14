@@ -115,20 +115,20 @@ describe('Drag Handle Hooks', () => {
       const mockPointerEvent = createPointerEvent('pointerdown');
 
       test('should transition from idle to dnd-start on POINTER_DOWN', () => {
-        const state: DragHandleInteractionState = { state: null };
+        const state: DragHandleInteractionState = { value: null };
         const action: Action = {
           type: 'POINTER_DOWN',
           payload: { nativeEvent: mockPointerEvent },
         };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('dnd-start');
+        expect(nextState.value).toBe('dnd-start');
         expect(nextState.eventData).toBe(mockPointerEvent);
       });
 
       test('should transition from dnd-start to dnd-active on POINTER_MOVE', () => {
         const state: DragHandleInteractionState = {
-          state: 'dnd-start',
+          value: 'dnd-start',
           eventData: mockPointerEvent,
         };
         const moveEvent = createPointerEvent('pointermove');
@@ -138,13 +138,13 @@ describe('Drag Handle Hooks', () => {
         };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('dnd-active');
+        expect(nextState.value).toBe('dnd-active');
         expect(nextState.eventData).toBe(moveEvent);
       });
 
       test('should stay in dnd-active on POINTER_MOVE', () => {
         const state: DragHandleInteractionState = {
-          state: 'dnd-active',
+          value: 'dnd-active',
           eventData: mockPointerEvent,
         };
         const moveEvent = createPointerEvent('pointermove');
@@ -154,13 +154,13 @@ describe('Drag Handle Hooks', () => {
         };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('dnd-active');
+        expect(nextState.value).toBe('dnd-active');
         expect(nextState.eventData).toBe(moveEvent);
       });
 
       test('should transition from dnd-start to uap-action-start on POINTER_UP', () => {
         const state: DragHandleInteractionState = {
-          state: 'dnd-start',
+          value: 'dnd-start',
           eventData: mockPointerEvent,
         };
         const action: Action = {
@@ -169,13 +169,13 @@ describe('Drag Handle Hooks', () => {
         };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('uap-action-start');
+        expect(nextState.value).toBe('uap-action-start');
         expect(nextState.eventData).toBeUndefined();
       });
 
       test('should transition from dnd-active to dnd-end on POINTER_UP', () => {
         const state: DragHandleInteractionState = {
-          state: 'dnd-active',
+          value: 'dnd-active',
           eventData: mockPointerEvent,
         };
         const action: Action = {
@@ -184,77 +184,77 @@ describe('Drag Handle Hooks', () => {
         };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('dnd-end');
+        expect(nextState.value).toBe('dnd-end');
         expect(nextState.eventData).toBe(mockPointerEvent);
       });
 
       test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)(
         'should transition to uap-action-start on "%s" key press from idle',
         key => {
-          const state: DragHandleInteractionState = { state: null };
+          const state: DragHandleInteractionState = { value: null };
           const action: Action = {
             type: 'KEY_DOWN',
             payload: { key },
           };
 
           const nextState = calculateNextState(state, action);
-          expect(nextState.state).toBe('uap-action-start');
+          expect(nextState.value).toBe('uap-action-start');
         }
       );
 
       test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)(
         'should transition from uap-action-start to uap-action-end on "%s" key press',
         key => {
-          const state: DragHandleInteractionState = { state: 'uap-action-start' };
+          const state: DragHandleInteractionState = { value: 'uap-action-start' };
           const action: Action = {
             type: 'KEY_DOWN',
             payload: { key },
           };
 
           const nextState = calculateNextState(state, action);
-          expect(nextState.state).toBe('uap-action-end');
+          expect(nextState.value).toBe('uap-action-end');
         }
       );
 
       test('should transition from uap-action-start to uap-action-end on Escape key press', () => {
-        const state: DragHandleInteractionState = { state: 'uap-action-start' };
+        const state: DragHandleInteractionState = { value: 'uap-action-start' };
         const action: Action = {
           type: 'KEY_DOWN',
           payload: { key: 'Escape' },
         };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('uap-action-end');
+        expect(nextState.value).toBe('uap-action-end');
       });
 
       test('should transition from uap-action-start to uap-action-end on BLUR', () => {
-        const state: DragHandleInteractionState = { state: 'uap-action-start' };
+        const state: DragHandleInteractionState = { value: 'uap-action-start' };
         const action: Action = { type: 'BLUR' };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('uap-action-end');
+        expect(nextState.value).toBe('uap-action-end');
       });
 
       test('should reset to idle on RESET_TO_IDLE from uap-action-end', () => {
-        const state: DragHandleInteractionState = { state: 'uap-action-end' };
+        const state: DragHandleInteractionState = { value: 'uap-action-end' };
         const action: Action = { type: 'RESET_TO_IDLE' };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe(null);
+        expect(nextState.value).toBe(null);
       });
 
       test('should reset to idle on RESET_TO_IDLE from dnd-end', () => {
-        const state: DragHandleInteractionState = { state: 'dnd-end' };
+        const state: DragHandleInteractionState = { value: 'dnd-end' };
         const action: Action = { type: 'RESET_TO_IDLE' };
 
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe(null);
+        expect(nextState.value).toBe(null);
       });
 
       test('should not reset to idle on RESET_TO_IDLE from active states', () => {
-        const dndStartState: DragHandleInteractionState = { state: 'dnd-start' };
-        const dndActiveState: DragHandleInteractionState = { state: 'dnd-active' };
-        const uapActionStartState: DragHandleInteractionState = { state: 'uap-action-start' };
+        const dndStartState: DragHandleInteractionState = { value: 'dnd-start' };
+        const dndActiveState: DragHandleInteractionState = { value: 'dnd-active' };
+        const uapActionStartState: DragHandleInteractionState = { value: 'uap-action-start' };
         const action: Action = { type: 'RESET_TO_IDLE' };
 
         expect(calculateNextState(dndStartState, action)).toBe(dndStartState);
@@ -263,15 +263,15 @@ describe('Drag Handle Hooks', () => {
       });
 
       test('should stay in idle on RESET_TO_IDLE', () => {
-        const idleState: DragHandleInteractionState = { state: null };
+        const idleState: DragHandleInteractionState = { value: null };
         const action: Action = { type: 'RESET_TO_IDLE' };
 
         const nextState = calculateNextState(idleState, action);
-        expect(nextState.state).toBeNull();
+        expect(nextState.value).toBeNull();
       });
 
       test('should return state on FOCUS action', () => {
-        const state: DragHandleInteractionState = { state: 'uap-action-start' };
+        const state: DragHandleInteractionState = { value: 'uap-action-start' };
         const action: Action = { type: 'FOCUS' };
 
         const nextState = calculateNextState(state, action);
@@ -279,7 +279,7 @@ describe('Drag Handle Hooks', () => {
       });
 
       test('should return state on FOCUS action with null state', () => {
-        const state: DragHandleInteractionState = { state: null };
+        const state: DragHandleInteractionState = { value: null };
         const action: Action = { type: 'FOCUS' };
 
         const nextState = calculateNextState(state, action);
@@ -287,7 +287,7 @@ describe('Drag Handle Hooks', () => {
       });
 
       test('should return state on unknown action type', () => {
-        const state: DragHandleInteractionState = { state: 'uap-action-start' };
+        const state: DragHandleInteractionState = { value: 'uap-action-start' };
         const action: Action = { type: 'UNKNOWN' as any };
 
         const nextState = calculateNextState(state, action);
@@ -297,33 +297,33 @@ describe('Drag Handle Hooks', () => {
       test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)(
         'should transition from dnd-start to uap-action-start on "%s" key press',
         key => {
-          const state: DragHandleInteractionState = { state: 'dnd-start' };
+          const state: DragHandleInteractionState = { value: 'dnd-start' };
           const action: Action = {
             type: 'KEY_DOWN',
             payload: { key },
           };
 
           const nextState = calculateNextState(state, action);
-          expect(nextState.state).toBe('uap-action-start');
+          expect(nextState.value).toBe('uap-action-start');
         }
       );
 
       test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)(
         'should transition from dnd-active to uap-action-start on "%s" key press',
         key => {
-          const state: DragHandleInteractionState = { state: 'dnd-active' };
+          const state: DragHandleInteractionState = { value: 'dnd-active' };
           const action: Action = {
             type: 'KEY_DOWN',
             payload: { key },
           };
 
           const nextState = calculateNextState(state, action);
-          expect(nextState.state).toBe('uap-action-start');
+          expect(nextState.value).toBe('uap-action-start');
         }
       );
 
       test('should not change state on non-Enter/non-Escape key press in uap-action-end state', () => {
-        const state: DragHandleInteractionState = { state: 'uap-action-end' };
+        const state: DragHandleInteractionState = { value: 'uap-action-end' };
         const action: Action = {
           type: 'KEY_DOWN',
           payload: { key: 'A' },
@@ -338,9 +338,9 @@ describe('Drag Handle Hooks', () => {
       const mockPointerEvent = createPointerEvent('pointerdown');
 
       test('should generate onDndStart callback for transition to dnd-start', () => {
-        const prevState: DragHandleInteractionState = { state: null };
+        const prevState: DragHandleInteractionState = { value: null };
         const nextState: DragHandleInteractionState = {
-          state: 'dnd-start',
+          value: 'dnd-start',
           eventData: mockPointerEvent,
         };
 
@@ -354,11 +354,11 @@ describe('Drag Handle Hooks', () => {
 
       test('should generate onDndActive callback for transition to dnd-active', () => {
         const prevState: DragHandleInteractionState = {
-          state: 'dnd-start',
+          value: 'dnd-start',
           eventData: mockPointerEvent,
         };
         const nextState: DragHandleInteractionState = {
-          state: 'dnd-active',
+          value: 'dnd-active',
           eventData: mockPointerEvent,
         };
 
@@ -372,11 +372,11 @@ describe('Drag Handle Hooks', () => {
 
       test('should generate onDndEnd callback for transition from dnd-active to dnd-end', () => {
         const prevState: DragHandleInteractionState = {
-          state: 'dnd-active',
+          value: 'dnd-active',
           eventData: mockPointerEvent,
         };
         const nextState: DragHandleInteractionState = {
-          state: 'dnd-end',
+          value: 'dnd-end',
           eventData: mockPointerEvent,
         };
 
@@ -386,8 +386,8 @@ describe('Drag Handle Hooks', () => {
       });
 
       test('should generate onUapActionStart callback for transition to uap-action-start', () => {
-        const prevState: DragHandleInteractionState = { state: null };
-        const nextState: DragHandleInteractionState = { state: 'uap-action-start' };
+        const prevState: DragHandleInteractionState = { value: null };
+        const nextState: DragHandleInteractionState = { value: 'uap-action-start' };
 
         const callbacks = getCallbacksForTransition(prevState, nextState);
         expect(callbacks).toHaveLength(1);
@@ -395,8 +395,8 @@ describe('Drag Handle Hooks', () => {
       });
 
       test('should generate onUapActionEnd callback for transition from uap-action-start to uap-action-end', () => {
-        const prevState: DragHandleInteractionState = { state: 'uap-action-start' };
-        const nextState: DragHandleInteractionState = { state: 'uap-action-end' };
+        const prevState: DragHandleInteractionState = { value: 'uap-action-start' };
+        const nextState: DragHandleInteractionState = { value: 'uap-action-end' };
 
         const callbacks = getCallbacksForTransition(prevState, nextState);
         expect(callbacks).toHaveLength(1);
@@ -405,10 +405,10 @@ describe('Drag Handle Hooks', () => {
 
       test('should generate multiple callbacks for complex transitions', () => {
         const prevState: DragHandleInteractionState = {
-          state: 'dnd-start',
+          value: 'dnd-start',
           eventData: mockPointerEvent,
         };
-        const nextState: DragHandleInteractionState = { state: 'uap-action-start' };
+        const nextState: DragHandleInteractionState = { value: 'uap-action-start' };
 
         const callbacks = getCallbacksForTransition(prevState, nextState);
         expect(callbacks).toHaveLength(2);
@@ -423,7 +423,7 @@ describe('Drag Handle Hooks', () => {
       test('should initialize with idle state', () => {
         const ref = React.createRef<TestComponentRef>();
         render(<TestComponent ref={ref} />);
-        expect(ref.current?.interaction.state).toBeNull();
+        expect(ref.current?.interaction.value).toBeNull();
       });
     });
 
@@ -438,7 +438,7 @@ describe('Drag Handle Hooks', () => {
             payload: { nativeEvent: createPointerEvent('pointerdown') },
           });
         });
-        expect(ref.current?.interaction.state).toBe('dnd-start');
+        expect(ref.current?.interaction.value).toBe('dnd-start');
       });
 
       test('should handle pointer move event after pointer down', () => {
@@ -451,7 +451,7 @@ describe('Drag Handle Hooks', () => {
             payload: { nativeEvent: createPointerEvent('pointerdown') },
           });
         });
-        expect(ref.current?.interaction.state).toBe('dnd-start');
+        expect(ref.current?.interaction.value).toBe('dnd-start');
 
         act(() => {
           ref.current?.dispatchAction({
@@ -459,7 +459,7 @@ describe('Drag Handle Hooks', () => {
             payload: { nativeEvent: createPointerEvent('pointermove') },
           });
         });
-        expect(ref.current?.interaction.state).toBe('dnd-active');
+        expect(ref.current?.interaction.value).toBe('dnd-active');
       });
 
       test('should handle pointer up event after pointer down', () => {
@@ -472,7 +472,7 @@ describe('Drag Handle Hooks', () => {
             payload: { nativeEvent: createPointerEvent('pointerdown') },
           });
         });
-        expect(ref.current?.interaction.state).toBe('dnd-start');
+        expect(ref.current?.interaction.value).toBe('dnd-start');
 
         act(() => {
           ref.current?.dispatchAction({
@@ -480,7 +480,7 @@ describe('Drag Handle Hooks', () => {
             payload: { nativeEvent: createPointerEvent('pointerup') },
           });
         });
-        expect(ref.current?.interaction.state).toBe('uap-action-start');
+        expect(ref.current?.interaction.value).toBe('uap-action-start');
       });
 
       test('should handle pointer up event after pointer move', () => {
@@ -493,7 +493,7 @@ describe('Drag Handle Hooks', () => {
             payload: { nativeEvent: createPointerEvent('pointerdown') },
           });
         });
-        expect(ref.current?.interaction.state).toBe('dnd-start');
+        expect(ref.current?.interaction.value).toBe('dnd-start');
 
         act(() => {
           ref.current?.dispatchAction({
@@ -501,7 +501,7 @@ describe('Drag Handle Hooks', () => {
             payload: { nativeEvent: createPointerEvent('pointermove') },
           });
         });
-        expect(ref.current?.interaction.state).toBe('dnd-active');
+        expect(ref.current?.interaction.value).toBe('dnd-active');
 
         act(() => {
           ref.current?.dispatchAction({
@@ -509,7 +509,7 @@ describe('Drag Handle Hooks', () => {
             payload: { nativeEvent: createPointerEvent('pointerup') },
           });
         });
-        expect(ref.current?.interaction.state).toBe('dnd-end');
+        expect(ref.current?.interaction.value).toBe('dnd-end');
       });
 
       test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)('should handle "%s" key press', key => {
@@ -518,7 +518,7 @@ describe('Drag Handle Hooks', () => {
         const element = getByTestId('drag-handle');
 
         fireEvent.keyDown(element, { key });
-        expect(ref.current?.interaction.state).toBe('uap-action-start');
+        expect(ref.current?.interaction.value).toBe('uap-action-start');
       });
 
       test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)(
@@ -529,10 +529,10 @@ describe('Drag Handle Hooks', () => {
           const element = getByTestId('drag-handle');
 
           fireEvent.keyDown(element, { key: key });
-          expect(ref.current?.interaction.state).toBe('uap-action-start');
+          expect(ref.current?.interaction.value).toBe('uap-action-start');
 
           fireEvent.keyDown(element, { key: key });
-          expect(ref.current?.interaction.state).toBe('uap-action-end');
+          expect(ref.current?.interaction.value).toBe('uap-action-end');
         }
       );
 
@@ -542,10 +542,10 @@ describe('Drag Handle Hooks', () => {
         const element = getByTestId('drag-handle');
 
         fireEvent.keyDown(element, { key: 'Enter' });
-        expect(ref.current?.interaction.state).toBe('uap-action-start');
+        expect(ref.current?.interaction.value).toBe('uap-action-start');
 
         fireEvent.keyDown(element, { key: 'Escape' });
-        expect(ref.current?.interaction.state).toBe('uap-action-end');
+        expect(ref.current?.interaction.value).toBe('uap-action-end');
       });
 
       test('should handle blur event in uap-action-start state', () => {
@@ -554,10 +554,10 @@ describe('Drag Handle Hooks', () => {
         const element = getByTestId('drag-handle');
 
         fireEvent.keyDown(element, { key: 'Enter' });
-        expect(ref.current?.interaction.state).toBe('uap-action-start');
+        expect(ref.current?.interaction.value).toBe('uap-action-start');
 
         fireEvent.blur(element);
-        expect(ref.current?.interaction.state).toBe('uap-action-end');
+        expect(ref.current?.interaction.value).toBe('uap-action-end');
       });
 
       test('should handle focus event', () => {
@@ -566,7 +566,7 @@ describe('Drag Handle Hooks', () => {
         const element = getByTestId('drag-handle');
 
         fireEvent.focus(element);
-        expect(ref.current?.interaction.state).toBeNull();
+        expect(ref.current?.interaction.value).toBeNull();
       });
     });
 
@@ -771,7 +771,7 @@ describe('Drag Handle Hooks', () => {
         const element = getByTestId('drag-handle');
 
         fireEvent.pointerMove(element);
-        expect(ref.current?.interaction.state).toBeNull();
+        expect(ref.current?.interaction.value).toBeNull();
       });
 
       test('should ignore pointer up when not in dnd state', () => {
@@ -780,7 +780,7 @@ describe('Drag Handle Hooks', () => {
         const element = getByTestId('drag-handle');
 
         fireEvent.pointerUp(element);
-        expect(ref.current?.interaction.state).toBeNull();
+        expect(ref.current?.interaction.value).toBeNull();
       });
 
       test('should ignore non-Enter/Escape key presses', () => {
@@ -789,7 +789,7 @@ describe('Drag Handle Hooks', () => {
         const element = getByTestId('drag-handle');
 
         fireEvent.keyDown(element, { key: 'A' });
-        expect(ref.current?.interaction.state).toBeNull();
+        expect(ref.current?.interaction.value).toBeNull();
       });
 
       test('should ignore non-Enter/Escape key presses in a non-null state', () => {
@@ -802,7 +802,7 @@ describe('Drag Handle Hooks', () => {
             payload: { nativeEvent: createPointerEvent('pointerdown') },
           });
         });
-        expect(ref.current?.interaction.state).toBe('dnd-start');
+        expect(ref.current?.interaction.value).toBe('dnd-start');
 
         // Dispatch a non-Enter/Escape key press
         act(() => {
@@ -811,7 +811,7 @@ describe('Drag Handle Hooks', () => {
             payload: { key: 'A' },
           });
         });
-        expect(ref.current?.interaction.state).toBe('dnd-start');
+        expect(ref.current?.interaction.value).toBe('dnd-start');
       });
 
       test('should ignore blur event in non-uap-action-start state', () => {
@@ -825,21 +825,21 @@ describe('Drag Handle Hooks', () => {
             payload: { nativeEvent: createPointerEvent('pointerdown') },
           });
         });
-        expect(ref.current?.interaction.state).toBe('dnd-start');
+        expect(ref.current?.interaction.value).toBe('dnd-start');
 
         // Then dispatch a blur event
         act(() => {
           ref.current?.dispatchAction({ type: 'BLUR' });
         });
         // State should remain unchanged
-        expect(ref.current?.interaction.state).toBe('dnd-start');
+        expect(ref.current?.interaction.value).toBe('dnd-start');
       });
 
       test('should handle RESET_TO_IDLE action directly', () => {
-        const state: DragHandleInteractionState = { state: 'uap-action-end' };
+        const state: DragHandleInteractionState = { value: 'uap-action-end' };
         const action: Action = { type: 'RESET_TO_IDLE' };
         const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBeNull();
+        expect(nextState.value).toBeNull();
       });
     });
 
@@ -856,7 +856,7 @@ describe('Drag Handle Hooks', () => {
             },
           });
         });
-        expect(ref.current?.interaction.state).toBe('dnd-start');
+        expect(ref.current?.interaction.value).toBe('dnd-start');
 
         act(() => {
           ref.current?.dispatchAction({
@@ -866,7 +866,7 @@ describe('Drag Handle Hooks', () => {
             },
           });
         });
-        expect(ref.current?.interaction.state).toBe('dnd-active');
+        expect(ref.current?.interaction.value).toBe('dnd-active');
       });
 
       test('should update event data without changing state', () => {
@@ -905,7 +905,7 @@ describe('Drag Handle Hooks', () => {
           });
         });
         // State should still be dnd-active and event data should be updated
-        expect(ref.current?.interaction.state).toBe('dnd-active');
+        expect(ref.current?.interaction.value).toBe('dnd-active');
         expect(ref.current?.interaction.eventData).not.toBe(initialEventData);
         expect(ref.current?.interaction.eventData).toBe(newEventData);
       });
@@ -913,7 +913,7 @@ describe('Drag Handle Hooks', () => {
       test('should not update state when event data is the same', () => {
         const mockEvent = createPointerEvent('pointermove');
         const state: DragHandleInteractionState = {
-          state: 'dnd-active',
+          value: 'dnd-active',
           eventData: mockEvent,
         };
 
@@ -921,7 +921,7 @@ describe('Drag Handle Hooks', () => {
           type: 'POINTER_MOVE',
           payload: { nativeEvent: mockEvent },
         });
-        expect(result.state).toBe('dnd-active');
+        expect(result.value).toBe('dnd-active');
         expect(result.eventData).toBe(mockEvent);
       });
     });
