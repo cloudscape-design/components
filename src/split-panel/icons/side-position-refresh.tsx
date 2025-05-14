@@ -41,7 +41,7 @@ const SidePanelRow = ({ offset }: SVGTableRowProps) => {
 const bottomPositionIcon = (
   <svg
     className={getClassName('svg')}
-    focusable={false}
+    focusable="false"
     viewBox="0 0 230 128"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"

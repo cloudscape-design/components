@@ -221,8 +221,6 @@ export default function AnnotationContext({
         return { ...availableHotspots, [id]: true } as const;
       });
     },
-    // We need to react on id2index changes for registering new hotspots when the map changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [id2index]
   );
 

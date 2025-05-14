@@ -32,7 +32,7 @@ function ApplicationController(
     (event: React.FocusEvent<SVGGElement>) => {
       if (focusTransitionRef.current === false) {
         setFocused(true);
-        onFocus && onFocus(event);
+        onFocus?.(event);
       } else {
         focusTransitionRef.current = false;
       }
@@ -44,7 +44,7 @@ function ApplicationController(
     (event: React.FocusEvent<SVGGElement>) => {
       if (focusTransitionRef.current === false) {
         setFocused(false);
-        onBlur && onBlur(event);
+        onBlur?.(event);
         // The application controller can only be focused programmatically.
         muteApplication(applicationRef.current!);
       }
@@ -101,7 +101,9 @@ function focusApplication(app: SVGGElement, target: null | SVGGElement) {
     for (const attributeName of target.getAttributeNames()) {
       if (attributeName === 'role' || attributeName.slice(0, 4) === 'aria') {
         const attributeValue = target.getAttribute(attributeName);
-        attributeValue && app.setAttribute(attributeName, attributeValue);
+        if (attributeValue) {
+          app.setAttribute(attributeName, attributeValue);
+        }
       }
     }
   }
