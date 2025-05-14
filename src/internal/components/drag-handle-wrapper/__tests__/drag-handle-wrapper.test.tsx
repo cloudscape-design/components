@@ -143,7 +143,7 @@ test("doesn't show direction buttons by default", () => {
   expect(getDirectionButton('block-end')).not.toBeInTheDocument();
 });
 
-describe('uapTriggerMode = focus (default)', () => {
+describe('triggerMode = focus (default)', () => {
   test('shows direction buttons when focus enters the button', () => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
@@ -174,11 +174,11 @@ describe('uapTriggerMode = focus (default)', () => {
   });
 });
 
-describe('uapTriggerMode = enter', () => {
+describe('triggerMode = keyboard-activate', () => {
   test('does not show direction buttons when focus enters the button', () => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
-      uapTriggerMode: 'enter',
+      triggerMode: 'keyboard-activate',
     });
 
     document.body.dataset.awsuiFocusVisible = 'true';
@@ -189,10 +189,10 @@ describe('uapTriggerMode = enter', () => {
     expect(getDirectionButton('inline-end')).toBeNull();
   });
 
-  test('show direction buttons when enter is pressed on the focused button', () => {
+  test.each(['Enter', ' '])('show direction buttons when "%s" key is pressed on the focused button', key => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
-      uapTriggerMode: 'enter',
+      triggerMode: 'keyboard-activate',
     });
 
     document.body.dataset.awsuiFocusVisible = 'true';
@@ -202,7 +202,7 @@ describe('uapTriggerMode = enter', () => {
     expect(getDirectionButton('inline-start')).not.toBeInTheDocument();
     expect(getDirectionButton('inline-end')).not.toBeInTheDocument();
 
-    fireEvent.keyDown(dragHandle, { key: 'Enter' });
+    fireEvent.keyDown(dragHandle, { key });
 
     expect(getDirectionButton('block-start')).toBeInTheDocument();
     expect(getDirectionButton('block-end')).toBeInTheDocument();
@@ -213,7 +213,7 @@ describe('uapTriggerMode = enter', () => {
   test('hides direction buttons when focus leaves the button', () => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
-      uapTriggerMode: 'enter',
+      triggerMode: 'keyboard-activate',
     });
 
     document.body.dataset.awsuiFocusVisible = 'true';
@@ -230,22 +230,22 @@ describe('uapTriggerMode = enter', () => {
     expectDirectionButtonHidden('block-end');
   });
 
-  test('hides direction buttons when toggling enter key', () => {
+  test.each(['Enter', ' '])('hides direction buttons when toggling "%s" key', key => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
-      uapTriggerMode: 'enter',
+      triggerMode: 'keyboard-activate',
     });
 
     document.body.dataset.awsuiFocusVisible = 'true';
 
-    fireEvent.keyDown(dragHandle, { key: 'Enter' });
+    fireEvent.keyDown(dragHandle, { key });
 
     expect(getDirectionButton('block-start')).toBeInTheDocument();
     expect(getDirectionButton('block-end')).toBeInTheDocument();
     expect(getDirectionButton('inline-start')).not.toBeInTheDocument();
     expect(getDirectionButton('inline-end')).not.toBeInTheDocument();
 
-    fireEvent.keyDown(dragHandle, { key: 'Enter' });
+    fireEvent.keyDown(dragHandle, { key });
 
     expectDirectionButtonHidden('block-start');
     expectDirectionButtonHidden('block-end');

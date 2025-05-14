@@ -3,12 +3,12 @@
 
 export type Direction = 'block-start' | 'block-end' | 'inline-start' | 'inline-end';
 export type DirectionState = 'active' | 'disabled';
-export type UapTriggerMode = 'focus' | 'enter';
+export type TriggerMode = 'focus' | 'keyboard-activate';
 
 export interface DragHandleWrapperProps {
   directions: Partial<Record<Direction, DirectionState>>;
   onDirectionClick?: (direction: Direction) => void;
   tooltipText?: string;
   children: React.ReactNode;
-  uapTriggerMode?: UapTriggerMode;
+  triggerMode?: TriggerMode;
 }

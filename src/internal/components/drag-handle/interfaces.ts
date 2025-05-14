@@ -4,7 +4,7 @@
 import {
   Direction as WrapperDirection,
   DirectionState as WrapperDirectionState,
-  UapTriggerMode,
+  TriggerMode,
 } from '../drag-handle-wrapper/interfaces';
 
 export interface DragHandleProps {
@@ -22,7 +22,7 @@ export interface DragHandleProps {
   tooltipText?: string;
   directions?: Partial<Record<DragHandleProps.Direction, DragHandleProps.DirectionState>>;
   onDirectionClick?: (direction: DragHandleProps.Direction) => void;
-  uapTriggerMode?: UapTriggerMode;
+  triggerMode?: TriggerMode;
 }
 
 export namespace DragHandleProps {

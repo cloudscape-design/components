@@ -25,7 +25,7 @@ export default function DragHandleWrapper({
   tooltipText,
   children,
   onDirectionClick,
-  uapTriggerMode = 'focus',
+  triggerMode = 'focus',
 }: DragHandleWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const dragHandleRef = useRef<HTMLDivElement | null>(null);
@@ -50,7 +50,7 @@ export default function DragHandleWrapper({
     // if the action that triggered the focus move was the result of a keypress.
     if (document.body.dataset.awsuiFocusVisible && !nodeContains(wrapperRef.current, event.relatedTarget)) {
       setShowTooltip(false);
-      if (uapTriggerMode === 'focus') {
+      if (triggerMode === 'focus') {
         setShowButtons(true);
       }
     }
@@ -154,8 +154,8 @@ export default function DragHandleWrapper({
     // the floating controls.
     if (event.key === 'Escape') {
       setShowButtons(false);
-    } else if (uapTriggerMode === 'enter' && event.key === 'Enter') {
-      // toggle buttons when Enter is pressed in controlled mode
+    } else if (triggerMode === 'keyboard-activate' && (event.key === 'Enter' || event.key === ' ')) {
+      // toggle buttons when Enter or space is pressed in 'keyboard-activate' triggerMode
       setShowButtons(prevShowButtons => !prevShowButtons);
     } else if (event.key !== 'Alt' && event.key !== 'Control' && event.key !== 'Meta' && event.key !== 'Shift') {
       // Pressing any other key will display the focus-visible ring around the
