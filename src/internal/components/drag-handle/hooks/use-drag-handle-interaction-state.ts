@@ -97,16 +97,8 @@ export function calculateNextState<T = void>(
       }
       return state;
 
-    case 'RESET_TO_IDLE':
-      if (state.value === 'uap-action-end' || state.value === 'dnd-end' || state.value === null) {
-        return {
-          value: null,
-        };
-      }
-      return state;
-
     default:
-      return state;
+      throw new Error(`The given action type [${action.type}] is not supported.`);
   }
 }
 

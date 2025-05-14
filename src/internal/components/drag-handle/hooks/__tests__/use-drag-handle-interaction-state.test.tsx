@@ -54,8 +54,6 @@ const TestComponent = React.forwardRef((props: TestComponentProps, ref: React.Re
         case 'BLUR':
           processBlur();
           break;
-        case 'RESET_TO_IDLE': // Handled by the reducer directly
-          break;
       }
     },
   }));
@@ -235,41 +233,6 @@ describe('Drag Handle Hooks', () => {
         expect(nextState.value).toBe('uap-action-end');
       });
 
-      test('should reset to idle on RESET_TO_IDLE from uap-action-end', () => {
-        const state: DragHandleInteractionState = { value: 'uap-action-end' };
-        const action: Action = { type: 'RESET_TO_IDLE' };
-
-        const nextState = calculateNextState(state, action);
-        expect(nextState.value).toBe(null);
-      });
-
-      test('should reset to idle on RESET_TO_IDLE from dnd-end', () => {
-        const state: DragHandleInteractionState = { value: 'dnd-end' };
-        const action: Action = { type: 'RESET_TO_IDLE' };
-
-        const nextState = calculateNextState(state, action);
-        expect(nextState.value).toBe(null);
-      });
-
-      test('should not reset to idle on RESET_TO_IDLE from active states', () => {
-        const dndStartState: DragHandleInteractionState = { value: 'dnd-start' };
-        const dndActiveState: DragHandleInteractionState = { value: 'dnd-active' };
-        const uapActionStartState: DragHandleInteractionState = { value: 'uap-action-start' };
-        const action: Action = { type: 'RESET_TO_IDLE' };
-
-        expect(calculateNextState(dndStartState, action)).toBe(dndStartState);
-        expect(calculateNextState(dndActiveState, action)).toBe(dndActiveState);
-        expect(calculateNextState(uapActionStartState, action)).toBe(uapActionStartState);
-      });
-
-      test('should stay in idle on RESET_TO_IDLE', () => {
-        const idleState: DragHandleInteractionState = { value: null };
-        const action: Action = { type: 'RESET_TO_IDLE' };
-
-        const nextState = calculateNextState(idleState, action);
-        expect(nextState.value).toBeNull();
-      });
-
       test('should return state on FOCUS action', () => {
         const state: DragHandleInteractionState = { value: 'uap-action-start' };
         const action: Action = { type: 'FOCUS' };
@@ -290,8 +253,10 @@ describe('Drag Handle Hooks', () => {
         const state: DragHandleInteractionState = { value: 'uap-action-start' };
         const action: Action = { type: 'UNKNOWN' as any };
 
-        const nextState = calculateNextState(state, action);
-        expect(nextState).toBe(state);
+        const nextState = () => {
+          calculateNextState(state, action);
+        };
+        expect(nextState).toThrow('The given action type [UNKNOWN] is not supported.');
       });
 
       test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)(
@@ -833,13 +798,6 @@ describe('Drag Handle Hooks', () => {
         });
         // State should remain unchanged
         expect(ref.current?.interaction.value).toBe('dnd-start');
-      });
-
-      test('should handle RESET_TO_IDLE action directly', () => {
-        const state: DragHandleInteractionState = { value: 'uap-action-end' };
-        const action: Action = { type: 'RESET_TO_IDLE' };
-        const nextState = calculateNextState(state, action);
-        expect(nextState.value).toBeNull();
       });
     });
 
