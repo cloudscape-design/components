@@ -17,7 +17,7 @@
 
   @each $variant in map.keys(constants.$link-variants) {
     &.variant-#{$variant} {
-      @if $variant == 'info' {
+      @if $variant == 'info' or $variant == 'top-navigation' {
         @include styles.font-smoothing;
       }
       @if $variant == 'secondary' {
