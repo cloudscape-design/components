@@ -44,10 +44,6 @@ const getMetadata = (label = 'Label') => {
   return metadata;
 };
 
-jest.mock('@cloudscape-design/component-toolkit', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit'),
-  useContainerQuery: () => [1300, () => {}],
-}));
 const globalWithFlags = globalThis as any;
 
 beforeEach(() => {
