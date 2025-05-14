@@ -258,7 +258,7 @@ const InternalTable = React.forwardRef(
           resourcesPerPage: preferencesData.pageSize,
         },
         totalNumberOfResourcesText: filterRef.current?.countText,
-        estimatedTotalNumberOfResources: calculatedTotalNumberOfResources,
+        totalNumberOfResources: calculatedTotalNumberOfResources,
         pagination: {
           currentPageIndex: paginationData.currentPageIndex,
           totalNumberOfPages: paginationData.openEnd ? null : paginationData.totalPageCount,
