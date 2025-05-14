@@ -105,6 +105,30 @@ describe('InlineEditor', () => {
     expect(handleEditEnd).toHaveBeenCalled();
   });
 
+  it('should not submit any wrapping forms', () => {
+    thereBeErrors = false;
+    const changeEvent = new Event('change', { bubbles: true });
+    const onSubmitSpy = jest.fn();
+    const { wrapper } = renderComponent(
+      <form onSubmit={onSubmitSpy}>
+        <TestComponent />
+      </form>
+    );
+
+    const input = wrapper.find('input')!.getElement();
+    fireEvent.click(input);
+
+    fireEvent(input, changeEvent);
+    fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
+
+    waitFor(() => {
+      expect(handleSubmitEdit).toHaveBeenCalled();
+      expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
+    });
+
+    expect(onSubmitSpy).not.toHaveBeenCalled();
+  });
+
   it('should handle failed submission', () => {
     thereBeErrors = false;
     const changeEvent = new Event('change', { bubbles: true });
