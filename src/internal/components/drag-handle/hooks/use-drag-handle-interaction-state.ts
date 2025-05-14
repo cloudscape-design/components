@@ -165,7 +165,7 @@ function interactionReducer<T = void>(
   if (action.type === 'CLEAR_CALLBACKS') {
     return {
       ...state,
-      pendingCallbacks: undefined,
+      transitionCallbacks: undefined,
     };
   }
 
@@ -182,7 +182,7 @@ function interactionReducer<T = void>(
 
     return {
       ...nextState,
-      pendingCallbacks: callbacks,
+      transitionCallbacks: callbacks,
     };
   }
 
@@ -203,7 +203,7 @@ function interactionReducer<T = void>(
   const callbacks = getCallbacksForTransition(state, nextState);
   return {
     ...nextState,
-    pendingCallbacks: callbacks.length > 0 ? callbacks : undefined,
+    transitionCallbacks: callbacks.length > 0 ? callbacks : undefined,
   };
 }
 
@@ -279,7 +279,7 @@ export default function useDragHandleInteractionState<T = void>(
 
   const [interaction, dispatch] = useReducer(interactionReducer<T>, { state: null } as DragHandleInteractionState<T>);
   useStateLogger(interaction, options.debug);
-  useCallbackHandler(interaction.pendingCallbacks, propsRef.current, dispatch);
+  useCallbackHandler(interaction.transitionCallbacks, propsRef.current, dispatch);
   return {
     interaction,
     processPointerDown: (event: PointerEvent, metadata?: T) => {

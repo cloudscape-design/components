@@ -16,7 +16,7 @@ export interface DragHandleInteractionState<T = void> {
   state: InteractionState;
   eventData?: PointerEvent; // Only relevant for dnd states
   metadata?: T;
-  pendingCallbacks?: StateTransitionCallbacks<T>[];
+  transitionCallbacks?: StateTransitionCallbacks<T>[];
 }
 
 export interface UseDragHandleInteractionStateProps<T = void> {
