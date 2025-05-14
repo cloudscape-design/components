@@ -124,9 +124,6 @@ function ChartPlot(
       setPlotFocused(true);
     }
   };
-  const onPlotClick = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-    onClick && onClick(event);
-  };
   const onPlotBlur = (event: React.FocusEvent<SVGSVGElement>) => {
     if (event.target === svgRef.current) {
       setPlotFocused(false);
@@ -144,13 +141,13 @@ function ChartPlot(
   };
 
   const onPlotApplicationFocus = (event: React.FocusEvent<SVGGElement>) => {
-    onApplicationFocus && onApplicationFocus(event, plotClickedRef.current ? 'mouse' : 'keyboard');
+    onApplicationFocus?.(event, plotClickedRef.current ? 'mouse' : 'keyboard');
     // "Release" the click reference to not affect the next call of this handler.
     plotClickedRef.current = false;
     setApplicationFocused(true);
   };
   const onPlotApplicationBlur = (event: React.FocusEvent<SVGGElement>) => {
-    onApplicationBlur && onApplicationBlur(event);
+    onApplicationBlur?.(event);
     setApplicationFocused(false);
   };
   const onApplicationKeyDown = onKeyDown;
@@ -190,7 +187,7 @@ function ChartPlot(
           [styles.precise]: isPrecise,
         })}
         onMouseDown={onPlotMouseDown}
-        onClick={onPlotClick}
+        onClick={onClick}
         onFocus={onPlotFocus}
         onBlur={onPlotBlur}
         onKeyDown={onPlotKeyDown}

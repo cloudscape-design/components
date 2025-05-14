@@ -41,6 +41,7 @@ export default function () {
           width={500}
           height={500}
           style={{ margin: '20px', transform: getIsRtl(document.body) ? 'scaleX(-1)' : '' }}
+          focusable="false"
         >
           {points.map(point => (
             <circle

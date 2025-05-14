@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-export default class ScrollSyncPage extends BasePageObject {
+class ScrollSyncPage extends BasePageObject {
   async assertNumberOfCalls(lessThan: number) {
     const str = await this.getElementAttribute('#numberOfCalls', 'data-call-number');
     await expect(parseInt(str)).toBeLessThan(lessThan);

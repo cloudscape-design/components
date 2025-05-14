@@ -9,7 +9,6 @@ import inputSelectors from '../../../input/styles.selectors.js';
 export default abstract class BaseInputWrapper extends ComponentWrapper {
   findNativeInput(): ElementWrapper<HTMLInputElement> {
     // Input component always have native input
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.find<HTMLInputElement>(`.${inputSelectors.input}`)!;
   }
 
