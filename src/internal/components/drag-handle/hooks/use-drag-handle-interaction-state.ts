@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { useCallback, useEffect, useReducer, useRef } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 
 import type {
   Action,
@@ -60,7 +60,7 @@ export function calculateNextState<T = void>(
     case 'KEY_DOWN': {
       const { key, metadata } = action.payload;
 
-      if (key === 'Enter') {
+      if (key === 'Enter' || key === ' ') {
         if (state.state === null || state.state === 'uap-action-end' || state.state === 'dnd-end') {
           return {
             state: 'uap-action-start',
@@ -253,62 +253,6 @@ function useCallbackHandler<T = void>(
   }, [pendingCallbacks, props, dispatch]);
 }
 
-function useEventHandlers<T = void>(dispatchParam: React.Dispatch<Action<T>>) {
-  // Use ref to maintain stable dispatch reference to avoid recreation on every re-render
-  const dispatchRef = useRef(dispatchParam);
-  useEffect(() => {
-    dispatchRef.current = dispatchParam;
-  }, [dispatchParam]);
-
-  const processPointerDown = useCallback((event: PointerEvent, metadata?: T) => {
-    dispatchRef.current({
-      type: 'POINTER_DOWN',
-      payload: { nativeEvent: event, metadata },
-    });
-  }, []);
-
-  const processPointerMove = useCallback((event: PointerEvent) => {
-    dispatchRef.current({
-      type: 'POINTER_MOVE',
-      payload: { nativeEvent: event },
-    });
-  }, []);
-
-  const processPointerUp = useCallback((event: PointerEvent) => {
-    dispatchRef.current({
-      type: 'POINTER_UP',
-      payload: { nativeEvent: event },
-    });
-  }, []);
-
-  const processKeyDown = useCallback((event: React.KeyboardEvent<Element>, metadata?: T) => {
-    const key = event.key;
-    if (key === 'Enter' || key === 'Escape') {
-      dispatchRef.current({
-        type: 'KEY_DOWN',
-        payload: { key, metadata },
-      });
-    }
-  }, []);
-
-  const processFocus = useCallback(() => {
-    dispatchRef.current({ type: 'FOCUS' });
-  }, []);
-
-  const processBlur = useCallback(() => {
-    dispatchRef.current({ type: 'BLUR' });
-  }, []);
-
-  return {
-    processPointerDown,
-    processPointerMove,
-    processPointerUp,
-    processKeyDown,
-    processFocus,
-    processBlur,
-  };
-}
-
 /**
  * Manages interaction states for drag handle components.
  *
@@ -336,9 +280,40 @@ export default function useDragHandleInteractionState<T = void>(
   const [interaction, dispatch] = useReducer(interactionReducer<T>, { state: null } as DragHandleInteractionState<T>);
   useStateLogger(interaction, options.debug);
   useCallbackHandler(interaction.pendingCallbacks, propsRef.current, dispatch);
-  const eventHandlers = useEventHandlers(dispatch);
   return {
     interaction,
-    ...eventHandlers,
+    processPointerDown: (event: PointerEvent, metadata?: T) => {
+      dispatch({
+        type: 'POINTER_DOWN',
+        payload: { nativeEvent: event, metadata },
+      });
+    },
+    processPointerMove: (event: PointerEvent) => {
+      dispatch({
+        type: 'POINTER_MOVE',
+        payload: { nativeEvent: event },
+      });
+    },
+    processPointerUp: (event: PointerEvent) => {
+      dispatch({
+        type: 'POINTER_UP',
+        payload: { nativeEvent: event },
+      });
+    },
+    processKeyDown: (event: React.KeyboardEvent<Element>, metadata?: T) => {
+      const key = event.key;
+      if (key === 'Enter' || key === 'Escape' || key === ' ') {
+        dispatch({
+          type: 'KEY_DOWN',
+          payload: { key, metadata },
+        });
+      }
+    },
+    processFocus: () => {
+      dispatch({ type: 'FOCUS' });
+    },
+    processBlur: () => {
+      dispatch({ type: 'BLUR' });
+    },
   };
 }

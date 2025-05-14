@@ -107,6 +107,8 @@ function createPointerEvent(type: string, overrides: Partial<any> = {}): any {
   });
 }
 
+const KEY_CODES_TO_TOGGLE_UAP_ACTION = ['Enter', ' '];
+
 describe('Drag Handle Hooks', () => {
   describe('Helper Functions', () => {
     describe('calculateNextState', () => {
@@ -186,27 +188,33 @@ describe('Drag Handle Hooks', () => {
         expect(nextState.eventData).toBe(mockPointerEvent);
       });
 
-      test('should transition to uap-action-start on Enter key press from idle', () => {
-        const state: DragHandleInteractionState = { state: null };
-        const action: Action = {
-          type: 'KEY_DOWN',
-          payload: { key: 'Enter' },
-        };
+      test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)(
+        'should transition to uap-action-start on "%s" key press from idle',
+        key => {
+          const state: DragHandleInteractionState = { state: null };
+          const action: Action = {
+            type: 'KEY_DOWN',
+            payload: { key },
+          };
 
-        const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('uap-action-start');
-      });
+          const nextState = calculateNextState(state, action);
+          expect(nextState.state).toBe('uap-action-start');
+        }
+      );
 
-      test('should transition from uap-action-start to uap-action-end on Enter key press', () => {
-        const state: DragHandleInteractionState = { state: 'uap-action-start' };
-        const action: Action = {
-          type: 'KEY_DOWN',
-          payload: { key: 'Enter' },
-        };
+      test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)(
+        'should transition from uap-action-start to uap-action-end on "%s" key press',
+        key => {
+          const state: DragHandleInteractionState = { state: 'uap-action-start' };
+          const action: Action = {
+            type: 'KEY_DOWN',
+            payload: { key },
+          };
 
-        const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('uap-action-end');
-      });
+          const nextState = calculateNextState(state, action);
+          expect(nextState.state).toBe('uap-action-end');
+        }
+      );
 
       test('should transition from uap-action-start to uap-action-end on Escape key press', () => {
         const state: DragHandleInteractionState = { state: 'uap-action-start' };
@@ -286,27 +294,33 @@ describe('Drag Handle Hooks', () => {
         expect(nextState).toBe(state);
       });
 
-      test('should transition from dnd-start to uap-action-start on Enter key press', () => {
-        const state: DragHandleInteractionState = { state: 'dnd-start' };
-        const action: Action = {
-          type: 'KEY_DOWN',
-          payload: { key: 'Enter' },
-        };
+      test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)(
+        'should transition from dnd-start to uap-action-start on "%s" key press',
+        key => {
+          const state: DragHandleInteractionState = { state: 'dnd-start' };
+          const action: Action = {
+            type: 'KEY_DOWN',
+            payload: { key },
+          };
 
-        const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('uap-action-start');
-      });
+          const nextState = calculateNextState(state, action);
+          expect(nextState.state).toBe('uap-action-start');
+        }
+      );
 
-      test('should transition from dnd-active to uap-action-start on Enter key press', () => {
-        const state: DragHandleInteractionState = { state: 'dnd-active' };
-        const action: Action = {
-          type: 'KEY_DOWN',
-          payload: { key: 'Enter' },
-        };
+      test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)(
+        'should transition from dnd-active to uap-action-start on "%s" key press',
+        key => {
+          const state: DragHandleInteractionState = { state: 'dnd-active' };
+          const action: Action = {
+            type: 'KEY_DOWN',
+            payload: { key },
+          };
 
-        const nextState = calculateNextState(state, action);
-        expect(nextState.state).toBe('uap-action-start');
-      });
+          const nextState = calculateNextState(state, action);
+          expect(nextState.state).toBe('uap-action-start');
+        }
+      );
 
       test('should not change state on non-Enter/non-Escape key press in uap-action-end state', () => {
         const state: DragHandleInteractionState = { state: 'uap-action-end' };
@@ -498,26 +512,29 @@ describe('Drag Handle Hooks', () => {
         expect(ref.current?.interaction.state).toBe('dnd-end');
       });
 
-      test('should handle Enter key press', () => {
+      test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)('should handle "%s" key press', key => {
         const ref = React.createRef<TestComponentRef>();
         const { getByTestId } = render(<TestComponent ref={ref} />);
         const element = getByTestId('drag-handle');
 
-        fireEvent.keyDown(element, { key: 'Enter' });
+        fireEvent.keyDown(element, { key });
         expect(ref.current?.interaction.state).toBe('uap-action-start');
       });
 
-      test('should handle Enter key press toggle in uap-action-start state', () => {
-        const ref = React.createRef<TestComponentRef>();
-        const { getByTestId } = render(<TestComponent ref={ref} />);
-        const element = getByTestId('drag-handle');
+      test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)(
+        'should handle "%s" key press toggle in uap-action-start state',
+        key => {
+          const ref = React.createRef<TestComponentRef>();
+          const { getByTestId } = render(<TestComponent ref={ref} />);
+          const element = getByTestId('drag-handle');
 
-        fireEvent.keyDown(element, { key: 'Enter' });
-        expect(ref.current?.interaction.state).toBe('uap-action-start');
+          fireEvent.keyDown(element, { key: key });
+          expect(ref.current?.interaction.state).toBe('uap-action-start');
 
-        fireEvent.keyDown(element, { key: 'Enter' });
-        expect(ref.current?.interaction.state).toBe('uap-action-end');
-      });
+          fireEvent.keyDown(element, { key: key });
+          expect(ref.current?.interaction.state).toBe('uap-action-end');
+        }
+      );
 
       test('should handle Escape key press in uap-action-start state', () => {
         const ref = React.createRef<TestComponentRef>();
