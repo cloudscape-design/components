@@ -4,6 +4,7 @@ import React, { MutableRefObject, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useComponentMetadata } from '@cloudscape-design/component-toolkit/internal';
+import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
 
 import InternalForm from '../form/internal';
 import InternalHeader from '../header/internal';
@@ -48,7 +49,8 @@ export default function WizardFormWithAnalytics(props: WizardFormProps) {
   const analyticsMetadata = getAnalyticsMetadataProps(
     props.steps[props.activeStepIndex] as BasePropsWithAnalyticsMetadata
   );
-  const __internalRootRef = useComponentMetadata('WizardForm', PACKAGE_VERSION, { ...analyticsMetadata });
+
+  const __internalRootRef = useComponentMetadata('WizardForm', PACKAGE_VERSION, analyticsMetadata as AnalyticsMetadata);
   const stepHeaderRef = useRef<HTMLDivElement | null>(null);
 
   useEffectOnUpdate(() => {
@@ -115,7 +117,7 @@ function WizardForm({
         totalSubSteps: funnelStepInfo.current.subStepCount.current,
         funnelIdentifier,
         subStepAllSelector: getSubStepAllSelector(),
-        stepErrorContext: funnelStepInfo.current.stepErrorContext,
+        errorContext: funnelStepInfo.current.stepErrorContext,
         subStepConfiguration: funnelStepInfo.current.subStepConfiguration.current?.get(
           funnelStepInfo.current.stepNumber
         ),
