@@ -45,14 +45,12 @@ export default function PortalOverlay({
         // the X coordinate ourselves just before applying the values.
         const newX = (insetInlineStart + getScrollInlineStart(document.documentElement)) * (isRtl ? -1 : 1);
         const newY = insetBlockStart + document.documentElement.scrollTop;
-        // Check if the current ref has style updates already applied (in case the ref changes)
-        const { width: currentWidth, height: currentHeight, translate: currentTranslate } = ref.current.style;
-        if (lastX !== newX || lastY !== newY || !currentTranslate) {
+        if (lastX !== newX || lastY !== newY) {
           ref.current.style.translate = `${newX}px ${newY}px`;
           lastX = newX;
           lastY = newY;
         }
-        if (lastInlineSize !== inlineSize || lastBlockSize !== blockSize || !currentWidth || !currentHeight) {
+        if (lastInlineSize !== inlineSize || lastBlockSize !== blockSize) {
           ref.current.style.width = `${inlineSize}px`;
           ref.current.style.height = `${blockSize}px`;
           lastInlineSize = inlineSize;
