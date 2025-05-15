@@ -26,11 +26,12 @@ export default function DragHandleWrapper({
   children,
   onDirectionClick,
   triggerMode = 'focus',
+  showButtons = false,
 }: DragHandleWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const dragHandleRef = useRef<HTMLDivElement | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [showButtons, setShowButtons] = useState(false);
+  const [buttonVisibility, setButtonVisibility] = useState(showButtons);
 
   const isPointerDown = useRef(false);
   const initialPointerPosition = useRef<{ x: number; y: number } | undefined>();
@@ -51,7 +52,7 @@ export default function DragHandleWrapper({
     if (document.body.dataset.awsuiFocusVisible && !nodeContains(wrapperRef.current, event.relatedTarget)) {
       setShowTooltip(false);
       if (triggerMode === 'focus') {
-        setShowButtons(true);
+        setButtonVisibility(true);
       }
     }
   };
@@ -62,7 +63,7 @@ export default function DragHandleWrapper({
     // since it'll be returned when they switch back anyway, we exclude that
     // case by checking for `document.hasFocus()`.
     if (document.hasFocus() && !nodeContains(wrapperRef.current, event.relatedTarget)) {
-      setShowButtons(false);
+      setButtonVisibility(false);
     }
   };
 
@@ -114,7 +115,7 @@ export default function DragHandleWrapper({
         if (isPointerDown.current && !didPointerDrag.current) {
           // The cursor didn't move much between "pointerdown" and "pointerup".
           // Handle this as a "click" instead of a "drag".
-          setShowButtons(true);
+          setButtonVisibility(true);
         }
         resetPointerDownState();
       },
@@ -153,14 +154,14 @@ export default function DragHandleWrapper({
     // For accessibility reasons, pressing escape should should always close
     // the floating controls.
     if (event.key === 'Escape') {
-      setShowButtons(false);
+      setButtonVisibility(false);
     } else if (triggerMode === 'keyboard-activate' && (event.key === 'Enter' || event.key === ' ')) {
       // toggle buttons when Enter or space is pressed in 'keyboard-activate' triggerMode
-      setShowButtons(prevShowButtons => !prevShowButtons);
+      setButtonVisibility(prevButtonVisibility => !prevButtonVisibility);
     } else if (event.key !== 'Alt' && event.key !== 'Control' && event.key !== 'Meta' && event.key !== 'Shift') {
       // Pressing any other key will display the focus-visible ring around the
       // drag handle if it's in focus, so we should also show the buttons now.
-      setShowButtons(true);
+      setButtonVisibility(true);
     }
   };
 
@@ -176,7 +177,7 @@ export default function DragHandleWrapper({
 
   return (
     <div
-      className={clsx(styles['drag-handle-wrapper'], showButtons && styles['drag-handle-wrapper-open'])}
+      className={clsx(styles['drag-handle-wrapper'], buttonVisibility && styles['drag-handle-wrapper-open'])}
       ref={wrapperRef}
       onFocus={onWrapperFocusIn}
       onBlur={onWrapperFocusOut}
@@ -191,15 +192,15 @@ export default function DragHandleWrapper({
           {children}
         </div>
 
-        {!isDisabled && !showButtons && showTooltip && tooltipText && (
+        {!isDisabled && !buttonVisibility && showTooltip && tooltipText && (
           <Tooltip trackRef={dragHandleRef} value={tooltipText} onDismiss={() => setShowTooltip(false)} />
         )}
       </div>
 
-      <PortalOverlay track={dragHandleRef.current} isDisabled={!showButtons}>
+      <PortalOverlay track={dragHandleRef} isDisabled={!buttonVisibility}>
         {directions['block-start'] && (
           <DirectionButton
-            show={!isDisabled && showButtons}
+            show={!isDisabled && buttonVisibility}
             direction="block-start"
             state={directions['block-start']}
             onClick={() => onInternalDirectionClick('block-start')}
@@ -207,7 +208,7 @@ export default function DragHandleWrapper({
         )}
         {directions['block-end'] && (
           <DirectionButton
-            show={!isDisabled && showButtons}
+            show={!isDisabled && buttonVisibility}
             direction="block-end"
             state={directions['block-end']}
             onClick={() => onInternalDirectionClick('block-end')}
@@ -215,7 +216,7 @@ export default function DragHandleWrapper({
         )}
         {directions['inline-start'] && (
           <DirectionButton
-            show={!isDisabled && showButtons}
+            show={!isDisabled && buttonVisibility}
             direction="inline-start"
             state={directions['inline-start']}
             onClick={() => onInternalDirectionClick('inline-start')}
@@ -223,7 +224,7 @@ export default function DragHandleWrapper({
         )}
         {directions['inline-end'] && (
           <DirectionButton
-            show={!isDisabled && showButtons}
+            show={!isDisabled && buttonVisibility}
             direction="inline-end"
             state={directions['inline-end']}
             onClick={() => onInternalDirectionClick('inline-end')}

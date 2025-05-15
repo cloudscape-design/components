@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { createRef } from 'react';
 import { render, waitFor } from '@testing-library/react';
 
 import PortalOverlay from '../../../../../lib/components/internal/components/drag-handle-wrapper/portal-overlay.js';
@@ -27,11 +27,17 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-test('matches the position of the tracked element', async () => {
-  const trackElement = document.createElement('span');
+function createMockRef() {
+  const ref = createRef<HTMLElement>();
+  render(<span ref={ref} />);
 
+  return ref;
+}
+
+test('matches the position of the tracked element', async () => {
+  const mockRef = createMockRef();
   render(
-    <PortalOverlay track={trackElement} isDisabled={false}>
+    <PortalOverlay track={mockRef} isDisabled={false}>
       <div id="overlay">Overlay</div>
     </PortalOverlay>
   );
@@ -46,10 +52,10 @@ test('matches the position of the tracked element', async () => {
 
 test('matches the position of the tracked element in rtl', async () => {
   isRtl = true;
-  const trackElement = document.createElement('span');
+  const mockRef = createMockRef();
 
   render(
-    <PortalOverlay track={trackElement} isDisabled={false}>
+    <PortalOverlay track={mockRef} isDisabled={false}>
       <div id="overlay">Overlay</div>
     </PortalOverlay>
   );
@@ -63,10 +69,10 @@ test('matches the position of the tracked element in rtl', async () => {
 });
 
 test('does not update position when disabled', async () => {
-  const trackElement = document.createElement('span');
+  const mockRef = createMockRef();
 
   render(
-    <PortalOverlay track={trackElement} isDisabled={true}>
+    <PortalOverlay track={mockRef} isDisabled={true}>
       <div id="overlay">Overlay</div>
     </PortalOverlay>
   );
@@ -80,10 +86,10 @@ test('does not update position when disabled', async () => {
 });
 
 test('resumes position updates when enabled after being disabled', async () => {
-  const trackElement = document.createElement('span');
+  const mockRef = createMockRef();
 
   const PortalOverlayWrapper = ({ isDisabled }: { isDisabled: boolean }) => (
-    <PortalOverlay track={trackElement} isDisabled={isDisabled}>
+    <PortalOverlay track={mockRef} isDisabled={isDisabled}>
       <div id="overlay">Overlay</div>
     </PortalOverlay>
   );

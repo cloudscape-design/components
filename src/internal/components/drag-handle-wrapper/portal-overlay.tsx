@@ -16,14 +16,14 @@ export default function PortalOverlay({
   isDisabled,
   children,
 }: {
-  track: HTMLElement | null;
+  track: React.RefObject<HTMLElement | null>;
   isDisabled: boolean;
   children: React.ReactNode;
 }) {
   const ref = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
-    if (track === null || isDisabled) {
+    if (track.current === null || isDisabled) {
       return;
     }
 
@@ -36,19 +36,23 @@ export default function PortalOverlay({
       // It could be that the portal hasn't been attached to the DOM yet - ensure the ref exists and is attached DOM tree.
       if (ref.current && document.body.contains(ref.current)) {
         const isRtl = getIsRtl(ref.current);
-        const { insetInlineStart, insetBlockStart, inlineSize, blockSize } = getLogicalBoundingClientRect(track);
+        const { insetInlineStart, insetBlockStart, inlineSize, blockSize } = getLogicalBoundingClientRect(
+          track.current!
+        );
         // For simplicity, we just make all our calculations independent of
         // the browser's scrolling edge. When it comes to applying the changes,
         // translate is independent of writing direction, so we need to invert
         // the X coordinate ourselves just before applying the values.
         const newX = (insetInlineStart + getScrollInlineStart(document.documentElement)) * (isRtl ? -1 : 1);
         const newY = insetBlockStart + document.documentElement.scrollTop;
-        if (lastX !== newX || lastY !== newY) {
+        // Check if the current ref has style updates already applied (in case the ref changes)
+        const { width: currentWidth, height: currentHeight, translate: currentTranslate } = ref.current.style;
+        if (lastX !== newX || lastY !== newY || !currentTranslate) {
           ref.current.style.translate = `${newX}px ${newY}px`;
           lastX = newX;
           lastY = newY;
         }
-        if (lastInlineSize !== inlineSize || lastBlockSize !== blockSize) {
+        if (lastInlineSize !== inlineSize || lastBlockSize !== blockSize || !currentWidth || !currentHeight) {
           ref.current.style.width = `${inlineSize}px`;
           ref.current.style.height = `${blockSize}px`;
           lastInlineSize = inlineSize;
