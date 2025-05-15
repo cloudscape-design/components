@@ -71,7 +71,7 @@ function AppLayoutGlobalDrawerImplementation({
   const isExpanded = activeGlobalDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
 
   return (
-    <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={0}>
+    <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={200}>
       {state => {
         return (
           <aside
@@ -84,7 +84,7 @@ function AppLayoutGlobalDrawerImplementation({
               styles[state],
               !animationDisabled && sharedStyles['with-motion-horizontal'],
               {
-                [styles['drawer-hidden']]: !show,
+                [styles['drawer-hidden']]: !show && state === 'exited',
                 [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
                 [testutilStyles['active-drawer']]: show,
                 [styles['drawer-expanded']]: isExpanded,
