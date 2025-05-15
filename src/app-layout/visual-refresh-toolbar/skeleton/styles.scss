@@ -161,6 +161,11 @@
   &.tools {
     inline-size: 0px;
   }
+  &.global-tools {
+    @include mobile-only {
+      inline-size: 0px;
+    }
+  }
 }
 
 .toolbar-container {

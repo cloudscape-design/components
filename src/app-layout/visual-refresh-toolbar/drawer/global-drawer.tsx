@@ -71,7 +71,7 @@ function AppLayoutGlobalDrawerImplementation({
   const isExpanded = activeGlobalDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
 
   return (
-    <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={200}>
+    <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={100}>
       {state => {
         return (
           <aside
