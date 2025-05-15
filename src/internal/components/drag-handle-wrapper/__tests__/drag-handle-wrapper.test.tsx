@@ -397,11 +397,11 @@ test("doesn't call onDirectionClick when disabled direction button is pressed", 
   expect(onDirectionClick).not.toHaveBeenCalled();
 });
 
-describe('showButtons property', () => {
-  test('shows direction buttons initially when showButtons=true', () => {
+describe('initialinitialShowButtons property', () => {
+  test('shows direction buttons initially when initialShowButtons=true', () => {
     renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
-      showButtons: true,
+      initialShowButtons: true,
     });
     expectDirectionButtonToBeVisible('block-start');
     expectDirectionButtonToBeVisible('block-end');
@@ -409,7 +409,7 @@ describe('showButtons property', () => {
     expect(getDirectionButton('inline-end')).not.toBeInTheDocument();
   });
 
-  test('hides direction buttons initially when showButtons=false (default)', () => {
+  test('hides direction buttons initially when initialShowButtons=false (default)', () => {
     renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
     });
@@ -422,7 +422,7 @@ describe('showButtons property', () => {
   test('hides direction buttons on Escape keypress when initially visible', () => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
-      showButtons: true,
+      initialShowButtons: true,
     });
     expectDirectionButtonToBeVisible('block-start');
     expectDirectionButtonToBeVisible('block-end');
@@ -439,7 +439,7 @@ describe('showButtons property', () => {
   test('hides direction buttons when focus leaves the button when initially visible', () => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
-      showButtons: true,
+      initialShowButtons: true,
     });
     expectDirectionButtonToBeVisible('block-start');
     expectDirectionButtonToBeVisible('block-end');
@@ -457,7 +457,7 @@ describe('showButtons property', () => {
   test('keeps direction buttons visible after click when initially visible', () => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active' },
-      showButtons: true,
+      initialShowButtons: true,
     });
 
     expect(getDirectionButton('block-start')).toBeInTheDocument();
@@ -470,11 +470,11 @@ describe('showButtons property', () => {
   });
 
   describe('interaction with triggerMode', () => {
-    test('shows direction buttons initially with showButtons=true and triggerMode=keyboard-activate', () => {
+    test('shows direction buttons initially with initialShowButtons=true and triggerMode=keyboard-activate', () => {
       renderDragHandle({
         directions: { 'block-start': 'active', 'block-end': 'active' },
         triggerMode: 'keyboard-activate',
-        showButtons: true,
+        initialShowButtons: true,
       });
 
       expectDirectionButtonToBeVisible('block-start');
@@ -487,7 +487,7 @@ describe('showButtons property', () => {
       const { dragHandle } = renderDragHandle({
         directions: { 'block-start': 'active', 'block-end': 'active' },
         triggerMode: 'keyboard-activate',
-        showButtons: true,
+        initialShowButtons: true,
       });
       expectDirectionButtonToBeVisible('block-start');
       expectDirectionButtonToBeVisible('block-end');

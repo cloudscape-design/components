@@ -25,7 +25,7 @@ const InternalDragHandle = forwardRef(
       onKeyDown,
       onDirectionClick,
       triggerMode,
-      showButtons,
+      initialShowButtons,
       ...rest
     }: DragHandleProps,
     ref: React.Ref<Element>
@@ -38,7 +38,7 @@ const InternalDragHandle = forwardRef(
         tooltipText={tooltipText}
         onDirectionClick={onDirectionClick}
         triggerMode={triggerMode}
-        showButtons={showButtons}
+        initialShowButtons={initialShowButtons}
       >
         <DragHandleButton
           ref={ref}

@@ -11,5 +11,5 @@ export interface DragHandleWrapperProps {
   tooltipText?: string;
   children: React.ReactNode;
   triggerMode?: TriggerMode;
-  showButtons?: boolean;
+  initialShowButtons?: boolean;
 }
