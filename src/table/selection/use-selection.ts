@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { joinStrings } from '../../internal/utils/strings';
 import { TableProps } from '../interfaces';
 import { getTrackableValue } from '../utils';
 import { SelectionProps } from './interfaces';
@@ -65,10 +64,7 @@ function useSingleSelection<T>({
       disabled: isItemDisabled(item),
       checked: isItemSelected(item),
       onChange: () => handleToggleItem(item),
-      ariaLabel: joinStrings(
-        ariaLabels?.selectionGroupLabel,
-        ariaLabels?.itemSelectionLabel?.({ selectedItems }, item)
-      ),
+      ariaLabel: ariaLabels?.itemSelectionLabel?.({ selectedItems }, item),
     }),
   };
 }
@@ -171,7 +167,7 @@ function useMultiSelection<T>({
       checked: allItemsCheckboxSelected,
       indeterminate: allItemsCheckboxIndeterminate,
       onChange: handleToggleAll,
-      ariaLabel: joinStrings(ariaLabels?.selectionGroupLabel, ariaLabels?.allItemsSelectionLabel?.({ selectedItems })),
+      ariaLabel: ariaLabels?.allItemsSelectionLabel?.({ selectedItems }),
       selectionGroupLabel: ariaLabels?.selectionGroupLabel,
     }),
     getItemSelectionProps: (item: T): SelectionProps => ({
@@ -181,10 +177,7 @@ function useMultiSelection<T>({
       checked: isItemSelected(item),
       onChange: () => handleToggleItem(item),
       onShiftToggle: (value: boolean) => setShiftPressed(value),
-      ariaLabel: joinStrings(
-        ariaLabels?.selectionGroupLabel,
-        ariaLabels?.itemSelectionLabel?.({ selectedItems }, item)
-      ),
+      ariaLabel: ariaLabels?.itemSelectionLabel?.({ selectedItems }, item),
     }),
   };
 }
