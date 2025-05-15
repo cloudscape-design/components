@@ -4,15 +4,25 @@ import { createContext, RefObject, useContext } from 'react';
 
 export interface FilterRef {
   filterText?: string;
+  filteredBy?: string[];
+  countText?: string;
 }
 
 export interface PaginationRef {
   currentPageIndex?: number;
   totalPageCount?: number;
+  openEnd?: boolean;
 }
+
+export interface PreferencesRef {
+  pageSize?: number;
+  visibleColumns?: string[];
+}
+
 interface TableComponentsContextProps {
   filterRef: RefObject<FilterRef>;
   paginationRef: RefObject<PaginationRef>;
+  preferencesRef: RefObject<PreferencesRef>;
 }
 
 const TableComponentsContext = createContext<TableComponentsContextProps | null>(null);

@@ -403,6 +403,7 @@ export namespace TableProps {
   export interface AnalyticsMetadata {
     instanceIdentifier?: string;
     flowType?: 'view-resource';
+    resourceType?: string;
   }
 
   export type TrackBy<T> = string | ((item: T) => string);

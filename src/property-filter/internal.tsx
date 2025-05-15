@@ -10,6 +10,7 @@ import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import TokenList from '../internal/components/token-list';
+import { useTableComponentsContext } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
@@ -44,6 +45,7 @@ import { PropertyEditorContentCustom, PropertyEditorContentEnum, PropertyEditorF
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import { TokenButton } from './token';
 import { useLoadItems } from './use-load-items';
+import { tokenGroupToTokens } from './utils';
 
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -184,6 +186,14 @@ const PropertyFilterInternal = React.forwardRef(
 
       return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery, internalFreeText };
     })();
+
+    const tableComponentContext = useTableComponentsContext();
+    if (tableComponentContext?.filterRef?.current) {
+      tableComponentContext.filterRef.current.countText = countText;
+      tableComponentContext.filterRef.current.filteredBy = tokenGroupToTokens<InternalToken>(internalQuery.tokens)
+        .map(token => token.property?.propertyKey)
+        .filter((propertyKey): propertyKey is string => typeof propertyKey === 'string');
+    }
 
     const { addToken, updateToken, updateOperation, removeToken, removeAllTokens } = getQueryActions({
       query: internalQuery,
