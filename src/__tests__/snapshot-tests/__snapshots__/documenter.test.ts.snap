@@ -7979,10 +7979,10 @@ Default: the user's current time offset as provided by the browser.",
     },
     {
       "defaultValue": "'day'",
-      "description": "Specifies the granularity at which users will be able to select a date range.
+      "description": "Specifies the granularity at which users will be able to select a date.
 Defaults to \`day\`.",
       "inlineType": {
-        "name": "DateRangePickerProps.Granularity",
+        "name": "CalendarProps.Granularity",
         "type": "union",
         "values": [
           "day",
@@ -8450,6 +8450,11 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 It should contain the only \`h2\` used in the drawer.",
       "isDefault": false,
       "name": "header",
+    },
+    {
+      "description": "Actions for the header. Available only if you specify the \`header\` property.",
+      "isDefault": false,
+      "name": "headerActions",
     },
   ],
   "releaseStatus": "stable",
