@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { TreeviewProps } from './interfaces';
-import TreeItem from './treeitem';
+import InternalTreeItem from './treeitem';
 import { getItemPosition } from './utils';
 
 import styles from './styles.css.js';
@@ -14,10 +14,17 @@ import styles from './styles.css.js';
 type InternalTreeviewProps = TreeviewProps & InternalBaseComponentProps;
 
 const InternalTreeview = ({
-  items = [],
   expandedItems = [],
-  //   ariaLabel,
-  onExpandableItemToggle,
+  onItemToggle,
+  items = [],
+  renderItem,
+  getItemId,
+  getItemChildren,
+  ariaLabel,
+  ariaLabelledby,
+  ariaDescription,
+  ariaDescribedby,
+  i18nStrings,
   __internalRootRef,
   ...rest
 }: InternalTreeviewProps) => {
@@ -25,19 +32,31 @@ const InternalTreeview = ({
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
-      <ul role="tree" className={styles.tree}>
-        {/* <ul role="tree" aria-label={ariaLabel}> */}
-        {items.map((item, index) => (
-          <TreeItem
-            {...item}
-            key={index}
-            level={0}
-            position={getItemPosition(index, items.length)}
-            expandedItems={expandedItems}
-            isExpanded={expandedItems.includes(item.id)}
-            onExpandableItemToggle={onExpandableItemToggle}
-          />
-        ))}
+      <ul
+        className={styles.tree}
+        role="tree"
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledby}
+        aria-description={ariaDescription}
+        aria-describedby={ariaDescribedby}
+      >
+        {items.map((item, index) => {
+          return (
+            <InternalTreeItem
+              key={index}
+              item={item}
+              level={0}
+              index={index}
+              expandedItems={expandedItems}
+              i18nStrings={i18nStrings}
+              position={getItemPosition(index, items.length)}
+              onItemToggle={onItemToggle}
+              renderItem={renderItem}
+              getItemId={getItemId}
+              getItemChildren={getItemChildren}
+            />
+          );
+        })}
       </ul>
     </div>
   );

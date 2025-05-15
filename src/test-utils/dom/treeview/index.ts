@@ -37,16 +37,25 @@ class TreeItemWrapper extends ComponentWrapper {
   /**
    * Finds the expand toggle of the tree item
    */
-  findExpandToggle(): ElementWrapper | null {
+  findItemToggle(): ElementWrapper | null {
     return this.findByClassName(expandToggleStyles['expand-toggle']);
   }
 
   /**
-   * Finds the expand toggle wrapper of the tree item. Use this with custom toggles.
+   * Finds the children tree items of the tree item
    */
-  //   findExpandToggleWrapper(): ElementWrapper | null {
-  //     return this.findByClassName(expandToggleStyles['expand-toggle']);
-  //   }
+  findChildren(): Array<TreeItemWrapper> {
+    return this.findAllByClassName(styles['child-treeitem']).map(item => new TreeItemWrapper(item.getElement()));
+  }
+
+  /**
+   * Finds a children tree item by its ID
+   */
+  findChildById(id: string): TreeItemWrapper | null {
+    const itemSelector = `.${styles['child-treeitem']}[data-testid="${id}"]`;
+    const item = this.find(itemSelector);
+    return item ? new TreeItemWrapper(item.getElement()) : null;
+  }
 
   /**
    * Returns `true` if the item expand toggle is present and expanded. Returns `false` otherwise.

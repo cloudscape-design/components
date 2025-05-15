@@ -21,20 +21,7 @@
   margin-block: 0;
 }
 
-.child-treeitem {
-  display: flex;
-}
-
-.tree {
-  @include styles.styles-reset-ul;
-}
-
-.parent-treeitem {
-  padding-inline-start: 0;
-  margin-inline-start: 0;
-}
-
-.treeitem-guideline {
+.treeitem-toggle-area {
   inline-size: 30px;
   background-color: yellow;
 
@@ -46,52 +33,17 @@
   position: relative;
 }
 
-.treeitem-guideline-horizontal {
-  block-size: 1px;
-  position: absolute;
-  inset-block-start: 14px;
-  inline-size: 39px;
-  background: red;
-  inset-inline-start: -14px;
-
-  &.expandable {
-    inline-size: 20px;
-  }
+.child-treeitem {
+  display: flex;
 }
 
-.treeitem-guideline-vertical {
-  &-root {
-    inline-size: 1px;
-    position: absolute;
-    inset-block: 0;
-    inset-inline-start: 50%;
-    background-color: red;
-  }
+.tree {
+  @include styles.styles-reset-ul;
+}
 
-  &-root-end {
-    block-size: 16px;
-    inset-block: 0 unset;
-  }
-
-  &-expandable {
-    inset-block-start: 24px;
-  }
-
-  &-middle {
-    inline-size: 1px;
-    position: absolute;
-    inset-block: -10px 0px;
-    inset-inline-start: -14px;
-    background-color: red;
-  }
-
-  &-end {
-    inline-size: 1px;
-    position: absolute;
-    inset-block: 0 10px;
-    inset-inline-start: -14px;
-    background-color: red;
-  }
+.parent-treeitem {
+  padding-inline-start: 0;
+  margin-inline-start: 0;
 }
 
 .treeitem-content {
@@ -113,6 +65,8 @@
 
 .treeitem-first-line {
   display: flex;
+  align-items: baseline;
+  gap: 4px;
 }
 
 .treeitem-actions {

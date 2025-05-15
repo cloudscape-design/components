@@ -9,7 +9,7 @@ import Container from '~components/container';
 import Icon from '~components/icon';
 import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
-import Treeview, { TreeviewProps } from '~components/treeview';
+import Treeview from '~components/treeview';
 
 const progressiveStepContent = (
   <div style={{ display: 'flex' }}>
@@ -35,15 +35,23 @@ const progressiveStepItemsContent = [
   </StatusIndicator>,
 ];
 
-const items: TreeviewProps.TreeItem[] = [
+interface Item {
+  id: string;
+  content: React.ReactNode;
+  details?: string;
+  children?: Item[];
+  hasActions?: boolean;
+}
+
+const items: Item[] = [
   {
     id: '1',
     content: 'Item 1',
-    items: [
+    children: [
       {
         id: '1.1',
         content: 'Item 1.1',
-        items: [
+        children: [
           {
             id: '1.1.1',
             content: 'Item 1.1.1',
@@ -61,9 +69,9 @@ const items: TreeviewProps.TreeItem[] = [
       {
         id: '1.3',
         content: 'Item 1.3',
-        details: <Box color="text-status-inactive">us-east-1</Box>,
-        actions: <Actions />,
-        items: [
+        details: 'us-east-1',
+        hasActions: true,
+        children: [
           {
             id: '1.3.1',
             content: 'Item 1.3.1',
@@ -83,7 +91,7 @@ const items: TreeviewProps.TreeItem[] = [
   {
     id: '3',
     content: 'Item 3',
-    items: [
+    children: [
       {
         id: '3.1',
         content: 'Item 3.1',
@@ -93,11 +101,11 @@ const items: TreeviewProps.TreeItem[] = [
   {
     id: '4',
     content: <RdsAccessRoleTreeItemContent />,
-    items: [
+    children: [
       {
         id: '4.1',
         content: 'Item 4.1',
-        items: [
+        children: [
           {
             id: '4.1.1',
             content: 'Item 4.1.1',
@@ -105,8 +113,8 @@ const items: TreeviewProps.TreeItem[] = [
           {
             id: '4.1.2',
             content: 'Item 4.1.2',
-            details: <Box color="text-status-inactive">us-east-1</Box>,
-            items: [
+            details: 'us-east-1',
+            children: [
               {
                 id: '4.1.2.1',
                 content: 'Item 4.1.2.1',
@@ -116,7 +124,7 @@ const items: TreeviewProps.TreeItem[] = [
           {
             id: '4.1.3',
             content: 'Item 4.1.3',
-            items: [
+            children: [
               {
                 id: '4.1.3.1',
                 content: 'Item 4.1.3.1',
@@ -146,7 +154,7 @@ const items: TreeviewProps.TreeItem[] = [
   {
     id: '6',
     content: progressiveStepContent,
-    items: [
+    children: [
       {
         id: '6.1',
         content: progressiveStepItemsContent[0],
@@ -257,11 +265,21 @@ export default function BasicTreeview() {
           <Container>
             <Treeview
               items={items}
-              onExpandableItemToggle={({ detail }: any) => {
+              renderItem={item => {
+                return {
+                  icon: <Icon name={expandedItems.includes(item.id) ? 'folder-open' : 'folder'} ariaLabel="folder" />,
+                  content: item.content,
+                  description: <Box color="text-status-inactive">{item.details}</Box>,
+                  actions: item.hasActions ? <Actions /> : undefined,
+                };
+              }}
+              getItemId={item => item.id}
+              getItemChildren={item => item.children}
+              onItemToggle={({ detail }: any) => {
                 if (detail.expanded) {
-                  return setExpandedItems(prev => [...prev, detail.id]);
+                  return setExpandedItems(prev => [...prev, detail.item.id]);
                 } else {
-                  return setExpandedItems(prev => prev.filter(id => id !== detail.id));
+                  return setExpandedItems(prev => prev.filter(id => id !== detail.item.id));
                 }
               }}
               expandedItems={expandedItems}
