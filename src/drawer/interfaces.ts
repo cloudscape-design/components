@@ -33,6 +33,11 @@ export interface DrawerProps extends BaseComponentProps {
    * @i18n
    */
   i18nStrings?: I18nStrings;
+
+  /**
+   * Actions for the header. Available only if you specify the `header` property.
+   */
+  headerActions?: React.ReactNode;
 }
 
 interface I18nStrings {
