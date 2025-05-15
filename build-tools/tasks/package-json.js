@@ -28,6 +28,7 @@ function getComponentsExports() {
     './internal/do-not-use/expandable-section': './internal/do-not-use/expandable-section.js',
     './internal/do-not-use/i18n': './internal/do-not-use/i18n.js',
     './internal/do-not-use/tooltip': './internal/do-not-use/tooltip.js',
+    './internal/do-not-use/drag-handle': './internal/do-not-use/drag-handle.js',
     './internal/widget-exports': './internal/widget-exports.js',
     './test-utils/dom/internal/tooltip': './test-utils/dom/internal/tooltip.js',
     './test-utils/selectors/internal/tooltip': './test-utils/selectors/internal/tooltip.js',
