@@ -23,6 +23,7 @@ export function DrawerImplementation({
   i18nStrings,
   disableContentPaddings,
   __internalRootRef,
+  headerActions,
   ...restProps
 }: DrawerInternalProps) {
   const baseProps = getBaseProps(restProps);
@@ -32,6 +33,7 @@ export function DrawerImplementation({
     ...baseProps,
     className: clsx(baseProps.className, styles.drawer, isToolbar && styles['with-toolbar']),
   };
+
   return loading ? (
     <div
       {...containerProps}
@@ -46,7 +48,12 @@ export function DrawerImplementation({
     </div>
   ) : (
     <div {...containerProps} ref={__internalRootRef}>
-      {header && <div className={styles.header}>{header}</div>}
+      {header && (
+        <div className={styles.header}>
+          {header}
+          {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
+        </div>
+      )}
       <div
         className={clsx(
           styles['test-utils-drawer-content'],

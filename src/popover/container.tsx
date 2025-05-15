@@ -116,11 +116,11 @@ export default function PopoverContainer({
     /*
     This is a heuristic. Some layout changes are caused by user clicks (e.g. toggling the tools panel, submitting a form),
     and by tracking the click event we can adapt the popover's position to the new layout.
-
-    TODO: extend this to Enter and Spacebar?
     */
 
-    const onClick = (event: UIEvent | KeyboardEvent) => {
+    const controller = new AbortController();
+
+    const onClick = async (event: UIEvent | KeyboardEvent) => {
       if (
         // Do not update position if keepPosition is true.
         keepPosition ||
@@ -131,14 +131,29 @@ export default function PopoverContainer({
         return;
       }
 
-      requestAnimationFrame(() => {
+      // Continuously update the popover position for one second to account for any layout changes
+      // and animations. On browsers where `requestIdleCallback` is supported,
+      // this runs only while the CPU is otherwise idle. In other browsers (mainly Safari), we call it
+      // with a low frequency.
+      const targetTime = performance.now() + 1_000;
+
+      while (performance.now() < targetTime) {
+        if (controller.signal.aborted) {
+          break;
+        }
+
         updatePositionHandler();
-      });
+
+        if (typeof requestIdleCallback !== 'undefined') {
+          await new Promise(r => requestIdleCallback(r));
+        } else {
+          await new Promise(r => setTimeout(r, 50));
+        }
+      }
     };
 
     const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
-    const controller = new AbortController();
 
     window.addEventListener('click', onClick, { signal: controller.signal });
     window.addEventListener('resize', updatePositionOnResize, { signal: controller.signal });
