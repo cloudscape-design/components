@@ -3,7 +3,18 @@
 import React from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
-import { Alert, BarChart, Box, ColumnLayout, FormField, Input, SpaceBetween, Textarea, Tiles } from '~components';
+import {
+  Alert,
+  BarChart,
+  Box,
+  ColumnLayout,
+  Drawer,
+  FormField,
+  Input,
+  SpaceBetween,
+  Textarea,
+  Tiles,
+} from '~components';
 import awsuiPlugins from '~components/internal/plugins';
 
 function Details() {
@@ -168,14 +179,15 @@ awsuiPlugins.appLayout.registerDrawer({
 
   mountContent: container => {
     ReactDOM.render(
-      <SpaceBetween size="l">
-        <div style={{ paddingBlockStart: '15px', paddingInlineStart: '20px', margin: 0 }}>
-          <Box variant="h3">Investigate Cold Start Chaser</Box>
-        </div>
-        <Box padding={{ left: 'l', right: 'l' }}>
-          <Details />
-        </Box>
-      </SpaceBetween>,
+      <Drawer
+        header={
+          <Box variant="h3" padding={{ right: 'm' }}>
+            Investigate Cold Start Chaser
+          </Box>
+        }
+      >
+        <Details />
+      </Drawer>,
       container
     );
   },

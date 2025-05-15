@@ -20,7 +20,7 @@
 }
 
 $global-drawer-gap-size: 8px;
-$global-drawer-expanded-mode: #{awsui.$motion-duration-refresh-only-slow} #{awsui.$motion-easing-refresh-only-a};
+$global-drawer-expanded-mode-motion: #{awsui.$motion-duration-refresh-only-slow} #{awsui.$motion-easing-refresh-only-a};
 $drawer-resize-handle-size: awsui.$space-m;
 
 .drawer {
@@ -28,7 +28,7 @@ $drawer-resize-handle-size: awsui.$space-m;
   z-index: constants.$drawer-z-index;
   background-color: awsui.$color-background-container-content;
   display: grid;
-  grid-template-columns: $drawer-resize-handle-size 1fr;
+  grid-template-columns: awsui.$space-m 1fr;
   inline-size: var(#{custom-props.$drawerSize});
 
   block-size: 100%;
@@ -39,8 +39,8 @@ $drawer-resize-handle-size: awsui.$space-m;
   word-wrap: break-word;
   @include styles.with-motion {
     transition:
-      inline-size #{$global-drawer-expanded-mode},
-      min-inline-size #{$global-drawer-expanded-mode};
+      inline-size #{$global-drawer-expanded-mode-motion},
+      min-inline-size #{$global-drawer-expanded-mode-motion};
   }
 
   @include desktop-only {
@@ -61,9 +61,6 @@ $drawer-resize-handle-size: awsui.$space-m;
 
     @include desktop-only {
       inline-size: var(#{custom-props.$drawerSize});
-      &.drawer-hidden {
-        display: block;
-      }
     }
 
     @include mobile-only {
@@ -122,7 +119,7 @@ $drawer-resize-handle-size: awsui.$space-m;
     grid-column: 1 / span 2;
     grid-row: 1;
     display: grid;
-    grid-template-columns: $drawer-resize-handle-size 1fr auto $drawer-resize-handle-size;
+    grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
     grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 1fr;
     overflow-y: auto;
     min-inline-size: var(#{custom-props.$drawerSize});

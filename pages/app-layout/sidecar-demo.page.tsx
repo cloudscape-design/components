@@ -20,7 +20,7 @@ import {
 } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 
-import './utils/external-widget-demo';
+import './utils/external-sidecar-widget-demo';
 import AppContext, { AppContextType } from '../app/app-context';
 import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
