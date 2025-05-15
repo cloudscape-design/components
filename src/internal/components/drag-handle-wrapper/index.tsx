@@ -13,6 +13,7 @@ import { Direction, DragHandleWrapperProps } from './interfaces';
 import PortalOverlay from './portal-overlay';
 
 import styles from './styles.css.js';
+import testUtilsStyles from './test-classes/styles.css.js';
 
 // The amount of distance after pointer down that the cursor is allowed to
 // jitter for a subsequent mouseup to still register as a "press" instead of
@@ -201,6 +202,7 @@ export default function DragHandleWrapper({
         {directions['block-start'] && (
           <DirectionButton
             show={!isDisabled && showButtons}
+            className={clsx(testUtilsStyles['direction-button'], testUtilsStyles['direction-block-start'])}
             direction="block-start"
             state={directions['block-start']}
             onClick={() => onInternalDirectionClick('block-start')}
@@ -209,6 +211,7 @@ export default function DragHandleWrapper({
         {directions['block-end'] && (
           <DirectionButton
             show={!isDisabled && showButtons}
+            className={clsx(testUtilsStyles['direction-button'], testUtilsStyles['direction-block-end'])}
             direction="block-end"
             state={directions['block-end']}
             onClick={() => onInternalDirectionClick('block-end')}
@@ -217,6 +220,7 @@ export default function DragHandleWrapper({
         {directions['inline-start'] && (
           <DirectionButton
             show={!isDisabled && showButtons}
+            className={clsx(testUtilsStyles['direction-button'], testUtilsStyles['direction-inline-start'])}
             direction="inline-start"
             state={directions['inline-start']}
             onClick={() => onInternalDirectionClick('inline-start')}
@@ -225,6 +229,7 @@ export default function DragHandleWrapper({
         {directions['inline-end'] && (
           <DirectionButton
             show={!isDisabled && showButtons}
+            className={clsx(testUtilsStyles['direction-button'], testUtilsStyles['direction-inline-end'])}
             direction="inline-end"
             state={directions['inline-end']}
             onClick={() => onInternalDirectionClick('inline-end')}

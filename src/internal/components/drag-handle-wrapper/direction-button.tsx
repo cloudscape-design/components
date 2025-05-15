@@ -10,6 +10,7 @@ import { Transition } from '../transition';
 import { Direction, DirectionState } from './interfaces';
 
 import styles from './styles.css.js';
+import testUtilsStyles from './test-classes/styles.css.js';
 
 // Mapping from CSS logical property direction to icon name. The icon component
 // already flips the left/right icons automatically based on RTL, so we don't
@@ -26,36 +27,48 @@ interface DirectionButtonProps {
   state: DirectionState;
   onClick: React.MouseEventHandler;
   show: boolean;
+  className: string;
 }
 
-export default function DirectionButton({ direction, state, show, onClick }: DirectionButtonProps) {
+export default function DirectionButton({ direction, state, show, onClick, className }: DirectionButtonProps) {
   return (
     <Transition in={show}>
-      {(transitionState, ref) => (
-        // The wrapper exists to provide a padding around each direction button that
-        // prevents any accidental presses around the button from propagating to any
-        // interactive elements behind the button.
-        <span
-          ref={ref}
-          className={clsx(
-            styles['direction-button-wrapper'],
-            styles[`direction-button-wrapper-${direction}`],
-            transitionState === 'exited' && styles['direction-button-wrapper-hidden'],
-            styles[`direction-button-wrapper-motion-${transitionState}`]
-          )}
-        >
+      {(transitionState, ref) => {
+        if (transitionState === 'exited') {
+          console.log('transitionState', transitionState, testUtilsStyles['direction-button-visible']);
+        }
+
+        return (
+          // The wrapper exists to provide a padding around each direction button that
+          // prevents any accidental presses around the button from propagating to any
+          // interactive elements behind the button.
           <span
-            className={clsx(styles['direction-button'], state === 'disabled' && styles['direction-button-disabled'])}
-            onClick={state !== 'disabled' ? onClick : undefined}
-            // This prevents focus from being lost to `document.body` on
-            // mouse/pointer press. This allows us to listen to onClick while
-            // keeping this button pointer-accessible only.
-            onPointerDown={event => event.preventDefault()}
+            ref={ref}
+            className={clsx(
+              styles['direction-button-wrapper'],
+              styles[`direction-button-wrapper-${direction}`],
+              transitionState === 'exited' && styles['direction-button-wrapper-hidden'],
+              transitionState !== 'exited' && testUtilsStyles['direction-button-visible'],
+              styles[`direction-button-wrapper-motion-${transitionState}`]
+            )}
           >
-            <InternalIcon name={ICON_LOGICAL_PROPERTY_MAP[direction]} size="small" />
+            <span
+              className={clsx(
+                className,
+                styles['direction-button'],
+                state === 'disabled' && styles['direction-button-disabled']
+              )}
+              onClick={state !== 'disabled' ? onClick : undefined}
+              // This prevents focus from being lost to `document.body` on
+              // mouse/pointer press. This allows us to listen to onClick while
+              // keeping this button pointer-accessible only.
+              onPointerDown={event => event.preventDefault()}
+            >
+              <InternalIcon name={ICON_LOGICAL_PROPERTY_MAP[direction]} size="small" />
+            </span>
           </span>
-        </span>
-      )}
+        );
+      }}
     </Transition>
   );
 }
