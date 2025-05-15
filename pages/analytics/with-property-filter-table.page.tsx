@@ -13,6 +13,7 @@ import {
   PropertyFilter,
   PropertyFilterProps,
   Table,
+  TableProps,
 } from '~components';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
@@ -28,7 +29,7 @@ import {
   pageSizeOptions,
   paginationLabels,
 } from '../table/shared-configs';
-import { useFunnelLogger } from './hooks/use-funnel-logger';
+import { withAnalyticsTestingApi } from './components/analytics-testing-page';
 
 const propertyFilterI18nStrings: PropertyFilterProps.I18nStrings = {
   filteringAriaLabel: 'Find instances',
@@ -67,9 +68,8 @@ const filteringProperties = [
   },
 ];
 
-export default function TablePage() {
-  useFunnelLogger();
-
+function TablePage() {
+  const [selectedItems, setSelectedItems] = useState<TableProps['selectedItems']>([]);
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>(defaultPreferences);
   const { items, actions, filteredItemsCount, collectionProps, propertyFilterProps, paginationProps } = useCollection(
     allItems,
@@ -100,11 +100,13 @@ export default function TablePage() {
     <I18nProvider messages={[messages]} locale="en">
       <Table<Instance>
         {...collectionProps}
+        selectionType="single"
         header={
           <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
             Instances
           </Header>
         }
+        selectedItems={selectedItems}
         columnDefinitions={columnsConfig}
         items={items}
         pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
@@ -143,7 +145,10 @@ export default function TablePage() {
           />
         }
         stickyHeader={true}
+        onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
       />
     </I18nProvider>
   );
 }
+
+export default withAnalyticsTestingApi(TablePage);

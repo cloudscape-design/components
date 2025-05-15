@@ -26,13 +26,11 @@ import {
   pageSizeOptions,
   paginationLabels,
 } from '../table/shared-configs';
-import { useFunnelLogger } from './hooks/use-funnel-logger';
+import { withAnalyticsTestingApi } from './components/analytics-testing-page';
 
 const allItems = generateItems();
 
-export default function TablePage() {
-  useFunnelLogger();
-
+function TablePage() {
   const [selectedItems, setSelectedItems] = useState<TableProps['selectedItems']>([]);
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>(defaultPreferences);
   const { items, actions, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(
@@ -72,7 +70,7 @@ export default function TablePage() {
         selectedItems={selectedItems}
         columnDefinitions={columnsConfig}
         items={items}
-        pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} openEnd={true} />}
+        pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
         filter={
           <TextFilter
             {...filterProps!}
@@ -108,3 +106,5 @@ export default function TablePage() {
     </>
   );
 }
+
+export default withAnalyticsTestingApi(TablePage);

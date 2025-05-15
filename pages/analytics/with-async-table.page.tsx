@@ -28,7 +28,7 @@ import {
   pageSizeOptions,
   paginationLabels,
 } from '../table/shared-configs';
-import { useFunnelLogger } from './hooks/use-funnel-logger';
+import { withAnalyticsTestingApi } from './components/analytics-testing-page';
 
 const allItems = generateItems();
 
@@ -52,9 +52,7 @@ function useLoading() {
   };
 }
 
-export default function TablePage() {
-  useFunnelLogger();
-
+function TablePage() {
   const [selectedItems, setSelectedItems] = useState<TableProps['selectedItems']>([]);
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>(defaultPreferences);
   const { loading, load } = useLoading();
@@ -160,3 +158,5 @@ export default function TablePage() {
     </Box>
   );
 }
+
+export default withAnalyticsTestingApi(TablePage);

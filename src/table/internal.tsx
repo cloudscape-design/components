@@ -246,6 +246,7 @@ const InternalTable = React.forwardRef(
         flowType: rest.analyticsMetadata?.flowType ?? null,
         instanceIdentifier: analyticsMetadata?.instanceIdentifier ?? null,
         taskName: analyticsMetadata?.instanceIdentifier ?? getHeaderText(),
+        taskNameUx: getHeaderText(),
         patternIdentifier: getPatternIdentifier() ?? null,
         sortedBy: {
           columnId: sortingColumn?.sortingField ?? null,
