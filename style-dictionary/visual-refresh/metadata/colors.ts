@@ -23,6 +23,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundButtonLinkActive: {
+    description: 'The background color of link buttons in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonLinkHover: {
+    description: 'The background color of link buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundToggleButtonNormalPressed: {
     description: 'The background color of normal toggle buttons in pressed state.',
     themeable: true,
