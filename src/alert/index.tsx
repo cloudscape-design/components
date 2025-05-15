@@ -62,7 +62,7 @@ const Alert = React.forwardRef(
               stepNameSelector,
               subStepAllSelector: getSubStepAllSelector(),
               subStepIdentifier,
-              subStepErrorContext,
+              errorContext: analyticsMetadata.errorContext || subStepErrorContext,
             });
           } else if (stepNameSelector) {
             FunnelMetrics.funnelStepError({
@@ -75,7 +75,7 @@ const Alert = React.forwardRef(
               totalSubSteps: subStepCount.current,
               funnelIdentifier,
               subStepAllSelector: getSubStepAllSelector(),
-              stepErrorContext,
+              errorContext: analyticsMetadata.errorContext || stepErrorContext,
               subStepConfiguration: subStepConfiguration.current?.get(stepNumber),
               stepErrorSelector: '#' + messageSlotId,
             });
@@ -83,7 +83,7 @@ const Alert = React.forwardRef(
             FunnelMetrics.funnelError({
               funnelIdentifier,
               funnelInteractionId,
-              funnelErrorContext,
+              errorContext: analyticsMetadata.errorContext || funnelErrorContext,
             });
           }
         }
