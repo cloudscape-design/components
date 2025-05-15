@@ -8451,6 +8451,11 @@ It should contain the only \`h2\` used in the drawer.",
       "isDefault": false,
       "name": "header",
     },
+    {
+      "description": "Actions for the header. Available only if you specify the \`header\` property.",
+      "isDefault": false,
+      "name": "headerActions",
+    },
   ],
   "releaseStatus": "stable",
 }
