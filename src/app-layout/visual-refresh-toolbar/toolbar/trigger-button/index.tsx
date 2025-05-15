@@ -3,6 +3,12 @@
 import React, { Ref, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import {
+  GeneratedAnalyticsMetadataAppLayoutToolbarClose,
+  GeneratedAnalyticsMetadataAppLayoutToolbarOpen,
+} from '../../../../app-layout-toolbar/analytics-metadata/interfaces';
 import { ButtonProps } from '../../../../button/interfaces';
 import { IconProps } from '../../../../icon/interfaces';
 import Icon from '../../../../icon/internal';
@@ -184,6 +190,13 @@ function TriggerButton(
     }
   }, [containerRef, hasTooltip, tooltipValue]);
 
+  const triggerEventMetadata:
+    | GeneratedAnalyticsMetadataAppLayoutToolbarClose
+    | GeneratedAnalyticsMetadataAppLayoutToolbarOpen = {
+    action: selected ? 'close' : 'open',
+    detail: { label: { root: 'self' } },
+  };
+
   return (
     <div
       ref={containerRef}
@@ -217,6 +230,7 @@ function TriggerButton(
         type="button"
         data-testid={testId}
         data-shift-focus="awsui-layout-drawer-trigger"
+        {...getAnalyticsMetadataAttribute(triggerEventMetadata)}
       >
         <span className={clsx(badge && clsx(styles['trigger-badge-wrapper'], styles['trigger-button-styles']))}>
           {(iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />}

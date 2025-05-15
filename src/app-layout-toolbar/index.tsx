@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { applyDefaults } from '../app-layout/defaults';
 import { AppLayoutProps } from '../app-layout/interfaces';
@@ -19,6 +20,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { GeneratedAnalyticsMetadataAppLayoutToolbarComponent } from './analytics-metadata/interfaces';
 import { AppLayoutToolbarProps } from './interfaces';
 
 export { AppLayoutToolbarProps };
@@ -126,9 +128,21 @@ const AppLayoutToolbar = React.forwardRef(
 
     const baseProps = getBaseProps(rest);
 
+    const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAppLayoutToolbarComponent = {
+      name: 'awsui.AppLayoutToolbar',
+      label: {
+        selector: 'h1',
+        root: 'body',
+      },
+    };
+
     return (
       <AppLayoutToolbarPublicContext.Provider value={true}>
-        <div ref={useMergeRefs(__internalRootRef, rootRef)} {...baseProps}>
+        <div
+          ref={useMergeRefs(__internalRootRef, rootRef)}
+          {...baseProps}
+          {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
+        >
           <AppLayoutToolbarInternal ref={ref} {...props} />
         </div>
       </AppLayoutToolbarPublicContext.Provider>

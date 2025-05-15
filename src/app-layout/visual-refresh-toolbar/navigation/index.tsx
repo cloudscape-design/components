@@ -75,6 +75,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
             formAction="none"
             className={testutilStyles['navigation-close']}
             ref={navigationFocusControl.refs.close}
+            analyticsAction="close"
           />
         </div>
         {navigation}
