@@ -15,6 +15,7 @@ import {
   Textarea,
   Tiles,
 } from '~components';
+import ButtonDropdown from '~components/button-dropdown';
 import awsuiPlugins from '~components/internal/plugins';
 
 function Details() {
@@ -180,10 +181,9 @@ awsuiPlugins.appLayout.registerDrawer({
   mountContent: container => {
     ReactDOM.render(
       <Drawer
-        header={
-          <Box variant="h3" padding={{ right: 'm' }}>
-            Investigate Cold Start Chaser
-          </Box>
+        header={<Box variant="h3">Investigate Cold Start Chaser</Box>}
+        headerActions={
+          <ButtonDropdown items={[{ id: 'settings', text: 'Settings' }]} ariaLabel="Control drawer" variant="icon" />
         }
       >
         <Details />
