@@ -139,6 +139,7 @@ function AppLayoutGlobalDrawerImplementation({
                   onClick={() => onActiveGlobalDrawersChange(activeDrawerId, { initiatedByUserAction: true })}
                   ref={refs?.close}
                   variant="icon"
+                  analyticsAction="close"
                 />
               </div>
               <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
