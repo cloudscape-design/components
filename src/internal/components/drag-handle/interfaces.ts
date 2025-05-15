@@ -4,6 +4,7 @@
 import {
   Direction as WrapperDirection,
   DirectionState as WrapperDirectionState,
+  TriggerMode,
 } from '../drag-handle-wrapper/interfaces';
 
 export interface DragHandleProps {
@@ -21,6 +22,7 @@ export interface DragHandleProps {
   tooltipText?: string;
   directions?: Partial<Record<DragHandleProps.Direction, DragHandleProps.DirectionState>>;
   onDirectionClick?: (direction: DragHandleProps.Direction) => void;
+  triggerMode?: TriggerMode;
 }
 
 export namespace DragHandleProps {
@@ -35,9 +37,5 @@ export namespace DragHandleProps {
     valueMin: number;
     valueMax: number;
     valueNow: number;
-  }
-
-  export interface Ref {
-    focus(options?: FocusOptions): void;
   }
 }

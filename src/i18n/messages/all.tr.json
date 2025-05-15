@@ -343,7 +343,8 @@
     "i18nStrings.preferencesPositionBottom": "Alt",
     "i18nStrings.preferencesConfirm": "Onayla",
     "i18nStrings.preferencesCancel": "İptal",
-    "i18nStrings.resizeHandleAriaLabel": "Bölünmüş paneli yeniden boyutlandır"
+    "i18nStrings.resizeHandleAriaLabel": "Bölünmüş paneli yeniden boyutlandır",
+    "i18nStrings.resizeHandleTooltipText": "Yeniden boyutlandırmak için sürükleyin veya seçin"
   },
   "table": {
     "ariaLabels.resizerRoleDescription": "yeniden boyutlandırma düğmesi",

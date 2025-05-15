@@ -25,12 +25,16 @@ export default function DragHandleWrapper({
   tooltipText,
   children,
   onDirectionClick,
+  triggerMode = 'focus',
 }: DragHandleWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-
   const dragHandleRef = useRef<HTMLDivElement | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
+
+  const isPointerDown = useRef(false);
+  const initialPointerPosition = useRef<{ x: number; y: number } | undefined>();
+  const didPointerDrag = useRef(false);
 
   // The tooltip ("Drag or select to move/resize") shouldn't show if clicking
   // on the handle wouldn't do anything.
@@ -41,10 +45,14 @@ export default function DragHandleWrapper({
     // The drag handle is focused when it's either tabbed to, or the pointer
     // is pressed on it. We exclude handling the pointer press in this handler,
     // since it could be the start of a drag event - the pointer stuff is
-    // handled in the "pointerup" listener instead.
-    if (!isPointerDown.current && !nodeContains(wrapperRef.current, event.relatedTarget)) {
+    // handled in the "pointerup" listener instead. In cases where focus is moved
+    // to the button (by manually calling `.focus()`, the buttons should only appear)
+    // if the action that triggered the focus move was the result of a keypress.
+    if (document.body.dataset.awsuiFocusVisible && !nodeContains(wrapperRef.current, event.relatedTarget)) {
       setShowTooltip(false);
-      setShowButtons(true);
+      if (triggerMode === 'focus') {
+        setShowButtons(true);
+      }
     }
   };
 
@@ -57,10 +65,6 @@ export default function DragHandleWrapper({
       setShowButtons(false);
     }
   };
-
-  const isPointerDown = useRef(false);
-  const initialPointerPosition = useRef<{ x: number; y: number } | undefined>();
-  const didPointerDrag = useRef(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -150,7 +154,10 @@ export default function DragHandleWrapper({
     // the floating controls.
     if (event.key === 'Escape') {
       setShowButtons(false);
-    } else {
+    } else if (triggerMode === 'keyboard-activate' && (event.key === 'Enter' || event.key === ' ')) {
+      // toggle buttons when Enter or space is pressed in 'keyboard-activate' triggerMode
+      setShowButtons(prevShowButtons => !prevShowButtons);
+    } else if (event.key !== 'Alt' && event.key !== 'Control' && event.key !== 'Meta' && event.key !== 'Shift') {
       // Pressing any other key will display the focus-visible ring around the
       // drag handle if it's in focus, so we should also show the buttons now.
       setShowButtons(true);

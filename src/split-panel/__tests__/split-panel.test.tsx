@@ -17,10 +17,11 @@ import { describeEachAppLayout } from '../../app-layout/__tests__/utils';
 import { defaultSplitPanelContextProps } from './helpers';
 
 import styles from '../../../lib/components/split-panel/styles.css.js';
+import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
 
 const onKeyDown = jest.fn();
 jest.mock('../../../lib/components/app-layout/utils/use-keyboard-events', () => ({
-  useKeyboardEvents: () => onKeyDown,
+  useKeyboardEvents: () => ({ onKeyDown }),
 }));
 
 const onSliderPointerDown = jest.fn();
@@ -285,17 +286,20 @@ describe('Split panel', () => {
           }
         );
 
-        test('supports using i18nStrings.closeButtonAriaLabel and i18nStrings.resizeHandleAriaLabel from i18n provider', () => {
+        test('supports using i18nStrings.closeButtonAriaLabel and i18nStrings.resizeHandle* from i18n provider', () => {
           const { wrapper } = renderSplitPanel({
             props: { i18nStrings: undefined, closeBehavior },
             contextProps: { position: 'bottom', isOpen: true },
             messages: {
               'i18nStrings.closeButtonAriaLabel': 'Custom close button',
               'i18nStrings.resizeHandleAriaLabel': 'Custom resize',
+              'i18nStrings.resizeHandleTooltipText': 'Custom tooltip text',
             },
           });
           expect(wrapper!.findCloseButton()!.getElement()).toHaveAttribute('aria-label', 'Custom close button');
           expect(wrapper!.findSlider()!.getElement()).toHaveAttribute('aria-label', 'Custom resize');
+          fireEvent.pointerOver(wrapper!.findSlider()!.getElement());
+          expect(document.querySelector(`.${tooltipStyles.root}`)).toHaveTextContent('Custom tooltip text');
         });
 
         test('supports using preferences props from i18n provider', () => {

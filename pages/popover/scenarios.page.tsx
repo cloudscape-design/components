@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
+import clsx from 'clsx';
 
 import { Select } from '~components';
 import Box from '~components/box';
@@ -122,6 +123,20 @@ export default function () {
               dismissAriaLabel="Close"
             >
               With select
+            </Popover>
+          </section>
+
+          <section id="scenario-in-containment" className={clsx(styles.scenario, styles['containing-block'])}>
+            <Popover
+              position="left"
+              size="medium"
+              fixedWidth={true}
+              header="Network interface eth0"
+              content={<KeyValuePair />}
+              dismissAriaLabel="Close"
+              renderWithPortal={renderWithPortal}
+            >
+              eth0
             </Popover>
           </section>
         </SpaceBetween>

@@ -4,13 +4,14 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { CalendarProps } from '../../calendar/interfaces';
 import InternalDateInput from '../../date-input/internal';
 import InternalFormField from '../../form-field/internal';
 import { useInternalI18n } from '../../i18n/context.js';
 import { BaseComponentProps } from '../../internal/base-component';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
-import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces';
+import { RangeCalendarI18nStrings } from '../interfaces';
 
 import styles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -28,7 +29,7 @@ type I18nStrings = Pick<
   | 'endTimeLabel'
 >;
 
-interface RangeInputsProps extends BaseComponentProps {
+interface RangeInputsProps extends BaseComponentProps, Pick<CalendarProps, 'granularity'> {
   startDate: string;
   onChangeStartDate: (value: string) => void;
   startTime: string;
@@ -40,7 +41,6 @@ interface RangeInputsProps extends BaseComponentProps {
   i18nStrings?: I18nStrings;
   dateOnly: boolean;
   timeInputFormat: TimeInputProps.Format;
-  granularity?: DateRangePickerProps.Granularity;
 }
 
 export default function RangeInputs({

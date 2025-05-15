@@ -13,6 +13,7 @@ import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
 import { Breadcrumbs, Footer, Navigation, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
 import * as toolsContent from './utils/tools-content';
 
 const allItems = generateItems();
@@ -83,21 +84,7 @@ export default function () {
         splitPanelOpen={splitPanelOpen}
         onSplitPanelToggle={e => setSplitPanelOpen(e.detail.open)}
         splitPanel={
-          <SplitPanel
-            header="Split panel header"
-            i18nStrings={{
-              preferencesTitle: 'Preferences',
-              preferencesPositionLabel: 'Split panel position',
-              preferencesPositionDescription: 'Choose the default split panel position for the service.',
-              preferencesPositionSide: 'Side',
-              preferencesPositionBottom: 'Bottom',
-              preferencesConfirm: 'Confirm',
-              preferencesCancel: 'Cancel',
-              closeButtonAriaLabel: 'Close panel',
-              openButtonAriaLabel: 'Open panel',
-              resizeHandleAriaLabel: 'Slider',
-            }}
-          >
+          <SplitPanel header="Split panel header" i18nStrings={splitPaneli18nStrings}>
             {DEMO_CONTENT}
           </SplitPanel>
         }

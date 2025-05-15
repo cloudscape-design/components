@@ -5,6 +5,7 @@ import { SplitPanelProps } from '~components/split-panel';
 export const discreetSplitPanelI18nStrings: SplitPanelProps.I18nStrings = {
   closeButtonAriaLabel: 'Close panel',
   resizeHandleAriaLabel: 'Slider',
+  resizeHandleTooltipText: 'Drag or select to resize',
 };
 
 export const splitPaneli18nStrings: SplitPanelProps.I18nStrings = {

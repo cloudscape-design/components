@@ -343,7 +343,8 @@
     "i18nStrings.preferencesPositionBottom": "Unten",
     "i18nStrings.preferencesConfirm": "Bestätigen",
     "i18nStrings.preferencesCancel": "Abbrechen",
-    "i18nStrings.resizeHandleAriaLabel": "Größe des geteilten Bereichs ändern"
+    "i18nStrings.resizeHandleAriaLabel": "Größe des geteilten Bereichs ändern",
+    "i18nStrings.resizeHandleTooltipText": "Zum Ändern der Größe ziehen oder auswählen"
   },
   "table": {
     "ariaLabels.resizerRoleDescription": "Schaltfläche für die Größenänderung",

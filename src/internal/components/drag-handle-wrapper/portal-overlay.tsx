@@ -6,9 +6,8 @@ import {
   getIsRtl,
   getLogicalBoundingClientRect,
   getScrollInlineStart,
+  Portal,
 } from '@cloudscape-design/component-toolkit/internal';
-
-import Portal from '../portal';
 
 import styles from './styles.css.js';
 
@@ -34,7 +33,8 @@ export default function PortalOverlay({
     let lastInlineSize: number | undefined;
     let lastBlockSize: number | undefined;
     const updateElement = () => {
-      if (ref.current) {
+      // It could be that the portal hasn't been attached to the DOM yet - ensure the ref exists and is attached DOM tree.
+      if (ref.current && document.body.contains(ref.current)) {
         const isRtl = getIsRtl(ref.current);
         const { insetInlineStart, insetBlockStart, inlineSize, blockSize } = getLogicalBoundingClientRect(track);
         // For simplicity, we just make all our calculations independent of

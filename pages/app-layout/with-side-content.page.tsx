@@ -9,6 +9,7 @@ import SplitPanel from '~components/split-panel';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import labels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
 
 export default function () {
   const [splitPanelOpen, setSplitPanelOpen] = useState(true);
@@ -63,21 +64,7 @@ export default function () {
               </>
             }
             splitPanel={
-              <SplitPanel
-                header="Split panel header"
-                i18nStrings={{
-                  preferencesTitle: 'Preferences',
-                  preferencesPositionLabel: 'Split panel position',
-                  preferencesPositionDescription: 'Choose the default split panel position for the service.',
-                  preferencesPositionSide: 'Side',
-                  preferencesPositionBottom: 'Bottom',
-                  preferencesConfirm: 'Confirm',
-                  preferencesCancel: 'Cancel',
-                  closeButtonAriaLabel: 'Close panel',
-                  openButtonAriaLabel: 'Open panel',
-                  resizeHandleAriaLabel: 'Slider',
-                }}
-              >
+              <SplitPanel header="Split panel header" i18nStrings={splitPaneli18nStrings}>
                 This is some placeholder content for the split panel content area.
               </SplitPanel>
             }

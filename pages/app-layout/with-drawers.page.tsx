@@ -10,6 +10,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import { drawerItems, drawerLabels } from './utils/drawers';
 import appLayoutLabels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
 
 import styles from './styles.scss';
 
@@ -78,21 +79,7 @@ export default function WithDrawers() {
         }}
         disableContentPaddings={disableContentPaddings}
         splitPanel={
-          <SplitPanel
-            header="Split panel header"
-            i18nStrings={{
-              preferencesTitle: 'Preferences',
-              preferencesPositionLabel: 'Split panel position',
-              preferencesPositionDescription: 'Choose the default split panel position for the service.',
-              preferencesPositionSide: 'Side',
-              preferencesPositionBottom: 'Bottom',
-              preferencesConfirm: 'Confirm',
-              preferencesCancel: 'Cancel',
-              closeButtonAriaLabel: 'Close panel',
-              openButtonAriaLabel: 'Open panel',
-              resizeHandleAriaLabel: 'Slider',
-            }}
-          >
+          <SplitPanel header="Split panel header" i18nStrings={splitPaneli18nStrings}>
             <SpaceBetween size="l">
               <div className={styles.contentPlaceholder} />
               <div className={styles.contentPlaceholder} />

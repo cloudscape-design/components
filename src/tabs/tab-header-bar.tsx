@@ -468,6 +468,7 @@ export function TabHeaderBar({
       }
       if (nextActive && nextActive.dataset.testid) {
         onChange({ activeTabId: nextActive.dataset.testid });
+        setPreviousActiveTabId(nextActive.dataset.testid);
         nextActive.focus();
       }
       onDismiss(event);

@@ -36,7 +36,7 @@ export function useResize({ currentWidth, minWidth, maxWidth, panelRef, handleRe
   const relativeSize = ((clampedWidth - minWidth) / (maxWidth - minWidth)) * 100;
 
   const onPointerDown = usePointerEvents(sizeControlProps);
-  const onKeyDown = useKeyboardEvents(sizeControlProps);
+  const { onKeyDown, onDirectionClick } = useKeyboardEvents(sizeControlProps);
 
-  return { onKeyDown, onPointerDown, relativeSize };
+  return { onKeyDown, onDirectionClick, onPointerDown, relativeSize };
 }
