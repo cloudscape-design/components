@@ -151,6 +151,7 @@ export default function InternalPagination({
   if (tableComponentContext?.paginationRef?.current) {
     tableComponentContext.paginationRef.current.currentPageIndex = currentPageIndex;
     tableComponentContext.paginationRef.current.totalPageCount = pagesCount;
+    tableComponentContext.paginationRef.current.openEnd = openEnd;
   }
   return (
     <ul
