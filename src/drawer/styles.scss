@@ -41,7 +41,7 @@
 
 .header-actions {
   display: inline-flex;
-  align-items: start;
+  align-items: flex-start;
   z-index: 1;
   /*
    Compensate for the difference between the runtime drawer's and the drawer component's heading
