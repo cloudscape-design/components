@@ -18,24 +18,25 @@ import styles from '../styles.css.js';
 const SidePageSlot = (props: SkeletonLayoutProps) => {
   const {
     appLayoutProps: { splitPanel },
-    appLayoutState: {
-      resolvedNavigationOpen,
-      activeGlobalDrawersIds,
-      activeDrawer,
-      splitPanelOpen,
-      drawers,
-      appLayoutInternals,
-      splitPanelInternals,
-      splitPanelPosition,
-    },
+    appLayoutState,
   } = props;
+  const {
+    resolvedNavigationOpen,
+    activeGlobalDrawersIds,
+    activeDrawer,
+    splitPanelOpen,
+    drawers,
+    appLayoutInternals,
+    splitPanelInternals,
+    splitPanelPosition,
+  } = appLayoutState ?? {};
   const toolsOpen = !!activeDrawer;
-  const globalToolsOpen = !!activeGlobalDrawersIds.length;
+  const globalToolsOpen = !!activeGlobalDrawersIds?.length;
   return (
     <>
       {splitPanelPosition === 'side' && (
         <div className={clsx(styles['split-panel-side'], !splitPanelOpen && styles['panel-hidden'])}>
-          <AppLayoutSplitPanelSide appLayoutInternals={appLayoutInternals} splitPanelInternals={splitPanelInternals}>
+          <AppLayoutSplitPanelSide appLayoutInternals={appLayoutInternals!} splitPanelInternals={splitPanelInternals!}>
             {splitPanel}
           </AppLayoutSplitPanelSide>
         </div>
@@ -49,11 +50,11 @@ const SidePageSlot = (props: SkeletonLayoutProps) => {
           toolsOpen && styles['tools-open']
         )}
       >
-        {drawers && drawers.length > 0 && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
+        {drawers && drawers.length > 0 && <AppLayoutDrawer appLayoutInternals={appLayoutInternals!} />}
       </div>
       <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>
-        <ActiveDrawersContext.Provider value={activeGlobalDrawersIds}>
-          <AppLayoutGlobalDrawers appLayoutInternals={appLayoutInternals} />
+        <ActiveDrawersContext.Provider value={activeGlobalDrawersIds ?? []}>
+          <AppLayoutGlobalDrawers appLayoutInternals={appLayoutInternals!} />
         </ActiveDrawersContext.Provider>
       </div>
     </>

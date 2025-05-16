@@ -13,8 +13,9 @@ import styles from '../styles.css.js';
 const TopPageContentSlot = (props: SkeletonLayoutProps) => {
   const {
     appLayoutProps: { headerVariant, notifications },
-    appLayoutState: { appLayoutInternals },
+    appLayoutState,
   } = props;
+  const { appLayoutInternals } = appLayoutState ?? {};
   return (
     <>
       {notifications && (
@@ -26,7 +27,7 @@ const TopPageContentSlot = (props: SkeletonLayoutProps) => {
         ></div>
       )}
       {notifications && (
-        <AppLayoutNotifications appLayoutInternals={appLayoutInternals}>{notifications}</AppLayoutNotifications>
+        <AppLayoutNotifications appLayoutInternals={appLayoutInternals!}>{notifications}</AppLayoutNotifications>
       )}
     </>
   );

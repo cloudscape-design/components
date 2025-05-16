@@ -11,7 +11,6 @@ import { useIntersectionObserver } from '../../internal/hooks/use-intersection-o
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
 import globalVars from '../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../interfaces';
@@ -19,14 +18,8 @@ import { SplitPanelProviderProps } from '../split-panel';
 import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers';
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
-import {
-  computeHorizontalLayout,
-  computeSplitPanelOffsets,
-  computeVerticalLayout,
-  CONTENT_PADDING,
-} from './compute-layout';
+import { computeHorizontalLayout, computeSplitPanelOffsets, CONTENT_PADDING } from './compute-layout';
 import { AppLayoutInternalProps, AppLayoutInternals } from './interfaces';
-import { useMultiAppLayout } from './multi-layout';
 
 export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: ForwardedRef<AppLayoutProps.Ref>) => {
   const {
@@ -57,7 +50,6 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
     ...rest
   } = props;
   const isMobile = useMobile();
-  const { __embeddedViewMode: embeddedViewMode, __forceDeduplicationType: forceDeduplicationType } = rest as any;
   const splitPanelControlId = useUniqueId('split-panel');
   const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
   const [toolbarHeight, setToolbarHeight] = useState(0);
@@ -250,54 +242,13 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
   });
 
   const { ref: intersectionObserverRef, isIntersecting } = useIntersectionObserver({ initialState: true });
-  const { registered, toolbarProps } = useMultiAppLayout(
-    {
-      forceDeduplicationType,
-      ariaLabels: ariaLabelsWithDrawers,
-      navigation: resolvedNavigation && !navigationTriggerHide,
-      navigationOpen: resolvedNavigationOpen,
-      onNavigationToggle,
-      navigationFocusRef: navigationFocusControl.refs.toggle,
-      breadcrumbs,
-      activeDrawerId: activeDrawer?.id ?? null,
-      // only pass it down if there are non-empty drawers or tools
-      drawers: drawers?.length || !toolsHide ? drawers : undefined,
-      globalDrawersFocusControl,
-      globalDrawers: globalDrawers?.length ? globalDrawers : undefined,
-      activeGlobalDrawersIds,
-      onActiveGlobalDrawersChange,
-      onActiveDrawerChange: onActiveDrawerChangeHandler,
-      drawersFocusRef: drawersFocusControl.refs.toggle,
-      splitPanel,
-      splitPanelToggleProps: {
-        ...splitPanelToggleConfig,
-        active: splitPanelOpen,
-        controlId: splitPanelControlId,
-        position: splitPanelPosition,
-      },
-      splitPanelFocusRef: splitPanelFocusControl.refs.toggle,
-      onSplitPanelToggle: onSplitPanelToggleHandler,
-    },
-    isIntersecting
-  );
-
-  const hasToolbar = !embeddedViewMode && !!toolbarProps;
-  const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar && !breadcrumbs);
-
-  const verticalOffsets = computeVerticalLayout({
-    topOffset: placement.insetBlockStart,
-    hasVisibleToolbar: hasToolbar && toolbarState !== 'hide',
-    notificationsHeight: notificationsHeight ?? 0,
-    toolbarHeight: toolbarHeight ?? 0,
-    stickyNotifications: resolvedStickyNotifications,
-  });
 
   const appLayoutInternals: AppLayoutInternals = {
     ariaLabels: ariaLabelsWithDrawers,
     headerVariant,
     isMobile,
     breadcrumbs,
-    discoveredBreadcrumbs,
+    discoveredBreadcrumbs: null,
     stickyNotifications: resolvedStickyNotifications,
     navigationOpen: resolvedNavigationOpen,
     navigation: resolvedNavigation,
@@ -324,7 +275,12 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
     placement,
     toolbarState,
     setToolbarState,
-    verticalOffsets,
+    verticalOffsets: {
+      toolbar: 0,
+      notifications: 0,
+      header: 0,
+      drawers: 0,
+    },
     drawersOpenQueue,
     setToolbarHeight,
     setNotificationsHeight,
@@ -456,15 +412,11 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
     navigationAnimationDisabled,
     isNested,
     isIntersecting,
-    hasToolbar,
     intersectionObserverRef,
     rootRef,
     splitPanelOffsets,
-    verticalOffsets,
     isMobile,
     appLayoutInternals,
-    toolbarProps,
-    registered,
     resolvedNavigation,
     resolvedNavigationOpen,
     drawers,
@@ -474,5 +426,7 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
     splitPanelPosition,
     splitPanelOpen,
     splitPanelInternals,
+    toolbarHeight,
+    notificationsHeight,
   };
 };

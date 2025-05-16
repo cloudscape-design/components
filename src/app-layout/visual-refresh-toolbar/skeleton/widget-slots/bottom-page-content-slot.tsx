@@ -10,14 +10,18 @@ import styles from '../styles.css.js';
 
 const BottomPageContentSlot = (props: SkeletonLayoutProps) => {
   const {
-    appLayoutState: { splitPanelPosition, appLayoutInternals, splitPanelInternals },
+    appLayoutState,
     appLayoutProps: { placement, splitPanel },
   } = props;
+  const { splitPanelPosition, appLayoutInternals, splitPanelInternals } = appLayoutState ?? {};
   return (
     <>
       {splitPanelPosition === 'bottom' && (
         <div className={styles['split-panel-bottom']} style={{ insetBlockEnd: placement.insetBlockEnd }}>
-          <AppLayoutSplitPanelBottom appLayoutInternals={appLayoutInternals} splitPanelInternals={splitPanelInternals}>
+          <AppLayoutSplitPanelBottom
+            appLayoutInternals={appLayoutInternals!}
+            splitPanelInternals={splitPanelInternals!}
+          >
             {splitPanel}
           </AppLayoutSplitPanelBottom>
         </div>

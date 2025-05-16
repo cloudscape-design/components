@@ -33,8 +33,8 @@ export const AppLayoutWidgetizedState = createWidgetizedAppLayoutState(
   createAppLayoutPart({ Component: AppLayoutStateImplementation })
 );
 
-const enableDelayedComponents = false;
-const enableSyncComponents = true;
+const enableDelayedComponents = true;
+const enableSyncComponents = false;
 
 export function createAppLayoutPart({ Component }: { Component: React.JSXElementConstructor<any> }) {
   const AppLayoutPartLoader = ({ Skeleton, ...props }: any) => {

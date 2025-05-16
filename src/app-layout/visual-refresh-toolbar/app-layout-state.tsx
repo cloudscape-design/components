@@ -1,27 +1,32 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React, { ForwardedRef, useEffect } from 'react';
 
 import { createWidgetizedComponent } from '../../internal/widgets';
+import { AppLayoutProps } from '../interfaces';
 import { AppLayoutInternalProps } from './interfaces';
 import { useSkeletonSlotsAttributes } from './skeleton/widget-slots/use-skeleton-slots-attributes';
 import { useAppLayout } from './use-app-layout';
 
 export interface AppLayoutStateProps {
   props: AppLayoutInternalProps;
-  state: ReturnType<typeof useAppLayout>;
-  onChange: (skeletonAttributes: ReturnType<typeof useSkeletonSlotsAttributes> | null) => void;
+  forwardRef: ForwardedRef<AppLayoutProps.Ref>;
+  onChange: (
+    appLayoutState: ReturnType<typeof useAppLayout>,
+    skeletonAttributes: ReturnType<typeof useSkeletonSlotsAttributes> | null
+  ) => void;
 }
 
 export const AppLayoutState = (props: AppLayoutStateProps) => {
+  const appLayoutState = useAppLayout(props.props, props.forwardRef);
   const skeletonSlotsAttributes = useSkeletonSlotsAttributes({
     appLayoutProps: props.props,
-    appLayoutState: props.state,
+    appLayoutState: appLayoutState,
   });
 
   useEffect(() => {
-    props.onChange(skeletonSlotsAttributes);
-  }, [props, skeletonSlotsAttributes]);
+    props.onChange(appLayoutState, skeletonSlotsAttributes);
+  }, [props, appLayoutState, skeletonSlotsAttributes]);
 
   return <></>;
 };

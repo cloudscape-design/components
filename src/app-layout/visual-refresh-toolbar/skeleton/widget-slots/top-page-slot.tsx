@@ -14,21 +14,20 @@ import sharedStyles from '../../../resize/styles.css.js';
 import styles from '../styles.css.js';
 
 export const TopPageSlot = (props: SkeletonLayoutProps) => {
+  const { appLayoutState } = props;
   const {
-    appLayoutState: {
-      resolvedNavigationOpen,
-      navigationAnimationDisabled,
-      activeDrawer,
-      hasToolbar,
-      appLayoutInternals,
-      toolbarProps,
-      resolvedNavigation,
-    },
-  } = props;
+    resolvedNavigationOpen,
+    navigationAnimationDisabled,
+    activeDrawer,
+    hasToolbar,
+    appLayoutInternals,
+    toolbarProps,
+    resolvedNavigation,
+  } = appLayoutState ?? {};
   const toolsOpen = !!activeDrawer;
   return (
     <>
-      {hasToolbar && <AppLayoutToolbar appLayoutInternals={appLayoutInternals} toolbarProps={toolbarProps!} />}
+      {hasToolbar && <AppLayoutToolbar appLayoutInternals={appLayoutInternals!} toolbarProps={toolbarProps!} />}
       {resolvedNavigation && (
         <div
           className={clsx(
@@ -38,7 +37,7 @@ export const TopPageSlot = (props: SkeletonLayoutProps) => {
             !navigationAnimationDisabled && sharedStyles['with-motion-horizontal']
           )}
         >
-          {resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
+          {resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals!} />}
         </div>
       )}
     </>

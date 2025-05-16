@@ -3,9 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import ScreenreaderOnly from '../../../internal/components/screenreader-only';
 import VisualContext from '../../../internal/components/visual-context';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { useMergeRefs } from '../../../internal/hooks/use-merge-refs';
+import { useGetGlobalBreadcrumbs } from '../../../internal/plugins/helpers/use-global-breadcrumbs';
+import { computeVerticalLayout } from '../compute-layout';
 import { AppLayoutInternalProps } from '../interfaces';
 import {
   AppLayoutSkeletonBottomContentSlot,
@@ -13,6 +16,7 @@ import {
   AppLayoutSkeletonTopContentSlot,
   AppLayoutSkeletonTopSlot,
 } from '../internal';
+import { useMultiAppLayout } from '../multi-layout';
 import { useAppLayout } from '../use-app-layout';
 import { useSkeletonSlotsAttributes } from './widget-slots/use-skeleton-slots-attributes';
 
@@ -21,7 +25,14 @@ import styles from './styles.css.js';
 
 export interface SkeletonLayoutProps {
   appLayoutProps: AppLayoutInternalProps;
-  appLayoutState: ReturnType<typeof useAppLayout>;
+  appLayoutState:
+    | (ReturnType<typeof useAppLayout> &
+        Partial<ReturnType<typeof useMultiAppLayout>> &
+        Partial<{
+          hasToolbar: boolean;
+          verticalOffsets: ReturnType<typeof computeVerticalLayout>;
+        }>)
+    | null;
 }
 
 export interface RootSkeletonLayoutProps extends SkeletonLayoutProps {
@@ -30,8 +41,17 @@ export interface RootSkeletonLayoutProps extends SkeletonLayoutProps {
 
 export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
   const { appLayoutProps, appLayoutState, skeletonSlotsAttributes } = props;
-  const { registered } = appLayoutState ?? {};
-  const { contentHeader, content, navigationWidth } = appLayoutProps;
+  const {
+    contentHeader,
+    content,
+    navigationWidth,
+    navigationTriggerHide,
+    breadcrumbs,
+    toolsHide,
+    splitPanel,
+    placement,
+    ...rest
+  } = appLayoutProps;
   const {
     wrapperElAttributes,
     mainElAttributes,
@@ -39,40 +59,102 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
     contentHeaderElAttributes,
     contentElAttributes,
   } = skeletonSlotsAttributes ?? {};
-  const ref = useMergeRefs(appLayoutState.intersectionObserverRef, appLayoutState.rootRef);
+  const ref = useMergeRefs(appLayoutState?.intersectionObserverRef, appLayoutState?.rootRef);
+  const { __forceDeduplicationType: forceDeduplicationType, __embeddedViewMode: embeddedViewMode } = rest as any;
+  const { registered, toolbarProps } = useMultiAppLayout(
+    {
+      forceDeduplicationType,
+      ariaLabels: appLayoutState?.appLayoutInternals?.ariaLabels,
+      navigation: appLayoutState?.resolvedNavigation && !navigationTriggerHide,
+      navigationOpen: Boolean(appLayoutState?.resolvedNavigationOpen),
+      onNavigationToggle: appLayoutState?.appLayoutInternals?.onNavigationToggle ?? function () {},
+      navigationFocusRef: appLayoutState?.appLayoutInternals?.navigationFocusControl.refs.toggle,
+      breadcrumbs,
+      activeDrawerId: appLayoutState?.activeDrawer?.id ?? null,
+      // only pass it down if there are non-empty drawers or tools
+      drawers: appLayoutState?.drawers?.length || !toolsHide ? appLayoutState?.drawers : undefined,
+      globalDrawersFocusControl: appLayoutState?.appLayoutInternals?.globalDrawersFocusControl,
+      globalDrawers: appLayoutState?.appLayoutInternals?.globalDrawers?.length
+        ? appLayoutState?.appLayoutInternals?.globalDrawers
+        : undefined,
+      activeGlobalDrawersIds: appLayoutState?.activeGlobalDrawersIds,
+      onActiveGlobalDrawersChange: appLayoutState?.appLayoutInternals?.onActiveGlobalDrawersChange,
+      onActiveDrawerChange: appLayoutState?.appLayoutInternals?.onActiveDrawerChange,
+      drawersFocusRef: appLayoutState?.appLayoutInternals?.drawersFocusControl.refs.toggle,
+      splitPanel,
+      splitPanelToggleProps: {
+        ...appLayoutState?.appLayoutInternals?.splitPanelToggleConfig,
+        active: Boolean(appLayoutState?.splitPanelOpen),
+        controlId: appLayoutState?.appLayoutInternals?.splitPanelControlId,
+        position: appLayoutState?.splitPanelPosition ?? 'side',
+      },
+      splitPanelFocusRef: appLayoutState?.appLayoutInternals?.splitPanelFocusControl.refs.toggle,
+      onSplitPanelToggle: appLayoutState?.appLayoutInternals?.onSplitPanelToggle ?? function () {},
+    },
+    appLayoutState?.isIntersecting ?? true
+  );
+  const hasToolbar = !embeddedViewMode && !!toolbarProps;
+  const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar && !breadcrumbs);
+  const verticalOffsets = computeVerticalLayout({
+    topOffset: placement.insetBlockStart,
+    hasVisibleToolbar: hasToolbar && appLayoutState?.appLayoutInternals?.toolbarState !== 'hide',
+    notificationsHeight: appLayoutState?.notificationsHeight ?? 0,
+    toolbarHeight: appLayoutState?.toolbarHeight ?? 0,
+    stickyNotifications: Boolean(appLayoutState?.appLayoutInternals?.stickyNotifications),
+  });
+  const combinedProps = {
+    ...props,
+    appLayoutState: {
+      ...appLayoutState,
+      appLayoutInternals: {
+        ...appLayoutState?.appLayoutInternals,
+        globalDrawers: appLayoutState?.appLayoutInternals?.globalDrawers ?? [],
+        discoveredBreadcrumbs,
+        verticalOffsets,
+      },
+      toolbarProps,
+      registered,
+      hasToolbar,
+      verticalOffsets,
+    },
+  };
 
   return (
-    <VisualContext contextName="app-layout-toolbar">
-      <div
-        {...wrapperElAttributes}
-        className={wrapperElAttributes?.className ?? clsx(styles.root, testutilStyles.root)}
-        style={
-          wrapperElAttributes?.style ?? {
-            [customCssProps.navigationWidth]: `${navigationWidth}px`,
-          }
-        }
-        ref={ref}
-      >
-        <AppLayoutSkeletonTopSlot {...props} />
-        <main {...mainElAttributes} className={mainElAttributes?.className ?? styles['main-landmark']}>
-          <AppLayoutSkeletonTopContentSlot {...props} />
-          <div
-            {...contentWrapperElAttributes}
-            className={
-              contentWrapperElAttributes?.className ??
-              clsx(styles.main, { [styles['main-disable-paddings']]: appLayoutProps.disableContentPaddings })
+    <>
+      {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
+      {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
+      <VisualContext contextName="app-layout-toolbar">
+        <div
+          {...wrapperElAttributes}
+          className={wrapperElAttributes?.className ?? clsx(styles.root, testutilStyles.root)}
+          style={
+            wrapperElAttributes?.style ?? {
+              [customCssProps.navigationWidth]: `${navigationWidth}px`,
             }
-          >
-            {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
-            {/*delay rendering the content until registration of this instance is complete*/}
-            <div {...contentElAttributes} className={contentElAttributes?.className ?? testutilStyles.content}>
-              {registered ? content : null}
+          }
+          ref={ref}
+        >
+          <AppLayoutSkeletonTopSlot {...(combinedProps as any)} />
+          <main {...mainElAttributes} className={mainElAttributes?.className ?? styles['main-landmark']}>
+            <AppLayoutSkeletonTopContentSlot {...(combinedProps as any)} />
+            <div
+              {...contentWrapperElAttributes}
+              className={
+                contentWrapperElAttributes?.className ??
+                clsx(styles.main, { [styles['main-disable-paddings']]: appLayoutProps.disableContentPaddings })
+              }
+            >
+              {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
+              {/*delay rendering the content until registration of this instance is complete*/}
+              <div {...contentElAttributes} className={contentElAttributes?.className ?? testutilStyles.content}>
+                {registered ? content : null}
+              </div>
             </div>
-          </div>
-          <AppLayoutSkeletonBottomContentSlot {...props} />
-        </main>
-        <AppLayoutSkeletonSideSlot {...props} />
-      </div>
-    </VisualContext>
+            <AppLayoutSkeletonBottomContentSlot {...(combinedProps as any)} />
+          </main>
+          <AppLayoutSkeletonSideSlot {...(combinedProps as any)} />
+        </div>
+      </VisualContext>
+    </>
   );
 };

@@ -87,14 +87,14 @@ export function AppLayoutToolbarImplementation({
     splitPanelFocusRef,
     splitPanelToggleProps,
     onSplitPanelToggle,
-  } = toolbarProps;
+  } = toolbarProps ?? {};
   // TODO: expose configuration property
   const pinnedToolbar = true;
   const ref = useRef<HTMLElement>(null);
-  useResizeObserver(ref, entry => setToolbarHeight(entry.borderBoxHeight));
+  useResizeObserver(ref, entry => setToolbarHeight?.(entry.borderBoxHeight));
   useEffect(() => {
     return () => {
-      setToolbarHeight(0);
+      setToolbarHeight?.(0);
     };
     // unmount effect only
     // eslint-disable-next-line react-hooks/exhaustive-deps

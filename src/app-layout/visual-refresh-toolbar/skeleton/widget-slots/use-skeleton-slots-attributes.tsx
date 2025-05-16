@@ -47,14 +47,16 @@ export const useSkeletonSlotsAttributes = ({ appLayoutProps, appLayoutState }: S
     className: clsx(styles['main-landmark'], isMobile && anyPanelOpen && styles['unfocusable-mobile']),
   };
 
+  // TODO: pass verticalOffsets hasToolbar as they are always empty
+
   const contentWrapperElAttributes = {
     className: clsx(styles.main, { [styles['main-disable-paddings']]: disableContentPaddings }),
     style: {
       paddingBlockEnd: splitPanelOffsets?.mainContentPaddingBlockEnd,
       ...(hasToolbar || !isNested
         ? {
-            [globalVars.stickyVerticalTopOffset]: `${verticalOffsets?.header}px`,
-            [globalVars.stickyVerticalBottomOffset]: `${splitPanelOffsets?.stickyVerticalBottomOffset}px`,
+            [globalVars.stickyVerticalTopOffset]: `${verticalOffsets?.header ?? 0}px`,
+            [globalVars.stickyVerticalBottomOffset]: `${splitPanelOffsets?.stickyVerticalBottomOffset ?? 0}px`,
           }
         : {}),
       ...(!isMobile ? { minWidth: `${minContentWidth}px` } : {}),
