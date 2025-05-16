@@ -23,6 +23,9 @@ export default function () {
     <>
       <h1>Table analytics</h1>
       <Table
+        analyticsMetadata={{
+          resourceType: 'table-resource-type',
+        }}
         items={[]}
         columnDefinitions={[]}
         header={
