@@ -3,6 +3,9 @@
 import React, { useState } from 'react';
 import { act, fireEvent, render, waitFor } from '@testing-library/react';
 
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
+
 import { Button } from '../../../lib/components';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
@@ -27,6 +30,7 @@ import iconStyles from '../../../lib/components/icon/styles.selectors.js';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
+  activateAnalyticsMetadata(true);
 });
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
@@ -1357,6 +1361,9 @@ describe('toolbar mode only features', () => {
         const drawerId = 'global-drawer';
         awsuiPlugins.appLayout.registerDrawer({
           ...drawerDefaults,
+          ariaLabels: {
+            expandedModeButton: 'Expanded mode button',
+          },
           id: drawerId,
           type: 'global',
           isExpandable: true,
@@ -1370,6 +1377,28 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
         globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
         expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
+        expect(
+          getGeneratedAnalyticsMetadata(
+            globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+          )
+        ).toStrictEqual({
+          action: 'expand',
+          detail: {
+            label: 'Expanded mode button',
+          },
+        });
+        globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
+        expect(
+          getGeneratedAnalyticsMetadata(
+            globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+          )
+        ).toStrictEqual({
+          action: 'collapse',
+          detail: {
+            label: 'Expanded mode button',
+          },
+        });
       });
 
       test('only one drawer could be in expanded mode. all other panels should be closed', async () => {
