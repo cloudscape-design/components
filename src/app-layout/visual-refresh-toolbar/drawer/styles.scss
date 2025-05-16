@@ -63,6 +63,7 @@ $drawer-resize-handle-size: awsui.$space-m;
       inline-size: var(#{custom-props.$drawerSize});
       &.exiting {
         display: block;
+        border-inline-start: none;
         > .global-drawer-wrapper {
           opacity: 0;
           // When multiple drawers are open and one of them is being closed, an unwanted width-changing transition appears.
