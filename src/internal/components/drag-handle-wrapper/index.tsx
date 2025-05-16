@@ -26,11 +26,12 @@ export default function DragHandleWrapper({
   children,
   onDirectionClick,
   triggerMode = 'focus',
+  initialShowButtons = false,
 }: DragHandleWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const dragHandleRef = useRef<HTMLDivElement | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [showButtons, setShowButtons] = useState(false);
+  const [showButtons, setShowButtons] = useState(initialShowButtons);
 
   const isPointerDown = useRef(false);
   const initialPointerPosition = useRef<{ x: number; y: number } | undefined>();
@@ -156,7 +157,7 @@ export default function DragHandleWrapper({
       setShowButtons(false);
     } else if (triggerMode === 'keyboard-activate' && (event.key === 'Enter' || event.key === ' ')) {
       // toggle buttons when Enter or space is pressed in 'keyboard-activate' triggerMode
-      setShowButtons(prevShowButtons => !prevShowButtons);
+      setShowButtons(prevshowButtons => !prevshowButtons);
     } else if (event.key !== 'Alt' && event.key !== 'Control' && event.key !== 'Meta' && event.key !== 'Shift') {
       // Pressing any other key will display the focus-visible ring around the
       // drag handle if it's in focus, so we should also show the buttons now.
@@ -196,7 +197,7 @@ export default function DragHandleWrapper({
         )}
       </div>
 
-      <PortalOverlay track={dragHandleRef.current} isDisabled={!showButtons}>
+      <PortalOverlay track={dragHandleRef} isDisabled={!showButtons}>
         {directions['block-start'] && (
           <DirectionButton
             show={!isDisabled && showButtons}
