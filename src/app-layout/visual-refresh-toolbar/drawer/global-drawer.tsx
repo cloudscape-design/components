@@ -37,8 +37,11 @@ function AppLayoutGlobalDrawerImplementation({
     minGlobalDrawersSizes,
     maxGlobalDrawersSizes,
     activeGlobalDrawersSizes,
+    activeGlobalDrawers,
     verticalOffsets,
     drawersOpenQueue,
+    expandedDrawerId,
+    setExpandedDrawerId,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeGlobalDrawer?.id ?? '';
@@ -65,9 +68,10 @@ function AppLayoutGlobalDrawerImplementation({
   const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
   const hasTriggerButton = !!activeGlobalDrawer?.trigger;
   const animationDisabled = activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id);
+  const isExpanded = activeGlobalDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
 
   return (
-    <Transition nodeRef={drawerRef} in={show} appear={show} timeout={0}>
+    <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={60}>
       {state => {
         return (
           <aside
@@ -80,9 +84,13 @@ function AppLayoutGlobalDrawerImplementation({
               styles[state],
               !animationDisabled && sharedStyles['with-motion-horizontal'],
               {
-                [styles['drawer-hidden']]: !show,
-                [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
+                [styles['drawer-hidden']]: !show && state === 'exited',
+                [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
                 [testutilStyles['active-drawer']]: show,
+                [styles['drawer-expanded']]: isExpanded,
+                [styles['has-next-siblings']]:
+                  activeGlobalDrawers.findIndex(drawer => drawer.id === activeDrawerId) + 1 <
+                  activeGlobalDrawers.length,
               }
             )}
             ref={drawerRef}
@@ -104,46 +112,63 @@ function AppLayoutGlobalDrawerImplementation({
               blockSize: drawerHeight,
               insetBlockStart: drawerTopOffset,
               ...(!isMobile && {
-                [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
+                [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? (isExpanded ? '100%' : size + 'px') : 0}`,
               }),
             }}
             data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
           >
-            {!isMobile && activeGlobalDrawer?.resizable && (
-              <div className={styles['drawer-slider']}>
-                <PanelResizeHandle
-                  ref={refs?.slider}
-                  position="side"
-                  className={testutilStyles['drawers-slider']}
-                  ariaLabel={activeGlobalDrawer?.ariaLabels?.resizeHandle}
-                  tooltipText={activeGlobalDrawer?.ariaLabels?.resizeHandleTooltipText}
-                  ariaValuenow={resizeProps.relativeSize}
-                  onKeyDown={resizeProps.onKeyDown}
-                  onDirectionClick={resizeProps.onDirectionClick}
-                  onPointerDown={resizeProps.onPointerDown}
-                />
-              </div>
-            )}
-            <div
-              className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
-              data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
-            >
-              <div className={clsx(styles['drawer-close-button'])}>
-                <InternalButton
-                  ariaLabel={computedAriaLabels.closeButton}
-                  className={clsx({
-                    [testutilStyles['active-drawer-close-button']]: activeDrawerId,
-                  })}
-                  formAction="none"
-                  iconName={isMobile ? 'close' : 'angle-right'}
-                  onClick={() => onActiveGlobalDrawersChange(activeDrawerId, { initiatedByUserAction: true })}
-                  ref={refs?.close}
-                  variant="icon"
-                  analyticsAction="close"
-                />
-              </div>
-              <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
-                {activeGlobalDrawer?.content}
+            <div className={clsx(styles['global-drawer-wrapper'])}>
+              {!isMobile && <div className={styles['drawer-gap']}></div>}
+              {!isMobile && activeGlobalDrawer?.resizable && !isExpanded && (
+                <div className={styles['drawer-slider']}>
+                  <PanelResizeHandle
+                    ref={refs?.slider}
+                    position="side"
+                    className={testutilStyles['drawers-slider']}
+                    ariaLabel={activeGlobalDrawer?.ariaLabels?.resizeHandle}
+                    tooltipText={activeGlobalDrawer?.ariaLabels?.resizeHandleTooltipText}
+                    ariaValuenow={resizeProps.relativeSize}
+                    onKeyDown={resizeProps.onKeyDown}
+                    onDirectionClick={resizeProps.onDirectionClick}
+                    onPointerDown={resizeProps.onPointerDown}
+                  />
+                </div>
+              )}
+
+              <div
+                className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
+                data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
+              >
+                {!isMobile && activeGlobalDrawer?.isExpandable && (
+                  <div className={styles['drawer-expanded-mode-button']}>
+                    <InternalButton
+                      ariaLabel={activeGlobalDrawer?.ariaLabels?.expandedModeButton}
+                      className={testutilStyles['active-drawer-expanded-mode-button']}
+                      formAction="none"
+                      ariaExpanded={isExpanded}
+                      iconName={isExpanded ? 'shrink' : 'expand'}
+                      onClick={() => setExpandedDrawerId(isExpanded ? undefined : activeDrawerId)}
+                      variant="icon"
+                    />
+                  </div>
+                )}
+                <div className={clsx(styles['drawer-close-button'])}>
+                  <InternalButton
+                    ariaLabel={computedAriaLabels.closeButton}
+                    className={clsx({
+                      [testutilStyles['active-drawer-close-button']]: activeDrawerId,
+                    })}
+                    formAction="none"
+                    iconName={isMobile ? 'close' : 'angle-right'}
+                    onClick={() => onActiveGlobalDrawersChange(activeDrawerId, { initiatedByUserAction: true })}
+                    ref={refs?.close}
+                    variant="icon"
+                    analyticsAction="close"
+                  />
+                </div>
+                <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
+                  {activeGlobalDrawer?.content}
+                </div>
               </div>
             </div>
           </aside>

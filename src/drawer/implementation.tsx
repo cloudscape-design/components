@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { RefObject } from 'react';
 import clsx from 'clsx';
 
+import { useRuntimeDrawerContext } from '../app-layout/runtime-drawer/use-runtime-drawer-context';
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
@@ -34,6 +35,9 @@ export function DrawerImplementation({
     className: clsx(baseProps.className, styles.drawer, isToolbar && styles['with-toolbar']),
   };
 
+  const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: __internalRootRef as RefObject<HTMLElement> });
+  const hasAdditioalDrawerAction = !!runtimeDrawerContext?.isExpandable;
+
   return loading ? (
     <div
       {...containerProps}
@@ -49,7 +53,7 @@ export function DrawerImplementation({
   ) : (
     <div {...containerProps} ref={__internalRootRef}>
       {header && (
-        <div className={styles.header}>
+        <div className={clsx(styles.header, hasAdditioalDrawerAction && styles['with-additional-action'])}>
           {header}
           {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
         </div>
