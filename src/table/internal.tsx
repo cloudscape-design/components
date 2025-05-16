@@ -233,6 +233,7 @@ const InternalTable = React.forwardRef(
       return {
         variant,
         flowType: rest.analyticsMetadata?.flowType,
+        resourceType: rest.analyticsMetadata?.resourceType,
         instanceIdentifier: analyticsMetadata?.instanceIdentifier,
         taskName: analyticsMetadata?.instanceIdentifier ?? getHeaderText(),
         patternIdentifier: getPatternIdentifier(),
@@ -241,9 +242,13 @@ const InternalTable = React.forwardRef(
           sortingOrder: sortingColumn ? (sortingDescending ? 'desc' : 'asc') : undefined,
         },
         filtered: Boolean(filterData?.filterText),
-        currentPageIndex: paginationData.currentPageIndex,
         totalNumberOfResources: paginationData.totalPageCount,
         resourcesPerPage: allRows?.length || 0,
+        pagination: {
+          currentPageIndex: paginationData?.currentPageIndex ?? 0,
+          totalNumberOfPages: paginationData?.openEnd ? null : paginationData?.totalPageCount ?? null,
+          openEnd: Boolean(paginationData?.openEnd),
+        },
         resourcesSelected: selectedItems?.length > 0,
       };
     };
@@ -251,6 +256,7 @@ const InternalTable = React.forwardRef(
     const { setLastUserAction, tableInteractionAttributes } = useTableInteractionMetrics({
       elementRef: tableRefObject,
       loading,
+      items,
       instanceIdentifier: analyticsMetadata?.instanceIdentifier,
       itemCount: items.length,
       getComponentIdentifier: getHeaderText,
