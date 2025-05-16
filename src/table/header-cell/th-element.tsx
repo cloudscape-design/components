@@ -3,10 +3,10 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';

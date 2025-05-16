@@ -3,14 +3,13 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
+import { useCurrentMode, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalGrid from '../grid/internal';
 import { getBaseProps } from '../internal/base-component';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { highContrastHeaderClassName } from '../internal/utils/content-header-utils';
 import { ContentLayoutProps } from './interfaces';

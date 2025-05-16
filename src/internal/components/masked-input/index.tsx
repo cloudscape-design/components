@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { Ref, useLayoutEffect, useState } from 'react';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalInput from '../../../input/internal';
 import { getBaseProps } from '../../base-component';
 import { useFormFieldContext } from '../../context/form-field-context';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../../events';
-import { useMergeRefs } from '../../hooks/use-merge-refs';
 import { MaskedInputProps } from './interfaces';
 import useMask from './use-mask';
 import MaskFormat from './utils/mask-format';

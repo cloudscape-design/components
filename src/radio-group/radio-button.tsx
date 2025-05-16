@@ -3,12 +3,12 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import AbstractSwitch from '../internal/components/abstract-switch';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { RadioGroupProps } from './interfaces';
 
 import styles from './styles.css.js';

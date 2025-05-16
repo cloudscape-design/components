@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+import { getIsRtl, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import AxisLabel from '../internal/components/cartesian-chart/axis-label';
 import BlockEndLabels, { useBLockEndLabels } from '../internal/components/cartesian-chart/block-end-labels';
@@ -18,7 +18,6 @@ import VerticalGridLines from '../internal/components/cartesian-chart/vertical-g
 import VerticalMarker from '../internal/components/cartesian-chart/vertical-marker';
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import useContainerWidth from '../internal/utils/use-container-width';

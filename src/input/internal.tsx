@@ -3,6 +3,7 @@
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalButton from '../button/internal';
@@ -14,7 +15,6 @@ import { FormFieldValidationControlProps, useFormFieldContext } from '../interna
 import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { GeneratedAnalyticsMetadataInputClearInput } from './analytics-metadata/interfaces';
 import { BaseChangeDetail, BaseInputProps, InputAutoCorrect, InputProps } from './interfaces';
 import { convertAutoComplete, useSearchProps } from './utils';
