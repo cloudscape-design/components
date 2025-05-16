@@ -3,12 +3,13 @@
 import React, { forwardRef, TdHTMLAttributes, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import { DatePickerProps } from '../../date-picker/interfaces';
 import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
 import Tooltip from '../../internal/components/tooltip';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { applyDisplayName } from '../../internal/utils/apply-display-name';
 import { CalendarProps } from '../interfaces';
 

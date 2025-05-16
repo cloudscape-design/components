@@ -3,9 +3,10 @@
 import React, { forwardRef, useRef } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import { IconProps } from '../../../icon/interfaces';
 import InternalIcon from '../../../icon/internal';
-import { useMergeRefs } from '../../hooks/use-merge-refs';
 import { DragHandleProps } from './interfaces';
 import { ResizeIcon } from './resize-icon';
 

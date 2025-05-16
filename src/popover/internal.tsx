@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { Portal } from '@cloudscape-design/component-toolkit/internal';
+import { Portal, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
@@ -13,7 +13,6 @@ import ResetContextsForModal from '../internal/context/reset-contexts-for-modal'
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { KeyCode } from '../internal/keycode';

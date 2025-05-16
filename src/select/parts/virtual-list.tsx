@@ -3,9 +3,9 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import OptionsList from '../../internal/components/options-list';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useVirtual } from '../../internal/hooks/use-virtual';
 import { renderOptions } from '../utils/render-options';
 import customScrollToIndex from '../utils/scroll-to-index';

@@ -3,14 +3,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
 import { ChartWrapper } from '../internal/components/chart-wrapper';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import { nodeBelongs } from '../internal/utils/node-belongs';

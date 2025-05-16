@@ -3,7 +3,7 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonProps } from '../button/interfaces';
 import { getBaseProps } from '../internal/base-component';
@@ -13,7 +13,6 @@ import {
   SingleTabStopNavigationProvider,
 } from '../internal/context/single-tab-stop-navigation-context';
 import { hasModifierKeys } from '../internal/events';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import handleKey from '../internal/utils/handle-key';

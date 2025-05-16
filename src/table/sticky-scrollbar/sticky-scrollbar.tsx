@@ -3,8 +3,9 @@
 import React, { forwardRef } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
 import { useStickyScrollbar } from './use-sticky-scrollbar';

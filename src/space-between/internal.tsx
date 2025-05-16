@@ -4,9 +4,10 @@ import React, { forwardRef } from 'react';
 import flattenChildren from 'react-keyed-flatten-children';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SpaceBetweenProps } from './interfaces';
 
 import styles from './styles.css.js';

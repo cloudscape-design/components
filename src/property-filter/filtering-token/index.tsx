@@ -4,7 +4,7 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+import { useDensityMode, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import {
   copyAnalyticsMetadataAttribute,
   getAnalyticsMetadataAttribute,
@@ -12,7 +12,6 @@ import {
 
 import InternalIcon from '../../icon/internal';
 import { useListFocusController } from '../../internal/hooks/use-list-focus-controller';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import InternalPopover, { InternalPopoverProps, InternalPopoverRef } from '../../popover/internal';
 import InternalSelect from '../../select/internal';
 import { GeneratedAnalyticsMetadataPropertyEditStart } from '../analytics-metadata/interfaces';

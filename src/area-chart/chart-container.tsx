@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import AxisLabel from '../internal/components/cartesian-chart/axis-label';
 import BlockEndLabels, { useBLockEndLabels } from '../internal/components/cartesian-chart/block-end-labels';
 import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
@@ -9,7 +11,6 @@ import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasize
 import InlineStartLabels from '../internal/components/cartesian-chart/inline-start-labels';
 import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
 import ChartPlot from '../internal/components/chart-plot';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import useContainerWidth from '../internal/utils/use-container-width';
 import { useSelector } from './async-store';
 import AreaChartPopover from './elements/chart-popover';
