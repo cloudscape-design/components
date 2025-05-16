@@ -233,6 +233,7 @@ const InternalTable = React.forwardRef(
       return {
         variant,
         flowType: rest.analyticsMetadata?.flowType,
+        resourceType: rest.analyticsMetadata?.resourceType,
         instanceIdentifier: analyticsMetadata?.instanceIdentifier,
         taskName: analyticsMetadata?.instanceIdentifier ?? getHeaderText(),
         patternIdentifier: getPatternIdentifier(),
