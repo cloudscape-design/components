@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef, TdHTMLAttributes, useRef, useState } from 'react';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import Tooltip from '../../../internal/components/tooltip';
 import useHiddenDescription from '../../../internal/hooks/use-hidden-description';
-import { useMergeRefs } from '../../../internal/hooks/use-merge-refs';
 import { applyDisplayName } from '../../../internal/utils/apply-display-name';
 
 import testutilStyles from '../../test-classes/styles.css.js';
