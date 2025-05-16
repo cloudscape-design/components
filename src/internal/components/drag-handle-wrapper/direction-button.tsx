@@ -27,48 +27,41 @@ interface DirectionButtonProps {
   state: DirectionState;
   onClick: React.MouseEventHandler;
   show: boolean;
-  className: string;
 }
 
-export default function DirectionButton({ direction, state, show, onClick, className }: DirectionButtonProps) {
+export default function DirectionButton({ direction, state, show, onClick }: DirectionButtonProps) {
   return (
     <Transition in={show}>
-      {(transitionState, ref) => {
-        if (transitionState === 'exited') {
-          console.log('transitionState', transitionState, testUtilsStyles['direction-button-visible']);
-        }
-
-        return (
-          // The wrapper exists to provide a padding around each direction button that
-          // prevents any accidental presses around the button from propagating to any
-          // interactive elements behind the button.
+      {(transitionState, ref) => (
+        // The wrapper exists to provide a padding around each direction button that
+        // prevents any accidental presses around the button from propagating to any
+        // interactive elements behind the button.
+        <span
+          ref={ref}
+          className={clsx(
+            styles['direction-button-wrapper'],
+            styles[`direction-button-wrapper-${direction}`],
+            transitionState === 'exited' && styles['direction-button-wrapper-hidden'],
+            styles[`direction-button-wrapper-motion-${transitionState}`]
+          )}
+        >
           <span
-            ref={ref}
             className={clsx(
-              styles['direction-button-wrapper'],
-              styles[`direction-button-wrapper-${direction}`],
-              transitionState === 'exited' && styles['direction-button-wrapper-hidden'],
-              transitionState !== 'exited' && testUtilsStyles['direction-button-visible'],
-              styles[`direction-button-wrapper-motion-${transitionState}`]
+              styles['direction-button'],
+              state === 'disabled' && styles['direction-button-disabled'],
+              testUtilsStyles[`direction-button-${direction}`],
+              transitionState !== 'exited' && testUtilsStyles['direction-button-visible']
             )}
+            onClick={state !== 'disabled' ? onClick : undefined}
+            // This prevents focus from being lost to `document.body` on
+            // mouse/pointer press. This allows us to listen to onClick while
+            // keeping this button pointer-accessible only.
+            onPointerDown={event => event.preventDefault()}
           >
-            <span
-              className={clsx(
-                className,
-                styles['direction-button'],
-                state === 'disabled' && styles['direction-button-disabled']
-              )}
-              onClick={state !== 'disabled' ? onClick : undefined}
-              // This prevents focus from being lost to `document.body` on
-              // mouse/pointer press. This allows us to listen to onClick while
-              // keeping this button pointer-accessible only.
-              onPointerDown={event => event.preventDefault()}
-            >
-              <InternalIcon name={ICON_LOGICAL_PROPERTY_MAP[direction]} size="small" />
-            </span>
+            <InternalIcon name={ICON_LOGICAL_PROPERTY_MAP[direction]} size="small" />
           </span>
-        );
-      }}
+        </span>
+      )}
     </Transition>
   );
 }

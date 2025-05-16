@@ -9,32 +9,30 @@ export default class DragHandleWrapper extends ComponentWrapper {
   static rootSelector: string = dragHandleStyles.root;
 
   findAllVisibleDirectionButtons(): Array<ElementWrapper> | null {
-    return this.findAll(
-      `.${dragHandleWrapperStyles['direction-button']}.${dragHandleWrapperStyles['direction-button-visible']}`
-    );
+    return this.findAll(`.${dragHandleWrapperStyles['direction-button-visible']}`);
   }
 
   findVisibleDirectionButtonBlockStart(): ElementWrapper | null {
     return this.find(
-      `.${dragHandleWrapperStyles['direction-bock-start']}.${dragHandleWrapperStyles['direction-button-visible']}`
+      `.${dragHandleWrapperStyles['direction-button-block-start']}.${dragHandleWrapperStyles['direction-button-visible']}`
     );
   }
 
   findVisibleDirectionButtonBlockEnd(): ElementWrapper | null {
     return this.find(
-      `.${dragHandleWrapperStyles['direction-bock-end']}.${dragHandleWrapperStyles['direction-button-visible']}`
+      `.${dragHandleWrapperStyles['direction-button-block-end']}.${dragHandleWrapperStyles['direction-button-visible']}`
     );
   }
 
   findVisibleDirectionButtonInlineStart(): ElementWrapper | null {
     return this.find(
-      `.${dragHandleWrapperStyles['direction-inline-start']}.${dragHandleWrapperStyles['direction-button-visible']}`
+      `.${dragHandleWrapperStyles['direction-button-inline-start']}.${dragHandleWrapperStyles['direction-button-visible']}`
     );
   }
 
   findVisibleDirectionButtonInlineEnd(): ElementWrapper | null {
     return this.find(
-      `.${dragHandleWrapperStyles['direction-inline-end']}.${dragHandleWrapperStyles['direction-button-visible']}`
+      `.${dragHandleWrapperStyles['direction-button-inline-end']}.${dragHandleWrapperStyles['direction-button-visible']}`
     );
   }
 }
