@@ -25,6 +25,7 @@ test(
     expect(componentsLog[0]).toMatchObject({
       componentConfiguration: {
         taskName: 'Table title',
+        resourceType: 'table-resource-type',
       },
       componentName: 'table',
       taskInteractionId: expect.any(String),
