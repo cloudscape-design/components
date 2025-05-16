@@ -22,16 +22,22 @@ function compileTypescript(theme) {
 
 function generateTestUtilsForComponents(signalCompletion) {
   const componentNamesKebabCase = listPublicItems(path.join(testUtilsSrcDir, 'dom'));
+  const publicComponents = listPublicItems('src');
 
-  const components = componentNamesKebabCase.map(testUtilsFolderName => {
-    const name = pascalCase(testUtilsFolderName);
-    const pluralName = pluralizeComponentName(name);
-    return {
-      name,
-      pluralName,
-      testUtilsFolderName,
-    };
-  });
+  const isPublicComponent = name => publicComponents.includes(name);
+
+  const components = componentNamesKebabCase
+    .filter(component => isPublicComponent(component) || component === 'annotation')
+    // The test utils for the internal Annotation component have already been exposed. We need to keep them for backwards compatibility.
+    .map(testUtilsFolderName => {
+      const name = pascalCase(testUtilsFolderName);
+      const pluralName = pluralizeComponentName(name);
+      return {
+        name,
+        pluralName,
+        testUtilsFolderName,
+      };
+    });
 
   generateTestUtils({
     components,
