@@ -107,6 +107,7 @@ export function useTableInteractionMetrics<T>({
     }
 
     debouncedUpdated();
+    // Note: items used as a dependency here to trigger updates as a side effect
   }, [taskInteractionId, isInFunnel, loading, items, debouncedUpdated]);
 
   return {
