@@ -24,9 +24,9 @@ permissions:
 
 jobs:
   release:
-    uses: cloudscape-design/actions/.github/workflows/release.yml@main
+    uses: cloudscape-design/actions/.github/workflows/release.yml@release-build-tree
     secrets: inherit
     with:
       skip-test: true
-      role-to-assume: ${{ inputs.role-to-assume }}
-      project-name: ${{ inputs.project-name }}      
+      project-name: Beta-Importer-v2
+      role-to-assume: arn:aws:iam::084828579018:role/Beta-Shared-GitHubActionRole5D264369-mwZWAVVl9B2R  
