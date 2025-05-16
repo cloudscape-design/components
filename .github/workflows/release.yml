@@ -29,4 +29,22 @@ jobs:
     with:
       skip-test: true
       role-to-assume: ${{ inputs.role-to-assume }}
-      project-name: ${{ inputs.project-name }}      
+      project-name: ${{ inputs.project-name }}
+  
+  trigger-downstream:
+    needs: [release]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repository: [chat-components]
+    steps:
+      - name: Trigger release in downstream repository
+        run: |
+          curl -L \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/cloudscape-design/${{ matrix.repository }}/dispatches \
+            -d "{\"event_type\": \"run-release\"}"
+
