@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react';
 import { ComponentMetrics, PerformanceMetrics } from '../../analytics';
 import { useFunnel } from '../../analytics/hooks/use-funnel';
 import { JSONObject } from '../../analytics/interfaces';
+import { useDebounceCallback } from '../use-debounce-callback';
 import { useDOMAttribute } from '../use-dom-attribute';
 import { useEffectOnUpdate } from '../use-effect-on-update';
 import { useRandomId } from '../use-unique-id';
@@ -16,25 +17,27 @@ to be the cause of the current loading state.
 */
 const USER_ACTION_TIME_LIMIT = 1_000;
 
-export interface UseTableInteractionMetricsProps {
+export interface UseTableInteractionMetricsProps<T> {
   elementRef: React.RefObject<HTMLElement>;
   instanceIdentifier: string | undefined;
   loading: boolean | undefined;
+  items: readonly T[];
   itemCount: number;
   getComponentIdentifier: () => string | undefined;
   getComponentConfiguration: () => JSONObject;
   interactionMetadata: () => string;
 }
 
-export function useTableInteractionMetrics({
+export function useTableInteractionMetrics<T>({
   elementRef,
+  items,
   itemCount,
   instanceIdentifier,
   getComponentIdentifier,
   getComponentConfiguration,
   loading = false,
   interactionMetadata,
-}: UseTableInteractionMetricsProps) {
+}: UseTableInteractionMetricsProps<T>) {
   const taskInteractionId = useRandomId();
   const tableInteractionAttributes = useDOMAttribute(
     elementRef,
@@ -86,17 +89,25 @@ export function useTableInteractionMetrics({
         instanceIdentifier,
         noOfResourcesInTable: metadata.current.itemCount,
       });
-
-      if (!isInFunnel) {
-        ComponentMetrics.componentUpdated({
-          taskInteractionId,
-          componentName: 'table',
-          actionType: capturedUserAction.current ?? '',
-          componentConfiguration: metadata.current.getComponentConfiguration(),
-        });
-      }
     }
   }, [instanceIdentifier, loading, taskInteractionId, isInFunnel]);
+
+  const debouncedUpdated = useDebounceCallback(() => {
+    ComponentMetrics.componentUpdated({
+      taskInteractionId,
+      componentName: 'table',
+      actionType: lastUserAction.current?.name ?? '',
+      componentConfiguration: metadata.current.getComponentConfiguration(),
+    });
+  });
+
+  useEffectOnUpdate(() => {
+    if (isInFunnel || loading) {
+      return;
+    }
+
+    debouncedUpdated();
+  }, [taskInteractionId, isInFunnel, loading, items, debouncedUpdated]);
 
   return {
     tableInteractionAttributes,
