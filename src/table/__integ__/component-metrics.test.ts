@@ -112,3 +112,26 @@ describe('pagination', () => {
     })
   );
 });
+
+describe('selection', () => {
+  test(
+    'tracks component updates caused by multi selection',
+    setupTest(async ({ page, wrapper }) => {
+      await page.click(wrapper.findRowSelectionArea(1).toSelector());
+      await page.click(wrapper.findRowSelectionArea(2).toSelector());
+      await page.waitForInteractionEvent('componentUpdated');
+      const componentsLog = await page.getComponentMetricsLog();
+      expect(componentsLog.length).toBe(2);
+      expect(componentsLog[1].name).toBe('componentUpdated');
+      expect(componentsLog[1].detail).toEqual({
+        taskInteractionId: expect.any(String),
+        componentName: 'table',
+        actionType: 'selection',
+        componentConfiguration: {
+          ...baseComponentConfiguration,
+          resourcesSelected: true,
+        },
+      });
+    })
+  );
+});
