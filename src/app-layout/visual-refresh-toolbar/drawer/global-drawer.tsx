@@ -149,6 +149,7 @@ function AppLayoutGlobalDrawerImplementation({
                       iconName={isExpanded ? 'shrink' : 'expand'}
                       onClick={() => setExpandedDrawerId(isExpanded ? undefined : activeDrawerId)}
                       variant="icon"
+                      analyticsAction={isExpanded ? 'leave-focus-mode' : 'enter-focus-mode'}
                     />
                   </div>
                 )}
