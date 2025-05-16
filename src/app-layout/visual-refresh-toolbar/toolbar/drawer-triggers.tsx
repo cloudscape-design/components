@@ -37,6 +37,8 @@ interface DrawerTriggersProps {
   globalDrawersFocusControl?: FocusControlMultipleStates;
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
   onActiveGlobalDrawersChange?: (newDrawerId: string, params: OnChangeParams) => void;
+  expandedDrawerId?: string;
+  setExpandedDrawerId: (value: string | undefined) => void;
 
   splitPanelOpen?: boolean;
   splitPanelPosition?: AppLayoutProps.SplitPanelPreferences['position'];
@@ -62,6 +64,8 @@ export function DrawerTriggers({
   globalDrawers,
   globalDrawersFocusControl,
   onActiveGlobalDrawersChange,
+  expandedDrawerId,
+  setExpandedDrawerId,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
@@ -130,15 +134,23 @@ export function DrawerTriggers({
             <TriggerButton
               ariaLabel={splitPanelToggleProps.ariaLabel}
               ariaControls={splitPanelToggleProps.controlId}
-              ariaExpanded={splitPanelToggleProps.active}
+              ariaExpanded={!expandedDrawerId && splitPanelToggleProps.active}
               className={clsx(
                 styles['drawers-trigger'],
                 testutilStyles['drawers-trigger'],
                 splitPanelTestUtilStyles['open-button']
               )}
               iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
-              onClick={() => onSplitPanelToggle?.()}
-              selected={splitPanelToggleProps.active}
+              onClick={() => {
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(undefined);
+                }
+                if (!!expandedDrawerId && splitPanelToggleProps.active) {
+                  return;
+                }
+                onSplitPanelToggle?.();
+              }}
+              selected={!expandedDrawerId && splitPanelToggleProps.active}
               ref={splitPanelResolvedPosition === 'side' ? splitPanelFocusRef : undefined}
               hasTooltip={true}
               isMobile={isMobile}
@@ -150,10 +162,11 @@ export function DrawerTriggers({
         )}
         {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
           const isForPreviousActiveDrawer = previousActiveLocalDrawerId?.current === item.id;
+          const selected = !expandedDrawerId && item.id === activeDrawerId;
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
-              ariaExpanded={item.id === activeDrawerId}
+              ariaExpanded={selected}
               ariaControls={activeDrawerId === item.id ? item.id : undefined}
               className={clsx(
                 styles['drawers-trigger'],
@@ -163,11 +176,17 @@ export function DrawerTriggers({
               iconName={item.trigger!.iconName}
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
-              onClick={() =>
-                onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true })
-              }
+              onClick={() => {
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(undefined);
+                }
+                if (!!expandedDrawerId && activeDrawerId === item.id) {
+                  return;
+                }
+                onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true });
+              }}
               ref={item.id === previousActiveLocalDrawerId.current ? drawersFocusRef : undefined}
-              selected={item.id === activeDrawerId}
+              selected={selected}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
               hasTooltip={true}
@@ -184,11 +203,13 @@ export function DrawerTriggers({
         )}
         {visibleItems.slice(globalDrawersStartIndex).map(item => {
           const isForPreviousActiveDrawer = previousActiveGlobalDrawersIds?.current.includes(item.id);
+          const selected =
+            activeGlobalDrawersIds.includes(item.id) && (!expandedDrawerId || item.id === expandedDrawerId);
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
-              ariaExpanded={activeGlobalDrawersIds.includes(item.id)}
-              ariaControls={activeGlobalDrawersIds.includes(item.id) ? item.id : undefined}
+              ariaExpanded={selected}
+              ariaControls={selected ? item.id : undefined}
               className={clsx(
                 styles['drawers-trigger'],
                 testutilStyles['drawers-trigger'],
@@ -198,10 +219,16 @@ export function DrawerTriggers({
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => {
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(undefined);
+                }
+                if (!!expandedDrawerId && item.id !== expandedDrawerId && activeGlobalDrawersIds.includes(item.id)) {
+                  return;
+                }
                 onActiveGlobalDrawersChange?.(item.id, { initiatedByUserAction: true });
               }}
               ref={globalDrawersFocusControl?.refs[item.id]?.toggle}
-              selected={activeGlobalDrawersIds.includes(item.id)}
+              selected={selected}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
               hasTooltip={true}
@@ -217,7 +244,7 @@ export function DrawerTriggers({
           <OverflowMenu
             items={overflowItems.map(item => ({
               ...item,
-              active: activeGlobalDrawersIds.includes(item.id),
+              active: activeGlobalDrawersIds.includes(item.id) && (!expandedDrawerId || item.id === expandedDrawerId),
             }))}
             ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
             customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => {
@@ -241,7 +268,13 @@ export function DrawerTriggers({
             }}
             onItemClick={event => {
               const id = event.detail.id;
+              if (setExpandedDrawerId) {
+                setExpandedDrawerId(undefined);
+              }
               if (globalDrawers.find(drawer => drawer.id === id)) {
+                if (!!expandedDrawerId && id !== expandedDrawerId && activeGlobalDrawersIds.includes(id)) {
+                  return;
+                }
                 onActiveGlobalDrawersChange?.(id, { initiatedByUserAction: true });
               } else {
                 onActiveDrawerChange?.(event.detail.id, { initiatedByUserAction: true });
