@@ -4,11 +4,13 @@ import { createContext, RefObject, useContext } from 'react';
 
 export interface FilterRef {
   filterText?: string;
+  countText?: string;
 }
 
 export interface PaginationRef {
   currentPageIndex?: number;
   totalPageCount?: number;
+  openEnd?: boolean;
 }
 interface TableComponentsContextProps {
   filterRef: RefObject<FilterRef>;
