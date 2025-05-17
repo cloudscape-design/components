@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
 import InternalInput from '../input/internal';
@@ -46,11 +46,22 @@ const InternalTextFilter = React.forwardRef(
     const searchResultsRef = useRef<InternalLiveRegionRef>(null);
     useForwardFocus(ref, inputRef);
 
+    const countValue = useMemo(() => {
+      if (!countText || typeof countText !== 'string') {
+        return undefined;
+      }
+
+      const m = countText.match(/\d+/);
+      return m ? parseInt(m[0]) : 0;
+    }, [countText]);
+
     const searchResultsId = useUniqueId('text-filter-search-results');
     const showResults = filteringText && countText && !disabled;
     const tableComponentContext = useTableComponentsContext();
     if (tableComponentContext?.filterRef?.current) {
       tableComponentContext.filterRef.current.filterText = filteringText;
+      tableComponentContext.filterRef.current.filterCount = countValue;
+      tableComponentContext.filterRef.current.filtered = !!filteringText;
     }
 
     useDebounceSearchResultCallback({
