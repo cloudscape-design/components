@@ -210,3 +210,43 @@ describe('preferences', () => {
     })
   );
 });
+
+describe('async loading', () => {
+  test(
+    'tracks component updates once table completes loading',
+    setupTest(async ({ page, wrapper }) => {
+      await page.click(wrapper.findPagination().findPageNumberByIndex(3).toSelector());
+      await page.waitForInteractionEvent('componentUpdated');
+      const componentsLog = await page.getComponentMetricsLog();
+      expect(componentsLog.length).toBe(2);
+      expect(componentsLog[1].name).toBe('componentUpdated');
+      expect(componentsLog[1].detail).toEqual({
+        taskInteractionId: expect.any(String),
+        componentName: 'table',
+        actionType: 'pagination',
+        componentConfiguration: {
+          ...baseComponentConfiguration,
+          instanceIdentifier: 'the-instances-table',
+          taskName: 'the-instances-table',
+          variant: 'full-page',
+          pagination: {
+            currentPageIndex: 3,
+            totalNumberOfPages: 200,
+            openEnd: false,
+          },
+        },
+      });
+    }, '#/light/funnel-analytics/with-async-table')
+  );
+
+  test(
+    'tracks component updates when the table refreshes for other reasons',
+    setupTest(async ({ page }) => {
+      await page.click('[data-testid=refresh-table]');
+      await page.waitForInteractionEvent('componentUpdated');
+      const componentsLog = await page.getComponentMetricsLog();
+      expect(componentsLog.length).toBe(2);
+      expect(componentsLog[1].name).toBe('componentUpdated');
+    }, '#/light/funnel-analytics/with-async-table')
+  );
+});
