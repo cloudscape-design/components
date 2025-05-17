@@ -241,8 +241,9 @@ const InternalTable = React.forwardRef(
           columnId: sortingColumn?.sortingField,
           sortingOrder: sortingColumn ? (sortingDescending ? 'desc' : 'asc') : undefined,
         },
-        filtered: Boolean(filterData?.filterText),
-        totalNumberOfResources: paginationData.totalPageCount,
+        filtered: Boolean(filterData.filtered),
+        filteredBy: filterData?.filteredBy ?? [],
+        totalNumberOfResources: filterRef.current?.filterCount ?? null,
         resourcesPerPage: allRows?.length || 0,
         pagination: {
           currentPageIndex: paginationData?.currentPageIndex ?? 0,
@@ -294,6 +295,7 @@ const InternalTable = React.forwardRef(
       onSelectionChange,
       ariaLabels,
       loading,
+      setLastUserAction,
     });
     const isRowSelected = (row: TableRow<T>) => row.type === 'data' && isItemSelected(row.item);
 
