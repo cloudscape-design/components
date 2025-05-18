@@ -12,6 +12,7 @@ import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { CollectionPreferencesMetadata } from '../internal/context/collection-preferences-metadata-context';
+import { useTableComponentsContext } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -126,6 +127,19 @@ export default function CollectionPreferences({
   }
 
   const referrerId = useUniqueId();
+  const tableComponentContext = useTableComponentsContext();
+  if (tableComponentContext?.preferencesRef?.current) {
+    tableComponentContext.preferencesRef.current.pageSize = preferences?.pageSize;
+
+    // When both are used contentDisplayPreference takes preference and so we always prefer to use this as our visible columns if available
+    if (preferences?.contentDisplay) {
+      tableComponentContext.preferencesRef.current.visibleColumns = preferences?.contentDisplay
+        .filter(column => column.visible)
+        .map(column => column.id);
+    } else if (preferences?.visibleContent) {
+      tableComponentContext.preferencesRef.current.visibleColumns = [...preferences.visibleContent];
+    }
+  }
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
