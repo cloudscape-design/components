@@ -46,9 +46,12 @@ const baseComponentConfiguration = {
     columnId: null,
     sortingOrder: null,
   },
+  tablePreferences: {
+    visibleColumns: ['id', 'type', 'dnsName', 'state'],
+    resourcesPerPage: 20,
+  },
   filtered: false,
   totalNumberOfResources: 200,
-  resourcesPerPage: 20,
   pagination: {
     currentPageIndex: 1,
     totalNumberOfPages: 200,
@@ -106,6 +109,78 @@ describe('pagination', () => {
             currentPageIndex: 3,
             totalNumberOfPages: 200,
             openEnd: false,
+          },
+        },
+      });
+    })
+  );
+});
+
+describe('preferences', () => {
+  test(
+    'tracks component changes when visible content preference is changed',
+    setupTest(async ({ page, wrapper }) => {
+      await page.click(wrapper.findCollectionPreferences().findTriggerButton().toSelector());
+      await page.waitForVisible(wrapper.findCollectionPreferences().findModal().toSelector());
+      await page.click(
+        wrapper.findCollectionPreferences().findModal().findContentDisplayPreference().findOptionByIndex(2).toSelector()
+      );
+      await page.click(wrapper.findCollectionPreferences().findModal().findConfirmButton().toSelector());
+      await page.waitForInteractionEvent('componentUpdated');
+      const componentsLog = await page.getComponentMetricsLog();
+      expect(componentsLog.length).toBe(2);
+      expect(componentsLog[1].name).toBe('componentUpdated');
+      expect(componentsLog[1].detail).toEqual({
+        taskInteractionId: expect.any(String),
+        componentName: 'table',
+        actionType: 'preferences',
+        componentConfiguration: {
+          ...baseComponentConfiguration,
+          tablePreferences: {
+            visibleColumns: ['id', 'dnsName', 'state'],
+            resourcesPerPage: 20,
+          },
+        },
+      });
+    })
+  );
+
+  test(
+    'tracks component changes when page size is changed',
+    setupTest(async ({ page, wrapper }) => {
+      await page.click(wrapper.findCollectionPreferences().findTriggerButton().toSelector());
+      await page.waitForVisible(wrapper.findCollectionPreferences().findModal().toSelector());
+      await page.click(
+        wrapper
+          .findCollectionPreferences()
+          .findModal()
+          .findPageSizePreference()
+          .findOptions()
+          .get(2)
+          .findNativeInput()
+          .toSelector()
+      );
+
+      await page.click(wrapper.findCollectionPreferences().findModal().findConfirmButton().toSelector());
+      await page.waitForInteractionEvent('componentUpdated');
+      const componentsLog = await page.getComponentMetricsLog();
+      expect(componentsLog.length).toBe(2);
+      expect(componentsLog[1].name).toBe('componentUpdated');
+      expect(componentsLog[1].detail).toEqual({
+        taskInteractionId: expect.any(String),
+        componentName: 'table',
+        actionType: 'preferences',
+        componentConfiguration: {
+          ...baseComponentConfiguration,
+          totalNumberOfResources: 80, // TODO: Remove after filtering PR is merged
+          pagination: {
+            currentPageIndex: 1,
+            totalNumberOfPages: 80,
+            openEnd: false,
+          },
+          tablePreferences: {
+            visibleColumns: ['id', 'type', 'dnsName', 'state'],
+            resourcesPerPage: 50,
           },
         },
       });
