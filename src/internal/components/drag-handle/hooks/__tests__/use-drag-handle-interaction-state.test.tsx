@@ -1,16 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useImperativeHandle } from 'react';
+import React, { useImperativeHandle, useState } from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
-import type { Action, DragHandleInteractionState, UseDragHandleInteractionStateProps } from '../interfaces';
-import useDragHandleInteractionState, {
+import {
   calculateNextState,
   getCallbacksForTransition,
-} from '../use-drag-handle-interaction-state';
+} from '../../../../../../lib/components/internal/components/drag-handle/hooks/use-drag-handle-interaction-state';
+import {
+  useInternalDragHandleInteractionState,
+  UseInternalDragHandleInteractionStateProps,
+} from '../../../../../../lib/components/internal/do-not-use/drag-handle';
+import type { Action, DragHandleInteractionState } from '../interfaces';
 
-interface TestComponentProps extends UseDragHandleInteractionStateProps {
+interface TestComponentProps extends UseInternalDragHandleInteractionStateProps {
   debug?: boolean;
 }
 
@@ -30,7 +34,7 @@ const TestComponent = React.forwardRef((props: TestComponentProps, ref: React.Re
     processKeyDown,
     processFocus,
     processBlur,
-  } = useDragHandleInteractionState(hookProps, { debug: debug || false });
+  } = useInternalDragHandleInteractionState(hookProps, { debug: debug || false });
 
   // Exposed for testing
   useImperativeHandle(ref, () => ({
@@ -414,7 +418,7 @@ describe('Drag Handle Hooks', () => {
     });
   });
 
-  describe('useDragHandleInteractionState hook', () => {
+  describe('useInternalDragHandleInteractionState hook', () => {
     describe('Initial State', () => {
       test('should initialize with idle state', () => {
         const ref = React.createRef<TestComponentRef>();
@@ -642,7 +646,7 @@ describe('Drag Handle Hooks', () => {
             },
             ref: React.Ref<any>
           ) => {
-            const { processPointerDown } = useDragHandleInteractionState<TestMetadata>({
+            const { processPointerDown } = useInternalDragHandleInteractionState<TestMetadata>({
               onDndStartAction: props.onDndStartAction,
             });
             useImperativeHandle(ref, () => ({
@@ -734,7 +738,7 @@ describe('Drag Handle Hooks', () => {
 
         const TestComponentWithMetadata = React.forwardRef(
           (props: { onUapActionStartAction?: (metadata?: TestMetadata) => void }, ref: React.Ref<any>) => {
-            const { processPointerDown, processPointerUp } = useDragHandleInteractionState<TestMetadata>({
+            const { processPointerDown, processPointerUp } = useInternalDragHandleInteractionState<TestMetadata>({
               onUapActionStartAction: props.onUapActionStartAction,
             });
             useImperativeHandle(ref, () => ({
@@ -862,7 +866,6 @@ describe('Drag Handle Hooks', () => {
         const ref = React.createRef<TestComponentRef>();
         render(<TestComponent ref={ref} />);
 
-        // First set state to dnd-start
         act(() => {
           ref.current?.dispatchAction({
             type: 'POINTER_DOWN',
@@ -871,12 +874,89 @@ describe('Drag Handle Hooks', () => {
         });
         expect(ref.current?.interaction.value).toBe('dnd-start');
 
-        // Then dispatch a blur event
         act(() => {
           ref.current?.dispatchAction({ type: 'BLUR' });
         });
-        // State should remain unchanged
         expect(ref.current?.interaction.value).toBe('dnd-start');
+      });
+
+      test('should correctly process a click and not re-invoke callbacks due to self-triggered re-renders', () => {
+        type TestMetadata = 'drag' | 'resize';
+
+        interface HostComponentProps {
+          onDndStartAction: () => void;
+          onDndEndAction: () => void;
+          onUapActionStartAction: () => void;
+        }
+
+        interface HostComponentRef {
+          interaction: DragHandleInteractionState<TestMetadata>;
+          processPointerDown: (event: PointerEvent, metadata?: TestMetadata) => void;
+          processPointerUp: (event: PointerEvent) => void;
+        }
+
+        const DragHandleInteractionHost = React.forwardRef<HostComponentRef, HostComponentProps>(
+          ({ onDndStartAction, onDndEndAction, onUapActionStartAction }, ref) => {
+            // State to trigger a re-render
+            const [, setInteractionTriggeredState] = useState(0);
+
+            // trigger a re-render on state changes
+            const hookProps: UseInternalDragHandleInteractionStateProps<TestMetadata> = {
+              onDndStartAction: () => {
+                setInteractionTriggeredState(s => s + 1);
+                onDndStartAction();
+              },
+              onDndEndAction: () => {
+                setInteractionTriggeredState(s => s + 1);
+                onDndEndAction();
+              },
+              onUapActionStartAction: () => {
+                setInteractionTriggeredState(s => s + 1);
+                onUapActionStartAction();
+              },
+            };
+
+            const { processPointerDown, processPointerUp, interaction } =
+              useInternalDragHandleInteractionState<TestMetadata>(hookProps);
+
+            useImperativeHandle(ref, () => ({
+              interaction,
+              processPointerDown,
+              processPointerUp,
+            }));
+
+            return <div />;
+          }
+        );
+
+        const hostRef = React.createRef<HostComponentRef>();
+        const mockOnDndStartAction = jest.fn();
+        const mockOnDndEndAction = jest.fn();
+        const mockOnUapActionStartAction = jest.fn();
+        render(
+          <DragHandleInteractionHost
+            ref={hostRef}
+            onDndStartAction={mockOnDndStartAction}
+            onDndEndAction={mockOnDndEndAction}
+            onUapActionStartAction={mockOnUapActionStartAction}
+          />
+        );
+
+        act(() => {
+          hostRef.current?.processPointerDown(createPointerEvent('pointerdown'), 'drag');
+        });
+        expect(mockOnDndStartAction).toHaveBeenCalledTimes(1);
+        expect(hostRef.current?.interaction.value).toBe('dnd-start');
+        // onDndStartAction has been called, and triggered a re-render in DragHandleInteractionHost,
+        // The hook should not have re-processed onDndStartAction.
+
+        act(() => {
+          hostRef.current?.processPointerUp(createPointerEvent('pointerup'));
+        });
+        expect(hostRef.current?.interaction.value).toBe('uap-action-start');
+        expect(mockOnDndEndAction).toHaveBeenCalledTimes(1);
+        expect(mockOnUapActionStartAction).toHaveBeenCalledTimes(1);
+        expect(mockOnDndStartAction).toHaveBeenCalledTimes(1);
       });
     });
 
