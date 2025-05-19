@@ -56,7 +56,7 @@ test(
         instanceIdentifier: 'the-instances-table',
         noOfResourcesInTable: 19,
         interactionMetadata:
-          '{"filterData":{"filterText":"238-1"},"paginationData":{"currentPageIndex":1,"totalPageCount":1}}',
+          '{"filterData":{"filterText":"238-1","filterCount":19,"filtered":true},"paginationData":{"currentPageIndex":1,"totalPageCount":1}}',
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
@@ -79,7 +79,7 @@ test(
         instanceIdentifier: 'the-instances-table',
         noOfResourcesInTable: 20,
         interactionMetadata:
-          '{"filterData":{"filterText":""},"paginationData":{"currentPageIndex":2,"totalPageCount":200}}',
+          '{"filterData":{"filterText":"","filterCount":4000,"filtered":false},"paginationData":{"currentPageIndex":2,"totalPageCount":200}}',
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
@@ -102,7 +102,7 @@ test(
         instanceIdentifier: 'the-instances-table',
         noOfResourcesInTable: 20,
         interactionMetadata:
-          '{"filterData":{"filterText":""},"paginationData":{"currentPageIndex":1,"totalPageCount":200},"sortingColumn":"type","sortingOrder":"Ascending"}',
+          '{"filterData":{"filterText":"","filterCount":4000,"filtered":false},"paginationData":{"currentPageIndex":1,"totalPageCount":200},"sortingColumn":"type","sortingOrder":"Ascending"}',
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
@@ -170,7 +170,7 @@ test(
         instanceIdentifier: 'the-instances-table',
         noOfResourcesInTable: 20,
         interactionMetadata:
-          '{"filterData":{"filterText":"m4.4xlarge"},"paginationData":{"currentPageIndex":1,"totalPageCount":5}}',
+          '{"filterData":{"filterText":"m4.4xlarge","filterCount":100,"filtered":true},"paginationData":{"currentPageIndex":1,"totalPageCount":5}}',
       })
     );
 
@@ -185,7 +185,7 @@ test(
         instanceIdentifier: 'the-instances-table',
         noOfResourcesInTable: 20,
         interactionMetadata:
-          '{"filterData":{"filterText":"m4.4xlarge"},"paginationData":{"currentPageIndex":2,"totalPageCount":5}}',
+          '{"filterData":{"filterText":"m4.4xlarge","filterCount":100,"filtered":true},"paginationData":{"currentPageIndex":2,"totalPageCount":5}}',
       })
     );
 
