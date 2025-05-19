@@ -251,7 +251,6 @@ const InternalTable = React.forwardRef(
         filtered: Boolean(filterData.filtered),
         filteredBy: filterData?.filteredBy ?? [],
         totalNumberOfResources: filterRef.current?.filterCount ?? null,
-        resourcesPerPage: allRows?.length || 0,
         tablePreferences: {
           visibleColumns: preferencesData?.visibleColumns ?? [],
           resourcesPerPage: preferencesData?.pageSize ?? null,
