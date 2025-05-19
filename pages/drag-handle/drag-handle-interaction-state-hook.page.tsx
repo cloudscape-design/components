@@ -26,6 +26,7 @@ type PageContext = React.Context<
 const TestBoardItemButton: React.FC = () => {
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   const [renderInPortal, setRenderInPortal] = useState(false);
+  const [, setInteractionTriggeredState] = useState(0);
 
   interface TestMetadata {
     operation: 'drag' | 'resize';
@@ -34,18 +35,23 @@ const TestBoardItemButton: React.FC = () => {
   const hookProps: UseDragHandleInteractionStateProps<TestMetadata> = {
     onDndStartAction: (event, metadata) => {
       console.log('onDndStartAction triggered', event.clientX, event.clientY, metadata);
+      setInteractionTriggeredState(s => s + 1);
     },
     onDndActiveAction: event => {
       console.log('onDndActiveAction triggered', event.clientX, event.clientY);
+      setInteractionTriggeredState(s => s + 1);
     },
     onDndEndAction: () => {
       console.log('onDndEndAction triggered');
+      setInteractionTriggeredState(s => s + 1);
     },
     onUapActionStartAction: metadata => {
       console.log('onKeyboardStartAction triggered', metadata);
+      setInteractionTriggeredState(s => s + 1);
     },
     onUapActionEndAction: () => {
       console.log('onKeyboardEndAction triggered');
+      setInteractionTriggeredState(s => s + 1);
     },
   };
 
