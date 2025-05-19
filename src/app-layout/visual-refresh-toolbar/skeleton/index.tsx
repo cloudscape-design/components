@@ -1,12 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
-import { Transition } from 'react-transition-group';
+import React from 'react';
 import clsx from 'clsx';
 
 import VisualContext from '../../../internal/components/visual-context';
 import customCssProps from '../../../internal/generated/custom-css-properties';
-import { useMergeRefs } from '../../../internal/hooks/use-merge-refs';
 import { useMobile } from '../../../internal/hooks/use-mobile';
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
 import { AppLayoutPropsWithDefaults } from '../../interfaces';
@@ -46,7 +44,6 @@ interface SkeletonLayoutProps
   isNested?: boolean;
   drawerExpandedMode: boolean;
   drawerExpandedModeInChildLayout: boolean;
-  totalActiveGlobalDrawersSize: number;
 }
 
 export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutProps>(
@@ -77,123 +74,97 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       isNested,
       drawerExpandedMode,
       drawerExpandedModeInChildLayout,
-      totalActiveGlobalDrawersSize,
     },
     ref
   ) => {
     const isMobile = useMobile();
     const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
     const anyPanelOpen = navigationOpen || toolsOpen;
-    const rootRef = useRef<HTMLDivElement>(null);
-    const mergedRef = useMergeRefs(ref, rootRef);
     return (
-      <Transition in={drawerExpandedMode} nodeRef={rootRef} timeout={250}>
-        {state => {
-          return (
-            <VisualContext contextName="app-layout-toolbar">
+      <VisualContext contextName="app-layout-toolbar">
+        <div
+          ref={ref}
+          className={clsx(styles.root, testutilStyles.root, {
+            [styles['has-adaptive-widths-default']]: !contentTypeCustomWidths.includes(contentType),
+            [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
+            [styles['drawer-expanded-mode']]: drawerExpandedMode,
+          })}
+          style={{
+            minBlockSize: isNested ? '100%' : `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
+            [customCssProps.maxContentWidth]: isMaxWidth ? '100%' : maxContentWidth ? `${maxContentWidth}px` : '',
+            [customCssProps.navigationWidth]: `${navigationWidth}px`,
+            [customCssProps.toolsWidth]: `${toolsWidth}px`,
+          }}
+        >
+          {toolbar}
+          {navigation && (
+            <div
+              className={clsx(
+                styles.navigation,
+                !navigationOpen && styles['panel-hidden'],
+                toolsOpen && styles['unfocusable-mobile'],
+                !navigationAnimationDisabled && sharedStyles['with-motion-horizontal'],
+                (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden
+              )}
+            >
+              {navigation}
+            </div>
+          )}
+          <main
+            className={clsx(
+              styles['main-landmark'],
+              isMobile && anyPanelOpen && styles['unfocusable-mobile'],
+              drawerExpandedMode && styles.hidden
+            )}
+          >
+            {notifications && (
               <div
-                ref={mergedRef}
-                className={clsx(styles.root, testutilStyles.root, {
-                  [styles['has-adaptive-widths-default']]: !contentTypeCustomWidths.includes(contentType),
-                  [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
-                  [styles['drawer-expanded-mode']]: drawerExpandedMode,
-                })}
-                style={{
-                  minBlockSize: isNested
-                    ? '100%'
-                    : `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
-                  [customCssProps.maxContentWidth]: isMaxWidth ? '100%' : maxContentWidth ? `${maxContentWidth}px` : '',
-                  [customCssProps.navigationWidth]: `${navigationWidth}px`,
-                  [customCssProps.toolsWidth]: `${toolsWidth}px`,
-                }}
-              >
-                {toolbar}
-                {navigation && (
-                  <div
-                    className={clsx(
-                      styles.navigation,
-                      !navigationOpen && styles['panel-hidden'],
-                      toolsOpen && styles['unfocusable-mobile'],
-                      !navigationAnimationDisabled && sharedStyles['with-motion-horizontal'],
-                      (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden
-                    )}
-                  >
-                    {navigation}
-                  </div>
+                className={clsx(
+                  styles['notifications-background'],
+                  headerVariant === 'high-contrast' && highContrastHeaderClassName
                 )}
-                <main
-                  className={clsx(
-                    styles['main-landmark'],
-                    isMobile && anyPanelOpen && styles['unfocusable-mobile'],
-                    drawerExpandedMode && styles.hidden
-                  )}
-                >
-                  {notifications && (
-                    <div
-                      className={clsx(
-                        styles['notifications-background'],
-                        headerVariant === 'high-contrast' && highContrastHeaderClassName
-                      )}
-                    ></div>
-                  )}
-                  {notifications}
-                  <div
-                    className={clsx(styles.main, { [styles['main-disable-paddings']]: disableContentPaddings })}
-                    style={style}
-                  >
-                    {contentHeader && <div className={styles['content-header']}>{contentHeader}</div>}
-                    <div className={clsx(styles.content, testutilStyles.content)}>{content}</div>
-                  </div>
-                  {bottomSplitPanel && (
-                    <div
-                      className={clsx(styles['split-panel-bottom'])}
-                      style={{ insetBlockEnd: placement.insetBlockEnd }}
-                    >
-                      {bottomSplitPanel}
-                    </div>
-                  )}
-                </main>
-                {sideSplitPanel && (
-                  <div
-                    className={clsx(
-                      styles['split-panel-side'],
-                      !splitPanelOpen && styles['panel-hidden'],
-                      drawerExpandedMode && styles.hidden
-                    )}
-                  >
-                    {sideSplitPanel}
-                  </div>
-                )}
-                <div
-                  className={clsx(
-                    styles.tools,
-                    !toolsOpen && styles['panel-hidden'],
-                    sharedStyles['with-motion-horizontal'],
-                    navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
-                    toolsOpen && styles['tools-open'],
-                    drawerExpandedMode && styles.hidden
-                  )}
-                >
-                  {tools}
-                </div>
-                <div
-                  className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}
-                  style={{
-                    inlineSize:
-                      state !== 'exited'
-                        ? drawerExpandedMode
-                          ? '100%'
-                          : totalActiveGlobalDrawersSize + 1 + 'px'
-                        : undefined,
-                  }}
-                >
-                  {globalTools}
-                </div>
+              ></div>
+            )}
+            {notifications}
+            <div
+              className={clsx(styles.main, { [styles['main-disable-paddings']]: disableContentPaddings })}
+              style={style}
+            >
+              {contentHeader && <div className={styles['content-header']}>{contentHeader}</div>}
+              <div className={clsx(styles.content, testutilStyles.content)}>{content}</div>
+            </div>
+            {bottomSplitPanel && (
+              <div className={clsx(styles['split-panel-bottom'])} style={{ insetBlockEnd: placement.insetBlockEnd }}>
+                {bottomSplitPanel}
               </div>
-            </VisualContext>
-          );
-        }}
-      </Transition>
+            )}
+          </main>
+          {sideSplitPanel && (
+            <div
+              className={clsx(
+                styles['split-panel-side'],
+                !splitPanelOpen && styles['panel-hidden'],
+                drawerExpandedMode && styles.hidden
+              )}
+            >
+              {sideSplitPanel}
+            </div>
+          )}
+          <div
+            className={clsx(
+              styles.tools,
+              !toolsOpen && styles['panel-hidden'],
+              sharedStyles['with-motion-horizontal'],
+              navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
+              toolsOpen && styles['tools-open'],
+              drawerExpandedMode && styles.hidden
+            )}
+          >
+            {tools}
+          </div>
+          <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>{globalTools}</div>
+        </div>
+      </VisualContext>
     );
   }
 );

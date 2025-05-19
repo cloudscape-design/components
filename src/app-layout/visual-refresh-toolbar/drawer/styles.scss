@@ -37,10 +37,13 @@ $drawer-resize-handle-size: awsui.$space-m;
   overscroll-behavior-y: contain;
   pointer-events: auto;
   word-wrap: break-word;
-  @include styles.with-motion {
-    transition:
-      inline-size #{$global-drawer-expanded-mode-motion},
-      min-inline-size #{$global-drawer-expanded-mode-motion};
+
+  &.with-expanded-motion {
+    @include styles.with-motion {
+      transition:
+        inline-size #{$global-drawer-expanded-mode-motion},
+        min-inline-size #{$global-drawer-expanded-mode-motion};
+    }
   }
 
   @include desktop-only {
