@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
@@ -197,16 +197,25 @@ const PropertyFilterInternal = React.forwardRef(
     }, [countText]);
 
     const tableComponentContext = useTableComponentsContext();
-    if (tableComponentContext?.filterRef?.current) {
-      const groupedTokens = tokenGroupToTokens<InternalToken>(internalQuery.tokens);
-      const filteredBy = groupedTokens
-        .map(token => token.property?.propertyKey)
-        .filter((propertyKey): propertyKey is string => typeof propertyKey === 'string');
 
-      tableComponentContext.filterRef.current.filterCount = countValue;
-      tableComponentContext.filterRef.current.filteredBy = filteredBy;
-      tableComponentContext.filterRef.current.filtered = groupedTokens.length > 0;
-    }
+    useEffect(() => {
+      if (tableComponentContext?.filterRef?.current) {
+        const groupedTokens = tokenGroupToTokens<InternalToken>(internalQuery.tokens);
+        const filteredBy = groupedTokens
+          .map(token => token.property?.propertyKey)
+          .filter((propertyKey): propertyKey is string => typeof propertyKey === 'string');
+
+        tableComponentContext.filterRef.current.filterCount = countValue;
+        tableComponentContext.filterRef.current.filteredBy = filteredBy;
+        tableComponentContext.filterRef.current.filtered = groupedTokens.length > 0;
+
+        return () => {
+          delete tableComponentContext.filterRef.current?.filterCount;
+          delete tableComponentContext.filterRef.current?.filteredBy;
+          delete tableComponentContext.filterRef.current?.filtered;
+        };
+      }
+    }, [tableComponentContext?.filterRef, countValue, internalQuery.tokens]);
 
     const { addToken, updateToken, updateOperation, removeToken, removeAllTokens } = getQueryActions({
       query: internalQuery,
