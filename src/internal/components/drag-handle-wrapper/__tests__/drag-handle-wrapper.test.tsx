@@ -168,8 +168,30 @@ describe('triggerMode = focus (default)', () => {
 
     document.body.dataset.awsuiFocusVisible = 'true';
     dragHandle.focus();
-    expect(getDirectionButton('block-start')).toBeVisible();
-    expect(getDirectionButton('block-end')).toBeVisible();
+    expectDirectionButtonToBeVisible('block-start');
+    expectDirectionButtonToBeVisible('block-end');
+    expect(getDirectionButton('inline-start')).not.toBeInTheDocument();
+  });
+
+  test('after focused and Esc key pressed, any other button press should show the direction buttons ', () => {
+    const { dragHandle } = renderDragHandle({
+      directions: { 'block-start': 'active', 'block-end': 'active' },
+    });
+
+    document.body.dataset.awsuiFocusVisible = 'true';
+    dragHandle.focus();
+    expectDirectionButtonToBeVisible('block-start');
+    expectDirectionButtonToBeVisible('block-end');
+    expect(getDirectionButton('inline-start')).not.toBeInTheDocument();
+
+    fireEvent.keyDown(dragHandle, { key: 'Escape' });
+    expectDirectionButtonToBeHidden('block-start');
+    expectDirectionButtonToBeHidden('block-end');
+    expect(getDirectionButton('inline-start')).not.toBeInTheDocument();
+
+    fireEvent.keyDown(dragHandle, { key: 'A' });
+    expectDirectionButtonToBeVisible('block-start');
+    expectDirectionButtonToBeVisible('block-end');
     expect(getDirectionButton('inline-start')).not.toBeInTheDocument();
   });
 
@@ -225,6 +247,24 @@ describe('triggerMode = keyboard-activate', () => {
     expect(getDirectionButton('block-end')).toBeInTheDocument();
     expect(getDirectionButton('inline-start')).not.toBeInTheDocument();
     expect(getDirectionButton('inline-end')).not.toBeInTheDocument();
+  });
+
+  test('when focused and other key is pressed, it should not show the direction buttons ', () => {
+    const { dragHandle } = renderDragHandle({
+      directions: { 'block-start': 'active', 'block-end': 'active' },
+      triggerMode: 'keyboard-activate',
+    });
+
+    document.body.dataset.awsuiFocusVisible = 'true';
+    dragHandle.focus();
+    expectDirectionButtonToBeHidden('block-start');
+    expectDirectionButtonToBeHidden('block-end');
+    expect(getDirectionButton('inline-start')).not.toBeInTheDocument();
+
+    fireEvent.keyDown(dragHandle, { key: 'A' });
+    expectDirectionButtonToBeHidden('block-start');
+    expectDirectionButtonToBeHidden('block-end');
+    expect(getDirectionButton('inline-start')).not.toBeInTheDocument();
   });
 
   test('hides direction buttons when focus leaves the button', () => {
