@@ -128,18 +128,31 @@ export default function CollectionPreferences({
 
   const referrerId = useUniqueId();
   const tableComponentContext = useTableComponentsContext();
-  if (tableComponentContext?.preferencesRef?.current) {
-    tableComponentContext.preferencesRef.current.pageSize = preferences?.pageSize;
 
-    // When both are used contentDisplayPreference takes preference and so we always prefer to use this as our visible columns if available
-    if (preferences?.contentDisplay) {
-      tableComponentContext.preferencesRef.current.visibleColumns = preferences?.contentDisplay
-        .filter(column => column.visible)
-        .map(column => column.id);
-    } else if (preferences?.visibleContent) {
-      tableComponentContext.preferencesRef.current.visibleColumns = [...preferences.visibleContent];
+  useEffect(() => {
+    if (tableComponentContext?.preferencesRef?.current) {
+      tableComponentContext.preferencesRef.current.pageSize = preferences?.pageSize;
+
+      // When both are used contentDisplayPreference takes preference and so we always prefer to use this as our visible columns if available
+      if (preferences?.contentDisplay) {
+        tableComponentContext.preferencesRef.current.visibleColumns = preferences?.contentDisplay
+          .filter(column => column.visible)
+          .map(column => column.id);
+      } else if (preferences?.visibleContent) {
+        tableComponentContext.preferencesRef.current.visibleColumns = [...preferences.visibleContent];
+      }
+
+      return () => {
+        delete tableComponentContext.preferencesRef.current?.pageSize;
+        delete tableComponentContext.preferencesRef.current?.visibleColumns;
+      };
     }
-  }
+  }, [
+    tableComponentContext?.preferencesRef,
+    preferences?.contentDisplay,
+    preferences?.visibleContent,
+    preferences?.pageSize,
+  ]);
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
