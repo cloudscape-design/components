@@ -8,6 +8,7 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import CollectionPreferences from '../../../lib/components/collection-preferences';
 import { PerformanceMetrics } from '../../../lib/components/internal/analytics';
 import Pagination from '../../../lib/components/pagination';
+import PropertyFilter from '../../../lib/components/property-filter';
 import Table from '../../../lib/components/table';
 import createWrapper, { InputWrapper } from '../../../lib/components/test-utils/dom';
 import TextFilter from '../../../lib/components/text-filter';
@@ -23,6 +24,7 @@ function render(jsx: React.ReactElement) {
 
   return {
     textFilterWrapper: createWrapper(container).findTable()!.findTextFilter()!,
+    propertyFilterWrapper: createWrapper(container).findTable()!.findPropertyFilter()!,
     paginationWrapper: createWrapper(container).findTable()!.findPagination()!,
     preferencesWrapper: createWrapper(container).findTable()!.findCollectionPreferences()!,
     rerender,
@@ -36,6 +38,62 @@ test('should track clicks in the filter slot', () => {
   textFilterWrapper.findInput().click();
   rerender(<Table items={[]} columnDefinitions={[]} filter={<TextFilter filteringText="" />} loading={true} />);
   rerender(<Table items={[]} columnDefinitions={[]} filter={<TextFilter filteringText="" />} loading={false} />);
+
+  expect(PerformanceMetrics.tableInteraction).toHaveBeenCalledTimes(1);
+  expect(PerformanceMetrics.tableInteraction).toHaveBeenCalledWith(expect.objectContaining({ userAction: 'filter' }));
+});
+
+test('should track clicks in the filter slot with property filter', () => {
+  const filteringProperties = [
+    {
+      key: 'id',
+      operators: ['='],
+      propertyLabel: 'Id',
+      groupValuesLabel: 'ID values',
+    },
+  ];
+  const { propertyFilterWrapper, rerender } = render(
+    <Table
+      items={[]}
+      columnDefinitions={[]}
+      filter={
+        <PropertyFilter
+          query={{ operation: 'and', tokens: [] }}
+          filteringProperties={filteringProperties}
+          onChange={() => {}}
+        />
+      }
+    />
+  );
+  propertyFilterWrapper.findNativeInput().click();
+  rerender(
+    <Table
+      items={[]}
+      columnDefinitions={[]}
+      filter={
+        <PropertyFilter
+          query={{ operation: 'and', tokens: [{ propertyKey: 'id', value: '1', operator: '=' }] }}
+          filteringProperties={filteringProperties}
+          onChange={() => {}}
+        />
+      }
+      loading={true}
+    />
+  );
+  rerender(
+    <Table
+      items={[]}
+      columnDefinitions={[]}
+      filter={
+        <PropertyFilter
+          query={{ operation: 'and', tokens: [{ propertyKey: 'id', value: '1', operator: '=' }] }}
+          filteringProperties={filteringProperties}
+          onChange={() => {}}
+        />
+      }
+      loading={false}
+    />
+  );
 
   expect(PerformanceMetrics.tableInteraction).toHaveBeenCalledTimes(1);
   expect(PerformanceMetrics.tableInteraction).toHaveBeenCalledWith(expect.objectContaining({ userAction: 'filter' }));

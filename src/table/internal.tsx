@@ -243,13 +243,15 @@ const InternalTable = React.forwardRef(
         resourceType: rest.analyticsMetadata?.resourceType,
         instanceIdentifier: analyticsMetadata?.instanceIdentifier,
         taskName: analyticsMetadata?.instanceIdentifier ?? getHeaderText(),
+        uxTaskName: getHeaderText(),
         patternIdentifier: getPatternIdentifier(),
         sortedBy: {
           columnId: sortingColumn?.sortingField,
           sortingOrder: sortingColumn ? (sortingDescending ? 'desc' : 'asc') : undefined,
         },
-        filtered: Boolean(filterData?.filterText),
-        totalNumberOfResources: paginationData.totalPageCount,
+        filtered: Boolean(filterData.filtered),
+        filteredBy: filterData?.filteredBy ?? [],
+        totalNumberOfResources: filterRef.current?.filterCount ?? null,
         tablePreferences: {
           visibleColumns: preferencesData?.visibleColumns ?? [],
           resourcesPerPage: preferencesData?.pageSize ?? null,
