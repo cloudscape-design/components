@@ -53,7 +53,13 @@ export function DrawerImplementation({
   ) : (
     <div {...containerProps} ref={__internalRootRef}>
       {header && (
-        <div className={clsx(styles.header, hasAdditioalDrawerAction && styles['with-additional-action'])}>
+        <div
+          className={clsx(
+            styles.header,
+            runtimeDrawerContext && styles['with-runtime-context'],
+            hasAdditioalDrawerAction && styles['with-additional-action']
+          )}
+        >
           {header}
           {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
         </div>

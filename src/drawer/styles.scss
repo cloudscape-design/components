@@ -5,6 +5,7 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../app-layout/constants.scss' as constants;
 
 @mixin desktop-only {
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -31,6 +32,10 @@
     &.with-additional-action {
       padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xxl});
     }
+
+    &.with-runtime-context {
+      padding-block: constants.$toolbar-vertical-panel-icon-offset;
+    }
   }
 
   .with-toolbar > & {
@@ -55,11 +60,6 @@
   display: inline-flex;
   align-items: flex-start;
   z-index: 1;
-  /*
-   Compensate for the difference between the runtime drawer's and the drawer component's heading
-   to ensure the header actions are vertically aligned
-   */
-  margin-block-start: -6px;
 }
 
 .content-with-paddings:not(:empty) {
