@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
+import { usePrevious } from '../../../internal/hooks/use-previous';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals, InternalDrawer } from '../interfaces';
@@ -67,8 +68,11 @@ function AppLayoutGlobalDrawerImplementation({
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
   const hasTriggerButton = !!activeGlobalDrawer?.trigger;
-  const animationDisabled = activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id);
   const isExpanded = activeGlobalDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
+  const isExpandedPrevious = usePrevious(isExpanded);
+  const animationDisabled =
+    (activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id)) ||
+    (isExpandedPrevious && !isExpanded);
 
   return (
     <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={60}>
@@ -83,6 +87,7 @@ function AppLayoutGlobalDrawerImplementation({
               styles['drawer-global'],
               styles[state],
               !animationDisabled && sharedStyles['with-motion-horizontal'],
+              !animationDisabled && isExpanded && styles['with-expanded-motion'],
               {
                 [styles['drawer-hidden']]: !show && state === 'exited',
                 [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,

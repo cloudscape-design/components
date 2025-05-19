@@ -29,7 +29,7 @@ describe('Verify TableComponentsContext', () => {
           paginationRef: {
             current: { totalPageCount: 10, currentPageIndex: 1 },
           },
-          filterRef: { current: { filterText: 'test' } },
+          filterRef: { current: { filterText: 'test', filterCount: 10, filtered: true } },
           preferencesRef: { current: { pageSize: 20, visibleColumns: ['id'] } },
         }}
       >
@@ -88,7 +88,7 @@ describe('Verify TableComponentsContext', () => {
           paginationRef: {
             current: { totalPageCount: 10, currentPageIndex: 1 },
           },
-          filterRef: { current: { filterText: 'test' } },
+          filterRef: { current: { filterText: 'test', filterCount: 10, filtered: true } },
           preferencesRef: { current: { pageSize: 20, visibleColumns: ['id'] } },
         }}
       >

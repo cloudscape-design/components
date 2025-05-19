@@ -41,6 +41,7 @@ const baseComponentConfiguration = {
   flowType: 'view-resource',
   resourceType: 'table-resource-type',
   taskName: 'Table title',
+  uxTaskName: 'Table title',
   patternIdentifier: '',
   sortedBy: {
     columnId: null,
@@ -51,7 +52,35 @@ const baseComponentConfiguration = {
     resourcesPerPage: 20,
   },
   filtered: false,
-  totalNumberOfResources: 200,
+  filteredBy: [],
+  totalNumberOfResources: 4000,
+  pagination: {
+    currentPageIndex: 1,
+    totalNumberOfPages: 200,
+    openEnd: false,
+  },
+  resourcesSelected: false,
+};
+
+const basePropertyFilterConfiguration = {
+  variant: 'container',
+  taskName: 'Table title',
+  uxTaskName: 'Table title',
+  resourceType: null,
+  instanceIdentifier: null,
+  flowType: null,
+  patternIdentifier: '',
+  sortedBy: {
+    columnId: null,
+    sortingOrder: null,
+  },
+  tablePreferences: {
+    visibleColumns: ['id', 'type', 'dnsName', 'state'],
+    resourcesPerPage: 20,
+  },
+  filtered: false,
+  filteredBy: [],
+  totalNumberOfResources: 4000,
   pagination: {
     currentPageIndex: 1,
     totalNumberOfPages: 200,
@@ -62,10 +91,10 @@ const baseComponentConfiguration = {
 
 const setupTest = (
   testFn: (testFnProps: { page: TableWithAnalyticsPageObject; wrapper: TableWrapper }) => Promise<void>,
-  url?: string
+  url = '#/light/funnel-analytics/with-table'
 ) => {
   return useBrowser(async browser => {
-    await browser.url(url || '#/light/funnel-analytics/with-table');
+    await browser.url(url);
     const page = new TableWithAnalyticsPageObject(browser);
     const wrapper = createWrapper().findTable();
     await page.waitForVisible(wrapper.toSelector());
@@ -195,7 +224,6 @@ describe('preferences', () => {
         actionType: 'preferences',
         componentConfiguration: {
           ...baseComponentConfiguration,
-          totalNumberOfResources: 80, // TODO: Remove after filtering PR is merged
           pagination: {
             currentPageIndex: 1,
             totalNumberOfPages: 80,
@@ -228,6 +256,7 @@ describe('async loading', () => {
           ...baseComponentConfiguration,
           instanceIdentifier: 'the-instances-table',
           taskName: 'the-instances-table',
+          uxTaskName: 'Instances',
           variant: 'full-page',
           pagination: {
             currentPageIndex: 3,
@@ -248,5 +277,93 @@ describe('async loading', () => {
       expect(componentsLog.length).toBe(2);
       expect(componentsLog[1].name).toBe('componentUpdated');
     }, '#/light/funnel-analytics/with-async-table')
+  );
+});
+
+describe('filtering', () => {
+  test(
+    'tracks component updates caused by text filtering',
+    setupTest(async ({ page, wrapper }) => {
+      await page.click(wrapper.findTextFilter().toSelector());
+      await page.keys('m3.2xlarge');
+      await page.waitForInteractionEvent('componentUpdated');
+
+      const componentsLog = await page.getComponentMetricsLog();
+      expect(componentsLog.length).toBe(2);
+      expect(componentsLog[1].name).toBe('componentUpdated');
+      expect(componentsLog[1].detail).toEqual({
+        taskInteractionId: expect.any(String),
+        componentName: 'table',
+        actionType: 'filter',
+        componentConfiguration: {
+          ...baseComponentConfiguration,
+          filtered: true,
+          totalNumberOfResources: 92,
+          pagination: {
+            currentPageIndex: 1,
+            openEnd: false,
+            totalNumberOfPages: 5,
+          },
+        },
+      });
+    })
+  );
+
+  test(
+    'tracks component updates caused by property filtering',
+    setupTest(async ({ page, wrapper }) => {
+      await page.click(wrapper.findPropertyFilter().findNativeInput().toSelector());
+      await page.keys('State=Stopped');
+      await page.keys(['Enter']);
+      await page.waitForInteractionEvent('componentUpdated');
+      const componentsLog = await page.getComponentMetricsLog();
+      expect(componentsLog.length).toBe(2);
+      expect(componentsLog[1].name).toBe('componentUpdated');
+      expect(componentsLog[1].detail).toEqual({
+        taskInteractionId: expect.any(String),
+        componentName: 'table',
+        actionType: 'filter',
+        componentConfiguration: {
+          ...basePropertyFilterConfiguration,
+          filtered: true,
+          filteredBy: ['state'],
+          totalNumberOfResources: 852,
+          pagination: {
+            currentPageIndex: 1,
+            openEnd: false,
+            totalNumberOfPages: 43,
+          },
+        },
+      });
+    }, '#/light/funnel-analytics/with-table-property-filter')
+  );
+
+  test(
+    'tracks component updates caused by property filtering with free text',
+    setupTest(async ({ page, wrapper }) => {
+      await page.click(wrapper.findPropertyFilter().findNativeInput().toSelector());
+      await page.keys('Stopped');
+      await page.keys(['Enter']);
+      await page.waitForInteractionEvent('componentUpdated');
+      const componentsLog = await page.getComponentMetricsLog();
+      expect(componentsLog.length).toBe(2);
+      expect(componentsLog[1].name).toBe('componentUpdated');
+      expect(componentsLog[1].detail).toEqual({
+        taskInteractionId: expect.any(String),
+        componentName: 'table',
+        actionType: 'filter',
+        componentConfiguration: {
+          ...basePropertyFilterConfiguration,
+          filtered: true,
+          filteredBy: [],
+          totalNumberOfResources: 852,
+          pagination: {
+            currentPageIndex: 1,
+            openEnd: false,
+            totalNumberOfPages: 43,
+          },
+        },
+      });
+    }, '#/light/funnel-analytics/with-table-property-filter')
   );
 });

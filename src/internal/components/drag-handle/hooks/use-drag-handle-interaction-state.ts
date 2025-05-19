@@ -163,6 +163,13 @@ function interactionReducer<T = void>(
   state: DragHandleInteractionState<T>,
   action: Action<T>
 ): DragHandleInteractionState<T> {
+  if (action.type === 'CLEAR_CALLBACKS') {
+    return {
+      ...state,
+      transitionCallbacks: undefined,
+    };
+  }
+
   const nextState = calculateNextState(state, action);
 
   // Special handling for POINTER_MOVE to always trigger onDndActive callback
@@ -242,6 +249,9 @@ function useCallbackHandler<T = void>(
           break;
       }
     });
+
+    // Clean up callbacks to prevent re-execution on subsequent re-renders.
+    dispatch({ type: 'CLEAR_CALLBACKS' });
   }, [pendingCallbacks, props, dispatch]);
 }
 
