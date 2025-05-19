@@ -87,7 +87,7 @@ function AppLayoutGlobalDrawerImplementation({
               styles['drawer-global'],
               styles[state],
               !animationDisabled && sharedStyles['with-motion-horizontal'],
-              !animationDisabled && styles['with-expanded-motion'],
+              !animationDisabled && isExpanded && styles['with-expanded-motion'],
               {
                 [styles['drawer-hidden']]: !show,
                 [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
