@@ -5,8 +5,7 @@ import { createContext, RefObject, useContext } from 'react';
 export interface FilterRef {
   filtered?: boolean;
   filterText?: string;
-  filteredBy?: string[];
-  filterCount?: number;
+  countText?: string;
 }
 
 export interface PaginationRef {

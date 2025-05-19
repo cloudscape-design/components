@@ -249,9 +249,8 @@ const InternalTable = React.forwardRef(
           columnId: sortingColumn?.sortingField,
           sortingOrder: sortingColumn ? (sortingDescending ? 'desc' : 'asc') : undefined,
         },
-        filtered: Boolean(filterData.filtered),
-        filteredBy: filterData?.filteredBy ?? [],
-        totalNumberOfResources: filterRef.current?.filterCount ?? null,
+        filtered: Boolean(filterData?.filterText),
+        totalNumberOfResources: paginationData.totalPageCount,
         tablePreferences: {
           visibleColumns: preferencesData?.visibleColumns ?? [],
           resourcesPerPage: preferencesData?.pageSize ?? null,

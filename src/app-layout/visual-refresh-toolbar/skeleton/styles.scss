@@ -75,11 +75,14 @@
     }
 
     &.drawer-expanded-mode {
-      grid-template-areas:
-        'toolbar      toolbar      toolbar       toolbar      toolbar     '
-        'global-tools global-tools global-tools  global-tools global-tools'
-        'global-tools global-tools global-tools  global-tools global-tools';
-      grid-template-rows: 1fr;
+      grid-template-columns:
+        0
+        0
+        0
+        0
+        0
+        0
+        auto;
     }
   }
 }
