@@ -294,6 +294,7 @@ const InternalTable = React.forwardRef(
       onSelectionChange,
       ariaLabels,
       loading,
+      setLastUserAction,
     });
     const isRowSelected = (row: TableRow<T>) => row.type === 'data' && isItemSelected(row.item);
 
