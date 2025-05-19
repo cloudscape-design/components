@@ -41,6 +41,7 @@ const baseComponentConfiguration = {
   flowType: 'view-resource',
   resourceType: 'table-resource-type',
   taskName: 'Table title',
+  uxTaskName: 'Table title',
   patternIdentifier: '',
   sortedBy: {
     columnId: null,
@@ -53,7 +54,6 @@ const baseComponentConfiguration = {
   filtered: false,
   filteredBy: [],
   totalNumberOfResources: 4000,
-  resourcesPerPage: 20,
   pagination: {
     currentPageIndex: 1,
     totalNumberOfPages: 200,
@@ -65,6 +65,7 @@ const baseComponentConfiguration = {
 const basePropertyFilterConfiguration = {
   variant: 'container',
   taskName: 'Table title',
+  uxTaskName: 'Table title',
   resourceType: null,
   instanceIdentifier: null,
   flowType: null,
@@ -73,10 +74,13 @@ const basePropertyFilterConfiguration = {
     columnId: null,
     sortingOrder: null,
   },
+  tablePreferences: {
+    visibleColumns: ['id', 'type', 'dnsName', 'state'],
+    resourcesPerPage: 20,
+  },
   filtered: false,
   filteredBy: [],
   totalNumberOfResources: 4000,
-  resourcesPerPage: 20,
   pagination: {
     currentPageIndex: 1,
     totalNumberOfPages: 200,
@@ -220,7 +224,6 @@ describe('preferences', () => {
         actionType: 'preferences',
         componentConfiguration: {
           ...baseComponentConfiguration,
-          totalNumberOfResources: 80, // TODO: Remove after filtering PR is merged
           pagination: {
             currentPageIndex: 1,
             totalNumberOfPages: 80,
@@ -253,6 +256,7 @@ describe('async loading', () => {
           ...baseComponentConfiguration,
           instanceIdentifier: 'the-instances-table',
           taskName: 'the-instances-table',
+          uxTaskName: 'Instances',
           variant: 'full-page',
           pagination: {
             currentPageIndex: 3,

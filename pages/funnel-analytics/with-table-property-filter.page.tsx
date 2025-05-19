@@ -108,67 +108,65 @@ export default function TableWithPropertyFilterPage() {
   );
 
   return (
-    <>
-      <Table<Instance>
-        ariaLabels={{
-          selectionGroupLabel: 'selectionGroupLabel',
-          activateEditLabel: () => 'activateEditLabel',
-          cancelEditLabel: () => 'cancelEditLabel',
-          submitEditLabel: () => 'submitEditLabel',
-          allItemsSelectionLabel: () => 'allItemsSelectionLabel',
-          itemSelectionLabel: () => 'itemSelectionLabel',
-          tableLabel: 'tableLabel',
-          expandButtonLabel: () => 'expand row',
-          collapseButtonLabel: () => 'collapse row',
-        }}
-        {...collectionProps}
-        selectionType="single"
-        header={
-          <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
-            Table title
-          </Header>
-        }
-        selectedItems={selectedItems}
-        columnDefinitions={columnsConfig}
-        items={items}
-        pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
-        filter={
-          <PropertyFilter
-            {...propertyFilterProps}
-            i18nStrings={propertyFilterI18nStrings}
-            countText={filteredItemsCount !== undefined ? getMatchesCountText(filteredItemsCount) : undefined}
-            expandToViewport={true}
-            enableTokenGroups={true}
-            onChange={event => {
-              propertyFilterProps.onChange(event);
-            }}
-          />
-        }
-        columnDisplay={preferences.contentDisplay}
-        preferences={
-          <CollectionPreferences
-            title="Preferences"
-            confirmLabel="Confirm"
-            cancelLabel="Cancel"
-            onConfirm={({ detail }) => setPreferences(detail)}
-            preferences={preferences}
-            pageSizePreference={{
-              title: 'Select page size',
-              options: pageSizeOptions,
-            }}
-            contentDisplayPreference={{
-              ...contentDisplayPreference,
-              ...contentDisplayPreferenceI18nStrings,
-            }}
-            wrapLinesPreference={{
-              label: 'Wrap lines',
-              description: 'Wrap lines description',
-            }}
-          />
-        }
-        stickyHeader={true}
-        onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
-      />
-    </>
+    <Table<Instance>
+      ariaLabels={{
+        selectionGroupLabel: 'selectionGroupLabel',
+        activateEditLabel: () => 'activateEditLabel',
+        cancelEditLabel: () => 'cancelEditLabel',
+        submitEditLabel: () => 'submitEditLabel',
+        allItemsSelectionLabel: () => 'allItemsSelectionLabel',
+        itemSelectionLabel: () => 'itemSelectionLabel',
+        tableLabel: 'tableLabel',
+        expandButtonLabel: () => 'expand row',
+        collapseButtonLabel: () => 'collapse row',
+      }}
+      {...collectionProps}
+      selectionType="single"
+      header={
+        <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
+          Table title
+        </Header>
+      }
+      selectedItems={selectedItems}
+      columnDefinitions={columnsConfig}
+      items={items}
+      pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
+      filter={
+        <PropertyFilter
+          {...propertyFilterProps}
+          i18nStrings={propertyFilterI18nStrings}
+          countText={filteredItemsCount !== undefined ? getMatchesCountText(filteredItemsCount) : undefined}
+          expandToViewport={true}
+          enableTokenGroups={true}
+          onChange={event => {
+            propertyFilterProps.onChange(event);
+          }}
+        />
+      }
+      columnDisplay={preferences.contentDisplay}
+      preferences={
+        <CollectionPreferences
+          title="Preferences"
+          confirmLabel="Confirm"
+          cancelLabel="Cancel"
+          onConfirm={({ detail }) => setPreferences(detail)}
+          preferences={preferences}
+          pageSizePreference={{
+            title: 'Select page size',
+            options: pageSizeOptions,
+          }}
+          contentDisplayPreference={{
+            ...contentDisplayPreference,
+            ...contentDisplayPreferenceI18nStrings,
+          }}
+          wrapLinesPreference={{
+            label: 'Wrap lines',
+            description: 'Wrap lines description',
+          }}
+        />
+      }
+      stickyHeader={true}
+      onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
+    />
   );
 }

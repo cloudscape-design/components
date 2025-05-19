@@ -52,7 +52,7 @@ const InternalTextFilter = React.forwardRef(
       }
 
       const m = countText.match(/\d+/);
-      return m ? parseInt(m[0]) : 0;
+      return m ? parseInt(m[0]) : undefined;
     }, [countText]);
 
     const searchResultsId = useUniqueId('text-filter-search-results');

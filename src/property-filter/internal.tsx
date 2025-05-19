@@ -193,7 +193,7 @@ const PropertyFilterInternal = React.forwardRef(
       }
 
       const m = countText.match(/\d+/);
-      return m ? parseInt(m[0]) : 0;
+      return m ? parseInt(m[0]) : undefined;
     }, [countText]);
 
     const tableComponentContext = useTableComponentsContext();
