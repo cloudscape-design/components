@@ -1435,9 +1435,7 @@ describe('toolbar mode only features', () => {
         expect(wrapper.findDrawerTriggerById(drawerId2)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
         expect(wrapper.findDrawerTriggerById(drawerId3Local)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
         expect(wrapper.findNavigationToggle()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
-        await waitFor(() => {
-          expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
-        });
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
         expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
 
         globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
@@ -1495,9 +1493,7 @@ describe('toolbar mode only features', () => {
           );
           expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
           expect(wrapper.findNavigationToggle()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
-          await waitFor(() => {
-            expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
-          });
+          expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
           expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
 
           globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
@@ -1530,9 +1526,7 @@ describe('toolbar mode only features', () => {
           );
           expect(wrapper.findNavigationToggle()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
           expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
-          await waitFor(() => {
-            expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
-          });
+          expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
           expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
         }
       );
@@ -1614,13 +1608,9 @@ describe('toolbar mode only features', () => {
         wrapper.findDrawerTriggerById(drawerId)!.click();
         globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
         expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
-        await waitFor(() => {
-          expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
-        });
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
         wrapper.findDrawerTriggerById(drawerId)!.click();
-        await waitFor(() => {
-          expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
-        });
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
       });
 
       describe('nested app layouts', () => {

@@ -32,10 +32,10 @@
     &.with-additional-action {
       padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xxl});
     }
+  }
 
-    &.with-runtime-context {
-      padding-block: constants.$toolbar-vertical-panel-icon-offset;
-    }
+  &.with-runtime-context {
+    padding-block: constants.$toolbar-vertical-panel-icon-offset;
   }
 
   .with-toolbar > & {

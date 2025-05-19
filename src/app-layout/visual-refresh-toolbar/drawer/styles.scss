@@ -184,12 +184,19 @@ $drawer-resize-handle-size: awsui.$space-m;
     }
 
     > .drawer-content-container {
-      grid-column: 2 / span 2;
       grid-row: 1;
       display: grid;
       grid-template-columns: $drawer-resize-handle-size 1fr auto $drawer-resize-handle-size;
       grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 1fr;
       overflow-y: auto;
+
+      @include desktop-only {
+        grid-column: 2 / span 2;
+      }
+
+      @include mobile-only {
+        grid-column: 1 / span 2;
+      }
 
       > .drawer-close-button {
         grid-column: 3;

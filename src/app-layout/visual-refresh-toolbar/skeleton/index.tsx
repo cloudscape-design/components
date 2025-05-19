@@ -46,6 +46,7 @@ interface SkeletonLayoutProps
   isNested?: boolean;
   drawerExpandedMode: boolean;
   drawerExpandedModeInChildLayout: boolean;
+  totalActiveGlobalDrawersSize: number;
 }
 
 export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutProps>(
@@ -76,6 +77,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       isNested,
       drawerExpandedMode,
       drawerExpandedModeInChildLayout,
+      totalActiveGlobalDrawersSize,
     },
     ref
   ) => {
@@ -87,7 +89,6 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
     return (
       <Transition in={drawerExpandedMode} nodeRef={rootRef} timeout={250}>
         {state => {
-          const expanded = drawerExpandedMode || ['entering', 'exiting'].includes(state);
           return (
             <VisualContext contextName="app-layout-toolbar">
               <div
@@ -95,7 +96,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
                 className={clsx(styles.root, testutilStyles.root, {
                   [styles['has-adaptive-widths-default']]: !contentTypeCustomWidths.includes(contentType),
                   [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
-                  [styles['drawer-expanded-mode']]: expanded,
+                  [styles['drawer-expanded-mode']]: drawerExpandedMode,
                 })}
                 style={{
                   minBlockSize: isNested
@@ -114,7 +115,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
                       !navigationOpen && styles['panel-hidden'],
                       toolsOpen && styles['unfocusable-mobile'],
                       !navigationAnimationDisabled && sharedStyles['with-motion-horizontal'],
-                      (expanded || drawerExpandedModeInChildLayout) && styles.hidden
+                      (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden
                     )}
                   >
                     {navigation}
@@ -124,7 +125,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
                   className={clsx(
                     styles['main-landmark'],
                     isMobile && anyPanelOpen && styles['unfocusable-mobile'],
-                    expanded && styles.hidden
+                    drawerExpandedMode && styles.hidden
                   )}
                 >
                   {notifications && (
@@ -157,7 +158,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
                     className={clsx(
                       styles['split-panel-side'],
                       !splitPanelOpen && styles['panel-hidden'],
-                      expanded && styles.hidden
+                      drawerExpandedMode && styles.hidden
                     )}
                   >
                     {sideSplitPanel}
@@ -170,12 +171,22 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
                     sharedStyles['with-motion-horizontal'],
                     navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
                     toolsOpen && styles['tools-open'],
-                    expanded && styles.hidden
+                    drawerExpandedMode && styles.hidden
                   )}
                 >
                   {tools}
                 </div>
-                <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>
+                <div
+                  className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}
+                  style={{
+                    inlineSize:
+                      state !== 'exited'
+                        ? drawerExpandedMode
+                          ? '100%'
+                          : totalActiveGlobalDrawersSize + 1 + 'px'
+                        : undefined,
+                  }}
+                >
                   {globalTools}
                 </div>
               </div>

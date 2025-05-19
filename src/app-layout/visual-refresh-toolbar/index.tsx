@@ -257,6 +257,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelPosition,
       maxGlobalDrawersSizes,
       resizableSpaceAvailable,
+      totalActiveGlobalDrawersSize,
     } = computeHorizontalLayout({
       activeDrawerSize: activeDrawer ? activeDrawerSize : 0,
       splitPanelSize,
@@ -555,6 +556,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           contentType={contentType}
           maxContentWidth={maxContentWidth}
           disableContentPaddings={disableContentPaddings}
+          totalActiveGlobalDrawersSize={totalActiveGlobalDrawersSize}
         />
       </AppLayoutVisibilityContext.Provider>
     );
