@@ -223,6 +223,13 @@ describe('i18n', () => {
     expect(footerItems.find(':nth-child(2)')!.findButton()!.getElement()).toHaveTextContent('Custom confirm');
   });
 
+  test("uses cancelLabel if closeAriaLabel isn't provided", () => {
+    const { container } = render(<CollectionPreferences cancelLabel="Cancel" />);
+    const wrapper = createWrapper(container).findCollectionPreferences()!;
+    wrapper.findTriggerButton().click();
+    expect(wrapper.findModal()!.findDismissButton()!.getElement()).toHaveAccessibleName('Cancel');
+  });
+
   test('supports using preference labels and descriptions from i18n provider', () => {
     const { container } = render(
       <TestI18nProvider

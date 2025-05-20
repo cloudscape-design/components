@@ -38,8 +38,7 @@ export default function SplitPanel({
         preferencesConfirm: i18n('i18nStrings.preferencesConfirm', i18nStrings?.preferencesConfirm),
         preferencesCancel: i18n('i18nStrings.preferencesCancel', i18nStrings?.preferencesCancel),
         preferencesCloseAriaLabel:
-          i18nModal('closeAriaLabel', i18nStrings?.preferencesCloseAriaLabel) ||
-          i18n('i18nStrings.preferencesCancel', i18nStrings?.preferencesCancel),
+          i18nModal('closeAriaLabel', i18nStrings?.preferencesCloseAriaLabel) || i18nStrings?.preferencesCancel,
         preferencesPositionLabel: i18n('i18nStrings.preferencesPositionLabel', i18nStrings?.preferencesPositionLabel),
         preferencesPositionDescription: i18n(
           'i18nStrings.preferencesPositionDescription',

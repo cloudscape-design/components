@@ -1062,6 +1062,7 @@ Map {
       "closeButtonAriaLabel": undefined,
       "openButtonAriaLabel": undefined,
       "preferencesCancel": undefined,
+      "preferencesCloseAriaLabel": undefined,
       "preferencesConfirm": undefined,
       "preferencesPositionBottom": undefined,
       "preferencesPositionDescription": undefined,

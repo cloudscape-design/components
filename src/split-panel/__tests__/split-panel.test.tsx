@@ -276,6 +276,15 @@ describe('Split panel', () => {
       });
 
       describe('i18n', () => {
+        test("should use preferencesCancel when preferencesCloseAriaLabel isn't provided", () => {
+          const { wrapper } = renderSplitPanel({
+            props: { i18nStrings: { preferencesCancel: 'Custom cancel' }, closeBehavior },
+            contextProps: { position: 'bottom', isOpen: true },
+          });
+          wrapper!.findPreferencesButton()!.click();
+          expect(createWrapper().findModal()!.findDismissButton().getElement()).toHaveAccessibleName('Custom cancel');
+        });
+
         testIf(closeBehavior === 'collapse')(
           'supports using i18nStrings.openButtonAriaLabel from i18n provider',
           () => {

@@ -207,7 +207,7 @@ export default function CollectionPreferences({
                 </InternalSpaceBetween>
               </InternalBox>
             }
-            closeAriaLabel={closeAriaLabel}
+            closeAriaLabel={closeAriaLabel || cancelLabel}
             size={hasContentOnTheLeft && hasContentOnTheRight ? 'large' : 'medium'}
             onDismiss={onCancelListener}
           >
