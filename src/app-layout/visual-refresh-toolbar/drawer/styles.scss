@@ -201,6 +201,15 @@ $drawer-resize-handle-size: awsui.$space-m;
         grid-column: 1 / span 2;
       }
 
+      > .drawer-actions {
+        position: absolute;
+        display: flex;
+        align-self: flex-start;
+        justify-self: flex-end;
+        padding-inline-end: awsui.$space-m;
+        padding-block-start: constants.$toolbar-vertical-panel-icon-offset;
+      }
+
       > .drawer-close-button {
         grid-column: 3;
         grid-row: 2;
