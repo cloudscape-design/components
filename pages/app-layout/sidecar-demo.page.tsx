@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import {
   AppLayout,
@@ -27,6 +27,7 @@ import { columnsConfig } from '../table/shared-configs';
 import { Breadcrumbs } from './utils/content-blocks';
 import { drawerLabels } from './utils/drawers';
 import appLayoutLabels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -39,7 +40,6 @@ type DemoContext = React.Context<
 export default function WithDrawers() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const hasTools = urlParams.hasTools ?? true;
-  const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
 
   const [activeHref, setActiveHref] = useState('#/');
   const [navigationOpen, setNavigationOpen] = useState(true);
@@ -55,7 +55,6 @@ export default function WithDrawers() {
     <AppLayout
       ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
       breadcrumbs={<Breadcrumbs />}
-      ref={appLayoutRef}
       navigation={
         <SideNavigation
           activeHref={activeHref}
@@ -102,21 +101,7 @@ export default function WithDrawers() {
         />
       }
       splitPanel={
-        <SplitPanel
-          header="Overview"
-          i18nStrings={{
-            preferencesTitle: 'Preferences',
-            preferencesPositionLabel: 'Split panel position',
-            preferencesPositionDescription: 'Choose the default split panel position for the service.',
-            preferencesPositionSide: 'Side',
-            preferencesPositionBottom: 'Bottom',
-            preferencesConfirm: 'Confirm',
-            preferencesCancel: 'Cancel',
-            closeButtonAriaLabel: 'Close panel',
-            openButtonAriaLabel: 'Open panel',
-            resizeHandleAriaLabel: 'Slider',
-          }}
-        >
+        <SplitPanel header="Overview" i18nStrings={splitPaneli18nStrings}>
           <SpaceBetween size="m">
             <Box>
               Receive real-time data insights to build process improvements, track key performance indicators, and
