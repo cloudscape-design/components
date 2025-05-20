@@ -64,6 +64,6 @@ export interface AppLayoutInternals {
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;
   onActiveGlobalDrawersChange: (newDrawerId: string, params: OnChangeParams) => void;
   splitPanelAnimationDisabled?: boolean;
-  expandedDrawerId: string | undefined;
-  setExpandedDrawerId: (value: string | undefined) => void;
+  expandedDrawerId: string | null;
+  setExpandedDrawerId: (value: string | null) => void;
 }

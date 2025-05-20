@@ -153,7 +153,7 @@ function AppLayoutGlobalDrawerImplementation({
                         formAction="none"
                         ariaExpanded={isExpanded}
                         iconName={isExpanded ? 'shrink' : 'expand'}
-                        onClick={() => setExpandedDrawerId(isExpanded ? undefined : activeDrawerId)}
+                        onClick={() => setExpandedDrawerId(isExpanded ? null : activeDrawerId)}
                         variant="icon"
                         analyticsAction={isExpanded ? 'expand' : 'collapse'}
                       />

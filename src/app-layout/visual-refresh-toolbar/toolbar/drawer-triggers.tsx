@@ -37,8 +37,8 @@ interface DrawerTriggersProps {
   globalDrawersFocusControl?: FocusControlMultipleStates;
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
   onActiveGlobalDrawersChange?: (newDrawerId: string, params: OnChangeParams) => void;
-  expandedDrawerId?: string;
-  setExpandedDrawerId: (value: string | undefined) => void;
+  expandedDrawerId?: string | null;
+  setExpandedDrawerId: (value: string | null) => void;
 
   splitPanelOpen?: boolean;
   splitPanelPosition?: AppLayoutProps.SplitPanelPreferences['position'];
@@ -118,7 +118,7 @@ export function DrawerTriggers({
 
   const exitExpandedMode = () => {
     if (setExpandedDrawerId) {
-      setExpandedDrawerId(undefined);
+      setExpandedDrawerId(null);
     }
   };
 

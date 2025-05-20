@@ -32,8 +32,8 @@ export interface SharedProps {
   splitPanelToggleProps: SplitPanelToggleProps | undefined;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
   onSplitPanelToggle: () => void;
-  expandedDrawerId?: string;
-  setExpandedDrawerId: (value: string | undefined) => void;
+  expandedDrawerId?: string | null;
+  setExpandedDrawerId: (value: string | null) => void;
 }
 
 function checkAlreadyExists(value: boolean, propName: string) {
