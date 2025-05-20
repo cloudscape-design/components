@@ -159,15 +159,10 @@
   border-inline: none;
   opacity: 0;
   z-index: 0;
-
   &.navigation,
-  &.tools {
-    inline-size: 0px;
-  }
+  &.tools,
   &.global-tools {
-    @include mobile-only {
-      inline-size: 0px;
-    }
+    inline-size: 0px;
   }
 }
 
