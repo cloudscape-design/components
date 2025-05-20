@@ -10,7 +10,7 @@ const { task } = require('../utils/gulp-utils');
 const workspace = require('../utils/workspace');
 const themes = require('../utils/themes');
 const { generatePackageJson } = require('./package-json');
-const { copyThirdPartyLicenses } = require('./licenses');
+const { copyFiles } = require('./copy-files');
 const { compileTypescript } = require('./typescript');
 
 const componentsTemplateDir = 'internal/template';
@@ -65,7 +65,7 @@ module.exports = parallel(
     injectDependencies: true,
   }),
   generatePackageJson(join(themeable.targetDir, designTokensTemplateDir), themeable.tokensPackageJson),
-  copyThirdPartyLicenses('themeable', join(themeable.targetDir, componentsTemplateDir)),
+  copyFiles('themeable', join(themeable.targetDir, componentsTemplateDir)),
   copyStylesTask,
   copyTemplateTask
 );
