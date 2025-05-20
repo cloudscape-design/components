@@ -53,13 +53,15 @@ function renderSplitPanel({
   props,
   contextProps,
   messages = {},
+  modalMessages = {},
 }: {
   props?: Partial<SplitPanelProps>;
   contextProps?: Partial<SplitPanelContextProps>;
   messages?: Record<string, string>;
+  modalMessages?: Record<string, string>;
 } = {}) {
   const { container } = render(
-    <TestI18nProvider messages={{ 'split-panel': messages }}>
+    <TestI18nProvider messages={{ 'split-panel': messages, modal: modalMessages }}>
       <SplitPanelContextProvider value={{ ...defaultSplitPanelContextProps, ...contextProps }}>
         <SplitPanel {...defaultProps} {...props} />
       </SplitPanelContextProvider>
@@ -315,9 +317,13 @@ describe('Split panel', () => {
               'i18nStrings.preferencesConfirm': 'Custom confirm',
               'i18nStrings.preferencesCancel': 'Custom cancel',
             },
+            modalMessages: {
+              closeAriaLabel: 'Custom modal close',
+            },
           });
           wrapper!.findPreferencesButton()!.click();
           const modalWrapper = createWrapper().findModal()!;
+          expect(modalWrapper.findDismissButton().getElement()).toHaveAccessibleName('Custom modal close');
           expect(modalWrapper.findHeader().getElement()).toHaveTextContent('Custom title');
           expect(modalWrapper.findContent().findFormField()!.findLabel()!.getElement()).toHaveTextContent(
             'Custom position'

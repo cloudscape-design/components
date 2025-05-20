@@ -72,6 +72,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const isRefresh = useVisualRefresh();
   const baseProps = getBaseProps(rest);
   const i18n = useInternalI18n('code-editor');
+  const i18nModal = useInternalI18n('modal');
 
   const errorsTabRef = useRef<HTMLButtonElement>(null);
   const warningsTabRef = useRef<HTMLButtonElement>(null);
@@ -291,6 +292,9 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
                 header: i18n('i18nStrings.preferencesModalHeader', i18nStrings?.preferencesModalHeader),
                 cancel: i18n('i18nStrings.preferencesModalCancel', i18nStrings?.preferencesModalCancel),
                 confirm: i18n('i18nStrings.preferencesModalConfirm', i18nStrings?.preferencesModalConfirm),
+                close:
+                  i18nModal('closeAriaLabel', i18nStrings?.preferencesModalClose) ||
+                  i18nStrings?.preferencesModalCancel,
                 wrapLines: i18n('i18nStrings.preferencesModalWrapLines', i18nStrings?.preferencesModalWrapLines),
                 theme: i18n('i18nStrings.preferencesModalTheme', i18nStrings?.preferencesModalTheme),
                 lightThemes: i18n('i18nStrings.preferencesModalLightThemes', i18nStrings?.preferencesModalLightThemes),

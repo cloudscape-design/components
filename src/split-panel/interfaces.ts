@@ -46,6 +46,7 @@ export namespace SplitPanelProps {
     preferencesPositionBottom?: string;
     preferencesConfirm?: string;
     preferencesCancel?: string;
+    preferencesClose?: string;
     resizeHandleAriaLabel?: string;
     resizeHandleTooltipText?: string;
   }

@@ -244,6 +244,9 @@ describe('i18n', () => {
             'contentDisplayPreference.liveAnnouncementDndItemCommitted':
               '{isInitialPosition, select, true {Item moved back to its original position {initialPosition} of {total}} false {Item moved from position {initialPosition} to position {finalPosition} of {total}} other {}}',
           },
+          modal: {
+            closeAriaLabel: 'Custom modal close',
+          },
         }}
       >
         <CollectionPreferences
@@ -269,6 +272,7 @@ describe('i18n', () => {
     const wrapper = createWrapper(container).findCollectionPreferences()!;
     wrapper.findTriggerButton().click();
     const modal = wrapper.findModal()!;
+    expect(modal.findDismissButton().getElement()).toHaveAccessibleName('Custom modal close');
     expect(modal.findPageSizePreference()!.findTitle().getElement()).toHaveTextContent('Custom page size');
     expect(modal.findWrapLinesPreference()!.findLabel().getElement()).toHaveTextContent('Custom wrap lines');
     expect(modal.findWrapLinesPreference()!.findDescription()!.getElement()).toHaveTextContent(

@@ -17,6 +17,7 @@ import sidePositionIconRefresh from './icons/side-position-refresh';
 interface PreferencesModali18nStrings {
   header?: string;
   cancel?: string;
+  close?: string;
   confirm?: string;
   positionLabel?: string;
   positionDescription?: string;
@@ -56,7 +57,7 @@ export default (props: PreferencesModalProps) => {
       visible={props.visible}
       onDismiss={props.onDismiss}
       header={props.i18nStrings.header}
-      closeAriaLabel={props.i18nStrings.cancel!}
+      closeAriaLabel={props.i18nStrings.close}
       footer={
         <InternalBox float="right">
           <InternalSpaceBetween direction="horizontal" size="xs">
