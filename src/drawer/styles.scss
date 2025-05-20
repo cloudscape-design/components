@@ -30,6 +30,10 @@
 
   @include desktop-only {
     &.with-additional-action {
+      /*
+        this padding is needed when the drawer renders inside a runtime drawer and the runtime drawer has an additional action
+        on the right (or left in rtl). in this case this padding ensures that the drawer's content does not overlap with runtime actions
+      */
       padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xxl});
     }
   }
