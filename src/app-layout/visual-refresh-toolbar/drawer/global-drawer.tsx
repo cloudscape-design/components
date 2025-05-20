@@ -69,10 +69,10 @@ function AppLayoutGlobalDrawerImplementation({
   const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
   const hasTriggerButton = !!activeGlobalDrawer?.trigger;
   const isExpanded = activeGlobalDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
-  const isExpandedPrevious = usePrevious(isExpanded);
+  const wasExpanded = usePrevious(isExpanded);
   const animationDisabled =
     (activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id)) ||
-    (isExpandedPrevious && !isExpanded);
+    (wasExpanded && !isExpanded);
 
   return (
     <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={0}>
