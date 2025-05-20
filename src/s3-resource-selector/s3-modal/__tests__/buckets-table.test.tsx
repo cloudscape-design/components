@@ -32,7 +32,7 @@ function findRefreshButton(wrapper: TableWrapper) {
 
 test('Renders correct aria-labels', async () => {
   const wrapper = await renderTable(<BucketsTable {...defaultProps} />);
-  expect(wrapper.findRowSelectionArea(1)!.getElement()).toHaveAttribute('aria-label', 'Buckets select bucket-laborum');
+  expect(wrapper.findRowSelectionArea(1)!.getElement()).toHaveAttribute('aria-label', 'select bucket-laborum');
   expect(wrapper.findTextFilter()!.findInput().findNativeInput().getElement()).toHaveAttribute(
     'aria-label',
     'Find Buckets'
