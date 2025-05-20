@@ -17,7 +17,7 @@ module.exports = {
   generateI18nMessages: require('./generate-i18n-messages'),
   integ: require('./integ'),
   motion: require('./motion'),
-  licenses: require('./licenses'),
+  copyFiles: require('./copy-files'),
   themeableSource: require('./themeable-source'),
   bundleVendorFiles: require('./bundle-vendor-files'),
   sizeLimit: require('./size-limit'),

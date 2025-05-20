@@ -30,6 +30,8 @@ function getComponentsExports() {
     './internal/do-not-use/tooltip': './internal/do-not-use/tooltip.js',
     './internal/do-not-use/drag-handle': './internal/do-not-use/drag-handle.js',
     './internal/widget-exports': './internal/widget-exports.js',
+    './test-utils/dom/internal/drag-handle': './test-utils/dom/internal/drag-handle.js',
+    './test-utils/selectors/internal/drag-handle': './test-utils/selectors/internal/drag-handle.js',
     './test-utils/dom/internal/tooltip': './test-utils/dom/internal/tooltip.js',
     './test-utils/selectors/internal/tooltip': './test-utils/selectors/internal/tooltip.js',
     './test-utils/dom/internal/chart-tooltip': './test-utils/dom/internal/chart-tooltip.js',

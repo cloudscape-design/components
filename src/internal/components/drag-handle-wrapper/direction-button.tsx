@@ -10,6 +10,7 @@ import { Transition } from '../transition';
 import { Direction, DirectionState } from './interfaces';
 
 import styles from './styles.css.js';
+import testUtilsStyles from './test-classes/styles.css.js';
 
 // Mapping from CSS logical property direction to icon name. The icon component
 // already flips the left/right icons automatically based on RTL, so we don't
@@ -45,7 +46,12 @@ export default function DirectionButton({ direction, state, show, onClick }: Dir
           )}
         >
           <span
-            className={clsx(styles['direction-button'], state === 'disabled' && styles['direction-button-disabled'])}
+            className={clsx(
+              styles['direction-button'],
+              state === 'disabled' && styles['direction-button-disabled'],
+              testUtilsStyles[`direction-button-${direction}`],
+              transitionState !== 'exited' && testUtilsStyles['direction-button-visible']
+            )}
             onClick={state !== 'disabled' ? onClick : undefined}
             // This prevents focus from being lost to `document.body` on
             // mouse/pointer press. This allows us to listen to onClick while
