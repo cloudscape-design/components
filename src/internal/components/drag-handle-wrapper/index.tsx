@@ -151,14 +151,19 @@ export default function DragHandleWrapper({
   };
 
   const onDragHandleKeyDown: React.KeyboardEventHandler = event => {
-    // For accessibility reasons, pressing escape should should always close
-    // the floating controls.
+    // For accessibility reasons, pressing escape should always close the floating controls.
     if (event.key === 'Escape') {
       setShowButtons(false);
     } else if (triggerMode === 'keyboard-activate' && (event.key === 'Enter' || event.key === ' ')) {
       // toggle buttons when Enter or space is pressed in 'keyboard-activate' triggerMode
       setShowButtons(prevshowButtons => !prevshowButtons);
-    } else if (event.key !== 'Alt' && event.key !== 'Control' && event.key !== 'Meta' && event.key !== 'Shift') {
+    } else if (
+      event.key !== 'Alt' &&
+      event.key !== 'Control' &&
+      event.key !== 'Meta' &&
+      event.key !== 'Shift' &&
+      triggerMode !== 'keyboard-activate'
+    ) {
       // Pressing any other key will display the focus-visible ring around the
       // drag handle if it's in focus, so we should also show the buttons now.
       setShowButtons(true);
