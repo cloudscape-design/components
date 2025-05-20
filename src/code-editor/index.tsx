@@ -293,7 +293,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
                 cancel: i18n('i18nStrings.preferencesModalCancel', i18nStrings?.preferencesModalCancel),
                 confirm: i18n('i18nStrings.preferencesModalConfirm', i18nStrings?.preferencesModalConfirm),
                 close:
-                  i18nModal('closeAriaLabel', i18nStrings?.preferencesModalClose) ||
+                  i18nModal('closeAriaLabel', i18nStrings?.preferencesModalCloseAriaLabel) ||
                   i18nStrings?.preferencesModalCancel,
                 wrapLines: i18n('i18nStrings.preferencesModalWrapLines', i18nStrings?.preferencesModalWrapLines),
                 theme: i18n('i18nStrings.preferencesModalTheme', i18nStrings?.preferencesModalTheme),

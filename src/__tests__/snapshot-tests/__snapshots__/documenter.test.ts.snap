@@ -5845,7 +5845,7 @@ The object should contain, among others:
             "type": "string",
           },
           {
-            "name": "preferencesModalClose",
+            "name": "preferencesModalCloseAriaLabel",
             "optional": true,
             "type": "string",
           },
@@ -16963,7 +16963,7 @@ exports[`Documenter definition for split-panel matches the snapshot: split-panel
             "type": "string",
           },
           {
-            "name": "preferencesClose",
+            "name": "preferencesCloseAriaLabel",
             "optional": true,
             "type": "string",
           },

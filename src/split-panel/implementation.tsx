@@ -244,7 +244,7 @@ export function SplitPanelImplementation({
             header: i18nStrings.preferencesTitle,
             confirm: i18nStrings.preferencesConfirm,
             cancel: i18nStrings.preferencesCancel,
-            close: i18nStrings.preferencesClose,
+            close: i18nStrings.preferencesCloseAriaLabel,
             positionLabel: i18nStrings.preferencesPositionLabel,
             positionDescription: i18nStrings.preferencesPositionDescription,
             positionBottom: i18nStrings.preferencesPositionBottom,

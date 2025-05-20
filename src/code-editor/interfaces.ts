@@ -159,7 +159,7 @@ export namespace CodeEditorProps {
     preferencesModalHeader?: string;
     preferencesModalCancel?: string;
     preferencesModalConfirm?: string;
-    preferencesModalClose?: string;
+    preferencesModalCloseAriaLabel?: string;
     preferencesModalWrapLines?: string;
     preferencesModalTheme?: string;
     preferencesModalLightThemes?: string;
