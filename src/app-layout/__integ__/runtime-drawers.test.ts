@@ -211,7 +211,7 @@ describe('Visual refresh toolbar only', () => {
     test(
       'active drawers can be shrunk to accommodate a third drawer',
       setupTest(async page => {
-        await page.setWindowSize({ ...viewports.desktop, width: 1600 });
+        await page.setWindowSize(viewports.desktopWide);
         await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
         await page.click(wrapper.findDrawerTriggerById('global-with-stored-state').toSelector());
 
@@ -267,7 +267,7 @@ describe('Visual refresh toolbar only', () => {
   test(
     'should prevent the horizontal page scroll from appearing during resize',
     setupTest(async page => {
-      await page.setWindowSize({ ...viewports.desktop, width: 1600 });
+      await page.setWindowSize(viewports.desktopWide);
       await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
       await page.click(wrapper.findDrawerTriggerById('global-with-stored-state').toSelector());
       await page.click(wrapper.findDrawerTriggerById('circle3-global').toSelector());
@@ -344,7 +344,7 @@ describe('Visual refresh toolbar only', () => {
   test(
     'should show only expanded drawer and hide all other panels if expanded mode for a drawer is active',
     setupTest(async page => {
-      await page.setWindowSize({ ...viewports.desktop, width: 1600 });
+      await page.setWindowSize(viewports.desktopWide);
       await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
       await page.click(wrapper.findDrawerTriggerById('circle3-global').toSelector());
       await page.click(wrapper.findDrawerTriggerById('circle').toSelector());

@@ -1370,8 +1370,6 @@ describe('toolbar mode only features', () => {
         });
         const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
 
-        await delay();
-
         wrapper.findDrawerTriggerById(drawerId)!.click();
         expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()).toBeInTheDocument();
         expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
