@@ -318,7 +318,6 @@ export namespace AppLayoutProps {
     triggerButton?: string;
     resizeHandle?: string;
     resizeHandleTooltipText?: string;
-    expandedModeButton?: string;
   }
 
   export interface Labels {

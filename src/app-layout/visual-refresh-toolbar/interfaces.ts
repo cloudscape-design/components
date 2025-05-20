@@ -15,7 +15,11 @@ export interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
   navigationTriggerHide?: boolean;
 }
 
-export type InternalDrawer = AppLayoutProps.Drawer & { defaultActive?: boolean; isExpandable?: boolean };
+export type InternalDrawer = AppLayoutProps.Drawer & {
+  defaultActive?: boolean;
+  isExpandable?: boolean;
+  ariaLabels: AppLayoutProps.Drawer['ariaLabels'] & { expandedModeButton?: string };
+};
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.
 // Treat these structures as an API and do not make incompatible changes.
