@@ -19,7 +19,7 @@ interface UseMaskHook {
   onPaste: (event: React.ClipboardEvent) => void;
 }
 
-interface UseMaskProps {
+export interface UseMaskProps {
   value: string;
   onChange: (value: string) => void;
   onKeyDown?: (event: CustomEvent) => void;

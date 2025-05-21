@@ -50,7 +50,18 @@ class MaskFormat {
     return this.inputSeparators.indexOf(key) !== -1;
   }
 
+  //used for testing only
+  getValidSeparators() {
+    return this.inputSeparators;
+  }
+
+  //used for testing only
+  getSegmentCount() {
+    return this.segments.length;
+  }
+
   isValid(value: string): boolean {
+    //no inputSeparators will be present as they are replaced with the separator prior
     const inputSegments = value.split(this.separator);
 
     if (inputSegments.length > this.segments.length) {
