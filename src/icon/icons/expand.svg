@@ -1,8 +1,10 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-<path d="M2 7V2H7" class="stroke-linejoin-round"/>
-<path d="M9 2H14V7" class="stroke-linejoin-round"/>
-<path d="M14 9V14H9" class="stroke-linejoin-round"/>
-<path d="M7 14H2V9" class="stroke-linejoin-round"/>
-<path d="M14 2L2 14" class="stroke-linejoin-round"/>
-<path d="M14 14L2.03003 2.02002" class="stroke-linejoin-round"/>
+<path d="M14 7L14 2L9 2" class="stroke-linejoin-round"/>
+<path d="M10 6L14 2" class="stroke-linejoin-round"/>
+<path d="M6.99023 14L2.00024 14L2.00024 9" class="stroke-linejoin-round"/>
+<path d="M6 10L2 14" class="stroke-linejoin-round"/>
+<path d="M9 14L14 14L14 9" class="stroke-linejoin-round"/>
+<path d="M10 10L14 14" class="stroke-linejoin-round"/>
+<path d="M2 6.99023L2 2.00024L7 2.00024" class="stroke-linejoin-round"/>
+<path d="M6 6L2 2" class="stroke-linejoin-round"/>
 </svg>
