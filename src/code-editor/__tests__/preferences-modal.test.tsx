@@ -31,6 +31,14 @@ test('should not render modal when preferences are not displayed', () => {
   expect(createWrapper().findModal()).toBeFalsy();
 });
 
+test('should use preferencesModalCloseAriaLabel when provided', () => {
+  const { wrapper } = renderCodeEditor({
+    i18nStrings: { preferencesModalCloseAriaLabel: 'Close', preferencesModalCancel: 'Cancel' },
+  });
+  wrapper.findSettingsButton()!.click();
+  expect(createWrapper().findModal()!.findDismissButton()!.getElement()).toHaveAccessibleName('Close');
+});
+
 test("should use preferencesModalCancel when preferencesModalCloseAriaLabel isn't provided", () => {
   const { wrapper } = renderCodeEditor({ i18nStrings: { ...i18nStrings, preferencesModalCloseAriaLabel: undefined } });
   wrapper.findSettingsButton()!.click();

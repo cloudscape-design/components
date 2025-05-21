@@ -221,6 +221,15 @@ describe('Split panel', () => {
           expect(modalWrapper).not.toBeNull();
         });
 
+        test('applies preferencesCloseAriaLabel to the modal close button', () => {
+          const { wrapper } = renderSplitPanel({
+            props: { closeBehavior, i18nStrings: { preferencesCloseAriaLabel: 'Close' } },
+          });
+          wrapper!.findPreferencesButton()!.click();
+          const modalWrapper = createWrapper().findModal()!;
+          expect(modalWrapper.findDismissButton().getElement()).toHaveAccessibleName('Close');
+        });
+
         test('cancels modal', () => {
           const { wrapper } = renderSplitPanel({ props: { closeBehavior } });
           wrapper!.findPreferencesButton()!.click();

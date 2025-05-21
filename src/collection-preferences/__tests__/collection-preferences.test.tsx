@@ -223,6 +223,13 @@ describe('i18n', () => {
     expect(footerItems.find(':nth-child(2)')!.findButton()!.getElement()).toHaveTextContent('Custom confirm');
   });
 
+  test('correctly provides closeAriaLabel to the dismiss button', () => {
+    const { container } = render(<CollectionPreferences closeAriaLabel="Close" />);
+    const wrapper = createWrapper(container).findCollectionPreferences()!;
+    wrapper.findTriggerButton().click();
+    expect(wrapper.findModal()!.findDismissButton()!.getElement()).toHaveAccessibleName('Close');
+  });
+
   test("uses cancelLabel if closeAriaLabel isn't provided", () => {
     const { container } = render(<CollectionPreferences cancelLabel="Cancel" />);
     const wrapper = createWrapper(container).findCollectionPreferences()!;
