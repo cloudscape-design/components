@@ -216,7 +216,11 @@ function NavigationStepClassic({ i18nStrings, index, onStepClick, onSkipToClick,
             className={clsx(styles['navigation-link'], analyticsSelectors['step-title'])}
             onFollow={evt => {
               evt.preventDefault();
-              status === Statuses.Visited ? onStepClick(index) : onSkipToClick(index);
+              if (status === Statuses.Visited) {
+                onStepClick(index);
+              } else {
+                onSkipToClick(index);
+              }
             }}
             variant="primary"
           >

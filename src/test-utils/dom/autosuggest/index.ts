@@ -70,8 +70,6 @@ export class AutosuggestDropdownWrapper extends ComponentWrapper {
   }
 
   findOpenDropdown(): ElementWrapper | null {
-    // Autosuggest always has a dropdown
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const dropdown = new DropdownWrapper(this.getElement());
     return dropdown.findOpenDropdown();
   }

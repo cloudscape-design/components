@@ -66,7 +66,7 @@ describe('Icon Component', () => {
   describe('custom icons', () => {
     const url = 'data:image/png;base64,aaaa';
     const svg = (
-      <svg className="test-svg">
+      <svg className="test-svg" focusable="false">
         <circle className="test-svg-inner" cx="8" cy="8" r="7" />
       </svg>
     );

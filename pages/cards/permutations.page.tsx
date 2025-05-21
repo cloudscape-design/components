@@ -66,7 +66,6 @@ const empty = (
   </Box>
 );
 
-/* eslint-disable react/jsx-key */
 const permutations = createPermutations<CardsProps>([
   {
     cardDefinition: [cardDefinition],
@@ -112,7 +111,6 @@ const permutations = createPermutations<CardsProps>([
     pagination: [undefined, 'pagination'],
   },
 ]);
-/* eslint-enable react/jsx-key */
 
 export default () => {
   return (

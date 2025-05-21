@@ -1,13 +1,15 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 import { build } from 'esbuild';
-import { gzip } from 'node:zlib';
-import { promisify } from 'node:util';
-import { unlinkSync, readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { promisify } from 'node:util';
+import { gzip } from 'node:zlib';
 
 const compress = promisify(gzip);
 
 function concatFiles(files) {
-  return files.reduce((total, current) => total + current.text ?? '', '');
+  return files.reduce((total, current) => total + (current.text ?? ''), '');
 }
 
 function getInstalledVersions(projectRoot) {
@@ -21,7 +23,9 @@ function getInstalledVersions(projectRoot) {
 async function main() {
   try {
     unlinkSync('output.json');
-  } catch (e) {}
+  } catch {
+    // no-op
+  }
 
   const result = await build({
     entryPoints: ['main.js'],
