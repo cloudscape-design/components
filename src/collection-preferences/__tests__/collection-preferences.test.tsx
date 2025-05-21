@@ -223,6 +223,20 @@ describe('i18n', () => {
     expect(footerItems.find(':nth-child(2)')!.findButton()!.getElement()).toHaveTextContent('Custom confirm');
   });
 
+  test('correctly provides closeAriaLabel to the dismiss button', () => {
+    const { container } = render(<CollectionPreferences closeAriaLabel="Close" />);
+    const wrapper = createWrapper(container).findCollectionPreferences()!;
+    wrapper.findTriggerButton().click();
+    expect(wrapper.findModal()!.findDismissButton()!.getElement()).toHaveAccessibleName('Close');
+  });
+
+  test("uses cancelLabel if closeAriaLabel isn't provided", () => {
+    const { container } = render(<CollectionPreferences cancelLabel="Cancel" />);
+    const wrapper = createWrapper(container).findCollectionPreferences()!;
+    wrapper.findTriggerButton().click();
+    expect(wrapper.findModal()!.findDismissButton()!.getElement()).toHaveAccessibleName('Cancel');
+  });
+
   test('supports using preference labels and descriptions from i18n provider', () => {
     const { container } = render(
       <TestI18nProvider
@@ -243,6 +257,9 @@ describe('i18n', () => {
               '{isInitialPosition, select, true {Moving item back to position {currentPosition} of {total}} false {Moving item to position {currentPosition} of {total}} other {}}',
             'contentDisplayPreference.liveAnnouncementDndItemCommitted':
               '{isInitialPosition, select, true {Item moved back to its original position {initialPosition} of {total}} false {Item moved from position {initialPosition} to position {finalPosition} of {total}} other {}}',
+          },
+          modal: {
+            closeAriaLabel: 'Custom modal close',
           },
         }}
       >
@@ -269,6 +286,7 @@ describe('i18n', () => {
     const wrapper = createWrapper(container).findCollectionPreferences()!;
     wrapper.findTriggerButton().click();
     const modal = wrapper.findModal()!;
+    expect(modal.findDismissButton().getElement()).toHaveAccessibleName('Custom modal close');
     expect(modal.findPageSizePreference()!.findTitle().getElement()).toHaveTextContent('Custom page size');
     expect(modal.findWrapLinesPreference()!.findLabel().getElement()).toHaveTextContent('Custom wrap lines');
     expect(modal.findWrapLinesPreference()!.findDescription()!.getElement()).toHaveTextContent(

@@ -5845,6 +5845,11 @@ The object should contain, among others:
             "type": "string",
           },
           {
+            "name": "preferencesModalCloseAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "preferencesModalConfirm",
             "optional": true,
             "type": "string",
@@ -6292,6 +6297,13 @@ The values for all configured preferences are present even if the user didn't ch
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an aria-label to the close button, for accessibility.",
+      "i18nTag": true,
+      "name": "closeAriaLabel",
       "optional": true,
       "type": "string",
     },
@@ -16947,6 +16959,11 @@ exports[`Documenter definition for split-panel matches the snapshot: split-panel
           },
           {
             "name": "preferencesCancel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "preferencesCloseAriaLabel",
             "optional": true,
             "type": "string",
           },

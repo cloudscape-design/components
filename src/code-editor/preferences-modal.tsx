@@ -19,6 +19,7 @@ interface PreferencesModali18nStrings {
   header?: string;
   cancel?: string;
   confirm?: string;
+  close?: string;
   wrapLines?: string;
   theme?: string;
   lightThemes?: string;
@@ -76,7 +77,7 @@ export default (props: PreferencesModalProps) => {
       removeModalRoot={props.removeModalRoot}
       onDismiss={props.onDismiss}
       header={props.i18nStrings.header}
-      closeAriaLabel={props.i18nStrings.cancel}
+      closeAriaLabel={props.i18nStrings.close}
       footer={
         <InternalBox float="right">
           <InternalSpaceBetween direction="horizontal" size="xs">
