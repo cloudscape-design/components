@@ -54,7 +54,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -184,7 +184,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -345,7 +345,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -475,7 +475,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -605,7 +605,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -784,7 +784,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -920,7 +920,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1059,7 +1059,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1228,7 +1228,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1364,7 +1364,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1500,7 +1500,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1696,7 +1696,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1842,7 +1842,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -2019,7 +2019,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -2165,7 +2165,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -2311,7 +2311,7 @@ Map {
         "setFocus": [Function],
       },
       "drawersOpenQueue": [],
-      "expandedDrawerId": undefined,
+      "expandedDrawerId": null,
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],

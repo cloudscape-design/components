@@ -48,8 +48,8 @@ export interface ToolbarProps {
   activeGlobalDrawersIds?: ReadonlyArray<string>;
   onActiveGlobalDrawersChange?: ((drawerId: string, params: OnChangeParams) => void) | undefined;
 
-  expandedDrawerId?: string;
-  setExpandedDrawerId?: (value: string | undefined) => void;
+  expandedDrawerId?: string | null;
+  setExpandedDrawerId?: (value: string | null) => void;
 }
 
 export interface AppLayoutToolbarImplementationProps {
@@ -169,7 +169,7 @@ export function AppLayoutToolbarImplementation({
               className={testutilStyles['navigation-toggle']}
               onClick={() => {
                 if (setExpandedDrawerId) {
-                  setExpandedDrawerId(undefined);
+                  setExpandedDrawerId(null);
                 }
                 if (navigationOpen) {
                   return;

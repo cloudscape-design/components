@@ -37,8 +37,8 @@ interface DrawerTriggersProps {
   globalDrawersFocusControl?: FocusControlMultipleStates;
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
   onActiveGlobalDrawersChange?: (newDrawerId: string, params: OnChangeParams) => void;
-  expandedDrawerId?: string;
-  setExpandedDrawerId: (value: string | undefined) => void;
+  expandedDrawerId?: string | null;
+  setExpandedDrawerId: (value: string | null) => void;
 
   splitPanelOpen?: boolean;
   splitPanelPosition?: AppLayoutProps.SplitPanelPreferences['position'];
@@ -116,6 +116,12 @@ export function DrawerTriggers({
   const hasOpenDrawer = !!activeDrawerId || (splitPanelPosition === 'side' && splitPanelOpen);
   const splitPanelResolvedPosition = splitPanelToggleProps?.position;
 
+  const exitExpandedMode = () => {
+    if (setExpandedDrawerId) {
+      setExpandedDrawerId(null);
+    }
+  };
+
   return (
     <aside
       className={styles[`drawers-${isMobile ? 'mobile' : 'desktop'}-triggers-container`]}
@@ -142,9 +148,7 @@ export function DrawerTriggers({
               )}
               iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
               onClick={() => {
-                if (setExpandedDrawerId) {
-                  setExpandedDrawerId(undefined);
-                }
+                exitExpandedMode();
                 if (!!expandedDrawerId && splitPanelToggleProps.active) {
                   return;
                 }
@@ -177,9 +181,7 @@ export function DrawerTriggers({
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => {
-                if (setExpandedDrawerId) {
-                  setExpandedDrawerId(undefined);
-                }
+                exitExpandedMode();
                 if (!!expandedDrawerId && activeDrawerId === item.id) {
                   return;
                 }
@@ -219,9 +221,7 @@ export function DrawerTriggers({
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => {
-                if (setExpandedDrawerId) {
-                  setExpandedDrawerId(undefined);
-                }
+                exitExpandedMode();
                 if (!!expandedDrawerId && item.id !== expandedDrawerId && activeGlobalDrawersIds.includes(item.id)) {
                   return;
                 }
@@ -268,9 +268,7 @@ export function DrawerTriggers({
             }}
             onItemClick={event => {
               const id = event.detail.id;
-              if (setExpandedDrawerId) {
-                setExpandedDrawerId(undefined);
-              }
+              exitExpandedMode();
               if (globalDrawers.find(drawer => drawer.id === id)) {
                 if (!!expandedDrawerId && id !== expandedDrawerId && activeGlobalDrawersIds.includes(id)) {
                   return;

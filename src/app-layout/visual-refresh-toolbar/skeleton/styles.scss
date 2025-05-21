@@ -71,11 +71,14 @@
     }
 
     &.drawer-expanded-mode {
-      grid-template-areas:
-        'toolbar      toolbar      toolbar       toolbar      toolbar     '
-        'global-tools global-tools global-tools  global-tools global-tools'
-        'global-tools global-tools global-tools  global-tools global-tools';
-      grid-template-rows: 1fr;
+      grid-template-columns:
+        0
+        0
+        0
+        0
+        0
+        0
+        auto;
     }
   }
 }
@@ -87,7 +90,6 @@
   grid-column: 1 / -1;
   background: awsui.$color-background-container-content;
   opacity: 1;
-  overflow-x: clip;
 
   @include mobile-only {
     inline-size: 100%;
