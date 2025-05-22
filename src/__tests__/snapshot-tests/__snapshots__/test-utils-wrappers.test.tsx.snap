@@ -1660,7 +1660,6 @@ findTopNavigation(selector?: string): TopNavigationWrapper | null;
  */
 findAllTopNavigations(selector?: string): Array<TopNavigationWrapper>;
 /**
-/**
  * Returns the wrapper of the first Treeview that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Treeview.
  * If no matching Treeview is found, returns \`null\`.
@@ -4045,7 +4044,6 @@ findTopNavigation(selector?: string): TopNavigationWrapper;
  * @returns {MultiElementWrapper<TopNavigationWrapper>}
  */
 findAllTopNavigations(selector?: string): MultiElementWrapper<TopNavigationWrapper>;
-/**
 /**
  * Returns a wrapper that matches the Treeviews with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Treeviews.
