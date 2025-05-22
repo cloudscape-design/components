@@ -3,6 +3,7 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
+import Box from '~components/box';
 import ButtonDropdown from '~components/button-dropdown';
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
@@ -131,6 +132,8 @@ awsuiPlugins.appLayout.registerDrawer({
   defaultSize: 350,
   preserveInactiveContent: true,
 
+  isExpandable: true,
+
   ariaLabels: {
     closeButton: 'Close button',
     content: 'Content',
@@ -155,7 +158,7 @@ awsuiPlugins.appLayout.registerDrawer({
   mountContent: (container, mountContext) => {
     ReactDOM.render(
       <Drawer
-        header={<h2>Global drawer</h2>}
+        header={<Box variant="h2">Global drawer</Box>}
         headerActions={
           <ButtonDropdown items={[{ id: 'settings', text: 'Settings' }]} ariaLabel="Control drawer" variant="icon" />
         }
@@ -217,6 +220,8 @@ awsuiPlugins.appLayout.registerDrawer({
   defaultActive: false,
   resizable: true,
   defaultSize: 320,
+
+  isExpandable: true,
 
   ariaLabels: {
     closeButton: 'Close button',

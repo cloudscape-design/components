@@ -15,7 +15,11 @@ export interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
   navigationTriggerHide?: boolean;
 }
 
-export type InternalDrawer = AppLayoutProps.Drawer & { defaultActive?: boolean };
+export type InternalDrawer = AppLayoutProps.Drawer & {
+  defaultActive?: boolean;
+  isExpandable?: boolean;
+  ariaLabels: AppLayoutProps.Drawer['ariaLabels'] & { expandedModeButton?: string };
+};
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.
 // Treat these structures as an API and do not make incompatible changes.
@@ -60,4 +64,6 @@ export interface AppLayoutInternals {
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;
   onActiveGlobalDrawersChange: (newDrawerId: string, params: OnChangeParams) => void;
   splitPanelAnimationDisabled?: boolean;
+  expandedDrawerId: string | null;
+  setExpandedDrawerId: (value: string | null) => void;
 }

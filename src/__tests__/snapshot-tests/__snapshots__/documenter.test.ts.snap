@@ -28,6 +28,25 @@ when the \`dismissible\` property is set to \`true\`.",
   "name": "Alert",
   "properties": [
     {
+      "analyticsTag": "",
+      "description": "Specifies additional analytics-related metadata.
+* \`errorContext\` - Identifies the error category and sub-category.",
+      "inlineType": {
+        "name": "AlertProps.AnalyticsMetadata",
+        "properties": [
+          {
+            "name": "errorContext",
+            "optional": true,
+            "type": "ErrorContext",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "AlertProps.AnalyticsMetadata",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -5826,6 +5845,11 @@ The object should contain, among others:
             "type": "string",
           },
           {
+            "name": "preferencesModalCloseAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "preferencesModalConfirm",
             "optional": true,
             "type": "string",
@@ -6273,6 +6297,13 @@ The values for all configured preferences are present even if the user didn't ch
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an aria-label to the close button, for accessibility.",
+      "i18nTag": true,
+      "name": "closeAriaLabel",
       "optional": true,
       "type": "string",
     },
@@ -9421,10 +9452,16 @@ exports[`Documenter definition for form matches the snapshot: form 1`] = `
       "description": "Specifies additional analytics-related metadata.
 * \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
 * \`flowType\` - Identifies the type of flow represented by the component.
-* \`resourceType\` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.",
+* \`resourceType\` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.
+* \`errorContext\` - Identifies the error category and sub-category.",
       "inlineType": {
         "name": "FormProps.AnalyticsMetadata",
         "properties": [
+          {
+            "name": "errorContext",
+            "optional": true,
+            "type": "ErrorContext",
+          },
           {
             "name": "flowType",
             "optional": true,
@@ -9530,10 +9567,16 @@ exports[`Documenter definition for form-field matches the snapshot: form-field 1
     {
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
-* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.",
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
+* \`errorContext\` - Identifies the error category and sub-category.",
       "inlineType": {
         "name": "FormFieldProps.AnalyticsMetadata",
         "properties": [
+          {
+            "name": "errorContext",
+            "optional": true,
+            "type": "ErrorContext",
+          },
           {
             "name": "instanceIdentifier",
             "optional": true,
@@ -16920,6 +16963,11 @@ exports[`Documenter definition for split-panel matches the snapshot: split-panel
             "type": "string",
           },
           {
+            "name": "preferencesCloseAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "preferencesConfirm",
             "optional": true,
             "type": "string",
@@ -17289,7 +17337,9 @@ scroll parent scrolls to reveal the first row of the table.",
     {
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
-* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.",
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
+* \`flowType\` - Identifies the type of flow represented by the component.
+* \`resourceType\` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.",
       "inlineType": {
         "name": "TableProps.AnalyticsMetadata",
         "properties": [
@@ -17300,6 +17350,11 @@ scroll parent scrolls to reveal the first row of the table.",
           },
           {
             "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "resourceType",
             "optional": true,
             "type": "string",
           },
@@ -20387,28 +20442,6 @@ The following properties are supported across all utility types:
 }
 `;
 
-exports[`Documenter definition for tree-view matches the snapshot: tree-view 1`] = `
-{
-  "dashCaseName": "tree-view",
-  "events": [],
-  "functions": [],
-  "name": "TreeView",
-  "properties": [
-    {
-      "defaultValue": "[]",
-      "name": "items",
-      "optional": false,
-      "type": "Array<{ text: string; }>",
-    },
-  ],
-  "regions": [],
-  "releaseStatus": "stable",
-  "systemTags": [
-    "core",
-  ],
-}
-`;
-
 exports[`Documenter definition for treeview matches the snapshot: treeview 1`] = `
 {
   "dashCaseName": "treeview",
@@ -20922,6 +20955,11 @@ Defaults to \`false\`.",
       "inlineType": {
         "name": "WizardProps.AnalyticsMetadata",
         "properties": [
+          {
+            "name": "errorContext",
+            "optional": true,
+            "type": "ErrorContext",
+          },
           {
             "name": "flowType",
             "optional": true,

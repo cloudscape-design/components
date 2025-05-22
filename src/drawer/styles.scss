@@ -5,6 +5,13 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../app-layout/constants.scss' as constants;
+
+@mixin desktop-only {
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    @content;
+  }
+}
 
 .drawer {
   @include styles.styles-reset;
@@ -17,9 +24,23 @@
   justify-content: space-between;
   color: awsui.$color-text-heading-default;
   padding-block: awsui.$space-panel-header-vertical;
-  padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
+  padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-l} + #{awsui.$space-scaled-xxl});
   // padding to make sure the header doesn't overlap with the close icon
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
+
+  @include desktop-only {
+    &.with-additional-action {
+      /*
+        this padding is needed when the drawer renders inside a runtime drawer and the runtime drawer has an additional action
+        on the right (or left in rtl). in this case this padding ensures that the drawer's content does not overlap with runtime actions
+      */
+      padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xxl});
+    }
+  }
+
+  &.with-runtime-context {
+    padding-block: constants.$toolbar-vertical-panel-icon-offset;
+  }
 
   .with-toolbar > & {
     border-color: transparent;
@@ -41,13 +62,8 @@
 
 .header-actions {
   display: inline-flex;
-  align-items: start;
+  align-items: flex-start;
   z-index: 1;
-  /*
-   Compensate for the difference between the runtime drawer's and the drawer component's heading
-   to ensure the header actions are vertically aligned
-   */
-  margin-block-start: -6px;
 }
 
 .content-with-paddings:not(:empty) {

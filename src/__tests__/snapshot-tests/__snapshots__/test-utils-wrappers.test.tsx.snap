@@ -87,7 +87,6 @@ import ToggleWrapper from './toggle';
 import ToggleButtonWrapper from './toggle-button';
 import TokenGroupWrapper from './token-group';
 import TopNavigationWrapper from './top-navigation';
-import TreeViewWrapper from './tree-view';
 import TreeviewWrapper from './treeview';
 import TutorialPanelWrapper from './tutorial-panel';
 import WizardWrapper from './wizard';
@@ -171,7 +170,6 @@ export { ToggleWrapper };
 export { ToggleButtonWrapper };
 export { TokenGroupWrapper };
 export { TopNavigationWrapper };
-export { TreeViewWrapper };
 export { TreeviewWrapper };
 export { TutorialPanelWrapper };
 export { WizardWrapper };
@@ -1662,24 +1660,6 @@ findTopNavigation(selector?: string): TopNavigationWrapper | null;
  */
 findAllTopNavigations(selector?: string): Array<TopNavigationWrapper>;
 /**
- * Returns the wrapper of the first TreeView that matches the specified CSS selector.
- * If no CSS selector is specified, returns the wrapper of the first TreeView.
- * If no matching TreeView is found, returns \`null\`.
- *
- * @param {string} [selector] CSS Selector
- * @returns {TreeViewWrapper | null}
- */
-findTreeView(selector?: string): TreeViewWrapper | null;
-
-/**
- * Returns an array of TreeView wrapper that matches the specified CSS selector.
- * If no CSS selector is specified, returns all of the TreeViews inside the current wrapper.
- * If no matching TreeView is found, returns an empty array.
- *
- * @param {string} [selector] CSS Selector
- * @returns {Array<TreeViewWrapper>}
- */
-findAllTreeViews(selector?: string): Array<TreeViewWrapper>;
 /**
  * Returns the wrapper of the first Treeview that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Treeview.
@@ -2521,16 +2501,6 @@ ElementWrapper.prototype.findTopNavigation = function(selector) {
 ElementWrapper.prototype.findAllTopNavigations = function(selector) {
   return this.findAllComponents(TopNavigationWrapper, selector);
 };
-ElementWrapper.prototype.findTreeView = function(selector) {
-  const rootSelector = \`.\${TreeViewWrapper.rootSelector}\`;
-  // casting to 'any' is needed to avoid this issue with generics
-  // https://github.com/microsoft/TypeScript/issues/29132
-  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TreeViewWrapper);
-};
-
-ElementWrapper.prototype.findAllTreeViews = function(selector) {
-  return this.findAllComponents(TreeViewWrapper, selector);
-};
 ElementWrapper.prototype.findTreeview = function(selector) {
   const rootSelector = \`.\${TreeviewWrapper.rootSelector}\`;
   // casting to 'any' is needed to avoid this issue with generics
@@ -2659,7 +2629,6 @@ import ToggleWrapper from './toggle';
 import ToggleButtonWrapper from './toggle-button';
 import TokenGroupWrapper from './token-group';
 import TopNavigationWrapper from './top-navigation';
-import TreeViewWrapper from './tree-view';
 import TreeviewWrapper from './treeview';
 import TutorialPanelWrapper from './tutorial-panel';
 import WizardWrapper from './wizard';
@@ -2743,7 +2712,6 @@ export { ToggleWrapper };
 export { ToggleButtonWrapper };
 export { TokenGroupWrapper };
 export { TopNavigationWrapper };
-export { TreeViewWrapper };
 export { TreeviewWrapper };
 export { TutorialPanelWrapper };
 export { WizardWrapper };
@@ -4078,22 +4046,6 @@ findTopNavigation(selector?: string): TopNavigationWrapper;
  */
 findAllTopNavigations(selector?: string): MultiElementWrapper<TopNavigationWrapper>;
 /**
- * Returns a wrapper that matches the TreeViews with the specified CSS selector.
- * If no CSS selector is specified, returns a wrapper that matches TreeViews.
- *
- * @param {string} [selector] CSS Selector
- * @returns {TreeViewWrapper}
- */
-findTreeView(selector?: string): TreeViewWrapper;
-
-/**
- * Returns a multi-element wrapper that matches TreeViews with the specified CSS selector.
- * If no CSS selector is specified, returns a multi-element wrapper that matches TreeViews.
- *
- * @param {string} [selector] CSS Selector
- * @returns {MultiElementWrapper<TreeViewWrapper>}
- */
-findAllTreeViews(selector?: string): MultiElementWrapper<TreeViewWrapper>;
 /**
  * Returns a wrapper that matches the Treeviews with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Treeviews.
@@ -4928,16 +4880,6 @@ ElementWrapper.prototype.findTopNavigation = function(selector) {
 
 ElementWrapper.prototype.findAllTopNavigations = function(selector) {
   return this.findAllComponents(TopNavigationWrapper, selector);
-};
-ElementWrapper.prototype.findTreeView = function(selector) {
-  const rootSelector = \`.\${TreeViewWrapper.rootSelector}\`;
-  // casting to 'any' is needed to avoid this issue with generics
-  // https://github.com/microsoft/TypeScript/issues/29132
-  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TreeViewWrapper);
-};
-
-ElementWrapper.prototype.findAllTreeViews = function(selector) {
-  return this.findAllComponents(TreeViewWrapper, selector);
 };
 ElementWrapper.prototype.findTreeview = function(selector) {
   const rootSelector = \`.\${TreeviewWrapper.rootSelector}\`;

@@ -20,6 +20,8 @@ export default function SplitPanel({
     props: { closeBehavior, hidePreferencesButton },
   });
   const i18n = useInternalI18n('split-panel');
+  const i18nModal = useInternalI18n('modal');
+
   return (
     <SplitPanelInternal
       {...restProps}
@@ -35,6 +37,8 @@ export default function SplitPanel({
         preferencesTitle: i18n('i18nStrings.preferencesTitle', i18nStrings?.preferencesTitle),
         preferencesConfirm: i18n('i18nStrings.preferencesConfirm', i18nStrings?.preferencesConfirm),
         preferencesCancel: i18n('i18nStrings.preferencesCancel', i18nStrings?.preferencesCancel),
+        preferencesCloseAriaLabel:
+          i18nModal('closeAriaLabel', i18nStrings?.preferencesCloseAriaLabel) || i18nStrings?.preferencesCancel,
         preferencesPositionLabel: i18n('i18nStrings.preferencesPositionLabel', i18nStrings?.preferencesPositionLabel),
         preferencesPositionDescription: i18n(
           'i18nStrings.preferencesPositionDescription',
