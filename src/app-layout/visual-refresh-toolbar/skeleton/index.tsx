@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
-import { Transition } from 'react-transition-group';
+import React from 'react';
 import clsx from 'clsx';
 
+import { Transition } from '../../../internal/components/transition';
 import VisualContext from '../../../internal/components/visual-context';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { useMobile } from '../../../internal/hooks/use-mobile';
@@ -81,7 +81,6 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
     const isMobile = useMobile();
     const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
     const anyPanelOpen = navigationOpen || toolsOpen;
-    const drawerRef = useRef<HTMLDivElement>(null);
     return (
       <VisualContext contextName="app-layout-toolbar">
         <div
@@ -164,10 +163,10 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
           >
             {tools}
           </div>
-          <Transition nodeRef={drawerRef} in={globalToolsOpen} timeout={60}>
-            {state => (
+          <Transition in={globalToolsOpen ?? false}>
+            {(state, elementRef) => (
               <div
-                ref={drawerRef}
+                ref={elementRef}
                 className={clsx(
                   styles['global-tools'],
                   !globalToolsOpen && state === 'exited' && styles['panel-hidden']
