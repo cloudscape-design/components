@@ -83,10 +83,7 @@ describe('Selection controls` labelling', () => {
 
   test('puts selectionGroupLabel and allItemsSelectionLabel on selectAll checkbox', () => {
     tableWrapper = renderTable({ selectionType: 'multi', selectedItems: [items[0]], ariaLabels }).wrapper;
-    expect(tableWrapper.findSelectAllTrigger()?.getElement()).toHaveAttribute(
-      'aria-label',
-      'group label 1 item selected'
-    );
+    expect(tableWrapper.findSelectAllTrigger()?.getElement()).toHaveAttribute('aria-label', '1 item selected');
   });
 
   test('puts selectionGroupLabel on single selection column header', () => {
@@ -108,15 +105,26 @@ describe('Selection controls` labelling', () => {
       tableWrapper = renderTable({ selectionType, ariaLabels, selectedItems: [items[1]] }).wrapper;
       expect(tableWrapper.findRowSelectionArea(1)?.getElement()).toHaveAttribute(
         'aria-label',
-        'group label Apples is not selected'
+        'Apples is not selected'
       );
-      expect(tableWrapper.findRowSelectionArea(2)?.getElement()).toHaveAttribute(
-        'aria-label',
-        'group label Oranges is selected'
-      );
+      expect(tableWrapper.findRowSelectionArea(2)?.getElement()).toHaveAttribute('aria-label', 'Oranges is selected');
       expect(tableWrapper.findRowSelectionArea(3)?.getElement()).toHaveAttribute(
         'aria-label',
-        'group label Bananas is not selected'
+        'Bananas is not selected'
+      );
+    });
+
+    test('does not put selectionGroupLabel on row selection control', () => {
+      tableWrapper = renderTable({ selectionType, ariaLabels, selectedItems: [items[1]] }).wrapper;
+
+      expect(tableWrapper.findRowSelectionArea(1)!.getElement().getAttribute('aria-label')).toEqual(
+        expect.not.stringContaining('group label')
+      );
+      expect(tableWrapper.findRowSelectionArea(2)!.getElement().getAttribute('aria-label')).toEqual(
+        expect.not.stringContaining('group label')
+      );
+      expect(tableWrapper.findRowSelectionArea(3)!.getElement().getAttribute('aria-label')).toEqual(
+        expect.not.stringContaining('group label')
       );
     });
   });
