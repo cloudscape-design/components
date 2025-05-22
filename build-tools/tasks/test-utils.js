@@ -16,7 +16,19 @@ function compileTypescript(theme) {
   return task(`typescript:test-utils:${theme.name}`, async () => {
     const config = path.resolve(testUtilsSrcDir, 'tsconfig.json');
     const outDir = path.join(theme.outputPath, 'test-utils');
-    await execa('tsc', ['-p', config, '--outDir', outDir, '--sourceMap'], { stdio: 'inherit' });
+    await execa(
+      'tsc',
+      [
+        '-p',
+        config,
+        '--outDir',
+        outDir,
+        '--tsBuildInfoFile',
+        `./lib/${theme.name}-test-utils.tsbuildinfo`,
+        '--sourceMap',
+      ],
+      { stdio: 'inherit' }
+    );
   });
 }
 
