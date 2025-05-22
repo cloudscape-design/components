@@ -9,22 +9,29 @@ class TreeItemWrapper extends ComponentWrapper {
   /**
    * Finds the content slot of the tree item
    */
-  findContentSlot(): ElementWrapper | null {
+  findContent(): ElementWrapper | null {
     return this.findByClassName(styles['treeitem-content']);
+  }
+
+  /**
+   * Finds the content slot of the tree item
+   */
+  findIcon(): ElementWrapper | null {
+    return this.findByClassName(styles['treeitem-icon']);
   }
 
   /**
    * Finds the details slot of the tree item
    */
-  findDetailsSlot(): ElementWrapper | null {
-    return this.findByClassName(styles['treeitem-details']);
+  findDetails(): ElementWrapper | null {
+    return this.findByClassName(styles['treeitem-description']);
   }
 
   /**
    * Finds the actions slot of the tree item
    */
-  findActionsSlot(): ElementWrapper | null {
-    return this.findByClassName(styles['treeitem-actions']);
+  findActions(): ElementWrapper | null {
+    return this.findByClassName(styles['treeitem-secondary-content']);
   }
 
   /**

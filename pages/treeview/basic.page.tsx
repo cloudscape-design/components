@@ -41,6 +41,7 @@ interface Item {
   details?: string;
   children?: Item[];
   hasActions?: boolean;
+  hideIcon?: boolean;
 }
 
 const items: Item[] = [
@@ -65,6 +66,7 @@ const items: Item[] = [
       {
         id: '1.2',
         content: 'Item 1.2',
+        hasActions: true,
       },
       {
         id: '1.3',
@@ -75,6 +77,7 @@ const items: Item[] = [
           {
             id: '1.3.1',
             content: 'Item 1.3.1',
+            hasActions: true,
           },
           {
             id: '1.3.2',
@@ -87,6 +90,7 @@ const items: Item[] = [
   {
     id: '2',
     content: 'Item 2',
+    hasActions: true,
   },
   {
     id: '3',
@@ -101,6 +105,7 @@ const items: Item[] = [
   {
     id: '4',
     content: <RdsAccessRoleTreeItemContent />,
+    hideIcon: true,
     children: [
       {
         id: '4.1',
@@ -124,6 +129,7 @@ const items: Item[] = [
           {
             id: '4.1.3',
             content: 'Item 4.1.3',
+            details: 'us-east-1',
             children: [
               {
                 id: '4.1.3.1',
@@ -154,18 +160,23 @@ const items: Item[] = [
   {
     id: '6',
     content: progressiveStepContent,
+    hideIcon: true,
+    hasActions: true,
     children: [
       {
         id: '6.1',
         content: progressiveStepItemsContent[0],
+        hideIcon: true,
       },
       {
         id: '6.2',
         content: progressiveStepItemsContent[1],
+        hideIcon: true,
       },
       {
         id: '6.3',
         content: progressiveStepItemsContent[2],
+        hideIcon: true,
       },
     ],
   },
@@ -264,13 +275,17 @@ export default function BasicTreeview() {
         <div style={{ width: '60%' }}>
           <Container>
             <Treeview
+              ariaLabel="Random data treeview"
+              ariaDescription="This is a basic treeview with random data"
               items={items}
               renderItem={item => {
                 return {
-                  icon: <Icon name={expandedItems.includes(item.id) ? 'folder-open' : 'folder'} ariaLabel="folder" />,
+                  icon: item.hideIcon ? undefined : (
+                    <Icon name={expandedItems.includes(item.id) ? 'folder-open' : 'folder'} ariaLabel="folder" />
+                  ),
                   content: item.content,
                   description: <Box color="text-status-inactive">{item.details}</Box>,
-                  actions: item.hasActions ? <Actions /> : undefined,
+                  secondaryContent: item.hasActions ? <Actions /> : undefined,
                 };
               }}
               getItemId={item => item.id}

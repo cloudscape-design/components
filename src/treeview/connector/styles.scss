@@ -8,7 +8,7 @@
 .treeitem-connector-horizontal {
   block-size: 1px;
   position: absolute;
-  inset-block-start: 14px;
+  inset-block-start: 12px;
   inline-size: 39px;
   background: red;
   inset-inline-start: -14px;
@@ -39,7 +39,7 @@
   &-middle {
     inline-size: 1px;
     position: absolute;
-    inset-block: -10px 0px;
+    inset-block: -11px 0px;
     inset-inline-start: -14px;
     background-color: red;
   }
@@ -50,5 +50,7 @@
     inset-block: 0 10px;
     inset-inline-start: -14px;
     background-color: red;
+
+    block-size: 13px;
   }
 }

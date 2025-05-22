@@ -54,6 +54,7 @@ const InternalTreeview = ({
               renderItem={renderItem}
               getItemId={getItemId}
               getItemChildren={getItemChildren}
+              // withGrid={true}
             />
           );
         })}

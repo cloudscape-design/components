@@ -4,6 +4,10 @@
 import { TreeviewProps } from './interfaces';
 
 export function getItemPosition(index: number, itemsLength: number) {
+  if (index === 0 && itemsLength === 1) {
+    return 'end';
+  }
+
   if (index === 0) {
     return 'start';
   }
