@@ -144,7 +144,7 @@ $drawer-resize-handle-size: awsui.$space-m;
       z-index: 1;
       align-self: start;
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
     }
 
     > .drawer-content {
@@ -227,7 +227,7 @@ $drawer-resize-handle-size: awsui.$space-m;
         z-index: 1;
         align-self: start;
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
       }
 
       > .drawer-content {
