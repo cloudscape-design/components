@@ -365,6 +365,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_direction-button-visible_8k1rt",
     "awsui_disabled_15o6u",
     "awsui_dropdown_qwoo0",
+    "awsui_expand-toggle_1xe88",
     "awsui_filter-container_z5mul",
     "awsui_filtering-match-highlight_1p2cx",
     "awsui_footer_dgs8z",
@@ -663,6 +664,11 @@ exports[`test-utils selectors 1`] = `
     "awsui_trigger_1ca1i",
     "awsui_utility-wrapper_1ca1i",
     "awsui_utility-wrapper_k5dlb",
+  ],
+  "treeview": [
+    "awsui_child-treeitem_uf1x6",
+    "awsui_root_uf1x6",
+    "awsui_treeitem-content_uf1x6",
   ],
   "tutorial-panel": [
     "awsui_collapse-button_ig8mp",
