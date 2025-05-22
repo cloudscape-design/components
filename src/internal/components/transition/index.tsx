@@ -14,7 +14,6 @@ export type TransitionStatus = ReactTransitionGroupTransitionStatus | 'enter' | 
 interface TransitionProps {
   in: boolean;
   exit?: boolean;
-  appear?: boolean;
 
   disabled?: boolean;
 
@@ -33,7 +32,6 @@ export function Transition({
   in: isIn,
   children,
   exit = true,
-  appear = false,
   onStatusChange = () => void 0,
   disabled = false,
   transitionChangeDelay,
@@ -70,29 +68,34 @@ export function Transition({
       in={isIn}
       nodeRef={transitionRootElement}
       exit={exit}
-      appear={appear}
-      onEnter={() => {
-        setTransitionState('enter');
-        onStatusChange('enter');
-      }}
-      onEntering={() => {
-        // This line forces the browser to recalculate the layout because we want the starting state in the 'enter' style
-        // to be applied before the animation starts.
-        void transitionRootElement.current?.offsetHeight;
-
-        if (transitionChangeDelay?.entering) {
-          setTimeout(() => {
-            setTransitionState('entering');
-            onStatusChange('entering');
-          }, transitionChangeDelay?.entering);
-        } else {
-          setTransitionState('entering');
-          onStatusChange('entering');
+      onEnter={isAppearing => {
+        if (!isAppearing) {
+          setTransitionState('enter');
+          onStatusChange('enter');
         }
       }}
-      onEntered={() => {
-        setTransitionState('entered');
-        onStatusChange('entered');
+      onEntering={isAppearing => {
+        if (!isAppearing) {
+          // This line forces the browser to recalculate the layout because we want the starting state in the 'enter' style
+          // to be applied before the animation starts.
+          void transitionRootElement.current?.offsetHeight;
+
+          if (transitionChangeDelay?.entering) {
+            setTimeout(() => {
+              setTransitionState('entering');
+              onStatusChange('entering');
+            }, transitionChangeDelay?.entering);
+          } else {
+            setTransitionState('entering');
+            onStatusChange('entering');
+          }
+        }
+      }}
+      onEntered={isAppearing => {
+        if (!isAppearing) {
+          setTransitionState('entered');
+          onStatusChange('entered');
+        }
       }}
       onExit={() => {
         setTransitionState('exit');

@@ -75,7 +75,7 @@ function AppLayoutGlobalDrawerImplementation({
     (wasExpanded && !isExpanded);
 
   return (
-    <Transition in={show} exit={!show} appear={show}>
+    <Transition in={show} exit={!show}>
       {(state, transitionRef) => {
         console.log('Transition state:', state);
         return (

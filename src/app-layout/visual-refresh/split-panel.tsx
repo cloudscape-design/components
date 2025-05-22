@@ -82,7 +82,7 @@ function SplitPanelBottom() {
   }
 
   return (
-    <Transition in={false} exit={false}>
+    <Transition in={isSplitPanelOpen ?? false} exit={false}>
       {(state, transitionEventsRef) => (
         <section
           className={clsx(styles['split-panel-bottom'], styles[`position-${splitPanelPosition}`], {
