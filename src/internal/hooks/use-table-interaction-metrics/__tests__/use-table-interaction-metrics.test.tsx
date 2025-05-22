@@ -17,21 +17,25 @@ import {
 import { renderHook, RenderHookOptions } from '../../../../__tests__/render-hook';
 import { mockFunnelMetrics, mockPerformanceMetrics } from '../../../analytics/__tests__/mocks';
 
-type RenderProps = Partial<UseTableInteractionMetricsProps>;
+type RenderProps<T> = Partial<UseTableInteractionMetricsProps<T>>;
 
 const defaultProps = {
   getComponentConfiguration: () => ({}),
   getComponentIdentifier: () => 'My resources',
+  items: [],
   itemCount: 10,
   loading: undefined,
   instanceIdentifier: undefined,
   interactionMetadata: () => '',
-} satisfies RenderProps;
+} satisfies RenderProps<any>;
 
-function renderUseTableInteractionMetricsHook(props: RenderProps, wrapper?: RenderHookOptions<RenderProps>['wrapper']) {
+function renderUseTableInteractionMetricsHook(
+  props: RenderProps<any>,
+  wrapper?: RenderHookOptions<RenderProps<any>>['wrapper']
+) {
   const elementRef = createRef<HTMLElement>();
 
-  const { result, rerender, unmount } = renderHook(useTableInteractionMetrics, {
+  const { result, rerender, unmount } = renderHook(useTableInteractionMetrics<any>, {
     initialProps: { elementRef, ...defaultProps, ...props },
     wrapper,
   });
@@ -39,12 +43,12 @@ function renderUseTableInteractionMetricsHook(props: RenderProps, wrapper?: Rend
   return {
     tableInteractionAttributes: result.current.tableInteractionAttributes,
     setLastUserAction: (name: string) => result.current.setLastUserAction(name),
-    rerender: (props: RenderProps) => rerender({ elementRef, ...defaultProps, ...props }),
+    rerender: (props: RenderProps<any>) => rerender({ elementRef, ...defaultProps, ...props }),
     unmount,
   };
 }
 
-function TestComponent(props: RenderProps) {
+function TestComponent(props: RenderProps<any>) {
   const elementRef = useRef<HTMLDivElement>(null);
   const { tableInteractionAttributes } = useTableInteractionMetrics({ elementRef, ...defaultProps, ...props });
   return <div {...tableInteractionAttributes} ref={elementRef} data-testid="element" />;
@@ -67,12 +71,16 @@ setComponentMetrics({
 });
 
 beforeEach(() => {
+  jest.useFakeTimers();
   jest.resetAllMocks();
   mockPerformanceMetrics();
   mockFunnelMetrics();
 });
 
-jest.useFakeTimers();
+afterEach(() => {
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+});
 
 describe('useTableInteractionMetrics', () => {
   test('should emit componentMount event on mount', () => {
@@ -142,6 +150,7 @@ describe('useTableInteractionMetrics', () => {
         })
       );
 
+      jest.runAllTimers();
       expect(ComponentMetrics.componentUpdated).toHaveBeenCalledTimes(1);
       expect(ComponentMetrics.componentUpdated).toHaveBeenCalledWith({
         taskInteractionId: expect.any(String),
@@ -156,9 +165,8 @@ describe('useTableInteractionMetrics', () => {
 
       setLastUserAction('filter');
       rerender({ loading: true });
-
-      jest.advanceTimersByTime(3456);
       rerender({ loading: false });
+      jest.runAllTimers();
       expect(ComponentMetrics.componentUpdated).toHaveBeenCalledTimes(0);
     });
 
@@ -195,6 +203,14 @@ describe('useTableInteractionMetrics', () => {
           userAction: 'pagination',
         })
       );
+
+      jest.runAllTimers();
+      expect(ComponentMetrics.componentUpdated).toHaveBeenCalledTimes(1);
+      expect(ComponentMetrics.componentUpdated).toHaveBeenCalledWith(
+        expect.objectContaining({
+          actionType: 'pagination',
+        })
+      );
     });
 
     test('user actions during the loading state should be ignored', () => {
@@ -208,13 +224,6 @@ describe('useTableInteractionMetrics', () => {
       rerender({ loading: true });
 
       rerender({ loading: false });
-
-      expect(ComponentMetrics.componentUpdated).toHaveBeenCalledTimes(1);
-      expect(ComponentMetrics.componentUpdated).toHaveBeenCalledWith(
-        expect.objectContaining({
-          actionType: 'filter',
-        })
-      );
 
       expect(PerformanceMetrics.tableInteraction).toHaveBeenCalledTimes(1);
       expect(PerformanceMetrics.tableInteraction).toHaveBeenCalledWith(
@@ -255,6 +264,7 @@ describe('useTableInteractionMetrics', () => {
         getComponentConfiguration: () => componentConfiguration,
       });
 
+      jest.runAllTimers();
       expect(ComponentMetrics.componentUpdated).toHaveBeenCalledTimes(1);
       expect(ComponentMetrics.componentUpdated).toHaveBeenCalledWith(
         expect.objectContaining({

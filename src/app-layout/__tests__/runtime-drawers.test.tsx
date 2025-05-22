@@ -1,13 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
+
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import { Button } from '../../../lib/components';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
+import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import {
   describeEachAppLayout,
@@ -19,12 +23,14 @@ import {
 } from './utils';
 
 import triggerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
+import skeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.selectors.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
 import iconStyles from '../../../lib/components/icon/styles.selectors.js';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
+  activateAnalyticsMetadata(true);
 });
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
@@ -1349,6 +1355,306 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.findDrawerById('global3')).toBeFalsy();
       });
     });
+
+    describe('expanded mode for global drawers', () => {
+      test('should set a drawer to expanded mode by clicking on "expanded mode" button', async () => {
+        const drawerId = 'global-drawer';
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          ariaLabels: {
+            expandedModeButton: 'Expanded mode button',
+          },
+          id: drawerId,
+          type: 'global',
+          isExpandable: true,
+        });
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+        wrapper.findDrawerTriggerById(drawerId)!.click();
+        expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()).toBeInTheDocument();
+        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
+        globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
+        expect(
+          getGeneratedAnalyticsMetadata(
+            globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+          )
+        ).toStrictEqual({
+          action: 'expand',
+          detail: {
+            label: 'Expanded mode button',
+          },
+        });
+        globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
+        expect(
+          getGeneratedAnalyticsMetadata(
+            globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+          )
+        ).toStrictEqual({
+          action: 'collapse',
+          detail: {
+            label: 'Expanded mode button',
+          },
+        });
+      });
+
+      test('only one drawer could be in expanded mode. all other panels should be closed', async () => {
+        const drawerId1 = 'global-drawer1';
+        const drawerId2 = 'global-drawer2';
+        const drawerId3Local = 'local-drawer';
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: drawerId1,
+          type: 'global',
+          isExpandable: true,
+        });
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: drawerId2,
+          type: 'global',
+          isExpandable: true,
+        });
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: drawerId3Local,
+        });
+        const { wrapper, globalDrawersWrapper } = await renderComponent(
+          <AppLayout navigationOpen={true} navigation={<div>nav</div>} />
+        );
+
+        await delay();
+
+        wrapper.findDrawerTriggerById(drawerId1)!.click();
+        wrapper.findDrawerTriggerById(drawerId2)!.click();
+        wrapper.findDrawerTriggerById(drawerId3Local)!.click();
+
+        expect(wrapper.findDrawerTriggerById(drawerId1)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+        expect(wrapper.findDrawerTriggerById(drawerId2)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+        expect(wrapper.findDrawerTriggerById(drawerId3Local)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+        expect(wrapper.findNavigationToggle()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
+
+        globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
+
+        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(true);
+        expect(wrapper.findDrawerTriggerById(drawerId1)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+        expect(wrapper.findDrawerTriggerById(drawerId2)!.getElement()).not.toHaveClass(toolbarTriggerStyles.selected);
+        expect(wrapper.findDrawerTriggerById(drawerId3Local)!.getElement()).not.toHaveClass(
+          toolbarTriggerStyles.selected
+        );
+        expect(wrapper.findNavigationToggle()!.getElement()).not.toHaveClass(toolbarTriggerStyles.selected);
+      });
+
+      test.each(['expanded', 'split-panel', 'global-drawer', 'local-drawer', 'nav'] as const)(
+        'should return panels to their initial state after leaving expanded mode by clicking on %s button',
+        async triggerName => {
+          const drawerId1 = 'global-drawer1';
+          const drawerId2 = 'global-drawer2';
+          const drawerId3Local = 'local-drawer';
+          awsuiPlugins.appLayout.registerDrawer({
+            ...drawerDefaults,
+            id: drawerId1,
+            type: 'global',
+            isExpandable: true,
+          });
+          awsuiPlugins.appLayout.registerDrawer({
+            ...drawerDefaults,
+            id: drawerId2,
+            type: 'global',
+            isExpandable: true,
+          });
+          awsuiPlugins.appLayout.registerDrawer({
+            ...drawerDefaults,
+            id: drawerId3Local,
+          });
+          const { wrapper, globalDrawersWrapper } = await renderComponent(
+            <AppLayout
+              navigationOpen={true}
+              navigation={<div>nav</div>}
+              splitPanel={<SplitPanel header="test header">test content</SplitPanel>}
+            />
+          );
+
+          await delay();
+
+          wrapper.findDrawerTriggerById(drawerId1)!.click();
+          wrapper.findDrawerTriggerById(drawerId2)!.click();
+          wrapper.findDrawerTriggerById(drawerId3Local)!.click();
+          wrapper.findSplitPanelOpenButton()!.click();
+
+          expect(wrapper.findDrawerTriggerById(drawerId1)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+          expect(wrapper.findDrawerTriggerById(drawerId2)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+          expect(wrapper.findDrawerTriggerById(drawerId3Local)!.getElement()).toHaveClass(
+            toolbarTriggerStyles.selected
+          );
+          expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+          expect(wrapper.findNavigationToggle()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+          expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+          expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
+
+          globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
+
+          expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(true);
+          expect(wrapper.findDrawerTriggerById(drawerId1)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+          expect(wrapper.findDrawerTriggerById(drawerId2)!.getElement()).not.toHaveClass(toolbarTriggerStyles.selected);
+          expect(wrapper.findDrawerTriggerById(drawerId3Local)!.getElement()).not.toHaveClass(
+            toolbarTriggerStyles.selected
+          );
+          expect(wrapper.findNavigationToggle()!.getElement()).not.toHaveClass(toolbarTriggerStyles.selected);
+          expect(wrapper.findSplitPanelOpenButton()!.getElement()).not.toHaveClass(toolbarTriggerStyles.selected);
+
+          if (triggerName === 'expanded') {
+            globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
+          } else if (triggerName === 'global-drawer') {
+            wrapper.findDrawerTriggerById(drawerId2)!.click();
+          } else if (triggerName === 'local-drawer') {
+            wrapper.findDrawerTriggerById(drawerId3Local)!.click();
+          } else if (triggerName === 'nav') {
+            wrapper.findNavigationToggle()!.click();
+          } else if (triggerName === 'split-panel') {
+            wrapper.findSplitPanelOpenButton()!.click();
+          }
+
+          expect(wrapper.findDrawerTriggerById(drawerId1)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+          expect(wrapper.findDrawerTriggerById(drawerId2)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+          expect(wrapper.findDrawerTriggerById(drawerId3Local)!.getElement()).toHaveClass(
+            toolbarTriggerStyles.selected
+          );
+          expect(wrapper.findNavigationToggle()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+          expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+          expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+          expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
+        }
+      );
+
+      test('should return panels to their initial state after leaving expanded mode by clicking on a button in the overflow menu', async () => {
+        const drawerId1 = 'global-drawer1';
+        const drawerId2 = 'global-drawer2';
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: drawerId1,
+          type: 'global',
+          isExpandable: true,
+        });
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: drawerId2,
+          type: 'global',
+          isExpandable: true,
+        });
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={manyDrawers} />);
+
+        await delay();
+
+        const buttonDropdown = wrapper.findDrawersOverflowTrigger();
+
+        buttonDropdown!.openDropdown();
+        buttonDropdown!.findItemById(drawerId1)!.click();
+        buttonDropdown!.openDropdown();
+        buttonDropdown!.findItemById(drawerId2)!.click();
+
+        buttonDropdown!.openDropdown();
+        expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
+          'aria-checked',
+          'true'
+        );
+        expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
+          'aria-checked',
+          'true'
+        );
+
+        globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
+
+        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(true);
+        buttonDropdown!.openDropdown();
+        expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
+          'aria-checked',
+          'true'
+        );
+        expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
+          'aria-checked',
+          'false'
+        );
+        // leave expanded mode
+        buttonDropdown!.findItemById(drawerId2)!.click();
+        buttonDropdown!.openDropdown();
+        expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
+          'aria-checked',
+          'true'
+        );
+        expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
+          'aria-checked',
+          'true'
+        );
+        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
+      });
+
+      test('should quit expanded mode when a drawer in expanded mode is closed', async () => {
+        const drawerId = 'global-drawer';
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: drawerId,
+          type: 'global',
+          isExpandable: true,
+        });
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+        await delay();
+
+        wrapper.findDrawerTriggerById(drawerId)!.click();
+        globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
+        wrapper.findDrawerTriggerById(drawerId)!.click();
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+      });
+
+      describe('nested app layouts', () => {
+        test('should apply expanded drawer mode only for inner AppLayout and hide nav for the outer AppLayout', async () => {
+          const drawerId = 'global-drawer';
+          awsuiPlugins.appLayout.registerDrawer({
+            ...drawerDefaults,
+            id: drawerId,
+            type: 'global',
+            isExpandable: true,
+          });
+          await renderComponent(
+            <AppLayout
+              data-testid="first"
+              navigation="testing nav"
+              content={<AppLayout navigationHide={true} data-testid="second" tools="testing tools" />}
+            />
+          );
+
+          const outerLayout = createWrapper().find('[data-testid="first"]')!.findAppLayout()!;
+          const innerLayout = createWrapper().find('[data-testid="second"]')!.findAppLayout()!;
+          const innerGlobalDrawers = getGlobalDrawersTestUtils(outerLayout);
+          const outerGlobalDrawers = getGlobalDrawersTestUtils(innerLayout);
+
+          await delay();
+
+          outerLayout.findDrawerTriggerById(drawerId)!.click();
+
+          await waitFor(() =>
+            expect(outerLayout.findDrawerTriggerById(drawerId)!.getElement()).toHaveClass(toolbarTriggerStyles.selected)
+          );
+          expect(outerLayout.findNavigationToggle()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+          expect(innerGlobalDrawers.isLayoutInDrawerExpandedMode()).toBe(false);
+          expect(innerGlobalDrawers.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
+
+          innerGlobalDrawers.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
+
+          expect(innerGlobalDrawers.isLayoutInDrawerExpandedMode()).toBe(false);
+          expect(outerGlobalDrawers.isLayoutInDrawerExpandedMode()).toBe(true);
+
+          await waitFor(() =>
+            expect(outerLayout.find(`.${skeletonStyles.navigation}`)!.getElement()).toHaveClass(skeletonStyles.hidden)
+          );
+        });
+      });
+    });
   });
 
   describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['mobile'] }, () => {
@@ -1439,6 +1745,22 @@ describe('toolbar mode only features', () => {
         expect(buttonDropdown!.findItemById('global-drawer2')).toBeTruthy();
         expect(buttonDropdown!.findItemById('global-drawer3')).toBeTruthy();
       });
+    });
+
+    test('should not render drawer expanded mode button in mobile view', async () => {
+      const drawerId = 'global-drawer';
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: drawerId,
+        type: 'global',
+        isExpandable: true,
+      });
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+      await delay();
+
+      wrapper.findDrawerTriggerById(drawerId)!.click();
+      expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)).toBeFalsy();
     });
   });
 });

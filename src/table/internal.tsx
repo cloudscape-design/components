@@ -16,7 +16,12 @@ import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-compon
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { FilterRef, PaginationRef, TableComponentsContextProvider } from '../internal/context/table-component-context';
+import {
+  FilterRef,
+  PaginationRef,
+  PreferencesRef,
+  TableComponentsContextProvider,
+} from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -188,6 +193,7 @@ const InternalTable = React.forwardRef(
     const { cancelEdit, ...cellEditing } = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
     const paginationRef = useRef<PaginationRef>({});
     const filterRef = useRef<FilterRef>({});
+    const preferencesRef = useRef<PreferencesRef>({});
     /* istanbul ignore next: performance marks do not work in JSDOM */
     const getHeaderText = () =>
       toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
@@ -229,21 +235,32 @@ const InternalTable = React.forwardRef(
     const getComponentConfiguration = () => {
       const filterData = filterRef.current;
       const paginationData = paginationRef.current;
+      const preferencesData = preferencesRef.current;
 
       return {
         variant,
         flowType: rest.analyticsMetadata?.flowType,
+        resourceType: rest.analyticsMetadata?.resourceType,
         instanceIdentifier: analyticsMetadata?.instanceIdentifier,
         taskName: analyticsMetadata?.instanceIdentifier ?? getHeaderText(),
+        uxTaskName: getHeaderText(),
         patternIdentifier: getPatternIdentifier(),
         sortedBy: {
           columnId: sortingColumn?.sortingField,
           sortingOrder: sortingColumn ? (sortingDescending ? 'desc' : 'asc') : undefined,
         },
-        filtered: Boolean(filterData?.filterText),
-        currentPageIndex: paginationData.currentPageIndex,
-        totalNumberOfResources: paginationData.totalPageCount,
-        resourcesPerPage: allRows?.length || 0,
+        filtered: Boolean(filterData.filtered),
+        filteredBy: filterData?.filteredBy ?? [],
+        totalNumberOfResources: filterRef.current?.filterCount ?? null,
+        tablePreferences: {
+          visibleColumns: preferencesData?.visibleColumns ?? [],
+          resourcesPerPage: preferencesData?.pageSize ?? null,
+        },
+        pagination: {
+          currentPageIndex: paginationData?.currentPageIndex ?? 0,
+          totalNumberOfPages: paginationData?.openEnd ? null : paginationData?.totalPageCount ?? null,
+          openEnd: Boolean(paginationData?.openEnd),
+        },
         resourcesSelected: selectedItems?.length > 0,
       };
     };
@@ -251,6 +268,7 @@ const InternalTable = React.forwardRef(
     const { setLastUserAction, tableInteractionAttributes } = useTableInteractionMetrics({
       elementRef: tableRefObject,
       loading,
+      items,
       instanceIdentifier: analyticsMetadata?.instanceIdentifier,
       itemCount: items.length,
       getComponentIdentifier: getHeaderText,
@@ -288,6 +306,7 @@ const InternalTable = React.forwardRef(
       onSelectionChange,
       ariaLabels,
       loading,
+      setLastUserAction,
     });
     const isRowSelected = (row: TableRow<T>) => row.type === 'data' && isItemSelected(row.item);
 
@@ -411,7 +430,7 @@ const InternalTable = React.forwardRef(
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <TableComponentsContextProvider value={{ paginationRef, filterRef }}>
+        <TableComponentsContextProvider value={{ paginationRef, filterRef, preferencesRef }}>
           <ColumnWidthsProvider
             visibleColumns={visibleColumnWidthsWithSelection}
             resizableColumns={resizableColumns}

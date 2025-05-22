@@ -25,6 +25,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Specifies additional analytics-related metadata.
    * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * * `flowType` - Identifies the type of flow represented by the component.
+   * * `resourceType` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.
    * @analytics
    */
   analyticsMetadata?: TableProps.AnalyticsMetadata;
@@ -403,6 +405,7 @@ export namespace TableProps {
   export interface AnalyticsMetadata {
     instanceIdentifier?: string;
     flowType?: 'view-resource';
+    resourceType?: string;
   }
 
   export type TrackBy<T> = string | ((item: T) => string);

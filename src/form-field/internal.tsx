@@ -133,7 +133,7 @@ export default function InternalFormField({
 
   const { funnelIdentifier, funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
   const { stepIdentifier, stepNumber, stepNameSelector } = useFunnelStep();
-  const { subStepErrorContext, subStepIdentifier, subStepSelector, subStepNameSelector } = useFunnelSubStep();
+  const { subStepIdentifier, subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
   const showWarning = warningText && !errorText;
 
@@ -195,12 +195,11 @@ export default function InternalFormField({
           stepName,
           stepNameSelector,
           stepIdentifier,
-          subStepErrorContext,
           fieldErrorSelector: `${getFieldSlotSeletor(slotIds.error)} .${styles.error__message}`,
           fieldLabelSelector: getFieldSlotSeletor(slotIds.label),
           subStepAllSelector: getSubStepAllSelector(),
           fieldIdentifier: __analyticsMetadata?.instanceIdentifier,
-          fieldErrorContext: __analyticsMetadata?.errorContext,
+          errorContext: __analyticsMetadata?.errorContext,
         });
       }
 

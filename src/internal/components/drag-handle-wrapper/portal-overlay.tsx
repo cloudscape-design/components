@@ -16,14 +16,14 @@ export default function PortalOverlay({
   isDisabled,
   children,
 }: {
-  track: HTMLElement | null;
+  track: React.RefObject<HTMLElement | null>;
   isDisabled: boolean;
   children: React.ReactNode;
 }) {
   const ref = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
-    if (track === null || isDisabled) {
+    if (track.current === null || isDisabled) {
       return;
     }
 
@@ -34,9 +34,11 @@ export default function PortalOverlay({
     let lastBlockSize: number | undefined;
     const updateElement = () => {
       // It could be that the portal hasn't been attached to the DOM yet - ensure the ref exists and is attached DOM tree.
-      if (ref.current && document.body.contains(ref.current)) {
+      if (track.current && ref.current && document.body.contains(ref.current)) {
         const isRtl = getIsRtl(ref.current);
-        const { insetInlineStart, insetBlockStart, inlineSize, blockSize } = getLogicalBoundingClientRect(track);
+        const { insetInlineStart, insetBlockStart, inlineSize, blockSize } = getLogicalBoundingClientRect(
+          track.current
+        );
         // For simplicity, we just make all our calculations independent of
         // the browser's scrolling edge. When it comes to applying the changes,
         // translate is independent of writing direction, so we need to invert

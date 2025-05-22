@@ -61,6 +61,7 @@ const Table = React.forwardRef(
           hasPaginationSlot: !!props.pagination,
           itemsCount: items.length,
           hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
+          hasResourceType: Boolean(analyticsMetadata?.resourceType),
           usesVisibleColumns: !!props.visibleColumns,
           usesColumnDisplay: !!props.columnDisplay,
           usesColumnDefinitionsVerticalAlign: props.columnDefinitions.some(

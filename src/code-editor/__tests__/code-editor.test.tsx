@@ -675,6 +675,9 @@ describe('Code editor component', () => {
             'i18nStrings.preferencesModalThemeFilteringAriaLabel': 'Custom theme filter',
             'i18nStrings.preferencesModalThemeFilteringPlaceholder': 'Custom theme filter placeholder',
           },
+          modal: {
+            closeAriaLabel: 'Custom modal close',
+          },
         }}
       >
         <CodeEditor {...defaultProps} themes={{ light: ['One'], dark: ['Two'] }} i18nStrings={undefined} />
@@ -683,6 +686,7 @@ describe('Code editor component', () => {
     const wrapper = createWrapper(container).findCodeEditor()!;
     wrapper.findSettingsButton()!.click();
     const modal = createWrapper().findModal()!;
+    expect(modal.findDismissButton().getElement()).toHaveAccessibleName('Custom modal close');
     expect(modal.findHeader().getElement()).toHaveTextContent('Custom modal header');
     expect(modal.findFooter()!.findSpaceBetween()!.find(':nth-child(1)')!.findButton()!.getElement()).toHaveTextContent(
       'Custom cancel'

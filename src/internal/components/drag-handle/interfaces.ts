@@ -23,6 +23,7 @@ export interface DragHandleProps {
   directions?: Partial<Record<DragHandleProps.Direction, DragHandleProps.DirectionState>>;
   onDirectionClick?: (direction: DragHandleProps.Direction) => void;
   triggerMode?: TriggerMode;
+  initialShowButtons?: boolean;
 }
 
 export namespace DragHandleProps {
