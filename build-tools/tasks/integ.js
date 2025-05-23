@@ -13,7 +13,7 @@ module.exports = task('test:integ', async () => {
     },
   };
   const shard = parseArgs({ options, strict: false }).values.shard;
-  const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.js'], {
+  const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.cjs'], {
     env: {
       NODE_ENV: 'development',
     },
