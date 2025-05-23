@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
-import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
+import { Transition } from '../../../internal/components/transition';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
@@ -75,8 +75,9 @@ function AppLayoutGlobalDrawerImplementation({
     (wasExpanded && !isExpanded);
 
   return (
-    <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={0}>
-      {state => {
+    <Transition in={show} exit={!show}>
+      {(state, transitionRef) => {
+        console.log('Transition state:', state);
         return (
           <aside
             id={activeDrawerId}
@@ -89,7 +90,7 @@ function AppLayoutGlobalDrawerImplementation({
               !animationDisabled && sharedStyles['with-motion-horizontal'],
               !animationDisabled && isExpanded && styles['with-expanded-motion'],
               {
-                [styles['drawer-hidden']]: !show,
+                [styles['drawer-hidden']]: !show && state === 'exited',
                 [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
                 [testutilStyles['active-drawer']]: show,
                 [styles['drawer-expanded']]: isExpanded,
@@ -98,7 +99,7 @@ function AppLayoutGlobalDrawerImplementation({
                   activeGlobalDrawers.length,
               }
             )}
-            ref={drawerRef}
+            ref={transitionRef}
             onBlur={e => {
               // Drawers with trigger buttons follow this restore focus logic:
               // If a previously focused element exists, restore focus on it; otherwise, focus on the associated trigger button.
@@ -122,7 +123,7 @@ function AppLayoutGlobalDrawerImplementation({
             }}
             data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
           >
-            <div className={clsx(styles['global-drawer-wrapper'])}>
+            <div ref={drawerRef} className={clsx(styles['global-drawer-wrapper'])}>
               {!isMobile && <div className={styles['drawer-gap']}></div>}
               {!isMobile && activeGlobalDrawer?.resizable && !isExpanded && (
                 <div className={styles['drawer-slider']}>

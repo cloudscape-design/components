@@ -63,7 +63,9 @@ $drawer-resize-handle-size: awsui.$space-m;
     display: block;
 
     @include desktop-only {
-      inline-size: var(#{custom-props.$drawerSize});
+      &.exiting > .global-drawer-wrapper {
+        inline-size: var(#{custom-props.$drawerSize});
+      }
     }
 
     @include mobile-only {
