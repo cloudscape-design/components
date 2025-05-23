@@ -28,5 +28,3 @@ jobs:
     secrets: inherit
     with:
       skip-test: true
-      project-name: Beta-Importer-v2
-      role-to-assume: arn:aws:iam::084828579018:role/Beta-Shared-GitHubActionRole5D264369-mwZWAVVl9B2R  
