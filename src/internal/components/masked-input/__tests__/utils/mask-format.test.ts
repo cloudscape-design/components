@@ -1,117 +1,509 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import MaskFormat from '../../../../../../lib/components/internal/components/masked-input/utils/mask-format';
+import { MaskArgs } from '../../utils/mask-format';
 
 describe('MaskFormat', () => {
-  const maskFormat = new MaskFormat({
-    separator: ':',
-    inputSeparators: ['/', '-'],
-    segments: [
-      { min: 1, max: 12, length: 2 },
-      { min: 0, max: 59, length: 2 },
-    ],
-  });
+  const mockDayMask = jest.fn().mockReturnValue(31);
+  const yearMask = { min: 0, max: 9999, default: 2000, length: 4 };
+  const monthMask = { min: 1, max: 12, length: 2 };
+  const dayMask = { min: 1, max: mockDayMask, length: 2 };
+  const hourMask = { min: 0, max: 23, length: 2 };
+  const minuteMask = { min: 0, max: 59, length: 2 };
+  const secondMask = { min: 0, max: 59, length: 2 };
 
-  describe('tryAppendSeparator', () => {
-    test('returns value with a separtor when valid', () => {
-      expect(maskFormat.tryAppendSeparator('12')).toBe('12:');
-    });
+  const maskTests: { description: string; mask: MaskArgs; maskType: string }[] = [
+    {
+      description: "time mask ':' to minutes",
+      maskType: 'time',
+      mask: {
+        separator: ':',
+        inputSeparators: ['/', '-'],
+        segments: [hourMask, minuteMask],
+      },
+    },
+    {
+      description: "time mask '-' to minutes",
+      maskType: 'time',
+      mask: {
+        separator: '-',
+        inputSeparators: ['/', ':'],
+        segments: [hourMask, minuteMask],
+      },
+    },
+    {
+      description: "time mask ':' to seconds",
+      maskType: 'time',
+      mask: {
+        separator: ':',
+        inputSeparators: ['/', '-'],
+        segments: [hourMask, minuteMask, secondMask],
+      },
+    },
+    {
+      description: "time mask '-' to seconds",
+      maskType: 'time',
+      mask: {
+        separator: '-',
+        inputSeparators: ['/', ':'],
+        segments: [hourMask, minuteMask, secondMask],
+      },
+    },
+    {
+      description: "date mask 'slashed' day only",
+      maskType: 'date',
+      mask: {
+        separator: '/',
+        inputSeparators: ['.', '-', ' '],
+        segments: [yearMask, monthMask, dayMask],
+      },
+    },
+    {
+      description: "date mask 'slashed' month only",
+      maskType: 'date',
+      mask: {
+        separator: '/',
+        inputSeparators: ['.', '-', ' '],
+        segments: [yearMask, monthMask],
+      },
+    },
+    {
+      description: "date mask 'iso' day only",
+      maskType: 'date',
+      mask: {
+        separator: '-',
+        inputSeparators: ['.', '/', ' '],
+        segments: [yearMask, monthMask, dayMask],
+      },
+    },
+    {
+      description: "date mask 'iso' month only",
+      maskType: 'date',
+      mask: {
+        separator: '/',
+        inputSeparators: ['.', '-', ' '],
+        segments: [yearMask, monthMask],
+      },
+    },
+    //no requirement for date-time mask
+  ];
 
-    test('returns value without separator when invalid', () => {
-      expect(maskFormat.tryAppendSeparator('1')).toBe('1');
-    });
-  });
+  maskTests.forEach(({ description, mask, maskType }) => {
+    describe(description, () => {
+      const maskFormat = new MaskFormat(mask);
 
-  describe('isSeparator', () => {
-    test('returns true when given a separator character', () => {
-      expect(maskFormat.isSeparator(':')).toBe(true);
-      expect(maskFormat.isSeparator('/')).toBe(true);
-      expect(maskFormat.isSeparator('-')).toBe(true);
-    });
+      test('constructs the mask correctly', () => {
+        expect(maskFormat).toBeTruthy();
+        const maskFormatSeparators = maskFormat.getValidSeparators();
+        expect(maskFormatSeparators.length).toBe((mask.inputSeparators || []).length + 1);
+        expect(maskFormatSeparators).toContain(mask.separator);
+        mask.inputSeparators?.forEach(inputSeparator => {
+          expect(maskFormatSeparators).toContain(inputSeparator);
+        });
+        expect(maskFormat.getSegmentCount()).toBe(mask.segments.length);
+      });
 
-    test('returns false when given a non-separator character', () => {
-      expect(maskFormat.isSeparator('a')).toBe(false);
-      expect(maskFormat.isSeparator('0')).toBe(false);
-      expect(maskFormat.isSeparator('!')).toBe(false);
-    });
-  });
+      describe('tryAppendSeparator', () => {
+        (maskType === 'time' ? test : test.skip)('returns correctly with time values', () => {
+          expect(maskFormat.tryAppendSeparator('1')).toBe('1');
+          expect(maskFormat.tryAppendSeparator('12')).toBe(`12${mask.segments.length > 1 ? mask.separator : ''}`);
+          if (mask.segments.length > 1) {
+            expect(maskFormat.tryAppendSeparator(`12${mask.separator}12`)).toBe(
+              `12${mask.separator}12${mask.segments.length > 2 ? mask.separator : ''}`
+            );
+          }
+          if (mask.segments.length > 2) {
+            expect(maskFormat.tryAppendSeparator(`12${mask.separator}12${mask.separator}12`)).toBe(
+              `12${mask.separator}12${mask.separator}12`
+            );
+          }
+        });
 
-  describe('isValid', () => {
-    test('returns true when valid', () => {
-      expect(maskFormat.isValid('')).toBe(true);
-      expect(maskFormat.isValid('1')).toBe(true);
-      expect(maskFormat.isValid('01')).toBe(true);
-      expect(maskFormat.isValid('12')).toBe(true);
-      expect(maskFormat.isValid('12:')).toBe(true);
-      expect(maskFormat.isValid('12:0')).toBe(true);
-      expect(maskFormat.isValid('12:00')).toBe(true);
-      expect(maskFormat.isValid('12:59')).toBe(true);
-    });
+        (maskType === 'date' ? test : test.skip)('returns correctly with date values', () => {
+          expect(maskFormat.tryAppendSeparator('1')).toBe('1');
+          expect(maskFormat.tryAppendSeparator('2025')).toBe(`2025${mask.segments.length > 1 ? mask.separator : ''}`);
+          if (mask.segments.length > 1) {
+            expect(maskFormat.tryAppendSeparator(`2025${mask.separator}12`)).toBe(
+              `2025${mask.separator}12${mask.segments.length > 2 ? mask.separator : ''}`
+            );
+          }
+          if (mask.segments.length > 2) {
+            expect(maskFormat.tryAppendSeparator(`2025${mask.separator}12${mask.separator}31`)).toBe(
+              `2025${mask.separator}12${mask.separator}31`
+            );
+          }
+        });
+      });
 
-    test('returns false when invalid', () => {
-      // Edge cases
-      expect(maskFormat.isValid('abc')).toBe(false);
-      expect(maskFormat.isValid(':')).toBe(false);
-      expect(maskFormat.isValid(':0')).toBe(false);
-      expect(maskFormat.isValid('00:00:')).toBe(false);
-      expect(maskFormat.isValid('110')).toBe(false);
-      expect(maskFormat.isValid('011')).toBe(false);
+      describe('isSeparator', () => {
+        test.each([...mask.separator, ...(mask.inputSeparators as string[])])(
+          'returns true when given a separator character of "%s"',
+          seperator => {
+            expect(maskFormat.isSeparator(seperator)).toBe(true);
+          }
+        );
 
-      // Min/max
-      expect(maskFormat.isValid('00')).toBe(false);
-      expect(maskFormat.isValid('13')).toBe(false);
+        test('returns false when given a non-separator character', () => {
+          expect(maskFormat.isSeparator('a')).toBe(false);
+          expect(maskFormat.isSeparator('0')).toBe(false);
+          expect(maskFormat.isSeparator('!')).toBe(false);
+        });
+      });
 
-      // Length
-      expect(maskFormat.isValid('1:')).toBe(false);
-    });
-  });
+      describe('isValid', () => {
+        [...maskFormat.getValidSeparators()].forEach(validSeparator => {
+          const isMatchingSeparator = validSeparator === mask.separator;
+          test(`returns correct value with "${validSeparator}" separator in param string for first segment`, () => {
+            expect(maskFormat.isValid('')).toBe(true);
+            expect(maskFormat.isValid('1')).toBe(true);
+            expect(maskFormat.isValid('01')).toBe(true);
+            expect(maskFormat.isValid('12')).toBe(true);
+            if (maskType === 'date') {
+              expect(maskFormat.isValid('202')).toBe(true);
+              expect(maskFormat.isValid('2025')).toBe(true);
+              expect(maskFormat.isValid(`2025${validSeparator}`)).toBe(mask.segments.length > 1 && isMatchingSeparator);
+              expect(maskFormat.isValid(`2025${validSeparator}${validSeparator}`)).toBe(false);
+            } else {
+              expect(maskFormat.isValid(`12${validSeparator}`)).toBe(mask.segments.length > 1 && isMatchingSeparator);
+              expect(maskFormat.isValid(`12${validSeparator}${validSeparator}`)).toBe(false);
+            }
+          });
 
-  describe('getValidValue', () => {
-    test('returns the closest valid value', () => {
-      expect(maskFormat.getValidValue('99:99')).toBe('9');
-      expect(maskFormat.getValidValue('99:99:99')).toBe('9');
-      expect(maskFormat.getValidValue('111:99')).toBe('11:');
-      expect(maskFormat.getValidValue('011')).toBe('01:');
-    });
+          (mask.segments.length > 1 ? test : test.skip)(
+            `returns correct value with "${validSeparator}" separator in param string for second segment`,
+            () => {
+              if (maskType === 'date') {
+                expect(maskFormat.isValid(`2025${validSeparator}`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`2025${validSeparator}1`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`2025${validSeparator}12`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`2025${validSeparator}01${validSeparator}`)).toBe(
+                  mask.segments.length > 2 && isMatchingSeparator
+                );
+                expect(maskFormat.isValid(`2025${validSeparator}01${validSeparator}${validSeparator}`)).toBe(false);
+              } else {
+                expect(maskFormat.isValid(`12${validSeparator}`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`12${validSeparator}0`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`12${validSeparator}00`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`12${validSeparator}59`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`12${validSeparator}00${validSeparator}`)).toBe(
+                  mask.segments.length > 2 && isMatchingSeparator
+                );
+                expect(maskFormat.isValid(`12${validSeparator}00${validSeparator}${validSeparator}`)).toBe(false);
+              }
+            }
+          );
 
-    test('returns an empty string if no valid value is possible', () => {
-      expect(maskFormat.getValidValue(':99')).toBe('');
-    });
-  });
+          (mask.segments.length > 2 ? test : test.skip)(
+            `returns correct value with "${validSeparator}" separator in param string for third segment`,
+            () => {
+              if (maskType === 'date') {
+                expect(maskFormat.isValid(`2025${validSeparator}01${validSeparator}`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`2025${validSeparator}01${validSeparator}1`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`2025${validSeparator}01${validSeparator}01`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`2025${validSeparator}12${validSeparator}31`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`2025${validSeparator}12${validSeparator}31${validSeparator}`)).toBe(false);
+                expect(
+                  maskFormat.isValid(`2025${validSeparator}12${validSeparator}31${validSeparator}${validSeparator}`)
+                ).toBe(false);
+              } else {
+                expect(maskFormat.isValid(`12${validSeparator}00${validSeparator}`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`12${validSeparator}00${validSeparator}0`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`12${validSeparator}00${validSeparator}00`)).toBe(isMatchingSeparator);
+                expect(maskFormat.isValid(`12${validSeparator}00${validSeparator}59${validSeparator}`)).toBe(false);
+                expect(
+                  maskFormat.isValid(`12${validSeparator}00${validSeparator}59${validSeparator}${validSeparator}`)
+                ).toBe(false);
+              }
+            }
+          );
+        });
+      });
 
-  describe('autoComplete', () => {
-    test('should autocomplete an empty value', () => {
-      expect(maskFormat.autoComplete('')).toBe('01:00');
-    });
+      describe('getValidValue', () => {
+        mask.segments.forEach((segment, segmentIndex) => {
+          const isLastSegment = segmentIndex === mask.segments.length - 1;
+          const maxSegment = `${mask.segments[0].max}${segmentIndex > 0 ? `${mask.separator}${mask.segments[1].max}${segmentIndex > 1 ? `${mask.separator}${typeof mask.segments[2].max === 'function' ? mask.segments[2].max('31') : mask.segments[2].max}` : ''}` : ''}`;
+          const maxPlusOneSegment = `${
+            segmentIndex === 0 ? (mask.segments[0].max as number) + 1 : (mask.segments[0].max as number)
+          }${
+            segmentIndex > 0
+              ? `${mask.separator}${
+                  segmentIndex === 1 ? (mask.segments[1].max as number) + 1 : (mask.segments[1].max as number)
+                }${
+                  segmentIndex > 1
+                    ? `${mask.separator}${
+                        segmentIndex === 2
+                          ? typeof mask.segments[2].max === 'function'
+                            ? (mask.segments[2].max('31') as number) + 1
+                            : (mask.segments[2].max as number) + 1
+                          : (mask.segments[2].max as number)
+                      }`
+                    : ''
+                }`
+              : ''
+          }`;
+          const segmentMsxPlus1 =
+            typeof segment.max === 'function' ? segment.max('31') + 1 : (segment.max as number) + 1;
+          const isLonger = segmentMsxPlus1.toString().length > segment.length;
 
-    test('should autocomplete a partial value', () => {
-      expect(maskFormat.autoComplete('0')).toBe('01:00');
-      expect(maskFormat.autoComplete('1')).toBe('01:00');
-      expect(maskFormat.autoComplete('01')).toBe('01:00');
-      expect(maskFormat.autoComplete('01:0')).toBe('01:00');
-    });
+          test(`does not allow for a max over the segment specific ${maxPlusOneSegment}`, () => {
+            expect(maskFormat.getValidValue(maxPlusOneSegment)).toBe(
+              `${maxPlusOneSegment.slice(0, maxPlusOneSegment.length - 1)}${isLonger ? mask.separator : ''}`
+            );
+          });
 
-    test('should not change a complete value', () => {
-      expect(maskFormat.autoComplete('01:00')).toBe('01:00');
-      expect(maskFormat.autoComplete('04:20')).toBe('04:20');
-    });
-  });
+          if (isLastSegment) {
+            //greater than max
+            test('does not allow for more another character when at the end of final segment length', () => {
+              expect(maskFormat.getValidValue(`${maxSegment}1`)).toBe(maxSegment);
+            });
+          } else {
+            test(`adds a separator when text is longer than the segment length when at segment number ${segmentIndex + 1} out of ${mask.segments.length} total`, () => {
+              expect(maskFormat.getValidValue(`${maxSegment}1`)).toBe(`${maxSegment}${mask.separator}`);
+            });
+          }
+        });
 
-  describe('getSegmentValueWithAddition', () => {
-    test('should overwrite the character at a given position in a segment', () => {
-      expect(maskFormat.getSegmentValueWithAddition(0, '00:00', '1')).toBe(10);
-      expect(maskFormat.getSegmentValueWithAddition(0, '11:00', '1')).toBe(11);
-      expect(maskFormat.getSegmentValueWithAddition(0, '11:00', '2')).toBe(21);
-      expect(maskFormat.getSegmentValueWithAddition(3, '00:00', '1')).toBe(10);
-    });
-  });
+        test('returns an empty string if no valid value is possible', () => {
+          expect(maskFormat.getValidValue(`${mask.separator}${maskType === 'time' ? '99' : '10000'}`)).toBe('');
+        });
+      });
 
-  describe('replaceDigitsWithZeroes', () => {
-    test('replaces selected digits with zeroes', () => {
-      expect(maskFormat.replaceDigitsWithZeroes('12:34', 0, 1)).toEqual({ position: 0, value: '02:34' });
-      expect(maskFormat.replaceDigitsWithZeroes('12:34', 1, 2)).toEqual({ position: 1, value: '10:34' });
-      expect(maskFormat.replaceDigitsWithZeroes('12:34', 1, 3)).toEqual({ position: 1, value: '10:34' });
-      expect(maskFormat.replaceDigitsWithZeroes('12:34', 1, 4)).toEqual({ position: 1, value: '10:04' });
+      describe('autoComplete', () => {
+        const expectedResultZero: { [key: string]: { [key2: string]: string } } = {
+          date: {
+            '1': `2000`,
+            '2': `2000${maskFormat.separator}01`,
+            '3': `2000${maskFormat.separator}01${maskFormat.separator}01`,
+          },
+          time: {
+            '1': `00`,
+            '2': `00${maskFormat.separator}00`,
+            '3': `00${maskFormat.separator}00${maskFormat.separator}00`,
+          },
+        };
+
+        test('should autocomplete an empty value', () => {
+          expect(maskFormat.autoComplete('')).toBe(
+            expectedResultZero[maskType][`${maskFormat.getSegmentCount()}` as string]
+          );
+        });
+
+        test(`should autocomplete a partial value for 0`, () => {
+          expect(maskFormat.autoComplete('0')).toBe(
+            expectedResultZero[maskType][`${maskFormat.getSegmentCount()}` as string]
+          );
+        });
+
+        test(`should autocomplete a partial value for 1, 01, ${maskType === 'date' ? '001' : ''}`, () => {
+          const expectedResultOne: { [key: string]: { [key2: string]: string } } = {
+            date: {
+              '1': `2001`,
+              '2': `2001${maskFormat.separator}01`,
+              '3': `2001${maskFormat.separator}01${maskFormat.separator}01`,
+            },
+            time: {
+              '1': `01`,
+              '2': `01${maskFormat.separator}00`,
+              '3': `01${maskFormat.separator}00${maskFormat.separator}00`,
+            },
+          };
+
+          expect(maskFormat.autoComplete('1')).toBe(
+            expectedResultOne[maskType][`${maskFormat.getSegmentCount()}` as string]
+          );
+          expect(maskFormat.autoComplete('01')).toBe(
+            expectedResultOne[maskType][`${maskFormat.getSegmentCount()}` as string]
+          );
+          if (maskType === 'date') {
+            expect(maskFormat.autoComplete('001')).toBe(
+              expectedResultOne[maskType][`${maskFormat.getSegmentCount()}` as string]
+            );
+          }
+        });
+
+        test(`should autocomplete a partial value with separator`, () => {
+          const expectedResultOne: { [key: string]: { [key2: string]: string } } = {
+            date: {
+              '1': `2001`,
+              '2': `2001${maskFormat.separator}01`,
+              '3': `2001${maskFormat.separator}01${maskFormat.separator}01`,
+            },
+            time: {
+              '1': `01`,
+              '2': `01${maskFormat.separator}00`,
+              '3': `01${maskFormat.separator}00${maskFormat.separator}00`,
+            },
+          };
+          const resultString = expectedResultOne[maskType][`${maskFormat.getSegmentCount()}` as string];
+          expect(maskFormat.autoComplete(resultString.slice(0, resultString.length - 1))).toBe(resultString);
+        });
+
+        test('should not change a complete value', () => {
+          const expectedResult: { [key: string]: { [key2: string]: string } } = {
+            date: {
+              '1': `1999`,
+              '2': `2014${maskFormat.separator}01`,
+              '3': `3455${maskFormat.separator}01${maskFormat.separator}01`,
+            },
+            time: {
+              '1': `11`,
+              '2': `03${maskFormat.separator}15`,
+              '3': `09${maskFormat.separator}50${maskFormat.separator}40`,
+            },
+          };
+          const resultString = expectedResult[maskType][`${maskFormat.getSegmentCount()}` as string];
+          expect(maskFormat.autoComplete(resultString)).toBe(resultString);
+        });
+      });
+
+      describe('getSegmentValueWithAddition', () => {
+        test('should overwrite the character at a given position in a segment', () => {
+          const tests: {
+            [key: string]: {
+              [key2: string]: {
+                position: number;
+                value: string;
+                enteredDigit: string;
+                result: number;
+              };
+            };
+          } = {
+            date: {
+              '1': {
+                position: 0,
+                value: `1999`,
+                enteredDigit: '1',
+                result: 10,
+              },
+              '2': {
+                position: 0,
+                value: `2014${maskFormat.separator}01`,
+                enteredDigit: '1',
+                result: 1014,
+              },
+              '3': {
+                position: 0,
+                value: `3455${maskFormat.separator}01${maskFormat.separator}01`,
+                enteredDigit: '1',
+                result: 1455,
+              },
+            },
+            time: {
+              '1': {
+                position: 0,
+                value: `11`,
+                enteredDigit: '1',
+                result: 10,
+              },
+              '2': {
+                position: 0,
+                value: `03${maskFormat.separator}15`,
+                enteredDigit: '1',
+                result: 13,
+              },
+              '3': {
+                position: 0,
+                value: `09${maskFormat.separator}50${maskFormat.separator}40`,
+                enteredDigit: '1',
+                result: 19,
+              },
+            },
+          };
+
+          const { position, value, enteredDigit, result } =
+            tests[maskType][`${maskFormat.getSegmentCount()}` as string];
+          expect(maskFormat.getSegmentValueWithAddition(position, value, enteredDigit)).toBe(result);
+        });
+      });
+
+      describe('replaceDigitsWithZeroes', () => {
+        test('replaces selected digits with zeroes', () => {
+          const tests: {
+            [key: string]: {
+              [key2: string]: {
+                cursorStart: number;
+                value: string;
+                cursorEnd: number;
+                result: {
+                  position: number;
+                  value: string;
+                };
+              };
+            };
+          } = {
+            date: {
+              '1': {
+                cursorStart: 0,
+                value: `1999`,
+                cursorEnd: 1,
+                result: {
+                  position: 0,
+                  value: `1000`,
+                },
+              },
+              '2': {
+                cursorStart: 0,
+                value: `2014${maskFormat.separator}01`,
+                cursorEnd: 1,
+                result: {
+                  position: 0,
+                  value: `0014${maskFormat.separator}01`,
+                },
+              },
+              '3': {
+                cursorStart: 0,
+                value: `3455${maskFormat.separator}01${maskFormat.separator}01`,
+                cursorEnd: 1,
+                result: {
+                  position: 0,
+                  value: `0455${maskFormat.separator}01${maskFormat.separator}01`,
+                },
+              },
+            },
+            time: {
+              '1': {
+                cursorStart: 0,
+                value: `11`,
+                cursorEnd: 1,
+                result: {
+                  position: 0,
+                  value: `10`,
+                },
+              },
+              '2': {
+                cursorStart: 0,
+                value: `11${maskFormat.separator}15`,
+                cursorEnd: 1,
+                result: {
+                  position: 0,
+                  value: `01${maskFormat.separator}15`,
+                },
+              },
+              '3': {
+                cursorStart: 1,
+                value: `09${maskFormat.separator}50${maskFormat.separator}40`,
+                cursorEnd: 0,
+                result: {
+                  position: 1,
+                  value: `00${maskFormat.separator}50${maskFormat.separator}40`,
+                },
+              },
+            },
+          };
+
+          const {
+            cursorStart,
+            value,
+            cursorEnd,
+            result: { position: expectedPosition, value: expectedValue },
+          } = tests[maskType][`${maskFormat.getSegmentCount()}` as string];
+          expect(maskFormat.replaceDigitsWithZeroes(value, cursorStart, cursorEnd)).toEqual({
+            position: expectedPosition,
+            value: expectedValue,
+          });
+        });
+      });
     });
   });
 });
