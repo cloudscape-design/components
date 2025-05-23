@@ -170,6 +170,7 @@ $drawer-resize-handle-size: awsui.$space-m;
 
     @include mobile-only {
       grid-template-columns: 1fr;
+      grid-column: 1 / span 2;
     }
 
     > .drawer-gap {
