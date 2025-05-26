@@ -54,7 +54,9 @@ class MaskFormat {
     const inputSegments = value.split(this.separator);
 
     if (inputSegments.length > this.segments.length) {
-      return false;
+      if (inputSegments[-1] !== '') {
+        return false;
+      }
     }
 
     return inputSegments.every((segmentValue, i) => {
