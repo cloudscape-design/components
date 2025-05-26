@@ -24,7 +24,7 @@ permissions:
 
 jobs:
   release:
-    uses: cloudscape-design/actions/.github/workflows/release.yml@release-build-tree
+    uses: cloudscape-design/actions/.github/workflows/release.yml@release-build-tree-test
     secrets: inherit
     with:
       skip-test: true
