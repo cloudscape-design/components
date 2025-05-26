@@ -68,34 +68,29 @@ export function Transition({
       in={isIn}
       nodeRef={transitionRootElement}
       exit={exit}
-      onEnter={isAppearing => {
-        if (!isAppearing) {
-          setTransitionState('enter');
-          onStatusChange('enter');
-        }
+      appear={true}
+      onEnter={() => {
+        setTransitionState('enter');
+        onStatusChange('enter');
       }}
-      onEntering={isAppearing => {
-        if (!isAppearing) {
-          // This line forces the browser to recalculate the layout because we want the starting state in the 'enter' style
-          // to be applied before the animation starts.
-          void transitionRootElement.current?.offsetHeight;
+      onEntering={() => {
+        // This line forces the browser to recalculate the layout because we want the starting state in the 'enter' style
+        // to be applied before the animation starts.
+        void transitionRootElement.current?.offsetHeight;
 
-          if (transitionChangeDelay?.entering) {
-            setTimeout(() => {
-              setTransitionState('entering');
-              onStatusChange('entering');
-            }, transitionChangeDelay?.entering);
-          } else {
+        if (transitionChangeDelay?.entering) {
+          setTimeout(() => {
             setTransitionState('entering');
             onStatusChange('entering');
-          }
+          }, transitionChangeDelay?.entering);
+        } else {
+          setTransitionState('entering');
+          onStatusChange('entering');
         }
       }}
-      onEntered={isAppearing => {
-        if (!isAppearing) {
-          setTransitionState('entered');
-          onStatusChange('entered');
-        }
+      onEntered={() => {
+        setTransitionState('entered');
+        onStatusChange('entered');
       }}
       onExit={() => {
         setTransitionState('exit');
