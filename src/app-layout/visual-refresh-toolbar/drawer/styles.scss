@@ -178,6 +178,7 @@ $drawer-resize-handle-size: awsui.$space-m;
       inline-size: $global-drawer-gap-size;
       background: awsui.$color-gap-global-drawer;
       border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      box-sizing: border-box;
     }
 
     > .drawer-slider {
