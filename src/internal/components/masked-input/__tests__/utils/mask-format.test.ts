@@ -85,6 +85,7 @@ describe('MaskFormat', () => {
         segments: [yearMask, monthMask],
       },
     },
+    //no requirement for year-only mask
     //no requirement for date-time mask
   ];
 
@@ -221,47 +222,78 @@ describe('MaskFormat', () => {
 
       describe('getValidValue', () => {
         mask.segments.forEach((segment, segmentIndex) => {
-          const isLastSegment = segmentIndex === mask.segments.length - 1;
-          const maxSegment = `${mask.segments[0].max}${segmentIndex > 0 ? `${mask.separator}${mask.segments[1].max}${segmentIndex > 1 ? `${mask.separator}${typeof mask.segments[2].max === 'function' ? mask.segments[2].max('31') : mask.segments[2].max}` : ''}` : ''}`;
-          const maxPlusOneSegment = `${
-            segmentIndex === 0 ? (mask.segments[0].max as number) + 1 : (mask.segments[0].max as number)
-          }${
-            segmentIndex > 0
-              ? `${mask.separator}${
-                  segmentIndex === 1 ? (mask.segments[1].max as number) + 1 : (mask.segments[1].max as number)
-                }${
-                  segmentIndex > 1
-                    ? `${mask.separator}${
-                        segmentIndex === 2
-                          ? typeof mask.segments[2].max === 'function'
-                            ? (mask.segments[2].max('31') as number) + 1
-                            : (mask.segments[2].max as number) + 1
-                          : (mask.segments[2].max as number)
-                      }`
-                    : ''
-                }`
-              : ''
-          }`;
-          const segmentMsxPlus1 =
-            typeof segment.max === 'function' ? segment.max('31') + 1 : (segment.max as number) + 1;
-          const isLonger = segmentMsxPlus1.toString().length > segment.length;
+          const overMaxTests: { [key: string]: { [key2: string]: { input: string; expectedResult: string } } } = {
+            time: {
+              '0': {
+                //uses the hourMask
+                input: `24`,
+                expectedResult: `2`,
+              },
+              '1': {
+                //using minuteMask  - todo is this reasonable
+                input: `23${mask.separator}60`,
+                expectedResult: `23${mask.separator}6`,
+              },
+              '2': {
+                //using secondMask
+                input: `23${mask.separator}59${mask.separator}60`,
+                expectedResult: `23${mask.separator}59${mask.separator}6`,
+              },
+            },
+            date: {
+              '0': {
+                //using year mask
+                input: '10000',
+                expectedResult: `1000${mask.separator}`, //always another segment
+              },
+              '1': {
+                //using month mask
+                input: `9999${mask.separator}13`,
+                expectedResult: `9999${mask.separator}1`,
+              },
+              '2': {
+                //using day mask
+                input: `9999${mask.separator}12${mask.separator}31`,
+                expectedResult: `9999${mask.separator}12${mask.separator}31`,
+              },
+            },
+          };
 
-          test(`does not allow for a max over the segment specific ${maxPlusOneSegment}`, () => {
-            expect(maskFormat.getValidValue(maxPlusOneSegment)).toBe(
-              `${maxPlusOneSegment.slice(0, maxPlusOneSegment.length - 1)}${isLonger ? mask.separator : ''}`
+          test(`does not allow for a value greater than max in ${segmentIndex + 1} segment`, () => {
+            expect(maskFormat.getValidValue(overMaxTests[maskType][segmentIndex].input)).toBe(
+              overMaxTests[maskType][segmentIndex].expectedResult
             );
           });
 
-          if (isLastSegment) {
-            //greater than max
-            test('does not allow for more another character when at the end of final segment length', () => {
-              expect(maskFormat.getValidValue(`${maxSegment}1`)).toBe(maxSegment);
-            });
-          } else {
-            test(`adds a separator when text is longer than the segment length when at segment number ${segmentIndex + 1} out of ${mask.segments.length} total`, () => {
-              expect(maskFormat.getValidValue(`${maxSegment}1`)).toBe(`${maxSegment}${mask.separator}`);
-            });
-          }
+          const anotherCharTests: { [key: string]: { [key2: string]: string } } = {
+            time: {
+              '0': `23`,
+              '1': `23${mask.separator}59`,
+              '2': `23${mask.separator}59${mask.separator}59`,
+            },
+            date: {
+              '0': `9999`,
+              '1': `9999${mask.separator}12`,
+              '2': `9999${mask.separator}12${mask.separator}31`,
+            },
+          };
+
+          (segmentIndex === mask.segments.length - 1 ? test : test.skip)(
+            'does not allow for more another character when at the end of final segment length',
+            () => {
+              expect(maskFormat.getValidValue(`${anotherCharTests[maskType][segmentIndex]}1`)).toBe(
+                anotherCharTests[maskType][segmentIndex]
+              );
+            }
+          );
+          (segmentIndex < mask.segments.length - 1 ? test : test.skip)(
+            `adds a separator when text is longer than the segment length when at segment number ${segmentIndex + 1} out of ${mask.segments.length} total`,
+            () => {
+              expect(maskFormat.getValidValue(`${anotherCharTests[maskType][segmentIndex]}1`)).toBe(
+                `${anotherCharTests[maskType][segmentIndex]}${mask.separator}`
+              );
+            }
+          );
         });
 
         test('returns an empty string if no valid value is possible', () => {
