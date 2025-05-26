@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { DateRangePickerProps } from '../../../date-range-picker/interfaces';
-import formatDateIso from './format-date-iso';
-import formatDateLocalized from './format-date-localized';
+import { formatDateIso } from './format-date-iso';
+import { formatDateLocalized } from './format-date-localized';
 import { isIsoDateOnly, isIsoMonthOnly } from './is-iso-only';
 
 export function formatDateTimeWithOffset({
