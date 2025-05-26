@@ -219,7 +219,7 @@ describe('MaskFormat', () => {
                 expectedResult: `2`,
               },
               '1': {
-                //using minuteMask  - todo is this reasonable
+                //using minuteMask
                 input: `23${mask.separator}60`,
                 expectedResult: `23${mask.separator}6`,
               },
@@ -249,9 +249,8 @@ describe('MaskFormat', () => {
           };
 
           test(`does not allow for a value greater than max in ${segmentIndex + 1} segment`, () => {
-            expect(maskFormat.getValidValue(overMaxTests[maskType][segmentIndex].input)).toBe(
-              overMaxTests[maskType][segmentIndex].expectedResult
-            );
+            const { input, expectedResult } = overMaxTests[maskType][segmentIndex];
+            expect(maskFormat.getValidValue(input)).toBe(expectedResult);
           });
 
           const anotherCharTests: { [key: string]: { [key2: string]: string } } = {
@@ -266,21 +265,18 @@ describe('MaskFormat', () => {
               '2': `9999${mask.separator}12${mask.separator}31`,
             },
           };
+          const endOfSegment = anotherCharTests[maskType][segmentIndex];
 
           (segmentIndex === mask.segments.length - 1 ? test : test.skip)(
             'does not allow for more another character when at the end of final segment length',
             () => {
-              expect(maskFormat.getValidValue(`${anotherCharTests[maskType][segmentIndex]}1`)).toBe(
-                anotherCharTests[maskType][segmentIndex]
-              );
+              expect(maskFormat.getValidValue(`${endOfSegment}1`)).toBe(endOfSegment);
             }
           );
           (segmentIndex < mask.segments.length - 1 ? test : test.skip)(
             `adds a separator when text is longer than the segment length when at segment number ${segmentIndex + 1} out of ${mask.segments.length} total`,
             () => {
-              expect(maskFormat.getValidValue(`${anotherCharTests[maskType][segmentIndex]}1`)).toBe(
-                `${anotherCharTests[maskType][segmentIndex]}${mask.separator}`
-              );
+              expect(maskFormat.getValidValue(`${endOfSegment}1`)).toBe(`${endOfSegment}${mask.separator}`);
             }
           );
         });
