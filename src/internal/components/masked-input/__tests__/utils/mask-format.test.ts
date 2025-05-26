@@ -211,7 +211,9 @@ describe('MaskFormat', () => {
 
       describe('getValidValue', () => {
         mask.segments.forEach((segment, segmentIndex) => {
-          const overMaxTests: { [key: string]: { [key2: string]: { input: string; expectedResult: string } } } = {
+          const overMaxTests: {
+            [maskType: string]: { [segmentIndex: string]: { input: string; expectedResult: string } };
+          } = {
             time: {
               '0': {
                 //uses the hourMask
@@ -253,7 +255,7 @@ describe('MaskFormat', () => {
             expect(maskFormat.getValidValue(input)).toBe(expectedResult);
           });
 
-          const anotherCharTests: { [key: string]: { [key2: string]: string } } = {
+          const anotherCharTests: { [maskType: string]: { [segmentIndex: string]: string } } = {
             time: {
               '0': `23`,
               '1': `23${mask.separator}59`,
@@ -287,7 +289,7 @@ describe('MaskFormat', () => {
       });
 
       describe('autoComplete', () => {
-        const expectedResultZero: { [key: string]: { [key2: string]: string } } = {
+        const expectedResultZero: { [maskType: string]: { [segmentIndex: string]: string } } = {
           date: {
             '1': `2000`,
             '2': `2000${maskFormat.separator}01`,
@@ -309,7 +311,7 @@ describe('MaskFormat', () => {
         });
 
         test(`should autocomplete a partial value for 1, 01, ${maskType === 'date' ? '001' : ''}`, () => {
-          const expectedResultOne: { [key: string]: { [key2: string]: string } } = {
+          const expectedResultOne: { [maskType: string]: { [segmentIndex: string]: string } } = {
             date: {
               '1': `2001`,
               '2': `2001${maskFormat.separator}01`,
@@ -332,7 +334,7 @@ describe('MaskFormat', () => {
         });
 
         test(`should autocomplete a partial value with separator`, () => {
-          const expectedResultOne: { [key: string]: { [key2: string]: string } } = {
+          const expectedResultOne: { [maskType: string]: { [segmentIndex: string]: string } } = {
             date: {
               '1': `2001`,
               '2': `2001${maskFormat.separator}01`,
@@ -349,7 +351,7 @@ describe('MaskFormat', () => {
         });
 
         test('should not change a complete value', () => {
-          const expectedResult: { [key: string]: { [key2: string]: string } } = {
+          const expectedResult: { [maskType: string]: { [segmentIndex: string]: string } } = {
             date: {
               '1': `1999`,
               '2': `2014${maskFormat.separator}01`,
@@ -369,8 +371,8 @@ describe('MaskFormat', () => {
       describe('getSegmentValueWithAddition', () => {
         test('should overwrite the character at a given position in a segment', () => {
           const tests: {
-            [key: string]: {
-              [key2: string]: {
+            [maskType: string]: {
+              [segmentIndex: string]: {
                 position: number;
                 value: string;
                 enteredDigit: string;
@@ -428,8 +430,8 @@ describe('MaskFormat', () => {
       describe('replaceDigitsWithZeroes', () => {
         test('replaces selected digits with zeroes', () => {
           const tests: {
-            [key: string]: {
-              [key2: string]: {
+            [maskType: string]: {
+              [segmentIndex: string]: {
                 cursorStart: number;
                 value: string;
                 cursorEnd: number;
