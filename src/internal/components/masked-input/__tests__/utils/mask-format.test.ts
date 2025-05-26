@@ -93,17 +93,6 @@ describe('MaskFormat', () => {
     describe(description, () => {
       const maskFormat = new MaskFormat(mask);
 
-      test('constructs the mask correctly', () => {
-        expect(maskFormat).toBeTruthy();
-        const maskFormatSeparators = maskFormat.getValidSeparators();
-        expect(maskFormatSeparators.length).toBe((mask.inputSeparators || []).length + 1);
-        expect(maskFormatSeparators).toContain(mask.separator);
-        mask.inputSeparators?.forEach(inputSeparator => {
-          expect(maskFormatSeparators).toContain(inputSeparator);
-        });
-        expect(maskFormat.getSegmentCount()).toBe(mask.segments.length);
-      });
-
       describe('tryAppendSeparator', () => {
         (maskType === 'time' ? test : test.skip)('returns correctly with time values', () => {
           expect(maskFormat.tryAppendSeparator('1')).toBe('1');
@@ -152,7 +141,7 @@ describe('MaskFormat', () => {
       });
 
       describe('isValid', () => {
-        [...maskFormat.getValidSeparators()].forEach(validSeparator => {
+        [...new Set([mask.inputSeparators || [], mask.separator])].forEach(validSeparator => {
           const isMatchingSeparator = validSeparator === mask.separator;
           test(`returns correct value with "${validSeparator}" separator in param string for first segment`, () => {
             expect(maskFormat.isValid('')).toBe(true);
@@ -316,15 +305,11 @@ describe('MaskFormat', () => {
         };
 
         test('should autocomplete an empty value', () => {
-          expect(maskFormat.autoComplete('')).toBe(
-            expectedResultZero[maskType][`${maskFormat.getSegmentCount()}` as string]
-          );
+          expect(maskFormat.autoComplete('')).toBe(expectedResultZero[maskType][`${mask.segments.length}` as string]);
         });
 
         test(`should autocomplete a partial value for 0`, () => {
-          expect(maskFormat.autoComplete('0')).toBe(
-            expectedResultZero[maskType][`${maskFormat.getSegmentCount()}` as string]
-          );
+          expect(maskFormat.autoComplete('0')).toBe(expectedResultZero[maskType][`${mask.segments.length}` as string]);
         });
 
         test(`should autocomplete a partial value for 1, 01, ${maskType === 'date' ? '001' : ''}`, () => {
@@ -341,15 +326,11 @@ describe('MaskFormat', () => {
             },
           };
 
-          expect(maskFormat.autoComplete('1')).toBe(
-            expectedResultOne[maskType][`${maskFormat.getSegmentCount()}` as string]
-          );
-          expect(maskFormat.autoComplete('01')).toBe(
-            expectedResultOne[maskType][`${maskFormat.getSegmentCount()}` as string]
-          );
+          expect(maskFormat.autoComplete('1')).toBe(expectedResultOne[maskType][`${mask.segments.length}` as string]);
+          expect(maskFormat.autoComplete('01')).toBe(expectedResultOne[maskType][`${mask.segments.length}` as string]);
           if (maskType === 'date') {
             expect(maskFormat.autoComplete('001')).toBe(
-              expectedResultOne[maskType][`${maskFormat.getSegmentCount()}` as string]
+              expectedResultOne[maskType][`${mask.segments.length}` as string]
             );
           }
         });
@@ -367,7 +348,7 @@ describe('MaskFormat', () => {
               '3': `01${maskFormat.separator}00${maskFormat.separator}00`,
             },
           };
-          const resultString = expectedResultOne[maskType][`${maskFormat.getSegmentCount()}` as string];
+          const resultString = expectedResultOne[maskType][`${mask.segments.length}` as string];
           expect(maskFormat.autoComplete(resultString.slice(0, resultString.length - 1))).toBe(resultString);
         });
 
@@ -384,7 +365,7 @@ describe('MaskFormat', () => {
               '3': `09${maskFormat.separator}50${maskFormat.separator}40`,
             },
           };
-          const resultString = expectedResult[maskType][`${maskFormat.getSegmentCount()}` as string];
+          const resultString = expectedResult[maskType][`${mask.segments.length}` as string];
           expect(maskFormat.autoComplete(resultString)).toBe(resultString);
         });
       });
@@ -443,8 +424,7 @@ describe('MaskFormat', () => {
             },
           };
 
-          const { position, value, enteredDigit, result } =
-            tests[maskType][`${maskFormat.getSegmentCount()}` as string];
+          const { position, value, enteredDigit, result } = tests[maskType][`${mask.segments.length}` as string];
           expect(maskFormat.getSegmentValueWithAddition(position, value, enteredDigit)).toBe(result);
         });
       });
@@ -529,7 +509,7 @@ describe('MaskFormat', () => {
             value,
             cursorEnd,
             result: { position: expectedPosition, value: expectedValue },
-          } = tests[maskType][`${maskFormat.getSegmentCount()}` as string];
+          } = tests[maskType][`${mask.segments.length}` as string];
           expect(maskFormat.replaceDigitsWithZeroes(value, cursorStart, cursorEnd)).toEqual({
             position: expectedPosition,
             value: expectedValue,
