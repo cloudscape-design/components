@@ -6,6 +6,5 @@ export default function setResolvedOptions(newValue: { locale: string }): void {
   const dateTimeFormat = new Intl.DateTimeFormat(newValue.locale);
   const resolvedOptions = dateTimeFormat.resolvedOptions();
 
-  // eslint-disable-next-line no-undef
   window.Intl.DateTimeFormat.prototype.resolvedOptions = () => ({ ...resolvedOptions, ...newValue });
 }

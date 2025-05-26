@@ -47,7 +47,7 @@ export function useSingleTabStopNavigation(
 
   let tabIndex = options?.tabIndex;
   if (navigationActive) {
-    tabIndex = !focusTargetActive ? -1 : options?.tabIndex ?? 0;
+    tabIndex = !focusTargetActive ? -1 : (options?.tabIndex ?? 0);
   }
 
   return { navigationActive, tabIndex };

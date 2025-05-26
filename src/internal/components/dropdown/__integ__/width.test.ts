@@ -7,7 +7,7 @@ import { AsyncResponsePage } from '../../../../__integ__/page-objects/async-resp
 
 type ComponentId = 'autosuggest' | 'multiselect' | 'select';
 
-export class DropdownPageObject extends AsyncResponsePage {
+class DropdownPageObject extends AsyncResponsePage {
   getWrapperAndTrigger(componentId: ComponentId) {
     const wrapper = createWrapper();
     let componentWrapper;

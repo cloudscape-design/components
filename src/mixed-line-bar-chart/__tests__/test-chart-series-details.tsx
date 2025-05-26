@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable jest/no-export */
 import React from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';

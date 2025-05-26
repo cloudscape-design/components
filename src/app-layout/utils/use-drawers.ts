@@ -298,7 +298,7 @@ export function useDrawers(
   );
 
   const activeDrawerSize = activeDrawerIdResolved
-    ? drawerSizes[activeDrawerIdResolved] ?? activeDrawer?.defaultSize ?? toolsProps.toolsWidth
+    ? (drawerSizes[activeDrawerIdResolved] ?? activeDrawer?.defaultSize ?? toolsProps.toolsWidth)
     : toolsProps.toolsWidth;
   const activeGlobalDrawersSizes: Record<string, number> = activeGlobalDrawersIds.reduce(
     (acc, currentGlobalDrawerId) => {
@@ -318,7 +318,7 @@ export function useDrawers(
     };
   }, {});
   const minDrawerSize = Math.min(
-    toolsProps?.toolsOpen ? toolsProps.toolsWidth : activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE,
+    toolsProps?.toolsOpen ? toolsProps.toolsWidth : (activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE),
     MIN_DRAWER_SIZE
   );
 

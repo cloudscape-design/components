@@ -64,6 +64,7 @@ function CornerMarker(props: { top?: number; right?: number; left?: number; bott
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 10 10"
       style={{ width: '50px', height: '50px', position: 'absolute', ...props }}
+      focusable="false"
     >
       <line x1="0" y1="0" x2="10" y2="10" stroke="currentColor" strokeWidth="1" />
       <line x1="0" y1="10" x2="10" y2="0" stroke="currentColor" strokeWidth="1" />

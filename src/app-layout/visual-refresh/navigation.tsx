@@ -96,9 +96,7 @@ export default function Navigation() {
             })}
             ref={state !== 'exiting' ? transitionEventsRef : undefined}
             aria-hidden={!navigationOpen}
-            onClick={event => {
-              onNavigationClick && onNavigationClick(event);
-            }}
+            onClick={onNavigationClick}
           >
             <div className={clsx(styles['content-container'], styles['animated-content'])}>
               <div className={styles['hide-navigation']}>

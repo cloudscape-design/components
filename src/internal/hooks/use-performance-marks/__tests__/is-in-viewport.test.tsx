@@ -8,7 +8,6 @@ jest.useFakeTimers();
 function isInViewport(element: Element, callback: (inViewport: boolean) => void) {
   // We need to import the function dynamically so that it picks up the mocked IntersectionObserver.
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   return jest.requireActual('../is-in-viewport').isInViewport(element, callback);
 }
 

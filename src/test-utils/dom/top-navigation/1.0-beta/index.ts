@@ -54,7 +54,6 @@ export default class TopNavigationWrapper extends ComponentWrapper {
 export class MenuDropdownWrapper extends ButtonDropdownWrapper {
   findNativeButton(): ElementWrapper<HTMLButtonElement> {
     // ButtonDropdown always has a button
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.find<HTMLButtonElement>(`button.${menuDropdownStyles.button}`)!;
   }
 }

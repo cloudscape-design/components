@@ -225,7 +225,7 @@ describe('Option component', () => {
         option: {
           ...baseOption,
           iconSvg: (
-            <svg className="test-svg">
+            <svg className="test-svg" focusable="false">
               <circle cx="8" cy="8" r="7" />
             </svg>
           ),

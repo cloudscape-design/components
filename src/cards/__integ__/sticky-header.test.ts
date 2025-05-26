@@ -5,7 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper, { CardsWrapper, ContainerWrapper } from '../../../lib/components/test-utils/selectors';
 
-export default class StickyHeaderCardsPage extends BasePageObject {
+class StickyHeaderCardsPage extends BasePageObject {
   wrapper = new CardsWrapper(createWrapper('body').find(`.${CardsWrapper.rootSelector}`).getElement());
   containerWrapper = new ContainerWrapper(this.wrapper.find(`.${ContainerWrapper.rootSelector}`).getElement());
 
