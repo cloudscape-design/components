@@ -25,13 +25,58 @@ export const generateMaskArgs = ({
   granularity = 'day',
   /**
    * There are only two options, 'iso' and 'slashed' which is our current default format. If more formats are entered
-   * we should take the formatting type rather than teh boolean when we make an update
+   * we should take the formatting type rather than the boolean when we make an update
    */
   isIso = false,
 }: GenerateMaskArgsProps = {}): MaskArgs => {
   return {
     separator: isIso ? '-' : '/',
-    inputSeparators: [...(isIso ? ['/'] : ['-']), '.', ' '],
-    segments: granularity === 'month' ? [yearMask, monthMask] : [yearMask, monthMask, dayMask],
+    inputSeparators: ['.', ' ', ...(isIso ? '/' : '-')],
+    segments: [yearMask, monthMask, ...(granularity === 'month' ? [] : [dayMask])],
   };
 };
+
+/**
+ * Normalizes a partial ISO date string by trimming incomplete segments
+ *
+ * @param dateString The date string to normalize (e.g., "2012-", "2012-0", "2012-01-3")
+ * @param granularity The level of detail required ('month' or 'day')
+ * @returns A properly formatted date string or empty string if invalid
+ */
+export function normalizeIsoDateString(dateString: string, granularity: CalendarProps.Granularity = 'day'): string {
+  if (!dateString) {
+    return '';
+  }
+
+  // Match different parts of the date, including trailing hyphens
+  const match = dateString.match(/^(\d{4})(?:-(\d{1,2})?)?(?:-(\d{1,2})?)?$/);
+
+  if (!match) {
+    return '';
+  }
+
+  const [, year, month, day] = match;
+
+  // Year only
+  if (!month) {
+    return year;
+  }
+
+  // Year and complete month
+  if (month.length === 2) {
+    if (granularity === 'month' || !day) {
+      return `${year}-${month}`;
+    }
+
+    // Year, month, and complete day
+    if (day && day.length === 2) {
+      return `${year}-${month}-${day}`;
+    }
+
+    // Year, month, and incomplete day
+    return `${year}-${month}`;
+  }
+
+  // Year and incomplete month
+  return year;
+}

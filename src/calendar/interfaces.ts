@@ -3,6 +3,7 @@
 
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { DateGranularity, DateLocale } from '../internal/utils/date-time/date-types';
 
 export interface CalendarProps extends BaseComponentProps {
   /**
@@ -32,7 +33,7 @@ export interface CalendarProps extends BaseComponentProps {
    * Supported values and formats are listed in the
    * [JavaScript Intl API specification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
    */
-  locale?: string;
+  locale?: DateLocale;
 
   /**
    * Determines the starting day of the week. The values 0-6 map to Sunday-Saturday.
@@ -109,7 +110,7 @@ export namespace CalendarProps {
     (date: Date): string;
   }
 
-  export type Granularity = 'day' | 'month';
+  export type Granularity = DateGranularity;
 
   export interface I18nStrings {
     /**

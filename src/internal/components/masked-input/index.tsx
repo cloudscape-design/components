@@ -16,6 +16,7 @@ const MaskedInput = React.forwardRef(
   (
     {
       value,
+      staticValue = '',
       onBlur,
       onChange,
       onKeyDown,
@@ -43,15 +44,26 @@ const MaskedInput = React.forwardRef(
       inputRef,
       autofix,
       disableAutocompleteOnBlur,
-      onChange: (value: string) => !rest.readOnly && fireNonCancelableEvent(onChange, { value }),
+      onChange: (value: string) => !rest.readOnly && !rest.disabled && fireNonCancelableEvent(onChange, { value }),
       onKeyDown: (event: CustomEvent) =>
-        !rest.readOnly && onKeyDown && fireCancelableEvent(onKeyDown, event.detail, event),
+        !rest.readOnly && !rest.disabled && onKeyDown && fireCancelableEvent(onKeyDown, event.detail, event),
       onBlur: () => fireNonCancelableEvent(onBlur),
       setPosition: setCursorPosition,
     });
 
-    const inputProps = { ...rest, ...baseProps, ...formFieldContext, ...maskProps };
+    const inputProps = {
+      ...rest,
+      ...baseProps,
+      ...formFieldContext,
+      ...(staticValue
+        ? {
+            value: staticValue,
+          }
+        : maskProps),
+    };
+
     const mergedRef = useMergeRefs(ref, inputRef);
+
     return (
       <InternalInput
         {...inputProps}
