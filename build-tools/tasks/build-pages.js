@@ -6,7 +6,7 @@ const webpack = require('webpack');
 const { parallel } = require('gulp');
 const path = require('path');
 const { mkdirSync, existsSync } = require('fs');
-const createConfig = require('../../pages/webpack.config');
+const createConfig = require('../../pages/webpack.config.cjs');
 const { task } = require('../utils/gulp-utils');
 const workspace = require('../utils/workspace');
 
