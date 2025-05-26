@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useState } from 'react';
 
-import { Box, Checkbox, SpaceBetween } from '~components';
+import { Box, Checkbox, FormField, SpaceBetween } from '~components';
 import DateInput, { DateInputProps } from '~components/date-input';
 
 import { AppContextType } from '../app/app-context';
@@ -37,6 +37,21 @@ export default function DateInputScenario() {
       setValue('');
     }
   }, [hasValue]);
+
+  const SimpleDateInput = (
+    <DateInput
+      className="testing-date-input"
+      name="date"
+      ariaLabel={`Enter the date in ${inputFormatPlaceholderText}`}
+      placeholder={inputFormatPlaceholderText}
+      onChange={e => setValue(e.detail.value)}
+      value={value}
+      format={format === '' ? undefined : format}
+      displayFormat={displayFormat === '' ? undefined : displayFormat}
+      granularity={monthOnly ? 'month' : 'day'}
+      locale={locale}
+    />
+  );
 
   return (
     <Box padding="l">
@@ -108,18 +123,17 @@ export default function DateInputScenario() {
             </select>
           </label>
         </SpaceBetween>
-        <DateInput
-          className="testing-date-input"
-          name="date"
-          ariaLabel={`Enter the date in ${inputFormatPlaceholderText}`}
-          placeholder={inputFormatPlaceholderText}
-          onChange={e => setValue(e.detail.value)}
-          value={value}
-          format={format === '' ? undefined : format}
-          displayFormat={displayFormat === '' ? undefined : displayFormat}
-          granularity={monthOnly ? 'month' : 'day'}
-          locale={locale}
-        />
+        <h3>Simple</h3>
+        {SimpleDateInput}
+        <br />
+        <h3>Simple wrapped in FormField component</h3>
+        <FormField
+          label="Form field date label"
+          description="This is a description for a date in a form field."
+          constraintText={`Enter ${inputFormatPlaceholderText}`}
+        >
+          {SimpleDateInput}
+        </FormField>
         <b>Raw value</b>
         <pre>{JSON.stringify(value, undefined, 2)}</pre>
       </SpaceBetween>
