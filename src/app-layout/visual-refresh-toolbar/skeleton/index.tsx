@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { Transition } from '../../../internal/components/transition';
 import VisualContext from '../../../internal/components/visual-context';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { useMobile } from '../../../internal/hooks/use-mobile';
@@ -162,7 +163,19 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
           >
             {tools}
           </div>
-          <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>{globalTools}</div>
+          <Transition in={globalToolsOpen ?? false}>
+            {(state, elementRef) => (
+              <div
+                ref={elementRef}
+                className={clsx(
+                  styles['global-tools'],
+                  !globalToolsOpen && state === 'exited' && styles['panel-hidden']
+                )}
+              >
+                {globalTools}
+              </div>
+            )}
+          </Transition>
         </div>
       </VisualContext>
     );
