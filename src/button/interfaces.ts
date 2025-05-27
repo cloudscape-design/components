@@ -127,9 +127,9 @@ export interface BaseButtonProps {
         hover: string;
       };
       focusRing?: {
-        borderColor?: string;
+        borderColor: string;
         borderRadius?: string;
-        borderWidth?: string;
+        borderWidth: string;
       };
       paddingBlock?: string;
       paddingInline?: string;
