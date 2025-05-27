@@ -162,8 +162,10 @@ const colors = {
 const focusRings = {
   light: {
     borderColor: 'rgb(0, 64, 77)',
+    borderWidth: '2px',
   },
   dark: {
     borderColor: 'rgb(233, 249, 252)',
+    borderWidth: '2px',
   },
 };
