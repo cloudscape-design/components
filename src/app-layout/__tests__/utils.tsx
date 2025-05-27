@@ -14,6 +14,7 @@ import { forceMobileModeSymbol } from '../../internal/hooks/use-mobile';
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
+import globalDrawerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/drawer/styles.css.js';
 import visualRefreshToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 
 export function renderComponent(jsx: React.ReactElement) {
@@ -169,6 +170,10 @@ class AppLayoutDrawerWrapper extends ComponentWrapper {
   isActive(): boolean {
     return this.element.classList.contains(testutilStyles['active-drawer']);
   }
+
+  isDrawerInExpandedMode(): boolean {
+    return this.element.classList.contains(globalDrawerStyles['drawer-expanded']);
+  }
 }
 
 export const getGlobalDrawersTestUtils = (wrapper: AppLayoutWrapper) => {
@@ -196,6 +201,16 @@ export const getGlobalDrawersTestUtils = (wrapper: AppLayoutWrapper) => {
       return wrapper.find(
         `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['active-drawer-close-button']}`
       );
+    },
+
+    findExpandedModeButtonByActiveDrawerId(id: string): ElementWrapper | null {
+      return wrapper.find(
+        `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['active-drawer-expanded-mode-button']}`
+      );
+    },
+
+    isLayoutInDrawerExpandedMode(): boolean {
+      return !!wrapper.matches(`.${visualRefreshToolbarStyles['drawer-expanded-mode']}`);
     },
   };
 };

@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
+import { useUniqueId } from '../../hooks/use-unique-id';
 import {
   AlertFlashContentApiInternal,
   AlertFlashContentResult,
@@ -16,15 +17,17 @@ export function createUseDiscoveredContent(componentName: string, controller: Al
     children,
   }: {
     type: string;
-    header: ReactNode;
-    children: ReactNode;
+    header: React.ReactNode;
+    children: React.ReactNode;
   }) {
+    const instanceId = useUniqueId(`${componentName}-discovered-content`);
     const headerRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const replacementHeaderRef = useRef<HTMLDivElement>(null);
     const replacementContentRef = useRef<HTMLDivElement>(null);
     const [initialHidden, setInitialHidden] = useState(() =>
       controller.initialCheck({
+        instanceId,
         type,
         header,
         content: children,
@@ -35,7 +38,7 @@ export function createUseDiscoveredContent(componentName: string, controller: Al
     const mountedProvider = useRef<AlertFlashContentResult | undefined>();
 
     useEffect(() => {
-      const context = { type, headerRef, contentRef };
+      const context = { instanceId, type, headerRef, contentRef };
 
       setInitialHidden(false);
 
@@ -96,7 +99,7 @@ export function createUseDiscoveredContent(componentName: string, controller: Al
           mounted = false;
         };
       });
-    }, [type]);
+    }, [instanceId, type]);
 
     useEffect(() => {
       mountedProvider.current?.update();

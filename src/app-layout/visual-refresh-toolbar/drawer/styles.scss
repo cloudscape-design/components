@@ -19,6 +19,10 @@
   }
 }
 
+$global-drawer-gap-size: 8px;
+$global-drawer-expanded-mode-motion: #{awsui.$motion-duration-refresh-only-slow} #{awsui.$motion-easing-refresh-only-a};
+$drawer-resize-handle-size: awsui.$space-m;
+
 .drawer {
   position: sticky;
   z-index: constants.$drawer-z-index;
@@ -34,6 +38,14 @@
   pointer-events: auto;
   word-wrap: break-word;
 
+  &.with-expanded-motion {
+    @include styles.with-motion {
+      transition:
+        inline-size #{$global-drawer-expanded-mode-motion},
+        min-inline-size #{$global-drawer-expanded-mode-motion};
+    }
+  }
+
   @include desktop-only {
     &:not(.legacy) {
       border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
@@ -48,8 +60,14 @@
   }
 
   &.drawer-global {
+    display: block;
+
+    @include desktop-only {
+      inline-size: var(#{custom-props.$drawerSize});
+    }
+
     @include mobile-only {
-      &:not(.last-opened) {
+      &:not(.last-opened):not(.drawer-expanded) {
         display: none;
       }
     }
@@ -59,6 +77,47 @@
     display: none;
   }
 
+  &.drawer-expanded {
+    inline-size: 100%;
+
+    @include desktop-only {
+      border-inline-start: none;
+
+      &.has-next-siblings {
+        > .global-drawer-wrapper {
+          &:after {
+            content: '';
+            position: absolute;
+            block-size: 100%;
+            inline-size: $global-drawer-gap-size;
+            inset-inline-end: 0;
+            background: awsui.$color-gap-global-drawer;
+            border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+            box-sizing: border-box;
+          }
+        }
+      }
+
+      > .global-drawer-wrapper {
+        inline-size: 100%;
+        grid-template-columns: $global-drawer-gap-size 1fr;
+
+        > .drawer-content-container {
+          grid-column: 2;
+        }
+
+        > .drawer-gap {
+          grid-column: 1;
+          grid-row: 1;
+          block-size: 100%;
+          inline-size: $global-drawer-gap-size;
+          background: awsui.$color-gap-global-drawer;
+          border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+        }
+      }
+    }
+  }
+
   > .drawer-content-container {
     grid-column: 1 / span 2;
     grid-row: 1;
@@ -66,12 +125,22 @@
     grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
     grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 1fr;
     overflow-y: auto;
+    min-inline-size: var(#{custom-props.$drawerSize});
 
     > .drawer-close-button {
       grid-column: 3;
       grid-row: 2;
       z-index: 1;
       align-self: start;
+    }
+
+    > .drawer-expanded-mode-button {
+      grid-column: 2;
+      grid-row: 2;
+      z-index: 1;
+      align-self: start;
+      display: flex;
+      justify-content: flex-end;
     }
 
     > .drawer-content {
@@ -89,5 +158,84 @@
     block-size: 100%;
     display: flex;
     align-items: center;
+  }
+
+  > .global-drawer-wrapper {
+    display: grid;
+    min-inline-size: var(#{custom-props.$drawerSize});
+    grid-template-columns: $global-drawer-gap-size $drawer-resize-handle-size 1fr;
+    overflow: hidden;
+
+    @include mobile-only {
+      grid-template-columns: 1fr;
+      grid-column: 1 / span 2;
+    }
+
+    > .drawer-gap {
+      grid-column: 1;
+      grid-row: 1;
+      block-size: 100%;
+      inline-size: $global-drawer-gap-size;
+      background: awsui.$color-gap-global-drawer;
+      border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      box-sizing: border-box;
+    }
+
+    > .drawer-slider {
+      grid-column: 2;
+      grid-row: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    > .drawer-content-container {
+      grid-row: 1;
+      display: grid;
+      grid-template-columns: $drawer-resize-handle-size 1fr auto $drawer-resize-handle-size;
+      grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 1fr;
+      overflow-y: auto;
+
+      @include desktop-only {
+        grid-column: 2 / span 2;
+      }
+
+      @include mobile-only {
+        grid-column: 1 / span 2;
+      }
+
+      > .drawer-actions {
+        position: absolute;
+        display: flex;
+        align-self: flex-start;
+        justify-self: flex-end;
+        padding-inline-end: awsui.$space-m;
+        padding-block-start: constants.$toolbar-vertical-panel-icon-offset;
+      }
+
+      > .drawer-close-button {
+        grid-column: 3;
+        grid-row: 2;
+        z-index: 1;
+        align-self: start;
+      }
+
+      > .drawer-expanded-mode-button {
+        grid-column: 2;
+        grid-row: 2;
+        z-index: 1;
+        align-self: start;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      > .drawer-content {
+        grid-column: 1 / span 4;
+        grid-row: 1 / span 2;
+
+        &.drawer-content-hidden {
+          display: none;
+        }
+      }
+    }
   }
 }

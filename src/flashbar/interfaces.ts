@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { ButtonProps } from '../button/interfaces';
+import { ErrorContext } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 
 export namespace FlashbarProps {
@@ -25,6 +26,7 @@ export namespace FlashbarProps {
 
   export interface ItemAnalyticsMetadata {
     suppressFlowMetricEvents?: boolean;
+    errorContext?: ErrorContext;
   }
 
   export interface I18nStrings {

@@ -3,9 +3,12 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
+import Box from '~components/box';
+import ButtonDropdown from '~components/button-dropdown';
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
 
+import { IframeWrapper } from '../../utils/iframe-wrapper';
 import { Counter, CustomDrawerContent } from './content-blocks';
 
 const searchParams = new URL(location.hash.substring(1), location.href).searchParams;
@@ -130,6 +133,8 @@ awsuiPlugins.appLayout.registerDrawer({
   defaultSize: 350,
   preserveInactiveContent: true,
 
+  isExpandable: true,
+
   ariaLabels: {
     closeButton: 'Close button',
     content: 'Content',
@@ -153,13 +158,20 @@ awsuiPlugins.appLayout.registerDrawer({
 
   mountContent: (container, mountContext) => {
     ReactDOM.render(
-      <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
-        global widget content circle 1
-        {new Array(100).fill(null).map((_, index) => (
-          <div key={index}>{index}</div>
-        ))}
-        <div data-testid="circle-global-bottom-content">circle-global bottom content</div>
-      </AutoIncrementCounter>,
+      <Drawer
+        header={<Box variant="h2">Global drawer</Box>}
+        headerActions={
+          <ButtonDropdown items={[{ id: 'settings', text: 'Settings' }]} ariaLabel="Control drawer" variant="icon" />
+        }
+      >
+        <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
+          global widget content circle 1
+          {new Array(100).fill(null).map((_, index) => (
+            <div key={index}>{index}</div>
+          ))}
+          <div data-testid="circle-global-bottom-content">circle-global bottom content</div>
+        </AutoIncrementCounter>
+      </Drawer>,
       container
     );
   },
@@ -210,6 +222,8 @@ awsuiPlugins.appLayout.registerDrawer({
   resizable: true,
   defaultSize: 320,
 
+  isExpandable: true,
+
   ariaLabels: {
     closeButton: 'Close button',
     content: 'Content',
@@ -226,10 +240,15 @@ awsuiPlugins.appLayout.registerDrawer({
 
   mountContent: container => {
     ReactDOM.render(
-      <>
-        <Counter id="circle3-global" />
-        global widget content circle 3
-      </>,
+      <IframeWrapper
+        id="circle3-global"
+        AppComponent={() => (
+          <>
+            <Counter id="circle3-global" />
+            global widget content circle 3
+          </>
+        )}
+      />,
       container
     );
   },

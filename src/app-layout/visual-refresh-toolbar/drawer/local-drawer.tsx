@@ -124,6 +124,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
                 onClick={() => onActiveDrawerChange(null, { initiatedByUserAction: true })}
                 ref={drawersFocusControl.refs.close}
                 variant="icon"
+                analyticsAction="close"
               />
             </div>
             <div

@@ -22,7 +22,8 @@ export function getAllComponents(): string[] {
         name !== 'contexts' &&
         name !== 'i18n' &&
         !name.includes('.') &&
-        !name.includes('LICENSE')
+        !name.includes('LICENSE') &&
+        !name.includes('NOTICE')
     );
 }
 

@@ -47,6 +47,9 @@ export interface ToolbarProps {
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   activeGlobalDrawersIds?: ReadonlyArray<string>;
   onActiveGlobalDrawersChange?: ((drawerId: string, params: OnChangeParams) => void) | undefined;
+
+  expandedDrawerId?: string | null;
+  setExpandedDrawerId?: (value: string | null) => void;
 }
 
 export interface AppLayoutToolbarImplementationProps {
@@ -87,9 +90,12 @@ export function AppLayoutToolbarImplementation({
     splitPanelFocusRef,
     splitPanelToggleProps,
     onSplitPanelToggle,
+    expandedDrawerId,
+    setExpandedDrawerId,
   } = toolbarProps ?? {};
   // TODO: expose configuration property
   const pinnedToolbar = true;
+  const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
   useResizeObserver(ref, entry => setToolbarHeight?.(entry.borderBoxHeight));
   useEffect(() => {
@@ -161,9 +167,17 @@ export function AppLayoutToolbarImplementation({
               ariaExpanded={false}
               iconName="menu"
               className={testutilStyles['navigation-toggle']}
-              onClick={() => onNavigationToggle?.(!navigationOpen)}
+              onClick={() => {
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(null);
+                }
+                if (navigationOpen) {
+                  return;
+                }
+                onNavigationToggle?.(!navigationOpen);
+              }}
               ref={navigationFocusRef}
-              selected={navigationOpen}
+              selected={!drawerExpandedMode && navigationOpen}
               disabled={anyPanelOpenInMobile}
             />
           </nav>
@@ -192,6 +206,8 @@ export function AppLayoutToolbarImplementation({
               globalDrawers={globalDrawers?.filter(item => !!item.trigger) ?? []}
               activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
               onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
+              expandedDrawerId={expandedDrawerId}
+              setExpandedDrawerId={setExpandedDrawerId!}
             />
           </div>
         )}

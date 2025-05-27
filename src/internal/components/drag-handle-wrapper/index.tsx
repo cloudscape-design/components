@@ -25,11 +25,13 @@ export default function DragHandleWrapper({
   tooltipText,
   children,
   onDirectionClick,
+  triggerMode = 'focus',
+  initialShowButtons = false,
 }: DragHandleWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const dragHandleRef = useRef<HTMLDivElement | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [showButtons, setShowButtons] = useState(false);
+  const [showButtons, setShowButtons] = useState(initialShowButtons);
 
   const isPointerDown = useRef(false);
   const initialPointerPosition = useRef<{ x: number; y: number } | undefined>();
@@ -49,7 +51,9 @@ export default function DragHandleWrapper({
     // if the action that triggered the focus move was the result of a keypress.
     if (document.body.dataset.awsuiFocusVisible && !nodeContains(wrapperRef.current, event.relatedTarget)) {
       setShowTooltip(false);
-      setShowButtons(true);
+      if (triggerMode === 'focus') {
+        setShowButtons(true);
+      }
     }
   };
 
@@ -147,11 +151,19 @@ export default function DragHandleWrapper({
   };
 
   const onDragHandleKeyDown: React.KeyboardEventHandler = event => {
-    // For accessibility reasons, pressing escape should should always close
-    // the floating controls.
+    // For accessibility reasons, pressing escape should always close the floating controls.
     if (event.key === 'Escape') {
       setShowButtons(false);
-    } else if (event.key !== 'Alt' && event.key !== 'Control' && event.key !== 'Meta' && event.key !== 'Shift') {
+    } else if (triggerMode === 'keyboard-activate' && (event.key === 'Enter' || event.key === ' ')) {
+      // toggle buttons when Enter or space is pressed in 'keyboard-activate' triggerMode
+      setShowButtons(prevshowButtons => !prevshowButtons);
+    } else if (
+      event.key !== 'Alt' &&
+      event.key !== 'Control' &&
+      event.key !== 'Meta' &&
+      event.key !== 'Shift' &&
+      triggerMode !== 'keyboard-activate'
+    ) {
       // Pressing any other key will display the focus-visible ring around the
       // drag handle if it's in focus, so we should also show the buttons now.
       setShowButtons(true);
@@ -190,7 +202,7 @@ export default function DragHandleWrapper({
         )}
       </div>
 
-      <PortalOverlay track={dragHandleRef.current} isDisabled={!showButtons}>
+      <PortalOverlay track={dragHandleRef} isDisabled={!showButtons}>
         {directions['block-start'] && (
           <DirectionButton
             show={!isDisabled && showButtons}

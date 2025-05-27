@@ -19,6 +19,7 @@ export const i18nStrings: CodeEditorProps.I18nStrings = {
 
   preferencesModalHeader: 'Preferences',
   preferencesModalCancel: 'Cancel',
+  preferencesModalCloseAriaLabel: 'Close',
   preferencesModalConfirm: 'Confirm',
   preferencesModalWrapLines: 'Wrap lines',
   preferencesModalTheme: 'Theme',
