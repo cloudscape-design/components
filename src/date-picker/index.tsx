@@ -3,6 +3,8 @@
 import React, { Ref, useCallback, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import InternalCalendar from '../calendar/internal';
@@ -18,7 +20,6 @@ import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useFocusTracker } from '../internal/hooks/use-focus-tracker.js';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { KeyCode } from '../internal/keycode';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
