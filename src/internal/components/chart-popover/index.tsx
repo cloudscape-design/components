@@ -4,12 +4,12 @@ import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import PopoverBody from '../../../popover/body';
 import PopoverContainer from '../../../popover/container';
 import { PopoverProps } from '../../../popover/interfaces';
 import { getBaseProps } from '../../base-component';
-import { useMergeRefs } from '../../hooks/use-merge-refs';
 import { nodeBelongs } from '../../utils/node-belongs';
 
 import popoverStyles from '../../../popover/styles.css.js';

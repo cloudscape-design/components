@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import Filter from '../internal/components/chart-filter';
@@ -13,7 +13,6 @@ import { ChartWrapper } from '../internal/components/chart-wrapper';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';

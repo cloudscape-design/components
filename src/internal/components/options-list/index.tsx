@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import {
@@ -14,7 +14,6 @@ import {
   fireNonCancelableEvent,
   NonCancelableEventHandler,
 } from '../../events';
-import { useMergeRefs } from '../../hooks/use-merge-refs';
 import { DropdownStatusProps } from '../dropdown-status';
 
 import styles from './styles.css.js';
