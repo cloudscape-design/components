@@ -70,7 +70,9 @@ function AppLayoutGlobalDrawerImplementation({
   const hasTriggerButton = !!activeGlobalDrawer?.trigger;
   const isExpanded = activeGlobalDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
   const wasExpanded = usePrevious(isExpanded);
-  const animationDisabled = wasExpanded && !isExpanded;
+  const animationDisabled =
+    (activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id)) ||
+    (wasExpanded && !isExpanded);
   const [hasOpened, setHasOpened] = React.useState(false);
 
   useEffect(() => {
