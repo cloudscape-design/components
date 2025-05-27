@@ -100,6 +100,41 @@ export interface BaseButtonProps {
    * @i18n
    */
   i18nStrings?: ButtonProps.I18nStrings;
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: {
+    root?: {
+      background?: {
+        active: string;
+        default: string;
+        disabled: string;
+        hover: string;
+      };
+      borderColor?: {
+        active: string;
+        default: string;
+        disabled: string;
+        hover: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      color?: {
+        active: string;
+        default: string;
+        disabled: string;
+        hover: string;
+      };
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+  };
 }
 
 export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
