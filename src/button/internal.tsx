@@ -293,7 +293,7 @@ export const InternalButton = React.forwardRef(
       </>
     );
 
-    const propertiesAndVariables = {
+    const stylePropertiesAndVariables = {
       borderRadius: style?.root?.borderRadius,
       borderWidth: style?.root?.borderWidth,
       paddingBlock: style?.root?.paddingBlock,
@@ -316,14 +316,11 @@ export const InternalButton = React.forwardRef(
         [customCssProps.styleColorDisabled]: style.root.color.disabled,
         [customCssProps.styleColorHover]: style.root.color.hover,
       }),
-      ...(style?.root?.focusRing?.borderColor && {
-        [customCssProps.styleFocusRingBorderColor]: style.root.focusRing.borderColor,
+      ...(style?.root?.focusRing && {
+        [customCssProps.styleFocusRingBoxShadow]: `0 0 0 ${style.root.focusRing.borderWidth} ${style.root.focusRing.borderColor}`,
       }),
       ...(style?.root?.focusRing?.borderRadius && {
         [customCssProps.styleFocusRingBorderRadius]: style.root.focusRing.borderRadius,
-      }),
-      ...(style?.root?.focusRing?.borderWidth && {
-        [customCssProps.styleFocusRingBorderWidth]: style.root.focusRing.borderWidth,
       }),
     };
 
@@ -341,7 +338,7 @@ export const InternalButton = React.forwardRef(
             aria-disabled={isNotInteractive ? true : undefined}
             download={download}
             {...disabledReasonProps}
-            style={propertiesAndVariables}
+            style={stylePropertiesAndVariables}
           >
             {buttonContent}
             {isDisabledWithReason && disabledReasonContent}
@@ -363,7 +360,7 @@ export const InternalButton = React.forwardRef(
           disabled={disabled && !__focusable && !isDisabledWithReason}
           aria-disabled={hasAriaDisabled ? true : undefined}
           {...disabledReasonProps}
-          style={propertiesAndVariables}
+          style={stylePropertiesAndVariables}
         >
           {buttonContent}
           {isDisabledWithReason && disabledReasonContent}
