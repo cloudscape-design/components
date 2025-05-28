@@ -10,9 +10,11 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<ButtonProps>([
   {
+    ariaLabel: ['Border Styles'],
     children: ['Border Styles'],
     disabled: [false, true],
     iconName: ['add-plus'],
+    iconAlt: ['add-plus'],
     style: [
       {
         root: {
@@ -30,9 +32,11 @@ const permutations = createPermutations<ButtonProps>([
     variant: ['primary', 'normal', 'link', 'icon', 'inline-icon', 'inline-link'],
   },
   {
+    ariaLabel: ['Background and Color Styles'],
     children: ['Background and Color Styles'],
     disabled: [false, true],
     iconName: ['arrow-left'],
+    iconAlt: ['arrow-left'],
     loading: [false, true],
     style: [
       {
@@ -56,9 +60,12 @@ const permutations = createPermutations<ButtonProps>([
     variant: ['primary', 'normal', 'link', 'icon', 'inline-icon', 'inline-link'],
   },
   {
+    ariaLabel: ['Padding Styles'],
     children: ['Padding Styles'],
     disabled: [false, true],
     iconName: ['delete-marker'],
+    iconAlt: ['delete-marker'],
+    iconAlign: ['left', 'right'],
     loading: [false, true],
     fullWidth: [false, true],
     style: [
