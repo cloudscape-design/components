@@ -4223,6 +4223,25 @@ If the \`rel\` property is provided, it overrides the default behavior.",
       "type": "string",
     },
     {
+      "inlineType": {
+        "name": "{ root?: { background?: { active: string; default: string; disabled: string; hover: string; } | undefined; borderColor?: { active: string; default: string; disabled: string; hover: string; } | undefined; ... 5 more ...; paddingInline?: string | undefined; } | undefined; }",
+        "properties": [
+          {
+            "name": "root",
+            "optional": true,
+            "type": "{ background?: { active: string; default: string; disabled: string; hover: string; } | undefined; borderColor?: { active: string; default: string; disabled: string; hover: string; } | undefined; ... 5 more ...; paddingInline?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "{ root?: { background?: { active: string; default: string; disabled: string; hover: string; } | undefined; borderColor?: { active: string; default: string; disabled: string; hover: string; } | undefined; ... 5 more ...; paddingInline?: string | undefined; } | undefined; }",
+    },
+    {
       "description": "Specifies where to open the linked URL (for example, to open in a new browser window or tab use \`_blank\`).
 This property only applies when an \`href\` is provided.",
       "name": "target",
@@ -20075,6 +20094,25 @@ It prevents users from clicking the button, but it can still be focused.",
       "name": "pressedIconUrl",
       "optional": true,
       "type": "string",
+    },
+    {
+      "inlineType": {
+        "name": "{ root?: { background?: { active: string; default: string; disabled: string; hover: string; } | undefined; borderColor?: { active: string; default: string; disabled: string; hover: string; } | undefined; ... 5 more ...; paddingInline?: string | undefined; } | undefined; }",
+        "properties": [
+          {
+            "name": "root",
+            "optional": true,
+            "type": "{ background?: { active: string; default: string; disabled: string; hover: string; } | undefined; borderColor?: { active: string; default: string; disabled: string; hover: string; } | undefined; ... 5 more ...; paddingInline?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "{ root?: { background?: { active: string; default: string; disabled: string; hover: string; } | undefined; borderColor?: { active: string; default: string; disabled: string; hover: string; } | undefined; ... 5 more ...; paddingInline?: string | undefined; } | undefined; }",
     },
     {
       "defaultValue": "'normal'",
