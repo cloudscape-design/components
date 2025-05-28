@@ -57,7 +57,6 @@ const MaskedInput = React.forwardRef(
       ...(staticValue
         ? {
             value: staticValue,
-            // readOnly: true,
           }
         : maskProps),
     };
