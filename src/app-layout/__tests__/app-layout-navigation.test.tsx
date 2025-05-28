@@ -42,4 +42,20 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop', 'mobile'
     expect(wrapper.findNavigation()).toBeTruthy();
     expect(wrapper.findNavigationToggle()).toBeFalsy();
   });
+
+  (size === 'desktop' ? test : test.skip)('should call onNavigationToggle on open/close navigation', () => {
+    const mockOnNavigationChange = jest.fn();
+    const { wrapper } = renderComponent(
+      <AppLayout navigation={<>Mock Navigation</>} onNavigationChange={mockOnNavigationChange} content={<>Content</>} />
+    );
+
+    expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
+    wrapper.findNavigationToggle().click();
+    expect(mockOnNavigationChange).toHaveBeenCalledTimes(1);
+    expect(wrapper.findOpenNavigationPanel()).toBeFalsy();
+
+    wrapper.findNavigationToggle().click();
+    expect(mockOnNavigationChange).toHaveBeenCalledTimes(2);
+    expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
+  });
 });
