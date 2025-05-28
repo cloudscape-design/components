@@ -6905,7 +6905,6 @@ exports[`Documenter definition for container matches the snapshot: container 1`]
       "type": "boolean",
     },
     {
-      "defaultValue": "false",
       "description": "Determines whether the container footer has padding. If \`true\`, removes the default padding from the footer.",
       "name": "disableFooterPaddings",
       "optional": true,
