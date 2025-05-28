@@ -132,14 +132,14 @@
 
   &.variant-inline-icon {
     padding-block: 0;
-    border-block: 0;
-    border-inline: 0;
+    border-block-width: 0;
+    border-inline-width: 0;
   }
 
   &.variant-inline-icon-pointer-target {
     padding-block: awsui.$space-xxxs;
-    border-block: 0;
-    border-inline: 0;
+    border-block-width: 0;
+    border-inline-width: 0;
   }
 
   > .icon-left {
