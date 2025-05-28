@@ -19,7 +19,6 @@ export default function Container({
   variant = 'default',
   disableHeaderPaddings = false,
   disableContentPaddings = false,
-  disableFooterPaddings = false,
   fitHeight = false,
   ...props
 }: ContainerProps) {
@@ -55,7 +54,6 @@ export default function Container({
         variant={variant}
         disableContentPaddings={disableContentPaddings}
         disableHeaderPaddings={disableHeaderPaddings}
-        disableFooterPaddings={disableFooterPaddings}
         fitHeight={fitHeight}
         {...props}
         {...externalProps}
