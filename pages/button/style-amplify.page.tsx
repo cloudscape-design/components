@@ -12,6 +12,8 @@ import ScreenshotArea from '../utils/screenshot-area';
 export default function AmplifyButtons() {
   return (
     <ScreenshotArea>
+      <h1>Amplify Button Style permutations</h1>
+
       <SpaceBetween direction="horizontal" size="m">
         <AmplifyButton colorTheme="default" variation="primary">
           Default
