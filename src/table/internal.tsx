@@ -303,7 +303,11 @@ const InternalTable = React.forwardRef(
       selectionType,
       isItemDisabled,
       onSelectionChange,
-      ariaLabels,
+      ariaLabels: {
+        ...ariaLabels,
+        // `selectionGroupLabel` should not be part of the selection control, it is already part of the selection column header.
+        selectionGroupLabel: undefined,
+      },
       loading,
       setLastUserAction,
     });
