@@ -15,33 +15,33 @@ export default function CustomButtonTypes() {
       <h1>Custom Button Types</h1>
 
       <SpaceBetween direction="horizontal" size="m">
-        <AmplifyButton colorTheme="default" variation="primary">
+        <CustomButton colorTheme="default" variation="primary">
           Default
-        </AmplifyButton>
-        <AmplifyButton colorTheme="success" variation="primary">
+        </CustomButton>
+        <CustomButton colorTheme="success" variation="primary">
           Success
-        </AmplifyButton>
-        <AmplifyButton colorTheme="error" variation="primary">
+        </CustomButton>
+        <CustomButton colorTheme="error" variation="primary">
           Error
-        </AmplifyButton>
-        <AmplifyButton colorTheme="info" variation="primary">
+        </CustomButton>
+        <CustomButton colorTheme="info" variation="primary">
           Info
-        </AmplifyButton>
-        <AmplifyButton colorTheme="warning" variation="primary">
+        </CustomButton>
+        <CustomButton colorTheme="warning" variation="primary">
           Warning
-        </AmplifyButton>
-        <AmplifyButton colorTheme="success" variation="primary" isDisabled={true}>
+        </CustomButton>
+        <CustomButton colorTheme="success" variation="primary" isDisabled={true}>
           isDisabled
-        </AmplifyButton>
-        <AmplifyButton colorTheme="success" variation="primary" isLoading={true}>
+        </CustomButton>
+        <CustomButton colorTheme="success" variation="primary" isLoading={true}>
           isLoading
-        </AmplifyButton>
+        </CustomButton>
       </SpaceBetween>
     </ScreenshotArea>
   );
 }
 
-interface AmplifyButtonProps {
+interface CustomButtonProps {
   children?: React.ReactNode;
   colorTheme: 'default' | 'error' | 'info' | 'warning' | 'success';
   isDisabled?: boolean;
@@ -50,7 +50,7 @@ interface AmplifyButtonProps {
   variation: 'primary';
 }
 
-function AmplifyButton({ children, colorTheme, isDisabled, isLoading, onClick, variation }: AmplifyButtonProps) {
+function CustomButton({ children, colorTheme, isDisabled, isLoading, onClick, variation }: CustomButtonProps) {
   const mode = useCurrentMode(useRef(document.body));
   const background = backgrounds[mode][colorTheme];
   const color = isDisabled || isLoading ? colors[mode] : colors[mode];
