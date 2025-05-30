@@ -29,13 +29,20 @@ const SidePageSlot = (props: SkeletonLayoutProps) => {
     appLayoutInternals,
     splitPanelInternals,
     splitPanelPosition,
+    drawerExpandedMode,
   } = appLayoutState ?? {};
   const toolsOpen = !!activeDrawer;
   const globalToolsOpen = !!activeGlobalDrawersIds?.length;
   return (
     <>
       {splitPanelPosition === 'side' && (
-        <div className={clsx(styles['split-panel-side'], !splitPanelOpen && styles['panel-hidden'])}>
+        <div
+          className={clsx(
+            styles['split-panel-side'],
+            !splitPanelOpen && styles['panel-hidden'],
+            drawerExpandedMode && styles.hidden
+          )}
+        >
           <AppLayoutSplitPanelSide appLayoutInternals={appLayoutInternals!} splitPanelInternals={splitPanelInternals!}>
             {splitPanel}
           </AppLayoutSplitPanelSide>
@@ -47,7 +54,8 @@ const SidePageSlot = (props: SkeletonLayoutProps) => {
           !toolsOpen && styles['panel-hidden'],
           sharedStyles['with-motion-horizontal'],
           resolvedNavigationOpen && !toolsOpen && styles['unfocusable-mobile'],
-          toolsOpen && styles['tools-open']
+          toolsOpen && styles['tools-open'],
+          drawerExpandedMode && styles.hidden
         )}
       >
         {drawers && drawers.length > 0 && <AppLayoutDrawer appLayoutInternals={appLayoutInternals!} />}

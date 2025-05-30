@@ -50,23 +50,25 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
     toolsHide,
     splitPanel,
     placement,
+    navigationHide,
+    ariaLabels,
+    navigation,
+    navigationOpen,
     ...rest
   } = appLayoutProps;
-  const {
-    wrapperElAttributes,
-    mainElAttributes,
-    contentWrapperElAttributes,
-    contentHeaderElAttributes,
-    contentElAttributes,
-  } = skeletonSlotsAttributes ?? {};
+
   const ref = useMergeRefs(appLayoutState?.intersectionObserverRef, appLayoutState?.rootRef);
   const { __forceDeduplicationType: forceDeduplicationType, __embeddedViewMode: embeddedViewMode } = rest as any;
+  //navigation must be null if hidden so toolbar knows to hide the toggle button
+  const resolvedNavigation = navigationHide ? null : navigation || <></>;
+  //navigation must not be open if navigationHide is true
+  const resolvedNavigationOpen = !!resolvedNavigation && navigationOpen;
   const { registered, toolbarProps } = useMultiAppLayout(
     {
       forceDeduplicationType,
-      ariaLabels: appLayoutState?.appLayoutInternals?.ariaLabels,
-      navigation: appLayoutState?.resolvedNavigation && !navigationTriggerHide,
-      navigationOpen: Boolean(appLayoutState?.resolvedNavigationOpen),
+      ariaLabels: appLayoutState?.appLayoutInternals?.ariaLabels ?? ariaLabels,
+      navigation: resolvedNavigation && !navigationTriggerHide,
+      navigationOpen: Boolean(resolvedNavigationOpen),
       onNavigationToggle: appLayoutState?.appLayoutInternals?.onNavigationToggle ?? function () {},
       navigationFocusRef: appLayoutState?.appLayoutInternals?.navigationFocusControl.refs.toggle,
       breadcrumbs,
@@ -90,6 +92,8 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
       },
       splitPanelFocusRef: appLayoutState?.appLayoutInternals?.splitPanelFocusControl.refs.toggle,
       onSplitPanelToggle: appLayoutState?.appLayoutInternals?.onSplitPanelToggle ?? function () {},
+      expandedDrawerId: appLayoutState?.expandedDrawerId,
+      setExpandedDrawerId: appLayoutState?.setExpandedDrawerId ?? function () {},
     },
     appLayoutState?.isIntersecting ?? true
   );
@@ -111,13 +115,26 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
         globalDrawers: appLayoutState?.appLayoutInternals?.globalDrawers ?? [],
         discoveredBreadcrumbs,
         verticalOffsets,
+        placement,
+        navigationOpen: resolvedNavigationOpen,
       },
       toolbarProps,
       registered,
       hasToolbar,
       verticalOffsets,
+      resolvedNavigation: appLayoutState?.resolvedNavigation ?? resolvedNavigation,
+      resolvedNavigationOpen: appLayoutState?.resolvedNavigationOpen ?? resolvedNavigationOpen,
     },
   };
+  const {
+    wrapperElAttributes,
+    mainElAttributes,
+    getContentWrapperElAttributes,
+    contentHeaderElAttributes,
+    contentElAttributes,
+  } = skeletonSlotsAttributes ?? {};
+
+  const contentWrapperElAttributes = getContentWrapperElAttributes?.(toolbarProps, verticalOffsets);
 
   return (
     <>

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { unstable_batchedUpdates } from 'react-dom';
 
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { AppLayoutProps } from '../interfaces';
 import { AppLayoutVisibilityContext } from './contexts';
 import { AppLayoutInternalProps } from './interfaces';
@@ -16,23 +16,33 @@ const AppLayoutStateProvider: FC<{
     appLayoutState: ReturnType<typeof useAppLayout> | null,
     skeletonSlotsAttributes: ReturnType<typeof useSkeletonSlotsAttributes> | null
   ) => React.ReactNode;
-  appLayoutStateChangeId: string;
-}> = ({ children, appLayoutStateChangeId }) => {
+  // appLayoutStateChangeId: string;
+  stateManager: any;
+}> = ({ stateManager, children }) => {
   const [appLayoutState, setAppLayoutState] = useState(null);
   const [skeletonAttributes, setSkeletonAttributes] = useState(null);
 
   useEffect(() => {
-    addEventListener(appLayoutStateChangeId, event => {
-      setAppLayoutState((event as any).detail.appLayoutState);
-      setSkeletonAttributes((event as any).detail.skeletonAttributes);
-    });
-  }, [appLayoutStateChangeId]);
+    stateManager.current.set = (appLayoutState: any, skeletonAttributes: any) => {
+      unstable_batchedUpdates(() => {
+        setAppLayoutState(appLayoutState);
+        setSkeletonAttributes(skeletonAttributes);
+      });
+    };
+    // addEventListener(appLayoutStateChangeId, event => {
+    //   unstable_batchedUpdates(() => {
+    //     setAppLayoutState((event as any).detail.appLayoutState);
+    //     setSkeletonAttributes((event as any).detail.skeletonAttributes);
+    //   });
+    // });
+  }, [stateManager]);
   return <>{children(appLayoutState, skeletonAttributes)}</>;
 };
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
   (props, forwardRef) => {
-    const appLayoutStateChangeId = useUniqueId('app-layout-state-change-');
+    // const appLayoutStateChangeId = useUniqueId('app-layout-state-change-');
+    const stateManager = useRef<any>({});
 
     return (
       <>
@@ -40,19 +50,27 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           props={props}
           forwardRef={forwardRef}
           onChange={(appLayoutState, skeletonAttributes) => {
-            dispatchEvent(new CustomEvent(appLayoutStateChangeId, { detail: { appLayoutState, skeletonAttributes } }));
+            stateManager.current?.set?.(appLayoutState, skeletonAttributes);
+            // window.dispatchEvent(
+            //   new CustomEvent(appLayoutStateChangeId, { detail: { appLayoutState, skeletonAttributes } })
+            // );
           }}
         />
-        <AppLayoutStateProvider appLayoutStateChangeId={appLayoutStateChangeId}>
-          {(appLayoutState, skeletonSlotsAttributes) => (
-            <AppLayoutVisibilityContext.Provider value={appLayoutState?.isIntersecting ?? true}>
-              <SkeletonLayout
-                appLayoutProps={props}
-                appLayoutState={appLayoutState}
-                skeletonSlotsAttributes={skeletonSlotsAttributes}
-              />
-            </AppLayoutVisibilityContext.Provider>
-          )}
+        <AppLayoutStateProvider
+          stateManager={stateManager}
+          // appLayoutStateChangeId={appLayoutStateChangeId}
+        >
+          {(appLayoutState, skeletonSlotsAttributes) => {
+            return (
+              <AppLayoutVisibilityContext.Provider value={appLayoutState?.isIntersecting ?? true}>
+                <SkeletonLayout
+                  appLayoutProps={props}
+                  appLayoutState={appLayoutState}
+                  skeletonSlotsAttributes={skeletonSlotsAttributes}
+                />
+              </AppLayoutVisibilityContext.Provider>
+            );
+          }}
         </AppLayoutStateProvider>
       </>
     );

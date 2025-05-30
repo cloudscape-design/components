@@ -124,6 +124,8 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
     onActiveDrawerChange,
     onActiveDrawerResize,
     onActiveGlobalDrawersChange,
+    expandedDrawerId,
+    setExpandedDrawerId,
   } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer }, ariaLabels, {
     ariaLabels,
     toolsHide,
@@ -289,6 +291,8 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
     onActiveDrawerChange: onActiveDrawerChangeHandler,
     onActiveDrawerResize,
     splitPanelAnimationDisabled,
+    expandedDrawerId,
+    setExpandedDrawerId,
   };
 
   const splitPanelInternals: SplitPanelProviderProps = {
@@ -428,5 +432,8 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
     splitPanelInternals,
     toolbarHeight,
     notificationsHeight,
+    setExpandedDrawerId,
+    expandedDrawerId,
+    drawerExpandedMode: !!expandedDrawerId,
   };
 };

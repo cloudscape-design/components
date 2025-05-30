@@ -23,8 +23,13 @@ export const TopPageSlot = (props: SkeletonLayoutProps) => {
     appLayoutInternals,
     toolbarProps,
     resolvedNavigation,
+    drawerExpandedMode,
   } = appLayoutState ?? {};
   const toolsOpen = !!activeDrawer;
+  // Why not use drawerExpandedMode={!!expandedDrawerId || !!toolbarProps?.expandedDrawerId} instead?
+  // Because in nested layouts, the parent layout hides its main content area,
+  // which means the child layout isn't rendered at all in that case
+  const drawerExpandedModeInChildLayout = !!toolbarProps?.expandedDrawerId;
   return (
     <>
       {hasToolbar && <AppLayoutToolbar appLayoutInternals={appLayoutInternals!} toolbarProps={toolbarProps!} />}
@@ -34,7 +39,8 @@ export const TopPageSlot = (props: SkeletonLayoutProps) => {
             styles.navigation,
             !resolvedNavigationOpen && styles['panel-hidden'],
             toolsOpen && styles['unfocusable-mobile'],
-            !navigationAnimationDisabled && sharedStyles['with-motion-horizontal']
+            !navigationAnimationDisabled && sharedStyles['with-motion-horizontal'],
+            (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden
           )}
         >
           {resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals!} />}

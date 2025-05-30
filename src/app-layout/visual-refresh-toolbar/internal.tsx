@@ -33,8 +33,7 @@ export const AppLayoutWidgetizedState = createWidgetizedAppLayoutState(
   createAppLayoutPart({ Component: AppLayoutStateImplementation })
 );
 
-const enableDelayedComponents = true;
-const enableSyncComponents = false;
+const enableDelayedComponents = false;
 
 export function createAppLayoutPart({ Component }: { Component: React.JSXElementConstructor<any> }) {
   const AppLayoutPartLoader = ({ Skeleton, ...props }: any) => {
@@ -47,7 +46,7 @@ export function createAppLayoutPart({ Component }: { Component: React.JSXElement
       }, 500);
     }, []);
 
-    if (enableSyncComponents || (mount && enableDelayedComponents)) {
+    if (!enableDelayedComponents || (mount && enableDelayedComponents)) {
       return <Component {...props} />;
     }
 
