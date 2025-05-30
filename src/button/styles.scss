@@ -65,7 +65,8 @@
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
-  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0 var(#{custom-props.$styleFocusRingBorderWidth}, 2px)
+  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
     var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
   @each $variant in map.keys(constants.$variants) {
