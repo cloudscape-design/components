@@ -6,13 +6,13 @@ import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 
 import { Button as CloudscapeButton, SpaceBetween } from '~components';
 
-import { palette } from '../app/themes/amplify';
+import { palette } from '../app/themes/style-api';
 import ScreenshotArea from '../utils/screenshot-area';
 
-export default function AmplifyButtons() {
+export default function CustomButtonTypes() {
   return (
     <ScreenshotArea>
-      <h1>Amplify Button Style permutations</h1>
+      <h1>Custom Button Types</h1>
 
       <SpaceBetween direction="horizontal" size="m">
         <AmplifyButton colorTheme="default" variation="primary">
