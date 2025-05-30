@@ -4224,12 +4224,12 @@ If the \`rel\` property is provided, it overrides the default behavior.",
     },
     {
       "inlineType": {
-        "name": "{ root?: { background?: { active: string; default: string; disabled: string; hover: string; } | undefined; borderColor?: { active: string; default: string; disabled: string; hover: string; } | undefined; ... 5 more ...; paddingInline?: string | undefined; } | undefined; }",
+        "name": "ButtonProps.Style",
         "properties": [
           {
             "name": "root",
             "optional": true,
-            "type": "{ background?: { active: string; default: string; disabled: string; hover: string; } | undefined; borderColor?: { active: string; default: string; disabled: string; hover: string; } | undefined; ... 5 more ...; paddingInline?: string | undefined; }",
+            "type": "{ background?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; borderColor?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; ... 5 more ...; pa...",
           },
         ],
         "type": "object",
@@ -4239,7 +4239,7 @@ If the \`rel\` property is provided, it overrides the default behavior.",
       "systemTags": [
         "core",
       ],
-      "type": "{ root?: { background?: { active: string; default: string; disabled: string; hover: string; } | undefined; borderColor?: { active: string; default: string; disabled: string; hover: string; } | undefined; ... 5 more ...; paddingInline?: string | undefined; } | undefined; }",
+      "type": "ButtonProps.Style",
     },
     {
       "description": "Specifies where to open the linked URL (for example, to open in a new browser window or tab use \`_blank\`).
@@ -20097,12 +20097,12 @@ It prevents users from clicking the button, but it can still be focused.",
     },
     {
       "inlineType": {
-        "name": "{ root?: { background?: { active: string; default: string; disabled: string; hover: string; } | undefined; borderColor?: { active: string; default: string; disabled: string; hover: string; } | undefined; ... 5 more ...; paddingInline?: string | undefined; } | undefined; }",
+        "name": "ButtonProps.Style",
         "properties": [
           {
             "name": "root",
             "optional": true,
-            "type": "{ background?: { active: string; default: string; disabled: string; hover: string; } | undefined; borderColor?: { active: string; default: string; disabled: string; hover: string; } | undefined; ... 5 more ...; paddingInline?: string | undefined; }",
+            "type": "{ background?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; borderColor?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; ... 5 more ...; pa...",
           },
         ],
         "type": "object",
@@ -20112,7 +20112,7 @@ It prevents users from clicking the button, but it can still be focused.",
       "systemTags": [
         "core",
       ],
-      "type": "{ root?: { background?: { active: string; default: string; disabled: string; hover: string; } | undefined; borderColor?: { active: string; default: string; disabled: string; hover: string; } | undefined; ... 5 more ...; paddingInline?: string | undefined; } | undefined; }",
+      "type": "ButtonProps.Style",
     },
     {
       "defaultValue": "'normal'",
