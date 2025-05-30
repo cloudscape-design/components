@@ -4,13 +4,14 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component/index.js';
 import TokenList from '../internal/components/token-list/index.js';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
 import InternalFileToken from './file-token.js';
 import { FileTokenGroupProps } from './interfaces.js';
 

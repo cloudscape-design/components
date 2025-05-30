@@ -134,10 +134,7 @@ test('uses I18nProvider for folder and file icons', async () => {
 
 test('Renders selection labels', async () => {
   const wrapper = await renderTable(<ObjectsTable {...defaultProps} />);
-  expect(wrapper.findRowSelectionArea(1)!.getElement()).toHaveAttribute(
-    'aria-label',
-    'Objects select simulation-nano-2019'
-  );
+  expect(wrapper.findRowSelectionArea(1)!.getElement()).toHaveAttribute('aria-label', 'select simulation-nano-2019');
 });
 
 test('allows selecting an object', async () => {

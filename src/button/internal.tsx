@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import {
   getAnalyticsLabelAttribute,
   getAnalyticsMetadataAttribute,
@@ -26,7 +26,6 @@ import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useModalContextLoadingButtonComponent } from '../internal/hooks/use-modal-component-analytics';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
