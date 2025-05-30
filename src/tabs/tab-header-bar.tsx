@@ -19,6 +19,7 @@ import {
 } from '../internal/context/single-tab-stop-navigation-context';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
+import { usePrevious } from '../internal/hooks/use-previous';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
@@ -112,6 +113,7 @@ export function TabHeaderBar({
   const [focusedTabId, setFocusedTabId] = useState(activeTabId);
   const [previousActiveTabId, setPreviousActiveTabId] = useState<string | undefined>(activeTabId);
   const hasActionOrDismissible = tabs.some(tab => tab.action || tab.dismissible);
+  const hadActionOrDismissible = usePrevious(hasActionOrDismissible);
   const tabActionAttributes = hasActionOrDismissible
     ? {
         role: 'application',
@@ -123,6 +125,16 @@ export function TabHeaderBar({
     : {
         role: 'tablist',
       };
+
+  useEffect(() => {
+    if (hadActionOrDismissible && !hasActionOrDismissible) {
+      // when tabs becomes non-dismissible (e.g. when all dismissible tabs are removed),
+      // the hasActionOrDismissible is changing which causing tabs to re-mount to the React tree,
+      // which, in turn, causes losing their refs, and the nextActive.focus() function inside handleDismiss does not focus on the next tab
+      // so this code does
+      getNextFocusTarget()?.focus();
+    }
+  }, [hasActionOrDismissible, hadActionOrDismissible]);
 
   useEffect(() => {
     if (headerBarRef.current) {
