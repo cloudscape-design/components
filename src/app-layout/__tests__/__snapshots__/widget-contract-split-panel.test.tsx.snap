@@ -169,7 +169,7 @@ Map {
         "setToolbarHeight": [Function],
         "setToolbarState": [Function],
         "splitPanelAnimationDisabled": true,
-        "splitPanelControlId": "split-panel15",
+        "splitPanelControlId": "split-panel33",
         "splitPanelFocusControl": {
           "refs": {
             "preferences": {
@@ -215,6 +215,7 @@ Map {
           },
         },
       ],
+      "expandedDrawerId": null,
       "hasToolbar": true,
       "intersectionObserverRef": [Function],
       "isIntersecting": true,
@@ -465,7 +466,7 @@ Map {
         "setToolbarHeight": [Function],
         "setToolbarState": [Function],
         "splitPanelAnimationDisabled": true,
-        "splitPanelControlId": "split-panel15",
+        "splitPanelControlId": "split-panel33",
         "splitPanelFocusControl": {
           "refs": {
             "preferences": {
@@ -511,6 +512,7 @@ Map {
           },
         },
       ],
+      "expandedDrawerId": null,
       "hasToolbar": true,
       "intersectionObserverRef": [Function],
       "isIntersecting": true,
@@ -761,7 +763,7 @@ Map {
         "setToolbarHeight": [Function],
         "setToolbarState": [Function],
         "splitPanelAnimationDisabled": true,
-        "splitPanelControlId": "split-panel15",
+        "splitPanelControlId": "split-panel33",
         "splitPanelFocusControl": {
           "refs": {
             "preferences": {
@@ -807,6 +809,7 @@ Map {
           },
         },
       ],
+      "expandedDrawerId": null,
       "hasToolbar": true,
       "intersectionObserverRef": [Function],
       "isIntersecting": true,
@@ -1057,7 +1060,7 @@ Map {
         "setToolbarHeight": [Function],
         "setToolbarState": [Function],
         "splitPanelAnimationDisabled": true,
-        "splitPanelControlId": "split-panel15",
+        "splitPanelControlId": "split-panel33",
         "splitPanelFocusControl": {
           "refs": {
             "preferences": {
@@ -1103,6 +1106,7 @@ Map {
           },
         },
       ],
+      "expandedDrawerId": null,
       "hasToolbar": true,
       "intersectionObserverRef": [Function],
       "isIntersecting": true,
@@ -1314,6 +1318,14 @@ Map {
       "appLayoutInternals": {
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigationOpen": true,
+        "placement": {
+          "inlineSize": Infinity,
+          "insetBlockEnd": 0,
+          "insetBlockStart": 0,
+          "insetInlineEnd": 0,
+          "insetInlineStart": 0,
+        },
         "verticalOffsets": {
           "drawers": 0,
           "header": 0,
@@ -1321,9 +1333,28 @@ Map {
           "toolbar": 0,
         },
       },
-      "hasToolbar": false,
+      "hasToolbar": true,
       "registered": true,
-      "toolbarProps": null,
+      "resolvedNavigation": "__JSX__",
+      "resolvedNavigationOpen": true,
+      "toolbarProps": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
+        "hasNavigation": true,
+        "navigationFocusRef": undefined,
+        "navigationOpen": true,
+        "onNavigationToggle": [Function],
+      },
       "verticalOffsets": {
         "drawers": 0,
         "header": 0,
@@ -1367,6 +1398,14 @@ Map {
       "appLayoutInternals": {
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigationOpen": true,
+        "placement": {
+          "inlineSize": Infinity,
+          "insetBlockEnd": 0,
+          "insetBlockStart": 0,
+          "insetInlineEnd": 0,
+          "insetInlineStart": 0,
+        },
         "verticalOffsets": {
           "drawers": 0,
           "header": 0,
@@ -1374,9 +1413,28 @@ Map {
           "toolbar": 0,
         },
       },
-      "hasToolbar": false,
+      "hasToolbar": true,
       "registered": true,
-      "toolbarProps": null,
+      "resolvedNavigation": "__JSX__",
+      "resolvedNavigationOpen": true,
+      "toolbarProps": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
+        "hasNavigation": true,
+        "navigationFocusRef": undefined,
+        "navigationOpen": true,
+        "onNavigationToggle": [Function],
+      },
       "verticalOffsets": {
         "drawers": 0,
         "header": 0,
@@ -1420,6 +1478,14 @@ Map {
       "appLayoutInternals": {
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigationOpen": true,
+        "placement": {
+          "inlineSize": Infinity,
+          "insetBlockEnd": 0,
+          "insetBlockStart": 0,
+          "insetInlineEnd": 0,
+          "insetInlineStart": 0,
+        },
         "verticalOffsets": {
           "drawers": 0,
           "header": 0,
@@ -1427,9 +1493,28 @@ Map {
           "toolbar": 0,
         },
       },
-      "hasToolbar": false,
+      "hasToolbar": true,
       "registered": true,
-      "toolbarProps": null,
+      "resolvedNavigation": "__JSX__",
+      "resolvedNavigationOpen": true,
+      "toolbarProps": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
+        "hasNavigation": true,
+        "navigationFocusRef": undefined,
+        "navigationOpen": true,
+        "onNavigationToggle": [Function],
+      },
       "verticalOffsets": {
         "drawers": 0,
         "header": 0,
@@ -1473,6 +1558,14 @@ Map {
       "appLayoutInternals": {
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigationOpen": true,
+        "placement": {
+          "inlineSize": Infinity,
+          "insetBlockEnd": 0,
+          "insetBlockStart": 0,
+          "insetInlineEnd": 0,
+          "insetInlineStart": 0,
+        },
         "verticalOffsets": {
           "drawers": 0,
           "header": 0,
@@ -1480,9 +1573,28 @@ Map {
           "toolbar": 0,
         },
       },
-      "hasToolbar": false,
+      "hasToolbar": true,
       "registered": true,
-      "toolbarProps": null,
+      "resolvedNavigation": "__JSX__",
+      "resolvedNavigationOpen": true,
+      "toolbarProps": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
+        "hasNavigation": true,
+        "navigationFocusRef": undefined,
+        "navigationOpen": true,
+        "onNavigationToggle": [Function],
+      },
       "verticalOffsets": {
         "drawers": 0,
         "header": 0,

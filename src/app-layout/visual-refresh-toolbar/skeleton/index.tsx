@@ -7,6 +7,7 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import ScreenreaderOnly from '../../../internal/components/screenreader-only';
 import VisualContext from '../../../internal/components/visual-context';
+import { fireNonCancelableEvent } from '../../../internal/events';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { useGetGlobalBreadcrumbs } from '../../../internal/plugins/helpers/use-global-breadcrumbs';
 import { computeVerticalLayout } from '../compute-layout';
@@ -55,6 +56,7 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
     ariaLabels,
     navigation,
     navigationOpen,
+    onNavigationChange,
     ...rest
   } = appLayoutProps;
 
@@ -70,7 +72,11 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
       ariaLabels: appLayoutState?.appLayoutInternals?.ariaLabels ?? ariaLabels,
       navigation: resolvedNavigation && !navigationTriggerHide,
       navigationOpen: Boolean(resolvedNavigationOpen),
-      onNavigationToggle: appLayoutState?.appLayoutInternals?.onNavigationToggle ?? function () {},
+      onNavigationToggle:
+        appLayoutState?.appLayoutInternals?.onNavigationToggle ??
+        function (open: boolean) {
+          fireNonCancelableEvent(onNavigationChange, { open });
+        },
       navigationFocusRef: appLayoutState?.appLayoutInternals?.navigationFocusControl.refs.toggle,
       breadcrumbs,
       activeDrawerId: appLayoutState?.activeDrawer?.id ?? null,
