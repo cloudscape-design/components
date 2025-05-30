@@ -94,7 +94,10 @@
         (
           'vertical': awsui.$space-button-icon-focus-outline-gutter-vertical,
           'horizontal': awsui.$space-button-focus-outline-gutter,
-        )
+        ),
+        $border-radius:
+          var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+        $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
       );
     }
 
