@@ -16,7 +16,7 @@ import { FlashbarProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProps }: FlashbarProps) {
+export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...restProps }: FlashbarProps) {
   const { allItemsHaveId, baseProps, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
     items,
     ...restProps,
@@ -40,6 +40,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
   const motionDisabled = isReducedMotion || !isVisualRefresh || !allItemsHaveId;
 
   const animateFlash = !isReducedMotion && isVisualRefresh;
+
   /**
    * If the flashbar is flat and motion is `enabled` then the adding and removing of items
    * from the flashbar will render with visual transitions.
@@ -116,6 +117,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
         ref={transitionRootElement}
         transitionState={transitionState}
         i18nStrings={iconAriaLabels}
+        style={style}
         {...item}
       />
     );

@@ -48,7 +48,8 @@ const useDiscoveredContent = createUseDiscoveredContent('flash', awsuiPluginsInt
 
 function dismissButton(
   dismissLabel: FlashbarProps.MessageDefinition['dismissLabel'],
-  onDismiss: FlashbarProps.MessageDefinition['onDismiss']
+  onDismiss: FlashbarProps.MessageDefinition['onDismiss'],
+  style?: FlashbarProps.Style
 ) {
   return (
     <div
@@ -64,6 +65,20 @@ function dismissButton(
         iconName="close"
         formAction="none"
         ariaLabel={dismissLabel}
+        style={{
+          root: {
+            color: {
+              active: style?.item?.dismissButton?.color?.active,
+              default: style?.item?.dismissButton?.color?.default,
+              hover: style?.item?.dismissButton?.color?.hover,
+            },
+            focusRing: {
+              borderColor: style?.item?.dismissButton?.focusRing?.borderColor,
+              borderRadius: style?.item?.dismissButton?.focusRing?.borderRadius,
+              borderWidth: style?.item?.dismissButton?.focusRing?.borderWidth,
+            },
+          },
+        }}
       />
     </div>
   );
@@ -82,6 +97,7 @@ interface FlashProps extends FlashbarProps.MessageDefinition {
   className: string;
   transitionState?: string;
   i18nStrings?: FlashbarProps.I18nStrings;
+  style?: FlashbarProps.Style;
 }
 
 export const Flash = React.forwardRef(
@@ -103,6 +119,7 @@ export const Flash = React.forwardRef(
       i18nStrings,
       type = 'info',
       analyticsMetadata,
+      style,
       ...props
     }: FlashProps,
     ref: React.Ref<HTMLDivElement>
@@ -193,6 +210,18 @@ export const Flash = React.forwardRef(
           getVisualContextClassname(type === 'warning' && !loading ? 'flashbar-warning' : 'flashbar'),
           initialHidden && styles['initial-hidden']
         )}
+        style={{
+          background:
+            style?.item?.root?.background &&
+            style?.item?.root?.background[effectiveType as keyof typeof style.item.root.background],
+          borderColor:
+            style?.item?.root?.borderColor &&
+            style?.item?.root?.borderColor[effectiveType as keyof typeof style.item.root.borderColor],
+          borderRadius: style?.item?.root?.borderRadius,
+          borderWidth: style?.item?.root?.borderWidth,
+          color:
+            style?.item?.root?.color && style?.item?.root?.color[effectiveType as keyof typeof style.item.root.color],
+        }}
         {...analyticsAttributes}
       >
         <div className={styles['flash-body']}>
@@ -248,7 +277,7 @@ export const Flash = React.forwardRef(
             wrappedClass={styles['action-wrapped']}
           />
         </div>
-        {dismissible && dismissButton(dismissLabel, onDismiss)}
+        {dismissible && dismissButton(dismissLabel, onDismiss, style)}
         {ariaRole === 'status' && (
           <InternalLiveRegion sources={[statusIconAriaLabel, headerRefObject, contentRefObject]} />
         )}
