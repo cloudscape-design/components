@@ -51,6 +51,7 @@ class MaskFormat {
   }
 
   isValid(value: string): boolean {
+    //no inputSeparators will be present as they are replaced with the separator prior
     const inputSegments = value.split(this.separator);
 
     if (inputSegments.length > this.segments.length) {
