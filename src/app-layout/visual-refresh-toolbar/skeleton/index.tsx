@@ -3,10 +3,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import ScreenreaderOnly from '../../../internal/components/screenreader-only';
 import VisualContext from '../../../internal/components/visual-context';
 import customCssProps from '../../../internal/generated/custom-css-properties';
-import { useMergeRefs } from '../../../internal/hooks/use-merge-refs';
 import { useGetGlobalBreadcrumbs } from '../../../internal/plugins/helpers/use-global-breadcrumbs';
 import { computeVerticalLayout } from '../compute-layout';
 import { AppLayoutInternalProps } from '../interfaces';
@@ -135,6 +136,8 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
   } = skeletonSlotsAttributes ?? {};
 
   const contentWrapperElAttributes = getContentWrapperElAttributes?.(toolbarProps, verticalOffsets);
+
+  console.log('contentElAttributes: ', contentElAttributes);
 
   return (
     <>
