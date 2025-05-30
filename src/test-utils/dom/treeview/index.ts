@@ -1,92 +1,105 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import expandToggleStyles from '../../../internal/components/expand-toggle-button/styles.selectors.js';
-import styles from '../../../treeview/styles.selectors.js';
+import testUtilStyles from '../../../treeview/test-classes/styles.selectors.js';
 
 class TreeItemWrapper extends ComponentWrapper {
   /**
-   * Finds the content slot of the tree item
+   * Finds the content of the tree item.
    */
   findContent(): ElementWrapper | null {
-    return this.findByClassName(styles['treeitem-content']);
+    return this.findByClassName(testUtilStyles.content);
   }
 
   /**
-   * Finds the content slot of the tree item
+   * Finds the icon of the tree item.
    */
   findIcon(): ElementWrapper | null {
-    return this.findByClassName(styles['treeitem-icon']);
+    return this.findByClassName(testUtilStyles.icon);
   }
 
   /**
-   * Finds the details slot of the tree item
+   * Finds the secondary content of the tree item.
    */
-  findDetails(): ElementWrapper | null {
-    return this.findByClassName(styles['treeitem-description']);
+  findSecondaryContent(): ElementWrapper | null {
+    return this.findByClassName(testUtilStyles['secondary-content']);
   }
 
   /**
-   * Finds the actions slot of the tree item
+   * Finds the actions of the tree item.
    */
   findActions(): ElementWrapper | null {
-    return this.findByClassName(styles['treeitem-secondary-content']);
+    return this.findByClassName(testUtilStyles.actions);
   }
 
   /**
-   * Finds the child items of the tree item
-   */
-  findItems(): Array<TreeItemWrapper> {
-    return this.findAllByClassName(styles['child-treeitem']).map(item => new TreeItemWrapper(item.getElement()));
-  }
-
-  /**
-   * Finds the expand toggle of the tree item
+   * Finds the expand toggle of the tree item.
    */
   findItemToggle(): ElementWrapper | null {
     return this.findByClassName(expandToggleStyles['expand-toggle']);
   }
 
   /**
-   * Finds the children tree items of the tree item
+   * Finds all visible child items of the tree item.
+   * @param options
+   * * expanded (boolean) - Flag to find the expanded/collapsed items
    */
-  findChildren(): Array<TreeItemWrapper> {
-    return this.findAllByClassName(styles['child-treeitem']).map(item => new TreeItemWrapper(item.getElement()));
+  findChildren(options: { expanded?: boolean } = {}): Array<TreeItemWrapper> {
+    const selector = getTreeItemSelector(options);
+
+    return this.findAll(selector).map(item => new TreeItemWrapper(item.getElement()));
   }
 
   /**
-   * Finds a children tree item by its ID
+   * Finds a visible child item by its ID.
+   * @param id of the item to find
+   * @param options
+   * * expanded (boolean) - Flag to find the expanded/collapsed item. Use it to test if item is expanded/collapsed.
    */
-  findChildById(id: string): TreeItemWrapper | null {
-    const itemSelector = `.${styles['child-treeitem']}[data-testid="${id}"]`;
-    const item = this.find(itemSelector);
+  findChildById(id: string, options: { expanded?: boolean } = {}): TreeItemWrapper | null {
+    const selector = `${getTreeItemSelector(options)}[data-testid="treeitem-${id}"]`;
+    const item = this.find(selector);
     return item ? new TreeItemWrapper(item.getElement()) : null;
-  }
-
-  /**
-   * Returns `true` if the item expand toggle is present and expanded. Returns `false` otherwise.
-   */
-  @usesDom
-  isExpanded(): boolean {
-    return this.getElement().getAttribute('aria-expanded') === 'true';
   }
 }
 
 export default class TreeviewWrapper extends ComponentWrapper {
-  static rootSelector: string = styles.root;
+  static rootSelector: string = testUtilStyles.root;
 
   /**
-   * Finds the root level tree items
+   * Finds all visible tree items.
+   * @param options
+   * * expanded (boolean) - Flag to find the expanded/collapsed items
    */
-  findItems(): Array<TreeItemWrapper> {
-    return this.findAllByClassName(styles['child-treeitem']).map(item => new TreeItemWrapper(item.getElement()));
+  findItems(options: { expanded?: boolean } = {}): Array<TreeItemWrapper> {
+    const selector = getTreeItemSelector(options);
+
+    return this.findAll(selector).map(item => new TreeItemWrapper(item.getElement()));
   }
 
-  findItemById(id: string): TreeItemWrapper | null {
-    // const itemSelector = `[role="treeitem"][data-testid="${id}"]`;
-    const itemSelector = `.${styles['child-treeitem']}[data-testid="${id}"]`;
-    const item = this.find(itemSelector);
+  /**
+   * Finds a visible item by its ID.
+   * @param id of the item to find
+   * @param options
+   * * expanded (boolean) - Flag to find the expanded/collapsed item. Use it to test if item is expanded/collapsed.
+   */
+  findItemById(id: string, options: { expanded?: boolean } = {}): TreeItemWrapper | null {
+    const selector = `${getTreeItemSelector(options)}[data-testid="treeitem-${id}"]`;
+    const item = this.find(selector);
     return item ? new TreeItemWrapper(item.getElement()) : null;
   }
+}
+
+function getTreeItemSelector({ expanded }: { expanded?: boolean }): string {
+  let selector = `.${testUtilStyles.treeitem}`;
+
+  if (expanded === true) {
+    selector += `.${testUtilStyles.expanded}`;
+  } else if (expanded === false) {
+    selector += `.${testUtilStyles.expandable}:not(.${testUtilStyles.expanded})`;
+  }
+
+  return selector;
 }

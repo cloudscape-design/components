@@ -14,14 +14,14 @@
 }
 
 .tree,
-.parent-treeitem,
-.child-treeitem {
+.treeitem-group,
+.treeitem {
   list-style-type: none;
   padding-inline-start: 0;
   margin-block: 0;
 }
 
-.parent-treeitem {
+.treeitem-group {
   inline-size: 100%;
 }
 
@@ -55,7 +55,7 @@
   inline-size: 100%;
 }
 
-.child-treeitem {
+.treeitem {
   display: flex;
 }
 
@@ -63,18 +63,18 @@
   @include styles.styles-reset-ul;
 }
 
-// .parent-treeitem {
+// .treeitem-group {
 //   padding-inline-start: 0;
 //   margin-inline-start: 0;
 // }
 
-.treeitem-content {
+.content {
   position: relative;
   padding-block-start: 2px;
   flex: 1;
 }
 
-.treeitem-group {
+.treeitem-connector-group {
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -90,14 +90,6 @@
   display: flex;
   align-items: baseline;
   gap: 4px;
-}
-
-.treeitem-secondary-content {
-  // test
-}
-
-.treeitem-description {
-  // test
 }
 
 .horizontal {
@@ -153,7 +145,7 @@
 //   overflow: visible;
 //   position: relative;
 
-//   .parent-treeitem {
+//   .treeitem-group {
 //     grid-column: 3;
 //     grid-row: 3;
 //     // grid-template-columns: subgrid;
@@ -192,7 +184,7 @@
 //     width: 2rem;
 //   }
 
-//   .treeitem-icon {
+//   .icon {
 //     // grid-column: 2;
 //     // grid-row: 1 / span 2;
 //   }

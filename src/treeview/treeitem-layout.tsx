@@ -1,31 +1,35 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import clsx from 'clsx';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 const TreeItemLayout = ({
   icon,
   content,
-  description,
   secondaryContent,
+  actions,
 }: {
   icon?: React.ReactNode;
   content: React.ReactNode;
-  description?: React.ReactNode;
   secondaryContent?: React.ReactNode;
+  actions?: React.ReactNode;
 }) => {
   return (
     <div className={styles['treeitem-layout']}>
       <div className={styles['treeitem-first-line']}>
-        {icon && <div className={styles['treeitem-icon']}>{icon}</div>}
+        {icon && <div className={testUtilStyles.icon}>{icon}</div>}
 
-        <div className={styles['treeitem-content']}>{content}</div>
+        <div className={clsx(styles.content, testUtilStyles.content)}>{content}</div>
 
-        {secondaryContent && <div className={styles['treeitem-secondary-content']}>{secondaryContent}</div>}
+        {actions && <div className={clsx(styles.actions, testUtilStyles.actions)}>{actions}</div>}
       </div>
 
-      {description && <div className={styles['treeitem-description']}>{description}</div>}
+      {secondaryContent && (
+        <div className={clsx(styles['secondary-content'], testUtilStyles['secondary-content'])}>{secondaryContent}</div>
+      )}
     </div>
   );
 };

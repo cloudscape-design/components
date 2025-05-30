@@ -5,27 +5,25 @@ import clsx from 'clsx';
 
 import { useInternalI18n } from '../i18n/context';
 import { ExpandToggleButton } from '../internal/components/expand-toggle-button';
-import { fireNonCancelableEvent } from '../internal/events';
 // import Connector from './connector';
 import { TreeviewProps } from './interfaces';
 import TreeItemLayout from './treeitem-layout';
 import { getItemPosition, transformTreeItemProps } from './utils';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
-interface InternalTreeItemProps
-  extends Pick<
-    TreeviewProps,
-    'expandedItems' | 'renderItem' | 'getItemId' | 'getItemChildren' | 'onItemToggle' | 'i18nStrings'
-  > {
-  item: any;
+interface InternalTreeItemProps<T>
+  extends Pick<TreeviewProps, 'expandedItems' | 'renderItem' | 'getItemId' | 'getItemChildren' | 'i18nStrings'> {
+  item: T;
   index: number;
   level: number;
   position: 'start' | 'middle' | 'end';
   withGrid?: boolean;
+  onItemToggle: (detail: TreeviewProps.ItemToggleDetail<T>) => void;
 }
 
-const InternalTreeItem = ({
+const InternalTreeItem = <T,>({
   item,
   index,
   level,
@@ -37,33 +35,34 @@ const InternalTreeItem = ({
   getItemId,
   getItemChildren,
   onItemToggle,
-}: InternalTreeItemProps) => {
+}: InternalTreeItemProps<T>) => {
   const i18n = useInternalI18n('treeview');
-  const { id, isExpandable, isExpanded, children, icon, content, description, secondaryContent } =
-    transformTreeItemProps({
-      item,
-      index,
-      expandedItems,
-      renderItem,
-      getItemId,
-      getItemChildren,
-    });
+  const { id, isExpandable, isExpanded, children, icon, content, secondaryContent, actions } = transformTreeItemProps({
+    item,
+    index,
+    expandedItems,
+    renderItem,
+    getItemId,
+    getItemChildren,
+  });
   const nextLevel = level + 1;
-
-  console.log(Array.from(Array(level + 1).keys()));
 
   return (
     <li
       id={id}
       role="treeitem"
       className={clsx(
-        styles['child-treeitem'],
+        styles.treeitem,
+        testUtilStyles.treeitem,
         isExpandable && [styles.expandable],
+        isExpandable && [testUtilStyles.expandable],
         isExpanded && [styles.expanded],
+        isExpanded && [testUtilStyles.expanded],
         withGrid && styles['with-grid']
       )}
       aria-expanded={isExpandable ? isExpanded : undefined}
-      data-testid={id}
+      aria-level={level}
+      data-testid={`treeitem-${id}`}
     >
       {/* <div className={styles['treeitem-toggle-area']}>
         {isExpandable && (
@@ -79,7 +78,7 @@ const InternalTreeItem = ({
       </div> */}
 
       {!withGrid && (
-        <div className={styles['treeitem-group']} style={{ alignItems: 'baseline' }}>
+        <div className={styles['treeitem-connector-group']} style={{ alignItems: 'baseline' }}>
           {/* Try out horizontally constructured connector lines */}
           <div className={styles['connector-area2']}>
             <div
@@ -130,9 +129,7 @@ const InternalTreeItem = ({
               {isExpandable && (
                 <ExpandToggleButton
                   isExpanded={isExpanded}
-                  onExpandableItemToggle={() =>
-                    fireNonCancelableEvent(onItemToggle, { id, item, expanded: !isExpanded })
-                  }
+                  onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
                   expandButtonLabel={i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item))}
                   collapseButtonLabel={i18n(
                     'i18nStrings.collapseButtonLabel',
@@ -142,16 +139,11 @@ const InternalTreeItem = ({
               )}
             </div>
 
-            <TreeItemLayout
-              icon={icon}
-              content={content}
-              description={description}
-              secondaryContent={secondaryContent}
-            />
+            <TreeItemLayout icon={icon} content={content} secondaryContent={secondaryContent} actions={actions} />
           </div>
 
           {isExpanded && children.length && (
-            <ul role="group" className={styles['parent-treeitem']}>
+            <ul role="group" className={styles['treeitem-group']}>
               {children.map((child, index) => {
                 return (
                   <InternalTreeItem
@@ -181,9 +173,7 @@ const InternalTreeItem = ({
               <div className={styles.toggle}>
                 <ExpandToggleButton
                   isExpanded={isExpanded}
-                  onExpandableItemToggle={() =>
-                    fireNonCancelableEvent(onItemToggle, { id, item, expanded: !isExpanded })
-                  }
+                  onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
                   expandButtonLabel={i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item))}
                   collapseButtonLabel={i18n(
                     'i18nStrings.collapseButtonLabel',
@@ -198,12 +188,12 @@ const InternalTreeItem = ({
 
           {level > 0 && <div className={styles['horizontal-rule']} />}
 
-          {/* {icon && <div className={styles['treeitem-icon']}>{icon}</div>} */}
+          {/* {icon && <div className={styles.icon}>{icon}</div>} */}
 
-          <TreeItemLayout icon={icon} content={content} description={description} secondaryContent={secondaryContent} />
+          <TreeItemLayout icon={icon} content={content} secondaryContent={secondaryContent} actions={actions} />
 
           {isExpanded && children.length && (
-            <ul role="group" className={styles['parent-treeitem']}>
+            <ul role="group" className={styles['treeitem-group']}>
               {children.map((child, index) => {
                 return (
                   <InternalTreeItem

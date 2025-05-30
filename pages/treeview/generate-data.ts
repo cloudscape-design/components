@@ -143,7 +143,7 @@ function getSubnetItems({ level, parentId, count }: { level: number; parentId: s
   });
 }
 
-export default function getItems(rootItemCount = 20) {
+export default function getItems(rootItemCount = 20): Item[] {
   return range(rootItemCount).map(() => {
     const errorCount = statusCount();
     const warningCount = statusCount();

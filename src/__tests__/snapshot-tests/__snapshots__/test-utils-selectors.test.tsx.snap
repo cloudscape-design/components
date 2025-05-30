@@ -666,9 +666,14 @@ exports[`test-utils selectors 1`] = `
     "awsui_utility-wrapper_k5dlb",
   ],
   "treeview": [
-    "awsui_child-treeitem_uf1x6",
-    "awsui_root_uf1x6",
-    "awsui_treeitem-content_uf1x6",
+    "awsui_actions_re8ah",
+    "awsui_content_re8ah",
+    "awsui_expandable_re8ah",
+    "awsui_expanded_re8ah",
+    "awsui_icon_re8ah",
+    "awsui_root_re8ah",
+    "awsui_secondary-content_re8ah",
+    "awsui_treeitem_re8ah",
   ],
   "tutorial-panel": [
     "awsui_collapse-button_ig8mp",

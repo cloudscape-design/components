@@ -52,8 +52,8 @@ export default function TestPage() {
             return {
               icon: <Icon name={isExpanded ? 'folder-open' : 'folder'} />,
               content: <Content {...item} />,
-              secondaryContent: item.hasActions ? <Actions /> : undefined,
-              description: item.tagName ? (
+              actions: item.hasActions ? <Actions /> : undefined,
+              secondaryContent: item.tagName ? (
                 <SpaceBetween size="xs" direction="horizontal">
                   <Box color="text-status-inactive">
                     <Icon name="ticket" />
@@ -65,7 +65,7 @@ export default function TestPage() {
           }}
           getItemId={item => item.id}
           getItemChildren={item => item.children}
-          onItemToggle={({ detail }: any) => {
+          onItemToggle={({ detail }) => {
             if (detail.expanded) {
               return setExpandedItems(prev => [...prev, detail.item.id]);
             } else {

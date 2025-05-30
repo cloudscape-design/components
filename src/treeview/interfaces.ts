@@ -16,8 +16,8 @@ export interface TreeviewProps<T = any> extends BaseComponentProps {
    * For each item the below properties must be returned:
    * * `content` (React.ReactNode) - The content of the item.
    * * `icon` (optional, React.ReactNode) - The leading icon of the item.
-   * * `description` (optional, React.ReactNode) - The details of the item, displayed below the content.
-   * * `secondaryContent` (optional, React.ReactNode) - Actions related to item. We recommend using a button group.
+   * * `secondaryContent` (optional, React.ReactNode) - Secondary content of the item, displayed below the content.
+   * * `actions` (optional, React.ReactNode) - Actions related to item. We recommend using a button group.
    */
   renderItem: (item: T, index: number) => TreeviewProps.TreeItem;
 
@@ -29,7 +29,7 @@ export interface TreeviewProps<T = any> extends BaseComponentProps {
   /**
    * The nested items of the item.
    */
-  getItemChildren: (item: T, index: number) => ReadonlyArray<T>;
+  getItemChildren: (item: T, index: number) => ReadonlyArray<T> | undefined;
 
   /**
    * An array of expanded item IDs. Use it to control expand state of tree items.
@@ -50,11 +50,6 @@ export interface TreeviewProps<T = any> extends BaseComponentProps {
   ariaLabelledby?: string;
 
   /**
-   * Sets the `aria-description` property on the treeview.
-   */
-  ariaDescription?: string;
-
-  /**
    * Sets the `aria-describedby` property on the treeview.
    */
   ariaDescribedby?: string;
@@ -62,7 +57,7 @@ export interface TreeviewProps<T = any> extends BaseComponentProps {
   /**
    * Called when an item's expand toggle is clicked.
    */
-  onItemToggle: NonCancelableEventHandler<TreeviewProps.ItemToggleDetail<T>>;
+  onItemToggle?: NonCancelableEventHandler<TreeviewProps.ItemToggleDetail<T>>;
 
   /**
    * An object containing all the necessary localized strings required by the component.
@@ -71,6 +66,7 @@ export interface TreeviewProps<T = any> extends BaseComponentProps {
   i18nStrings?: TreeviewProps.I18nStrings<T>;
 
   /**
+   * @awsuiSystem core
    * If `true`, adds connecting lines between child items and their expanded parent items.
    */
   showConnectorLine?: boolean;
@@ -87,8 +83,8 @@ export namespace TreeviewProps {
   export interface TreeItem {
     content: React.ReactNode;
     icon?: React.ReactNode;
-    description?: React.ReactNode;
     secondaryContent?: React.ReactNode;
+    actions?: React.ReactNode;
   }
 
   export interface ItemToggleDetail<T> {

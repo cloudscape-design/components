@@ -11,7 +11,7 @@ import InternalTreeview from './internal';
 
 export { TreeviewProps };
 
-const Treeview = ({ items, showConnectorLine = true, ...rest }: TreeviewProps) => {
+const Treeview = <T,>({ items, showConnectorLine = true, ...rest }: TreeviewProps<T>) => {
   const baseProps = getBaseProps(rest);
   //   TODO: analytics metadata?
   const baseComponentProps = useBaseComponent('Treeview', {
