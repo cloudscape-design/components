@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
@@ -937,6 +937,35 @@ describe('Tabs', () => {
       pressLeft(wrapper);
       wrapper.findActiveTab()!.keydown({ keyCode: KeyCode.tab });
       expect(wrapper.findTabContent()?.getElement()).toHaveFocus();
+    });
+  });
+
+  describe('Dismissible mixed with non-dismissible', () => {
+    test('moves focus from the last dismissible button to non-dismissible', () => {
+      const TabsWrapper = () => {
+        const [tabsDismissibles, setTabDismissibles] = useState([
+          {
+            label: 'First tab',
+            id: 'first',
+            content: <>first</>,
+          },
+          {
+            label: 'Second tab',
+            id: 'second',
+            dismissible: true,
+            dismissLabel: 'Dismiss second tab (dismissibles variant)',
+            onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(0, 1)),
+            content: <>second</>,
+          },
+        ]);
+
+        return <Tabs tabs={tabsDismissibles} />;
+      };
+      const { wrapper } = renderTabs(<TabsWrapper />);
+
+      wrapper.findDismissibleButtonByTabId('second')!.click();
+
+      expect(wrapper.findTabLinkById('first')!.getElement()).toHaveFocus();
     });
   });
 
