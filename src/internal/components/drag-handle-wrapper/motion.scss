@@ -56,8 +56,8 @@
     &-motion-exiting {
       @include styles.with-motion {
         animation:
-          drag-handle-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
-          awsui-motion-fade-out-0 awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+          drag-handle-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive forwards,
+          awsui-motion-fade-out-0 awsui.$motion-duration-complex awsui.$motion-easing-responsive forwards;
       }
     }
   }
