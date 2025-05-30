@@ -137,8 +137,6 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
 
   const contentWrapperElAttributes = getContentWrapperElAttributes?.(toolbarProps, verticalOffsets);
 
-  console.log('contentElAttributes: ', contentElAttributes);
-
   return (
     <>
       {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
