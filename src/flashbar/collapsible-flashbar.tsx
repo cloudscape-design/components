@@ -36,7 +36,7 @@ const maxNonCollapsibleItems = 1;
 
 const resizeListenerThrottleDelay = 100;
 
-export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps) {
+export default function CollapsibleFlashbar({ items, style, ...restProps }: FlashbarProps) {
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
@@ -265,14 +265,23 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                     collapsedItemRefs.current[getAnimationElementId(item)] = element;
                   }
                 }}
-                style={
-                  !isFlashbarStackExpanded || transitioning
-                    ? {
-                        [customCssProps.flashbarStackIndex]:
-                          (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
-                      }
-                    : undefined
-                }
+                style={{
+                  background:
+                    style?.item?.root?.background &&
+                    style?.item?.root?.background[item.type as keyof typeof style.item.root.background],
+                  borderColor:
+                    style?.item?.root?.borderColor &&
+                    style?.item?.root?.borderColor[item.type as keyof typeof style.item.root.borderColor],
+                  borderRadius: style?.item?.root?.borderRadius,
+                  borderWidth: style?.item?.root?.borderWidth,
+                  color:
+                    style?.item?.root?.color &&
+                    style?.item?.root?.color[item.type as keyof typeof style.item.root.color],
+                  ...((!isFlashbarStackExpanded || transitioning) && {
+                    [customCssProps.flashbarStackIndex]:
+                      (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
+                  }),
+                }}
                 key={getItemId(item)}
                 {...getAnalyticsMetadataAttribute(getItemAnalyticsMetadata(index + 1, item.type || 'info', item.id))}
               >
@@ -287,6 +296,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                     ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
                     transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
                     i18nStrings={iconAriaLabels}
+                    style={style}
                     {...item}
                   />
                 )}
@@ -326,6 +336,37 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
           )}
           onClick={toggleCollapseExpand}
           ref={notificationBarRef}
+          style={{
+            borderRadius: style?.notificationBar?.root.borderRadius,
+            borderWidth: style?.notificationBar?.root.borderWidth,
+            ...(style?.notificationBar?.root?.background?.active && {
+              [customCssProps.styleBackgroundActive]: style.notificationBar.root.background.active,
+            }),
+            ...(style?.notificationBar?.root?.background?.default && {
+              [customCssProps.styleBackgroundDefault]: style.notificationBar.root.background.default,
+            }),
+            ...(style?.notificationBar?.root?.background?.hover && {
+              [customCssProps.styleBackgroundHover]: style.notificationBar.root.background.hover,
+            }),
+            ...(style?.notificationBar?.root?.borderColor?.active && {
+              [customCssProps.styleBorderColorActive]: style.notificationBar.root.borderColor.active,
+            }),
+            ...(style?.notificationBar?.root?.borderColor?.default && {
+              [customCssProps.styleBorderColorDefault]: style.notificationBar.root.borderColor.default,
+            }),
+            ...(style?.notificationBar?.root?.borderColor?.hover && {
+              [customCssProps.styleBorderColorHover]: style.notificationBar.root.borderColor.hover,
+            }),
+            ...(style?.notificationBar?.root?.color?.active && {
+              [customCssProps.styleColorActive]: style.notificationBar.root.color.active,
+            }),
+            ...(style?.notificationBar?.root?.color?.default && {
+              [customCssProps.styleColorDefault]: style.notificationBar.root.color.default,
+            }),
+            ...(style?.notificationBar?.root?.color?.hover && {
+              [customCssProps.styleColorHover]: style.notificationBar.root.color.hover,
+            }),
+          }}
           {...getAnalyticsMetadataAttribute({
             action: !isFlashbarStackExpanded ? 'expand' : 'collapse',
             detail: {
