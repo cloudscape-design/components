@@ -2,13 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import globalVars from '../../internal/styles/global-vars';
