@@ -171,7 +171,7 @@ export function AppLayoutToolbarImplementation({
                 if (setExpandedDrawerId) {
                   setExpandedDrawerId(null);
                 }
-                if (navigationOpen) {
+                if (navigationOpen && expandedDrawerId) {
                   return;
                 }
                 onNavigationToggle?.(!navigationOpen);

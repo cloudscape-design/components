@@ -3,9 +3,9 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { TopNavigationProps } from './interfaces';
 
 import styles from './styles.css.js';

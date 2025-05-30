@@ -4,7 +4,7 @@ import React, { useCallback, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import {
   GeneratedAnalyticsMetadataFragment,
   getAnalyticsMetadataAttribute,
@@ -24,7 +24,6 @@ import {
 } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
@@ -304,7 +303,11 @@ const InternalTable = React.forwardRef(
       selectionType,
       isItemDisabled,
       onSelectionChange,
-      ariaLabels,
+      ariaLabels: {
+        ...ariaLabels,
+        // `selectionGroupLabel` should not be part of the selection control, it is already part of the selection column header.
+        selectionGroupLabel: undefined,
+      },
       loading,
       setLastUserAction,
     });

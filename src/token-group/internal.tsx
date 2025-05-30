@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { getBaseProps } from '../internal/base-component';
@@ -12,7 +13,6 @@ import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { TokenGroupProps } from './interfaces';
 import { Token } from './token';
