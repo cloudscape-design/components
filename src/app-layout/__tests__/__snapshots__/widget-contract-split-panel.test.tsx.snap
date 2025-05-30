@@ -4,7 +4,6 @@ exports[`Theme=refresh-toolbar, Size=desktop contract with split panel (trigger 
 Map {
   [Function] => {
     "forwardRef": null,
-    "onChange": [Function],
     "props": {
       "ariaLabels": {
         "drawers": undefined,
@@ -34,6 +33,9 @@ Map {
       "splitPanel": "__JSX__",
       "toolsWidth": 290,
     },
+    "stateManager": {
+      "current": {},
+    },
   },
   [Function] => {
     "appLayoutProps": {
@@ -169,7 +171,7 @@ Map {
         "setToolbarHeight": [Function],
         "setToolbarState": [Function],
         "splitPanelAnimationDisabled": true,
-        "splitPanelControlId": "split-panel33",
+        "splitPanelControlId": "split-panel41",
         "splitPanelFocusControl": {
           "refs": {
             "preferences": {
@@ -466,7 +468,7 @@ Map {
         "setToolbarHeight": [Function],
         "setToolbarState": [Function],
         "splitPanelAnimationDisabled": true,
-        "splitPanelControlId": "split-panel33",
+        "splitPanelControlId": "split-panel41",
         "splitPanelFocusControl": {
           "refs": {
             "preferences": {
@@ -763,7 +765,7 @@ Map {
         "setToolbarHeight": [Function],
         "setToolbarState": [Function],
         "splitPanelAnimationDisabled": true,
-        "splitPanelControlId": "split-panel33",
+        "splitPanelControlId": "split-panel41",
         "splitPanelFocusControl": {
           "refs": {
             "preferences": {
@@ -1060,7 +1062,7 @@ Map {
         "setToolbarHeight": [Function],
         "setToolbarState": [Function],
         "splitPanelAnimationDisabled": true,
-        "splitPanelControlId": "split-panel33",
+        "splitPanelControlId": "split-panel41",
         "splitPanelFocusControl": {
           "refs": {
             "preferences": {
@@ -1253,7 +1255,6 @@ exports[`Theme=refresh-toolbar, Size=desktop contract with split panel 1`] = `
 Map {
   [Function] => {
     "forwardRef": null,
-    "onChange": [Function],
     "props": {
       "ariaLabels": {
         "drawers": undefined,
@@ -1282,6 +1283,9 @@ Map {
       },
       "splitPanel": "__JSX__",
       "toolsWidth": 290,
+    },
+    "stateManager": {
+      "current": {},
     },
   },
   [Function] => {

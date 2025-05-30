@@ -111,20 +111,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#16191f",
-            "light": "#eaeded",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#21252c",
-            "light": "#fafafa",
-          },
-        },
         "color-background-button-normal-active": {
           "$description": "The background color of normal buttons in active state.",
           "$value": {
@@ -2681,20 +2667,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
-          },
-        },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#16191f",
-            "light": "#eaeded",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#21252c",
-            "light": "#fafafa",
           },
         },
         "color-background-button-normal-active": {
@@ -5255,20 +5227,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#16191f",
-            "light": "#eaeded",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#21252c",
-            "light": "#fafafa",
-          },
-        },
         "color-background-button-normal-active": {
           "$description": "The background color of normal buttons in active state.",
           "$value": {
@@ -7825,20 +7783,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
-          },
-        },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#16191f",
-            "light": "#eaeded",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#21252c",
-            "light": "#fafafa",
           },
         },
         "color-background-button-normal-active": {
@@ -10399,20 +10343,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#16191f",
-            "light": "#eaeded",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#21252c",
-            "light": "#fafafa",
-          },
-        },
         "color-background-button-normal-active": {
           "$description": "The background color of normal buttons in active state.",
           "$value": {
@@ -12971,20 +12901,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#16191f",
-            "light": "#16191f",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#21252c",
-            "light": "#21252c",
-          },
-        },
         "color-background-button-normal-active": {
           "$description": "The background color of normal buttons in active state.",
           "$value": {
@@ -15541,20 +15457,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
         "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
-      },
-    },
-    "color-background-button-link-active": {
-      "$description": "The background color of link buttons in active state.",
-      "$value": {
-        "dark": "#16191f",
-        "light": "#eaeded",
-      },
-    },
-    "color-background-button-link-hover": {
-      "$description": "The background color of link buttons in hover state.",
-      "$value": {
-        "dark": "#21252c",
-        "light": "#fafafa",
       },
     },
     "color-background-button-normal-active": {
@@ -18120,20 +18022,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#d1f1ff",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#1b232d",
-            "light": "#f0fbff",
-          },
-        },
         "color-background-button-normal-active": {
           "$description": "The background color of normal buttons in active state.",
           "$value": {
@@ -20690,20 +20578,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
-          },
-        },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#333843",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#1b232d",
-            "light": "#1b232d",
           },
         },
         "color-background-button-normal-active": {
@@ -23264,20 +23138,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#d1f1ff",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#1b232d",
-            "light": "#f0fbff",
-          },
-        },
         "color-background-button-normal-active": {
           "$description": "The background color of normal buttons in active state.",
           "$value": {
@@ -25834,20 +25694,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
-          },
-        },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#d1f1ff",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#1b232d",
-            "light": "#f0fbff",
           },
         },
         "color-background-button-normal-active": {
@@ -28408,20 +28254,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#d1f1ff",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#1b232d",
-            "light": "#f0fbff",
-          },
-        },
         "color-background-button-normal-active": {
           "$description": "The background color of normal buttons in active state.",
           "$value": {
@@ -30978,20 +30810,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
-          },
-        },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#d1f1ff",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#1b232d",
-            "light": "#f0fbff",
           },
         },
         "color-background-button-normal-active": {
@@ -33552,20 +33370,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#333843",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#1b232d",
-            "light": "#1b232d",
-          },
-        },
         "color-background-button-normal-active": {
           "$description": "The background color of normal buttons in active state.",
           "$value": {
@@ -36124,20 +35928,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
-        "color-background-button-link-active": {
-          "$description": "The background color of link buttons in active state.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#333843",
-          },
-        },
-        "color-background-button-link-hover": {
-          "$description": "The background color of link buttons in hover state.",
-          "$value": {
-            "dark": "#1b232d",
-            "light": "#1b232d",
-          },
-        },
         "color-background-button-normal-active": {
           "$description": "The background color of normal buttons in active state.",
           "$value": {
@@ -38694,20 +38484,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
         "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
-      },
-    },
-    "color-background-button-link-active": {
-      "$description": "The background color of link buttons in active state.",
-      "$value": {
-        "dark": "#333843",
-        "light": "#d1f1ff",
-      },
-    },
-    "color-background-button-link-hover": {
-      "$description": "The background color of link buttons in hover state.",
-      "$value": {
-        "dark": "#1b232d",
-        "light": "#f0fbff",
       },
     },
     "color-background-button-normal-active": {

@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
+import React, { FC, useLayoutEffect, useRef, useState } from 'react';
 
 import { AppLayoutProps } from '../interfaces';
 import { AppLayoutVisibilityContext } from './contexts';
@@ -22,12 +21,10 @@ const AppLayoutStateProvider: FC<{
   const [appLayoutState, setAppLayoutState] = useState(null);
   const [skeletonAttributes, setSkeletonAttributes] = useState(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     stateManager.current.set = (appLayoutState: any, skeletonAttributes: any) => {
-      unstable_batchedUpdates(() => {
-        setAppLayoutState(appLayoutState);
-        setSkeletonAttributes(skeletonAttributes);
-      });
+      setAppLayoutState(appLayoutState);
+      setSkeletonAttributes(skeletonAttributes);
     };
     // addEventListener(appLayoutStateChangeId, event => {
     //   unstable_batchedUpdates(() => {
@@ -46,16 +43,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     return (
       <>
-        <AppLayoutWidgetizedState
-          props={props}
-          forwardRef={forwardRef}
-          onChange={(appLayoutState, skeletonAttributes) => {
-            stateManager.current?.set?.(appLayoutState, skeletonAttributes);
-            // window.dispatchEvent(
-            //   new CustomEvent(appLayoutStateChangeId, { detail: { appLayoutState, skeletonAttributes } })
-            // );
-          }}
-        />
+        <AppLayoutWidgetizedState props={props} forwardRef={forwardRef} stateManager={stateManager} />
         <AppLayoutStateProvider
           stateManager={stateManager}
           // appLayoutStateChangeId={appLayoutStateChangeId}

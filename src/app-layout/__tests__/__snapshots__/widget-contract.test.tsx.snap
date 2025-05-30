@@ -4,7 +4,6 @@ exports[`Theme=refresh-toolbar, Size=desktop contract for default use-case 1`] =
 Map {
   [Function] => {
     "forwardRef": null,
-    "onChange": [Function],
     "props": {
       "ariaLabels": {
         "drawers": undefined,
@@ -32,6 +31,11 @@ Map {
         "insetInlineStart": 0,
       },
       "toolsWidth": 290,
+    },
+    "stateManager": {
+      "current": {
+        "set": [Function],
+      },
     },
   },
   [Function] => {
@@ -357,7 +361,6 @@ exports[`Theme=refresh-toolbar, Size=desktop contract with all slots provided 1`
 Map {
   [Function] => {
     "forwardRef": null,
-    "onChange": [Function],
     "props": {
       "ariaLabels": {
         "drawers": undefined,
@@ -403,6 +406,11 @@ Map {
         tools
       </div>,
       "toolsWidth": 290,
+    },
+    "stateManager": {
+      "current": {
+        "set": [Function],
+      },
     },
   },
   [Function] => {
@@ -812,7 +820,6 @@ exports[`Theme=refresh-toolbar, Size=desktop contract with drawers 1`] = `
 Map {
   [Function] => {
     "forwardRef": null,
-    "onChange": [Function],
     "props": {
       "activeDrawerId": "security",
       "ariaLabels": {
@@ -859,6 +866,11 @@ Map {
         "insetInlineStart": 0,
       },
       "toolsWidth": 290,
+    },
+    "stateManager": {
+      "current": {
+        "set": [Function],
+      },
     },
   },
   [Function] => {

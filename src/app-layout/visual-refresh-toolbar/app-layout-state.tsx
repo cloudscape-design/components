@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ForwardedRef, useEffect } from 'react';
+import React, { ForwardedRef } from 'react';
 
 import { createWidgetizedComponent } from '../../internal/widgets';
 import { AppLayoutProps } from '../interfaces';
@@ -11,10 +11,11 @@ import { useAppLayout } from './use-app-layout';
 export interface AppLayoutStateProps {
   props: AppLayoutInternalProps;
   forwardRef: ForwardedRef<AppLayoutProps.Ref>;
-  onChange: (
-    appLayoutState: ReturnType<typeof useAppLayout>,
-    skeletonAttributes: ReturnType<typeof useSkeletonSlotsAttributes> | null
-  ) => void;
+  // onChange: (
+  //   appLayoutState: ReturnType<typeof useAppLayout>,
+  //   skeletonAttributes: ReturnType<typeof useSkeletonSlotsAttributes> | null
+  // ) => void;
+  stateManager: any;
 }
 
 export const AppLayoutState = (props: AppLayoutStateProps) => {
@@ -24,9 +25,7 @@ export const AppLayoutState = (props: AppLayoutStateProps) => {
     appLayoutState: appLayoutState,
   });
 
-  useEffect(() => {
-    props.onChange(appLayoutState, skeletonSlotsAttributes);
-  }, [props, appLayoutState, skeletonSlotsAttributes]);
+  props.stateManager.current?.set?.(appLayoutState, skeletonSlotsAttributes);
 
   return <></>;
 };
