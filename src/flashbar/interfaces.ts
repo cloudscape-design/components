@@ -40,6 +40,66 @@ export namespace FlashbarProps {
     warningIconAriaLabel?: string;
   }
 
+  export interface Style {
+    item?: {
+      root?: {
+        background?: {
+          error?: string;
+          info?: string;
+          success?: string;
+          warning?: string;
+        };
+        borderColor?: {
+          error?: string;
+          info?: string;
+          success?: string;
+          warning?: string;
+        };
+        borderRadius?: string;
+        borderWidth?: string;
+        color?: {
+          error?: string;
+          info?: string;
+          success?: string;
+          warning?: string;
+        };
+      };
+      dismissButton?: {
+        color?: {
+          active?: string;
+          default?: string;
+          hover?: string;
+        };
+        focusRing?: {
+          borderColor?: string;
+          borderRadius?: string;
+          borderWidth?: string;
+        };
+      };
+    };
+    notificationBar?: {
+      root: {
+        background?: {
+          active?: string;
+          default?: string;
+          hover?: string;
+        };
+        borderColor?: {
+          active?: string;
+          default?: string;
+          hover?: string;
+        };
+        borderRadius?: string;
+        borderWidth?: string;
+        color?: {
+          active?: string;
+          default?: string;
+          hover?: string;
+        };
+      };
+    };
+  }
+
   export type Type = 'success' | 'warning' | 'info' | 'error' | 'in-progress';
   export type AriaRole = 'alert' | 'status';
 }
@@ -100,4 +160,9 @@ export interface FlashbarProps extends BaseComponentProps {
    * @i18n
    */
   i18nStrings?: FlashbarProps.I18nStrings;
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: FlashbarProps.Style;
 }
