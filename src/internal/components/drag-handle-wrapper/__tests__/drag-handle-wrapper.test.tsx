@@ -53,9 +53,15 @@ function expectDirectionButtonToBeVisible(direction: Direction) {
   ).toBe(true);
 }
 
-function renderDragHandle(props: Omit<DragHandleWrapperProps, 'children'>) {
+function renderDragHandle(props: Partial<Omit<DragHandleWrapperProps, 'children'>>) {
+  const mergedProps: Omit<DragHandleWrapperProps, 'children'> = {
+    directions: {},
+    hideButtonsOnDrag: false,
+    clickDragThreshold: 3,
+    ...props,
+  };
   const { container } = render(
-    <DragHandleWrapper {...props}>
+    <DragHandleWrapper {...mergedProps}>
       <button type="button" id="drag-button">
         Drag
       </button>
@@ -343,7 +349,7 @@ test('shows direction buttons when dragged 2 pixels', () => {
   expect(getDirectionButton('block-start')).toBeVisible();
 });
 
-test("doesn't show direction buttons when dragged more than 3 pixels", () => {
+test("doesn't show direction buttons when dragged more than 3 pixels (default threshold)", () => {
   const { dragHandle } = renderDragHandle({
     directions: { 'block-start': 'active' },
     tooltipText: 'Click me!',
@@ -353,6 +359,49 @@ test("doesn't show direction buttons when dragged more than 3 pixels", () => {
   fireEvent.pointerMove(dragHandle, { clientX: 55, clientY: 55 });
   fireEvent.pointerUp(dragHandle);
   expectDirectionButtonToBeHidden('block-start');
+});
+
+test('shows direction buttons when dragged less than custom clickDragThreshold', () => {
+  const { dragHandle } = renderDragHandle({
+    directions: { 'block-start': 'active' },
+    tooltipText: 'Click me!',
+    clickDragThreshold: 10,
+  });
+
+  fireEvent.pointerDown(dragHandle, { clientX: 50, clientY: 50 });
+  fireEvent.pointerMove(dragHandle, { clientX: 55, clientY: 55 });
+  fireEvent.pointerUp(dragHandle);
+  expectDirectionButtonToBeVisible('block-start');
+});
+
+describe('hideButtonsOnDrag property', () => {
+  test('hides direction buttons when dragging with hideButtonsOnDrag=true', () => {
+    const { dragHandle, showButtons } = renderDragHandle({
+      directions: { 'block-start': 'active' },
+      tooltipText: 'Click me!',
+      hideButtonsOnDrag: true,
+    });
+
+    showButtons();
+    expectDirectionButtonToBeVisible('block-start');
+    fireEvent.pointerDown(dragHandle, { clientX: 50, clientY: 50 });
+    fireEvent.pointerMove(dragHandle, { clientX: 55, clientY: 55 });
+    expectDirectionButtonToBeHidden('block-start');
+  });
+
+  test('keeps direction buttons visible when dragging with hideButtonsOnDrag=false (default)', () => {
+    const { dragHandle, showButtons } = renderDragHandle({
+      directions: { 'block-start': 'active' },
+      tooltipText: 'Click me!',
+      hideButtonsOnDrag: false,
+    });
+
+    showButtons();
+    expectDirectionButtonToBeVisible('block-start');
+    fireEvent.pointerDown(dragHandle, { clientX: 50, clientY: 50 });
+    fireEvent.pointerMove(dragHandle, { clientX: 55, clientY: 55 }); // Move more than default threshold
+    expectDirectionButtonToBeVisible('block-start');
+  });
 });
 
 test('hides direction buttons on Escape keypress', () => {
