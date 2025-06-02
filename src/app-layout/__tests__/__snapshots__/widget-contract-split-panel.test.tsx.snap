@@ -1320,6 +1320,7 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
         "navigationOpen": true,
@@ -1400,6 +1401,7 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
         "navigationOpen": true,
@@ -1480,6 +1482,7 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
         "navigationOpen": true,
@@ -1560,6 +1563,7 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
         "navigationOpen": true,
