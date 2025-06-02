@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, fireEvent, screen, within } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
@@ -89,16 +89,18 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
       }
     });
 
-    test('uses the provided content width if one is provided', () => {
+    test('uses the provided content width if one is provided', async () => {
       const { wrapper } = renderComponent(<AppLayout minContentWidth={120} maxContentWidth={650} />);
 
       if (theme === 'classic') {
         expect(wrapper.findContentRegion().getElement()).toHaveStyle({ minWidth: '120px', maxWidth: '650px' });
       } else {
-        const minWidthInGrid = wrapper.getElement().style.getPropertyValue(customCssProps.minContentWidth);
-        const maxWidthInGrid = wrapper.getElement().style.getPropertyValue(customCssProps.maxContentWidth);
-        expect(minWidthInGrid).toBe(theme === 'refresh' ? '120px' : '');
-        expect(maxWidthInGrid).toBe('650px');
+        await waitFor(() => {
+          const minWidthInGrid = wrapper.getElement().style.getPropertyValue(customCssProps.minContentWidth);
+          const maxWidthInGrid = wrapper.getElement().style.getPropertyValue(customCssProps.maxContentWidth);
+          expect(minWidthInGrid).toBe(theme === 'refresh' ? '120px' : '');
+          expect(maxWidthInGrid).toBe('650px');
+        });
       }
     });
 
@@ -125,14 +127,16 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
   });
 
-  test('Allows notifications to be sticky', () => {
+  test('Allows notifications to be sticky', async () => {
     const { wrapper } = renderComponent(<AppLayout notifications="Test" stickyNotifications={true} />);
     const stickyNotificationsClassName = {
       classic: notificationStyles['notifications-sticky'],
       refresh: visualRefreshStyles['sticky-notifications'],
       'refresh-toolbar': visualRefreshToolbarNotificationStyles['sticky-notifications'],
     }[theme];
-    expect(wrapper.findByClassName(stickyNotificationsClassName)).not.toBeNull();
+    await waitFor(() => {
+      expect(wrapper.findByClassName(stickyNotificationsClassName)).not.toBeNull();
+    });
   });
 
   describe('unfocusable content', () => {
@@ -152,30 +156,37 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     });
   });
 
-  test('should render an active drawer', () => {
+  test('should render an active drawer', async () => {
     const { wrapper } = renderComponent(
       <AppLayout activeDrawerId={testDrawer.id} drawers={[testDrawer]} onDrawerChange={() => {}} />
     );
 
-    expect(wrapper.findActiveDrawer()).toBeTruthy();
+    await waitFor(() => {
+      expect(wrapper.findActiveDrawer()).toBeTruthy();
+    });
   });
 
-  test(`should toggle drawer on click`, () => {
+  test(`should toggle drawer on click`, async () => {
     const { wrapper } = renderComponent(<AppLayout toolsHide={true} drawers={[testDrawer]} />);
-    wrapper.findDrawersTriggers()![0].click();
+    await waitFor(() => {
+      wrapper.findDrawersTriggers()![0].click();
+    });
+
     expect(wrapper.findActiveDrawer()).toBeTruthy();
     wrapper.findDrawersTriggers()![0].click();
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
-  test(`Moves focus to slider when opened`, () => {
+  test(`Moves focus to slider when opened`, async () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[{ ...testDrawer, resizable: true }]} />);
 
-    wrapper.findDrawerTriggerById('security')!.click();
+    await waitFor(() => {
+      wrapper.findDrawerTriggerById('security')!.click();
+    });
     expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveFocus();
   });
 
-  test('should change size via keyboard events on slider handle', () => {
+  test('should change size via keyboard events on slider handle', async () => {
     const onDrawerItemResize = jest.fn();
     const testDrawerResizable: AppLayoutProps.Drawer = {
       ...testDrawer,
@@ -186,12 +197,14 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     const { wrapper } = renderComponent(
       <AppLayout activeDrawerId={testDrawerResizable.id} drawers={[testDrawerResizable]} />
     );
-    wrapper.findActiveDrawerResizeHandle()!.keydown(KeyCode.left);
+    await waitFor(() => {
+      wrapper.findActiveDrawerResizeHandle()!.keydown(KeyCode.left);
+    });
 
     expect(onDrawerItemResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'security' });
   });
 
-  test('should change size via mouse pointer on slider handle', () => {
+  test('should change size via mouse pointer on slider handle', async () => {
     const onDrawerItemResize = jest.fn();
     const testDrawerResizable: AppLayoutProps.Drawer = {
       ...testDrawer,
@@ -201,7 +214,9 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     const { wrapper } = renderComponent(
       <AppLayout activeDrawerId={testDrawerResizable.id} drawers={[testDrawerResizable]} />
     );
-    wrapper.findActiveDrawerResizeHandle()!.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
+    await waitFor(() => {
+      wrapper.findActiveDrawerResizeHandle()!.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
+    });
     const resizeEvent = new MouseEvent('pointermove', { bubbles: true });
     wrapper.findActiveDrawerResizeHandle()!.fireEvent(resizeEvent);
     wrapper.findActiveDrawerResizeHandle()!.fireEvent(new MouseEvent('pointerup', { bubbles: true }));
@@ -209,10 +224,13 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     expect(onDrawerItemResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'security' });
   });
 
-  test('should read relative size on resize handle', () => {
+  test('should read relative size on resize handle', async () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[{ ...testDrawer, resizable: true }]} />);
 
-    wrapper.findDrawerTriggerById(testDrawer.id)!.click();
+    await waitFor(() => {
+      wrapper.findDrawerTriggerById(testDrawer.id)!.click();
+    });
+
     expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveAttribute('aria-valuenow', '0');
   });
 
@@ -222,18 +240,22 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     expect(wrapper.findDrawersTriggers()!.length).toBeLessThan(100);
   });
 
-  test('Renders aria-controls on toggle only when active', () => {
+  test('Renders aria-controls on toggle only when active', async () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
-    expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-controls');
+    await waitFor(() => {
+      expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-controls');
+    });
     wrapper.findDrawerTriggerById('security')!.click();
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute('aria-controls', 'security');
   });
 
-  test('should render badge when defined', () => {
+  test('should render badge when defined', async () => {
     const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
 
-    expect(wrapper.findDrawerTriggerById(manyDrawers[0].id, { hasBadge: true })).toBeTruthy();
-    expect(wrapper.findDrawerTriggerById(manyDrawers[1].id, { hasBadge: false })).toBeTruthy();
+    await waitFor(() => {
+      expect(wrapper.findDrawerTriggerById(manyDrawers[0].id, { hasBadge: true })).toBeTruthy();
+      expect(wrapper.findDrawerTriggerById(manyDrawers[1].id, { hasBadge: false })).toBeTruthy();
+    });
   });
 
   test('should return null when searching for a non-existing drawer with hasBadge condition', () => {
@@ -243,10 +265,12 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     expect(wrapper.findDrawerTriggerById('non-existing', { hasBadge: false })).toBeNull();
   });
 
-  test('should have width equal to the size declaration', () => {
+  test('should have width equal to the size declaration', async () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[{ ...testDrawer, resizable: true, defaultSize: 500 }]} />);
 
-    wrapper.findDrawersTriggers()![0].click();
+    await waitFor(() => {
+      wrapper.findDrawersTriggers()![0].click();
+    });
     expect(getActiveDrawerWidth(wrapper)).toEqual('500px');
   });
 });
@@ -304,23 +328,28 @@ describeEachAppLayout({ themes: ['classic'], sizes: ['desktop'] }, () => {
 
 describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['desktop'] }, ({ theme }) => {
   const styles = theme === 'refresh' ? visualRefreshStyles : toolbarStyles;
-  test(`${theme} - renders roles only when aria labels are not provided`, () => {
+  test(`${theme} - renders roles only when aria labels are not provided`, async () => {
     const { wrapper } = renderComponent(<AppLayout navigationHide={true} drawers={[testDrawerWithoutLabels]} />);
 
-    expect(wrapper.findDrawerTriggerById(testDrawer.id)!.getElement()).not.toHaveAttribute('aria-label');
+    await waitFor(() => {
+      expect(wrapper.findDrawerTriggerById(testDrawer.id)!.getElement()).not.toHaveAttribute('aria-label');
+    });
+
     expect(wrapper.findByClassName(styles['drawers-desktop-triggers-container'])!.getElement()).not.toHaveAttribute(
       'aria-label'
     );
     expect(wrapper.findByClassName(styles['drawers-trigger-content'])!.getElement()).toHaveAttribute('role', 'toolbar');
   });
 
-  test(`${theme} - renders roles and aria labels when provided`, () => {
+  test(`${theme} - renders roles and aria labels when provided`, async () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} ariaLabels={{ drawers: 'Drawers' }} />);
 
-    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
-      'aria-label',
-      'Security trigger button'
-    );
+    await waitFor(() => {
+      expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
+        'aria-label',
+        'Security trigger button'
+      );
+    });
     expect(wrapper.findByClassName(styles['drawers-desktop-triggers-container'])!.getElement()).toHaveAttribute(
       'aria-label',
       'Drawers'
