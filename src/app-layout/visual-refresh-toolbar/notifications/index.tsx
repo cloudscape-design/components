@@ -29,12 +29,12 @@ export function AppLayoutNotificationsImplementation({
 
   useResizeObserver(rootRef, entry => {
     const hasContent = entry.contentBoxHeight > 0;
-    setNotificationsHeight(hasContent ? entry.borderBoxHeight : 0);
+    setNotificationsHeight?.(hasContent ? entry.borderBoxHeight : 0);
     setHasNotificationsContent(hasContent);
   });
   useEffect(() => {
     return () => {
-      setNotificationsHeight(0);
+      setNotificationsHeight?.(0);
     };
     // unmount effect only
     // eslint-disable-next-line react-hooks/exhaustive-deps

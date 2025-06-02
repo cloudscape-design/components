@@ -124,6 +124,7 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
         verticalOffsets,
         placement,
         navigationOpen: resolvedNavigationOpen,
+        breadcrumbs,
       },
       toolbarProps,
       registered,

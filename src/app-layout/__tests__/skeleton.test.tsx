@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { waitFor } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
@@ -26,7 +27,7 @@ jest.mock('../../../lib/components/internal/widgets', () => ({
 }));
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], skipInitialTest: true }, () => {
-  it('renders complete component by default', () => {
+  it('renders complete component by default', async () => {
     const { wrapper } = renderComponent(
       <AppLayout
         navigation="test nav"
@@ -39,7 +40,9 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], skipInitialTest: true }, ()
     expect(wrapper.findNavigation()).toBeTruthy();
     expect(wrapper.findBreadcrumbs()).toBeTruthy();
     expect(wrapper.findNotifications()).toBeTruthy();
-    expect(wrapper.findTools()).toBeTruthy();
+    await waitFor(() => {
+      expect(wrapper.findTools()).toBeTruthy();
+    });
     expect(wrapper.findContentRegion()).toBeTruthy();
   });
 

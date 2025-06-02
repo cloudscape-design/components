@@ -11,10 +11,6 @@ import { useAppLayout } from './use-app-layout';
 export interface AppLayoutStateProps {
   props: AppLayoutInternalProps;
   forwardRef: ForwardedRef<AppLayoutProps.Ref>;
-  // onChange: (
-  //   appLayoutState: ReturnType<typeof useAppLayout>,
-  //   skeletonAttributes: ReturnType<typeof useSkeletonSlotsAttributes> | null
-  // ) => void;
   stateManager: any;
 }
 

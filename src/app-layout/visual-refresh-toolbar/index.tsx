@@ -15,7 +15,6 @@ const AppLayoutStateProvider: FC<{
     appLayoutState: ReturnType<typeof useAppLayout> | null,
     skeletonSlotsAttributes: ReturnType<typeof useSkeletonSlotsAttributes> | null
   ) => React.ReactNode;
-  // appLayoutStateChangeId: string;
   stateManager: any;
 }> = ({ stateManager, children }) => {
   const [appLayoutState, setAppLayoutState] = useState(null);
@@ -26,28 +25,18 @@ const AppLayoutStateProvider: FC<{
       setAppLayoutState(appLayoutState);
       setSkeletonAttributes(skeletonAttributes);
     };
-    // addEventListener(appLayoutStateChangeId, event => {
-    //   unstable_batchedUpdates(() => {
-    //     setAppLayoutState((event as any).detail.appLayoutState);
-    //     setSkeletonAttributes((event as any).detail.skeletonAttributes);
-    //   });
-    // });
   }, [stateManager]);
   return <>{children(appLayoutState, skeletonAttributes)}</>;
 };
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
   (props, forwardRef) => {
-    // const appLayoutStateChangeId = useUniqueId('app-layout-state-change-');
     const stateManager = useRef<any>({});
 
     return (
       <>
         <AppLayoutWidgetizedState props={props} forwardRef={forwardRef} stateManager={stateManager} />
-        <AppLayoutStateProvider
-          stateManager={stateManager}
-          // appLayoutStateChangeId={appLayoutStateChangeId}
-        >
+        <AppLayoutStateProvider stateManager={stateManager}>
           {(appLayoutState, skeletonSlotsAttributes) => {
             return (
               <AppLayoutVisibilityContext.Provider value={appLayoutState?.isIntersecting ?? true}>
