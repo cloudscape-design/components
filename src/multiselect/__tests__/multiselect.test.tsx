@@ -752,10 +752,13 @@ describe('With inline tokens', () => {
 });
 
 describe('Disabled item with reason', () => {
-  test('has no tooltip open by default', () => {
+  test("has no tooltip open by default (if it's not the first item)", () => {
     const { wrapper } = renderMultiselect(
       <Multiselect
-        options={[{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }]}
+        options={[
+          { label: 'First', value: '1', disabled: false },
+          { label: 'Second', value: '2', disabled: true, disabledReason: 'disabled reason' },
+        ]}
         selectedOptions={[]}
       />
     );
@@ -777,12 +780,14 @@ describe('Disabled item with reason', () => {
   test('open tooltip when the item is highlighted', () => {
     const { wrapper } = renderMultiselect(
       <Multiselect
-        options={[{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }]}
+        options={[
+          { label: 'First', value: '1', disabled: false },
+          { label: 'Second', value: '2', disabled: true, disabledReason: 'disabled reason' },
+        ]}
         selectedOptions={[]}
       />
     );
     wrapper.openDropdown();
-    wrapper.findTrigger().keydown(KeyCode.down);
 
     expect(wrapper.findDropdown().findOption(1)!.findDisabledReason()!.getElement()).toHaveTextContent(
       'disabled reason'
