@@ -16,6 +16,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SomeRequired } from '../internal/types';
+import { useTableIntegration } from './analytics/use-table-integration';
 import { HeaderProps } from './interfaces';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -49,6 +50,9 @@ export default function InternalHeader({
   const assignHeaderId = useContext(CollectionLabelContext).assignId;
   const isInContainer = useContainerHeader();
   const headingId = useUniqueId('heading');
+
+  useTableIntegration(counter);
+
   if (assignHeaderId !== undefined) {
     assignHeaderId(headingId);
   }
