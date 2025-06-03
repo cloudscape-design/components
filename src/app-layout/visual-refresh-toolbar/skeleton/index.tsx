@@ -126,6 +126,7 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
         navigationOpen: resolvedNavigationOpen,
         breadcrumbs,
         navigation,
+        ariaLabels: appLayoutState?.appLayoutInternals?.ariaLabels ?? ariaLabels,
       },
       toolbarProps,
       registered,
