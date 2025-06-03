@@ -24,6 +24,15 @@ export interface DragHandleProps {
   onDirectionClick?: (direction: DragHandleProps.Direction) => void;
   triggerMode?: TriggerMode;
   initialShowButtons?: boolean;
+  /**
+   * Hide the UAP buttons when dragging is active.
+   */
+  hideButtonsOnDrag?: boolean;
+  /**
+   * Max cursor movement (in pixels) that still counts as a press rather than
+   * a drag. Small threshold needed for usability.
+   */
+  clickDragThreshold?: number;
 }
 
 export namespace DragHandleProps {

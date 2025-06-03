@@ -14,12 +14,6 @@ import PortalOverlay from './portal-overlay';
 
 import styles from './styles.css.js';
 
-// The amount of distance after pointer down that the cursor is allowed to
-// jitter for a subsequent mouseup to still register as a "press" instead of
-// a drag. A little allowance is needed for usability reasons, but this number
-// isn't set in stone.
-const PRESS_DELTA_MAX = 3;
-
 export default function DragHandleWrapper({
   directions,
   tooltipText,
@@ -27,6 +21,8 @@ export default function DragHandleWrapper({
   onDirectionClick,
   triggerMode = 'focus',
   initialShowButtons = false,
+  hideButtonsOnDrag,
+  clickDragThreshold,
 }: DragHandleWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const dragHandleRef = useRef<HTMLDivElement | null>(null);
@@ -70,25 +66,26 @@ export default function DragHandleWrapper({
   useEffect(() => {
     const controller = new AbortController();
 
-    // See `PRESS_DELTA_MAX` above. We need to differentiate between a "click"
-    // and a "drag" action. We can say a "click" happens when a "pointerdown"
-    // is followed by a "pointerup" with no "pointermove" between the two.
+    // We need to differentiate between a "click" and a "drag" action.
+    // We can say a "click" happens when a "pointerdown" is followed by
+    // a "pointerup" with no "pointermove" between the two.
     // However, it would be a poor usability experience if a "click" isn't
     // registered because, while pressing my mouse, I moved it by just one
     // pixel, making it a "drag" instead. So we allow the pointer to move by
-    // `PRESS_DELTA_MAX` pixels before setting `didPointerDrag` to true.
+    // `clickDragThreshold` pixels before setting `didPointerDrag` to true.
     document.addEventListener(
       'pointermove',
       event => {
         if (
           isPointerDown.current &&
           initialPointerPosition.current &&
-          (event.clientX > initialPointerPosition.current.x + PRESS_DELTA_MAX ||
-            event.clientX < initialPointerPosition.current.x - PRESS_DELTA_MAX ||
-            event.clientY > initialPointerPosition.current.y + PRESS_DELTA_MAX ||
-            event.clientY < initialPointerPosition.current.y - PRESS_DELTA_MAX)
+          (event.clientX > initialPointerPosition.current.x + clickDragThreshold ||
+            event.clientX < initialPointerPosition.current.x - clickDragThreshold ||
+            event.clientY > initialPointerPosition.current.y + clickDragThreshold ||
+            event.clientY < initialPointerPosition.current.y - clickDragThreshold)
         ) {
           didPointerDrag.current = true;
+          hideButtonsOnDrag && setShowButtons(false);
         }
       },
       { signal: controller.signal }
@@ -123,7 +120,7 @@ export default function DragHandleWrapper({
     );
 
     return () => controller.abort();
-  }, []);
+  }, [clickDragThreshold, hideButtonsOnDrag]);
 
   const onHandlePointerDown: React.PointerEventHandler = event => {
     // Tooltip behavior: the tooltip should appear on hover, but disappear when

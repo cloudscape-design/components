@@ -4,13 +4,12 @@ import React from 'react';
 import flattenChildren from 'react-keyed-flatten-children';
 import clsx, { ClassValue } from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import { Breakpoint, matchBreakpointMapping } from '../internal/breakpoints';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { isDevelopment } from '../internal/is-development';
 import { GridProps } from './interfaces';
 

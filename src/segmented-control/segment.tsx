@@ -3,10 +3,11 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalIcon from '../icon/internal';
 import Tooltip from '../internal/components/tooltip';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SegmentedControlProps } from './interfaces';
 

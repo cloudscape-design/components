@@ -16,6 +16,7 @@ awsuiPlugins.appLayout.registerDrawer({
   resizable: true,
   defaultSize: 350,
   preserveInactiveContent: true,
+  isExpandable: true,
 
   ariaLabels: {
     closeButton: 'Close button',

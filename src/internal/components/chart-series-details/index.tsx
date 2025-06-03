@@ -3,9 +3,10 @@
 import React, { forwardRef, memo, ReactNode, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalExpandableSection from '../../../expandable-section/internal';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { useMergeRefs } from '../../hooks/use-merge-refs';
 import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
 import getSeriesDetailsText, { screenReaderTextClass } from './series-details-text';
 

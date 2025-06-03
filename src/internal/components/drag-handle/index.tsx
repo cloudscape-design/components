@@ -26,6 +26,8 @@ const InternalDragHandle = forwardRef(
       onDirectionClick,
       triggerMode,
       initialShowButtons,
+      hideButtonsOnDrag = false,
+      clickDragThreshold = 3,
       ...rest
     }: DragHandleProps,
     ref: React.Ref<Element>
@@ -39,6 +41,8 @@ const InternalDragHandle = forwardRef(
         onDirectionClick={onDirectionClick}
         triggerMode={triggerMode}
         initialShowButtons={initialShowButtons}
+        hideButtonsOnDrag={hideButtonsOnDrag}
+        clickDragThreshold={clickDragThreshold}
       >
         <DragHandleButton
           ref={ref}

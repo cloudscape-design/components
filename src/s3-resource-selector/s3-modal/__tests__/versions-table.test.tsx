@@ -65,7 +65,7 @@ test('Renders selection labels', async () => {
   const wrapper = await renderTable(<VersionsTable {...defaultProps} />);
   expect(wrapper.findRowSelectionArea(1)!.getElement()).toHaveAttribute(
     'aria-label',
-    'Versions select 6036589969ec3d9b2db8faa7'
+    'select 6036589969ec3d9b2db8faa7'
   );
 });
 

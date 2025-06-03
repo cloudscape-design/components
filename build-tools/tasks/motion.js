@@ -6,7 +6,7 @@ const waitOn = require('wait-on');
 const { task } = require('../utils/gulp-utils.js');
 
 module.exports = task('test:motion', async () => {
-  const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.js'], {
+  const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.cjs'], {
     env: {
       NODE_ENV: 'development',
     },

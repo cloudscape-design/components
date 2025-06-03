@@ -140,7 +140,7 @@ $drawer-resize-handle-size: awsui.$space-m;
       z-index: 1;
       align-self: start;
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
     }
 
     > .drawer-content {
@@ -168,6 +168,7 @@ $drawer-resize-handle-size: awsui.$space-m;
 
     @include mobile-only {
       grid-template-columns: 1fr;
+      grid-column: 1 / span 2;
     }
 
     > .drawer-gap {
@@ -177,6 +178,7 @@ $drawer-resize-handle-size: awsui.$space-m;
       inline-size: $global-drawer-gap-size;
       background: awsui.$color-gap-global-drawer;
       border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      box-sizing: border-box;
     }
 
     > .drawer-slider {
@@ -223,7 +225,7 @@ $drawer-resize-handle-size: awsui.$space-m;
         z-index: 1;
         align-self: start;
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
       }
 
       > .drawer-content {
