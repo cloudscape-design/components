@@ -61,7 +61,7 @@ const InternalTreeItem = <T,>({
         withGrid && styles['with-grid']
       )}
       aria-expanded={isExpandable ? isExpanded : undefined}
-      aria-level={level}
+      aria-level={level > 0 ? level : undefined}
       data-testid={`treeitem-${id}`}
     >
       {/* <div className={styles['treeitem-toggle-area']}>
@@ -157,6 +157,7 @@ const InternalTreeItem = <T,>({
                     renderItem={renderItem}
                     getItemId={getItemId}
                     getItemChildren={getItemChildren}
+                    i18nStrings={i18nStrings}
                   />
                 );
               })}

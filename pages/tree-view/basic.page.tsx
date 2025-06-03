@@ -337,6 +337,10 @@ export default function BasicTreeView() {
                 }
               }}
               expandedItems={expandedItems}
+              i18nStrings={{
+                expandButtonLabel: () => 'Expand item',
+                collapseButtonLabel: () => 'Collapse item',
+              }}
             />
           </Container>
         </div>

@@ -93,11 +93,13 @@ test('children items are rendered only when item is expanded', () => {
 
   // expand
   expandableItem.findItemToggle()!.getElement().click();
+  expect(expandableItem.findChildren().length).toBe(2);
   expect(wrapper.findItemById('1', { expanded: true })!.getElement()).toBeVisible();
   expect(expandableItem.findChildById('1.1')!.getElement()).toBeVisible();
 
   // collapse
   expandableItem.findItemToggle()!.getElement().click();
+  expect(expandableItem.findChildren().length).toBe(0);
   expect(wrapper.findItemById('1', { expanded: false })!.getElement()).toBeVisible();
   expect(expandableItem.findChildById('1.1')).toBeNull();
 });

@@ -73,6 +73,10 @@ export default function TestPage() {
             }
           }}
           expandedItems={expandedItems}
+          i18nStrings={{
+            expandButtonLabel: () => 'Expand item',
+            collapseButtonLabel: () => 'Collapse item',
+          }}
         />
       </Box>
     </>
