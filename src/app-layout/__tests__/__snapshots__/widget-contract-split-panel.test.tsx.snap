@@ -137,7 +137,7 @@ Map {
         "maxGlobalDrawersSizes": {},
         "minDrawerSize": 290,
         "minGlobalDrawersSizes": {},
-        "navigation": "__JSX__",
+        "navigation": undefined,
         "navigationFocusControl": {
           "loseFocus": [Function],
           "refs": {
@@ -434,7 +434,7 @@ Map {
         "maxGlobalDrawersSizes": {},
         "minDrawerSize": 290,
         "minGlobalDrawersSizes": {},
-        "navigation": "__JSX__",
+        "navigation": undefined,
         "navigationFocusControl": {
           "loseFocus": [Function],
           "refs": {
@@ -731,7 +731,7 @@ Map {
         "maxGlobalDrawersSizes": {},
         "minDrawerSize": 290,
         "minGlobalDrawersSizes": {},
-        "navigation": "__JSX__",
+        "navigation": undefined,
         "navigationFocusControl": {
           "loseFocus": [Function],
           "refs": {
@@ -1028,7 +1028,7 @@ Map {
         "maxGlobalDrawersSizes": {},
         "minDrawerSize": 290,
         "minGlobalDrawersSizes": {},
-        "navigation": "__JSX__",
+        "navigation": undefined,
         "navigationFocusControl": {
           "loseFocus": [Function],
           "refs": {
@@ -1323,6 +1323,7 @@ Map {
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": undefined,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -1404,6 +1405,7 @@ Map {
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": undefined,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -1485,6 +1487,7 @@ Map {
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": undefined,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -1566,6 +1569,7 @@ Map {
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": undefined,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,

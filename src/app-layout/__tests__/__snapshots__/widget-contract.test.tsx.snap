@@ -72,6 +72,7 @@ Map {
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": undefined,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -152,6 +153,7 @@ Map {
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": undefined,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -232,6 +234,7 @@ Map {
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": undefined,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -312,6 +315,7 @@ Map {
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": undefined,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -471,6 +475,9 @@ Map {
         </div>,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": <div>
+          navigation
+        </div>,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -574,6 +581,9 @@ Map {
         </div>,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": <div>
+          navigation
+        </div>,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -677,6 +687,9 @@ Map {
         </div>,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": <div>
+          navigation
+        </div>,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -780,6 +793,9 @@ Map {
         </div>,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": <div>
+          navigation
+        </div>,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -942,6 +958,7 @@ Map {
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": undefined,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -1041,6 +1058,7 @@ Map {
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": undefined,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -1140,6 +1158,7 @@ Map {
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": undefined,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
@@ -1239,6 +1258,7 @@ Map {
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
+        "navigation": undefined,
         "navigationOpen": true,
         "placement": {
           "inlineSize": Infinity,
