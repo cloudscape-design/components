@@ -26,7 +26,7 @@ export default function PortalOverlay({
   useLayoutEffect(() => {
     if (track.current) {
       const newContainer = track.current.ownerDocument.createElement('div');
-      track.current.ownerDocument.documentElement.appendChild(newContainer);
+      track.current.ownerDocument.body.appendChild(newContainer);
       setContainer(newContainer);
       return () => newContainer.remove();
     }
@@ -77,10 +77,6 @@ export default function PortalOverlay({
       cleanedUp = true;
     };
   }, [isDisabled, track]);
-
-  if (track === null) {
-    return null;
-  }
 
   return (
     <Portal container={container}>
