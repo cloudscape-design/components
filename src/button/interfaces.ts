@@ -100,6 +100,17 @@ export interface BaseButtonProps {
    * @i18n
    */
   i18nStrings?: ButtonProps.I18nStrings;
+
+  /**
+   * Attributes to add to the native `button` element.
+   *
+   * It is not supported to use this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeAttributes?:
+    | (React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>)
+    | Record<`data-${string}`, string>;
 }
 
 export interface ButtonProps extends BaseComponentProps, BaseButtonProps {

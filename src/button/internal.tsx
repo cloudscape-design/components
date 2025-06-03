@@ -49,9 +49,6 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
     | 'inline-icon-pointer-target';
   badge?: boolean;
   analyticsAction?: string;
-  __nativeAttributes?:
-    | (React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>)
-    | Record<`data-${string}`, string>;
   __iconClass?: string;
   __focusable?: boolean;
   __injectAnalyticsComponentMetadata?: boolean;
@@ -90,7 +87,7 @@ export const InternalButton = React.forwardRef(
       fullWidth,
       badge,
       i18nStrings,
-      __nativeAttributes,
+      nativeAttributes = {},
       __internalRootRef = null,
       __focusable = false,
       __injectAnalyticsComponentMetadata = false,
@@ -185,8 +182,7 @@ export const InternalButton = React.forwardRef(
       [styles.link]: isAnchor,
     });
 
-    const explicitTabIndex =
-      __nativeAttributes && 'tabIndex' in __nativeAttributes ? __nativeAttributes.tabIndex : undefined;
+    const explicitTabIndex = 'tabIndex' in nativeAttributes ? nativeAttributes.tabIndex : undefined;
     const { tabIndex } = useSingleTabStopNavigation(buttonRef, {
       tabIndex: isAnchor && isNotInteractive && !isDisabledWithReason ? -1 : explicitTabIndex,
     });
@@ -207,7 +203,6 @@ export const InternalButton = React.forwardRef(
 
     const buttonProps = {
       ...props,
-      ...__nativeAttributes,
       ...performanceMarkAttributes,
       tabIndex,
       // https://github.com/microsoft/TypeScript/issues/36659
@@ -305,6 +300,7 @@ export const InternalButton = React.forwardRef(
             aria-disabled={isNotInteractive ? true : undefined}
             download={download}
             {...disabledReasonProps}
+            {...nativeAttributes}
           >
             {buttonContent}
             {isDisabledWithReason && disabledReasonContent}
@@ -326,6 +322,7 @@ export const InternalButton = React.forwardRef(
           disabled={disabled && !__focusable && !isDisabledWithReason}
           aria-disabled={hasAriaDisabled ? true : undefined}
           {...disabledReasonProps}
+          {...nativeAttributes}
         >
           {buttonContent}
           {isDisabledWithReason && disabledReasonContent}
