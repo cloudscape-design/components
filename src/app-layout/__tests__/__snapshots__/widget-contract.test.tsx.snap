@@ -69,6 +69,18 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
@@ -150,6 +162,18 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
@@ -231,6 +255,18 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
@@ -312,6 +348,18 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
@@ -470,6 +518,18 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
         "breadcrumbs": <div>
           breadcrumbs
         </div>,
@@ -576,6 +636,18 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
         "breadcrumbs": <div>
           breadcrumbs
         </div>,
@@ -682,6 +754,18 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
         "breadcrumbs": <div>
           breadcrumbs
         </div>,
@@ -788,6 +872,18 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
         "breadcrumbs": <div>
           breadcrumbs
         </div>,
@@ -955,6 +1051,18 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
@@ -1055,6 +1163,18 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
@@ -1155,6 +1275,18 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
@@ -1255,6 +1387,18 @@ Map {
     },
     "appLayoutState": {
       "appLayoutInternals": {
+        "ariaLabels": {
+          "drawers": undefined,
+          "drawersOverflow": undefined,
+          "drawersOverflowWithBadge": undefined,
+          "navigation": undefined,
+          "navigationClose": undefined,
+          "navigationToggle": undefined,
+          "notifications": undefined,
+          "tools": undefined,
+          "toolsClose": undefined,
+          "toolsToggle": undefined,
+        },
         "breadcrumbs": undefined,
         "discoveredBreadcrumbs": null,
         "globalDrawers": [],
