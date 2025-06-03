@@ -5,7 +5,6 @@ import fs from 'fs';
 import path from 'path';
 
 import { SplitPanelContextProvider } from '../../lib/components/internal/context/split-panel-context';
-import definitions from '../../lib/components-definitions/components';
 import { defaultSplitPanelContextProps } from './required-props-for-components';
 
 const componentsDir = path.resolve(__dirname, '../../lib/components');
@@ -66,10 +65,6 @@ export function requireComponent(componentName: string): any {
   }
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   return require(path.join(componentsDir, componentName));
-}
-
-export function requireComponentDefinition(componentName: string) {
-  return definitions[componentName];
 }
 
 export function requireDesignTokensFile(fileName: string): any {
