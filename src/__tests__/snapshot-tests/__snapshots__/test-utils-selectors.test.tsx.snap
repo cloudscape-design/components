@@ -152,7 +152,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_content-display-option-label_tc96w",
     "awsui_content-display-option-list_tc96w",
     "awsui_content-display-option-toggle_tc96w",
-    "awsui_content-display-option_tc96w",
     "awsui_content-display-text-filter_tc96w",
     "awsui_content-display-title_tc96w",
     "awsui_content-display_tc96w",
@@ -417,6 +416,9 @@ exports[`test-utils selectors 1`] = `
   ],
   "link": [
     "awsui_link_4c84z",
+  ],
+  "list": [
+    "awsui_root_rckk5",
   ],
   "live-region": [
     "awsui_root_1pc7b",

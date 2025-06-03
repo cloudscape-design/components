@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, forwardRef } from 'react';
 
-import DragHandle, { DragHandleProps } from '../../internal/components/drag-handle';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import InternalToggle from '../../toggle/internal';
 import { OptionWithVisibility } from './utils';
@@ -13,21 +12,16 @@ const componentPrefix = 'content-display-option';
 export const getClassName = (suffix?: string) => styles[[componentPrefix, suffix].filter(Boolean).join('-')];
 
 interface ContentDisplayOptionProps {
-  dragHandleProps: DragHandleProps;
   onToggle?: (option: OptionWithVisibility) => void;
   option: OptionWithVisibility;
 }
 
 const ContentDisplayOption = forwardRef(
-  ({ dragHandleProps, onToggle, option }: ContentDisplayOptionProps, ref: ForwardedRef<HTMLDivElement>) => {
+  ({ onToggle, option }: ContentDisplayOptionProps, ref: ForwardedRef<HTMLDivElement>) => {
     const idPrefix = useUniqueId(componentPrefix);
     const controlId = `${idPrefix}-control-${option.id}`;
     return (
       <div ref={ref} className={getClassName('content')}>
-        <div className={styles['drag-handle-wrapper']}>
-          <DragHandle {...dragHandleProps} />
-        </div>
-
         <label className={getClassName('label')} htmlFor={controlId}>
           {option.label}
         </label>
