@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { TreeviewProps } from './interfaces';
+import { TreeViewProps } from '../interfaces';
 
 export function getItemPosition(index: number, itemsLength: number) {
   if (index === 0 && itemsLength === 1) {
@@ -20,7 +20,7 @@ export function getItemPosition(index: number, itemsLength: number) {
 }
 
 interface TransformTreeItemPropsParams
-  extends Pick<TreeviewProps, 'expandedItems' | 'renderItem' | 'getItemId' | 'getItemChildren'> {
+  extends Pick<TreeViewProps, 'expandedItems' | 'renderItem' | 'getItemId' | 'getItemChildren'> {
   item: any;
   index: number;
 }

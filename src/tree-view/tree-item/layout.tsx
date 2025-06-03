@@ -3,8 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import styles from './styles.css.js';
-import testUtilStyles from './test-classes/styles.css.js';
+import styles from '../styles.css.js';
+import testUtilStyles from '../test-classes/styles.css.js';
 
 const TreeItemLayout = ({
   icon,

@@ -8,16 +8,16 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { TreeviewProps } from './interfaces';
-import InternalTreeItem from './treeitem';
-import { getItemPosition } from './utils';
+import { TreeViewProps } from './interfaces';
+import InternalTreeItem from './tree-item';
+import { getItemPosition } from './tree-item/utils';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-type InternalTreeviewProps<T> = TreeviewProps<T> & InternalBaseComponentProps;
+type InternalTreeViewProps<T> = TreeViewProps<T> & InternalBaseComponentProps;
 
-const InternalTreeview = <T,>({
+const InternalTreeView = <T,>({
   expandedItems,
   items = [],
   renderItem,
@@ -30,19 +30,19 @@ const InternalTreeview = <T,>({
   i18nStrings,
   __internalRootRef,
   ...rest
-}: InternalTreeviewProps<T>) => {
+}: InternalTreeViewProps<T>) => {
   const baseProps = getBaseProps(rest);
   const isExpandStateControlled = !!expandedItems;
   const [internalExpandedItems, setInternalExpandedItems] = useState(expandedItems || []);
 
   if (isExpandStateControlled && !onItemToggle) {
     warnOnce(
-      'Tree view',
+      'TreeView',
       '`expandedItems` is provided without `onItemToggle`. Make sure to provide `onItemToggle` with `expandedItems` to control expand/collapse state of items.'
     );
   }
 
-  const onToggle = ({ id, item, expanded }: TreeviewProps.ItemToggleDetail<T>) => {
+  const onToggle = ({ id, item, expanded }: TreeViewProps.ItemToggleDetail<T>) => {
     if (!isExpandStateControlled) {
       if (expanded) {
         setInternalExpandedItems([...internalExpandedItems, id]);
@@ -90,4 +90,4 @@ const InternalTreeview = <T,>({
   );
 };
 
-export default InternalTreeview;
+export default InternalTreeView;

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
-import Treeview, { TreeviewProps } from '../../../lib/components/treeview';
+import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
 
 interface Item {
   id: string;
@@ -39,19 +39,18 @@ const defaultItems: Item[] = [
   },
 ];
 
-function renderTreeView(props: Partial<TreeviewProps<Item>> = {}) {
-  const { container } = render(
-    <Treeview
-      items={defaultItems}
-      getItemId={item => item.id}
-      getItemChildren={item => item.items}
-      renderItem={item => ({
-        content: item.title,
-      })}
-      {...props}
-    />
-  );
-  const wrapper = createWrapper(container).findTreeview()!;
+const defaultProps: TreeViewProps<Item> = {
+  items: defaultItems,
+  getItemId: item => item.id,
+  getItemChildren: item => item.items,
+  renderItem: item => ({
+    content: item.title,
+  }),
+};
+
+function renderTreeView(props: Partial<TreeViewProps<Item>> = {}) {
+  const { container } = render(<TreeView {...defaultProps} {...props} />);
+  const wrapper = createWrapper(container).findTreeView()!;
   return { wrapper };
 }
 

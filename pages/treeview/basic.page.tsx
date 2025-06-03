@@ -11,7 +11,7 @@ import Icon from '~components/icon';
 import Popover from '~components/popover';
 import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
-import Treeview from '~components/treeview';
+import TreeView from '~components/tree-view';
 
 const progressiveStepContent = (
   <div style={{ display: 'flex' }}>
@@ -304,18 +304,18 @@ function RdsAccessRoleTreeItemContent() {
   );
 }
 
-export default function BasicTreeview() {
+export default function BasicTreeView() {
   const [expandedItems, setExpandedItems] = useState<Array<string>>(['1', '4.1']);
 
   return (
     <>
-      <h1>Basic treeview</h1>
+      <h1>Basic tree view</h1>
 
       <Box padding="xl">
         <div style={{ width: '60%' }}>
           <Container>
-            <Treeview
-              ariaLabel="Random data treeview"
+            <TreeView
+              ariaLabel="Random data tree view"
               items={items}
               renderItem={item => {
                 return {

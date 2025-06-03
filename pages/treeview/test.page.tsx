@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Button, SpaceBetween } from '~components';
 import Box from '~components/box';
 import Icon from '~components/icon';
-import Treeview from '~components/treeview';
+import TreeView from '~components/tree-view';
 
 import { Actions, Content } from './common';
 import { allItems, items } from './generate-data';
@@ -45,7 +45,7 @@ export default function TestPage() {
       </SpaceBetween>
 
       <Box padding="xl">
-        <Treeview
+        <TreeView
           items={items}
           renderItem={item => {
             const isExpanded = expandedItems.includes(item.id);

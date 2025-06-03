@@ -5,9 +5,9 @@ import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface TreeviewProps<T = any> extends BaseComponentProps {
+export interface TreeViewProps<T = any> extends BaseComponentProps {
   /**
-   * An array of treeview items.
+   * An array of tree view items.
    */
   items: ReadonlyArray<T>;
 
@@ -19,7 +19,7 @@ export interface TreeviewProps<T = any> extends BaseComponentProps {
    * * `secondaryContent` (optional, React.ReactNode) - Secondary content of the item, displayed below the content.
    * * `actions` (optional, React.ReactNode) - Actions related to item. We recommend using a button group.
    */
-  renderItem: (item: T, index: number) => TreeviewProps.TreeItem;
+  renderItem: (item: T, index: number) => TreeViewProps.TreeItem;
 
   /**
    * Provides a unique identifier of each item.
@@ -37,33 +37,33 @@ export interface TreeviewProps<T = any> extends BaseComponentProps {
   expandedItems?: ReadonlyArray<string>;
 
   /**
-   * Provides an `aria-label` to the treeview that screen readers can read (for accessibility).
+   * Provides an `aria-label` to the tree view that screen readers can read (for accessibility).
    * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
    */
   ariaLabel?: string;
 
   /**
-   * Sets the `aria-labelledby` property on the treeview.
+   * Sets the `aria-labelledby` property on the tree view.
    * If there's a visible label element that you can reference, use this instead of `ariaLabel`.
    * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
    */
   ariaLabelledby?: string;
 
   /**
-   * Sets the `aria-describedby` property on the treeview.
+   * Sets the `aria-describedby` property on the tree view.
    */
   ariaDescribedby?: string;
 
   /**
    * Called when an item's expand toggle is clicked.
    */
-  onItemToggle?: NonCancelableEventHandler<TreeviewProps.ItemToggleDetail<T>>;
+  onItemToggle?: NonCancelableEventHandler<TreeViewProps.ItemToggleDetail<T>>;
 
   /**
    * An object containing all the necessary localized strings required by the component.
    * @i18n
    */
-  i18nStrings?: TreeviewProps.I18nStrings<T>;
+  i18nStrings?: TreeViewProps.I18nStrings<T>;
 
   /**
    * @awsuiSystem core
@@ -79,7 +79,7 @@ export interface TreeviewProps<T = any> extends BaseComponentProps {
   renderItemToggleIcon?: (isExpanded: boolean) => React.ReactNode;
 }
 
-export namespace TreeviewProps {
+export namespace TreeViewProps {
   export interface TreeItem {
     content: React.ReactNode;
     icon?: React.ReactNode;

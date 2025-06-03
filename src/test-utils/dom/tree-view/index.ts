@@ -3,7 +3,7 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import expandToggleStyles from '../../../internal/components/expand-toggle-button/styles.selectors.js';
-import testUtilStyles from '../../../treeview/test-classes/styles.selectors.js';
+import testUtilStyles from '../../../tree-view/test-classes/styles.selectors.js';
 
 class TreeItemWrapper extends ComponentWrapper {
   /**
@@ -65,7 +65,7 @@ class TreeItemWrapper extends ComponentWrapper {
   }
 }
 
-export default class TreeviewWrapper extends ComponentWrapper {
+export default class TreeViewWrapper extends ComponentWrapper {
   static rootSelector: string = testUtilStyles.root;
 
   /**

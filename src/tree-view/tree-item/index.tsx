@@ -3,24 +3,24 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useInternalI18n } from '../i18n/context';
-import { ExpandToggleButton } from '../internal/components/expand-toggle-button';
+import { useInternalI18n } from '../../i18n/context';
+import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 // import Connector from './connector';
-import { TreeviewProps } from './interfaces';
-import TreeItemLayout from './treeitem-layout';
+import { TreeViewProps } from '../interfaces';
+import TreeItemLayout from './layout';
 import { getItemPosition, transformTreeItemProps } from './utils';
 
-import styles from './styles.css.js';
-import testUtilStyles from './test-classes/styles.css.js';
+import styles from '../styles.css.js';
+import testUtilStyles from '../test-classes/styles.css.js';
 
 interface InternalTreeItemProps<T>
-  extends Pick<TreeviewProps, 'expandedItems' | 'renderItem' | 'getItemId' | 'getItemChildren' | 'i18nStrings'> {
+  extends Pick<TreeViewProps, 'expandedItems' | 'renderItem' | 'getItemId' | 'getItemChildren' | 'i18nStrings'> {
   item: T;
   index: number;
   level: number;
   position: 'start' | 'middle' | 'end';
   withGrid?: boolean;
-  onItemToggle: (detail: TreeviewProps.ItemToggleDetail<T>) => void;
+  onItemToggle: (detail: TreeViewProps.ItemToggleDetail<T>) => void;
 }
 
 const InternalTreeItem = <T,>({
@@ -36,7 +36,7 @@ const InternalTreeItem = <T,>({
   getItemChildren,
   onItemToggle,
 }: InternalTreeItemProps<T>) => {
-  const i18n = useInternalI18n('treeview');
+  const i18n = useInternalI18n('tree-view');
   const { id, isExpandable, isExpanded, children, icon, content, secondaryContent, actions } = transformTreeItemProps({
     item,
     index,

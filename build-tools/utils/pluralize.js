@@ -79,7 +79,7 @@ const pluralizationMap = {
   ToggleButton: 'ToggleButtons',
   TokenGroup: 'TokenGroups',
   TopNavigation: 'TopNavigations',
-  Treeview: 'Treeviews',
+  TreeView: 'TreeViews',
   TutorialPanel: 'TutorialPanels',
   Wizard: 'Wizards',
 };

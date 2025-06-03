@@ -6,15 +6,15 @@ import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
-import { TreeviewProps } from './interfaces';
-import InternalTreeview from './internal';
+import { TreeViewProps } from './interfaces';
+import InternalTreeView from './internal';
 
-export { TreeviewProps };
+export { TreeViewProps };
 
-const Treeview = <T,>({ items, showConnectorLine = true, ...rest }: TreeviewProps<T>) => {
+const TreeView = <T,>({ items, showConnectorLine = true, ...rest }: TreeViewProps<T>) => {
   const baseProps = getBaseProps(rest);
   //   TODO: analytics metadata?
-  const baseComponentProps = useBaseComponent('Treeview', {
+  const baseComponentProps = useBaseComponent('TreeView', {
     props: {},
     metadata: {
       itemsCount: items?.length,
@@ -23,7 +23,7 @@ const Treeview = <T,>({ items, showConnectorLine = true, ...rest }: TreeviewProp
   const externalProps = getExternalProps(rest);
 
   return (
-    <InternalTreeview
+    <InternalTreeView
       {...baseProps}
       {...baseComponentProps}
       {...externalProps}
@@ -35,5 +35,5 @@ const Treeview = <T,>({ items, showConnectorLine = true, ...rest }: TreeviewProp
   );
 };
 
-applyDisplayName(Treeview, 'Treeview');
-export default Treeview;
+applyDisplayName(TreeView, 'TreeView');
+export default TreeView;

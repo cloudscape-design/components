@@ -10,7 +10,7 @@ import Icon from '../../../lib/components/icon';
 import Link from '../../../lib/components/link';
 import Popover from '../../../lib/components/popover';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import Treeview, { TreeviewProps } from '../../../lib/components/treeview';
+import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -20,13 +20,6 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
 afterEach(() => {
   (warnOnce as jest.Mock).mockReset();
 });
-
-// [DONE] should render tree-view with only content
-// [DONE] should render tree-view with various slots
-// [DONE] should expand items in expandedItems
-// [DONE] should render tree-view with other Cloudscape components inside
-// [DONE] dev warning if expanded items is defined but there is no onItemToggle?
-// should render connector lines when showConnectorLine is true
 
 interface Item {
   id: string;
@@ -105,7 +98,7 @@ const defaultData: Item[] = [
   },
 ];
 
-const defaultProps: TreeviewProps<Item> = {
+const defaultProps: TreeViewProps<Item> = {
   items: defaultData,
   getItemId: item => item.id,
   getItemChildren: item => item.items,
@@ -118,9 +111,9 @@ const defaultProps: TreeviewProps<Item> = {
   }),
 };
 
-function renderTreeView(props: Partial<TreeviewProps<Item>> = {}) {
-  const { container, rerender } = render(<Treeview {...defaultProps} {...props} />);
-  const wrapper = createWrapper(container).findTreeview()!;
+function renderTreeView(props: Partial<TreeViewProps<Item>> = {}) {
+  const { container, rerender } = render(<TreeView {...defaultProps} {...props} />);
+  const wrapper = createWrapper(container).findTreeView()!;
   return { wrapper, rerender };
 }
 
@@ -191,10 +184,10 @@ test('expand/collapse state should be controlled by expandedItems', () => {
   });
   expect(wrapper.findItems({ expanded: true })).toHaveLength(2);
 
-  rerender(<Treeview {...defaultProps} expandedItems={[...expandedItems, '1.3']} />);
+  rerender(<TreeView {...defaultProps} expandedItems={[...expandedItems, '1.3']} />);
   expect(wrapper.findItems({ expanded: true })).toHaveLength(3);
 
-  rerender(<Treeview {...defaultProps} expandedItems={['1']} />);
+  rerender(<TreeView {...defaultProps} expandedItems={['1']} />);
   expect(wrapper.findItems({ expanded: true })).toHaveLength(1);
 });
 
@@ -204,7 +197,7 @@ test('should warn when expandedItems is provided without onItemToggle', () => {
   });
 
   expect(warnOnce).toHaveBeenCalledWith(
-    'Tree view',
+    'TreeView',
     '`expandedItems` is provided without `onItemToggle`. Make sure to provide `onItemToggle` with `expandedItems` to control expand/collapse state of items.'
   );
 });

@@ -542,7 +542,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.labelsTaskStatus.in-progress": never;
     "i18nStrings.labelsTaskStatus.success": never;
   }
-  "treeview": {
+  "tree-view": {
     "i18nStrings.expandButtonLabel": never;
     "i18nStrings.collapseButtonLabel": never;
   }
