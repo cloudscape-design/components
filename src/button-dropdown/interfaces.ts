@@ -119,6 +119,24 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * Sets the button width to be 100% of the parent container width. Button content is centered.
    */
   fullWidth?: boolean;
+
+  /**
+   * Attributes to add to the native `button` element.
+   *
+   * It is not supported to use this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeButtonAttributes?: ButtonProps['nativeAttributes'];
+
+  /**
+   * Attributes to add to the native  `button` element of the `mainAction`.
+   *
+   * It is not supported to use this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeMainActionButtonAttributes?: ButtonProps['nativeAttributes'];
 }
 
 export namespace ButtonDropdownProps {

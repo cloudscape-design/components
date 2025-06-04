@@ -4216,6 +4216,25 @@ It prevents users from clicking the button, but it can still be focused.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native \`button\` element.
+
+It is not supported to use this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+    },
+    {
       "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to "noopener noreferrer" when \`target\` is \`"_blank"\`.
 If the \`rel\` property is provided, it overrides the default behavior.",
       "name": "rel",
@@ -4636,6 +4655,44 @@ The main action also supports the following properties of the [button](/componen
       "type": "ButtonDropdownProps.MainAction",
     },
     {
+      "description": "Attributes to add to the native \`button\` element.
+
+It is not supported to use this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeButtonAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+    },
+    {
+      "description": "Attributes to add to the native  \`button\` element of the \`mainAction\`.
+
+It is not supported to use this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeMainActionButtonAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+    },
+    {
       "defaultValue": "'normal'",
       "description": "Determines the general styling of the button dropdown.
 * \`primary\` for primary buttons
@@ -4835,18 +4892,35 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 * \`text\` (string) - The name of the group rendered as ARIA label for this group.
 * \`items\` ((ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown)[]) - The array of items that belong to this group.",
       "name": "items",
-      "optional": false,
+      "optional": true,
       "type": "ReadonlyArray<ButtonGroupProps.ItemOrGroup>",
     },
     {
+      "defaultValue": "'icon'",
       "description": "Determines the general styling of the button dropdown.
 * \`icon\` for icon buttons.",
       "name": "variant",
-      "optional": false,
+      "optional": true,
       "type": ""icon"",
     },
   ],
-  "regions": [],
+  "regions": [
+    {
+      "description": "Instead of passing \`items\`, group items can be passed as children. When using this,
+you will need to manage click handlers and state of buttons.
+
+Each item should contain a single focusable element which must have a unique \`data-itemid\` attribute.
+
+For example:
+- \`<Button data-itemid="button-one">One</Button>\`
+- \`<ButtonDropdown nativeButtonAttributes={{'data-itemid': 'button-two'}} items={...} />\`",
+      "isDefault": true,
+      "name": "children",
+      "systemTags": [
+        "core",
+      ],
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
@@ -19907,6 +19981,25 @@ It prevents users from clicking the button, but it can still be focused.",
       "name": "loadingText",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native \`button\` element.
+
+It is not supported to use this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
     },
     {
       "defaultValue": "false",
