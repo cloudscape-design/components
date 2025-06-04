@@ -127,10 +127,10 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    *
    * @awsuiSystem core
    */
-  nativeButtonAttributes?: ButtonProps['nativeAttributes'];
+  nativeTriggerAttributes?: ButtonProps['nativeAttributes'];
 
   /**
-   * Attributes to add to the native  `button` element of the `mainAction`.
+   * Attributes to add to the native `button` element of the `mainAction`.
    *
    * It is not supported to use this attribute to apply custom styling.
    *

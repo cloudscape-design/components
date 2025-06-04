@@ -9,11 +9,11 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 describe('ButtonDropdown native attributes', () => {
   const items = [{ id: 'item1', text: 'Item 1' }];
 
-  test('passes nativeButtonAttributes to the dropdown trigger button', () => {
+  test('passes nativeTriggerAttributes to the dropdown trigger button', () => {
     const { container } = render(
       <ButtonDropdown
         items={items}
-        nativeButtonAttributes={{
+        nativeTriggerAttributes={{
           'data-testid': 'dropdown-trigger',
           'aria-controls': 'controlled-element',
         }}
@@ -60,13 +60,13 @@ describe('ButtonDropdown native attributes', () => {
     expect(container.querySelector('[data-testid="main-action"]')).toBeNull();
   });
 
-  test('applies both nativeButtonAttributes and nativeMainActionButtonAttributes to respective buttons', () => {
+  test('applies both nativeTriggerAttributes and nativeMainActionButtonAttributes to respective buttons', () => {
     const { container } = render(
       <ButtonDropdown
         items={items}
         variant="primary"
         mainAction={{ text: 'Main action' }}
-        nativeButtonAttributes={{
+        nativeTriggerAttributes={{
           'data-testid': 'dropdown-trigger',
         }}
         nativeMainActionButtonAttributes={{
