@@ -48,11 +48,11 @@ export type ColorPaletteTokenName =
   | 'colorRed600'
   | 'colorRed900'
   | 'colorRed1000'
-  | 'colorYellow100'
-  | 'colorYellow600'
-  | 'colorYellow700'
-  | 'colorYellow800'
+  | 'colorYellow50'
+  | 'colorYellow400'
+  | 'colorYellow500'
   | 'colorYellow900'
+  | 'colorYellow1000'
   | 'colorTransparent'
   | 'colorWhite';
 export type ColorChartsTokenName =

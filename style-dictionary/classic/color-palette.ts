@@ -35,7 +35,7 @@ const tokens: StyleDictionary.ColorPaletteDictionary = {
   colorRed400: '#ff5d64',
   colorRed600: '#d13212',
   colorRed1000: '#270a11',
-  colorYellow800: '#906806',
+  colorYellow900: '#906806',
 };
 
 const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);
