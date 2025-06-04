@@ -485,8 +485,8 @@ const InternalTable = React.forwardRef(
               }
               disableHeaderPaddings={true}
               disableContentPaddings={true}
+              disableFooterPaddings={true}
               variant={toContainerVariant(computedVariant)}
-              __disableFooterPaddings={true}
               __disableFooterDivider={true}
               __disableStickyMobile={false}
               footer={

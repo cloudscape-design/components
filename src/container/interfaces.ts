@@ -68,6 +68,12 @@ export interface ContainerProps extends BaseComponentProps {
   footer?: React.ReactNode;
 
   /**
+   * Determines whether the container footer has padding. If `true`, removes the default padding from the footer.
+   * @awsuiSystem core
+   */
+  disableFooterPaddings?: boolean;
+
+  /**
    * Specify a container variant with one of the following:
    * * `default` - Use this variant in standalone context.
    * * `stacked` - Use this variant adjacent to other stacked containers (such as a container,
