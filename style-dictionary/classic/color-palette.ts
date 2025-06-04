@@ -6,13 +6,13 @@ import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/color-palette.js';
 
 const tokens: StyleDictionary.ColorPaletteDictionary = {
-  colorBlue100: '#f1faff',
-  colorBlue300: '#99cbe4',
-  colorBlue400: '#44b9d6',
-  colorBlue500: '#00a1c9',
+  colorBlue50: '#f1faff',
+  colorBlue200: '#99cbe4',
+  colorBlue300: '#44b9d6',
+  colorBlue400: '#00a1c9',
   colorBlue600: '#0073bb',
   colorBlue700: '#0a4a74',
-  colorBlue900: '#12293b',
+  colorBlue1000: '#12293b',
   colorGreen100: '#f2f8f0',
   colorGreen500: '#6aaf35',
   colorGreen600: '#1d8102',

@@ -103,7 +103,7 @@ const tokens: StyleDictionary.ColorChartsDictionary = {
   colorChartsStatusNeutral: '{colorGrey500}',
   colorChartsThresholdNegative: { light: '{colorRed600}', dark: '{colorRed500}' },
   colorChartsThresholdPositive: { light: '{colorGreen600}', dark: '{colorGreen500}' },
-  colorChartsThresholdInfo: { light: '{colorBlue600}', dark: '{colorBlue400}' },
+  colorChartsThresholdInfo: { light: '{colorBlue600}', dark: '{colorBlue300}' },
   colorChartsThresholdNeutral: { light: '{colorGrey600}', dark: '{colorGrey450}' },
   colorChartsLineGrid: { light: '{colorGrey300}', dark: '{colorGrey650}' },
   colorChartsLineTick: { light: '{colorGrey300}', dark: '{colorGrey650}' },
