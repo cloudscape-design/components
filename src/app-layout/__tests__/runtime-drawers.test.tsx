@@ -22,11 +22,9 @@ import {
   testDrawer,
 } from './utils';
 
-import triggerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import skeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.selectors.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
-import iconStyles from '../../../lib/components/icon/styles.selectors.js';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
@@ -64,7 +62,7 @@ const drawerDefaults: DrawerConfig = {
   unmountContent: () => {},
 };
 
-describeEachAppLayout(({ theme, size }) => {
+describeEachAppLayout(({ size }) => {
   test('does not render runtime drawers when it is explicitly disabled', async () => {
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
     const { wrapper } = await renderComponent(<AppLayout {...({ __disableRuntimeDrawers: true } as any)} />);
@@ -111,24 +109,13 @@ describeEachAppLayout(({ theme, size }) => {
     const { wrapper } = await renderComponent(<AppLayout />);
     // the 2nd trigger is for tools
     expect(wrapper.findDrawersTriggers()).toHaveLength(2);
-    const drawerTrigger = wrapper.findDrawerTriggerById(drawerDefaults.id);
-
-    const triggerParent = drawerTrigger!.getElement().parentElement;
-    const triggerParentWrapper = createWrapper(triggerParent!);
 
     awsuiPlugins.appLayout.updateDrawer({
       id: drawerDefaults.id,
       badge: true,
     });
     await delay();
-    const badgeSelector =
-      theme === 'refresh-toolbar'
-        ? toolbarTriggerStyles.badge
-        : theme === 'refresh' && size === 'desktop'
-          ? triggerStyles.badge
-          : iconStyles.badge;
-
-    expect(triggerParentWrapper!.findByClassName(badgeSelector)!.getElement()).toBeInTheDocument();
+    expect(wrapper.findDrawerTriggerById(drawerDefaults.id, { hasBadge: true })).toBeTruthy();
 
     awsuiPlugins.appLayout.updateDrawer({
       id: drawerDefaults.id,
@@ -136,8 +123,7 @@ describeEachAppLayout(({ theme, size }) => {
     });
     await delay();
 
-    // re-querying the dot element
-    expect(triggerParentWrapper!.findByClassName(badgeSelector)).toBeNull();
+    expect(wrapper.findDrawerTriggerById(drawerDefaults.id, { hasBadge: false })).toBeTruthy();
   });
 
   (size === 'desktop' ? test : test.skip)('update runtime drawers config resizable validation', async () => {
