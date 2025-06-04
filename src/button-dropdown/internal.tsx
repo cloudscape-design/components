@@ -56,6 +56,8 @@ const InternalButtonDropdown = React.forwardRef(
       analyticsMetadataTransformer,
       linkStyle,
       fullWidth,
+      nativeButtonAttributes,
+      nativeMainActionButtonAttributes,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -237,6 +239,7 @@ const InternalButtonDropdown = React.forwardRef(
           ref={mainActionRef}
           {...mainActionProps}
           {...mainActionIconProps}
+          nativeAttributes={nativeMainActionButtonAttributes}
           fullWidth={canBeFullWidth}
           className={clsx(
             styles['trigger-button'],
@@ -290,6 +293,7 @@ const InternalButtonDropdown = React.forwardRef(
               <InternalButton
                 ref={triggerRef}
                 {...baseTriggerProps}
+                nativeAttributes={{ ...baseTriggerProps.nativeAttributes, ...nativeButtonAttributes }}
                 className={clsx(baseTriggerProps.className, {
                   [styles['main-action-trigger-full-width']]: canBeFullWidth,
                 })}
@@ -308,6 +312,7 @@ const InternalButtonDropdown = React.forwardRef(
             ref={triggerRef}
             id={triggerId}
             {...baseTriggerProps}
+            nativeAttributes={{ ...baseTriggerProps.nativeAttributes, ...nativeButtonAttributes }}
             className={clsx(baseTriggerProps.className, {
               [styles['full-width']]: canBeFullWidth,
               [styles.loading]: canBeFullWidth && !!loading,

@@ -4655,6 +4655,44 @@ The main action also supports the following properties of the [button](/componen
       "type": "ButtonDropdownProps.MainAction",
     },
     {
+      "description": "Attributes to add to the native \`button\` element.
+
+It is not supported to use this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeButtonAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+    },
+    {
+      "description": "Attributes to add to the native  \`button\` element of the \`mainAction\`.
+
+It is not supported to use this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeMainActionButtonAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+    },
+    {
       "defaultValue": "'normal'",
       "description": "Determines the general styling of the button dropdown.
 * \`primary\` for primary buttons
