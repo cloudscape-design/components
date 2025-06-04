@@ -92,7 +92,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundStatusError: { light: '{colorRed100}', dark: '{colorRed900}' },
   colorBackgroundStatusInfo: { light: '{colorBlue50}', dark: '{colorBlue1000}' },
   colorBackgroundDialog: '{colorBackgroundStatusInfo}',
-  colorBackgroundStatusSuccess: { light: '{colorGreen100}', dark: '{colorGreen900}' },
+  colorBackgroundStatusSuccess: { light: '{colorGreen50}', dark: '{colorGreen1000}' },
   colorBackgroundStatusWarning: { light: '{colorYellow100}', dark: '{colorYellow900}' },
   colorBackgroundTableHeader: '{colorBackgroundContainerHeader}',
   colorBackgroundTilesDisabled: { light: '{colorGrey250}', dark: '{colorGrey800}' },
