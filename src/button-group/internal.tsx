@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { ButtonProps } from '../button/interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import {
@@ -25,11 +24,12 @@ import testUtilStyles from './test-classes/styles.css.js';
 const InternalButtonGroup = forwardRef(
   (
     {
-      items = [],
+      items,
       onItemClick,
       onFilesChange,
       ariaLabel,
       dropdownExpandToViewport,
+      children,
       __internalRootRef = null,
       ...props
     }: InternalButtonGroupProps,
@@ -40,22 +40,18 @@ const InternalButtonGroup = forwardRef(
     const navigationAPI = useRef<SingleTabStopNavigationAPI>(null);
     const containerObjectRef = useRef<HTMLDivElement>(null);
     const containerRef = useMergeRefs(containerObjectRef, __internalRootRef);
-    const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
     const [tooltip, setTooltip] = useState<null | { item: string; feedback: boolean }>(null);
 
     useImperativeHandle(ref, () => ({
       focus: id => {
-        itemsRef.current[id]?.focus();
+        getNextFocusTarget(id)?.focus();
       },
     }));
 
-    function getNextFocusTarget(): null | HTMLElement {
+    function getNextFocusTarget(id = focusedIdRef.current): null | HTMLElement {
       if (containerObjectRef.current) {
-        const buttons: HTMLButtonElement[] = Array.from(
-          containerObjectRef.current.querySelectorAll(`.${testUtilStyles.item}`)
-        );
-        const activeButtons = buttons.filter(button => !button.disabled);
-        return activeButtons.find(button => button.dataset.itemid === focusedIdRef.current) ?? activeButtons[0] ?? null;
+        const activeButtons = getFocusablesFrom(containerObjectRef.current);
+        return activeButtons.find(button => button.dataset.itemid === id) ?? activeButtons[0] ?? null;
       }
       return null;
     }
@@ -95,7 +91,10 @@ const InternalButtonGroup = forwardRef(
         return;
       }
       // Ignore navigation when the focused element is not an item.
-      if (document.activeElement && !document.activeElement.matches(`.${testUtilStyles.item}`)) {
+      if (
+        document.activeElement &&
+        !('dataset' in document.activeElement && (document.activeElement as HTMLElement).dataset.itemid)
+      ) {
         return;
       }
       event.preventDefault();
@@ -148,7 +147,7 @@ const InternalButtonGroup = forwardRef(
           getNextFocusTarget={getNextFocusTarget}
           onUnregisterActive={onUnregisterActive}
         >
-          {items.map((itemOrGroup, index) => {
+          {items?.map((itemOrGroup, index) => {
             const itemContent = (item: ButtonGroupProps.Item) => (
               <ItemElement
                 key={item.id}
@@ -158,7 +157,6 @@ const InternalButtonGroup = forwardRef(
                 setTooltip={setTooltip}
                 onItemClick={onItemClick}
                 onFilesChange={onFilesChange}
-                ref={element => (itemsRef.current[item.id] = element)}
               />
             );
 
@@ -184,6 +182,7 @@ const InternalButtonGroup = forwardRef(
               </React.Fragment>
             );
           })}
+          {children}
         </SingleTabStopNavigationProvider>
       </div>
     );
