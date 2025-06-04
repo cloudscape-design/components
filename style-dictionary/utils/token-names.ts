@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 export type ColorPaletteTokenName =
-  | 'colorAmazonOrange'
+  | 'colorAmber400'
+  | 'colorAmber500'
   | 'colorAwsSquidInk'
   | 'colorBlack'
   | 'colorBlue50'
@@ -37,10 +38,6 @@ export type ColorPaletteTokenName =
   | 'colorGrey900'
   | 'colorGrey950'
   | 'colorGrey1000'
-  | 'colorOrange100'
-  | 'colorOrange500'
-  | 'colorOrange600'
-  | 'colorOrange700'
   | 'colorPurple400'
   | 'colorPurple700'
   | 'colorRed50'
