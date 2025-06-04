@@ -42,7 +42,7 @@ export type ColorPaletteTokenName =
   | 'colorOrange600'
   | 'colorOrange700'
   | 'colorPurple400'
-  | 'colorPurple600'
+  | 'colorPurple700'
   | 'colorRed50'
   | 'colorRed400'
   | 'colorRed600'
