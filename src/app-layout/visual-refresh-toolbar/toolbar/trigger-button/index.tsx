@@ -217,10 +217,9 @@ function TriggerButton(
         disabled={disabled}
         className={clsx(
           styles.trigger,
-          styles['trigger-button-styles'],
           {
             [styles.selected]: selected,
-            [styles.badge]: badge,
+            [styles['trigger-with-badge']]: badge,
             [testutilStyles['drawers-trigger-with-badge']]: badge,
           },
           className
@@ -232,9 +231,7 @@ function TriggerButton(
         data-shift-focus="awsui-layout-drawer-trigger"
         {...getAnalyticsMetadataAttribute(triggerEventMetadata)}
       >
-        <span className={clsx(badge && clsx(styles['trigger-badge-wrapper'], styles['trigger-button-styles']))}>
-          {(iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />}
-        </span>
+        {(iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />}
       </button>
       {badge && <div className={styles.dot} />}
       {tooltipVisible && (
