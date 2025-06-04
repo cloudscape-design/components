@@ -37,3 +37,11 @@
   margin-inline-start: 0;
   margin-inline-end: 0;
 }
+
+@mixin styles-reset-ul {
+  margin-block: 0;
+  margin-inline: 0;
+
+  padding-block: 0;
+  padding-inline: 0;
+}
