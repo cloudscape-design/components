@@ -31,10 +31,10 @@ const tokens: StyleDictionary.ColorPaletteDictionary = {
   colorGrey800: '#21252c',
   colorGrey850: '#1a2029',
   colorGrey950: '#16191f',
-  colorRed100: '#fdf3f1',
-  colorRed500: '#ff5d64',
+  colorRed50: '#fdf3f1',
+  colorRed400: '#ff5d64',
   colorRed600: '#d13212',
-  colorRed900: '#270a11',
+  colorRed1000: '#270a11',
   colorYellow800: '#906806',
 };
 

@@ -39,11 +39,11 @@ export const tokens: StyleDictionary.ColorPaletteDictionary = {
   colorGreen900: '#00471e',
   colorGreen1000: '#001401',
 
-  colorRed100: '#fff5f5',
-  colorRed500: '#ff7a7a',
+  colorRed50: '#fff5f5',
+  colorRed400: '#ff7a7a',
   colorRed600: '#db0000',
-  colorRed700: '#700000',
-  colorRed900: '#1f0000',
+  colorRed900: '#700000',
+  colorRed1000: '#1f0000',
 
   colorYellow100: '#fffef0',
   colorYellow600: '#ffe347',
