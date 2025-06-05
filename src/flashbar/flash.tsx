@@ -213,14 +213,23 @@ export const Flash = React.forwardRef(
         style={{
           background:
             style?.item?.root?.background &&
-            style?.item?.root?.background[effectiveType as keyof typeof style.item.root.background],
+            (effectiveType === 'in-progress'
+              ? style?.item?.root?.background.inProgress
+              : style?.item?.root?.background[effectiveType as keyof typeof style.item.root.background]),
           borderColor:
             style?.item?.root?.borderColor &&
-            style?.item?.root?.borderColor[effectiveType as keyof typeof style.item.root.borderColor],
+            (effectiveType === 'in-progress'
+              ? style?.item?.root?.borderColor.inProgress
+              : style?.item?.root?.borderColor[effectiveType as keyof typeof style.item.root.borderColor]),
           borderRadius: style?.item?.root?.borderRadius,
           borderWidth: style?.item?.root?.borderWidth,
+          borderStyle: style?.item?.root?.borderWidth && 'solid',
           color:
-            style?.item?.root?.color && style?.item?.root?.color[effectiveType as keyof typeof style.item.root.color],
+            style?.item?.root?.color &&
+            (effectiveType === 'in-progress'
+              ? style?.item?.root?.color?.inProgress
+              : style?.item?.root?.color &&
+                style?.item?.root?.color[effectiveType as keyof typeof style.item.root.color]),
         }}
         {...analyticsAttributes}
       >

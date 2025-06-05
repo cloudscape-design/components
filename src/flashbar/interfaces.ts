@@ -46,12 +46,14 @@ export namespace FlashbarProps {
         background?: {
           error?: string;
           info?: string;
+          inProgress?: string;
           success?: string;
           warning?: string;
         };
         borderColor?: {
           error?: string;
           info?: string;
+          inProgress?: string;
           success?: string;
           warning?: string;
         };
@@ -60,6 +62,7 @@ export namespace FlashbarProps {
         color?: {
           error?: string;
           info?: string;
+          inProgress?: string;
           success?: string;
           warning?: string;
         };

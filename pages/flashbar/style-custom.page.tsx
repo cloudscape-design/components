@@ -47,6 +47,15 @@ export default function CustomFlashbar() {
       header: 'This is the test header',
       content: 'This is the test content.',
     },
+    {
+      dismissible: true,
+      onDismiss: noop,
+      dismissLabel: 'Dismiss',
+      statusIconAriaLabel: 'In Progress',
+      type: 'in-progress',
+      header: 'This is the test header',
+      content: 'This is the test content.',
+    },
   ];
 
   return (
@@ -80,6 +89,7 @@ const item = {
     background: {
       error: palette.red20,
       info: palette.blue20,
+      inProgress: palette.teal20,
       success: palette.green20,
       warning: palette.orange20,
     },
@@ -87,6 +97,7 @@ const item = {
     color: {
       error: palette.red100,
       info: palette.blue100,
+      inProgress: palette.teal100,
       success: palette.green100,
       warning: palette.orange100,
     },
