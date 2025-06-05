@@ -11,8 +11,6 @@ import SideNavigationBar from './SideNavigationBar/SideNavigationBar';
 import TopNavigation from './TopNavigation/TopNavigation';
 import Typography from './Typography';
 
-import styles from './styles.scss';
-
 export default function HodgkinsDemo() {
   const [inputValue, setInputValue] = useState('');
   const [selectedId, setSelectedId] = useState('seg-1');
@@ -21,16 +19,16 @@ export default function HodgkinsDemo() {
   return (
     <Theme fontFamily='"Amazon Ember Display", "Helvetica Neue", Helvetica, Arial, sans-serif'>
       <TopNavigation />
-      <div className={"h-screen bg-black bg-image-cs"}>
+      <div className={'h-screen bg-image-gradient'}>
         <div className="grid grid-cols-3 gap-[60px] px-[60px] min-h-[calc(100%-100px)]">
-          <div data-column="1">
+          <div className="flex py-[60px] items-center">
             <SideNavigationBar
               selectedId={selectedButton}
               onItemClick={({ detail }) => setSelectedButton(detail.pressed ? detail.id : '')}
             />
           </div>
 
-          <div data-column="2">
+          <div className="flex py-[60px] flex-col justify-between">
             <div>
               <Typography size="medium" type="label">
                 New project
@@ -57,8 +55,8 @@ export default function HodgkinsDemo() {
             />
           </div>
 
-          <div data-column="3">
-            <div data-component="container">
+          <div className="flex py-[60px]">
+            <div className="rounded-[16px] p-[16px] bg-[#101415]">
               <Typography size="medium" type="label">
                 Experiment
               </Typography>
@@ -78,7 +76,7 @@ export default function HodgkinsDemo() {
                   ]}
                 />
 
-                <div data-component="container" className={styles.inner}>
+                <div className="rounded-[16px] px-[16px] py-[12px] bg-[#191c1d]">
                   <Typography size="small" type="title" tag="h3">
                     <Theme fill="rgba(24, 255, 182, .8) ">
                       <Icon name="gen-ai" size="inherit" /> Overview

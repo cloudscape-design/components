@@ -8,8 +8,6 @@ import Theme from '~components/theming/component';
 import { palette } from '../foundation/colors';
 import { addPlus, beaker, clipBoard, dinnertime } from '../foundation/icons';
 
-import styles from './styles.scss';
-
 type SideNavigationProps = Omit<ButtonGroupProps, 'variant' | 'items'> & {
   selectedId?: string;
 };
@@ -25,7 +23,7 @@ export default function SideNavigationBar(props: SideNavigationProps) {
       backgroundColor={backgroundColors}
       borderColor={borderColors}
     >
-      <div className={styles['hodgkins-side-nav']}>
+      <div className="bg-[#1d2021] [box-shadow:-19px_57px_61.7px_rgba(0,_0,_0,_0.25)] rounded-[100px] px-[8px] py-[16px]">
         <ButtonGroup
           onItemClick={props.onItemClick}
           ariaLabel="Navigation options"

@@ -1,9 +1,14 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
 @layer theme, base, components, utilities;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
 
+/* stylelint-disable scss/at-rule-no-unknown */
 
-@utility bg-image-cs {
+@utility bg-image-gradient {
   background-image: linear-gradient(
       to bottom left,
       #000000,
@@ -19,4 +24,34 @@
       rgba(93, 193, 232, 0.5),
       #000000 50%
     );
+}
+
+@utility gradient-text {
+  color: transparent;
+  background-clip: text;
+}
+
+@theme {
+  --color-gray-50: oklch(0.985 0.002 247.839);
+  --color-gray-100: oklch(0.967 0.003 264.542);
+  --color-gray-200: oklch(0.928 0.006 264.531);
+  --color-gray-300: oklch(0.872 0.01 258.338);
+  --color-gray-400: oklch(0.707 0.022 261.325);
+  --color-gray-500: oklch(0.551 0.027 264.364);
+  --color-gray-600: oklch(0.446 0.03 256.802);
+  --color-gray-700: oklch(0.373 0.034 259.733);
+  --color-gray-800: oklch(0.278 0.033 256.848);
+  --color-gray-900: oklch(0.21 0.034 264.665);
+  --color-gray-950: oklch(0.13 0.028 261.692);
+  --color-gray-1: light-dark(oklch(0.985 0.002 247.839), oklch(0.13 0.028 261.692));
+  --color-gray-2: light-dark(oklch(0.967 0.003 264.542), oklch(0.21 0.034 264.665));
+  --color-gray-3: light-dark(oklch(0.928 0.006 264.531), oklch(0.278 0.033 256.848));
+  --color-gray-4: light-dark(oklch(0.872 0.01 258.338), oklch(0.373 0.034 259.733));
+  --color-gray-5: light-dark(oklch(0.707 0.022 261.325), oklch(0.446 0.03 256.802));
+  --color-gray-6: light-dark(oklch(0.551 0.027 264.364), oklch(0.551 0.027 264.364));
+  --color-gray-7: light-dark(oklch(0.446 0.03 256.802), oklch(0.707 0.022 261.325));
+  --color-gray-8: light-dark(oklch(0.373 0.034 259.733), oklch(0.872 0.01 258.338));
+  --color-gray-9: light-dark(oklch(0.278 0.033 256.848), oklch(0.928 0.006 264.531));
+  --color-gray-10: light-dark(oklch(0.21 0.034 264.665), oklch(0.967 0.003 264.542));
+  --color-gray-11: light-dark(oklch(0.13 0.028 261.692), oklch(0.985 0.002 247.839));
 }

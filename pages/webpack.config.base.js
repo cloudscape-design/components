@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+/* eslint-disable @typescript-eslint/no-require-imports */
 const path = require('path');
 const { NormalModuleReplacementPlugin } = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -62,7 +63,7 @@ module.exports = ({
             },
           },
         },
-        { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader','postcss-loader'] },
+        { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] },
         // { test: /\.\/tailwind.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] },
         {
           test: /\.scss$/,
