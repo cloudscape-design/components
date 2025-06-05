@@ -268,15 +268,21 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
                 style={{
                   background:
                     style?.item?.root?.background &&
-                    style?.item?.root?.background[item.type as keyof typeof style.item.root.background],
+                    (item.type === 'in-progress'
+                      ? style?.item?.root?.background.inProgress
+                      : style?.item?.root?.background[item.type as keyof typeof style.item.root.background]),
                   borderColor:
                     style?.item?.root?.borderColor &&
-                    style?.item?.root?.borderColor[item.type as keyof typeof style.item.root.borderColor],
+                    (item.type === 'in-progress'
+                      ? style?.item?.root?.borderColor.inProgress
+                      : style?.item?.root?.borderColor[item.type as keyof typeof style.item.root.borderColor]),
                   borderRadius: style?.item?.root?.borderRadius,
                   borderWidth: style?.item?.root?.borderWidth,
                   color:
                     style?.item?.root?.color &&
-                    style?.item?.root?.color[item.type as keyof typeof style.item.root.color],
+                    (item.type === 'in-progress'
+                      ? style?.item?.root?.color.inProgress
+                      : style?.item?.root?.color[item.type as keyof typeof style.item.root.color]),
                   ...((!isFlashbarStackExpanded || transitioning) && {
                     [customCssProps.flashbarStackIndex]:
                       (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
