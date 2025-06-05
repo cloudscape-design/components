@@ -50,8 +50,22 @@ class MaskFormat {
     return this.inputSeparators.indexOf(key) !== -1;
   }
 
+  normalizeSeparators(input: string): string {
+    if (!input) {
+      return input;
+    }
+
+    let result = input;
+    for (const delimiter of this.inputSeparators) {
+      if (delimiter !== this.separator) {
+        result = result.split(delimiter).join(this.separator);
+      }
+    }
+    return result;
+  }
+
   isValid(value: string): boolean {
-    const inputSegments = value.split(this.separator);
+    const inputSegments = this.normalizeSeparators(value).split(this.separator);
 
     if (inputSegments.length > this.segments.length) {
       if (inputSegments[-1] !== '') {

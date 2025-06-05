@@ -213,6 +213,58 @@ describe('Date Input component', () => {
               expect(onChangeSpy).not.toHaveBeenCalled();
             });
 
+            test('should fire on value change with iso value detail when setting the input via the helper method', async () => {
+              const { wrapper, onChangeSpy } = renderDateInput({
+                ...sharedProps,
+                value: '',
+              });
+
+              if (format === 'long-localized') {
+                act(() => {
+                  wrapper.findNativeInput()!.getElement().focus();
+                });
+                await waitFor(() => {
+                  expect(wrapper!.getElement().classList).toContain(testStyles['long-localized-focused']);
+                });
+              }
+
+              act(() => wrapper.setInputValue(`2018-01${granularity === 'month' ? '' : '-01'}`));
+              expect(onChangeSpy).toHaveBeenCalledTimes(1);
+              expect(onChangeSpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                  detail: {
+                    value: `2018-01${granularity === 'month' ? '' : `-01`}`,
+                  },
+                })
+              );
+            });
+
+            test('should fire on value change with slash value detail when setting the input via the helper method', async () => {
+              const { wrapper, onChangeSpy } = renderDateInput({
+                ...sharedProps,
+                value: '',
+              });
+
+              if (format === 'long-localized') {
+                act(() => {
+                  wrapper.findNativeInput()!.getElement().focus();
+                });
+                await waitFor(() => {
+                  expect(wrapper!.getElement().classList).toContain(testStyles['long-localized-focused']);
+                });
+              }
+
+              act(() => wrapper.setInputValue(`2018/01${granularity === 'month' ? '' : '/01'}`));
+              expect(onChangeSpy).toHaveBeenCalledTimes(1);
+              expect(onChangeSpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                  detail: {
+                    value: `2018-01${granularity === 'month' ? '' : `-01`}`,
+                  },
+                })
+              );
+            });
+
             describe('autocomplete', () => {
               ['-', '/', '.', ' '].forEach(separatorKey => {
                 test(`should autocomplete using [${separatorKey}] key`, async () => {
@@ -246,7 +298,6 @@ describe('Date Input component', () => {
                   value: '2018-',
                 });
 
-                //focus to change to masked-input
                 if (format === 'long-localized') {
                   act(() => {
                     wrapper.findNativeInput()!.getElement().focus();
@@ -302,7 +353,6 @@ describe('Date Input component', () => {
                   value: '2',
                 });
 
-                //focus to change to masked-input
                 if (format === 'long-localized') {
                   act(() => {
                     wrapper.findNativeInput()!.getElement().focus();
@@ -331,7 +381,6 @@ describe('Date Input component', () => {
                   value: '22',
                 });
 
-                //focus to change to masked-input
                 if (format === 'long-localized') {
                   act(() => {
                     wrapper.findNativeInput()!.getElement().focus();
@@ -360,7 +409,6 @@ describe('Date Input component', () => {
                   value: '2002-2',
                 });
 
-                //focus to change to masked-input
                 if (format === 'long-localized') {
                   act(() => {
                     wrapper.findNativeInput()!.getElement().focus();
@@ -386,10 +434,9 @@ describe('Date Input component', () => {
               (granularity === 'month' ? test.skip : test)(`should correct single digit day on enter`, async () => {
                 const { wrapper, onChangeSpy } = renderDateInput({
                   ...sharedProps,
-                  value: '2001/01/1',
+                  value: '2001-01-1',
                 });
 
-                //focus to change to masked-input
                 if (format === 'long-localized') {
                   act(() => {
                     wrapper.findNativeInput()!.getElement().focus();
@@ -523,7 +570,6 @@ describe('Date Input component', () => {
                   value: '2018-01-3',
                 });
 
-                //focus to change to masked-input
                 if (format === 'long-localized') {
                   act(() => {
                     wrapper.findNativeInput()!.getElement().focus();
@@ -547,7 +593,6 @@ describe('Date Input component', () => {
                   value: '2018-03-3',
                 });
 
-                //focus to change to masked-input
                 if (format === 'long-localized') {
                   act(() => {
                     wrapper.findNativeInput()!.getElement().focus();
@@ -571,7 +616,6 @@ describe('Date Input component', () => {
                   value: '2018-04-3',
                 });
 
-                //focus to change to masked-input
                 if (format === 'long-localized') {
                   act(() => {
                     wrapper.findNativeInput()!.getElement().focus();

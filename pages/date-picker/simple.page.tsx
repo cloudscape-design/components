@@ -22,7 +22,7 @@ export type DatePickerDemoContext = React.Context<
 
 export default function DatePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DatePickerDemoContext);
-  const initValue = '2025-02-14';
+  const initValue = '2025/02/14';
   const hasValue = urlParams.hasValue ?? false;
   const inputFormat = urlParams.inputFormat ?? '';
   const disabled = urlParams.disabled ?? false;

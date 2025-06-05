@@ -4,7 +4,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-// import createWrapper from '../../../lib/components/test-utils/selectors';
+import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const dateInputWrapper = createWrapper().findDateInput()!;
 const defaultSelector = dateInputWrapper.findNativeInput().toSelector();
@@ -42,7 +42,7 @@ class DateInputPage extends BasePageObject {
 
   async type(text: string) {
     // `await this.keys(text);` doesn't work as it key presses too quickly and doesn't
-    // allow the seperator to be appended so the cursor position gets messed up.
+    // allow the separator to be appended so the cursor position gets messed up.
     for (let k = 0; k < text.length; k++) {
       await this.keys(text[k]);
     }
@@ -74,7 +74,7 @@ const setupTest = (
       format: `${format}`,
       ...(format === 'long-localized' ? { inputFormat: `${inputFormat},` } : {}),
     }).toString();
-    await browser.url(`#/light/date-input/simple${params}`);
+    await browser.url(`#/light/date-input/simple?${params}`);
     await page.waitForLoad();
     await testFn(page);
   });
@@ -90,6 +90,8 @@ describe('Date Input', () => {
         };
         const isIso = format === 'iso' || (format === 'long-localized' && inputFormat === 'iso');
         const separator = isIso ? '-' : '/';
+        //a false negative is given for most tests that are not reproducible in the page
+        const overwrittenSeparator = format === 'long-localized' && inputFormat === 'iso' ? '/' : separator;
         const isMonthOnly = granularity === 'month';
 
         test(
@@ -97,7 +99,7 @@ describe('Date Input', () => {
           setupTest(async page => {
             const inputSelector = dateInputWrapper.findNativeInput().toSelector();
             await expect(page.getElementAttribute(inputSelector, 'placeholder')).resolves.toBe(
-              `YYYY${separator}MM${isMonthOnly ? '' : `${separator}DD`}`
+              `YYYY${overwrittenSeparator}MM${isMonthOnly ? '' : `${overwrittenSeparator}DD`}`
             );
             await expect(page.getValue(inputSelector)).resolves.toBe('');
           }, testParams)
@@ -109,7 +111,7 @@ describe('Date Input', () => {
             await page.focusInput();
             await page.type(`198903${isMonthOnly ? '' : '02'}`);
             await expect(page.getValue(dateInputWrapper.findNativeInput().toSelector())).resolves.toBe(
-              `1989${separator}03${isMonthOnly ? '' : `${separator}02`}`
+              `1989${overwrittenSeparator}03${isMonthOnly ? '' : `${overwrittenSeparator}02`}`
             );
           }, testParams)
         );
@@ -133,19 +135,19 @@ describe('Date Input', () => {
             await page.focusInput();
             await page.type(isMonthOnly ? `22222` : `22222222`);
             await expect(page.getValue(defaultSelector)).resolves.toBe(
-              `2222${separator}02${isMonthOnly ? '' : `${separator}22`}`
+              `2222${overwrittenSeparator}02${isMonthOnly ? '' : `${overwrittenSeparator}22`}`
             );
 
             await page.clearInput();
             await page.type(isMonthOnly ? `99999` : `99999999`);
             await expect(page.getValue(defaultSelector)).resolves.toBe(
-              `9999${separator}09${isMonthOnly ? '' : `${separator}09`}`
+              `9999${overwrittenSeparator}09${isMonthOnly ? '' : `${overwrittenSeparator}09`}`
             );
 
             await page.clearInput();
             await page.type(isMonthOnly ? `000000` : `00000000`);
             await expect(page.getValue(defaultSelector)).resolves.toBe(
-              `0000${separator}01${isMonthOnly ? '' : `${separator}01`}`
+              `0000${overwrittenSeparator}01${isMonthOnly ? '' : `${overwrittenSeparator}01`}`
             );
           }, testParams)
         );
@@ -153,27 +155,31 @@ describe('Date Input', () => {
         test(
           'should autocomplete segments correctly',
           setupTest(async page => {
-            await page.clearInput();
-            await page.type(`2018`);
-            await expect(page.getValue(defaultSelector)).resolves.toBe(`2018${separator}`);
-            await expect(page.getCursorPosition()).resolves.toBe(isMonthOnly ? 7 : 8);
-
             await page.focusInput();
+            await page.type(`2018`);
+            await expect(page.getValue(defaultSelector)).resolves.toBe(`2018${overwrittenSeparator}`);
+            await expect(page.getCursorPosition()).resolves.toBe(5);
+
+            await page.clearInput();
             await page.type(`20181/`);
             await expect(page.getValue(defaultSelector)).resolves.toBe(
-              `2018${separator}01${isMonthOnly ? '' : separator}`
+              `2018${overwrittenSeparator}01${isMonthOnly ? '' : overwrittenSeparator}`
             );
             await expect(page.getCursorPosition()).resolves.toBe(isMonthOnly ? 7 : 8);
 
             if (!isMonthOnly) {
               await page.clearInput();
               await page.type(`20180/`);
-              await expect(page.getValue(defaultSelector)).resolves.toBe(`2018${separator}01${separator}`);
+              await expect(page.getValue(defaultSelector)).resolves.toBe(
+                `2018${overwrittenSeparator}01${overwrittenSeparator}`
+              );
               await expect(page.getCursorPosition()).resolves.toBe(8);
 
               await page.clearInput();
               await page.type(`2018012/`);
-              await expect(page.getValue(defaultSelector)).resolves.toBe(`2018${separator}01${separator}02`);
+              await expect(page.getValue(defaultSelector)).resolves.toBe(
+                `2018${overwrittenSeparator}01${overwrittenSeparator}02`
+              );
               await expect(page.getCursorPosition()).resolves.toBe(10);
             }
           }, testParams)
@@ -186,35 +192,45 @@ describe('Date Input', () => {
             await page.type('2');
             await page.keys('Tab');
             await expect(page.getValue(defaultSelector)).resolves.toBe(
-              `2002${separator}01${isMonthOnly ? '' : `${separator}01`}`
+              format === 'long-localized'
+                ? `January${isMonthOnly ? '' : ' 1,'} 2002`
+                : `2002${separator}01${isMonthOnly ? '' : `${separator}01`}`
             );
 
             await page.clearInput();
             await page.type(`2000`);
             await page.keys('Tab');
             await expect(page.getValue(defaultSelector)).resolves.toBe(
-              `2000${separator}01${isMonthOnly ? '' : `${separator}01`}`
+              format === 'long-localized'
+                ? `January${isMonthOnly ? '' : ' 1,'} 2000`
+                : `2000${separator}01${isMonthOnly ? '' : `${separator}01`}`
             );
 
             await page.clearInput();
             await page.type(`20201`);
             await page.keys('Tab');
             await expect(page.getValue(defaultSelector)).resolves.toBe(
-              `2020${separator}01${isMonthOnly ? '' : `${separator}01`}`
+              format === 'long-localized'
+                ? `January${isMonthOnly ? '' : ' 1,'} 2020`
+                : `2020${separator}01${isMonthOnly ? '' : `${separator}01`}`
             );
 
             await page.clearInput();
             await page.type(`20209`);
             await page.keys('Tab');
             await expect(page.getValue(defaultSelector)).resolves.toBe(
-              `2020${separator}09${isMonthOnly ? '' : `${separator}01`}`
+              format === 'long-localized'
+                ? `September${isMonthOnly ? '' : ' 1,'} 2020`
+                : `2020${separator}09${isMonthOnly ? '' : `${separator}01`}`
             );
 
             await page.clearInput();
             await page.type(`202091`);
             await page.keys('Tab');
             await expect(page.getValue(defaultSelector)).resolves.toBe(
-              `2020${separator}09${isMonthOnly ? '' : `${separator}01`}`
+              format === 'long-localized'
+                ? `September${isMonthOnly ? '' : ' 1,'} 2020`
+                : `2020${separator}09${isMonthOnly ? '' : `${separator}01`}`
             );
           }, testParams)
         );
@@ -226,7 +242,7 @@ describe('Date Input', () => {
               await page.focusInput();
               await page.type('2');
               await page.keys(separatorKey);
-              await expect(page.getValue(defaultSelector)).resolves.toBe(`2002${separator}`);
+              await expect(page.getValue(defaultSelector)).resolves.toBe(`2002${overwrittenSeparator}`);
               await expect(page.getCursorPosition()).resolves.toBe(5);
             }, testParams)
           );
@@ -237,18 +253,20 @@ describe('Date Input', () => {
           setupTest(async page => {
             await page.focusInput();
             await page.type('2018'); // yyyy
-            await expect(page.getValue(defaultSelector)).resolves.toBe(`2018${separator}`);
+            await expect(page.getValue(defaultSelector)).resolves.toBe(`2018${overwrittenSeparator}`);
             await expect(page.getCursorPosition()).resolves.toBe(5);
 
             await page.type('11'); // mm
             await expect(page.getValue(defaultSelector)).resolves.toBe(
-              `2018${separator}11${isMonthOnly ? '' : `${separator}01`}`
+              `2018${overwrittenSeparator}11${isMonthOnly ? '' : overwrittenSeparator}`
             );
-            await expect(page.getCursorPosition()).resolves.toBe(8);
+            await expect(page.getCursorPosition()).resolves.toBe(isMonthOnly ? 7 : 8);
 
             if (!isMonthOnly) {
               await page.type('11'); // dd
-              await expect(page.getValue(defaultSelector)).resolves.toBe(`2018${separator}11${separator}11`);
+              await expect(page.getValue(defaultSelector)).resolves.toBe(
+                `2018${overwrittenSeparator}11${overwrittenSeparator}11`
+              );
               await expect(page.getCursorPosition()).resolves.toBe(10);
             }
           }, testParams)
@@ -257,17 +275,22 @@ describe('Date Input', () => {
         test(
           'should swallow characters when overwriting a separator',
           setupTest(async page => {
+            const lastSeparatorLocation = isMonthOnly ? 5 : 7;
             await page.focusInput();
-            await page.type(`20181102`);
-            await page.setCursorPosition(7, 7);
-            await page.type('/2');
-            await expect(page.getValue(defaultSelector)).resolves.toBe(`2018${separator}11${separator}22`);
+            await page.type(`201801${isMonthOnly ? '' : '02'}`);
+            await page.setCursorPosition(lastSeparatorLocation, lastSeparatorLocation);
+            await page.type('/1');
+            await expect(page.getValue(defaultSelector)).resolves.toBe(
+              `2018${overwrittenSeparator}${isMonthOnly ? '11' : `01${overwrittenSeparator}12`}`
+            );
 
             await page.clearInput();
-            await page.type(`20181102`);
-            await page.setCursorPosition(7, 7);
+            await page.type(`201801${isMonthOnly ? '' : '02'}`);
+            await page.setCursorPosition(lastSeparatorLocation, lastSeparatorLocation);
             await page.type('32');
-            await expect(page.getValue(defaultSelector)).resolves.toBe(`2018${separator}11${separator}22`);
+            await expect(page.getValue(defaultSelector)).resolves.toBe(
+              `2018${overwrittenSeparator}${isMonthOnly ? '12' : `01${overwrittenSeparator}22`}`
+            );
           }, testParams)
         );
       });
