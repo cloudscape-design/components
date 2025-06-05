@@ -71,7 +71,6 @@ const DatePicker = React.forwardRef(
       metadata: { hasDisabledReasons: Boolean(dateDisabledReason) },
     });
     checkControlled('DatePicker', 'value', value, 'onChange', onChange);
-
     const contextLocale = useLocale();
     const normalizedLocale = normalizeLocale('DatePicker', locale || contextLocale);
 

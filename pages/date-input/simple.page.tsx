@@ -22,7 +22,7 @@ export type DateInputDemoContext = React.Context<
 
 export default function DateInputScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateInputDemoContext);
-  const initValue = '2025-02-14';
+  const initValue = '2025/02/14';
   const hasValue = urlParams.hasValue ?? false;
   const inputFormat = urlParams.inputFormat ?? '';
   const disabled = urlParams.disabled ?? false;
@@ -31,7 +31,7 @@ export default function DateInputScenario() {
   const locale = urlParams.locale ?? 'en-US';
   const monthOnly = urlParams.monthOnly ?? false;
   const [value, setValue] = useState<DateInputProps['value']>('');
-  const isIso = (format === 'long-localized' && inputFormat === 'iso') || inputFormat === 'iso';
+  const isIso = format === 'iso' || (format === 'long-localized' && inputFormat === 'iso');
   const inputFormatPlaceholderText = `YYYY${isIso ? '-' : '/'}MM${monthOnly ? `` : `${isIso ? '-' : '/'}DD`}`;
 
   useEffect(() => {

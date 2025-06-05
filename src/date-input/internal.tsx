@@ -68,9 +68,8 @@ const InternalDateInput = React.forwardRef(
       const isNonFocusedLongLocalized = format === 'long-localized' && !isFocused;
       if (!readOnly && !disabled && !isNonFocusedLongLocalized) {
         fireNonCancelableEvent(onChange, {
-          value: isIso ? event.detail.value : displayToIso(event.detail.value),
+          value: displayToIso(event.detail.value),
         });
-        console.log('onchange');
       }
     };
 
@@ -131,6 +130,7 @@ const InternalDateInput = React.forwardRef(
           {...sharedProps}
           staticValue={(!isFocused || readOnly) && format === 'long-localized' ? displayValue : ''}
           value={isIso ? value || '' : isoToDisplay(value || '')}
+          // value={isIso ? displayToIso(value) || '' : isoToDisplay(value || '')}
           onChange={onInputChange}
           onFocus={onInputFocus}
           onBlur={onInputBlur}
