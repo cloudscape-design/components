@@ -1,0 +1,22 @@
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+
+@utility bg-image-cs {
+  background-image: linear-gradient(
+      to bottom left,
+      #000000,
+      58%,
+      rgba(93, 193, 232, 0.4),
+      rgba(0, 242, 255, 0.4),
+      rgba(93, 193, 232, 0.4)
+    ),
+    radial-gradient(
+      farthest-corner at 90% 90%,
+      rgba(93, 193, 232, 0.5),
+      rgba(0, 242, 255, 0.5),
+      rgba(93, 193, 232, 0.5),
+      #000000 50%
+    );
+}

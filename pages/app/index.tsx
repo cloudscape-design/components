@@ -17,6 +17,7 @@ import StrictModeWrapper from './components/strict-mode-wrapper';
 import '@cloudscape-design/global-styles/index.css';
 // screenshot test overrides
 import styles from './styles.scss';
+import './tailwind.css';
 
 interface GlobalFlags {
   appLayoutWidget?: boolean;

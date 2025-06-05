@@ -21,8 +21,8 @@ export default function HodgkinsDemo() {
   return (
     <Theme fontFamily='"Amazon Ember Display", "Helvetica Neue", Helvetica, Arial, sans-serif'>
       <TopNavigation />
-      <div className={styles['page-background']}>
-        <div className={styles['page-grid']}>
+      <div className={"h-screen bg-black bg-image-cs"}>
+        <div className="grid grid-cols-3 gap-[60px] px-[60px] min-h-[calc(100%-100px)]">
           <div data-column="1">
             <SideNavigationBar
               selectedId={selectedButton}

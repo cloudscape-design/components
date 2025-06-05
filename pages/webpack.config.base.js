@@ -62,7 +62,8 @@ module.exports = ({
             },
           },
         },
-        { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
+        { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader','postcss-loader'] },
+        // { test: /\.\/tailwind.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] },
         {
           test: /\.scss$/,
           use: [
