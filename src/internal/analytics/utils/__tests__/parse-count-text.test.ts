@@ -26,11 +26,6 @@ test('handles parentheses format', () => {
   expect(parseCountValue('(100)')).toBe(100);
 });
 
-test('handles comma-separated numbers', () => {
-  expect(parseCountValue('1,234 items')).toBe(1234);
-  expect(parseCountValue('Total: 1,234')).toBe(1234);
-});
-
 test('handles strings with extra whitespace', () => {
   expect(parseCountValue('  100  ')).toBe(100);
   expect(parseCountValue('\t50\n')).toBe(50);

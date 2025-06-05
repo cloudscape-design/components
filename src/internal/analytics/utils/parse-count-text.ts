@@ -8,7 +8,6 @@
  * - "Items (100)" - Extracts 100 (first number found)
  * - "1/100" - Extracts 100 (denominator of fraction, representing total count)
  * - "100+" - Extracts 100 (first number found)
- * - "1,234 items" - Extracts 1234 (handles comma-separated numbers)
  */
 export const parseCountValue = (countText: string | undefined): number | undefined => {
   if (!countText || typeof countText !== 'string') {
@@ -16,6 +15,6 @@ export const parseCountValue = (countText: string | undefined): number | undefin
   }
 
   const target = countText.includes('/') ? countText.split('/')[1] : countText;
-  const match = target.match(/\d[\d,]*/);
-  return match ? parseInt(match[0].replace(/,/g, ''), 10) : undefined;
+  const match = target.match(/\d+/);
+  return match ? parseInt(match[0], 10) : undefined;
 };
