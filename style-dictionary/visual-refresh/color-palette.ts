@@ -55,7 +55,7 @@ export const tokens: StyleDictionary.ColorPaletteDictionary = {
   colorPurple700: '#7300e5',
 
   colorAmber400: '#ff9900',
-  colorAmber500: '#ec7211',
+  colorAmber500: '#fa6f00',
 
   colorAwsSquidInk: '#232f3e',
   colorTransparent: 'transparent',
