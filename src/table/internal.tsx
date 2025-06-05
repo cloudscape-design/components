@@ -18,6 +18,7 @@ import { CollectionLabelContext } from '../internal/context/collection-label-con
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import {
   FilterRef,
+  HeaderRef,
   PaginationRef,
   PreferencesRef,
   TableComponentsContextProvider,
@@ -193,6 +194,7 @@ const InternalTable = React.forwardRef(
     const paginationRef = useRef<PaginationRef>({});
     const filterRef = useRef<FilterRef>({});
     const preferencesRef = useRef<PreferencesRef>({});
+    const headerRef = useRef<HeaderRef>({});
     /* istanbul ignore next: performance marks do not work in JSDOM */
     const getHeaderText = () =>
       toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
@@ -232,6 +234,7 @@ const InternalTable = React.forwardRef(
       });
     };
     const getComponentConfiguration = () => {
+      const headerData = headerRef.current;
       const filterData = filterRef.current;
       const paginationData = paginationRef.current;
       const preferencesData = preferencesRef.current;
@@ -248,9 +251,10 @@ const InternalTable = React.forwardRef(
           columnId: sortingColumn?.sortingField,
           sortingOrder: sortingColumn ? (sortingDescending ? 'desc' : 'asc') : undefined,
         },
-        filtered: Boolean(filterData.filtered),
+        filtered: filterData?.filtered ?? null,
         filteredBy: filterData?.filteredBy ?? [],
-        totalNumberOfResources: filterRef.current?.filterCount ?? null,
+        filteredCount: filterData?.filterCount ?? null,
+        totalNumberOfResources: headerData?.totalCount ?? null,
         tablePreferences: {
           visibleColumns: preferencesData?.visibleColumns ?? [],
           resourcesPerPage: preferencesData?.pageSize ?? null,
@@ -433,7 +437,7 @@ const InternalTable = React.forwardRef(
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <TableComponentsContextProvider value={{ paginationRef, filterRef, preferencesRef }}>
+        <TableComponentsContextProvider value={{ paginationRef, filterRef, preferencesRef, headerRef }}>
           <ColumnWidthsProvider
             visibleColumns={visibleColumnWidthsWithSelection}
             resizableColumns={resizableColumns}

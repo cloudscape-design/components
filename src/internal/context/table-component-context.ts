@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createContext, RefObject, useContext } from 'react';
 
+export interface HeaderRef {
+  totalCount?: number;
+}
+
 export interface FilterRef {
   filtered?: boolean;
   filterText?: string;
@@ -21,6 +25,7 @@ export interface PreferencesRef {
 }
 
 interface TableComponentsContextProps {
+  headerRef: RefObject<HeaderRef>;
   filterRef: RefObject<FilterRef>;
   paginationRef: RefObject<PaginationRef>;
   preferencesRef: RefObject<PreferencesRef>;

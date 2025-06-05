@@ -91,7 +91,7 @@ export default function WithTablePage() {
         }}
         selectionType="multi"
         header={
-          <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
+          <Header headingTagOverride="h1" counter={`(1/${allItems.length})`}>
             Table title
           </Header>
         }
