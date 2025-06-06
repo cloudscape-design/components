@@ -54,6 +54,7 @@ import InputWrapper from './input';
 import KeyValuePairsWrapper from './key-value-pairs';
 import LineChartWrapper from './line-chart';
 import LinkWrapper from './link';
+import ListWrapper from './list';
 import LiveRegionWrapper from './live-region';
 import MixedLineBarChartWrapper from './mixed-line-bar-chart';
 import ModalWrapper from './modal';
@@ -136,6 +137,7 @@ export { InputWrapper };
 export { KeyValuePairsWrapper };
 export { LineChartWrapper };
 export { LinkWrapper };
+export { ListWrapper };
 export { LiveRegionWrapper };
 export { MixedLineBarChartWrapper };
 export { ModalWrapper };
@@ -1030,6 +1032,25 @@ findLink(selector?: string): LinkWrapper | null;
  * @returns {Array<LinkWrapper>}
  */
 findAllLinks(selector?: string): Array<LinkWrapper>;
+/**
+ * Returns the wrapper of the first List that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first List.
+ * If no matching List is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ListWrapper | null}
+ */
+findList(selector?: string): ListWrapper | null;
+
+/**
+ * Returns an array of List wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Lists inside the current wrapper.
+ * If no matching List is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ListWrapper>}
+ */
+findAllLists(selector?: string): Array<ListWrapper>;
 /**
  * Returns the wrapper of the first LiveRegion that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first LiveRegion.
@@ -2149,6 +2170,16 @@ ElementWrapper.prototype.findLink = function(selector) {
 ElementWrapper.prototype.findAllLinks = function(selector) {
   return this.findAllComponents(LinkWrapper, selector);
 };
+ElementWrapper.prototype.findList = function(selector) {
+  const rootSelector = \`.\${ListWrapper.rootSelector}\`;
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ListWrapper);
+};
+
+ElementWrapper.prototype.findAllLists = function(selector) {
+  return this.findAllComponents(ListWrapper, selector);
+};
 ElementWrapper.prototype.findLiveRegion = function(selector) {
   const rootSelector = \`.\${LiveRegionWrapper.rootSelector}\`;
   // casting to 'any' is needed to avoid this issue with generics
@@ -2564,6 +2595,7 @@ import InputWrapper from './input';
 import KeyValuePairsWrapper from './key-value-pairs';
 import LineChartWrapper from './line-chart';
 import LinkWrapper from './link';
+import ListWrapper from './list';
 import LiveRegionWrapper from './live-region';
 import MixedLineBarChartWrapper from './mixed-line-bar-chart';
 import ModalWrapper from './modal';
@@ -2646,6 +2678,7 @@ export { InputWrapper };
 export { KeyValuePairsWrapper };
 export { LineChartWrapper };
 export { LinkWrapper };
+export { ListWrapper };
 export { LiveRegionWrapper };
 export { MixedLineBarChartWrapper };
 export { ModalWrapper };
@@ -3450,6 +3483,23 @@ findLink(selector?: string): LinkWrapper;
  * @returns {MultiElementWrapper<LinkWrapper>}
  */
 findAllLinks(selector?: string): MultiElementWrapper<LinkWrapper>;
+/**
+ * Returns a wrapper that matches the Lists with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches Lists.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ListWrapper}
+ */
+findList(selector?: string): ListWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches Lists with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches Lists.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<ListWrapper>}
+ */
+findAllLists(selector?: string): MultiElementWrapper<ListWrapper>;
 /**
  * Returns a wrapper that matches the LiveRegions with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches LiveRegions.
@@ -4498,6 +4548,16 @@ ElementWrapper.prototype.findLink = function(selector) {
 
 ElementWrapper.prototype.findAllLinks = function(selector) {
   return this.findAllComponents(LinkWrapper, selector);
+};
+ElementWrapper.prototype.findList = function(selector) {
+  const rootSelector = \`.\${ListWrapper.rootSelector}\`;
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ListWrapper);
+};
+
+ElementWrapper.prototype.findAllLists = function(selector) {
+  return this.findAllComponents(ListWrapper, selector);
 };
 ElementWrapper.prototype.findLiveRegion = function(selector) {
   const rootSelector = \`.\${LiveRegionWrapper.rootSelector}\`;

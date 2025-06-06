@@ -11449,6 +11449,65 @@ The default is \`secondary\`, except inside the following components where it de
 }
 `;
 
+exports[`Documenter definition for list matches the snapshot: list 1`] = `
+{
+  "dashCaseName": "list",
+  "events": [],
+  "functions": [],
+  "name": "List",
+  "properties": [
+    {
+      "name": "items",
+      "optional": false,
+      "type": "Array<T>",
+    },
+    {
+      "inlineType": {
+        "name": "(item: T, index: number) => StructuredItemProps",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "T",
+          },
+          {
+            "name": "index",
+            "type": "number",
+          },
+        ],
+        "returnType": "StructuredItemProps",
+        "type": "function",
+      },
+      "name": "renderItem",
+      "optional": false,
+      "type": "(item: T, index: number) => StructuredItemProps",
+    },
+    {
+      "inlineType": {
+        "name": ""wrap" | "min-width" | "breakpoint" | "stick" | "wrap-right" | "min-width-right" | "breakpoint-right"",
+        "type": "union",
+        "values": [
+          "wrap",
+          "min-width",
+          "breakpoint",
+          "stick",
+          "wrap-right",
+          "min-width-right",
+          "breakpoint-right",
+        ],
+      },
+      "name": "strategy",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
+}
+`;
+
 exports[`Documenter definition for live-region matches the snapshot: live-region 1`] = `
 {
   "dashCaseName": "live-region",
@@ -17181,6 +17240,57 @@ Each step definition has the following properties:
   ],
   "regions": [],
   "releaseStatus": "stable",
+}
+`;
+
+exports[`Documenter definition for structured-item matches the snapshot: structured-item 1`] = `
+{
+  "dashCaseName": "structured-item",
+  "events": [],
+  "functions": [],
+  "name": "StructuredItem",
+  "properties": [
+    {
+      "inlineType": {
+        "name": ""wrap" | "min-width" | "breakpoint" | "stick" | "wrap-right" | "min-width-right" | "breakpoint-right"",
+        "type": "union",
+        "values": [
+          "wrap",
+          "min-width",
+          "breakpoint",
+          "stick",
+          "wrap-right",
+          "min-width-right",
+          "breakpoint-right",
+        ],
+      },
+      "name": "strategy",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "isDefault": false,
+      "name": "content",
+    },
+    {
+      "isDefault": false,
+      "name": "description",
+    },
+    {
+      "isDefault": false,
+      "name": "icon",
+    },
+    {
+      "isDefault": false,
+      "name": "secondaryContent",
+    },
+  ],
+  "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
 }
 `;
 
