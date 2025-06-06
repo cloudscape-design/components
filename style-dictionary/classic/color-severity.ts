@@ -7,7 +7,7 @@ import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/color-severity.js';
 
 const tokens: StyleDictionary.ColorSeverityDictionary = {
-  colorTextNotificationSeverityMedium: { light: '{colorBlack}', dark: '{colorGrey900}' },
+  colorTextNotificationSeverityMedium: { light: '{colorBlack}', dark: '{colorGrey950}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
