@@ -19,16 +19,16 @@ export default function HodgkinsDemo() {
   return (
     <Theme fontFamily='"Amazon Ember Display", "Helvetica Neue", Helvetica, Arial, sans-serif'>
       <TopNavigation />
-      <div className={'h-screen bg-image-gradient'}>
-        <div className="grid grid-cols-3 gap-[60px] px-[60px] min-h-[calc(100%-100px)]">
-          <div className="flex py-[60px] items-center">
+      <div className={'h-[calc(100vh_-_96px)] bg-image-gradient'}>
+        <div className="grid grid-cols-[20%_40%_40%] gap-xxxl px-xxxl min-h-[calc(100%-100px)] overflow-hidden">
+          <div className="flex pt-xxxl items-center">
             <SideNavigationBar
               selectedId={selectedButton}
               onItemClick={({ detail }) => setSelectedButton(detail.pressed ? detail.id : '')}
             />
           </div>
 
-          <div className="flex py-[60px] flex-col justify-between">
+          <div className="flex pt-xxxl flex-col justify-between">
             <div>
               <Typography size="medium" type="label">
                 New project
@@ -55,7 +55,7 @@ export default function HodgkinsDemo() {
             />
           </div>
 
-          <div className="flex py-[60px]">
+          <div className="flex pt-xxxl">
             <div className="rounded-[16px] p-[16px] bg-[#101415]">
               <Typography size="medium" type="label">
                 Experiment

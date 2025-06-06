@@ -5,6 +5,7 @@
 @layer theme, base, components, utilities;
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
+@config './tailwind.config.mjs';
 
 /* stylelint-disable scss/at-rule-no-unknown */
 
@@ -29,6 +30,10 @@
 @utility gradient-text {
   color: transparent;
   background-clip: text;
+}
+
+@utility gap-* {
+  gap: --value(--spacing-*);
 }
 
 @theme {

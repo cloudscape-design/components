@@ -1,6 +1,7 @@
 .page-background {
   height: 100vh;
-  background-image: linear-gradient(
+  background-color: #000000;
+  background-image: linear-gradient(Add commentMore actions
       to bottom left,
       #000000,
       58%,
@@ -41,12 +42,8 @@
 
 [data-component='container'] {
   background: #101415;
-  border-start-start-radius: 16px;
-  border-start-end-radius: 16px;
-  border-end-start-radius: 16px;
-  border-end-end-radius: 16px;
-  padding-block: 16px;
-  padding-inline: 16px;
+  border-radius: 16px;
+  padding: 16px;
 
   &.inner {
     background: #191c1d;
