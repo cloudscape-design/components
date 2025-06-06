@@ -18,7 +18,7 @@ interface ColumnDefinition {
 
 export interface SimpleTableWrapperProps {
   children: ReactNode;
-  title: string;
+  title?: string;
   columns?: ColumnDefinition[];
   enableFiltering?: boolean;
 }
@@ -89,9 +89,11 @@ export default function SimpleTableWrapper({
   return (
     <InternalContainer
       header={
-        <InternalHeader variant="h2" description={enableFiltering ? <TableFilter tableRef={baseTable} /> : undefined}>
-          {title}
-        </InternalHeader>
+        title ? (
+          <InternalHeader variant="h2" description={enableFiltering ? <TableFilter tableRef={baseTable} /> : undefined}>
+            {title}
+          </InternalHeader>
+        ) : undefined
       }
       className={styles.root}
     >
