@@ -5,6 +5,10 @@ import React, { ChangeEvent, Ref, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import {
+  GeneratedAnalyticsMetadataFragment,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalButton from '../button/internal';
 import { useFormFieldContext } from '../contexts/form-field';
@@ -17,6 +21,7 @@ import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
+import { GeneratedAnalyticsMetadataFileInputComponent } from './analytics-metadata/interfaces';
 import { FileInputProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -24,6 +29,7 @@ import styles from './styles.css.js';
 interface InternalFileInputProps {
   __inputClassName?: string;
   __inputNativeAttributes?: React.InputHTMLAttributes<HTMLInputElement> | Record<`data-${string}`, string>;
+  __injectAnalyticsComponentMetadata?: boolean;
 }
 
 const InternalFileInput = React.forwardRef(
@@ -40,6 +46,7 @@ const InternalFileInput = React.forwardRef(
       __internalRootRef = null,
       __inputClassName,
       __inputNativeAttributes,
+      __injectAnalyticsComponentMetadata,
       ...restProps
     }: FileInputProps & InternalBaseComponentProps & InternalFileInputProps,
     ref: Ref<FileInputProps.Ref>
@@ -104,8 +111,24 @@ const InternalFileInput = React.forwardRef(
 
     const { tabIndex } = useSingleTabStopNavigation(uploadInputRef);
 
+    const analyticsLabel = variant === 'button' && children ? 'button' : 'input';
+    const componentAnalyticsMetadata: GeneratedAnalyticsMetadataFileInputComponent = {
+      name: 'awsui.FileInput',
+      label: analyticsLabel,
+    };
+
+    const analyticsMetadata: GeneratedAnalyticsMetadataFragment = { detail: { label: analyticsLabel } };
+    if (__injectAnalyticsComponentMetadata) {
+      analyticsMetadata.component = componentAnalyticsMetadata;
+    }
+
     return (
-      <div {...baseProps} ref={mergedRef} className={clsx(baseProps.className, styles.root)}>
+      <div
+        {...baseProps}
+        ref={mergedRef}
+        className={clsx(baseProps.className, styles.root)}
+        {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+      >
         {/* This is the actual interactive and accessible file-upload element. */}
         {/* It is visually hidden to achieve the desired UX design. */}
         <input
