@@ -19,6 +19,7 @@ export default function SimpleTableScenario() {
             },
             {
               id: 'default',
+              sortable: true,
             },
             {
               id: 'adjustable',
@@ -26,6 +27,7 @@ export default function SimpleTableScenario() {
             },
             {
               id: 'description',
+              sortable: true,
             },
           ]}
         >

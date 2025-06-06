@@ -32,7 +32,7 @@ export default function SimpleTableWrapper({
   const baseTable = useRef<HTMLDivElement | null>(null);
 
   const sortTableByColumn = useCallback((colIndex: number, sortingDirection = 'asc') => {
-    const tableColumns = Array.from(baseTable.current?.querySelector('thead')!.querySelectorAll('th') ?? []);
+    const tableColumns = Array.from(baseTable.current?.querySelector('thead')?.querySelectorAll('th') ?? []);
 
     for (const col of tableColumns) {
       if (tableColumns.indexOf(col) !== colIndex) {
@@ -66,7 +66,7 @@ export default function SimpleTableWrapper({
   }, []);
 
   useEffect(() => {
-    const tableColumns = Array.from(baseTable.current?.querySelector('thead')!.querySelectorAll('th') ?? []);
+    const tableColumns = Array.from(baseTable.current?.querySelector('thead')?.querySelectorAll('th') ?? []);
     if (columns) {
       for (const col of tableColumns) {
         const columnDef = columns.find(c => c.id === col.id);
