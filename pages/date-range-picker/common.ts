@@ -21,6 +21,8 @@ export type DateRangePickerDemoContext = React.Context<
     disabledDates?: string;
     withDisabledReason?: boolean;
     hasValue?: boolean;
+    dateInputFormat?: DateRangePickerProps.DateInputFormat | 'none';
+    timeInputFormat?: DateRangePickerProps.TimeInputFormat;
   }>
 >;
 
@@ -100,6 +102,7 @@ export function applyDisabledReason(
   }
 }
 
+//should match default props values at src/date-range-picker/index.tsx
 export const dateRangePickerDemoDefaults = {
   monthOnly: false,
   dateOnly: false,
@@ -114,6 +117,7 @@ export const dateRangePickerDemoDefaults = {
   disabledDates: 'none',
   withDisabledReason: true,
   hasValue: true,
+  timeInputFormat: 'hh:mm:ss',
 };
 
 function formatRelativeRange(range: DateRangePickerProps.RelativeValue): string {
@@ -136,9 +140,22 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   customRelativeRangeUnitLabel: 'Unit of time',
   formatRelativeRange: formatRelativeRange,
   formatUnit: (unit, value) => (value === 1 ? unit : `${unit}s`),
-  dateConstraintText: 'Range must be between 6 and 30 days.',
-  dateTimeConstraintText: 'Range must be between 6 and 30 days. Use 24 hour format.',
-  monthConstraintText: 'For month use YYYY/MM.',
+
+  //date constraint text
+  dateConstraintText: 'Range must be between 6 and 30 days.', //fallback
+  slashedDateConstraintText: 'For date, use YYYY/MM/DD.',
+  isoDateConstraintText: 'For date, use YYYY-MM-DD.',
+
+  //date time constraint text
+  dateTimeConstraintText: 'Range must be between 6 and 30 days. Use 24 hour format.', //fallback
+  slashedDateTimeConstraintText: 'For date, use YYYY/MM/DD. For time, use 24 hr format.',
+  isoDateTimeConstraintText: 'For date, use YYYY-MM-DD. For time, use 24 hr format.',
+
+  //month constraint text
+  monthConstraintText: 'For month, use YYYY/MM.', //fallback
+  slashedMonthConstraintText: 'For month, use YYYY/MM.',
+  isoMonthConstraintText: 'For month, use YYYY-MM.',
+
   modeSelectionLabel: 'Date range mode',
   relativeModeTitle: 'Relative range',
   absoluteModeTitle: 'Absolute range',
