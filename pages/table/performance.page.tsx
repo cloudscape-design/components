@@ -18,7 +18,7 @@ type PageContext = React.Context<
   }>
 >;
 
-const COLUMN_COUNT = 100;
+const COLUMN_COUNT = 4;
 
 interface Item {
   name: string;
@@ -28,7 +28,7 @@ interface Item {
   type?: string;
 }
 
-const ITEM_COUNT = 100;
+const ITEM_COUNT = 623;
 
 export const items: Array<Item> = [...new Array(ITEM_COUNT)].map((_, i) => ({
   name: 'Item' + i,
@@ -45,66 +45,43 @@ const columnDefinitions: Array<TableProps.ColumnDefinition<Item>> = [...new Arra
   cell: item => {
     return item.name;
   },
-  editConfig: {
-    ariaLabel: 'Name',
-    editIconAriaLabel: 'editable',
-    errorIconAriaLabel: 'Name Error',
-    editingCell: (item, { currentValue, setValue }) => {
-      return (
-        <Input autoFocus={true} value={currentValue ?? item.name} onChange={event => setValue(event.detail.value)} />
-      );
-    },
-  },
+  // editConfig: {
+  //   ariaLabel: 'Name',
+  //   editIconAriaLabel: 'editable',
+  //   errorIconAriaLabel: 'Name Error',
+  //   editingCell: (item, { currentValue, setValue }) => {
+  //     return (
+  //       <Input autoFocus={true} value={currentValue ?? item.name} onChange={event => setValue(event.detail.value)} />
+  //     );
+  //   },
+  // },
 }));
 
 export default function App() {
-  const [isActive, setIsActive] = useState(false);
-  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   return (
     <ScreenshotArea>
       <h1>Table performance test</h1>
 
-      {isActive ? (
-        <Table
-          columnDefinitions={columnDefinitions}
-          items={items}
-          loadingText="Loading resources"
-          submitEdit={async () => {
-            await new Promise(e => setTimeout(e, 1e3));
-          }}
-          resizableColumns={true}
-          empty={
-            <Box textAlign="center" color="inherit">
-              <b>No resources</b>
-              <Box padding={{ bottom: 's' }} variant="p" color="inherit">
-                No resources to display.
-              </Box>
-              <Button>Create resource</Button>
+      <Table
+        columnDefinitions={columnDefinitions}
+        items={items}
+        loadingText="Loading resources"
+        submitEdit={async () => {
+          await new Promise(e => setTimeout(e, 1e3));
+        }}
+        enableKeyboardNavigation
+        // resizableColumns={true}
+        empty={
+          <Box textAlign="center" color="inherit">
+            <b>No resources</b>
+            <Box padding={{ bottom: 's' }} variant="p" color="inherit">
+              No resources to display.
             </Box>
-          }
-          header={<Header>Table with inline editing</Header>}
-          enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
-        />
-      ) : (
-        <SpaceBetween size="s">
-          <Checkbox
-            checked={urlParams.enableKeyboardNavigation}
-            onChange={event => setUrlParams({ enableKeyboardNavigation: event.detail.checked })}
-          >
-            Keyboard navigation
-          </Checkbox>
-
-          <Button
-            onClick={() => {
-              setIsActive(true);
-              console.time('render');
-              requestAnimationFrame(() => console.timeEnd('render'));
-            }}
-          >
-            Render Table
-          </Button>
-        </SpaceBetween>
-      )}
+            <Button>Create resource</Button>
+          </Box>
+        }
+        header={<Header>Table with inline editing</Header>}
+      />
     </ScreenshotArea>
   );
 }

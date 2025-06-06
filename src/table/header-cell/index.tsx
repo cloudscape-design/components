@@ -42,7 +42,7 @@ export interface TableHeaderCellProps<ItemType> {
   resizableStyle?: ColumnWidthStyle;
   isEditable?: boolean;
   columnId: PropertyKey;
-  stickyState: StickyColumnsModel;
+  stickyState?: StickyColumnsModel;
   cellRef: React.RefCallback<HTMLElement>;
   focusedComponent?: null | string;
   tableRole: TableRole;

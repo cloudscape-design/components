@@ -30,7 +30,7 @@ export interface TableThElementProps {
   isSelection?: boolean;
   colIndex: number;
   columnId: PropertyKey;
-  stickyState: StickyColumnsModel;
+  stickyState?: StickyColumnsModel;
   cellRef?: React.RefCallback<HTMLElement> | null;
   tableRole: TableRole;
   children: React.ReactNode;
@@ -60,11 +60,11 @@ export function TableThElement({
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
 
-  const stickyStyles = useStickyCellStyles({
+  const stickyStyles = stickyState ? useStickyCellStyles({
     stickyColumns: stickyState,
     columnId,
     getClassName: props => getStickyClassNames(styles, props),
-  });
+  }) : {ref: () => {}};
 
   const cellRefObject = useRef<HTMLTableCellElement>(null);
   const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject);
