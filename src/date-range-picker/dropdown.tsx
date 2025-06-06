@@ -42,12 +42,14 @@ interface DateRangePickerDropdownProps
       | 'startOfWeek'
       | 'getTimeOffset'
       | 'timeInputFormat'
+      | 'dateInputFormat'
       | 'timeOffset'
       | 'ariaLabelledby'
       | 'ariaDescribedby'
       | 'i18nStrings'
       | 'customRelativeRangeUnits'
       | 'dateDisabledReason'
+      | 'absoluteFormat'
     >,
     Pick<CalendarProps, 'granularity'> {
   onClear: () => void;
@@ -74,7 +76,9 @@ export function DateRangePickerDropdown({
   isSingleGrid,
   i18nStrings,
   dateOnly,
+  absoluteFormat = 'iso',
   timeInputFormat,
+  dateInputFormat,
   rangeSelectorMode,
   ariaLabelledby,
   ariaDescribedby,
@@ -201,7 +205,9 @@ export function DateRangePickerDropdown({
                       dateDisabledReason={dateDisabledReason}
                       i18nStrings={i18nStrings}
                       dateOnly={dateOnly}
+                      absoluteFormat={absoluteFormat}
                       timeInputFormat={timeInputFormat}
+                      dateInputFormat={dateInputFormat}
                       customAbsoluteRangeControl={customAbsoluteRangeControl}
                       granularity={granularity}
                     />

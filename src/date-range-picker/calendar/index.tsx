@@ -29,7 +29,6 @@ import { formatDate, formatDateTime, parseDate, splitDateTime } from '../../inte
 import { normalizeLocale, normalizeStartOfWeek } from '../../internal/utils/locale';
 import InternalLiveRegion from '../../live-region/internal';
 import SpaceBetween from '../../space-between/internal';
-import { TimeInputProps } from '../../time-input/interfaces';
 import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces';
 import { Grids } from './grids';
 import CalendarHeader from './header';
@@ -48,7 +47,9 @@ export interface DateRangePickerCalendarProps extends BaseComponentProps, Pick<C
   dateDisabledReason?: (date: Date) => string;
   i18nStrings?: RangeCalendarI18nStrings;
   dateOnly?: boolean;
-  timeInputFormat?: TimeInputProps.Format;
+  absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
+  timeInputFormat?: DateRangePickerProps.TimeInputFormat;
+  dateInputFormat?: DateRangePickerProps.DateInputFormat;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
 }
 
@@ -61,7 +62,9 @@ export default function DateRangePickerCalendar({
   dateDisabledReason = () => '',
   i18nStrings,
   dateOnly = false,
+  absoluteFormat,
   timeInputFormat = 'hh:mm:ss',
+  dateInputFormat,
   customAbsoluteRangeControl,
   granularity = 'day',
 }: DateRangePickerCalendarProps) {
@@ -301,7 +304,9 @@ export default function DateRangePickerCalendar({
             onChangeEndTime={value => setValue(oldValue => ({ ...oldValue, end: { ...oldValue.end, time: value } }))}
             i18nStrings={i18nStrings}
             dateOnly={dateOnly}
+            absoluteFormat={absoluteFormat}
             timeInputFormat={timeInputFormat}
+            dateInputFormat={dateInputFormat}
             granularity={granularity}
           />
           {customAbsoluteRangeControl && <div>{customAbsoluteRangeControl(value, interceptedSetValue)}</div>}
