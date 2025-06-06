@@ -4216,6 +4216,25 @@ It prevents users from clicking the button, but it can still be focused.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native \`button\` element.
+
+It is not supported to use this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+    },
+    {
       "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to "noopener noreferrer" when \`target\` is \`"_blank"\`.
 If the \`rel\` property is provided, it overrides the default behavior.",
       "name": "rel",
@@ -19907,6 +19926,25 @@ It prevents users from clicking the button, but it can still be focused.",
       "name": "loadingText",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native \`button\` element.
+
+It is not supported to use this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
     },
     {
       "defaultValue": "false",

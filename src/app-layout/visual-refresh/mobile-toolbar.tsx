@@ -69,7 +69,7 @@ export default function MobileToolbar() {
             className={testutilStyles['navigation-toggle']}
             ref={navigationRefs.toggle}
             disabled={hasDrawerViewportOverlay}
-            __nativeAttributes={{ 'aria-haspopup': navigationOpen ? undefined : true }}
+            nativeAttributes={{ 'aria-haspopup': navigationOpen ? undefined : true }}
           />
         </nav>
       )}
@@ -97,7 +97,7 @@ export default function MobileToolbar() {
               onClick={() => handleToolsClick(true)}
               variant="icon"
               ref={toolsRefs.toggle}
-              __nativeAttributes={{ 'aria-haspopup': true }}
+              nativeAttributes={{ 'aria-haspopup': true }}
             />
           </aside>
         )
