@@ -16,14 +16,17 @@ export default function SimpleTableScenario() {
             {
               id: 'name',
               sortable: true,
+              minWidth: 550,
             },
             {
               id: 'default',
               sortable: true,
+              minWidth: 200,
             },
             {
               id: 'adjustable',
               sortable: true,
+              minWidth: 120,
             },
             {
               id: 'description',

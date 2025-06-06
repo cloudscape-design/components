@@ -13,6 +13,7 @@ import styles from './styles.css.js';
 
 interface ColumnDefinition {
   id: string;
+  minWidth?: number;
   sortable?: boolean;
 }
 
@@ -34,11 +35,12 @@ export default function SimpleTableWrapper({
   const sortTableByColumn = useCallback((colIndex: number, sortingDirection = 'asc') => {
     const tableColumns = Array.from(baseTable.current?.querySelector('thead')?.querySelectorAll('th') ?? []);
 
+    // Sorting Icon display
     for (const col of tableColumns) {
       if (tableColumns.indexOf(col) !== colIndex) {
         col.removeAttribute('data-sortingDirection');
         if (col.childNodes.length > 1) {
-          col.removeChild(col.lastChild!);
+          render(<>{col.textContent}</>, col);
         }
       } else {
         render(
@@ -70,6 +72,13 @@ export default function SimpleTableWrapper({
     if (columns) {
       for (const col of tableColumns) {
         const columnDef = columns.find(c => c.id === col.id);
+
+        // Min width
+        if (columnDef?.minWidth) {
+          col.style.minWidth = `${columnDef.minWidth}px`;
+        }
+
+        // Sorting
         if (columnDef?.sortable) {
           const index = tableColumns.indexOf(col);
           const item = baseTable.current?.querySelectorAll('th').item(index);
