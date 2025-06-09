@@ -149,7 +149,7 @@ const InternalButtonGroup = forwardRef(
           onUnregisterActive={onUnregisterActive}
         >
           {items.map((itemOrGroup, index) => {
-            const itemContent = (item: ButtonGroupProps.Item) => (
+            const itemContent = (item: ButtonGroupProps.Item, position: string) => (
               <ItemElement
                 key={item.id}
                 item={item}
@@ -159,6 +159,7 @@ const InternalButtonGroup = forwardRef(
                 onItemClick={onItemClick}
                 onFilesChange={onFilesChange}
                 ref={element => (itemsRef.current[item.id] = element)}
+                position={position}
               />
             );
 
@@ -176,10 +177,10 @@ const InternalButtonGroup = forwardRef(
                 {shouldAddDivider && <div className={styles.divider} />}
                 {itemOrGroup.type === 'group' ? (
                   <div key={index} role="group" aria-label={itemOrGroup.text} className={styles.group}>
-                    {itemOrGroup.items.map(item => itemContent(item))}
+                    {itemOrGroup.items.map((item, subIndex) => itemContent(item, `${index + 1},${subIndex + 1}`))}
                   </div>
                 ) : (
-                  itemContent(itemOrGroup)
+                  itemContent(itemOrGroup, `${index + 1}`)
                 )}
               </React.Fragment>
             );
