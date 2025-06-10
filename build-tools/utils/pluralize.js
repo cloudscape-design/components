@@ -45,6 +45,7 @@ const pluralizationMap = {
   KeyValuePairs: 'KeyValuePairs',
   LineChart: 'LineCharts',
   Link: 'Links',
+  List: 'Lists',
   LiveRegion: 'LiveRegions',
   MixedLineBarChart: 'MixedLineBarCharts',
   Modal: 'Modals',

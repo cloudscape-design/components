@@ -33,7 +33,7 @@ describe('Content Display preference', () => {
       const descriptionId = wrapper.findDescription().getElement().id;
       expect(descriptionId).toBeTruthy();
       expect(titleId).not.toBe(descriptionId);
-      const list = wrapper.findAll('ul')[0].getElement();
+      const list = wrapper.findAll('ol')[0].getElement();
       expect(list.getAttribute('aria-labelledby')).toBe(titleId);
       expect(list.getAttribute('aria-describedby')).toBe(descriptionId);
     });
@@ -516,7 +516,7 @@ function testOption({
 }) {
   const element = option.getElement();
   expect(element.tagName).toBe('LI');
-  expect(element.parentElement!.tagName).toBe('UL');
+  expect(element.parentElement!.tagName).toBe('OL');
   expect(option.findLabel().getElement()).toHaveTextContent(`Item ${index + 1}`);
   const dragHandle = option.findDragHandle().getElement();
   expectAriaLabel(wrapper, dragHandle, `Drag handle Item ${index + 1}`);
