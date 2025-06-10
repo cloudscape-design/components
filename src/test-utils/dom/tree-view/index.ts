@@ -3,6 +3,7 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import expandToggleStyles from '../../../internal/components/expand-toggle-button/styles.selectors.js';
+import structuredItemTestUtilStyles from '../../../internal/components/structured-item/test-classes/styles.selectors.js';
 import testUtilStyles from '../../../tree-view/test-classes/styles.selectors.js';
 
 class TreeItemWrapper extends ComponentWrapper {
@@ -10,28 +11,28 @@ class TreeItemWrapper extends ComponentWrapper {
    * Finds the content of the tree item.
    */
   findContent(): ElementWrapper | null {
-    return this.findByClassName(testUtilStyles.content);
+    return this.findByClassName(structuredItemTestUtilStyles.content);
   }
 
   /**
    * Finds the icon of the tree item.
    */
   findIcon(): ElementWrapper | null {
-    return this.findByClassName(testUtilStyles.icon);
+    return this.findByClassName(structuredItemTestUtilStyles.icon);
   }
 
   /**
    * Finds the secondary content of the tree item.
    */
   findSecondaryContent(): ElementWrapper | null {
-    return this.findByClassName(testUtilStyles['secondary-content']);
+    return this.findByClassName(structuredItemTestUtilStyles.secondary);
   }
 
   /**
    * Finds the actions of the tree item.
    */
   findActions(): ElementWrapper | null {
-    return this.findByClassName(testUtilStyles.actions);
+    return this.findByClassName(structuredItemTestUtilStyles.actions);
   }
 
   /**
