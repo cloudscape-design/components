@@ -222,7 +222,7 @@ export const InternalButton = React.forwardRef(
       onClick: handleClick,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
       ...getAnalyticsMetadataAttribute(analyticsMetadata),
-      ...getAnalyticsLabelAttribute(children ? `.${analyticsSelectors.label}` : ''),
+      ...getAnalyticsLabelAttribute(shouldHaveContent ? `.${analyticsSelectors.label}` : ''),
     } as const;
 
     const iconProps: ButtonIconProps = {
