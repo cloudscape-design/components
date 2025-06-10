@@ -327,6 +327,11 @@ export interface InternalButtonDropdownProps
   fullWidth?: boolean;
 
   analyticsMetadataTransformer?: (input: GeneratedAnalyticsMetadataFragment) => GeneratedAnalyticsMetadataFragment;
+
+  /**
+   * Position of the button dropdown inside a list of elements, for example a button group
+   */
+  position?: string;
 }
 
 export interface CustomTriggerProps {
