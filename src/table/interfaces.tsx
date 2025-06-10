@@ -413,6 +413,7 @@ export namespace TableProps {
   export interface CellContext<V> {
     currentValue: Optional<V>;
     setValue: (value: V | undefined) => void;
+    submitValue: () => void;
   }
 
   export interface EditConfig<T, V = any> {
@@ -452,6 +453,11 @@ export namespace TableProps {
      * Determines whether inline edit for certain items is disabled, and provides a reason why.
      */
     disabledReason?: (item: T) => string | undefined;
+
+    /**
+     * Disables the use of a <form> element to capture submissions inside the inline editor.
+     */
+    disableNativeForm?: boolean;
   }
 
   export type ColumnDefinition<ItemType> = {
