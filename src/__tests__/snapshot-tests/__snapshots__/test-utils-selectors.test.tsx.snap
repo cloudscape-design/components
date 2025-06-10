@@ -152,7 +152,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_content-display-option-label_tc96w",
     "awsui_content-display-option-list_tc96w",
     "awsui_content-display-option-toggle_tc96w",
-    "awsui_content-display-option_tc96w",
     "awsui_content-display-text-filter_tc96w",
     "awsui_content-display-title_tc96w",
     "awsui_content-display_tc96w",
@@ -348,6 +347,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_2rhyz",
   ],
   "internal": [
+    "awsui_actions_x6dl3",
     "awsui_application_1fcus",
     "awsui_axis-label--x_f0fot",
     "awsui_axis-label--y_f0fot",
@@ -355,6 +355,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_button-trigger_18eso",
     "awsui_button_m5h9f",
     "awsui_chart-filter_1px7g",
+    "awsui_content_x6dl3",
     "awsui_control_1wepg",
     "awsui_description_1p2cx",
     "awsui_description_1wepg",
@@ -372,6 +373,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_has-background_15o6u",
     "awsui_header_dgs8z",
     "awsui_highlighted_15o6u",
+    "awsui_icon_x6dl3",
     "awsui_inner-list-item_10ipo",
     "awsui_key_10ipo",
     "awsui_label-tag_1p2cx",
@@ -395,6 +397,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_qwoo0",
     "awsui_root_vrgzu",
     "awsui_screenreader-content_15o6u",
+    "awsui_secondary_x6dl3",
     "awsui_select-all_15o6u",
     "awsui_selectable-item_15o6u",
     "awsui_selected_15o6u",
@@ -418,6 +421,10 @@ exports[`test-utils selectors 1`] = `
   ],
   "link": [
     "awsui_link_4c84z",
+  ],
+  "list": [
+    "awsui_item_rckk5",
+    "awsui_root_rckk5",
   ],
   "live-region": [
     "awsui_root_1pc7b",
