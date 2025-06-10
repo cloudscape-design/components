@@ -9,7 +9,7 @@ import { tokens as parentTokens } from '../colors.js';
 const appLayoutToolsDrawerTriggerFocusedButton: StyleDictionary.ColorsDictionary = {
   colorBorderItemFocused: {
     light: '{colorGrey100}',
-    dark: '{colorGrey700}',
+    dark: '{colorGrey750}',
   },
 };
 
