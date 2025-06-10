@@ -153,7 +153,7 @@ To run a single test suite, you can call Jest directly using the appropriate con
 npx jest -c jest.unit.config.js src/button/__tests__/button.test.tsx
 
 # Run all input integration tests
-npx jest -c jest.integ.config.js src/input
+npm run test:integ -- --files=src/input/**/*.test.ts
 
 # Run motion tests for the flashbar component
 npx jest -c jest.motion.config.js src/flashbar
