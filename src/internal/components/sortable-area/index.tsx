@@ -95,6 +95,7 @@ export default function SortableArea<Item>({
               isDragGhost: true,
               dragHandleProps: {
                 ariaLabel: joinStrings(i18nStrings?.dragHandleAriaLabel, itemDefinition.label(activeItem)) ?? '',
+                active: true,
                 onKeyDown: handleKeyDown,
               },
             })}

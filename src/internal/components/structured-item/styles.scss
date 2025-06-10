@@ -9,6 +9,7 @@
   @include styles.styles-reset;
   @include styles.text-wrapping;
   display: flex;
+  flex: 1;
   flex-direction: row;
   align-items: baseline;
   column-gap: awsui.$space-xs;

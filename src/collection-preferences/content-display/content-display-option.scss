@@ -14,28 +14,16 @@
   @include styles.styles-reset;
   display: flex;
   align-items: flex-start;
-  padding-block: awsui.$space-xs;
-  padding-inline-start: 0;
-  padding-inline-end: awsui.$space-scaled-xs;
-  background-color: awsui.$color-background-container-content;
+  padding-block: awsui.$space-scaled-xs;
+  padding-inline: awsui.$space-xs;
   border-start-start-radius: awsui.$border-radius-item;
   border-start-end-radius: awsui.$border-radius-item;
   border-end-start-radius: awsui.$border-radius-item;
   border-end-end-radius: awsui.$border-radius-item;
 }
 
-.content-display-option {
-  list-style: none;
-  position: relative;
-  border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
-}
-
 .content-display-option-label {
   flex-grow: 1;
   @include styles.text-wrapping;
   padding-inline-end: awsui.$space-l;
-}
-
-.drag-handle-wrapper {
-  margin-inline: awsui.$space-scaled-xxs;
 }

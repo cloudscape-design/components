@@ -11519,6 +11519,166 @@ The default is \`secondary\`, except inside the following components where it de
 }
 `;
 
+exports[`Documenter definition for list matches the snapshot: list 1`] = `
+{
+  "dashCaseName": "list",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when items are reordered in a sortable list.",
+      "detailInlineType": {
+        "name": "ListProps.SortingState<T>",
+        "properties": [
+          {
+            "name": "items",
+            "optional": false,
+            "type": "ReadonlyArray<T>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ListProps.SortingState<T>",
+      "name": "onSortingChange",
+    },
+  ],
+  "functions": [],
+  "name": "List",
+  "properties": [
+    {
+      "description": "Adds an aria-describedby to the list.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an aria-label to the list.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an aria-labelledby to the list.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Removes padding around list items.",
+      "name": "disablePaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "An object containing all the localized strings required by the component.
+
+- \`liveAnnouncementDndStarted\` ((position: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an item is picked for reordering.
+- \`liveAnnouncementDndDiscarded\` (string) - (Optional) Adds a message to be announced by screen readers when a reordering action is canceled.
+- \`liveAnnouncementDndItemReordered\` ((initialPosition: number, currentPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an item is being moved.
+- \`liveAnnouncementDndItemCommitted\` ((initialPosition: number, finalPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when a reordering action is committed.
+- \`dragHandleAriaDescription\` (string) - (Optional) Adds an ARIA description for the drag handle.
+- \`dragHandleAriaLabel\` (string) - (Optional) Adds an ARIA label for the drag handle.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "{ dragHandleAriaLabel?: string | undefined; dragHandleAriaDescription?: string | undefined; liveAnnouncementDndStarted?: ((position: number, total: number) => string) | undefined; liveAnnouncementDndItemReordered?: ((initialPosition: number, currentPosition: number, total: number) => string) | undefined; liveAnnounc...",
+        "properties": [
+          {
+            "name": "dragHandleAriaDescription",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "dragHandleAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "liveAnnouncementDndDiscarded",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "liveAnnouncementDndItemCommitted",
+            "optional": true,
+            "type": "((initialPosition: number, finalPosition: number, total: number) => string)",
+          },
+          {
+            "name": "liveAnnouncementDndItemReordered",
+            "optional": true,
+            "type": "((initialPosition: number, currentPosition: number, total: number) => string)",
+          },
+          {
+            "name": "liveAnnouncementDndStarted",
+            "optional": true,
+            "type": "((position: number, total: number) => string)",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "{ dragHandleAriaLabel?: string | undefined; dragHandleAriaDescription?: string | undefined; liveAnnouncementDndStarted?: ((position: number, total: number) => string) | undefined; liveAnnouncementDndItemReordered?: ((initialPosition: number, currentPosition: number, total: number) => string) | undefined; liveAnnounc...",
+    },
+    {
+      "description": "The items to display in the list.",
+      "name": "items",
+      "optional": false,
+      "type": "ReadonlyArray<T>",
+    },
+    {
+      "description": "Render an item. The function should return an object with the following keys:
+* \`id\` (string) - A unique identifier for the item.
+* \`content\` (React.ReactNode) - The content of the item.
+* \`secondaryContent\` (React.ReactNode) - (Optional) Secondary content, for example item description.
+* \`icon\` (React.ReactNode) - (Optional) An icon.
+* \`action\` (React.ReactNode) - (Optional) Action button(s).
+* \`announcementLabel\` (string) - (Optional) An announcement label for the item, used when sorting. By default, the \`content\` is used.",
+      "inlineType": {
+        "name": "(item: T) => StructuredItemProps & { id: string; announcementLabel?: string | undefined; }",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "T",
+          },
+        ],
+        "returnType": "StructuredItemProps & { id: string; announcementLabel?: string | undefined; }",
+        "type": "function",
+      },
+      "name": "renderItem",
+      "optional": false,
+      "type": "(item: T) => StructuredItemProps & { id: string; announcementLabel?: string | undefined; }",
+    },
+    {
+      "description": "Makes the list sortable by enabling drag and drop functionality.",
+      "name": "sortable",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Disables sorting drag handles. Use this when a sortable list is temporarily unsortable for some reason.",
+      "name": "sortDisabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "The HTML tag to render. By default \`ul\` is used for standard lists and \`ol\` for sortable lists.",
+      "inlineType": {
+        "name": ""ol" | "ul"",
+        "type": "union",
+        "values": [
+          "ol",
+          "ul",
+        ],
+      },
+      "name": "tag",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for live-region matches the snapshot: live-region 1`] = `
 {
   "dashCaseName": "live-region",
