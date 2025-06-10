@@ -116,6 +116,9 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *        The `cellContext` object contains the following properties:
    *     * `cellContext.currentValue` - State to keep track of a value in input fields while editing.
    *     * `cellContext.setValue` - Function to update `currentValue`. This should be called when the value in input field changes.
+   *     * `cellContext.submitValue` - Function to submit the `currentValue`.
+   *   * `editConfig.disableNativeForm` (boolean) - Disables the use of a `<form>` element to capture submissions inside the inline editor.
+   *        If enabled, ensure that any text inputs in the editing cell submit the cell value when the Enter key is pressed, using `cellContext.submitValue`.
    * * `isRowHeader` (boolean) - Specifies that cells in this column should be used as row headers.
    * * `hasDynamicContent` (boolean) - Specifies that cells in this column may have dynamic content. The contents will then be observed to update calculated column widths.
    *    This may have a negative performance impact, so should be used only if necessary. It has no effect if `resizableColumns` is set to `true`.
@@ -413,6 +416,7 @@ export namespace TableProps {
   export interface CellContext<V> {
     currentValue: Optional<V>;
     setValue: (value: V | undefined) => void;
+    submitValue: () => void;
   }
 
   export interface EditConfig<T, V = any> {
@@ -452,6 +456,13 @@ export namespace TableProps {
      * Determines whether inline edit for certain items is disabled, and provides a reason why.
      */
     disabledReason?: (item: T) => string | undefined;
+
+    /**
+     * Disables the use of a `<form>` element to capture submissions inside the inline editor.
+     * If enabled, ensure that any text inputs in the editing cell submit the cell value when
+     * the Enter key is pressed, using `cellContext.submitValue`.
+     */
+    disableNativeForm?: boolean;
   }
 
   export type ColumnDefinition<ItemType> = {
