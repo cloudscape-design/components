@@ -28,6 +28,7 @@ const InternalTreeView = <T,>({
   ariaLabelledby,
   ariaDescribedby,
   i18nStrings,
+  showConnectorLine,
   __internalRootRef,
   ...rest
 }: InternalTreeViewProps<T>) => {
@@ -72,16 +73,14 @@ const InternalTreeView = <T,>({
               item={item}
               level={0}
               index={index}
-              expandedItems={
-                expandedItems === undefined || expandedItems === null ? internalExpandedItems : expandedItems
-              }
+              expandedItems={isExpandStateControlled ? expandedItems : internalExpandedItems}
               i18nStrings={i18nStrings}
               position={getItemPosition(index, items.length)}
               onItemToggle={onToggle}
               renderItem={renderItem}
               getItemId={getItemId}
               getItemChildren={getItemChildren}
-              // withGrid={true}
+              showConnectorLine={showConnectorLine}
             />
           );
         })}

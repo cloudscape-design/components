@@ -13,6 +13,10 @@
   line-height: awsui.$line-height-heading-m;
 }
 
+.tree {
+  @include styles.styles-reset-ul;
+}
+
 .tree,
 .treeitem-group,
 .treeitem {
@@ -21,171 +25,35 @@
   margin-block: 0;
 }
 
-.treeitem-group {
-  inline-size: 100%;
-}
-
-.treeitem-toggle-area {
-  inline-size: 30px;
-  background-color: yellow;
-
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  padding-block-start: 6px;
-
-  position: relative;
-}
-
-.connector-area {
-  background-color: yellow;
-  display: flex;
-  padding-block-start: 3px;
-  justify-content: flex-end;
-
-  &.level-0 {
-    justify-content: center;
-  }
-}
-
-.connector-area2 {
-  display: flex;
-  align-items: baseline;
-  position: relative;
-  inline-size: 100%;
-}
-
 .treeitem {
-  display: flex;
-}
-
-.tree {
-  @include styles.styles-reset-ul;
-}
-
-// .treeitem-group {
-//   padding-inline-start: 0;
-//   margin-inline-start: 0;
-// }
-
-.content {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  column-gap: 4px;
+  grid-template-rows: minmax(32px, 1fr) auto auto;
+  overflow: visible;
   position: relative;
-  padding-block-start: 2px;
-  flex: 1;
-}
 
-.treeitem-connector-group {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-}
+  > .connector-toggle-wrapper {
+    grid-column: 1;
+    grid-row: 1;
+    padding-block-start: 6px;
+    position: relative;
 
-.treeitem-layout {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.treeitem-first-line {
-  display: flex;
-  align-items: baseline;
-  gap: 4px;
-}
-
-.horizontal {
-  inline-size: 32px;
-  block-size: 1px;
-  background: red;
-  position: absolute;
-  inset-block-start: 11px;
-
-  &.expandable {
-    inline-size: 22px;
-  }
-}
-.vertical {
-  inline-size: 1px;
-  background-color: red;
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: 8px;
-
-  &.expanded {
-    inset-block-start: 24px;
+    > .toggle {
+      justify-self: center;
+      position: relative;
+      inset-block-start: 2px;
+    }
   }
 
-  &.position-end:not(.expanded) {
-    block-size: 12px;
+  > .structured-item-wrapper {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    padding-block-start: 6px;
+  }
+
+  > .treeitem-group {
+    grid-column: 2;
+    grid-row: 3;
   }
 }
-
-.level0 {
-  inline-size: 1px;
-  background-color: red;
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: 8px;
-
-  &.expandable {
-    inset-block: 22px -8px;
-  }
-
-  &.position-start {
-    inset-block-start: 20px;
-  }
-}
-
-// .with-grid {
-//   align-items: center;
-//   display: grid;
-//   grid-template-columns: auto auto 1fr;
-//   grid-template-rows: repeat(2, 1fr) auto;
-//   // row-gap: 0.4rem;
-//   // line-height: 2.8rem;
-//   overflow: visible;
-//   position: relative;
-
-//   .treeitem-group {
-//     grid-column: 3;
-//     grid-row: 3;
-//     // grid-template-columns: subgrid;
-//     // grid-template-rows: subgrid;
-//   }
-
-//   .toggle {
-//     align-items: center;
-//     display: flex;
-//     grid-column: 1;
-//     grid-row: 1 / span 2;
-//     justify-content: center;
-//   }
-
-//   .treeitem-layout {
-//     grid-column: 2;
-//     // grid-column: 3;
-//     grid-row: 1 / span 2;
-//   }
-
-//   .vertical-rule {
-//     background: red;
-//     grid-column: 1;
-//     grid-row: 3;
-//     height: 100%;
-//     justify-self: center;
-//     width: 1px;
-//   }
-
-//   .horizontal-rule {
-//     background: red;
-//     grid-column: 1;
-//     grid-row: 1 / span 2;
-//     height: 0.1rem;
-//     margin-left: -2.5rem;
-//     width: 2rem;
-//   }
-
-//   .icon {
-//     // grid-column: 2;
-//     // grid-row: 1 / span 2;
-//   }
-// }

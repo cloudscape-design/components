@@ -10,10 +10,7 @@ import TreeView from '~components/tree-view';
 import { Actions, Content } from './common';
 import { allItems, items } from './generate-data';
 
-console.log('items: ', items);
-console.log('all items: ', allItems);
 const allExpandableItemIds = allItems.filter(item => item.children && item.children.length > 0).map(item => item.id);
-console.log('expandable item ids: ', allExpandableItemIds);
 
 export default function TestPage() {
   const [expandedItems, setExpandedItems] = useState<Array<string>>([]);

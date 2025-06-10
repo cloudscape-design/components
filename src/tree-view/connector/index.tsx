@@ -9,33 +9,65 @@ const Connector = ({
   level,
   position,
   isExpandable,
+  isExpanded,
 }: {
   level: number;
   position: 'start' | 'middle' | 'end';
   isExpandable: boolean;
+  isExpanded: boolean;
 }) => {
   if (level === 0) {
     return (
-      <div
-        className={clsx(
-          styles['treeitem-connector-vertical-root'],
-          position === 'end' && styles['treeitem-connector-vertical-root-end'],
-          isExpandable && styles['treeitem-connector-vertical-expandable']
-        )}
-      ></div>
+      <div className={styles.connector}>
+        <div
+          className={clsx(
+            styles['vertical-rule-level-0'],
+            isExpandable && styles.expandable,
+            styles[`position-${position}`]
+          )}
+        />
+
+        {!isExpandable && <div className={clsx(styles['horizontal-rule-level-0'])} />}
+      </div>
     );
   }
 
   return (
-    <>
-      <div className={clsx(styles['treeitem-connector-horizontal'], isExpandable && [styles.expandable])}></div>
+    <div className={styles.connector}>
+      <div className={clsx(styles['horizontal-rule'], isExpandable && styles.expandable)} />
 
-      {level > 1 && (position === 'start' || position === 'end') && (
-        <div className={styles['treeitem-connector-vertical-end']}></div>
-      )}
+      {level > 0 &&
+        Array.from(Array(level + 1).keys()).map(l => {
+          if (l === 0) {
+            const offsetLevelDiff = level - 1;
+            return (
+              <div
+                key={`${level} - ${l}`}
+                className={clsx(styles['vertical-rule'], styles[`with-offset-${offsetLevelDiff}`])}
+              />
+            );
+          }
 
-      {level > 1 && position === 'middle' && <div className={styles['treeitem-connector-vertical-middle']}></div>}
-    </>
+          // No vertical lines shown if item is not expanded
+          if (l === level && !isExpanded) {
+            return <div key={`${level} - ${l}`} />;
+          }
+
+          const offsetLevelDiff = level - l - 1;
+
+          return (
+            <div
+              key={`${level} - ${l}`}
+              className={clsx(
+                styles['vertical-rule'],
+                l !== level && styles[`position-${position}`],
+                isExpanded && l === level && styles.expanded,
+                styles[`with-offset-${offsetLevelDiff}`]
+              )}
+            />
+          );
+        })}
+    </div>
   );
 };
 

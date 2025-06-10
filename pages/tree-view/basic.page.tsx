@@ -55,6 +55,7 @@ interface Item {
   children?: Item[];
   hasActions?: boolean;
   hideIcon?: boolean;
+  actionType?: 'button-group' | 'button-dropdown' | 'inline-button-dropdown';
 }
 
 const items: Item[] = [
@@ -86,6 +87,7 @@ const items: Item[] = [
         content: 'Item 1.3',
         details: 'us-east-1',
         hasActions: true,
+        actionType: 'button-group',
         children: [
           {
             id: '1.3.1',
@@ -108,6 +110,8 @@ const items: Item[] = [
   {
     id: '3',
     content: 'Item 3',
+    hasActions: true,
+    actionType: 'inline-button-dropdown',
     children: [
       {
         id: '3.1',
@@ -169,6 +173,7 @@ const items: Item[] = [
   {
     id: '5',
     content: 'Item 5',
+    details: 'This item is on level 0',
   },
   {
     id: '6',
@@ -205,7 +210,9 @@ const items: Item[] = [
 ];
 
 function Actions(
-  { actionType }: { actionType?: 'button-group' | 'button-dropdown' } = { actionType: 'button-dropdown' }
+  { actionType }: { actionType?: 'button-group' | 'button-dropdown' | 'inline-button-dropdown' } = {
+    actionType: 'button-dropdown',
+  }
 ) {
   const [pressed, setPressed] = useState(false);
 
@@ -219,6 +226,14 @@ function Actions(
             iconName: 'settings',
             type: 'icon-button',
             text: 'Settings',
+          },
+          {
+            type: 'icon-toggle-button',
+            id: 'favorite',
+            text: 'Favorite',
+            pressed: pressed,
+            iconName: 'star',
+            pressedIconName: 'star-filled',
           },
           {
             id: 'menu',
@@ -236,20 +251,32 @@ function Actions(
               { id: 'terminate', text: 'Terminate' },
             ],
           },
-          {
-            type: 'icon-toggle-button',
-            id: 'favorite',
-            text: 'Favorite',
-            pressed: pressed,
-            iconName: 'star',
-            pressedIconName: 'star-filled',
-          },
         ]}
         onItemClick={({ detail }) => {
           if (detail.id === 'favorite') {
             setPressed(!pressed);
           }
         }}
+      />
+    );
+  }
+
+  if (actionType === 'inline-button-dropdown') {
+    return (
+      <ButtonDropdown
+        items={[
+          { id: 'start', text: 'Start' },
+          { id: 'stop', text: 'Stop', disabled: true },
+          {
+            id: 'hibernate',
+            text: 'Hibernate',
+            disabled: true,
+          },
+          { id: 'reboot', text: 'Reboot', disabled: true },
+          { id: 'terminate', text: 'Terminate' },
+        ]}
+        ariaLabel="Control instance"
+        variant="inline-icon"
       />
     );
   }
@@ -323,8 +350,8 @@ export default function BasicTreeView() {
                     <Icon name={expandedItems.includes(item.id) ? 'folder-open' : 'folder'} ariaLabel="folder" />
                   ),
                   content: item.content,
-                  secondaryContent: <Box color="text-status-inactive">{item.details}</Box>,
-                  actions: item.hasActions ? <Actions /> : undefined,
+                  secondaryContent: item.details && <Box color="text-status-inactive">{item.details}</Box>,
+                  actions: item.hasActions ? <Actions actionType={item.actionType} /> : undefined,
                 };
               }}
               getItemId={item => item.id}
@@ -341,6 +368,7 @@ export default function BasicTreeView() {
                 expandButtonLabel: () => 'Expand item',
                 collapseButtonLabel: () => 'Collapse item',
               }}
+              showConnectorLine={true}
             />
           </Container>
         </div>

@@ -172,7 +172,7 @@ function flattenItems(items: Item[]) {
   const allItems: Item[] = [];
 
   const pushItem = (item: Item) => {
-    allItems.push(item);
+    allItems.push({ ...item, children: [] });
     if (item.children) {
       item.children.forEach(pushItem);
     }

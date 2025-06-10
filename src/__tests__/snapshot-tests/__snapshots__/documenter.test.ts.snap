@@ -20639,7 +20639,6 @@ Use it to have different icons/animations for toggle.",
       "type": "((isExpanded: boolean) => React.ReactNode)",
     },
     {
-      "defaultValue": "true",
       "name": "showConnectorLine",
       "optional": true,
       "systemTags": [

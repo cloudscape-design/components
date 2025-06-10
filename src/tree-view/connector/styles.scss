@@ -5,52 +5,66 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
 
-.treeitem-connector-horizontal {
-  block-size: 1px;
-  position: absolute;
-  inset-block-start: 12px;
-  inline-size: 39px;
+$max-nesting-levels: 20;
+
+.vertical-rule-level-0 {
   background: red;
-  inset-inline-start: -14px;
+  inline-size: 1px;
+  position: absolute;
+  inset-block-start: 0;
+  inset-block-end: -5px;
+  inset-inline-start: 14px; // 28px / 2
 
   &.expandable {
-    inline-size: 20px;
+    inset-block-start: 30px;
+  }
+
+  &.position-end {
+    block-size: 16px; // 32px / 2
   }
 }
 
-.treeitem-connector-vertical {
-  &-root {
-    inline-size: 1px;
-    position: absolute;
-    inset-block: 0;
-    inset-inline-start: 50%;
-    background-color: red;
+@for $level from 0 through $max-nesting-levels {
+  .with-offset-#{$level} {
+    inset-inline-start: calc((#{$level} * -32px) - 18px);
+  }
+}
+
+.vertical-rule {
+  background: red;
+  inline-size: 1px;
+  position: absolute;
+  inset-block-start: 0;
+  inset-block-end: -5px;
+
+  &.position-end {
+    block-size: 16px; // 32px / 2
   }
 
-  &-root-end {
-    block-size: 16px;
-    inset-block: 0 unset;
+  &.expanded {
+    inset-block-start: 26px;
+    inset-inline-start: 14px; // 28px / 2
   }
+}
 
-  &-expandable {
-    inset-block-start: 24px;
-  }
+.horizontal-rule-level-0 {
+  background: red;
+  inline-size: 12px;
+  block-size: 1px;
+  position: absolute;
+  inset-block-start: 16px;
+  inset-inline-start: 14px;
+}
 
-  &-middle {
-    inline-size: 1px;
-    position: absolute;
-    inset-block: -11px 0px;
-    inset-inline-start: -14px;
-    background-color: red;
-  }
+.horizontal-rule {
+  background: red;
+  block-size: 1px;
+  position: absolute;
+  inset-block-start: 16px;
+  inset-inline-start: -18px; // 28 / 2 + 4 -> width / 2 + gap
+  inline-size: 38px;
 
-  &-end {
-    inline-size: 1px;
-    position: absolute;
-    inset-block: 0 10px;
-    inset-inline-start: -14px;
-    background-color: red;
-
-    block-size: 13px;
+  &.expandable {
+    inline-size: 12px;
   }
 }
