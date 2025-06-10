@@ -8,13 +8,13 @@ import { tokens as parentTokens } from '../colors.js';
 
 export const alertButtonTokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonNormalDefault: {
-    light: '{colorGrey600}',
+    light: '{colorGrey650}',
     dark: '{colorGrey300}',
   },
   colorBorderButtonNormalDefault: '{colorTextButtonNormalDefault}',
   colorBackgroundButtonNormalDefault: 'transparent',
   colorTextButtonNormalHover: {
-    light: '{colorGrey900}',
+    light: '{colorGrey950}',
     dark: '{colorWhite}',
   },
   colorBorderButtonNormalHover: '{colorTextButtonNormalHover}',
