@@ -17,7 +17,16 @@ const FileInput = React.forwardRef(
         variant,
       },
     });
-    return <InternalFileInput multiple={multiple} variant={variant} {...props} {...baseComponentProps} ref={ref} />;
+    return (
+      <InternalFileInput
+        multiple={multiple}
+        variant={variant}
+        {...props}
+        {...baseComponentProps}
+        ref={ref}
+        __injectAnalyticsComponentMetadata={true}
+      />
+    );
   }
 );
 
