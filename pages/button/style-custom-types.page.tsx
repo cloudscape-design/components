@@ -51,11 +51,8 @@ interface CustomButtonProps {
   variation: 'primary';
 }
 
-<<<<<<< HEAD
+
 function CustomButton({ children, colorTheme, id, isDisabled, isLoading, onClick, variation }: CustomButtonProps) {
-=======
-function CustomButton({ children, colorTheme, isDisabled, isLoading, onClick, variation }: CustomButtonProps) {
->>>>>>> ca20ba078 (Remove references.)
   const mode = useCurrentMode(useRef(document.body));
   const background = backgrounds[mode][colorTheme];
   const color = isDisabled || isLoading ? colors[mode] : colors[mode];
