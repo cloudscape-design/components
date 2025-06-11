@@ -8,11 +8,17 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 const wrapper = createWrapper();
 const annotationWrapper = wrapper.findAnnotation();
 
+function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
+  return useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    await browser.url('#/light/annotation-context/annotation-scroll');
+    await testFn(page);
+  });
+}
+
 test(
   'scrolls annotation in view with fixed elements',
-  useBrowser(async browser => {
-    await browser.url('#/light/annotation-context/annotation-scroll');
-    const page = new BasePageObject(browser);
+  setupTest(async page => {
     const nextButtonSelector = annotationWrapper.findNextButton().toSelector();
     await page.waitForVisible(nextButtonSelector);
     await page.click(nextButtonSelector);
@@ -34,6 +40,21 @@ test(
     const headerBox = await page.getBoundingBox('[data-testid="header"]');
 
     expect(overlap(hotspotOneTwoBox, { ...headerBox, top: -Infinity })).toBeFalsy();
+  })
+);
+
+test(
+  'does not update popover position when annotation is rendered offscreen',
+  setupTest(async page => {
+    await expect(page.isDisplayedInViewport(annotationWrapper.toSelector())).resolves.toEqual(true);
+    // scroll to the page bottom to make annotation offscreen
+    await page.windowScrollTo({ top: 1200 });
+    await expect(page.isDisplayedInViewport(annotationWrapper.toSelector())).resolves.toEqual(false);
+    const positionBefore = await page.getBoundingBox(annotationWrapper.toSelector());
+    // click somewhere to trigger the regression
+    await page.click('main');
+    const positionAfter = await page.getBoundingBox(annotationWrapper.toSelector());
+    expect(positionBefore).toEqual(positionAfter);
   })
 );
 
