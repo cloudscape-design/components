@@ -4,7 +4,7 @@ import React, { useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { getLogicalBoundingClientRect, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { InternalPosition, PopoverProps } from './interfaces';
@@ -18,7 +18,7 @@ interface PopoverContainerProps {
   getTrack?: () => null | HTMLElement | SVGElement;
   /**
     Used to update the container position in case track or track position changes:
-    
+
     const trackRef = useRef<Element>(null)
     return (<>
       <Track style={getPosition(selectedItemId)} ref={trackRef} />
@@ -128,6 +128,13 @@ export default function PopoverContainer({
         // so no need to update its position either in this case.
         nodeContains(getTrack.current(), event.target)
       ) {
+        return;
+      }
+
+      // Do not update position if popover moved offscreen
+      const popoverOffset = popoverRef.current && getLogicalBoundingClientRect(popoverRef.current);
+      // istanbul ignore if - tested via integration tests
+      if (!popoverOffset || popoverOffset.insetBlockStart < 0 || popoverOffset.insetBlockEnd > window.innerHeight) {
         return;
       }
 
