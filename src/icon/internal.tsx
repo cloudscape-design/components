@@ -1,14 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import { InternalIconContext } from '../icon-provider/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import icons from './generated/icons';
 import { IconProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -49,6 +49,7 @@ const InternalIcon = ({
   __internalRootRef = null,
   ...props
 }: InternalIconProps) => {
+  const icons = useContext(InternalIconContext);
   const iconRef = useRef<HTMLElement>(null);
   // To ensure a re-render is triggered on visual mode changes
   useVisualRefresh();
@@ -107,9 +108,14 @@ const InternalIcon = ({
     );
   }
 
-  const validIcon = name && Object.prototype.hasOwnProperty.call(icons, name);
+  function getIconFromName(name?: IconProps.Name) {
+    const validIcon = name && Object.prototype.hasOwnProperty.call(icons, name);
 
-  function iconMap(name: IconProps.Name) {
+    if (!validIcon) {
+      warnOnce('Icon', `The "${name}" icon does not exist in the icon set.`);
+      return undefined;
+    }
+
     if (name === 'gen-ai' && iconSize === 'small') {
       return (
         <svg
@@ -134,7 +140,7 @@ const InternalIcon = ({
 
   return (
     <span {...baseProps} {...labelAttributes} ref={mergedRef} style={inlineStyles}>
-      {validIcon ? iconMap(name) : undefined}
+      {getIconFromName(name)}
     </span>
   );
 };
