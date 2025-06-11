@@ -147,7 +147,7 @@ const getExpandEvent = (label: string, position: string, expanded = false): Gene
 beforeAll(() => {
   activateAnalyticsMetadata(true);
 });
-describe('Button Dropdown renders correct analytics metadata', () => {
+describe('Button Group renders correct analytics metadata', () => {
   test('for icon-button type', () => {
     const wrapper = renderButtonGroup();
     expect(getGeneratedAnalyticsMetadata(wrapper.findButtonById('send')?.getElement() as HTMLElement)).toEqual(
