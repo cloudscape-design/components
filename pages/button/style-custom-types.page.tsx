@@ -15,7 +15,7 @@ export default function CustomButtonTypes() {
       <h1>Custom Button Types</h1>
 
       <SpaceBetween direction="horizontal" size="m">
-        <CustomButton colorTheme="default" variation="primary">
+        <CustomButton colorTheme="default" variation="primary" id="default">
           Default
         </CustomButton>
         <CustomButton colorTheme="success" variation="primary">
@@ -44,13 +44,14 @@ export default function CustomButtonTypes() {
 interface CustomButtonProps {
   children?: React.ReactNode;
   colorTheme: 'default' | 'error' | 'info' | 'warning' | 'success';
+  id?: string;
   isDisabled?: boolean;
   isLoading?: boolean;
   onClick?: any;
   variation: 'primary';
 }
 
-function CustomButton({ children, colorTheme, isDisabled, isLoading, onClick, variation }: CustomButtonProps) {
+function CustomButton({ children, colorTheme, id, isDisabled, isLoading, onClick, variation }: CustomButtonProps) {
   const mode = useCurrentMode(useRef(document.body));
   const background = backgrounds[mode][colorTheme];
   const color = isDisabled || isLoading ? colors[mode] : colors[mode];
@@ -58,6 +59,7 @@ function CustomButton({ children, colorTheme, isDisabled, isLoading, onClick, va
 
   return (
     <CloudscapeButton
+      data-testid={id}
       disabled={isDisabled}
       loading={isLoading}
       onClick={onClick}
