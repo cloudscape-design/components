@@ -185,7 +185,7 @@ export class BaseDropdownContentWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns an option from the autosuggest by it's value
+   * Returns an option from the autosuggest by its value
    *
    * @param value The 'value' of the option.
    */
