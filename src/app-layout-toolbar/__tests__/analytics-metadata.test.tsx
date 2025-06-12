@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 
 import {
   activateAnalyticsMetadata,
@@ -125,7 +125,7 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
     });
   });
   describe('with tools', () => {
-    test('closed', () => {
+    test('closed', async () => {
       const wrapper = renderToolbar({
         tools: <span>tools</span>,
         toolsOpen: false,
@@ -133,6 +133,9 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
         ariaLabels: {
           toolsToggle: 'toggle tools',
         },
+      });
+      await waitFor(() => {
+        expect(wrapper.findToolsToggle()).toBeTruthy();
       });
       const toolsTrigger = wrapper.findToolsToggle().getElement();
       validateComponentNameAndLabels(toolsTrigger, {});
@@ -144,7 +147,7 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
         ...getMetadata(),
       });
     });
-    test('open', () => {
+    test('open', async () => {
       const wrapper = renderToolbar({
         tools: <span>tools</span>,
         toolsOpen: true,
@@ -153,6 +156,9 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
           toolsToggle: 'toggle tools',
           toolsClose: 'close tools',
         },
+      });
+      await waitFor(() => {
+        expect(wrapper.findToolsToggle()).toBeTruthy();
       });
       const toolsTrigger = wrapper.findToolsToggle().getElement();
       validateComponentNameAndLabels(toolsTrigger, {});
@@ -174,7 +180,7 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
   });
 
   describe('with local drawer', () => {
-    test('closed', () => {
+    test('closed', async () => {
       const wrapper = renderToolbar({
         drawers: [
           {
@@ -191,6 +197,9 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
           },
         ],
       });
+      await waitFor(() => {
+        expect(wrapper.findDrawerTriggerById('test-drawer')).toBeTruthy();
+      });
       const drawerTrigger = wrapper.findDrawerTriggerById('test-drawer')!.getElement();
       validateComponentNameAndLabels(drawerTrigger, {});
       expect(getGeneratedAnalyticsMetadata(drawerTrigger)).toEqual({
@@ -201,7 +210,7 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
         ...getMetadata(),
       });
     });
-    test('open', () => {
+    test('open', async () => {
       const wrapper = renderToolbar({
         drawers: [
           {
@@ -231,6 +240,9 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
         ],
         activeDrawerId: 'test-drawer',
         onDrawerChange: () => {},
+      });
+      await waitFor(() => {
+        expect(wrapper.findDrawerTriggerById('test-drawer')).toBeTruthy();
       });
       const drawerTrigger = wrapper.findDrawerTriggerById('test-drawer')!.getElement();
       validateComponentNameAndLabels(drawerTrigger, {});
@@ -319,7 +331,7 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
   });
 
   describe('with split panel', () => {
-    test.each(['open', 'close'])('%s', action => {
+    test.each(['open', 'close'])('%s', async action => {
       const wrapper = renderToolbar({
         splitPanel: (
           <SplitPanel i18nStrings={{ openButtonAriaLabel: 'open split panel' }} header="Split panel header">
@@ -328,6 +340,9 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
         ),
         splitPanelOpen: action !== 'open',
         onSplitPanelToggle: () => {},
+      });
+      await waitFor(() => {
+        expect(wrapper.findSplitPanelOpenButton()).toBeTruthy();
       });
       const splitPanelTrigger = wrapper.findSplitPanelOpenButton()!.getElement();
       validateComponentNameAndLabels(splitPanelTrigger, {});
