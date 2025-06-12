@@ -300,4 +300,18 @@ describe('Internal Button Dropdown', () => {
       detail: { label: 'Delete', position: '1', href: '#' },
     });
   });
+  test('accepts position', () => {
+    const renderResult = render(
+      <InternalButtonDropdown position="4" items={items}>
+        Action text
+      </InternalButtonDropdown>
+    );
+    const wrapper = createWrapper(renderResult.container).findButtonDropdown()!;
+    wrapper.openDropdown();
+    const enabledSimpleItem = wrapper.findItemById('rm')!.getElement();
+    expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toEqual({
+      action: 'click',
+      detail: { label: 'Delete', position: '4,1', href: '#', id: 'rm' },
+    });
+  });
 });

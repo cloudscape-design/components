@@ -7,20 +7,11 @@
 @use '../../../../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
-@mixin trigger-selected-styles {
-  background: awsui.$color-background-layout-toggle-selected-default;
-  color: awsui.$color-text-layout-toggle-selected;
+.trigger {
+  // reset native <button> tag styles
+  all: initial;
 
-  &:hover {
-    background: awsui.$color-background-layout-toggle-selected-hover;
-  }
-  &:active {
-    background: awsui.$color-background-layout-toggle-selected-active;
-  }
-}
-
-.trigger-button-styles {
-  background: transparent;
+  cursor: pointer;
   color: awsui.$color-text-interactive-default;
   border-start-start-radius: 50%;
   border-start-end-radius: 50%;
@@ -28,10 +19,19 @@
   border-end-end-radius: 50%;
   block-size: 30px;
   inline-size: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
+  text-align: center;
+
+  &-with-badge {
+    clip-path: path(
+      'M29.2862 10.4145C28.7243 10.5998 28.1238 10.7 27.4999 10.7C24.3519 10.7 21.7999 8.14803 21.7999 5C21.7999 3.92883 22.0954 2.92667 22.6093 2.07057C20.3785 0.754846 17.7774 0 15 0C6.71573 0 0 6.71573 0 15C0 23.2843 6.71573 30 15 30C23.2843 30 30 23.2843 30 15C30 13.4007 29.7497 11.8599 29.2862 10.4145Z'
+    );
+
+    @include styles.with-direction('rtl') {
+      clip-path: path(
+        'M2.21384 10.4145C2.77569 10.5998 3.37617 10.7 4.00007 10.7C7.1481 10.7 9.70007 8.14803 9.70007 5C9.70007 3.92883 9.4046 2.92667 8.89071 2.07057C11.1215 0.754846 13.7226 0 16.5 0C24.7843 0 31.5 6.71573 31.5 15C31.5 23.2843 24.7843 30 16.5 30C8.21573 30 1.5 23.2843 1.5 15C1.5 13.4007 1.75029 11.8599 2.21384 10.4145Z'
+      );
+    }
+  }
 
   &:hover {
     background: awsui.$color-background-input-disabled;
@@ -42,61 +42,30 @@
     background: awsui.$color-background-control-disabled;
     color: awsui.$color-text-interactive-hover;
   }
-}
-
-.trigger-badge-wrapper {
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  clip-path: path(
-    'M29.2862 10.4145C28.7243 10.5998 28.1238 10.7 27.4999 10.7C24.3519 10.7 21.7999 8.14803 21.7999 5C21.7999 3.92883 22.0954 2.92667 22.6093 2.07057C20.3785 0.754846 17.7774 0 15 0C6.71573 0 0 6.71573 0 15C0 23.2843 6.71573 30 15 30C23.2843 30 30 23.2843 30 15C30 13.4007 29.7497 11.8599 29.2862 10.4145Z'
-  );
-
-  @include styles.with-direction('rtl') {
-    clip-path: path(
-      'M2.21384 10.4145C2.77569 10.5998 3.37617 10.7 4.00007 10.7C7.1481 10.7 9.70007 8.14803 9.70007 5C9.70007 3.92883 9.4046 2.92667 8.89071 2.07057C11.1215 0.754846 13.7226 0 16.5 0C24.7843 0 31.5 6.71573 31.5 15C31.5 23.2843 24.7843 30 16.5 30C8.21573 30 1.5 23.2843 1.5 15C1.5 13.4007 1.75029 11.8599 2.21384 10.4145Z'
-    );
-  }
-}
-
-.trigger {
-  border-block: none;
-  border-inline: none;
-  cursor: pointer;
-  pointer-events: auto;
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(3px);
-  }
 
   &:focus {
+    // custom outline attached on the wrapping element
     outline: none;
   }
 
   &.selected {
-    @include trigger-selected-styles();
+    background: awsui.$color-background-layout-toggle-selected-default;
+    color: awsui.$color-text-layout-toggle-selected;
 
-    > .trigger-badge-wrapper {
-      @include trigger-selected-styles();
+    &:hover {
+      background: awsui.$color-background-layout-toggle-selected-hover;
     }
-  }
-
-  &.badge,
-  &.badge:hover,
-  &.badge:active {
-    background: transparent;
+    &:active {
+      background: awsui.$color-background-layout-toggle-selected-active;
+    }
   }
 }
 
 .trigger-wrapper {
   position: relative;
-  border-start-start-radius: 50%;
-  border-start-end-radius: 50%;
-  border-end-start-radius: 50%;
-  border-end-end-radius: 50%;
+  &:has(:focus-visible) {
+    @include styles.focus-highlight(3px);
+  }
 }
 
 .dot {

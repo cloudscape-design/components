@@ -206,8 +206,8 @@ $drawer-resize-handle-size: awsui.$space-m;
       > .drawer-actions {
         position: absolute;
         display: flex;
-        align-self: flex-start;
-        justify-self: flex-end;
+        inset-block-start: 0;
+        inset-inline-end: 0;
         padding-inline-end: awsui.$space-m;
         padding-block-start: constants.$toolbar-vertical-panel-icon-offset;
       }
