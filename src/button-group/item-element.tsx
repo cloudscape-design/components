@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { ButtonProps } from '../button/interfaces.js';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
 import { FileInputProps } from '../file-input/interfaces';
@@ -22,11 +24,12 @@ interface ItemElementProps {
   setTooltip: (tooltip: null | { item: string; feedback: boolean }) => void;
   onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails> | undefined;
   onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails> | undefined;
+  position: string;
 }
 
 const ItemElement = forwardRef(
   (
-    { item, dropdownExpandToViewport, tooltip, setTooltip, onItemClick, onFilesChange }: ItemElementProps,
+    { item, dropdownExpandToViewport, tooltip, setTooltip, onItemClick, onFilesChange, position }: ItemElementProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -120,6 +123,9 @@ const ItemElement = forwardRef(
           onShowTooltipHard(true);
         }}
         onBlur={() => onShowTooltipHard(false)}
+        {...(item.type === 'menu-dropdown' || (item as ButtonGroupProps.IconButton).disabled
+          ? {}
+          : getAnalyticsMetadataAttribute({ detail: { position, id: item.id } }))}
       >
         {item.type === 'icon-button' && (
           <IconButtonItem
@@ -158,6 +164,7 @@ const ItemElement = forwardRef(
             onItemClick={onClickHandler}
             expandToViewport={dropdownExpandToViewport}
             onTooltipDismiss={() => setTooltip(null)}
+            position={position}
           />
         )}
       </div>
