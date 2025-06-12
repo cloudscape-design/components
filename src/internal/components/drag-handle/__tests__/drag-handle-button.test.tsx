@@ -53,10 +53,10 @@ test('assigns aria-labelledby attribute', () => {
   expect(document.querySelector(`.${styles.handle}`)).toHaveAccessibleName('custom label');
 });
 
-test('has role="button" by default', () => {
+test('has role="application" if no ariaValue is provided', () => {
   render(<DragHandleButton ariaLabel="drag handle" />);
 
-  expect(screen.getByRole('button')).toHaveAccessibleName('drag handle');
+  expect(screen.getByRole('application')).toHaveAccessibleName('drag handle');
 });
 
 test('has role="slider" and aria-value attributes when ariaValue is set', () => {

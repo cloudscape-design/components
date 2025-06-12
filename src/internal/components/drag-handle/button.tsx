@@ -53,7 +53,7 @@ const DragHandleButton = forwardRef(
       // when it is being dragged.
       <div
         ref={useMergeRefs(ref, dragHandleRefObject)}
-        role={ariaValue ? 'slider' : 'button'}
+        role={ariaValue ? 'slider' : 'application'}
         tabIndex={0}
         className={clsx(
           className,
