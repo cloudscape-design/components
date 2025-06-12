@@ -31,6 +31,7 @@ describe('Verify TableComponentsContext', () => {
           },
           filterRef: { current: { filterText: 'test', filterCount: 10, filtered: true } },
           preferencesRef: { current: { pageSize: 20, visibleColumns: ['id'] } },
+          headerRef: { current: { totalCount: 10 } },
         }}
       >
         <ChildComponent />
@@ -90,6 +91,7 @@ describe('Verify TableComponentsContext', () => {
           },
           filterRef: { current: { filterText: 'test', filterCount: 10, filtered: true } },
           preferencesRef: { current: { pageSize: 20, visibleColumns: ['id'] } },
+          headerRef: { current: { totalCount: 10 } },
         }}
       >
         <ChildComponent />

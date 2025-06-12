@@ -399,6 +399,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_qwoo0",
     "awsui_root_vrgzu",
     "awsui_secondary_x6dl3",
+    "awsui_screenreader-content_15o6u",
     "awsui_select-all_15o6u",
     "awsui_selectable-item_15o6u",
     "awsui_selected_15o6u",

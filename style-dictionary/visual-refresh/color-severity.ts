@@ -9,7 +9,7 @@ const tokens: StyleDictionary.ColorSeverityDictionary = {
   colorSeverityRed: { light: '#ce3311', dark: '#fe6e73' },
   colorSeverityOrange: { light: '#f89256', dark: '#f89256' },
   colorSeverityYellow: { light: '#f2cd54', dark: '#f2cd54' },
-  colorSeverityGrey: '{colorGrey550}',
+  colorSeverityGrey: '{colorGrey600}',
 
   colorBackgroundNotificationSeverityCritical: '{colorSeverityDarkRed}',
   colorBackgroundNotificationSeverityHigh: '{colorSeverityRed}',
@@ -18,9 +18,9 @@ const tokens: StyleDictionary.ColorSeverityDictionary = {
   colorBackgroundNotificationSeverityNeutral: '{colorSeverityGrey}',
 
   colorTextNotificationSeverityCritical: { light: '{colorGrey100}', dark: '{colorBlack}' },
-  colorTextNotificationSeverityHigh: { light: '{colorGrey100}', dark: '{colorGrey900}' },
-  colorTextNotificationSeverityMedium: '{colorGrey900}',
-  colorTextNotificationSeverityLow: '{colorGrey900}',
+  colorTextNotificationSeverityHigh: { light: '{colorGrey100}', dark: '{colorGrey950}' },
+  colorTextNotificationSeverityMedium: '{colorGrey950}',
+  colorTextNotificationSeverityLow: '{colorGrey950}',
   colorTextNotificationSeverityNeutral: '{colorGrey100}',
 };
 

@@ -121,6 +121,13 @@ module.exports = parallel([
   ]),
   generatePackageJson(path.join(workspace.targetPath, 'components-definitions'), {
     name: '@cloudscape-design/components-definitions',
+    exports: {
+      './components': './components/index.js',
+      './test-utils-doc/dom': './test-utils-doc/dom.js',
+      './test-utils-doc/selectors': './test-utils-doc/selectors.js',
+      // this directory is generated down the line in other builds
+      './styles/*.json': './styles/*.json',
+    },
   }),
   styleDictionaryPackageJson,
   componentsThemeablePackageJson,
