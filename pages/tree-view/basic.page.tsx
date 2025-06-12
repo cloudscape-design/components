@@ -14,6 +14,8 @@ import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
 import TreeView from '~components/tree-view';
 
+import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 const progressiveStepContent = (
@@ -356,7 +358,7 @@ export default function BasicTreeView() {
   };
 
   return (
-    <>
+    <ScreenshotArea disableAnimations={true}>
       <h1>Basic tree view</h1>
 
       <Checkbox checked={useDifferentIcon} onChange={({ detail }) => setUseDifferentIcon(detail.checked)}>
@@ -369,43 +371,41 @@ export default function BasicTreeView() {
         Use icon with animation
       </Checkbox>
 
-      <Box padding="xl">
-        <div style={{ width: '60%' }}>
-          <Container>
-            <TreeView
-              ariaLabel="Random data tree view"
-              items={items}
-              renderItem={item => {
-                return {
-                  icon: item.hideIcon ? undefined : (
-                    <Icon name={expandedItems.includes(item.id) ? 'folder-open' : 'folder'} ariaLabel="folder" />
-                  ),
-                  content: item.content,
-                  secondaryContent: item.details && <Box color="text-status-inactive">{item.details}</Box>,
-                  actions: item.hasActions ? <Actions actionType={item.actionType} /> : undefined,
-                };
-              }}
-              getItemId={item => item.id}
-              getItemChildren={item => item.children}
-              onItemToggle={({ detail }: any) => {
-                if (detail.expanded) {
-                  return setExpandedItems(prev => [...prev, detail.item.id]);
-                } else {
-                  return setExpandedItems(prev => prev.filter(id => id !== detail.item.id));
-                }
-              }}
-              expandedItems={expandedItems}
-              i18nStrings={{
-                expandButtonLabel: () => 'Expand item',
-                collapseButtonLabel: () => 'Collapse item',
-              }}
-              renderItemToggleIcon={renderItemToggleIcon}
-            />
-          </Container>
-        </div>
+      <div style={{ width: '60%' }}>
+        <Container>
+          <TreeView
+            ariaLabel="Random data tree view"
+            items={items}
+            renderItem={item => {
+              return {
+                icon: item.hideIcon ? undefined : (
+                  <Icon name={expandedItems.includes(item.id) ? 'folder-open' : 'folder'} ariaLabel="folder" />
+                ),
+                content: item.content,
+                secondaryContent: item.details && <Box color="text-status-inactive">{item.details}</Box>,
+                actions: item.hasActions ? <Actions actionType={item.actionType} /> : undefined,
+              };
+            }}
+            getItemId={item => item.id}
+            getItemChildren={item => item.children}
+            onItemToggle={({ detail }: any) => {
+              if (detail.expanded) {
+                return setExpandedItems(prev => [...prev, detail.item.id]);
+              } else {
+                return setExpandedItems(prev => prev.filter(id => id !== detail.item.id));
+              }
+            }}
+            expandedItems={expandedItems}
+            i18nStrings={{
+              expandButtonLabel: () => 'Expand item',
+              collapseButtonLabel: () => 'Collapse item',
+            }}
+            renderItemToggleIcon={renderItemToggleIcon}
+          />
+        </Container>
+      </div>
 
-        <div style={{ marginTop: '10px' }}>Expanded items: {expandedItems.map(id => `Item ${id}`).join(', ')}</div>
-      </Box>
-    </>
+      <div style={{ marginTop: '10px' }}>Expanded items: {expandedItems.map(id => `Item ${id}`).join(', ')}</div>
+    </ScreenshotArea>
   );
 }

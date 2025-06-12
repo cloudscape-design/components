@@ -13,43 +13,33 @@
   line-height: awsui.$line-height-heading-m;
 }
 
-.tree {
-  @include styles.styles-reset-ul;
-}
-
 .tree,
 .treeitem-group,
 .treeitem {
-  list-style-type: none;
-  padding-inline-start: 0;
-  margin-block: 0;
+  @include styles.styles-reset-ul;
 }
 
 .treeitem {
   display: grid;
   grid-template-columns: 28px 1fr;
-  column-gap: 4px;
+  column-gap: awsui.$space-scaled-xxs;
+  // min-height 32px for a unified look
   grid-template-rows: minmax(32px, 1fr) auto auto;
-  overflow: visible;
-  position: relative;
 
-  > .connector-toggle-wrapper {
+  > .expand-toggle-wrapper {
     grid-column: 1;
     grid-row: 1;
-    padding-block-start: 6px;
-    position: relative;
+    padding-block-start: 6px; // may be a design token?
 
     > .toggle {
       justify-self: center;
-      position: relative;
-      // inset-block-start: 2px;
     }
   }
 
   > .structured-item-wrapper {
     grid-column: 2;
     grid-row: 1 / span 2;
-    padding-block-start: 6px;
+    padding-block-start: 6px; // may be a design token?
   }
 
   > .treeitem-group {

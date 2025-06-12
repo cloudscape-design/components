@@ -7,7 +7,7 @@ import { useInternalI18n } from '../../i18n/context';
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 import InternalStructuredItem from '../../internal/components/structured-item';
 import { TreeViewProps } from '../interfaces';
-import { getItemPosition, transformTreeItemProps } from './utils';
+import { transformTreeItemProps } from './utils';
 
 import styles from '../styles.css.js';
 import testUtilStyles from '../test-classes/styles.css.js';
@@ -20,7 +20,6 @@ interface InternalTreeItemProps<T>
   item: T;
   index: number;
   level: number;
-  position: 'start' | 'middle' | 'end';
   onItemToggle: (detail: TreeViewProps.ItemToggleDetail<T>) => void;
 }
 
@@ -55,21 +54,17 @@ const InternalTreeItem = <T,>({
   return (
     <li
       id={id}
-      // role="treeitem"
       className={clsx(
         styles.treeitem,
         testUtilStyles.treeitem,
-        isExpandable && [styles.expandable],
         isExpandable && [testUtilStyles.expandable],
-        isExpanded && [styles.expanded],
-        isExpanded && [testUtilStyles.expanded],
-        styles[`level-${0}`]
+        isExpanded && [testUtilStyles.expanded]
       )}
       aria-expanded={isExpandable ? isExpanded : undefined}
       aria-level={level > 0 ? level : undefined}
       data-testid={`treeitem-${id}`}
     >
-      <div className={styles['connector-toggle-wrapper']}>
+      <div className={styles['expand-toggle-wrapper']}>
         {isExpandable && (
           <div className={styles.toggle}>
             <ExpandToggleButton
@@ -98,12 +93,11 @@ const InternalTreeItem = <T,>({
                 key={`${nextLevel}-${index}`}
                 level={nextLevel}
                 expandedItems={expandedItems}
-                position={getItemPosition(index, children.length)}
+                i18nStrings={i18nStrings}
                 onItemToggle={onItemToggle}
                 renderItem={renderItem}
                 getItemId={getItemId}
                 getItemChildren={getItemChildren}
-                i18nStrings={i18nStrings}
                 renderItemToggleIcon={renderItemToggleIcon}
               />
             );

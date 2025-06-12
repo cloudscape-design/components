@@ -3,22 +3,6 @@
 
 import { TreeViewProps } from '../interfaces';
 
-export function getItemPosition(index: number, itemsLength: number) {
-  if (index === 0 && itemsLength === 1) {
-    return 'end';
-  }
-
-  if (index === 0) {
-    return 'start';
-  }
-
-  if (index === itemsLength - 1) {
-    return 'end';
-  }
-
-  return 'middle';
-}
-
 interface TransformTreeItemPropsParams
   extends Pick<TreeViewProps, 'expandedItems' | 'renderItem' | 'getItemId' | 'getItemChildren'> {
   item: any;

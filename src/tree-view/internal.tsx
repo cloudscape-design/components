@@ -10,7 +10,6 @@ import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { TreeViewProps } from './interfaces';
 import InternalTreeItem from './tree-item';
-import { getItemPosition } from './tree-item/utils';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -61,7 +60,6 @@ const InternalTreeView = <T,>({
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root, testUtilStyles.root)}>
       <ul
         className={clsx(styles.tree, testUtilStyles.tree)}
-        // role="tree"
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}
         aria-describedby={ariaDescribedby}
@@ -75,7 +73,6 @@ const InternalTreeView = <T,>({
               index={index}
               expandedItems={isExpandStateControlled ? expandedItems : internalExpandedItems}
               i18nStrings={i18nStrings}
-              position={getItemPosition(index, items.length)}
               onItemToggle={onToggle}
               renderItem={renderItem}
               getItemId={getItemId}
