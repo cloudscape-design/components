@@ -191,6 +191,7 @@ export class BaseDropdownContentWrapper extends ComponentWrapper {
     return this.findByClassName(OptionsListWrapper.rootSelector);
   }
 }
+
 export class DropdownContentWrapper extends BaseDropdownContentWrapper {
   /**
    * Returns an option from the dropdown.
