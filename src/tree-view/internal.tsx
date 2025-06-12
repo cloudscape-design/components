@@ -29,7 +29,6 @@ const InternalTreeView = <T,>({
   ariaLabelledby,
   ariaDescribedby,
   i18nStrings,
-  showConnectorLine,
   __internalRootRef,
   ...rest
 }: InternalTreeViewProps<T>) => {
@@ -82,7 +81,6 @@ const InternalTreeView = <T,>({
               getItemId={getItemId}
               getItemChildren={getItemChildren}
               renderItemToggleIcon={renderItemToggleIcon}
-              showConnectorLine={showConnectorLine}
             />
           );
         })}

@@ -67,12 +67,6 @@ export interface TreeViewProps<T = any> extends BaseComponentProps {
 
   /**
    * @awsuiSystem core
-   * If `true`, adds connecting lines between child items and their expanded parent items.
-   */
-  showConnectorLine?: boolean;
-
-  /**
-   * @awsuiSystem core
    * Overrides the default expand toggle.
    * Use it to have different icons/animations for toggle.
    */

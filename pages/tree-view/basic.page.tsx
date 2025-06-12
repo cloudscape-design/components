@@ -399,7 +399,6 @@ export default function BasicTreeView() {
                 expandButtonLabel: () => 'Expand item',
                 collapseButtonLabel: () => 'Collapse item',
               }}
-              showConnectorLine={true}
               renderItemToggleIcon={renderItemToggleIcon}
             />
           </Container>

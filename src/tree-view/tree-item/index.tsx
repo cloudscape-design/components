@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { useInternalI18n } from '../../i18n/context';
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 import InternalStructuredItem from '../../internal/components/structured-item';
-import Connector from '../connector';
 import { TreeViewProps } from '../interfaces';
 import { getItemPosition, transformTreeItemProps } from './utils';
 
@@ -16,13 +15,7 @@ import testUtilStyles from '../test-classes/styles.css.js';
 interface InternalTreeItemProps<T>
   extends Pick<
     TreeViewProps,
-    | 'expandedItems'
-    | 'renderItem'
-    | 'getItemId'
-    | 'getItemChildren'
-    | 'renderItemToggleIcon'
-    | 'showConnectorLine'
-    | 'i18nStrings'
+    'expandedItems' | 'renderItem' | 'getItemId' | 'getItemChildren' | 'renderItemToggleIcon' | 'i18nStrings'
   > {
   item: T;
   index: number;
@@ -35,10 +28,8 @@ const InternalTreeItem = <T,>({
   item,
   index,
   level,
-  position,
   i18nStrings,
   expandedItems = [],
-  showConnectorLine,
   renderItemToggleIcon,
   renderItem,
   getItemId,
@@ -90,10 +81,6 @@ const InternalTreeItem = <T,>({
             />
           </div>
         )}
-
-        {showConnectorLine && (
-          <Connector level={level} position={position} isExpandable={isExpandable} isExpanded={isExpanded} />
-        )}
       </div>
 
       <div className={styles['structured-item-wrapper']}>
@@ -115,7 +102,6 @@ const InternalTreeItem = <T,>({
                 renderItem={renderItem}
                 getItemId={getItemId}
                 getItemChildren={getItemChildren}
-                showConnectorLine={showConnectorLine}
                 i18nStrings={i18nStrings}
                 renderItemToggleIcon={renderItemToggleIcon}
               />
