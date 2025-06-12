@@ -163,5 +163,60 @@ describe('CopyToClipboard', () => {
         );
       });
     });
+
+    describe('when disabled', () => {
+      test('disables the copy button', () => {
+        const { container } = render(
+          <CopyToClipboard
+            {...defaultProps}
+            popoverRenderWithPortal={popoverRenderWithPortal}
+            textToCopy="Text to copy with error"
+            disabled={true}
+          />
+        );
+
+        const copyButton = createWrapper(container).findCopyToClipboard()!.findCopyButton()!;
+
+        expect(copyButton.isDisabled()).toBe(true);
+      });
+
+      test('sets the disabled reason when button is focused', async () => {
+        const { container } = render(
+          <CopyToClipboard
+            {...defaultProps}
+            popoverRenderWithPortal={popoverRenderWithPortal}
+            textToCopy="Text to copy with error"
+            disabled={true}
+            disabledReason="Disabled reason"
+          />
+        );
+
+        const copyToClipboardButton = createWrapper(container).findCopyToClipboard()!;
+        copyToClipboardButton.findCopyButton()!.focus();
+
+        await waitFor(() => {
+          expect(copyToClipboardButton.findCopyButton()!.findDisabledReason()!.getElement()).toHaveTextContent(
+            'Disabled reason'
+          );
+        });
+      });
+
+      test('does not show the popover when clicked', () => {
+        const { container } = render(
+          <CopyToClipboard
+            {...defaultProps}
+            popoverRenderWithPortal={popoverRenderWithPortal}
+            textToCopy="Text to copy with error"
+            disabled={true}
+            disabledReason="Disabled reason"
+          />
+        );
+
+        const wrapper = createWrapper(container);
+        wrapper.findCopyToClipboard()!.click();
+
+        expect(wrapper.findPopover()).toBeNull();
+      });
+    });
   });
 });

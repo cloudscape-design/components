@@ -53,6 +53,17 @@ export interface CopyToClipboardProps extends BaseComponentProps {
    * Enable this setting if you need the popover to ignore its parent stacking context.
    */
   popoverRenderWithPortal?: boolean;
+
+  /**
+   * Renders the copy to clipboard button as disabled and prevents clicks.
+   */
+  disabled?: boolean;
+  /**
+   * Provides a reason why the copy to clipboard button is disabled (only when `disabled` is `true`).
+   * If provided, the copy to clipboard button becomes focusable.
+   * Applicable for all variants except inline.
+   */
+  disabledReason?: string;
 }
 
 export namespace CopyToClipboardProps {
