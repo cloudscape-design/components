@@ -22,6 +22,8 @@ export const baseTokens: StyleDictionary.ColorsDictionary = {
   colorTextBodyDefault: '{colorGrey100}',
   colorTextHeadingSecondary: '{colorGrey100}',
   colorBorderDividerDefault: '{colorGrey100}',
+  colorTextTutorialHotspotDefault: '{colorGrey300}',
+  colorTextTutorialHotspotHover: '{colorGrey100}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(

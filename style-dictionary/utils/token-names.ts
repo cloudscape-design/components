@@ -487,6 +487,8 @@ export type ColorsTokenName =
   | 'colorTextStatusSuccess'
   | 'colorTextStatusWarning'
   | 'colorTextTopNavigationTitle'
+  | 'colorTextTutorialHotspotDefault'
+  | 'colorTextTutorialHotspotHover'
   | 'colorBoardPlaceholderActive'
   | 'colorBoardPlaceholderHover'
   | 'colorDragPlaceholderActive'
