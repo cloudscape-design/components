@@ -27,7 +27,7 @@ const options: SelectProps.Options = [
 ];
 
 export default function () {
-  const [selected, setSelected] = useState<SelectProps['selectedOption']>(null);
+  const [selected, setSelected] = useState<SelectProps['selectedOption']>(options[0]);
 
   return (
     <>
