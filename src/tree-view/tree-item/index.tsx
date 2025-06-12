@@ -84,7 +84,7 @@ const InternalTreeItem = <T,>({
       </div>
 
       {isExpanded && children.length && (
-        <ul role="group" className={styles['treeitem-group']}>
+        <ul className={styles['treeitem-group']}>
           {children.map((child, index) => {
             return (
               <InternalTreeItem
