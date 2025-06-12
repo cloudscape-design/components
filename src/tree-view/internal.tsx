@@ -60,7 +60,7 @@ const InternalTreeView = <T,>({
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root, testUtilStyles.root)}>
       <ul
-        className={styles.tree}
+        className={clsx(styles.tree, testUtilStyles.tree)}
         // role="tree"
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}

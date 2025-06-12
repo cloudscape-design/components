@@ -20635,15 +20635,6 @@ Use it to have different icons/animations for toggle.",
       ],
       "type": "((isExpanded: boolean) => React.ReactNode)",
     },
-    {
-      "name": "showConnectorLine",
-      "optional": true,
-      "systemTags": [
-        "core
-If \`true\`, adds connecting lines between child items and their expanded parent items.",
-      ],
-      "type": "boolean",
-    },
   ],
   "regions": [],
   "releaseStatus": "stable",

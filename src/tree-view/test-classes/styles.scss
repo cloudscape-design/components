@@ -3,13 +3,9 @@
  SPDX-License-Identifier: Apache-2.0
 */
 .root,
+.tree,
 .treeitem,
 .expandable,
-.expanded,
-.content,
-.icon,
-.secondary-content,
-.actions,
-.expand-toggle {
+.expanded {
   /* used in test-utils */
 }
