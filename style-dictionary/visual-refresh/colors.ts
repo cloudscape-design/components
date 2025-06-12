@@ -269,6 +269,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextStatusSuccess: { light: '{colorGreen600}', dark: '{colorGreen500}' },
   colorTextStatusWarning: { light: '{colorYellow900}', dark: '{colorYellow500}' },
   colorTextTopNavigationTitle: { light: '{colorGrey950}', dark: '{colorGrey100}' },
+  colorTextTutorialHotspotDefault: '{colorTextLinkDefault}',
+  colorTextTutorialHotspotHover: '{colorTextLinkHover}',
   colorBoardPlaceholderActive: { light: '{colorGrey250}', dark: '{colorGrey600}' },
   colorBoardPlaceholderHover: { light: '{colorBlue100}', dark: '{colorBlue600}' },
   colorDragPlaceholderActive: { light: '{colorGrey250}', dark: '{colorGrey600}' },

@@ -35,6 +35,10 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorTextHeadingSecondary: '{colorTextNotificationYellow}',
   // Content
   colorTextBodyDefault: '{colorTextNotificationYellow}',
+
+  // Tutorial hotspot
+  colorTextTutorialHotspotDefault: '{colorGrey600}',
+  colorTextTutorialHotspotHover: '{colorGrey900}',
 };
 
 const tokens: StyleDictionary.ColorsDictionary = {
