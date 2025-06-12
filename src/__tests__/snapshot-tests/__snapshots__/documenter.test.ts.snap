@@ -7188,6 +7188,20 @@ and to distinguish between multiple buttons with identical visible text. The tex
       "type": "string",
     },
     {
+      "description": "Renders the copy to clipboard button as disabled and prevents clicks.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Provides a reason why the copy to clipboard button is disabled (only when \`disabled\` is \`true\`).
+If provided, the copy to clipboard button becomes focusable.
+Applicable for all variants except inline.",
+      "name": "disabledReason",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
