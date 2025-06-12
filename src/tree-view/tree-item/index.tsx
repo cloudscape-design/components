@@ -16,7 +16,13 @@ import testUtilStyles from '../test-classes/styles.css.js';
 interface InternalTreeItemProps<T>
   extends Pick<
     TreeViewProps,
-    'expandedItems' | 'renderItem' | 'getItemId' | 'getItemChildren' | 'showConnectorLine' | 'i18nStrings'
+    | 'expandedItems'
+    | 'renderItem'
+    | 'getItemId'
+    | 'getItemChildren'
+    | 'renderItemToggleIcon'
+    | 'showConnectorLine'
+    | 'i18nStrings'
   > {
   item: T;
   index: number;
@@ -33,6 +39,7 @@ const InternalTreeItem = <T,>({
   i18nStrings,
   expandedItems = [],
   showConnectorLine,
+  renderItemToggleIcon,
   renderItem,
   getItemId,
   getItemChildren,
@@ -48,11 +55,16 @@ const InternalTreeItem = <T,>({
     getItemChildren,
   });
   const nextLevel = level + 1;
+  let customIcon = null;
+
+  if (renderItemToggleIcon) {
+    customIcon = renderItemToggleIcon(isExpanded);
+  }
 
   return (
     <li
       id={id}
-      role="treeitem"
+      // role="treeitem"
       className={clsx(
         styles.treeitem,
         testUtilStyles.treeitem,
@@ -74,6 +86,7 @@ const InternalTreeItem = <T,>({
               onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
               expandButtonLabel={i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item))}
               collapseButtonLabel={i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item))}
+              customIcon={customIcon}
             />
           </div>
         )}
@@ -104,6 +117,7 @@ const InternalTreeItem = <T,>({
                 getItemChildren={getItemChildren}
                 showConnectorLine={showConnectorLine}
                 i18nStrings={i18nStrings}
+                renderItemToggleIcon={renderItemToggleIcon}
               />
             );
           })}

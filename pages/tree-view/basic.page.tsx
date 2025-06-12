@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+import clsx from 'clsx';
 
-import { ButtonDropdown } from '~components';
+import { ButtonDropdown, Checkbox } from '~components';
 import Badge from '~components/badge';
 import Box from '~components/box';
 import ButtonGroup from '~components/button-group';
@@ -12,6 +13,8 @@ import Popover from '~components/popover';
 import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
 import TreeView from '~components/tree-view';
+
+import styles from './styles.scss';
 
 const progressiveStepContent = (
   <div style={{ display: 'flex' }}>
@@ -333,10 +336,38 @@ function RdsAccessRoleTreeItemContent() {
 
 export default function BasicTreeView() {
   const [expandedItems, setExpandedItems] = useState<Array<string>>(['1', '4.1']);
+  const [useDifferentIcon, setUseDifferentIcon] = useState(false);
+  const [useDifferentIconWithAnimation, setUseDifferentIconWithAnimation] = useState(false);
+
+  const renderItemToggleIcon = (isExpanded: boolean) => {
+    if (useDifferentIcon) {
+      return <Icon name={isExpanded ? 'treeview-collapse' : 'treeview-expand'} ariaLabel="Toggle" />;
+    }
+
+    if (useDifferentIconWithAnimation) {
+      return (
+        <Icon
+          size="small"
+          name={'caret-down-filled'}
+          className={clsx(styles.animation, isExpanded && styles['animation-expanded'])}
+        />
+      );
+    }
+  };
 
   return (
     <>
       <h1>Basic tree view</h1>
+
+      <Checkbox checked={useDifferentIcon} onChange={({ detail }) => setUseDifferentIcon(detail.checked)}>
+        Use different CDS icon
+      </Checkbox>
+      <Checkbox
+        checked={useDifferentIconWithAnimation}
+        onChange={({ detail }) => setUseDifferentIconWithAnimation(detail.checked)}
+      >
+        Use icon with animation
+      </Checkbox>
 
       <Box padding="xl">
         <div style={{ width: '60%' }}>
@@ -369,6 +400,7 @@ export default function BasicTreeView() {
                 collapseButtonLabel: () => 'Collapse item',
               }}
               showConnectorLine={true}
+              renderItemToggleIcon={renderItemToggleIcon}
             />
           </Container>
         </div>

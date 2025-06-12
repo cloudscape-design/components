@@ -16,11 +16,11 @@ $max-nesting-levels: 20;
   inset-inline-start: 14px; // 28px / 2
 
   &.expandable {
-    inset-block-start: 30px;
+    inset-block-start: 28px;
   }
 
   &.position-end {
-    block-size: 16px; // 32px / 2
+    block-size: 15px;
   }
 }
 
@@ -35,14 +35,14 @@ $max-nesting-levels: 20;
   inline-size: 1px;
   position: absolute;
   inset-block-start: 0;
-  inset-block-end: -5px;
+  inset-block-end: -3px;
 
   &.position-end {
-    block-size: 16px; // 32px / 2
+    block-size: 15px;
   }
 
   &.expanded {
-    inset-block-start: 26px;
+    inset-block-start: 32px;
     inset-inline-start: 14px; // 28px / 2
   }
 }
@@ -52,7 +52,7 @@ $max-nesting-levels: 20;
   inline-size: 12px;
   block-size: 1px;
   position: absolute;
-  inset-block-start: 16px;
+  inset-block-start: 14px;
   inset-inline-start: 14px;
 }
 
@@ -60,7 +60,7 @@ $max-nesting-levels: 20;
   background: red;
   block-size: 1px;
   position: absolute;
-  inset-block-start: 16px;
+  inset-block-start: 14px;
   inset-inline-start: -18px; // 28 / 2 + 4 -> width / 2 + gap
   inline-size: 38px;
 

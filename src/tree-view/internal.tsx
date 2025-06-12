@@ -24,6 +24,7 @@ const InternalTreeView = <T,>({
   getItemId,
   getItemChildren,
   onItemToggle,
+  renderItemToggleIcon,
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
@@ -61,7 +62,7 @@ const InternalTreeView = <T,>({
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root, testUtilStyles.root)}>
       <ul
         className={styles.tree}
-        role="tree"
+        // role="tree"
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}
         aria-describedby={ariaDescribedby}
@@ -80,6 +81,7 @@ const InternalTreeView = <T,>({
               renderItem={renderItem}
               getItemId={getItemId}
               getItemChildren={getItemChildren}
+              renderItemToggleIcon={renderItemToggleIcon}
               showConnectorLine={showConnectorLine}
             />
           );
