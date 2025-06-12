@@ -139,14 +139,17 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
       );
 
       await waitFor(() => {
-        wrapper.findSplitPanelOpenButton()!.click();
+        expect(wrapper.findSplitPanelOpenButton()).toBeTruthy();
       });
+      wrapper.findSplitPanelOpenButton()!.click();
       wrapper.findSplitPanel()!.findCloseButton()!.click();
       const button =
         position === 'side'
           ? wrapper.findSplitPanelOpenButton()
           : wrapper.findSplitPanel()!.findByClassName(testUtilStyles['open-button']);
-      expect(button!.getElement()).toHaveFocus();
+      await waitFor(() => {
+        expect(button!.getElement()).toHaveFocus();
+      });
     });
 
     test(`Moves focus to the slider when focusSplitPanel() is called`, async () => {
@@ -162,7 +165,12 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
       );
 
       await waitFor(() => {
-        ref.current!.focusSplitPanel();
+        expect(wrapper.findSplitPanel()).toBeTruthy();
+      });
+
+      ref.current!.focusSplitPanel();
+
+      await waitFor(() => {
         expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
       });
     });

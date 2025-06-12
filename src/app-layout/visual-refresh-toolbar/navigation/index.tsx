@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalButton } from '../../../button/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
@@ -43,6 +44,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
       onNavigationToggle(false);
     }
   };
+  const closeMergedRef = useMergeRefs(navigationFocusControl?.refs?.close, navigationFocusControl?.refs?.onMount);
 
   return (
     <div
@@ -74,7 +76,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
             variant="icon"
             formAction="none"
             className={testutilStyles['navigation-close']}
-            ref={navigationFocusControl?.refs?.close}
+            ref={closeMergedRef}
             analyticsAction="close"
           />
         </div>

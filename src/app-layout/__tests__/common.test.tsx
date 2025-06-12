@@ -283,10 +283,16 @@ describeEachAppLayout(({ theme, size }) => {
           await waitForAppLayoutLoaded(wrapper);
 
           findToggle(wrapper).click();
-          expect(findClose(wrapper).getElement()).toBe(document.activeElement);
+
+          await waitFor(() => {
+            expect(findClose(wrapper).getElement()).toHaveFocus();
+          });
 
           findClose(wrapper).click();
-          expect(findToggle(wrapper).getElement()).toBe(document.activeElement);
+
+          await waitFor(() => {
+            expect(findToggle(wrapper).getElement()).toHaveFocus();
+          });
         });
 
         test(`Should not render the drawer if ${hideProp} is set to true`, () => {

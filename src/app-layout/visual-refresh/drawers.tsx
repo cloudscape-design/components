@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalButton } from '../../button/internal';
 import customCssProps from '../../internal/generated/custom-css-properties';
@@ -100,6 +101,7 @@ function ActiveDrawer() {
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
 
   const size = getLimitedValue(drawersMinWidth, drawerSize, drawersMaxWidth);
+  const closeMergedRef = useMergeRefs(drawersRefs.close, drawersRefs.onMount);
 
   return (
     <aside
@@ -137,7 +139,7 @@ function ActiveDrawer() {
               handleDrawersClick(activeDrawerId);
               handleToolsClick(false);
             }}
-            ref={drawersRefs.close}
+            ref={closeMergedRef}
             variant="icon"
           />
         </div>

@@ -114,6 +114,7 @@ Map {
                 "focus": [Function],
               },
             },
+            "onMount": [Function],
             "slider": {
               "current": null,
             },
@@ -146,6 +147,7 @@ Map {
                 "focus": [Function],
               },
             },
+            "onMount": [Function],
             "slider": {
               "current": null,
             },
@@ -171,9 +173,10 @@ Map {
         "setToolbarHeight": [Function],
         "setToolbarState": [Function],
         "splitPanelAnimationDisabled": true,
-        "splitPanelControlId": "split-panel41",
+        "splitPanelControlId": "split-panel33",
         "splitPanelFocusControl": {
           "refs": {
+            "onMount": [Function],
             "preferences": {
               "current": null,
             },
@@ -243,6 +246,7 @@ Map {
         "onToggle": [Function],
         "position": "bottom",
         "refs": {
+          "onMount": [Function],
           "preferences": {
             "current": null,
           },
@@ -411,6 +415,7 @@ Map {
                 "focus": [Function],
               },
             },
+            "onMount": [Function],
             "slider": {
               "current": null,
             },
@@ -443,6 +448,7 @@ Map {
                 "focus": [Function],
               },
             },
+            "onMount": [Function],
             "slider": {
               "current": null,
             },
@@ -468,9 +474,10 @@ Map {
         "setToolbarHeight": [Function],
         "setToolbarState": [Function],
         "splitPanelAnimationDisabled": true,
-        "splitPanelControlId": "split-panel41",
+        "splitPanelControlId": "split-panel33",
         "splitPanelFocusControl": {
           "refs": {
+            "onMount": [Function],
             "preferences": {
               "current": null,
             },
@@ -540,6 +547,7 @@ Map {
         "onToggle": [Function],
         "position": "bottom",
         "refs": {
+          "onMount": [Function],
           "preferences": {
             "current": null,
           },
@@ -708,6 +716,7 @@ Map {
                 "focus": [Function],
               },
             },
+            "onMount": [Function],
             "slider": {
               "current": null,
             },
@@ -740,6 +749,7 @@ Map {
                 "focus": [Function],
               },
             },
+            "onMount": [Function],
             "slider": {
               "current": null,
             },
@@ -765,9 +775,10 @@ Map {
         "setToolbarHeight": [Function],
         "setToolbarState": [Function],
         "splitPanelAnimationDisabled": true,
-        "splitPanelControlId": "split-panel41",
+        "splitPanelControlId": "split-panel33",
         "splitPanelFocusControl": {
           "refs": {
+            "onMount": [Function],
             "preferences": {
               "current": null,
             },
@@ -837,6 +848,7 @@ Map {
         "onToggle": [Function],
         "position": "bottom",
         "refs": {
+          "onMount": [Function],
           "preferences": {
             "current": null,
           },
@@ -1005,6 +1017,7 @@ Map {
                 "focus": [Function],
               },
             },
+            "onMount": [Function],
             "slider": {
               "current": null,
             },
@@ -1037,6 +1050,7 @@ Map {
                 "focus": [Function],
               },
             },
+            "onMount": [Function],
             "slider": {
               "current": null,
             },
@@ -1062,9 +1076,10 @@ Map {
         "setToolbarHeight": [Function],
         "setToolbarState": [Function],
         "splitPanelAnimationDisabled": true,
-        "splitPanelControlId": "split-panel41",
+        "splitPanelControlId": "split-panel33",
         "splitPanelFocusControl": {
           "refs": {
+            "onMount": [Function],
             "preferences": {
               "current": null,
             },
@@ -1134,6 +1149,7 @@ Map {
         "onToggle": [Function],
         "position": "bottom",
         "refs": {
+          "onMount": [Function],
           "preferences": {
             "current": null,
           },

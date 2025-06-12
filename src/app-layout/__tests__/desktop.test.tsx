@@ -181,9 +181,12 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     const { wrapper } = renderComponent(<AppLayout drawers={[{ ...testDrawer, resizable: true }]} />);
 
     await waitFor(() => {
-      wrapper.findDrawerTriggerById('security')!.click();
+      expect(wrapper.findDrawerTriggerById('security')).toBeTruthy();
     });
-    expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveFocus();
+    wrapper.findDrawerTriggerById('security')!.click();
+    await waitFor(() => {
+      expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveFocus();
+    });
   });
 
   test('should change size via keyboard events on slider handle', async () => {
