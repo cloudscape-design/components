@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 import { act } from '@cloudscape-design/test-utils-core/utils-dom';
 
 import InputWrapper from '../input';
@@ -30,6 +31,16 @@ export class AutosuggestDropdownWrapper extends BaseDropdownContentWrapper {
       `.${selectableStyles['selectable-item']}[data-test-index="${optionIndex}"]`,
       OptionWrapper
     );
+  }
+
+  /**
+   * Returns an option from the autosuggest by its value
+   *
+   * @param value The 'value' of the option.
+   */
+  findOptionByValue(value: string): OptionWrapper | null {
+    const toReplace = escapeSelector(value);
+    return this.findComponent(`.${OptionWrapper.rootSelector}[data-value="${toReplace}"]`, OptionWrapper);
   }
 
   /**

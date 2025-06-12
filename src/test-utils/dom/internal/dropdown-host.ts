@@ -185,16 +185,6 @@ export class BaseDropdownContentWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns an option from the autosuggest by its value
-   *
-   * @param value The 'value' of the option.
-   */
-  findOptionByValue(value: string): OptionWrapper | null {
-    const toReplace = escapeSelector(value);
-    return this.findComponent(`.${OptionWrapper.rootSelector}[data-value="${toReplace}"]`, OptionWrapper);
-  }
-
-  /**
    * Use this element to scroll through the list of options
    */
   findOptionsContainer(): ElementWrapper | null {
@@ -212,6 +202,11 @@ export class DropdownContentWrapper extends BaseDropdownContentWrapper {
       `.${selectableStyles['selectable-item']}[data-test-index="${optionIndex}"] .${OptionWrapper.rootSelector}`,
       OptionWrapper
     );
+  }
+
+  findOptionByValue(value: string): OptionWrapper | null {
+    const toReplace = escapeSelector(value);
+    return this.findComponent(`.${OptionWrapper.rootSelector}[data-value="${toReplace}"]`, OptionWrapper);
   }
 
   /**
