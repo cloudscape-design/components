@@ -61,6 +61,8 @@ const DatePicker = React.forwardRef(
       openCalendarAriaLabel,
       expandToViewport,
       granularity = 'day',
+      format = 'slashed',
+      inputFormat = 'slashed',
       ...restProps
     }: DatePickerProps,
     ref: Ref<DatePickerProps.Ref>
@@ -70,7 +72,6 @@ const DatePicker = React.forwardRef(
       metadata: { hasDisabledReasons: Boolean(dateDisabledReason) },
     });
     checkControlled('DatePicker', 'value', value, 'onChange', onChange);
-
     const contextLocale = useLocale();
     const normalizedLocale = normalizeLocale('DatePicker', locale || contextLocale);
 
@@ -151,6 +152,9 @@ const DatePicker = React.forwardRef(
             autoFocus={autoFocus}
             onFocus={onDropdownCloseHandler}
             granularity={granularity}
+            locale={locale}
+            format={format}
+            inputFormat={inputFormat}
           />
         </div>
         <div>
