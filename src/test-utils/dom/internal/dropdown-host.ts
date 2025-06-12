@@ -161,7 +161,7 @@ export class DropdownContentWrapper extends ComponentWrapper {
   }
 
   findHighlightedAriaLiveRegion(): ElementWrapper | null {
-    return this.find('[aria-live]');
+    return this.findHighlightedOption()?.findByClassName(selectableStyles['screenreader-content']) ?? null;
   }
 
   /**

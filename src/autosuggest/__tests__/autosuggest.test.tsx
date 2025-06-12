@@ -291,6 +291,26 @@ describe('a11y props', () => {
         .getElement()
     ).not.toHaveTextContent('Selected');
   });
+
+  test('renders screen reader content for highlighted option', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="1" />);
+    wrapper.focus();
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findHighlightedAriaLiveRegion()!.getElement().textContent).toEqual('One');
+  });
+
+  test('renders screen reader content for highlighted option with custom text', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} value="1" renderHighlightedAriaLive={option => `${option.label}, custom text`} />
+    );
+    wrapper.focus();
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findHighlightedAriaLiveRegion()!.getElement().textContent).toEqual(
+      'One, custom text'
+    );
+  });
 });
 
 describe('keyboard interactions', () => {

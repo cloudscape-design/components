@@ -113,4 +113,23 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     wrapper.openDropdown();
     expectLiveRegionText('Test error text');
   });
+
+  test('renders screen reader content for highlighted selected option', () => {
+    const { wrapper } = renderSelect({ selectedOption: { label: 'First', value: '1' } });
+    wrapper.openDropdown();
+    expect(
+      wrapper.findDropdown({ expandToViewport }).findHighlightedAriaLiveRegion()!.getElement().textContent
+    ).toEqual('First');
+  });
+
+  test('renders screen reader content for highlighted option with custom text', () => {
+    const { wrapper } = renderSelect({
+      selectedOption: { label: 'First', value: '1' },
+      renderHighlightedAriaLive: option => `${option.label}, custom text`,
+    });
+    wrapper.openDropdown();
+    expect(
+      wrapper.findDropdown({ expandToViewport }).findHighlightedAriaLiveRegion()!.getElement().textContent
+    ).toEqual('First, custom text');
+  });
 });

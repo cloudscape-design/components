@@ -8,7 +8,6 @@ import TestI18nProvider from '../../../lib/components/i18n/testing';
 import Select, { SelectProps } from '../../../lib/components/select';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.selectors.js';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 
 const defaultOptions: SelectProps.Options = [
@@ -81,9 +80,6 @@ describe('i18n provider', () => {
       </TestI18nProvider>
     );
     wrapper.openDropdown();
-    const selectedOption = wrapper.findDropdown()!.find('[data-test-index="1"]');
-    expect(selectedOption!.findByClassName(itemStyles['screenreader-content'])!.getElement()).toHaveTextContent(
-      'Custom selected'
-    );
+    expect(wrapper.findDropdown()!.findHighlightedAriaLiveRegion()!.getElement()).toHaveTextContent('Custom selected');
   });
 });
