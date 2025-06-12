@@ -2,10 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
+import { GeneratedAnalyticsMetadataButtonGroupComponent } from './analytics-metadata/interfaces';
 import { ButtonGroupProps } from './interfaces';
 import InternalButtonGroup from './internal';
 
@@ -30,6 +33,12 @@ const ButtonGroup = React.forwardRef(
     });
 
     const externalProps = getExternalProps(rest);
+
+    const componentMetadata: GeneratedAnalyticsMetadataButtonGroupComponent = {
+      name: 'awsui.ButtonGroup',
+      label: { root: 'self' },
+    };
+
     return (
       <InternalButtonGroup
         {...baseProps}
@@ -38,6 +47,7 @@ const ButtonGroup = React.forwardRef(
         ref={ref}
         variant={variant}
         dropdownExpandToViewport={dropdownExpandToViewport}
+        {...getAnalyticsMetadataAttribute({ component: componentMetadata })}
       />
     );
   }
