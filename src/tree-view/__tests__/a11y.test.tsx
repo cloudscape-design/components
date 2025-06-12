@@ -7,6 +7,8 @@ import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
 
+import styles from '../../../lib/components/tree-view/styles.css.js';
+
 interface Item {
   id: string;
   title: string;
@@ -76,7 +78,7 @@ test('sets aria-label', () => {
   const ariaLabel = 'This is the aria label for this tree view';
   const { wrapper } = renderTreeView({ ariaLabel });
 
-  expect(wrapper.find('[role=tree]')!.getElement().getAttribute('aria-label')).toEqual(ariaLabel);
+  expect(wrapper.findByClassName(styles.tree)!.getElement().getAttribute('aria-label')).toEqual(ariaLabel);
 });
 
 test('sets aria-expanded on expandable items', () => {

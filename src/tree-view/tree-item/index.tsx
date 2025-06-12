@@ -74,10 +74,11 @@ const InternalTreeItem = <T,>({
           <div className={styles.toggle}>
             <ExpandToggleButton
               isExpanded={isExpanded}
-              onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
+              customIcon={customIcon}
+              hasLargeFocusOffset={true}
               expandButtonLabel={i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item))}
               collapseButtonLabel={i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item))}
-              customIcon={customIcon}
+              onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
             />
           </div>
         )}

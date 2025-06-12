@@ -341,7 +341,7 @@ export default function BasicTreeView() {
 
   const renderItemToggleIcon = (isExpanded: boolean) => {
     if (useDifferentIcon) {
-      return <Icon name={isExpanded ? 'treeview-collapse' : 'treeview-expand'} ariaLabel="Toggle" />;
+      return <Icon size="small" name={isExpanded ? 'treeview-collapse' : 'treeview-expand'} ariaLabel="Toggle" />;
     }
 
     if (useDifferentIconWithAnimation) {

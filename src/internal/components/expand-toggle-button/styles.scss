@@ -44,6 +44,12 @@
     @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
   }
 
+  &.focus-offset-large {
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+    }
+  }
+
   &:hover {
     color: awsui.$color-text-interactive-hover;
   }
