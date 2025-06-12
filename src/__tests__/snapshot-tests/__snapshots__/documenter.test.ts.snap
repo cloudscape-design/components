@@ -9402,7 +9402,7 @@ The value is an array of flash message definition objects.
 A flash message object contains the following properties:
 * \`header\` (ReactNode) - Specifies the heading text.
 * \`content\` (ReactNode) - Specifies the primary text displayed in the flash element.
-* \`type\` (string) - Indicates the type of the message to be displayed. Allowed values are as follows: \`success, error, warning, info\`. The default is \`info\`.
+* \`type\` (string) - Indicates the type of the message to be displayed. Allowed values are as follows: \`success, error, warning, info, in-progress\`. The default is \`info\`.
 * \`loading\` (boolean) - Replaces the status icon with a spinner and forces the type to \`info\`.
 * \`dismissible\` (boolean) - Determines whether the component includes a close button icon. By default, the close button is not included.
 When a user clicks on this button the \`onDismiss\` handler is called.
