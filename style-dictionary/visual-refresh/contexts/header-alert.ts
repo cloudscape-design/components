@@ -12,4 +12,5 @@ const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColor
   merge({}, alertTokens, darkModeColorValues)
 );
 
+export default expandedTokens;
 export { expandedTokens as tokens };
