@@ -46,6 +46,8 @@ interface SkeletonLayoutProps
   drawerExpandedModeInChildLayout: boolean;
 }
 
+const BOTTOM_GLOBAL_DRAWER_HEIGHT = 200;
+
 export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutProps>(
   (
     {
@@ -134,7 +136,10 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
               <div className={clsx(styles.content, testutilStyles.content)}>{content}</div>
             </div>
             {bottomSplitPanel && (
-              <div className={clsx(styles['split-panel-bottom'])} style={{ insetBlockEnd: placement.insetBlockEnd }}>
+              <div
+                className={clsx(styles['split-panel-bottom'])}
+                style={{ insetBlockEnd: placement.insetBlockEnd + BOTTOM_GLOBAL_DRAWER_HEIGHT }}
+              >
                 {bottomSplitPanel}
               </div>
             )}
@@ -163,6 +168,14 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             {tools}
           </div>
           <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>{globalTools}</div>
+          <div
+            className={clsx(styles['global-tools-bottom'])}
+            style={{
+              blockSize: BOTTOM_GLOBAL_DRAWER_HEIGHT + 'px',
+            }}
+          >
+            global tools bottom
+          </div>
         </div>
       </VisualContext>
     );

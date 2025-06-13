@@ -50,9 +50,11 @@
   // desktop grid
   @include desktop-only {
     grid-template-areas:
-      'toolbar    toolbar      toolbar       toolbar   toolbar         toolbar  toolbar'
-      'navigation .         notifications    .         sideSplitPanel  tools    global-tools'
-      'navigation .             main         .         sideSplitPanel  tools    global-tools';
+      'toolbar            toolbar          toolbar         toolbar            toolbar             toolbar         toolbar'
+      'navigation        .                notifications   .                  sideSplitPanel      tools          global-tools'
+      'navigation        .                main           .                  sideSplitPanel      tools          global-tools'
+      'global-tools-bottom global-tools-bottom global-tools-bottom global-tools-bottom global-tools-bottom global-tools-bottom global-tools';
+
     grid-template-columns:
       min-content
       minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
@@ -60,7 +62,7 @@
       minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
       min-content
       min-content;
-    grid-template-rows: min-content min-content 1fr min-content;
+    grid-template-rows: min-content min-content 1fr auto;
 
     &.has-adaptive-widths-default {
       #{custom-props.$maxContentWidth}: map.get(constants.$adaptive-content-widths, styles.$breakpoint-xx-large);
@@ -98,6 +100,15 @@
   @include mobile-only {
     inline-size: 100%;
   }
+}
+
+.global-tools-bottom {
+  grid-area: global-tools-bottom;
+  border-block-start: 1px solid black;
+  position: sticky;
+  inset-block-end: 0;
+  z-index: 855;
+  background: #ffffff;
 }
 
 .navigation {
