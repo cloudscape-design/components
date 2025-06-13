@@ -22,10 +22,6 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  row-gap: awsui.$space-scaled-xxs;
-  .disable-paddings > & {
-    row-gap: 0;
-  }
 }
 
 .content-wrap {
@@ -35,10 +31,8 @@
   flex-direction: row;
   flex-wrap: wrap;
   column-gap: awsui.$space-xs;
-  row-gap: awsui.$space-scaled-xxs;
   .disable-paddings > .main > & {
     column-gap: 0;
-    row-gap: 0;
   }
 }
 

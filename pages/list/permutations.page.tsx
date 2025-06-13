@@ -31,6 +31,7 @@ const permutations = createPermutations<ListProps<Item> & { viewportWidth: numbe
     viewportWidth: [200, 400],
     items: [items],
     _sortable: [true, false, 'disabled'],
+    disablePaddings: [false, true],
     renderItem: [
       ({ content }) => ({ content, id: content }),
       ({ content }) => ({ content, id: content, secondaryContent: <Box variant="small">Description</Box> }),
