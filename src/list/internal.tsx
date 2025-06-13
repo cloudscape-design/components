@@ -61,7 +61,7 @@ export default function InternalList<T = any>({
           const content = (
             <div className={styles['sortable-item']}>
               <InternalDragHandle {...dragHandleProps} />
-              <InternalStructuredItem {...structuredItemProps} />
+              <InternalStructuredItem disablePaddings={disablePaddings} {...structuredItemProps} />
             </div>
           );
 
