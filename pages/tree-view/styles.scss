@@ -1,0 +1,17 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../src/internal/styles/motion/mixins' as styles;
+
+.animation {
+  transform: rotate(-90deg);
+
+  @include styles.with-motion {
+    transition: transform 1000ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  &-expanded {
+    transform: rotate(0deg);
+  }
+}
