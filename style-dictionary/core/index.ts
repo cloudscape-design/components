@@ -34,7 +34,7 @@ const tokenCategories: Array<StyleDictionary.CategoryModule> = [
   await import('../visual-refresh/shadows.js'),
 ];
 
-export async function buildCoreOpenSource(builder: ThemeBuilder) {
+async function buildCoreOpenSource(builder: ThemeBuilder) {
   tokenCategories.forEach(({ tokens, mode: modeId }) => {
     const mode = modes.find(mode => mode.id === modeId);
     builder.addTokens(tokens, mode);
