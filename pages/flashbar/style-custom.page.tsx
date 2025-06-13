@@ -93,7 +93,15 @@ const item = {
       success: palette.green20,
       warning: palette.orange20,
     },
+    borderColor: {
+      error: palette.red60,
+      info: palette.blue60,
+      inProgress: palette.teal60,
+      success: palette.green60,
+      warning: palette.orange60,
+    },
     borderRadius: '4px',
+    borderWidth: '1px',
     color: {
       error: palette.red100,
       info: palette.blue100,
@@ -109,7 +117,9 @@ const item = {
       hover: palette.neutral90,
     },
     focusRing: {
-      borderColor: palette.neutral80,
+      borderColor: palette.neutral90,
+      borderRadius: '4px',
+      borderWidth: '1px',
     },
   },
 };
@@ -122,11 +132,12 @@ const notificationBar = {
       hover: palette.neutral100,
     },
     borderColor: {
-      active: 'transparent',
-      default: 'transparent',
-      hover: 'transparent',
+      active: palette.neutral100,
+      default: palette.neutral100,
+      hover: palette.neutral100,
     },
     borderRadius: '4px',
+    borderWidth: '1px',
     color: {
       active: palette.neutral10,
       default: palette.neutral10,
