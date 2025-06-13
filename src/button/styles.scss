@@ -6,13 +6,15 @@
 @use 'sass:map';
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/foundation' as foundation;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
 
 @mixin adjust-for-variant($variant) {
-  background: map.get($variant, 'default-background');
-  color: map.get($variant, 'default-color');
-  border-color: map.get($variant, 'default-border-color');
+  background: var(#{custom-props.$styleBackgroundDefault}, map.get($variant, 'default-background'));
+  color: var(#{custom-props.$styleColorDefault}, map.get($variant, 'default-color'));
+  border-color: var(#{custom-props.$styleBorderColorDefault}, #{map.get($variant, 'default-border-color')});
   border-block-width: map.get($variant, 'border-width');
   border-inline-width: map.get($variant, 'border-width');
   position: relative;
@@ -22,22 +24,22 @@
   font-weight: map.get($variant, 'font-weight');
 
   &:hover {
-    background: map.get($variant, 'hover-background');
-    color: map.get($variant, 'hover-color');
-    border-color: map.get($variant, 'hover-border-color');
+    background: var(#{custom-props.$styleBackgroundHover}, map.get($variant, 'hover-background'));
+    border-color: var(#{custom-props.$styleBorderColorHover}, map.get($variant, 'hover-border-color'));
+    color: var(#{custom-props.$styleColorHover}, map.get($variant, 'hover-color'));
     text-decoration: none;
   }
 
   &:active {
-    background: map.get($variant, 'active-background');
-    color: map.get($variant, 'active-color');
-    border-color: map.get($variant, 'active-border-color');
+    background: var(#{custom-props.$styleBackgroundActive}, map.get($variant, 'active-background'));
+    border-color: var(#{custom-props.$styleBorderColorActive}, map.get($variant, 'active-border-color'));
+    color: var(#{custom-props.$styleColorActive}, map.get($variant, 'active-color'));
   }
 
   &.disabled {
-    background: map.get($variant, 'disabled-background');
-    border-color: map.get($variant, 'disabled-border-color');
-    color: map.get($variant, 'disabled-color');
+    background: var(#{custom-props.$styleBackgroundDisabled}, map.get($variant, 'disabled-background'));
+    border-color: var(#{custom-props.$styleBorderColorDisabled}, map.get($variant, 'disabled-border-color'));
+    color: var(#{custom-props.$styleColorDisabled}, map.get($variant, 'disabled-color'));
     text-decoration: none;
     cursor: auto;
   }
@@ -63,6 +65,9 @@
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
+  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
   @each $variant in map.keys(constants.$variants) {
     &.variant-#{$variant} {
@@ -76,7 +81,11 @@
   }
 
   @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+    @include styles.focus-highlight(
+      $gutter: awsui.$space-button-focus-outline-gutter,
+      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+    );
 
     &.variant-icon,
     &.variant-modal-dismiss,
@@ -126,14 +135,14 @@
 
   &.variant-inline-icon {
     padding-block: 0;
-    border-block: 0;
-    border-inline: 0;
+    border-block-width: 0;
+    border-inline-width: 0;
   }
 
   &.variant-inline-icon-pointer-target {
     padding-block: awsui.$space-xxxs;
-    border-block: 0;
-    border-inline: 0;
+    border-block-width: 0;
+    border-inline-width: 0;
   }
 
   > .icon-left {

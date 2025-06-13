@@ -11,6 +11,15 @@ class ButtonPageObject extends BasePageObject {
   getClickMessage() {
     return this.getText('#clickMessage');
   }
+
+  getComputedStyles(selector: string, property: string, pseudoElement: string | null = null) {
+    return this.browser.execute(
+      ([selector, property, pseudoElement]) => {
+        return getComputedStyle(document.querySelector(selector)!, pseudoElement).getPropertyValue(property);
+      },
+      [selector, property, pseudoElement] as const
+    );
+  }
 }
 
 describe('Button', () => {
@@ -42,6 +51,26 @@ describe('Button', () => {
       await expect(page.getFocusedElementText()).resolves.toBe('Loading');
       await page.keys('Tab');
       await expect(page.getFocusedElementText()).resolves.toBe('Last button');
+    })
+  );
+});
+
+describe('Button Style API', () => {
+  test(
+    'active, hover and focus states',
+    useBrowser(async browser => {
+      await browser.url('#/light/button/style-custom-types');
+      const page = new ButtonPageObject(browser);
+      await page.click('[data-testid=default]');
+      await page.hoverElement('[data-testid=default]');
+      await expect(await page.getComputedStyles('[data-testid=default]', 'background-color')).toBe('rgb(0, 85, 102)');
+      await page.buttonDownOnElement('[data-testid=default]');
+      await expect(await page.getComputedStyles('[data-testid=default]', 'background-color')).toBe('rgb(0, 64, 77)');
+      await page.buttonUp();
+      await page.keys('a');
+      await expect(await page.getComputedStyles('[data-testid=default]', 'box-shadow', ':before')).toBe(
+        'rgb(0, 64, 77) 0px 0px 0px 2px'
+      );
     })
   );
 });
