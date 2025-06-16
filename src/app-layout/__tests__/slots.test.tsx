@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { waitFor } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import { describeEachAppLayout, renderComponent } from './utils';
@@ -16,11 +17,13 @@ describeEachAppLayout(() => {
       expect(notificationsEl).not.toHaveAttribute('aria-label');
     });
 
-    test('notifications can have aria-label', () => {
+    test('notifications can have aria-label', async () => {
       const { wrapper } = renderComponent(
         <AppLayout notifications="abcd" ariaLabels={{ notifications: 'Notifications' }} />
       );
-      expect(wrapper.findNotifications()!.getElement()).toHaveAttribute('aria-label', 'Notifications');
+      await waitFor(() => {
+        expect(wrapper.findNotifications()!.getElement()).toHaveAttribute('aria-label', 'Notifications');
+      });
     });
   });
 
