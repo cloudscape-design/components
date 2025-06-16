@@ -97,7 +97,7 @@ const InternalPromptInput = React.forwardRef(
         }
 
         event.preventDefault();
-        fireNonCancelableEvent(onAction, { value });
+        fireNonCancelableEvent(onAction, { value, isComposing: event.nativeEvent.isComposing });
       }
     };
 
