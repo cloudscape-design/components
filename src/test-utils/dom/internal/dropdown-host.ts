@@ -149,7 +149,10 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
   }
 }
 
-export class DropdownContentWrapper extends ComponentWrapper {
+export class BaseDropdownContentWrapper extends ComponentWrapper {
+  /**
+   * Returns all the disabled options.
+   */
   findDisabledOptions(): Array<OptionWrapper> {
     return this.findAllByClassName(selectableStyles.disabled).map(
       (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
@@ -180,6 +183,16 @@ export class DropdownContentWrapper extends ComponentWrapper {
     const dropdown = new DropdownWrapper(this.getElement());
     return dropdown.findOpenDropdown();
   }
+
+  /**
+   * Use this element to scroll through the list of options
+   */
+  findOptionsContainer(): ElementWrapper | null {
+    return this.findByClassName(OptionsListWrapper.rootSelector);
+  }
+}
+
+export class DropdownContentWrapper extends BaseDropdownContentWrapper {
   /**
    * Returns an option from the dropdown.
    *
@@ -214,13 +227,6 @@ export class DropdownContentWrapper extends ComponentWrapper {
     return this.findAll(`.${selectableStyles['selectable-item']}[data-test-index] .${OptionWrapper.rootSelector}`).map(
       (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
     );
-  }
-
-  /**
-   * Use this element to scroll through the list of options
-   */
-  findOptionsContainer(): ElementWrapper | null {
-    return this.findByClassName(OptionsListWrapper.rootSelector);
   }
 
   findSelectedOptions(): Array<OptionWrapper> {
