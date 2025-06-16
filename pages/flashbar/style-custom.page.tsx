@@ -64,6 +64,7 @@ export default function CustomFlashbar() {
 
       <SpaceBetween direction="vertical" size="l">
         <Flashbar
+          data-testid="collapsed"
           items={items}
           stackItems={true}
           style={{
@@ -73,6 +74,7 @@ export default function CustomFlashbar() {
         />
 
         <Flashbar
+          data-testid="expanded"
           items={items}
           stackItems={false}
           style={{
@@ -127,7 +129,7 @@ const item = {
 const notificationBar = {
   root: {
     background: {
-      active: palette.neutral90,
+      active: palette.neutral80,
       default: palette.neutral90,
       hover: palette.neutral100,
     },

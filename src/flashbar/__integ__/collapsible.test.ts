@@ -1,8 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import { FOCUS_THROTTLE_DELAY } from '../utils';
 import { setupTest } from './pages/interactive-page';
 import { setupTest as setupStickyFlashbarTest } from './pages/sticky-page';
+
+class FlashbarPageObject extends BasePageObject {
+  getComputedStyles(selector: string, property: string, pseudoElement: string | null = null) {
+    return this.browser.execute(
+      ([selector, property, pseudoElement]) => {
+        return getComputedStyle(document.querySelector(selector)!, pseudoElement).getPropertyValue(property);
+      },
+      [selector, property, pseudoElement] as const
+    );
+  }
+}
 
 describe('Collapsible Flashbar', () => {
   describe('Keyboard navigation', () => {
@@ -149,4 +163,33 @@ describe('Collapsible Flashbar', () => {
       })
     );
   });
+});
+
+describe('Flashbar Style API', () => {
+  test(
+    'active, hover and focus states',
+    useBrowser(async browser => {
+      await browser.url('#/light/flashbar/style-custom');
+      const page = new FlashbarPageObject(browser);
+      const dismissButton = '[data-testid=collapsed] > ul > li > div:last-of-type > div:last-of-type > button';
+      await page.hoverElement(dismissButton);
+      await expect(await page.getComputedStyles(dismissButton, 'color')).toBe('rgb(48, 64, 80)');
+      await page.buttonDownOnElement(dismissButton);
+      await expect(await page.getComputedStyles(dismissButton, 'color')).toBe('rgb(13, 26, 38)');
+      await page.click('[data-testid=collapsed]');
+      await page.keys('Tab');
+      await expect(await page.getComputedStyles(dismissButton, 'box-shadow', ':before')).toBe(
+        'rgb(48, 64, 80) 0px 0px 0px 1px'
+      );
+      await page.click('[data-testid=collapsed]');
+      await page.keys(['Shift', 'Tab']);
+      await expect(
+        await page.getComputedStyles('[data-testid=collapsed] > div > button', 'box-shadow', ':before')
+      ).toBe('rgb(249, 249, 250) 0px 0px 0px 2px');
+      await page.buttonDownOnElement('[data-testid=collapsed] > div');
+      await expect(await page.getComputedStyles('[data-testid=collapsed] > div', 'background-color')).toBe(
+        'rgb(92, 102, 112)'
+      );
+    })
+  );
 });

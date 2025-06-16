@@ -18,17 +18,18 @@ import { disableMotion } from '@cloudscape-design/global-styles';
 
 import Flashbar from '../../../lib/components/flashbar';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
+import customCssProps from '../../internal/generated/custom-css-properties';
 import { FlashbarProps } from '../interfaces';
 import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
 
 import stylesCss from '../../../lib/components/flashbar/styles.css.js';
 
 const sampleItems: Record<FlashbarProps.Type, FlashbarProps.MessageDefinition> = {
-  error: { type: 'error', header: 'Error', content: 'There was an error' },
-  success: { type: 'success', header: 'Success', content: 'Everything went fine' },
-  warning: { type: 'warning', header: 'Warning' },
-  info: { type: 'info', header: 'Information' },
-  'in-progress': { type: 'in-progress', header: 'Operation in progress' },
+  error: { type: 'error', header: 'Error', content: 'There was an error', dismissible: true },
+  success: { type: 'success', header: 'Success', content: 'Everything went fine', dismissible: true },
+  warning: { type: 'warning', header: 'Warning', dismissible: true },
+  info: { type: 'info', header: 'Information', dismissible: true },
+  'in-progress': { type: 'in-progress', header: 'Operation in progress', dismissible: true },
 };
 
 const defaultStrings = {
@@ -384,6 +385,123 @@ describe('Collapsible Flashbar', () => {
         button.click(); // Expand
         button.click(); // Collapse
         expect(scrollElementIntoViewMock).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('Style API', () => {
+      test('custom properties', () => {
+        const flashbar = renderFlashbar({
+          style: {
+            item: {
+              dismissButton: {
+                color: {
+                  active: 'magenta',
+                  default: 'blue',
+                  hover: 'orange',
+                },
+                focusRing: {
+                  borderColor: 'green',
+                  borderRadius: '10px',
+                  borderWidth: '90px',
+                },
+              },
+            },
+            notificationBar: {
+              root: {
+                background: {
+                  active: 'magenta',
+                  default: 'red',
+                  hover: 'brown',
+                },
+                borderColor: {
+                  active: 'magenta',
+                  default: 'purple',
+                  hover: 'blue',
+                },
+                color: {
+                  active: 'magenta',
+                  default: 'orange',
+                  hover: 'green',
+                },
+              },
+            },
+          },
+        });
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleBackgroundActive
+          )
+        ).toBe('magenta');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleBackgroundDefault
+          )
+        ).toBe('red');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleBackgroundHover
+          )
+        ).toBe('brown');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleBorderColorActive
+          )
+        ).toBe('magenta');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleBorderColorDefault
+          )
+        ).toBe('purple');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleBorderColorHover
+          )
+        ).toBe('blue');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleColorActive
+          )
+        ).toBe('magenta');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleColorDefault
+          )
+        ).toBe('orange');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleColorHover
+          )
+        ).toBe('green');
+        expect(
+          getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
+            customCssProps.styleColorActive
+          )
+        ).toBe('magenta');
+        expect(
+          getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
+            customCssProps.styleColorDefault
+          )
+        ).toBe('blue');
+        expect(
+          getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
+            customCssProps.styleColorHover
+          )
+        ).toBe('orange');
+        expect(
+          getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
+            customCssProps.styleFocusRingBorderColor
+          )
+        ).toBe('green');
+        expect(
+          getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
+            customCssProps.styleFocusRingBorderRadius
+          )
+        ).toBe('10px');
+        expect(
+          getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
+            customCssProps.styleFocusRingBorderWidth
+          )
+        ).toBe('90px');
       });
     });
   });
