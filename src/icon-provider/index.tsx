@@ -21,13 +21,17 @@ export default function IconProvider({ children, icons }: IconProviderProps) {
   useBaseComponent('IconProvider');
   const contextIcons = useContext(InternalIconContext);
 
-  const mergedIcons = useMemo(() => ({ ...contextIcons, ...icons }), [contextIcons, icons]);
+  const iconsToProvide: IconProviderProps.Icons = useMemo(() => {
+    // Reset icons to the original set when the configuration is explicitly null
+    if (icons === null) {
+      return generatedIcons;
+    }
 
-  return (
-    <InternalIconContext.Provider value={icons === null ? generatedIcons : mergedIcons}>
-      {children}
-    </InternalIconContext.Provider>
-  );
+    // Merge the icons with the context icons, this allows child instances of IconProvider to persistent parent configurations
+    return { ...contextIcons, ...icons };
+  }, [contextIcons, icons]);
+
+  return <InternalIconContext.Provider value={iconsToProvide}>{children}</InternalIconContext.Provider>;
 }
 
 applyDisplayName(IconProvider, 'IconProvider');

@@ -10389,6 +10389,13 @@ exports[`Documenter definition for icon-provider matches the snapshot: icon-prov
       "type": "string",
     },
     {
+      "description": "Specifies icon overrides using existing icon names, e.g. \`{'add-plus': <svg>...</svg>}\`.
+
+Context is shared with child instances of IconProvider.
+
+Set to \`null\` to reset the icons to the default set.
+
+e.g. Override \`AppLayout\` icons but not content icons by wrapping content with an \`IconProvider\` with this property set to \`null\`.",
       "inlineType": {
         "name": "Partial<{ "add-plus": JSX.Element; "anchor-link": JSX.Element; "angle-down": JSX.Element; "angle-left-double": JSX.Element; "angle-left": JSX.Element; "angle-right-double": JSX.Element; ... 120 more ...; "zoom-to-fit": JSX.Element; }>",
         "properties": [
@@ -11032,7 +11039,7 @@ exports[`Documenter definition for icon-provider matches the snapshot: icon-prov
       },
       "name": "icons",
       "optional": false,
-      "type": "Partial<{ "add-plus": JSX.Element; "anchor-link": JSX.Element; "angle-down": JSX.Element; "angle-left-double": JSX.Element; "angle-left": JSX.Element; "angle-right-double": JSX.Element; ... 120 more ...; "zoom-to-fit": JSX.Element; }>",
+      "type": "Partial<{ "add-plus": JSX.Element; "anchor-link": JSX.Element; "angle-down": JSX.Element; "angle-left-double": JSX.Element; "angle-left": JSX.Element; "angle-right-double": JSX.Element; ... 120 more ...; "zoom-to-fit": JSX.Element; }> | null",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,

@@ -2,10 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { Alert, CollectionPreferences, IconProvider, TextFilter } from '~components';
+import Alert from '~components/alert';
 import Button from '~components/button';
+import CollectionPreferences from '~components/collection-preferences';
+import Icon from '~components/icon';
+import IconProvider from '~components/icon-provider';
 import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
+import TextFilter from '~components/text-filter';
 
 import {
   baseProperties,
@@ -39,7 +43,7 @@ export default function SimpleContainers() {
         {/* Global icon override */}
         <IconProvider
           icons={{
-            close: CUSTOM_SVG,
+            close: CUSTOM_SIMPLE_SVG,
           }}
         >
           <SpaceBetween size="m">
@@ -63,13 +67,36 @@ export default function SimpleContainers() {
                 'status-negative': CUSTOM_SVG,
               }}
             >
-              <SpaceBetween size="s" direction="horizontal" alignItems="center">
-                <Button iconName="add-plus">Icon test</Button>
-                <StatusIndicator type="success">Icon test</StatusIndicator>
+              <SpaceBetween size="m">
+                <SpaceBetween size="s" direction="horizontal" alignItems="center">
+                  <Button iconName="close">Icon test</Button>
+                  <StatusIndicator type="success">Icon test</StatusIndicator>
+                </SpaceBetween>
+                <Alert type="error" dismissible={true}>
+                  Icon test
+                </Alert>
               </SpaceBetween>
-              <Alert type="error" dismissible={true}>
-                Icon test
-              </Alert>
+            </IconProvider>
+
+            {/* Icon reset */}
+            <IconProvider
+              icons={{
+                'drag-indicator': CUSTOM_SVG,
+                close: CUSTOM_SIMPLE_SVG,
+              }}
+            >
+              <IconProvider icons={{ 'add-plus': CUSTOM_SVG, close: CUSTOM_SIMPLE_SVG }}>
+                <SpaceBetween direction="horizontal" size="s">
+                  <Icon name={'add-plus'} />
+                  <Icon name={'close'} />
+                  <IconProvider icons={null}>
+                    <SpaceBetween direction="horizontal" size="s">
+                      <Icon name={'add-plus'} />
+                      <Icon name={'close'} />
+                    </SpaceBetween>
+                  </IconProvider>
+                </SpaceBetween>
+              </IconProvider>
             </IconProvider>
 
             {/* Modal icon override */}
