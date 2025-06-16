@@ -3,7 +3,7 @@
 import React, { MutableRefObject, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useComponentMetadata } from '@cloudscape-design/component-toolkit/internal';
+import { useComponentMetadata, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
 
 import InternalForm from '../form/internal';
@@ -21,7 +21,6 @@ import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../in
 import { PACKAGE_VERSION } from '../internal/environment';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { WizardProps } from './interfaces';
 import WizardActions from './wizard-actions';
 import WizardFormHeader from './wizard-form-header';

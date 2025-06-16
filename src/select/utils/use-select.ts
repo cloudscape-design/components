@@ -3,6 +3,8 @@
 import React, { RefObject } from 'react';
 import { useEffect, useRef } from 'react';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
 import { DropdownProps } from '../../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../../internal/components/dropdown-status';
@@ -16,7 +18,6 @@ import { useOpenState } from '../../internal/components/options-list/utils/use-o
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
 import useForwardFocus from '../../internal/hooks/forward-focus';
 import { usePrevious } from '../../internal/hooks/use-previous';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { connectOptionsByValue } from './connect-options';

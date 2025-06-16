@@ -5,6 +5,7 @@ import { TransitionGroup } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../i18n/context';
@@ -15,7 +16,6 @@ import { Transition } from '../internal/components/transition';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { throttle } from '../internal/utils/throttle';
 import {

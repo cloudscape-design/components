@@ -3,13 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import ButtonTrigger from '../../internal/components/button-trigger';
 import Option from '../../internal/components/option';
 import { OptionDefinition } from '../../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../../internal/context/form-field-context';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { joinStrings } from '../../internal/utils/strings';
 import { MultiselectProps } from '../../multiselect/interfaces';

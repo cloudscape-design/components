@@ -3,11 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import Box from '../box/internal';
 import ColumnLayout from '../column-layout/internal';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { KeyValuePairsProps } from './interfaces';
 
 import styles from './styles.css.js';
