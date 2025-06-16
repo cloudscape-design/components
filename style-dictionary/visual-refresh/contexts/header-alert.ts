@@ -13,3 +13,4 @@ const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColor
 );
 
 export default expandedTokens;
+export { expandedTokens as tokens };
