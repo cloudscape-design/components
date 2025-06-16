@@ -9467,6 +9467,30 @@ If the \`action\` property is set, this property is ignored. **Deprecated**, rep
       "optional": true,
       "type": "boolean",
     },
+    {
+      "inlineType": {
+        "name": "FlashbarProps.Style",
+        "properties": [
+          {
+            "name": "item",
+            "optional": true,
+            "type": "{ root?: { background?: { error?: string | undefined; info?: string | undefined; inProgress?: string | undefined; success?: string | undefined; warning?: string | undefined; } | undefined; borderColor?: { ...; } | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; color?: { ...; } | unde...",
+          },
+          {
+            "name": "notificationBar",
+            "optional": true,
+            "type": "{ root: { background?: { active?: string | undefined; default?: string | undefined; hover?: string | undefined; } | undefined; borderColor?: { active?: string | undefined; default?: string | undefined; hover?: string | undefined; } | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; col...",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "FlashbarProps.Style",
+    },
   ],
   "regions": [],
   "releaseStatus": "stable",
