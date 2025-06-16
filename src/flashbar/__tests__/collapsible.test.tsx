@@ -393,6 +393,29 @@ describe('Collapsible Flashbar', () => {
         const flashbar = renderFlashbar({
           style: {
             item: {
+              root: {
+                background: {
+                  error: 'magenta',
+                  info: 'blue',
+                  inProgress: 'yellow',
+                  success: 'orange',
+                  warning: 'brown',
+                },
+                borderColor: {
+                  error: 'magenta',
+                  info: 'blue',
+                  inProgress: 'yellow',
+                  success: 'orange',
+                  warning: 'brown',
+                },
+                color: {
+                  error: 'magenta',
+                  info: 'blue',
+                  inProgress: 'yellow',
+                  success: 'orange',
+                  warning: 'brown',
+                },
+              },
               dismissButton: {
                 color: {
                   active: 'magenta',
