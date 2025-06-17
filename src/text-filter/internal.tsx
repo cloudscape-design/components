@@ -3,12 +3,13 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalInput from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
 import { InternalLiveRegionRef } from '../live-region/internal';
 import { useTableIntegration } from './analytics/use-table-integration';

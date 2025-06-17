@@ -3,11 +3,12 @@
 import React, { forwardRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { ButtonDropdownProps } from '../../../button-dropdown/interfaces';
 import { isLinkItem } from '../../../button-dropdown/utils/utils';
 import InternalIcon from '../../../icon/internal';
 import { fireCancelableEvent, isPlainLeftClick } from '../../../internal/events';
-import { useUniqueId } from '../../../internal/hooks/use-unique-id';
 import { spinWhenOpen } from '../../../internal/styles/motion/utils';
 import { LinkProps } from '../../../link/interfaces';
 import { TopNavigationProps } from '../../interfaces';

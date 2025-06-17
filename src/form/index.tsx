@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { FunnelMetrics } from '../internal/analytics';
 import { AnalyticsFunnel, AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
 import { useFunnel, useFunnelNameSelector, useFunnelStepRef } from '../internal/analytics/hooks/use-funnel';
@@ -9,7 +11,6 @@ import { getSubStepAllSelector, getTextFromSelector } from '../internal/analytic
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { FormProps } from './interfaces';
 import InternalForm from './internal';

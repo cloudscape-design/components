@@ -3,7 +3,8 @@
 import React, { memo } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { useSelector } from '../async-store';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';

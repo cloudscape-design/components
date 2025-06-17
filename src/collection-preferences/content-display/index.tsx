@@ -3,11 +3,12 @@
 import React, { useMemo, useState } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalBox from '../../box/internal';
 import InternalButton from '../../button/internal';
 import { useInternalI18n } from '../../i18n/context';
 import SortableArea from '../../internal/components/sortable-area';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalTextFilter from '../../text-filter/internal';
 import { getAnalyticsInnerContextAttribute } from '../analytics-metadata/utils';

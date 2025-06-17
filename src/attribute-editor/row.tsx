@@ -3,13 +3,14 @@
 import React, { useCallback } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import InternalFormField from '../form-field/internal';
 import { useInternalI18n } from '../i18n/context';
 import { Breakpoint } from '../internal/breakpoints';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { AttributeEditorProps } from './interfaces';
 import { getItemGridColumns, getRemoveButtonGridColumns, isRemoveButtonOnSameLine } from './utils';
 

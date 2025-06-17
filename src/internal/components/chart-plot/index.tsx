@@ -3,9 +3,10 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../../../i18n/context';
 import InternalLiveRegion from '../../../live-region/internal';
-import { useUniqueId } from '../../hooks/use-unique-id';
 import { KeyCode } from '../../keycode';
 import { Offset } from '../interfaces';
 import ApplicationController, { ApplicationRef } from './application-controller';

@@ -3,13 +3,13 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import FocusLock from '../internal/components/focus-lock';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { KeyCode } from '../internal/keycode';
 
 import styles from './styles.css.js';

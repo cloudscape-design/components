@@ -16,6 +16,8 @@ import {
   startOfYear,
 } from 'date-fns';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { CalendarProps } from '../../calendar/interfaces';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import { getBaseDay } from '../../calendar/utils/navigation-day';
@@ -23,7 +25,6 @@ import { getBaseMonth } from '../../calendar/utils/navigation-month';
 import { useInternalI18n } from '../../i18n/context.js';
 import { BaseComponentProps } from '../../internal/base-component';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { formatDate, formatDateTime, parseDate, splitDateTime } from '../../internal/utils/date-time';
 import { normalizeLocale, normalizeStartOfWeek } from '../../internal/utils/locale';
 import InternalLiveRegion from '../../live-region/internal';

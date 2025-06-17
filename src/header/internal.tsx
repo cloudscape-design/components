@@ -3,6 +3,7 @@
 import React, { MutableRefObject, useContext } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { StickyHeaderContext } from '../container/use-sticky-header';
@@ -13,7 +14,6 @@ import { useContainerHeader } from '../internal/context/container-header';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SomeRequired } from '../internal/types';
 import { useTableIntegration } from './analytics/use-table-integration';

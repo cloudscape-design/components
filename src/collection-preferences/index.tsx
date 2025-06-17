@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalBox from '../box/internal';
@@ -16,7 +16,6 @@ import { useTableComponentsContext } from '../internal/context/table-component-c
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import InternalModal from '../modal/internal';
 import InternalSpaceBetween from '../space-between/internal';

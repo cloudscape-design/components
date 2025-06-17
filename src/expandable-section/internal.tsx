@@ -4,12 +4,13 @@ import React, { KeyboardEvent, useCallback, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { getBaseProps } from '../internal/base-component';
 import { screenReaderTextClass } from '../internal/components/chart-series-details/series-details-text';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { KeyCode } from '../internal/keycode';
 import { ExpandableSectionContainer } from './expandable-section-container';
 import { ExpandableSectionHeader } from './expandable-section-header';

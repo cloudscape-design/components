@@ -3,9 +3,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import FocusLock from '../../../../internal/components/focus-lock';
 import { fireCancelableEvent, isPlainLeftClick } from '../../../../internal/events';
-import { useUniqueId } from '../../../../internal/hooks/use-unique-id';
 import { TopNavigationProps } from '../../../interfaces';
 import { View } from '..';
 import Header from '../header';

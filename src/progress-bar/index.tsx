@@ -3,12 +3,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { joinStrings } from '../internal/utils/strings';
 import { throttle } from '../internal/utils/throttle';

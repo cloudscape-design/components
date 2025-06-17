@@ -3,11 +3,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '@cloudscape-design/component-toolkit/internal';
 
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';

@@ -4,7 +4,7 @@
 import React, { Ref, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useFormFieldContext } from '../contexts/form-field';
 import { useInternalI18n } from '../i18n/context';
@@ -21,7 +21,6 @@ import {
 } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { checkOptionValueField } from '../select/utils/check-option-value-field';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import { useAutosuggestLoadMore } from './load-more-controller';

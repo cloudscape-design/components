@@ -5,12 +5,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { addMonths, addYears, isSameDay, isSameMonth, isSameYear } from 'date-fns';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import checkControlled from '../internal/hooks/check-controlled/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
-import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { formatDate, parseDate } from '../internal/utils/date-time';
 import { normalizeLocale } from '../internal/utils/locale';
 import Grid from './grid';

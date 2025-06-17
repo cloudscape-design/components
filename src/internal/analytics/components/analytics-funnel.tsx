@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { PACKAGE_VERSION, THEME } from '../../environment';
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
-import { useUniqueId } from '../../hooks/use-unique-id';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { nodeBelongs } from '../../utils/node-belongs';
 import {
