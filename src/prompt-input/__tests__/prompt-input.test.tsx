@@ -224,6 +224,12 @@ describe('prompt input in form', () => {
     (console.error as jest.Mock).mockClear();
   });
 
+  test('enter key during IME composition does not submit form', () => {
+    const [wrapper, submitSpy] = renderPromptInputInForm({ value: '' });
+    wrapper.findNativeTextarea().keydown({ keyCode: KeyCode.enter, isComposing: true });
+    expect(submitSpy).not.toHaveBeenCalled();
+  });
+
   test('cancelling key event prevents submission', () => {
     const [wrapper, submitSpy] = renderPromptInputInForm({
       value: '',
@@ -247,7 +253,7 @@ describe('events', () => {
     expect(onChange).toHaveBeenCalledWith({ value: 'updated value' });
   });
 
-  test('fire an action event with correct parameters', () => {
+  test('fire an action event on action button click with correct parameters', () => {
     const onAction = jest.fn();
     const { wrapper } = renderPromptInput({
       value: 'value',
@@ -255,11 +261,32 @@ describe('events', () => {
       onAction: event => onAction(event.detail),
     });
 
-    act(() => {
-      wrapper.findActionButton().click();
+    wrapper.findActionButton().click();
+    expect(onAction).toHaveBeenCalled();
+  });
+
+  test('fire an action event on enter keydown with correct parameters', () => {
+    const onAction = jest.fn();
+    const { wrapper } = renderPromptInput({
+      value: 'value',
+      actionButtonIconName: 'send',
+      onAction: event => onAction(event.detail),
     });
 
+    wrapper.findNativeTextarea().keydown(KeyCode.enter);
     expect(onAction).toHaveBeenCalled();
+  });
+
+  test('does not fire an action event on enter keydown if part of IME composition', () => {
+    const onAction = jest.fn();
+    const { wrapper } = renderPromptInput({
+      value: 'value',
+      actionButtonIconName: 'send',
+      onAction: event => onAction(event.detail),
+    });
+
+    wrapper.findNativeTextarea().keydown({ keyCode: KeyCode.enter, isComposing: true });
+    expect(onAction).not.toHaveBeenCalled();
   });
 
   test('fire keydown event', () => {
