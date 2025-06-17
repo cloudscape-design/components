@@ -17,41 +17,27 @@ import {
 } from 'date-fns';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
-
 import { CalendarProps } from '../../calendar/interfaces';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import { getBaseDay } from '../../calendar/utils/navigation-day';
 import { getBaseMonth } from '../../calendar/utils/navigation-month';
 import { useInternalI18n } from '../../i18n/context.js';
-import { BaseComponentProps } from '../../internal/base-component';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import { formatDate, formatDateTime, parseDate, splitDateTime } from '../../internal/utils/date-time';
 import { normalizeLocale, normalizeStartOfWeek } from '../../internal/utils/locale';
 import InternalLiveRegion from '../../live-region/internal';
 import SpaceBetween from '../../space-between/internal';
-import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces';
+import { DateRangePickerProps } from '../interfaces';
 import { Grids } from './grids';
 import CalendarHeader from './header';
+import { DateRangePickerCalendarProps } from './interfaces';
 import RangeInputs from './range-inputs.js';
 import { findDateToFocus, findMonthToDisplay, findMonthToFocus, findYearToDisplay } from './utils';
 
 import styles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
-export interface DateRangePickerCalendarProps extends BaseComponentProps, Pick<CalendarProps, 'granularity'> {
-  value: DateRangePickerProps.PendingAbsoluteValue;
-  setValue: React.Dispatch<React.SetStateAction<DateRangePickerProps.PendingAbsoluteValue>>;
-  locale?: string;
-  startOfWeek?: number;
-  isDateEnabled?: (date: Date) => boolean;
-  dateDisabledReason?: (date: Date) => string;
-  i18nStrings?: RangeCalendarI18nStrings;
-  dateOnly?: boolean;
-  absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
-  timeInputFormat?: DateRangePickerProps.TimeInputFormat;
-  dateInputFormat?: DateRangePickerProps.DateInputFormat;
-  customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
-}
+export { DateRangePickerCalendarProps };
 
 export default function DateRangePickerCalendar({
   value,
@@ -74,7 +60,6 @@ export default function DateRangePickerCalendar({
   const normalizedLocale = normalizeLocale('DateRangePicker', locale);
   const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
   const i18n = useInternalI18n('date-range-picker');
-
   const [announcement, setAnnouncement] = useState('');
   const findPageToDisplay = isMonthPicker ? findYearToDisplay : findMonthToDisplay;
   const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
@@ -131,7 +116,7 @@ export default function DateRangePickerCalendar({
   const renderSelectedAbsoluteRangeAriaLive = i18n(
     'i18nStrings.renderSelectedAbsoluteRangeAriaLive',
     i18nStrings?.renderSelectedAbsoluteRangeAriaLive,
-    format => (startDate, endDate) => format({ startDate, endDate })
+    format => (startDate: string | number, endDate: string | number) => format({ startDate, endDate })
   );
 
   const announceRange = (startDate: Date, endDate: Date) => {

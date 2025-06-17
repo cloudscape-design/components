@@ -133,6 +133,7 @@ export interface DateRangePickerBaseProps {
    */
   getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction;
 }
+
 export interface DateRangePickerProps
   extends BaseComponentProps,
     FormFieldValidationControlProps,
@@ -584,29 +585,3 @@ export namespace DateRangePickerProps {
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export type QuarterIndex = 0 | 1 | 2;
-
-export type RangeCalendarI18nStrings = Pick<
-  DateRangePickerProps.I18nStrings,
-  | 'todayAriaLabel'
-  | 'nextMonthAriaLabel'
-  | 'previousMonthAriaLabel'
-  | 'currentMonthAriaLabel'
-  | 'nextYearAriaLabel'
-  | 'previousYearAriaLabel'
-  | 'startMonthLabel'
-  | 'startDateLabel'
-  | 'startTimeLabel'
-  | 'endMonthLabel'
-  | 'endDateLabel'
-  | 'endTimeLabel'
-  | 'dateConstraintText'
-  | 'isoDateConstraintText'
-  | 'slashedDateConstraintText'
-  | 'dateTimeConstraintText'
-  | 'isoDateTimeConstraintText'
-  | 'slashedDateTimeConstraintText'
-  | 'monthConstraintText'
-  | 'isoMonthConstraintText'
-  | 'slashedMonthConstraintText'
-  | 'renderSelectedAbsoluteRangeAriaLive'
->;

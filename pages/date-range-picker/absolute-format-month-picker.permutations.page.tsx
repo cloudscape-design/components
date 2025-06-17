@@ -10,10 +10,14 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { generatePlaceholder, i18nStrings, isValid } from './common';
 
 const permutations = createPermutations<
-  Pick<DateRangePickerProps, 'absoluteFormat' | 'dateOnly' | 'hideTimeOffset' | 'value' | 'granularity'>
+  Pick<
+    DateRangePickerProps,
+    'absoluteFormat' | 'dateOnly' | 'hideTimeOffset' | 'value' | 'granularity' | 'dateInputFormat'
+  >
 >([
   {
-    absoluteFormat: ['iso', 'long-localized'],
+    absoluteFormat: ['iso', 'long-localized', 'slashed'],
+    dateInputFormat: ['iso', 'slashed'],
     value: [
       {
         type: 'absolute',
@@ -24,6 +28,7 @@ const permutations = createPermutations<
   },
   {
     absoluteFormat: ['iso', 'long-localized'],
+    dateInputFormat: ['iso', 'slashed'],
     hideTimeOffset: [true, false],
     value: [
       {
@@ -48,6 +53,7 @@ export default function DateRangePickerPermutations() {
               <DateRangePicker
                 value={permutation.value}
                 absoluteFormat={permutation.absoluteFormat}
+                dateInputFormat={permutation.dateInputFormat}
                 dateOnly={false}
                 granularity="month"
                 hideTimeOffset={permutation.hideTimeOffset}

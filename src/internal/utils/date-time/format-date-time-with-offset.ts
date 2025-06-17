@@ -26,7 +26,11 @@ export function formatDateTimeWithOffset({
       return formatDateLocalized({ date, hideTimeOffset, isDateOnly, isMonthOnly, locale, timeOffset });
     }
     case 'slashed': {
-      return formatDateIso({ date, hideTimeOffset, isDateOnly, isMonthOnly, timeOffset }).split('-').join('/');
+      //todo test out cases. run date picker tests confirm working
+      const [formattedDate, time] = formatDateIso({ date, hideTimeOffset, isDateOnly, isMonthOnly, timeOffset }).split(
+        'T'
+      );
+      return `${formattedDate.split('-').join('/')}${time ? `T${time}` : ''}`;
     }
     default: {
       return formatDateIso({ date, hideTimeOffset, isDateOnly, isMonthOnly, timeOffset });

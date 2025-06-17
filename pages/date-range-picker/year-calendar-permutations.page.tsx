@@ -32,6 +32,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     onChange: [() => {}],
     i18nStrings: [i18nStrings],
     customAbsoluteRangeControl: [undefined],
+    dateInputFormat: ['iso', 'slashed'] as const,
   })),
   // Disabled dates
   {

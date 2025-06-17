@@ -3,6 +3,7 @@
 import React, { useContext, useState } from 'react';
 
 import { Box, DateRangePicker, DateRangePickerProps, FormField, Grid, SpaceBetween } from '~components';
+import { EditableDateFormat } from '~components/internal/utils/date-time/date-types';
 
 import AppContext from '../app/app-context';
 import {
@@ -53,6 +54,13 @@ export default function DateRangePickerScenario() {
   const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
   const absoluteFormat =
     urlParams.absoluteFormat ?? (dateRangePickerDemoDefaults.absoluteFormat as DateRangePickerProps.AbsoluteFormat);
+  const timeInputFormat =
+    urlParams.timeInputFormat ?? (dateRangePickerDemoDefaults.timeInputFormat as DateRangePickerProps.TimeInputFormat);
+  const dateInputFormat =
+    urlParams.dateInputFormat && urlParams.dateInputFormat !== 'none'
+      ? (urlParams.dateInputFormat as EditableDateFormat)
+      : undefined;
+
   const hideTimeOffset = urlParams.hideTimeOffset ?? dateRangePickerDemoDefaults.hideTimeOffset;
   const timeOffset = isNaN(parseInt(urlParams.timeOffset as string))
     ? dateRangePickerDemoDefaults.timeOffset
@@ -69,7 +77,7 @@ export default function DateRangePickerScenario() {
         <h1>Absolute date range picker with custom absolute format</h1>
         <SpaceBetween direction="horizontal" size="xxl">
           <label>
-            Format{' '}
+            Absolute format{' '}
             <select
               value={absoluteFormat}
               onChange={event =>
@@ -79,6 +87,7 @@ export default function DateRangePickerScenario() {
               }
             >
               <option value="">(Default)</option>
+              <option value="slashed">Slashed</option>
               <option value="long-localized">Localized</option>
             </select>
           </label>
@@ -126,6 +135,36 @@ export default function DateRangePickerScenario() {
             Month only
           </label>
           <label>
+            Date input format{' '}
+            <select
+              value={dateInputFormat}
+              onChange={event =>
+                setUrlParams({
+                  dateInputFormat: event.currentTarget.value as DateRangePickerProps.DateInputFormat | 'none',
+                })
+              }
+            >
+              <option value="none">None (Default)</option>
+              <option value="iso">Iso</option>
+              <option value="slashed">Slashed</option>
+            </select>
+          </label>
+          <label>
+            Time input format{' '}
+            <select
+              value={timeInputFormat}
+              onChange={event =>
+                setUrlParams({
+                  timeInputFormat: event.currentTarget.value as DateRangePickerProps.TimeInputFormat,
+                })
+              }
+            >
+              <option value="hh:mm:ss">hh:mm:ss (Default)</option>
+              <option value="hh:mm">hh:mm</option>
+              <option value="hh">hh</option>
+            </select>
+          </label>
+          <label>
             Time offset from UTC in minutes{' '}
             <input
               type="number"
@@ -167,6 +206,8 @@ export default function DateRangePickerScenario() {
                   dateOnly={dateOnly}
                   granularity={monthOnly ? 'month' : 'day'}
                   hideTimeOffset={hideTimeOffset}
+                  timeInputFormat={timeInputFormat}
+                  dateInputFormat={dateInputFormat}
                 />
               </FormField>
             </Grid>

@@ -34,6 +34,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     startOfWeek: [1],
     onChange: [() => {}],
     timeInputFormat: ['hh:mm:ss'] as const,
+    dateInputFormat: ['iso', 'slashed'] as const,
     i18nStrings: [i18nStrings],
     customAbsoluteRangeControl: [undefined],
   })),
