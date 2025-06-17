@@ -188,6 +188,38 @@ export const Flash = React.forwardRef(
       analyticsAttributes[DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS] = 'true';
     }
 
+    const getFlashStyles = () => {
+      return {
+        background:
+          style?.item?.root?.background &&
+          (effectiveType === 'in-progress'
+            ? style?.item?.root?.background.inProgress
+            : style?.item?.root?.background[effectiveType as keyof typeof style.item.root.background]),
+        borderColor:
+          style?.item?.root?.borderColor &&
+          (effectiveType === 'in-progress'
+            ? style?.item?.root?.borderColor.inProgress
+            : style?.item?.root?.borderColor[effectiveType as keyof typeof style.item.root.borderColor]),
+        borderRadius: style?.item?.root?.borderRadius,
+        borderWidth: style?.item?.root?.borderWidth,
+        borderStyle: style?.item?.root?.borderWidth && 'solid',
+        color:
+          style?.item?.root?.color &&
+          (effectiveType === 'in-progress'
+            ? style?.item?.root?.color?.inProgress
+            : style?.item?.root?.color &&
+              style?.item?.root?.color[effectiveType as keyof typeof style.item.root.color]),
+        ...(style?.item?.root?.focusRing && {
+          [customCssProps.styleFocusRingBorderColor]: style.item.root.focusRing?.borderColor,
+          [customCssProps.styleFocusRingBorderRadius]: style.item.root.focusRing?.borderRadius,
+          [customCssProps.styleFocusRingBorderWidth]: style.item.root.focusRing?.borderWidth,
+        }),
+        ...(style?.item?.root?.focusRing?.borderRadius && {
+          [customCssProps.styleFocusRingBorderRadius]: style.item.root.focusRing.borderRadius,
+        }),
+      };
+    };
+
     return (
       // We're not using "polite" or "assertive" here, just turning default behavior off.
       // eslint-disable-next-line @cloudscape-design/prefer-live-region
@@ -211,35 +243,7 @@ export const Flash = React.forwardRef(
           getVisualContextClassname(type === 'warning' && !loading ? 'flashbar-warning' : 'flashbar'),
           initialHidden && styles['initial-hidden']
         )}
-        style={{
-          background:
-            style?.item?.root?.background &&
-            (effectiveType === 'in-progress'
-              ? style?.item?.root?.background.inProgress
-              : style?.item?.root?.background[effectiveType as keyof typeof style.item.root.background]),
-          borderColor:
-            style?.item?.root?.borderColor &&
-            (effectiveType === 'in-progress'
-              ? style?.item?.root?.borderColor.inProgress
-              : style?.item?.root?.borderColor[effectiveType as keyof typeof style.item.root.borderColor]),
-          borderRadius: style?.item?.root?.borderRadius,
-          borderWidth: style?.item?.root?.borderWidth,
-          borderStyle: style?.item?.root?.borderWidth && 'solid',
-          color:
-            style?.item?.root?.color &&
-            (effectiveType === 'in-progress'
-              ? style?.item?.root?.color?.inProgress
-              : style?.item?.root?.color &&
-                style?.item?.root?.color[effectiveType as keyof typeof style.item.root.color]),
-          ...(style?.item?.root?.focusRing && {
-            [customCssProps.styleFocusRingBorderColor]: style.item.root.focusRing?.borderColor,
-            [customCssProps.styleFocusRingBorderRadius]: style.item.root.focusRing?.borderRadius,
-            [customCssProps.styleFocusRingBorderWidth]: style.item.root.focusRing?.borderWidth,
-          }),
-          ...(style?.item?.root?.focusRing?.borderRadius && {
-            [customCssProps.styleFocusRingBorderRadius]: style.item.root.focusRing.borderRadius,
-          }),
-        }}
+        style={{ ...getFlashStyles() }}
         {...analyticsAttributes}
       >
         <div className={styles['flash-body']}>
