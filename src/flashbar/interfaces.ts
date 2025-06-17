@@ -66,6 +66,11 @@ export namespace FlashbarProps {
           success?: string;
           warning?: string;
         };
+        focusRing?: {
+          borderColor?: string;
+          borderRadius?: string;
+          borderWidth?: string;
+        };
       };
       dismissButton?: {
         color?: {

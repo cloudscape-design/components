@@ -20,6 +20,7 @@ export default function CustomFlashbar() {
       type: 'success',
       header: 'This is the test header',
       content: 'This is the test content.',
+      id: 'success',
     },
     {
       dismissible: true,
@@ -29,6 +30,7 @@ export default function CustomFlashbar() {
       type: 'warning',
       header: 'This is the test header',
       content: 'This is the test content.',
+      id: 'warning',
     },
     {
       dismissible: true,
@@ -38,6 +40,7 @@ export default function CustomFlashbar() {
       type: 'error',
       header: 'This is the test header',
       content: 'This is the test content.',
+      id: 'error',
     },
     {
       dismissible: true,
@@ -47,6 +50,7 @@ export default function CustomFlashbar() {
       type: 'info',
       header: 'This is the test header',
       content: 'This is the test content.',
+      id: 'info',
     },
     {
       dismissible: true,
@@ -56,6 +60,7 @@ export default function CustomFlashbar() {
       type: 'in-progress',
       header: 'This is the test header',
       content: 'This is the test content.',
+      id: 'in-progress',
     },
   ];
 
@@ -113,6 +118,11 @@ const item = {
       inProgress: palette.teal100,
       success: palette.green100,
       warning: palette.orange100,
+    },
+    focusRing: {
+      borderColor: palette.neutral90,
+      borderRadius: '4px',
+      borderWidth: '1px',
     },
   },
   dismissButton: {

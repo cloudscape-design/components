@@ -21,6 +21,7 @@ import {
 } from '../internal/analytics/selectors';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { PACKAGE_VERSION } from '../internal/environment';
+import customCssProps from '../internal/generated/custom-css-properties';
 import { isDevelopment } from '../internal/is-development';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
@@ -230,6 +231,14 @@ export const Flash = React.forwardRef(
               ? style?.item?.root?.color?.inProgress
               : style?.item?.root?.color &&
                 style?.item?.root?.color[effectiveType as keyof typeof style.item.root.color]),
+          ...(style?.item?.root?.focusRing && {
+            [customCssProps.styleFocusRingBorderColor]: style.item.root.focusRing?.borderColor,
+            [customCssProps.styleFocusRingBorderRadius]: style.item.root.focusRing?.borderRadius,
+            [customCssProps.styleFocusRingBorderWidth]: style.item.root.focusRing?.borderWidth,
+          }),
+          ...(style?.item?.root?.focusRing?.borderRadius && {
+            [customCssProps.styleFocusRingBorderRadius]: style.item.root.focusRing.borderRadius,
+          }),
         }}
         {...analyticsAttributes}
       >
