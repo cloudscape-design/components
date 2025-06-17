@@ -450,13 +450,16 @@ describe('Collapsible Flashbar', () => {
             },
           },
           items: [
+            { type: 'in-progress', header: 'In progress', dismissible: true },
             { type: 'error', header: 'Error', dismissible: true },
             { type: 'success', header: 'Success', dismissible: true },
             { type: 'warning', header: 'Warning', dismissible: true },
             { type: 'info', header: 'Info', dismissible: true },
-            { type: 'in-progress', header: 'In progress', dismissible: true },
           ],
         });
+
+        findNotificationBar(flashbar)!.click();
+
         expect(
           getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
             customCssProps.styleBackgroundActive
