@@ -45,11 +45,6 @@ export function InlineEditor<ItemType>({
 
   const focusLockRef = useRef<FocusLockRef>(null);
 
-  const cellContext = {
-    currentValue: currentEditValue,
-    setValue: setCurrentEditValue,
-  };
-
   function finishEdit({ cancelled = false, refocusCell = true }: Partial<OnEditEndOptions> = {}) {
     if (!cancelled) {
       setCurrentEditValue(undefined);
@@ -57,9 +52,7 @@ export function InlineEditor<ItemType>({
     onEditEnd({ cancelled, refocusCell: refocusCell });
   }
 
-  async function onSubmitClick(evt: React.FormEvent) {
-    evt.preventDefault(); // Prevents the form from navigating away
-    evt.stopPropagation(); // Prevents any outer form elements from submitting
+  async function handleSubmit() {
     if (currentEditValue === undefined) {
       finishEdit();
       return;
@@ -77,6 +70,12 @@ export function InlineEditor<ItemType>({
       setCurrentEditLoading(false);
       focusLockRef.current?.focusFirst();
     }
+  }
+
+  function onFormSubmit(evt: React.FormEvent) {
+    evt.preventDefault(); // Prevents the form from navigating away
+    evt.stopPropagation(); // Prevents any outer form elements from submitting
+    handleSubmit();
   }
 
   function onCancel({ reFocusEditedCell = true } = {}) {
@@ -108,7 +107,16 @@ export function InlineEditor<ItemType>({
     errorIconAriaLabel,
     constraintText,
     editingCell,
+    disableNativeForm,
   } = column.editConfig!;
+
+  const cellContext = {
+    currentValue: currentEditValue,
+    setValue: setCurrentEditValue,
+    submitValue: handleSubmit,
+  };
+
+  const FormElement = disableNativeForm ? 'div' : 'form';
 
   return (
     <FocusLock restoreFocus={true} ref={focusLockRef}>
@@ -118,7 +126,7 @@ export function InlineEditor<ItemType>({
         aria-label={ariaLabels?.activateEditLabel?.(column, item)}
         onKeyDown={handleEscape}
       >
-        <form onSubmit={onSubmitClick}>
+        <FormElement onSubmit={disableNativeForm ? undefined : onFormSubmit}>
           <FormField
             stretch={true}
             label={ariaLabel}
@@ -143,7 +151,8 @@ export function InlineEditor<ItemType>({
                   ) : null}
                   <Button
                     ariaLabel={ariaLabels?.submitEditLabel?.(column)}
-                    formAction="submit"
+                    formAction={disableNativeForm ? 'none' : 'submit'}
+                    onClick={disableNativeForm ? handleSubmit : undefined}
                     iconName="check"
                     variant="inline-icon"
                     loading={currentEditLoading}
@@ -157,7 +166,7 @@ export function InlineEditor<ItemType>({
               </span>
             </div>
           </FormField>
-        </form>
+        </FormElement>
       </div>
     </FocusLock>
   );
