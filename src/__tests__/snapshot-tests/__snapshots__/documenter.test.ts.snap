@@ -9474,7 +9474,7 @@ If the \`action\` property is set, this property is ignored. **Deprecated**, rep
           {
             "name": "item",
             "optional": true,
-            "type": "{ root?: { background?: { error?: string | undefined; info?: string | undefined; inProgress?: string | undefined; success?: string | undefined; warning?: string | undefined; } | undefined; borderColor?: { ...; } | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; color?: { ...; } | unde...",
+            "type": "{ root?: { background?: { error?: string | undefined; info?: string | undefined; inProgress?: string | undefined; success?: string | undefined; warning?: string | undefined; } | undefined; ... 4 more ...; focusRing?: { ...; } | undefined; } | undefined; dismissButton?: { ...; } | undefined; }",
           },
           {
             "name": "notificationBar",
