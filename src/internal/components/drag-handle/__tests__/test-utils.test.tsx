@@ -25,7 +25,10 @@ describe('test util selectors', () => {
     const handle = container.querySelector<HTMLButtonElement>(`.${InternalDragHandleWrapper.rootSelector}`)!;
 
     if (showUapActions) {
-      document.body.dataset.awsuiFocusVisible = 'true';
+      const originalMatches = document.body.matches;
+      jest.spyOn(document.body, 'matches').mockImplementationOnce(selectors => {
+        return selectors === ':has(:focus-visible)' ? true : originalMatches.call(document.body, selectors);
+      });
       handle.focus();
     }
 

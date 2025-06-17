@@ -18,8 +18,14 @@ beforeAll(() => {
   (window as any).PointerEvent ??= PointerEventMock;
 });
 
+beforeEach(() => {
+  const originalMatches = document.body.matches;
+  jest.spyOn(document.body, 'matches').mockImplementation(selectors => {
+    return selectors === ':has(:focus-visible)' ? true : originalMatches.call(document.body, selectors);
+  });
+});
+
 afterEach(() => {
-  delete document.body.dataset.awsuiFocusVisible;
   jest.restoreAllMocks();
 });
 
@@ -71,7 +77,6 @@ function renderDragHandle(props: Partial<Omit<DragHandleWrapperProps, 'children'
   return {
     dragHandle: container.querySelector<HTMLButtonElement>('#drag-button')!,
     showButtons: () => {
-      document.body.dataset.awsuiFocusVisible = 'true';
       container.querySelector<HTMLButtonElement>('#drag-button')!.focus();
     },
     getTooltip: () => document.querySelector(`.${tooltipStyles.root}`),
@@ -172,7 +177,6 @@ describe('triggerMode = focus (default)', () => {
       directions: { 'block-start': 'active', 'block-end': 'active' },
     });
 
-    document.body.dataset.awsuiFocusVisible = 'true';
     dragHandle.focus();
     expectDirectionButtonToBeVisible('block-start');
     expectDirectionButtonToBeVisible('block-end');
@@ -184,7 +188,6 @@ describe('triggerMode = focus (default)', () => {
       directions: { 'block-start': 'active', 'block-end': 'active' },
     });
 
-    document.body.dataset.awsuiFocusVisible = 'true';
     dragHandle.focus();
     expectDirectionButtonToBeVisible('block-start');
     expectDirectionButtonToBeVisible('block-end');
@@ -207,7 +210,6 @@ describe('triggerMode = focus (default)', () => {
       tooltipText: 'Click me!',
     });
 
-    document.body.dataset.awsuiFocusVisible = 'true';
     dragHandle.focus();
 
     expect(getDirectionButton('block-start')).toBeInTheDocument();
@@ -226,7 +228,6 @@ describe('triggerMode = keyboard-activate', () => {
       triggerMode: 'keyboard-activate',
     });
 
-    document.body.dataset.awsuiFocusVisible = 'true';
     dragHandle.focus();
     expectDirectionButtonToBeHidden('block-start');
     expectDirectionButtonToBeHidden('block-end');
@@ -240,7 +241,6 @@ describe('triggerMode = keyboard-activate', () => {
       triggerMode: 'keyboard-activate',
     });
 
-    document.body.dataset.awsuiFocusVisible = 'true';
     dragHandle.focus();
     expectDirectionButtonToBeHidden('block-start');
     expectDirectionButtonToBeHidden('block-end');
@@ -261,7 +261,6 @@ describe('triggerMode = keyboard-activate', () => {
       triggerMode: 'keyboard-activate',
     });
 
-    document.body.dataset.awsuiFocusVisible = 'true';
     dragHandle.focus();
     expectDirectionButtonToBeHidden('block-start');
     expectDirectionButtonToBeHidden('block-end');
@@ -278,8 +277,6 @@ describe('triggerMode = keyboard-activate', () => {
       directions: { 'block-start': 'active', 'block-end': 'active' },
       triggerMode: 'keyboard-activate',
     });
-
-    document.body.dataset.awsuiFocusVisible = 'true';
 
     dragHandle.focus();
     fireEvent.keyDown(dragHandle, { key: 'Enter' });
@@ -298,8 +295,6 @@ describe('triggerMode = keyboard-activate', () => {
       directions: { 'block-start': 'active', 'block-end': 'active' },
       triggerMode: 'keyboard-activate',
     });
-
-    document.body.dataset.awsuiFocusVisible = 'true';
 
     fireEvent.keyDown(dragHandle, { key });
 

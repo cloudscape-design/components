@@ -5,7 +5,6 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @mixin animated {
   @include styles.with-motion {
@@ -19,7 +18,8 @@
   border-end-start-radius: $border-radius;
   border-end-end-radius: $border-radius;
 
-  @include focus-visible.when-visible-unfocused {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  :global(:has(:focus-visible)) & {
     @include styles.focus-highlight(0px, $border-radius);
   }
 }

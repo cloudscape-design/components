@@ -45,7 +45,13 @@ beforeEach(() => {
   Object.defineProperty(document.documentElement, 'clientHeight', { value: 800, configurable: true });
   originalGetComputedStyle = window.getComputedStyle;
   window.getComputedStyle = fakeComputedStyle;
+
+  const originalMatches = document.body.matches;
+  jest.spyOn(document.body, 'matches').mockImplementationOnce(selectors => {
+    return selectors === ':has(:focus-visible)' ? true : originalMatches.call(document.body, selectors);
+  });
 });
+
 afterEach(() => {
   Object.defineProperty(document.documentElement, 'clientHeight', {
     value: originalDocumentHeight,

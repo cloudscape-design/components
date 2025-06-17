@@ -5,7 +5,6 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $cell-vertical-padding: awsui.$space-scaled-xs;
 // Calculate padding to prevent a shift in content after selection due to the difference
@@ -401,7 +400,7 @@ $cell-negative-space-vertical: 2px;
     }
 
     &-focusable {
-      @include focus-visible.when-visible {
+      &:focus-visible {
         // Making focus outline slightly smaller to not intersect with the success indicator.
         @include safe-focus-highlight(-1px);
       }
@@ -543,7 +542,7 @@ $cell-negative-space-vertical: 2px;
     }
   }
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include cell-focus-outline;
   }
 }
