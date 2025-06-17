@@ -6,6 +6,7 @@ import { Flashbar, FlashbarProps, SpaceBetween } from '~components';
 
 import { palette } from '../app/themes/style-api';
 import ScreenshotArea from '../utils/screenshot-area';
+import { i18nStrings } from './common';
 
 export default function CustomFlashbar() {
   const noop = () => void 0;
@@ -71,6 +72,7 @@ export default function CustomFlashbar() {
             item,
             notificationBar,
           }}
+          i18nStrings={i18nStrings}
         />
 
         <Flashbar
@@ -80,6 +82,7 @@ export default function CustomFlashbar() {
           style={{
             item,
           }}
+          i18nStrings={i18nStrings}
         />
       </SpaceBetween>
     </ScreenshotArea>
