@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { useFormFieldContext } from '../contexts/form-field';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SomeRequired } from '../internal/types';
 import PlainList from '../select/parts/plain-list';
 import VirtualList from '../select/parts/virtual-list';

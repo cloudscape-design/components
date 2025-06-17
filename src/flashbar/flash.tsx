@@ -3,7 +3,12 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { useComponentMetadata, useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import {
+  useComponentMetadata,
+  useMergeRefs,
+  useUniqueId,
+  warnOnce,
+} from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
 
@@ -16,7 +21,6 @@ import {
 } from '../internal/analytics/selectors';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { PACKAGE_VERSION } from '../internal/environment';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';

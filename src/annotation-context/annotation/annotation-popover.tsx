@@ -3,11 +3,12 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalAlert from '../../alert/internal';
 import InternalBox from '../../box/internal';
 import { InternalButton } from '../../button/internal';
 import { HotspotProps } from '../../hotspot/interfaces';
-import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
 import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
 import { joinStrings } from '../../internal/utils/strings/join-strings.js';
 import PopoverBody from '../../popover/body';

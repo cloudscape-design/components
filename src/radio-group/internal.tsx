@@ -3,13 +3,13 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { getBaseProps } from '../internal/base-component';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { GeneratedAnalyticsMetadataRadioGroupSelect } from './analytics-metadata/interfaces';
 import { RadioGroupProps } from './interfaces';
 import RadioButton from './radio-button';

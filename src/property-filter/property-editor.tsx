@@ -4,12 +4,13 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalButton from '../button/internal';
 import InternalCheckbox from '../checkbox/internal';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { FormFieldContext } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import EmbeddedMultiselect from '../multiselect/embedded';
 import { filterOptions } from './filter-options';
 import { I18nStringsInternal } from './i18n-utils';
