@@ -4223,6 +4223,25 @@ If the \`rel\` property is provided, it overrides the default behavior.",
       "type": "string",
     },
     {
+      "inlineType": {
+        "name": "ButtonProps.Style",
+        "properties": [
+          {
+            "name": "root",
+            "optional": true,
+            "type": "{ background?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; borderColor?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; ... 5 more ...; pa...",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "ButtonProps.Style",
+    },
+    {
       "description": "Specifies where to open the linked URL (for example, to open in a new browser window or tab use \`_blank\`).
 This property only applies when an \`href\` is provided.",
       "name": "target",
@@ -20075,6 +20094,25 @@ It prevents users from clicking the button, but it can still be focused.",
       "name": "pressedIconUrl",
       "optional": true,
       "type": "string",
+    },
+    {
+      "inlineType": {
+        "name": "ButtonProps.Style",
+        "properties": [
+          {
+            "name": "root",
+            "optional": true,
+            "type": "{ background?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; borderColor?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; ... 5 more ...; pa...",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "ButtonProps.Style",
     },
     {
       "defaultValue": "'normal'",
