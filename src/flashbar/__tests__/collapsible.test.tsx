@@ -463,6 +463,10 @@ describe('Collapsible Flashbar', () => {
           ],
         });
 
+        expect(getComputedStyle(flashbar.findItems()[0].find('li > div')?.getElement() as HTMLElement).background).toBe(
+          'yellow'
+        );
+
         findNotificationBar(flashbar)!.click();
 
         expect(
