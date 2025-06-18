@@ -63,7 +63,7 @@ const MaskedInput = React.forwardRef(
     };
 
     const mergedRef = useMergeRefs(ref, inputRef);
-
+    console.log({ rest, inputProps });
     return (
       <InternalInput
         {...inputProps}

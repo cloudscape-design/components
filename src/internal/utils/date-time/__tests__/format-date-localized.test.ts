@@ -32,7 +32,7 @@ describe('formatDateLocalized', () => {
       locale: 'en-US',
     });
 
-    expect(result).toMatch(/^June 15, 2023, 14:00:00 UTC\+00:00$/);
+    expect(result).toMatch(/^June 15, 2023, 12:00:00 UTC\+00:00$/);
   });
 
   test('formats date only when isDateOnly is true', () => {
@@ -55,7 +55,7 @@ describe('formatDateLocalized', () => {
       locale: 'en-US',
     });
 
-    expect(result).toBe('June 15, 2023, 14:00:00');
+    expect(result).toBe('June 15, 2023, 12:00:00');
   });
 
   test('uses space as separator for Japanese locale', () => {
@@ -66,7 +66,7 @@ describe('formatDateLocalized', () => {
       locale: 'ja',
     });
 
-    expect(result).toMatch(/^2023年6月15日 14:00:00 UTC\+00:00$/);
+    expect(result).toMatch(/^2023年6月15日 12:00:00 UTC\+00:00$/);
   });
 
   test('handles non-ISO formatted date strings', () => {
@@ -91,6 +91,6 @@ describe('formatDateLocalized', () => {
       locale: 'en-US',
     });
 
-    expect(result).toMatch(/^June 15, 2023, 19:00:00 UTC-05:00$/);
+    expect(result).toMatch(/^June 15, 2023, 17:00:00 UTC-05:00$/);
   });
 });

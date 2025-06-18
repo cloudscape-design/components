@@ -6,7 +6,6 @@ import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import { CalendarProps } from '../calendar/interfaces';
 import MaskedInput from '../internal/components/masked-input';
 import { fireNonCancelableEvent } from '../internal/events';
 import { NonCancelableCustomEvent } from '../internal/events';
@@ -18,10 +17,7 @@ import { generateMaskArgs, normalizeIsoDateString } from './utils';
 
 import styles from './styles.css.js';
 
-type InternalDateInputProps = DateInputProps &
-  InternalBaseComponentProps & {
-    granularity?: CalendarProps.Granularity;
-  };
+type InternalDateInputProps = DateInputProps & InternalBaseComponentProps;
 
 const InternalDateInput = React.forwardRef(
   (
@@ -109,35 +105,39 @@ const InternalDateInput = React.forwardRef(
       }
     }, [isIso, format, value, locale, inputFormat, granularity, isFocused]);
 
-    const sharedProps = {
-      ...props,
-      ref: inputRef,
-      autoComplete: false,
-      disabled,
-      disableBrowserAutocorrect: true,
-      className: clsx(styles.root, props.className, {
-        [styles['long-localized-focused']]: format === 'long-localized' && isFocused,
-      }),
-      onFocus: onInputFocus,
-      ['__internalRootRef']: __internalRootRef,
-      ['data-format']: format,
-      ['data-editable-format']: format === 'long-localized' ? inputFormat : format,
-    };
+    // const sharedProps = {
+    //   ...props,
+
+    //   ['__internalRootRef']: __internalRootRef,
+    //   ['data-format']: format,
+    //   ['data-editable-format']: format === 'long-localized' ? inputFormat : format,
+    // };
 
     return (
       <div ref={mergedRef}>
         <MaskedInput
-          {...sharedProps}
+          {...props}
+          ref={inputRef}
+          className={clsx({
+            [styles.root]: true,
+            [styles['long-localized-focused']]: format === 'long-localized' && isFocused,
+            ...(props.className && { [props.className]: true }),
+          })}
           staticValue={(!isFocused || readOnly) && format === 'long-localized' ? displayValue : ''}
           value={isIso ? value || '' : isoToDisplay(value || '')}
-          // value={isIso ? displayToIso(value) || '' : isoToDisplay(value || '')}
           onChange={onInputChange}
           onFocus={onInputFocus}
           onBlur={onInputBlur}
           mask={generateMaskArgs({ granularity, isIso })}
           autofix={format !== 'long-localized' || (format === 'long-localized' && isFocused)}
           disableAutocompleteOnBlur={false}
+          disableBrowserAutocorrect={true}
+          autoComplete={false}
+          disabled={disabled}
           readOnly={readOnly}
+          data-format={format}
+          data-editable-format={format === 'long-localized' ? inputFormat : format}
+          __internalRootRef={__internalRootRef}
         />
       </div>
     );

@@ -17,7 +17,7 @@ import {
 } from 'date-fns';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
-import { CalendarProps } from '../../calendar/interfaces';
+
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import { getBaseDay } from '../../calendar/utils/navigation-day';
 import { getBaseMonth } from '../../calendar/utils/navigation-month';
