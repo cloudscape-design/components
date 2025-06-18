@@ -159,27 +159,34 @@ describe('Flashbar Style API', () => {
     'active, hover and focus states',
     useBrowser(async browser => {
       await browser.url('#/light/flashbar/style-custom');
+
       const page = new FlashbarBasePage(browser);
       const dismissButton = page.getDismissButton();
       const notificationBar = page.getNotificationBar();
       const expandButton = page.getExpandButton();
 
       await page.hoverElement(dismissButton);
-      await expect(await page.getComputedStyles(dismissButton, 'color')).toBe('rgb(48, 64, 80)');
+      await expect((await browser.$(dismissButton).getCSSProperty('color')).value).toBe('rgba(48,64,80,1)');
+
       await page.buttonDownOnElement(dismissButton);
-      await expect(await page.getComputedStyles(dismissButton, 'color')).toBe('rgb(13, 26, 38)');
+      await expect((await browser.$(dismissButton).getCSSProperty('color')).value).toBe('rgba(13,26,38,1)');
+
       await page.click('[data-testid=collapsed]');
       await page.keys('Tab');
-      await expect(await page.getComputedStyles(dismissButton, 'box-shadow', ':before')).toBe(
-        'rgb(48, 64, 80) 0px 0px 0px 1px'
+      await expect((await browser.$(dismissButton).getCSSProperty('box-shadow', '::before')).value).toBe(
+        'rgb(48,64,80)0px0px0px1px'
       );
+
       await page.click('[data-testid=collapsed]');
       await page.keys(['Shift', 'Tab']);
-      await expect(await page.getComputedStyles(expandButton, 'box-shadow', ':before')).toBe(
-        'rgb(249, 249, 250) 0px 0px 0px 2px'
+      await expect((await browser.$(expandButton).getCSSProperty('box-shadow', '::before')).value).toBe(
+        'rgb(249,249,250)0px0px0px2px'
       );
+
       await page.buttonDownOnElement(notificationBar);
-      await expect(await page.getComputedStyles(notificationBar, 'background-color')).toBe('rgb(92, 102, 112)');
+      await expect((await browser.$(notificationBar).getCSSProperty('background-color')).value).toBe(
+        'rgba(92,102,112,1)'
+      );
     })
   );
 });

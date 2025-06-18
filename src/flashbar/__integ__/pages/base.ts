@@ -35,13 +35,4 @@ export class FlashbarBasePage extends BasePageObject {
       flashbar.findItems().get(index).findByClassName(selectors['flash-focus-container']).toSelector()
     );
   }
-
-  getComputedStyles(selector: string, property: string, pseudoElement: string | null = null) {
-    return this.browser.execute(
-      ([selector, property, pseudoElement]) => {
-        return getComputedStyle(document.querySelector(selector)!, pseudoElement).getPropertyValue(property);
-      },
-      [selector, property, pseudoElement] as const
-    );
-  }
 }
