@@ -62,13 +62,13 @@ export default function SimpleContainers() {
             {/* Multi-component icon override */}
             <IconProvider
               icons={{
-                'add-plus': CUSTOM_SVG,
                 'status-positive': CUSTOM_SVG,
                 'status-negative': CUSTOM_SVG,
               }}
             >
               <SpaceBetween size="m">
                 <SpaceBetween size="s" direction="horizontal" alignItems="center">
+                  {/* Use close override from parent Provider */}
                   <Button iconName="close">Icon test</Button>
                   <StatusIndicator type="success">Icon test</StatusIndicator>
                 </SpaceBetween>
@@ -79,24 +79,18 @@ export default function SimpleContainers() {
             </IconProvider>
 
             {/* Icon reset */}
-            <IconProvider
-              icons={{
-                'drag-indicator': CUSTOM_SVG,
-                close: CUSTOM_SIMPLE_SVG,
-              }}
-            >
-              <IconProvider icons={{ 'add-plus': CUSTOM_SVG, close: CUSTOM_SIMPLE_SVG }}>
-                <SpaceBetween direction="horizontal" size="s">
-                  <Icon name={'add-plus'} />
-                  <Icon name={'close'} />
-                  <IconProvider icons={null}>
-                    <SpaceBetween direction="horizontal" size="s">
-                      <Icon name={'add-plus'} />
-                      <Icon name={'close'} />
-                    </SpaceBetween>
-                  </IconProvider>
-                </SpaceBetween>
-              </IconProvider>
+            <IconProvider icons={{ 'add-plus': CUSTOM_SVG, close: CUSTOM_SIMPLE_SVG }}>
+              <SpaceBetween direction="horizontal" size="s">
+                <Icon name={'add-plus'} />
+                <Icon name={'close'} />
+                {/* Restore icons in the below Provider back to the built-in set */}
+                <IconProvider icons={null}>
+                  <SpaceBetween direction="horizontal" size="s">
+                    <Icon name={'add-plus'} />
+                    <Icon name={'close'} />
+                  </SpaceBetween>
+                </IconProvider>
+              </SpaceBetween>
             </IconProvider>
 
             {/* Modal icon override */}
