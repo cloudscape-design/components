@@ -108,14 +108,9 @@ const InternalIcon = ({
     );
   }
 
-  function getIconFromName(name?: IconProps.Name) {
-    const validIcon = name && Object.prototype.hasOwnProperty.call(icons, name);
+  const validIcon = name && Object.prototype.hasOwnProperty.call(icons, name);
 
-    if (!validIcon) {
-      warnOnce('Icon', `The "${name}" icon does not exist in the icon set.`);
-      return undefined;
-    }
-
+  function iconMap(name: IconProps.Name) {
     if (name === 'gen-ai' && iconSize === 'small') {
       return (
         <svg
@@ -140,7 +135,7 @@ const InternalIcon = ({
 
   return (
     <span {...baseProps} {...labelAttributes} ref={mergedRef} style={inlineStyles}>
-      {getIconFromName(name)}
+      {validIcon ? iconMap(name) : undefined}
     </span>
   );
 };

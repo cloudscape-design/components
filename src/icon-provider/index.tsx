@@ -27,7 +27,7 @@ export default function IconProvider({ children, icons }: IconProviderProps) {
       return generatedIcons;
     }
 
-    // Merge the icons with the context icons, this allows child instances of IconProvider to persistent parent configurations
+    // Merge the icons with the context icons, this allows child instances of IconProvider to persist parent configurations
     return { ...contextIcons, ...icons };
   }, [contextIcons, icons]);
 
