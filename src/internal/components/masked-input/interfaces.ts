@@ -21,6 +21,11 @@ export interface MaskedInputProps extends InternalInputProps, FormFieldValidatio
    * Disable value autocompletion when input is blurred
    */
   disableAutocompleteOnBlur?: boolean;
+
+  /**
+   * Overrides the values and set the input to readOnly when applied
+   */
+  staticValue?: string;
 }
 
 export namespace MaskedInputProps {

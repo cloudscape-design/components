@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { DateRangePickerProps } from '../../../date-range-picker/interfaces';
-import formatDateIso from './format-date-iso';
-import formatDateLocalized from './format-date-localized';
+import { formatDateIso } from './format-date-iso';
+import { formatDateLocalized } from './format-date-localized';
 import { isIsoDateOnly, isIsoMonthOnly } from './is-iso-only';
 
 export function formatDateTimeWithOffset({
@@ -24,6 +24,13 @@ export function formatDateTimeWithOffset({
   switch (format) {
     case 'long-localized': {
       return formatDateLocalized({ date, hideTimeOffset, isDateOnly, isMonthOnly, locale, timeOffset });
+    }
+    case 'slashed': {
+      //todo test out cases. run date picker tests confirm working
+      const [formattedDate, time] = formatDateIso({ date, hideTimeOffset, isDateOnly, isMonthOnly, timeOffset }).split(
+        'T'
+      );
+      return `${formattedDate.split('-').join('/')}${time ? `T${time}` : ''}`;
     }
     default: {
       return formatDateIso({ date, hideTimeOffset, isDateOnly, isMonthOnly, timeOffset });

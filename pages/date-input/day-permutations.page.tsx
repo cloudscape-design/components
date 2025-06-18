@@ -8,11 +8,14 @@ import DateInput, { DateInputProps } from '~components/date-input';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+import { generatePlaceholder } from './common';
 
 const permutations = createPermutations<DateInputProps>([
   {
     value: ['', '2020-01-01'],
-    placeholder: ['', 'YYYY/MM/DD'],
+    placeholder: ['', 'applied'],
+    format: ['slashed', 'iso', 'long-localized'],
+    inputFormat: ['slashed', 'iso'],
     ariaLabel: ['Some label'],
     invalid: [false, true],
     readOnly: [false, true],
@@ -33,6 +36,17 @@ export default function DateInputPermutations() {
                 /*empty handler to suppress react controlled property warning*/
               }}
               {...permutation}
+              granularity="day"
+              locale="en-US"
+              placeholder={
+                permutation.placeholder
+                  ? generatePlaceholder(
+                      false,
+                      permutation.format === 'iso' ||
+                        (permutation.format === 'long-localized' && permutation.inputFormat === 'iso')
+                    )
+                  : ''
+              }
             />
           )}
         />
