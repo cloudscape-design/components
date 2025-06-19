@@ -47,7 +47,11 @@ export interface ListProps<T = any> {
    */
   sortDisabled?: boolean;
   /**
-   * Removes padding around list items.
+   * Removes padding around and inside list items.
+   */
+  disableItemPaddings?: boolean;
+  /**
+   * Removes top and bottom padding around the list. Does not apply for sortable lists.
    */
   disablePaddings?: boolean;
   /**

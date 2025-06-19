@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Box, ButtonDropdown, SpaceBetween } from '~components';
+import { Box, ButtonDropdown, Icon, SpaceBetween } from '~components';
 import List, { ListProps } from '~components/list';
 
 import createPermutations from '../utils/permutations';
@@ -26,15 +26,23 @@ const items: Item[] = [
 ];
 
 /* eslint-disable react/jsx-key */
-const permutations = createPermutations<ListProps<Item> & { viewportWidth: number; _sortable: boolean | 'disabled' }>([
+const permutations = createPermutations<
+  ListProps<Item> & { viewportWidth: number; _sortable: boolean | 'disabled'; _disablePaddings: boolean | 'item' }
+>([
   {
     viewportWidth: [200, 400],
     items: [items],
     _sortable: [true, false, 'disabled'],
-    disablePaddings: [false, true],
+    _disablePaddings: [false, true, 'item'],
     renderItem: [
       ({ content }) => ({ content, id: content }),
       ({ content }) => ({ content, id: content, secondaryContent: <Box variant="small">Description</Box> }),
+      ({ content }) => ({
+        content,
+        id: content,
+        icon: <Icon name="anchor-link" ariaLabel="Icon" />,
+        secondaryContent: <Box variant="small">Description</Box>,
+      }),
       ({ content, description }) => ({
         id: content,
         content,
@@ -64,12 +72,14 @@ export default function ListItemPermutations() {
       <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
-          render={({ viewportWidth, ...permutation }) => (
+          render={({ viewportWidth, _sortable, _disablePaddings, ...permutation }) => (
             <div style={{ width: viewportWidth, borderRight: '1px solid red', padding: '4px', overflow: 'hidden' }}>
               <List
                 {...permutation}
-                sortable={!!permutation._sortable}
-                sortDisabled={permutation._sortable === 'disabled'}
+                sortable={!!_sortable}
+                sortDisabled={_sortable === 'disabled'}
+                disablePaddings={_disablePaddings === true}
+                disableItemPaddings={_disablePaddings === 'item'}
               />
             </div>
           )}

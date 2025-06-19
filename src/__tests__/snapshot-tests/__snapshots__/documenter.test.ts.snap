@@ -11563,7 +11563,13 @@ exports[`Documenter definition for list matches the snapshot: list 1`] = `
       "type": "string",
     },
     {
-      "description": "Removes padding around list items.",
+      "description": "Removes padding around and inside list items.",
+      "name": "disableItemPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Removes top and bottom padding around the list. Does not apply for sortable lists.",
       "name": "disablePaddings",
       "optional": true,
       "type": "boolean",
