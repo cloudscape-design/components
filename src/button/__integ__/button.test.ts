@@ -11,15 +11,6 @@ class ButtonPageObject extends BasePageObject {
   getClickMessage() {
     return this.getText('#clickMessage');
   }
-
-  getComputedStyles(selector: string, property: string, pseudoElement: string | null = null) {
-    return this.browser.execute(
-      ([selector, property, pseudoElement]) => {
-        return getComputedStyle(document.querySelector(selector)!, pseudoElement).getPropertyValue(property);
-      },
-      [selector, property, pseudoElement] as const
-    );
-  }
 }
 
 describe('Button', () => {
@@ -61,15 +52,19 @@ describe('Button Style API', () => {
     useBrowser(async browser => {
       await browser.url('#/light/button/style-custom-types');
       const page = new ButtonPageObject(browser);
-      await page.click('[data-testid=default]');
-      await page.hoverElement('[data-testid=default]');
-      await expect(await page.getComputedStyles('[data-testid=default]', 'background-color')).toBe('rgb(0, 85, 102)');
+      const buttonSelector = '[data-testid=default]';
+
+      await page.click(buttonSelector);
+      await page.hoverElement(buttonSelector);
+      await expect((await browser.$(buttonSelector).getCSSProperty('background-color')).value).toBe('rgba(0,85,102,1)');
+
       await page.buttonDownOnElement('[data-testid=default]');
-      await expect(await page.getComputedStyles('[data-testid=default]', 'background-color')).toBe('rgb(0, 64, 77)');
+      await expect((await browser.$(buttonSelector).getCSSProperty('background-color')).value).toBe('rgba(0,64,77,1)');
+
       await page.buttonUp();
       await page.keys('a');
-      await expect(await page.getComputedStyles('[data-testid=default]', 'box-shadow', ':before')).toBe(
-        'rgb(0, 64, 77) 0px 0px 0px 2px'
+      await expect((await browser.$(buttonSelector).getCSSProperty('box-shadow', '::before')).value).toBe(
+        'rgb(0,64,77)0px0px0px2px'
       );
     })
   );
