@@ -84,7 +84,7 @@ export default class SelectPageObject<
     assert.equal(
       await this.isExisting(this.wrapper.findDropdown().findHighlightedOption().toSelector()),
       isDisplayed,
-      `There should ${isDisplayed ? '' : 'not '}be a highlighted option`
+      `There should ${isDisplayed ? '' : 'not '} be a highlighted option`
     );
   }
 
