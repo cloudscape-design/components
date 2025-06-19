@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Box, ButtonDropdown, Icon, SpaceBetween } from '~components';
+import { Box, ButtonDropdown, SpaceBetween } from '~components';
 import List, { ListProps } from '~components/list';
 
 import createPermutations from '../utils/permutations';
@@ -26,28 +26,14 @@ const items: Item[] = [
 ];
 
 /* eslint-disable react/jsx-key */
-const permutations = createPermutations<
-  ListProps<Item> & { viewportWidth: number; _disablePaddings: boolean | 'item' }
->([
+const permutations = createPermutations<ListProps<Item> & { viewportWidth: number; _sortable: boolean | 'disabled' }>([
   {
     viewportWidth: [200, 400],
     items: [items],
-    _disablePaddings: [false, true, 'item'],
+    _sortable: [true, false, 'disabled'],
+    disableItemPaddings: [false, true],
     renderItem: [
       ({ content }) => ({ content, id: content }),
-      ({ content }) => ({ content, id: content, secondaryContent: <Box variant="small">Description</Box> }),
-      ({ content }) => ({
-        content,
-        id: content,
-        icon: <Icon name="anchor-link" ariaLabel="Icon" />,
-        secondaryContent: <Box variant="small">Description</Box>,
-      }),
-      ({ content, description }) => ({
-        id: content,
-        content,
-        secondaryContent: description && <Box variant="small">{description}</Box>,
-        actions: <ButtonDropdown variant="icon" items={[{ id: 'item', text: 'item' }]} ariaLabel="Actions" />,
-      }),
       ({ content, description, timestamp }) => ({
         id: content,
         content,
@@ -71,13 +57,9 @@ export default function ListItemPermutations() {
       <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
-          render={({ viewportWidth, _disablePaddings, ...permutation }) => (
+          render={({ viewportWidth, _sortable, ...permutation }) => (
             <div style={{ width: viewportWidth, borderRight: '1px solid red', padding: '4px', overflow: 'hidden' }}>
-              <List
-                {...permutation}
-                disablePaddings={_disablePaddings === true}
-                disableItemPaddings={_disablePaddings === 'item'}
-              />
+              <List {...permutation} sortable={!!_sortable} sortDisabled={_sortable === 'disabled'} />
             </div>
           )}
         />
