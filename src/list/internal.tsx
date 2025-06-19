@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import InternalDragHandle from '../internal/components/drag-handle';
 import SortableArea from '../internal/components/sortable-area';
-import InternalStructuredItem from '../internal/components/structured-item';
+import InternalStructuredItem, { StructuredItemProps } from '../internal/components/structured-item';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { ListProps } from './interfaces';
@@ -15,6 +15,13 @@ import styles from './styles.css.js';
 import testClasses from './test-classes/styles.css.js';
 
 type InternalListProps<T = any> = InternalBaseComponentProps & ListProps<T>;
+
+const extractValidStructuredItemProps = ({ content, secondaryContent, icon, actions }: StructuredItemProps) => ({
+  content,
+  secondaryContent,
+  icon,
+  actions,
+});
 
 export default function InternalList<T = any>({
   items,
@@ -28,6 +35,7 @@ export default function InternalList<T = any>({
   onSortingChange,
   i18nStrings,
   disablePaddings,
+  disableItemPaddings,
   __internalRootRef = null,
   ...rest
 }: InternalListProps<T>) {
@@ -49,20 +57,21 @@ export default function InternalList<T = any>({
         onItemsChange={event => fireNonCancelableEvent(onSortingChange, { items: event.detail.items })}
         i18nStrings={i18nStrings}
         renderItem={({ ref, item, style, className, dragHandleProps, isDragGhost }) => {
-          const structuredItemProps = renderItem(item);
+          const structuredItemProps = extractValidStructuredItemProps(renderItem(item));
 
           const itemClass = clsx(
             styles.item,
             testClasses.item,
-            disablePaddings && styles['disable-paddings'],
+            disableItemPaddings && styles['disable-item-paddings'],
+            styles['sortable-item'],
             className
           );
 
           const content = (
-            <div className={styles['sortable-item']}>
+            <>
               <InternalDragHandle {...dragHandleProps} />
-              <InternalStructuredItem disablePaddings={disablePaddings} {...structuredItemProps} />
-            </div>
+              <InternalStructuredItem {...structuredItemProps} disablePaddings={disableItemPaddings} />
+            </>
           );
 
           if (isDragGhost) {
@@ -81,8 +90,19 @@ export default function InternalList<T = any>({
     contents = items?.map(item => {
       const { id, ...structuredItemProps } = renderItem(item);
       return (
-        <li key={id} className={clsx(styles.item, testClasses.item)}>
-          <InternalStructuredItem {...structuredItemProps} />
+        <li
+          key={id}
+          className={clsx(
+            styles.item,
+            testClasses.item,
+            disablePaddings && styles['disable-paddings'],
+            disableItemPaddings && styles['disable-item-paddings']
+          )}
+        >
+          <InternalStructuredItem
+            {...extractValidStructuredItemProps(structuredItemProps)}
+            disablePaddings={disableItemPaddings}
+          />
         </li>
       );
     });

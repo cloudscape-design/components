@@ -128,7 +128,7 @@ export default function ContentDisplayPreference({
           content: <ContentDisplayOption option={item} onToggle={onToggle} />,
           announcementLabel: item.label,
         })}
-        disablePaddings={true}
+        disableItemPaddings={true}
         sortable={true}
         sortDisabled={columnFilteringText.trim().length > 0}
         onSortingChange={({ detail: { items } }) => {
