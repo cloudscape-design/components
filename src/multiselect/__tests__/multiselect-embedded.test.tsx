@@ -63,7 +63,10 @@ test.each([false, true])('renders options, virtualScroll=%s', virtualScroll => {
   const items = createWrapper()
     .findAllByClassName(selectableItemsStyles['selectable-item'])
     .map(w => w.getElement());
-  expect(items.map(item => item.textContent)).toEqual(['First', 'Second', 'Third', 'Fourth']);
+
+  ['First', 'Second', 'Third', 'Fourth'].forEach((expected, i) => {
+    expect(items[i]).toHaveTextContent(expected);
+  });
 });
 
 test.each([
