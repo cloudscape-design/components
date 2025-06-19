@@ -212,41 +212,6 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
 
   const getAnimationElementId = (item: StackableItem) => `flash-${getItemId(item)}`;
 
-  const getItemStyles = (item: StackableItem) => {
-    const background =
-      style?.item?.root?.background &&
-      (item.type === 'in-progress'
-        ? style?.item?.root?.background.inProgress
-        : style?.item?.root?.background[item.type as keyof typeof style.item.root.background]);
-
-    const borderColor =
-      style?.item?.root?.borderColor &&
-      (item.type === 'in-progress'
-        ? style?.item?.root?.borderColor.inProgress
-        : style?.item?.root?.borderColor[item.type as keyof typeof style.item.root.borderColor]);
-
-    const borderRadius = style?.item?.root?.borderRadius;
-
-    const borderWidth = style?.item?.root?.borderWidth;
-
-    const borderStyle = style?.item?.root?.borderWidth && 'solid';
-
-    const color =
-      style?.item?.root?.color &&
-      (item.type === 'in-progress'
-        ? style?.item?.root?.color.inProgress
-        : style?.item?.root?.color[item.type as keyof typeof style.item.root.color]);
-
-    return {
-      background,
-      borderColor,
-      borderRadius,
-      borderStyle,
-      borderWidth,
-      color,
-    };
-  };
-
   const getNotificationBarStyles = () => {
     return {
       borderRadius: style?.notificationBar?.root.borderRadius,
@@ -335,7 +300,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
                   }
                 }}
                 style={{
-                  ...(index > 0 && !isFlashbarStackExpanded && getItemStyles(item)),
+                  ...(index > 0 && !isFlashbarStackExpanded && style && getItemStyles(style, item.type)),
                   ...((!isFlashbarStackExpanded || transitioning) && {
                     [customCssProps.flashbarStackIndex]:
                       (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
@@ -431,6 +396,41 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
     </div>
   );
 }
+
+export const getItemStyles = (style: FlashbarProps.Style, type: string = 'info') => {
+  const background =
+    style?.item?.root?.background &&
+    (type === 'in-progress'
+      ? style?.item?.root?.background.inProgress
+      : style?.item?.root?.background[type as keyof typeof style.item.root.background]);
+
+  const borderColor =
+    style?.item?.root?.borderColor &&
+    (type === 'in-progress'
+      ? style?.item?.root?.borderColor.inProgress
+      : style?.item?.root?.borderColor[type as keyof typeof style.item.root.borderColor]);
+
+  const borderRadius = style?.item?.root?.borderRadius;
+
+  const borderWidth = style?.item?.root?.borderWidth;
+
+  const borderStyle = style?.item?.root?.borderWidth && 'solid';
+
+  const color =
+    style?.item?.root?.color &&
+    (type === 'in-progress'
+      ? style?.item?.root?.color.inProgress
+      : style?.item?.root?.color[type as keyof typeof style.item.root.color]);
+
+  return {
+    background,
+    borderColor,
+    borderRadius,
+    borderStyle,
+    borderWidth,
+    color,
+  };
+};
 
 const NotificationTypeCount = ({
   iconName,
