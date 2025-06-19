@@ -31,6 +31,35 @@ export default [
     ],
   },
   {
+    title: 'AWS-MiscellaneousOverflowingStringNameService',
+    data: [
+      {
+        x: '2023-04-01',
+        y: 0,
+      },
+      {
+        x: '2023-05-01',
+        y: 12,
+      },
+      {
+        x: '2023-06-01',
+        y: 31,
+      },
+      {
+        x: '2023-07-01',
+        y: 52,
+      },
+      {
+        x: '2023-08-01',
+        y: 24,
+      },
+      {
+        x: '2023-09-01',
+        y: 4,
+      },
+    ],
+  },
+  {
     title: 'Amazon Relational Database Service',
     data: [
       {

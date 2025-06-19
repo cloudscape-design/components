@@ -36,6 +36,7 @@ $font-weight-bold: awsui.$font-weight-heading-s;
   justify-content: space-between;
   inline-size: 100%;
   > .key {
+    @include styles.text-wrapping;
     display: inline-flex;
     color: awsui.$color-text-group-label;
   }
