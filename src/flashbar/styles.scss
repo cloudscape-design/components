@@ -6,6 +6,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../internal/styles/typography' as typography;
+@use '../internal/styles/foundation' as foundation;
 @use './motion';
 @use './collapsible';
 
@@ -38,6 +39,10 @@
   overflow-wrap: break-word;
   word-wrap: break-word;
   box-shadow: awsui.$shadow-flash-sticky;
+
+  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 }
 
 .initial-hidden {
@@ -76,7 +81,11 @@
     outline: none;
   }
   &:focus-visible {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+    @include styles.focus-highlight(
+      $gutter: awsui.$space-button-focus-outline-gutter,
+      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+    );
   }
 }
 
