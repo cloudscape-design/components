@@ -52,41 +52,32 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     describe('Disabled item with reason', () => {
       test('has no tooltip open by default', () => {
         const { wrapper } = renderSelect({
-          options: [
-            { label: 'First', value: '1' },
-            { label: 'Second', value: '2', disabled: true, disabledReason: 'disabled reason' },
-          ],
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
         });
         wrapper.openDropdown();
 
-        expect(wrapper.findDropdown({ expandToViewport }).findOption(2)!.findDisabledReason()).toBe(null);
+        expect(wrapper.findDropdown({ expandToViewport }).findOption(1)!.findDisabledReason()).toBe(null);
       });
 
       test('has no tooltip without disabledReason', () => {
         const { wrapper } = renderSelect({
-          options: [
-            { label: 'First', value: '1' },
-            { label: 'Second', value: '2', disabled: true },
-          ],
+          options: [{ label: 'First', value: '1', disabled: true }],
         });
         wrapper.openDropdown();
-        wrapper.findDropdown({ expandToViewport }).findOptionsContainer()!.keydown(KeyCode.down);
+        wrapper.findTrigger()!.keydown(KeyCode.down);
 
-        expect(wrapper.findDropdown({ expandToViewport }).findOption(2)!.findDisabledReason()).toBe(null);
+        expect(wrapper.findDropdown({ expandToViewport }).findOption(1)!.findDisabledReason()).toBe(null);
       });
 
       test('open tooltip when the item is highlighted', () => {
         const { wrapper } = renderSelect({
-          options: [
-            { label: 'First', value: '1' },
-            { label: 'Second', value: '2', disabled: true, disabledReason: 'disabled reason' },
-          ],
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
         });
         wrapper.openDropdown();
-        wrapper.findDropdown({ expandToViewport }).findOptionsContainer()!.keydown(KeyCode.down);
+        wrapper.findTrigger().keydown(KeyCode.down);
 
         expect(
-          wrapper.findDropdown({ expandToViewport }).findOption(2)!.findDisabledReason()!.getElement()
+          wrapper.findDropdown({ expandToViewport }).findOption(1)!.findDisabledReason()!.getElement()
         ).toHaveTextContent('disabled reason');
       });
 
