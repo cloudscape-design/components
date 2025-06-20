@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Grid, { GridProps } from '../../../lib/components/grid';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Grid, { GridProps } from '../../../lib/components/grid/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/grid/styles.css.js';
 

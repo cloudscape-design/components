@@ -5,14 +5,14 @@ import clsx from 'clsx';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../../internal/base-component';
-import VisualContext from '../../internal/components/visual-context';
-import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
-import { InternalBaseComponentProps } from '../../internal/hooks/use-base-component';
-import { checkSafeUrl } from '../../internal/utils/check-safe-url';
-import { TopNavigationProps } from './interfaces';
-import OverflowMenu from './parts/overflow-menu';
-import Utility from './parts/utility';
+import { getBaseProps } from '../../internal/base-component/index.js';
+import VisualContext from '../../internal/components/visual-context/index.js';
+import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events/index.js';
+import { InternalBaseComponentProps } from '../../internal/hooks/use-base-component/index.js';
+import { checkSafeUrl } from '../../internal/utils/check-safe-url.js';
+import { TopNavigationProps } from './interfaces.js';
+import OverflowMenu from './parts/overflow-menu.js';
+import Utility from './parts/utility.js';
 import { useTopNavigation } from './use-top-navigation.js';
 
 import styles from './styles.css.js';

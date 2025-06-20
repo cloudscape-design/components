@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { findAllPages } from '../__integ__/utils';
-import { getUrlParams } from '../app-layout/__integ__/utils';
-import A11yPageObject from './a11y-page-object';
+import { findAllPages } from '../__integ__/utils.js';
+import { getUrlParams } from '../app-layout/__integ__/utils.js';
+import A11yPageObject from './a11y-page-object.js';
 
 const EXCLUDED_PAGES = [
   // Test page for an app layout nested inside another through an iframe.

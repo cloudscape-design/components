@@ -5,7 +5,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import InternalDragHandle from '../../../../../lib/components/internal/components/drag-handle/index.js';
-import InternalDragHandleWrapper from '../../../../../lib/components/test-utils/dom/internal/drag-handle';
+import InternalDragHandleWrapper from '../../../../../lib/components/test-utils/dom/internal/drag-handle.js';
 
 describe('test util selectors', () => {
   function renderTestComponent(showUapActions = true, props?: React.ComponentProps<typeof InternalDragHandle>) {

@@ -5,8 +5,8 @@ import { fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import MaskedInput, { MaskedInputProps } from '../../../../../lib/components/internal/components/masked-input';
-import createWrapper, { InputWrapper } from '../../../../../lib/components/test-utils/dom';
+import MaskedInput, { MaskedInputProps } from '../../../../../lib/components/internal/components/masked-input/index.js';
+import createWrapper, { InputWrapper } from '../../../../../lib/components/test-utils/dom/index.js';
 
 const defaultProps: MaskedInputProps = {
   mask: {

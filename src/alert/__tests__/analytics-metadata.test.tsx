@@ -9,11 +9,11 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import Alert, { AlertProps } from '../../../lib/components/alert';
-import InternalAlert from '../../../lib/components/alert/internal';
-import Button from '../../../lib/components/button';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+import Alert, { AlertProps } from '../../../lib/components/alert/index.js';
+import InternalAlert from '../../../lib/components/alert/internal.js';
+import Button from '../../../lib/components/button/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import labels from '../../../lib/components/alert/analytics-metadata/styles.css.js';
 

@@ -4,18 +4,18 @@ import React, { createRef, useRef } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { render } from '@testing-library/react';
 
+import { AnalyticsFunnel } from '../../../../../lib/components/internal/analytics/components/analytics-funnel.js';
 import {
   ComponentMetrics,
   PerformanceMetrics,
   setComponentMetrics,
-} from '../../../../../lib/components/internal/analytics';
-import { AnalyticsFunnel } from '../../../../../lib/components/internal/analytics/components/analytics-funnel';
+} from '../../../../../lib/components/internal/analytics/index.js';
 import {
   useTableInteractionMetrics,
   UseTableInteractionMetricsProps,
-} from '../../../../../lib/components/internal/hooks/use-table-interaction-metrics';
-import { renderHook, RenderHookOptions } from '../../../../__tests__/render-hook';
-import { mockFunnelMetrics, mockPerformanceMetrics } from '../../../analytics/__tests__/mocks';
+} from '../../../../../lib/components/internal/hooks/use-table-interaction-metrics/index.js';
+import { renderHook, RenderHookOptions } from '../../../../__tests__/render-hook.js';
+import { mockFunnelMetrics, mockPerformanceMetrics } from '../../../analytics/__tests__/mocks.js';
 
 type RenderProps<T> = Partial<UseTableInteractionMetricsProps<T>>;
 

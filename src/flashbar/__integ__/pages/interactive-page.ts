@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../../lib/components/test-utils/selectors';
-import { flashbar, FlashbarBasePage } from './base';
+import createWrapper from '../../../../lib/components/test-utils/selectors/index.js';
+import { flashbar, FlashbarBasePage } from './base.js';
 
 export class FlashbarInteractivePage extends FlashbarBasePage {
   async addInfoFlash() {

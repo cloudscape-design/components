@@ -9,16 +9,18 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import CollectionPreferences, { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
 import {
   GeneratedAnalyticsMetadataCollectionPreferencesCancel,
   GeneratedAnalyticsMetadataCollectionPreferencesConfirm,
   GeneratedAnalyticsMetadataCollectionPreferencesDismiss,
   GeneratedAnalyticsMetadataCollectionPreferencesOpen,
-} from '../../../lib/components/collection-preferences/analytics-metadata/interfaces';
-import { GeneratedAnalyticsMetadataCollectionPreferencesComponent } from '../../../lib/components/collection-preferences/analytics-metadata/interfaces';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+} from '../../../lib/components/collection-preferences/analytics-metadata/interfaces.js';
+import { GeneratedAnalyticsMetadataCollectionPreferencesComponent } from '../../../lib/components/collection-preferences/analytics-metadata/interfaces.js';
+import CollectionPreferences, {
+  CollectionPreferencesProps,
+} from '../../../lib/components/collection-preferences/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 import {
   contentDensityPreference,
   contentDisplayPreference,
@@ -27,7 +29,7 @@ import {
   stripedRowsPreference,
   visibleContentPreference,
   wrapLinesPreference,
-} from './shared';
+} from './shared.js';
 
 import labels from '../../../lib/components/collection-preferences/analytics-metadata/styles.css.js';
 

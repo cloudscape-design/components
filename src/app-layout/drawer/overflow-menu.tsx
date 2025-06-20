@@ -6,10 +6,10 @@ import {
   ButtonDropdownProps,
   InternalButtonDropdownProps,
   InternalItemOrGroup,
-} from '../../button-dropdown/interfaces';
-import InternalButtonDropdown from '../../button-dropdown/internal';
-import { CancelableEventHandler } from '../../internal/events';
-import { AppLayoutProps } from '../interfaces';
+} from '../../button-dropdown/interfaces.js';
+import InternalButtonDropdown from '../../button-dropdown/internal.js';
+import { CancelableEventHandler } from '../../internal/events/index.js';
+import { AppLayoutProps } from '../interfaces.js';
 
 import testutilStyles from '../test-classes/styles.css.js';
 

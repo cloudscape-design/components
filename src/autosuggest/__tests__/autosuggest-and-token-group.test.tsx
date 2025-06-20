@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
-import Autosuggest from '../../../lib/components/autosuggest';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import TokenGroup from '../../../lib/components/token-group';
+import Autosuggest from '../../../lib/components/autosuggest/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import TokenGroup from '../../../lib/components/token-group/index.js';
 
 const wrapper = createWrapper();
 

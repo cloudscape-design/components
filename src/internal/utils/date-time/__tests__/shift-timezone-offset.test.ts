@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { shiftTimezoneOffset } from '../../../../../lib/components/internal/utils/date-time/shift-timezone-offset';
+import { shiftTimezoneOffset } from '../../../../../lib/components/internal/utils/date-time/shift-timezone-offset.js';
 
 interface TestArguments {
   date: string;

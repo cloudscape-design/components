@@ -6,8 +6,8 @@ import clsx from 'clsx';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { getLogicalBoundingClientRect, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { InternalPosition, PopoverProps } from './interfaces';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { InternalPosition, PopoverProps } from './interfaces.js';
 import usePopoverPosition from './use-popover-position.js';
 
 import styles from './styles.css.js';

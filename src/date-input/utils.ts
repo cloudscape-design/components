@@ -3,9 +3,9 @@
 
 import { getDaysInMonth } from 'date-fns';
 
-import { CalendarProps } from '../calendar/interfaces';
-import { MaskArgs } from '../internal/components/masked-input/utils/mask-format';
-import { displayToIso, parseDate } from '../internal/utils/date-time';
+import { CalendarProps } from '../calendar/interfaces.js';
+import { MaskArgs } from '../internal/components/masked-input/utils/mask-format.js';
+import { displayToIso, parseDate } from '../internal/utils/date-time/index.js';
 
 function daysMax(value: string): number {
   // force to first day in month, as new Date('2018-02-30') -> March 2nd 2018

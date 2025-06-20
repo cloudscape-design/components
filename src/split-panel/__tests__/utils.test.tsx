@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { fireEvent } from '@testing-library/react';
 
-import { useKeyboardEvents } from '../../app-layout/utils/use-keyboard-events';
-import { Direction } from '../../internal/components/drag-handle-wrapper/interfaces';
-import { KeyCode } from '../../internal/keycode';
+import { useKeyboardEvents } from '../../app-layout/utils/use-keyboard-events.js';
+import { Direction } from '../../internal/components/drag-handle-wrapper/interfaces.js';
+import { KeyCode } from '../../internal/keycode.js';
 
 const sizeControlProps: any = {
   panelRef: { current: { clientHeight: 100, clientWidth: 100 } },

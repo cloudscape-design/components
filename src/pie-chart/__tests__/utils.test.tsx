@@ -10,7 +10,7 @@ import {
   getDimensionsBySize,
   minLabelLineAngularPadding,
   refreshDimensionsBySize,
-} from '../../../lib/components/pie-chart/utils';
+} from '../../../lib/components/pie-chart/utils.js';
 
 // Sample test cases gathered from charts with overlapping labels and other edge cases
 const testCases = [

@@ -6,8 +6,8 @@ import { render } from '@testing-library/react';
 
 import { disableMotion } from '@cloudscape-design/global-styles';
 
-import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 const defaultItems: FlashbarProps.MessageDefinition[] = [
   {

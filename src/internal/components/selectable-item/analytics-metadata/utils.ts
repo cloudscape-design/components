@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ItemDataAttributes, SelectableItemProps } from '../interfaces';
-import { GeneratedAnalyticsMetadataSelectableItemSelect } from './interfaces';
+import { ItemDataAttributes, SelectableItemProps } from '../interfaces.js';
+import { GeneratedAnalyticsMetadataSelectableItemSelect } from './interfaces.js';
 
 import optionAnalyticsSelectors from './../../option/analytics-metadata/styles.css.js';
 import analyticsSelectors from './styles.css.js';

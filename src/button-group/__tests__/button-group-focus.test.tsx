@@ -3,8 +3,8 @@
 
 import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
 
-import { ButtonGroupProps } from '../../../lib/components/button-group';
-import { renderButtonGroup } from './common';
+import { ButtonGroupProps } from '../../../lib/components/button-group/index.js';
+import { renderButtonGroup } from './common.js';
 
 const copyButton: ButtonGroupProps.IconButton = {
   type: 'icon-button',

@@ -10,12 +10,12 @@ import {
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
 
-import AppLayoutToolbar, { AppLayoutToolbarProps } from '../../../lib/components/app-layout-toolbar';
-import Header from '../../../lib/components/header';
-import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import SplitPanel from '../../../lib/components/split-panel';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+import AppLayoutToolbar, { AppLayoutToolbarProps } from '../../../lib/components/app-layout-toolbar/index.js';
+import Header from '../../../lib/components/header/index.js';
+import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api.js';
+import SplitPanel from '../../../lib/components/split-panel/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),

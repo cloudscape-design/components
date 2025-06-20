@@ -5,7 +5,7 @@ import {
   Direction as WrapperDirection,
   DirectionState as WrapperDirectionState,
   TriggerMode,
-} from '../drag-handle-wrapper/interfaces';
+} from '../drag-handle-wrapper/interfaces.js';
 
 export interface DragHandleProps {
   variant?: DragHandleProps.Variant;

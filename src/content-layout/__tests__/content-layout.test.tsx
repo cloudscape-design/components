@@ -3,11 +3,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import ContentLayout, { ContentLayoutProps } from '../../../lib/components/content-layout';
-import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import { highContrastHeaderClassName } from '../../../lib/components/internal/utils/content-header-utils';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import ContentLayout, { ContentLayoutProps } from '../../../lib/components/content-layout/index.js';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties/index.js';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode/index.js';
+import { highContrastHeaderClassName } from '../../../lib/components/internal/utils/content-header-utils.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/content-layout/styles.selectors.js';
 

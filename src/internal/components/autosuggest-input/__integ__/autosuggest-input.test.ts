@@ -4,7 +4,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import AutosuggestInputWrapper from '../../../../../lib/components/test-utils/selectors/internal/autosuggest-input';
+import AutosuggestInputWrapper from '../../../../../lib/components/test-utils/selectors/internal/autosuggest-input.js';
 
 const wrapper = new AutosuggestInputWrapper('*');
 

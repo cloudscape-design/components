@@ -4,13 +4,13 @@
 import React, { Ref } from 'react';
 import clsx from 'clsx';
 
-import { CalendarProps } from '../calendar/interfaces';
-import MaskedInput from '../internal/components/masked-input';
-import { fireNonCancelableEvent } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { displayToIso, isoToDisplay } from '../internal/utils/date-time';
-import { DateInputProps } from './interfaces';
-import { generateMaskArgs } from './utils';
+import { CalendarProps } from '../calendar/interfaces.js';
+import MaskedInput from '../internal/components/masked-input/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { displayToIso, isoToDisplay } from '../internal/utils/date-time/index.js';
+import { DateInputProps } from './interfaces.js';
+import { generateMaskArgs } from './utils.js';
 
 import styles from './styles.css.js';
 

@@ -4,10 +4,10 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import Multiselect from '../../../lib/components/multiselect';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { MultiselectProps } from '../interfaces';
-import { optionsWithGroups } from './common';
+import Multiselect from '../../../lib/components/multiselect/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { MultiselectProps } from '../interfaces.js';
+import { optionsWithGroups } from './common.js';
 
 function renderMultiselect(props?: Partial<MultiselectProps>) {
   const { container } = render(

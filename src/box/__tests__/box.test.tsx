@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Box, { BoxProps } from '../../../lib/components/box';
-import BoxWrapper from '../../../lib/components/test-utils/dom/box';
+import Box, { BoxProps } from '../../../lib/components/box/index.js';
+import BoxWrapper from '../../../lib/components/test-utils/dom/box/index.js';
 
 import styles from '../../../lib/components/box/styles.css.js';
 

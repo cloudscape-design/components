@@ -5,9 +5,9 @@ import { act, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import ChartPlot, { ChartPlotRef } from '../../../../../lib/components/internal/components/chart-plot';
-import createWrapper, { ElementWrapper } from '../../../../../lib/components/test-utils/dom';
-import createBBoxMock from './bbox-mock';
+import ChartPlot, { ChartPlotRef } from '../../../../../lib/components/internal/components/chart-plot/index.js';
+import createWrapper, { ElementWrapper } from '../../../../../lib/components/test-utils/dom/index.js';
+import createBBoxMock from './bbox-mock.js';
 
 import styles from '../../../../../lib/components/internal/components/chart-plot/styles.css.js';
 

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import MockDate from 'mockdate';
 
-import * as intl from '../grids/intl';
+import * as intl from '../grids/intl.js';
 
 const GetDateLabelSpy = jest.spyOn(intl, 'getDateLabel').mockReturnValue('June 2023');
 const RenderMonthAndYearSpy = jest.spyOn(intl, 'renderMonthAndYear').mockReturnValue('June 2023');

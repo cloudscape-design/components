@@ -4,11 +4,11 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { GeneratedAnalyticsMetadataSideNavigationComponent } from './analytics-metadata/interfaces';
-import { SideNavigationProps } from './interfaces';
-import { InternalSideNavigation } from './internal';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { GeneratedAnalyticsMetadataSideNavigationComponent } from './analytics-metadata/interfaces.js';
+import { SideNavigationProps } from './interfaces.js';
+import { InternalSideNavigation } from './internal.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 

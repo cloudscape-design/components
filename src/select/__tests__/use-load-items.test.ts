@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { act, renderHook } from '../../__tests__/render-hook';
-import { useLoadItems } from '../utils/use-load-items';
+import { act, renderHook } from '../../__tests__/render-hook.js';
+import { useLoadItems } from '../utils/use-load-items.js';
 
 const options = [
   {

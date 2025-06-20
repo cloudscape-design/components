@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { metrics } from '../../../../../lib/components/internal/metrics';
+import { metrics } from '../../../../../lib/components/internal/metrics.js';
 import {
   DrawerConfig,
   DrawersController,
   UpdateDrawerConfig,
-} from '../../../../../lib/components/internal/plugins/controllers/drawers';
+} from '../../../../../lib/components/internal/plugins/controllers/drawers.js';
 
 const drawerA = { id: 'drawerA' } as DrawerConfig;
 const drawerB = { id: 'drawerB' } as DrawerConfig;

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import createCategoryColorScale from '../../internal/utils/create-category-color-scale';
-import { AreaChartProps } from '../interfaces';
-import { ChartModel } from './index';
+import createCategoryColorScale from '../../internal/utils/create-category-color-scale.js';
+import { AreaChartProps } from '../interfaces.js';
+import { ChartModel } from './index.js';
 
 export default function createSeriesDecorator<T extends AreaChartProps.DataTypes>(
   externalSeries: readonly AreaChartProps.Series<T>[]

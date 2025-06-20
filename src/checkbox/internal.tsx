@@ -8,16 +8,16 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { getBaseProps } from '../internal/base-component';
-import AbstractSwitch from '../internal/components/abstract-switch';
-import CheckboxIcon from '../internal/components/checkbox-icon';
-import { useFormFieldContext } from '../internal/context/form-field-context';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
-import { fireNonCancelableEvent } from '../internal/events';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { GeneratedAnalyticsMetadataCheckboxComponent } from './analytics-metadata/interfaces';
-import { CheckboxProps } from './interfaces';
+import { getBaseProps } from '../internal/base-component/index.js';
+import AbstractSwitch from '../internal/components/abstract-switch/index.js';
+import CheckboxIcon from '../internal/components/checkbox-icon/index.js';
+import { useFormFieldContext } from '../internal/context/form-field-context.js';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { GeneratedAnalyticsMetadataCheckboxComponent } from './analytics-metadata/interfaces.js';
+import { CheckboxProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

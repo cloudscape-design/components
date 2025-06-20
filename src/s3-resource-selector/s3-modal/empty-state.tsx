@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import InternalBox from '../../box/internal';
+import InternalBox from '../../box/internal.js';
 
 interface EmptyStateProps {
   title?: string;

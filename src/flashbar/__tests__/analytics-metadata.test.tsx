@@ -9,17 +9,17 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import Button from '../../../lib/components/button';
-import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
-import { GeneratedAnalyticsMetadataFlashbarButtonClick } from '../../../lib/components/flashbar/analytics-metadata/interfaces';
+import Button from '../../../lib/components/button/index.js';
+import { GeneratedAnalyticsMetadataFlashbarButtonClick } from '../../../lib/components/flashbar/analytics-metadata/interfaces.js';
+import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
+
+import labels from '../../../lib/components/flashbar/analytics-metadata/styles.css.js';
 import {
   DATA_ATTR_ANALYTICS_FLASHBAR,
   DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS,
-} from '../../../lib/components/internal/analytics/selectors';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
-
-import labels from '../../../lib/components/flashbar/analytics-metadata/styles.css.js';
+} from '../../../lib/components/internal/analytics/selectors.js';
 
 const items: FlashbarProps['items'] = [
   {

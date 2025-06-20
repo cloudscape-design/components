@@ -6,8 +6,8 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { TokenListProps } from './interfaces';
-import TokenLimitToggle from './token-limit-toggle';
+import { TokenListProps } from './interfaces.js';
+import TokenLimitToggle from './token-limit-toggle.js';
 
 import styles from './styles.css.js';
 

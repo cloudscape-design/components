@@ -3,8 +3,8 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { PropertyFilterProps } from '../../../lib/components/property-filter/interfaces';
-import createWrapper from '../../../lib/components/test-utils/selectors';
+import { PropertyFilterProps } from '../../../lib/components/property-filter/interfaces.js';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
 

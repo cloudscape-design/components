@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
+import { scrollElementIntoView } from '../../internal/utils/scrollable-containers.js';
 
 export default function ({ index, menuEl }: { index: number; menuEl: HTMLElement }) {
   const item = menuEl.querySelector<HTMLElement>(`[data-mouse-target="${index}"]`);

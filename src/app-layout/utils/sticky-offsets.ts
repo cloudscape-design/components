@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import globalVars from '../../internal/styles/global-vars';
+import globalVars from '../../internal/styles/global-vars.js';
 
 export function getStickyOffsetVars(
   headerHeight: number,

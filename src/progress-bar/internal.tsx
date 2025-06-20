@@ -3,12 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { BoxProps } from '../box/interfaces';
-import InternalBox from '../box/internal';
-import { ButtonProps } from '../button/interfaces';
-import { InternalButton } from '../button/internal';
-import InternalStatusIndicator from '../status-indicator/internal';
-import { ProgressBarProps } from './interfaces';
+import { BoxProps } from '../box/interfaces.js';
+import InternalBox from '../box/internal.js';
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton } from '../button/internal.js';
+import InternalStatusIndicator from '../status-indicator/internal.js';
+import { ProgressBarProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

@@ -4,8 +4,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { browserScrollbarSize } from '../../../../lib/components/internal/utils/browser-scrollbar-size';
-import { StickyScrollbar } from '../../../../lib/components/table/sticky-scrollbar';
+import { browserScrollbarSize } from '../../../../lib/components/internal/utils/browser-scrollbar-size.js';
+import { StickyScrollbar } from '../../../../lib/components/table/sticky-scrollbar/index.js';
 
 import styles from '../../../../lib/components/table/sticky-scrollbar/styles.css.js';
 

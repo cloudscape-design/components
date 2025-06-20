@@ -3,11 +3,11 @@
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
-import MaskedInput from '../internal/components/masked-input';
-import { MaskArgs } from '../internal/components/masked-input/utils/mask-format';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { TimeInputProps } from './interfaces';
+import MaskedInput from '../internal/components/masked-input/index.js';
+import { MaskArgs } from '../internal/components/masked-input/utils/mask-format.js';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { TimeInputProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

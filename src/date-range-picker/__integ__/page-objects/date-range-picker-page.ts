@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-import DateRangePickerWrapper from '../../../../lib/components/test-utils/selectors/date-range-picker';
-import DropdownWrapper from '../../../../lib/components/test-utils/selectors/internal/dropdown';
+import DateRangePickerWrapper from '../../../../lib/components/test-utils/selectors/date-range-picker/index.js';
+import DropdownWrapper from '../../../../lib/components/test-utils/selectors/internal/dropdown.js';
 
 export default class DateRangePickerPage extends BasePageObject {
   public dateRangePickerWrapper: DateRangePickerWrapper;

@@ -3,7 +3,7 @@
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { mergeLocales } from './merge-locales';
+import { mergeLocales } from './merge-locales.js';
 
 export function normalizeLocale(component: string, locale: string | null): string {
   locale = checkLocale(component, locale);

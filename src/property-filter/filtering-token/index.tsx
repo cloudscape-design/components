@@ -10,11 +10,11 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalIcon from '../../icon/internal';
-import { useListFocusController } from '../../internal/hooks/use-list-focus-controller';
-import InternalPopover, { InternalPopoverProps, InternalPopoverRef } from '../../popover/internal';
-import InternalSelect from '../../select/internal';
-import { GeneratedAnalyticsMetadataPropertyEditStart } from '../analytics-metadata/interfaces';
+import InternalIcon from '../../icon/internal.js';
+import { useListFocusController } from '../../internal/hooks/use-list-focus-controller.js';
+import InternalPopover, { InternalPopoverProps, InternalPopoverRef } from '../../popover/internal.js';
+import InternalSelect from '../../select/internal.js';
+import { GeneratedAnalyticsMetadataPropertyEditStart } from '../analytics-metadata/interfaces.js';
 
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';

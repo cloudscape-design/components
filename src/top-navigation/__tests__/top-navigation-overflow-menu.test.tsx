@@ -3,13 +3,13 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { transformUtility } from '../../../lib/components/top-navigation/1.0-beta/parts/overflow-menu';
-import { TopNavigationProps } from '../../../lib/components/top-navigation/interfaces';
-import { UtilityMenuItem } from '../../../lib/components/top-navigation/parts/overflow-menu/menu-item';
-import SubmenuView from '../../../lib/components/top-navigation/parts/overflow-menu/views/submenu';
-import UtilitiesView from '../../../lib/components/top-navigation/parts/overflow-menu/views/utilities';
-import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { transformUtility } from '../../../lib/components/top-navigation/1.0-beta/parts/overflow-menu.js';
+import { TopNavigationProps } from '../../../lib/components/top-navigation/interfaces.js';
+import { UtilityMenuItem } from '../../../lib/components/top-navigation/parts/overflow-menu/menu-item.js';
+import SubmenuView from '../../../lib/components/top-navigation/parts/overflow-menu/views/submenu.js';
+import UtilitiesView from '../../../lib/components/top-navigation/parts/overflow-menu/views/utilities.js';
+import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper.js';
 
 const buttonUtility: TopNavigationProps.ButtonUtility = {
   type: 'button',

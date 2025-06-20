@@ -8,8 +8,8 @@ import {
   AlertFlashContentApiInternal,
   AlertFlashContentResult,
   ReplacementType,
-} from '../controllers/alert-flash-content';
-import { reportRuntimeApiWarning } from './metrics';
+} from '../controllers/alert-flash-content.js';
+import { reportRuntimeApiWarning } from './metrics.js';
 
 export function createUseDiscoveredContent(componentName: string, controller: AlertFlashContentApiInternal) {
   return function useDiscoveredContent({

@@ -6,10 +6,10 @@ import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { LiveRegionController } from './controller';
-import { LiveRegionProps } from './interfaces';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { LiveRegionController } from './controller.js';
+import { LiveRegionProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';

@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { PromptInputProps } from './interfaces';
-import InternalPromptInput from './internal';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { PromptInputProps } from './interfaces.js';
+import InternalPromptInput from './internal.js';
 
 export { PromptInputProps };
 

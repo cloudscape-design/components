@@ -4,13 +4,13 @@ import React, { useLayoutEffect, useState } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { awsuiPluginsInternal } from '../../internal/plugins/api';
-import { RegistrationState } from '../../internal/plugins/controllers/app-layout-widget';
-import { AppLayoutProps } from '../interfaces';
-import { useAppLayoutFlagEnabled } from '../utils/feature-flags';
-import { OnChangeParams } from '../utils/use-drawers';
-import { Focusable, FocusControlMultipleStates } from '../utils/use-focus-control';
-import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
+import { awsuiPluginsInternal } from '../../internal/plugins/api.js';
+import { RegistrationState } from '../../internal/plugins/controllers/app-layout-widget.js';
+import { AppLayoutProps } from '../interfaces.js';
+import { useAppLayoutFlagEnabled } from '../utils/feature-flags.js';
+import { OnChangeParams } from '../utils/use-drawers.js';
+import { Focusable, FocusControlMultipleStates } from '../utils/use-focus-control.js';
+import { SplitPanelToggleProps, ToolbarProps } from './toolbar/index.js';
 
 export interface SharedProps {
   forceDeduplicationType?: 'primary' | 'secondary' | 'suspended' | 'off';

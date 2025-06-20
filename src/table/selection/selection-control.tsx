@@ -6,11 +6,11 @@ import clsx from 'clsx';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalCheckbox from '../../checkbox/internal';
-import { SingleTabStopNavigationContext } from '../../internal/context/single-tab-stop-navigation-context';
-import { KeyCode } from '../../internal/keycode';
-import RadioButton from '../../radio-group/radio-button';
-import { SelectionProps } from './interfaces';
+import InternalCheckbox from '../../checkbox/internal.js';
+import { SingleTabStopNavigationContext } from '../../internal/context/single-tab-stop-navigation-context.js';
+import { KeyCode } from '../../internal/keycode.js';
+import RadioButton from '../../radio-group/radio-button.js';
+import { SelectionProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

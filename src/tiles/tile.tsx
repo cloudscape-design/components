@@ -6,11 +6,11 @@ import clsx from 'clsx';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { fireNonCancelableEvent } from '../internal/events';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import RadioButton from '../radio-group/radio-button';
-import { TilesProps } from './interfaces';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import RadioButton from '../radio-group/radio-button.js';
+import { TilesProps } from './interfaces.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

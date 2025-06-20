@@ -3,11 +3,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalBox from '../../../box/internal';
-import InternalLink from '../../../link/internal';
-import InternalSpaceBetween from '../../../space-between/internal';
-import InternalStatusIndicator from '../../../status-indicator/internal';
-import { TutorialPanelProps } from '../../interfaces';
+import InternalBox from '../../../box/internal.js';
+import InternalLink from '../../../link/internal.js';
+import InternalSpaceBetween from '../../../space-between/internal.js';
+import InternalStatusIndicator from '../../../status-indicator/internal.js';
+import { TutorialPanelProps } from '../../interfaces.js';
 
 import styles from './styles.css.js';
 

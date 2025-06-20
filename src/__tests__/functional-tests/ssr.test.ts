@@ -9,8 +9,8 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
 
-import { getRequiredPropsForComponent } from '../required-props-for-components';
-import { getAllComponents, requireComponent } from '../utils';
+import { getRequiredPropsForComponent } from '../required-props-for-components.js';
+import { getAllComponents, requireComponent } from '../utils.js';
 
 const globalWithFlags = globalThis as any;
 

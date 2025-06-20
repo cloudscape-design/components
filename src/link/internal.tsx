@@ -5,29 +5,29 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../i18n/context';
-import InternalIcon from '../icon/internal';
-import { FunnelMetrics } from '../internal/analytics';
-import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { useInternalI18n } from '../i18n/context.js';
+import InternalIcon from '../icon/internal.js';
+import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
+import { FunnelMetrics } from '../internal/analytics/index.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { InfoLinkLabelContext } from '../internal/context/info-link-label-context.js';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context.js';
+import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events/index.js';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { KeyCode } from '../internal/keycode.js';
+import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
+import { LinkProps } from './interfaces.js';
+
+import styles from './styles.css.js';
 import {
   DATA_ATTR_FUNNEL_VALUE,
   getFunnelValueSelector,
   getSubStepAllSelector,
   getTextFromSelector,
-} from '../internal/analytics/selectors';
-import { getBaseProps } from '../internal/base-component';
-import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
-import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
-import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { KeyCode } from '../internal/keycode';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { LinkProps } from './interfaces';
-
-import styles from './styles.css.js';
+} from '../internal/analytics/selectors.js';
 
 type InternalLinkProps = InternalBaseComponentProps<HTMLAnchorElement> &
   Omit<LinkProps, 'variant'> & {

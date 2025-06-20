@@ -5,10 +5,10 @@ import { ResizeObserver } from '@juggle/resize-observer';
 
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import globalVars from '../../internal/styles/global-vars';
-import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
-import { getContainingBlock } from '../../internal/utils/dom';
-import { getOverflowParents } from '../../internal/utils/scrollable-containers';
+import globalVars from '../../internal/styles/global-vars.js';
+import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size.js';
+import { getContainingBlock } from '../../internal/utils/dom.js';
+import { getOverflowParents } from '../../internal/utils/scrollable-containers.js';
 
 import styles from './styles.css.js';
 

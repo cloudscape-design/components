@@ -5,22 +5,22 @@ import { useEffect, useRef } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { ButtonTriggerProps } from '../../internal/components/button-trigger';
-import { DropdownProps } from '../../internal/components/dropdown/interfaces';
-import { DropdownStatusProps } from '../../internal/components/dropdown-status';
-import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
-import { isGroup, isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options';
-import { OptionsListProps } from '../../internal/components/options-list';
-import { useHighlightedOption } from '../../internal/components/options-list/utils/use-highlight-option';
-import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
-import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
-import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
-import useForwardFocus from '../../internal/hooks/forward-focus';
-import { usePrevious } from '../../internal/hooks/use-previous';
-import { FilterProps } from '../parts/filter';
-import { ItemProps } from '../parts/item';
-import { connectOptionsByValue } from './connect-options';
+import { ButtonTriggerProps } from '../../internal/components/button-trigger/index.js';
+import { DropdownProps } from '../../internal/components/dropdown/interfaces.js';
+import { DropdownStatusProps } from '../../internal/components/dropdown-status/index.js';
+import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces.js';
+import { isGroup, isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options.js';
+import { OptionsListProps } from '../../internal/components/options-list/index.js';
+import { useHighlightedOption } from '../../internal/components/options-list/utils/use-highlight-option.js';
+import { getOptionId } from '../../internal/components/options-list/utils/use-ids.js';
+import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard.js';
+import { useOpenState } from '../../internal/components/options-list/utils/use-open-state.js';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events/index.js';
+import useForwardFocus from '../../internal/hooks/forward-focus/index.js';
+import { usePrevious } from '../../internal/hooks/use-previous/index.js';
+import { FilterProps } from '../parts/filter.js';
+import { ItemProps } from '../parts/item.js';
+import { connectOptionsByValue } from './connect-options.js';
 
 export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLUListElement> };
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;

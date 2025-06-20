@@ -3,10 +3,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import InternalFormField from '../../../lib/components/form-field/internal';
-import InternalInput from '../../../lib/components/input/internal';
-import { DEBOUNCE_DEFAULT_DELAY } from '../../../lib/components/internal/debounce';
-import createWrapper, { InputWrapper } from '../../../lib/components/test-utils/dom';
+import InternalFormField from '../../../lib/components/form-field/internal.js';
+import InternalInput from '../../../lib/components/input/internal.js';
+import { DEBOUNCE_DEFAULT_DELAY } from '../../../lib/components/internal/debounce.js';
+import createWrapper, { InputWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/input/styles.css.js';
 

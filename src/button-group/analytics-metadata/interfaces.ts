@@ -7,7 +7,7 @@ import {
   GeneratedAnalyticsMetadataButtonDropdownClick,
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
-} from '../../button-dropdown/analytics-metadata/interfaces';
+} from '../../button-dropdown/analytics-metadata/interfaces.js';
 
 export type GeneratedAnalyticsMetadataButtonGroupClick = GeneratedAnalyticsMetadataButtonDropdownClick;
 export type GeneratedAnalyticsMetadataButtonGroupExpand = GeneratedAnalyticsMetadataButtonDropdownExpand;

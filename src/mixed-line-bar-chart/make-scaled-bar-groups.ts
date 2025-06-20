@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ChartScale } from '../internal/components/cartesian-chart/scales';
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
-import { isDataSeries, isXThreshold, isYThreshold, matchesX } from './utils';
+import { ChartScale } from '../internal/components/cartesian-chart/scales.js';
+import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces.js';
+import { isDataSeries, isXThreshold, isYThreshold, matchesX } from './utils.js';
 
 export interface ScaledBarGroup<T> {
   x: T;

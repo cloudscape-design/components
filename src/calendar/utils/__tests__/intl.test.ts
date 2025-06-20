@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { getDateLabel } from '../intl';
+import { getDateLabel } from '../intl.js';
 
 describe('getDateLabel', () => {
   test('should return local date string for the sepcified date', () => {

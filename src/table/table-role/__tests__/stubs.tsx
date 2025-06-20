@@ -3,8 +3,8 @@
 
 import React, { useRef, useState } from 'react';
 
-import { useSingleTabStopNavigation } from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
-import { GridNavigationProvider } from '../../../../lib/components/table/table-role';
+import { useSingleTabStopNavigation } from '../../../../lib/components/internal/context/single-tab-stop-navigation-context.js';
+import { GridNavigationProvider } from '../../../../lib/components/table/table-role/index.js';
 
 export interface Item {
   id: string;

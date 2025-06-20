@@ -7,12 +7,12 @@ import { act, fireEvent, render } from '@testing-library/react';
 import {
   calculateNextState,
   getCallbacksForTransition,
-} from '../../../../../../lib/components/internal/components/drag-handle/hooks/use-drag-handle-interaction-state';
+} from '../../../../../../lib/components/internal/components/drag-handle/hooks/use-drag-handle-interaction-state.js';
 import {
   useInternalDragHandleInteractionState,
   UseInternalDragHandleInteractionStateProps,
-} from '../../../../../../lib/components/internal/do-not-use/drag-handle';
-import type { Action, DragHandleInteractionState } from '../interfaces';
+} from '../../../../../../lib/components/internal/do-not-use/drag-handle.js';
+import type { Action, DragHandleInteractionState } from '../interfaces.js';
 
 interface TestComponentProps extends UseInternalDragHandleInteractionStateProps {
   debug?: boolean;

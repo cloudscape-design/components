@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseComponentProps } from '../../base-component';
-import { NonCancelableEventHandler } from '../../events';
+import { BaseComponentProps } from '../../base-component/index.js';
+import { NonCancelableEventHandler } from '../../events/index.js';
 
 export interface CartesianChartProps<T extends ChartDataTypes, Series> extends BaseComponentProps {
   /**

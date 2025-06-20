@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { CalendarProps } from '../calendar/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
-import { TimeInputProps } from '../time-input/interfaces';
+import { CalendarProps } from '../calendar/interfaces.js';
+import { BaseComponentProps } from '../internal/base-component/index.js';
+import { ExpandToViewport } from '../internal/components/dropdown/interfaces.js';
+import { FormFieldValidationControlProps } from '../internal/context/form-field-context.js';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
+import { TimeInputProps } from '../time-input/interfaces.js';
 
 export interface DateRangePickerBaseProps {
   /**

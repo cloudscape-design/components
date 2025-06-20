@@ -3,15 +3,15 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { SplitPanelContextProvider } from '../../../lib/components/internal/context/split-panel-context';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
+import { SplitPanelContextProvider } from '../../../lib/components/internal/context/split-panel-context.js';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode/index.js';
 import {
   createWidgetizedSplitPanel,
   SplitPanelImplementationProps,
-} from '../../../lib/components/split-panel/implementation';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { describeWithAppLayoutFeatureFlagEnabled } from '../../internal/widgets/__tests__/utils';
-import { defaultSplitPanelContextProps } from './helpers';
+} from '../../../lib/components/split-panel/implementation.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { describeWithAppLayoutFeatureFlagEnabled } from '../../internal/widgets/__tests__/utils.js';
+import { defaultSplitPanelContextProps } from './helpers.js';
 
 const LoaderSkeleton = () => {
   return <div data-testid="loader">Loading...</div>;

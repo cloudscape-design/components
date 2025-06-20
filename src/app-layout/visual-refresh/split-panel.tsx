@@ -3,11 +3,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { Transition } from '../../internal/components/transition';
-import customCssProps from '../../internal/generated/custom-css-properties';
-import { AppLayoutProps } from '../interfaces';
-import { SPLIT_PANEL_MIN_WIDTH, SplitPanelProvider, SplitPanelProviderProps } from '../split-panel';
-import { useAppLayoutInternals } from './context';
+import { Transition } from '../../internal/components/transition/index.js';
+import customCssProps from '../../internal/generated/custom-css-properties/index.js';
+import { AppLayoutProps } from '../interfaces.js';
+import { SPLIT_PANEL_MIN_WIDTH, SplitPanelProvider, SplitPanelProviderProps } from '../split-panel/index.js';
+import { useAppLayoutInternals } from './context.js';
 
 import styles from './styles.css.js';
 

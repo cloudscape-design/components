@@ -5,7 +5,7 @@ import {
   setComponentMetrics,
   setFunnelMetrics,
   setPerformanceMetrics,
-} from '../../../../lib/components/internal/analytics';
+} from '../../../../lib/components/internal/analytics/index.js';
 
 export const mockedFunnelInteractionId = 'mocked-funnel-id';
 export function mockFunnelMetrics() {

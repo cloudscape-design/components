@@ -9,14 +9,14 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import Badge from '../../../lib/components/badge';
-import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation';
+import Badge from '../../../lib/components/badge/index.js';
 import {
   GeneratedAnalyticsMetadataSideNavigationCollapse,
   GeneratedAnalyticsMetadataSideNavigationExpand,
-} from '../../../lib/components/side-navigation/analytics-metadata/interfaces';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+} from '../../../lib/components/side-navigation/analytics-metadata/interfaces.js';
+import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import expandableSectionLabels from '../../../lib/components/expandable-section/analytics-metadata/styles.css.js';
 import sideNavigationLabels from '../../../lib/components/side-navigation/analytics-metadata/styles.css.js';

@@ -3,11 +3,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { BucketsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/buckets-table';
-import createWrapper, { TableWrapper } from '../../../../lib/components/test-utils/dom';
-import { buckets, i18nStrings, waitForFetch } from '../../__tests__/fixtures';
-import { compareDates } from '../table-utils';
-import { getColumnAriaLabels, getHeaderVisibleText, getTableBodyContent, getTableColumnContent } from './utils';
+import { BucketsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/buckets-table.js';
+import createWrapper, { TableWrapper } from '../../../../lib/components/test-utils/dom/index.js';
+import { buckets, i18nStrings, waitForFetch } from '../../__tests__/fixtures.js';
+import { compareDates } from '../table-utils.js';
+import { getColumnAriaLabels, getHeaderVisibleText, getTableBodyContent, getTableColumnContent } from './utils.js';
 
 async function renderTable(jsx: React.ReactElement) {
   const { container } = render(jsx);

@@ -4,19 +4,19 @@ import React, { useEffect } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { FunnelMetrics } from '../internal/analytics';
-import { AnalyticsFunnel, AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
-import { useFunnel, useFunnelNameSelector, useFunnelStepRef } from '../internal/analytics/hooks/use-funnel';
-import { getSubStepAllSelector, getTextFromSelector } from '../internal/analytics/selectors';
-import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { FormProps } from './interfaces';
-import InternalForm from './internal';
+import { AnalyticsFunnel, AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel.js';
+import { useFunnel, useFunnelNameSelector, useFunnelStepRef } from '../internal/analytics/hooks/use-funnel.js';
+import { FunnelMetrics } from '../internal/analytics/index.js';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component/index.js';
+import { ButtonContext, ButtonContextProps } from '../internal/context/button-context.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { FormProps } from './interfaces.js';
+import InternalForm from './internal.js';
 
 import headerStyles from '../header/styles.css.js';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
+import { getSubStepAllSelector, getTextFromSelector } from '../internal/analytics/selectors.js';
 
 export { FormProps };
 

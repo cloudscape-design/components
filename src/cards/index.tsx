@@ -6,31 +6,31 @@ import clsx from 'clsx';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalContainerAsSubstep } from '../container/internal';
-import { useInternalI18n } from '../i18n/context';
-import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
-import { getBaseProps } from '../internal/base-component';
-import { CollectionLabelContext } from '../internal/context/collection-label-context';
-import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useMobile } from '../internal/hooks/use-mobile';
-import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import InternalLiveRegion from '../live-region/internal';
-import InternalStatusIndicator from '../status-indicator/internal';
+import { InternalContainerAsSubstep } from '../container/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
+import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { CollectionLabelContext } from '../internal/context/collection-label-context.js';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
+import useMouseDownTarget from '../internal/hooks/use-mouse-down-target.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import InternalLiveRegion from '../live-region/internal.js';
+import InternalStatusIndicator from '../status-indicator/internal.js';
 import {
   focusMarkers,
   SelectionControl,
   SelectionControlProps,
   useSelection,
   useSelectionFocusMove,
-} from '../table/selection';
-import stickyScrolling from '../table/sticky-scrolling';
-import ToolsHeader from '../table/tools-header';
-import { getItemKey } from '../table/utils';
-import { getCardsPerRow } from './cards-layout-helper';
-import { CardsForwardRefType, CardsProps } from './interfaces';
+} from '../table/selection/index.js';
+import stickyScrolling from '../table/sticky-scrolling.js';
+import ToolsHeader from '../table/tools-header.js';
+import { getItemKey } from '../table/utils.js';
+import { getCardsPerRow } from './cards-layout-helper.js';
+import { CardsForwardRefType, CardsProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

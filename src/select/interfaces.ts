@@ -2,16 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../internal/base-component/index.js';
 import {
   BaseDropdownHostProps,
   OptionsFilteringType,
   OptionsLoadItemsDetail,
-} from '../internal/components/dropdown/interfaces';
-import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
-import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
+} from '../internal/components/dropdown/interfaces.js';
+import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
+import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces.js';
+import { FormFieldValidationControlProps } from '../internal/context/form-field-context.js';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
 
 export interface BaseSelectProps
   extends BaseDropdownHostProps,

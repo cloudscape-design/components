@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DropdownOption, OptionDefinition, OptionGroup } from '../interfaces';
-import { isGroup } from './filter-options';
+import { DropdownOption, OptionDefinition, OptionGroup } from '../interfaces.js';
+import { isGroup } from './filter-options.js';
 
 export const flattenOptions = (options: ReadonlyArray<OptionDefinition | OptionGroup>) => {
   const parentMap = new Map<DropdownOption, DropdownOption>();

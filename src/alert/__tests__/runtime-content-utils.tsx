@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { AlertWrapper } from '../../../lib/components/test-utils/dom';
 import FlashWrapper from '../../../lib/components/test-utils/dom/flashbar/flash.js';
+import { AlertWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import alertStyles from '../../../lib/components/alert/styles.selectors.js';
 import flashbarStyles from '../../../lib/components/flashbar/styles.selectors.js';

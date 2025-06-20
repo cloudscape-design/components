@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import ExpandableSectionWrapper from '../expandable-section';
+import ExpandableSectionWrapper from '../expandable-section/index.js';
 
 import styles from '../../../side-navigation/styles.selectors.js';
 import testUtilStyles from '../../../side-navigation/test-classes/styles.selectors.js';

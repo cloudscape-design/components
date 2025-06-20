@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { flashbar, FlashbarBasePage } from './base';
+import { flashbar, FlashbarBasePage } from './base.js';
 
 export class StickyFlashbarPage extends FlashbarBasePage {
   async getNotificationBarBottom() {

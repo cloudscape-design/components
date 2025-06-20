@@ -3,10 +3,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { StickyHeaderContext } from '../../../lib/components/container/use-sticky-header';
-import Header from '../../../lib/components/header';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import { StickyHeaderContext } from '../../../lib/components/container/use-sticky-header.js';
+import Header from '../../../lib/components/header/index.js';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/header/styles.css.js';
 

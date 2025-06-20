@@ -3,11 +3,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import VisualContext from '../../../internal/components/visual-context';
-import customCssProps from '../../../internal/generated/custom-css-properties';
-import { useMobile } from '../../../internal/hooks/use-mobile';
-import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
-import { AppLayoutPropsWithDefaults } from '../../interfaces';
+import VisualContext from '../../../internal/components/visual-context/index.js';
+import customCssProps from '../../../internal/generated/custom-css-properties/index.js';
+import { useMobile } from '../../../internal/hooks/use-mobile/index.js';
+import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils.js';
+import { AppLayoutPropsWithDefaults } from '../../interfaces.js';
 
 import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';

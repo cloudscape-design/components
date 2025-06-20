@@ -6,8 +6,8 @@ import { render } from '@testing-library/react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom.js';
 
-import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Table, { TableProps } from '../../../lib/components/table/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 

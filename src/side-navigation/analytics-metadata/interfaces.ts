@@ -4,7 +4,7 @@
 import {
   GeneratedAnalyticsMetadataExpandableSectionCollapse,
   GeneratedAnalyticsMetadataExpandableSectionExpand,
-} from '../../expandable-section/analytics-metadata/interfaces';
+} from '../../expandable-section/analytics-metadata/interfaces.js';
 
 export interface GeneratedAnalyticsMetadataSideNavigationClick {
   action: 'click';

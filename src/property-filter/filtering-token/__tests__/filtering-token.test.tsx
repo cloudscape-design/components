@@ -4,8 +4,10 @@
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
-import FilteringToken, { FilteringTokenProps } from '../../../../lib/components/property-filter/filtering-token';
-import { FilteringTokenWrapper } from '../../../../lib/components/test-utils/dom/property-filter';
+import FilteringToken, {
+  FilteringTokenProps,
+} from '../../../../lib/components/property-filter/filtering-token/index.js';
+import { FilteringTokenWrapper } from '../../../../lib/components/test-utils/dom/property-filter/index.js';
 
 const token1 = {
   content: 'property1 = value',

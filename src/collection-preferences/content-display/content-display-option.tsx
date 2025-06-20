@@ -4,9 +4,9 @@ import React, { ForwardedRef, forwardRef } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import DragHandle, { DragHandleProps } from '../../internal/components/drag-handle';
-import InternalToggle from '../../toggle/internal';
-import { OptionWithVisibility } from './utils';
+import DragHandle, { DragHandleProps } from '../../internal/components/drag-handle/index.js';
+import InternalToggle from '../../toggle/internal.js';
+import { OptionWithVisibility } from './utils.js';
 
 import styles from '../styles.css.js';
 

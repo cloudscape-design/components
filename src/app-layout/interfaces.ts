@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { IconProps } from '../icon/interfaces';
-import { FlowType } from '../internal/analytics/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
-import { SomeRequired } from '../internal/types';
+import { IconProps } from '../icon/interfaces.js';
+import { FlowType } from '../internal/analytics/interfaces.js';
+import { BaseComponentProps } from '../internal/base-component/index.js';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
+import { SomeRequired } from '../internal/types.js';
 
 export interface BaseLayoutProps extends BaseComponentProps {
   /**

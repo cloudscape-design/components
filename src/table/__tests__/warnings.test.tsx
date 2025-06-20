@@ -5,8 +5,8 @@ import { render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import Table from '../../../lib/components/table';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Table from '../../../lib/components/table/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

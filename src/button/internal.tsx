@@ -9,35 +9,35 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useInternalI18n } from '../i18n/context';
-import Icon from '../icon/internal';
-import { FunnelMetrics } from '../internal/analytics';
-import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { useInternalI18n } from '../i18n/context.js';
+import Icon from '../icon/internal.js';
+import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
+import { FunnelMetrics } from '../internal/analytics/index.js';
+import Tooltip from '../internal/components/tooltip/index.js';
+import { useButtonContext } from '../internal/context/button-context.js';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context.js';
+import { fireCancelableEvent, isPlainLeftClick } from '../internal/events/index.js';
+import customCssProps from '../internal/generated/custom-css-properties/index.js';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import useHiddenDescription from '../internal/hooks/use-hidden-description/index.js';
+import { useModalContextLoadingButtonComponent } from '../internal/hooks/use-modal-component-analytics/index.js';
+import { usePerformanceMarks } from '../internal/hooks/use-performance-marks/index.js';
+import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
+import InternalLiveRegion from '../live-region/internal.js';
+import { GeneratedAnalyticsMetadataButtonFragment } from './analytics-metadata/interfaces.js';
+import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper.js';
+import { ButtonProps } from './interfaces.js';
+
+import analyticsSelectors from './analytics-metadata/styles.css.js';
+import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 import {
   DATA_ATTR_FUNNEL_VALUE,
   getFunnelValueSelector,
   getSubStepAllSelector,
   getTextFromSelector,
-} from '../internal/analytics/selectors';
-import Tooltip from '../internal/components/tooltip/index.js';
-import { useButtonContext } from '../internal/context/button-context';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
-import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
-import customCssProps from '../internal/generated/custom-css-properties';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import useHiddenDescription from '../internal/hooks/use-hidden-description';
-import { useModalContextLoadingButtonComponent } from '../internal/hooks/use-modal-component-analytics';
-import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import InternalLiveRegion from '../live-region/internal';
-import { GeneratedAnalyticsMetadataButtonFragment } from './analytics-metadata/interfaces';
-import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
-import { ButtonProps } from './interfaces';
-
-import analyticsSelectors from './analytics-metadata/styles.css.js';
-import styles from './styles.css.js';
-import testUtilStyles from './test-classes/styles.css.js';
+} from '../internal/analytics/selectors.js';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?:

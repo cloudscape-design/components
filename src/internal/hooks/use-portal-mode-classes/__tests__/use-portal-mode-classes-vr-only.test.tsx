@@ -3,7 +3,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { RenderTest } from './helpers';
+import { RenderTest } from './helpers.js';
 
 jest.mock('../../../../../lib/components/internal/environment', () => ({
   ...jest.requireActual('../../../../../lib/components/internal/environment'),

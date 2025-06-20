@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { ColumnLayoutBreakpoint } from './internal';
+import { BaseComponentProps } from '../internal/base-component/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { ColumnLayoutBreakpoint } from './internal.js';
 
 export interface ColumnLayoutProps extends BaseComponentProps {
   /**

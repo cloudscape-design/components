@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import ChartStatusContainer from '../../../../../lib/components/internal/components/chart-status-container';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
+import ChartStatusContainer from '../../../../../lib/components/internal/components/chart-status-container/index.js';
+import createWrapper from '../../../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../../../lib/components/internal/components/chart-status-container/styles.css.js';
 

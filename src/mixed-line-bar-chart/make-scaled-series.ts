@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
-import { isXThreshold, isYThreshold } from './utils';
+import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales.js';
+import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces.js';
+import { isXThreshold, isYThreshold } from './utils.js';
 
 export interface ScaledPoint<T> {
   x: number;

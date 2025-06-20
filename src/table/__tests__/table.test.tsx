@@ -3,11 +3,15 @@
 import * as React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import PropertyFilter from '../../../lib/components/property-filter';
-import Select from '../../../lib/components/select';
-import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper, { ElementWrapper, PaginationWrapper, TableWrapper } from '../../../lib/components/test-utils/dom';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile/index.js';
+import PropertyFilter from '../../../lib/components/property-filter/index.js';
+import Select from '../../../lib/components/select/index.js';
+import Table, { TableProps } from '../../../lib/components/table/index.js';
+import createWrapper, {
+  ElementWrapper,
+  PaginationWrapper,
+  TableWrapper,
+} from '../../../lib/components/test-utils/dom/index.js';
 
 import popoverStyles from '../../../lib/components/popover/styles.css.js';
 import bodyCellStyles from '../../../lib/components/table/body-cell/styles.css.js';

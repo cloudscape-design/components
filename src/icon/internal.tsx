@@ -5,11 +5,11 @@ import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import icons from './generated/icons';
-import { IconProps } from './interfaces';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import icons from './generated/icons.js';
+import { IconProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

@@ -3,12 +3,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { AppLayoutInternals } from '../../../lib/components/app-layout/visual-refresh-toolbar/interfaces';
+import { AppLayoutInternals } from '../../../lib/components/app-layout/visual-refresh-toolbar/interfaces.js';
 import {
   AppLayoutToolbarImplementation,
   ToolbarProps,
-} from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar';
-import createWrapper from '../../../lib/components/test-utils/dom';
+} from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import splitPanelTestUtilStyles from '../../../lib/components/split-panel/test-classes/styles.selectors.js';

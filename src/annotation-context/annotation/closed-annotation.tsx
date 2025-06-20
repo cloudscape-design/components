@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { AnnotationContextProps } from '../interfaces';
-import AnnotationTrigger from './annotation-trigger';
+import { AnnotationContextProps } from '../interfaces.js';
+import AnnotationTrigger from './annotation-trigger.js';
 
 interface AnnotationProps {
   globalStepIndex: number;

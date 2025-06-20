@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import ButtonWrapper from '../button';
+import ButtonWrapper from '../button/index.js';
 
 import styles from '../../../internal/components/chart-popover/styles.selectors.js';
 import testClasses from '../../../internal/components/chart-popover/test-classes/styles.selectors.js';

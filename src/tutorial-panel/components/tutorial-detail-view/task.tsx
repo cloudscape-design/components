@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback } from 'react';
 
-import InternalBox from '../../../box/internal';
-import InternalExpandableSection from '../../../expandable-section/internal';
+import InternalBox from '../../../box/internal.js';
+import InternalExpandableSection from '../../../expandable-section/internal.js';
 import { joinStrings } from '../../../internal/utils/strings/join-strings.js';
-import InternalSpaceBetween from '../../../space-between/internal';
-import InternalStatusIndicator from '../../../status-indicator/internal';
-import { TutorialPanelProps } from '../../interfaces';
+import InternalSpaceBetween from '../../../space-between/internal.js';
+import InternalStatusIndicator from '../../../status-indicator/internal.js';
+import { TutorialPanelProps } from '../../interfaces.js';
 
 import styles from './styles.css.js';
 

@@ -3,12 +3,12 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import Button from '../../../lib/components/button';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import WizardWrapper from '../../../lib/components/test-utils/dom/wizard';
-import Wizard, { WizardProps } from '../../../lib/components/wizard';
-import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
+import Button from '../../../lib/components/button/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import WizardWrapper from '../../../lib/components/test-utils/dom/wizard/index.js';
+import Wizard, { WizardProps } from '../../../lib/components/wizard/index.js';
+import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common.js';
 
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 import styles from '../../../lib/components/wizard/styles.selectors.js';

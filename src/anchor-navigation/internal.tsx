@@ -4,11 +4,11 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component/index.js';
-import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events/index';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { AnchorNavigationProps } from './interfaces';
+import { AnchorNavigationProps } from './interfaces.js';
 import useScrollSpy from './use-scroll-spy.js';
-import { renderNestedAnchors } from './utils';
+import { renderNestedAnchors } from './utils.js';
 
 import styles from './styles.css.js';
 import testUtilsStyles from './test-classes/styles.css.js';

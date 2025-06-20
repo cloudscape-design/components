@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { act, renderHook } from '../../__tests__/render-hook';
-import { OptionsLoadItemsDetail } from '../../internal/components/dropdown/interfaces';
-import { useAutosuggestLoadMore } from '../load-more-controller';
+import { act, renderHook } from '../../__tests__/render-hook.js';
+import { OptionsLoadItemsDetail } from '../../internal/components/dropdown/interfaces.js';
+import { useAutosuggestLoadMore } from '../load-more-controller.js';
 
 describe('Autosuggest load-more-controller', () => {
   test('calls onLoadItems on input focus', () => {

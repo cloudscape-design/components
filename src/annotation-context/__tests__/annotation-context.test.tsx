@@ -3,11 +3,11 @@
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
-import AnnotationContext from '../../../lib/components/annotation-context';
-import Hotspot from '../../../lib/components/hotspot';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { AnnotationContextProps } from '../interfaces';
-import { getTutorial, getTutorialWithMultipleStepsPerHotspot, i18nStrings } from './data';
+import AnnotationContext from '../../../lib/components/annotation-context/index.js';
+import Hotspot from '../../../lib/components/hotspot/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { AnnotationContextProps } from '../interfaces.js';
+import { getTutorial, getTutorialWithMultipleStepsPerHotspot, i18nStrings } from './data.js';
 import Tutorial = AnnotationContextProps.Tutorial;
 
 const noop = () => {};

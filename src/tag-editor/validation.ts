@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentFormatFunction } from '../i18n/context';
-import { TagEditorProps } from './interfaces';
+import { ComponentFormatFunction } from '../i18n/context.js';
+import { TagEditorProps } from './interfaces.js';
 
 const DEFAULT_CHAR_REGEX = /^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$/u;
 

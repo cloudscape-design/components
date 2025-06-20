@@ -4,10 +4,10 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import PropertyFilter from '../../../lib/components/property-filter';
-import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
-import { createDefaultProps } from './common';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import PropertyFilter from '../../../lib/components/property-filter/index.js';
+import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { createDefaultProps } from './common.js';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
 

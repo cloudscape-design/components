@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { getBaseProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { ToggleButtonProps } from './interfaces';
-import { InternalToggleButton } from './internal';
+import { getBaseProps } from '../internal/base-component/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { ToggleButtonProps } from './interfaces.js';
+import { InternalToggleButton } from './internal.js';
 
 export { ToggleButtonProps };
 

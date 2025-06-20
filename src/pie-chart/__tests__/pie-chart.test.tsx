@@ -5,11 +5,11 @@ import { act, fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import PieChart, { PieChartProps } from '../../../lib/components/pie-chart';
-import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
-import { PieChartWrapper } from '../../../lib/components/test-utils/dom';
-import * as colors from '../../../lib/design-tokens';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import PieChart, { PieChartProps } from '../../../lib/components/pie-chart/index.js';
+import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { PieChartWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import * as colors from '../../../lib/design-tokens/index.js';
 
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
 import styles from '../../../lib/components/pie-chart/styles.css.js';

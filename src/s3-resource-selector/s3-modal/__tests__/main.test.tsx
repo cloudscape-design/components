@@ -3,10 +3,10 @@
 import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 
-import { S3Modal } from '../../../../lib/components/s3-resource-selector/s3-modal';
-import createWrapper from '../../../../lib/components/test-utils/dom';
-import { i18nStrings, waitForFetch } from '../../__tests__/fixtures';
-import { modalDefaultProps, navigateToTableItem } from './utils';
+import { S3Modal } from '../../../../lib/components/s3-resource-selector/s3-modal/index.js';
+import createWrapper from '../../../../lib/components/test-utils/dom/index.js';
+import { i18nStrings, waitForFetch } from '../../__tests__/fixtures.js';
+import { modalDefaultProps, navigateToTableItem } from './utils.js';
 
 jest.setTimeout(20_000);
 

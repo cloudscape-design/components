@@ -4,19 +4,19 @@ import React from 'react';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../i18n/context';
-import { getBaseProps } from '../internal/base-component';
-import { NonCancelableCustomEvent } from '../internal/events';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useControllable } from '../internal/hooks/use-controllable';
-import { useMobile } from '../internal/hooks/use-mobile';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { isDevelopment } from '../internal/is-development';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { applyDefaults } from './defaults';
-import { AppLayoutProps } from './interfaces';
-import { AppLayoutInternal } from './internal';
-import { useAppLayoutPlacement } from './utils/use-app-layout-placement';
+import { useInternalI18n } from '../i18n/context.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { NonCancelableCustomEvent } from '../internal/events/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { useControllable } from '../internal/hooks/use-controllable/index.js';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { isDevelopment } from '../internal/is-development.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { applyDefaults } from './defaults.js';
+import { AppLayoutProps } from './interfaces.js';
+import { AppLayoutInternal } from './internal.js';
+import { useAppLayoutPlacement } from './utils/use-app-layout-placement.js';
 
 export { AppLayoutProps };
 

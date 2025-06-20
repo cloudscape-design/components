@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { joinStrings } from '../../../../../lib/components/internal/utils/strings/join-strings';
+import { joinStrings } from '../../../../../lib/components/internal/utils/strings/join-strings.js';
 
 describe('joinStrings', () => {
   test('joins non-empty strings', () => {

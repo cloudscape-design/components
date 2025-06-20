@@ -3,8 +3,8 @@
 
 import React from 'react';
 
-import { TableTdElement, TableTdElementProps } from '../body-cell/td-element';
-import { ItemsLoader, ItemsLoaderProps } from './items-loader';
+import { TableTdElement, TableTdElementProps } from '../body-cell/td-element.js';
+import { ItemsLoader, ItemsLoaderProps } from './items-loader.js';
 
 export interface TableLoaderCellProps<ItemType>
   extends Omit<TableTdElementProps, 'isEditable' | 'isEditing' | 'children'>,

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import ButtonDropdownWrapper from '../../../lib/components/test-utils/selectors/button-dropdown';
+import ButtonDropdownWrapper from '../../../lib/components/test-utils/selectors/button-dropdown/index.js';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
 
 const wrapper = createWrapper();
 export default class ButtonDropdownPage extends BasePageObject {

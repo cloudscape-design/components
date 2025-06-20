@@ -3,16 +3,17 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import Container from '../../../lib/components/container';
-import Form from '../../../lib/components/form';
-import Header from '../../../lib/components/header';
-import { FunnelMetrics } from '../../../lib/components/internal/analytics';
-import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
-import { FUNNEL_KEY_STEP_NAME, getFunnelKeySelector } from '../../../lib/components/internal/analytics/selectors';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import Wizard, { WizardProps } from '../../../lib/components/wizard';
-import { mockFunnelMetrics, mockInnerText } from '../../internal/analytics/__tests__/mocks';
-import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
+import Container from '../../../lib/components/container/index.js';
+import Form from '../../../lib/components/form/index.js';
+import Header from '../../../lib/components/header/index.js';
+import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel.js';
+import { FunnelMetrics } from '../../../lib/components/internal/analytics/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import Wizard, { WizardProps } from '../../../lib/components/wizard/index.js';
+import { mockFunnelMetrics, mockInnerText } from '../../internal/analytics/__tests__/mocks.js';
+import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common.js';
+
+import { FUNNEL_KEY_STEP_NAME, getFunnelKeySelector } from '../../../lib/components/internal/analytics/selectors.js';
 
 let mockedFunnelMetrics: ReturnType<typeof mockFunnelMetrics>;
 

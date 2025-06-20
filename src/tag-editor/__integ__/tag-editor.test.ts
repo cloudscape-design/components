@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import TagEditorPage from './page/tag-editor-page';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import TagEditorPage from './page/tag-editor-page.js';
 
 const tagEditorWrapper = createWrapper().findTagEditor();
 

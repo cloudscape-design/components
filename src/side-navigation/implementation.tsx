@@ -3,15 +3,15 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 
-import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
-import { getBaseProps } from '../internal/base-component';
-import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { isDevelopment } from '../internal/is-development';
-import { createWidgetizedComponent } from '../internal/widgets';
-import { SideNavigationProps } from './interfaces';
-import { Header, NavigationItemsList } from './parts';
-import { checkDuplicateHrefs, generateExpandableItemsMapping } from './util';
+import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { isDevelopment } from '../internal/is-development.js';
+import { createWidgetizedComponent } from '../internal/widgets/index.js';
+import { SideNavigationProps } from './interfaces.js';
+import { Header, NavigationItemsList } from './parts.js';
+import { checkDuplicateHrefs, generateExpandableItemsMapping } from './util.js';
 
 import styles from './styles.css.js';
 

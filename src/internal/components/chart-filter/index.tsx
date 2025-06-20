@@ -3,12 +3,12 @@
 import React, { memo, useCallback } from 'react';
 import clsx from 'clsx';
 
-import InternalFormField from '../../../form-field/internal';
-import { useInternalI18n } from '../../../i18n/context';
-import { MultiselectProps } from '../../../multiselect/interfaces';
-import InternalMultiselect from '../../../multiselect/internal';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { NonCancelableEventHandler } from '../../events';
+import InternalFormField from '../../../form-field/internal.js';
+import { useInternalI18n } from '../../../i18n/context.js';
+import { MultiselectProps } from '../../../multiselect/interfaces.js';
+import InternalMultiselect from '../../../multiselect/internal.js';
+import { BaseComponentProps, getBaseProps } from '../../base-component/index.js';
+import { NonCancelableEventHandler } from '../../events/index.js';
 
 import styles from './styles.css.js';
 

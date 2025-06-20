@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { usesDom } from '@cloudscape-design/test-utils-core/dom';
 
-import ButtonWrapper from '../button';
+import ButtonWrapper from '../button/index.js';
 
 import buttonStyles from '../../../button/styles.selectors.js';
 import styles from '../../../toggle-button/styles.selectors.js';

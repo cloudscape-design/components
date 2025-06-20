@@ -5,11 +5,11 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
-import BarSeries from './bar-series';
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
-import LineSeries from './line-series';
-import { calculateStackedBarValues } from './utils';
+import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales.js';
+import BarSeries from './bar-series.js';
+import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces.js';
+import LineSeries from './line-series.js';
+import { calculateStackedBarValues } from './utils.js';
 
 import styles from './styles.css.js';
 

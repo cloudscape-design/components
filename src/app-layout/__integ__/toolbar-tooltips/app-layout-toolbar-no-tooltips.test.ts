@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import createWrapper from '../../../../lib/components/test-utils/selectors';
-import { setupTest } from '../utils';
+import createWrapper from '../../../../lib/components/test-utils/selectors/index.js';
+import { setupTest } from '../utils.js';
 
 const wrapper = createWrapper().findAppLayout();
 

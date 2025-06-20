@@ -4,11 +4,11 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { GeneratedAnalyticsMetadataRadioGroupComponent } from './analytics-metadata/interfaces';
-import { RadioGroupProps } from './interfaces';
-import InternalRadioGroup from './internal';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { GeneratedAnalyticsMetadataRadioGroupComponent } from './analytics-metadata/interfaces.js';
+import { RadioGroupProps } from './interfaces.js';
+import InternalRadioGroup from './internal.js';
 
 export { RadioGroupProps };
 

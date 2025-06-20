@@ -4,7 +4,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { getHeaderWidth, getResizerElements } from '../../../../lib/components/table/resizer/resizer-lookup';
+import { getHeaderWidth, getResizerElements } from '../../../../lib/components/table/resizer/resizer-lookup.js';
 
 import resizerStyles from '../../../../lib/components/table/resizer/styles.css.js';
 import tableStyles from '../../../../lib/components/table/styles.css.js';

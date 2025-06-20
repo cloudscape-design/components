@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ChartDataTypes } from './interfaces';
-import { ScaledBarGroup } from './make-scaled-bar-groups';
+import { ChartDataTypes } from './interfaces.js';
+import { ScaledBarGroup } from './make-scaled-bar-groups.js';
 
 import styles from './styles.css.js';
 

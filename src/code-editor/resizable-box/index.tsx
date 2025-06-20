@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalDragHandle from '../../internal/components/drag-handle';
+import InternalDragHandle from '../../internal/components/drag-handle/index.js';
 
 import styles from './styles.css.js';
 

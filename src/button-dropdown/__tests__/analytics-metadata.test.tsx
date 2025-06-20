@@ -9,10 +9,10 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
-import InternalButtonDropdown from '../../../lib/components/button-dropdown/internal';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown/index.js';
+import InternalButtonDropdown from '../../../lib/components/button-dropdown/internal.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import labels from '../../../lib/components/button-dropdown/analytics-metadata/styles.css.js';
 

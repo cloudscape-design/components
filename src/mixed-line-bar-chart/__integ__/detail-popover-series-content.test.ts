@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { MixedChartPage } from './common';
+import { MixedChartPage } from './common.js';
 
 describe('Detail popover series content keeps expanded state independently for every datum', () => {
   test.each(['hover', 'click'])('on %s', interaction =>

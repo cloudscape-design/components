@@ -98,6 +98,7 @@ const styleDictionaryPackageJson = generatePackageJson(path.join(workspace.targe
 
 const componentsThemeablePackageJson = generatePackageJson(path.join(workspace.targetPath, 'components-themeable'), {
   name: '@cloudscape-design/components-themeable',
+  type: 'module',
 });
 
 const devPagesPackageJson = generatePackageJson(path.join(workspace.targetPath, 'dev-pages'), {
@@ -110,6 +111,7 @@ module.exports = parallel([
       theme.outputPath,
       {
         ...theme.packageJson,
+        type: 'module',
         files: ['*'],
         main: './index.js',
         exports: getComponentsExports(),

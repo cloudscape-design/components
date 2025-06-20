@@ -3,10 +3,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { TextContentProps } from './interfaces';
+import { getBaseProps } from '../internal/base-component/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { TextContentProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

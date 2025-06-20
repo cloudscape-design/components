@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ChartScale, NumericChartScale } from '../../../lib/components/internal/components/cartesian-chart/scales';
-import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/interfaces';
-import makeScaledSeries from '../../../lib/components/mixed-line-bar-chart/make-scaled-series';
-import { lineSeries1, lineSeries3, thresholdSeries } from './common';
+import { ChartScale, NumericChartScale } from '../../../lib/components/internal/components/cartesian-chart/scales.js';
+import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/interfaces.js';
+import makeScaledSeries from '../../../lib/components/mixed-line-bar-chart/make-scaled-series.js';
+import { lineSeries1, lineSeries3, thresholdSeries } from './common.js';
 
 function createInternalSeries<T>(externalSeries: readonly MixedLineBarChartProps.ChartSeries<T>[]) {
   return externalSeries.map((series, index) => ({ series, index, color: series.color ?? '' }));

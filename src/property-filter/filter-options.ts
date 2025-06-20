@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { AutosuggestProps } from '../autosuggest/interfaces';
-import { OptionDefinition } from '../internal/components/option/interfaces';
+import { AutosuggestProps } from '../autosuggest/interfaces.js';
+import { OptionDefinition } from '../internal/components/option/interfaces.js';
 
 export function filterOptions(
   options: readonly (AutosuggestProps.Option | AutosuggestProps.OptionGroup)[],

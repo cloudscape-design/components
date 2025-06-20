@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { memo } from 'react';
 
-import { NumericChartScale } from './scales';
+import { NumericChartScale } from './scales.js';
 
 import styles from './styles.css.js';
 

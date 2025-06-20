@@ -7,9 +7,9 @@ import { pascalCase } from 'change-case';
 import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal';
 import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
 
-import { PACKAGE_VERSION } from '../../../lib/components/internal/environment';
-import { getRequiredPropsForComponent } from '../required-props-for-components';
-import { getAllComponents, requireComponent, supportsDOMProperties } from '../utils';
+import { PACKAGE_VERSION } from '../../../lib/components/internal/environment.js';
+import { getRequiredPropsForComponent } from '../required-props-for-components.js';
+import { getAllComponents, requireComponent, supportsDOMProperties } from '../utils.js';
 
 const globalWithFlags = globalThis as any;
 

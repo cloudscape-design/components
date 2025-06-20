@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { validateProps } from '../../../../lib/components/internal/base-component';
+import { validateProps } from '../../../../lib/components/internal/base-component/index.js';
 
 test('should pass validation', () => {
   expect(() => validateProps('TestComponent', {}, [], {})).not.toThrow();

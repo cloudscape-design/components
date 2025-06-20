@@ -5,14 +5,14 @@ import isSameDay from 'date-fns/isSameDay';
 import isSameMonth from 'date-fns/isSameMonth';
 import subMonths from 'date-fns/subMonths';
 
-import { DayIndex } from '../../locale';
+import { DayIndex } from '../../locale/index.js';
 import {
   getCalendarMonthWithSixRows,
   getCalendarYear,
   getCurrentMonthRows,
   getNextMonthRows,
   getPrevMonthRows,
-} from '../calendar';
+} from '../calendar.js';
 
 describe('getCalendarYear', () => {
   test('returns a 4x3 matrix of dates', () => {

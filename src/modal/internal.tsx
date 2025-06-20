@@ -7,34 +7,34 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { Portal, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { InternalButton } from '../button/internal';
-import InternalHeader from '../header/internal';
-import { useInternalI18n } from '../i18n/context';
-import { PerformanceMetrics } from '../internal/analytics';
+import { InternalButton } from '../button/internal.js';
+import InternalHeader from '../header/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
 import {
   FunnelNameSelectorContext,
   FunnelStepContextValue,
   FunnelSubStepContextValue,
-} from '../internal/analytics/context/analytics-context';
-import { FunnelProps, useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { getBaseProps } from '../internal/base-component';
-import FocusLock from '../internal/components/focus-lock';
-import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
-import { ModalContext } from '../internal/context/modal-context';
-import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
-import { fireNonCancelableEvent } from '../internal/events';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { KeyCode } from '../internal/keycode';
-import { SomeRequired } from '../internal/types';
+} from '../internal/analytics/context/analytics-context.js';
+import { FunnelProps, useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
+import { PerformanceMetrics } from '../internal/analytics/index.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import FocusLock from '../internal/components/focus-lock/index.js';
+import { ButtonContext, ButtonContextProps } from '../internal/context/button-context.js';
+import { ModalContext } from '../internal/context/modal-context.js';
+import ResetContextsForModal from '../internal/context/reset-contexts-for-modal.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { KeyCode } from '../internal/keycode.js';
+import { SomeRequired } from '../internal/types.js';
 import {
   GeneratedAnalyticsMetadataModalComponent,
   GeneratedAnalyticsMetadataModalDismiss,
-} from './analytics-metadata/interfaces';
-import { disableBodyScrolling, enableBodyScrolling } from './body-scroll';
-import { ModalProps } from './interfaces';
+} from './analytics-metadata/interfaces.js';
+import { disableBodyScrolling, enableBodyScrolling } from './body-scroll.js';
+import { ModalProps } from './interfaces.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

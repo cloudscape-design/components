@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { OptionDefinition, OptionGroup } from './interfaces';
-import { matchesString } from './utils/filter-options';
+import { OptionDefinition, OptionGroup } from './interfaces.js';
+import { matchesString } from './utils/filter-options.js';
 
 interface DefaultOptionDescriptionProps {
   option: OptionDefinition;

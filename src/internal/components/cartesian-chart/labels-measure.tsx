@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
-import { ChartScale, NumericChartScale } from './scales';
+import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces.js';
+import { ChartScale, NumericChartScale } from './scales.js';
 
 import styles from './styles.css.js';
 

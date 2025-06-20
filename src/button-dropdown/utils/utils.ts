@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ButtonDropdownProps, LinkItem } from '../interfaces';
-import { traverseItems } from './create-items-tree';
+import { ButtonDropdownProps, LinkItem } from '../interfaces.js';
+import { traverseItems } from './create-items-tree.js';
 
 export const isItemGroup = (item: ButtonDropdownProps.ItemOrGroup): item is ButtonDropdownProps.ItemGroup =>
   item && (item as ButtonDropdownProps.ItemGroup).items !== undefined;

@@ -3,7 +3,7 @@
 
 import useInternalDragHandleInteractionState, {
   UseDragHandleInteractionStateProps as UseInternalDragHandleInteractionStateProps,
-} from '../components/drag-handle/hooks/use-drag-handle-interaction-state';
+} from '../components/drag-handle/hooks/use-drag-handle-interaction-state.js';
 import InternalDragHandle, { DragHandleProps as InternalDragHandleProps } from '../components/drag-handle/index.js';
 
 export type { InternalDragHandleProps, UseInternalDragHandleInteractionStateProps };

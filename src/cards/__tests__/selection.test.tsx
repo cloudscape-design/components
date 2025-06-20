@@ -4,8 +4,8 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import range from 'lodash/range';
 
-import Cards, { CardsProps } from '../../../lib/components/cards';
-import { CardsWrapper } from '../../../lib/components/test-utils/dom';
+import Cards, { CardsProps } from '../../../lib/components/cards/index.js';
+import { CardsWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 interface Item {
   description: string;

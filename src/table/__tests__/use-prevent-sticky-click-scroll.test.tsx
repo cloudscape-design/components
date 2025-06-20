@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import { usePreventStickyClickScroll } from '../../../lib/components/table/use-prevent-sticky-click-scroll';
+import { usePreventStickyClickScroll } from '../../../lib/components/table/use-prevent-sticky-click-scroll.js';
 
 import bodyCellStyles from '../../../lib/components/table/body-cell/styles.css.js';
 

@@ -5,16 +5,16 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalBox from '../../box/internal';
-import InternalButton from '../../button/internal';
-import { useInternalI18n } from '../../i18n/context';
-import SortableArea from '../../internal/components/sortable-area';
-import InternalSpaceBetween from '../../space-between/internal';
-import InternalTextFilter from '../../text-filter/internal';
-import { getAnalyticsInnerContextAttribute } from '../analytics-metadata/utils';
-import { CollectionPreferencesProps } from '../interfaces';
-import ContentDisplayOption, { getClassName as getOptionClassName } from './content-display-option';
-import { getFilteredOptions, getSortedOptions, OptionWithVisibility } from './utils';
+import InternalBox from '../../box/internal.js';
+import InternalButton from '../../button/internal.js';
+import { useInternalI18n } from '../../i18n/context.js';
+import SortableArea from '../../internal/components/sortable-area/index.js';
+import InternalSpaceBetween from '../../space-between/internal.js';
+import InternalTextFilter from '../../text-filter/internal.js';
+import { getAnalyticsInnerContextAttribute } from '../analytics-metadata/utils.js';
+import { CollectionPreferencesProps } from '../interfaces.js';
+import ContentDisplayOption, { getClassName as getOptionClassName } from './content-display-option.js';
+import { getFilteredOptions, getSortedOptions, OptionWithVisibility } from './utils.js';
 
 import styles from '../styles.css.js';
 

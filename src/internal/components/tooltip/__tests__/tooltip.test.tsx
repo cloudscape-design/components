@@ -3,9 +3,9 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import Tooltip, { TooltipProps } from '../../../../../lib/components/internal/components/tooltip';
-import StatusIndicator from '../../../../../lib/components/status-indicator';
-import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../../../lib/components/test-utils/dom';
+import Tooltip, { TooltipProps } from '../../../../../lib/components/internal/components/tooltip/index.js';
+import StatusIndicator from '../../../../../lib/components/status-indicator/index.js';
+import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../../../lib/components/test-utils/dom/index.js';
 
 import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.selectors.js';
 import styles from '../../../../../lib/components/popover/styles.selectors.js';

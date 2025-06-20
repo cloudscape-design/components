@@ -4,8 +4,8 @@ import { RefObject, useEffect, useState } from 'react';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-import { awsuiPluginsInternal } from '../../internal/plugins/api';
-import { DrawerConfig } from '../../internal/plugins/controllers/drawers';
+import { awsuiPluginsInternal } from '../../internal/plugins/api.js';
+import { DrawerConfig } from '../../internal/plugins/controllers/drawers.js';
 
 export const useRuntimeDrawerContext = ({ rootRef }: { rootRef: RefObject<HTMLElement> }) => {
   const [drawerContext, setDrawerContext] = useState<DrawerConfig | null>(null);

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { act } from '@testing-library/react';
 
-import { ElementWrapper } from '../../../../lib/components/test-utils/dom';
+import { ElementWrapper } from '../../../../lib/components/test-utils/dom/index.js';
 
 export function fireMousedown(wrapper: ElementWrapper, button = 0) {
   act(() => {

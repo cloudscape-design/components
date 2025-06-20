@@ -5,9 +5,9 @@ import { render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import createWrapper from '../../../lib/components/test-utils/dom';
-import ToggleButton, { ToggleButtonProps } from '../../../lib/components/toggle-button';
-import { getToggleIcon } from '../../../lib/components/toggle-button/util';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import ToggleButton, { ToggleButtonProps } from '../../../lib/components/toggle-button/index.js';
+import { getToggleIcon } from '../../../lib/components/toggle-button/util.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { colorChartsThresholdNeutral as thresholdColor } from '../generated/styles/tokens';
-import { categoryPalette } from '../styles/colors';
-import { parseCssVariable } from './dom';
+import { colorChartsThresholdNeutral as thresholdColor } from '../generated/styles/tokens.js';
+import { categoryPalette } from '../styles/colors.js';
+import { parseCssVariable } from './dom.js';
 
 export default function createCategoryColorScale<T>(
   items: readonly T[],

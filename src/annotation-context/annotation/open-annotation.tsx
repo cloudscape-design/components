@@ -4,10 +4,10 @@ import React, { useRef } from 'react';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
-import { HotspotProps } from '../../hotspot/interfaces';
-import { AnnotationContextProps } from '../interfaces';
-import { AnnotationPopover } from './annotation-popover';
-import AnnotationTrigger from './annotation-trigger';
+import { HotspotProps } from '../../hotspot/interfaces.js';
+import { AnnotationContextProps } from '../interfaces.js';
+import { AnnotationPopover } from './annotation-popover.js';
+import AnnotationTrigger from './annotation-trigger.js';
 
 interface AnnotationProps {
   title: string;
