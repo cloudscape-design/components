@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-const customCssPropertiesList = require('../../src/internal/generated/custom-css-properties/list');
 const path = require('path');
-const { writeFile } = require('../utils/files');
 const { getHashDigest } = require('loader-utils');
+const customCssPropertiesList = require('../utils/custom-css-properties');
+const { writeFile } = require('../utils/files');
+const workspace = require('../utils/workspace');
 
-const outputBasePath = path.join(__dirname, '../../src/internal/generated/custom-css-properties');
+const outputBasePath = path.join(workspace.generatedPath, 'custom-css-properties');
 const hash = getHashDigest(Buffer.from(JSON.stringify(customCssPropertiesList)), 'md5', 'base36', 6);
 
 const getHashedProperty = property => {
@@ -32,6 +33,9 @@ function writeSassFile() {
   writeFile(
     filepath,
     `
+    // Build environment
+    $awsui-commit-hash: ${workspace.gitCommitVersion};
+    // Manually managed CSS-variables
     ${customCssPropertiesList.map(property => `$${property}: ${getHashedProperty(property)};`).join('\n')}
     `
   );

@@ -10,6 +10,7 @@ function writeEnvironmentFile(theme) {
   const values = {
     PACKAGE_SOURCE: workspace.packageSource,
     PACKAGE_VERSION: workspace.packageVersion,
+    GIT_SHA: workspace.gitCommitVersion,
     THEME: theme.name,
     ALWAYS_VISUAL_REFRESH: !!theme.alwaysVisualRefresh,
   };
