@@ -45,7 +45,7 @@ export default function DragHandleWrapper({
     // handled in the "pointerup" listener instead. In cases where focus is moved
     // to the button (by manually calling `.focus()`, the buttons should only appear)
     // if the action that triggered the focus move was the result of a keypress.
-    if (document.body.dataset.awsuiFocusVisible && !nodeContains(wrapperRef.current, event.relatedTarget)) {
+    if (document.body.matches(':has(:focus-visible)') && !nodeContains(wrapperRef.current, event.relatedTarget)) {
       setShowTooltip(false);
       if (triggerMode === 'focus') {
         setShowButtons(true);

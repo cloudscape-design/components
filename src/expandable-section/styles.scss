@@ -4,7 +4,6 @@
 */
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../container/shared' as container;
 
 @use './motion';
@@ -145,7 +144,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       padding-inline-start: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-medium});
     }
 
-    @include focus-visible.when-visible {
+    &:focus-visible {
       // HACK: Remediate focus border
       padding-block: calc(#{awsui.$space-scaled-s} - #{awsui.$border-divider-section-width});
       padding-inline: calc(#{awsui.$space-l} - #{awsui.$border-divider-section-width});
@@ -180,7 +179,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
   &-button,
   &-container-button {
-    @include focus-visible.when-visible {
+    &:focus-visible {
       @include styles.focus-highlight(0px);
     }
   }
@@ -221,7 +220,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
         color: awsui.$color-text-expandable-section-hover;
       }
 
-      @include focus-visible.when-visible {
+      &:focus-visible {
         @include styles.focus-highlight(2px);
       }
     }
@@ -269,7 +268,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     text-decoration: none;
   }
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.focus-element-without-border(awsui.$border-radius-control-default-focus-ring);
   }
 }

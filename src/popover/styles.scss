@@ -5,7 +5,6 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @import './arrow';
 @import './body';
@@ -77,7 +76,7 @@ $trigger-underline-offset: 0.25em;
     outline: none;
   }
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.focus-highlight(1px);
   }
 }

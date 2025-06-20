@@ -5,7 +5,6 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .content,
 .description,
@@ -21,14 +20,6 @@
   display: none;
   &.show-outline {
     display: block;
-  }
-}
-
-.native-input {
-  @include focus-visible.when-visible {
-    & + .outline {
-      display: block;
-    }
   }
 }
 
@@ -86,4 +77,8 @@
     margin-inline: 0;
   }
   /* stylelint-enable selector-max-type */
+}
+
+.native-input:focus-visible + .outline {
+  display: block;
 }

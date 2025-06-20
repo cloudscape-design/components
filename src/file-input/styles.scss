@@ -4,7 +4,6 @@
 */
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .root,
 .file-input {
@@ -16,7 +15,8 @@
 }
 
 .file-input-button {
-  @include focus-visible.when-visible-unfocused {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  :global(:has(:focus-visible)) & {
     &.force-focus-outline {
       &-icon {
         @include styles.focus-highlight(
