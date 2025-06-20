@@ -6,10 +6,10 @@ import clsx from 'clsx';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { ColumnWidthStyle } from '../column-widths-utils';
-import { ExpandToggleButton } from '../expandable-rows/expand-toggle-button';
 import { TableProps } from '../interfaces.js';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { getTableCellRoleProps, TableRole } from '../table-role';
