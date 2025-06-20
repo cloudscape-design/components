@@ -11,7 +11,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 export default function CustomButtonTypes() {
   return (
-    <ScreenshotArea>
+    <ScreenshotArea disableAnimations={true}>
       <h1>Custom Button Types</h1>
 
       <SpaceBetween direction="horizontal" size="m">
