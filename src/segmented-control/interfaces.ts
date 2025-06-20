@@ -13,7 +13,8 @@ export interface SegmentedControlProps extends BaseComponentProps {
   selectedId: string | null;
 
   /**
-   * An array of objects representing options. Each segment has the following properties:
+   * An array of objects representing options. Only up to 6 options are supported.
+   * Each segment has the following properties:
    *
    * - `id` (string) - The ID of the segment.
    * - `disabled` [boolean] - (Optional) Determines whether the segment is disabled, which prevents the user from selecting it.

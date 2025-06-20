@@ -15780,7 +15780,8 @@ the label is visible and attached to the select component, unless \`ariaLabelled
       "type": "string",
     },
     {
-      "description": "An array of objects representing options. Each segment has the following properties:
+      "description": "An array of objects representing options. Only up to 6 options are supported.
+Each segment has the following properties:
 
 - \`id\` (string) - The ID of the segment.
 - \`disabled\` [boolean] - (Optional) Determines whether the segment is disabled, which prevents the user from selecting it.
