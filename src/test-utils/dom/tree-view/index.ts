@@ -6,63 +6,63 @@ import expandToggleStyles from '../../../internal/components/expand-toggle-butto
 import structuredItemTestUtilStyles from '../../../internal/components/structured-item/test-classes/styles.selectors.js';
 import testUtilStyles from '../../../tree-view/test-classes/styles.selectors.js';
 
-class TreeItemWrapper extends ComponentWrapper {
+class TreeViewItemWrapper extends ComponentWrapper {
   /**
-   * Finds the content of the tree item.
+   * Finds the content slot of the tree view item.
    */
   findContent(): ElementWrapper | null {
     return this.findByClassName(structuredItemTestUtilStyles.content);
   }
 
   /**
-   * Finds the icon of the tree item.
+   * Finds the icon slot of the tree view item.
    */
   findIcon(): ElementWrapper | null {
     return this.findByClassName(structuredItemTestUtilStyles.icon);
   }
 
   /**
-   * Finds the secondary content of the tree item.
+   * Finds the secondary content slot of the tree view item.
    */
   findSecondaryContent(): ElementWrapper | null {
     return this.findByClassName(structuredItemTestUtilStyles.secondary);
   }
 
   /**
-   * Finds the actions of the tree item.
+   * Finds the actions slot of the tree view item.
    */
   findActions(): ElementWrapper | null {
     return this.findByClassName(structuredItemTestUtilStyles.actions);
   }
 
   /**
-   * Finds the expand toggle of the tree item.
+   * Finds the expand toggle of the tree view item.
    */
   findItemToggle(): ElementWrapper | null {
     return this.findByClassName(expandToggleStyles['expand-toggle']);
   }
 
   /**
-   * Finds all visible child items of the tree item.
+   * Finds all visible child items of the tree view item.
    * @param options
-   * * expanded (boolean) - Flag to find the expanded/collapsed items
+   * * expanded (optional, boolean) - Use it to find all visible expanded or collapsed child items.
    */
-  findChildren(options: { expanded?: boolean } = {}): Array<TreeItemWrapper> {
+  findChildren(options: { expanded?: boolean } = {}): Array<TreeViewItemWrapper> {
     const selector = getTreeItemSelector(options);
 
-    return this.findAll(selector).map(item => new TreeItemWrapper(item.getElement()));
+    return this.findAll(selector).map(item => new TreeViewItemWrapper(item.getElement()));
   }
 
   /**
    * Finds a visible child item by its ID.
    * @param id of the item to find
    * @param options
-   * * expanded (boolean) - Flag to find the expanded/collapsed item. Use it to test if item is expanded/collapsed.
+   * * expanded (optional, boolean) - Use it to find the visible expanded or collapsed child item.
    */
-  findChildById(id: string, options: { expanded?: boolean } = {}): TreeItemWrapper | null {
+  findChildById(id: string, options: { expanded?: boolean } = {}): TreeViewItemWrapper | null {
     const selector = `${getTreeItemSelector(options)}[data-testid="treeitem-${id}"]`;
     const item = this.find(selector);
-    return item ? new TreeItemWrapper(item.getElement()) : null;
+    return item ? new TreeViewItemWrapper(item.getElement()) : null;
   }
 }
 
@@ -70,26 +70,26 @@ export default class TreeViewWrapper extends ComponentWrapper {
   static rootSelector: string = testUtilStyles.root;
 
   /**
-   * Finds all visible tree items.
+   * Finds all visible tree view items.
    * @param options
-   * * expanded (boolean) - Flag to find the expanded/collapsed items
+   * * expanded (optional, boolean) - Use it to find all visible expanded or collapsed items.
    */
-  findItems(options: { expanded?: boolean } = {}): Array<TreeItemWrapper> {
+  findItems(options: { expanded?: boolean } = {}): Array<TreeViewItemWrapper> {
     const selector = getTreeItemSelector(options);
 
-    return this.findAll(selector).map(item => new TreeItemWrapper(item.getElement()));
+    return this.findAll(selector).map(item => new TreeViewItemWrapper(item.getElement()));
   }
 
   /**
-   * Finds a visible item by its ID.
+   * Finds a visible tree view item by its ID.
    * @param id of the item to find
    * @param options
-   * * expanded (boolean) - Flag to find the expanded/collapsed item. Use it to test if item is expanded/collapsed.
+   * * expanded (optiona, boolean) - Use it to find the visible expanded or collapsed item.
    */
-  findItemById(id: string, options: { expanded?: boolean } = {}): TreeItemWrapper | null {
+  findItemById(id: string, options: { expanded?: boolean } = {}): TreeViewItemWrapper | null {
     const selector = `${getTreeItemSelector(options)}[data-testid="treeitem-${id}"]`;
     const item = this.find(selector);
-    return item ? new TreeItemWrapper(item.getElement()) : null;
+    return item ? new TreeViewItemWrapper(item.getElement()) : null;
   }
 }
 

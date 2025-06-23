@@ -7,32 +7,31 @@ import { NonCancelableEventHandler } from '../internal/events';
 
 export interface TreeViewProps<T = any> extends BaseComponentProps {
   /**
-   * An array of tree view items.
+   * Specifies the items to display in the tree view.
    */
   items: ReadonlyArray<T>;
 
   /**
-   * Use it to map your data to render the item.
-   * For each item the below properties must be returned:
+   * Use this property to map your data to tree view items. This property must return an object with the following properties:
    * * `content` (React.ReactNode) - The content of the item.
    * * `icon` (optional, React.ReactNode) - The leading icon of the item.
-   * * `secondaryContent` (optional, React.ReactNode) - Secondary content of the item, displayed below the content.
-   * * `actions` (optional, React.ReactNode) - Actions related to item. We recommend using a button group.
+   * * `secondaryContent` (optional, React.ReactNode) - Secondary content of the item, displayed below `content`.
+   * * `actions` (optional, React.ReactNode) - Actions related to the item. Use [button group](/components/button-group/).
    */
   renderItem: (item: T, index: number) => TreeViewProps.TreeItem;
 
   /**
-   * Provides a unique identifier of each item.
+   * Provides a unique identifier for each tree view item.
    */
   getItemId: (item: T, index: number) => string;
 
   /**
-   * The nested items of the item.
+   * Specifies the nested items that are displayed when a tree view item gets expanded.
    */
   getItemChildren: (item: T, index: number) => ReadonlyArray<T> | undefined;
 
   /**
-   * An array of expanded item IDs. Use it to control expand state of tree items.
+   * Provides the IDs of the expanded tree view items. It controls whether an item is expanded or collapsed.
    */
   expandedItems?: ReadonlyArray<string>;
 
@@ -55,7 +54,7 @@ export interface TreeViewProps<T = any> extends BaseComponentProps {
   ariaDescribedby?: string;
 
   /**
-   * Called when an item's expand toggle is clicked.
+   * Called when an item expands or collapses.
    */
   onItemToggle?: NonCancelableEventHandler<TreeViewProps.ItemToggleDetail<T>>;
 
@@ -67,8 +66,7 @@ export interface TreeViewProps<T = any> extends BaseComponentProps {
 
   /**
    * @awsuiSystem core
-   * Overrides the default expand toggle.
-   * Use it to have different icons/animations for toggle.
+   * Use this property to display a custom icon in the toggle button.
    */
   renderItemToggleIcon?: (isExpanded: boolean) => React.ReactNode;
 }

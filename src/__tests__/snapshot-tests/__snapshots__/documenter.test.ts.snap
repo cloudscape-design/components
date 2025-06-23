@@ -20445,7 +20445,7 @@ exports[`Documenter definition for tree-view matches the snapshot: tree-view 1`]
   "events": [
     {
       "cancelable": false,
-      "description": "Called when an item's expand toggle is clicked.",
+      "description": "Called when an item expands or collapses.",
       "detailInlineType": {
         "name": "TreeViewProps.ItemToggleDetail<T>",
         "properties": [
@@ -20503,13 +20503,13 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     {
-      "description": "An array of expanded item IDs. Use it to control expand state of tree items.",
+      "description": "Provides the IDs of the expanded tree view items. It controls whether an item is expanded or collapsed.",
       "name": "expandedItems",
       "optional": true,
       "type": "ReadonlyArray<string>",
     },
     {
-      "description": "The nested items of the item.",
+      "description": "Specifies the nested items that are displayed when a tree view item gets expanded.",
       "inlineType": {
         "name": "(item: T, index: number) => ReadonlyArray<T>",
         "parameters": [
@@ -20530,7 +20530,7 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "(item: T, index: number) => ReadonlyArray<T>",
     },
     {
-      "description": "Provides a unique identifier of each item.",
+      "description": "Provides a unique identifier for each tree view item.",
       "inlineType": {
         "name": "(item: T, index: number) => string",
         "parameters": [
@@ -20583,18 +20583,17 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "An array of tree view items.",
+      "description": "Specifies the items to display in the tree view.",
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<T>",
     },
     {
-      "description": "Use it to map your data to render the item.
-For each item the below properties must be returned:
+      "description": "Use this property to map your data to tree view items. This property must return an object with the following properties:
 * \`content\` (React.ReactNode) - The content of the item.
 * \`icon\` (optional, React.ReactNode) - The leading icon of the item.
-* \`secondaryContent\` (optional, React.ReactNode) - Secondary content of the item, displayed below the content.
-* \`actions\` (optional, React.ReactNode) - Actions related to item. We recommend using a button group.",
+* \`secondaryContent\` (optional, React.ReactNode) - Secondary content of the item, displayed below \`content\`.
+* \`actions\` (optional, React.ReactNode) - Actions related to the item. Use [button group](/components/button-group/).",
       "inlineType": {
         "name": "(item: T, index: number) => TreeViewProps.TreeItem",
         "parameters": [
@@ -20630,8 +20629,7 @@ For each item the below properties must be returned:
       "optional": true,
       "systemTags": [
         "core
-Overrides the default expand toggle.
-Use it to have different icons/animations for toggle.",
+Use this property to display a custom icon in the toggle button.",
       ],
       "type": "((isExpanded: boolean) => React.ReactNode)",
     },
