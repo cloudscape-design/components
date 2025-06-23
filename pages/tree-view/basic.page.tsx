@@ -218,30 +218,33 @@ const items: Item[] = [
 function RdsAccessRoleTreeItemContent() {
   return (
     <div>
-      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' }}>
-        <div style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <SpaceBetween direction="horizontal" size="xxs">
           <Icon name="user-profile-active" />
           <span>RdsAccessRole</span>
           <Badge color="red">1</Badge>
           <Badge color="blue">1</Badge>
           <Badge color="green">3</Badge>
-        </div>
-
+        </SpaceBetween>
         <div>
           <Actions actionType="button-group" />
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '10px' }}>
+      <SpaceBetween direction="horizontal" size="s">
         <Box color="text-status-inactive">
-          <Icon name="globe" />
-          us-east-1
+          <SpaceBetween direction="horizontal" size="xxs">
+            <Icon name="globe" />
+            <span>us-east-1</span>
+          </SpaceBetween>
         </Box>
         <Box color="text-status-inactive">
-          <Icon name="ticket" />
-          prod-eng-xyz-zip-f
+          <SpaceBetween direction="horizontal" size="xxs">
+            <Icon name="ticket" />
+            <span>prod-eng-xyz-zip-f</span>
+          </SpaceBetween>
         </Box>
-      </div>
+      </SpaceBetween>
     </div>
   );
 }
