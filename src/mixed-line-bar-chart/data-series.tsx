@@ -3,8 +3,9 @@
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import BarSeries from './bar-series';
 import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
 import LineSeries from './line-series';

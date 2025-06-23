@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import { cleanup, fireEvent, render, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, waitFor } from '@testing-library/react';
 
 import { InlineEditor } from '../../../lib/components/table/body-cell/inline-editor';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -21,18 +21,28 @@ function renderComponent(jsx: React.ReactElement) {
   return { wrapper, rerender, getByTestId, queryByTestId, getByRole };
 }
 
-const TestComponent = () => {
+const TestComponent = ({
+  disableNativeForm,
+  submitValueRef,
+}: {
+  disableNativeForm?: boolean;
+  submitValueRef?: React.MutableRefObject<TableProps.CellContext<any>['submitValue'] | null>;
+}) => {
   const column = {
     id: 'test',
     header: 'test',
     editConfig: {
+      disableNativeForm,
       ariaLabel: 'test-input',
       errorIconAriaLabel: 'error-icon',
       constraintText: 'Requirement',
       validation: () => (thereBeErrors ? 'there be errors' : undefined),
-      editingCell: (item: any, { currentValue, setValue }: TableProps.CellContext<string>) => (
-        <input value={currentValue ?? item.test} onChange={() => setValue('test')} />
-      ),
+      editingCell: (item: any, { currentValue, setValue, submitValue }: TableProps.CellContext<string>) => {
+        if (submitValueRef) {
+          submitValueRef.current = submitValue;
+        }
+        return <input value={currentValue ?? item.test} onChange={() => setValue('test')} />;
+      },
     },
     cell: (item: any) => <span>{item.test}</span>,
   };
@@ -85,10 +95,34 @@ describe('InlineEditor', () => {
     expect(wrapper.find('[aria-label="error-icon"]')?.getElement()).toBeInTheDocument();
   });
 
-  it('should submit edit', () => {
+  it.each([false, true])(
+    'should submit edit when submit button is pressed (disableNativeForm=%s)',
+    disableNativeForm => {
+      thereBeErrors = false;
+      const changeEvent = new Event('change', { bubbles: true });
+      const { wrapper } = renderComponent(<TestComponent disableNativeForm={disableNativeForm} />);
+      const input = wrapper.find('input')!.getElement();
+
+      fireEvent.click(input);
+
+      fireEvent(input, changeEvent);
+      expect(wrapper.find('[aria-label="error-icon"]')?.getElement()).toBeUndefined();
+
+      fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
+      waitFor(() => {
+        expect(handleSubmitEdit).toHaveBeenCalled();
+        expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
+      });
+
+      expect(handleEditEnd).toHaveBeenCalled();
+    }
+  );
+
+  it('should submit edit when submitValue is called', () => {
     thereBeErrors = false;
+    const submitValueRef = React.createRef<TableProps.CellContext<string>['submitValue'] | null>();
     const changeEvent = new Event('change', { bubbles: true });
-    const { wrapper } = renderComponent(<TestComponent />);
+    const { wrapper } = renderComponent(<TestComponent submitValueRef={submitValueRef} />);
     const input = wrapper.find('input')!.getElement();
 
     fireEvent.click(input);
@@ -96,13 +130,25 @@ describe('InlineEditor', () => {
     fireEvent(input, changeEvent);
     expect(wrapper.find('[aria-label="error-icon"]')?.getElement()).toBeUndefined();
 
-    fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
+    act(() => {
+      submitValueRef.current!();
+    });
     waitFor(() => {
       expect(handleSubmitEdit).toHaveBeenCalled();
       expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
     });
 
     expect(handleEditEnd).toHaveBeenCalled();
+  });
+
+  it('should not render a form element if disableNativeForm is set', () => {
+    const { wrapper } = renderComponent(<TestComponent disableNativeForm={true} />);
+    expect(wrapper.find('form')).toBe(null);
+  });
+
+  it('should not render a submit button if disableNativeForm is set', () => {
+    const { wrapper } = renderComponent(<TestComponent disableNativeForm={true} />);
+    expect(wrapper.find('button[type=submit]')).toBe(null);
   });
 
   it('should not submit any wrapping forms', () => {

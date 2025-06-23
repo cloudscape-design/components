@@ -3,10 +3,11 @@
 
 import { useEffect, useState } from 'react';
 
+import { useRandomId } from '@cloudscape-design/component-toolkit/internal';
+
 import { useModalContext } from '../../context/modal-context';
 import { useDOMAttribute } from '../use-dom-attribute';
 import { useEffectOnUpdate } from '../use-effect-on-update';
-import { useRandomId } from '../use-unique-id';
 import { isInViewport } from './is-in-viewport';
 
 const EVALUATE_COMPONENT_VISIBILITY_EVENT = 'awsui-evaluate-component-visibility';

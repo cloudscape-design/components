@@ -4,7 +4,7 @@
 import React, { ForwardedRef, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
@@ -20,7 +20,6 @@ import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
 import { FileUploadProps } from './interfaces';

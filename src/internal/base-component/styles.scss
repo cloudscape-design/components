@@ -9,3 +9,8 @@
 */
 @use 'awsui:globals';
 @use '../styles/global.scss';
+@use '../generated/custom-css-properties' as custom-styles;
+
+:root {
+  --awsui-version-info-#{custom-styles.$awsui-commit-hash}: true;
+}

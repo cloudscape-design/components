@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import Dropdown from '../internal/components/dropdown';
@@ -10,7 +12,6 @@ import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
 import Filter from '../select/parts/filter';

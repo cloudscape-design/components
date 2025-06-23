@@ -11,6 +11,7 @@ module.exports = {
   isProd: process.env.NODE_ENV === 'production',
   packageSource,
   packageVersion,
+  gitCommitVersion,
   sourcePath: 'src',
   generatedPath: 'src/internal/generated',
   generatedTestUtils: 'src/test-utils/selectors',

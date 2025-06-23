@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { PieArcDatum } from 'd3-shape';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalBox from '../box/internal';
 import { useInternalI18n } from '../i18n/context';
@@ -13,7 +14,6 @@ import ChartPopover from '../internal/components/chart-popover';
 import SeriesDetails from '../internal/components/chart-series-details';
 import SeriesMarker from '../internal/components/chart-series-marker';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { SomeRequired } from '../internal/types';

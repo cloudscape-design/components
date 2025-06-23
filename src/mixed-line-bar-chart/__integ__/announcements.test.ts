@@ -8,11 +8,11 @@ describe('Popover content is announced as plain text on hover', () => {
     const alwaysVisibleTexts = [
       'Jun 2023',
       'Amazon Simple Storage Service $69.80',
-      'Amazon Relational Database Service $35.96',
-      'Group 1 $83.31',
-      'Group 2 $114.17',
+      'AWS-MiscellaneousOverflowingStringNameService $31.00',
+      'Group 1 $76.02',
+      'Group 2 $157.42',
     ];
-    const group1SubItemsTexts = ['AWS Config $40.06', 'AWS Key Management Service $43.25'];
+    const group1SubItemsTexts = ['Amazon Relational Database Service $35.96', 'AWS Config $40.06'];
 
     test(
       'without expandable sub-items',

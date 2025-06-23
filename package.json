@@ -164,7 +164,7 @@
     {
       "path": "lib/components/internal/widget-exports.js",
       "brotli": false,
-      "limit": "790 kB",
+      "limit": "800 kB",
       "ignore": "react-dom"
     }
   ],
@@ -172,6 +172,6 @@
     "last 3 Chrome major versions",
     "last 3 Firefox major versions",
     "last 3 Edge major versions",
-    "last 3 Safari major versions"
+    "last 3 Safari versions"
   ]
 }

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useState } from 'react';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { fireNonCancelableEvent } from '../../internal/events';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { joinStrings } from '../../internal/utils/strings';
 import { TableProps } from '../interfaces';
 import { getTrackableValue } from '../utils';

@@ -30,7 +30,18 @@ export function useIntersectionObserver<T extends HTMLElement>({
 
     // Create a new observer with the target element
     if (targetElement) {
-      observerRef.current = new IntersectionObserver(([entry]) => setIsIntersecting(entry.isIntersecting));
+      // Fix for AWSUI-60898: In Firefox, IntersectionObserver instances inside an
+      //   iframe context can't detect visibility changes caused by changes to elements
+      //   outside the iframe (e.g. if an element wrapping the iframe is set to `display: none`).
+      let TopLevelIntersectionObserver = IntersectionObserver;
+      try {
+        if (window.top) {
+          TopLevelIntersectionObserver = (window.top as typeof window).IntersectionObserver;
+        }
+      } catch {
+        // Tried to access a cross-origin iframe. Fall back to current IntersectionObserver.
+      }
+      observerRef.current = new TopLevelIntersectionObserver(([entry]) => setIsIntersecting(entry.isIntersecting));
       observerRef.current.observe(targetElement);
     }
   }, []);

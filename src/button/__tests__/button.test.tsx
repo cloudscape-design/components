@@ -11,6 +11,7 @@ import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
 import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
+import customCssProps from '../../internal/generated/custom-css-properties';
 
 import styles from '../../../lib/components/button/styles.css.js';
 import testUtilStyles from '../../../lib/components/button/test-classes/styles.css.js';
@@ -820,5 +821,68 @@ describe('table grid navigation support', () => {
     setCurrentTarget(getButton('#button1'));
     expect(getButton('#button1')).toHaveAttribute('tabIndex', '-2');
     expect(getButton('#button2')).toHaveAttribute('tabIndex', '-2');
+  });
+});
+
+describe('Style API', () => {
+  test('custom properties', () => {
+    const wrapper = renderButton({
+      children: 'Button',
+      style: {
+        root: {
+          background: {
+            active: '#fff',
+            default: '#fff',
+            disabled: '#fff',
+            hover: '#fff',
+          },
+          borderColor: {
+            active: '#fff',
+            default: '#fff',
+            disabled: '#fff',
+            hover: '#fff',
+          },
+          color: {
+            active: '#fff',
+            default: '#fff',
+            disabled: '#fff',
+            hover: '#fff',
+          },
+          focusRing: {
+            borderColor: '#fff',
+            borderRadius: '50px',
+            borderWidth: '25px',
+          },
+        },
+      },
+    });
+
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBackgroundActive)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBackgroundDefault)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBackgroundDisabled)).toBe(
+      '#fff'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBackgroundHover)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBorderColorActive)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBorderColorDefault)).toBe(
+      '#fff'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBorderColorDisabled)).toBe(
+      '#fff'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBorderColorHover)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleColorActive)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleColorDefault)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleColorDisabled)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleColorHover)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe(
+      '#fff'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe(
+      '50px'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe(
+      '25px'
+    );
   });
 });

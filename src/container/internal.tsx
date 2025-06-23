@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
@@ -12,7 +12,6 @@ import { ContainerHeaderContextProvider } from '../internal/context/container-he
 import { useModalContext } from '../internal/context/modal-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { ContainerProps } from './interfaces';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';

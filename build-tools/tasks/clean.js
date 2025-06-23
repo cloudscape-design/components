@@ -14,6 +14,7 @@ module.exports = task('clean', () => {
       `${workspace.targetPath}/**`,
       `${workspace.staticSitePath}/**`,
       `${workspace.generatedTestUtils}/**`,
+      `${workspace.generatedPath}/custom-css-properties/**`,
       `node_modules/.cache`,
     ],
     { glob: true }

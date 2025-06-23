@@ -91,11 +91,10 @@ const InternalPromptInput = React.forwardRef(
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
       fireKeyboardEvent(onKeyDown, event);
 
-      if (event.key === 'Enter' && !event.shiftKey) {
-        if ('form' in event.target && event.target.form !== null && !event.isDefaultPrevented()) {
-          (event.target.form as HTMLFormElement).requestSubmit();
+      if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
+        if (event.currentTarget.form && !event.isDefaultPrevented()) {
+          event.currentTarget.form.requestSubmit();
         }
-
         event.preventDefault();
         fireNonCancelableEvent(onAction, { value });
       }

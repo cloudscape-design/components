@@ -3,9 +3,10 @@
 import React, { useContext } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 import styles from './styles.css.js';
 

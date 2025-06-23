@@ -22,6 +22,14 @@ export class FlashbarBasePage extends BasePageObject {
     return createWrapper().findFlashbar().findByClassName(selectors['notification-bar']).toSelector();
   }
 
+  getExpandButton() {
+    return createWrapper().findFlashbar().findByClassName(selectors.button).toSelector();
+  }
+
+  getDismissButton() {
+    return createWrapper().findFlashbar().findByClassName(selectors['dismiss-button']).toSelector();
+  }
+
   isFlashFocused(index: number) {
     return this.isFocused(
       flashbar.findItems().get(index).findByClassName(selectors['flash-focus-container']).toSelector()
