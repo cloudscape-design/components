@@ -13,10 +13,10 @@ export interface TreeViewProps<T = any> extends BaseComponentProps {
 
   /**
    * Use this property to map your data to tree view items. This property must return an object with the following properties:
-   * * `content` (React.ReactNode) - The content of the item.
-   * * `icon` (optional, React.ReactNode) - The leading icon of the item.
-   * * `secondaryContent` (optional, React.ReactNode) - Secondary content of the item, displayed below `content`.
-   * * `actions` (optional, React.ReactNode) - Actions related to the item. Use [button group](/components/button-group/).
+   * * `content` (ReactNode) - The content of the item.
+   * * `icon` (optional, ReactNode) - The leading icon of the item.
+   * * `secondaryContent` (optional, ReactNode) - Secondary content of the item, displayed below `content`.
+   * * `actions` (optional, ReactNode) - Actions related to the item. Use [button group](/components/button-group/).
    */
   renderItem: (item: T, index: number) => TreeViewProps.TreeItem;
 
@@ -68,7 +68,7 @@ export interface TreeViewProps<T = any> extends BaseComponentProps {
    * @awsuiSystem core
    * Use this property to display a custom icon in the toggle button.
    */
-  renderItemToggleIcon?: (isExpanded: boolean) => React.ReactNode;
+  renderItemToggleIcon?: ({ expanded }: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode;
 }
 
 export namespace TreeViewProps {
@@ -82,6 +82,10 @@ export namespace TreeViewProps {
   export interface ItemToggleDetail<T> {
     id: string;
     item: T;
+    expanded: boolean;
+  }
+
+  export interface ItemToggleRenderIconData {
     expanded: boolean;
   }
 

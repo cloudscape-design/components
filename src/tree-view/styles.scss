@@ -5,6 +5,9 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 
+$item-toggle-column-width: 28px;
+$item-min-height: 32px;
+
 .root {
   @include styles.styles-reset;
 
@@ -21,10 +24,9 @@
 
 .treeitem {
   display: grid;
-  grid-template-columns: 28px 1fr;
+  grid-template-columns: $item-toggle-column-width 1fr;
   column-gap: awsui.$space-scaled-xxs;
-  // min-height 32px for a unified look
-  grid-template-rows: minmax(32px, 1fr) auto auto;
+  grid-template-rows: minmax($item-min-height, 1fr) auto auto;
 
   > .expand-toggle-wrapper {
     grid-column: 1;

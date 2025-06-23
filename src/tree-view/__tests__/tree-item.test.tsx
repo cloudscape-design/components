@@ -5,48 +5,7 @@ import { render } from '@testing-library/react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
-
-interface Item {
-  id: string;
-  title: string;
-  items?: Item[];
-}
-
-const defaultItems: Item[] = [
-  {
-    id: '1',
-    title: 'Item 1',
-    items: [
-      {
-        id: '1.1',
-        title: 'Item 1.1',
-      },
-      {
-        id: '1.2',
-        title: 'Item 1.2',
-        items: [
-          {
-            id: '1.2.1',
-            title: 'Item 1.2.1',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: '2',
-    title: 'Item 2',
-  },
-];
-
-const defaultProps: TreeViewProps<Item> = {
-  items: defaultItems,
-  getItemId: item => item.id,
-  getItemChildren: item => item.items,
-  renderItem: item => ({
-    content: item.title,
-  }),
-};
+import { defaultProps, Item, items } from './common';
 
 function renderTreeView(props: Partial<TreeViewProps<Item>> = {}) {
   const { container } = render(<TreeView {...defaultProps} {...props} />);
@@ -74,14 +33,14 @@ test('onItemToggle is fired when toggle is clicked', () => {
   itemToggle.click();
   expect(onItemToggle).toHaveBeenCalledTimes(1);
   expect(onItemToggle).toHaveBeenCalledWith(
-    expect.objectContaining({ detail: { id: defaultItems[0].id, item: defaultItems[0], expanded: true } })
+    expect.objectContaining({ detail: { id: items[0].id, item: items[0], expanded: true } })
   );
 
   // collapse
   itemToggle.click();
   expect(onItemToggle).toHaveBeenCalledTimes(2);
   expect(onItemToggle).toHaveBeenCalledWith(
-    expect.objectContaining({ detail: { id: defaultItems[0].id, item: defaultItems[0], expanded: false } })
+    expect.objectContaining({ detail: { id: items[0].id, item: items[0], expanded: false } })
   );
 });
 
@@ -89,19 +48,19 @@ test('children items are rendered only when item is expanded', () => {
   const { wrapper } = renderTreeView();
 
   const expandableItem = wrapper.findItemById('1')!;
-  expect(expandableItem.findChildById('1.1')).toBeNull();
+  expect(expandableItem.findChildItemById('1.1')).toBeNull();
 
   // expand
   expandableItem.findItemToggle()!.getElement().click();
-  expect(expandableItem.findChildren().length).toBe(2);
+  expect(expandableItem.findChildItems().length).toBe(2);
   expect(wrapper.findItemById('1', { expanded: true })!.getElement()).toBeVisible();
-  expect(expandableItem.findChildById('1.1')!.getElement()).toBeVisible();
+  expect(expandableItem.findChildItemById('1.1')!.getElement()).toBeVisible();
 
   // collapse
   expandableItem.findItemToggle()!.getElement().click();
-  expect(expandableItem.findChildren().length).toBe(0);
+  expect(expandableItem.findChildItems().length).toBe(0);
   expect(wrapper.findItemById('1', { expanded: false })!.getElement()).toBeVisible();
-  expect(expandableItem.findChildById('1.1')).toBeNull();
+  expect(expandableItem.findChildItemById('1.1')).toBeNull();
 });
 
 test("expanding an item shouldn't expand its child item", () => {
@@ -110,6 +69,6 @@ test("expanding an item shouldn't expand its child item", () => {
   const expandableItem = wrapper.findItemById('1')!;
 
   expandableItem.findItemToggle()!.getElement().click();
-  expect(expandableItem.findChildById('1.2', { expanded: false })!.getElement()).toBeVisible();
-  expect(expandableItem.findChildById('1.2.1')).toBeNull();
+  expect(expandableItem.findChildItemById('1.2', { expanded: false })!.getElement()).toBeVisible();
+  expect(expandableItem.findChildItemById('1.2.1')).toBeNull();
 });

@@ -13,12 +13,7 @@ export { TreeViewProps };
 
 const TreeView = <T,>({ items, ...rest }: TreeViewProps<T>) => {
   const baseProps = getBaseProps(rest);
-  const baseComponentProps = useBaseComponent('TreeView', {
-    props: {},
-    metadata: {
-      itemsCount: items?.length,
-    },
-  });
+  const baseComponentProps = useBaseComponent('TreeView');
   const externalProps = getExternalProps(rest);
 
   return <InternalTreeView {...baseProps} {...baseComponentProps} {...externalProps} items={items} {...rest} />;

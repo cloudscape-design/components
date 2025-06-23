@@ -47,7 +47,7 @@ class TreeViewItemWrapper extends ComponentWrapper {
    * @param options
    * * expanded (optional, boolean) - Use it to find all visible expanded or collapsed child items.
    */
-  findChildren(options: { expanded?: boolean } = {}): Array<TreeViewItemWrapper> {
+  findChildItems(options: { expanded?: boolean } = {}): Array<TreeViewItemWrapper> {
     const selector = getTreeItemSelector(options);
 
     return this.findAll(selector).map(item => new TreeViewItemWrapper(item.getElement()));
@@ -59,8 +59,8 @@ class TreeViewItemWrapper extends ComponentWrapper {
    * @param options
    * * expanded (optional, boolean) - Use it to find the visible expanded or collapsed child item.
    */
-  findChildById(id: string, options: { expanded?: boolean } = {}): TreeViewItemWrapper | null {
-    const selector = `${getTreeItemSelector(options)}[data-testid="treeitem-${id}"]`;
+  findChildItemById(id: string, options: { expanded?: boolean } = {}): TreeViewItemWrapper | null {
+    const selector = `${getTreeItemSelector(options)}[data-testid="awsui-treeitem-${id}"]`;
     const item = this.find(selector);
     return item ? new TreeViewItemWrapper(item.getElement()) : null;
   }
@@ -87,7 +87,7 @@ export default class TreeViewWrapper extends ComponentWrapper {
    * * expanded (optiona, boolean) - Use it to find the visible expanded or collapsed item.
    */
   findItemById(id: string, options: { expanded?: boolean } = {}): TreeViewItemWrapper | null {
-    const selector = `${getTreeItemSelector(options)}[data-testid="treeitem-${id}"]`;
+    const selector = `${getTreeItemSelector(options)}[data-testid="awsui-treeitem-${id}"]`;
     const item = this.find(selector);
     return item ? new TreeViewItemWrapper(item.getElement()) : null;
   }

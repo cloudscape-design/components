@@ -1,13 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
-
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useControllable } from '../internal/hooks/use-controllable';
 import { TreeViewProps } from './interfaces';
 import InternalTreeItem from './tree-item';
 
@@ -17,8 +16,8 @@ import testUtilStyles from './test-classes/styles.css.js';
 type InternalTreeViewProps<T> = TreeViewProps<T> & InternalBaseComponentProps;
 
 const InternalTreeView = <T,>({
-  expandedItems,
-  items = [],
+  expandedItems: controlledExpandedItems,
+  items,
   renderItem,
   getItemId,
   getItemChildren,
@@ -32,28 +31,20 @@ const InternalTreeView = <T,>({
   ...rest
 }: InternalTreeViewProps<T>) => {
   const baseProps = getBaseProps(rest);
-  const isExpandStateControlled = !!expandedItems;
-  const [internalExpandedItems, setInternalExpandedItems] = useState(expandedItems || []);
 
-  if (isExpandStateControlled && !onItemToggle) {
-    warnOnce(
-      'TreeView',
-      '`expandedItems` is provided without `onItemToggle`. Make sure to provide `onItemToggle` with `expandedItems` to control expand/collapse state of items.'
-    );
-  }
+  const [expandedItems, setExpandedItems] = useControllable(controlledExpandedItems, onItemToggle, [], {
+    componentName: 'TreeView',
+    controlledProp: 'expandedItems',
+    changeHandler: 'onItemToggle',
+  });
 
   const onToggle = ({ id, item, expanded }: TreeViewProps.ItemToggleDetail<T>) => {
-    if (!isExpandStateControlled) {
-      if (expanded) {
-        setInternalExpandedItems([...internalExpandedItems, id]);
-      } else {
-        setInternalExpandedItems(internalExpandedItems.filter(expandedId => expandedId !== id));
-      }
+    if (expanded) {
+      setExpandedItems([...(expandedItems || []), id]);
+    } else {
+      setExpandedItems((expandedItems || []).filter(expandedId => expandedId !== id));
     }
-
-    if (onItemToggle) {
-      fireNonCancelableEvent(onItemToggle, { id, item, expanded });
-    }
+    fireNonCancelableEvent(onItemToggle, { id, item, expanded });
   };
 
   return (
@@ -69,9 +60,9 @@ const InternalTreeView = <T,>({
             <InternalTreeItem
               key={index}
               item={item}
-              level={0}
+              level={1}
               index={index}
-              expandedItems={isExpandStateControlled ? expandedItems : internalExpandedItems}
+              expandedItems={expandedItems}
               i18nStrings={i18nStrings}
               onItemToggle={onToggle}
               renderItem={renderItem}

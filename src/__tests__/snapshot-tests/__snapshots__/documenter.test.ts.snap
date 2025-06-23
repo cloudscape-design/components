@@ -20590,10 +20590,10 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
     {
       "description": "Use this property to map your data to tree view items. This property must return an object with the following properties:
-* \`content\` (React.ReactNode) - The content of the item.
-* \`icon\` (optional, React.ReactNode) - The leading icon of the item.
-* \`secondaryContent\` (optional, React.ReactNode) - Secondary content of the item, displayed below \`content\`.
-* \`actions\` (optional, React.ReactNode) - Actions related to the item. Use [button group](/components/button-group/).",
+* \`content\` (ReactNode) - The content of the item.
+* \`icon\` (optional, ReactNode) - The leading icon of the item.
+* \`secondaryContent\` (optional, ReactNode) - Secondary content of the item, displayed below \`content\`.
+* \`actions\` (optional, ReactNode) - Actions related to the item. Use [button group](/components/button-group/).",
       "inlineType": {
         "name": "(item: T, index: number) => TreeViewProps.TreeItem",
         "parameters": [
@@ -20615,11 +20615,11 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
     {
       "inlineType": {
-        "name": "(isExpanded: boolean) => React.ReactNode",
+        "name": "({ expanded }: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode",
         "parameters": [
           {
-            "name": "isExpanded",
-            "type": "boolean",
+            "name": "__0",
+            "type": "TreeViewProps.ItemToggleRenderIconData",
           },
         ],
         "returnType": "React.ReactNode",
@@ -20631,7 +20631,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
         "core
 Use this property to display a custom icon in the toggle button.",
       ],
-      "type": "((isExpanded: boolean) => React.ReactNode)",
+      "type": "(({ expanded }: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode)",
     },
   ],
   "regions": [],

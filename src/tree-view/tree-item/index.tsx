@@ -7,7 +7,6 @@ import { useInternalI18n } from '../../i18n/context';
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 import InternalStructuredItem from '../../internal/components/structured-item';
 import { TreeViewProps } from '../interfaces';
-import { transformTreeItemProps } from './utils';
 
 import styles from '../styles.css.js';
 import testUtilStyles from '../test-classes/styles.css.js';
@@ -36,19 +35,17 @@ const InternalTreeItem = <T,>({
   onItemToggle,
 }: InternalTreeItemProps<T>) => {
   const i18n = useInternalI18n('tree-view');
-  const { id, isExpandable, isExpanded, children, icon, content, secondaryContent, actions } = transformTreeItemProps({
-    item,
-    index,
-    expandedItems,
-    renderItem,
-    getItemId,
-    getItemChildren,
-  });
-  const nextLevel = level + 1;
-  let customIcon = null;
 
-  if (renderItemToggleIcon) {
-    customIcon = renderItemToggleIcon(isExpanded);
+  const { icon, content, secondaryContent, actions } = renderItem(item, index);
+  const id = getItemId(item, index);
+  const children = getItemChildren(item, index) || [];
+  const isExpandable = children.length > 0;
+  const isExpanded = isExpandable && expandedItems.includes(id);
+  const nextLevel = level + 1;
+
+  let customIcon = null;
+  if (isExpandable && renderItemToggleIcon) {
+    customIcon = renderItemToggleIcon({ expanded: isExpanded });
   }
 
   return (
@@ -61,8 +58,8 @@ const InternalTreeItem = <T,>({
         isExpanded && [testUtilStyles.expanded]
       )}
       aria-expanded={isExpandable ? isExpanded : undefined}
-      aria-level={level > 0 ? level : undefined}
-      data-testid={`treeitem-${id}`}
+      aria-level={level}
+      data-testid={`awsui-treeitem-${id}`}
     >
       <div className={styles['expand-toggle-wrapper']}>
         {isExpandable && (

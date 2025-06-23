@@ -3,18 +3,19 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import { ButtonDropdown, Checkbox } from '~components';
+import { Checkbox } from '~components';
 import Badge from '~components/badge';
 import Box from '~components/box';
-import ButtonGroup from '~components/button-group';
 import Container from '~components/container';
+import Grid from '~components/grid';
 import Icon from '~components/icon';
 import Popover from '~components/popover';
 import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
-import TreeView from '~components/tree-view';
+import TreeView, { TreeViewProps } from '~components/tree-view';
 
 import ScreenshotArea from '../utils/screenshot-area';
+import { Actions } from './common';
 
 import styles from './styles.scss';
 
@@ -214,97 +215,6 @@ const items: Item[] = [
   },
 ];
 
-function Actions(
-  { actionType }: { actionType?: 'button-group' | 'button-dropdown' | 'inline-button-dropdown' } = {
-    actionType: 'button-dropdown',
-  }
-) {
-  const [pressed, setPressed] = useState(false);
-
-  if (actionType === 'button-group') {
-    return (
-      <ButtonGroup
-        variant="icon"
-        items={[
-          {
-            id: 'settings',
-            iconName: 'settings',
-            type: 'icon-button',
-            text: 'Settings',
-          },
-          {
-            type: 'icon-toggle-button',
-            id: 'favorite',
-            text: 'Favorite',
-            pressed: pressed,
-            iconName: 'star',
-            pressedIconName: 'star-filled',
-          },
-          {
-            id: 'menu',
-            type: 'menu-dropdown',
-            text: 'Menu',
-            items: [
-              { id: 'start', text: 'Start' },
-              { id: 'stop', text: 'Stop', disabled: true },
-              {
-                id: 'hibernate',
-                text: 'Hibernate',
-                disabled: true,
-              },
-              { id: 'reboot', text: 'Reboot', disabled: true },
-              { id: 'terminate', text: 'Terminate' },
-            ],
-          },
-        ]}
-        onItemClick={({ detail }) => {
-          if (detail.id === 'favorite') {
-            setPressed(!pressed);
-          }
-        }}
-      />
-    );
-  }
-
-  if (actionType === 'inline-button-dropdown') {
-    return (
-      <ButtonDropdown
-        items={[
-          { id: 'start', text: 'Start' },
-          { id: 'stop', text: 'Stop', disabled: true },
-          {
-            id: 'hibernate',
-            text: 'Hibernate',
-            disabled: true,
-          },
-          { id: 'reboot', text: 'Reboot', disabled: true },
-          { id: 'terminate', text: 'Terminate' },
-        ]}
-        ariaLabel="Control instance"
-        variant="inline-icon"
-      />
-    );
-  }
-
-  return (
-    <ButtonDropdown
-      items={[
-        { id: 'start', text: 'Start' },
-        { id: 'stop', text: 'Stop', disabled: true },
-        {
-          id: 'hibernate',
-          text: 'Hibernate',
-          disabled: true,
-        },
-        { id: 'reboot', text: 'Reboot', disabled: true },
-        { id: 'terminate', text: 'Terminate' },
-      ]}
-      ariaLabel="Control instance"
-      variant="icon"
-    />
-  );
-}
-
 function RdsAccessRoleTreeItemContent() {
   return (
     <div>
@@ -338,40 +248,40 @@ function RdsAccessRoleTreeItemContent() {
 
 export default function BasicTreeView() {
   const [expandedItems, setExpandedItems] = useState<Array<string>>(['1', '4.1']);
-  const [useDifferentIcon, setUseDifferentIcon] = useState(false);
-  const [useDifferentIconWithAnimation, setUseDifferentIconWithAnimation] = useState(false);
+  const [useCustomIcon, setUseCustomIcon] = useState(false);
+  const [useCaretIconWithSlowerAnimation, setUseCaretIconWithSlowerAnimation] = useState(false);
 
-  const renderItemToggleIcon = (isExpanded: boolean) => {
-    if (useDifferentIcon) {
-      return <Icon size="small" name={isExpanded ? 'treeview-collapse' : 'treeview-expand'} ariaLabel="Toggle" />;
+  const renderItemToggleIcon = ({ expanded }: TreeViewProps.ItemToggleRenderIconData) => {
+    if (useCustomIcon) {
+      return <Icon size="small" name={expanded ? 'treeview-collapse' : 'treeview-expand'} ariaLabel="Toggle" />;
     }
 
-    if (useDifferentIconWithAnimation) {
+    if (useCaretIconWithSlowerAnimation) {
       return (
         <Icon
           size="small"
           name={'caret-down-filled'}
-          className={clsx(styles.animation, isExpanded && styles['animation-expanded'])}
+          className={clsx(styles.animation, expanded && styles['animation-expanded'])}
         />
       );
     }
   };
 
   return (
-    <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea>
       <h1>Basic tree view</h1>
 
-      <Checkbox checked={useDifferentIcon} onChange={({ detail }) => setUseDifferentIcon(detail.checked)}>
-        Use different CDS icon
+      <Checkbox checked={useCustomIcon} onChange={({ detail }) => setUseCustomIcon(detail.checked)}>
+        Use custom icon
       </Checkbox>
       <Checkbox
-        checked={useDifferentIconWithAnimation}
-        onChange={({ detail }) => setUseDifferentIconWithAnimation(detail.checked)}
+        checked={useCaretIconWithSlowerAnimation}
+        onChange={({ detail }) => setUseCaretIconWithSlowerAnimation(detail.checked)}
       >
-        Use icon with animation
+        Use caret icon with slower animation
       </Checkbox>
 
-      <div style={{ width: '60%' }}>
+      <Grid gridDefinition={[{ colspan: { m: 7, xs: 10, xxs: 12 } }]}>
         <Container>
           <TreeView
             ariaLabel="Random data tree view"
@@ -403,7 +313,7 @@ export default function BasicTreeView() {
             renderItemToggleIcon={renderItemToggleIcon}
           />
         </Container>
-      </div>
+      </Grid>
 
       <div style={{ marginTop: '10px' }}>Expanded items: {expandedItems.map(id => `Item ${id}`).join(', ')}</div>
     </ScreenshotArea>

@@ -6,50 +6,9 @@ import { render } from '@testing-library/react';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
+import { defaultProps, Item } from './common';
 
 import styles from '../../../lib/components/tree-view/styles.css.js';
-
-interface Item {
-  id: string;
-  title: string;
-  items?: Item[];
-}
-
-const defaultItems: Item[] = [
-  {
-    id: '1',
-    title: 'Item 1',
-    items: [
-      {
-        id: '1.1',
-        title: 'Item 1.1',
-      },
-      {
-        id: '1.2',
-        title: 'Item 1.2',
-        items: [
-          {
-            id: '1.2.1',
-            title: 'Item 1.2.1',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: '2',
-    title: 'Item 2',
-  },
-];
-
-const defaultProps: TreeViewProps<Item> = {
-  items: defaultItems,
-  getItemId: item => item.id,
-  getItemChildren: item => item.items,
-  renderItem: item => ({
-    content: item.title,
-  }),
-};
 
 function renderTreeView(props: Partial<TreeViewProps<Item>> = {}) {
   const { container } = render(<TreeView {...defaultProps} {...props} />);
@@ -124,12 +83,12 @@ test('correct aria-level is set', () => {
   const rootLevelItem = wrapper.findItemById('1')!;
   rootLevelItem.findItemToggle()!.getElement().click();
 
-  const level1Item = wrapper.findItemById('1.2')!;
-  level1Item.findItemToggle()!.getElement().click();
+  const level2Item = wrapper.findItemById('1.2')!;
+  level2Item.findItemToggle()!.getElement().click();
 
-  const level2Item = wrapper.findItemById('1.2.1')!;
+  const level3Item = wrapper.findItemById('1.2.1')!;
 
-  expect(rootLevelItem.getElement().getAttribute('aria-level')).toBeNull(); // root level shouldn't have aria-level
-  expect(level1Item.getElement().getAttribute('aria-level')).toEqual('1');
+  expect(rootLevelItem.getElement().getAttribute('aria-level')).toEqual('1');
   expect(level2Item.getElement().getAttribute('aria-level')).toEqual('2');
+  expect(level3Item.getElement().getAttribute('aria-level')).toEqual('3');
 });

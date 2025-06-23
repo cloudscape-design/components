@@ -12,12 +12,12 @@ import { allItems, items } from './generate-data';
 
 const allExpandableItemIds = allItems.filter(item => item.children && item.children.length > 0).map(item => item.id);
 
-export default function TestPage() {
+export default function DynamicItemsPage() {
   const [expandedItems, setExpandedItems] = useState<Array<string>>([]);
 
   return (
     <>
-      <h1>Test performance page</h1>
+      <h1>Dynamic items page</h1>
 
       <SpaceBetween size="s">
         <Button
@@ -49,7 +49,7 @@ export default function TestPage() {
             return {
               icon: <Icon name={isExpanded ? 'folder-open' : 'folder'} />,
               content: <Content {...item} />,
-              actions: item.hasActions ? <Actions /> : undefined,
+              actions: item.hasActions ? <Actions actionType="button-group" /> : undefined,
               secondaryContent: item.tagName ? (
                 <SpaceBetween size="xs" direction="horizontal">
                   <Box color="text-status-inactive">
@@ -64,9 +64,15 @@ export default function TestPage() {
           getItemChildren={item => item.children}
           onItemToggle={({ detail }) => {
             if (detail.expanded) {
-              return setExpandedItems(prev => [...prev, detail.item.id]);
+              const logName = `expand-item-${detail.item.name}`;
+              console.time(logName);
+              requestAnimationFrame(() => console.timeEnd(logName));
+              return setExpandedItems(prev => [...prev, detail.id]);
             } else {
-              return setExpandedItems(prev => prev.filter(id => id !== detail.item.id));
+              const logName = `collapse-item-${detail.item.name}`;
+              console.time(logName);
+              requestAnimationFrame(() => console.timeEnd(logName));
+              return setExpandedItems(prev => prev.filter(id => id !== detail.id));
             }
           }}
           expandedItems={expandedItems}

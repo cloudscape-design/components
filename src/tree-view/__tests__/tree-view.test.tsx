@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -156,7 +156,7 @@ test('should render with various slots', () => {
   });
 });
 
-test('should render with other CDS components inside', () => {
+test('should render with other components inside', () => {
   const { wrapper } = renderTreeView();
 
   const item = wrapper.findItemById('2')!;
@@ -169,10 +169,10 @@ test('should render with other CDS components inside', () => {
   expect(descriptionLink.getElement()).toBeVisible();
   expect(actionsButtonDropdown.getElement()).toBeVisible();
 
-  fireEvent.click(contentPopover.findTrigger().getElement());
+  contentPopover.findTrigger().click();
   expect(contentPopover.findContent()?.getElement()).toHaveTextContent('This is a popover');
 
-  fireEvent.click(actionsButtonDropdown.findNativeButton().getElement());
+  actionsButtonDropdown.findNativeButton().click();
   expect(actionsButtonDropdown.findItems()).toHaveLength(3);
 });
 
@@ -198,6 +198,6 @@ test('should warn when expandedItems is provided without onItemToggle', () => {
 
   expect(warnOnce).toHaveBeenCalledWith(
     'TreeView',
-    '`expandedItems` is provided without `onItemToggle`. Make sure to provide `onItemToggle` with `expandedItems` to control expand/collapse state of items.'
+    'You provided a `expandedItems` prop without an `onItemToggle` handler. This will render a non-interactive component.'
   );
 });
