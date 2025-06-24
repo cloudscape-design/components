@@ -106,4 +106,35 @@ describe('Icon Provider', () => {
     expect(secondIcon).not.toStrictEqual(expectedFirstSvg);
     expect(secondIcon).toStrictEqual(expectedSecondSvg);
   });
+
+  it('resets specific icons when configuration set to null per item', () => {
+    const { container } = render(
+      <>
+        <IconProvider icons={{ 'add-plus': CUSTOM_SVG, settings: CUSTOM_SVG }}>
+          <Icon data-testid="firstAddPlus" name={'add-plus'} />
+          <Icon data-testid="firstSettings" name={'settings'} />
+          <IconProvider icons={{ 'add-plus': null }}>
+            <Icon data-testid="secondAddPlus" name={'add-plus'} />
+            <Icon data-testid="secondSettings" name={'settings'} />
+          </IconProvider>
+        </IconProvider>
+        <div data-testid="customSvg">{CUSTOM_SVG}</div>
+        <div data-testid="expectedAddPlusSvg">{generatedIcons['add-plus']}</div>
+      </>
+    );
+
+    const firstAddPlus = wrapper(container).find('[data-testid=firstAddPlus]')!.find('svg');
+    const firstSettings = wrapper(container).find('[data-testid=firstSettings]')!.find('svg');
+    const secondAddPlus = wrapper(container).find('[data-testid=secondAddPlus]')!.find('svg');
+    const secondSettings = wrapper(container).find('[data-testid=secondSettings]')!.find('svg');
+
+    const customSvg = wrapper(container).find('[data-testid=customSvg]')!.find('svg');
+    const expectedAddPlusSvg = wrapper(container).find('[data-testid=expectedAddPlusSvg]')!.find('svg');
+
+    expect(firstAddPlus).toStrictEqual(customSvg);
+    expect(firstSettings).toStrictEqual(customSvg);
+
+    expect(secondAddPlus).toStrictEqual(expectedAddPlusSvg);
+    expect(secondSettings).toStrictEqual(customSvg);
+  });
 });
