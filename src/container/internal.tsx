@@ -21,11 +21,11 @@ import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
+  disableFooterPaddings?: boolean;
   __stickyHeader?: boolean;
   __stickyOffset?: number;
   __mobileStickyOffset?: number;
   __disableFooterDivider?: boolean;
-  __disableFooterPaddings?: boolean;
   __hiddenContent?: boolean;
   __headerRef?: React.RefObject<HTMLDivElement>;
   __fullPage?: boolean;
@@ -62,6 +62,7 @@ export default function InternalContainer({
   variant = 'default',
   disableHeaderPaddings = false,
   disableContentPaddings = false,
+  disableFooterPaddings = false,
   fitHeight,
   media,
   __stickyOffset,
@@ -69,7 +70,6 @@ export default function InternalContainer({
   __stickyHeader = false,
   __internalRootRef = null,
   __disableFooterDivider = false,
-  __disableFooterPaddings = false,
   __hiddenContent = false,
   __headerRef,
   __fullPage = false,
@@ -180,7 +180,7 @@ export default function InternalContainer({
           <div
             className={clsx(styles.footer, {
               [styles['with-divider']]: !__disableFooterDivider,
-              [styles['with-paddings']]: !__disableFooterPaddings,
+              [styles['with-paddings']]: !disableFooterPaddings,
             })}
           >
             {footer}
