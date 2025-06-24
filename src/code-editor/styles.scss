@@ -6,7 +6,6 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './ace-editor';
 @use './pane';
 
@@ -163,7 +162,7 @@
     }
   }
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.focus-highlight(awsui.$space-code-editor-status-focus-outline-gutter);
   }
 
