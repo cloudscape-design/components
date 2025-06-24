@@ -29,6 +29,6 @@ export namespace IconProviderProps {
   export type Icons = {
     // Generates an object shape using the current set of available icons.
     // For example: {'add-plus': JSX.Element, 'anchor-link': ...}
-    [name in keyof typeof generatedIcons]?: JSX.Element;
+    [name in keyof typeof generatedIcons]?: ReactNode | null;
   };
 }
