@@ -27,6 +27,14 @@ export default function IconProvider({ children, icons }: IconProviderProps) {
       return generatedIcons;
     }
 
+    // Reset null icon values to their original definitions
+    Object.keys(icons).forEach(name => {
+      const iconName = name as keyof typeof generatedIcons;
+      if (iconName in generatedIcons && icons[iconName] === null) {
+        icons[iconName] = generatedIcons[iconName];
+      }
+    });
+
     // Merge the icons with the context icons, this allows child instances of IconProvider to persist parent configurations
     return { ...contextIcons, ...icons };
   }, [contextIcons, icons]);
