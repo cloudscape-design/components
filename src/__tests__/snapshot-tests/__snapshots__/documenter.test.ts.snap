@@ -4223,6 +4223,27 @@ If the \`rel\` property is provided, it overrides the default behavior.",
       "type": "string",
     },
     {
+      "description": "Specifies an object of selectors and properties that are used to apply custom styles.
+
+- \`root.background.active\` (string) - (Optional) Background in active state.
+- \`root.background.default\` (string) - (Optional) Background in default state.
+- \`root.background.disabled\` (string) - (Optional) Background in disabled state.
+- \`root.background.hover\` (string) - (Optional) Background in hover state.
+- \`root.borderColor.active\` (string) - (Optional) Border color in active state.
+- \`root.borderColor.default\` (string) - (Optional) Border color in default state.
+- \`root.borderColor.disabled\` (string) - (Optional) Border color in disabled state.
+- \`root.borderColor.hover\` (string) - (Optional) Border color in hover state.
+- \`root.borderRadius\` (string) - (Optional) Border radius style.
+- \`root.borderWidth\` (string) - (Optional) Border width style.
+- \`root.color.active\` (string) - (Optional) Color in active state.
+- \`root.color.default\` (string) - (Optional) Color in default state.
+- \`root.color.disabled\` (string) - (Optional) Color in disabled state.
+- \`root.color.hover\` (string) - (Optional) Color in hover state.
+- \`root.focusRing.borderColor\` (string) - (Optional) Focus ring border color.
+- \`root.focusRing.borderRadius\` (string) - (Optional) Focus ring border radius.
+- \`root.focusRing.borderWidth\` (string) - (Optional) Focus ring border width.
+- \`root.paddingBlock\` (string) - (Optional) Block dimension padding.
+- \`root.paddingInline\` (string) - (Optional) Inline dimension padding.",
       "inlineType": {
         "name": "ButtonProps.Style",
         "properties": [
@@ -20130,6 +20151,27 @@ It prevents users from clicking the button, but it can still be focused.",
       "type": "string",
     },
     {
+      "description": "Specifies an object of selectors and properties that are used to apply custom styles.
+
+- \`root.background.active\` (string) - (Optional) Background in active state.
+- \`root.background.default\` (string) - (Optional) Background in default state.
+- \`root.background.disabled\` (string) - (Optional) Background in disabled state.
+- \`root.background.hover\` (string) - (Optional) Background in hover state.
+- \`root.borderColor.active\` (string) - (Optional) Border color in active state.
+- \`root.borderColor.default\` (string) - (Optional) Border color in default state.
+- \`root.borderColor.disabled\` (string) - (Optional) Border color in disabled state.
+- \`root.borderColor.hover\` (string) - (Optional) Border color in hover state.
+- \`root.borderRadius\` (string) - (Optional) Border radius style.
+- \`root.borderWidth\` (string) - (Optional) Border width style.
+- \`root.color.active\` (string) - (Optional) Color in active state.
+- \`root.color.default\` (string) - (Optional) Color in default state.
+- \`root.color.disabled\` (string) - (Optional) Color in disabled state.
+- \`root.color.hover\` (string) - (Optional) Color in hover state.
+- \`root.focusRing.borderColor\` (string) - (Optional) Focus ring border color.
+- \`root.focusRing.borderRadius\` (string) - (Optional) Focus ring border radius.
+- \`root.focusRing.borderWidth\` (string) - (Optional) Focus ring border width.
+- \`root.paddingBlock\` (string) - (Optional) Block dimension padding.
+- \`root.paddingInline\` (string) - (Optional) Inline dimension padding.",
       "inlineType": {
         "name": "ButtonProps.Style",
         "properties": [
