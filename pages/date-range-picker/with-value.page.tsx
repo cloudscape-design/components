@@ -3,6 +3,7 @@
 import React, { useContext, useState } from 'react';
 
 import { Box, Checkbox, DateRangePicker, DateRangePickerProps, FormField, Link } from '~components';
+import { EditableDateFormat } from '~components/internal/utils/date-time/date-types';
 
 import AppContext from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -27,6 +28,12 @@ export default function DatePickerScenario() {
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const absoluteFormat =
     urlParams.absoluteFormat ?? ('dateRangePickerDemoDefaults.absoluteFormat' as DateRangePickerProps.AbsoluteFormat);
+  const timeInputFormat =
+    urlParams.timeInputFormat ?? (dateRangePickerDemoDefaults.timeInputFormat as DateRangePickerProps.TimeInputFormat);
+  const dateInputFormat =
+    urlParams.dateInputFormat && urlParams.dateInputFormat !== 'none'
+      ? (urlParams.dateInputFormat as EditableDateFormat)
+      : undefined;
 
   return (
     <Box padding="s">
@@ -42,7 +49,38 @@ export default function DatePickerScenario() {
           }
         >
           <option value="iso">Iso (Default)</option>
+          <option value="slashed">Slashed</option>
           <option value="long-localized">Long localized</option>
+        </select>
+      </label>
+      <label>
+        Date input format{' '}
+        <select
+          value={dateInputFormat}
+          onChange={event =>
+            setUrlParams({
+              dateInputFormat: event.currentTarget.value as DateRangePickerProps.DateInputFormat | 'none',
+            })
+          }
+        >
+          <option value="none">None (Default)</option>
+          <option value="iso">Iso</option>
+          <option value="slashed">Slashed</option>
+        </select>
+      </label>
+      <label>
+        Time input format{' '}
+        <select
+          value={timeInputFormat}
+          onChange={event =>
+            setUrlParams({
+              timeInputFormat: event.currentTarget.value as DateRangePickerProps.TimeInputFormat,
+            })
+          }
+        >
+          <option value="hh:mm:ss">hh:mm:ss (Default)</option>
+          <option value="hh:mm">hh:mm</option>
+          <option value="hh">hh</option>
         </select>
       </label>
       <Checkbox
@@ -74,6 +112,8 @@ export default function DatePickerScenario() {
             customRelativeRangeUnits={['second', 'minute', 'hour']}
             i18nStrings={i18nStrings}
             absoluteFormat={absoluteFormat}
+            timeInputFormat={timeInputFormat}
+            dateInputFormat={dateInputFormat}
           />
         </FormField>
         <br />
