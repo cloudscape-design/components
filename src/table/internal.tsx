@@ -379,6 +379,7 @@ const InternalTable = React.forwardRef(
       getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
       variant: computedVariant,
+      tableVariant: computedVariant,
       wrapLines,
       resizableColumns,
       sortingColumn,
@@ -680,6 +681,7 @@ const InternalTable = React.forwardRef(
                                       columnId={column.id ?? colIndex}
                                       colIndex={colIndex + colIndexOffset}
                                       verticalAlign={column.verticalAlign ?? cellVerticalAlign}
+                                      tableVariant={computedVariant}
                                       {...cellExpandableProps}
                                       {...getAnalyticsMetadataAttribute(analyticsMetadata)}
                                     />

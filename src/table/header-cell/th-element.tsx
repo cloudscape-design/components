@@ -36,6 +36,7 @@ export interface TableThElementProps {
   children: React.ReactNode;
   variant: TableProps.Variant;
   ariaLabel?: string;
+  tableVariant?: string;
 }
 
 export function TableThElement({
@@ -56,6 +57,7 @@ export function TableThElement({
   children,
   variant,
   ariaLabel,
+  tableVariant,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -66,6 +68,7 @@ export function TableThElement({
     getClassName: props => getStickyClassNames(styles, props),
   });
 
+  console.log('TH: tableVariant', tableVariant);
   const cellRefObject = useRef<HTMLTableCellElement>(null);
   const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject);
   const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
@@ -81,6 +84,7 @@ export function TableThElement({
         stripedRows && styles['has-striped-rows'],
         isVisualRefresh && styles['is-visual-refresh'],
         isSelection && clsx(tableStyles['selection-control'], tableStyles['selection-control-header']),
+        tableVariant && styles[`table-variant-${tableVariant}`],
         {
           [styles['header-cell-fake-focus']]: focusedComponent === `header-${String(columnId)}`,
           [styles['header-cell-sortable']]: sortingStatus,

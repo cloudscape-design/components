@@ -56,6 +56,7 @@ export interface TableTdElementProps {
   isEditing: boolean;
   isEditingDisabled?: boolean;
   hasSuccessIcon?: boolean;
+  tableVariant?: string;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -95,6 +96,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       isEditing,
       isEditingDisabled,
       hasSuccessIcon,
+      tableVariant,
       ...rest
     },
     ref
@@ -141,6 +143,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasSuccessIcon && styles['body-cell-has-success'],
           level !== undefined && !isEditingActive && styles['body-cell-expandable'],
           level !== undefined && !isEditingActive && styles[`expandable-level-${getLevelClassSuffix(level)}`],
+          tableVariant && styles[`table-variant-${tableVariant}`],
           stickyStyles.className
         )}
         onClick={onClick}
