@@ -35,6 +35,13 @@ describe('List', () => {
     expect(wrapper.findItemByIndex(3)!.getElement()).toHaveTextContent('Item 3');
   });
 
+  test('find item by id', () => {
+    const wrapper = renderList();
+    expect(wrapper.findItemById('item1')!.getElement()).toHaveTextContent('Item 1');
+    expect(wrapper.findItemById('item2')!.getElement()).toHaveTextContent('Item 2');
+    expect(wrapper.findItemById('item3')!.getElement()).toHaveTextContent('Item 3');
+  });
+
   test('renders complex items', () => {
     const wrapper = renderList({
       renderItem: item => ({

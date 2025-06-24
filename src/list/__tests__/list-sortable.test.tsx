@@ -75,4 +75,9 @@ describe('List - Sortable', () => {
     const dragHandle = wrapper.findItemByIndex(1)!.findDragHandle();
     expect(dragHandle!.getElement()).toHaveAttribute('aria-disabled', 'true');
   });
+
+  test('can find item by id', () => {
+    const { wrapper } = renderSortableList();
+    expect(wrapper.findItemById('item2')!.getElement()).toHaveTextContent('Item 2');
+  });
 });

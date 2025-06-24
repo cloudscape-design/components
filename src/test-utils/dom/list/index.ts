@@ -29,4 +29,11 @@ export default class ListWrapper extends ComponentWrapper {
   findItemByIndex(index: number): ListItemWrapper | null {
     return this.findComponent(`.${styles.item}:nth-child(${index})`, ListItemWrapper);
   }
+  /**
+   * Returns an item for a given id.
+   *
+   */
+  findItemById(id: string): ListItemWrapper | null {
+    return this.findComponent(`.${styles.item}[data-testid="${id}"]`, ListItemWrapper);
+  }
 }

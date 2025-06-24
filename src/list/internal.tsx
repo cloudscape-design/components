@@ -56,7 +56,7 @@ export default function InternalList<T = any>({
         }}
         onItemsChange={event => fireNonCancelableEvent(onSortingChange, { items: event.detail.items })}
         i18nStrings={i18nStrings}
-        renderItem={({ ref, item, style, className, dragHandleProps, isDragGhost }) => {
+        renderItem={({ ref, item, id, style, className, dragHandleProps, isDragGhost }) => {
           const structuredItemProps = extractValidStructuredItemProps(renderItem(item));
 
           const itemClass = clsx(
@@ -79,7 +79,7 @@ export default function InternalList<T = any>({
           }
 
           return (
-            <li ref={ref} className={itemClass} style={style}>
+            <li ref={ref} className={itemClass} style={style} data-testid={id}>
               {content}
             </li>
           );
@@ -92,6 +92,7 @@ export default function InternalList<T = any>({
       return (
         <li
           key={id}
+          data-testid={id}
           className={clsx(
             styles.item,
             testClasses.item,
