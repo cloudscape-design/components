@@ -80,11 +80,18 @@ export default function SimpleContainers() {
 
             {/* Icon reset */}
             <IconProvider icons={{ 'add-plus': CUSTOM_SVG, close: CUSTOM_SIMPLE_SVG }}>
-              <SpaceBetween direction="horizontal" size="s">
+              <SpaceBetween direction="vertical" size="l">
                 <Icon name={'add-plus'} />
                 <Icon name={'close'} />
                 {/* Restore icons in the below Provider back to the built-in set */}
                 <IconProvider icons={null}>
+                  <SpaceBetween direction="horizontal" size="s">
+                    <Icon name={'add-plus'} />
+                    <Icon name={'close'} />
+                  </SpaceBetween>
+                </IconProvider>
+                {/* Restore specific icons in the below Provider back to the built-in icons */}
+                <IconProvider icons={{ close: null }}>
                   <SpaceBetween direction="horizontal" size="s">
                     <Icon name={'add-plus'} />
                     <Icon name={'close'} />
