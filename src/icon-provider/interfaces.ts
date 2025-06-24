@@ -14,7 +14,7 @@ export interface IconProviderProps extends BaseComponentProps {
    *
    * These icon overrides will automatically be applied to any component that is a descendant of this provider, including nested providers.
    *
-   * Set to `null` to reset the icons to the default set.
+   * Set to `null` to reset the icons to the default set or set specific icon names to `null` to change them back to the default set.
    *
    * For example, override `AppLayout` icons but not icons in the content slot by wrapping content with an `IconProvider` with this property set to `null`.
    *
