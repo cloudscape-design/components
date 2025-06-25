@@ -125,7 +125,7 @@
     "rimraf": "^5.0.5",
     "rollup": "^3.29.5",
     "rollup-plugin-license": "^3.0.1",
-    "sass": "^1.43.4",
+    "sass": "^1.89.2",
     "sass-loader": "^12.3.0",
     "size-limit": "^11.1.6",
     "stylelint": "^16.6.1",

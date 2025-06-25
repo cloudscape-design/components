@@ -6,7 +6,7 @@
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 
-@import 'content-display-option';
+@use './content-display-option';
 
 .content-display,
 .content-display-text-filter,
