@@ -12,11 +12,6 @@ import AppLayout from '../../../lib/components/app-layout';
 import Header from '../../../lib/components/header';
 import { describeEachAppLayout, renderComponent } from './utils';
 
-jest.mock('@cloudscape-design/component-toolkit', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit'),
-  useContainerQuery: () => [1300, () => {}],
-}));
-
 const getMetadata = (label = 'Label') => {
   const metadata: GeneratedAnalyticsMetadataFragment = {
     contexts: [
@@ -35,7 +30,7 @@ const getMetadata = (label = 'Label') => {
 beforeAll(() => {
   activateAnalyticsMetadata(true);
 });
-describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
+describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
   describe('AppLayoutToolbar renders correct analytics metadata', () => {
     test('with the header component inside the content', () => {
       const { wrapper } = renderComponent(
@@ -47,11 +42,19 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
           }
         />
       );
-      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata('H1 Header'));
+      if (theme === 'refresh-toolbar') {
+        expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata('H1 Header'));
+      } else {
+        expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({});
+      }
     });
     test('with a simple h1 tag inside the content', () => {
       const { wrapper } = renderComponent(<AppLayout content={<h1>Label</h1>} />);
-      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata());
+      if (theme === 'refresh-toolbar') {
+        expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata());
+      } else {
+        expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({});
+      }
     });
   });
 });

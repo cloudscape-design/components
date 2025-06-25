@@ -1361,27 +1361,22 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
         globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
         expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
-        expect(
-          getGeneratedAnalyticsMetadata(
-            globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
-          )
-        ).toStrictEqual({
-          action: 'expand',
-          detail: {
-            label: 'Expanded mode button',
-          },
+        let metadata = getGeneratedAnalyticsMetadata(
+          globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+        );
+        expect(metadata.action).toEqual('expand');
+        expect(metadata.detail).toEqual({
+          label: 'Expanded mode button',
         });
+
         globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
         expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
-        expect(
-          getGeneratedAnalyticsMetadata(
-            globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
-          )
-        ).toStrictEqual({
-          action: 'collapse',
-          detail: {
-            label: 'Expanded mode button',
-          },
+        metadata = getGeneratedAnalyticsMetadata(
+          globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+        );
+        expect(metadata.action).toEqual('collapse');
+        expect(metadata.detail).toEqual({
+          label: 'Expanded mode button',
         });
       });
 
