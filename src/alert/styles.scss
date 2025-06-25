@@ -6,7 +6,6 @@
 @use 'sass:map';
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @use './motion';
 
@@ -76,7 +75,7 @@
   &:focus {
     outline: none;
   }
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
   }
 }
