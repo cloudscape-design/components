@@ -6,7 +6,6 @@
 @use 'sass:map';
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
 
 .link {
@@ -44,7 +43,7 @@
     }
   }
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.link-focus;
   }
 

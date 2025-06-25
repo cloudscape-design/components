@@ -5,7 +5,6 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .top-navigation {
   @include styles.styles-reset;
@@ -61,7 +60,7 @@
     &:hover {
       color: awsui.$color-text-accent;
     }
-    @include focus-visible.when-visible {
+    &:focus-visible {
       @include styles.link-focus;
     }
   }
