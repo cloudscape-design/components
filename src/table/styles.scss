@@ -5,7 +5,6 @@
 
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../container/shared' as container;
 
 .root {
@@ -87,7 +86,7 @@
     display: none; /* Hide scrollbar in Safari and Chrome */
   }
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.container-focus();
   }
 }
