@@ -3,7 +3,7 @@
 import padStart from 'lodash/padStart';
 import range from 'lodash/range';
 
-import pseudoRandom from '../utils/pseudo-random';
+import pseudoRandom from '../../utils/pseudo-random';
 
 const MAX_LEVEL = 5;
 

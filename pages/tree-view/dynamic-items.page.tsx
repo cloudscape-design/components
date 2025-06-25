@@ -8,7 +8,7 @@ import Icon from '~components/icon';
 import TreeView from '~components/tree-view';
 
 import { Actions, Content } from './common';
-import { allItems, items } from './generate-data';
+import { allItems, items } from './items/dynamic-items';
 
 const allExpandableItemIds = allItems.filter(item => item.children && item.children.length > 0).map(item => item.id);
 

@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
+import Box from '~components/box';
 import ButtonDropdown from '~components/button-dropdown';
 import ButtonGroup from '~components/button-group';
 import StatusIndicator from '~components/status-indicator/internal';
 
-import { Item } from './generate-data';
+import { Item } from './items/dynamic-items';
 
 export function Content(item: Item) {
   if (item.status) {
@@ -29,11 +30,15 @@ export function Content(item: Item) {
 }
 
 export function Actions(
-  { actionType }: { actionType?: 'button-group' | 'button-dropdown' | 'inline-button-dropdown' } = {
-    actionType: 'button-dropdown',
+  { actionType }: { actionType?: 'button-group' | 'button-dropdown' | 'inline-button-dropdown' | 'text' } = {
+    actionType: 'inline-button-dropdown',
   }
 ) {
-  const [pressed, setPressed] = useState(false);
+  const [markedAsFavorite, setMarkedAsFavorite] = useState(false);
+
+  if (actionType === 'text') {
+    return <Box color="text-status-inactive">Some metadata</Box>;
+  }
 
   if (actionType === 'button-group') {
     return (
@@ -50,7 +55,7 @@ export function Actions(
             type: 'icon-toggle-button',
             id: 'favorite',
             text: 'Favorite',
-            pressed: pressed,
+            pressed: markedAsFavorite,
             iconName: 'star',
             pressedIconName: 'star-filled',
           },
@@ -73,7 +78,7 @@ export function Actions(
         ]}
         onItemClick={({ detail }) => {
           if (detail.id === 'favorite') {
-            setPressed(!pressed);
+            setMarkedAsFavorite(!markedAsFavorite);
           }
         }}
       />
