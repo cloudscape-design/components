@@ -71,7 +71,7 @@ function Permutation({ title, items, expandAll }: Permutation & { expandAll?: bo
 
   return (
     <div>
-      <h3>{title}</h3>
+      <h2>{title}</h2>
       <TreeView
         ariaLabel={title}
         items={items}
