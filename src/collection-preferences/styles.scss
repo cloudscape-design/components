@@ -5,8 +5,8 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@import './visible-content';
-@import './content-display/styles';
+@use './visible-content';
+@use './content-display/content-display-list';
 
 .root,
 .modal-root,
