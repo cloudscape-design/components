@@ -156,12 +156,6 @@
     "i18nStrings.endTimeLabel": "終了時刻",
     "i18nStrings.dateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",
     "i18nStrings.dateConstraintText": "日付には YYYY/MM/DD を使用してください。",
-    "i18nStrings.slashedDateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",
-    "i18nStrings.isoDateTimeConstraintText": "日付には YYYY-MM-DD を使用します。時刻には 24 時間形式を使用します。",
-    "i18nStrings.slashedDateConstraintText": "日付には YYYY/MM/DD を使用してください。",
-    "i18nStrings.isoDateConstraintText": "日付には YYYY-MM-DD を使用してください。",
-    "i18nStrings.slashedMonthConstraintText": "月には YYYY/MM を使用してください。",
-    "i18nStrings.isoMonthConstraintText": "月には YYYY-MM を使用してください。",
     "i18nStrings.monthConstraintText": "月には YYYY/MM を使用してください。",
     "i18nStrings.errorIconAriaLabel": "エラー",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate} から {endDate} で選択された範囲",
@@ -409,10 +403,6 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "メニューを閉じる",
     "i18nStrings.overflowMenuBackIconAriaLabel": "戻る",
     "i18nStrings.overflowMenuTitleText": "すべて"
-  },
-  "tree-view": {
-    "i18nStrings.expandButtonLabel": "展開する",
-    "i18nStrings.collapseButtonLabel": "折りたたむ"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "ロード中",

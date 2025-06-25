@@ -156,12 +156,6 @@
     "i18nStrings.endTimeLabel": "Bitiş zamanı",
     "i18nStrings.dateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
     "i18nStrings.dateConstraintText": "Tarih için YYYYY/AA/GG kullanın.",
-    "i18nStrings.slashedDateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
-    "i18nStrings.isoDateTimeConstraintText": "Tarih için YYYY-AA-GG kullanın. Zaman için 24 saat biçimini kullanın.",
-    "i18nStrings.slashedDateConstraintText": "Tarih için YYYYY/AA/GG kullanın.",
-    "i18nStrings.isoDateConstraintText": "Tarih için YYYYY-AA-GG kullanın.",
-    "i18nStrings.slashedMonthConstraintText": "Ay için YYYY/AA kullanın.",
-    "i18nStrings.isoMonthConstraintText": "Ay için YYYY-AA kullanın.",
     "i18nStrings.monthConstraintText": "Ay için YYYY/AA kullanın.",
     "i18nStrings.errorIconAriaLabel": "Hata",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate}-{endDate} aralığı seçildi",
@@ -409,10 +403,6 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Menüyü kapat",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Geri",
     "i18nStrings.overflowMenuTitleText": "Tümü"
-  },
-  "tree-view": {
-    "i18nStrings.expandButtonLabel": "Genişlet",
-    "i18nStrings.collapseButtonLabel": "Daralt"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "Yükleniyor",

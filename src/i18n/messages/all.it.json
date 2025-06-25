@@ -156,12 +156,6 @@
     "i18nStrings.endTimeLabel": "Ora di fine",
     "i18nStrings.dateTimeConstraintText": "Per la data, utilizza il formato GG/MM/AAAA. Per l'ora, usa il formato 24 ore.",
     "i18nStrings.dateConstraintText": "Per la data, utilizza il formato GG/MM/AAAA.",
-    "i18nStrings.slashedDateTimeConstraintText": "Per la data, utilizza il formato GG/MM/AAAA. Per l'ora, utilizza il formato 24 ore.",
-    "i18nStrings.isoDateTimeConstraintText": "Per la data, utilizza il formato GG-MM-AAAA. Per l'ora, usa il formato 24 ore.",
-    "i18nStrings.slashedDateConstraintText": "Per la data, utilizza il formato GG/MM/AAAA.",
-    "i18nStrings.isoDateConstraintText": "Per la data, utilizza il formato GG-MM-AAAA.",
-    "i18nStrings.slashedMonthConstraintText": "Per il mese, utilizza il formato MM/AAAA.",
-    "i18nStrings.isoMonthConstraintText": "Per il mese, utilizza il formato MM-AAAA.",
     "i18nStrings.monthConstraintText": "Per il mese, utilizza il formato MM/AAAA.",
     "i18nStrings.errorIconAriaLabel": "Errore",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Intervallo selezionato da {startDate} a {endDate}",
@@ -409,10 +403,6 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Chiudi menu",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Indietro",
     "i18nStrings.overflowMenuTitleText": "Tutti"
-  },
-  "tree-view": {
-    "i18nStrings.expandButtonLabel": "Espandi",
-    "i18nStrings.collapseButtonLabel": "Comprimi"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "Caricamento in corso",

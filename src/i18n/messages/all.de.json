@@ -93,7 +93,7 @@
     "i18nStrings.resizeHandleTooltipText": "Zum Ändern der Größe ziehen oder auswählen"
   },
   "collection-preferences": {
-    "title": "Einstellungen",
+    "title": "Präferenzen",
     "confirmLabel": "Bestätigen",
     "cancelLabel": "Abbrechen",
     "pageSizePreference.title": "Seitengröße",
@@ -156,12 +156,6 @@
     "i18nStrings.endTimeLabel": "Endzeit",
     "i18nStrings.dateTimeConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
     "i18nStrings.dateConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT.",
-    "i18nStrings.slashedDateTimeConstraintText": "Verwenden Sie für das Datum das Format JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
-    "i18nStrings.isoDateTimeConstraintText": "Verwenden Sie für das Datum das Format JJJJ-MM-TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
-    "i18nStrings.slashedDateConstraintText": "Verwenden Sie für das Datum das Format JJJJ/MM/TT.",
-    "i18nStrings.isoDateConstraintText": "Verwenden Sie für das Datum das Format JJJJ-MM-TT.",
-    "i18nStrings.slashedMonthConstraintText": "Verwenden Sie für den Monat das Format JJJJ/MM.",
-    "i18nStrings.isoMonthConstraintText": "Verwenden Sie für den Monat das Format JJJJ-MM.",
     "i18nStrings.monthConstraintText": "Verwenden Sie für Monat JJJJ/MM.",
     "i18nStrings.errorIconAriaLabel": "Fehler",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Bereich ausgewählt von {startDate} bis {endDate}",
@@ -409,10 +403,6 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Menü schließen",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Zurück",
     "i18nStrings.overflowMenuTitleText": "Alle"
-  },
-  "tree-view": {
-    "i18nStrings.expandButtonLabel": "Erweitern",
-    "i18nStrings.collapseButtonLabel": "Minimieren"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "Wird geladen",
