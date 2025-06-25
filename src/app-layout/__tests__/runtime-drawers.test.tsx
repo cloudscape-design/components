@@ -1361,23 +1361,33 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
         globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
         expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
-        let metadata = getGeneratedAnalyticsMetadata(
-          globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+        expect(
+          getGeneratedAnalyticsMetadata(
+            globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+          )
+        ).toEqual(
+          expect.objectContaining({
+            action: 'expand',
+            detail: {
+              label: 'Expanded mode button',
+            },
+          })
         );
-        expect(metadata.action).toEqual('expand');
-        expect(metadata.detail).toEqual({
-          label: 'Expanded mode button',
-        });
 
         globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
         expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
-        metadata = getGeneratedAnalyticsMetadata(
-          globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+        expect(
+          getGeneratedAnalyticsMetadata(
+            globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+          )
+        ).toEqual(
+          expect.objectContaining({
+            action: 'collapse',
+            detail: {
+              label: 'Expanded mode button',
+            },
+          })
         );
-        expect(metadata.action).toEqual('collapse');
-        expect(metadata.detail).toEqual({
-          label: 'Expanded mode button',
-        });
       });
 
       test('only one drawer could be in expanded mode. all other panels should be closed', async () => {
