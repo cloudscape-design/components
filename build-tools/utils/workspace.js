@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 const { version } = require('../../package.json');
-const gitCommitVersion = (process.env.GITHUB_SHA || 'HEAD').slice(0, 8);
+const gitCommitVersion = '03e6fbed'; //(process.env.GITHUB_SHA || 'HEAD').slice(0, 8);
 const packageSource = 'components';
 const packageVersion = `${version} (${gitCommitVersion})`;
 
