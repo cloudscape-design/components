@@ -49,6 +49,7 @@ const InternalTreeView = <T,>({
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root, testUtilStyles.root)}>
+      {/* Role `tree` isn't used in the initial release per discussion with A11Y team. It requires focus management to be implemented so they will be added as a follow up together. */}
       <ul
         className={clsx(styles.tree, testUtilStyles.tree)}
         aria-label={ariaLabel}

@@ -5,9 +5,6 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 
-$item-toggle-column-width: 28px;
-$item-min-height: 32px;
-
 .root {
   @include styles.styles-reset;
 
@@ -16,36 +13,6 @@ $item-min-height: 32px;
   line-height: awsui.$line-height-heading-m;
 }
 
-.tree,
-.treeitem-group,
-.treeitem {
+.tree {
   @include styles.styles-reset-ul;
-}
-
-.treeitem {
-  display: grid;
-  grid-template-columns: $item-toggle-column-width 1fr;
-  column-gap: awsui.$space-scaled-xxs;
-  grid-template-rows: minmax($item-min-height, 1fr) auto auto;
-
-  > .expand-toggle-wrapper {
-    grid-column: 1;
-    grid-row: 1;
-    padding-block-start: 6px; // may be a design token?
-
-    > .toggle {
-      justify-self: center;
-    }
-  }
-
-  > .structured-item-wrapper {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    padding-block-start: 6px; // may be a design token?
-  }
-
-  > .treeitem-group {
-    grid-column: 2;
-    grid-row: 3;
-  }
 }

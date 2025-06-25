@@ -16,7 +16,7 @@ export interface TreeViewProps<T = any> extends BaseComponentProps {
    * * `content` (ReactNode) - The content of the item.
    * * `icon` (optional, ReactNode) - The leading icon of the item.
    * * `secondaryContent` (optional, ReactNode) - Secondary content of the item, displayed below `content`.
-   * * `actions` (optional, ReactNode) - Actions related to the item. Use [button group](/components/button-group/) if the item has multiple actions.
+   * * `actions` (optional, ReactNode) - Actions related to the item. Use [button](/components/button/?tabId=playground&example=inline-icon-button) with inline-icon or inline-link variants. For items with multiple actions, use [button dropdown](/components/button-dropdown/?tabId=playground&example=inline-icon-button-dropdown) with the inline-icon variant.
    */
   renderItem: (item: T, index: number) => TreeViewProps.TreeItem;
 

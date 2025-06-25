@@ -8,8 +8,8 @@ import { ExpandToggleButton } from '../../internal/components/expand-toggle-butt
 import InternalStructuredItem from '../../internal/components/structured-item';
 import { TreeViewProps } from '../interfaces';
 
-import styles from '../styles.css.js';
 import testUtilStyles from '../test-classes/styles.css.js';
+import styles from './styles.css.js';
 
 interface InternalTreeItemProps<T>
   extends Pick<
@@ -48,6 +48,7 @@ const InternalTreeItem = <T,>({
     customIcon = renderItemToggleIcon({ expanded: isExpanded });
   }
 
+  //  Role `treeitem` isn't used in the initial release per discussion with A11Y team. It requires focus management to be implemented so they will be added as a follow up together.
   return (
     <li
       id={id}
