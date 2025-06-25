@@ -55,10 +55,12 @@ export const longTextItems: Item[] = [
   {
     id: 'long-text-1',
     content:
-      'This item and its children all have long texts such as; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
+      'This item and its children all have long texts such as; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
     secondaryContent: (
       <Box color="text-status-inactive">
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium
+        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. Sed ut
+        perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. Sed ut perspiciatis
+        unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
       </Box>
     ),
     icon: <Icon name="file" />,
@@ -71,7 +73,9 @@ export const longTextItems: Item[] = [
     secondaryContent: (
       <Box color="text-status-inactive">
         Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non
-        numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem,
+        numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem, Neque porro quisquam
+        est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora
+        incidunt ut labore et dolore magnam aliquam quaerat voluptatem
       </Box>
     ),
     icon: <Icon name="file" />,
@@ -85,7 +89,9 @@ export const longTextItems: Item[] = [
         secondaryContent: (
           <Box color="text-status-inactive">
             Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non
-            numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem,
+            numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem, Neque porro
+            quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius
+            modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem
           </Box>
         ),
       },
@@ -96,7 +102,9 @@ export const longTextItems: Item[] = [
         secondaryContent: (
           <Box color="text-status-inactive">
             Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non
-            numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem,
+            numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem, Neque porro
+            quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius
+            modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem
           </Box>
         ),
         icon: <Icon name="file" />,
@@ -117,24 +125,26 @@ export const longTextItems: Item[] = [
     id: 'long-text-3',
     content:
       'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque',
-    secondaryContent: 'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam',
+    secondaryContent:
+      'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam',
     icon: <Icon name="file" />,
     actions: <Actions actionType="button-dropdown" />,
     children: [
       {
         id: 'long-text-3.1',
         content:
-          'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt',
+          'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt',
         secondaryContent:
-          'Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem',
+          'Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem',
       },
     ],
   },
   {
     id: 'long-text-4',
     content:
-      'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque',
-    secondaryContent: 'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam',
+      'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque',
+    secondaryContent:
+      'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam',
     icon: <Icon name="file" />,
     actions: <Actions actionType="inline-button-dropdown" />,
   },
