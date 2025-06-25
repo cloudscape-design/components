@@ -213,6 +213,14 @@
   "link": {
     "externalIconAriaLabel": "Se abre en una pestaña nueva."
   },
+  "list": {
+    "dragHandleAriaLabel": "Arrastrar controlador",
+    "dragHandleAriaDescription": "Utilice la barra espaciadora o Enter para activar el arrastre de un elemento y, a continuación, utilice las teclas de flecha para mover la posición del elemento. Para completar el movimiento de la posición, utilice la barra espaciadora o Enter, o para descartar el movimiento, utilice Escape.",
+    "liveAnnouncementDndStarted": "Recogida del elemento en la posición {position} de {total}",
+    "liveAnnouncementDndDiscarded": "Reordenación cancelada",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Mover el elemento de nuevo a la posición {currentPosition} de {total}} false {Mover el elemento a la posición {currentPosition} de {total}} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {El artículo ha vuelto a su posición original {initialPosition} de {total}} false {El artículo se movió de la posición {initialPosition} a la posición {finalPosition} de {total}} other {}}"
+  },
   "modal": {
     "closeAriaLabel": "Cerrar modal"
   },

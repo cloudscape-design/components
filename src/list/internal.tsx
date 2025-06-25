@@ -3,6 +3,7 @@
 import React, { ReactNode } from 'react';
 import clsx from 'clsx';
 
+import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import InternalDragHandle from '../internal/components/drag-handle';
 import SortableArea from '../internal/components/sortable-area';
@@ -40,6 +41,7 @@ export default function InternalList<T = any>({
   ...rest
 }: InternalListProps<T>) {
   const baseProps = getBaseProps(rest);
+  const i18n = useInternalI18n('list');
 
   let contents: ReactNode;
   if (sortable) {
@@ -55,7 +57,33 @@ export default function InternalList<T = any>({
           },
         }}
         onItemsChange={event => fireNonCancelableEvent(onSortingChange, { items: event.detail.items })}
-        i18nStrings={i18nStrings}
+        i18nStrings={{
+          liveAnnouncementDndStarted: i18n(
+            'liveAnnouncementDndStarted',
+            i18nStrings?.liveAnnouncementDndStarted,
+            format => (position, total) => format({ position, total })
+          ),
+          liveAnnouncementDndItemReordered: i18n(
+            'liveAnnouncementDndItemReordered',
+            i18nStrings?.liveAnnouncementDndItemReordered,
+            format => (initialPosition, currentPosition, total) =>
+              format({ currentPosition, total, isInitialPosition: `${initialPosition === currentPosition}` })
+          ),
+          liveAnnouncementDndItemCommitted: i18n(
+            'liveAnnouncementDndItemCommitted',
+            i18nStrings?.liveAnnouncementDndItemCommitted,
+            format => (initialPosition, finalPosition, total) =>
+              format({
+                initialPosition,
+                finalPosition,
+                total,
+                isInitialPosition: `${initialPosition === finalPosition}`,
+              })
+          ),
+          liveAnnouncementDndDiscarded: i18n('liveAnnouncementDndDiscarded', i18nStrings?.liveAnnouncementDndDiscarded),
+          dragHandleAriaLabel: i18n('dragHandleAriaLabel', i18nStrings?.dragHandleAriaLabel),
+          dragHandleAriaDescription: i18n('dragHandleAriaDescription', i18nStrings?.dragHandleAriaDescription),
+        }}
         renderItem={({ ref, item, id, style, className, dragHandleProps, isDragGhost }) => {
           const structuredItemProps = extractValidStructuredItemProps(renderItem(item));
 
