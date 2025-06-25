@@ -3,7 +3,7 @@
 import React, { useContext, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
@@ -22,7 +22,6 @@ import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-
 import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';

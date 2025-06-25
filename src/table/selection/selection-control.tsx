@@ -3,11 +3,11 @@
 import React, { KeyboardEvent, KeyboardEventHandler, MouseEvent, useContext } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalCheckbox from '../../checkbox/internal';
 import { SingleTabStopNavigationContext } from '../../internal/context/single-tab-stop-navigation-context';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { KeyCode } from '../../internal/keycode';
 import RadioButton from '../../radio-group/radio-button';
 import { SelectionProps } from './interfaces';

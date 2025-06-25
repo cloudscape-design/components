@@ -100,6 +100,11 @@ export interface BaseButtonProps {
    * @i18n
    */
   i18nStrings?: ButtonProps.I18nStrings;
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: ButtonProps.Style;
 }
 
 export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
@@ -202,5 +207,37 @@ export namespace ButtonProps {
      * Focuses the underlying native button.
      */
     focus(options?: FocusOptions): void;
+  }
+
+  export interface Style {
+    root?: {
+      background?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      borderColor?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      color?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
   }
 }

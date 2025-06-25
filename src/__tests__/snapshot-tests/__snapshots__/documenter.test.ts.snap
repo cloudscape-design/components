@@ -4223,6 +4223,25 @@ If the \`rel\` property is provided, it overrides the default behavior.",
       "type": "string",
     },
     {
+      "inlineType": {
+        "name": "ButtonProps.Style",
+        "properties": [
+          {
+            "name": "root",
+            "optional": true,
+            "type": "{ background?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; borderColor?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; ... 5 more ...; pa...",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "ButtonProps.Style",
+    },
+    {
       "description": "Specifies where to open the linked URL (for example, to open in a new browser window or tab use \`_blank\`).
 This property only applies when an \`href\` is provided.",
       "name": "target",
@@ -6905,6 +6924,15 @@ exports[`Documenter definition for container matches the snapshot: container 1`]
       "type": "boolean",
     },
     {
+      "description": "Determines whether the container footer has padding. If \`true\`, removes the default padding from the footer.",
+      "name": "disableFooterPaddings",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "boolean",
+    },
+    {
       "defaultValue": "false",
       "description": "Determines whether the container header has padding. If \`true\`, removes the default padding from the header.",
       "name": "disableHeaderPaddings",
@@ -7185,6 +7213,20 @@ and to distinguish between multiple buttons with identical visible text. The tex
       "description": "The message shown when the text is copied successfully.",
       "name": "copySuccessText",
       "optional": false,
+      "type": "string",
+    },
+    {
+      "description": "Renders the copy to clipboard button as disabled and prevents clicks.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Provides a reason why the copy to clipboard button is disabled (only when \`disabled\` is \`true\`).
+If provided, the copy to clipboard button becomes focusable.
+Applicable for all variants except inline.",
+      "name": "disabledReason",
+      "optional": true,
       "type": "string",
     },
     {
@@ -9402,7 +9444,7 @@ The value is an array of flash message definition objects.
 A flash message object contains the following properties:
 * \`header\` (ReactNode) - Specifies the heading text.
 * \`content\` (ReactNode) - Specifies the primary text displayed in the flash element.
-* \`type\` (string) - Indicates the type of the message to be displayed. Allowed values are as follows: \`success, error, warning, info\`. The default is \`info\`.
+* \`type\` (string) - Indicates the type of the message to be displayed. Allowed values are as follows: \`success, error, warning, info, in-progress\`. The default is \`info\`.
 * \`loading\` (boolean) - Replaces the status icon with a spinner and forces the type to \`info\`.
 * \`dismissible\` (boolean) - Determines whether the component includes a close button icon. By default, the close button is not included.
 When a user clicks on this button the \`onDismiss\` handler is called.
@@ -9433,6 +9475,30 @@ If the \`action\` property is set, this property is ignored. **Deprecated**, rep
       "name": "stackItems",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "inlineType": {
+        "name": "FlashbarProps.Style",
+        "properties": [
+          {
+            "name": "item",
+            "optional": true,
+            "type": "{ root?: { background?: { error?: string | undefined; info?: string | undefined; inProgress?: string | undefined; success?: string | undefined; warning?: string | undefined; } | undefined; ... 4 more ...; focusRing?: { ...; } | undefined; } | undefined; dismissButton?: { ...; } | undefined; }",
+          },
+          {
+            "name": "notificationBar",
+            "optional": true,
+            "type": "{ root: { background?: { active?: string | undefined; default?: string | undefined; hover?: string | undefined; } | undefined; borderColor?: { active?: string | undefined; default?: string | undefined; hover?: string | undefined; } | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; col...",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "FlashbarProps.Style",
     },
   ],
   "regions": [],
@@ -15723,7 +15789,8 @@ the label is visible and attached to the select component, unless \`ariaLabelled
       "type": "string",
     },
     {
-      "description": "An array of objects representing options. Each segment has the following properties:
+      "description": "An array of objects representing options. Only up to 6 options are supported.
+Each segment has the following properties:
 
 - \`id\` (string) - The ID of the segment.
 - \`disabled\` [boolean] - (Optional) Determines whether the segment is disabled, which prevents the user from selecting it.
@@ -17525,6 +17592,9 @@ To target individual cells use \`columnDefinitions.verticalAlign\`, that takes p
        The \`cellContext\` object contains the following properties:
     * \`cellContext.currentValue\` - State to keep track of a value in input fields while editing.
     * \`cellContext.setValue\` - Function to update \`currentValue\`. This should be called when the value in input field changes.
+    * \`cellContext.submitValue\` - Function to submit the \`currentValue\`.
+  * \`editConfig.disableNativeForm\` (boolean) - Disables the use of a \`<form>\` element to capture submissions inside the inline editor.
+       If enabled, ensure that any text inputs in the editing cell submit the cell value when the Enter key is pressed, using \`cellContext.submitValue\`.
 * \`isRowHeader\` (boolean) - Specifies that cells in this column should be used as row headers.
 * \`hasDynamicContent\` (boolean) - Specifies that cells in this column may have dynamic content. The contents will then be observed to update calculated column widths.
    This may have a negative performance impact, so should be used only if necessary. It has no effect if \`resizableColumns\` is set to \`true\`.
@@ -20058,6 +20128,25 @@ It prevents users from clicking the button, but it can still be focused.",
       "name": "pressedIconUrl",
       "optional": true,
       "type": "string",
+    },
+    {
+      "inlineType": {
+        "name": "ButtonProps.Style",
+        "properties": [
+          {
+            "name": "root",
+            "optional": true,
+            "type": "{ background?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; borderColor?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; ... 5 more ...; pa...",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "ButtonProps.Style",
     },
     {
       "defaultValue": "'normal'",

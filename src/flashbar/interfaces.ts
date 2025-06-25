@@ -40,6 +40,74 @@ export namespace FlashbarProps {
     warningIconAriaLabel?: string;
   }
 
+  export interface Style {
+    item?: {
+      root?: {
+        background?: {
+          error?: string;
+          info?: string;
+          inProgress?: string;
+          success?: string;
+          warning?: string;
+        };
+        borderColor?: {
+          error?: string;
+          info?: string;
+          inProgress?: string;
+          success?: string;
+          warning?: string;
+        };
+        borderRadius?: string;
+        borderWidth?: string;
+        color?: {
+          error?: string;
+          info?: string;
+          inProgress?: string;
+          success?: string;
+          warning?: string;
+        };
+        focusRing?: {
+          borderColor?: string;
+          borderRadius?: string;
+          borderWidth?: string;
+        };
+      };
+      dismissButton?: {
+        color?: {
+          active?: string;
+          default?: string;
+          hover?: string;
+        };
+        focusRing?: {
+          borderColor?: string;
+          borderRadius?: string;
+          borderWidth?: string;
+        };
+      };
+    };
+    notificationBar?: {
+      root: {
+        background?: {
+          active?: string;
+          default?: string;
+          hover?: string;
+        };
+        borderColor?: {
+          active?: string;
+          default?: string;
+          hover?: string;
+        };
+        borderRadius?: string;
+        borderWidth?: string;
+        color?: {
+          active?: string;
+          default?: string;
+          hover?: string;
+        };
+      };
+    };
+  }
+
   export type Type = 'success' | 'warning' | 'info' | 'error' | 'in-progress';
   export type AriaRole = 'alert' | 'status';
 }
@@ -52,7 +120,7 @@ export interface FlashbarProps extends BaseComponentProps {
    * A flash message object contains the following properties:
    * * `header` (ReactNode) - Specifies the heading text.
    * * `content` (ReactNode) - Specifies the primary text displayed in the flash element.
-   * * `type` (string) - Indicates the type of the message to be displayed. Allowed values are as follows: `success, error, warning, info`. The default is `info`.
+   * * `type` (string) - Indicates the type of the message to be displayed. Allowed values are as follows: `success, error, warning, info, in-progress`. The default is `info`.
    * * `loading` (boolean) - Replaces the status icon with a spinner and forces the type to `info`.
    * * `dismissible` (boolean) - Determines whether the component includes a close button icon. By default, the close button is not included.
    * When a user clicks on this button the `onDismiss` handler is called.
@@ -100,4 +168,9 @@ export interface FlashbarProps extends BaseComponentProps {
    * @i18n
    */
   i18nStrings?: FlashbarProps.I18nStrings;
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: FlashbarProps.Style;
 }

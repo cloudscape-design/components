@@ -8,12 +8,12 @@ import {
   createCompactTableContext,
   createFlashbarContext,
   createFlashbarWarningContext,
+  createHeaderAlertContext,
   createHeaderContext,
   createTopNavigationContext,
 } from '../utils/contexts.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes.js';
-import alertHeaderContextTokens from './contexts/header-alert.js';
 
 const modes = [
   createColorMode('.awsui-dark-mode'),
@@ -46,12 +46,8 @@ export async function buildVisualRefresh(builder: ThemeBuilder) {
   builder.addContext(createFlashbarContext((await import('./contexts/flashbar.js')).tokens));
   builder.addContext(createFlashbarWarningContext((await import('./contexts/flashbar-warning.js')).tokens));
   builder.addContext(createAlertContext((await import('./contexts/alert.js')).tokens));
+  builder.addContext(createHeaderAlertContext((await import('./contexts/header-alert.js')).tokens));
   builder.addContext(createAppLayoutToolbarContext((await import('./contexts/app-layout-toolbar.js')).tokens));
-  builder.addContext({
-    id: 'alert-header',
-    selector: '.awsui-context-content-header .awsui-context-alert',
-    tokens: alertHeaderContextTokens,
-  });
 
   return builder.build();
 }

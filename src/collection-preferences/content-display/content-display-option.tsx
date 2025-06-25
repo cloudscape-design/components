@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, forwardRef } from 'react';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import DragHandle, { DragHandleProps } from '../../internal/components/drag-handle';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import InternalToggle from '../../toggle/internal';
 import { OptionWithVisibility } from './utils';
 

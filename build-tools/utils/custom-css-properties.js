@@ -73,5 +73,22 @@ const customCssPropertiesList = [
   // Internal drag handle properties
   'dragHandleAnimationInlineOffset',
   'dragHandleAnimationBlockOffset',
+  // Style API
+  'styleBackgroundActive',
+  'styleBackgroundDefault',
+  'styleBackgroundDisabled',
+  'styleBackgroundHover',
+  'styleBorderColorActive',
+  'styleBorderColorDefault',
+  'styleBorderColorDisabled',
+  'styleBorderColorHover',
+  'styleColorActive',
+  'styleColorDefault',
+  'styleColorDisabled',
+  'styleColorHover',
+  'styleFocusRingBorderColor',
+  'styleFocusRingBorderRadius',
+  'styleFocusRingBorderWidth',
+  'styleFocusRingBoxShadow',
 ];
 module.exports = customCssPropertiesList;

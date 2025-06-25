@@ -4,7 +4,7 @@
 import React, { ChangeEvent, Ref, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import {
   GeneratedAnalyticsMetadataFragment,
   getAnalyticsMetadataAttribute,
@@ -19,7 +19,6 @@ import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
 import { GeneratedAnalyticsMetadataFileInputComponent } from './analytics-metadata/interfaces';
 import { FileInputProps } from './interfaces';

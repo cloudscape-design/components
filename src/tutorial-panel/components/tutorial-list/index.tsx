@@ -4,13 +4,14 @@ import React, { useCallback, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalAlert from '../../../alert/internal';
 import { HotspotContext } from '../../../annotation-context/context.js';
 import InternalBox from '../../../box/internal';
 import { InternalButton } from '../../../button/internal';
 import InternalIcon from '../../../icon/internal';
 import { fireNonCancelableEvent } from '../../../internal/events/index.js';
-import { useUniqueId } from '../../../internal/hooks/use-unique-id/index.js';
 import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../../../internal/utils/check-safe-url';
 import InternalLink from '../../../link/internal';

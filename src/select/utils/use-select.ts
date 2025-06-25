@@ -3,6 +3,8 @@
 import React, { RefObject } from 'react';
 import { useEffect, useRef } from 'react';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
 import { DropdownProps } from '../../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../../internal/components/dropdown-status';
@@ -16,7 +18,6 @@ import { useOpenState } from '../../internal/components/options-list/utils/use-o
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
 import useForwardFocus from '../../internal/hooks/forward-focus';
 import { usePrevious } from '../../internal/hooks/use-previous';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { connectOptionsByValue } from './connect-options';
@@ -88,6 +89,7 @@ export function useSelect({
       resetHighlightWithKeyboard,
       setHighlightedIndexWithMouse,
       highlightOptionWithKeyboard,
+      highlightFirstOptionWithMouse,
       goHomeWithKeyboard,
       goEndWithKeyboard,
     },
@@ -299,11 +301,20 @@ export function useSelect({
   useEffect(() => {
     // highlight the first selected option, when opening the Select component without filter input
     // keep the focus in the filter input when opening, so that screenreader can recognize the combobox
-    if (isOpen && !prevOpen && hasSelectedOption && !hasFilter) {
+    if (isOpen && !prevOpen && options.length > 0 && !hasFilter) {
       if (openedWithKeyboard) {
-        highlightOptionWithKeyboard(__selectedOptions[0]);
+        if (__selectedOptions[0]) {
+          highlightOptionWithKeyboard(__selectedOptions[0]);
+        } else {
+          goHomeWithKeyboard();
+        }
       } else {
-        setHighlightedIndexWithMouse(options.indexOf(__selectedOptions[0]), true);
+        if (!__selectedOptions[0] || !options.includes(__selectedOptions[0])) {
+          highlightFirstOptionWithMouse();
+        } else {
+          const highlightedIndex = options.indexOf(__selectedOptions[0]);
+          setHighlightedIndexWithMouse(highlightedIndex, true);
+        }
       }
     }
   }, [
@@ -312,6 +323,8 @@ export function useSelect({
     hasSelectedOption,
     setHighlightedIndexWithMouse,
     highlightOptionWithKeyboard,
+    highlightFirstOptionWithMouse,
+    goHomeWithKeyboard,
     openedWithKeyboard,
     options,
     prevOpen,
