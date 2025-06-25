@@ -65,7 +65,6 @@ export interface TreeViewProps<T = any> extends BaseComponentProps {
   i18nStrings?: TreeViewProps.I18nStrings<T>;
 
   /**
-   * @awsuiSystem core
    * Use this property to display a custom icon in the toggle button.
    */
   renderItemToggleIcon?: ({ expanded }: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode;
