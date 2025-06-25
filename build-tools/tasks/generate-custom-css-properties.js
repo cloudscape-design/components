@@ -34,7 +34,7 @@ function writeSassFile() {
     filepath,
     `
     // Build environment
-    $awsui-commit-hash: ${workspace.gitCommitVersion};
+    $awsui-commit-hash: "${workspace.gitCommitVersion}";
     // Manually managed CSS-variables
     ${customCssPropertiesList.map(property => `$${property}: ${getHashedProperty(property)};`).join('\n')}
     `
