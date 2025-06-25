@@ -6,7 +6,6 @@ import {
   ComponentConfiguration,
   useComponentMetadata,
   useComponentMetrics,
-  useFocusVisible,
 } from '@cloudscape-design/component-toolkit/internal';
 
 import { AnalyticsMetadata } from '../../analytics/interfaces';
@@ -32,7 +31,6 @@ export default function useBaseComponent<T = any>(
   const isVisualRefresh = useVisualRefresh();
   const theme = getVisualTheme(THEME, isVisualRefresh);
   useComponentMetrics(componentName, { packageSource: PACKAGE_SOURCE, packageVersion: PACKAGE_VERSION, theme }, config);
-  useFocusVisible();
   useMissingStylesCheck();
   const elementRef = useComponentMetadata<T>(
     componentName,
