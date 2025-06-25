@@ -33,7 +33,7 @@ export default function BasicTreeView() {
       return (
         <Icon
           size="small"
-          name={'caret-down-filled'}
+          name="angle-down"
           className={clsx(styles.animation, expanded && styles['animation-expanded'])}
         />
       );
