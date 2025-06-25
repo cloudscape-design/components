@@ -24,6 +24,7 @@ export interface TheadProps {
   sortingDescending: boolean | undefined;
   sortingDisabled: boolean | undefined;
   variant: TableProps.Variant;
+  tableVariant?: string;
   wrapLines: boolean | undefined;
   resizableColumns: boolean | undefined;
   getSelectAllProps?: () => SelectionProps;
@@ -56,6 +57,7 @@ const Thead = React.forwardRef(
       sortingDescending,
       resizableColumns,
       variant,
+      tableVariant,
       wrapLines,
       onFocusMove,
       onSortingChange,
@@ -85,6 +87,7 @@ const Thead = React.forwardRef(
       stripedRows,
       tableRole,
       variant,
+      tableVariant,
       stickyState,
     };
 

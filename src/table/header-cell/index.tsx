@@ -49,6 +49,7 @@ export interface TableHeaderCellProps<ItemType> {
   isExpandable?: boolean;
   hasDynamicContent?: boolean;
   variant: TableProps.Variant;
+  tableVariant?: string;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -78,6 +79,7 @@ export function TableHeaderCell<ItemType>({
   isExpandable,
   hasDynamicContent,
   variant,
+  tableVariant,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -133,6 +135,7 @@ export function TableHeaderCell<ItemType>({
       stickyState={stickyState}
       tableRole={tableRole}
       variant={variant}
+      tableVariant={tableVariant}
       {...(sortingDisabled
         ? {}
         : getAnalyticsMetadataAttribute({

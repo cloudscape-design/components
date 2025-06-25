@@ -253,6 +253,9 @@ $cell-negative-space-vertical: 2px;
       transition-duration: awsui.$motion-duration-transition-show-quick;
       transition-timing-function: awsui.$motion-easing-sticky;
     }
+    &.table-variant-full-page {
+      background: awsui.$color-background-layout-main;
+    }
     &.body-cell-shaded {
       background: awsui.$color-background-cell-shaded;
     }

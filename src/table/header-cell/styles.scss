@@ -93,6 +93,9 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
       transition-duration: awsui.$motion-duration-transition-show-quick;
       transition-timing-function: awsui.$motion-easing-sticky;
     }
+    &.table-variant-full-page {
+      background: awsui.$color-background-layout-main;
+    }
     &-pad-left:not(.has-selection) {
       padding-inline-start: awsui.$space-table-horizontal;
     }
