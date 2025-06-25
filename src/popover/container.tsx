@@ -162,7 +162,7 @@ export default function PopoverContainer({
     const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
 
-    window.addEventListener('click', onClick, { signal: controller.signal });
+    window.addEventListener('click', onClick, { capture: true, signal: controller.signal });
     window.addEventListener('resize', updatePositionOnResize, { signal: controller.signal });
     window.addEventListener('scroll', refreshPosition, { capture: true, signal: controller.signal });
 
