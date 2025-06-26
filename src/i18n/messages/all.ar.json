@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "وقت الانتهاء",
     "i18nStrings.dateTimeConstraintText": "استخدم الصيغة YYYY/MM/DD للتاريخ، وصيغة 24 ساعة للوقت.",
     "i18nStrings.dateConstraintText": "للحصول على التاريخ، استخدم الصيغة YYYY/MM/DD.",
+    "i18nStrings.slashedDateTimeConstraintText": "استخدم الصيغة YYYY/MM/DD للتاريخ، وصيغة 24 ساعة للوقت.",
+    "i18nStrings.isoDateTimeConstraintText": "استخدم الصيغة YYYY-MM-DD للتاريخ، وصيغة 24 ساعة للوقت.",
+    "i18nStrings.slashedDateConstraintText": "للحصول على التاريخ، استخدم الصيغة YYYY/MM/DD.",
+    "i18nStrings.isoDateConstraintText": "للحصول على التاريخ، استخدم الصيغة YYYY-MM-DD.",
+    "i18nStrings.slashedMonthConstraintText": "للحصول على الشهر، استخدم الصيغة YYYY/MM.",
+    "i18nStrings.isoMonthConstraintText": "للحصول على الشهر، استخدم الصيغة YYYY-MM.",
     "i18nStrings.monthConstraintText": "للحصول على الشهر، استخدم الصيغة YYYY/MM.",
     "i18nStrings.errorIconAriaLabel": "خطأ",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "النطاق المحدد من {startDate} إلى {endDate}",
@@ -403,6 +409,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "إغلاق القائمة",
     "i18nStrings.overflowMenuBackIconAriaLabel": "العودة إلى الصفحة السابقة",
     "i18nStrings.overflowMenuTitleText": "الكل"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "توسيع",
+    "i18nStrings.collapseButtonLabel": "تحجيم"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "جار التحميل",
