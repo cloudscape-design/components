@@ -5,7 +5,6 @@
 
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../internal/styles/typography/index' as typographyConstants;
 @use './motion';
 
@@ -152,7 +151,7 @@
 
     &:focus {
       outline: none;
-      @include focus-visible.when-visible {
+      &:focus-visible {
         @include styles.focus-highlight(
           awsui.$space-calendar-grid-focus-outline-gutter,
           awsui.$border-radius-calendar-day-focus-ring
@@ -169,7 +168,7 @@
       z-index: 2;
       font-weight: styles.$font-weight-bold;
       &:focus {
-        @include focus-visible.when-visible {
+        &:focus-visible {
           @include styles.focus-highlight(
             awsui.$space-calendar-grid-focus-outline-gutter,
             awsui.$border-radius-calendar-day-focus-ring,
