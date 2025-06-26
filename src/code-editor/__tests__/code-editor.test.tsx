@@ -761,7 +761,7 @@ describe('Code editor component', () => {
   });
 
   test('adds command to focus editor container on Esc keypress', () => {
-    let callback: (editor: Ace.Editor) => void;
+    let callback: ((editor: Ace.Editor) => void) | undefined;
     editorMock.commands.addCommand = jest.fn((command: Ace.Command) => {
       if (command.name === 'exitCodeEditor' && command.bindKey === 'Esc') {
         callback = command.exec;
