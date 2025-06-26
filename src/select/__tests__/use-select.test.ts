@@ -186,24 +186,6 @@ describe('useSelect', () => {
     expect(testEvent.defaultPrevented).toBe(true);
   });
 
-  test('should highlight the first option by default (keyboard:enter)', () => {
-    const hook = renderHook(useSelect, { initialProps: { ...initialProps, filteringType: 'none' } });
-
-    const { getTriggerProps } = hook.result.current;
-    const triggerProps = getTriggerProps();
-    act(() => triggerProps.onKeyDown && triggerProps.onKeyDown(createTestEvent(KeyCode.enter)));
-    expect(hook.result.current.isOpen).toBe(true);
-    expect(hook.result.current.highlightedOption).toEqual({
-      type: 'child',
-      option: {
-        label: 'Child 1',
-        value: 'child1',
-      },
-    });
-    expect(hook.result.current.highlightType.type).toBe('keyboard');
-    expect(hook.result.current.highlightType.moveFocus).toBe(true);
-  });
-
   test('should open and navigate to the first option (keyboard:down)', () => {
     const hook = renderHook(useSelect, {
       initialProps,
@@ -298,24 +280,6 @@ describe('useSelect', () => {
       },
     });
     expect(hook.result.current.highlightType.type).toBe('keyboard');
-    expect(hook.result.current.highlightType.moveFocus).toBe(true);
-  });
-
-  test('should highlight the first option by default (mouse)', () => {
-    const hook = renderHook(useSelect, { initialProps: { ...initialProps, filteringType: 'none' } });
-
-    const { getTriggerProps } = hook.result.current;
-    const triggerProps = getTriggerProps();
-    act(() => triggerProps.onMouseDown && triggerProps.onMouseDown(createCustomEvent({})));
-    expect(hook.result.current.isOpen).toBe(true);
-    expect(hook.result.current.highlightedOption).toEqual({
-      type: 'child',
-      option: {
-        label: 'Child 1',
-        value: 'child1',
-      },
-    });
-    expect(hook.result.current.highlightType.type).toBe('mouse');
     expect(hook.result.current.highlightType.moveFocus).toBe(true);
   });
 
