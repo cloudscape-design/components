@@ -11585,7 +11585,7 @@ exports[`Documenter definition for list matches the snapshot: list 1`] = `
 - \`dragHandleAriaLabel\` (string) - (Optional) Adds an ARIA label for the drag handle.",
       "i18nTag": true,
       "inlineType": {
-        "name": "{ dragHandleAriaLabel?: string | undefined; dragHandleAriaDescription?: string | undefined; liveAnnouncementDndStarted?: ((position: number, total: number) => string) | undefined; liveAnnouncementDndItemReordered?: ((initialPosition: number, currentPosition: number, total: number) => string) | undefined; liveAnnounc...",
+        "name": "ListProps.I18nStrings",
         "properties": [
           {
             "name": "dragHandleAriaDescription",
@@ -11622,7 +11622,7 @@ exports[`Documenter definition for list matches the snapshot: list 1`] = `
       },
       "name": "i18nStrings",
       "optional": true,
-      "type": "{ dragHandleAriaLabel?: string | undefined; dragHandleAriaDescription?: string | undefined; liveAnnouncementDndStarted?: ((position: number, total: number) => string) | undefined; liveAnnouncementDndItemReordered?: ((initialPosition: number, currentPosition: number, total: number) => string) | undefined; liveAnnounc...",
+      "type": "ListProps.I18nStrings",
     },
     {
       "description": "The items to display in the list.",

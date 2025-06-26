@@ -70,7 +70,15 @@ export interface ListProps<T = any> {
    *
    * @i18n
    */
-  i18nStrings?: {
+  i18nStrings?: ListProps.I18nStrings;
+}
+
+export namespace ListProps {
+  export interface SortingState<T> {
+    items: ReadonlyArray<T>;
+  }
+
+  export interface I18nStrings {
     /**
      * Aria label for the drag handle.
      */
@@ -95,11 +103,5 @@ export interface ListProps<T = any> {
      * Announcement when drag and drop is discarded.
      */
     liveAnnouncementDndDiscarded?: string;
-  };
-}
-
-export namespace ListProps {
-  export interface SortingState<T> {
-    items: ReadonlyArray<T>;
   }
 }
