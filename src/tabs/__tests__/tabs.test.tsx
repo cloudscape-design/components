@@ -623,7 +623,7 @@ describe('Tabs', () => {
       if (tabs.length === 3) {
         testMessage = 'With one enable tab';
       }
-      describe(testMessage, () => {
+      describe(`${testMessage}`, () => {
         test('keeps the same tab active upon key interactions', () => {
           const wrapper = renderTabs(<Tabs tabs={tabs} />).wrapper;
 
