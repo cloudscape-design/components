@@ -4,12 +4,12 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import StructuredItemWrapper from '../internal/structured-item.js';
 
-import dragHandleStyles from '../../../internal/components/drag-handle/styles.selectors.js';
+import dragHandleStyles from '../../../internal/components/drag-handle/test-classes/styles.selectors.js';
 import styles from '../../../list/test-classes/styles.selectors.js';
 
 export class ListItemWrapper extends StructuredItemWrapper {
   findDragHandle(): ElementWrapper | null {
-    return this.findByClassName(dragHandleStyles.handle);
+    return this.findByClassName(dragHandleStyles.root);
   }
 }
 

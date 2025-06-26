@@ -39,7 +39,7 @@ describe('Content Display preference', () => {
     });
 
     it('displays list of options with correct semantics', () => {
-      const wrapper = renderContentDisplay();
+      const wrapper = renderContentDisplay(undefined, true);
       const options = wrapper.findOptions();
       for (let i = 0; i < options.length; i++) {
         testOption({ wrapper, option: options[i], index: i });
@@ -103,7 +103,7 @@ describe('Content Display preference', () => {
 
   describe('Content reordering', () => {
     it('moves item down', async () => {
-      const wrapper = renderContentDisplay();
+      const wrapper = renderContentDisplay(undefined, true);
       testOrder({ wrapper, order: [0, 1, 2, 3] });
       const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
@@ -116,7 +116,7 @@ describe('Content Display preference', () => {
     });
 
     it('moves item up', async () => {
-      const wrapper = renderContentDisplay();
+      const wrapper = renderContentDisplay(undefined, true);
       testOrder({ wrapper, order: [0, 1, 2, 3] });
       const dragHandle = wrapper.findOptionByIndex(2)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
@@ -129,7 +129,7 @@ describe('Content Display preference', () => {
     });
 
     it('moves item down and back up', async () => {
-      const wrapper = renderContentDisplay();
+      const wrapper = renderContentDisplay(undefined, true);
       testOrder({ wrapper, order: [0, 1, 2, 3] });
       const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
@@ -144,7 +144,7 @@ describe('Content Display preference', () => {
     });
 
     it('ignores keystrokes out of bounds', async () => {
-      const wrapper = renderContentDisplay();
+      const wrapper = renderContentDisplay(undefined, true);
       testOrder({ wrapper, order: [0, 1, 2, 3] });
       const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
@@ -175,7 +175,7 @@ describe('Content Display preference', () => {
     });
 
     it('cancels reordering when pressing Escape', async () => {
-      const wrapper = renderContentDisplay();
+      const wrapper = renderContentDisplay(undefined, true);
       testOrder({ wrapper, order: [0, 1, 2, 3] });
       const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
@@ -188,7 +188,7 @@ describe('Content Display preference', () => {
     });
 
     it('moves item between options that are not part of the current preferences', async () => {
-      const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } });
+      const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } }, true);
       const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
       await expectAnnouncement('Picked up item at position 1 of 4');
@@ -202,7 +202,7 @@ describe('Content Display preference', () => {
     });
 
     it('moves an item not part of the current preferences above the ones that are', async () => {
-      const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } });
+      const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } }, true);
       const dragHandle = wrapper.findOptionByIndex(2)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
       await expectAnnouncement('Picked up item at position 2 of 4');
@@ -348,27 +348,30 @@ describe('Content Display preference', () => {
     ];
 
     it('initializes values from preferences prop', () => {
-      const collectionPreferencesWrapper = renderCollectionPreferences({
-        contentDisplayPreference,
-        onConfirm: () => null,
-        preferences: {
-          contentDisplay: [
-            {
-              id: 'id1',
-              visible: true,
-            },
-            { id: 'id4', visible: true },
-            {
-              id: 'id2',
-              visible: false,
-            },
-            {
-              id: 'id3',
-              visible: true,
-            },
-          ],
+      const collectionPreferencesWrapper = renderCollectionPreferences(
+        {
+          contentDisplayPreference,
+          onConfirm: () => null,
+          preferences: {
+            contentDisplay: [
+              {
+                id: 'id1',
+                visible: true,
+              },
+              { id: 'id4', visible: true },
+              {
+                id: 'id2',
+                visible: false,
+              },
+              {
+                id: 'id3',
+                visible: true,
+              },
+            ],
+          },
         },
-      });
+        true
+      );
       collectionPreferencesWrapper.findTriggerButton().click();
       const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
       testOrder({ wrapper: contentDisplayPreferenceWrapper, order: [0, 3, 1, 2] });
