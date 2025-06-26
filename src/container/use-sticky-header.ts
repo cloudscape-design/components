@@ -29,7 +29,7 @@ export function computeOffset({
   hasInnerOverflowParents,
   __additionalOffset,
 }: ComputeOffsetProps): string {
-  const localOffset = isMobile ? (__stickyOffset ?? 0) - (__mobileStickyOffset ?? 0) : __stickyOffset ?? 0;
+  const localOffset = isMobile ? (__stickyOffset ?? 0) - (__mobileStickyOffset ?? 0) : (__stickyOffset ?? 0);
   if (hasInnerOverflowParents || __stickyOffset !== undefined) {
     return `${localOffset}px`;
   }
