@@ -134,7 +134,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const maxContentWidth =
       props.maxContentWidth && props.maxContentWidth > halfGeckoMaxCssLength
         ? halfGeckoMaxCssLength
-        : props.maxContentWidth ?? 0;
+        : (props.maxContentWidth ?? 0);
     const minContentWidth = props.minContentWidth ?? 280;
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
