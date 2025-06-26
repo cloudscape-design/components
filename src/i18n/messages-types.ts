@@ -552,10 +552,6 @@ export interface I18nFormatArgTypes {
     "i18nStrings.labelsTaskStatus.in-progress": never;
     "i18nStrings.labelsTaskStatus.success": never;
   }
-  "tree-view": {
-    "i18nStrings.expandButtonLabel": never;
-    "i18nStrings.collapseButtonLabel": never;
-  }
   "wizard": {
     "i18nStrings.stepNumberLabel": {
       "stepNumber": string | number;
