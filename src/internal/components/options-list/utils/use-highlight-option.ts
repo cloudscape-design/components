@@ -23,7 +23,6 @@ export interface HighlightedOptionState<OptionType> {
 export interface HighlightedOptionHandlers<OptionType> {
   // Mouse handlers
   setHighlightedIndexWithMouse(index: number, moveFocus?: boolean): void;
-  highlightFirstOptionWithMouse(): void;
   // Keyboard handlers
   moveHighlightWithKeyboard(direction: -1 | 1): void;
   highlightOptionWithKeyboard(option: OptionType): void;
@@ -74,7 +73,6 @@ export function useHighlightedOption<OptionType>({
     {
       setHighlightedIndexWithMouse: (index: number, moveFocus = false) =>
         setHighlightedIndex(index, new HighlightType('mouse', moveFocus)),
-      highlightFirstOptionWithMouse: () => moveHighlightFrom(1, -1, new HighlightType('mouse', true)),
       moveHighlightWithKeyboard: (direction: -1 | 1) => moveHighlight(direction, new HighlightType('keyboard')),
       highlightOptionWithKeyboard: (option: OptionType) => highlightOption(option, new HighlightType('keyboard')),
       resetHighlightWithKeyboard: () => setHighlightedIndex(-1, new HighlightType('keyboard')),

@@ -74,6 +74,15 @@ describe(`Select (Native Search)`, () => {
     );
 
     test(
+      'no match - no highlight, with dropdown open',
+      setupTest(optionsType, async page => {
+        await page.clickSelect();
+        await page.keys(['a']);
+        await page.assertHighlightedOption(false);
+      })
+    );
+
+    test(
       'no match - no selection, with dropdown closed',
       setupTest(optionsType, async page => {
         await page.focusSelect();
@@ -101,6 +110,15 @@ describe(`Select (Native Search)`, () => {
         await page.focusSelect();
         await page.keys(['s', 's']);
         await expect(page.getTriggerLabel()).resolves.toMatch('Third thing');
+      })
+    );
+
+    test(
+      'no highlight when the option does not start with the search substring',
+      setupTest(optionsType, async page => {
+        await page.clickSelect();
+        await page.keys(['a']);
+        await page.assertHighlightedOption(false);
       })
     );
   });

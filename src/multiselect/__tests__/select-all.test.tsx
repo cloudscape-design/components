@@ -154,18 +154,20 @@ describe('Multiselect with "select all" control', () => {
       wrapper.openDropdown();
       const dropdown = wrapper.findDropdown();
       const optionsContainer = dropdown.findOptionsContainer()!;
-      // When opening the dropdown the first option ("Select all") gets highlighted if none is selected.
+      // When opening the dropdown no option gets highlighted if none is selected. Move one position down to highlight the "Select all" control.
+      optionsContainer.keydown(KeyCode.down);
       optionsContainer.keydown(KeyCode.space);
       expect(dropdown.findOptionByValue('1')).toBeNull();
     });
 
-    describe.each([false, true])('virtualScroll=%s', virtualScroll => {
+    describe.each([false, true])('virtuaScroll=%s', virtualScroll => {
       test('selects all options when none are selected', () => {
         const onChange = jest.fn();
         const wrapper = renderMultiselectWithSelectAll({ onChange, virtualScroll });
         wrapper.openDropdown();
         const optionsContainer = wrapper.findDropdown().findOptionsContainer()!;
-        // When opening the dropdown the first option ("Select all") gets highlighted if none is selected.
+        // When opening the dropdown no option gets highlighted if none is selected. Move one position down to highlight the "Select all" control.
+        optionsContainer.keydown(KeyCode.down);
         optionsContainer.keydown(KeyCode.space);
         expect(onChange).toHaveBeenCalledWith(
           expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
@@ -185,14 +187,14 @@ describe('Multiselect with "select all" control', () => {
       const wrapper = createWrapper(container).findMultiselect()!;
       wrapper.openDropdown();
       const selectAll = wrapper.findDropdown().findSelectAll()!;
-      expect(selectAll.getElement()).toHaveTextContent('Custom Select all text');
+      expect(selectAll.getElement().textContent).toBe('Custom Select all text');
     });
 
     test('uses i18nStrings.selectAllText from i18nStrings prop', () => {
       const wrapper = renderMultiselectWithSelectAll({ i18nStrings: { selectAllText: 'Custom Select all text' } });
       wrapper.openDropdown();
       const selectAll = wrapper.findDropdown().findSelectAll()!;
-      expect(selectAll.getElement()).toHaveTextContent('Custom Select all text');
+      expect(selectAll.getElement().textContent).toBe('Custom Select all text');
     });
 
     test('uses i18nStrings.selectAllText from i18nStrings prop when both i18n provider and i18nStrings prop are provided ', () => {
@@ -212,7 +214,7 @@ describe('Multiselect with "select all" control', () => {
       const wrapper = createWrapper(container).findMultiselect()!;
       wrapper.openDropdown();
       const selectAll = wrapper.findDropdown().findSelectAll()!;
-      expect(selectAll.getElement()).toHaveTextContent('Custom Select all text from i18nStrings');
+      expect(selectAll.getElement().textContent).toBe('Custom Select all text from i18nStrings');
     });
   });
 
