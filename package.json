@@ -79,7 +79,6 @@
     "@types/react-test-renderer": "^16.9.12",
     "@types/react-transition-group": "^4.4.4",
     "@types/webpack-env": "^1.16.3",
-    "@typescript-eslint/eslint-plugin": "^8.32.1",
     "axe-core": "^4.7.2",
     "babel-jest": "^29.7.0",
     "change-case": "^4.1.2",

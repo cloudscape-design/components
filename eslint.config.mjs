@@ -22,8 +22,13 @@ headerPlugin.rules.header.meta.schema = false;
 export default tsEslint.config(
   includeIgnoreFile(path.resolve('.gitignore')),
   {
-    // this code does not run, only used as a text contnt
+    // this code does not run, only used as a text content
     ignores: ['pages/code-editor/samples/**'],
+  },
+  {
+    settings: {
+      react: { version: 'detect' },
+    },
   },
   eslint.configs.recommended,
   tsEslint.configs.recommended,
@@ -37,9 +42,6 @@ export default tsEslint.config(
       globals: {
         ...globals.browser,
       },
-    },
-    settings: {
-      react: { version: 'detect' },
     },
     plugins: {
       'simple-import-sort': simpleImportSortPlugin,
