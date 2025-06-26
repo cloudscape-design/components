@@ -16,12 +16,11 @@ $item-min-height: 32px;
   @include styles.styles-reset-ul;
 
   align-items: baseline;
-  padding-block: awsui.$space-scaled-xxs;
 
   display: grid;
   grid-template-columns: $item-toggle-column-width 1fr;
   column-gap: awsui.$space-scaled-xxs;
-  grid-template-rows: repeat(auto, 3);
+  grid-template-rows: auto auto auto;
 
   > .expand-toggle-wrapper {
     grid-column: 1;
@@ -35,6 +34,7 @@ $item-min-height: 32px;
   > .structured-item-wrapper {
     grid-column: 2;
     grid-row: 1 / span 2;
+    padding-block: awsui.$space-scaled-xxs;
   }
 
   > .treeitem-group {
