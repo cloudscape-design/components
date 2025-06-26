@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import InternalDragHandle from '../../../../../lib/components/internal/components/drag-handle/index.js';
 import InternalDragHandleWrapper from '../../../../../lib/components/test-utils/dom/internal/drag-handle';
@@ -25,8 +25,8 @@ describe('test util selectors', () => {
     const handle = container.querySelector<HTMLButtonElement>(`.${InternalDragHandleWrapper.rootSelector}`)!;
 
     if (showUapActions) {
-      document.body.dataset.awsuiFocusVisible = 'true';
-      handle.focus();
+      fireEvent.pointerDown(handle);
+      fireEvent.pointerUp(handle);
     }
 
     return {
