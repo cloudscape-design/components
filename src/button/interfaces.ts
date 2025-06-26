@@ -117,6 +117,17 @@ export interface BaseButtonProps {
    * @awsuiSystem core
    */
   style?: ButtonProps.Style;
+
+  /**
+   * Attributes to add to the native `button` element.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeAttributes?:
+    | (React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>)
+    | Record<`data-${string}`, string>;
 }
 
 export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
