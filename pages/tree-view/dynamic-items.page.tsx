@@ -51,12 +51,12 @@ export default function DynamicItemsPage() {
               content: <Content {...item} />,
               actions: item.hasActions ? <Actions actionType="button-group" /> : undefined,
               secondaryContent: item.tagName ? (
-                <SpaceBetween size="xs" direction="horizontal">
-                  <Box color="text-status-inactive">
+                <Box color="text-status-inactive">
+                  <SpaceBetween size="xxs" direction="horizontal">
                     <Icon name="ticket" />
                     <span>{item.tagName}</span>
-                  </Box>
-                </SpaceBetween>
+                  </SpaceBetween>
+                </Box>
               ) : undefined,
             };
           }}

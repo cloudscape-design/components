@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
+import { SpaceBetween } from '~components';
 import Box from '~components/box';
+import Button from '~components/button';
 import ButtonDropdown from '~components/button-dropdown';
 import ButtonGroup from '~components/button-group';
 import StatusIndicator from '~components/status-indicator/internal';
@@ -30,7 +32,11 @@ export function Content(item: Item) {
 }
 
 export function Actions(
-  { actionType }: { actionType?: 'button-group' | 'button-dropdown' | 'inline-button-dropdown' | 'text' } = {
+  {
+    actionType,
+  }: {
+    actionType?: 'button-group' | 'button-dropdown' | 'inline-button-dropdown' | 'text' | 'custom-inline-button-group';
+  } = {
     actionType: 'inline-button-dropdown',
   }
 ) {
@@ -85,41 +91,31 @@ export function Actions(
     );
   }
 
-  if (actionType === 'inline-button-dropdown') {
+  const buttonDropdownItems = [
+    { id: 'start', text: 'Start' },
+    { id: 'stop', text: 'Stop', disabled: true },
+    {
+      id: 'hibernate',
+      text: 'Hibernate',
+      disabled: true,
+    },
+    { id: 'reboot', text: 'Reboot', disabled: true },
+    { id: 'terminate', text: 'Terminate' },
+  ];
+
+  if (actionType === 'custom-inline-button-group') {
     return (
-      <ButtonDropdown
-        items={[
-          { id: 'start', text: 'Start' },
-          { id: 'stop', text: 'Stop', disabled: true },
-          {
-            id: 'hibernate',
-            text: 'Hibernate',
-            disabled: true,
-          },
-          { id: 'reboot', text: 'Reboot', disabled: true },
-          { id: 'terminate', text: 'Terminate' },
-        ]}
-        ariaLabel="Control instance"
-        variant="inline-icon"
-      />
+      <SpaceBetween direction="horizontal" size="s">
+        <Button variant="inline-icon" iconName="settings" />
+        <Button variant="inline-icon" iconName="star" />
+        <ButtonDropdown items={buttonDropdownItems} ariaLabel="Control instance" variant="inline-icon" />
+      </SpaceBetween>
     );
   }
 
-  return (
-    <ButtonDropdown
-      items={[
-        { id: 'start', text: 'Start' },
-        { id: 'stop', text: 'Stop', disabled: true },
-        {
-          id: 'hibernate',
-          text: 'Hibernate',
-          disabled: true,
-        },
-        { id: 'reboot', text: 'Reboot', disabled: true },
-        { id: 'terminate', text: 'Terminate' },
-      ]}
-      ariaLabel="Control instance"
-      variant="icon"
-    />
-  );
+  if (actionType === 'inline-button-dropdown') {
+    return <ButtonDropdown items={buttonDropdownItems} ariaLabel="Control instance" variant="inline-icon" />;
+  }
+
+  return <ButtonDropdown items={buttonDropdownItems} ariaLabel="Control instance" variant="icon" />;
 }

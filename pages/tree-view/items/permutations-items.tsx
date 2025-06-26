@@ -49,6 +49,12 @@ export const textItems: Item[] = [
       { id: '3.3', content: 'Item 3.3', secondaryContent: 'Description 3.3' },
     ],
   },
+  {
+    id: '4',
+    content: 'Item 4',
+    secondaryContent: 'Description 4',
+    actions: <Actions actionType="custom-inline-button-group" />,
+  },
 ];
 
 export const longTextItems: Item[] = [
@@ -128,7 +134,7 @@ export const longTextItems: Item[] = [
     secondaryContent:
       'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam',
     icon: <Icon name="file" />,
-    actions: <Actions actionType="button-dropdown" />,
+    actions: <Actions actionType="custom-inline-button-group" />,
     children: [
       {
         id: 'long-text-3.1',
