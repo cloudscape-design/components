@@ -5,6 +5,7 @@
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 @use '../background-inline-svg.scss' as utils;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .resizable-box {
   position: relative;

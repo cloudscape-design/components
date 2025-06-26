@@ -5,6 +5,7 @@
 
 @use '../../../internal/styles/index' as styles;
 @use '../../../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../../calendar/calendar' as calendar;
 
 @mixin border-radius($horizontal, $vertical) {
@@ -71,7 +72,7 @@
     background-color: transparent;
   }
 
-  &:focus-visible {
+  @include focus-visible.when-visible {
     z-index: 2;
     @include styles.focus-highlight(
       awsui.$space-calendar-grid-focus-outline-gutter,
@@ -161,7 +162,7 @@
   position: relative;
   z-index: 2;
   font-weight: styles.$font-weight-bold;
-  &:focus-visible {
+  @include focus-visible.when-visible {
     @include styles.focus-highlight(
       awsui.$space-calendar-grid-selected-focus-outline-gutter,
       awsui.$border-radius-calendar-day-focus-ring,
