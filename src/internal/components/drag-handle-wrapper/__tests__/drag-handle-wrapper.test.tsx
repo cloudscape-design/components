@@ -179,7 +179,7 @@ describe('triggerMode = focus (default)', () => {
     expect(getDirectionButton('inline-start')).not.toBeInTheDocument();
   });
 
-  test('after focused and Esc key pressed, any other button press should show the direction buttons ', () => {
+  test('after focused and Esc key pressed, any other button press should show the direction buttons', () => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
     });
@@ -255,7 +255,7 @@ describe('triggerMode = keyboard-activate', () => {
     expect(getDirectionButton('inline-end')).not.toBeInTheDocument();
   });
 
-  test('when focused and other key is pressed, it should not show the direction buttons ', () => {
+  test('when focused and other key is pressed, it should not show the direction buttons', () => {
     const { dragHandle } = renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
       triggerMode: 'keyboard-activate',

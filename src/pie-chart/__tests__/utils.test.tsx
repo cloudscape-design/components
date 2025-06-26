@@ -355,7 +355,7 @@ describe('balanceLabelNodes', () => {
   });
 
   testCases.forEach(({ title, width, height, nodes, markers }) => {
-    test(title, () => {
+    test(`${title}`, () => {
       const { container } = render(
         <svg width={width} height={height} style={{ fontSize: '14px' }} focusable="false">
           <g className="labels" transform={`translate(${width / 2} ${height / 2})`}>

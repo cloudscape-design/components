@@ -181,7 +181,6 @@ export default tsEslint.config(
     rules: {
       ...jestPlugin.configs['flat/recommended'].rules,
       'jest/no-conditional-expect': 'off',
-      'jest/valid-title': 'off',
       'jest/no-standalone-expect': 'off',
       'jest/expect-expect': 'off',
     },
