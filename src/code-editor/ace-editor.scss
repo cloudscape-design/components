@@ -6,6 +6,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use './background-inline-svg.scss' as utils;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 /* stylelint-disable selector-combinator-disallowed-list, @cloudscape-design/no-implicit-descendant */
 
@@ -73,7 +74,7 @@
   .ace_fold-widget,
   .ace_gutter_annotation {
     box-shadow: none;
-    &:focus-visible {
+    @include focus-visible.when-visible {
       @include styles.focus-highlight(-1px);
     }
   }
@@ -144,7 +145,7 @@
 
     .ace_fold-widget,
     .ace_gutter_annotation {
-      &:focus-visible {
+      @include focus-visible.when-visible {
         @include styles.focus-highlight(
           -2px,
           awsui.$border-radius-control-default-focus-ring,

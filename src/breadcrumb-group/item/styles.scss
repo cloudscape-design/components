@@ -5,6 +5,7 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .link:after {
   display: none;
@@ -31,7 +32,7 @@
       display: block;
     }
 
-    &:focus-visible {
+    @include focus-visible.when-visible {
       @include styles.link-focus;
     }
   }
