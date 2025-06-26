@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "Hora de finalización",
     "i18nStrings.dateTimeConstraintText": "Para la fecha, utilice AAAA/MM/DD. Para la hora, utilice el formato de 24 horas.",
     "i18nStrings.dateConstraintText": "Para la fecha, use el formato AAAA/MM/DD.",
+    "i18nStrings.slashedDateTimeConstraintText": "Para la fecha, use AAAA/MM/DD. Para la hora, use el formato de 24 horas.",
+    "i18nStrings.isoDateTimeConstraintText": "Para la fecha, use AAAA-MM-DD. Para la hora, use el formato de 24 horas.",
+    "i18nStrings.slashedDateConstraintText": "Para la fecha, use el formato AAAA/MM/DD.",
+    "i18nStrings.isoDateConstraintText": "Para la fecha, use el formato AAAA-MM-DD.",
+    "i18nStrings.slashedMonthConstraintText": "Para el mes, use el formato AAAA/MM.",
+    "i18nStrings.isoMonthConstraintText": "Para el mes, use el formato AAAA-MM.",
     "i18nStrings.monthConstraintText": "Para el mes, use el formato AAAA/MM.",
     "i18nStrings.errorIconAriaLabel": "Error",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Rango seleccionado de {startDate} a {endDate}",
@@ -403,6 +409,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Cerrar menú",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Volver",
     "i18nStrings.overflowMenuTitleText": "Todos"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "Ampliar",
+    "i18nStrings.collapseButtonLabel": "Contraer"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "Cargando",
