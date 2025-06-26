@@ -361,7 +361,9 @@ describe.each([false, true] as const)('token editor labels, isMobile = %s', isMo
       expect(editor.propertyField().findControl()!.find('button')!.getElement()).toHaveAccessibleName(
         'Property string'
       );
-      expect(editor.operatorField().findControl()!.find('button')!.getElement()).toHaveAccessibleName('Operator =');
+      expect(editor.operatorField().findControl()!.find('button')!.getElement()).toHaveAccessibleName(
+        enableTokenGroups ? 'Operator =' : 'Operator = Equals'
+      );
       expect(editor.valueField().findControl()!.find('input')!.getElement()).toHaveAccessibleName('Value');
       expect(editor.valueField().findControl()!.find('input')!.getElement()).toHaveValue('John');
 

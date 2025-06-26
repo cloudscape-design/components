@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as Axe from 'axe-core';
-import fs from 'fs';
+import * as fs from 'fs';
 
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
@@ -42,7 +42,7 @@ export default class A11yPageObject extends BasePageObject {
       options: Axe.ContextObject,
       spec: Axe.Spec,
       runOptions: Axe.RunOptions,
-      done: (result: AxeResult) => void
+      done: (result: AxeResult | undefined) => void
     ) => {
       // Adding parts of spec that are not serializable.
       if (spec.checks) {
@@ -57,7 +57,7 @@ export default class A11yPageObject extends BasePageObject {
 
       axe.configure(spec);
 
-      return axe.run(options, runOptions).then(
+      axe.run(options, runOptions).then(
         result => done({ result }),
         error => done(error)
       );

@@ -3,7 +3,7 @@
 
 import { NodePath, PluginObj, transformSync, types } from '@babel/core';
 import fs from 'fs';
-import glob from 'glob';
+import * as glob from 'glob';
 import { flatten, zip } from 'lodash';
 import path from 'path';
 

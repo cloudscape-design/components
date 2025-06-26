@@ -12,7 +12,9 @@ declare const window: ExtendedWindow;
 
 class TableWithAnalyticsPageObject extends BasePageObject {
   async getComponentMetricsLog() {
-    const componentsLog = await this.browser.execute(() => window.__awsuiComponentlMetrics__);
+    const componentsLog: ExtendedWindow['__awsuiComponentlMetrics__'] = await this.browser.execute(
+      () => window.__awsuiComponentlMetrics__
+    );
     return componentsLog;
   }
 
