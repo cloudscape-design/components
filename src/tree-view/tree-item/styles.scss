@@ -13,6 +13,8 @@ $item-min-height: 32px;
 }
 
 .treeitem {
+  position: relative;
+
   @include styles.styles-reset-ul;
 
   align-items: baseline;
@@ -28,7 +30,9 @@ $item-min-height: 32px;
     grid-row: 1;
 
     > .toggle {
-      justify-self: center;
+      position: absolute;
+      inset-block-start: awsui.$space-static-xxs;
+      inset-inline-start: awsui.$space-static-xxs;
     }
   }
 
