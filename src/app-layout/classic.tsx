@@ -179,7 +179,7 @@ const ClassicAppLayout = React.forwardRef(
     const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.contentBoxHeight);
     const anyPanelOpen = navigationVisible || toolsVisible || !!activeDrawer;
     const hasRenderedNotifications = notificationsHeight ? notificationsHeight > 0 : false;
-    const stickyNotificationsHeight = stickyNotifications ? notificationsHeight ?? 0 : 0;
+    const stickyNotificationsHeight = stickyNotifications ? (notificationsHeight ?? 0) : 0;
 
     const [splitPanelPreferences, setSplitPanelPreferences] = useControllable(
       controlledSplitPanelPreferences,

@@ -139,9 +139,9 @@ const PropertyFilterInternal = React.forwardRef(
           propertyGroup: property?.group,
           operators: (property?.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
           defaultOperator: property?.defaultOperator ?? '=',
-          getTokenType: operator => (operator ? extendedOperators.get(operator)?.tokenType ?? 'value' : 'value'),
-          getValueFormatter: operator => (operator ? extendedOperators.get(operator)?.format ?? null : null),
-          getValueFormRenderer: operator => (operator ? extendedOperators.get(operator)?.form ?? null : null),
+          getTokenType: operator => (operator ? (extendedOperators.get(operator)?.tokenType ?? 'value') : 'value'),
+          getValueFormatter: operator => (operator ? (extendedOperators.get(operator)?.format ?? null) : null),
+          getValueFormRenderer: operator => (operator ? (extendedOperators.get(operator)?.form ?? null) : null),
           externalProperty: property,
         });
         return acc;
