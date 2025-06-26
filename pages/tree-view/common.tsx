@@ -106,8 +106,8 @@ export function Actions(
   if (actionType === 'custom-inline-button-group') {
     return (
       <SpaceBetween direction="horizontal" size="s">
-        <Button variant="inline-icon" iconName="settings" />
-        <Button variant="inline-icon" iconName="star" />
+        <Button variant="inline-icon" iconName="settings" ariaLabel="settings" />
+        <Button variant="inline-icon" iconName="star" ariaLabel="favorite" />
         <ButtonDropdown items={buttonDropdownItems} ariaLabel="Control instance" variant="inline-icon" />
       </SpaceBetween>
     );
