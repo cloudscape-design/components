@@ -910,7 +910,7 @@ describe('Date range picker', () => {
           const { wrapper } = renderDateRangePicker({
             ...defaultProps,
             dateOnly: true,
-            granularity,
+            granularity: 'day',
             onChange: event => onChangeSpy(event.detail),
           });
 
