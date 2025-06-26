@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "Waktu berakhir",
     "i18nStrings.dateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
     "i18nStrings.dateConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT.",
+    "i18nStrings.slashedDateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
+    "i18nStrings.isoDateTimeConstraintText": "Untuk tanggal, gunakan HH-BB-TTTT. Untuk waktu, gunakan format 24 jam.",
+    "i18nStrings.slashedDateConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT.",
+    "i18nStrings.isoDateConstraintText": "Untuk tanggal, gunakan HH-BB-TTTT.",
+    "i18nStrings.slashedMonthConstraintText": "Untuk bulan, gunakan BB/TTTT.",
+    "i18nStrings.isoMonthConstraintText": "Untuk bulan, gunakan BB-TTTT.",
     "i18nStrings.monthConstraintText": "Untuk bulan, gunakan BB/TTTT.",
     "i18nStrings.errorIconAriaLabel": "Kesalahan",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Rentang dipilih dari {startDate} hingga {endDate}",
@@ -403,6 +409,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Tutup menu",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Kembali",
     "i18nStrings.overflowMenuTitleText": "Semua"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "Luaskan",
+    "i18nStrings.collapseButtonLabel": "Ciutkan"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "Memuat",

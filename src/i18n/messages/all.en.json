@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "End time",
     "i18nStrings.dateTimeConstraintText": "For date, use YYYY/MM/DD. For time, use 24 hr format.",
     "i18nStrings.dateConstraintText": "For date, use YYYY/MM/DD.",
+    "i18nStrings.slashedDateTimeConstraintText": "For date, use YYYY/MM/DD. For time, use 24 hr format.",
+    "i18nStrings.isoDateTimeConstraintText": "For date, use YYYY-MM-DD. For time, use 24 hr format.",
+    "i18nStrings.slashedDateConstraintText": "For date, use YYYY/MM/DD.",
+    "i18nStrings.isoDateConstraintText": "For date, use YYYY-MM-DD.",
+    "i18nStrings.slashedMonthConstraintText": "For month, use YYYY/MM.",
+    "i18nStrings.isoMonthConstraintText": "For month, use YYYY-MM.",
     "i18nStrings.monthConstraintText": "For month, use YYYY/MM.",
     "i18nStrings.errorIconAriaLabel": "Error",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Range selected from {startDate} to {endDate}",
@@ -403,6 +409,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Close menu",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Back",
     "i18nStrings.overflowMenuTitleText": "All"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "Expand",
+    "i18nStrings.collapseButtonLabel": "Collapse"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "Loading",

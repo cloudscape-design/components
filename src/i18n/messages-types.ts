@@ -192,6 +192,12 @@ export interface I18nFormatArgTypes {
     "i18nStrings.endTimeLabel": never;
     "i18nStrings.dateTimeConstraintText": never;
     "i18nStrings.dateConstraintText": never;
+    "i18nStrings.slashedDateTimeConstraintText": never;
+    "i18nStrings.isoDateTimeConstraintText": never;
+    "i18nStrings.slashedDateConstraintText": never;
+    "i18nStrings.isoDateConstraintText": never;
+    "i18nStrings.slashedMonthConstraintText": never;
+    "i18nStrings.isoMonthConstraintText": never;
     "i18nStrings.monthConstraintText": never;
     "i18nStrings.errorIconAriaLabel": never;
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": {
@@ -513,6 +519,10 @@ export interface I18nFormatArgTypes {
     "i18nStrings.overflowMenuDismissIconAriaLabel": never;
     "i18nStrings.overflowMenuBackIconAriaLabel": never;
     "i18nStrings.overflowMenuTitleText": never;
+  }
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": never;
+    "i18nStrings.collapseButtonLabel": never;
   }
   "tutorial-panel": {
     "i18nStrings.loadingText": never;
