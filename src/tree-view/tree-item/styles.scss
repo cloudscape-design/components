@@ -6,7 +6,6 @@
 @use '../../internal/styles' as styles;
 
 $item-toggle-column-width: 28px;
-$item-min-height: 32px;
 
 .treeitem-group {
   @include styles.styles-reset-ul;
@@ -19,15 +18,17 @@ $item-min-height: 32px;
 
   display: grid;
   grid-template-columns: $item-toggle-column-width 1fr;
-  column-gap: awsui.$space-scaled-xxs;
   grid-template-rows: auto auto auto;
 
   > .expand-toggle-wrapper {
     grid-column: 1;
     grid-row: 1;
+    margin-inline-end: awsui.$space-scaled-xxs;
 
     > .toggle {
       justify-self: center;
+      position: relative;
+      inset-block-start: 2px;
     }
   }
 
