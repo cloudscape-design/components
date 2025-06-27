@@ -49,7 +49,7 @@ export default function DynamicItemsPage() {
             return {
               icon: <Icon name={isExpanded ? 'folder-open' : 'folder'} />,
               content: <Content {...item} />,
-              actions: item.hasActions ? <Actions actionType="button-group" /> : undefined,
+              actions: item.hasActions ? <Actions actionType="button-group" itemLabel={item.name} /> : undefined,
               secondaryContent: item.tagName ? (
                 <Box color="text-status-inactive">
                   <SpaceBetween size="xxs" direction="horizontal">

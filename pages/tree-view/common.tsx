@@ -34,8 +34,10 @@ export function Content(item: Item) {
 export function Actions(
   {
     actionType,
+    itemLabel,
   }: {
     actionType?: 'button-group' | 'button-dropdown' | 'inline-button-dropdown' | 'text' | 'custom-inline-button-group';
+    itemLabel?: string;
   } = {
     actionType: 'inline-button-dropdown',
   }
@@ -87,6 +89,7 @@ export function Actions(
             setMarkedAsFavorite(!markedAsFavorite);
           }
         }}
+        ariaLabel={itemLabel}
       />
     );
   }
@@ -106,16 +109,26 @@ export function Actions(
   if (actionType === 'custom-inline-button-group') {
     return (
       <SpaceBetween direction="horizontal" size="s">
-        <Button variant="inline-icon" iconName="settings" ariaLabel="settings" />
-        <Button variant="inline-icon" iconName="star" ariaLabel="favorite" />
-        <ButtonDropdown items={buttonDropdownItems} ariaLabel="Control instance" variant="inline-icon" />
+        <Button variant="inline-icon" iconName="settings" ariaLabel={`Settings for ${itemLabel}`} />
+        <Button variant="inline-icon" iconName="star" ariaLabel={`Favorite ${itemLabel}`} />
+        <ButtonDropdown
+          items={buttonDropdownItems}
+          ariaLabel={`Control instance for ${itemLabel}`}
+          variant="inline-icon"
+        />
       </SpaceBetween>
     );
   }
 
   if (actionType === 'inline-button-dropdown') {
-    return <ButtonDropdown items={buttonDropdownItems} ariaLabel="Control instance" variant="inline-icon" />;
+    return (
+      <ButtonDropdown
+        items={buttonDropdownItems}
+        ariaLabel={`Control instance for ${itemLabel}`}
+        variant="inline-icon"
+      />
+    );
   }
 
-  return <ButtonDropdown items={buttonDropdownItems} ariaLabel="Control instance" variant="icon" />;
+  return <ButtonDropdown items={buttonDropdownItems} ariaLabel={`Control instance for ${itemLabel}`} variant="icon" />;
 }

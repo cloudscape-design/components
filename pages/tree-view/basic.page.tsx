@@ -80,7 +80,12 @@ export default function BasicTreeView() {
                   ),
                   content: item.content,
                   secondaryContent: item.details && <Box color="text-status-inactive">{item.details}</Box>,
-                  actions: item.hasActions ? <Actions actionType="inline-button-dropdown" /> : undefined,
+                  actions: item.hasActions ? (
+                    <Actions
+                      actionType="inline-button-dropdown"
+                      itemLabel={item.announcementLabel ?? (item.content as string)}
+                    />
+                  ) : undefined,
                 };
               }}
               getItemId={item => item.id}

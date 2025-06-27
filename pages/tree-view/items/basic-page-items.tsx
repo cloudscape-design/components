@@ -49,6 +49,7 @@ interface Item {
   children?: Item[];
   hasActions?: boolean;
   hideIcon?: boolean;
+  announcementLabel?: string;
 }
 
 export const items: Item[] = [
@@ -123,6 +124,7 @@ export const items: Item[] = [
         </SpaceBetween>
       </SpaceBetween>
     ),
+    announcementLabel: 'Item 4 but imagine this is a longer text',
     hasActions: true,
     details: 'Some random description regarding the item and it is a bit long too',
     children: [
@@ -167,6 +169,7 @@ export const items: Item[] = [
   {
     id: '6',
     content: progressiveStepContent,
+    announcementLabel: 'Checked 5 nodes',
     hideIcon: true,
     hasActions: true,
     children: [
