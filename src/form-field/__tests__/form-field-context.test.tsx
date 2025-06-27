@@ -58,7 +58,7 @@ function getWrapperAndContextSecondaryControl(props: FormFieldProps = {}) {
     getWrapperAndContext: getWrapperAndContextSecondaryControl,
   },
 ].forEach(({ controlName, getWrapperAndContext }) => {
-  describe(controlName, () => {
+  describe(`${controlName}`, () => {
     describe('ariaLabelledby', () => {
       test('is passed to children when a label is defined on the form field', () => {
         const controlId = 'test-control-id';

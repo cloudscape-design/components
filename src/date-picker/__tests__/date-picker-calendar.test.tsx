@@ -586,14 +586,13 @@ describe('Date picker calendar', () => {
       jest.restoreAllMocks();
     });
 
-    test('should fire change event when selecting date with mouse', done => {
+    test('should fire change event when selecting date with mouse', async () => {
       wrapper.findCalendar()!.findDateAt(3, 3).click();
 
-      setTimeout(() => {
-        expect(onChangeSpy).toHaveBeenCalledTimes(1);
-        expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-03-13' } }));
-        done();
-      }, 1000);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      expect(onChangeSpy).toHaveBeenCalledTimes(1);
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-03-13' } }));
     });
 
     test('should fire change event when selecting date with keyboard', () => {

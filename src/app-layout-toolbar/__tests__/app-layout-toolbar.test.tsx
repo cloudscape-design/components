@@ -8,7 +8,7 @@ import AppLayoutToolbar, { AppLayoutToolbarProps } from '../../../lib/components
 import createWrapper from '../../../lib/components/test-utils/dom';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 
-export function renderComponent(jsx: React.ReactElement) {
+function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
   const wrapper = createWrapper(container).findAppLayoutToolbar()!;
 

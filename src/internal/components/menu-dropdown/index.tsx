@@ -49,7 +49,7 @@ export const ButtonTrigger = React.forwardRef(
         disabled={disabled}
         onClick={event => {
           event.preventDefault();
-          onClick && onClick();
+          onClick?.();
         }}
       >
         {hasIcon && (

@@ -127,7 +127,7 @@ test('should show the tracking line and activate resizer onMouseDown', () => {
   expect(hasGlobalResizeClass()).toEqual(false);
 });
 
-test('should attach event listeners to the body on mousedown and remove on mouseup ', () => {
+test('should attach event listeners to the body on mousedown and remove on mouseup', () => {
   const { wrapper } = renderTable(<Table {...defaultProps} />);
   jest.spyOn(document, 'addEventListener');
   jest.spyOn(AbortController.prototype, 'abort');

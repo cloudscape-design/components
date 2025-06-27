@@ -9,7 +9,6 @@ export default class OptionWrapper extends ComponentWrapper {
   static rootSelector: string = styles.option;
 
   findLabel(): ElementWrapper {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.findByClassName(styles.label)!;
   }
 

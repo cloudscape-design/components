@@ -93,8 +93,6 @@ export default function InternalTopNavigation({
       <Wrapper
         ref={isVirtual ? virtualRef : mainRef}
         aria-hidden={isVirtual ? true : undefined}
-        // Wrapper is an alias for "div" or "header".
-        // eslint-disable-next-line react/forbid-component-props
         className={clsx(styles['top-navigation'], {
           [styles.virtual]: isVirtual,
           [styles.hidden]: isVirtual,

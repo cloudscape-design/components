@@ -89,7 +89,9 @@ export default function CollectionPreferences({
 
   useEffect(() => {
     if (!modalVisible) {
-      dialogPreviouslyOpen.current && triggerRef.current && triggerRef.current.focus();
+      if (dialogPreviouslyOpen.current) {
+        triggerRef.current?.focus();
+      }
     } else {
       dialogPreviouslyOpen.current = true;
     }

@@ -40,7 +40,6 @@ export function SideNavigationImplementation({
   const onChangeHandler = useCallback(
     (item: SideNavigationProps.Section | SideNavigationProps.ExpandableLinkGroup, expanded: boolean) => {
       // generateExpandableItemsMapping walks through the entire tree, so we're certain about getting a value.
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       fireNonCancelableEvent(onChange, { item, expanded: expanded, expandableParents: parentMap.get(item)! });
     },
     [onChange, parentMap]
