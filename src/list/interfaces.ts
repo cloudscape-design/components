@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { StructuredItemProps } from '../internal/components/structured-item/interfaces';
+import { ReactNode } from 'react';
+
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface ListProps<T = any> {
@@ -17,9 +18,17 @@ export interface ListProps<T = any> {
    * * `secondaryContent` (React.ReactNode) - (Optional) Secondary content, for example item description.
    * * `icon` (React.ReactNode) - (Optional) An icon.
    * * `action` (React.ReactNode) - (Optional) Action button(s).
-   * * `announcementLabel` (string) - (Optional) An announcement label for the item, used when sorting. By default, the `content` is used.
+   * * `announcementLabel` (string) - (Optional) An announcement label for the item, used when sorting.
+   *    By default, the `content` is used: a custom label should be provided if `content` is not a string.
    */
-  renderItem: (item: T) => StructuredItemProps & { id: string; announcementLabel?: string };
+  renderItem: (item: T) => {
+    id: string;
+    content: ReactNode;
+    secondaryContent?: ReactNode;
+    icon?: ReactNode;
+    action?: ReactNode;
+    announcementLabel?: string;
+  };
 
   /**
    * The HTML tag to render. By default `ul` is used for standard lists and `ol` for sortable lists.
