@@ -54,7 +54,7 @@ function renderDateRange({
 }) {
   const firstPart = range
     ? range.type === 'relative'
-      ? formatRelativeRange?.(range) ?? ''
+      ? (formatRelativeRange?.(range) ?? '')
       : formatDateTimeWithOffset({
           date: range.startDate,
           timeOffset: timeOffset.startDate,

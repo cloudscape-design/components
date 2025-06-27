@@ -38,7 +38,7 @@ const IconToggleButtonItem = forwardRef(
       warnOnce('ButtonGroup', `Missing pressed icon for item with id: ${item.id}`);
     }
 
-    const feedbackContent = item.pressed ? item.pressedPopoverFeedback ?? item.popoverFeedback : item.popoverFeedback;
+    const feedbackContent = item.pressed ? (item.pressedPopoverFeedback ?? item.popoverFeedback) : item.popoverFeedback;
     const canShowTooltip = showTooltip && !item.disabled && !item.loading;
     const canShowFeedback = showTooltip && showFeedback && feedbackContent;
     return (

@@ -44,8 +44,8 @@ export function computeHorizontalLayout({
     isMobile,
     availableWidthForSplitPanel,
   });
-  const resolvedSplitPanelPosition = splitPanelForcedPosition ? 'bottom' : splitPanelPosition ?? 'bottom';
-  const sideSplitPanelSize = resolvedSplitPanelPosition === 'side' && splitPanelOpen ? splitPanelSize ?? 0 : 0;
+  const resolvedSplitPanelPosition = splitPanelForcedPosition ? 'bottom' : (splitPanelPosition ?? 'bottom');
+  const sideSplitPanelSize = resolvedSplitPanelPosition === 'side' && splitPanelOpen ? (splitPanelSize ?? 0) : 0;
   const maxSplitPanelSize = Math.max(resizableSpaceAvailable - totalActiveGlobalDrawersSize - activeDrawerSize, 0);
   resizableSpaceAvailable -= sideSplitPanelSize;
   const maxDrawerSize = resizableSpaceAvailable - totalActiveGlobalDrawersSize;
@@ -151,7 +151,7 @@ export function getDrawerStyles(
   drawerTopOffset: number;
   drawerHeight: string;
 } {
-  const drawerTopOffset = isMobile ? verticalOffsets.toolbar : verticalOffsets.drawers ?? placement.insetBlockStart;
+  const drawerTopOffset = isMobile ? verticalOffsets.toolbar : (verticalOffsets.drawers ?? placement.insetBlockStart);
   const drawerHeight = `calc(100vh - ${drawerTopOffset}px - ${placement.insetBlockEnd}px)`;
   return { drawerTopOffset, drawerHeight };
 }
