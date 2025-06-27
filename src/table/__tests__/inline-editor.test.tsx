@@ -97,7 +97,7 @@ describe('InlineEditor', () => {
 
   it.each([false, true])(
     'should submit edit when submit button is pressed (disableNativeForm=%s)',
-    disableNativeForm => {
+    async disableNativeForm => {
       thereBeErrors = false;
       const changeEvent = new Event('change', { bubbles: true });
       const { wrapper } = renderComponent(<TestComponent disableNativeForm={disableNativeForm} />);
@@ -109,7 +109,7 @@ describe('InlineEditor', () => {
       expect(wrapper.find('[aria-label="error-icon"]')?.getElement()).toBeUndefined();
 
       fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
-      waitFor(() => {
+      await waitFor(() => {
         expect(handleSubmitEdit).toHaveBeenCalled();
         expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
       });
@@ -118,7 +118,7 @@ describe('InlineEditor', () => {
     }
   );
 
-  it('should submit edit when submitValue is called', () => {
+  it('should submit edit when submitValue is called', async () => {
     thereBeErrors = false;
     const submitValueRef = React.createRef<TableProps.CellContext<string>['submitValue'] | null>();
     const changeEvent = new Event('change', { bubbles: true });
@@ -133,7 +133,7 @@ describe('InlineEditor', () => {
     act(() => {
       submitValueRef.current!();
     });
-    waitFor(() => {
+    await waitFor(() => {
       expect(handleSubmitEdit).toHaveBeenCalled();
       expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
     });
@@ -151,7 +151,7 @@ describe('InlineEditor', () => {
     expect(wrapper.find('button[type=submit]')).toBe(null);
   });
 
-  it('should not submit any wrapping forms', () => {
+  it('should not submit any wrapping forms', async () => {
     thereBeErrors = false;
     const changeEvent = new Event('change', { bubbles: true });
     const onSubmitSpy = jest.fn();
@@ -167,7 +167,7 @@ describe('InlineEditor', () => {
     fireEvent(input, changeEvent);
     fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(handleSubmitEdit).toHaveBeenCalled();
       expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
     });
@@ -175,7 +175,7 @@ describe('InlineEditor', () => {
     expect(onSubmitSpy).not.toHaveBeenCalled();
   });
 
-  it('should handle failed submission', () => {
+  it('should handle failed submission', async () => {
     thereBeErrors = false;
     const changeEvent = new Event('change', { bubbles: true });
     const { wrapper } = renderComponent(<TestComponent />);
@@ -188,7 +188,7 @@ describe('InlineEditor', () => {
     handleSubmitEdit.mockImplementation(() => Promise.reject(new Error('test error')));
 
     fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
-    waitFor(() => {
+    await waitFor(() => {
       expect(handleSubmitEdit).toHaveBeenCalled();
       expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
       expect(handleEditEnd).not.toHaveBeenCalled();
@@ -203,7 +203,7 @@ describe('InlineEditor', () => {
   });
 
   // useless test but need the coverage
-  it('should render spinner while submitting', () => {
+  it('should render spinner while submitting', async () => {
     thereBeErrors = false;
     const changeEvent = new Event('change', { bubbles: true });
     const { wrapper } = renderComponent(<TestComponent />);
@@ -214,11 +214,11 @@ describe('InlineEditor', () => {
 
     const button = wrapper.findButton('[aria-label="save edit"]')!;
     fireEvent.click(button.getElement());
-    waitFor(() => {
+    await waitFor(() => {
       expect(button.findLoadingIndicator()).not.toBeNull();
       expect(button).toHaveAttribute('disabled');
     });
-    waitFor(() => {
+    await waitFor(() => {
       expect(button.findLoadingIndicator()).toBeNull();
       expect(button).not.toHaveAttribute('disabled');
     });
