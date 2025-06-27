@@ -122,7 +122,7 @@ export function StatusBar({
             iconAlt="Settings"
             ariaLabel={i18n('i18nStrings.preferencesButtonAriaLabel', i18nStrings?.preferencesButtonAriaLabel)}
             onClick={onPreferencesOpen}
-            __nativeAttributes={{
+            nativeAttributes={{
               tabIndex: paneStatus !== 'hidden' && isTabFocused ? -1 : undefined,
               'aria-hidden': paneStatus !== 'hidden' && isTabFocused ? true : undefined,
             }}

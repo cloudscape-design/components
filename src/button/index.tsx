@@ -41,6 +41,7 @@ const Button = React.forwardRef(
       form,
       i18nStrings,
       style,
+      nativeAttributes,
       ...props
     }: ButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -82,6 +83,7 @@ const Button = React.forwardRef(
         form={form}
         i18nStrings={i18nStrings}
         style={style}
+        nativeAttributes={nativeAttributes}
         __injectAnalyticsComponentMetadata={true}
       >
         {children}
