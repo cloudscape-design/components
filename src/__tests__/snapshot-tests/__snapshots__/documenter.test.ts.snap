@@ -4216,15 +4216,21 @@ It prevents users from clicking the button, but it can still be focused.",
       "type": "string",
     },
     {
-      "description": "Attributes to add to the native \`button\` element.
+      "description": "Attributes to add to the native \`button\` (or \`a\`, when using \`href\`) element. These can be provided in two ways:
+1. As an object. When using this approach, some attributes will be automatically
+   combined with Cloudscape-provided attribute values:
+   - \`className\` will be appended.
+   - Event handlers will be chained, unless the default is prevented.
+2. As a function. This receives any Cloudscape-provided attribute values, and the returned attributes
+   are exclusively passed directly to the native element.
 
 We do not support using this attribute to apply custom styling.",
       "inlineType": {
-        "name": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
-          "React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>",
-          "Record<\`data-\${string}\`, string>",
+          "NativeAttributesObject<React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>>",
+          "(internalAttributes: NativeAttributesObject<React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>>) => NativeAttributesObject<...>",
         ],
       },
       "name": "nativeAttributes",
@@ -4232,7 +4238,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>>",
     },
     {
       "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to "noopener noreferrer" when \`target\` is \`"_blank"\`.
@@ -20007,15 +20013,21 @@ It prevents users from clicking the button, but it can still be focused.",
       "type": "string",
     },
     {
-      "description": "Attributes to add to the native \`button\` element.
+      "description": "Attributes to add to the native \`button\` (or \`a\`, when using \`href\`) element. These can be provided in two ways:
+1. As an object. When using this approach, some attributes will be automatically
+   combined with Cloudscape-provided attribute values:
+   - \`className\` will be appended.
+   - Event handlers will be chained, unless the default is prevented.
+2. As a function. This receives any Cloudscape-provided attribute values, and the returned attributes
+   are exclusively passed directly to the native element.
 
 We do not support using this attribute to apply custom styling.",
       "inlineType": {
-        "name": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
-          "React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>",
-          "Record<\`data-\${string}\`, string>",
+          "NativeAttributesObject<React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>>",
+          "(internalAttributes: NativeAttributesObject<React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>>) => NativeAttributesObject<...>",
         ],
       },
       "name": "nativeAttributes",
@@ -20023,7 +20035,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "(React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>) | Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>>",
     },
     {
       "defaultValue": "false",

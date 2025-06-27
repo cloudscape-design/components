@@ -119,16 +119,23 @@ export interface BaseButtonProps {
   style?: ButtonProps.Style;
 
   /**
-   * Attributes to add to the native `button` element.
+   * Attributes to add to the native `button` (or `a`, when using `href`) element. These can be provided in two ways:
+   * 1. As an object. When using this approach, some attributes will be automatically
+   *    combined with Cloudscape-provided attribute values:
+   *    - `className` will be appended.
+   *    - Event handlers will be chained, unless the default is prevented.
+   * 2. As a function. This receives any Cloudscape-provided attribute values, and the returned attributes
+   *    are exclusively passed directly to the native element.
    *
    * We do not support using this attribute to apply custom styling.
    *
    * @awsuiSystem core
    */
-  nativeAttributes?:
-    | (React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>)
-    | Record<`data-${string}`, string>;
+  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>>;
 }
+
+export type NativeAttributesObject<T extends React.HTMLAttributes<HTMLElement>> = T & Record<`data-${string}`, string>;
+export type NativeAttributes<T extends React.HTMLAttributes<HTMLElement>> = NativeAttributesObject<T> | ((internalAttributes: NativeAttributesObject<T>) => NativeAttributesObject<T>);
 
 export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
   /**
