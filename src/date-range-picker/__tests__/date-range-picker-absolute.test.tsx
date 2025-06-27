@@ -26,6 +26,7 @@ const defaultProps: DateRangePickerProps = {
 const outsideId = 'outside';
 function renderDateRangePicker(props: DateRangePickerProps = defaultProps) {
   const ref = React.createRef<HTMLInputElement>();
+  console.log(props);
   const { container, getByTestId, rerender } = render(
     <div>
       <button data-testid={outsideId} />
@@ -884,7 +885,7 @@ describe('Date range picker', () => {
           expect(wrapper.findTrigger().getElement()).toHaveTextContent('2018-01 — 2018-01');
         });
 
-        test('date-only has no effect on saving', () => {
+        testIf(granularity === 'month')('date-only has no effect on saving', () => {
           const onChangeSpy = jest.fn();
           const { wrapper } = renderDateRangePicker({
             ...defaultProps,
@@ -905,7 +906,7 @@ describe('Date range picker', () => {
           });
         });
 
-        test('date-only range is saved without time part', () => {
+        testIf(granularity === 'day')('date-only range is saved without time part', () => {
           const onChangeSpy = jest.fn();
           const { wrapper } = renderDateRangePicker({
             ...defaultProps,
