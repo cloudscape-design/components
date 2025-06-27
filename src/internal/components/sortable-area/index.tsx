@@ -88,6 +88,7 @@ export default function SortableArea<Item>({
           {activeItem &&
             renderItem({
               item: activeItem,
+              id: activeItemId!.toString(),
               style: {},
               className: styles.active,
               isDropPlaceholder: true,
@@ -95,6 +96,7 @@ export default function SortableArea<Item>({
               isDragGhost: true,
               dragHandleProps: {
                 ariaLabel: joinStrings(i18nStrings?.dragHandleAriaLabel, itemDefinition.label(activeItem)) ?? '',
+                active: true,
                 onKeyDown: handleKeyDown,
               },
             })}
@@ -133,8 +135,9 @@ function DraggableItem<Item>({
   onKeyDown: (event: React.KeyboardEvent) => void;
   renderItem: (props: SortableAreaProps.RenderItemProps<Item>) => React.ReactNode;
 }) {
+  const id = itemDefinition.id(item);
   const { isDragging, isSorting, listeners, setNodeRef, transform, attributes } = useSortable({
-    id: itemDefinition.id(item),
+    id,
   });
   const style = { transform: CSS.Translate.toString(transform) };
   const dragHandleListeners = attributes['aria-disabled']
@@ -158,6 +161,7 @@ function DraggableItem<Item>({
     <>
       {renderItem({
         item,
+        id,
         ref: setNodeRef,
         style,
         className,

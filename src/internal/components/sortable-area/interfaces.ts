@@ -25,6 +25,7 @@ export namespace SortableAreaProps {
   export interface RenderItemProps<Item> {
     ref?: React.RefCallback<HTMLElement>;
     item: Item;
+    id: string;
     style: React.CSSProperties;
     className?: string;
     isDropPlaceholder: boolean;
