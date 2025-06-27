@@ -14,9 +14,10 @@ export interface TreeViewProps<T = any> extends BaseComponentProps {
   /**
    * Use this property to map your data to tree view items. This property must return an object with the following properties:
    * * `content` (ReactNode) - The content of the item.
-   * * `icon` (optional, ReactNode) - The leading icon of the item.
-   * * `secondaryContent` (optional, ReactNode) - Secondary content of the item, displayed below `content`.
-   * * `actions` (optional, ReactNode) - Actions related to the item. Use [button](/components/button/?tabId=playground&example=inline-icon-button) with inline-icon or inline-link variants. For items with multiple actions, use [button dropdown](/components/button-dropdown/?tabId=playground&example=inline-icon-button-dropdown) with the inline-icon variant.
+   * * `icon` (ReactNode) - (Optional) The icon of the item.
+   * * `secondaryContent` (ReactNode) - (Optional) Secondary content of the item, such as a description of the item.
+   * * `actions` (ReactNode) - (Optional) Actions related to the item. Use [button](/components/button/?tabId=playground&example=inline-icon-button) with inline-icon or inline-link variants. For items with multiple actions, use [button dropdown](/components/button-dropdown/?tabId=playground&example=inline-icon-button-dropdown) with the inline-icon variant.
+   * * `announcementLabel` (string) - (Optional) An announcement label for the item, used for labeling the toggle button. By default, the `content` is used. Make sure to provide the `announcementLabel` if `content` is not a string.
    */
   renderItem: (item: T, index: number) => TreeViewProps.TreeItem;
 
@@ -76,6 +77,7 @@ export namespace TreeViewProps {
     icon?: React.ReactNode;
     secondaryContent?: React.ReactNode;
     actions?: React.ReactNode;
+    announcementLabel?: string;
   }
 
   export interface ItemToggleDetail<T> {

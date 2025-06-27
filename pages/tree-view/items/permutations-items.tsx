@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { TreeViewProps } from '~components';
 import Box from '~components/box';
 import Icon from '~components/icon';
 import SpaceBetween from '~components/space-between';
@@ -9,12 +10,8 @@ import StatusIndicator from '~components/status-indicator';
 
 import { Actions } from '../common';
 
-export interface Item {
+export interface Item extends TreeViewProps.TreeItem {
   id: string;
-  content: React.ReactNode;
-  secondaryContent?: React.ReactNode;
-  icon?: React.ReactNode;
-  actions?: React.ReactNode;
   children?: Item[];
 }
 
@@ -176,6 +173,7 @@ export const statusIndicatorItems: Item[] = [
         </SpaceBetween>
       </div>
     ),
+    announcementLabel: 'Checked 5 nodes',
     children: [
       {
         id: 'status-indicator-2.1',
@@ -189,6 +187,7 @@ export const statusIndicatorItems: Item[] = [
       {
         id: 'status-indicator-2.3',
         content: <StatusIndicator type="warning">node-20 (eksclu-node-wx456)</StatusIndicator>,
+        announcementLabel: 'node-20 (eksclu-node-wx456)',
         children: [
           {
             id: 'status-indicator-2.3.1',
@@ -224,6 +223,7 @@ export const statusIndicatorItems: Item[] = [
         </SpaceBetween>
       </div>
     ),
+    announcementLabel: 'Running automation',
     children: [
       {
         id: 'status-indicator-4.1',

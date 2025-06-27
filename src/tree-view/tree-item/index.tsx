@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useInternalI18n } from '../../i18n/context';
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 import InternalStructuredItem from '../../internal/components/structured-item';
+import { joinStrings } from '../../internal/utils/strings';
 import { TreeViewProps } from '../interfaces';
 
 import testUtilStyles from '../test-classes/styles.css.js';
@@ -36,7 +37,7 @@ const InternalTreeItem = <T,>({
 }: InternalTreeItemProps<T>) => {
   const i18n = useInternalI18n('tree-view');
 
-  const { icon, content, secondaryContent, actions } = renderItem(item, index);
+  const { icon, content, secondaryContent, actions, announcementLabel } = renderItem(item, index);
   const id = getItemId(item, index);
   const children = getItemChildren(item, index) || [];
   const isExpandable = children.length > 0;
@@ -69,8 +70,14 @@ const InternalTreeItem = <T,>({
               isExpanded={isExpanded}
               customIcon={customIcon}
               hasLargeFocusOffset={true}
-              expandButtonLabel={i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item))}
-              collapseButtonLabel={i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item))}
+              expandButtonLabel={joinStrings(
+                i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
+                announcementLabel ?? (content as string)
+              )}
+              collapseButtonLabel={joinStrings(
+                i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item)),
+                announcementLabel ?? (content as string)
+              )}
               onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
             />
           </div>

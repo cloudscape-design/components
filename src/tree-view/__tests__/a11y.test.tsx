@@ -54,11 +54,11 @@ test('i18n provider adds label to expand/collapse toggle', () => {
   const { wrapper } = renderTreeViewWithI18NProvider();
 
   const collapsedItem = wrapper.findItemById('1', { expanded: false })!;
-  expect(collapsedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Expand item');
+  expect(collapsedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Expand item Item 1');
 
   collapsedItem.findItemToggle()!.getElement().click();
   const expandedItem = wrapper.findItemById('1', { expanded: true })!;
-  expect(expandedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Collapse item');
+  expect(expandedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Collapse item Item 1');
 });
 
 test('i18nStrings adds custom label to expand/collapse toggle', () => {
@@ -70,11 +70,24 @@ test('i18nStrings adds custom label to expand/collapse toggle', () => {
   });
 
   const collapsedItem = wrapper.findItemById('1', { expanded: false })!;
-  expect(collapsedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Expand Item 1');
+  expect(collapsedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Expand Item 1 Item 1'); // i18n string + item content
 
   collapsedItem.findItemToggle()!.getElement().click();
   const expandedItem = wrapper.findItemById('1', { expanded: true })!;
-  expect(expandedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Collapse Item 1');
+  expect(expandedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Collapse Item 1 Item 1');
+});
+
+test('announcementLabel is added to aria-label', () => {
+  const { wrapper } = renderTreeViewWithI18NProvider({
+    renderItem: item => ({ content: item.title, announcementLabel: 'Test announcement label' }),
+  });
+
+  const collapsedItem = wrapper.findItemById('1', { expanded: false })!;
+  expect(collapsedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Expand item Test announcement label'); // i18n string + item content
+
+  collapsedItem.findItemToggle()!.getElement().click();
+  const expandedItem = wrapper.findItemById('1', { expanded: true })!;
+  expect(expandedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Collapse item Test announcement label');
 });
 
 test('correct aria-level is set', () => {
