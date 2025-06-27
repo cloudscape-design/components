@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
 
 import generatedIcons from '../icon/generated/icons';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -21,23 +21,22 @@ export default function IconProvider({ children, icons }: IconProviderProps) {
   useBaseComponent('IconProvider');
   const contextIcons = useContext(InternalIconContext);
 
-  const iconsToProvide: IconProviderProps.Icons = useMemo(() => {
-    // Reset icons to the original set when the configuration is explicitly null
-    if (icons === null) {
-      return generatedIcons;
-    }
+  let iconsToProvide: IconProviderProps.Icons = generatedIcons;
+
+  // Merge the context icons with the custom icons, this allows child instances of IconProvider to persist parent configurations
+  if (icons !== null) {
+    const iconsResetWithBuiltInIcons = { ...icons };
 
     // Reset null icon values to their original definitions
-    Object.keys(icons).forEach(name => {
+    Object.keys(iconsResetWithBuiltInIcons).forEach(name => {
       const iconName = name as keyof typeof generatedIcons;
-      if (iconName in generatedIcons && icons[iconName] === null) {
-        icons[iconName] = generatedIcons[iconName];
+      if (iconName in generatedIcons && iconsResetWithBuiltInIcons[iconName] === null) {
+        iconsResetWithBuiltInIcons[iconName] = generatedIcons[iconName];
       }
     });
 
-    // Merge the icons with the context icons, this allows child instances of IconProvider to persist parent configurations
-    return { ...contextIcons, ...icons };
-  }, [contextIcons, icons]);
+    iconsToProvide = { ...contextIcons, ...iconsResetWithBuiltInIcons };
+  }
 
   return <InternalIconContext.Provider value={iconsToProvide}>{children}</InternalIconContext.Provider>;
 }
