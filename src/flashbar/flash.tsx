@@ -178,8 +178,6 @@ export const Flash = React.forwardRef(
       analyticsAttributes[DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS] = 'true';
     }
 
-    console.log(style && getDismissButtonStyles(style));
-
     return (
       // We're not using "polite" or "assertive" here, just turning default behavior off.
       // eslint-disable-next-line @cloudscape-design/prefer-live-region
