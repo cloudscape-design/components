@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -33,7 +33,7 @@ import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import InternalLiveRegion from '../live-region/internal';
 import { GeneratedAnalyticsMetadataButtonFragment } from './analytics-metadata/interfaces';
 import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
-import { ButtonProps } from './interfaces';
+import { ButtonProps, NativeAttributes, NativeAttributesObject } from './interfaces';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -49,15 +49,38 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
     | 'inline-icon-pointer-target';
   badge?: boolean;
   analyticsAction?: string;
-  __nativeAttributes?:
-    | (React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>)
-    | Record<`data-${string}`, string>;
   __iconClass?: string;
   __focusable?: boolean;
   __injectAnalyticsComponentMetadata?: boolean;
   __title?: string;
   __emitPerformanceMarks?: boolean;
 } & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
+
+function WithNativeAttributes<T extends React.HTMLAttributes<HTMLElement>> ({ tag, nativeAttributes, children, ...rest}: {tag: string, children?: ReactNode; nativeAttributes: NativeAttributes<T>} & NativeAttributesObject<T>) {
+  const Tag = tag;
+  const attributes = rest as NativeAttributesObject<T>;
+  if (typeof nativeAttributes === 'function') {
+    return <Tag {...nativeAttributes(attributes as NativeAttributesObject<T>) as any}>{children}</Tag>;
+  }
+  const processedAttributes = Object.entries(nativeAttributes).reduce((acc, [key, value]) => {
+    if (key === 'className') {
+      // concatenate className
+      acc[key] = clsx(attributes.className, value);
+    } else if (key.match(/^on[A-Z]/) && typeof value === 'function' && key in attributes) {
+      // chain event handlers
+      acc[key] = (event: Event) => {
+        value(event);
+        if (!event.defaultPrevented) {
+          (attributes as any)[key](event);
+        }
+      }
+    } else {
+      acc[key] = value;
+    }
+    return acc;
+  }, {} as any);
+  return <Tag {...attributes as any} {...processedAttributes}>{children}</Tag>;
+}
 
 export const InternalButton = React.forwardRef(
   (
@@ -91,7 +114,7 @@ export const InternalButton = React.forwardRef(
       badge,
       i18nStrings,
       style,
-      __nativeAttributes,
+      nativeAttributes = {},
       __internalRootRef = null,
       __focusable = false,
       __injectAnalyticsComponentMetadata = false,
@@ -186,8 +209,7 @@ export const InternalButton = React.forwardRef(
       [styles.link]: isAnchor,
     });
 
-    const explicitTabIndex =
-      __nativeAttributes && 'tabIndex' in __nativeAttributes ? __nativeAttributes.tabIndex : undefined;
+    const explicitTabIndex = 'tabIndex' in nativeAttributes ? nativeAttributes.tabIndex : undefined;
     const { tabIndex } = useSingleTabStopNavigation(buttonRef, {
       tabIndex: isAnchor && isNotInteractive && !isDisabledWithReason ? -1 : explicitTabIndex,
     });
@@ -208,7 +230,6 @@ export const InternalButton = React.forwardRef(
 
     const buttonProps = {
       ...props,
-      ...__nativeAttributes,
       ...performanceMarkAttributes,
       tabIndex,
       // https://github.com/microsoft/TypeScript/issues/36659
@@ -330,7 +351,9 @@ export const InternalButton = React.forwardRef(
         // https://github.com/yannickcr/eslint-plugin-react/issues/2962
         // eslint-disable-next-line react/jsx-no-target-blank
         <>
-          <a
+          <WithNativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>
+            tag="a"
+            nativeAttributes={nativeAttributes as NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>}
             {...buttonProps}
             href={href}
             target={target}
@@ -343,7 +366,7 @@ export const InternalButton = React.forwardRef(
           >
             {buttonContent}
             {isDisabledWithReason && disabledReasonContent}
-          </a>
+          </WithNativeAttributes>
           {loading && loadingText && (
             <InternalLiveRegion tagName="span" hidden={true}>
               {loadingText}
@@ -355,7 +378,9 @@ export const InternalButton = React.forwardRef(
 
     return (
       <>
-        <button
+        <WithNativeAttributes<React.ButtonHTMLAttributes<HTMLAnchorElement>>
+          tag="button"
+          nativeAttributes={nativeAttributes as NativeAttributes<React.ButtonHTMLAttributes<HTMLAnchorElement>>}
           {...buttonProps}
           type={formAction === 'none' ? 'button' : 'submit'}
           disabled={disabled && !__focusable && !isDisabledWithReason}
@@ -365,7 +390,7 @@ export const InternalButton = React.forwardRef(
         >
           {buttonContent}
           {isDisabledWithReason && disabledReasonContent}
-        </button>
+        </WithNativeAttributes>
         {loading && loadingText && (
           <InternalLiveRegion tagName="span" hidden={true}>
             {loadingText}
