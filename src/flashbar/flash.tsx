@@ -30,7 +30,7 @@ import InternalLiveRegion from '../live-region/internal';
 import InternalSpinner from '../spinner/internal';
 import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
 import { FlashbarProps } from './interfaces';
-import { getFlashStyles } from './style';
+import { getDismissButtonStyles, getFlashStyles } from './style';
 import { FOCUS_THROTTLE_DELAY } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -50,7 +50,8 @@ const useDiscoveredContent = createUseDiscoveredContent('flash', awsuiPluginsInt
 function dismissButton(
   dismissLabel: FlashbarProps.MessageDefinition['dismissLabel'],
   onDismiss: FlashbarProps.MessageDefinition['onDismiss'],
-  style?: FlashbarProps.Style
+  style?: FlashbarProps.Style,
+  type?: string
 ) {
   return (
     <div
@@ -67,18 +68,7 @@ function dismissButton(
         formAction="none"
         ariaLabel={dismissLabel}
         style={{
-          root: {
-            color: {
-              active: style?.item?.dismissButton?.color?.active,
-              default: style?.item?.dismissButton?.color?.default,
-              hover: style?.item?.dismissButton?.color?.hover,
-            },
-            focusRing: {
-              borderColor: style?.item?.dismissButton?.focusRing?.borderColor,
-              borderRadius: style?.item?.dismissButton?.focusRing?.borderRadius,
-              borderWidth: style?.item?.dismissButton?.focusRing?.borderWidth,
-            },
-          },
+          ...(style && getDismissButtonStyles(style, type)),
         }}
       />
     </div>
@@ -188,6 +178,8 @@ export const Flash = React.forwardRef(
       analyticsAttributes[DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS] = 'true';
     }
 
+    console.log(style && getDismissButtonStyles(style));
+
     return (
       // We're not using "polite" or "assertive" here, just turning default behavior off.
       // eslint-disable-next-line @cloudscape-design/prefer-live-region
@@ -269,7 +261,7 @@ export const Flash = React.forwardRef(
             wrappedClass={styles['action-wrapped']}
           />
         </div>
-        {dismissible && dismissButton(dismissLabel, onDismiss, style)}
+        {dismissible && dismissButton(dismissLabel, onDismiss, style, effectiveType)}
         {ariaRole === 'status' && (
           <InternalLiveRegion sources={[statusIconAriaLabel, headerRefObject, contentRefObject]} />
         )}

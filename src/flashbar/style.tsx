@@ -39,10 +39,16 @@ export function getCollapsibleFlashStyles(style: FlashbarProps.Style, type: stri
 }
 
 export function getFlashStyles(style: FlashbarProps.Style, type: string = 'info') {
+  const focusRingBorderColor =
+    style?.item?.root?.focusRing?.borderColor &&
+    (type === 'in-progress'
+      ? style.item.root.focusRing.borderColor.inProgress
+      : style.item.root.focusRing.borderColor[type as keyof typeof style.item.root.focusRing.borderColor]);
+
   return {
     ...(style && getCollapsibleFlashStyles(style, type)),
     ...(style?.item?.root?.focusRing && {
-      [customCssProps.styleFocusRingBorderColor]: style.item.root.focusRing?.borderColor,
+      [customCssProps.styleFocusRingBorderColor]: focusRingBorderColor,
       [customCssProps.styleFocusRingBorderRadius]: style.item.root.focusRing?.borderRadius,
       [customCssProps.styleFocusRingBorderWidth]: style.item.root.focusRing?.borderWidth,
     }),
@@ -52,10 +58,53 @@ export function getFlashStyles(style: FlashbarProps.Style, type: string = 'info'
   };
 }
 
+export function getDismissButtonStyles(style: FlashbarProps.Style, type: string = 'info') {
+  const activeColor =
+    style?.item?.dismissButton?.color?.active &&
+    (type === 'in-progress'
+      ? style.item.dismissButton.color.active.inProgress
+      : style.item.dismissButton.color.active[type as keyof typeof style.item.dismissButton.color.active]);
+
+  const defaultColor =
+    style?.item?.dismissButton?.color?.default &&
+    (type === 'in-progress'
+      ? style.item.dismissButton.color.default.inProgress
+      : style.item.dismissButton.color.default[type as keyof typeof style.item.dismissButton.color.default]);
+
+  const hoverColor =
+    style?.item?.dismissButton?.color?.hover &&
+    (type === 'in-progress'
+      ? style.item.dismissButton.color.hover.inProgress
+      : style.item.dismissButton.color.hover[type as keyof typeof style.item.dismissButton.color.hover]);
+
+  const focusRingBorderColor =
+    style?.item?.dismissButton?.focusRing?.borderColor &&
+    (type === 'in-progress'
+      ? style.item.dismissButton.focusRing.borderColor.inProgress
+      : style.item.dismissButton.focusRing.borderColor[
+          type as keyof typeof style.item.dismissButton.focusRing.borderColor
+        ]);
+
+  return {
+    root: {
+      color: {
+        active: activeColor,
+        default: defaultColor,
+        hover: hoverColor,
+      },
+      focusRing: {
+        borderColor: focusRingBorderColor,
+        borderRadius: style?.item?.dismissButton?.focusRing?.borderRadius,
+        borderWidth: style?.item?.dismissButton?.focusRing?.borderWidth,
+      },
+    },
+  };
+}
+
 export function getNotificationBarStyles(style: FlashbarProps.Style) {
   return {
-    borderRadius: style?.notificationBar?.root.borderRadius,
-    borderWidth: style?.notificationBar?.root.borderWidth,
+    borderRadius: style?.notificationBar?.root?.borderRadius,
+    borderWidth: style?.notificationBar?.root?.borderWidth,
     ...(style?.notificationBar?.root?.background?.active && {
       [customCssProps.styleBackgroundActive]: style.notificationBar.root.background.active,
     }),
@@ -82,6 +131,14 @@ export function getNotificationBarStyles(style: FlashbarProps.Style) {
     }),
     ...(style?.notificationBar?.root?.color?.hover && {
       [customCssProps.styleColorHover]: style.notificationBar.root.color.hover,
+    }),
+    ...(style?.notificationBar?.expandButton?.focusRing && {
+      [customCssProps.styleFocusRingBorderColor]: style?.notificationBar?.expandButton?.focusRing?.borderColor,
+      [customCssProps.styleFocusRingBorderRadius]: style?.notificationBar?.expandButton?.focusRing?.borderRadius,
+      [customCssProps.styleFocusRingBorderWidth]: style?.notificationBar?.expandButton?.focusRing?.borderWidth,
+    }),
+    ...(style?.notificationBar?.expandButton?.focusRing?.borderRadius && {
+      [customCssProps.styleFocusRingBorderRadius]: style.notificationBar.expandButton.focusRing.borderRadius,
     }),
   };
 }

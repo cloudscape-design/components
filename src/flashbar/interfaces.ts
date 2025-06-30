@@ -67,26 +67,56 @@ export namespace FlashbarProps {
           warning?: string;
         };
         focusRing?: {
-          borderColor?: string;
+          borderColor?: {
+            error?: string;
+            info?: string;
+            inProgress?: string;
+            success?: string;
+            warning?: string;
+          };
           borderRadius?: string;
           borderWidth?: string;
         };
       };
       dismissButton?: {
         color?: {
-          active?: string;
-          default?: string;
-          hover?: string;
+          active?: {
+            error?: string;
+            info?: string;
+            inProgress?: string;
+            success?: string;
+            warning?: string;
+          };
+          default?: {
+            error?: string;
+            info?: string;
+            inProgress?: string;
+            success?: string;
+            warning?: string;
+          };
+          hover?: {
+            error?: string;
+            info?: string;
+            inProgress?: string;
+            success?: string;
+            warning?: string;
+          };
         };
         focusRing?: {
-          borderColor?: string;
+          borderColor?: {
+            error?: string;
+            info?: string;
+            inProgress?: string;
+            success?: string;
+            warning?: string;
+          };
           borderRadius?: string;
           borderWidth?: string;
         };
       };
     };
     notificationBar?: {
-      root: {
+      root?: {
         background?: {
           active?: string;
           default?: string;
@@ -103,6 +133,13 @@ export namespace FlashbarProps {
           active?: string;
           default?: string;
           hover?: string;
+        };
+      };
+      expandButton?: {
+        focusRing?: {
+          borderColor?: string;
+          borderRadius?: string;
+          borderWidth?: string;
         };
       };
     };
