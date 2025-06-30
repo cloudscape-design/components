@@ -631,6 +631,7 @@ const InternalTable = React.forwardRef(
                                       itemKey: rowId,
                                     }}
                                     verticalAlign={cellVerticalAlign}
+                                    tableVariant={computedVariant}
                                   />
                                 )}
 
@@ -711,6 +712,7 @@ const InternalTable = React.forwardRef(
                                     {...sharedCellProps}
                                     columnId={selectionColumnId}
                                     verticalAlign={cellVerticalAlign}
+                                    tableVariant={computedVariant}
                                   />
                                 )}
                                 {visibleColumnDefinitions.map((column, colIndex) => (
