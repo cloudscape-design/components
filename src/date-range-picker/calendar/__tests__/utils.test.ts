@@ -2,7 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import MockDate from 'mockdate';
 
-import { findDateToFocus, findMonthToDisplay, findMonthToFocus, findYearToDisplay } from '../utils';
+import {
+  findDateToFocus,
+  findMonthToDisplay,
+  findMonthToFocus,
+  findYearToDisplay,
+  generateI18NFallbackKey,
+  generateI18NKey,
+  provideI18N,
+} from '../utils';
 // Helper function to create Date objects from YYYY-MM-DD strings
 const createDate = (dateString: string) => new Date(dateString);
 describe('findDateToFocus', () => {
@@ -180,5 +188,112 @@ describe('findYearToDisplay', () => {
     const value = { start: { date: '2023-01-01', time: '00:00' }, end: { date: '', time: '' } };
     const result = findYearToDisplay(value, true);
     expect(result).toEqual(createDate('2023-01-01'));
+  });
+});
+
+describe('generateI18NKey', () => {
+  test('should return isoMonthConstraintText when isMonthPicker is true and isIso is true', () => {
+    expect(generateI18NKey(true, false, true)).toBe('i18nStrings.isoMonthConstraintText');
+  });
+
+  test('should return slashedMonthConstraintText when isMonthPicker is true and isIso is false', () => {
+    expect(generateI18NKey(true, false, false)).toBe('i18nStrings.slashedMonthConstraintText');
+  });
+
+  test('should return isoDateConstraintText when isDateOnly is true and isIso is true', () => {
+    expect(generateI18NKey(false, true, true)).toBe('i18nStrings.isoDateConstraintText');
+  });
+
+  test('should return slashedDateConstraintText when isDateOnly is true and isIso is false', () => {
+    expect(generateI18NKey(false, true, false)).toBe('i18nStrings.slashedDateConstraintText');
+  });
+
+  test('should return isoDateTimeConstraintText when isDateOnly and isMonthPicker are false and isIso is true', () => {
+    expect(generateI18NKey(false, false, true)).toBe('i18nStrings.isoDateTimeConstraintText');
+  });
+
+  test('should return slashedDateTimeConstraintText when isDateOnly and isMonthPicker are false and isIso is false', () => {
+    expect(generateI18NKey(false, false, false)).toBe('i18nStrings.slashedDateTimeConstraintText');
+  });
+});
+
+describe('generateI18NFallbackKey', () => {
+  test('should return monthConstraintText when isMonthPicker is true', () => {
+    expect(generateI18NFallbackKey(true, false)).toBe('i18nStrings.monthConstraintText');
+  });
+
+  test('should return dateConstraintText when isDateOnly is true', () => {
+    expect(generateI18NFallbackKey(false, true)).toBe('i18nStrings.dateConstraintText');
+  });
+
+  test('should return dateTimeConstraintText when isDateOnly and isMonthPicker are false', () => {
+    expect(generateI18NFallbackKey(false, false)).toBe('i18nStrings.dateTimeConstraintText');
+  });
+});
+
+describe('provideI18N', () => {
+  const mockI18nStrings = {
+    monthConstraintText: 'Month constraint',
+    isoMonthConstraintText: 'ISO month constraint',
+    slashedMonthConstraintText: 'Slashed month constraint',
+    dateConstraintText: 'Date constraint',
+    isoDateConstraintText: 'ISO date constraint',
+    slashedDateConstraintText: 'Slashed date constraint',
+    dateTimeConstraintText: 'Date time constraint',
+    isoDateTimeConstraintText: 'ISO date time constraint',
+    slashedDateTimeConstraintText: 'Slashed date time constraint',
+  };
+
+  test('should return isoMonthConstraintText when isMonthPicker is true and isIso is true', () => {
+    expect(provideI18N(mockI18nStrings, true, false, true)).toBe('ISO month constraint');
+  });
+
+  test('should return slashedMonthConstraintText when isMonthPicker is true and isIso is false', () => {
+    expect(provideI18N(mockI18nStrings, true, false, false)).toBe('Slashed month constraint');
+  });
+
+  test('should return monthConstraintText when isMonthPicker is true and specific format text is not available', () => {
+    const partialI18nStrings = {
+      monthConstraintText: 'Month constraint',
+    };
+    expect(provideI18N(partialI18nStrings, true, false, true)).toBe('Month constraint');
+  });
+
+  test('should return isoDateConstraintText when isDateOnly is true and isIso is true', () => {
+    expect(provideI18N(mockI18nStrings, false, true, true)).toBe('ISO date constraint');
+  });
+
+  test('should return slashedDateConstraintText when isDateOnly is true and isIso is false', () => {
+    expect(provideI18N(mockI18nStrings, false, true, false)).toBe('Slashed date constraint');
+  });
+
+  test('should return dateConstraintText when isDateOnly is true and specific format text is not available', () => {
+    const partialI18nStrings = {
+      dateConstraintText: 'Date constraint',
+    };
+    expect(provideI18N(partialI18nStrings, false, true, true)).toBe('Date constraint');
+  });
+
+  test('should return isoDateTimeConstraintText when isDateOnly and isMonthPicker are false and isIso is true', () => {
+    expect(provideI18N(mockI18nStrings, false, false, true)).toBe('ISO date time constraint');
+  });
+
+  test('should return slashedDateTimeConstraintText when isDateOnly and isMonthPicker are false and isIso is false', () => {
+    expect(provideI18N(mockI18nStrings, false, false, false)).toBe('Slashed date time constraint');
+  });
+
+  test('should return dateTimeConstraintText when isDateOnly and isMonthPicker are false and specific format text is not available', () => {
+    const partialI18nStrings = {
+      dateTimeConstraintText: 'Date time constraint',
+    };
+    expect(provideI18N(partialI18nStrings, false, false, true)).toBe('Date time constraint');
+  });
+
+  test('should return empty string when no matching text is found', () => {
+    expect(provideI18N({}, false, false, false)).toBe('');
+  });
+
+  test('should handle undefined i18nStrings', () => {
+    expect(provideI18N(undefined as any, false, false, false)).toBe('');
   });
 });

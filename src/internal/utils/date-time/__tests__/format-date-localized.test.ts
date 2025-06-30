@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import formatDateLocalized from '../format-date-localized';
+import { formatDateLocalized } from '../format-date-localized';
 import * as formatTimeOffsetModule from '../format-time-offset';
 
 describe('formatDateLocalized', () => {
@@ -80,8 +80,7 @@ describe('formatDateLocalized', () => {
     expect(result).toMatch(/^June 15, 2023, 12:00:00 UTC\+00:00$/);
   });
 
-  //todo  determine how to handle this failing
-  test.skip('handles different time offsets', () => {
+  test('handles different time offsets', () => {
     (formatTimeOffsetModule.formatTimeOffsetLocalized as jest.Mock).mockReturnValue('UTC-05:00');
 
     const result = formatDateLocalized({
