@@ -21,7 +21,6 @@ import {
 } from '../internal/analytics/selectors';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { PACKAGE_VERSION } from '../internal/environment';
-import customCssProps from '../internal/generated/custom-css-properties';
 import { isDevelopment } from '../internal/is-development';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
@@ -30,8 +29,8 @@ import useContainerWidth from '../internal/utils/use-container-width';
 import InternalLiveRegion from '../live-region/internal';
 import InternalSpinner from '../spinner/internal';
 import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
-import { getItemStyles } from './collapsible-flashbar';
 import { FlashbarProps } from './interfaces';
+import { getFlashStyles } from './style';
 import { FOCUS_THROTTLE_DELAY } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -213,15 +212,7 @@ export const Flash = React.forwardRef(
           initialHidden && styles['initial-hidden']
         )}
         style={{
-          ...(style && getItemStyles(style, effectiveType)),
-          ...(style?.item?.root?.focusRing && {
-            [customCssProps.styleFocusRingBorderColor]: style.item.root.focusRing?.borderColor,
-            [customCssProps.styleFocusRingBorderRadius]: style.item.root.focusRing?.borderRadius,
-            [customCssProps.styleFocusRingBorderWidth]: style.item.root.focusRing?.borderWidth,
-          }),
-          ...(style?.item?.root?.focusRing?.borderRadius && {
-            [customCssProps.styleFocusRingBorderRadius]: style.item.root.focusRing.borderRadius,
-          }),
+          ...(style && getFlashStyles(style, effectiveType)),
         }}
         {...analyticsAttributes}
       >
