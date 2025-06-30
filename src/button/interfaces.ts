@@ -100,23 +100,6 @@ export interface BaseButtonProps {
    * @i18n
    */
   i18nStrings?: ButtonProps.I18nStrings;
-
-  /**
-   * Specifies an object of selectors and properties that are used to apply custom styles.
-   *
-   * - `root.background` {active, default, disabled, hover} - (Optional) Background for component states.
-   * - `root.borderColor` {active, default, disabled, hover} - (Optional) Border color for component states.
-   * - `root.borderRadius` (string) - (Optional) Border radius style.
-   * - `root.borderWidth` (string) - (Optional) Border width style.
-   * - `root.color` {active, default, disabled, hover} - (Optional) Color for component states.
-   * - `root.focusRing.borderColor` (string) - (Optional) Focus ring border color.
-   * - `root.focusRing.borderRadius` (string) - (Optional) Focus ring border radius.
-   * - `root.focusRing.borderWidth` (string) - (Optional) Focus ring border width.
-   * - `root.paddingBlock` (string) - (Optional) Block dimension padding.
-   * - `root.paddingInline` (string) - (Optional) Inline dimension padding.
-   * @awsuiSystem core
-   */
-  style?: ButtonProps.Style;
 }
 
 export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
@@ -196,6 +179,23 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
    * This property is ignored if you use a predefined icon or if you set your custom icon using the `iconSvg` slot.
    */
   iconAlt?: string;
+
+  /**
+   * Specifies an object of selectors and properties that are used to apply custom styles.
+   *
+   * - `root.background` {active, default, disabled, hover} - (Optional) Background for component states.
+   * - `root.borderColor` {active, default, disabled, hover} - (Optional) Border color for component states.
+   * - `root.borderRadius` (string) - (Optional) Border radius style.
+   * - `root.borderWidth` (string) - (Optional) Border width style.
+   * - `root.color` {active, default, disabled, hover} - (Optional) Color for component states.
+   * - `root.focusRing.borderColor` (string) - (Optional) Focus ring border color.
+   * - `root.focusRing.borderRadius` (string) - (Optional) Focus ring border radius.
+   * - `root.focusRing.borderWidth` (string) - (Optional) Focus ring border width.
+   * - `root.paddingBlock` (string) - (Optional) Block dimension padding.
+   * - `root.paddingInline` (string) - (Optional) Inline dimension padding.
+   * @awsuiSystem core
+   */
+  style?: ButtonProps.Style;
 }
 
 export namespace ButtonProps {
