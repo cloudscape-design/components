@@ -24,7 +24,9 @@ class MultiPageCreate extends BasePageObject {
   }
 
   async getFunnelLog() {
-    const funnelLog = await this.browser.execute(() => window.__awsuiFunnelMetrics__);
+    const funnelLog: ExtendedWindow['__awsuiFunnelMetrics__'] = await this.browser.execute(
+      () => window.__awsuiFunnelMetrics__
+    );
     const actions = funnelLog.map(item => item.action);
     return { funnelLog, actions };
   }

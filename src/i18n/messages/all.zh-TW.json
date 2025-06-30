@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "結束時間",
     "i18nStrings.dateTimeConstraintText": "日期請使用 YYYY/MM/DD 格式。時間請使用 24 小時格式。",
     "i18nStrings.dateConstraintText": "對於日期，請使用 YYYY/MM/DD。",
+    "i18nStrings.slashedDateTimeConstraintText": "日期請使用 YYYY/MM/DD 格式。時間請使用 24 小時格式。",
+    "i18nStrings.isoDateTimeConstraintText": "日期請使用 YYYY-MM-DD 格式。時間請使用 24 小時格式。",
+    "i18nStrings.slashedDateConstraintText": "日期請使用 YYYY/MM/DD 格式。",
+    "i18nStrings.isoDateConstraintText": "日期請使用 YYYY-MM-DD 格式。",
+    "i18nStrings.slashedMonthConstraintText": "月份請使用 YYYY/MM 格式。",
+    "i18nStrings.isoMonthConstraintText": "月份請使用 YYYY-MM 格式。",
     "i18nStrings.monthConstraintText": "對於月份，請使用 YYYY/MM。",
     "i18nStrings.errorIconAriaLabel": "錯誤",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "已選取從 {startDate} 到 {endDate} 的範圍",
@@ -403,6 +409,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "關閉選單",
     "i18nStrings.overflowMenuBackIconAriaLabel": "返回",
     "i18nStrings.overflowMenuTitleText": "全部"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "展開",
+    "i18nStrings.collapseButtonLabel": "收合"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "正在載入",

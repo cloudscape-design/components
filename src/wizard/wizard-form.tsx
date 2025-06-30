@@ -152,7 +152,7 @@ function WizardForm({
         actions={
           <WizardActions
             cancelButtonText={i18nStrings.cancelButton}
-            primaryButtonText={isLastStep ? submitButtonText ?? i18nStrings.submitButton : i18nStrings.nextButton}
+            primaryButtonText={isLastStep ? (submitButtonText ?? i18nStrings.submitButton) : i18nStrings.nextButton}
             primaryButtonLoadingText={
               isLastStep ? i18nStrings.submitButtonLoadingAnnouncement : i18nStrings.nextButtonLoadingAnnouncement
             }
