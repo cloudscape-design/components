@@ -50,6 +50,14 @@ export const createAlertContext = (tokens: TokenCategory<string, GlobalValue | M
   };
 };
 
+export const createHeaderAlertContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return {
+    id: 'alert-header',
+    selector: '.awsui-context-content-header .awsui-context-alert',
+    tokens,
+  };
+};
+
 export const createAppLayoutToolsDrawerTriggerContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
   return {
     id: 'app-layout-tools-drawer-trigger',

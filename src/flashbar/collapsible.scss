@@ -197,8 +197,8 @@ the grid layout will be:
 
 .stack > .notification-bar {
   @include styles.text-wrapping;
-  background: awsui.$color-background-notification-stack-bar;
-  border-color: awsui.$color-border-notification-stack-bar;
+  background: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-notification-stack-bar);
+  border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-notification-stack-bar);
   border-start-start-radius: awsui.$border-radius-button;
   border-start-end-radius: awsui.$border-radius-button;
   border-end-start-radius: awsui.$border-radius-button;
@@ -206,7 +206,7 @@ the grid layout will be:
   border-block-style: solid;
   border-inline-style: solid;
   box-shadow: awsui.$shadow-panel-toggle;
-  color: awsui.$color-text-notification-stack-bar;
+  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-notification-stack-bar);
   cursor: pointer;
   display: flex;
   flex-direction: row;
@@ -260,12 +260,15 @@ the grid layout will be:
   }
 
   &:hover {
-    background: awsui.$color-background-notification-stack-bar-hover;
-    border-color: awsui.$color-background-notification-stack-bar-hover;
+    background: var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-notification-stack-bar-hover);
+    border-color: var(#{custom-props.$styleBorderColorHover}, awsui.$color-background-notification-stack-bar-hover);
+    color: var(#{custom-props.$styleColorHover}, awsui.$color-text-notification-stack-bar);
   }
 
   &:active {
-    background: awsui.$color-background-notification-stack-bar-active;
+    background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-notification-stack-bar-active);
+    border-color: var(#{custom-props.$styleBorderColorActive}, awsui.$color-background-notification-stack-bar);
+    color: var(#{custom-props.$styleColorActive}, awsui.$color-text-notification-stack-bar);
   }
 
   &.visual-refresh {

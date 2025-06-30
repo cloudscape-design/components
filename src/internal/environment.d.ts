@@ -5,5 +5,6 @@
 export const THEME: string;
 export const PACKAGE_SOURCE: string;
 export const PACKAGE_VERSION: string;
+export const GIT_SHA: string;
 /** Indicates that the current theme is always in visual refresh mode. */
 export const ALWAYS_VISUAL_REFRESH: boolean;

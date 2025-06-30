@@ -7,10 +7,10 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
-@import './arrow';
-@import './body';
-@import './container';
-@import './motion';
+@use './arrow';
+@use './body';
+@use './container';
+@use './motion';
 
 $trigger-underline-offset: 0.25em;
 

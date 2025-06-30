@@ -11,7 +11,7 @@ import React, {
   useState,
 } from 'react';
 
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getOffsetInlineStart } from '@cloudscape-design/component-toolkit/internal';
 
 import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
@@ -19,7 +19,6 @@ import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-co
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useMobile } from '../../internal/hooks/use-mobile';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
@@ -135,7 +134,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const maxContentWidth =
       props.maxContentWidth && props.maxContentWidth > halfGeckoMaxCssLength
         ? halfGeckoMaxCssLength
-        : props.maxContentWidth ?? 0;
+        : (props.maxContentWidth ?? 0);
     const minContentWidth = props.minContentWidth ?? 280;
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);

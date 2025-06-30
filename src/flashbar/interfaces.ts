@@ -40,6 +40,74 @@ export namespace FlashbarProps {
     warningIconAriaLabel?: string;
   }
 
+  export interface Style {
+    item?: {
+      root?: {
+        background?: {
+          error?: string;
+          info?: string;
+          inProgress?: string;
+          success?: string;
+          warning?: string;
+        };
+        borderColor?: {
+          error?: string;
+          info?: string;
+          inProgress?: string;
+          success?: string;
+          warning?: string;
+        };
+        borderRadius?: string;
+        borderWidth?: string;
+        color?: {
+          error?: string;
+          info?: string;
+          inProgress?: string;
+          success?: string;
+          warning?: string;
+        };
+        focusRing?: {
+          borderColor?: string;
+          borderRadius?: string;
+          borderWidth?: string;
+        };
+      };
+      dismissButton?: {
+        color?: {
+          active?: string;
+          default?: string;
+          hover?: string;
+        };
+        focusRing?: {
+          borderColor?: string;
+          borderRadius?: string;
+          borderWidth?: string;
+        };
+      };
+    };
+    notificationBar?: {
+      root: {
+        background?: {
+          active?: string;
+          default?: string;
+          hover?: string;
+        };
+        borderColor?: {
+          active?: string;
+          default?: string;
+          hover?: string;
+        };
+        borderRadius?: string;
+        borderWidth?: string;
+        color?: {
+          active?: string;
+          default?: string;
+          hover?: string;
+        };
+      };
+    };
+  }
+
   export type Type = 'success' | 'warning' | 'info' | 'error' | 'in-progress';
   export type AriaRole = 'alert' | 'status';
 }
@@ -52,7 +120,7 @@ export interface FlashbarProps extends BaseComponentProps {
    * A flash message object contains the following properties:
    * * `header` (ReactNode) - Specifies the heading text.
    * * `content` (ReactNode) - Specifies the primary text displayed in the flash element.
-   * * `type` (string) - Indicates the type of the message to be displayed. Allowed values are as follows: `success, error, warning, info`. The default is `info`.
+   * * `type` (string) - Indicates the type of the message to be displayed. Allowed values are as follows: `success, error, warning, info, in-progress`. The default is `info`.
    * * `loading` (boolean) - Replaces the status icon with a spinner and forces the type to `info`.
    * * `dismissible` (boolean) - Determines whether the component includes a close button icon. By default, the close button is not included.
    * When a user clicks on this button the `onDismiss` handler is called.
@@ -100,4 +168,28 @@ export interface FlashbarProps extends BaseComponentProps {
    * @i18n
    */
   i18nStrings?: FlashbarProps.I18nStrings;
+
+  /**
+   * Specifies an object of selectors and properties that are used to apply custom styles.
+   *
+   * - `item.root.background` {error, info, inProgress, success, warning} - (Optional) Background for item types.
+   * - `item.root.borderColor` {error, info, inProgress, success, warning} - (Optional) Border color for item types.
+   * - `item.root.borderRadius` (string) - (Optional) Item border radius.
+   * - `item.root.borderWidth` (string) - (Optional) Item border width.
+   * - `item.root.color` {error, info, inProgress, success, warning} - (Optional) Color for item types.
+   * - `item.root.focusRing.borderColor` (string) - (Optional) Item focus ring border color.
+   * - `item.root.focusRing.borderRadius` (string) - (Optional) Item focus ring border radius.
+   * - `item.root.focusRing.borderWidth` (string) - (Optional) Item focus ring border width.
+   * - `item.dismissButton.color` {active, default, hover} - (Optional) Color for dismiss button states.
+   * - `item.dismissButton.focusRing.borderColor` (string) - (Optional) Dismiss button focus ring border color.
+   * - `item.dismissButton.focusRing.borderRadius` (string) - (Optional) Dismiss button focus ring border radius.
+   * - `item.dismissButton.focusRing.borderWidth` (string) - (Optional) Dismiss button focus ring border width.
+   * - `notificationBar.root.background` {active, default, hover} - (Optional) Background for notification bar states.
+   * - `notificationBar.root.borderColor` {active, default, hover} - (Optional) Border color for notification bar states.
+   * - `notificationBar.root.borderRadius` (string) - (Optional) Notification bar border radius.
+   * - `notificationBar.root.borderWidth` (string) - (Optional) Notification bar border width.
+   * - `notificationBar.root.color` {active, default, hover} - (Optional) Color for notification bar states.
+   * @awsuiSystem core
+   */
+  style?: FlashbarProps.Style;
 }

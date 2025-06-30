@@ -3,6 +3,9 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import { GeneratedAnalyticsMetadataAppLayoutToolbarComponent } from '../../../app-layout-toolbar/analytics-metadata/interfaces';
 import VisualContext from '../../../internal/components/visual-context';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { useMobile } from '../../../internal/hooks/use-mobile';
@@ -47,6 +50,14 @@ interface SkeletonLayoutProps
 }
 
 const BOTTOM_GLOBAL_DRAWER_HEIGHT = 200;
+
+const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAppLayoutToolbarComponent = {
+  name: 'awsui.AppLayoutToolbar',
+  label: {
+    selector: 'h1',
+    root: 'body',
+  },
+};
 
 export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutProps>(
   (
@@ -97,6 +108,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             [customCssProps.navigationWidth]: `${navigationWidth}px`,
             [customCssProps.toolsWidth]: `${toolsWidth}px`,
           }}
+          {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
         >
           {toolbar}
           {navigation && (

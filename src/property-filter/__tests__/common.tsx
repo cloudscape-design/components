@@ -74,6 +74,7 @@ export const providedI18nStrings = {
     'i18nStrings.editTokenHeader': 'Edit filter',
     'i18nStrings.propertyText': 'Property',
     'i18nStrings.operatorText': 'Operator',
+    'i18nStrings.operatorEqualsText': 'Equals',
     'i18nStrings.valueText': 'Value',
     'i18nStrings.cancelActionText': 'Cancel',
     'i18nStrings.applyActionText': 'Apply',

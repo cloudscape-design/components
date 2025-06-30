@@ -100,6 +100,23 @@ export interface BaseButtonProps {
    * @i18n
    */
   i18nStrings?: ButtonProps.I18nStrings;
+
+  /**
+   * Specifies an object of selectors and properties that are used to apply custom styles.
+   *
+   * - `root.background` {active, default, disabled, hover} - (Optional) Background for component states.
+   * - `root.borderColor` {active, default, disabled, hover} - (Optional) Border color for component states.
+   * - `root.borderRadius` (string) - (Optional) Border radius style.
+   * - `root.borderWidth` (string) - (Optional) Border width style.
+   * - `root.color` {active, default, disabled, hover} - (Optional) Color for component states.
+   * - `root.focusRing.borderColor` (string) - (Optional) Focus ring border color.
+   * - `root.focusRing.borderRadius` (string) - (Optional) Focus ring border radius.
+   * - `root.focusRing.borderWidth` (string) - (Optional) Focus ring border width.
+   * - `root.paddingBlock` (string) - (Optional) Block dimension padding.
+   * - `root.paddingInline` (string) - (Optional) Inline dimension padding.
+   * @awsuiSystem core
+   */
+  style?: ButtonProps.Style;
 }
 
 export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
@@ -202,5 +219,37 @@ export namespace ButtonProps {
      * Focuses the underlying native button.
      */
     focus(options?: FocusOptions): void;
+  }
+
+  export interface Style {
+    root?: {
+      background?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      borderColor?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      color?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
   }
 }

@@ -3,7 +3,7 @@
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
@@ -12,7 +12,6 @@ import { matchBreakpointMapping } from '../internal/breakpoints';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { usePrevious } from '../internal/hooks/use-previous';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
 import { AdditionalInfo } from './additional-info';

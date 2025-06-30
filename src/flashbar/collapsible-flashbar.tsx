@@ -5,6 +5,7 @@ import { TransitionGroup } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../i18n/context';
@@ -15,7 +16,6 @@ import { Transition } from '../internal/components/transition';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { throttle } from '../internal/utils/throttle';
 import {
@@ -36,7 +36,7 @@ const maxNonCollapsibleItems = 1;
 
 const resizeListenerThrottleDelay = 100;
 
-export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps) {
+export default function CollapsibleFlashbar({ items, style, ...restProps }: FlashbarProps) {
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
@@ -212,6 +212,40 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   const getAnimationElementId = (item: StackableItem) => `flash-${getItemId(item)}`;
 
+  const getNotificationBarStyles = () => {
+    return {
+      borderRadius: style?.notificationBar?.root.borderRadius,
+      borderWidth: style?.notificationBar?.root.borderWidth,
+      ...(style?.notificationBar?.root?.background?.active && {
+        [customCssProps.styleBackgroundActive]: style.notificationBar.root.background.active,
+      }),
+      ...(style?.notificationBar?.root?.background?.default && {
+        [customCssProps.styleBackgroundDefault]: style.notificationBar.root.background.default,
+      }),
+      ...(style?.notificationBar?.root?.background?.hover && {
+        [customCssProps.styleBackgroundHover]: style.notificationBar.root.background.hover,
+      }),
+      ...(style?.notificationBar?.root?.borderColor?.active && {
+        [customCssProps.styleBorderColorActive]: style.notificationBar.root.borderColor.active,
+      }),
+      ...(style?.notificationBar?.root?.borderColor?.default && {
+        [customCssProps.styleBorderColorDefault]: style.notificationBar.root.borderColor.default,
+      }),
+      ...(style?.notificationBar?.root?.borderColor?.hover && {
+        [customCssProps.styleBorderColorHover]: style.notificationBar.root.borderColor.hover,
+      }),
+      ...(style?.notificationBar?.root?.color?.active && {
+        [customCssProps.styleColorActive]: style.notificationBar.root.color.active,
+      }),
+      ...(style?.notificationBar?.root?.color?.default && {
+        [customCssProps.styleColorDefault]: style.notificationBar.root.color.default,
+      }),
+      ...(style?.notificationBar?.root?.color?.hover && {
+        [customCssProps.styleColorHover]: style.notificationBar.root.color.hover,
+      }),
+    };
+  };
+
   const renderList = () => (
     <ul
       ref={listElementRef}
@@ -265,14 +299,13 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                     collapsedItemRefs.current[getAnimationElementId(item)] = element;
                   }
                 }}
-                style={
-                  !isFlashbarStackExpanded || transitioning
-                    ? {
-                        [customCssProps.flashbarStackIndex]:
-                          (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
-                      }
-                    : undefined
-                }
+                style={{
+                  ...(index > 0 && !isFlashbarStackExpanded && style && getItemStyles(style, item.type)),
+                  ...((!isFlashbarStackExpanded || transitioning) && {
+                    [customCssProps.flashbarStackIndex]:
+                      (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
+                  }),
+                }}
                 key={getItemId(item)}
                 {...getAnalyticsMetadataAttribute(getItemAnalyticsMetadata(index + 1, item.type || 'info', item.id))}
               >
@@ -287,6 +320,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                     ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
                     transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
                     i18nStrings={iconAriaLabels}
+                    style={style}
                     {...item}
                   />
                 )}
@@ -326,6 +360,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
           )}
           onClick={toggleCollapseExpand}
           ref={notificationBarRef}
+          style={{ ...getNotificationBarStyles() }}
           {...getAnalyticsMetadataAttribute({
             action: !isFlashbarStackExpanded ? 'expand' : 'collapse',
             detail: {
@@ -361,6 +396,41 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     </div>
   );
 }
+
+export const getItemStyles = (style: FlashbarProps.Style, type: string = 'info') => {
+  const background =
+    style?.item?.root?.background &&
+    (type === 'in-progress'
+      ? style?.item?.root?.background.inProgress
+      : style?.item?.root?.background[type as keyof typeof style.item.root.background]);
+
+  const borderColor =
+    style?.item?.root?.borderColor &&
+    (type === 'in-progress'
+      ? style?.item?.root?.borderColor.inProgress
+      : style?.item?.root?.borderColor[type as keyof typeof style.item.root.borderColor]);
+
+  const borderRadius = style?.item?.root?.borderRadius;
+
+  const borderWidth = style?.item?.root?.borderWidth;
+
+  const borderStyle = style?.item?.root?.borderWidth && 'solid';
+
+  const color =
+    style?.item?.root?.color &&
+    (type === 'in-progress'
+      ? style?.item?.root?.color.inProgress
+      : style?.item?.root?.color[type as keyof typeof style.item.root.color]);
+
+  return {
+    background,
+    borderColor,
+    borderRadius,
+    borderStyle,
+    borderWidth,
+    color,
+  };
+};
 
 const NotificationTypeCount = ({
   iconName,

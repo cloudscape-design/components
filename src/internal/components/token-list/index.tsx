@@ -4,7 +4,8 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '../../hooks/use-unique-id';
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { TokenListProps } from './interfaces';
 import TokenLimitToggle from './token-limit-toggle';
 

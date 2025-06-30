@@ -28,12 +28,12 @@ We support
 
 ## Browsers support
 
-We support the latest 3 major versions of these browsers for desktop.
-
+We support the latest 3 *major* versions of these browsers for desktop:
 - Google Chrome
 - Mozilla Firefox
 - Microsoft Edge
-- Apple Safari for macOS
+
+and the latest three *minor* versions of Apple Safari for macOS for desktop.
 
 We do not support Microsoft Internet Explorer or mobile browsers. We support all viewport sizes across desktop browsers.
 

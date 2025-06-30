@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "종료 시간",
     "i18nStrings.dateTimeConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다. 시간에는 24시간 형식을 사용합니다.",
     "i18nStrings.dateConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다.",
+    "i18nStrings.slashedDateTimeConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다. 시간에는 24시간 형식을 사용합니다.",
+    "i18nStrings.isoDateTimeConstraintText": "날짜에는 YYYY-MM-DD를 사용합니다. 시간에는 24시간 형식을 사용합니다.",
+    "i18nStrings.slashedDateConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다.",
+    "i18nStrings.isoDateConstraintText": "날짜에는 YYYY-MM-DD를 사용합니다.",
+    "i18nStrings.slashedMonthConstraintText": "월에는 YYYY/MM을 사용합니다.",
+    "i18nStrings.isoMonthConstraintText": "월에는 YYYY-MM을 사용합니다.",
     "i18nStrings.monthConstraintText": "월에는 YYYY/MM을 사용합니다.",
     "i18nStrings.errorIconAriaLabel": "오류",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate}~{endDate}에서 선택한 범위",
@@ -403,6 +409,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "메뉴 닫기",
     "i18nStrings.overflowMenuBackIconAriaLabel": "뒤로",
     "i18nStrings.overflowMenuTitleText": "모두"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "확장",
+    "i18nStrings.collapseButtonLabel": "축소"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "로드 중",
