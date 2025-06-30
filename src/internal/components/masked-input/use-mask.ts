@@ -100,7 +100,7 @@ const useMask = ({
       }
 
       // Proxy original event
-      onKeyDown && onKeyDown(event);
+      onKeyDown?.(event);
     },
     onChange: ({ detail }) => onMaskChange(detail.value),
     onBlur: () => {
@@ -108,7 +108,7 @@ const useMask = ({
         onAutoComplete(maskedValue, onChange, format);
       }
 
-      onBlur && onBlur();
+      onBlur?.();
     },
     onPaste: (event: React.ClipboardEvent) => {
       const text = (event.clipboardData || (window as any).clipboardData).getData('text');

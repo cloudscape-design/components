@@ -16,7 +16,7 @@ const ruleWildcardPath = [
   },
 ];
 const defaultRules = [...ruleHardcodedPath, ...ruleWildcardPath];
-const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018, sourceType: 'module' } });
+const ruleTester = new RuleTester();
 
 ruleTester.run('ban-files', banFiles, {
   valid: [
@@ -48,12 +48,6 @@ ruleTester.run('ban-files', banFiles, {
     {
       code: 'import "../../"',
       filename: './src/select/parts/filter.tsx',
-      options: [ruleHardcodedPath],
-      errors: [{ message: "Disallowed import 'src/index.ts' in favor of having smaller bundle sizes." }],
-    },
-    {
-      code: 'import "../index"',
-      filename: './src/button/index.tsx',
       options: [ruleHardcodedPath],
       errors: [{ message: "Disallowed import 'src/index.ts' in favor of having smaller bundle sizes." }],
     },

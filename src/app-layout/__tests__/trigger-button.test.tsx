@@ -165,7 +165,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
 
       test.each([true, false])('icon renders correctly when iconSvg prop has a %s value', hasIconSvg => {
         const icon = (
-          <svg viewBox="0 0 24 24">
+          <svg viewBox="0 0 24 24" focusable="false">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
           </svg>
         );
@@ -297,7 +297,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
 
   test.each([true, false])('icon renders correctly when iconSvg prop has a %s value', hasIconSvg => {
     const icon = (
-      <svg viewBox="0 0 24 24">
+      <svg viewBox="0 0 24 24" focusable="false">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
       </svg>
     );

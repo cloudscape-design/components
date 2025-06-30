@@ -76,7 +76,7 @@ describe('Date picker - direct date input', () => {
   });
 
   describe('aria-describedby', () => {
-    test('is not added if not passed ', () => {
+    test('is not added if not passed', () => {
       const { wrapper } = renderDatePicker({ ...defaultProps, ariaDescribedby: undefined });
       expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('aria-describedby');
     });

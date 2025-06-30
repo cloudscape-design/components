@@ -5,10 +5,8 @@ import { pascalCase } from 'change-case';
 import { getAllComponents, requireComponent } from '../utils';
 
 describe('component displayName matches import directory name', () => {
-  getAllComponents().forEach(componentName => {
+  test.each(getAllComponents())('%s', componentName => {
     const { default: Component } = requireComponent(componentName);
-    test(componentName, () => {
-      expect(Component.displayName).toBe(pascalCase(componentName));
-    });
+    expect(Component.displayName).toBe(pascalCase(componentName));
   });
 });

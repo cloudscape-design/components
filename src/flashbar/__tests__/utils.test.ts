@@ -63,7 +63,7 @@ describe('getVisibleCollapsedItems', () => {
   ];
 
   for (const testCase of cases) {
-    it(testCase.description, () => {
+    it(`${testCase.description}`, () => {
       const items = testCase.input.map(type => ({ type }));
       const result = getVisibleCollapsedItems(items, 3).map(item => getItemType(item));
       expect(result).toEqual(testCase.expectedOutput);

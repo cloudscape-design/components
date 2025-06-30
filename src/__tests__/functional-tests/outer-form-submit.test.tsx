@@ -28,7 +28,7 @@ describe('Check outer form submission', () => {
       const { default: Component } = requireComponent(componentName);
       const requiredProps = getRequiredPropsForComponent(componentName);
 
-      test(componentName, () => {
+      test(`${componentName}`, () => {
         const onSubmit = jest.fn((e: React.FormEvent<HTMLFormElement>) => {
           // JSDOM doesn't support form submissions, so we need to call preventDefault.
           e.preventDefault();

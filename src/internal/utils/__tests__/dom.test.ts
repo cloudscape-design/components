@@ -12,7 +12,7 @@ import {
 describe('parseCssVariable', () => {
   [true, false].forEach(supports => {
     const testCssVariable = (testName: string, input: string, output: string) =>
-      test(testName, () => expect(parseCssVariable(input)).toBe(supports ? input : output));
+      test(`${testName}`, () => expect(parseCssVariable(input)).toBe(supports ? input : output));
 
     describe(`with${supports ? '' : 'out'} CSS variable support`, () => {
       const originalCSS = window.CSS;
