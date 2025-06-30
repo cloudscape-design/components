@@ -5,6 +5,8 @@ import React from 'react';
 
 import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { NonCancelableEventHandler } from '../../internal/events';
+import { DrawerPosition, DrawerPositionChangeParams } from '../../internal/plugins/controllers/drawers';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { OnChangeParams } from '../utils/use-drawers';
 import { FocusControlMultipleStates, FocusControlState } from '../utils/use-focus-control';
@@ -19,6 +21,9 @@ export type InternalDrawer = AppLayoutProps.Drawer & {
   defaultActive?: boolean;
   isExpandable?: boolean;
   ariaLabels: AppLayoutProps.Drawer['ariaLabels'] & { expandedModeButton?: string };
+  movable?: boolean;
+  position?: DrawerPosition;
+  onPositionChange?: NonCancelableEventHandler<DrawerPositionChangeParams>;
 };
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.
