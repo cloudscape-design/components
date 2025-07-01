@@ -88,6 +88,12 @@ const defaultProps: Record<string, Record<string, any>> = {
     },
     tutorials: [],
   },
+  'tree-view': {
+    items: [],
+    renderItem: () => ({ content: '' }),
+    getItemId: () => '',
+    getItemChildren: () => [],
+  },
   'annotation-context': {
     i18nStrings: {},
   },
