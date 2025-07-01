@@ -416,19 +416,49 @@ describe('Collapsible Flashbar', () => {
                   warning: 'brown',
                 },
                 focusRing: {
-                  borderColor: 'magenta',
+                  borderColor: {
+                    error: 'magenta',
+                    info: 'blue',
+                    inProgress: 'yellow',
+                    success: 'orange',
+                    warning: 'brown',
+                  },
                   borderRadius: '10px',
                   borderWidth: '5px',
                 },
               },
               dismissButton: {
                 color: {
-                  active: 'magenta',
-                  default: 'blue',
-                  hover: 'orange',
+                  active: {
+                    error: 'magenta',
+                    info: 'blue',
+                    inProgress: 'yellow',
+                    success: 'orange',
+                    warning: 'brown',
+                  },
+                  default: {
+                    error: 'magenta',
+                    info: 'blue',
+                    inProgress: 'yellow',
+                    success: 'orange',
+                    warning: 'brown',
+                  },
+                  hover: {
+                    error: 'magenta',
+                    info: 'blue',
+                    inProgress: 'yellow',
+                    success: 'orange',
+                    warning: 'brown',
+                  },
                 },
                 focusRing: {
-                  borderColor: 'green',
+                  borderColor: {
+                    error: 'magenta',
+                    info: 'blue',
+                    inProgress: 'yellow',
+                    success: 'orange',
+                    warning: 'brown',
+                  },
                   borderRadius: '10px',
                   borderWidth: '90px',
                 },
@@ -450,6 +480,13 @@ describe('Collapsible Flashbar', () => {
                   active: 'magenta',
                   default: 'orange',
                   hover: 'green',
+                },
+              },
+              expandButton: {
+                focusRing: {
+                  borderColor: 'magenta',
+                  borderRadius: '10px',
+                  borderWidth: '90px',
                 },
               },
             },
@@ -513,15 +550,30 @@ describe('Collapsible Flashbar', () => {
           )
         ).toBe('green');
         expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleFocusRingBorderColor
+          )
+        ).toBe('magenta');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleFocusRingBorderRadius
+          )
+        ).toBe('10px');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleFocusRingBorderWidth
+          )
+        ).toBe('90px');
+        expect(
           getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
             customCssProps.styleColorActive
           )
-        ).toBe('magenta');
+        ).toBe('yellow');
         expect(
           getComputedStyle(flashbar.find('li > div')?.getElement() as HTMLElement).getPropertyValue(
             customCssProps.styleFocusRingBorderColor
           )
-        ).toBe('magenta');
+        ).toBe('yellow');
         expect(
           getComputedStyle(flashbar.find('li > div')?.getElement() as HTMLElement).getPropertyValue(
             customCssProps.styleFocusRingBorderRadius
@@ -536,17 +588,17 @@ describe('Collapsible Flashbar', () => {
           getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
             customCssProps.styleColorDefault
           )
-        ).toBe('blue');
+        ).toBe('yellow');
         expect(
           getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
             customCssProps.styleColorHover
           )
-        ).toBe('orange');
+        ).toBe('yellow');
         expect(
           getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
             customCssProps.styleFocusRingBorderColor
           )
-        ).toBe('green');
+        ).toBe('yellow');
         expect(
           getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
             customCssProps.styleFocusRingBorderRadius

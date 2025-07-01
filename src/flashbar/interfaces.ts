@@ -67,26 +67,56 @@ export namespace FlashbarProps {
           warning?: string;
         };
         focusRing?: {
-          borderColor?: string;
+          borderColor?: {
+            error?: string;
+            info?: string;
+            inProgress?: string;
+            success?: string;
+            warning?: string;
+          };
           borderRadius?: string;
           borderWidth?: string;
         };
       };
       dismissButton?: {
         color?: {
-          active?: string;
-          default?: string;
-          hover?: string;
+          active?: {
+            error?: string;
+            info?: string;
+            inProgress?: string;
+            success?: string;
+            warning?: string;
+          };
+          default?: {
+            error?: string;
+            info?: string;
+            inProgress?: string;
+            success?: string;
+            warning?: string;
+          };
+          hover?: {
+            error?: string;
+            info?: string;
+            inProgress?: string;
+            success?: string;
+            warning?: string;
+          };
         };
         focusRing?: {
-          borderColor?: string;
+          borderColor?: {
+            error?: string;
+            info?: string;
+            inProgress?: string;
+            success?: string;
+            warning?: string;
+          };
           borderRadius?: string;
           borderWidth?: string;
         };
       };
     };
     notificationBar?: {
-      root: {
+      root?: {
         background?: {
           active?: string;
           default?: string;
@@ -103,6 +133,13 @@ export namespace FlashbarProps {
           active?: string;
           default?: string;
           hover?: string;
+        };
+      };
+      expandButton?: {
+        focusRing?: {
+          borderColor?: string;
+          borderRadius?: string;
+          borderWidth?: string;
         };
       };
     };
@@ -177,11 +214,13 @@ export interface FlashbarProps extends BaseComponentProps {
    * - `item.root.borderRadius` (string) - (Optional) Item border radius.
    * - `item.root.borderWidth` (string) - (Optional) Item border width.
    * - `item.root.color` {error, info, inProgress, success, warning} - (Optional) Color for item types.
-   * - `item.root.focusRing.borderColor` (string) - (Optional) Item focus ring border color.
+   * - `item.root.focusRing.borderColor` {error, info, inProgress, success, warning} - (Optional) Item focus ring border color.
    * - `item.root.focusRing.borderRadius` (string) - (Optional) Item focus ring border radius.
    * - `item.root.focusRing.borderWidth` (string) - (Optional) Item focus ring border width.
-   * - `item.dismissButton.color` {active, default, hover} - (Optional) Color for dismiss button states.
-   * - `item.dismissButton.focusRing.borderColor` (string) - (Optional) Dismiss button focus ring border color.
+   * - `item.dismissButton.color.active` {error, info, inProgress, success, warning} - (Optional) Color for dismiss button active state.
+   * - `item.dismissButton.color.default` {error, info, inProgress, success, warning} - (Optional) Color for dismiss button default state.
+   * - `item.dismissButton.color.hover` {error, info, inProgress, success, warning} - (Optional) Color for dismiss button hover state.
+   * - `item.dismissButton.focusRing.borderColor` {error, info, inProgress, success, warning} - (Optional) Dismiss button focus ring border color.
    * - `item.dismissButton.focusRing.borderRadius` (string) - (Optional) Dismiss button focus ring border radius.
    * - `item.dismissButton.focusRing.borderWidth` (string) - (Optional) Dismiss button focus ring border width.
    * - `notificationBar.root.background` {active, default, hover} - (Optional) Background for notification bar states.
@@ -189,6 +228,9 @@ export interface FlashbarProps extends BaseComponentProps {
    * - `notificationBar.root.borderRadius` (string) - (Optional) Notification bar border radius.
    * - `notificationBar.root.borderWidth` (string) - (Optional) Notification bar border width.
    * - `notificationBar.root.color` {active, default, hover} - (Optional) Color for notification bar states.
+   * - `notificationBar.expandButton.focusRing.borderColor` (string) - (Optional) Border color for the expand button.
+   * - `notificationBar.expandButton.focusRing.borderRadius` (string) - (Optional) Border radius for the expand button.
+   * - `notificationBar.expandButton.focusRing.borderWidth` (string) - (Optional) Border width for the expand button.
    * @awsuiSystem core
    */
   style?: FlashbarProps.Style;

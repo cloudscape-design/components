@@ -21,7 +21,6 @@ import {
 } from '../internal/analytics/selectors';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { PACKAGE_VERSION } from '../internal/environment';
-import customCssProps from '../internal/generated/custom-css-properties';
 import { isDevelopment } from '../internal/is-development';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
@@ -30,8 +29,8 @@ import useContainerWidth from '../internal/utils/use-container-width';
 import InternalLiveRegion from '../live-region/internal';
 import InternalSpinner from '../spinner/internal';
 import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
-import { getItemStyles } from './collapsible-flashbar';
 import { FlashbarProps } from './interfaces';
+import { getDismissButtonStyles, getFlashStyles } from './style';
 import { FOCUS_THROTTLE_DELAY } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -51,7 +50,8 @@ const useDiscoveredContent = createUseDiscoveredContent('flash', awsuiPluginsInt
 function dismissButton(
   dismissLabel: FlashbarProps.MessageDefinition['dismissLabel'],
   onDismiss: FlashbarProps.MessageDefinition['onDismiss'],
-  style?: FlashbarProps.Style
+  style?: FlashbarProps.Style,
+  type?: string
 ) {
   return (
     <div
@@ -68,18 +68,7 @@ function dismissButton(
         formAction="none"
         ariaLabel={dismissLabel}
         style={{
-          root: {
-            color: {
-              active: style?.item?.dismissButton?.color?.active,
-              default: style?.item?.dismissButton?.color?.default,
-              hover: style?.item?.dismissButton?.color?.hover,
-            },
-            focusRing: {
-              borderColor: style?.item?.dismissButton?.focusRing?.borderColor,
-              borderRadius: style?.item?.dismissButton?.focusRing?.borderRadius,
-              borderWidth: style?.item?.dismissButton?.focusRing?.borderWidth,
-            },
-          },
+          ...(style && getDismissButtonStyles(style, type)),
         }}
       />
     </div>
@@ -213,15 +202,7 @@ export const Flash = React.forwardRef(
           initialHidden && styles['initial-hidden']
         )}
         style={{
-          ...(style && getItemStyles(style, effectiveType)),
-          ...(style?.item?.root?.focusRing && {
-            [customCssProps.styleFocusRingBorderColor]: style.item.root.focusRing?.borderColor,
-            [customCssProps.styleFocusRingBorderRadius]: style.item.root.focusRing?.borderRadius,
-            [customCssProps.styleFocusRingBorderWidth]: style.item.root.focusRing?.borderWidth,
-          }),
-          ...(style?.item?.root?.focusRing?.borderRadius && {
-            [customCssProps.styleFocusRingBorderRadius]: style.item.root.focusRing.borderRadius,
-          }),
+          ...(style && getFlashStyles(style, effectiveType)),
         }}
         {...analyticsAttributes}
       >
@@ -278,7 +259,7 @@ export const Flash = React.forwardRef(
             wrappedClass={styles['action-wrapped']}
           />
         </div>
-        {dismissible && dismissButton(dismissLabel, onDismiss, style)}
+        {dismissible && dismissButton(dismissLabel, onDismiss, style, effectiveType)}
         {ariaRole === 'status' && (
           <InternalLiveRegion sources={[statusIconAriaLabel, headerRefObject, contentRefObject]} />
         )}

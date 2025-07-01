@@ -120,19 +120,49 @@ const item = {
       warning: palette.orange100,
     },
     focusRing: {
-      borderColor: palette.neutral90,
+      borderColor: {
+        error: palette.red100,
+        info: palette.blue100,
+        inProgress: palette.teal100,
+        success: palette.green100,
+        warning: palette.orange100,
+      },
       borderRadius: '4px',
       borderWidth: '1px',
     },
   },
   dismissButton: {
     color: {
-      active: palette.neutral100,
-      default: palette.neutral80,
-      hover: palette.neutral90,
+      active: {
+        error: palette.red100,
+        info: palette.blue100,
+        inProgress: palette.teal100,
+        success: palette.green100,
+        warning: palette.orange100,
+      },
+      default: {
+        error: palette.red90,
+        info: palette.blue90,
+        inProgress: palette.teal90,
+        success: palette.green90,
+        warning: palette.orange90,
+      },
+      hover: {
+        error: palette.red80,
+        info: palette.blue80,
+        inProgress: palette.teal80,
+        success: palette.green80,
+        warning: palette.orange80,
+      },
     },
     focusRing: {
-      borderColor: palette.neutral90,
+      borderColor: {
+        error: palette.red80,
+        info: palette.blue80,
+        inProgress: palette.teal80,
+        success: palette.green80,
+        warning: palette.orange80,
+      },
       borderRadius: '4px',
       borderWidth: '1px',
     },
@@ -157,6 +187,13 @@ const notificationBar = {
       active: palette.neutral10,
       default: palette.neutral10,
       hover: palette.neutral10,
+    },
+  },
+  expandButton: {
+    focusRing: {
+      borderColor: palette.neutral20,
+      borderRadius: '4px',
+      borderWidth: '1px',
     },
   },
 };

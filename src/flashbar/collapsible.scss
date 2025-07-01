@@ -6,6 +6,7 @@
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/foundation' as foundation;
 @use '../internal/styles' as styles;
 @use '../internal/styles/typography' as typography;
 @use './collapsible.motion';
@@ -84,9 +85,8 @@ the grid layout will be:
        This makes them look better during the collapse animation, in which they are already empty.
      */
     min-block-size: calc(
-      #{awsui.$line-height-body-m} + (
-          #{awsui.$space-scaled-xs} + #{awsui.$border-width-field} + #{awsui.$space-scaled-xxs}
-        ) * 2
+      #{awsui.$line-height-body-m} +
+        (#{awsui.$space-scaled-xs} + #{awsui.$border-width-field} + #{awsui.$space-scaled-xxs}) * 2
     );
   }
 
@@ -112,13 +112,15 @@ the grid layout will be:
   /* $notification-bar-line-height + 2 * $notification-bar-padding-vertical + 2 * $border-width
   is the full height of the notification bar */
   #{custom-props.$stackedNotificationsDefaultBottomMargin}: calc(
-    #{$notification-bar-line-height} + 2 * #{$notification-bar-padding-vertical} + 2 * #{$border-width} - #{$top-overlap}
+    #{$notification-bar-line-height} + 2 * #{$notification-bar-padding-vertical} + 2 * #{$border-width} -
+      #{$top-overlap}
   );
   margin-block-end: calc(
     var(
         #{custom-props.$stackedNotificationsBottomMargin},
         var(#{custom-props.$stackedNotificationsDefaultBottomMargin})
-      ) + #{$buffer-bottom} + #{$offset-bottom}
+      ) +
+      #{$buffer-bottom} + #{$offset-bottom}
   );
 
   > .notification-bar {
@@ -126,8 +128,8 @@ the grid layout will be:
     /* $notification-bar-line-height + 2 * $notification-bar-padding-vertical + 2 * $border-width
     is the full height of the notification bar */
     margin-block-end: calc(
-      #{$top-overlap} - #{$notification-bar-line-height} - 2 * #{$notification-bar-padding-vertical} - 2 * #{$border-width} -
-        #{$offset-bottom}
+      #{$top-overlap} - #{$notification-bar-line-height} - 2 * #{$notification-bar-padding-vertical} - 2 *
+        #{$border-width} - #{$offset-bottom}
     );
     padding-block: $notification-bar-padding-vertical;
   }
@@ -300,6 +302,9 @@ the grid layout will be:
     border-block: 0;
     border-inline: none;
     padding-block: 0;
+    #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+      var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+      var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
     > .icon {
       @include styles.with-motion {
@@ -315,7 +320,14 @@ the grid layout will be:
     }
 
     @include focus-visible.when-visible {
-      @include styles.focus-highlight(0px);
+      @include styles.focus-highlight(
+        $gutter: 0px,
+        $border-radius: var(
+            #{custom-props.$styleFocusRingBorderRadius},
+            awsui.$border-radius-control-default-focus-ring
+          ),
+        $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+      );
     }
   }
 }

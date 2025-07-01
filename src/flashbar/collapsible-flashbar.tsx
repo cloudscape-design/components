@@ -26,6 +26,7 @@ import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './anal
 import { useFlashbar } from './common';
 import { Flash, focusFlashById } from './flash';
 import { FlashbarProps } from './interfaces';
+import { getCollapsibleFlashStyles, getNotificationBarStyles } from './style';
 import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils';
 
 import styles from './styles.css.js';
@@ -212,40 +213,6 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
 
   const getAnimationElementId = (item: StackableItem) => `flash-${getItemId(item)}`;
 
-  const getNotificationBarStyles = () => {
-    return {
-      borderRadius: style?.notificationBar?.root.borderRadius,
-      borderWidth: style?.notificationBar?.root.borderWidth,
-      ...(style?.notificationBar?.root?.background?.active && {
-        [customCssProps.styleBackgroundActive]: style.notificationBar.root.background.active,
-      }),
-      ...(style?.notificationBar?.root?.background?.default && {
-        [customCssProps.styleBackgroundDefault]: style.notificationBar.root.background.default,
-      }),
-      ...(style?.notificationBar?.root?.background?.hover && {
-        [customCssProps.styleBackgroundHover]: style.notificationBar.root.background.hover,
-      }),
-      ...(style?.notificationBar?.root?.borderColor?.active && {
-        [customCssProps.styleBorderColorActive]: style.notificationBar.root.borderColor.active,
-      }),
-      ...(style?.notificationBar?.root?.borderColor?.default && {
-        [customCssProps.styleBorderColorDefault]: style.notificationBar.root.borderColor.default,
-      }),
-      ...(style?.notificationBar?.root?.borderColor?.hover && {
-        [customCssProps.styleBorderColorHover]: style.notificationBar.root.borderColor.hover,
-      }),
-      ...(style?.notificationBar?.root?.color?.active && {
-        [customCssProps.styleColorActive]: style.notificationBar.root.color.active,
-      }),
-      ...(style?.notificationBar?.root?.color?.default && {
-        [customCssProps.styleColorDefault]: style.notificationBar.root.color.default,
-      }),
-      ...(style?.notificationBar?.root?.color?.hover && {
-        [customCssProps.styleColorHover]: style.notificationBar.root.color.hover,
-      }),
-    };
-  };
-
   const renderList = () => (
     <ul
       ref={listElementRef}
@@ -300,7 +267,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
                   }
                 }}
                 style={{
-                  ...(index > 0 && !isFlashbarStackExpanded && style && getItemStyles(style, item.type)),
+                  ...(index > 0 && !isFlashbarStackExpanded && style && getCollapsibleFlashStyles(style, item.type)),
                   ...((!isFlashbarStackExpanded || transitioning) && {
                     [customCssProps.flashbarStackIndex]:
                       (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
@@ -360,7 +327,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
           )}
           onClick={toggleCollapseExpand}
           ref={notificationBarRef}
-          style={{ ...getNotificationBarStyles() }}
+          style={{ ...(style && getNotificationBarStyles(style)) }}
           {...getAnalyticsMetadataAttribute({
             action: !isFlashbarStackExpanded ? 'expand' : 'collapse',
             detail: {
@@ -396,41 +363,6 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
     </div>
   );
 }
-
-export const getItemStyles = (style: FlashbarProps.Style, type: string = 'info') => {
-  const background =
-    style?.item?.root?.background &&
-    (type === 'in-progress'
-      ? style?.item?.root?.background.inProgress
-      : style?.item?.root?.background[type as keyof typeof style.item.root.background]);
-
-  const borderColor =
-    style?.item?.root?.borderColor &&
-    (type === 'in-progress'
-      ? style?.item?.root?.borderColor.inProgress
-      : style?.item?.root?.borderColor[type as keyof typeof style.item.root.borderColor]);
-
-  const borderRadius = style?.item?.root?.borderRadius;
-
-  const borderWidth = style?.item?.root?.borderWidth;
-
-  const borderStyle = style?.item?.root?.borderWidth && 'solid';
-
-  const color =
-    style?.item?.root?.color &&
-    (type === 'in-progress'
-      ? style?.item?.root?.color.inProgress
-      : style?.item?.root?.color[type as keyof typeof style.item.root.color]);
-
-  return {
-    background,
-    borderColor,
-    borderRadius,
-    borderStyle,
-    borderWidth,
-    color,
-  };
-};
 
 const NotificationTypeCount = ({
   iconName,
