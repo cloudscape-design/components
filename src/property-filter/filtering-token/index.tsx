@@ -108,7 +108,7 @@ const FilteringToken = forwardRef(
       __onOpen: onEditorOpen,
       __closeAnalyticsAction: 'editClose',
     };
-    useImperativeHandle(ref, () => ({ closeEditor: () => popoverRef.current?.dismissPopover() }));
+    useImperativeHandle(ref, () => ({ closeEditor: () => popoverRef.current?.focus() }));
 
     return (
       <TokenGroup
