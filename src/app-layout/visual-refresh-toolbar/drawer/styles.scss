@@ -280,6 +280,7 @@ $drawer-resize-handle-size: awsui.$space-m;
 
       > .drawer-content-container {
         block-size: var(#{custom-props.$drawerSize});
+        border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
       }
     }
   }
