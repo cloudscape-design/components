@@ -4,7 +4,29 @@
 import { useRef } from 'react';
 import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 
+import { CustomHandler } from '../../../i18n/context';
+import { I18nFormatArgTypes } from '../../../i18n/messages-types';
 import { SortableAreaProps } from './interfaces';
+
+export const formatDndStarted: CustomHandler<
+  SortableAreaProps.DndAreaI18nStrings['liveAnnouncementDndStarted'],
+  I18nFormatArgTypes['list']['liveAnnouncementDndStarted']
+> = format => (position, total) => format({ position, total });
+export const formatDndItemReordered: CustomHandler<
+  SortableAreaProps.DndAreaI18nStrings['liveAnnouncementDndItemReordered'],
+  I18nFormatArgTypes['list']['liveAnnouncementDndItemReordered']
+> = format => (initialPosition, currentPosition, total) =>
+  format({ currentPosition, total, isInitialPosition: `${initialPosition === currentPosition}` });
+export const formatDndItemCommitted: CustomHandler<
+  SortableAreaProps.DndAreaI18nStrings['liveAnnouncementDndItemCommitted'],
+  I18nFormatArgTypes['list']['liveAnnouncementDndItemCommitted']
+> = format => (initialPosition, finalPosition, total) =>
+  format({
+    initialPosition,
+    finalPosition,
+    total,
+    isInitialPosition: `${initialPosition === finalPosition}`,
+  });
 
 export default function useLiveAnnouncements<Item>({
   items,

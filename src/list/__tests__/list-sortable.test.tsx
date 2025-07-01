@@ -105,7 +105,7 @@ describe('List - Sortable', () => {
   });
 
   test('can override tag when sortable', () => {
-    const { wrapper } = renderSortableList({ tag: 'ul' });
+    const { wrapper } = renderSortableList({ tagOverride: 'ul' });
     expect(wrapper.getElement().tagName).toBe('UL');
   });
 

@@ -7,6 +7,11 @@ import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import InternalDragHandle from '../internal/components/drag-handle';
 import SortableArea from '../internal/components/sortable-area';
+import {
+  formatDndItemCommitted,
+  formatDndItemReordered,
+  formatDndStarted,
+} from '../internal/components/sortable-area/use-live-announcements';
 import InternalStructuredItem, { StructuredItemProps } from '../internal/components/structured-item';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -29,7 +34,7 @@ export default function InternalList<T = any>({
   renderItem,
   sortable = false,
   sortDisabled = false,
-  tag: Tag = sortable ? 'ol' : 'ul',
+  tagOverride: Tag = sortable ? 'ol' : 'ul',
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
@@ -61,24 +66,17 @@ export default function InternalList<T = any>({
           liveAnnouncementDndStarted: i18n(
             'liveAnnouncementDndStarted',
             i18nStrings?.liveAnnouncementDndStarted,
-            format => (position, total) => format({ position, total })
+            formatDndStarted
           ),
           liveAnnouncementDndItemReordered: i18n(
             'liveAnnouncementDndItemReordered',
             i18nStrings?.liveAnnouncementDndItemReordered,
-            format => (initialPosition, currentPosition, total) =>
-              format({ currentPosition, total, isInitialPosition: `${initialPosition === currentPosition}` })
+            formatDndItemReordered
           ),
           liveAnnouncementDndItemCommitted: i18n(
             'liveAnnouncementDndItemCommitted',
             i18nStrings?.liveAnnouncementDndItemCommitted,
-            format => (initialPosition, finalPosition, total) =>
-              format({
-                initialPosition,
-                finalPosition,
-                total,
-                isInitialPosition: `${initialPosition === finalPosition}`,
-              })
+            formatDndItemCommitted
           ),
           liveAnnouncementDndDiscarded: i18n('liveAnnouncementDndDiscarded', i18nStrings?.liveAnnouncementDndDiscarded),
           dragHandleAriaLabel: i18n('dragHandleAriaLabel', i18nStrings?.dragHandleAriaLabel),

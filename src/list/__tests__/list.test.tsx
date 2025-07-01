@@ -66,7 +66,7 @@ describe('List', () => {
   });
 
   test('can render as ol', () => {
-    const wrapper = renderList({ tag: 'ol' });
+    const wrapper = renderList({ tagOverride: 'ol' });
     expect(wrapper.getElement().tagName).toBe('OL');
   });
 });

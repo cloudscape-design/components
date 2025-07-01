@@ -11585,7 +11585,7 @@ exports[`Documenter definition for list matches the snapshot: list 1`] = `
 - \`dragHandleAriaLabel\` (string) - (Optional) Adds an ARIA label for the drag handle.",
       "i18nTag": true,
       "inlineType": {
-        "name": "ListProps.I18nStrings",
+        "name": "SortableAreaProps.DndAreaI18nStrings",
         "properties": [
           {
             "name": "dragHandleAriaDescription",
@@ -11622,7 +11622,7 @@ exports[`Documenter definition for list matches the snapshot: list 1`] = `
       },
       "name": "i18nStrings",
       "optional": true,
-      "type": "ListProps.I18nStrings",
+      "type": "SortableAreaProps.DndAreaI18nStrings",
     },
     {
       "description": "The items to display in the list.",
@@ -11635,7 +11635,7 @@ exports[`Documenter definition for list matches the snapshot: list 1`] = `
 * \`id\` (string) - A unique identifier for the item.
 * \`content\` (React.ReactNode) - The content of the item.
 * \`secondaryContent\` (React.ReactNode) - (Optional) Secondary content, for example item description.
-* \`icon\` (React.ReactNode) - (Optional) An icon.
+* \`icon\` (React.ReactNode) - (Optional) An icon, displayed at the start.
 * \`action\` (React.ReactNode) - (Optional) Action button(s).
 * \`announcementLabel\` (string) - (Optional) An announcement label for the item, used when sorting.
    By default, the \`content\` is used: a custom label should be provided if \`content\` is not a string.",
@@ -11661,7 +11661,7 @@ exports[`Documenter definition for list matches the snapshot: list 1`] = `
       "type": "boolean",
     },
     {
-      "description": "Disables sorting drag handles. Use this when a sortable list is temporarily unsortable for some reason.",
+      "description": "Disables sorting drag handles. Use this to temporarily prevent users from reordering the list.",
       "name": "sortDisabled",
       "optional": true,
       "type": "boolean",
@@ -11676,7 +11676,7 @@ exports[`Documenter definition for list matches the snapshot: list 1`] = `
           "ul",
         ],
       },
-      "name": "tag",
+      "name": "tagOverride",
       "optional": true,
       "type": "string",
     },

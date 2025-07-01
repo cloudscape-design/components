@@ -7,6 +7,11 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import InternalBox from '../../box/internal';
 import InternalButton from '../../button/internal';
 import { useInternalI18n } from '../../i18n/context';
+import {
+  formatDndItemCommitted,
+  formatDndItemReordered,
+  formatDndStarted,
+} from '../../internal/components/sortable-area/use-live-announcements';
 import InternalList from '../../list/internal';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalTextFilter from '../../text-filter/internal';
@@ -140,24 +145,17 @@ export default function ContentDisplayPreference({
           liveAnnouncementDndStarted: i18n(
             'contentDisplayPreference.liveAnnouncementDndStarted',
             liveAnnouncementDndStarted,
-            format => (position, total) => format({ position, total })
+            formatDndStarted
           ),
           liveAnnouncementDndItemReordered: i18n(
             'contentDisplayPreference.liveAnnouncementDndItemReordered',
             liveAnnouncementDndItemReordered,
-            format => (initialPosition, currentPosition, total) =>
-              format({ currentPosition, total, isInitialPosition: `${initialPosition === currentPosition}` })
+            formatDndItemReordered
           ),
           liveAnnouncementDndItemCommitted: i18n(
             'contentDisplayPreference.liveAnnouncementDndItemCommitted',
             liveAnnouncementDndItemCommitted,
-            format => (initialPosition, finalPosition, total) =>
-              format({
-                initialPosition,
-                finalPosition,
-                total,
-                isInitialPosition: `${initialPosition === finalPosition}`,
-              })
+            formatDndItemCommitted
           ),
           liveAnnouncementDndDiscarded: i18n(
             'contentDisplayPreference.liveAnnouncementDndDiscarded',

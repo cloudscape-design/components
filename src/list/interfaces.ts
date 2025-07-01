@@ -3,6 +3,7 @@
 
 import { ReactNode } from 'react';
 
+import { SortableAreaProps } from '../internal/components/sortable-area';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface ListProps<T = any> {
@@ -16,7 +17,7 @@ export interface ListProps<T = any> {
    * * `id` (string) - A unique identifier for the item.
    * * `content` (React.ReactNode) - The content of the item.
    * * `secondaryContent` (React.ReactNode) - (Optional) Secondary content, for example item description.
-   * * `icon` (React.ReactNode) - (Optional) An icon.
+   * * `icon` (React.ReactNode) - (Optional) An icon, displayed at the start.
    * * `action` (React.ReactNode) - (Optional) Action button(s).
    * * `announcementLabel` (string) - (Optional) An announcement label for the item, used when sorting.
    *    By default, the `content` is used: a custom label should be provided if `content` is not a string.
@@ -33,7 +34,7 @@ export interface ListProps<T = any> {
   /**
    * The HTML tag to render. By default `ul` is used for standard lists and `ol` for sortable lists.
    */
-  tag?: 'ol' | 'ul';
+  tagOverride?: 'ol' | 'ul';
 
   /**
    * Adds an aria-label to the list.
@@ -52,7 +53,7 @@ export interface ListProps<T = any> {
    */
   sortable?: boolean;
   /**
-   * Disables sorting drag handles. Use this when a sortable list is temporarily unsortable for some reason.
+   * Disables sorting drag handles. Use this to temporarily prevent users from reordering the list.
    */
   sortDisabled?: boolean;
   /**
@@ -87,30 +88,5 @@ export namespace ListProps {
     items: ReadonlyArray<T>;
   }
 
-  export interface I18nStrings {
-    /**
-     * Aria label for the drag handle.
-     */
-    dragHandleAriaLabel?: string;
-    /**
-     * Aria description for the drag handle.
-     */
-    dragHandleAriaDescription?: string;
-    /**
-     * Announcement when drag and drop starts.
-     */
-    liveAnnouncementDndStarted?: (position: number, total: number) => string;
-    /**
-     * Announcement when an item is reordered during drag and drop.
-     */
-    liveAnnouncementDndItemReordered?: (initialPosition: number, currentPosition: number, total: number) => string;
-    /**
-     * Announcement when drag and drop is committed.
-     */
-    liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
-    /**
-     * Announcement when drag and drop is discarded.
-     */
-    liveAnnouncementDndDiscarded?: string;
-  }
+  export type I18nStrings = SortableAreaProps.DndAreaI18nStrings;
 }
