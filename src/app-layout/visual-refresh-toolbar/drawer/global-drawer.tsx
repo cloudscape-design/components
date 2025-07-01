@@ -57,6 +57,7 @@ function AppLayoutGlobalDrawerImplementation({
   const minDrawerSize = (activeDrawerId ? minGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
   const maxDrawerSize = (activeDrawerId ? maxGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
   const refs = globalDrawersFocusControl.refs[activeDrawerId];
+  const position = activeGlobalDrawer?.position ?? 'side';
   const resizeProps = useResize({
     currentWidth: activeDrawerSize,
     minWidth: minDrawerSize,
@@ -64,6 +65,7 @@ function AppLayoutGlobalDrawerImplementation({
     panelRef: drawerRef,
     handleRef: refs?.slider,
     onResize: size => onActiveDrawerResize({ id: activeDrawerId!, size }),
+    position,
   });
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
@@ -73,6 +75,10 @@ function AppLayoutGlobalDrawerImplementation({
   const animationDisabled =
     (activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id)) ||
     (wasExpanded && !isExpanded);
+  const motionClassName = `with-motion-${position === 'side' ? 'horizontal' : 'vertical'}`;
+  const sideDrawersTotalSize = Object.entries(activeGlobalDrawersSizes)
+    .filter(([drawerId]) => drawerId !== activeGlobalDrawer?.id)
+    .reduce((acc, [, size]) => acc + size, 0);
 
   return (
     <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={0}>
@@ -86,8 +92,9 @@ function AppLayoutGlobalDrawerImplementation({
               styles.drawer,
               styles['drawer-global'],
               styles[state],
-              !animationDisabled && sharedStyles['with-motion-horizontal'],
+              !animationDisabled && sharedStyles[motionClassName],
               !animationDisabled && isExpanded && styles['with-expanded-motion'],
+              styles[position],
               {
                 [styles['drawer-hidden']]: !show,
                 [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
@@ -114,21 +121,26 @@ function AppLayoutGlobalDrawerImplementation({
               }
             }}
             style={{
-              blockSize: drawerHeight,
-              insetBlockStart: drawerTopOffset,
               ...(!isMobile && {
                 [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? (isExpanded ? '100%' : size + 'px') : 0}`,
+              }),
+              ...(position === 'side' && {
+                insetBlockStart: drawerTopOffset,
+                blockSize: drawerHeight,
+              }),
+              ...(position === 'bottom' && {
+                right: sideDrawersTotalSize + 'px',
               }),
             }}
             data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
           >
             <div className={clsx(styles['global-drawer-wrapper'])}>
-              {!isMobile && <div className={styles['drawer-gap']}></div>}
+              {!isMobile && <div className={clsx(styles['drawer-gap'], styles[position])}></div>}
               {!isMobile && activeGlobalDrawer?.resizable && !isExpanded && (
                 <div className={styles['drawer-slider']}>
                   <PanelResizeHandle
                     ref={refs?.slider}
-                    position="side"
+                    position={position}
                     className={testutilStyles['drawers-slider']}
                     ariaLabel={activeGlobalDrawer?.ariaLabels?.resizeHandle}
                     tooltipText={activeGlobalDrawer?.ariaLabels?.resizeHandleTooltipText}
@@ -141,7 +153,7 @@ function AppLayoutGlobalDrawerImplementation({
               )}
 
               <div
-                className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
+                className={clsx(styles['drawer-content-container'], sharedStyles[motionClassName])}
                 data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
               >
                 <div className={styles['drawer-actions']}>
@@ -174,7 +186,14 @@ function AppLayoutGlobalDrawerImplementation({
                     />
                   </div>
                 </div>
-                <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
+                <div
+                  className={styles['drawer-content']}
+                  style={{
+                    ...(position === 'side' && {
+                      blockSize: drawerHeight,
+                    }),
+                  }}
+                >
                   {activeGlobalDrawer?.content}
                 </div>
               </div>

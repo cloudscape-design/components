@@ -49,7 +49,7 @@ interface SkeletonLayoutProps
   drawerExpandedModeInChildLayout: boolean;
 }
 
-const BOTTOM_GLOBAL_DRAWER_HEIGHT = 200;
+const BOTTOM_GLOBAL_DRAWER_HEIGHT = 0;
 
 const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAppLayoutToolbarComponent = {
   name: 'awsui.AppLayoutToolbar',
@@ -180,14 +180,6 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             {tools}
           </div>
           <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>{globalTools}</div>
-          <div
-            className={clsx(styles['global-tools-bottom'])}
-            style={{
-              blockSize: BOTTOM_GLOBAL_DRAWER_HEIGHT + 'px',
-            }}
-          >
-            global tools bottom
-          </div>
         </div>
       </VisualContext>
     );

@@ -50,7 +50,7 @@ function getToolsDrawerItem(props: ToolsProps): AppLayoutProps.Drawer | null {
   };
 }
 
-const DRAWERS_LIMIT = 2;
+const DRAWERS_LIMIT = 3;
 
 const DEFAULT_ON_CHANGE_PARAMS = { initiatedByUserAction: true };
 

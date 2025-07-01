@@ -104,11 +104,10 @@
 
 .global-tools-bottom {
   grid-area: global-tools-bottom;
-  border-block-start: 1px solid black;
   position: sticky;
   inset-block-end: 0;
   z-index: 855;
-  background: #ffffff;
+  overflow: hidden;
 }
 
 .navigation {

@@ -47,8 +47,12 @@ $drawer-resize-handle-size: awsui.$space-m;
   }
 
   @include desktop-only {
-    &:not(.legacy) {
+    &.side:not(.legacy) {
       border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    }
+
+    &.bottom:not(.legacy) {
+      border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
     }
   }
 
@@ -171,13 +175,25 @@ $drawer-resize-handle-size: awsui.$space-m;
     }
 
     > .drawer-gap {
-      grid-column: 1;
-      grid-row: 1;
-      block-size: 100%;
-      inline-size: $global-drawer-gap-size;
       background: awsui.$color-gap-global-drawer;
-      border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
       box-sizing: border-box;
+
+      &.side {
+        grid-column: 1;
+        grid-row: 1;
+        block-size: 100%;
+        inline-size: $global-drawer-gap-size;
+        border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
+
+      &.bottom {
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-start: 0;
+        inline-size: 100%;
+        block-size: $global-drawer-gap-size;
+        border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
     }
 
     > .drawer-slider {
@@ -234,6 +250,36 @@ $drawer-resize-handle-size: awsui.$space-m;
         &.drawer-content-hidden {
           display: none;
         }
+      }
+    }
+  }
+
+  &.bottom {
+    position: fixed;
+    inset-block-end: 0;
+    inset-inline-start: 0;
+    inline-size: auto;
+    overflow: auto;
+    block-size: var(#{custom-props.$drawerSize});
+    z-index: 840;
+
+    > .global-drawer-wrapper {
+      display: block;
+      overflow-y: auto;
+      position: relative;
+
+      > .drawer-slider {
+        position: absolute;
+        inset-block-start: $global-drawer-gap-size;
+        inset-inline-start: 0;
+        inline-size: 100%;
+        display: flex;
+        justify-content: center;
+        z-index: 2;
+      }
+
+      > .drawer-content-container {
+        block-size: var(#{custom-props.$drawerSize});
       }
     }
   }
