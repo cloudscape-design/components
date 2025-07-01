@@ -396,6 +396,17 @@ describe('ref support', () => {
     ref.current?.focus();
     expect(wrapper.findContent()?.getElement()).toBeFalsy();
   });
+
+  test('Calling dismiss should close the popover', () => {
+    const ref: React.RefObject<PopoverProps.Ref> = { current: null };
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', ref });
+
+    wrapper.findTrigger().click();
+    expect(wrapper.findBody()).toBeTruthy();
+
+    ref.current?.dismiss();
+    expect(wrapper.findBody()).toBeNull();
+  });
 });
 
 test('does not add portal to the body unless visible', () => {
