@@ -52,12 +52,21 @@ function AppLayoutGlobalDrawerImplementation({
     content: activeGlobalDrawer ? activeGlobalDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
+  const getMaxHeight = () => {
+    const availableHeight = document.documentElement.clientHeight - placement.insetBlockStart - placement.insetBlockEnd;
+    // If the page is likely zoomed in at 200%, allow the bottom panel to fill the content area
+    return availableHeight < 400 ? availableHeight - 40 : availableHeight - 250;
+  };
+  const MIN_HEIGHT = 160;
+
+  const position = activeGlobalDrawer?.position ?? 'side';
   const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
   const activeDrawerSize = (activeDrawerId ? activeGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
-  const minDrawerSize = (activeDrawerId ? minGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
-  const maxDrawerSize = (activeDrawerId ? maxGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
+  const minDrawerSize =
+    position === 'side' ? ((activeDrawerId ? minGlobalDrawersSizes[activeDrawerId] : 0) ?? 0) : MIN_HEIGHT;
+  const maxDrawerSize =
+    position === 'side' ? ((activeDrawerId ? maxGlobalDrawersSizes[activeDrawerId] : 0) ?? 0) : getMaxHeight();
   const refs = globalDrawersFocusControl.refs[activeDrawerId];
-  const position = activeGlobalDrawer?.position ?? 'side';
   const resizeProps = useResize({
     currentWidth: activeDrawerSize,
     minWidth: minDrawerSize,

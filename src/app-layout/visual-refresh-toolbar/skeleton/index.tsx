@@ -99,6 +99,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
     const bottomDrawerWrapperRef = useRef<HTMLDivElement>(null);
     useResizeObserver(bottomDrawerWrapperRef, entry => {
       if (activeBottomDrawerId) {
+        // TODO: turn this into a global css var and apply to the drawer
         document.getElementById(activeBottomDrawerId)!.style.inlineSize = `${entry.contentBoxWidth}px`;
       }
     });
