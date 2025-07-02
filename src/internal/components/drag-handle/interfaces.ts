@@ -14,6 +14,7 @@ export interface DragHandleProps {
   ariaLabelledBy?: string;
   ariaDescribedby?: string;
   ariaValue?: DragHandleProps.AriaValue;
+  active?: boolean;
   disabled?: boolean;
   className?: string;
   onPointerDown?: React.PointerEventHandler;
