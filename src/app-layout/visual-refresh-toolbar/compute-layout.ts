@@ -81,6 +81,7 @@ interface VerticalLayoutInput {
   toolbarHeight: number;
   stickyNotifications: boolean;
   notificationsHeight: number;
+  activeBottomDrawerHeight: number;
 }
 
 export interface VerticalLayoutOutput {
@@ -88,6 +89,7 @@ export interface VerticalLayoutOutput {
   notifications: number;
   header: number;
   drawers: number;
+  bottomDrawer: number;
 }
 
 export function computeVerticalLayout({
@@ -96,6 +98,7 @@ export function computeVerticalLayout({
   toolbarHeight,
   stickyNotifications,
   notificationsHeight,
+  activeBottomDrawerHeight,
 }: VerticalLayoutInput): VerticalLayoutOutput {
   const toolbar = topOffset;
   let notifications = topOffset;
@@ -110,7 +113,7 @@ export function computeVerticalLayout({
     header += notificationsHeight;
   }
 
-  return { toolbar, notifications, header, drawers };
+  return { toolbar, notifications, header, drawers, bottomDrawer: activeBottomDrawerHeight };
 }
 
 interface SplitPanelOffsetInput {
@@ -150,8 +153,10 @@ export function getDrawerStyles(
 ): {
   drawerTopOffset: number;
   drawerHeight: string;
+  globalDrawerHeight: string;
 } {
   const drawerTopOffset = isMobile ? verticalOffsets.toolbar : (verticalOffsets.drawers ?? placement.insetBlockStart);
-  const drawerHeight = `calc(100vh - ${drawerTopOffset}px - ${placement.insetBlockEnd}px)`;
-  return { drawerTopOffset, drawerHeight };
+  const drawerHeight = `calc(100vh - ${drawerTopOffset}px - ${placement.insetBlockEnd}px - ${verticalOffsets.bottomDrawer}px)`;
+  const globalDrawerHeight = `calc(100vh - ${drawerTopOffset}px - ${placement.insetBlockEnd}px)`;
+  return { drawerTopOffset, drawerHeight, globalDrawerHeight };
 }

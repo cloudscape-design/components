@@ -60,7 +60,7 @@ function AppLayoutGlobalDrawerImplementation({
   const MIN_HEIGHT = 160;
 
   const position = activeGlobalDrawer?.position ?? 'side';
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const { drawerTopOffset, globalDrawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
   const activeDrawerSize = (activeDrawerId ? activeGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
   const minDrawerSize =
     position === 'side' ? ((activeDrawerId ? minGlobalDrawersSizes[activeDrawerId] : 0) ?? 0) : MIN_HEIGHT;
@@ -132,7 +132,7 @@ function AppLayoutGlobalDrawerImplementation({
               }),
               ...(position === 'side' && {
                 insetBlockStart: drawerTopOffset,
-                blockSize: drawerHeight,
+                blockSize: globalDrawerHeight,
               }),
             }}
             data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
@@ -193,7 +193,7 @@ function AppLayoutGlobalDrawerImplementation({
                   className={styles['drawer-content']}
                   style={{
                     ...(position === 'side' && {
-                      blockSize: drawerHeight,
+                      blockSize: globalDrawerHeight,
                     }),
                   }}
                 >

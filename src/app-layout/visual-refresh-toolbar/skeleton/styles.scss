@@ -200,7 +200,7 @@
 .main {
   grid-area: main;
   margin-block-start: awsui.$space-scaled-s;
-  margin-block-end: awsui.$space-layout-content-bottom;
+  margin-block-end: calc(#{awsui.$space-layout-content-bottom} + var(#{custom-props.$activeGlobalBottomDrawerHeight}));
 
   &-disable-paddings {
     margin-block: 0;

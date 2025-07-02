@@ -117,6 +117,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             [customCssProps.maxContentWidth]: isMaxWidth ? '100%' : maxContentWidth ? `${maxContentWidth}px` : '',
             [customCssProps.navigationWidth]: `${navigationWidth}px`,
             [customCssProps.toolsWidth]: `${toolsWidth}px`,
+            [customCssProps.activeGlobalBottomDrawerHeight]: `${activeBottomDrawerSize}px`,
           }}
           {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
         >

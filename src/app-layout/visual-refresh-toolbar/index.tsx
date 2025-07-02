@@ -244,7 +244,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     }));
 
     const activeBottomDrawerId = activeGlobalDrawers.find(drawer => drawer.position === 'bottom')?.id;
-    const activeBottomDrawerSize = activeBottomDrawerId ? activeGlobalDrawersSizes[activeBottomDrawerId] : 0;
+    const activeBottomDrawerHeight = activeBottomDrawerId ? activeGlobalDrawersSizes[activeBottomDrawerId] : 0;
 
     const resolvedStickyNotifications = !!stickyNotifications && !isMobile;
     //navigation must be null if hidden so toolbar knows to hide the toggle button
@@ -322,6 +322,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       notificationsHeight: notificationsHeight ?? 0,
       toolbarHeight: toolbarHeight ?? 0,
       stickyNotifications: resolvedStickyNotifications,
+      activeBottomDrawerHeight: activeBottomDrawerHeight,
     });
 
     const appLayoutInternals: AppLayoutInternals = {
@@ -565,7 +566,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           maxContentWidth={maxContentWidth}
           disableContentPaddings={disableContentPaddings}
           activeBottomDrawerId={activeBottomDrawerId}
-          activeBottomDrawerSize={activeBottomDrawerSize}
+          activeBottomDrawerSize={activeBottomDrawerHeight}
         />
       </AppLayoutVisibilityContext.Provider>
     );
