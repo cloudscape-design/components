@@ -18,6 +18,7 @@ const DragHandleButton = forwardRef(
     {
       variant = 'drag-indicator',
       size = 'normal',
+      active = false,
       className,
       ariaLabel,
       ariaLabelledBy,
@@ -61,7 +62,8 @@ const DragHandleButton = forwardRef(
           testUtilsStyles.root,
           styles[`handle-${variant}`],
           styles[`handle-size-${size}`],
-          disabled && styles['handle-disabled']
+          disabled && styles['handle-disabled'],
+          active && styles.active
         )}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
