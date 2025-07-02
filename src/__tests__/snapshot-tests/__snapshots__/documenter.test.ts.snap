@@ -9485,18 +9485,23 @@ If the \`action\` property is set, this property is ignored. **Deprecated**, rep
 - \`item.root.borderRadius\` (string) - (Optional) Item border radius.
 - \`item.root.borderWidth\` (string) - (Optional) Item border width.
 - \`item.root.color\` {error, info, inProgress, success, warning} - (Optional) Color for item types.
-- \`item.root.focusRing.borderColor\` (string) - (Optional) Item focus ring border color.
+- \`item.root.focusRing.borderColor\` {error, info, inProgress, success, warning} - (Optional) Item focus ring border color.
 - \`item.root.focusRing.borderRadius\` (string) - (Optional) Item focus ring border radius.
 - \`item.root.focusRing.borderWidth\` (string) - (Optional) Item focus ring border width.
-- \`item.dismissButton.color\` {active, default, hover} - (Optional) Color for dismiss button states.
-- \`item.dismissButton.focusRing.borderColor\` (string) - (Optional) Dismiss button focus ring border color.
+- \`item.dismissButton.color.active\` {error, info, inProgress, success, warning} - (Optional) Color for dismiss button active state.
+- \`item.dismissButton.color.default\` {error, info, inProgress, success, warning} - (Optional) Color for dismiss button default state.
+- \`item.dismissButton.color.hover\` {error, info, inProgress, success, warning} - (Optional) Color for dismiss button hover state.
+- \`item.dismissButton.focusRing.borderColor\` {error, info, inProgress, success, warning} - (Optional) Dismiss button focus ring border color.
 - \`item.dismissButton.focusRing.borderRadius\` (string) - (Optional) Dismiss button focus ring border radius.
 - \`item.dismissButton.focusRing.borderWidth\` (string) - (Optional) Dismiss button focus ring border width.
 - \`notificationBar.root.background\` {active, default, hover} - (Optional) Background for notification bar states.
 - \`notificationBar.root.borderColor\` {active, default, hover} - (Optional) Border color for notification bar states.
 - \`notificationBar.root.borderRadius\` (string) - (Optional) Notification bar border radius.
 - \`notificationBar.root.borderWidth\` (string) - (Optional) Notification bar border width.
-- \`notificationBar.root.color\` {active, default, hover} - (Optional) Color for notification bar states.",
+- \`notificationBar.root.color\` {active, default, hover} - (Optional) Color for notification bar states.
+- \`notificationBar.expandButton.focusRing.borderColor\` (string) - (Optional) Border color for the expand button.
+- \`notificationBar.expandButton.focusRing.borderRadius\` (string) - (Optional) Border radius for the expand button.
+- \`notificationBar.expandButton.focusRing.borderWidth\` (string) - (Optional) Border width for the expand button.",
       "name": "style",
       "optional": true,
       "systemTags": [
@@ -11515,6 +11520,173 @@ The default is \`secondary\`, except inside the following components where it de
       "name": "children",
     },
   ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Documenter definition for list matches the snapshot: list 1`] = `
+{
+  "dashCaseName": "list",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when items are reordered in a sortable list.",
+      "detailInlineType": {
+        "name": "ListProps.SortingState<T>",
+        "properties": [
+          {
+            "name": "items",
+            "optional": false,
+            "type": "ReadonlyArray<T>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ListProps.SortingState<T>",
+      "name": "onSortingChange",
+    },
+  ],
+  "functions": [],
+  "name": "List",
+  "properties": [
+    {
+      "description": "Adds an aria-describedby to the list.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an aria-label to the list.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an aria-labelledby to the list.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Removes padding around and inside list items.",
+      "name": "disableItemPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Removes top and bottom padding around the list. Does not apply for sortable lists.",
+      "name": "disablePaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "An object containing all the localized strings required by the component.
+
+- \`liveAnnouncementDndStarted\` ((position: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an item is picked for reordering.
+- \`liveAnnouncementDndDiscarded\` (string) - (Optional) Adds a message to be announced by screen readers when a reordering action is canceled.
+- \`liveAnnouncementDndItemReordered\` ((initialPosition: number, currentPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an item is being moved.
+- \`liveAnnouncementDndItemCommitted\` ((initialPosition: number, finalPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when a reordering action is committed.
+- \`dragHandleAriaDescription\` (string) - (Optional) Adds an ARIA description for the drag handle.
+- \`dragHandleAriaLabel\` (string) - (Optional) Adds an ARIA label for the drag handle.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "SortableAreaProps.DndAreaI18nStrings",
+        "properties": [
+          {
+            "name": "dragHandleAriaDescription",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "dragHandleAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "liveAnnouncementDndDiscarded",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "liveAnnouncementDndItemCommitted",
+            "optional": true,
+            "type": "((initialPosition: number, finalPosition: number, total: number) => string)",
+          },
+          {
+            "name": "liveAnnouncementDndItemReordered",
+            "optional": true,
+            "type": "((initialPosition: number, currentPosition: number, total: number) => string)",
+          },
+          {
+            "name": "liveAnnouncementDndStarted",
+            "optional": true,
+            "type": "((position: number, total: number) => string)",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "SortableAreaProps.DndAreaI18nStrings",
+    },
+    {
+      "description": "The items to display in the list.",
+      "name": "items",
+      "optional": false,
+      "type": "ReadonlyArray<T>",
+    },
+    {
+      "description": "Render an item. The function should return an object with the following keys:
+* \`id\` (string) - A unique identifier for the item.
+* \`content\` (React.ReactNode) - The content of the item.
+* \`secondaryContent\` (React.ReactNode) - (Optional) Secondary content, for example item description.
+* \`icon\` (React.ReactNode) - (Optional) An icon, displayed at the start.
+* \`action\` (React.ReactNode) - (Optional) Action button(s).
+* \`announcementLabel\` (string) - (Optional) An announcement label for the item, used when sorting.
+   By default, the \`content\` is used: a custom label should be provided if \`content\` is not a string.",
+      "inlineType": {
+        "name": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; action?: React.ReactNode; announcementLabel?: string | undefined; }",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "T",
+          },
+        ],
+        "returnType": "{ id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; action?: React.ReactNode; announcementLabel?: string | undefined; }",
+        "type": "function",
+      },
+      "name": "renderItem",
+      "optional": false,
+      "type": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; action?: React.ReactNode; announcementLabel?: string | undefined; }",
+    },
+    {
+      "description": "Makes the list sortable by enabling drag and drop functionality.",
+      "name": "sortable",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Disables sorting drag handles. Use this to temporarily prevent users from reordering the list.",
+      "name": "sortDisabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "The HTML tag to render. By default \`ul\` is used for standard lists and \`ol\` for sortable lists.",
+      "inlineType": {
+        "name": ""ol" | "ul"",
+        "type": "union",
+        "values": [
+          "ol",
+          "ul",
+        ],
+      },
+      "name": "tagOverride",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [],
   "releaseStatus": "stable",
 }
 `;

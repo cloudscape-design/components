@@ -2,34 +2,39 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
+import ListWrapper, { ListItemWrapper } from '../list';
 import TextFilterWrapper from '../text-filter';
 import ToggleWrapper from '../toggle';
 
 import styles from '../../../collection-preferences/styles.selectors.js';
-import dragHandleStyles from '../../../internal/components/drag-handle/styles.selectors.js';
 
 const getClassName = (suffix: string): string => styles[`content-display-${suffix}`];
 
 export class ContentDisplayOptionWrapper extends ComponentWrapper {
+  private getListItem(): ListItemWrapper {
+    return new ListItemWrapper(this.getElement());
+  }
   /**
    * Returns the drag handle for the option item.
    */
   findDragHandle(): ElementWrapper {
-    return this.findByClassName(dragHandleStyles.handle)!;
+    return this.getListItem().findDragHandle()!;
   }
 
   /**
    * Returns the text label displayed in the option item.
    */
   findLabel(): ElementWrapper {
-    return this.findByClassName(styles['content-display-option-label'])!;
+    return this.getListItem().findContent().findByClassName(styles['content-display-option-label'])!;
   }
 
   /**
    * Returns the visibility toggle for the option item.
    */
   findVisibilityToggle(): ToggleWrapper {
-    return this.findComponent(`.${styles['content-display-option-toggle']}`, ToggleWrapper)!;
+    return this.getListItem()
+      .findContent()
+      .findComponent(`.${styles['content-display-option-toggle']}`, ToggleWrapper)!;
   }
 }
 
@@ -50,22 +55,27 @@ export default class ContentDisplayPreferenceWrapper extends ComponentWrapper {
     return this.findByClassName(getClassName('description'))!;
   }
 
+  private getList(): ListWrapper {
+    return new ListWrapper(this.getElement());
+  }
+
   /**
    * Returns an option for a given index.
    *
    * @param index 1-based index of the option to return.
    */
   findOptionByIndex(index: number): ContentDisplayOptionWrapper | null {
-    return this.findComponent(`.${getClassName('option')}:nth-child(${index})`, ContentDisplayOptionWrapper);
+    const item = this.getList().findItemByIndex(index);
+    return item && new ContentDisplayOptionWrapper(item.getElement());
   }
 
   /**
    * Returns options that the user can reorder.
    */
   findOptions(): Array<ContentDisplayOptionWrapper> {
-    return this.findAllByClassName(getClassName('option')).map(
-      wrapper => new ContentDisplayOptionWrapper(wrapper.getElement())
-    );
+    return this.getList()
+      .findItems()
+      .map(wrapper => new ContentDisplayOptionWrapper(wrapper.getElement()));
   }
 
   /**
