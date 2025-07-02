@@ -189,7 +189,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             {tools}
           </div>
           <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>{globalTools}</div>
-          <div ref={bottomDrawerWrapperRef} className={clsx(styles['global-tools-bottom'])} />
+          <div ref={bottomDrawerWrapperRef} className={clsx(styles['global-tools-bottom-stub'])} />
         </div>
       </VisualContext>
     );

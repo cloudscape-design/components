@@ -102,11 +102,10 @@
   }
 }
 
-.global-tools-bottom {
+.global-tools-bottom-stub {
   grid-area: global-tools-bottom;
   position: sticky;
   inset-block-end: 0;
-  z-index: 855;
   overflow: hidden;
 }
 
