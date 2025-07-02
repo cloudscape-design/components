@@ -255,32 +255,34 @@ $drawer-resize-handle-size: awsui.$space-m;
   }
 
   &.bottom {
-    position: fixed;
-    inset-block-end: 0;
-    inset-inline-start: 0;
-    inline-size: 100%;
-    overflow: auto;
-    block-size: var(#{custom-props.$drawerSize});
-    z-index: 840;
+    @include desktop-only {
+      position: fixed;
+      inset-block-end: 0;
+      inset-inline-start: 0;
+      inline-size: 100%;
+      overflow: auto;
+      block-size: var(#{custom-props.$drawerSize});
+      z-index: 840;
 
-    > .global-drawer-wrapper {
-      display: block;
-      overflow-y: auto;
-      position: relative;
-      min-inline-size: 0;
+      > .global-drawer-wrapper {
+        display: block;
+        overflow-y: auto;
+        position: relative;
+        min-inline-size: 0;
 
-      > .drawer-slider {
-        position: absolute;
-        inset-block-start: $global-drawer-gap-size;
-        inset-inline-start: 0;
-        inline-size: 100%;
-        display: flex;
-        justify-content: center;
-        z-index: 2;
-      }
+        > .drawer-slider {
+          position: absolute;
+          inset-block-start: $global-drawer-gap-size;
+          inset-inline-start: 0;
+          inline-size: 100%;
+          display: flex;
+          justify-content: center;
+          z-index: 2;
+        }
 
-      > .drawer-content-container {
-        block-size: var(#{custom-props.$drawerSize});
+        > .drawer-content-container {
+          block-size: var(#{custom-props.$drawerSize});
+        }
       }
     }
   }

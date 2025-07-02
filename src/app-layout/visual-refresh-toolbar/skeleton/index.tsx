@@ -100,7 +100,11 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
     useResizeObserver(bottomDrawerWrapperRef, entry => {
       if (activeBottomDrawerId) {
         // TODO: turn this into a global css var and apply to the drawer
-        document.getElementById(activeBottomDrawerId)!.style.inlineSize = `${entry.contentBoxWidth}px`;
+        if (!isMobile) {
+          document.getElementById(activeBottomDrawerId)!.style.inlineSize = `${entry.contentBoxWidth}px`;
+        } else {
+          document.getElementById(activeBottomDrawerId)!.style.inlineSize = '100%';
+        }
       }
     });
     return (
