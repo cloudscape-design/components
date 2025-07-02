@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { GeneratedAnalyticsMetadataAppLayoutToolbarComponent } from '../../../app-layout-toolbar/analytics-metadata/interfaces';
@@ -47,9 +48,9 @@ interface SkeletonLayoutProps
   isNested?: boolean;
   drawerExpandedMode: boolean;
   drawerExpandedModeInChildLayout: boolean;
+  activeBottomDrawerSize: number;
+  activeBottomDrawerId?: string;
 }
-
-const BOTTOM_GLOBAL_DRAWER_HEIGHT = 0;
 
 const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAppLayoutToolbarComponent = {
   name: 'awsui.AppLayoutToolbar',
@@ -87,12 +88,20 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       isNested,
       drawerExpandedMode,
       drawerExpandedModeInChildLayout,
+      activeBottomDrawerSize,
+      activeBottomDrawerId,
     },
     ref
   ) => {
     const isMobile = useMobile();
     const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
     const anyPanelOpen = navigationOpen || toolsOpen;
+    const bottomDrawerWrapperRef = useRef<HTMLDivElement>(null);
+    useResizeObserver(bottomDrawerWrapperRef, entry => {
+      if (activeBottomDrawerId) {
+        document.getElementById(activeBottomDrawerId)!.style.inlineSize = `${entry.contentBoxWidth}px`;
+      }
+    });
     return (
       <VisualContext contextName="app-layout-toolbar">
         <div
@@ -150,7 +159,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             {bottomSplitPanel && (
               <div
                 className={clsx(styles['split-panel-bottom'])}
-                style={{ insetBlockEnd: placement.insetBlockEnd + BOTTOM_GLOBAL_DRAWER_HEIGHT }}
+                style={{ insetBlockEnd: placement.insetBlockEnd + activeBottomDrawerSize }}
               >
                 {bottomSplitPanel}
               </div>
@@ -180,6 +189,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             {tools}
           </div>
           <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>{globalTools}</div>
+          <div ref={bottomDrawerWrapperRef} className={clsx(styles['global-tools-bottom'])} />
         </div>
       </VisualContext>
     );

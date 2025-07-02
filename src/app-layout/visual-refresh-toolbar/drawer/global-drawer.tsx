@@ -76,9 +76,6 @@ function AppLayoutGlobalDrawerImplementation({
     (activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id)) ||
     (wasExpanded && !isExpanded);
   const motionClassName = `with-motion-${position === 'side' ? 'horizontal' : 'vertical'}`;
-  const sideDrawersTotalSize = Object.entries(activeGlobalDrawersSizes)
-    .filter(([drawerId]) => drawerId !== activeGlobalDrawer?.id)
-    .reduce((acc, [, size]) => acc + size, 0);
 
   return (
     <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={0}>
@@ -127,9 +124,6 @@ function AppLayoutGlobalDrawerImplementation({
               ...(position === 'side' && {
                 insetBlockStart: drawerTopOffset,
                 blockSize: drawerHeight,
-              }),
-              ...(position === 'bottom' && {
-                right: sideDrawersTotalSize + 'px',
               }),
             }}
             data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}

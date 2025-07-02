@@ -243,6 +243,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       focusNavigation: () => navigationFocusControl.setFocus(true),
     }));
 
+    const activeBottomDrawerId = activeGlobalDrawers.find(drawer => drawer.position === 'bottom')?.id;
+    const activeBottomDrawerSize = activeBottomDrawerId ? activeGlobalDrawersSizes[activeBottomDrawerId] : 0;
+
     const resolvedStickyNotifications = !!stickyNotifications && !isMobile;
     //navigation must be null if hidden so toolbar knows to hide the toggle button
     const resolvedNavigation = navigationHide ? null : navigation || <></>;
@@ -265,7 +268,15 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelOpen,
       splitPanelPosition: splitPanelPreferences?.position,
       isMobile,
-      activeGlobalDrawersSizes,
+      activeGlobalDrawersSizes: Object.keys(activeGlobalDrawersSizes)
+        .filter(key => key !== activeBottomDrawerId)
+        .reduce(
+          (acc, curr) => ({
+            ...acc,
+            [curr]: activeGlobalDrawersSizes[curr],
+          }),
+          {}
+        ),
     });
 
     const { ref: intersectionObserverRef, isIntersecting } = useIntersectionObserver({ initialState: true });
@@ -553,6 +564,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           contentType={contentType}
           maxContentWidth={maxContentWidth}
           disableContentPaddings={disableContentPaddings}
+          activeBottomDrawerId={activeBottomDrawerId}
+          activeBottomDrawerSize={activeBottomDrawerSize}
         />
       </AppLayoutVisibilityContext.Provider>
     );

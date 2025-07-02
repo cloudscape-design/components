@@ -47,7 +47,7 @@ $drawer-resize-handle-size: awsui.$space-m;
   }
 
   @include desktop-only {
-    &.side:not(.legacy) {
+    &:not(.bottom):not(.legacy) {
       border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
     }
 
@@ -258,7 +258,7 @@ $drawer-resize-handle-size: awsui.$space-m;
     position: fixed;
     inset-block-end: 0;
     inset-inline-start: 0;
-    inline-size: auto;
+    inline-size: 100%;
     overflow: auto;
     block-size: var(#{custom-props.$drawerSize});
     z-index: 840;
@@ -280,7 +280,6 @@ $drawer-resize-handle-size: awsui.$space-m;
 
       > .drawer-content-container {
         block-size: var(#{custom-props.$drawerSize});
-        border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
       }
     }
   }
