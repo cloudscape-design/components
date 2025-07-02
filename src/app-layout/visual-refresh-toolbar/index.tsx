@@ -397,7 +397,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     };
 
     const closeFirstDrawer = useStableCallback(() => {
-      const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
+      const sideDrawersOpenQueue = drawersOpenQueue.filter(
+        drawerId => globalDrawers.find(globalDrawer => globalDrawer.id === drawerId)?.position !== 'bottom'
+      );
+      const drawerToClose = sideDrawersOpenQueue[sideDrawersOpenQueue.length - 1];
       if (activeDrawer && activeDrawer?.id === drawerToClose) {
         onActiveDrawerChange(null, { initiatedByUserAction: true });
       } else if (activeGlobalDrawersIds.includes(drawerToClose)) {

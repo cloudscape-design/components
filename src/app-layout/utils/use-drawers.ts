@@ -258,11 +258,7 @@ export function useDrawers(
       onAddNewActiveDrawer?.(drawerId);
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
       onGlobalDrawerFocus?.(drawerId, true);
-      // add only side drawers to the open queue, because it's main purpose is to keep track of opened drawers and close
-      // the least recently opened when they cannot be horizontally accommodated on the page anymore
-      if (drawer?.position !== 'bottom') {
-        drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
-      }
+      drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
       fireNonCancelableEvent(drawer?.onToggle, { isOpen: true, initiatedByUserAction });
     }
   }
