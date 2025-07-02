@@ -8,7 +8,6 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation/' as foundation;
 @use '../internal/styles/forms/constants' as constants;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $send-icon-right-spacing: awsui.$space-static-xxs;
 $invalid-border-offset: constants.$invalid-control-left-padding;
@@ -145,7 +144,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     padding: 0;
 
     // offset the focus ring by 1px per side so it doesn't blend into the textarea border
-    @include focus-visible.when-visible {
+    &:focus-visible {
       @include styles.focus-highlight(
         (
           'vertical': calc((-1 * #{awsui.$space-xxxs}) - 1px),

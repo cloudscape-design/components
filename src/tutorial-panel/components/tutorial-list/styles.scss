@@ -5,7 +5,6 @@
 
 @use '../../../internal/styles/tokens' as awsui;
 @use '../../../internal/styles' as styles;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @use './motion';
 
@@ -110,7 +109,7 @@
     text-decoration-color: currentColor;
   }
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.link-focus;
   }
 }
