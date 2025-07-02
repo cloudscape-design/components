@@ -29,10 +29,10 @@
     block-size: awsui.$line-height-body-s;
   }
 
-  &-drag-indicator {
+  &-drag-indicator:not(&-disabled) {
     cursor: grab;
 
-    &:active {
+    &.active {
       cursor: grabbing;
     }
   }
@@ -51,10 +51,6 @@
 
   &-resize-vertical {
     cursor: ns-resize;
-  }
-
-  &-disabled {
-    cursor: default;
   }
 
   &:hover {
