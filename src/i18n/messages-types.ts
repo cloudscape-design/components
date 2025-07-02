@@ -266,6 +266,26 @@ export interface I18nFormatArgTypes {
   "link": {
     "externalIconAriaLabel": never;
   }
+  "list": {
+    "dragHandleAriaLabel": never;
+    "dragHandleAriaDescription": never;
+    "liveAnnouncementDndStarted": {
+      "position": string | number;
+      "total": string | number;
+    }
+    "liveAnnouncementDndDiscarded": never;
+    "liveAnnouncementDndItemReordered": {
+      "isInitialPosition": string;
+      "currentPosition": string | number;
+      "total": string | number;
+    }
+    "liveAnnouncementDndItemCommitted": {
+      "isInitialPosition": string;
+      "initialPosition": string | number;
+      "total": string | number;
+      "finalPosition": string | number;
+    }
+  }
   "modal": {
     "closeAriaLabel": never;
   }

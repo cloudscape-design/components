@@ -146,6 +146,14 @@
   "link": {
     "externalIconAriaLabel": "เปิดในแท็บใหม่"
   },
+  "list": {
+    "dragHandleAriaLabel": "ลากที่จับ",
+    "dragHandleAriaDescription": "ใช้ปุ่ม Space หรือ Enter เพื่อเปิดใช้งานการลากสำหรับรายการ จากนั้นใช้ปุ่มลูกศรเพื่อย้ายตำแหน่งของรายการ หากต้องการย้ายตำแหน่งให้เสร็จสิ้น ให้ใช้ปุ่ม Space หรือ Enter หรือหากต้องการยกเลิกการย้ายให้ใช้ปุ่ม Escape",
+    "liveAnnouncementDndStarted": "รับรายการที่ตำแหน่ง {position} จาก {total}",
+    "liveAnnouncementDndDiscarded": "ยกเลิกการจัดเรียงใหม่",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {ย้ายรายการกลับไปยังตำแหน่ง {currentPosition} จาก {total}} false {ย้ายรายการไปยังตำแหน่ง {currentPosition} จาก {total}} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {รายการย้ายกลับไปยังตำแหน่งเดิม {initialPosition} จาก {total}} false {รายการย้ายจากตำแหน่ง {initialPosition} ไปยังตำแหน่ง {finalPosition} จาก {total}} other {}}"
+  },
   "modal": {
     "closeAriaLabel": "ปิดโมแดล"
   },

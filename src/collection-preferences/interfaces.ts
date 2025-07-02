@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BaseComponentProps } from '../internal/base-component';
+import { SortableAreaProps } from '../internal/components/sortable-area';
 import { NonCancelableEventHandler } from '../internal/events';
 import { BaseModalProps } from '../modal/interfaces';
 
@@ -224,16 +225,10 @@ export namespace CollectionPreferencesProps {
     custom?: CustomPreferenceType;
   }
 
-  export interface ContentDisplayPreference {
+  export interface ContentDisplayPreference extends SortableAreaProps.DndAreaI18nStrings {
     title?: string;
     description?: string;
     options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
-    liveAnnouncementDndStarted?: (position: number, total: number) => string;
-    liveAnnouncementDndItemReordered?: (initialPosition: number, currentPosition: number, total: number) => string;
-    liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
-    liveAnnouncementDndDiscarded?: string;
-    dragHandleAriaLabel?: string;
-    dragHandleAriaDescription?: string;
     enableColumnFiltering?: boolean;
     i18nStrings?: ContentDisplayPreferenceI18nStrings;
   }

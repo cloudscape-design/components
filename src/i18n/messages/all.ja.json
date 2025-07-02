@@ -213,6 +213,14 @@
   "link": {
     "externalIconAriaLabel": "新しいタブで開く"
   },
+  "list": {
+    "dragHandleAriaLabel": "ドラッグハンドル",
+    "dragHandleAriaDescription": "Space または Enter を使用して項目のドラッグをアクティブ化し、矢印キーを使用して項目の位置を移動します。位置の移動を完了するには、Space または Enter を使用します。移動を取り消すには、Escape を使用します。",
+    "liveAnnouncementDndStarted": "{position}/{total} の位置で項目をピックアップしました",
+    "liveAnnouncementDndDiscarded": "順序変更をキャンセルしました",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {項目を位置 {currentPosition}/{total} に戻しています} false {項目を位置 {currentPosition}/{total} に移動しています} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目は元の位置 {initialPosition}/{total} に戻りました} false {項目が位置 {initialPosition} から位置 {finalPosition}/{total} に移動しました} other {}}"
+  },
   "modal": {
     "closeAriaLabel": "モーダルを閉じる"
   },

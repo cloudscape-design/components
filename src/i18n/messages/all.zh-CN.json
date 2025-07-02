@@ -213,6 +213,14 @@
   "link": {
     "externalIconAriaLabel": "在新标签页中打开"
   },
+  "list": {
+    "dragHandleAriaLabel": "拖动手柄",
+    "dragHandleAriaDescription": "使用空格键或 Enter 键激活项目拖动功能，然后使用箭头键移动项目的位置。要完成位置移动，请使用空格键或 Enter 键，要放弃移动，请使用 Esc 键。",
+    "liveAnnouncementDndStarted": "已选择位于位置 {position}（共 {total} 个位置）的项目",
+    "liveAnnouncementDndDiscarded": "重新排序已取消",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {正在将项目移回位置 {currentPosition}（共 {total} 个位置）} false {正在将项目移动到位置 {currentPosition}（共 {total} 个位置）} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {已将项目移回其原始位置 {initialPosition}（共 {total} 个位置）} false {已将项目从位置 {initialPosition} 移动到位置 {finalPosition}（共 {total} 个位置）} other {}}"
+  },
   "modal": {
     "closeAriaLabel": "关闭模态"
   },
