@@ -267,6 +267,7 @@ $drawer-resize-handle-size: awsui.$space-m;
       display: block;
       overflow-y: auto;
       position: relative;
+      min-inline-size: 0;
 
       > .drawer-slider {
         position: absolute;
