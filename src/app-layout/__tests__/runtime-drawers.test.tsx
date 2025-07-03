@@ -1372,24 +1372,29 @@ describe('toolbar mode only features', () => {
           getGeneratedAnalyticsMetadata(
             globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
           )
-        ).toStrictEqual({
-          action: 'expand',
-          detail: {
-            label: 'Expanded mode button',
-          },
-        });
+        ).toEqual(
+          expect.objectContaining({
+            action: 'expand',
+            detail: {
+              label: 'Expanded mode button',
+            },
+          })
+        );
+
         globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
         expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
         expect(
           getGeneratedAnalyticsMetadata(
             globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
           )
-        ).toStrictEqual({
-          action: 'collapse',
-          detail: {
-            label: 'Expanded mode button',
-          },
-        });
+        ).toEqual(
+          expect.objectContaining({
+            action: 'collapse',
+            detail: {
+              label: 'Expanded mode button',
+            },
+          })
+        );
       });
 
       test('only one drawer could be in expanded mode. all other panels should be closed', async () => {

@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "終了時刻",
     "i18nStrings.dateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",
     "i18nStrings.dateConstraintText": "日付には YYYY/MM/DD を使用してください。",
+    "i18nStrings.slashedDateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",
+    "i18nStrings.isoDateTimeConstraintText": "日付には YYYY-MM-DD を使用します。時刻には 24 時間形式を使用します。",
+    "i18nStrings.slashedDateConstraintText": "日付には YYYY/MM/DD を使用してください。",
+    "i18nStrings.isoDateConstraintText": "日付には YYYY-MM-DD を使用してください。",
+    "i18nStrings.slashedMonthConstraintText": "月には YYYY/MM を使用してください。",
+    "i18nStrings.isoMonthConstraintText": "月には YYYY-MM を使用してください。",
     "i18nStrings.monthConstraintText": "月には YYYY/MM を使用してください。",
     "i18nStrings.errorIconAriaLabel": "エラー",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate} から {endDate} で選択された範囲",
@@ -206,6 +212,14 @@
   },
   "link": {
     "externalIconAriaLabel": "新しいタブで開く"
+  },
+  "list": {
+    "dragHandleAriaLabel": "ドラッグハンドル",
+    "dragHandleAriaDescription": "Space または Enter を使用して項目のドラッグをアクティブ化し、矢印キーを使用して項目の位置を移動します。位置の移動を完了するには、Space または Enter を使用します。移動を取り消すには、Escape を使用します。",
+    "liveAnnouncementDndStarted": "{position}/{total} の位置で項目をピックアップしました",
+    "liveAnnouncementDndDiscarded": "順序変更をキャンセルしました",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {項目を位置 {currentPosition}/{total} に戻しています} false {項目を位置 {currentPosition}/{total} に移動しています} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目は元の位置 {initialPosition}/{total} に戻りました} false {項目が位置 {initialPosition} から位置 {finalPosition}/{total} に移動しました} other {}}"
   },
   "modal": {
     "closeAriaLabel": "モーダルを閉じる"
@@ -403,6 +417,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "メニューを閉じる",
     "i18nStrings.overflowMenuBackIconAriaLabel": "戻る",
     "i18nStrings.overflowMenuTitleText": "すべて"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "展開する",
+    "i18nStrings.collapseButtonLabel": "折りたたむ"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "ロード中",

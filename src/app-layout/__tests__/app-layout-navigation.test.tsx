@@ -43,8 +43,10 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop', 'mobile'
     expect(wrapper.findNavigation()).toBeTruthy();
     expect(wrapper.findNavigationToggle()).toBeFalsy();
   });
+});
 
-  (size === 'desktop' ? test : test.skip)('should call onNavigationToggle on open/close navigation', () => {
+describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
+  test('should call onNavigationToggle on open/close navigation', () => {
     const mockOnNavigationChange = jest.fn();
     const { wrapper } = renderComponent(
       <AppLayout navigation={<>Mock Navigation</>} onNavigationChange={mockOnNavigationChange} content={<>Content</>} />
@@ -60,5 +62,19 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop', 'mobile'
     expect(mockOnNavigationChange).toHaveBeenCalledTimes(2);
     expect(mockOnNavigationChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: true } }));
     expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
+  });
+
+  test(`Sets aria-expanded=false on toggle when navigation is closed`, () => {
+    const { wrapper } = renderComponent(
+      <AppLayout navigation={<>Mock Navigation</>} navigationOpen={false} content={<>Content</>} />
+    );
+    expect(wrapper.findNavigationToggle().getElement()).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test(`Sets aria-expanded=true on toggle when navigation is open`, () => {
+    const { wrapper } = renderComponent(
+      <AppLayout navigation={<>Mock Navigation</>} navigationOpen={true} content={<>Content</>} />
+    );
+    expect(wrapper.findNavigationToggle().getElement()).toHaveAttribute('aria-expanded', 'true');
   });
 });

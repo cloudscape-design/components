@@ -4,7 +4,7 @@ import React, { useEffect, useImperativeHandle, useMemo, useRef, useState } from
 import clsx from 'clsx';
 
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { InternalButton } from '../button/internal';
@@ -15,7 +15,6 @@ import { useTableComponentsContext } from '../internal/context/table-component-c
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
-import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
 import { InternalLiveRegionRef } from '../live-region/internal';
@@ -140,9 +139,9 @@ const PropertyFilterInternal = React.forwardRef(
           propertyGroup: property?.group,
           operators: (property?.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
           defaultOperator: property?.defaultOperator ?? '=',
-          getTokenType: operator => (operator ? extendedOperators.get(operator)?.tokenType ?? 'value' : 'value'),
-          getValueFormatter: operator => (operator ? extendedOperators.get(operator)?.format ?? null : null),
-          getValueFormRenderer: operator => (operator ? extendedOperators.get(operator)?.form ?? null : null),
+          getTokenType: operator => (operator ? (extendedOperators.get(operator)?.tokenType ?? 'value') : 'value'),
+          getValueFormatter: operator => (operator ? (extendedOperators.get(operator)?.format ?? null) : null),
+          getValueFormRenderer: operator => (operator ? (extendedOperators.get(operator)?.form ?? null) : null),
           externalProperty: property,
         });
         return acc;

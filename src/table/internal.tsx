@@ -261,7 +261,7 @@ const InternalTable = React.forwardRef(
         },
         pagination: {
           currentPageIndex: paginationData?.currentPageIndex ?? 0,
-          totalNumberOfPages: paginationData?.openEnd ? null : paginationData?.totalPageCount ?? null,
+          totalNumberOfPages: paginationData?.openEnd ? null : (paginationData?.totalPageCount ?? null),
           openEnd: Boolean(paginationData?.openEnd),
         },
         resourcesSelected: selectedItems?.length > 0,
@@ -379,6 +379,7 @@ const InternalTable = React.forwardRef(
       getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
       variant: computedVariant,
+      tableVariant: computedVariant,
       wrapLines,
       resizableColumns,
       sortingColumn,
@@ -489,8 +490,8 @@ const InternalTable = React.forwardRef(
               }
               disableHeaderPaddings={true}
               disableContentPaddings={true}
+              disableFooterPaddings={true}
               variant={toContainerVariant(computedVariant)}
-              __disableFooterPaddings={true}
               __disableFooterDivider={true}
               __disableStickyMobile={false}
               footer={
@@ -630,6 +631,7 @@ const InternalTable = React.forwardRef(
                                       itemKey: rowId,
                                     }}
                                     verticalAlign={cellVerticalAlign}
+                                    tableVariant={computedVariant}
                                   />
                                 )}
 
@@ -680,6 +682,7 @@ const InternalTable = React.forwardRef(
                                       columnId={column.id ?? colIndex}
                                       colIndex={colIndex + colIndexOffset}
                                       verticalAlign={column.verticalAlign ?? cellVerticalAlign}
+                                      tableVariant={computedVariant}
                                       {...cellExpandableProps}
                                       {...getAnalyticsMetadataAttribute(analyticsMetadata)}
                                     />
@@ -709,6 +712,7 @@ const InternalTable = React.forwardRef(
                                     {...sharedCellProps}
                                     columnId={selectionColumnId}
                                     verticalAlign={cellVerticalAlign}
+                                    tableVariant={computedVariant}
                                   />
                                 )}
                                 {visibleColumnDefinitions.map((column, colIndex) => (

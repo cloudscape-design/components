@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "Ora di fine",
     "i18nStrings.dateTimeConstraintText": "Per la data, utilizza il formato GG/MM/AAAA. Per l'ora, usa il formato 24 ore.",
     "i18nStrings.dateConstraintText": "Per la data, utilizza il formato GG/MM/AAAA.",
+    "i18nStrings.slashedDateTimeConstraintText": "Per la data, utilizza il formato GG/MM/AAAA. Per l'ora, utilizza il formato 24 ore.",
+    "i18nStrings.isoDateTimeConstraintText": "Per la data, utilizza il formato GG-MM-AAAA. Per l'ora, usa il formato 24 ore.",
+    "i18nStrings.slashedDateConstraintText": "Per la data, utilizza il formato GG/MM/AAAA.",
+    "i18nStrings.isoDateConstraintText": "Per la data, utilizza il formato GG-MM-AAAA.",
+    "i18nStrings.slashedMonthConstraintText": "Per il mese, utilizza il formato MM/AAAA.",
+    "i18nStrings.isoMonthConstraintText": "Per il mese, utilizza il formato MM-AAAA.",
     "i18nStrings.monthConstraintText": "Per il mese, utilizza il formato MM/AAAA.",
     "i18nStrings.errorIconAriaLabel": "Errore",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Intervallo selezionato da {startDate} a {endDate}",
@@ -206,6 +212,14 @@
   },
   "link": {
     "externalIconAriaLabel": "Si apre in una nuova scheda"
+  },
+  "list": {
+    "dragHandleAriaLabel": "Punto di trascinamento",
+    "dragHandleAriaDescription": "Utilizza Spazio o Invio per attivare il trascinamento di un elemento, quindi usa i tasti freccia per spostare la posizione dell'elemento. Per completare lo spostamento della posizione, utilizza Spazio o Invio oppure per annullare lo spostamento, usa Esc.",
+    "liveAnnouncementDndStarted": "Elemento raccolto nella posizione {position} di {total}",
+    "liveAnnouncementDndDiscarded": "Riordinamento annullato",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Spostamento dell'elemento di nuovo nella posizione {currentPosition} di {total}} false {Spostamento dell'elemento nella posizione {currentPosition} di {total}} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {L'elemento è stato spostato di nuovo nella posizione originale {initialPosition} di {total}} false {Elemento spostato da una posizione {initialPosition} alla posizione {finalPosition} di {total}} other {}}"
   },
   "modal": {
     "closeAriaLabel": "Chiudi modale"
@@ -403,6 +417,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Chiudi menu",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Indietro",
     "i18nStrings.overflowMenuTitleText": "Tutti"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "Espandi",
+    "i18nStrings.collapseButtonLabel": "Comprimi"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "Caricamento in corso",

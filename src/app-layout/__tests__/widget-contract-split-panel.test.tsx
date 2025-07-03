@@ -59,9 +59,10 @@ function createWidgetizedComponentMock(Implementation: React.ComponentType) {
 jest.mock('../../../lib/components/internal/widgets', () => ({
   createWidgetizedComponent: createWidgetizedComponentMock,
 }));
-jest.mock('../../../lib/components/internal/hooks/use-unique-id', () => {
+jest.mock('@cloudscape-design/component-toolkit/internal', () => {
   let counter = 0;
   return {
+    ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
     useUniqueId: (prefix: string) => `${prefix}${++counter}`,
     useRandomId: (prefix: string) => `${prefix}${++counter}`,
   };

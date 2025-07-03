@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalSpaceBetween from '../space-between/internal';
 import InternalToggle from '../toggle/internal';
 import { getAnalyticsInnerContextAttribute } from './analytics-metadata/utils';

@@ -28,6 +28,7 @@ const InternalDragHandle = forwardRef(
       initialShowButtons,
       hideButtonsOnDrag = false,
       clickDragThreshold = 3,
+      active,
       ...rest
     }: DragHandleProps,
     ref: React.Ref<Element>
@@ -54,6 +55,7 @@ const InternalDragHandle = forwardRef(
           ariaDescribedby={ariaDescribedby}
           ariaValue={ariaValue}
           disabled={disabled}
+          active={active}
           onPointerDown={onPointerDown}
           onKeyDown={onKeyDown}
         />

@@ -24,6 +24,8 @@ export default function InternalCopyToClipboard({
   textToCopy,
   textToDisplay,
   popoverRenderWithPortal,
+  disabled,
+  disabledReason,
   __internalRootRef = null,
   ...restProps
 }: InternalCopyToClipboardProps) {
@@ -62,7 +64,24 @@ export default function InternalCopyToClipboard({
   )[variant];
 
   const isInline = variant === 'inline';
-  const trigger = (
+
+  const button = (
+    <InternalButton
+      ariaLabel={copyButtonAriaLabel ?? copyButtonText}
+      iconName="copy"
+      variant={triggerVariant}
+      wrapText={false}
+      formAction="none"
+      disabled={disabled}
+      disabledReason={disabledReason}
+    >
+      {copyButtonText}
+    </InternalButton>
+  );
+
+  const trigger = disabled ? (
+    button
+  ) : (
     <InternalPopover
       isInline={isInline}
       size="medium"
@@ -73,15 +92,7 @@ export default function InternalCopyToClipboard({
       content={<InternalStatusIndicator type={status}>{statusText}</InternalStatusIndicator>}
       __onOpen={onClick}
     >
-      <InternalButton
-        ariaLabel={copyButtonAriaLabel ?? copyButtonText}
-        iconName="copy"
-        variant={triggerVariant}
-        wrapText={false}
-        formAction="none"
-      >
-        {copyButtonText}
-      </InternalButton>
+      {button}
     </InternalPopover>
   );
 

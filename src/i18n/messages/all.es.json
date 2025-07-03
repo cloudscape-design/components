@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "Hora de finalización",
     "i18nStrings.dateTimeConstraintText": "Para la fecha, utilice AAAA/MM/DD. Para la hora, utilice el formato de 24 horas.",
     "i18nStrings.dateConstraintText": "Para la fecha, use el formato AAAA/MM/DD.",
+    "i18nStrings.slashedDateTimeConstraintText": "Para la fecha, use AAAA/MM/DD. Para la hora, use el formato de 24 horas.",
+    "i18nStrings.isoDateTimeConstraintText": "Para la fecha, use AAAA-MM-DD. Para la hora, use el formato de 24 horas.",
+    "i18nStrings.slashedDateConstraintText": "Para la fecha, use el formato AAAA/MM/DD.",
+    "i18nStrings.isoDateConstraintText": "Para la fecha, use el formato AAAA-MM-DD.",
+    "i18nStrings.slashedMonthConstraintText": "Para el mes, use el formato AAAA/MM.",
+    "i18nStrings.isoMonthConstraintText": "Para el mes, use el formato AAAA-MM.",
     "i18nStrings.monthConstraintText": "Para el mes, use el formato AAAA/MM.",
     "i18nStrings.errorIconAriaLabel": "Error",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Rango seleccionado de {startDate} a {endDate}",
@@ -206,6 +212,14 @@
   },
   "link": {
     "externalIconAriaLabel": "Se abre en una pestaña nueva."
+  },
+  "list": {
+    "dragHandleAriaLabel": "Arrastrar controlador",
+    "dragHandleAriaDescription": "Utilice la barra espaciadora o Enter para activar el arrastre de un elemento y, a continuación, utilice las teclas de flecha para mover la posición del elemento. Para completar el movimiento de la posición, utilice la barra espaciadora o Enter, o para descartar el movimiento, utilice Escape.",
+    "liveAnnouncementDndStarted": "Recogida del elemento en la posición {position} de {total}",
+    "liveAnnouncementDndDiscarded": "Reordenación cancelada",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Mover el elemento de nuevo a la posición {currentPosition} de {total}} false {Mover el elemento a la posición {currentPosition} de {total}} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {El artículo ha vuelto a su posición original {initialPosition} de {total}} false {El artículo se movió de la posición {initialPosition} a la posición {finalPosition} de {total}} other {}}"
   },
   "modal": {
     "closeAriaLabel": "Cerrar modal"
@@ -403,6 +417,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Cerrar menú",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Volver",
     "i18nStrings.overflowMenuTitleText": "Todos"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "Ampliar",
+    "i18nStrings.collapseButtonLabel": "Contraer"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "Cargando",

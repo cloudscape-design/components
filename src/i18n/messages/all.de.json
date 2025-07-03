@@ -93,7 +93,7 @@
     "i18nStrings.resizeHandleTooltipText": "Zum Ändern der Größe ziehen oder auswählen"
   },
   "collection-preferences": {
-    "title": "Präferenzen",
+    "title": "Einstellungen",
     "confirmLabel": "Bestätigen",
     "cancelLabel": "Abbrechen",
     "pageSizePreference.title": "Seitengröße",
@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "Endzeit",
     "i18nStrings.dateTimeConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
     "i18nStrings.dateConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT.",
+    "i18nStrings.slashedDateTimeConstraintText": "Verwenden Sie für das Datum das Format JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
+    "i18nStrings.isoDateTimeConstraintText": "Verwenden Sie für das Datum das Format JJJJ-MM-TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
+    "i18nStrings.slashedDateConstraintText": "Verwenden Sie für das Datum das Format JJJJ/MM/TT.",
+    "i18nStrings.isoDateConstraintText": "Verwenden Sie für das Datum das Format JJJJ-MM-TT.",
+    "i18nStrings.slashedMonthConstraintText": "Verwenden Sie für den Monat das Format JJJJ/MM.",
+    "i18nStrings.isoMonthConstraintText": "Verwenden Sie für den Monat das Format JJJJ-MM.",
     "i18nStrings.monthConstraintText": "Verwenden Sie für Monat JJJJ/MM.",
     "i18nStrings.errorIconAriaLabel": "Fehler",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Bereich ausgewählt von {startDate} bis {endDate}",
@@ -206,6 +212,14 @@
   },
   "link": {
     "externalIconAriaLabel": "Wird in einem neuen Fenster geöffnet"
+  },
+  "list": {
+    "dragHandleAriaLabel": "Ziehpunkt",
+    "dragHandleAriaDescription": "Verwenden Sie Space (Leertaste) oder Enter (Eingabetaste), um das Ziehen für ein Element zu aktivieren. Verwenden Sie dann die Pfeiltasten, um die Position abzuschließen. Verwenden Sie Space (Leertaste) oder Enter (Eingabetaste) oder, um den Zug zu verwerfen, verwenden Sie Escape (Escape).",
+    "liveAnnouncementDndStarted": "Aufgeholtes Element an Position {position} von {total}",
+    "liveAnnouncementDndDiscarded": "Neuanordnung storniert",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Objekt zurück an die Position {currentPosition} von {total} verschieben} false {Objekt an Position {currentPosition} von {total} verschieben} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Das Objekt wurde zurück an seine ursprüngliche Position {initialPosition} von {total} verschoben} false {Das Objekt wurde von Position {initialPosition} zu Position {finalPosition} von {total} verschoben} other {}}"
   },
   "modal": {
     "closeAriaLabel": "Modal schließen"
@@ -403,6 +417,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Menü schließen",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Zurück",
     "i18nStrings.overflowMenuTitleText": "Alle"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "Erweitern",
+    "i18nStrings.collapseButtonLabel": "Minimieren"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "Wird geladen",

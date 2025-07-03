@@ -23,7 +23,7 @@ class CustomPropertyPageObject extends BasePageObject {
         for (const [prop, value] of (element as any).computedStyleMap()) {
           // Custom Property
           if (prop.startsWith('--')) {
-            const valueWithoutPostfix = prop.substring(2, prop.length - 7);
+            const valueWithoutPostfix = prop.replace(/^--/, '').replace(/-[\d\w]+$/, '');
             result[valueWithoutPostfix] = value[0][0];
           }
         }

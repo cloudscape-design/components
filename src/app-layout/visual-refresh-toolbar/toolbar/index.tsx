@@ -164,7 +164,7 @@ export function AppLayoutToolbarImplementation({
           <nav {...navLandmarkAttributes} className={clsx(styles['universal-toolbar-nav'])}>
             <TriggerButton
               ariaLabel={ariaLabels?.navigationToggle ?? undefined}
-              ariaExpanded={false}
+              ariaExpanded={!drawerExpandedMode && navigationOpen}
               iconName="menu"
               className={testutilStyles['navigation-toggle']}
               onClick={() => {

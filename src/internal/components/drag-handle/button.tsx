@@ -18,6 +18,7 @@ const DragHandleButton = forwardRef(
     {
       variant = 'drag-indicator',
       size = 'normal',
+      active = false,
       className,
       ariaLabel,
       ariaLabelledBy,
@@ -53,7 +54,7 @@ const DragHandleButton = forwardRef(
       // when it is being dragged.
       <div
         ref={useMergeRefs(ref, dragHandleRefObject)}
-        role={ariaValue ? 'slider' : 'button'}
+        role={ariaValue ? 'slider' : 'application'}
         tabIndex={0}
         className={clsx(
           className,
@@ -61,7 +62,8 @@ const DragHandleButton = forwardRef(
           testUtilsStyles.root,
           styles[`handle-${variant}`],
           styles[`handle-size-${size}`],
-          disabled && styles['handle-disabled']
+          disabled && styles['handle-disabled'],
+          active && styles.active
         )}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}

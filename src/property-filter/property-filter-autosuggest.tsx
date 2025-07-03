@@ -4,7 +4,7 @@
 import React, { Ref, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { AutosuggestItem, AutosuggestProps } from '../autosuggest/interfaces';
 import { useAutosuggestLoadMore } from '../autosuggest/load-more-controller';
@@ -24,7 +24,6 @@ import {
 } from '../internal/events';
 import { fireCancelableEvent } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
 import { filterOptions } from './filter-options';
 

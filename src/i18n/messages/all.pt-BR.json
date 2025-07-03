@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "Horário de término",
     "i18nStrings.dateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",
     "i18nStrings.dateConstraintText": "Para data, use AAAA/MM/DD.",
+    "i18nStrings.slashedDateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",
+    "i18nStrings.isoDateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",
+    "i18nStrings.slashedDateConstraintText": "Para data, use AAAA/MM/DD.",
+    "i18nStrings.isoDateConstraintText": "Para data, use AAAA/MM/DD.",
+    "i18nStrings.slashedMonthConstraintText": "Para mês, use AAAA/MM.",
+    "i18nStrings.isoMonthConstraintText": "Para mês, use AAAA/MM.",
     "i18nStrings.monthConstraintText": "Para mês, use AAAA/MM.",
     "i18nStrings.errorIconAriaLabel": "Erro",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Intervalo selecionado de {startDate} a {endDate}",
@@ -206,6 +212,14 @@
   },
   "link": {
     "externalIconAriaLabel": "Abre em uma nova guia"
+  },
+  "list": {
+    "dragHandleAriaLabel": "Ícone de arrastar",
+    "dragHandleAriaDescription": "Use Space ou Enter para ativar a função de arrastar para um item e, em seguida, use as teclas de setas para movimentar o posicionamento do item. Para completar o movimento de posicionamento, use Space ou Enter, ou para descartar o movimento, use Escape.",
+    "liveAnnouncementDndStarted": "Item selecionado na posição {position} de {total}",
+    "liveAnnouncementDndDiscarded": "Reordenação cancelada",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Movendo o item de volta para a posição {currentPosition} de {total}} false {Movendo o item para a posição {currentPosition} de {total}} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item movido de volta à sua posição original {initialPosition} de {total}} false {Item movido da posição {initialPosition} para a posição {finalPosition} de {total}} other {}}"
   },
   "modal": {
     "closeAriaLabel": "Fechar modal"
@@ -403,6 +417,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Fechar menu",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Voltar",
     "i18nStrings.overflowMenuTitleText": "Todos"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "Expandir",
+    "i18nStrings.collapseButtonLabel": "Recolher"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "Carregando",

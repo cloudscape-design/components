@@ -4,7 +4,9 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { GeneratedAnalyticsMetadataAppLayoutToolbarComponent } from '../../../app-layout-toolbar/analytics-metadata/interfaces';
 import ScreenreaderOnly from '../../../internal/components/screenreader-only';
 import VisualContext from '../../../internal/components/visual-context';
 import { fireNonCancelableEvent } from '../../../internal/events';
@@ -40,6 +42,14 @@ export interface SkeletonLayoutProps {
 export interface RootSkeletonLayoutProps extends SkeletonLayoutProps {
   skeletonSlotsAttributes: ReturnType<typeof useSkeletonSlotsAttributes> | null;
 }
+
+const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAppLayoutToolbarComponent = {
+  name: 'awsui.AppLayoutToolbar',
+  label: {
+    selector: 'h1',
+    root: 'body',
+  },
+};
 
 export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
   const { appLayoutProps, appLayoutState, skeletonSlotsAttributes } = props;
@@ -160,6 +170,7 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
             }
           }
           ref={ref}
+          {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
         >
           <AppLayoutSkeletonTopSlot {...(combinedProps as any)} />
           <main {...mainElAttributes} className={mainElAttributes?.className ?? styles['main-landmark']}>

@@ -3,7 +3,7 @@
 import React, { Ref, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
@@ -19,7 +19,6 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useFocusTracker } from '../internal/hooks/use-focus-tracker';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { usePrevious } from '../internal/hooks/use-previous';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development.js';
 import { KeyCode } from '../internal/keycode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -55,7 +54,7 @@ function renderDateRange({
 }) {
   const firstPart = range
     ? range.type === 'relative'
-      ? formatRelativeRange?.(range) ?? ''
+      ? (formatRelativeRange?.(range) ?? '')
       : formatDateTimeWithOffset({
           date: range.startDate,
           timeOffset: timeOffset.startDate,

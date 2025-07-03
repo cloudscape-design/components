@@ -72,17 +72,17 @@
 
   > .icon {
     position: relative;
-    stroke: awsui.$color-text-link-default;
+    stroke: awsui.$color-text-tutorial-hotspot-default;
   }
 
   &:hover {
     > .icon {
-      stroke: awsui.$color-text-link-hover;
+      stroke: awsui.$color-text-tutorial-hotspot-hover;
     }
   }
   &:active {
     > .icon {
-      stroke: awsui.$color-text-link-default;
+      stroke: awsui.$color-text-tutorial-hotspot-default;
     }
   }
 }

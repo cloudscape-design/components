@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "وقت الانتهاء",
     "i18nStrings.dateTimeConstraintText": "استخدم الصيغة YYYY/MM/DD للتاريخ، وصيغة 24 ساعة للوقت.",
     "i18nStrings.dateConstraintText": "للحصول على التاريخ، استخدم الصيغة YYYY/MM/DD.",
+    "i18nStrings.slashedDateTimeConstraintText": "استخدم الصيغة YYYY/MM/DD للتاريخ، وصيغة 24 ساعة للوقت.",
+    "i18nStrings.isoDateTimeConstraintText": "استخدم الصيغة YYYY-MM-DD للتاريخ، وصيغة 24 ساعة للوقت.",
+    "i18nStrings.slashedDateConstraintText": "للحصول على التاريخ، استخدم الصيغة YYYY/MM/DD.",
+    "i18nStrings.isoDateConstraintText": "للحصول على التاريخ، استخدم الصيغة YYYY-MM-DD.",
+    "i18nStrings.slashedMonthConstraintText": "للحصول على الشهر، استخدم الصيغة YYYY/MM.",
+    "i18nStrings.isoMonthConstraintText": "للحصول على الشهر، استخدم الصيغة YYYY-MM.",
     "i18nStrings.monthConstraintText": "للحصول على الشهر، استخدم الصيغة YYYY/MM.",
     "i18nStrings.errorIconAriaLabel": "خطأ",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "النطاق المحدد من {startDate} إلى {endDate}",
@@ -206,6 +212,14 @@
   },
   "link": {
     "externalIconAriaLabel": "تفتح الصفحة في علامة تبويب جديدة"
+  },
+  "list": {
+    "dragHandleAriaLabel": "مؤشر السحب للتعبئة التلقائية",
+    "dragHandleAriaDescription": "استخدم زر Space أو Enter لتنشيط السحب لأحد العناصر، ثم استخدم مفاتيح الأسهم لتحريك موضع العنصر. لإكمال تحريك الموضع، استخدم زر Space أو Enter، أو استخدم Escape لتجاهل الحركة.",
+    "liveAnnouncementDndStarted": "العنصر المسحوب في الموضع {position} من أصل {total}",
+    "liveAnnouncementDndDiscarded": "تم إلغاء إعادة الترتيب",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {نقل العنصر مرة أخرى إلى الموضع {currentPosition} من أصل {total}} false {نقل العنصر إلى الموضع {currentPosition} من أصل {total}} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {تم نقل العنصر مرة أخرى إلى موضعه الأصلي {initialPosition} من أصل {total}} false {تم نقل العنصر من الموضع {initialPosition} إلى الموضع {finalPosition} من أصل {total}} other {}}"
   },
   "modal": {
     "closeAriaLabel": "إغلاق النموذج"
@@ -403,6 +417,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "إغلاق القائمة",
     "i18nStrings.overflowMenuBackIconAriaLabel": "العودة إلى الصفحة السابقة",
     "i18nStrings.overflowMenuTitleText": "الكل"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "توسيع",
+    "i18nStrings.collapseButtonLabel": "تحجيم"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "جار التحميل",

@@ -26,6 +26,7 @@
 
 .drag-overlay {
   box-shadow: awsui.$shadow-container-active;
+  background-color: awsui.$color-background-container-content;
 
   &-item {
     @include drag-overlay-with-radius(awsui.$border-radius-item);

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import FocusLock from '../../../../internal/components/focus-lock';
-import { useUniqueId } from '../../../../internal/hooks/use-unique-id';
 import { TopNavigationProps } from '../../../interfaces';
 import { View } from '..';
 import Header from '../header';
