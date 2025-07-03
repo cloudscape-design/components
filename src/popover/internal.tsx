@@ -31,7 +31,6 @@ export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType' |
 }
 
 export interface InternalPopoverRef {
-  dismissPopover: () => void;
   focus: HTMLElement['focus'];
 }
 
@@ -105,7 +104,9 @@ function InternalPopover(
   );
 
   useImperativeHandle(ref, () => ({
-    dismissPopover: onDismiss,
+    dismiss: () => {
+      setVisible(false);
+    },
     focus: () => {
       setVisible(false);
       focusTrigger();
