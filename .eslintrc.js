@@ -62,6 +62,11 @@ module.exports = {
           message:
             "Disallowed import '{{ path }}'. This raises the minimum TypeScript requirements of the current file.",
         },
+        {
+          pattern: './src/icon-provider/{index,provider}.tsx',
+          message:
+            "Disallowed import '{{ path }}'. This raises the minimum TypeScript requirements of the current file.",
+        },
       ],
     ],
     '@typescript-eslint/naming-convention': [
@@ -270,6 +275,7 @@ module.exports = {
         // 'src/hotspot/**',
         // 'src/i18n/**',
         'src/icon/**',
+        // 'src/icon-provider/**',
         'src/input/**',
         // 'src/internal/**',
         // 'src/line-chart/**',

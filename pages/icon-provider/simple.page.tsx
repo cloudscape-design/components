@@ -38,7 +38,7 @@ export default function SimpleContainers() {
   const [filteringText, setFilteringText] = useState('Icon test');
   return (
     <article>
-      <h1>Simple Icon Provider</h1>
+      <h1>IconProvider</h1>
       <ScreenshotArea>
         {/* Global icon override */}
         <IconProvider
