@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { getLogicalBoundingClientRect, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
+import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { InternalPosition, PopoverProps } from './interfaces';
 import usePopoverPosition from './use-popover-position.js';
@@ -111,6 +112,11 @@ export default function PopoverContainer({
     updatePositionHandler(true);
   });
 
+  // Create a debounced version of the position handler to avoid performance issues with the mutation observer
+  const debouncedPositionHandler = useDebounceCallback(() => {
+    requestAnimationFrame(() => positionHandlerRef.current());
+  }, 50);
+
   // Recalculate position on DOM events.
   useLayoutEffect(() => {
     /*
@@ -166,10 +172,18 @@ export default function PopoverContainer({
     window.addEventListener('resize', updatePositionOnResize, { signal: controller.signal });
     window.addEventListener('scroll', refreshPosition, { capture: true, signal: controller.signal });
 
+    // React to layout changes at the DOM level, such as flashbars being added and shifting content down
+    const observer = new MutationObserver(debouncedPositionHandler);
+    observer.observe(contentRef.current!.getRootNode(), {
+      childList: true,
+      subtree: true,
+    });
+
     return () => {
+      observer.disconnect();
       controller.abort();
     };
-  }, [hideOnOverscroll, keepPosition, positionHandlerRef, trackRef, updatePositionHandler]);
+  }, [hideOnOverscroll, keepPosition, positionHandlerRef, trackRef, updatePositionHandler, debouncedPositionHandler]);
 
   return isOverscrolling ? null : (
     <div
