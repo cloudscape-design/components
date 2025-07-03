@@ -12,7 +12,7 @@ export interface FocusControlRefs {
   toggle: RefObject<Focusable>;
   close: RefObject<Focusable>;
   slider: RefObject<HTMLDivElement>;
-  onMount?: (node: HTMLDivElement) => void;
+  onMount?: () => void;
   focusPromise?: any;
 }
 

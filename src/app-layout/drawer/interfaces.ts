@@ -14,7 +14,7 @@ export interface DesktopDrawerProps {
   toggleRefs: {
     toggle: React.Ref<{ focus(): void }>;
     close: React.Ref<{ focus(): void }>;
-    onMount: () => void;
+    onMount?: () => void;
   };
   width: number;
   topOffset: number | undefined;
