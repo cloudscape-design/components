@@ -14,7 +14,7 @@ import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
 import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers';
-import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
+import { useAsyncFocusControl, useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { computeHorizontalLayout, computeSplitPanelOffsets, CONTENT_PADDING } from './compute-layout';
 import { AppLayoutInternalProps, AppLayoutInternals } from './interfaces';
@@ -197,7 +197,7 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
   });
 
   const globalDrawersFocusControl = useMultipleFocusControl(true, activeGlobalDrawersIds);
-  const drawersFocusControl = useFocusControl(!!activeDrawer?.id, true, activeDrawer?.id);
+  const drawersFocusControl = useAsyncFocusControl(!!activeDrawer?.id, true, activeDrawer?.id);
   const navigationFocusControl = useFocusControl(navigationOpen, navigationTriggerHide);
   const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
