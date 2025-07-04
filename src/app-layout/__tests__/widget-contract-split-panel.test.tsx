@@ -22,6 +22,17 @@ function skipHashInClassnames(classNames: string): string {
     .join(' ');
 }
 
+// --awsui-max-content-width-kcc2gu becomes --awsui-max-content-width
+function skipHashInGLobalStyle(style: string): string {
+  if (!style.startsWith('--awsui')) {
+    return style;
+  }
+
+  const parts = style.split('-');
+  parts.pop();
+  return parts.join('-');
+}
+
 function sanitizeProps(props: any): any {
   if (!isObject(props)) {
     return props;
@@ -37,6 +48,12 @@ function sanitizeProps(props: any): any {
     return {
       ...props,
       className: skipHashInClassnames(props.className),
+      ...(props.style && {
+        style: Object.keys(props.style).reduce(
+          (acc, key) => ({ ...acc, [skipHashInGLobalStyle(key)]: props.style[key] }),
+          {}
+        ),
+      }),
     };
   }
   return Object.fromEntries(

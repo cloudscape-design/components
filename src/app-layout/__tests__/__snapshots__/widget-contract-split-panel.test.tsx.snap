@@ -147,7 +147,6 @@ Map {
                 "focus": [Function],
               },
             },
-            "onMount": [Function],
             "slider": {
               "current": null,
             },
@@ -330,9 +329,9 @@ Map {
       "wrapperElAttributes": {
         "className": "awsui_root awsui_root awsui_has-adaptive-widths-default",
         "style": {
-          "--awsui-max-content-width-xgujsu": "",
-          "--awsui-navigation-width-xgujsu": "280px",
-          "--awsui-tools-width-xgujsu": "290px",
+          "--awsui-max-content-width": "",
+          "--awsui-navigation-width": "280px",
+          "--awsui-tools-width": "290px",
           "minBlockSize": "calc(100vh - 0px)",
         },
       },
@@ -448,7 +447,6 @@ Map {
                 "focus": [Function],
               },
             },
-            "onMount": [Function],
             "slider": {
               "current": null,
             },
@@ -631,9 +629,9 @@ Map {
       "wrapperElAttributes": {
         "className": "awsui_root awsui_root awsui_has-adaptive-widths-default",
         "style": {
-          "--awsui-max-content-width-xgujsu": "",
-          "--awsui-navigation-width-xgujsu": "280px",
-          "--awsui-tools-width-xgujsu": "290px",
+          "--awsui-max-content-width": "",
+          "--awsui-navigation-width": "280px",
+          "--awsui-tools-width": "290px",
           "minBlockSize": "calc(100vh - 0px)",
         },
       },
@@ -749,7 +747,6 @@ Map {
                 "focus": [Function],
               },
             },
-            "onMount": [Function],
             "slider": {
               "current": null,
             },
@@ -932,9 +929,9 @@ Map {
       "wrapperElAttributes": {
         "className": "awsui_root awsui_root awsui_has-adaptive-widths-default",
         "style": {
-          "--awsui-max-content-width-xgujsu": "",
-          "--awsui-navigation-width-xgujsu": "280px",
-          "--awsui-tools-width-xgujsu": "290px",
+          "--awsui-max-content-width": "",
+          "--awsui-navigation-width": "280px",
+          "--awsui-tools-width": "290px",
           "minBlockSize": "calc(100vh - 0px)",
         },
       },
@@ -1050,7 +1047,6 @@ Map {
                 "focus": [Function],
               },
             },
-            "onMount": [Function],
             "slider": {
               "current": null,
             },
@@ -1233,9 +1229,9 @@ Map {
       "wrapperElAttributes": {
         "className": "awsui_root awsui_root awsui_has-adaptive-widths-default",
         "style": {
-          "--awsui-max-content-width-xgujsu": "",
-          "--awsui-navigation-width-xgujsu": "280px",
-          "--awsui-tools-width-xgujsu": "290px",
+          "--awsui-max-content-width": "",
+          "--awsui-navigation-width": "280px",
+          "--awsui-tools-width": "290px",
           "minBlockSize": "calc(100vh - 0px)",
         },
       },
