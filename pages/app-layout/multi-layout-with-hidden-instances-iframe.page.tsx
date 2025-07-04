@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import AppLayout from '~components/app-layout';
 import BreadcrumbGroup from '~components/breadcrumb-group';
@@ -18,14 +18,6 @@ import labels from './utils/labels';
 
 function createView(name: string) {
   return function View() {
-    const [count, setCount] = useState(0);
-
-    useEffect(() => {
-      console.log('mount ', name);
-
-      return () => console.log('unmount ', name);
-    }, []);
-
     return (
       <AppLayout
         data-testid="secondary-layout"
@@ -53,9 +45,6 @@ function createView(name: string) {
             </Link>
 
             <div>Page content: {name}</div>
-
-            <button onClick={() => setCount(count + 1)}>increment count</button>
-            {count}
           </SpaceBetween>
         }
         tools={<Tools>Tools content: {name}</Tools>}
