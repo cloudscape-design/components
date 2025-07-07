@@ -195,7 +195,7 @@ describe('Multiselect with "select all" control', () => {
       expect(selectAll.getElement()).toHaveTextContent('Custom Select all text');
     });
 
-    test('uses i18nStrings.selectAllText from i18nStrings prop when both i18n provider and i18nStrings prop are provided ', () => {
+    test('uses i18nStrings.selectAllText from i18nStrings prop when both i18n provider and i18nStrings prop are provided', () => {
       const { container } = render(
         <TestI18nProvider
           messages={{ multiselect: { 'i18nStrings.selectAllText': 'Custom Select all text from i18n provider' } }}

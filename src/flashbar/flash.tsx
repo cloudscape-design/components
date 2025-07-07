@@ -180,7 +180,7 @@ export const Flash = React.forwardRef(
 
     return (
       // We're not using "polite" or "assertive" here, just turning default behavior off.
-      // eslint-disable-next-line @cloudscape-design/prefer-live-region
+      // eslint-disable-next-line @cloudscape-design/components/prefer-live-region
       <div
         ref={mergedRef}
         role={ariaRole}

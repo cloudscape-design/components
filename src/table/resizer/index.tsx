@@ -132,7 +132,7 @@ export function Resizer({
         if (keys.indexOf(event.keyCode) !== -1) {
           event.preventDefault();
 
-          isEventLike(event) &&
+          if (isEventLike(event)) {
             handleKey(event, {
               onActivate: () => {
                 setIsKeyboardDragging(false);
@@ -145,19 +145,21 @@ export function Resizer({
               onInlineStart: () => updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize - 10),
               onInlineEnd: () => updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize + 10),
             });
+          }
         }
       }
       // Enter keyboard dragging mode
       else if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
         event.preventDefault();
 
-        isEventLike(event) &&
+        if (isEventLike(event)) {
           handleKey(event, {
             onActivate: () => {
               setIsKeyboardDragging(true);
               resizerSeparatorRef.current?.focus();
             },
           });
+        }
       }
     };
 

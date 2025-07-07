@@ -58,15 +58,13 @@ describe('animate', () => {
     expect(element.style.transform).toEqual('scale(1) translate(0px, 0px)');
   });
 
-  it("removes transforms once it's finished", done => {
+  it("removes transforms once it's finished", async () => {
     const element = document.createElement('div');
     animate({
       oldState: { a: { width: 1, height: 1, bottom: 1, left: 1, top: 1, right: 1, x: 1, y: 1, toJSON: () => void 0 } },
       elements: { a: element },
     });
-    setTimeout(() => {
-      expect(element.style?.transform).toBeFalsy();
-      done();
-    }, 0);
+    await new Promise(resolve => setTimeout(resolve, 0));
+    expect(element.style?.transform).toBeFalsy();
   });
 });

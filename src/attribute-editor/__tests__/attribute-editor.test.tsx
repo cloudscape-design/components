@@ -305,24 +305,22 @@ describe('Attribute Editor', () => {
     });
   });
 
-  ['control', 'errorText', 'warningText', 'constraintText'].forEach(renderableFn => {
-    describe(renderableFn, () => {
-      const renderableFns: Record<string, jest.Mock> = {};
+  describe.each(['control', 'errorText', 'warningText', 'constraintText'] as const)(`%s`, renderableFn => {
+    const renderableFns: Record<string, jest.Mock> = {};
 
-      beforeEach(() => {
-        const definition = defaultProps.definition.map(definition => ({ ...definition }));
-        ['key', 'value', 'additional'].forEach((type, i) => {
-          renderableFns[type] = jest.fn();
-          definition[i][renderableFn as keyof AttributeEditorProps.FieldDefinition<Item>] = renderableFns[type];
-        });
-
-        renderAttributeEditor({ ...defaultProps, definition });
+    beforeEach(() => {
+      const definition = defaultProps.definition.map(definition => ({ ...definition }));
+      ['key', 'value', 'additional'].forEach((type, i) => {
+        renderableFns[type] = jest.fn();
+        definition[i][renderableFn] = renderableFns[type];
       });
 
-      test(`passes 'item' and 'index' to ${renderableFn} function`, () => {
-        Object.keys(renderableFns).forEach(key => {
-          expect(renderableFns[key]).toHaveBeenCalledWith(expect.any(Object), expect.any(Number));
-        });
+      renderAttributeEditor({ ...defaultProps, definition });
+    });
+
+    test(`passes 'item' and 'index' to ${renderableFn} function`, () => {
+      Object.keys(renderableFns).forEach(key => {
+        expect(renderableFns[key]).toHaveBeenCalledWith(expect.any(Object), expect.any(Number));
       });
     });
   });

@@ -176,7 +176,6 @@ describe('InlineEditor', () => {
     fireEvent.click(input);
     fireEvent.change(input, { target: { value: 'new value' } });
 
-    // eslint-disable-next-line require-await
     handleSubmitEdit.mockImplementation(() => Promise.reject(new Error('test error')));
 
     fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);

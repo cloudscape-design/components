@@ -73,7 +73,7 @@ describe('TopNavigation Utility part', () => {
 
     it('supports iconSvg', () => {
       const iconSvg = (
-        <svg className="test-svg">
+        <svg className="test-svg" focusable="false">
           <circle cx="8" cy="8" r="7" />
         </svg>
       );
@@ -237,7 +237,7 @@ describe('TopNavigation Utility part', () => {
 
     it('supports iconSvg', () => {
       const iconSvg = (
-        <svg className="test-svg">
+        <svg className="test-svg" focusable="false">
           <circle cx="8" cy="8" r="7" />
         </svg>
       );
