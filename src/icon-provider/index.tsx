@@ -25,17 +25,17 @@ export default function IconProvider({ children, icons }: IconProviderProps) {
 
   // Merge the context icons with the custom icons, this allows child instances of IconProvider to persist parent configurations
   if (icons !== null) {
-    const iconsResetWithBuiltInIcons = { ...icons };
+    const clonedIcons = { ...icons };
 
     // Reset null icon values to their original definitions
-    Object.keys(iconsResetWithBuiltInIcons).forEach(name => {
+    Object.keys(clonedIcons).forEach(name => {
       const iconName = name as keyof typeof generatedIcons;
-      if (iconName in generatedIcons && iconsResetWithBuiltInIcons[iconName] === null) {
-        iconsResetWithBuiltInIcons[iconName] = generatedIcons[iconName];
+      if (iconName in generatedIcons && clonedIcons[iconName] === null) {
+        clonedIcons[iconName] = generatedIcons[iconName];
       }
     });
 
-    iconsToProvide = { ...contextIcons, ...iconsResetWithBuiltInIcons };
+    iconsToProvide = { ...contextIcons, ...clonedIcons };
   }
 
   return <InternalIconContext.Provider value={iconsToProvide}>{children}</InternalIconContext.Provider>;
