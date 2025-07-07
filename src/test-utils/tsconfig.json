@@ -2,6 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "incremental": true,
+    "types": [],
     "module": "CommonJS",
     "target": "ES2015",
     "lib": ["ES2020", "DOM"],

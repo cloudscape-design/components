@@ -75,8 +75,8 @@ function InternalPopover(
   const focusTrigger = useCallback(() => {
     if (['text', 'text-inline'].includes(triggerType)) {
       triggerRef.current?.focus();
-    } else {
-      triggerRef.current && getFirstFocusable(triggerRef.current)?.focus();
+    } else if (triggerRef.current) {
+      getFirstFocusable(triggerRef.current)?.focus();
     }
   }, [triggerType]);
 
@@ -136,7 +136,6 @@ function InternalPopover(
 
   const triggerProps = {
     // https://github.com/microsoft/TypeScript/issues/36659
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ref: triggerRef as any,
     onClick: onTriggerClick,
     onKeyDown: onTriggerKeyDown,

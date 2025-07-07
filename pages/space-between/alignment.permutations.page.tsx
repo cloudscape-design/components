@@ -45,7 +45,6 @@ const NestedExample = createPermutations([
   </div>
 ));
 
-/* eslint-disable react/jsx-key */
 const permutations = createPermutations<Pick<SpaceBetweenProps, 'direction' | 'alignItems' | 'children'>>([
   {
     children: [ExampleChildren, NestedExample],
@@ -53,7 +52,6 @@ const permutations = createPermutations<Pick<SpaceBetweenProps, 'direction' | 'a
     alignItems: [undefined, 'center', 'start', 'end'],
   },
 ]);
-/* eslint-enable react/jsx-key */
 
 export default function SpaceBetweenPermutations() {
   return (

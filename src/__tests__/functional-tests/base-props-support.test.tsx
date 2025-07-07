@@ -35,7 +35,7 @@ describe('Base props support', () => {
       const { default: Component } = requireComponent(componentName);
       const props = { ...getRequiredPropsForComponent(componentName), ...runtimeProps[componentName] };
 
-      describe(componentName, () => {
+      describe(`${componentName}`, () => {
         test('should allow className', () => {
           const { container } = render(<Component {...props} className="example" />, { container: componentRoot });
           expect(container.firstElementChild).toHaveClass('example');

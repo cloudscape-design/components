@@ -89,7 +89,9 @@ export default function Calendar({
 
   // Update displayed date if value changes.
   useEffect(() => {
-    memoizedValue && setDisplayedDate(prev => (prev.getTime() !== memoizedValue.getTime() ? memoizedValue : prev));
+    if (memoizedValue) {
+      setDisplayedDate(prev => (prev.getTime() !== memoizedValue.getTime() ? memoizedValue : prev));
+    }
   }, [memoizedValue]);
 
   const selectFocusedDate = (selected: Date | null, baseDate: Date): Date | null => {

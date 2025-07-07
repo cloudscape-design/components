@@ -15,7 +15,6 @@ const data1 = [...data, thresholdSeries];
 // Position of the threshold series in a stacked chart must not affect chart's plot.
 const data2 = [data[0], thresholdSeries, data[1], data[2]];
 
-/* eslint-disable react/jsx-key */
 const permutations = createPermutations<BarChartProps<string>>([
   {
     i18nStrings: [commonProps.i18nStrings],

@@ -1,15 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import resolve from '@rollup/plugin-node-resolve';
-import license from 'rollup-plugin-license';
-import * as path from 'path';
-import { fileURLToPath } from 'url';
 import commenting from 'commenting';
 import { readFileSync } from 'fs';
+import * as path from 'path';
+import license from 'rollup-plugin-license';
+import { fileURLToPath } from 'url';
 
 const dirName = path.dirname(fileURLToPath(import.meta.url));
 const vendorFolder = path.join(dirName, '../lib/components/internal/vendor');
-const licensesFile = path.join(dirName, 'generated-third-party-licenses.txt');
 
 export default ['d3-scale', 'react-virtual'].map(entry => ({
   input: `./src/internal/vendor/${entry}.js`,

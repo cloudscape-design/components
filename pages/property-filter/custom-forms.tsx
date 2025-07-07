@@ -53,13 +53,11 @@ export function DateTimeForm({
   };
 
   // Parse value from filter text when it changes.
-  useEffect(
-    () => {
-      filter && setState(parseDateTimeFilter(filter.trim()));
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [filter]
-  );
+  useEffect(() => {
+    if (filter) {
+      setState(parseDateTimeFilter(filter.trim()));
+    }
+  }, [filter]);
 
   // Call onChange only when the value is valid.
   useEffect(
@@ -130,7 +128,9 @@ export function DateForm({ filter, value, onChange }: PropertyFilterOperatorForm
 
   // Parse value from filter text when it changes.
   useEffect(() => {
-    filter && setState(parseDateTimeFilter(filter.trim()));
+    if (filter) {
+      setState(parseDateTimeFilter(filter.trim()));
+    }
   }, [filter]);
 
   // Call onChange only when the value is valid.
