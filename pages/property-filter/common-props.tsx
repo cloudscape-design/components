@@ -327,10 +327,13 @@ function checkArrayMatches(value: unknown[], token: unknown[]) {
   );
   for (const tokenEntry of token) {
     const count = valuesMap.get(tokenEntry);
-    if (count) {
-      count === 1 ? valuesMap.delete(tokenEntry) : valuesMap.set(tokenEntry, count - 1);
-    } else {
+    if (!count) {
       return false;
+    }
+    if (count === 1) {
+      valuesMap.delete(tokenEntry);
+    } else {
+      valuesMap.set(tokenEntry, count - 1);
     }
   }
   return valuesMap.size === 0;

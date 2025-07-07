@@ -327,8 +327,6 @@ export const InternalButton = React.forwardRef(
 
     if (isAnchor) {
       return (
-        // https://github.com/yannickcr/eslint-plugin-react/issues/2962
-        // eslint-disable-next-line react/jsx-no-target-blank
         <>
           <a
             {...buttonProps}

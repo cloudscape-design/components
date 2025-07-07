@@ -13,7 +13,7 @@ interface ResizeIconProps {
 export function ResizeIcon({ variant }: ResizeIconProps) {
   return (
     <svg
-      focusable={false}
+      focusable="false"
       className={clsx(styles['resize-icon'], styles[`resize-icon-${variant}`])}
       xmlns="http://www.w3.org/2000/svg"
       width="16"

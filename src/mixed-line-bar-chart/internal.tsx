@@ -190,7 +190,9 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
 
   const onBlur = (event: React.FocusEvent) => {
     if (event.relatedTarget && !nodeBelongs(containerRef.current, event.relatedTarget)) {
-      highlightedSeries && onHighlightChange(highlightedSeries);
+      if (highlightedSeries) {
+        onHighlightChange(highlightedSeries);
+      }
       setHighlightedPoint(null);
       setHighlightedGroupIndex(null);
       setLegendSeries(null);

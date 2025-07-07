@@ -13,7 +13,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [500, () => {}],
 }));
 
-export function renderColumnLayout(props: ColumnLayoutProps = {}) {
+function renderColumnLayout(props: ColumnLayoutProps = {}) {
   const renderResult = render(<ColumnLayout {...props} />);
   const wrapper = createWrapper(renderResult.container).find(`.${styles['css-grid']}`)!;
   return {

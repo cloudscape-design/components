@@ -22,7 +22,7 @@ describe('Icon Component props', () => {
       variant: 'normal',
       url: 'dummyUrl',
       alt: 'dummy alt text',
-      svg: <svg></svg>,
+      svg: <svg focusable="false"></svg>,
     };
     render(<Icon {...props} />);
     expect(InternalIcon).toHaveBeenCalledWith(expect.objectContaining(props), {});

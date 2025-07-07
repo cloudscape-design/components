@@ -27,7 +27,6 @@ const Header: React.FC<HeaderProps> = ({
       {onBack && (
         <InternalButton
           // Used for test-utils, which require the selectable element to have a classname.
-          // eslint-disable-next-line react/forbid-component-props
           className={styles['overflow-menu-back-button']}
           ariaLabel={backIconAriaLabel}
           iconName="angle-left"
@@ -40,7 +39,6 @@ const Header: React.FC<HeaderProps> = ({
         {secondaryText && <div className={styles['overflow-menu-header-text--secondary']}>{secondaryText}</div>}
       </h2>
       <InternalButton
-        // eslint-disable-next-line react/forbid-component-props
         className={styles['overflow-menu-dismiss-button']}
         ariaLabel={dismissIconAriaLabel}
         iconName="close"
