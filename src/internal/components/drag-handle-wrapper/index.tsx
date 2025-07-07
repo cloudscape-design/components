@@ -85,7 +85,9 @@ export default function DragHandleWrapper({
             event.clientY < initialPointerPosition.current.y - clickDragThreshold)
         ) {
           didPointerDrag.current = true;
-          hideButtonsOnDrag && setShowButtons(false);
+          if (hideButtonsOnDrag) {
+            setShowButtons(false);
+          }
         }
       },
       { signal: controller.signal }

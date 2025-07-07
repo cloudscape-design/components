@@ -6,7 +6,7 @@ import { act, render } from '@testing-library/react';
 import TopNavigationWrapper from '../../../../lib/components/test-utils/dom/top-navigation/1.0-beta';
 import TopNavigation, { TopNavigationProps } from '../../../../lib/components/top-navigation/1.0-beta';
 
-export const I18N_STRINGS: TopNavigationProps.I18nStrings = {
+const I18N_STRINGS: TopNavigationProps.I18nStrings = {
   searchIconAriaLabel: 'Search',
   searchDismissIconAriaLabel: 'Close search',
   overflowMenuTriggerText: 'More',

@@ -278,7 +278,6 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
               >
                 {showInnerContent(item) && (
                   <Flash
-                    // eslint-disable-next-line react/forbid-component-props
                     className={clsx(
                       animateFlash && styles['flash-with-motion'],
                       isVisualRefresh && styles['flash-refresh']

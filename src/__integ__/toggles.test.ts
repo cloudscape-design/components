@@ -11,7 +11,7 @@ const wrappers = {
 };
 
 Object.keys(wrappers).forEach(componentName => {
-  describe(componentName, () => {
+  describe(`${componentName}`, () => {
     const wrapper = wrappers[componentName as keyof typeof wrappers];
     const nativeInputSelector = wrapper.findNativeInput().toSelector();
 

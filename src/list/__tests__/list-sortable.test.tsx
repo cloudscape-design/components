@@ -36,7 +36,7 @@ const ControlledList = (props: ListProps<Item>) => {
 
   const onSortingChange: ListProps<Item>['onSortingChange'] = event => {
     setItems(event.detail.items);
-    props.onSortingChange && props.onSortingChange(event);
+    props.onSortingChange?.(event);
   };
 
   return (

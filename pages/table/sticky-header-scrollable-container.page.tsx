@@ -91,7 +91,7 @@ function HooksTable({
   );
   useImperativeHandle(tableRef, () => ({
     scrollToTop: () => {
-      collectionProps.ref.current && collectionProps.ref.current.scrollToTop();
+      collectionProps.ref.current?.scrollToTop();
     },
   }));
   const [selectedItems, setSelectedItems] = useState<Instance[]>();

@@ -155,7 +155,7 @@ describe('filtering input', () => {
     expect(wrapper.findNativeInput().getElement()).toHaveAttribute('id', 'control-id');
   });
 
-  describe('typing experience: ', () => {
+  describe('typing experience:', () => {
     test('provides relevant suggestions depending on the currently entered string', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent();
       // property suggestions

@@ -25,7 +25,7 @@ const checkPercentage = (wrapper: ProgressBarWrapper, percentage: number) => {
 
 allVariants.forEach(variant => {
   describe(`Progress bar component ${variant} variant`, () => {
-    describe('Progress value ', () => {
+    describe('Progress value', () => {
       test('is 0 if not set', () => {
         const wrapper = renderProgressBar({ variant });
         checkPercentage(wrapper, 0);
@@ -63,7 +63,7 @@ allVariants.forEach(variant => {
         );
       });
     });
-    describe('Result state ', () => {
+    describe('Result state', () => {
       test('is not displayed for value=100 and status="in-progress"', () => {
         const wrapper = renderProgressBar({ variant, value: 100 });
         checkPercentage(wrapper, 100);

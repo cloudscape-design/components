@@ -524,7 +524,7 @@ describe('Details popover', () => {
     expect(wrapper.findDetailPopover()).toBeNull();
   });
 
-  test('allow mouse to be over details popover ', () => {
+  test('allow mouse to be over details popover', () => {
     const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
     wrapper.findApplication()!.focus();
 
@@ -538,7 +538,7 @@ describe('Details popover', () => {
     expect(detailPopover?.findHeader()?.getElement()).toHaveTextContent(defaultData[0].title);
   });
 
-  test('allow mouse to be move between segment and popover ', () => {
+  test('allow mouse to be move between segment and popover', () => {
     const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
     fireEvent.mouseOver(wrapper!.findSegments()[0].getElement());
 
@@ -561,7 +561,7 @@ describe('Details popover', () => {
     expect(wrapper.findDetailPopover()).toBeFalsy();
   });
 
-  test('close popover when mouse leaves it ', () => {
+  test('close popover when mouse leaves it', () => {
     const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
     wrapper.findApplication()!.focus();
 

@@ -29,7 +29,9 @@ export function useFilesDragging() {
 
       if (files > 0) {
         setFilesDragging(true);
-        dragTimer && clearTimeout(dragTimer);
+        if (dragTimer) {
+          clearTimeout(dragTimer);
+        }
       }
     };
 
@@ -53,7 +55,9 @@ export function useFilesDragging() {
     document.addEventListener('drop', onDocumentDrop, { signal: controller.signal });
 
     return () => {
-      dragTimer && clearTimeout(dragTimer);
+      if (dragTimer) {
+        clearTimeout(dragTimer);
+      }
       controller.abort();
     };
   }, []);

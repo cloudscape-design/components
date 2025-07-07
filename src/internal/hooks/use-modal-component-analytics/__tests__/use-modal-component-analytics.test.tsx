@@ -44,7 +44,7 @@ describe('useModalContextLoadingButtonComponent', () => {
     expect(mockLoadTime).toBe(0);
   });
 
-  test('should not set loadCompleteTime if componentLoadingCount is not 0 ', () => {
+  test('should not set loadCompleteTime if componentLoadingCount is not 0', () => {
     const Demo = () => {
       return <button>{useModalContextLoadingButtonComponent(true, true)} content</button>;
     };
@@ -58,7 +58,7 @@ describe('useModalContextLoadingButtonComponent', () => {
     }, 100);
   });
 
-  test('should not set componentLoadingCount or loadCompleteTime if element is not of type primary ', () => {
+  test('should not set componentLoadingCount or loadCompleteTime if element is not of type primary', () => {
     const Demo = () => {
       return <button>{useModalContextLoadingButtonComponent(false, true)} content</button>;
     };

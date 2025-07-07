@@ -108,25 +108,33 @@ describe('Date range picker', () => {
       });
 
       describe('data formats', () => {
-        test(
-          granularity === 'month'
-            ? 'granularity of month overrides dateOnly and parses out milliseconds'
-            : 'dateOnly parses out milliseconds',
-          () => {
-            const { wrapper } = renderDateRangePicker({
-              ...defaultProps,
-              dateOnly: true,
-              granularity,
-              value: {
-                type: 'absolute',
-                startDate: '2018-01-02T05:00:00.000+08:45',
-                endDate: '2018-01-05T13:00:00.15+08:45',
-              },
-            });
-            const expectedText = granularity === 'month' ? '2018-01 — 2018-01' : '2018-01-02 — 2018-01-05';
-            expect(wrapper.findTrigger().getElement()).toHaveTextContent(expectedText);
-          }
-        );
+        test(`granularity of month overrides dateOnly and parses out milliseconds`, () => {
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            dateOnly: true,
+            granularity: 'month',
+            value: {
+              type: 'absolute',
+              startDate: '2018-01-02T05:00:00.000+08:45',
+              endDate: '2018-01-05T13:00:00.15+08:45',
+            },
+          });
+          expect(wrapper.findTrigger().getElement()).toHaveTextContent('2018-01 — 2018-01');
+        });
+
+        test(`dateOnly parses out milliseconds`, () => {
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            dateOnly: true,
+            granularity: 'day',
+            value: {
+              type: 'absolute',
+              startDate: '2018-01-02T05:00:00.000+08:45',
+              endDate: '2018-01-05T13:00:00.15+08:45',
+            },
+          });
+          expect(wrapper.findTrigger().getElement()).toHaveTextContent('2018-01-02 — 2018-01-05');
+        });
 
         test('accepts optional milliseconds dateOnly is false', () => {
           const { wrapper } = renderDateRangePicker({
@@ -856,48 +864,67 @@ describe('Date range picker', () => {
           }
         });
 
-        test(
-          granularity === 'month' ? 'date-only has no effect on value' : 'formatted date-only range has no time part',
-          () => {
-            const { wrapper } = renderDateRangePicker({
-              ...defaultProps,
-              granularity,
-              dateOnly: true,
-              value: { type: 'absolute', startDate: '2018-01-02', endDate: '2018-01-05' },
-            });
-            expect(wrapper.findTrigger().getElement()).toHaveTextContent(
-              granularity === 'month' ? '2018-01 — 2018-01' : '2018-01-02 — 2018-01-05'
-            );
-          }
-        );
+        test('formatted date-only range has no time part', () => {
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity: 'day',
+            dateOnly: true,
+            value: { type: 'absolute', startDate: '2018-01-02', endDate: '2018-01-05' },
+          });
+          expect(wrapper.findTrigger().getElement()).toHaveTextContent('2018-01-02 — 2018-01-05');
+        });
 
-        test(
-          granularity === 'month' ? 'date-only has no effect on saving' : 'date-only range is saved without time part',
-          () => {
-            const onChangeSpy = jest.fn();
-            const { wrapper } = renderDateRangePicker({
-              ...defaultProps,
-              dateOnly: true,
-              granularity,
-              onChange: event => onChangeSpy(event.detail),
-            });
+        test('date-only has no effect on value', () => {
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity: 'month',
+            dateOnly: true,
+            value: { type: 'absolute', startDate: '2018-01-02', endDate: '2018-01-05' },
+          });
+          expect(wrapper.findTrigger().getElement()).toHaveTextContent('2018-01 — 2018-01');
+        });
 
-            wrapper.findTrigger().click();
-            expect(wrapper.findDropdown()!.findStartTimeInput()).toBeNull();
-            expect(wrapper.findDropdown()!.findEndTimeInput()).toBeNull();
-            wrapper.findDropdown()!.findStartDateInput()!.setInputValue(expectedStartDateValue);
-            wrapper.findDropdown()!.findEndDateInput()!.setInputValue(expectedEndDateValue);
-            wrapper.findDropdown()!.findApplyButton().click();
+        testIf(granularity === 'month')('date-only has no effect on saving', () => {
+          const onChangeSpy = jest.fn();
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            dateOnly: true,
+            granularity: 'month',
+            onChange: event => onChangeSpy(event.detail),
+          });
 
-            expect(onChangeSpy).toHaveBeenCalledWith(
-              expect.objectContaining(
-                granularity === 'day'
-                  ? { value: { type: 'absolute', startDate: '2018-05-10', endDate: '2018-05-12' } }
-                  : { value: { type: 'absolute', startDate: '2018-05', endDate: '2018-05' } }
-              )
-            );
-          }
-        );
+          wrapper.findTrigger().click();
+          expect(wrapper.findDropdown()!.findStartTimeInput()).toBeNull();
+          expect(wrapper.findDropdown()!.findEndTimeInput()).toBeNull();
+          wrapper.findDropdown()!.findStartDateInput()!.setInputValue(expectedStartDateValue);
+          wrapper.findDropdown()!.findEndDateInput()!.setInputValue(expectedEndDateValue);
+          wrapper.findDropdown()!.findApplyButton().click();
+
+          expect(onChangeSpy).toHaveBeenCalledWith({
+            value: { type: 'absolute', startDate: '2018-05', endDate: '2018-05' },
+          });
+        });
+
+        testIf(granularity === 'day')('date-only range is saved without time part', () => {
+          const onChangeSpy = jest.fn();
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            dateOnly: true,
+            granularity: 'day',
+            onChange: event => onChangeSpy(event.detail),
+          });
+
+          wrapper.findTrigger().click();
+          expect(wrapper.findDropdown()!.findStartTimeInput()).toBeNull();
+          expect(wrapper.findDropdown()!.findEndTimeInput()).toBeNull();
+          wrapper.findDropdown()!.findStartDateInput()!.setInputValue(expectedStartDateValue);
+          wrapper.findDropdown()!.findEndDateInput()!.setInputValue(expectedEndDateValue);
+          wrapper.findDropdown()!.findApplyButton().click();
+
+          expect(onChangeSpy).toHaveBeenCalledWith({
+            value: { type: 'absolute', startDate: '2018-05-10', endDate: '2018-05-12' },
+          });
+        });
       });
 
       describe('custom control', () => {

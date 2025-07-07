@@ -34,7 +34,7 @@ class DatePickerDropdownTestPage extends DatePickerPage {
   }
 }
 
-describe('Dropdown fitHandler ', () => {
+describe('Dropdown fitHandler', () => {
   const dropDownHeight = 800;
   const dropUpHeight = 450;
 

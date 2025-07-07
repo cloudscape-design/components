@@ -52,7 +52,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
 
     return (
       // This is a proxy for <ul>, so we're not applying a class to another actual component.
-      // eslint-disable-next-line react/forbid-component-props
+
       <TransitionGroup component="ul" className={styles['flash-list']} aria-label={ariaLabel}>
         {items.map((item, index) => (
           <Transition
@@ -111,7 +111,6 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
   ) {
     return (
       <Flash
-        // eslint-disable-next-line react/forbid-component-props
         className={clsx(animateFlash && styles['flash-with-motion'], isVisualRefresh && styles['flash-refresh'])}
         key={key}
         ref={transitionRootElement}
