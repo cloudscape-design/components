@@ -41,9 +41,11 @@ export function createAppLayoutPart({ Component }: { Component: React.JSXElement
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setMount(true);
-      }, 500);
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
     }, []);
 
     if (!enableDelayedComponents || (mount && enableDelayedComponents)) {

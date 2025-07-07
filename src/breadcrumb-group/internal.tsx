@@ -9,7 +9,6 @@ export const InternalBreadcrumbGroup = createWidgetizedBreadcrumbGroup(
 );
 
 const enableDelayedComponents = false;
-const enableSyncComponents = true;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createAppLayoutPart({ Component }: { Component: React.JSXElementConstructor<any> }) {
@@ -19,12 +18,14 @@ export function createAppLayoutPart({ Component }: { Component: React.JSXElement
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setMount(true);
       }, 1000);
+
+      return () => clearTimeout(timeoutId);
     }, []);
 
-    if (enableSyncComponents || (mount && enableDelayedComponents)) {
+    if (!enableDelayedComponents || (mount && enableDelayedComponents)) {
       return <Component {...props} />;
     }
 
