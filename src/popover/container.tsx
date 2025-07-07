@@ -173,11 +173,15 @@ export default function PopoverContainer({
     window.addEventListener('scroll', refreshPosition, { capture: true, signal: controller.signal });
 
     // React to layout changes at the DOM level, such as flashbars being added and shifting content down
-    const observer = new MutationObserver(debouncedPositionHandler);
-    observer.observe(contentRef.current!.getRootNode(), {
-      childList: true,
-      subtree: true,
-    });
+    let observer: MutationObserver;
+
+    if (contentRef.current) {
+      observer = new MutationObserver(debouncedPositionHandler);
+      observer.observe(contentRef.current.getRootNode(), {
+        childList: true,
+        subtree: true,
+      });
+    }
 
     return () => {
       observer.disconnect();
