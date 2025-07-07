@@ -144,7 +144,7 @@ module.exports = ({
           errors: true,
           warnings: true,
           runtimeErrors: false,
-        }
+        },
       },
     },
   };
