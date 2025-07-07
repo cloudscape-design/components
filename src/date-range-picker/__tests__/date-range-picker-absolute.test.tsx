@@ -26,7 +26,6 @@ const defaultProps: DateRangePickerProps = {
 const outsideId = 'outside';
 function renderDateRangePicker(props: DateRangePickerProps = defaultProps) {
   const ref = React.createRef<HTMLInputElement>();
-  console.log(props);
   const { container, getByTestId, rerender } = render(
     <div>
       <button data-testid={outsideId} />
