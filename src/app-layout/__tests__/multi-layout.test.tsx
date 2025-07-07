@@ -23,7 +23,7 @@ function findAllToolbars() {
 
 function delay() {
   // longer than a setTimeout(..., 0) used inside the implementation
-  return act(() => new Promise(resolve => setTimeout(resolve, 10)));
+  return act(() => new Promise(resolve => setTimeout(resolve, 50)));
 }
 
 const defaultAppLayoutProps = {
