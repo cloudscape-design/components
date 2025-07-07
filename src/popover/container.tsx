@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
@@ -117,6 +117,21 @@ export default function PopoverContainer({
     requestAnimationFrame(() => positionHandlerRef.current());
   }, 50);
 
+  useEffect(() => {
+    // React to layout changes at the DOM level, such as flashbars being added and shifting content down
+    let observer: MutationObserver;
+
+    if (contentRef.current) {
+      observer = new MutationObserver(debouncedPositionHandler);
+      observer.observe(contentRef.current.getRootNode(), {
+        childList: true,
+        subtree: true,
+      });
+    }
+
+    return () => observer.disconnect();
+  }, [debouncedPositionHandler]);
+
   // Recalculate position on DOM events.
   useLayoutEffect(() => {
     /*
@@ -172,19 +187,7 @@ export default function PopoverContainer({
     window.addEventListener('resize', updatePositionOnResize, { signal: controller.signal });
     window.addEventListener('scroll', refreshPosition, { capture: true, signal: controller.signal });
 
-    // React to layout changes at the DOM level, such as flashbars being added and shifting content down
-    let observer: MutationObserver;
-
-    if (contentRef.current) {
-      observer = new MutationObserver(debouncedPositionHandler);
-      observer.observe(contentRef.current.getRootNode(), {
-        childList: true,
-        subtree: true,
-      });
-    }
-
     return () => {
-      observer.disconnect();
       controller.abort();
     };
   }, [hideOnOverscroll, keepPosition, positionHandlerRef, trackRef, updatePositionHandler, debouncedPositionHandler]);
