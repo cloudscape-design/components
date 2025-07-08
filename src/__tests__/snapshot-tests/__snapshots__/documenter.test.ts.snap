@@ -20863,10 +20863,10 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     {
       "description": "Use this property to display a custom icon in the toggle button.",
       "inlineType": {
-        "name": "({ expanded }: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode",
+        "name": "(data: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode",
         "parameters": [
           {
-            "name": "__0",
+            "name": "data",
             "type": "TreeViewProps.ItemToggleRenderIconData",
           },
         ],
@@ -20875,7 +20875,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       },
       "name": "renderItemToggleIcon",
       "optional": true,
-      "type": "(({ expanded }: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode)",
+      "type": "((data: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode)",
     },
   ],
   "regions": [],
