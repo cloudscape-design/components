@@ -25,6 +25,7 @@ const items: Item[] = [
   { content: 'Item 4', description: 'Description', timestamp: 'January 1 2025' },
 ];
 
+/* eslint-disable react/jsx-key */
 const permutations = createPermutations<
   ListProps<Item> & { viewportWidth: number; _disablePaddings: boolean | 'item' }
 >([
@@ -61,6 +62,7 @@ const permutations = createPermutations<
     ],
   },
 ]);
+/* eslint-enable react/jsx-key */
 
 export default function ListItemPermutations() {
   return (
