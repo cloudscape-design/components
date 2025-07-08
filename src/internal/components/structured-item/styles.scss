@@ -29,14 +29,13 @@
   display: flex;
   align-items: baseline;
   flex-direction: row;
-  flex-wrap: wrap;
   column-gap: awsui.$space-xs;
   .disable-paddings > .main > & {
     column-gap: 0;
   }
 
-  &.disable-actions-wrapping {
-    flex-wrap: nowrap;
+  &.wrap-actions {
+    flex-wrap: wrap;
   }
 }
 

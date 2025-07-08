@@ -9,5 +9,5 @@ export interface StructuredItemProps {
   actions?: ReactNode;
   secondaryContent?: ReactNode;
   disablePaddings?: boolean;
-  disableActionsWrapping?: boolean;
+  wrapActions?: boolean;
 }

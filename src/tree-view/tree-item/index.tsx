@@ -90,7 +90,7 @@ const InternalTreeItem = <T,>({
           content={content}
           secondaryContent={secondaryContent}
           actions={actions}
-          disableActionsWrapping={true}
+          wrapActions={false}
         />
       </div>
 

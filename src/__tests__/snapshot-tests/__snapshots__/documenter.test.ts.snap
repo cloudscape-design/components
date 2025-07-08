@@ -20829,7 +20829,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "Specifies the items to display in the tree view.",
+      "description": "Specifies the top-level items to display in the tree view.",
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<T>",

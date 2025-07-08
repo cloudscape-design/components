@@ -7,7 +7,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 
 export interface TreeViewProps<T = any> extends BaseComponentProps {
   /**
-   * Specifies the items to display in the tree view.
+   * Specifies the top-level items to display in the tree view.
    */
   items: ReadonlyArray<T>;
 
