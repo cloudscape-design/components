@@ -53,12 +53,11 @@ test('sets aria-expanded on expandable items', () => {
 test('i18n provider adds label to expand/collapse toggle', () => {
   const { wrapper } = renderTreeViewWithI18NProvider();
 
-  const collapsedItem = wrapper.findItemById('1', { expanded: false })!;
-  expect(collapsedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Expand item Item 1');
+  const itemToggle = wrapper.findItemById('1')!.findItemToggle()!.getElement();
 
-  collapsedItem.findItemToggle()!.getElement().click();
-  const expandedItem = wrapper.findItemById('1', { expanded: true })!;
-  expect(expandedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Collapse item Item 1');
+  expect(itemToggle).toHaveAccessibleName('Expand item Item 1');
+  itemToggle.click(); // expand
+  expect(itemToggle).toHaveAccessibleName('Collapse item Item 1');
 });
 
 test('i18nStrings adds custom label to expand/collapse toggle', () => {
@@ -69,12 +68,11 @@ test('i18nStrings adds custom label to expand/collapse toggle', () => {
     },
   });
 
-  const collapsedItem = wrapper.findItemById('1', { expanded: false })!;
-  expect(collapsedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Expand Item 1 Item 1'); // i18n string + item content
+  const itemToggle = wrapper.findItemById('1')!.findItemToggle()!.getElement();
 
-  collapsedItem.findItemToggle()!.getElement().click();
-  const expandedItem = wrapper.findItemById('1', { expanded: true })!;
-  expect(expandedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Collapse Item 1 Item 1');
+  expect(itemToggle).toHaveAccessibleName('Expand Item 1 Item 1'); // i18n string + item content
+  itemToggle.click(); // expand
+  expect(itemToggle).toHaveAccessibleName('Collapse Item 1 Item 1');
 });
 
 test('announcementLabel is added to aria-label', () => {
@@ -82,12 +80,23 @@ test('announcementLabel is added to aria-label', () => {
     renderItem: item => ({ content: item.title, announcementLabel: 'Test announcement label' }),
   });
 
-  const collapsedItem = wrapper.findItemById('1', { expanded: false })!;
-  expect(collapsedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Expand item Test announcement label'); // i18n string + item content
+  const itemToggle = wrapper.findItemById('1')!.findItemToggle()!.getElement();
 
-  collapsedItem.findItemToggle()!.getElement().click();
-  const expandedItem = wrapper.findItemById('1', { expanded: true })!;
-  expect(expandedItem.findItemToggle()!.getElement()).toHaveAccessibleName('Collapse item Test announcement label');
+  expect(itemToggle).toHaveAccessibleName('Expand item Test announcement label'); // i18n string + item content
+  itemToggle.click(); // expand
+  expect(itemToggle).toHaveAccessibleName('Collapse item Test announcement label');
+});
+
+test('only expand label is added to aria-label if content is not string and announcementLabel is not provided', () => {
+  const { wrapper } = renderTreeViewWithI18NProvider({
+    renderItem: item => ({ content: <>{item.title}</> }),
+  });
+
+  const itemToggle = wrapper.findItemById('1')!.findItemToggle()!.getElement();
+
+  expect(itemToggle).toHaveAccessibleName('Expand item');
+  itemToggle.click(); // expand
+  expect(itemToggle).toHaveAccessibleName('Collapse item');
 });
 
 test('correct aria-level is set', () => {

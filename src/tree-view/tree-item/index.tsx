@@ -49,6 +49,12 @@ const InternalTreeItem = <T,>({
     customIcon = renderItemToggleIcon({ expanded: isExpanded });
   }
 
+  const itemLabelToAnnounce = announcementLabel
+    ? announcementLabel
+    : typeof content === 'string'
+      ? (content as string)
+      : '';
+
   //  Role `treeitem` isn't used in the initial release per discussion with A11Y team. It requires focus management to be implemented so they will be added as a follow up together.
   return (
     <li
@@ -72,11 +78,11 @@ const InternalTreeItem = <T,>({
               hasLargeFocusOffset={true}
               expandButtonLabel={joinStrings(
                 i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
-                announcementLabel ?? (content as string)
+                itemLabelToAnnounce
               )}
               collapseButtonLabel={joinStrings(
                 i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item)),
-                announcementLabel ?? (content as string)
+                itemLabelToAnnounce
               )}
               onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
             />
