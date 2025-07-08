@@ -7,7 +7,7 @@ import styles from './styles.css.js';
 const sidePositionIcon = (
   <svg
     className={styles['preference-icon--svg']}
-    focusable={false}
+    focusable="false"
     viewBox="0 0 239 134"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"

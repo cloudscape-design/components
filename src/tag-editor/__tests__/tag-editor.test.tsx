@@ -357,7 +357,7 @@ describe('Tag Editor component', () => {
   });
 
   describe('Add button', () => {
-    test('is not disabled by default ', () => {
+    test('is not disabled by default', () => {
       const { wrapper } = renderTagEditor();
 
       expect(wrapper.findAddButton().getElement()).not.toHaveAttribute('aria-disabled');

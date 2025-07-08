@@ -213,6 +213,14 @@
   "link": {
     "externalIconAriaLabel": "S’ouvre dans un nouvel onglet"
   },
+  "list": {
+    "dragHandleAriaLabel": "Faire glisser",
+    "dragHandleAriaDescription": "Utilisez Espace ou Entrée pour activer le glissement pour un élément, puis utilisez les touches fléchées pour déplacer la position de l'élément. Pour terminer le déplacement de la position, utilisez Espace ou Entrée. Pour ignorer le déplacement, utilisez Échap.",
+    "liveAnnouncementDndStarted": "Élément sélectionné à la position {position} de {total}",
+    "liveAnnouncementDndDiscarded": "Réorganisation annulée",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Remettre l'élément à la position {currentPosition} de {total}} false {Déplacer l'élément vers la position {currentPosition} de {total}} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {L'élément a été replacé dans sa position initiale {initialPosition} de {total}} false {L'élément a été déplacé de la position {initialPosition} à {finalPosition} de {total}} other {}}"
+  },
   "modal": {
     "closeAriaLabel": "Fermer le modal"
   },

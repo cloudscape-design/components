@@ -10,7 +10,7 @@ import styles from '../../../lib/components/badge/styles.css.js';
 
 function getNativeSpan(container: HTMLElement) {
   const wrapper = createWrapper(container);
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
   return wrapper.findBadge()!.getElement();
 }
 

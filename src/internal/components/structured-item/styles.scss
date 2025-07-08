@@ -31,7 +31,6 @@
   flex-direction: row;
   flex-wrap: wrap;
   column-gap: awsui.$space-xs;
-
   .disable-paddings > .main > & {
     column-gap: 0;
   }

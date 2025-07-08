@@ -134,7 +134,9 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
 
   const onBlur = (event: React.FocusEvent) => {
     if (event.relatedTarget && !nodeBelongs(containerRef.current, event.relatedTarget)) {
-      highlightedSegment && onHighlightChange(null);
+      if (highlightedSegment) {
+        onHighlightChange(null);
+      }
       setLegendSegment(null);
     }
   };

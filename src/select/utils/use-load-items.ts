@@ -26,12 +26,13 @@ export const useLoadItems = ({ onLoadItems, options, statusType }: UseLoadItemsP
 
   const handleLoadMore = () => {
     const firstPage = options.length === 0;
-    statusType === 'pending' &&
+    if (statusType === 'pending') {
       fireNonCancelableEvent(onLoadItems, {
         firstPage,
         samePage: false,
         filteringText: prevFilteringText.current || '',
       });
+    }
   };
 
   const handleRecoveryClick = () =>

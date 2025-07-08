@@ -8,9 +8,7 @@ import { InlineEditor } from '../../../lib/components/table/body-cell/inline-edi
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { TableProps } from '../interfaces';
 
-const handleSubmitEdit = jest.fn((): Promise<void> => {
-  return new Promise(resolve => setTimeout(resolve, 500));
-});
+const handleSubmitEdit = jest.fn();
 const handleEditEnd = jest.fn();
 
 let thereBeErrors = false;
@@ -41,7 +39,7 @@ const TestComponent = ({
         if (submitValueRef) {
           submitValueRef.current = submitValue;
         }
-        return <input value={currentValue ?? item.test} onChange={() => setValue('test')} />;
+        return <input value={currentValue ?? item.test} onChange={event => setValue(event.target.value)} />;
       },
     },
     cell: (item: any) => <span>{item.test}</span>,
@@ -87,58 +85,54 @@ describe('InlineEditor', () => {
 
   it('should show error', () => {
     thereBeErrors = true;
-    const changeEvent = new Event('change', { bubbles: true });
     const { wrapper } = renderComponent(<TestComponent />);
     const input = wrapper.find('input')!.getElement();
     fireEvent.click(input);
-    fireEvent(input, changeEvent);
+    fireEvent.change(input, { target: { value: 'new value' } });
+
     expect(wrapper.find('[aria-label="error-icon"]')?.getElement()).toBeInTheDocument();
   });
 
   it.each([false, true])(
     'should submit edit when submit button is pressed (disableNativeForm=%s)',
-    disableNativeForm => {
+    async disableNativeForm => {
       thereBeErrors = false;
-      const changeEvent = new Event('change', { bubbles: true });
       const { wrapper } = renderComponent(<TestComponent disableNativeForm={disableNativeForm} />);
       const input = wrapper.find('input')!.getElement();
 
       fireEvent.click(input);
+      fireEvent.change(input, { target: { value: 'new value' } });
 
-      fireEvent(input, changeEvent);
       expect(wrapper.find('[aria-label="error-icon"]')?.getElement()).toBeUndefined();
 
       fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
-      waitFor(() => {
+      await waitFor(() => {
         expect(handleSubmitEdit).toHaveBeenCalled();
         expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
+        expect(handleEditEnd).toHaveBeenCalled();
       });
-
-      expect(handleEditEnd).toHaveBeenCalled();
     }
   );
 
-  it('should submit edit when submitValue is called', () => {
+  it('should submit edit when submitValue is called', async () => {
     thereBeErrors = false;
     const submitValueRef = React.createRef<TableProps.CellContext<string>['submitValue'] | null>();
-    const changeEvent = new Event('change', { bubbles: true });
     const { wrapper } = renderComponent(<TestComponent submitValueRef={submitValueRef} />);
     const input = wrapper.find('input')!.getElement();
 
     fireEvent.click(input);
+    fireEvent.change(input, { target: { value: 'new value' } });
 
-    fireEvent(input, changeEvent);
     expect(wrapper.find('[aria-label="error-icon"]')?.getElement()).toBeUndefined();
 
     act(() => {
       submitValueRef.current!();
     });
-    waitFor(() => {
+    await waitFor(() => {
       expect(handleSubmitEdit).toHaveBeenCalled();
       expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
+      expect(handleEditEnd).toHaveBeenCalled();
     });
-
-    expect(handleEditEnd).toHaveBeenCalled();
   });
 
   it('should not render a form element if disableNativeForm is set', () => {
@@ -151,9 +145,8 @@ describe('InlineEditor', () => {
     expect(wrapper.find('button[type=submit]')).toBe(null);
   });
 
-  it('should not submit any wrapping forms', () => {
+  it('should not submit any wrapping forms', async () => {
     thereBeErrors = false;
-    const changeEvent = new Event('change', { bubbles: true });
     const onSubmitSpy = jest.fn();
     const { wrapper } = renderComponent(
       <form onSubmit={onSubmitSpy}>
@@ -163,11 +156,11 @@ describe('InlineEditor', () => {
 
     const input = wrapper.find('input')!.getElement();
     fireEvent.click(input);
+    fireEvent.change(input, { target: { value: 'new value' } });
 
-    fireEvent(input, changeEvent);
     fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(handleSubmitEdit).toHaveBeenCalled();
       expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
     });
@@ -175,20 +168,18 @@ describe('InlineEditor', () => {
     expect(onSubmitSpy).not.toHaveBeenCalled();
   });
 
-  it('should handle failed submission', () => {
+  it('should handle failed submission', async () => {
     thereBeErrors = false;
-    const changeEvent = new Event('change', { bubbles: true });
     const { wrapper } = renderComponent(<TestComponent />);
     const input = wrapper.find('input')!.getElement();
 
     fireEvent.click(input);
-    fireEvent(input, changeEvent);
+    fireEvent.change(input, { target: { value: 'new value' } });
 
-    // eslint-disable-next-line require-await
     handleSubmitEdit.mockImplementation(() => Promise.reject(new Error('test error')));
 
     fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
-    waitFor(() => {
+    await waitFor(() => {
       expect(handleSubmitEdit).toHaveBeenCalled();
       expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
       expect(handleEditEnd).not.toHaveBeenCalled();
@@ -203,24 +194,30 @@ describe('InlineEditor', () => {
   });
 
   // useless test but need the coverage
-  it('should render spinner while submitting', () => {
+  it('should render spinner while submitting', async () => {
     thereBeErrors = false;
-    const changeEvent = new Event('change', { bubbles: true });
     const { wrapper } = renderComponent(<TestComponent />);
+    let resolveSubmit = () => {};
+    handleSubmitEdit.mockImplementationOnce(() => {
+      return new Promise<void>(resolve => {
+        resolveSubmit = resolve;
+      });
+    });
 
     const input = wrapper.find('input')!.getElement();
     fireEvent.click(input);
-    fireEvent(input, changeEvent);
+    fireEvent.change(input, { target: { value: 'new value' } });
 
     const button = wrapper.findButton('[aria-label="save edit"]')!;
     fireEvent.click(button.getElement());
-    waitFor(() => {
+    await waitFor(() => {
       expect(button.findLoadingIndicator()).not.toBeNull();
-      expect(button).toHaveAttribute('disabled');
+      expect(button.getElement()).toHaveAttribute('aria-disabled');
     });
-    waitFor(() => {
+    resolveSubmit();
+    await waitFor(() => {
       expect(button.findLoadingIndicator()).toBeNull();
-      expect(button).not.toHaveAttribute('disabled');
+      expect(button.getElement()).not.toHaveAttribute('aria-disabled');
     });
   });
 

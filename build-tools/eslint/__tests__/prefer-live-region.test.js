@@ -3,9 +3,7 @@
 const { RuleTester } = require('eslint');
 const useLiveRegionOverAriaLive = require('../prefer-live-region');
 
-const ruleTester = new RuleTester({
-  parserOptions: { ecmaVersion: 2018, sourceType: 'module', ecmaFeatures: { jsx: true } },
-});
+const ruleTester = new RuleTester({ languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } } });
 
 ruleTester.run('no-aria-live', useLiveRegionOverAriaLive, {
   valid: ['<div></div>'],

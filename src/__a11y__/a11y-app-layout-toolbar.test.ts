@@ -18,7 +18,7 @@ describe('A11y checks for app layout toolbar', () => {
     .forEach(inputUrl => {
       const url = `#/light/${inputUrl}?${getUrlParams('refresh-toolbar')}`;
       test(
-        url,
+        `${url}`,
         useBrowser(async browser => {
           const page = new A11yPageObject(browser);
           await browser.url(url);

@@ -142,8 +142,8 @@ function InternalInput(
     value: value ?? '',
     onChange: onChange && (event => handleChange(event.target.value)),
     onBlur: e => {
-      onBlur && fireNonCancelableEvent(onBlur);
-      __onBlurWithDetail && fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: e.relatedTarget });
+      fireNonCancelableEvent(onBlur);
+      fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: e.relatedTarget });
     },
     onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     ...__nativeAttributes,
@@ -201,7 +201,6 @@ function InternalInput(
         >
           <InternalButton
             // Used for test utils
-            // eslint-disable-next-line react/forbid-component-props
             className={styles['input-button-right']}
             variant="inline-icon-pointer-target"
             formAction="none"
