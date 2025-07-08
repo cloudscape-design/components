@@ -123,7 +123,7 @@ const InternalPromptInput = React.forwardRef(
           textareaRef.current.style.height = `min(max(${scrollHeight}, ${minTextareaHeight}), ${maxRowsHeight})`;
         }
       }
-    }, [maxRows, LINE_HEIGHT, PADDING]);
+    }, [minRows, maxRows, LINE_HEIGHT, PADDING]);
 
     useEffect(() => {
       const handleResize = () => {
