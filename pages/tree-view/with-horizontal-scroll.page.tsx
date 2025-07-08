@@ -17,7 +17,7 @@ export default function TreeViewWithHorizontalScroll() {
 
       <div style={{ maxWidth: '300px' }}>
         <Container>
-          <div tabIndex={0} aria-label="TreeView container" style={{ overflowX: 'auto' }}>
+          <div style={{ overflowX: 'auto' }}>
             <div style={{ minWidth: '350px' }}>
               <TreeView
                 ariaLabel="TreeView with deep nesting"

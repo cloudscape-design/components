@@ -44,7 +44,7 @@ const InternalTreeItem = <T,>({
   const isExpanded = isExpandable && expandedItems.includes(id);
   const nextLevel = level + 1;
 
-  let customIcon = null;
+  let customIcon: React.ReactNode | undefined = undefined;
   if (isExpandable && renderItemToggleIcon) {
     customIcon = renderItemToggleIcon({ expanded: isExpanded });
   }

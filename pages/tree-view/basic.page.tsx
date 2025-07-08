@@ -90,13 +90,11 @@ export default function BasicTreeView() {
               }}
               getItemId={item => item.id}
               getItemChildren={item => item.children}
-              onItemToggle={({ detail }: any) => {
-                if (detail.expanded) {
-                  return setExpandedItems(prev => [...prev, detail.item.id]);
-                } else {
-                  return setExpandedItems(prev => prev.filter(id => id !== detail.item.id));
-                }
-              }}
+              onItemToggle={({ detail }: any) =>
+                setExpandedItems(prev =>
+                  detail.expanded ? [...prev, detail.item.id] : prev.filter(id => id !== detail.item.id)
+                )
+              }
               expandedItems={expandedItems}
               i18nStrings={{
                 expandButtonLabel: () => 'Expand item',
