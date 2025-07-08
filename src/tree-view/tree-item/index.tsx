@@ -85,7 +85,13 @@ const InternalTreeItem = <T,>({
       </div>
 
       <div className={styles['structured-item-wrapper']}>
-        <InternalStructuredItem icon={icon} content={content} secondaryContent={secondaryContent} actions={actions} />
+        <InternalStructuredItem
+          icon={icon}
+          content={content}
+          secondaryContent={secondaryContent}
+          actions={actions}
+          disableActionsWrapping={true}
+        />
       </div>
 
       {isExpanded && children.length && (

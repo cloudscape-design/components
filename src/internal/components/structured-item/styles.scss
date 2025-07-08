@@ -34,6 +34,10 @@
   .disable-paddings > .main > & {
     column-gap: 0;
   }
+
+  &.disable-actions-wrapping {
+    flex-wrap: nowrap;
+  }
 }
 
 .content {
