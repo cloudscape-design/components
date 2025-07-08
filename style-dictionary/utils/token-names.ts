@@ -392,7 +392,8 @@ export type ColorChartsTokenName =
   | 'colorChartsPaletteCategorical47'
   | 'colorChartsPaletteCategorical48'
   | 'colorChartsPaletteCategorical49'
-  | 'colorChartsPaletteCategorical50';
+  | 'colorChartsPaletteCategorical50'
+  | 'colorChartsErrorBarMarker';
 export type ColorSeverityTokenName =
   | 'colorSeverityDarkRed'
   | 'colorSeverityRed'

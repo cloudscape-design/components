@@ -158,6 +158,7 @@ const tokens: StyleDictionary.ColorChartsDictionary = {
   colorChartsPaletteCategorical48: '{colorChartsTeal1000}',
   colorChartsPaletteCategorical49: '{colorChartsPurple1200}',
   colorChartsPaletteCategorical50: '{colorChartsOrange1000}',
+  colorChartsErrorBarMarker: { light: '{colorGrey900}', dark: '{colorWhite}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

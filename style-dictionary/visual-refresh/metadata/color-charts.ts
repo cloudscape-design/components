@@ -703,6 +703,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorChartsErrorBarMarker: {
+    description: 'Color for the error bar marker in charts.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;
