@@ -15,7 +15,7 @@ import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 export interface AppLayoutNotificationsImplementationProps {
-  appLayoutInternals: AppLayoutInternals;
+  appLayoutInternals: Partial<AppLayoutInternals>;
   children: React.ReactNode;
 }
 
@@ -49,7 +49,7 @@ export function AppLayoutNotificationsImplementation({
         appLayoutInternals.headerVariant !== 'high-contrast' && styles['sticky-notifications-with-background']
       )}
       style={{
-        insetBlockStart: stickyNotifications ? verticalOffsets.notifications : undefined,
+        insetBlockStart: stickyNotifications ? verticalOffsets?.notifications : undefined,
       }}
     >
       <div className={testutilStyles.notifications} role="region" aria-label={ariaLabels?.notifications}>

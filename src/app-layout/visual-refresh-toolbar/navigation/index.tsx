@@ -17,7 +17,7 @@ import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 interface AppLayoutNavigationImplementationProps {
-  appLayoutInternals: AppLayoutInternals;
+  appLayoutInternals: Partial<AppLayoutInternals>;
 }
 
 export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLayoutNavigationImplementationProps) {
@@ -32,7 +32,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
     verticalOffsets,
   } = appLayoutInternals;
 
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets!, isMobile!, placement!);
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.
   const onNavigationClick = (event: React.MouseEvent) => {
@@ -41,7 +41,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
       node => node.tagName === 'A' && !!(node as HTMLAnchorElement).href
     );
     if (hasLink && isMobile) {
-      onNavigationToggle(false);
+      onNavigationToggle?.(false);
     }
   };
   const closeMergedRef = useMergeRefs(navigationFocusControl?.refs?.close, navigationFocusControl?.refs?.onMount);
@@ -72,7 +72,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
           <InternalButton
             ariaLabel={ariaLabels?.navigationClose ?? undefined}
             iconName={isMobile ? 'close' : 'angle-left'}
-            onClick={() => onNavigationToggle(false)}
+            onClick={() => onNavigationToggle?.(false)}
             variant="icon"
             formAction="none"
             className={testutilStyles['navigation-close']}

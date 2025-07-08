@@ -13,7 +13,7 @@ export interface FocusControlRefs {
   close: RefObject<Focusable>;
   slider: RefObject<HTMLDivElement>;
   onMount?: () => void;
-  focusPromise?: any;
+  focusPromise?: Deferred<HTMLElement>;
 }
 
 export interface FocusControlState {
@@ -166,7 +166,7 @@ export function useAsyncFocusControl(
   restoreFocus = false,
   activeDrawerId?: string | null
 ): FocusControlState {
-  const focusPromise = useRef<Deferred<undefined>>(new Deferred());
+  const focusPromise = useRef<Deferred<HTMLElement>>(new Deferred());
   const refs = {
     toggle: useRef<Focusable>(null),
     close: useRef<Focusable>(null),

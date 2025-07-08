@@ -9,6 +9,7 @@ import {
   AppLayoutDrawerImplementation as AppLayoutDrawer,
   AppLayoutGlobalDrawersImplementation as AppLayoutGlobalDrawers,
 } from '../../drawer';
+import { AppLayoutInternals } from '../../interfaces';
 import { AppLayoutSplitPanelDrawerSideImplementation as AppLayoutSplitPanelSide } from '../../split-panel';
 import { SkeletonLayoutProps } from '../index';
 
@@ -58,11 +59,15 @@ const SidePageSlot = (props: SkeletonLayoutProps) => {
           drawerExpandedMode && styles.hidden
         )}
       >
-        {drawers && drawers.length > 0 && <AppLayoutDrawer appLayoutInternals={appLayoutInternals!} />}
+        {drawers && drawers.length > 0 && (
+          // type casting is safe here since 'drawers' only exists at runtime after appLayoutInternals
+          // has been initialized
+          <AppLayoutDrawer appLayoutInternals={appLayoutInternals as AppLayoutInternals} />
+        )}
       </div>
       <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>
         <ActiveDrawersContext.Provider value={activeGlobalDrawersIds ?? []}>
-          <AppLayoutGlobalDrawers appLayoutInternals={appLayoutInternals!} />
+          <AppLayoutGlobalDrawers appLayoutInternals={appLayoutInternals as AppLayoutInternals} />
         </ActiveDrawersContext.Provider>
       </div>
     </>

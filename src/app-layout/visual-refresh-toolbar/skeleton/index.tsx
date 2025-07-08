@@ -13,7 +13,7 @@ import { fireNonCancelableEvent } from '../../../internal/events';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { useGetGlobalBreadcrumbs } from '../../../internal/plugins/helpers/use-global-breadcrumbs';
 import { computeVerticalLayout } from '../compute-layout';
-import { AppLayoutInternalProps } from '../interfaces';
+import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
 import {
   AppLayoutSkeletonBottomContentSlot,
   AppLayoutSkeletonSideSlot,
@@ -27,10 +27,15 @@ import { useSkeletonSlotsAttributes } from './widget-slots/use-skeleton-slots-at
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
+type AppLayoutState = ReturnType<typeof useAppLayout>;
+type SkeletonSlotsAttributes = ReturnType<typeof useSkeletonSlotsAttributes>;
+
 export interface SkeletonLayoutProps {
   appLayoutProps: AppLayoutInternalProps;
   appLayoutState:
-    | (ReturnType<typeof useAppLayout> &
+    | (Partial<Omit<AppLayoutState, 'appLayoutInternals'>> & { appLayoutInternals: Partial<AppLayoutInternals> } &
+        // these props are excluded from the runtime app layout, because they are critical for the initial rendering
+        // to prevent layout shifts
         Partial<ReturnType<typeof useMultiAppLayout>> &
         Partial<{
           hasToolbar: boolean;
@@ -40,7 +45,7 @@ export interface SkeletonLayoutProps {
 }
 
 export interface RootSkeletonLayoutProps extends SkeletonLayoutProps {
-  skeletonSlotsAttributes: ReturnType<typeof useSkeletonSlotsAttributes> | null;
+  skeletonSlotsAttributes: SkeletonSlotsAttributes | null;
 }
 
 const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAppLayoutToolbarComponent = {
@@ -87,7 +92,7 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
         function (open: boolean) {
           fireNonCancelableEvent(onNavigationChange, { open });
         },
-      navigationFocusRef: appLayoutState?.appLayoutInternals?.navigationFocusControl.refs.toggle,
+      navigationFocusRef: appLayoutState?.appLayoutInternals?.navigationFocusControl?.refs.toggle,
       breadcrumbs,
       activeDrawerId: appLayoutState?.activeDrawer?.id ?? null,
       // only pass it down if there are non-empty drawers or tools
@@ -99,7 +104,7 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
       activeGlobalDrawersIds: appLayoutState?.activeGlobalDrawersIds,
       onActiveGlobalDrawersChange: appLayoutState?.appLayoutInternals?.onActiveGlobalDrawersChange,
       onActiveDrawerChange: appLayoutState?.appLayoutInternals?.onActiveDrawerChange,
-      drawersFocusRef: appLayoutState?.appLayoutInternals?.drawersFocusControl.refs.toggle,
+      drawersFocusRef: appLayoutState?.appLayoutInternals?.drawersFocusControl?.refs.toggle,
       splitPanel,
       splitPanelToggleProps: {
         ...appLayoutState?.appLayoutInternals?.splitPanelToggleConfig,
@@ -107,7 +112,7 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
         controlId: appLayoutState?.appLayoutInternals?.splitPanelControlId,
         position: appLayoutState?.splitPanelPosition ?? 'side',
       },
-      splitPanelFocusRef: appLayoutState?.appLayoutInternals?.splitPanelFocusControl.refs.toggle,
+      splitPanelFocusRef: appLayoutState?.appLayoutInternals?.splitPanelFocusControl?.refs.toggle,
       onSplitPanelToggle: appLayoutState?.appLayoutInternals?.onSplitPanelToggle ?? function () {},
       expandedDrawerId: appLayoutState?.expandedDrawerId,
       setExpandedDrawerId: appLayoutState?.setExpandedDrawerId ?? function () {},
@@ -123,7 +128,8 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
     toolbarHeight: appLayoutState?.toolbarHeight ?? 0,
     stickyNotifications: Boolean(appLayoutState?.appLayoutInternals?.stickyNotifications),
   });
-  const combinedProps = {
+  // here we merge runtime and built-time props
+  const mergedProps = {
     ...props,
     appLayoutState: {
       ...appLayoutState,
@@ -139,7 +145,7 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
         ariaLabels: appLayoutState?.appLayoutInternals?.ariaLabels ?? ariaLabels,
       },
       toolbarProps,
-      registered,
+      registered: !!registered,
       hasToolbar,
       verticalOffsets,
       resolvedNavigation: appLayoutState?.resolvedNavigation ?? resolvedNavigation,
@@ -172,9 +178,9 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
           ref={ref}
           {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
         >
-          <AppLayoutSkeletonTopSlot {...(combinedProps as any)} />
+          <AppLayoutSkeletonTopSlot {...mergedProps} />
           <main {...mainElAttributes} className={mainElAttributes?.className ?? styles['main-landmark']}>
-            <AppLayoutSkeletonTopContentSlot {...(combinedProps as any)} />
+            <AppLayoutSkeletonTopContentSlot {...mergedProps} />
             <div
               {...contentWrapperElAttributes}
               className={
@@ -188,9 +194,9 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
                 {registered ? content : null}
               </div>
             </div>
-            <AppLayoutSkeletonBottomContentSlot {...(combinedProps as any)} />
+            <AppLayoutSkeletonBottomContentSlot {...mergedProps} />
           </main>
-          <AppLayoutSkeletonSideSlot {...(combinedProps as any)} />
+          <AppLayoutSkeletonSideSlot {...mergedProps} />
         </div>
       </VisualContext>
     </>

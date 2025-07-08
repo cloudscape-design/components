@@ -33,7 +33,7 @@ describe('Visual refresh toolbar only', () => {
   test(
     'global drawers registered from child AppLayout render correctly when __disableRuntimeDrawers is set to true for parent AppLayout',
     setupTest(async page => {
-      await expect(page.isDisplayed(wrapper.findDrawerTriggerById('circle-global').toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(wrapper.findDrawerTriggerById('circle-global').toSelector())).resolves.toBe(true);
       await page.runInsideIframe(iframeId, true, async () => {
         await expect(page.isDisplayed(findDrawerById(secondaryLayout, 'circle-global').toSelector())).resolves.toBe(
           true

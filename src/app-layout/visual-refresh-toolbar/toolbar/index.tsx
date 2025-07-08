@@ -53,7 +53,7 @@ export interface ToolbarProps {
 }
 
 export interface AppLayoutToolbarImplementationProps {
-  appLayoutInternals: AppLayoutInternals;
+  appLayoutInternals: Partial<AppLayoutInternals>;
   toolbarProps: ToolbarProps;
 }
 
@@ -112,7 +112,7 @@ export function AppLayoutToolbarImplementation({
     /* istanbul ignore next not testable in JSDOM */
     const updateScrollDirection = () => {
       if (pinnedToolbar) {
-        setToolbarState('show');
+        setToolbarState?.('show');
         return;
       }
       const scrollY = window.scrollY;
@@ -120,7 +120,7 @@ export function AppLayoutToolbarImplementation({
       const direction = scrollY > lastScrollY && scrollY > 80 ? 'hide' : 'show';
       // 2 as a buffer to avoid mistaking minor accidental mouse moves as scroll
       if (direction !== toolbarState && (scrollY - lastScrollY > 2 || scrollY - lastScrollY < -2)) {
-        setToolbarState(direction);
+        setToolbarState?.(direction);
       }
       lastScrollY = scrollY > 0 ? scrollY : 0;
     };
@@ -156,7 +156,7 @@ export function AppLayoutToolbarImplementation({
         [styles['toolbar-hidden']]: toolbarHidden,
       })}
       style={{
-        insetBlockStart: toolbarHidden ? '-60px' : verticalOffsets.toolbar,
+        insetBlockStart: toolbarHidden ? '-60px' : verticalOffsets?.toolbar,
       }}
     >
       <div className={styles['toolbar-container']}>

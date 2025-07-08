@@ -34,7 +34,9 @@ Map {
       "toolsWidth": 290,
     },
     "stateManager": {
-      "current": {},
+      "current": {
+        "set": [Function],
+      },
     },
   },
   [Function] => {
@@ -1297,7 +1299,9 @@ Map {
       "toolsWidth": 290,
     },
     "stateManager": {
-      "current": {},
+      "current": {
+        "set": [Function],
+      },
     },
   },
   [Function] => {

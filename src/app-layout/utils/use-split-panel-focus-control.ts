@@ -19,7 +19,7 @@ export interface SplitPanelFocusControlState {
 }
 
 export function useSplitPanelFocusControl(dependencies: DependencyList): SplitPanelFocusControlState {
-  const focusPromise = useRef<Deferred<undefined>>(new Deferred());
+  const focusPromise = useRef<Deferred<HTMLElement>>(new Deferred());
 
   const refs = {
     toggle: useRef<Focusable>(null),
