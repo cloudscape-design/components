@@ -26,6 +26,6 @@ export default function usePopoverObserver(popoverRef: React.RefObject<HTMLEleme
       });
       observer.observe(popoverRef.current.ownerDocument, { attributes: true, subtree: true, childList: true });
     }
-    return () => observer.disconnect();
+    return () => observer?.disconnect();
   }, [popoverRef, callback]);
 }
