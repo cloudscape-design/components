@@ -11,6 +11,9 @@
   font-family: awsui.$font-family-base;
   font-size: awsui.$font-size-body-m;
   line-height: awsui.$line-height-heading-m;
+
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline: awsui.$space-scaled-xxs;
 }
 
 .tree {

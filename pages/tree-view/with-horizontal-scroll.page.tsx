@@ -15,9 +15,10 @@ export default function TreeViewWithHorizontalScroll() {
     <Box margin="m">
       <h1>Tree view with deep nesting</h1>
 
+      {/* restrict the space the treeview can use */}
       <div style={{ maxWidth: '300px' }}>
         <Container>
-          <div style={{ overflowX: 'auto' }}>
+          <div role="region" tabIndex={0} aria-label="TreeView container" style={{ overflowX: 'auto' }}>
             <div style={{ minWidth: '350px' }}>
               <TreeView
                 ariaLabel="TreeView with deep nesting"
