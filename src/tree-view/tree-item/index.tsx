@@ -75,7 +75,6 @@ const InternalTreeItem = <T,>({
             <ExpandToggleButton
               isExpanded={isExpanded}
               customIcon={customIcon}
-              hasLargeFocusOffset={true}
               expandButtonLabel={joinStrings(
                 i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
                 itemLabelToAnnounce

@@ -41,13 +41,7 @@
   color: awsui.$color-text-interactive-default;
 
   @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
-  }
-
-  &.focus-offset-large {
-    @include focus-visible.when-visible {
-      @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-    }
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
   }
 
   &:hover {
