@@ -393,8 +393,25 @@ describe('ref support', () => {
     const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', ref });
     wrapper.findTrigger().getElement().click();
     expect(wrapper.findContent()?.getElement()).toBeInTheDocument();
-    ref.current?.focus();
+    act(() => {
+      ref.current?.focus();
+    });
     expect(wrapper.findContent()?.getElement()).toBeFalsy();
+    expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
+  });
+
+  test('Calling dismiss should close the popover', () => {
+    const ref: React.RefObject<PopoverProps.Ref> = { current: null };
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', ref });
+
+    wrapper.findTrigger().click();
+    expect(wrapper.findBody()).toBeTruthy();
+
+    act(() => {
+      ref.current?.dismiss();
+    });
+    expect(wrapper.findBody()).toBeNull();
+    expect(document.activeElement).toBe(document.body);
   });
 });
 
