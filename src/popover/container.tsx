@@ -3,7 +3,7 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { getLogicalBoundingClientRect, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { InternalPosition, PopoverProps } from './interfaces';
@@ -113,6 +113,17 @@ export default function PopoverContainer({
 
   // Recalculate position when the DOM changes.
   usePopoverObserver(popoverRef, () => {
+    // Do not update position if popover moved offscreen
+    const popoverOffset = popoverRef.current && getLogicalBoundingClientRect(popoverRef.current);
+    // istanbul ignore if - tested via integration tests
+    if (
+      !keepPosition ||
+      !popoverOffset ||
+      popoverOffset.insetBlockStart < 0 ||
+      popoverOffset.insetBlockEnd > window.innerHeight
+    ) {
+      return;
+    }
     updatePositionHandler();
   });
 
