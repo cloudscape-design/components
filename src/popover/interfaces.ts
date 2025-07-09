@@ -119,8 +119,13 @@ export namespace PopoverProps {
 
   export interface Ref {
     /**
-     * Sets focus on the popover's trigger.
+     * Sets focus on the popover's trigger and dismisses the popover if open.
      */
     focus(): void;
+
+    /**
+     * Dismisses the popover without focusing the trigger. Use only if an element other than the trigger needs to be focused after dismissing the popover.
+     */
+    dismiss(): void;
   }
 }

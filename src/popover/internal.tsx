@@ -30,11 +30,6 @@ export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType' |
   isInline?: boolean;
 }
 
-export interface InternalPopoverRef {
-  dismissPopover: () => void;
-  focus: HTMLElement['focus'];
-}
-
 export default React.forwardRef(InternalPopover);
 
 function InternalPopover(
@@ -60,7 +55,7 @@ function InternalPopover(
 
     ...restProps
   }: InternalPopoverProps,
-  ref: React.Ref<InternalPopoverRef>
+  ref: React.Ref<PopoverProps.Ref>
 ) {
   const baseProps = getBaseProps(restProps);
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -105,7 +100,9 @@ function InternalPopover(
   );
 
   useImperativeHandle(ref, () => ({
-    dismissPopover: onDismiss,
+    dismiss: () => {
+      setVisible(false);
+    },
     focus: () => {
       setVisible(false);
       focusTrigger();
