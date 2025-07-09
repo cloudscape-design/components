@@ -57,6 +57,7 @@ export interface TableTdElementProps {
   isEditingDisabled?: boolean;
   hasSuccessIcon?: boolean;
   tableVariant?: string;
+  colSpan?: number;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -97,6 +98,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       isEditingDisabled,
       hasSuccessIcon,
       tableVariant,
+      colSpan,
       ...rest
     },
     ref
@@ -152,6 +154,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         ref={mergedRef}
         {...nativeAttributes}
         tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
+        colSpan={colSpan}
         {...copyAnalyticsMetadataAttribute(rest)}
       >
         {level !== undefined && isExpandable && !isEditingActive && (

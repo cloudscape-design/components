@@ -13,11 +13,9 @@ export interface TableLoaderCellProps<ItemType>
 export function TableLoaderCell<ItemType>({ item, trackBy, children, ...props }: TableLoaderCellProps<ItemType>) {
   return (
     <TableTdElement {...props} isEditable={false} isEditing={false}>
-      {props.isRowHeader ? (
-        <ItemsLoader item={item} trackBy={trackBy}>
-          {children}
-        </ItemsLoader>
-      ) : null}
+      <ItemsLoader item={item} trackBy={trackBy}>
+        {children}
+      </ItemsLoader>
     </TableTdElement>
   );
 }
