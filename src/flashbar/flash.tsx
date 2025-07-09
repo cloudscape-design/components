@@ -67,9 +67,7 @@ function dismissButton(
         iconName="close"
         formAction="none"
         ariaLabel={dismissLabel}
-        style={{
-          ...(style && getDismissButtonStyles(style, type)),
-        }}
+        style={getDismissButtonStyles(style, type)}
       />
     </div>
   );
@@ -201,9 +199,7 @@ export const Flash = React.forwardRef(
           getVisualContextClassname(type === 'warning' && !loading ? 'flashbar-warning' : 'flashbar'),
           initialHidden && styles['initial-hidden']
         )}
-        style={{
-          ...(style && getFlashStyles(style, effectiveType)),
-        }}
+        style={getFlashStyles(style, effectiveType)}
         {...analyticsAttributes}
       >
         <div className={styles['flash-body']}>

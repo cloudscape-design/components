@@ -1,9 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { SYSTEM } from '../internal/environment';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { FlashbarProps } from './interfaces';
 
-export function getCollapsibleFlashStyles(style: FlashbarProps.Style, type: string = 'info') {
+export function getCollapsibleFlashStyles(style: FlashbarProps['style'], type: string = 'info') {
+  if (SYSTEM !== 'core' || !style) {
+    return undefined;
+  }
   const background =
     style?.item?.root?.background &&
     (type === 'in-progress'
@@ -38,7 +42,10 @@ export function getCollapsibleFlashStyles(style: FlashbarProps.Style, type: stri
   };
 }
 
-export function getFlashStyles(style: FlashbarProps.Style, type: string = 'info') {
+export function getFlashStyles(style: FlashbarProps['style'] | undefined, type: string = 'info') {
+  if (SYSTEM !== 'core' || !style) {
+    return undefined;
+  }
   const focusRingBorderColor =
     style?.item?.root?.focusRing?.borderColor &&
     (type === 'in-progress'
@@ -46,7 +53,7 @@ export function getFlashStyles(style: FlashbarProps.Style, type: string = 'info'
       : style.item.root.focusRing.borderColor[type as keyof typeof style.item.root.focusRing.borderColor]);
 
   return {
-    ...(style && getCollapsibleFlashStyles(style, type)),
+    ...getCollapsibleFlashStyles(style, type),
     ...(style?.item?.root?.focusRing && {
       [customCssProps.styleFocusRingBorderColor]: focusRingBorderColor,
       [customCssProps.styleFocusRingBorderRadius]: style.item.root.focusRing?.borderRadius,
@@ -58,7 +65,10 @@ export function getFlashStyles(style: FlashbarProps.Style, type: string = 'info'
   };
 }
 
-export function getDismissButtonStyles(style: FlashbarProps.Style, type: string = 'info') {
+export function getDismissButtonStyles(style: FlashbarProps['style'], type: string = 'info') {
+  if (SYSTEM !== 'core' || !style) {
+    return undefined;
+  }
   const activeColor =
     style?.item?.dismissButton?.color?.active &&
     (type === 'in-progress'
@@ -101,7 +111,10 @@ export function getDismissButtonStyles(style: FlashbarProps.Style, type: string 
   };
 }
 
-export function getNotificationBarStyles(style: FlashbarProps.Style) {
+export function getNotificationBarStyles(style: FlashbarProps['style']) {
+  if (SYSTEM !== 'core' || !style) {
+    return undefined;
+  }
   return {
     borderRadius: style?.notificationBar?.root?.borderRadius,
     borderWidth: style?.notificationBar?.root?.borderWidth,
