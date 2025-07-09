@@ -12,6 +12,7 @@ function writeEnvironmentFile(theme) {
     PACKAGE_VERSION: workspace.packageVersion,
     GIT_SHA: workspace.gitCommitVersion,
     THEME: theme.name,
+    SYSTEM: 'core',
     ALWAYS_VISUAL_REFRESH: !!theme.alwaysVisualRefresh,
   };
   const basePath = path.join(theme.outputPath, filepath);
