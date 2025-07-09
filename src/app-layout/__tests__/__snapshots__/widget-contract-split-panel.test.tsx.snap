@@ -177,6 +177,13 @@ Map {
         "splitPanelControlId": "split-panel33",
         "splitPanelFocusControl": {
           "refs": {
+            "focusPromise": {
+              "_promise": Promise {},
+              "_reject": [Function],
+              "_resolve": [Function],
+              "reject": [Function],
+              "resolve": [Function],
+            },
             "onMount": [Function],
             "preferences": {
               "current": null,
@@ -247,6 +254,13 @@ Map {
         "onToggle": [Function],
         "position": "bottom",
         "refs": {
+          "focusPromise": {
+            "_promise": Promise {},
+            "_reject": [Function],
+            "_resolve": [Function],
+            "reject": [Function],
+            "resolve": [Function],
+          },
           "onMount": [Function],
           "preferences": {
             "current": null,
@@ -477,6 +491,13 @@ Map {
         "splitPanelControlId": "split-panel33",
         "splitPanelFocusControl": {
           "refs": {
+            "focusPromise": {
+              "_promise": Promise {},
+              "_reject": [Function],
+              "_resolve": [Function],
+              "reject": [Function],
+              "resolve": [Function],
+            },
             "onMount": [Function],
             "preferences": {
               "current": null,
@@ -547,6 +568,13 @@ Map {
         "onToggle": [Function],
         "position": "bottom",
         "refs": {
+          "focusPromise": {
+            "_promise": Promise {},
+            "_reject": [Function],
+            "_resolve": [Function],
+            "reject": [Function],
+            "resolve": [Function],
+          },
           "onMount": [Function],
           "preferences": {
             "current": null,
@@ -777,6 +805,13 @@ Map {
         "splitPanelControlId": "split-panel33",
         "splitPanelFocusControl": {
           "refs": {
+            "focusPromise": {
+              "_promise": Promise {},
+              "_reject": [Function],
+              "_resolve": [Function],
+              "reject": [Function],
+              "resolve": [Function],
+            },
             "onMount": [Function],
             "preferences": {
               "current": null,
@@ -847,6 +882,13 @@ Map {
         "onToggle": [Function],
         "position": "bottom",
         "refs": {
+          "focusPromise": {
+            "_promise": Promise {},
+            "_reject": [Function],
+            "_resolve": [Function],
+            "reject": [Function],
+            "resolve": [Function],
+          },
           "onMount": [Function],
           "preferences": {
             "current": null,
@@ -1077,6 +1119,13 @@ Map {
         "splitPanelControlId": "split-panel33",
         "splitPanelFocusControl": {
           "refs": {
+            "focusPromise": {
+              "_promise": Promise {},
+              "_reject": [Function],
+              "_resolve": [Function],
+              "reject": [Function],
+              "resolve": [Function],
+            },
             "onMount": [Function],
             "preferences": {
               "current": null,
@@ -1147,6 +1196,13 @@ Map {
         "onToggle": [Function],
         "position": "bottom",
         "refs": {
+          "focusPromise": {
+            "_promise": Promise {},
+            "_reject": [Function],
+            "_resolve": [Function],
+            "reject": [Function],
+            "resolve": [Function],
+          },
           "onMount": [Function],
           "preferences": {
             "current": null,

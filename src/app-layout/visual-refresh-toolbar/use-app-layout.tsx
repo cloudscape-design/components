@@ -212,7 +212,11 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
     openTools: () => onToolsToggle(true),
     focusToolsClose: () => drawersFocusControl.setFocus(true),
     focusActiveDrawer: () => drawersFocusControl.setFocus(true),
-    focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
+    focusSplitPanel: () => {
+      splitPanelFocusControl.refs.focusPromise?.promise.then(() => {
+        splitPanelFocusControl.refs.slider.current?.focus();
+      });
+    },
     focusNavigation: () => navigationFocusControl.setFocus(true),
   }));
 

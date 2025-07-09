@@ -11,6 +11,7 @@ export interface SplitPanelFocusControlRefs {
   toggle: RefObject<Focusable>;
   slider: RefObject<HTMLDivElement>;
   preferences: RefObject<Focusable>;
+  focusPromise?: Deferred<HTMLElement>;
   onMount: () => void;
 }
 export interface SplitPanelFocusControlState {
@@ -25,6 +26,7 @@ export function useSplitPanelFocusControl(dependencies: DependencyList): SplitPa
     toggle: useRef<Focusable>(null),
     slider: useRef<HTMLDivElement>(null),
     preferences: useRef<Focusable>(null),
+    focusPromise: focusPromise.current,
     onMount: () => {
       focusPromise.current.resolve();
     },
