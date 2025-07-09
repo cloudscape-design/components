@@ -13556,7 +13556,13 @@ exports[`Documenter definition for popover matches the snapshot: popover 1`] = `
   "events": [],
   "functions": [
     {
-      "description": "Sets focus on the popover's trigger.",
+      "description": "Dismisses the popover without focusing the trigger. Use only if an element other than the trigger needs to be focused after dismissing the popover.",
+      "name": "dismiss",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Sets focus on the popover's trigger and dismisses the popover if open.",
       "name": "focus",
       "parameters": [],
       "returnType": "void",
