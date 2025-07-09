@@ -14,9 +14,10 @@ interface ResizeProps {
   panelRef: React.RefObject<HTMLDivElement>;
   handleRef: React.RefObject<HTMLDivElement>;
   onResize: (newWidth: number) => void;
+  position?: 'side' | 'bottom';
 }
 
-export function useResize({ currentWidth, minWidth, maxWidth, panelRef, handleRef, onResize }: ResizeProps) {
+export function useResize({ currentWidth, minWidth, maxWidth, panelRef, handleRef, onResize, position }: ResizeProps) {
   const onResizeHandler = (newWidth: number) => {
     const size = getLimitedValue(minWidth, newWidth, maxWidth);
 
@@ -26,7 +27,7 @@ export function useResize({ currentWidth, minWidth, maxWidth, panelRef, handleRe
   };
 
   const sizeControlProps: SizeControlProps = {
-    position: 'side',
+    position: position ?? 'side',
     panelRef,
     handleRef,
     onResize: onResizeHandler,

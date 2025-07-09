@@ -243,6 +243,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       focusNavigation: () => navigationFocusControl.setFocus(true),
     }));
 
+    const activeBottomDrawerId = activeGlobalDrawers.find(drawer => drawer.position === 'bottom')?.id;
+    const activeBottomDrawerHeight = activeBottomDrawerId ? activeGlobalDrawersSizes[activeBottomDrawerId] : 0;
+
     const resolvedStickyNotifications = !!stickyNotifications && !isMobile;
     //navigation must be null if hidden so toolbar knows to hide the toggle button
     const resolvedNavigation = navigationHide ? null : navigation || <></>;
@@ -265,7 +268,15 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelOpen,
       splitPanelPosition: splitPanelPreferences?.position,
       isMobile,
-      activeGlobalDrawersSizes,
+      activeGlobalDrawersSizes: Object.keys(activeGlobalDrawersSizes)
+        .filter(key => key !== activeBottomDrawerId)
+        .reduce(
+          (acc, curr) => ({
+            ...acc,
+            [curr]: activeGlobalDrawersSizes[curr],
+          }),
+          {}
+        ),
     });
 
     const { ref: intersectionObserverRef, isIntersecting } = useIntersectionObserver({ initialState: true });
@@ -311,6 +322,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       notificationsHeight: notificationsHeight ?? 0,
       toolbarHeight: toolbarHeight ?? 0,
       stickyNotifications: resolvedStickyNotifications,
+      activeBottomDrawerHeight: activeBottomDrawerHeight,
     });
 
     const appLayoutInternals: AppLayoutInternals = {
@@ -385,7 +397,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     };
 
     const closeFirstDrawer = useStableCallback(() => {
-      const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
+      const sideDrawersOpenQueue = drawersOpenQueue.filter(
+        drawerId => globalDrawers.find(globalDrawer => globalDrawer.id === drawerId)?.position !== 'bottom'
+      );
+      const drawerToClose = sideDrawersOpenQueue[sideDrawersOpenQueue.length - 1];
       if (activeDrawer && activeDrawer?.id === drawerToClose) {
         onActiveDrawerChange(null, { initiatedByUserAction: true });
       } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
@@ -553,6 +568,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           contentType={contentType}
           maxContentWidth={maxContentWidth}
           disableContentPaddings={disableContentPaddings}
+          activeBottomDrawerId={activeBottomDrawerId}
+          activeBottomDrawerSize={activeBottomDrawerHeight}
         />
       </AppLayoutVisibilityContext.Provider>
     );

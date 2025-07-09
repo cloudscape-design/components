@@ -38,6 +38,7 @@ const customCssPropertiesList = [
   'toolsMaxWidth',
   'toolsWidth',
   'toolsAnimationStartingOpacity',
+  'activeGlobalBottomDrawerHeight',
   // Annotation Context Custom Properties
   'contentScrollMargin',
   // Flashbar Custom Properties
