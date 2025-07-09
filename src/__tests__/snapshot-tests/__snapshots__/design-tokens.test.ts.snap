@@ -825,6 +825,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#273ea5",
           },
         },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
+          },
+        },
         "color-charts-green-1000": {
           "$description": "Color from the 'green' data visualization palette at a contrast ratio of 10:1",
           "$value": {
@@ -3395,6 +3402,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#c3d1ff",
             "light": "#273ea5",
+          },
+        },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
           },
         },
         "color-charts-green-1000": {
@@ -5969,6 +5983,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#273ea5",
           },
         },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
+          },
+        },
         "color-charts-green-1000": {
           "$description": "Color from the 'green' data visualization palette at a contrast ratio of 10:1",
           "$value": {
@@ -8539,6 +8560,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#c3d1ff",
             "light": "#273ea5",
+          },
+        },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
           },
         },
         "color-charts-green-1000": {
@@ -11113,6 +11141,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#273ea5",
           },
         },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
+          },
+        },
         "color-charts-green-1000": {
           "$description": "Color from the 'green' data visualization palette at a contrast ratio of 10:1",
           "$value": {
@@ -13685,6 +13720,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#273ea5",
           },
         },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
+          },
+        },
         "color-charts-green-1000": {
           "$description": "Color from the 'green' data visualization palette at a contrast ratio of 10:1",
           "$value": {
@@ -16255,6 +16297,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#c3d1ff",
         "light": "#273ea5",
+      },
+    },
+    "color-charts-error-bar-marker": {
+      "$description": "Color for the error bar marker in charts.",
+      "$value": {
+        "dark": "#ffffff",
+        "light": "#131920",
       },
     },
     "color-charts-green-1000": {
@@ -18834,6 +18883,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#273ea5",
           },
         },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
+          },
+        },
         "color-charts-green-1000": {
           "$description": "Color from the 'green' data visualization palette at a contrast ratio of 10:1",
           "$value": {
@@ -21404,6 +21460,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#c3d1ff",
             "light": "#273ea5",
+          },
+        },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
           },
         },
         "color-charts-green-1000": {
@@ -23978,6 +24041,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#273ea5",
           },
         },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
+          },
+        },
         "color-charts-green-1000": {
           "$description": "Color from the 'green' data visualization palette at a contrast ratio of 10:1",
           "$value": {
@@ -26548,6 +26618,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#c3d1ff",
             "light": "#273ea5",
+          },
+        },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
           },
         },
         "color-charts-green-1000": {
@@ -29122,6 +29199,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#273ea5",
           },
         },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
+          },
+        },
         "color-charts-green-1000": {
           "$description": "Color from the 'green' data visualization palette at a contrast ratio of 10:1",
           "$value": {
@@ -31692,6 +31776,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#c3d1ff",
             "light": "#273ea5",
+          },
+        },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
           },
         },
         "color-charts-green-1000": {
@@ -34266,6 +34357,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#273ea5",
           },
         },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
+          },
+        },
         "color-charts-green-1000": {
           "$description": "Color from the 'green' data visualization palette at a contrast ratio of 10:1",
           "$value": {
@@ -36838,6 +36936,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#273ea5",
           },
         },
+        "color-charts-error-bar-marker": {
+          "$description": "Color for the error bar marker in charts.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#131920",
+          },
+        },
         "color-charts-green-1000": {
           "$description": "Color from the 'green' data visualization palette at a contrast ratio of 10:1",
           "$value": {
@@ -39408,6 +39513,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#c3d1ff",
         "light": "#273ea5",
+      },
+    },
+    "color-charts-error-bar-marker": {
+      "$description": "Color for the error bar marker in charts.",
+      "$value": {
+        "dark": "#ffffff",
+        "light": "#131920",
       },
     },
     "color-charts-green-1000": {
