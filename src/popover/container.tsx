@@ -1,15 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
-import { getLogicalBoundingClientRect, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { InternalPosition, PopoverProps } from './interfaces';
 import usePopoverPosition from './use-popover-position.js';
+import usePopoverObserver from './use-position-observer';
 
 import styles from './styles.css.js';
 
@@ -112,85 +111,25 @@ export default function PopoverContainer({
     updatePositionHandler(true);
   });
 
-  // Create a debounced version of the position handler to avoid performance issues with the mutation observer
-  const debouncedPositionHandler = useDebounceCallback(() => {
-    requestAnimationFrame(() => positionHandlerRef.current());
-  }, 50);
+  // Recalculate position when the DOM changes.
+  usePopoverObserver(popoverRef, () => {
+    updatePositionHandler();
+  });
 
-  useEffect(() => {
-    // React to layout changes at the DOM level, such as flashbars being added and shifting content down
-    let observer: MutationObserver;
-
-    if (contentRef.current) {
-      observer = new MutationObserver(debouncedPositionHandler);
-      observer.observe(contentRef.current.getRootNode(), {
-        childList: true,
-        subtree: true,
-      });
-    }
-
-    return () => observer.disconnect();
-  }, [debouncedPositionHandler]);
-
-  // Recalculate position on DOM events.
+  // Recalculate position on resize or scroll events.
   useLayoutEffect(() => {
-    /*
-    This is a heuristic. Some layout changes are caused by user clicks (e.g. toggling the tools panel, submitting a form),
-    and by tracking the click event we can adapt the popover's position to the new layout.
-    */
-
     const controller = new AbortController();
-
-    const onClick = async (event: UIEvent | KeyboardEvent) => {
-      if (
-        // Do not update position if keepPosition is true.
-        keepPosition ||
-        // If the click was on the trigger, this will make the popover appear or disappear,
-        // so no need to update its position either in this case.
-        nodeContains(getTrack.current(), event.target)
-      ) {
-        return;
-      }
-
-      // Do not update position if popover moved offscreen
-      const popoverOffset = popoverRef.current && getLogicalBoundingClientRect(popoverRef.current);
-      // istanbul ignore if - tested via integration tests
-      if (!popoverOffset || popoverOffset.insetBlockStart < 0 || popoverOffset.insetBlockEnd > window.innerHeight) {
-        return;
-      }
-
-      // Continuously update the popover position for one second to account for any layout changes
-      // and animations. On browsers where `requestIdleCallback` is supported,
-      // this runs only while the CPU is otherwise idle. In other browsers (mainly Safari), we call it
-      // with a low frequency.
-      const targetTime = performance.now() + 1_000;
-
-      while (performance.now() < targetTime) {
-        if (controller.signal.aborted) {
-          break;
-        }
-
-        updatePositionHandler();
-
-        if (typeof requestIdleCallback !== 'undefined') {
-          await new Promise(r => requestIdleCallback(r));
-        } else {
-          await new Promise(r => setTimeout(r, 50));
-        }
-      }
-    };
 
     const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
 
-    window.addEventListener('click', onClick, { capture: true, signal: controller.signal });
     window.addEventListener('resize', updatePositionOnResize, { signal: controller.signal });
     window.addEventListener('scroll', refreshPosition, { capture: true, signal: controller.signal });
 
     return () => {
       controller.abort();
     };
-  }, [hideOnOverscroll, keepPosition, positionHandlerRef, trackRef, updatePositionHandler, debouncedPositionHandler]);
+  }, [hideOnOverscroll, keepPosition, positionHandlerRef, trackRef, updatePositionHandler]);
 
   return isOverscrolling ? null : (
     <div
