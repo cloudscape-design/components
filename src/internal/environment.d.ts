@@ -3,6 +3,7 @@
 
 // this a placeholder for typescript. The real files are generated in `generate-environment` task
 export const THEME: string;
+export const SYSTEM: string;
 export const PACKAGE_SOURCE: string;
 export const PACKAGE_VERSION: string;
 export const GIT_SHA: string;
