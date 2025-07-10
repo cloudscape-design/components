@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 
+import { isAppLayoutDelayedWidget } from '../utils/feature-flags';
 import { AppLayoutState as AppLayoutStateImplementation, createWidgetizedAppLayoutState } from './app-layout-state';
 import { createWidgetizedAppLayoutDrawer, createWidgetizedAppLayoutGlobalDrawers } from './drawer';
 import { createWidgetizedAppLayoutNavigation } from './navigation';
@@ -33,7 +34,7 @@ export const AppLayoutWidgetizedState = createWidgetizedAppLayoutState(
   createAppLayoutPart({ Component: AppLayoutStateImplementation })
 );
 
-const enableDelayedComponents = false;
+const enableDelayedComponents = isAppLayoutDelayedWidget();
 
 export function createAppLayoutPart({ Component }: { Component: React.JSXElementConstructor<any> }) {
   const AppLayoutPartLoader = ({ Skeleton, ...props }: any) => {
