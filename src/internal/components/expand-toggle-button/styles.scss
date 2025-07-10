@@ -3,8 +3,8 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../internal/styles/index' as styles;
-@use '../../internal/styles/tokens' as awsui;
+@use '../../../internal/styles/index' as styles;
+@use '../../../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @use './motion';
@@ -41,7 +41,7 @@
   color: awsui.$color-text-interactive-default;
 
   @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
   }
 
   &:hover {

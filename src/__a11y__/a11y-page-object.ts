@@ -101,12 +101,13 @@ export default class A11yPageObject extends BasePageObject {
 }
 
 // The message says: "aria-level values greater than 6 are not supported in all screenreader and browser combinations".
-// However, that is relevant for heading roles but not for treegrid. In treegrid there can be more levels of nesting.
+// However, that is relevant for heading roles but not for treegrid or tree. In treegrid or tree there can be more levels of nesting.
 function ariaLevelViolationsFilter(violation: Axe.Result) {
   return !(
     violation.id === 'aria-valid-attr-value' &&
     violation.nodes.every(node => node.all.every(entry => entry.id === 'aria-level')) &&
-    violation.nodes.every(node => node.html.startsWith('<tr'))
+    (violation.nodes.every(node => node.html.startsWith('<tr')) ||
+      violation.nodes.every(node => node.html.startsWith('<li')))
   );
 }
 
