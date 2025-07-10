@@ -88,8 +88,8 @@ export default function StaticSinglePageCreatePage() {
             {
               analyticsMetadata: {
                 errorContext: {
-                  errorCategory: 'api_specific',
-                  errorSubCategory: 'access_control',
+                  errorCategory: 'API_SPECIFIC',
+                  errorSubCategory: 'ACCESS_CONTROL_ISSUES',
                   errorMessage: 'This is a dismissible error message.',
                 },
               },
@@ -149,8 +149,8 @@ export default function StaticSinglePageCreatePage() {
                       const errorMessage = 'There is an error';
                       setErrorText('There is an error');
                       setFunnelErrorContext({
-                        errorCategory: 'api_specific',
-                        errorSubCategory: 'connection',
+                        errorCategory: 'API_SPECIFIC',
+                        errorSubCategory: 'CONNECTION_PROBLEMS',
                         errorMessage,
                       });
                     } else {
@@ -205,8 +205,8 @@ export default function StaticSinglePageCreatePage() {
                           const errorMessage = 'Trigger error';
                           setFieldError(errorMessage);
                           setFieldErrorContext({
-                            errorCategory: 'input_validation',
-                            errorSubCategory: 'access_control',
+                            errorCategory: 'INPUT_VALIDATION',
+                            errorSubCategory: 'ACCESS_CONTROL_ISSUES',
                             errorMessage,
                           });
                         } else {

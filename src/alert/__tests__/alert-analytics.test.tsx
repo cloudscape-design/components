@@ -207,8 +207,8 @@ describe('Alert Analytics', () => {
           type="error"
           analyticsMetadata={{
             errorContext: {
-              errorCategory: 'api_specific',
-              errorSubCategory: 'access_control',
+              errorCategory: 'API_SPECIFIC',
+              errorSubCategory: 'ACCESS_CONTROL_ISSUES',
               errorMessage: 'This is an error text from errorContext',
             },
           }}
@@ -225,8 +225,8 @@ describe('Alert Analytics', () => {
     expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
       expect.objectContaining({
         errorContext: {
-          errorCategory: 'api_specific',
-          errorSubCategory: 'access_control',
+          errorCategory: 'API_SPECIFIC',
+          errorSubCategory: 'ACCESS_CONTROL_ISSUES',
           errorMessage: 'This is an error text from errorContext',
         },
       })
