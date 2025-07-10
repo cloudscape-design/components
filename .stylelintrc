@@ -41,7 +41,6 @@
         ]
       }
     ],
-    "@cloudscape-design/no-motion-outside-of-mixin": [true],
     "@cloudscape-design/z-index-value-constraint": [true],
     "plugin/no-unsupported-browser-features": [
       true,
@@ -58,7 +57,8 @@
       ],
       "rules": {
         "property-disallowed-list": ["border", "border-radius", "border-style", "margin", "padding"],
-        "csstools/use-logical": "always"
+        "csstools/use-logical": "always",
+        "@cloudscape-design/no-motion-outside-of-mixin": [true]
       }
     }
   ],
