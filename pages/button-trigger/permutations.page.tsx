@@ -87,7 +87,7 @@ export default function ButtonTriggerPermutations() {
                 <div>
                   <ButtonTrigger {...permutation} />
                 </div>
-                <div style={{ backgroundColor: 'red' }}>Test</div>
+                <div style={{ border: '1px solid' }}>Test</div>
               </div>
             )}
           />
