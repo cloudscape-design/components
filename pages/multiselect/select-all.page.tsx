@@ -33,6 +33,7 @@ const groupedOptionsWithDisabledOptions: MultiselectProps.Options = [
 const initialSelectedOptions = [
   (groupedOptionsWithDisabledOptions[0] as OptionGroup).options[2],
   (groupedOptionsWithDisabledOptions[1] as OptionGroup).options[0],
+  (groupedOptionsWithDisabledOptions[1] as OptionGroup).options[1],
 ];
 
 export default function MultiselectPage() {
