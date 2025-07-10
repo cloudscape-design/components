@@ -151,7 +151,9 @@ $operator-field-width: 120px;
 
     display: grid;
     gap: awsui.$space-s;
-    grid-template-columns: minmax(min-content, 2fr) minmax(min-content, $operator-field-width) minmax(min-content, 3fr) min-content;
+    grid-template-columns:
+      minmax(min-content, 2fr) minmax(min-content, $operator-field-width) minmax(min-content, 3fr)
+      min-content;
 
     &-group {
       display: contents;

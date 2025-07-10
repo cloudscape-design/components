@@ -17,7 +17,7 @@
     "test:motion": "gulp test:motion",
     "lint": "npm-run-all --parallel lint:*",
     "lint:eslint": "eslint .",
-    "lint:stylelint": "stylelint --ignore-path .gitignore --fix '{src,pages}/**/*.{css,scss}'",
+    "lint:stylelint": "stylelint --ignore-path .gitignore '{src,pages}/**/*.{css,scss}'",
     "start": "npm-run-all --parallel start:watch start:dev",
     "start:watch": "gulp watch",
     "start:dev": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.cjs",
