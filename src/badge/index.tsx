@@ -12,14 +12,14 @@ import styles from './styles.css.js';
 
 export { BadgeProps };
 
-export default function Badge({ color = 'grey', children, ...rest }: BadgeProps) {
+export default function Badge({ color = 'grey', children, style, ...rest }: BadgeProps) {
   const { __internalRootRef } = useBaseComponent('Badge', { props: { color } });
   const baseProps = getBaseProps(rest);
 
   const className = clsx(baseProps.className, styles.badge, styles[`badge-color-${color}`]);
 
   return (
-    <span {...baseProps} {...{ className }} ref={__internalRootRef}>
+    <span {...baseProps} {...{ className }} ref={__internalRootRef} style={style as React.CSSProperties}>
       {children}
     </span>
   );
