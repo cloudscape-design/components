@@ -267,7 +267,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
                   }
                 }}
                 style={{
-                  ...(index > 0 && !isFlashbarStackExpanded && style && getCollapsibleFlashStyles(style, item.type)),
+                  ...(index > 0 && !isFlashbarStackExpanded && getCollapsibleFlashStyles(style, item.type)),
                   ...((!isFlashbarStackExpanded || transitioning) && {
                     [customCssProps.flashbarStackIndex]:
                       (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
@@ -326,7 +326,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
           )}
           onClick={toggleCollapseExpand}
           ref={notificationBarRef}
-          style={{ ...(style && getNotificationBarStyles(style)) }}
+          style={getNotificationBarStyles(style)}
           {...getAnalyticsMetadataAttribute({
             action: !isFlashbarStackExpanded ? 'expand' : 'collapse',
             detail: {
