@@ -31,6 +31,8 @@ type InternalMultiselectProps = SomeRequired<
 > &
   InternalBaseComponentProps;
 
+type ExtendedToken = TokenGroupProps.Item & { _readOnly: boolean };
+
 const InternalMultiselect = React.forwardRef(
   (
     {
@@ -116,9 +118,9 @@ const InternalMultiselect = React.forwardRef(
       />
     );
 
-    const tokens: TokenGroupProps['items'] = selectedOptions.map(option => ({
+    const tokens: Array<ExtendedToken> = selectedOptions.map(option => ({
       label: option.label,
-      disabled: disabled || option.disabled,
+      disabled,
       labelTag: option.labelTag,
       description: option.description,
       iconAlt: option.iconAlt,
@@ -129,6 +131,7 @@ const InternalMultiselect = React.forwardRef(
       dismissLabel: i18n('deselectAriaLabel', deselectAriaLabel?.(option), format =>
         format({ option__label: option.label ?? '' })
       ),
+      _readOnly: !!option.disabled,
     }));
 
     const ListComponent = virtualScroll ? VirtualList : PlainList;
@@ -200,6 +203,7 @@ const InternalMultiselect = React.forwardRef(
             limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
             disableOuterPadding={true}
             readOnly={readOnly}
+            isItemReadOnly={item => (item as ExtendedToken)._readOnly}
           />
         )}
 
