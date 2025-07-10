@@ -8,8 +8,8 @@ import PaginationWrapper from '../pagination';
 import PropertyFilterWrapper from '../property-filter';
 import TextFilterWrapper from '../text-filter';
 
+import expandToggleStyles from '../../../internal/components/expand-toggle-button/styles.selectors.js';
 import bodyCellStyles from '../../../table/body-cell/styles.selectors.js';
-import expandableRowsStyles from '../../../table/expandable-rows/styles.selectors.js';
 import headerCellStyles from '../../../table/header-cell/styles.selectors.js';
 import progressiveLoadingStyles from '../../../table/progressive-loading/styles.selectors.js';
 import resizerStyles from '../../../table/resizer/styles.selectors.js';
@@ -177,7 +177,7 @@ export default class TableWrapper extends ComponentWrapper {
    * @param rowIndex 1-based index of the row.
    */
   findExpandToggle(rowIndex: number): ElementWrapper | null {
-    return this.findNativeTable().find(`tbody tr:nth-child(${rowIndex}) .${expandableRowsStyles['expand-toggle']}`);
+    return this.findNativeTable().find(`tbody tr:nth-child(${rowIndex}) .${expandToggleStyles['expand-toggle']}`);
   }
 
   /**
