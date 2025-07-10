@@ -24,3 +24,20 @@ export interface BadgeProps extends BaseComponentProps {
    */
   children?: React.ReactNode;
 }
+
+export interface Style {
+  root?: {
+    background?: string;
+    borderColor?: string;
+    borderRadius?: string;
+    borderWidth?: string;
+    color?: string;
+  };
+  focusRing?: {
+    borderColor?: string;
+    borderRadius?: string;
+    borderWidth?: string;
+  };
+  paddingBlock?: string;
+  paddingInline?: string;
+}
