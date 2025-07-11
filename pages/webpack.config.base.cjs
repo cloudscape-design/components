@@ -136,6 +136,13 @@ module.exports = ({
       ...(moduleReplacements || []).map(({ from, to }) => replaceModule(from, to)),
     ],
     devServer: {
+      client: {
+        overlay: {
+          errors: true,
+          warnings: true,
+          runtimeErrors: false,
+        },
+      },
       devMiddleware: {
         publicPath: '/',
       },
