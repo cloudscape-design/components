@@ -16,6 +16,7 @@ interface BaseOption {
   tags?: ReadonlyArray<string>;
   filteringTags?: ReadonlyArray<string>;
   iconAlt?: string;
+  iconAriaLabel?: string;
   iconName?: IconProps.Name;
   iconUrl?: string;
   iconSvg?: React.ReactNode;
