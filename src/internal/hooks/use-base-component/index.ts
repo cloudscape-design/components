@@ -38,6 +38,8 @@ export default function useBaseComponent<T = any>(
     { packageName: PACKAGE_SOURCE, version: PACKAGE_VERSION, theme },
     analyticsMetadata as any
   );
-  useFocusVisible(elementRef as MutableRefObject<HTMLElement>);
+  (useFocusVisible as (componentRef?: React.RefObject<HTMLElement | null>) => void)(
+    elementRef as MutableRefObject<HTMLElement>
+  );
   return { __internalRootRef: elementRef };
 }
