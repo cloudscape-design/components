@@ -53,10 +53,5 @@ export namespace BadgeProps {
       paddingBlock?: string;
       paddingInline?: string;
     };
-    focusRing?: {
-      borderColor?: string;
-      borderRadius?: string;
-      borderWidth?: string;
-    };
   }
 }

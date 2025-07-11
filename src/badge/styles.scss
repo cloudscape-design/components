@@ -21,9 +21,6 @@
   padding-block: 0;
   padding-inline: awsui.$space-xs;
   color: awsui.$color-text-notification-default;
-  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
   &.badge-color-grey {
     background-color: awsui.$color-background-notification-grey;
