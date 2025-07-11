@@ -7,13 +7,10 @@ import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { AppLayoutToolbarPublicContext } from '../visual-refresh-toolbar/contexts';
 
-const getCutomFlag = (flagName: string) => {
-  const isBrowser = typeof window !== 'undefined';
-  if (!isBrowser) {
-    return {};
-  }
+const getCustomFlag = (flagName: string) => {
+  const flagHolder: any = typeof window !== 'undefined' ? window : globalThis;
   const awsuiCustomFlagsSymbol = Symbol.for('awsui-custom-flags');
-  return window?.[awsuiCustomFlagsSymbol as any]?.[flagName as any];
+  return flagHolder?.[awsuiCustomFlagsSymbol as any]?.[flagName as any];
 };
 
 //   useAppLayoutFlagEnabled is set to true only in consoles. It controls if AppLayout theme is toolbar
@@ -34,5 +31,5 @@ export const useAppLayoutToolbarDesignEnabled = () => {
 };
 
 export const isAppLayoutDelayedWidget = () => {
-  return !!getCutomFlag('appLayoutDelayedWidget');
+  return !!getCustomFlag('appLayoutDelayedWidget');
 };

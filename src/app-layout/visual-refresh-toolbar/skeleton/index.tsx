@@ -168,6 +168,7 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
       {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
       <VisualContext contextName="app-layout-toolbar">
         <div
+          data-awsui-app-layout-widget-loaded={false}
           {...wrapperElAttributes}
           className={wrapperElAttributes?.className ?? clsx(styles.root, testutilStyles.root)}
           style={
