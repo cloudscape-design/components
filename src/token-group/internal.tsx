@@ -20,7 +20,10 @@ import { Token } from './token';
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import styles from './styles.css.js';
 
-type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignment'> & InternalBaseComponentProps;
+type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignment'> &
+  InternalBaseComponentProps & {
+    isItemReadOnly?: (item: TokenGroupProps.Item) => boolean;
+  };
 
 export default function InternalTokenGroup({
   alignment,
@@ -32,6 +35,7 @@ export default function InternalTokenGroup({
   limitShowFewerAriaLabel,
   limitShowMoreAriaLabel,
   readOnly,
+  isItemReadOnly,
   __internalRootRef,
   ...props
 }: InternalTokenGroupProps) {
@@ -75,7 +79,7 @@ export default function InternalTokenGroup({
               setNextFocusIndex(itemIndex);
             }}
             disabled={item.disabled}
-            readOnly={readOnly}
+            readOnly={readOnly || isItemReadOnly?.(item)}
             {...(item.disabled || readOnly
               ? {}
               : getAnalyticsMetadataAttribute({ detail: { position: `${itemIndex + 1}` } }))}
