@@ -98,8 +98,7 @@ $link-variants: (
   ),
   // Need separate variant used for backwards compatible styles in classic
   // (vr - button style, classic - underlined link style),
-  'recovery':
-    (
+  'recovery': (
       'text-color-default': awsui.$color-text-link-default,
       'text-color-hover': awsui.$color-text-link-hover,
       'text-color-active': awsui.$color-text-link-hover,
@@ -113,8 +112,7 @@ $link-variants: (
 
 $link-styles: (
   // A link without an href to be styled like a button
-  'button':
-    (
+  'button': (
       'text-color-default': awsui.$color-text-link-button-normal-default,
       'text-color-hover': awsui.$color-text-link-button-normal-hover,
       'text-color-active': awsui.$color-text-link-button-normal-active,
