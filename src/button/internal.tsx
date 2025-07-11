@@ -31,6 +31,7 @@ import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useModalContextLoadingButtonComponent } from '../internal/hooks/use-modal-component-analytics';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import InternalLiveRegion from '../live-region/internal';
 import { GeneratedAnalyticsMetadataButtonFragment } from './analytics-metadata/interfaces';
 import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
@@ -50,14 +51,12 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
     | 'inline-icon-pointer-target';
   badge?: boolean;
   analyticsAction?: string;
-  __nativeAttributes?:
-    | (React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>)
-    | Record<`data-${string}`, string>;
   __iconClass?: string;
   __focusable?: boolean;
   __injectAnalyticsComponentMetadata?: boolean;
   __title?: string;
   __emitPerformanceMarks?: boolean;
+  __skipNativeAttributesWarnings?: boolean;
 } & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
 
 export const InternalButton = React.forwardRef(
@@ -92,12 +91,14 @@ export const InternalButton = React.forwardRef(
       badge,
       i18nStrings,
       style,
-      __nativeAttributes,
+      nativeButtonAttributes,
+      nativeAnchorAttributes,
       __internalRootRef = null,
       __focusable = false,
       __injectAnalyticsComponentMetadata = false,
       __title,
       __emitPerformanceMarks = true,
+      __skipNativeAttributesWarnings,
       analyticsAction = 'click',
       ...props
     }: InternalButtonProps,
@@ -187,8 +188,7 @@ export const InternalButton = React.forwardRef(
       [styles.link]: isAnchor,
     });
 
-    const explicitTabIndex =
-      __nativeAttributes && 'tabIndex' in __nativeAttributes ? __nativeAttributes.tabIndex : undefined;
+    const explicitTabIndex = nativeButtonAttributes?.tabIndex ?? nativeAnchorAttributes?.tabIndex;
     const { tabIndex } = useSingleTabStopNavigation(buttonRef, {
       tabIndex: isAnchor && isNotInteractive && !isDisabledWithReason ? -1 : explicitTabIndex,
     });
@@ -209,7 +209,6 @@ export const InternalButton = React.forwardRef(
 
     const buttonProps = {
       ...props,
-      ...__nativeAttributes,
       ...performanceMarkAttributes,
       tabIndex,
       // https://github.com/microsoft/TypeScript/issues/36659
@@ -341,7 +340,10 @@ export const InternalButton = React.forwardRef(
 
       return (
         <>
-          <a
+          <WithNativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>
+            tag="a"
+            nativeAttributes={nativeAnchorAttributes}
+            skipWarnings={__skipNativeAttributesWarnings}
             {...buttonProps}
             href={isNotInteractive ? undefined : href}
             role={isNotInteractive ? 'link' : undefined}
@@ -356,7 +358,7 @@ export const InternalButton = React.forwardRef(
           >
             {buttonContent}
             {isDisabledWithReason && disabledReasonContent}
-          </a>
+          </WithNativeAttributes>
           {loading && loadingText && (
             <InternalLiveRegion tagName="span" hidden={true}>
               {loadingText}
@@ -368,7 +370,10 @@ export const InternalButton = React.forwardRef(
 
     return (
       <>
-        <button
+        <WithNativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>
+          tag="button"
+          nativeAttributes={nativeButtonAttributes}
+          skipWarnings={__skipNativeAttributesWarnings}
           {...buttonProps}
           type={formAction === 'none' ? 'button' : 'submit'}
           disabled={disabled && !__focusable && !isDisabledWithReason}
@@ -378,7 +383,7 @@ export const InternalButton = React.forwardRef(
         >
           {buttonContent}
           {isDisabledWithReason && disabledReasonContent}
-        </button>
+        </WithNativeAttributes>
         {loading && loadingText && (
           <InternalLiveRegion tagName="span" hidden={true}>
             {loadingText}
