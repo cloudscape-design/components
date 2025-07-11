@@ -110,7 +110,8 @@ export default function PopoverContainer({
   usePositionObserver(trackRef, trackKey, () => {
     // Do not update position if popover moved offscreen
     const popoverOffset = popoverRef.current && getLogicalBoundingClientRect(popoverRef.current);
-    // istanbul ignore if - tested via integration tests
+
+    // istanbul ignore next - tested via integration tests
     if (
       keepPosition ||
       !popoverOffset ||
