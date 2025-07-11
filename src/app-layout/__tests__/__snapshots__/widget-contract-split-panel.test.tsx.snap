@@ -344,6 +344,7 @@ Map {
       },
       "wrapperElAttributes": {
         "className": "awsui_root awsui_root awsui_has-adaptive-widths-default",
+        "data-awsui-app-layout-widget-loaded": true,
         "style": {
           "--awsui-max-content-width": "",
           "--awsui-navigation-width": "280px",
@@ -658,6 +659,7 @@ Map {
       },
       "wrapperElAttributes": {
         "className": "awsui_root awsui_root awsui_has-adaptive-widths-default",
+        "data-awsui-app-layout-widget-loaded": true,
         "style": {
           "--awsui-max-content-width": "",
           "--awsui-navigation-width": "280px",
@@ -972,6 +974,7 @@ Map {
       },
       "wrapperElAttributes": {
         "className": "awsui_root awsui_root awsui_has-adaptive-widths-default",
+        "data-awsui-app-layout-widget-loaded": true,
         "style": {
           "--awsui-max-content-width": "",
           "--awsui-navigation-width": "280px",
@@ -1286,6 +1289,7 @@ Map {
       },
       "wrapperElAttributes": {
         "className": "awsui_root awsui_root awsui_has-adaptive-widths-default",
+        "data-awsui-app-layout-widget-loaded": true,
         "style": {
           "--awsui-max-content-width": "",
           "--awsui-navigation-width": "280px",
