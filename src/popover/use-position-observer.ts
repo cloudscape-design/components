@@ -10,7 +10,11 @@ interface Coords {
   y?: number;
 }
 
-export default function usePopoverObserver(triggerRef: React.RefObject<Element> | undefined, callback: () => void) {
+export default function usePositionObserver(
+  triggerRef: React.RefObject<Element> | undefined,
+  trackKey: string | number | undefined,
+  callback: () => void
+) {
   const stableCallback = useStableCallback(callback);
 
   useEffect(() => {
@@ -18,7 +22,12 @@ export default function usePopoverObserver(triggerRef: React.RefObject<Element> 
       return;
     }
 
-    let lastPosition: Coords = {};
+    let lastTrackKey = trackKey;
+
+    let lastPosition: Coords = {
+      x: triggerRef.current.getBoundingClientRect().x,
+      y: triggerRef.current.getBoundingClientRect().y,
+    };
 
     const observer = new MutationObserver(() => {
       if (!triggerRef.current) {
@@ -27,8 +36,9 @@ export default function usePopoverObserver(triggerRef: React.RefObject<Element> 
 
       const { x, y } = triggerRef.current.getBoundingClientRect();
 
-      // Only trigger the callback when the position changes
-      if (x !== lastPosition?.x || y !== lastPosition?.y) {
+      // Only trigger the callback when the position changes or the track key changes
+      if (x !== lastPosition.x || y !== lastPosition.y || trackKey !== lastTrackKey) {
+        lastTrackKey = trackKey;
         lastPosition = { x, y };
         stableCallback();
       }
@@ -38,5 +48,5 @@ export default function usePopoverObserver(triggerRef: React.RefObject<Element> 
     observer.observe(triggerRef.current.ownerDocument, { attributes: true, subtree: true, childList: true });
 
     return () => observer.disconnect();
-  }, [triggerRef, stableCallback]);
+  }, [triggerRef, stableCallback, trackKey]); // trackKey added to dependencies to update when triggerRef doesn't change
 }

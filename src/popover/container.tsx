@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { getLogicalBoundingClientRect, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
@@ -8,7 +8,7 @@ import { getLogicalBoundingClientRect, useResizeObserver } from '@cloudscape-des
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { InternalPosition, PopoverProps } from './interfaces';
 import usePopoverPosition from './use-popover-position.js';
-import usePopoverObserver from './use-position-observer';
+import usePositionObserver from './use-position-observer';
 
 import styles from './styles.css.js';
 
@@ -101,18 +101,13 @@ export default function PopoverContainer({
       minVisibleBlockSize,
     });
 
-  // Recalculate position when properties change.
-  useLayoutEffect(() => {
-    updatePositionHandler();
-  }, [updatePositionHandler, trackKey]);
-
   // Recalculate position when content size changes.
   useResizeObserver(contentRef, () => {
     updatePositionHandler(true);
   });
 
   // Recalculate position when the DOM changes.
-  usePopoverObserver(trackRef, () => {
+  usePositionObserver(trackRef, trackKey, () => {
     // Do not update position if popover moved offscreen
     const popoverOffset = popoverRef.current && getLogicalBoundingClientRect(popoverRef.current);
     // istanbul ignore if - tested via integration tests
@@ -129,7 +124,7 @@ export default function PopoverContainer({
   });
 
   // Recalculate position on resize or scroll events.
-  useLayoutEffect(() => {
+  useEffect(() => {
     const controller = new AbortController();
 
     const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
@@ -141,7 +136,7 @@ export default function PopoverContainer({
     return () => {
       controller.abort();
     };
-  }, [hideOnOverscroll, keepPosition, positionHandlerRef, trackRef, updatePositionHandler]);
+  }, [positionHandlerRef, updatePositionHandler]);
 
   return isOverscrolling ? null : (
     <div
