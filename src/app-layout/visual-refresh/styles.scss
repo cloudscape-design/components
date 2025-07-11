@@ -3,15 +3,15 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use './background.scss';
-@use './breadcrumbs.scss';
-@use './drawers.scss';
-@use './header.scss';
-@use './layout.scss';
-@use './main.scss';
-@use './mobile-toolbar.scss';
-@use './navigation.scss';
-@use './notifications.scss';
-@use './split-panel.scss';
-@use './tools.scss';
-@use './trigger-button.scss';
+@use './background';
+@use './breadcrumbs';
+@use './drawers';
+@use './header';
+@use './layout';
+@use './main';
+@use './mobile-toolbar';
+@use './navigation';
+@use './notifications';
+@use './split-panel';
+@use './tools';
+@use './trigger-button';
