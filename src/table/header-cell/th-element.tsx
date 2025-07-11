@@ -25,6 +25,7 @@ export interface TableThElementProps {
   focusedComponent?: null | string;
   stuck?: boolean;
   sticky?: boolean;
+  resizable?: boolean;
   hidden?: boolean;
   stripedRows?: boolean;
   isSelection?: boolean;
@@ -46,6 +47,7 @@ export function TableThElement({
   focusedComponent,
   stuck,
   sticky,
+  resizable,
   hidden,
   stripedRows,
   isSelection,
@@ -79,6 +81,7 @@ export function TableThElement({
         styles['header-cell'],
         styles[`header-cell-variant-${variant}`],
         sticky && styles['header-cell-sticky'],
+        resizable && styles['header-cell-resizable'],
         stuck && styles['header-cell-stuck'],
         stripedRows && styles['has-striped-rows'],
         isVisualRefresh && styles['is-visual-refresh'],

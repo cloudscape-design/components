@@ -231,7 +231,7 @@ export function Resizer({
         data-focus-id={focusId}
       />
       <span
-        className={clsx(styles.divider, isDragging && styles['divider-active'])}
+        className={clsx(styles['divider-interactive'], isDragging && styles['divider-active'])}
         data-awsui-table-suppress-navigation={true}
         ref={resizerSeparatorRef}
         id={separatorId}
