@@ -10,7 +10,7 @@ import styles from './styles.css.js';
 
 interface BreadcrumbsSlotProps {
   ownBreadcrumbs: React.ReactNode;
-  discoveredBreadcrumbs: BreadcrumbGroupProps | null;
+  discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
 }
 
 export function BreadcrumbsSlot({ ownBreadcrumbs, discoveredBreadcrumbs }: BreadcrumbsSlotProps) {

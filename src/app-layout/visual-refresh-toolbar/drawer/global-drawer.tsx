@@ -4,6 +4,8 @@ import React, { useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
@@ -73,6 +75,7 @@ function AppLayoutGlobalDrawerImplementation({
   const animationDisabled =
     (activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id)) ||
     (wasExpanded && !isExpanded);
+  const closeRef = useMergeRefs(refs?.close, refs?.onMount);
 
   return (
     <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={0}>
@@ -168,7 +171,7 @@ function AppLayoutGlobalDrawerImplementation({
                       formAction="none"
                       iconName={isMobile ? 'close' : 'angle-right'}
                       onClick={() => onActiveGlobalDrawersChange(activeDrawerId, { initiatedByUserAction: true })}
-                      ref={refs?.close}
+                      ref={closeRef}
                       variant="icon"
                       analyticsAction="close"
                     />
