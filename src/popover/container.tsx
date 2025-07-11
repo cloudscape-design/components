@@ -121,6 +121,7 @@ export default function PopoverContainer({
       return;
     }
 
+    // istanbul ignore next - tested via integration tests
     updatePositionHandler();
   });
 
