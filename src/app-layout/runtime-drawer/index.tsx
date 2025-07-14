@@ -21,6 +21,7 @@ export interface DrawersLayout {
   global: Array<RuntimeDrawer>;
   localBefore: Array<RuntimeDrawer>;
   localAfter: Array<RuntimeDrawer>;
+  aiDrawer?: RuntimeDrawer;
 }
 
 type VisibilityCallback = (isVisible: boolean) => void;
@@ -93,7 +94,8 @@ const mapRuntimeConfigToDrawer = (
 
 export function convertRuntimeDrawers(
   localDrawers: Array<RuntimeDrawerConfig>,
-  globalDrawers: Array<RuntimeDrawerConfig>
+  globalDrawers: Array<RuntimeDrawerConfig>,
+  aiDrawer?: RuntimeDrawerConfig
 ): DrawersLayout {
   const converted = localDrawers.map(mapRuntimeConfigToDrawer);
   const sorted = sortByPriority(converted);
@@ -101,5 +103,8 @@ export function convertRuntimeDrawers(
     global: sortByPriority(globalDrawers.map(mapRuntimeConfigToDrawer)),
     localBefore: sorted.filter(item => (item.orderPriority ?? 0) > 0),
     localAfter: sorted.filter(item => (item.orderPriority ?? 0) <= 0),
+    ...(aiDrawer && {
+      aiDrawer: mapRuntimeConfigToDrawer(aiDrawer),
+    }),
   };
 }

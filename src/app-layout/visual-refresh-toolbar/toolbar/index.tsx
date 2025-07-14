@@ -50,6 +50,10 @@ export interface ToolbarProps {
 
   expandedDrawerId?: string | null;
   setExpandedDrawerId?: (value: string | null) => void;
+
+  aiDrawer?: AppLayoutProps.Drawer;
+  onActiveAiDrawerChange?: (value: string | null) => void;
+  activeAiDrawer?: string | null;
 }
 
 export interface AppLayoutToolbarImplementationProps {
@@ -84,6 +88,9 @@ export function AppLayoutToolbarImplementation({
     onSplitPanelToggle,
     expandedDrawerId,
     setExpandedDrawerId,
+    aiDrawer,
+    activeAiDrawer,
+    onActiveAiDrawerChange,
   } = toolbarProps;
   const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
@@ -123,6 +130,29 @@ export function AppLayoutToolbarImplementation({
       }}
     >
       <div className={styles['toolbar-container']}>
+        {aiDrawer && !activeAiDrawer && (
+          <div className={styles['universal-toolbar-ai-drawer']}>
+            <TriggerButton
+              // ariaLabel={ariaLabels?.navigationToggle ?? undefined}
+              ariaExpanded={!!activeAiDrawer}
+              iconName="add-plus"
+              className={testutilStyles['ai-drawer-toggle']}
+              onClick={() => {
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(null);
+                }
+                if (navigationOpen && activeAiDrawer) {
+                  return;
+                }
+                onActiveAiDrawerChange?.(aiDrawer?.id);
+              }}
+              // ref={navigationFocusRef}
+              selected={!drawerExpandedMode && !!activeAiDrawer}
+              disabled={anyPanelOpenInMobile}
+            />
+            <div className={styles['group-divider']} />
+          </div>
+        )}
         {hasNavigation && (
           <nav {...navLandmarkAttributes} className={clsx(styles['universal-toolbar-nav'])}>
             <TriggerButton

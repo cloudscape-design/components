@@ -151,6 +151,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onActiveGlobalDrawersChange,
       expandedDrawerId,
       setExpandedDrawerId,
+      aiDrawer,
+      onActiveAiDrawerChange,
+      activeAiDrawer,
     } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer }, ariaLabels, {
       ariaLabels,
       toolsHide,
@@ -298,6 +301,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         onSplitPanelToggle: onSplitPanelToggleHandler,
         expandedDrawerId,
         setExpandedDrawerId,
+        aiDrawer,
+        onActiveAiDrawerChange,
+        activeAiDrawer,
       },
       isIntersecting
     );
@@ -356,6 +362,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelAnimationDisabled,
       expandedDrawerId,
       setExpandedDrawerId,
+      aiDrawer,
+      onActiveAiDrawerChange,
+      activeAiDrawer,
     };
 
     const splitPanelInternals: SplitPanelProviderProps = {

@@ -32,22 +32,27 @@
     display: grid;
     column-gap: awsui.$space-static-xs;
     inline-size: 100%;
-    grid-template-columns: min-content minmax(0, 3fr) minmax(auto, 1fr);
+    grid-template-columns: min-content min-content minmax(0, 4fr) minmax(auto, 1fr);
     grid-template-rows: 1fr;
 
-    > .universal-toolbar-nav {
+    > .universal-toolbar-ai-drawer {
       grid-column: 1;
       padding-inline-end: awsui.$space-static-xxs;
     }
 
-    > .universal-toolbar-breadcrumbs {
+    > .universal-toolbar-nav {
       grid-column: 2;
+      padding-inline-end: awsui.$space-static-xxs;
+    }
+
+    > .universal-toolbar-breadcrumbs {
+      grid-column: 3;
       background-color: transparent;
       flex: 1 0;
     }
 
     > .universal-toolbar-drawers {
-      grid-column: 3;
+      grid-column: 4;
       column-gap: awsui.$space-static-xs;
       display: flex;
       justify-content: flex-end;

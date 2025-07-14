@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef, useState } from 'react';
+import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import {
   AppLayout,
@@ -30,6 +31,31 @@ type DemoContext = React.Context<
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
   }>
 >;
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'amazon-q',
+  type: 'global-ai',
+  resizable: true,
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Content',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+  },
+
+  trigger: {
+    iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+    </svg>`,
+  },
+
+  mountContent: container => {
+    ReactDOM.render(<div>Tela</div>, container);
+  },
+  unmountContent: container => unmountComponentAtNode(container),
+});
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);

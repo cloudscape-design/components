@@ -79,9 +79,10 @@ function useRuntimeDrawers(
       return;
     }
     const unsubscribe = awsuiPluginsInternal.appLayout.onDrawersRegistered(drawers => {
-      const localDrawers = drawers.filter(drawer => drawer.type !== 'global');
+      const localDrawers = drawers.filter(drawer => !drawer.type?.includes('global'));
       const globalDrawers = drawers.filter(drawer => drawer.type === 'global');
-      setRuntimeDrawers(convertRuntimeDrawers(localDrawers, globalDrawers));
+      const aiDrawer = drawers.find(drawer => drawer.type === 'global-ai');
+      setRuntimeDrawers(convertRuntimeDrawers(localDrawers, globalDrawers, aiDrawer));
       if (!localDrawerWasOpenRef.current) {
         const defaultActiveLocalDrawer = sortByPriority(localDrawers).find(drawer => drawer.defaultActive);
         if (defaultActiveLocalDrawer) {
@@ -198,6 +199,7 @@ export function useDrawers(
     changeHandler: 'onChange',
   });
   const [activeGlobalDrawersIds, setActiveGlobalDrawersIds] = useState<Array<string>>([]);
+  const [activeAiDrawer, setActiveAiDrawer] = useState<string | null>(null);
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
   const [expandedDrawerId, setExpandedDrawerId] = useState<string | null>(null);
   // FIFO queue that keeps track of open drawers, where the first element is the most recently opened drawer
@@ -208,6 +210,21 @@ export function useDrawers(
     fireNonCancelableEvent(activeDrawer?.onResize, { id, size });
     const activeGlobalDrawer = runtimeGlobalDrawers.find(drawer => drawer.id === id);
     fireNonCancelableEvent(activeGlobalDrawer?.onResize, { id, size });
+  }
+
+  function onActiveAiDrawerChange(
+    newDrawerId: string | null,
+    { initiatedByUserAction }: OnChangeParams = DEFAULT_ON_CHANGE_PARAMS
+  ) {
+    setActiveAiDrawer(newDrawerId);
+
+    if (newDrawerId) {
+      fireNonCancelableEvent(runtimeDrawers?.aiDrawer?.onToggle, { isOpen: true, initiatedByUserAction });
+    }
+
+    if (activeDrawerId) {
+      fireNonCancelableEvent(runtimeDrawers?.aiDrawer?.onToggle, { isOpen: false, initiatedByUserAction });
+    }
   }
 
   function onActiveDrawerChange(
@@ -278,7 +295,7 @@ export function useDrawers(
     activeGlobalDrawersIds,
     onActiveGlobalDrawersChange
   );
-  const { localBefore, localAfter, global: runtimeGlobalDrawers } = runtimeDrawers;
+  const { localBefore, localAfter, global: runtimeGlobalDrawers, aiDrawer } = runtimeDrawers;
   const combinedLocalDrawers = drawers
     ? [...localBefore, ...drawers, ...localAfter]
     : applyToolsDrawer(toolsProps, runtimeDrawers);
@@ -341,5 +358,8 @@ export function useDrawers(
     onActiveGlobalDrawersChange,
     expandedDrawerId,
     setExpandedDrawerId,
+    aiDrawer,
+    onActiveAiDrawerChange,
+    activeAiDrawer,
   };
 }

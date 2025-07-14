@@ -34,6 +34,9 @@ export interface SharedProps {
   onSplitPanelToggle: () => void;
   expandedDrawerId?: string | null;
   setExpandedDrawerId: (value: string | null) => void;
+  aiDrawer: AppLayoutProps.Drawer | undefined;
+  onActiveAiDrawerChange: (value: string | null) => void;
+  activeAiDrawer?: string | null;
 }
 
 function checkAlreadyExists(value: boolean, propName: string) {
@@ -69,6 +72,11 @@ export function mergeProps(
       toolbar.globalDrawers = props.globalDrawers;
       toolbar.activeGlobalDrawersIds = props.activeGlobalDrawersIds;
       toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
+    }
+    if (props.aiDrawer && !checkAlreadyExists(!!toolbar.aiDrawer, 'aiDrawer')) {
+      toolbar.aiDrawer = props.aiDrawer;
+      toolbar.onActiveAiDrawerChange = props.onActiveAiDrawerChange;
+      toolbar.activeAiDrawer = props.activeAiDrawer;
     }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
       toolbar.hasNavigation = true;
