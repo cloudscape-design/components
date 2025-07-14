@@ -8,6 +8,8 @@
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../constants.scss' as constants;
 
+$ai-drawer-background: #0f1b2a;
+
 .universal-toolbar {
   background-color: awsui.$color-background-layout-panel-content;
   box-sizing: border-box;
@@ -22,6 +24,24 @@
     transition-property: inset-block-start, opacity;
   }
 
+  &.with-open-ai-drawer {
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      inline-size: 5px;
+      block-size: 5px;
+      background: $ai-drawer-background;
+    }
+
+    &:after {
+      background-color: awsui.$color-background-layout-panel-content;
+      border-start-start-radius: awsui.$space-xxs;
+    }
+  }
+
   &.disable-body-scroll {
     inset-block-start: 0px;
   }
@@ -32,22 +52,38 @@
     display: grid;
     column-gap: awsui.$space-static-xs;
     inline-size: 100%;
-    grid-template-columns: min-content minmax(0, 3fr) minmax(auto, 1fr);
+    grid-template-columns: min-content min-content minmax(0, 4fr) minmax(auto, 1fr);
     grid-template-rows: 1fr;
 
-    > .universal-toolbar-nav {
+    > .universal-toolbar-ai-custom {
       grid-column: 1;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-inline-start: calc(-1 * #{awsui.$space-m});
+      padding-inline: awsui.$space-static-xxs;
+      padding-block-start: awsui.$space-static-xxs;
+      box-sizing: border-box;
+
+      block-size: 100%;
+      border-end-end-radius: 8px;
+      background: $ai-drawer-background;
+    }
+
+    > .universal-toolbar-nav {
+      grid-column: 2;
       padding-inline-end: awsui.$space-static-xxs;
     }
 
     > .universal-toolbar-breadcrumbs {
-      grid-column: 2;
+      grid-column: 3;
       background-color: transparent;
       flex: 1 0;
     }
 
     > .universal-toolbar-drawers {
-      grid-column: 3;
+      grid-column: 4;
       column-gap: awsui.$space-static-xs;
       display: flex;
       justify-content: flex-end;

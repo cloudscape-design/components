@@ -17,7 +17,7 @@ export interface DrawerStateChangeParams {
 
 export interface DrawerConfig {
   id: string;
-  type?: 'local' | 'global';
+  type?: 'local' | 'global' | 'global-ai';
   ariaLabels: {
     content?: string;
     closeButton?: string;
@@ -25,6 +25,7 @@ export interface DrawerConfig {
     resizeHandle?: string;
     resizeHandleTooltipText?: string;
     expandedModeButton?: string;
+    exitExpandedModeButton?: string;
   };
   isExpandable?: boolean;
   badge?: boolean;
@@ -34,7 +35,8 @@ export interface DrawerConfig {
   orderPriority?: number;
   defaultActive?: boolean;
   trigger?: {
-    iconSvg: string;
+    iconSvg?: string;
+    customIcon?: string;
   };
   mountContent: (container: HTMLElement, mountContext: MountContentContext) => void;
   unmountContent: (container: HTMLElement) => void;

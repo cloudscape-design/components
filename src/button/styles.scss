@@ -22,6 +22,10 @@
   padding-block: map.get($variant, 'padding');
   padding-inline: map.get($variant, 'padding');
   font-weight: map.get($variant, 'font-weight');
+  border-start-start-radius: map.get($variant, 'border-radius');
+  border-start-end-radius: map.get($variant, 'border-radius');
+  border-end-start-radius: map.get($variant, 'border-radius');
+  border-end-end-radius: map.get($variant, 'border-radius');
 
   &:hover {
     background: var(#{custom-props.$styleBackgroundHover}, map.get($variant, 'hover-background'));
