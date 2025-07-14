@@ -78,10 +78,9 @@ export function Resizer({
 
     const updateTrackerPosition = (newOffset: number) => {
       const { insetInlineStart: scrollParentInsetInlineStart } = getLogicalBoundingClientRect(elements.table);
-      const classicOffset = isVisualRefresh ? 0 : 12; // space-xl / 2
       elements.tracker.style.insetBlockStart = getLogicalBoundingClientRect(elements.header).blockSize + 'px';
       // minus one pixel to offset the cell border
-      elements.tracker.style.insetInlineStart = newOffset - scrollParentInsetInlineStart - classicOffset - 1 + 'px';
+      elements.tracker.style.insetInlineStart = newOffset - scrollParentInsetInlineStart - 1 + 'px';
     };
 
     const updateColumnWidth = (newWidth: number) => {
@@ -189,7 +188,7 @@ export function Resizer({
       document.body.classList.remove(styles['resize-active-with-focus']);
       controller.abort();
     };
-  }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit, isVisualRefresh]);
+  }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit]);
 
   const { tabIndex: resizerTabIndex } = useSingleTabStopNavigation(resizerToggleRef, { tabIndex });
 
