@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { createWidgetizedComponent } from '../../../internal/widgets';
+import { ActiveDrawersContext } from '../../utils/visibility-context';
+import { AppLayoutGlobalAiDrawerImplementation } from '../drawer/global-ai-drawer';
 import { AppLayoutNavigationImplementation as AppLayoutNavigation } from '../navigation';
 import { SkeletonPartProps } from '../skeleton/interfaces';
 import { BeforeMainSlotSkeleton } from '../skeleton/skeleton-parts';
@@ -14,6 +16,7 @@ import sharedStyles from '../../resize/styles.css.js';
 import styles from '../skeleton/styles.css.js';
 
 export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, appLayoutProps }: SkeletonPartProps) => {
+  const wasAiDrawerOpenRef = useRef(false);
   if (!isWidgetReady(appLayoutState)) {
     return (
       <BeforeMainSlotSkeleton
@@ -23,8 +26,28 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
       />
     );
   }
-  const { activeDrawer, navigationOpen, navigation, expandedDrawerId, navigationAnimationDisabled } =
-    appLayoutState.widgetizedState;
+  const {
+    activeDrawer,
+    navigationOpen,
+    navigation,
+    expandedDrawerId,
+    setExpandedDrawerId,
+    navigationAnimationDisabled,
+    placement,
+    activeAiDrawerId,
+    aiDrawerExpandedMode,
+    aiDrawer,
+    activeAiDrawerSize,
+    minAiDrawerSize,
+    maxAiDrawerSize,
+    onActiveAiDrawerResize,
+    aiDrawerFocusControl,
+    ariaLabels,
+    isMobile,
+    drawersOpenQueue,
+    onActiveAiDrawerChange,
+    activeAiDrawer,
+  } = appLayoutState.widgetizedState;
   const drawerExpandedMode = !!expandedDrawerId;
   const toolsOpen = !!activeDrawer;
   // Must use `toolbarProps` because all layouts have to apply this mode, not just the one with toolbar
@@ -32,8 +55,47 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
   const { __embeddedViewMode: embeddedViewMode } = appLayoutProps as any;
   return (
     <>
-      {!!toolbarProps && !embeddedViewMode && (
+      {!!toolbarProps && !embeddedViewMode && !aiDrawerExpandedMode && (
         <AppLayoutToolbar appLayoutInternals={appLayoutState.appLayoutInternals} toolbarProps={toolbarProps} />
+      )}
+      {aiDrawer && (
+        <div
+          className={clsx(
+            styles['ai-drawer'],
+            (drawerExpandedMode || drawerExpandedModeInChildLayout) && !aiDrawerExpandedMode && styles.hidden
+          )}
+          style={{
+            insetBlockStart: `${placement.insetBlockStart}px`,
+            blockSize: `calc(100vh - ${placement.insetBlockStart}px)`,
+          }}
+        >
+          <ActiveDrawersContext.Provider value={activeAiDrawer ? [activeAiDrawer.id] : []}>
+            {(!!activeAiDrawerId || (aiDrawer?.preserveInactiveContent && wasAiDrawerOpenRef.current)) && (
+              <>
+                {(wasAiDrawerOpenRef.current = true)}
+                <AppLayoutGlobalAiDrawerImplementation
+                  show={!!activeAiDrawerId}
+                  activeAiDrawer={aiDrawer ?? null}
+                  appLayoutInternals={appLayoutState.appLayoutInternals}
+                  aiDrawerProps={{
+                    activeAiDrawerSize: activeAiDrawerSize!,
+                    minAiDrawerSize: minAiDrawerSize!,
+                    maxAiDrawerSize: maxAiDrawerSize!,
+                    aiDrawer: aiDrawer!,
+                    ariaLabels,
+                    aiDrawerFocusControl,
+                    isMobile,
+                    drawersOpenQueue,
+                    onActiveAiDrawerChange,
+                    onActiveDrawerResize: ({ size }) => onActiveAiDrawerResize(size),
+                    expandedDrawerId,
+                    setExpandedDrawerId,
+                  }}
+                />
+              </>
+            )}
+          </ActiveDrawersContext.Provider>
+        </div>
       )}
       {navigation && (
         <div

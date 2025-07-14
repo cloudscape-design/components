@@ -30,7 +30,7 @@ export const useKeyboardEvents = ({ position, onResize, panelRef }: SizeControlP
 
       const { panelHeight, panelWidth } = getCurrentSize(panelRef);
 
-      if (position === 'side') {
+      if (['side', 'side-start'].includes(position)) {
         currentSize = panelWidth;
       } else {
         currentSize = panelHeight;
@@ -42,11 +42,11 @@ export const useKeyboardEvents = ({ position, onResize, panelRef }: SizeControlP
       switch (direction) {
         case 'block-start':
         case 'inline-start':
-          singleStepUp();
+          position === 'side-start' ? singleStepDown() : singleStepUp();
           break;
         case 'block-end':
         case 'inline-end':
-          singleStepDown();
+          position === 'side-start' ? singleStepUp() : singleStepDown();
           break;
       }
     },
@@ -57,7 +57,7 @@ export const useKeyboardEvents = ({ position, onResize, panelRef }: SizeControlP
 
       const { panelHeight, panelWidth } = getCurrentSize(panelRef);
 
-      if (position === 'side') {
+      if (['side', 'side-start'].includes(position)) {
         currentSize = panelWidth;
         // don't need the exact max size as it's constrained in the set size function
         maxSize = window.innerWidth;
@@ -76,16 +76,16 @@ export const useKeyboardEvents = ({ position, onResize, panelRef }: SizeControlP
 
       handleKey(event, {
         onBlockStart: () => {
-          position === 'bottom' ? singleStepUp() : singleStepDown();
+          ['bottom', 'side-start'].includes(position) ? singleStepUp() : singleStepDown();
         },
         onBlockEnd: () => {
-          position === 'bottom' ? singleStepDown() : singleStepUp();
+          ['bottom', 'side-start'].includes(position) ? singleStepDown() : singleStepUp();
         },
         onInlineEnd: () => {
-          position === 'bottom' ? singleStepUp() : singleStepDown();
+          ['bottom', 'side-start'].includes(position) ? singleStepUp() : singleStepDown();
         },
         onInlineStart: () => {
-          position === 'bottom' ? singleStepDown() : singleStepUp();
+          ['bottom', 'side-start'].includes(position) ? singleStepDown() : singleStepUp();
         },
         onPageDown: () => multipleStepDown(),
         onPageUp: () => multipleStepUp(),

@@ -11,7 +11,7 @@ interface ResizeHandleProps {
   className?: string;
   ariaLabel: string | undefined;
   tooltipText?: string | undefined;
-  position: 'side' | 'bottom';
+  position: 'side-start' | 'side' | 'bottom';
   ariaValuenow: number;
   onDirectionClick: DragHandleProps['onDirectionClick'];
   onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => void;
@@ -28,17 +28,22 @@ export default React.forwardRef<HTMLDivElement, ResizeHandleProps>(function Pane
       ariaLabel={ariaLabel}
       tooltipText={tooltipText}
       ariaValue={{ valueMin: 0, valueMax: 100, valueNow: ariaValuenow }}
-      variant={position === 'side' ? 'resize-horizontal' : 'resize-vertical'}
+      variant={['side', 'side-start'].includes(position) ? 'resize-horizontal' : 'resize-vertical'}
       directions={
         position === 'side'
           ? {
               'inline-end': ariaValuenow === 0 ? 'disabled' : 'active',
               'inline-start': ariaValuenow === 100 ? 'disabled' : 'active',
             }
-          : {
-              'block-end': ariaValuenow === 0 ? 'disabled' : 'active',
-              'block-start': ariaValuenow === 100 ? 'disabled' : 'active',
-            }
+          : position === 'side-start'
+            ? {
+                'inline-end': ariaValuenow === 100 ? 'disabled' : 'active',
+                'inline-start': ariaValuenow === 0 ? 'disabled' : 'active',
+              }
+            : {
+                'block-end': ariaValuenow === 0 ? 'disabled' : 'active',
+                'block-start': ariaValuenow === 100 ? 'disabled' : 'active',
+              }
       }
       onDirectionClick={onDirectionClick}
       onKeyDown={onKeyDown}
