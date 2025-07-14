@@ -34,6 +34,8 @@ export interface SharedProps {
   onSplitPanelToggle: () => void;
   expandedDrawerId?: string | null;
   setExpandedDrawerId: (value: string | null) => void;
+  aiDrawer?: AppLayoutProps.Drawer | undefined;
+  aiDrawerFocusRef: React.Ref<Focusable> | undefined;
 }
 
 function checkAlreadyExists(value: boolean, propName: string) {
@@ -69,6 +71,13 @@ export function mergeProps(
       toolbar.globalDrawers = props.globalDrawers;
       toolbar.activeGlobalDrawersIds = props.activeGlobalDrawersIds;
       toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
+    }
+    if (
+      props.aiDrawer &&
+      props.aiDrawerFocusRef &&
+      !checkAlreadyExists(!!toolbar.aiDrawerFocusRef, 'aiDrawerFocusRef')
+    ) {
+      toolbar.aiDrawerFocusRef = props.aiDrawerFocusRef;
     }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
       toolbar.hasNavigation = true;
