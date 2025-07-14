@@ -55,27 +55,24 @@ const permutations = createPermutations<BadgeProps>([
   },
 
   {
-    children: ['Background and Color Styles'],
+    children: ['Background Styles'],
     style: [
       {
         root: {
           background: 'purple',
           borderWidth: '0px',
-          color: 'white',
         },
       },
       {
         root: {
           background: 'green',
           borderWidth: '0px',
-          color: 'white',
         },
       },
       {
         root: {
           background: 'orange',
           borderWidth: '0px',
-          color: 'black',
         },
       },
       {
@@ -83,9 +80,17 @@ const permutations = createPermutations<BadgeProps>([
           background: 'transparent',
           borderWidth: '2px',
           borderColor: 'red',
-          color: 'red',
         },
       },
+    ],
+    color: [
+      'grey',
+      'blue',
+      'severity-critical',
+      'severity-high',
+      'severity-medium',
+      'severity-low',
+      'severity-neutral',
     ],
   },
 

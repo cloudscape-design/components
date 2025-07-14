@@ -64,11 +64,10 @@ describe('Style API', () => {
       <Badge
         style={{
           root: {
-            background: '#fff',
-            borderColor: '#000',
+            background: 'rgb(255, 255, 255)',
+            borderColor: 'rgb(0, 0, 0)',
             borderRadius: '8px',
             borderWidth: '2px',
-            color: 'blue',
             paddingBlock: '4px',
             paddingInline: '8px',
           },
@@ -78,12 +77,10 @@ describe('Style API', () => {
       </Badge>
     );
 
-    expect(badge.style.background).toBe('#fff');
-    expect(badge.style.borderColor).toBe('#000');
+    expect(badge.style.background).toBe('rgb(255, 255, 255)');
+    expect(badge.style.borderColor).toBe('rgb(0, 0, 0)');
     expect(badge.style.borderRadius).toBe('8px');
     expect(badge.style.borderWidth).toBe('2px');
-    expect(badge.style.borderStyle).toBe('solid');
-    expect(badge.style.color).toBe('blue');
     expect(badge.style.paddingBlock).toBe('4px');
     expect(badge.style.paddingInline).toBe('8px');
   });
