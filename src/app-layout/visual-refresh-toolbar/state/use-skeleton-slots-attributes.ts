@@ -26,12 +26,14 @@ export const useSkeletonSlotsAttributes = (
     splitPanelOffsets,
     activeDrawer,
     expandedDrawerId,
+    activeAiDrawer,
   } = appLayoutState.widgetizedState ?? {};
   const { contentType, placement, maxContentWidth, navigationWidth, minContentWidth, disableContentPaddings } =
     appLayoutProps;
   const isMobile = useMobile();
   const toolsOpen = !!activeDrawer;
   const drawerExpandedMode = !!expandedDrawerId;
+  const aiDrawerExpandedMode = expandedDrawerId === activeAiDrawer?.id;
   const anyPanelOpen = navigationOpen || toolsOpen;
   const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
 
@@ -40,6 +42,7 @@ export const useSkeletonSlotsAttributes = (
       [styles['has-adaptive-widths-default']]: !contentTypeCustomWidths.includes(contentType),
       [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
       [styles['drawer-expanded-mode']]: drawerExpandedMode,
+      [styles['ai-drawer-expanded-mode']]: aiDrawerExpandedMode,
     }),
     style: {
       minBlockSize: isNested ? '100%' : `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,

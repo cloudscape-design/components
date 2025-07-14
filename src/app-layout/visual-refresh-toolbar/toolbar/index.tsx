@@ -49,6 +49,11 @@ export interface ToolbarProps {
 
   expandedDrawerId?: string | null;
   setExpandedDrawerId?: (value: string | null) => void;
+
+  aiDrawer?: AppLayoutProps.Drawer;
+  onActiveAiDrawerChange?: (value: string | null) => void;
+  activeAiDrawerId?: string | null;
+  aiDrawerFocusRef?: React.Ref<Focusable>;
 }
 
 export interface AppLayoutToolbarImplementationProps {
@@ -62,7 +67,16 @@ export function AppLayoutToolbarImplementation({
   // not testable in a single-version setup
   toolbarProps = {},
 }: AppLayoutToolbarImplementationProps) {
-  const { breadcrumbs, discoveredBreadcrumbs, verticalOffsets, isMobile, setToolbarHeight } = appLayoutInternals;
+  const {
+    breadcrumbs,
+    discoveredBreadcrumbs,
+    verticalOffsets,
+    isMobile,
+    setToolbarHeight,
+    aiDrawer,
+    activeAiDrawer,
+    onActiveAiDrawerChange,
+  } = appLayoutInternals;
   const {
     ariaLabels,
     activeDrawerId,
@@ -83,9 +97,11 @@ export function AppLayoutToolbarImplementation({
     onSplitPanelToggle,
     expandedDrawerId,
     setExpandedDrawerId,
+    aiDrawerFocusRef,
   } = toolbarProps;
   const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
+  const activeAiDrawerId = activeAiDrawer?.id;
   useResizeObserver(ref, entry => setToolbarHeight(entry.borderBoxHeight));
   useEffect(() => {
     return () => {
@@ -116,12 +132,37 @@ export function AppLayoutToolbarImplementation({
       ref={ref}
       className={clsx(styles['universal-toolbar'], testutilStyles.toolbar, {
         [testutilStyles['mobile-bar']]: isMobile,
+        [styles['with-open-ai-drawer']]: !!activeAiDrawerId,
       })}
       style={{
         insetBlockStart: verticalOffsets.toolbar,
       }}
     >
       <div className={styles['toolbar-container']}>
+        {aiDrawer?.trigger && !activeAiDrawerId && (
+          <div className={clsx(!!aiDrawer.trigger?.customIcon && styles['universal-toolbar-ai-custom'])}>
+            <TriggerButton
+              ariaLabel={aiDrawer?.ariaLabels?.triggerButton}
+              ariaExpanded={!!activeAiDrawerId}
+              iconName={aiDrawer.trigger!.iconName}
+              iconSvg={aiDrawer.trigger!.iconSvg}
+              customSvg={aiDrawer.trigger!.customIcon}
+              className={testutilStyles['ai-drawer-toggle']}
+              onClick={() => {
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(null);
+                }
+                onActiveAiDrawerChange?.(aiDrawer?.id, { initiatedByUserAction: true });
+              }}
+              ref={aiDrawerFocusRef}
+              selected={!drawerExpandedMode && !!activeAiDrawerId}
+              disabled={anyPanelOpenInMobile}
+              variant={aiDrawer.trigger?.customIcon ? 'custom' : 'circle'}
+              hasTooltip={true}
+              testId={`awsui-app-layout-trigger-${aiDrawer.id}`}
+            />
+          </div>
+        )}
         {hasNavigation && (
           <nav {...navLandmarkAttributes} className={clsx(styles['universal-toolbar-nav'])}>
             <TriggerButton
