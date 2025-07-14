@@ -45,8 +45,13 @@ export default function usePositionObserver(
     });
 
     // Observe the entire ownerDocument for DOM changes
-    observer.observe(triggerRef.current.ownerDocument, { attributes: true, subtree: true, childList: true });
+    observer.observe(triggerRef.current.ownerDocument, {
+      attributes: true,
+      subtree: true,
+      childList: true,
+    });
 
     return () => observer.disconnect();
-  }, [triggerRef, stableCallback, trackKey]); // trackKey added to dependencies to update when triggerRef doesn't change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [triggerRef, stableCallback]); // trackKey excluded to avoid the observer being recreated everytime the value changes, causing rendering issues for Tooltip
 }
