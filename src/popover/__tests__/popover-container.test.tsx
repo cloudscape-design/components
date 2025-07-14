@@ -6,16 +6,13 @@ import { render } from '@testing-library/react';
 import '../../__a11y__/to-validate-a11y';
 import PopoverContainer from '../../../lib/components/popover/container';
 import * as usePopoverPosition from '../../../lib/components/popover/use-popover-position';
-import * as usePositionObserver from '../../../lib/components/popover/use-position-observer';
 
 const usePopoverPositionSpy = jest.spyOn(usePopoverPosition, 'default');
-const usePositionObserverSpy = jest.spyOn(usePositionObserver, 'default');
 
 const defaultProps = { position: 'bottom', arrow: () => null, size: 'small', fixedWidth: false } as const;
 
 afterEach(() => {
   usePopoverPositionSpy.mockClear();
-  usePositionObserverSpy.mockClear();
 });
 
 test('throws when neither trackRef nor getTrack is provided', () => {
