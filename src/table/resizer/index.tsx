@@ -7,6 +7,7 @@ import { useStableCallback, useUniqueId } from '@cloudscape-design/component-too
 import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '@cloudscape-design/component-toolkit/internal';
 
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
@@ -46,6 +47,8 @@ export function Resizer({
   onWidthUpdate = useStableCallback(onWidthUpdate);
   onWidthUpdateCommit = useStableCallback(onWidthUpdateCommit);
 
+  const isVisualRefresh = useVisualRefresh();
+
   const separatorId = useUniqueId();
   const resizerToggleRef = useRef<HTMLButtonElement>(null);
   const resizerSeparatorRef = useRef<HTMLSpanElement>(null);
@@ -75,9 +78,10 @@ export function Resizer({
 
     const updateTrackerPosition = (newOffset: number) => {
       const { insetInlineStart: scrollParentInsetInlineStart } = getLogicalBoundingClientRect(elements.table);
+      const classicOffset = isVisualRefresh ? 0 : 12; // space-xl / 2
       elements.tracker.style.insetBlockStart = getLogicalBoundingClientRect(elements.header).blockSize + 'px';
       // minus one pixel to offset the cell border
-      elements.tracker.style.insetInlineStart = newOffset - scrollParentInsetInlineStart - 1 + 'px';
+      elements.tracker.style.insetInlineStart = newOffset - scrollParentInsetInlineStart - classicOffset - 1 + 'px';
     };
 
     const updateColumnWidth = (newWidth: number) => {
@@ -185,7 +189,7 @@ export function Resizer({
       document.body.classList.remove(styles['resize-active-with-focus']);
       controller.abort();
     };
-  }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit]);
+  }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit, isVisualRefresh]);
 
   const { tabIndex: resizerTabIndex } = useSingleTabStopNavigation(resizerToggleRef, { tabIndex });
 
@@ -195,7 +199,8 @@ export function Resizer({
         ref={resizerToggleRef}
         className={clsx(
           styles.resizer,
-          (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus']
+          (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus'],
+          isVisualRefresh && styles['is-visual-refresh']
         )}
         onMouseDown={event => {
           if (event.button !== 0) {
@@ -231,7 +236,11 @@ export function Resizer({
         data-focus-id={focusId}
       />
       <span
-        className={clsx(styles['divider-interactive'], isDragging && styles['divider-active'])}
+        className={clsx(
+          styles['divider-interactive'],
+          isDragging && styles['divider-active'],
+          isVisualRefresh && styles['is-visual-refresh']
+        )}
         data-awsui-table-suppress-navigation={true}
         ref={resizerSeparatorRef}
         id={separatorId}

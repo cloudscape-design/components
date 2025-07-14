@@ -41,6 +41,10 @@ th:not(:last-child) > .divider,
   }
 }
 
+.divider-interactive:not(.is-visual-refresh) {
+  inset-inline-end: calc(#{$handle-width} / 2);
+}
+
 .resizer {
   @include styles.styles-reset;
   border-block: none;
@@ -70,6 +74,10 @@ th:not(:last-child) > .divider,
         position: absolute;
       }
     }
+  }
+
+  &:not(.is-visual-refresh) {
+    inset-inline-end: 0;
   }
 }
 
