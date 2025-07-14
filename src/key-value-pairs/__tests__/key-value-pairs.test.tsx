@@ -3,11 +3,18 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import Icon from '../../../lib/components/icon';
 import KeyValuePairs from '../../../lib/components/key-value-pairs';
 import Link from '../../../lib/components/link';
 import SpaceBetween from '../../../lib/components/space-between';
 import createWrapper, { IconWrapper } from '../../../lib/components/test-utils/dom';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
 
 function renderKeyValuePairs(jsx: React.ReactElement) {
   const { container, ...rest } = render(jsx);
@@ -15,6 +22,10 @@ function renderKeyValuePairs(jsx: React.ReactElement) {
 }
 
 describe('KeyValuePairs', () => {
+  afterEach(() => {
+    (warnOnce as jest.Mock).mockReset();
+  });
+
   describe('item rendering', () => {
     test('renders correctly', () => {
       const { wrapper } = renderKeyValuePairs(
@@ -92,6 +103,25 @@ describe('KeyValuePairs', () => {
         labelId
       );
       expect(wrapper.findItems()[0]!.findInfo()!.getElement()).toHaveTextContent('Info');
+    });
+  });
+
+  describe('warnOnce when columns property exceeds max', () => {
+    test.each([
+      { columns: 1, warnOnceMessage: false },
+      { columns: 2, warnOnceCalled: false },
+      {
+        columns: 3,
+        warnOnceCalled: false,
+      },
+      { columns: 4, warnOnceCalled: false },
+      {
+        columns: 5,
+        warnOnceCalled: true,
+      },
+    ])(`warnOnce called = $warnOnceCalled when columns is set to $columns`, ({ columns, warnOnceCalled }) => {
+      renderKeyValuePairs(<KeyValuePairs items={[]} columns={columns} />);
+      expect(warnOnce).toHaveBeenCalledTimes(warnOnceCalled ? 1 : 0);
     });
   });
 
