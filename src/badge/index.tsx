@@ -4,10 +4,10 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
-import { SYSTEM } from '../internal/environment';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { BadgeProps } from './interfaces';
+import { getBadgeStyles } from './style';
 
 import styles from './styles.css.js';
 
@@ -27,20 +27,3 @@ export default function Badge({ color = 'grey', children, style, ...rest }: Badg
 }
 
 applyDisplayName(Badge, 'Badge');
-
-function getBadgeStyles(style: BadgeProps['style']) {
-  if (!style?.root) {
-    return undefined;
-  }
-
-  return SYSTEM === 'core'
-    ? {
-        background: style.root.background,
-        borderColor: style.root.borderColor,
-        borderRadius: style.root.borderRadius,
-        borderWidth: style.root.borderWidth,
-        paddingBlock: style.root.paddingBlock,
-        paddingInline: style.root.paddingInline,
-      }
-    : undefined;
-}

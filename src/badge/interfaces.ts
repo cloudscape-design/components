@@ -27,8 +27,7 @@ export interface BadgeProps extends BaseComponentProps {
   /**
    * Specifies an object of selectors and properties that are used to apply custom styles.
    *
-   * - `root.background` (string) - (Optional) Benecccfgefdfrttrfcdnjccekhtknjhlrkllblblfbfi
-   *
+   * - `root.background` (string) - (Optional) Background for component states.
    * - `root.borderColor` (string) - (Optional) Border color for component states.
    * - `root.borderRadius` (string) - (Optional) Border radius style.
    * - `root.borderWidth` (string) - (Optional) Border width style.

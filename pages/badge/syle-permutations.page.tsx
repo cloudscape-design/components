@@ -8,7 +8,6 @@ import Badge, { BadgeProps } from '~components/badge';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<BadgeProps>([
   {
@@ -150,9 +149,7 @@ export default function BadgeStylePermutations() {
   return (
     <>
       <h1>Badge Style permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
-        <PermutationsView permutations={permutations} render={permutation => <Badge {...permutation} />} />
-      </ScreenshotArea>
+      <PermutationsView permutations={permutations} render={permutation => <Badge {...permutation} />} />
     </>
   );
 }
