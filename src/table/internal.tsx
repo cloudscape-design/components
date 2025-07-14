@@ -715,21 +715,19 @@ const InternalTable = React.forwardRef(
                                     tableVariant={computedVariant}
                                   />
                                 )}
-                                {visibleColumnDefinitions.map((column, colIndex) => (
-                                  <TableLoaderCell
-                                    key={getColumnKey(column, colIndex)}
-                                    {...sharedCellProps}
-                                    wrapLines={false}
-                                    columnId={column.id ?? colIndex}
-                                    colIndex={colIndex + colIndexOffset}
-                                    isRowHeader={colIndex === 0}
-                                    level={row.level}
-                                    item={row.item}
-                                    trackBy={trackBy}
-                                  >
-                                    {loaderContent}
-                                  </TableLoaderCell>
-                                ))}
+                                <TableLoaderCell
+                                  key={getColumnKey(visibleColumnDefinitions[0], 0)}
+                                  {...sharedCellProps}
+                                  wrapLines={false}
+                                  columnId={visibleColumnDefinitions[0].id ?? 0}
+                                  colIndex={colIndexOffset}
+                                  level={row.level}
+                                  item={row.item}
+                                  trackBy={trackBy}
+                                  colSpan={visibleColumnDefinitions.length}
+                                >
+                                  {loaderContent}
+                                </TableLoaderCell>
                               </tr>
                             )
                           );
