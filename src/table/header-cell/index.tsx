@@ -128,6 +128,7 @@ export function TableHeaderCell<ItemType>({
       focusedComponent={focusedComponent}
       stuck={stuck}
       sticky={sticky}
+      resizable={resizableColumns}
       hidden={hidden}
       stripedRows={stripedRows}
       colIndex={colIndex}

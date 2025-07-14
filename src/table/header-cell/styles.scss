@@ -224,7 +224,7 @@ settings icon in the pagination slot.
     @include cell-offset(awsui.$space-xxs);
   }
 
-  &:last-child.header-cell-sortable {
+  &:last-child.header-cell-sortable:not(.header-cell-resizable) {
     padding-inline-end: awsui.$space-xxxs;
   }
 
