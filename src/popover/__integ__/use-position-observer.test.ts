@@ -17,9 +17,9 @@ const sliderTooltipWrapper = wrapper.find(`.${tooltipStyles.root} > *`);
 
 class UsePositionObserverPageObject extends BasePageObject {
   async dragSlider({ x: deltaX, y: deltaY }: { x: number; y: number }) {
-    const resizerBox = await this.getBoundingBox(sliderWrapper.findNativeInput().toSelector());
-    const currentX = Math.ceil(resizerBox.left);
-    const currentY = Math.ceil(resizerBox.top);
+    const slider = await this.getBoundingBox(sliderWrapper.findNativeInput().toSelector());
+    const currentX = Math.ceil(slider.left);
+    const currentY = Math.ceil(slider.top);
     await this.browser.performActions([
       {
         type: 'pointer',

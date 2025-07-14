@@ -107,11 +107,11 @@ export default function PopoverContainer({
   });
 
   // Recalculate position when the DOM changes.
+  // istanbul ignore next - tested via integration tests
   usePositionObserver(trackRef, trackKey, () => {
     // Do not update position if popover moved offscreen
     const popoverOffset = popoverRef.current && getLogicalBoundingClientRect(popoverRef.current);
 
-    // istanbul ignore next - tested via integration tests
     if (
       keepPosition ||
       !popoverOffset ||
@@ -121,7 +121,6 @@ export default function PopoverContainer({
       return;
     }
 
-    // istanbul ignore next - tested via integration tests
     updatePositionHandler();
   });
 
