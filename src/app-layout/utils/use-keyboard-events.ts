@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Direction } from '../../internal/components/drag-handle-wrapper/interfaces';
+import { DragHandleProps } from '../../internal/components/drag-handle/interfaces';
 import handleKey from '../../internal/utils/handle-key';
 import { SizeControlProps } from './interfaces';
 
@@ -25,7 +25,7 @@ const getCurrentSize = (panelRef?: React.RefObject<HTMLDivElement>) => {
 
 export const useKeyboardEvents = ({ position, onResize, panelRef }: SizeControlProps) => {
   return {
-    onDirectionClick: (direction: Direction) => {
+    onDirectionClick: (direction: DragHandleProps.Direction) => {
       let currentSize: number;
 
       const { panelHeight, panelWidth } = getCurrentSize(panelRef);

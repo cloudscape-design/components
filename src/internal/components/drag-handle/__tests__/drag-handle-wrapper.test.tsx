@@ -4,14 +4,12 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import DragHandleWrapper from '../../../../../lib/components/internal/components/drag-handle-wrapper';
-import {
-  Direction,
-  DragHandleWrapperProps,
-} from '../../../../../lib/components/internal/components/drag-handle-wrapper/interfaces';
+import DragHandleWrapper from '../../../../../lib/components/internal/components/drag-handle/components/wrapper';
+import { useDefaultDragBehavior } from '../../../../../lib/components/internal/components/drag-handle/hooks/use-default-drag-behavior';
+import { DragHandleProps } from '../../../../../lib/components/internal/components/drag-handle/interfaces';
 import { PointerEventMock } from '../../../../../lib/components/internal/utils/pointer-events-mock';
 
-import styles from '../../../../../lib/components/internal/components/drag-handle-wrapper/styles.css.js';
+import styles from '../../../../../lib/components/internal/components/drag-handle/styles.css.js';
 import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.css.js';
 
 beforeAll(() => {
@@ -23,7 +21,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-function getDirectionButton(direction: Direction) {
+function getDirectionButton(direction: DragHandleProps.Direction) {
   return document.querySelector<HTMLButtonElement>(
     `.${styles[`direction-button-wrapper-${direction}`]} .${styles['direction-button']}`
   );
@@ -37,7 +35,7 @@ const DIRECTION_BUTTON_HIDDEN_CLASSES = [
   styles['direction-button-wrapper-hidden'],
 ];
 
-function expectDirectionButtonToBeHidden(direction: Direction) {
+function expectDirectionButtonToBeHidden(direction: DragHandleProps.Direction) {
   expect(
     DIRECTION_BUTTON_HIDDEN_CLASSES.some(className =>
       getDirectionButton(direction)!.parentElement!.classList.contains(className)
@@ -45,7 +43,7 @@ function expectDirectionButtonToBeHidden(direction: Direction) {
   ).toBe(true);
 }
 
-function expectDirectionButtonToBeVisible(direction: Direction) {
+function expectDirectionButtonToBeVisible(direction: DragHandleProps.Direction) {
   expect(
     !DIRECTION_BUTTON_HIDDEN_CLASSES.some(className =>
       getDirectionButton(direction)!.parentElement!.classList.contains(className)
@@ -53,20 +51,28 @@ function expectDirectionButtonToBeVisible(direction: Direction) {
   ).toBe(true);
 }
 
-function renderDragHandle(props: Partial<Omit<DragHandleWrapperProps, 'children'>>) {
-  const mergedProps: Omit<DragHandleWrapperProps, 'children'> = {
-    directions: {},
-    hideButtonsOnDrag: false,
-    clickDragThreshold: 3,
+function DragHandleWrapperWithLogic(props: Partial<Omit<DragHandleProps, 'children'>>) {
+  const mergedProps = {
     ...props,
+    directions: props.directions ?? {},
+    hideButtonsOnDrag: props.hideButtonsOnDrag ?? false,
+    clickDragThreshold: props.clickDragThreshold ?? 3,
+    triggerMode: props.triggerMode ?? 'focus',
+    initialShowButtons: props.initialShowButtons ?? false,
   };
-  const { container } = render(
-    <DragHandleWrapper {...mergedProps}>
+  const { wrapperProps } = useDefaultDragBehavior(mergedProps);
+
+  return (
+    <DragHandleWrapper tooltipText={props.tooltipText} {...wrapperProps}>
       <button type="button" id="drag-button">
         Drag
       </button>
     </DragHandleWrapper>
   );
+}
+
+function renderDragHandle(props: Partial<Omit<DragHandleProps, 'children'>>) {
+  const { container } = render(<DragHandleWrapperWithLogic {...props} />);
 
   return {
     dragHandle: container.querySelector<HTMLButtonElement>('#drag-button')!,
@@ -486,7 +492,7 @@ test("doesn't call onDirectionClick when disabled direction button is pressed", 
   expect(onDirectionClick).not.toHaveBeenCalled();
 });
 
-describe('initialinitialShowButtons property', () => {
+describe('initialShowButtons property', () => {
   test('shows direction buttons initially when initialShowButtons=true', () => {
     renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },

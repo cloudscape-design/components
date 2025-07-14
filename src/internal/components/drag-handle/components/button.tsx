@@ -5,13 +5,27 @@ import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import { IconProps } from '../../../icon/interfaces';
-import InternalIcon from '../../../icon/internal';
-import { DragHandleProps } from './interfaces';
-import { ResizeIcon } from './resize-icon';
+import { IconProps } from '../../../../icon/interfaces';
+import InternalIcon from '../../../../icon/internal';
+import { DragHandleProps } from '../interfaces';
+import { ResizeIcon } from '../resize-icon';
 
-import styles from './styles.css.js';
-import testUtilsStyles from './test-classes/styles.css.js';
+import styles from '../styles.css.js';
+import testUtilsStyles from '../test-classes/styles.css.js';
+
+interface DragHandleButtonProps {
+  variant?: DragHandleProps.Variant;
+  size?: DragHandleProps.Size;
+  disabled?: boolean;
+  ariaLabel?: string;
+  ariaLabelledBy?: string;
+  ariaDescribedby?: string;
+  ariaValue?: DragHandleProps.AriaValue;
+  active?: boolean;
+  className?: string;
+  onPointerDown?: React.PointerEventHandler;
+  onKeyDown?: React.KeyboardEventHandler;
+}
 
 const DragHandleButton = forwardRef(
   (
@@ -27,7 +41,7 @@ const DragHandleButton = forwardRef(
       disabled,
       onPointerDown,
       onKeyDown,
-    }: DragHandleProps,
+    }: DragHandleButtonProps,
     ref: React.Ref<Element>
   ) => {
     const dragHandleRefObject = useRef<HTMLDivElement>(null);

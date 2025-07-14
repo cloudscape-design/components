@@ -1,31 +1,41 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
+import { useEffect, useRef, useState } from 'react';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
+import { getFirstFocusable } from '@cloudscape-design/component-toolkit/internal';
 
-import { getFirstFocusable } from '../focus-lock/utils';
-import Tooltip from '../tooltip';
-import DirectionButton from './direction-button';
-import { Direction, DragHandleWrapperProps } from './interfaces';
-import PortalOverlay from './portal-overlay';
+import { DragHandleWrapperProps } from '../components/wrapper';
+import { DragHandleProps } from '../interfaces';
 
-import styles from './styles.css.js';
+interface UseDefaultDragBehaviorProps {
+  directions: Partial<Record<DragHandleProps.Direction, DragHandleProps.DirectionState>>;
+  triggerMode: DragHandleProps.TriggerMode;
+  hideButtonsOnDrag: boolean;
+  clickDragThreshold: number;
+  initialShowButtons: boolean;
+  onDirectionClick?: (direction: DragHandleProps.Direction) => void;
+}
 
-export default function DragHandleWrapper({
+interface UseDefaultDragBehaviorResult {
+  wrapperProps: Required<
+    Pick<
+      DragHandleWrapperProps,
+      'directions' | 'showButtons' | 'onDirectionClick' | 'showTooltip' | 'onTooltipDismiss' | 'nativeAttributes'
+    > & { ref: React.Ref<HTMLDivElement> }
+  >;
+}
+
+export function useDefaultDragBehavior({
   directions,
-  tooltipText,
-  children,
-  onDirectionClick,
-  triggerMode = 'focus',
-  initialShowButtons = false,
+  triggerMode,
   hideButtonsOnDrag,
   clickDragThreshold,
-}: DragHandleWrapperProps) {
+  initialShowButtons,
+  onDirectionClick,
+}: UseDefaultDragBehaviorProps): UseDefaultDragBehaviorResult {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const dragHandleRef = useRef<HTMLDivElement | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [showButtons, setShowButtons] = useState(initialShowButtons);
 
@@ -35,10 +45,10 @@ export default function DragHandleWrapper({
 
   // The tooltip ("Drag or select to move/resize") shouldn't show if clicking
   // on the handle wouldn't do anything.
-  const isDisabled =
+  const isImplicitlyDisabled =
     !directions['block-start'] && !directions['block-end'] && !directions['inline-start'] && !directions['inline-end'];
 
-  const onWrapperFocusIn: React.FocusEventHandler = event => {
+  const onFocus: React.FocusEventHandler = event => {
     // The drag handle is focused when it's either tabbed to, or the pointer
     // is pressed on it. We exclude handling the pointer press in this handler,
     // since it could be the start of a drag event - the pointer stuff is
@@ -53,7 +63,7 @@ export default function DragHandleWrapper({
     }
   };
 
-  const onWrapperFocusOut: React.FocusEventHandler = event => {
+  const onBlur: React.FocusEventHandler = event => {
     // Close the directional buttons when the focus leaves the drag handle.
     // "focusout" is also triggered when the user leaves the current tab, but
     // since it'll be returned when they switch back anyway, we exclude that
@@ -124,7 +134,7 @@ export default function DragHandleWrapper({
     return () => controller.abort();
   }, [clickDragThreshold, hideButtonsOnDrag]);
 
-  const onHandlePointerDown: React.PointerEventHandler = event => {
+  const onPointerDown: React.PointerEventHandler = event => {
     // Tooltip behavior: the tooltip should appear on hover, but disappear when
     // the pointer starts dragging (having the tooltip get in the way while
     // you're trying to drag upwards is annoying). Additionally, the tooltip
@@ -140,16 +150,17 @@ export default function DragHandleWrapper({
   // Tooltip behavior: the tooltip should stay open when the cursor moves
   // from the drag handle into the tooltip content itself. This is why the
   // handler is set on the wrapper for both the drag handle and the tooltip.
-  const onTooltipGroupPointerEnter: React.PointerEventHandler = () => {
+  const onPointerEnter: React.PointerEventHandler = () => {
     if (!isPointerDown.current) {
       setShowTooltip(true);
     }
   };
-  const onTooltipGroupPointerLeave: React.PointerEventHandler = () => {
+
+  const onPointerLeave: React.PointerEventHandler = () => {
     setShowTooltip(false);
   };
 
-  const onDragHandleKeyDown: React.KeyboardEventHandler = event => {
+  const onKeyDown: React.KeyboardEventHandler = event => {
     // For accessibility reasons, pressing escape should always close the floating controls.
     if (event.key === 'Escape') {
       setShowButtons(false);
@@ -169,72 +180,25 @@ export default function DragHandleWrapper({
     }
   };
 
-  const onInternalDirectionClick = (direction: Direction) => {
+  const onInternalDirectionClick = (direction: DragHandleProps.Direction) => {
     // Move focus back to the wrapper on click. This prevents focus from staying
     // on an aria-hidden control, and allows future keyboard events to be handled
     // cleanly using the drag handle's own handlers.
-    if (dragHandleRef.current) {
-      getFirstFocusable(dragHandleRef.current)?.focus();
+    if (wrapperRef.current) {
+      getFirstFocusable(wrapperRef.current)?.focus();
     }
     onDirectionClick?.(direction);
   };
 
-  return (
-    <div
-      className={clsx(styles['drag-handle-wrapper'], showButtons && styles['drag-handle-wrapper-open'])}
-      ref={wrapperRef}
-      onFocus={onWrapperFocusIn}
-      onBlur={onWrapperFocusOut}
-    >
-      <div onPointerEnter={onTooltipGroupPointerEnter} onPointerLeave={onTooltipGroupPointerLeave}>
-        <div
-          className={styles['drag-handle']}
-          ref={dragHandleRef}
-          onPointerDown={onHandlePointerDown}
-          onKeyDown={onDragHandleKeyDown}
-        >
-          {children}
-        </div>
-
-        {!isDisabled && !showButtons && showTooltip && tooltipText && (
-          <Tooltip trackRef={dragHandleRef} value={tooltipText} onDismiss={() => setShowTooltip(false)} />
-        )}
-      </div>
-
-      <PortalOverlay track={dragHandleRef} isDisabled={!showButtons}>
-        {directions['block-start'] && (
-          <DirectionButton
-            show={!isDisabled && showButtons}
-            direction="block-start"
-            state={directions['block-start']}
-            onClick={() => onInternalDirectionClick('block-start')}
-          />
-        )}
-        {directions['block-end'] && (
-          <DirectionButton
-            show={!isDisabled && showButtons}
-            direction="block-end"
-            state={directions['block-end']}
-            onClick={() => onInternalDirectionClick('block-end')}
-          />
-        )}
-        {directions['inline-start'] && (
-          <DirectionButton
-            show={!isDisabled && showButtons}
-            direction="inline-start"
-            state={directions['inline-start']}
-            onClick={() => onInternalDirectionClick('inline-start')}
-          />
-        )}
-        {directions['inline-end'] && (
-          <DirectionButton
-            show={!isDisabled && showButtons}
-            direction="inline-end"
-            state={directions['inline-end']}
-            onClick={() => onInternalDirectionClick('inline-end')}
-          />
-        )}
-      </PortalOverlay>
-    </div>
-  );
+  return {
+    wrapperProps: {
+      ref: wrapperRef,
+      directions,
+      showButtons: !isImplicitlyDisabled && showButtons,
+      showTooltip: !isImplicitlyDisabled && !showButtons && showTooltip,
+      onDirectionClick: onInternalDirectionClick,
+      onTooltipDismiss: () => setShowTooltip(false),
+      nativeAttributes: { onFocus, onBlur, onKeyDown, onPointerDown, onPointerEnter, onPointerLeave },
+    },
+  };
 }
