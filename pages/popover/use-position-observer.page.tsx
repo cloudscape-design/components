@@ -8,6 +8,11 @@ import PopoverContainer from '~components/popover/container';
 import Slider from '~components/slider';
 import SpaceBetween from '~components/space-between';
 
+const sliderI18nStrings = {
+  valueTextRange: (previousValue: string, value: number, nextValue: string) =>
+    `${value}, between ${previousValue} and ${nextValue}`,
+};
+
 export default function () {
   const keepPositionRef = useRef<HTMLDivElement>(null);
   const updatePositionRef = useRef<HTMLDivElement>(null);
@@ -57,7 +62,14 @@ export default function () {
         </>
 
         {/* Slider */}
-        <Slider min={0} max={100} value={sliderValue} onChange={({ detail }) => setSliderValue(detail.value)} />
+        <Slider
+          ariaLabel="Slider test"
+          min={0}
+          max={100}
+          value={sliderValue}
+          onChange={({ detail }) => setSliderValue(detail.value)}
+          i18nStrings={sliderI18nStrings}
+        />
       </SpaceBetween>
     </article>
   );
