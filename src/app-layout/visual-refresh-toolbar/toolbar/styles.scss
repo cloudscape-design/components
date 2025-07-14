@@ -11,15 +11,29 @@
 .universal-toolbar {
   background-color: awsui.$color-background-layout-panel-content;
   box-sizing: border-box;
-  padding-block: 0;
-  padding-inline: awsui.$space-m;
-  //right padding set in child trigger-container below for focus indicator to show correctly
-  padding-inline-end: 0;
   position: sticky;
   z-index: constants.$toolbar-z-index;
   @include styles.with-motion {
     transition: ease awsui.$motion-duration-refresh-only-slow;
     transition-property: inset-block-start, opacity;
+  }
+
+  &.with-open-ai-drawer {
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      inline-size: 5px;
+      block-size: 5px;
+      background: constants.$ai-drawer-background;
+    }
+
+    &:after {
+      background-color: awsui.$color-background-layout-panel-content;
+      border-start-start-radius: awsui.$space-xxs;
+    }
   }
 
   &.disable-body-scroll {
@@ -30,24 +44,43 @@
     block-size: 100%;
     align-items: center;
     display: grid;
-    column-gap: awsui.$space-static-xs;
     inline-size: 100%;
-    grid-template-columns: min-content minmax(0, 3fr) minmax(auto, 1fr);
+    grid-template-columns: min-content min-content minmax(0, 3fr) minmax(auto, 1fr);
     grid-template-rows: 1fr;
 
-    > .universal-toolbar-nav {
+    > .universal-toolbar-ai-custom {
       grid-column: 1;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-inline: awsui.$space-static-xxs;
+      padding-block-start: awsui.$space-static-xxs;
+      box-sizing: border-box;
+
+      block-size: 100%;
+      border-end-end-radius: 8px;
+      background: constants.$ai-drawer-background;
+    }
+
+    > .universal-toolbar-nav {
+      grid-column: 2;
+      padding-inline-start: awsui.$space-m;
       padding-inline-end: awsui.$space-static-xxs;
     }
 
     > .universal-toolbar-breadcrumbs {
-      grid-column: 2;
+      grid-column: 3;
+      padding-inline: awsui.$space-static-xs;
       background-color: transparent;
       flex: 1 0;
+      &:first-child {
+        padding-inline: calc(#{awsui.$space-static-xs} + #{awsui.$space-static-m});
+      }
     }
 
     > .universal-toolbar-drawers {
-      grid-column: 3;
+      grid-column: 4;
       column-gap: awsui.$space-static-xs;
       display: flex;
       justify-content: flex-end;
@@ -60,9 +93,7 @@
 .drawers-mobile-triggers-container {
   @include styles.styles-reset;
   background-color: transparent;
-  padding-inline: 0;
-  //matches the left padding of .universal-toolbar but allows for focus indicator to show correctly
-  padding-inline-end: awsui.$space-m;
+  padding-inline: awsui.$space-m;
   box-sizing: border-box;
   overflow-y: hidden;
   overflow-x: hidden;
