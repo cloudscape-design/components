@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import AnchorNavigation, { AnchorNavigationProps } from '../../../lib/components/anchor-navigation';
-import { AnchorNavigationWrapper } from '../../../lib/components/test-utils/dom';
+import AnchorNavigation, { AnchorNavigationProps } from '../../../lib/components/anchor-navigation/index.js';
+import { AnchorNavigationWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 function renderAnchorNavigation(props: AnchorNavigationProps) {
   const { container } = render(<AnchorNavigation {...props} />);

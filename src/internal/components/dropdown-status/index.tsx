@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import InternalLink from '../../../link/internal';
-import InternalStatusIndicator from '../../../status-indicator/internal';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
-import { usePrevious } from '../../hooks/use-previous';
-import { DropdownStatusProps } from './interfaces';
+import InternalLink from '../../../link/internal.js';
+import InternalStatusIndicator from '../../../status-indicator/internal.js';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events/index.js';
+import { usePrevious } from '../../hooks/use-previous/index.js';
+import { DropdownStatusProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

@@ -4,11 +4,11 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { GeneratedAnalyticsMetadataMultiselectComponent } from './analytics-metadata/interfaces';
-import { MultiselectProps } from './interfaces';
-import InternalMultiselect from './internal';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { GeneratedAnalyticsMetadataMultiselectComponent } from './analytics-metadata/interfaces.js';
+import { MultiselectProps } from './interfaces.js';
+import InternalMultiselect from './internal.js';
 
 import buttonTriggerAnalyticsSelectors from '../internal/components/button-trigger/analytics-metadata/styles.css.js';
 

@@ -4,11 +4,11 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { GeneratedAnalyticsMetadataTextFilterComponent } from './analytics-metadata/interfaces';
-import { TextFilterProps } from './interfaces';
-import InternalTextFilter from './internal';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { GeneratedAnalyticsMetadataTextFilterComponent } from './analytics-metadata/interfaces.js';
+import { TextFilterProps } from './interfaces.js';
+import InternalTextFilter from './internal.js';
 
 export { TextFilterProps };
 

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { CalendarProps } from '../../../calendar/interfaces';
-import { DateRangePickerProps, DayIndex } from '../../interfaces';
+import { CalendarProps } from '../../../calendar/interfaces.js';
+import { DateRangePickerProps, DayIndex } from '../../interfaces.js';
 
 export interface GridBaseProps {
   baseDate: Date;

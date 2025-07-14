@@ -9,7 +9,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
 
-import AppLayout from '../../../lib/components/app-layout';
+import AppLayout from '../../../lib/components/app-layout/index.js';
 
 import classicStyles from '../../../lib/components/app-layout/styles.selectors.js';
 import refreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';

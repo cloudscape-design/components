@@ -5,15 +5,15 @@ import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { TableHeaderCell } from './header-cell';
-import { TableProps } from './interfaces';
-import { focusMarkers, SelectionProps } from './selection';
-import { TableHeaderSelectionCell } from './selection/selection-cell';
-import { StickyColumnsModel } from './sticky-columns';
-import { getTableHeaderRowRoleProps, TableRole } from './table-role';
-import { useColumnWidths } from './use-column-widths';
-import { getColumnKey } from './utils';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
+import { TableHeaderCell } from './header-cell/index.js';
+import { TableProps } from './interfaces.js';
+import { focusMarkers, SelectionProps } from './selection/index.js';
+import { TableHeaderSelectionCell } from './selection/selection-cell.js';
+import { StickyColumnsModel } from './sticky-columns/index.js';
+import { getTableHeaderRowRoleProps, TableRole } from './table-role/index.js';
+import { useColumnWidths } from './use-column-widths.js';
+import { getColumnKey } from './utils.js';
 
 import styles from './styles.css.js';
 

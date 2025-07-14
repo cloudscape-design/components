@@ -5,10 +5,10 @@ import { act, within } from '@testing-library/react';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import SideNavigation from '../../../lib/components/side-navigation';
-import SplitPanel from '../../../lib/components/split-panel';
-import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout/index.js';
+import SideNavigation from '../../../lib/components/side-navigation/index.js';
+import SplitPanel from '../../../lib/components/split-panel/index.js';
+import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom/index.js';
 import {
   describeEachAppLayout,
   manyDrawers,
@@ -16,7 +16,7 @@ import {
   splitPanelI18nStrings,
   testDrawer,
   testDrawerWithoutLabels,
-} from './utils';
+} from './utils.js';
 
 import drawersMobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import mobileToolbarStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';

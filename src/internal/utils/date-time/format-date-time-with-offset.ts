@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { DateRangePickerProps } from '../../../date-range-picker/interfaces';
-import formatDateIso from './format-date-iso';
-import formatDateLocalized from './format-date-localized';
-import { isIsoDateOnly, isIsoMonthOnly } from './is-iso-only';
+import { DateRangePickerProps } from '../../../date-range-picker/interfaces.js';
+import formatDateIso from './format-date-iso.js';
+import formatDateLocalized from './format-date-localized.js';
+import { isIsoDateOnly, isIsoMonthOnly } from './is-iso-only.js';
 
 export function formatDateTimeWithOffset({
   date,

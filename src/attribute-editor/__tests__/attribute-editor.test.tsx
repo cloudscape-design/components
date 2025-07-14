@@ -5,11 +5,11 @@ import { render, waitFor } from '@testing-library/react';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/attribute-editor';
-import ButtonDropdown from '../../../lib/components/button-dropdown';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import Input from '../../../lib/components/input';
-import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom';
+import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/attribute-editor/index.js';
+import ButtonDropdown from '../../../lib/components/button-dropdown/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import Input from '../../../lib/components/input/index.js';
+import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
 import buttonStyles from '../../../lib/components/button/styles.css.js';

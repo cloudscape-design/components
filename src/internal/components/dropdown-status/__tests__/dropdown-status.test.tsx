@@ -6,8 +6,8 @@ import { render } from '@testing-library/react';
 import {
   DropdownStatusPropsExtended,
   useDropdownStatus,
-} from '../../../../../lib/components/internal/components/dropdown-status';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
+} from '../../../../../lib/components/internal/components/dropdown-status/index.js';
+import createWrapper from '../../../../../lib/components/test-utils/dom/index.js';
 
 import statusIconStyles from '../../../../../lib/components/status-indicator/styles.selectors.js';
 function StatusRender(props: DropdownStatusPropsExtended) {

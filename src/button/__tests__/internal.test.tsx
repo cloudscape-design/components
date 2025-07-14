@@ -3,12 +3,12 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import Button from '../../../lib/components/button';
-import { InternalButton } from '../../../lib/components/button/internal';
-import { FunnelMetrics } from '../../../lib/components/internal/analytics';
-import { AnalyticsFunnel } from '../../../lib/components/internal/analytics/components/analytics-funnel';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
+import Button from '../../../lib/components/button/index.js';
+import { InternalButton } from '../../../lib/components/button/internal.js';
+import { AnalyticsFunnel } from '../../../lib/components/internal/analytics/components/analytics-funnel.js';
+import { FunnelMetrics } from '../../../lib/components/internal/analytics/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks.js';
 
 import styles from '../../../lib/components/button/styles.css.js';
 

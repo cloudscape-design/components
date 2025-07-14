@@ -5,8 +5,8 @@ import { render, screen } from '@testing-library/react';
 
 import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
 
-import VisualContext from '../../../../../lib/components/internal/components/visual-context';
-import { RenderTest } from './helpers';
+import VisualContext from '../../../../../lib/components/internal/components/visual-context/index.js';
+import { RenderTest } from './helpers.js';
 
 const globalWithFlags = globalThis as any;
 

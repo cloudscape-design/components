@@ -2,19 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
-import Background from './background';
-import Breadcrumbs from './breadcrumbs';
-import { AppLayoutInternalsProvider } from './context';
-import Drawers from './drawers';
-import Header from './header';
-import Layout from './layout';
-import Main from './main';
-import MobileToolbar from './mobile-toolbar';
-import Navigation from './navigation';
-import Notifications from './notifications';
-import SplitPanel from './split-panel';
-import Tools from './tools';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces.js';
+import Background from './background.js';
+import Breadcrumbs from './breadcrumbs.js';
+import { AppLayoutInternalsProvider } from './context.js';
+import Drawers from './drawers.js';
+import Header from './header.js';
+import Layout from './layout.js';
+import Main from './main.js';
+import MobileToolbar from './mobile-toolbar.js';
+import Navigation from './navigation.js';
+import Notifications from './notifications.js';
+import SplitPanel from './split-panel.js';
+import Tools from './tools.js';
 
 const AppLayoutWithRef = React.forwardRef(function AppLayout(
   props: AppLayoutPropsWithDefaults,

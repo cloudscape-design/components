@@ -10,7 +10,7 @@ import Icon from '../../../lib/components/icon';
 import Link from '../../../lib/components/link';
 import Popover from '../../../lib/components/popover';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
+import TreeView, { TreeViewProps } from '../../../lib/components/tree-view.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

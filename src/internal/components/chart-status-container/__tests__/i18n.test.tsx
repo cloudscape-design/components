@@ -3,9 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import TestI18nProvider from '../../../../../lib/components/i18n/testing';
-import ChartStatusContainer from '../../../../../lib/components/internal/components/chart-status-container';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
+import TestI18nProvider from '../../../../../lib/components/i18n/testing.js';
+import ChartStatusContainer from '../../../../../lib/components/internal/components/chart-status-container/index.js';
+import createWrapper from '../../../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../../../lib/components/internal/components/chart-status-container/styles.css.js';
 

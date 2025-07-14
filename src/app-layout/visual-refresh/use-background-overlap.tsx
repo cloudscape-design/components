@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useState } from 'react';
 
-import customCssProps from '../../internal/generated/custom-css-properties';
+import customCssProps from '../../internal/generated/custom-css-properties/index.js';
 
 export default function useBackgroundOverlap({
   contentHeader,

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { isDevelopment } from '../../internal/is-development';
+import { isDevelopment } from '../../internal/is-development.js';
 
 export function checkOptionValueField<ValueType extends ReadonlyArray<any>>(
   componentName: string,

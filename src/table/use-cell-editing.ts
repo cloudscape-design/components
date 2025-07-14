@@ -3,8 +3,8 @@
 
 import { useCallback, useState } from 'react';
 
-import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
-import { TableProps } from './interfaces';
+import { CancelableEventHandler, fireCancelableEvent } from '../internal/events/index.js';
+import { TableProps } from './interfaces.js';
 
 interface CellId {
   row: string; // Item ID (from trackBy) or row index

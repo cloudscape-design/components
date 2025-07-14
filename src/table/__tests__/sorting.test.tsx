@@ -5,9 +5,9 @@ import { fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import Table from '../../../lib/components/table';
-import { TableProps } from '../../../lib/components/table/interfaces';
-import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
+import Table from '../../../lib/components/table/index.js';
+import { TableProps } from '../../../lib/components/table/interfaces.js';
+import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';

@@ -4,29 +4,29 @@ import React, { useEffect, useImperativeHandle, useLayoutEffect, useRef, useStat
 
 import { useMergeRefs, useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import ScreenreaderOnly from '../../internal/components/screenreader-only';
-import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
-import { fireNonCancelableEvent } from '../../internal/events';
-import { useControllable } from '../../internal/hooks/use-controllable';
-import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
-import { useMobile } from '../../internal/hooks/use-mobile';
-import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
-import globalVars from '../../internal/styles/global-vars';
-import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
-import { AppLayoutProps } from '../interfaces';
-import { SplitPanelProviderProps } from '../split-panel';
-import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers';
-import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
-import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
-import { ActiveDrawersContext } from '../utils/visibility-context';
+import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
+import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context.js';
+import { fireNonCancelableEvent } from '../../internal/events/index.js';
+import { useControllable } from '../../internal/hooks/use-controllable/index.js';
+import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer/index.js';
+import { useMobile } from '../../internal/hooks/use-mobile/index.js';
+import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs.js';
+import globalVars from '../../internal/styles/global-vars.js';
+import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils.js';
+import { AppLayoutProps } from '../interfaces.js';
+import { SplitPanelProviderProps } from '../split-panel/index.js';
+import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers.js';
+import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control.js';
+import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control.js';
+import { ActiveDrawersContext } from '../utils/visibility-context.js';
 import {
   computeHorizontalLayout,
   computeSplitPanelOffsets,
   computeVerticalLayout,
   CONTENT_PADDING,
-} from './compute-layout';
-import { AppLayoutVisibilityContext } from './contexts';
-import { AppLayoutInternalProps, AppLayoutInternals } from './interfaces';
+} from './compute-layout.js';
+import { AppLayoutVisibilityContext } from './contexts.js';
+import { AppLayoutInternalProps, AppLayoutInternals } from './interfaces.js';
 import {
   AppLayoutDrawer,
   AppLayoutGlobalDrawers,
@@ -35,9 +35,9 @@ import {
   AppLayoutSplitPanelBottom,
   AppLayoutSplitPanelSide,
   AppLayoutToolbar,
-} from './internal';
-import { useMultiAppLayout } from './multi-layout';
-import { SkeletonLayout } from './skeleton';
+} from './internal.js';
+import { useMultiAppLayout } from './multi-layout.js';
+import { SkeletonLayout } from './skeleton/index.js';
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
   (

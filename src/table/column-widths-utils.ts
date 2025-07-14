@@ -3,7 +3,7 @@
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { TableProps } from './interfaces';
+import { TableProps } from './interfaces.js';
 
 export interface ColumnWidthStyle {
   width?: string | number;

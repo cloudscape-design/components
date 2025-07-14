@@ -4,11 +4,11 @@ import React, { useRef } from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import { act, render } from '@testing-library/react';
 
-import AppLayout from '../../../lib/components/app-layout';
-import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { useRuntimeDrawerContext } from '../runtime-drawer/use-runtime-drawer-context';
-import { describeEachAppLayout, getGlobalDrawersTestUtils, testDrawer } from './utils';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { useRuntimeDrawerContext } from '../runtime-drawer/use-runtime-drawer-context.js';
+import { describeEachAppLayout, getGlobalDrawersTestUtils, testDrawer } from './utils.js';
 
 async function renderComponent(jsx: React.ReactElement) {
   const { container, rerender, getByTestId, ...rest } = render(jsx);

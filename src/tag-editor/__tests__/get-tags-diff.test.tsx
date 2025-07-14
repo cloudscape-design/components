@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 
-import { getTagsDiff, TagEditorProps } from '../../../lib/components/tag-editor';
+import { getTagsDiff, TagEditorProps } from '../../../lib/components/tag-editor/index.js';
 
 describe('identifyTagStates', () => {
   const initialTags: TagEditorProps.Tag[] = [

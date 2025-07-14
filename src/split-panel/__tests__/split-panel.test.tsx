@@ -5,16 +5,16 @@ import { fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
 import {
   SplitPanelContextProps,
   SplitPanelContextProvider,
-} from '../../../lib/components/internal/context/split-panel-context';
-import SplitPanel, { SplitPanelProps } from '../../../lib/components/split-panel';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { testIf } from '../../__tests__/utils';
-import { describeEachAppLayout } from '../../app-layout/__tests__/utils';
-import { defaultSplitPanelContextProps } from './helpers';
+} from '../../../lib/components/internal/context/split-panel-context.js';
+import SplitPanel, { SplitPanelProps } from '../../../lib/components/split-panel/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { testIf } from '../../__tests__/utils.js';
+import { describeEachAppLayout } from '../../app-layout/__tests__/utils.js';
+import { defaultSplitPanelContextProps } from './helpers.js';
 
 import styles from '../../../lib/components/split-panel/styles.css.js';
 import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';

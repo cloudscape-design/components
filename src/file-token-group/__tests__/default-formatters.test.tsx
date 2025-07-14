@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { formatFileSize } from '../default-formatters';
+import { formatFileSize } from '../default-formatters.js';
 
 describe('file upload default formatters', () => {
   test('rounds file size to KB', () => {

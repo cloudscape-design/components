@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { generateMaskArgs, GenerateMaskArgsProps } from '../utils';
+import { generateMaskArgs, GenerateMaskArgsProps } from '../utils.js';
 
 describe('generateMaskArgs', () => {
   test.each([

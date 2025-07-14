@@ -9,11 +9,11 @@ import clsx from 'clsx';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
-import { fireNonCancelableEvent } from '../../events';
-import { joinStrings } from '../../utils/strings';
-import { SortableAreaProps } from './interfaces';
-import useDragAndDropReorder from './use-drag-and-drop-reorder';
-import useLiveAnnouncements from './use-live-announcements';
+import { fireNonCancelableEvent } from '../../events/index.js';
+import { joinStrings } from '../../utils/strings/index.js';
+import { SortableAreaProps } from './interfaces.js';
+import useDragAndDropReorder from './use-drag-and-drop-reorder.js';
+import useLiveAnnouncements from './use-live-announcements.js';
 
 import styles from './styles.css.js';
 

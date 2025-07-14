@@ -5,9 +5,9 @@ import { render } from '@testing-library/react';
 
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
+import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker/index.js';
+import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import calendarStyles from '../../../lib/components/calendar/styles.selectors.js';
 import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import AutosuggestPage from './page-objects/autosuggest-page';
+import AutosuggestPage from './page-objects/autosuggest-page.js';
 
 interface ExtendedWindow extends Window {
   __shrinkComponent?: (shrunk: boolean) => void;

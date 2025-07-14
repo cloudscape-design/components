@@ -3,18 +3,18 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import TestI18nProvider from '../../../../lib/components/i18n/testing';
-import { ObjectsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/objects-table';
-import createWrapper from '../../../../lib/components/test-utils/dom';
-import { getIconHTML } from '../../../icon/__tests__/utils';
-import { i18nStrings, objects } from '../../__tests__/fixtures';
+import TestI18nProvider from '../../../../lib/components/i18n/testing.js';
+import { ObjectsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/objects-table.js';
+import createWrapper from '../../../../lib/components/test-utils/dom/index.js';
+import { getIconHTML } from '../../../icon/__tests__/utils.js';
+import { i18nStrings, objects } from '../../__tests__/fixtures.js';
 import {
   getColumnAriaLabels,
   getElementsText,
   getHeaderVisibleText,
   getTableBodyContent,
   getTableColumnContent,
-} from './utils';
+} from './utils.js';
 
 async function renderTable(jsx: React.ReactElement) {
   const { container } = render(jsx);

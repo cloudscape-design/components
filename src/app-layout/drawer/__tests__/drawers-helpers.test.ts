@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { splitItems } from '../../../../lib/components/app-layout/drawer/drawers-helpers';
+import { splitItems } from '../../../../lib/components/app-layout/drawer/drawers-helpers.js';
 
 test('handles empty values', () => {
   expect(splitItems(undefined, 2, null)).toEqual({ visibleItems: [], overflowItems: [] });

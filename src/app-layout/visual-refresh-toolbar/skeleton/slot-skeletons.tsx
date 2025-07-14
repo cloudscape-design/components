@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { AppLayoutNotificationsImplementationProps } from '../notifications';
-import { AppLayoutToolbarImplementationProps } from '../toolbar';
-import { BreadcrumbsSlot } from './breadcrumbs';
-import { NotificationsSlot, ToolbarSlot } from './slot-wrappers';
+import { AppLayoutNotificationsImplementationProps } from '../notifications/index.js';
+import { AppLayoutToolbarImplementationProps } from '../toolbar/index.js';
+import { BreadcrumbsSlot } from './breadcrumbs/index.js';
+import { NotificationsSlot, ToolbarSlot } from './slot-wrappers.js';
 
 export const ToolbarSkeleton = React.forwardRef<HTMLElement, AppLayoutToolbarImplementationProps>(
   ({ appLayoutInternals }: AppLayoutToolbarImplementationProps, ref) => (

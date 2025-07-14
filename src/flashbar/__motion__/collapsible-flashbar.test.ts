@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { flashbar } from '../__integ__/pages/base';
-import { FlashbarInteractivePage } from '../__integ__/pages/interactive-page';
+import { flashbar } from '../__integ__/pages/base.js';
+import { FlashbarInteractivePage } from '../__integ__/pages/interactive-page.js';
 
 const setupTest = (options: { visualRefresh?: boolean }, testFn: (page: FlashbarInteractivePage) => Promise<void>) => {
   return useBrowser(async browser => {

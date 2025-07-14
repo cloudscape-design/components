@@ -3,11 +3,11 @@
 import * as React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 
-import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
-import awsuiPlugins from '../../../lib/components/internal/plugins';
-import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import { ActionConfig } from '../../../lib/components/internal/plugins/controllers/action-buttons';
-import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
+import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar/index.js';
+import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api.js';
+import { ActionConfig } from '../../../lib/components/internal/plugins/controllers/action-buttons.js';
+import awsuiPlugins from '../../../lib/components/internal/plugins/index.js';
+import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 const defaultAction: ActionConfig = {
   id: 'test-action',

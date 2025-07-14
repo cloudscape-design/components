@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { PACKAGE_VERSION } from '../../environment';
-import { metrics } from '../../metrics';
+import { PACKAGE_VERSION } from '../../environment.js';
+import { metrics } from '../../metrics.js';
 
 export function reportRuntimeApiLoadMetric() {
   metrics.sendPanoramaMetric({ eventContext: 'awsui-runtime-api-loaded', eventDetail: { version: PACKAGE_VERSION } });

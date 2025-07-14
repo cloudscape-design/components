@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import { act, render } from '@testing-library/react';
 
-import { useMobile } from '../index';
+import { useMobile } from '../index.js';
 
 function Demo() {
   const renderCount = useRef(0);

@@ -7,22 +7,22 @@ import { addMonths, addYears, isSameDay, isSameMonth, isSameYear } from 'date-fn
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import checkControlled from '../internal/hooks/check-controlled/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
-import { formatDate, parseDate } from '../internal/utils/date-time';
-import { normalizeLocale } from '../internal/utils/locale';
-import Grid from './grid';
-import CalendarGridHeader from './grid/calendar-grid-header';
-import useCalendarGridKeyboardNavigation from './grid/use-calendar-grid-keyboard-navigation';
-import useCalendarGridRows from './grid/use-calendar-grid-rows';
-import CalendarHeader from './header';
+import { formatDate, parseDate } from '../internal/utils/date-time/index.js';
+import { normalizeLocale } from '../internal/utils/locale/index.js';
+import CalendarGridHeader from './grid/calendar-grid-header.js';
+import Grid from './grid/index.js';
+import useCalendarGridKeyboardNavigation from './grid/use-calendar-grid-keyboard-navigation.js';
+import useCalendarGridRows from './grid/use-calendar-grid-rows.js';
+import CalendarHeader from './header/index.js';
 import { CalendarProps } from './interfaces.js';
-import useCalendarLabels from './use-calendar-labels';
-import { getBaseDay } from './utils/navigation-day';
-import { getBaseMonth } from './utils/navigation-month';
+import useCalendarLabels from './use-calendar-labels.js';
+import { getBaseDay } from './utils/navigation-day.js';
+import { getBaseMonth } from './utils/navigation-month.js';
 
 import styles from './styles.css.js';
 

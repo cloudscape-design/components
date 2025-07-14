@@ -3,14 +3,14 @@
 import * as React from 'react';
 import { render, waitFor } from '@testing-library/react';
 
-import Button from '../../../lib/components/button';
-import Flashbar from '../../../lib/components/flashbar';
-import { metrics } from '../../../lib/components/internal/metrics';
-import awsuiPlugins from '../../../lib/components/internal/plugins';
-import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import { AlertFlashContentConfig } from '../../../lib/components/internal/plugins/controllers/alert-flash-content';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { expectContent } from '../../alert/__tests__/runtime-content-utils';
+import Button from '../../../lib/components/button/index.js';
+import Flashbar from '../../../lib/components/flashbar/index.js';
+import { metrics } from '../../../lib/components/internal/metrics.js';
+import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api.js';
+import { AlertFlashContentConfig } from '../../../lib/components/internal/plugins/controllers/alert-flash-content.js';
+import awsuiPlugins from '../../../lib/components/internal/plugins/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { expectContent } from '../../alert/__tests__/runtime-content-utils.js';
 
 import stylesCss from '../../../lib/components/flashbar/styles.css.js';
 

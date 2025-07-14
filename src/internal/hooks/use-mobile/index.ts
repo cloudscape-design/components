@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createSingletonState } from '@cloudscape-design/component-toolkit/internal';
 
-import { getMatchingBreakpoint, mobileBreakpoint } from '../../breakpoints';
+import { getMatchingBreakpoint, mobileBreakpoint } from '../../breakpoints.js';
 
 export const forceMobileModeSymbol = Symbol.for('awsui-force-mobile-mode');
 

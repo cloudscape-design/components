@@ -3,7 +3,7 @@
 
 import React, { useImperativeHandle, useRef } from 'react';
 
-import InternalLiveRegion, { InternalLiveRegionRef } from '../live-region/internal';
+import InternalLiveRegion, { InternalLiveRegionRef } from '../live-region/internal.js';
 
 import styles from './styles.css.js';
 

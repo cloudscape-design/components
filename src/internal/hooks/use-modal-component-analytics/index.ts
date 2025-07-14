@@ -3,7 +3,7 @@
 
 import { useEffect } from 'react';
 
-import { useModalContext } from '../../context/modal-context';
+import { useModalContext } from '../../context/modal-context.js';
 
 export const useModalContextLoadingButtonComponent = (isPrimaryButton: boolean, loading: boolean) => {
   const modalContext = useModalContext();

@@ -3,9 +3,9 @@
 import * as React from 'react';
 import { act, render } from '@testing-library/react';
 
-import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { fakeBoundingClientRect, fireMousedown, fireMouseMove, fireMouseup } from './utils/resize-actions';
+import Table, { TableProps } from '../../../lib/components/table/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { fakeBoundingClientRect, fireMousedown, fireMouseMove, fireMouseup } from './utils/resize-actions.js';
 
 let overflowParent: HTMLElement | null = null;
 jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => ({

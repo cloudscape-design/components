@@ -4,9 +4,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
-import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom';
-import testChartSeriesDetails from './test-chart-series-details';
+import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/index.js';
+import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import testChartSeriesDetails from './test-chart-series-details.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

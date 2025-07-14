@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { AreaChartWrapper } from '../../../lib/components/test-utils/selectors';
-import AreaChartPageObject from './page-objects/area-chart-page';
+import { AreaChartWrapper } from '../../../lib/components/test-utils/selectors/index.js';
+import AreaChartPageObject from './page-objects/area-chart-page.js';
 
 const computedDomainChartWrapper = new AreaChartWrapper('#chart');
 

@@ -3,10 +3,10 @@
 import * as React from 'react';
 import clsx from 'clsx';
 
-import { IconProps } from '../icon/interfaces';
-import InternalIcon from '../icon/internal';
-import InternalSpinner from '../spinner/internal';
-import { ButtonProps } from './interfaces';
+import { IconProps } from '../icon/interfaces.js';
+import InternalIcon from '../icon/internal.js';
+import InternalSpinner from '../spinner/internal.js';
+import { ButtonProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

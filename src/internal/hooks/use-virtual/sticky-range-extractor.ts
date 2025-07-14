@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { defaultRangeExtractor } from '../../vendor/react-virtual';
+import { defaultRangeExtractor } from '../../vendor/react-virtual.js';
 
 interface Range {
   start: number;

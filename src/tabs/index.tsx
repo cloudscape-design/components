@@ -6,16 +6,16 @@ import clsx from 'clsx';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalContainer from '../container/internal';
-import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent } from '../internal/events';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useControllable } from '../internal/hooks/use-controllable';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { GeneratedAnalyticsMetadataTabsComponent } from './analytics-metadata/interfaces';
-import { TabsProps } from './interfaces';
-import { getTabElementId, TabHeaderBar } from './tab-header-bar';
+import InternalContainer from '../container/internal.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { useControllable } from '../internal/hooks/use-controllable/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
+import { GeneratedAnalyticsMetadataTabsComponent } from './analytics-metadata/interfaces.js';
+import { TabsProps } from './interfaces.js';
+import { getTabElementId, TabHeaderBar } from './tab-header-bar.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

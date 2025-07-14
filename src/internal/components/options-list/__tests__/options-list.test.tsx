@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import OptionsList from '../../../../../lib/components/internal/components/options-list';
+import OptionsList from '../../../../../lib/components/internal/components/options-list/index.js';
 
 function renderList(jsx: React.ReactElement) {
   const { container } = render(jsx);

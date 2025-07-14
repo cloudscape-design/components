@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Spinner from '../../../lib/components/spinner';
+import Spinner from '../../../lib/components/spinner/index.js';
 
 import styles from '../../../lib/components/spinner/styles.css.js';
 

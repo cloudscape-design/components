@@ -3,7 +3,7 @@
 import { BasePageObject, ElementRect } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper, { CardsWrapper, ContainerWrapper } from '../../../lib/components/test-utils/selectors';
+import createWrapper, { CardsWrapper, ContainerWrapper } from '../../../lib/components/test-utils/selectors/index.js';
 
 class StickyHeaderCardsPage extends BasePageObject {
   wrapper = new CardsWrapper(createWrapper('body').find(`.${CardsWrapper.rootSelector}`).getElement());

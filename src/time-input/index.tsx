@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { Ref } from 'react';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { TimeInputProps } from './interfaces';
-import InternalTimeInput from './internal';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { TimeInputProps } from './interfaces.js';
+import InternalTimeInput from './internal.js';
 
 export { TimeInputProps };
 

@@ -1,8 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useMouseHover, UseMouseHoverProps } from '../../../lib/components/mixed-line-bar-chart/hooks/use-mouse-hover';
-import { ChartDataTypes } from '../../../lib/components/mixed-line-bar-chart/interfaces';
-import { act, renderHook } from '../../__tests__/render-hook';
+import {
+  useMouseHover,
+  UseMouseHoverProps,
+} from '../../../lib/components/mixed-line-bar-chart/hooks/use-mouse-hover.js';
+import { ChartDataTypes } from '../../../lib/components/mixed-line-bar-chart/interfaces.js';
+import { act, renderHook } from '../../__tests__/render-hook.js';
 
 const SVGElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 

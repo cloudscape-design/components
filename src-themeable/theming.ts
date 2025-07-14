@@ -4,7 +4,7 @@ import { join } from 'path';
 
 import { buildThemedComponents as themingCoreBuild } from '@cloudscape-design/theming-build';
 
-import { preset, TypedOverride } from './internal/template/internal/generated/theming/index.cjs';
+import { preset, TypedOverride } from './internal/template/internal/generated/theming/index.cjs.js';
 
 const internalDir = join(__dirname, './internal');
 const scssDir = join(internalDir, './scss');

@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ButtonDropdownProps } from '../../../button-dropdown/interfaces';
-import { BaseComponentProps } from '../../../internal/base-component';
-import MenuDropdown from '../../../internal/components/menu-dropdown';
-import { fireCancelableEvent } from '../../../internal/events';
-import { TopNavigationProps } from '../interfaces';
+import { ButtonDropdownProps } from '../../../button-dropdown/interfaces.js';
+import { BaseComponentProps } from '../../../internal/base-component/index.js';
+import MenuDropdown from '../../../internal/components/menu-dropdown/index.js';
+import { fireCancelableEvent } from '../../../internal/events/index.js';
+import { TopNavigationProps } from '../interfaces.js';
 
 import styles from '../styles.css.js';
 

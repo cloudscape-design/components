@@ -3,9 +3,9 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { IconProps } from '../../../icon/interfaces';
-import InternalIcon from '../../../icon/internal';
-import HighlightMatch from './highlight-match';
+import { IconProps } from '../../../icon/interfaces.js';
+import InternalIcon from '../../../icon/internal.js';
+import HighlightMatch from './highlight-match.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

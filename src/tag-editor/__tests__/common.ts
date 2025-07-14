@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { TagEditorProps } from '../../../lib/components/tag-editor';
+import { TagEditorProps } from '../../../lib/components/tag-editor/index.js';
 
 export const MAX_KEY_LENGTH = 128;
 export const MAX_VALUE_LENGTH = 256;

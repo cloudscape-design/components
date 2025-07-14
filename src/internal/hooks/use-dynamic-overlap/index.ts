@@ -6,7 +6,7 @@ import { useCallback, useRef } from 'react';
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { DynamicOverlapContext } from '../../context/dynamic-overlap-context';
+import { DynamicOverlapContext } from '../../context/dynamic-overlap-context.js';
 
 interface UseDynamicOverlapProps {
   /**

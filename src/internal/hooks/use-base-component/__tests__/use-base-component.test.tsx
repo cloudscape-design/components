@@ -5,12 +5,12 @@ import { render } from '@testing-library/react';
 
 import { COMPONENT_METADATA_KEY, Portal, useComponentMetrics } from '@cloudscape-design/component-toolkit/internal';
 
-import { Button } from '../../../../../lib/components';
-import { PACKAGE_VERSION } from '../../../../../lib/components/internal/environment';
+import { Button } from '../../../../../lib/components/index.js';
+import { PACKAGE_VERSION } from '../../../../../lib/components/internal/environment.js';
 import useBaseComponent, {
   InternalBaseComponentProps,
-} from '../../../../../lib/components/internal/hooks/use-base-component';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
+} from '../../../../../lib/components/internal/hooks/use-base-component/index.js';
+import createWrapper from '../../../../../lib/components/test-utils/dom/index.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => {
   return {

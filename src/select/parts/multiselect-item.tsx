@@ -4,14 +4,14 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../../internal/base-component';
-import CheckboxIcon from '../../internal/components/checkbox-icon';
-import Option from '../../internal/components/option';
-import { OptionDefinition } from '../../internal/components/option/interfaces';
-import SelectableItem from '../../internal/components/selectable-item';
-import Tooltip from '../../internal/components/tooltip';
-import useHiddenDescription from '../../internal/hooks/use-hidden-description';
-import { ItemProps } from './item';
+import { getBaseProps } from '../../internal/base-component/index.js';
+import CheckboxIcon from '../../internal/components/checkbox-icon/index.js';
+import Option from '../../internal/components/option/index.js';
+import { OptionDefinition } from '../../internal/components/option/interfaces.js';
+import SelectableItem from '../../internal/components/selectable-item/index.js';
+import Tooltip from '../../internal/components/tooltip/index.js';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description/index.js';
+import { ItemProps } from './item.js';
 
 import styles from './styles.css.js';
 interface MultiselectItemProps extends ItemProps {

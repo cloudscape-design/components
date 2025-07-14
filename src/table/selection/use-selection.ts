@@ -4,12 +4,12 @@ import { useState } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { fireNonCancelableEvent } from '../../internal/events';
-import { joinStrings } from '../../internal/utils/strings';
-import { TableProps } from '../interfaces';
-import { getTrackableValue } from '../utils';
-import { SelectionProps } from './interfaces';
-import { ItemSet } from './utils';
+import { fireNonCancelableEvent } from '../../internal/events/index.js';
+import { joinStrings } from '../../internal/utils/strings/index.js';
+import { TableProps } from '../interfaces.js';
+import { getTrackableValue } from '../utils.js';
+import { SelectionProps } from './interfaces.js';
+import { ItemSet } from './utils.js';
 
 type SelectionOptions<T> = Pick<
   TableProps<T>,

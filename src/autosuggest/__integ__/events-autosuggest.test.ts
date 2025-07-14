@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import EventsAutosuggestPage from './page-objects/events-autosuggest-page';
+import EventsAutosuggestPage from './page-objects/events-autosuggest-page.js';
 
 describe.each<boolean>([false, true])('Autosuggest events (expandToViewport=%s)', expandToViewport => {
   function setupTest(testFn: (page: EventsAutosuggestPage) => Promise<void>) {

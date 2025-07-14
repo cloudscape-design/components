@@ -3,8 +3,8 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import { viewports } from '../../app-layout/__integ__/constants';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import { viewports } from '../../app-layout/__integ__/constants.js';
 
 import styles from '../../../lib/components/container/styles.selectors.js';
 

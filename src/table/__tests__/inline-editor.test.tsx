@@ -4,9 +4,9 @@
 import * as React from 'react';
 import { act, cleanup, fireEvent, render, waitFor } from '@testing-library/react';
 
-import { InlineEditor } from '../../../lib/components/table/body-cell/inline-editor';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { TableProps } from '../interfaces';
+import { InlineEditor } from '../../../lib/components/table/body-cell/inline-editor.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { TableProps } from '../interfaces.js';
 
 const handleSubmitEdit = jest.fn();
 const handleEditEnd = jest.fn();

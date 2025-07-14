@@ -3,21 +3,22 @@
 
 import { useContext, useRef } from 'react';
 
-import { nodeBelongs } from '../../utils/node-belongs';
-import { FunnelMetrics } from '../';
+import { nodeBelongs } from '../../utils/node-belongs.js';
+import { FunnelMetrics } from '..//index.js';
 import {
   FunnelContext,
   FunnelContextValue,
   FunnelNameSelectorContext,
   FunnelStepContext,
   FunnelSubStepContext,
-} from '../context/analytics-context';
+} from '../context/analytics-context.js';
+
 import {
   DATA_ATTR_FUNNEL_INTERACTION_ID,
   DATA_ATTR_FUNNEL_SUBSTEP,
   getSubStepAllSelector,
   getTextFromSelector,
-} from '../selectors';
+} from '../selectors.js';
 
 /**
  * Custom React Hook to manage and interact with FunnelSubStep.

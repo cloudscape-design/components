@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBreakpointValue } from '../../breakpoints';
-import { BoundingBox, getOverflowParentDimensions, getOverflowParents } from '../../utils/scrollable-containers';
-import { LogicalDOMRect } from './dropdown-position';
+import { getBreakpointValue } from '../../breakpoints.js';
+import { BoundingBox, getOverflowParentDimensions, getOverflowParents } from '../../utils/scrollable-containers.js';
+import { LogicalDOMRect } from './dropdown-position.js';
 
 import styles from './styles.css.js';
 

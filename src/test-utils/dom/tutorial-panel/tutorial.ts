@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import ButtonWrapper from '../button';
+import ButtonWrapper from '../button/index.js';
 import { AlertWrapper } from '../index.js';
-import LinkWrapper from '../link';
+import LinkWrapper from '../link/index.js';
 
 import styles from '../../../tutorial-panel/components/tutorial-list/styles.selectors.js';
 

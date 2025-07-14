@@ -5,11 +5,11 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { useSelector } from '../async-store';
-import { AreaChartProps } from '../interfaces';
-import { ChartModel } from '../model';
-import AreaSeries from './area-series';
-import ThresholdSeries from './threshold-series';
+import { useSelector } from '../async-store/index.js';
+import { AreaChartProps } from '../interfaces.js';
+import { ChartModel } from '../model/index.js';
+import AreaSeries from './area-series.js';
+import ThresholdSeries from './threshold-series.js';
 
 import styles from '../styles.css.js';
 

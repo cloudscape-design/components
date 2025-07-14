@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ChartDataTypes, CommonMixedChartProps, MixedLineBarChartProps } from '../mixed-line-bar-chart/interfaces';
+import { ChartDataTypes, CommonMixedChartProps, MixedLineBarChartProps } from '../mixed-line-bar-chart/interfaces.js';
 
 type LineSeries<T> = MixedLineBarChartProps.LineDataSeries<T> | MixedLineBarChartProps.ThresholdSeries<T>;
 

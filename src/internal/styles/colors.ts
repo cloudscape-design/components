@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as tokens from '../generated/styles/tokens';
+import * as tokens from '../generated/styles/tokens.js';
 
 export const categoryPalette = [
   tokens.colorChartsPaletteCategorical1,

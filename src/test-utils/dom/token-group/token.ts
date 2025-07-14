@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import OptionWrapper from '../internal/option';
+import OptionWrapper from '../internal/option.js';
 
 import selectors from '../../../token-group/styles.selectors.js';
 

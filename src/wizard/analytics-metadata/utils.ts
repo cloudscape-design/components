@@ -6,7 +6,7 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { WizardProps } from '../interfaces';
+import { WizardProps } from '../interfaces.js';
 
 export const getNavigationActionDetail = (
   targetStepIndex: number,

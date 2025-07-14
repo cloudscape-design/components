@@ -6,29 +6,29 @@ import clsx from 'clsx';
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useInternalI18n } from '../i18n/context';
-import { FunnelMetrics } from '../internal/analytics';
-import { useFunnel } from '../internal/analytics/hooks/use-funnel';
+import { useInternalI18n } from '../i18n/context.js';
+import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
+import { FunnelMetrics } from '../internal/analytics/index.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useControllable } from '../internal/hooks/use-controllable/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { useFunnelChangeEvent } from './analytics.js';
+import { GeneratedAnalyticsMetadataWizardComponent } from './analytics-metadata/interfaces.js';
+import { WizardProps } from './interfaces.js';
+import WizardForm, { STEP_NAME_SELECTOR } from './wizard-form.js';
+import WizardNavigation from './wizard-navigation.js';
+
+import styles from './styles.css.js';
 import {
   DATA_ATTR_FUNNEL_KEY,
   FUNNEL_KEY_FUNNEL_NAME,
   FUNNEL_KEY_STEP_NAME,
   getSubStepAllSelector,
   getTextFromSelector,
-} from '../internal/analytics/selectors';
-import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent } from '../internal/events';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useControllable } from '../internal/hooks/use-controllable';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useFunnelChangeEvent } from './analytics';
-import { GeneratedAnalyticsMetadataWizardComponent } from './analytics-metadata/interfaces';
-import { WizardProps } from './interfaces';
-import WizardForm, { STEP_NAME_SELECTOR } from './wizard-form';
-import WizardNavigation from './wizard-navigation';
-
-import styles from './styles.css.js';
+} from '../internal/analytics/selectors.js';
 
 type InternalWizardProps = WizardProps &
   InternalBaseComponentProps & {

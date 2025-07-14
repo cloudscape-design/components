@@ -3,13 +3,13 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Container from '../../../lib/components/container';
-import ExpandableSection from '../../../lib/components/expandable-section';
-import Header from '../../../lib/components/header';
-import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../../../lib/components/internal/analytics/selectors';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Container from '../../../lib/components/container/index.js';
+import ExpandableSection from '../../../lib/components/expandable-section/index.js';
+import Header from '../../../lib/components/header/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/header/styles.css.js';
+import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../../../lib/components/internal/analytics/selectors.js';
 
 function renderHeader(jsx: React.ReactElement) {
   const { container } = render(jsx);

@@ -5,7 +5,7 @@ import * as fs from 'fs';
 
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-import { runOptions, spec } from './axe';
+import { runOptions, spec } from './axe.js';
 
 import tableStyles from '../../lib/components/table/styles.selectors.js';
 

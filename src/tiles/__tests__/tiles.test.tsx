@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 
-import createWrapper, { ElementWrapper, TilesWrapper } from '../../../lib/components/test-utils/dom';
-import TileWrapper from '../../../lib/components/test-utils/dom/tiles/tile';
-import Tiles, { TilesProps } from '../../../lib/components/tiles';
+import createWrapper, { ElementWrapper, TilesWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import TileWrapper from '../../../lib/components/test-utils/dom/tiles/tile.js';
+import Tiles, { TilesProps } from '../../../lib/components/tiles/index.js';
 
 import styles from '../../../lib/components/tiles/styles.css.js';
 

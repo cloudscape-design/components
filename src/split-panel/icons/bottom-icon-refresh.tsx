@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { getClassName, SVGTableRowProps } from './side-position-refresh';
+import { getClassName, SVGTableRowProps } from './side-position-refresh.js';
 
 const TableRow = ({ offset, isHeader }: SVGTableRowProps) => {
   const offsetTop = 0.4482;

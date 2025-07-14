@@ -3,7 +3,7 @@
 import { BaseComponentProps } from '../internal/base-component';
 import { SortableAreaProps } from '../internal/components/sortable-area';
 import { NonCancelableEventHandler } from '../internal/events';
-import { BaseModalProps } from '../modal/interfaces';
+import { BaseModalProps } from '../modal/interfaces.js';
 
 export interface CollectionPreferencesProps<CustomPreferenceType = any> extends BaseComponentProps, BaseModalProps {
   /**

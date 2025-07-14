@@ -3,9 +3,9 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import { Size, Theme } from '../../__integ__/utils';
-import { viewports } from './constants';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import { Size, Theme } from '../../__integ__/utils.js';
+import { viewports } from './constants.js';
 
 export const testIf = (condition: boolean) => (condition ? test : test.skip);
 

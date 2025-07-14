@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { makeCancellable, PromiseCancelledSignal } from '../promises';
+import { makeCancellable, PromiseCancelledSignal } from '../promises.js';
 
 const waitForPromises = () => new Promise(resolve => setTimeout(resolve, 0));
 

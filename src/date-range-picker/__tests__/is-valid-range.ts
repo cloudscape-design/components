@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DateRangePickerProps } from '../interfaces';
+import { DateRangePickerProps } from '../interfaces.js';
 
 export const isValidRange: DateRangePickerProps.ValidationFunction = (range: DateRangePickerProps.Value | null) => {
   if (range === null) {

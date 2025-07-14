@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
+import Table, { TableProps } from '../../../lib/components/table/index.js';
+import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 interface Item {
   id: number;

@@ -4,8 +4,8 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
-import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
-import { defaultProps, Item, items } from './common';
+import TreeView, { TreeViewProps } from '../../../lib/components/tree-view.js';
+import { defaultProps, Item, items } from './common.js';
 
 function renderTreeView(props: Partial<TreeViewProps<Item>> = {}) {
   const { container } = render(<TreeView {...defaultProps} {...props} />);

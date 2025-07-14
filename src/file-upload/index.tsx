@@ -3,11 +3,11 @@
 
 import React from 'react';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { getExternalProps } from '../internal/utils/external-props';
-import { FileUploadProps } from './interfaces';
-import InternalFileUpload from './internal';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { getExternalProps } from '../internal/utils/external-props.js';
+import { FileUploadProps } from './interfaces.js';
+import InternalFileUpload from './internal.js';
 
 export { FileUploadProps };
 

@@ -3,7 +3,7 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
-import TileWrapper from './tile';
+import TileWrapper from './tile.js';
 
 import styles from '../../../tiles/styles.selectors.js';
 

@@ -5,7 +5,7 @@ import { render } from '@testing-library/react';
 
 import useDebounceSearchResultCallback, {
   DebouncedLiveAnnouncementProps,
-} from '../../../lib/components/text-filter/use-debounce-search-result-callback';
+} from '../../../lib/components/text-filter/use-debounce-search-result-callback.js';
 
 const TestComponent = (props: DebouncedLiveAnnouncementProps) => {
   useDebounceSearchResultCallback(props);

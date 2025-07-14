@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useSplitPanelContext } from '../../internal/context/split-panel-context';
+import { useSplitPanelContext } from '../../internal/context/split-panel-context.js';
 
 import styles from './styles.css.js';
 

@@ -4,7 +4,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import SortableArea, { SortableAreaProps } from '../../../../../lib/components/internal/components/sortable-area';
+import SortableArea, {
+  SortableAreaProps,
+} from '../../../../../lib/components/internal/components/sortable-area/index.js';
 
 interface Item {
   id: string;

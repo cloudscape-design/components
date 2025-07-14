@@ -23,7 +23,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 /* eslint-disable header/header */
-import { calculateOnce } from './calculate-once';
+import { calculateOnce } from './calculate-once.js';
 
 export const browserScrollbarSize = calculateOnce(() => {
   if (typeof document === 'undefined') {

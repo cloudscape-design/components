@@ -10,18 +10,18 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import ButtonDropdown from '../../../lib/components/button-dropdown';
-import Header from '../../../lib/components/header';
-import Table, { TableProps } from '../../../lib/components/table';
+import ButtonDropdown from '../../../lib/components/button-dropdown/index.js';
+import Header from '../../../lib/components/header/index.js';
 import {
   GeneratedAnalyticsMetadataTableDeselect,
   GeneratedAnalyticsMetadataTableDeselectAll,
   GeneratedAnalyticsMetadataTableSelect,
   GeneratedAnalyticsMetadataTableSelectAll,
-} from '../../../lib/components/table/analytics-metadata/interfaces';
-import InternalTable from '../../../lib/components/table/internal';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+} from '../../../lib/components/table/analytics-metadata/interfaces.js';
+import Table, { TableProps } from '../../../lib/components/table/index.js';
+import InternalTable from '../../../lib/components/table/internal.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import abstractSwitchlabels from '../../../lib/components/internal/components/abstract-switch/analytics-metadata/styles.css.js';
 import tablelabels from '../../../lib/components/table/analytics-metadata/styles.css.js';

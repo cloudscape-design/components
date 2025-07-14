@@ -1,4 +1,4 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export { useInternalI18n } from '../../i18n/context';
+export { useInternalI18n } from '../../i18n/context.js';

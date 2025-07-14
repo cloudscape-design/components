@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { DropdownOption } from '../../internal/components/option/interfaces';
-import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
-import { VirtualItem } from '../../internal/vendor/react-virtual';
-import Item from '../parts/item';
-import MultiselectItem from '../parts/multiselect-item';
-import { getItemProps } from './get-item-props';
+import { DropdownOption } from '../../internal/components/option/interfaces.js';
+import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
+import { VirtualItem } from '../../internal/vendor/react-virtual.js';
+import Item from '../parts/item.js';
+import MultiselectItem from '../parts/multiselect-item.js';
+import { getItemProps } from './get-item-props.js';
 
 interface RenderOptionProps {
   options: ReadonlyArray<DropdownOption>;

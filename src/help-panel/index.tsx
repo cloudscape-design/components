@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { HelpPanelProps } from './interfaces';
-import { InternalHelpPanel } from './internal';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { HelpPanelProps } from './interfaces.js';
+import { InternalHelpPanel } from './internal.js';
 
 export { HelpPanelProps };
 

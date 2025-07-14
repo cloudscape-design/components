@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import A11yPageObject from '../../__a11y__/a11y-page-object';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import A11yPageObject from '../../__a11y__/a11y-page-object.js';
 
 const wrapper = createWrapper().findPropertyFilter();
 const popoverWrapper = createWrapper(wrapper.findTokens().get(1).toSelector()).findPopover();

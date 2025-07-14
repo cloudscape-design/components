@@ -4,11 +4,11 @@ import React, { useEffect } from 'react';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
-import PopoverArrow from '../../../popover/arrow';
-import PopoverBody from '../../../popover/body';
-import PopoverContainer from '../../../popover/container';
-import { PopoverProps } from '../../../popover/interfaces';
-import { Transition } from '../transition';
+import PopoverArrow from '../../../popover/arrow.js';
+import PopoverBody from '../../../popover/body.js';
+import PopoverContainer from '../../../popover/container.js';
+import { PopoverProps } from '../../../popover/interfaces.js';
+import { Transition } from '../transition/index.js';
 
 import styles from './styles.css.js';
 

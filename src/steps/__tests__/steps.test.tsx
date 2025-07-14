@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import Steps, { StepsProps } from '../../../lib/components/steps';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Steps, { StepsProps } from '../../../lib/components/steps/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 import stepsStyles from '../../../lib/components/steps/styles.selectors.js';

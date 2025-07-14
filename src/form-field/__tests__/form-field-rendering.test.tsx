@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import FormField, { FormFieldProps } from '../../../lib/components/form-field';
-import createWrapper, { FormFieldWrapper } from '../../../lib/components/test-utils/dom';
+import FormField, { FormFieldProps } from '../../../lib/components/form-field/index.js';
+import createWrapper, { FormFieldWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 

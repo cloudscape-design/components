@@ -5,7 +5,7 @@ import Axe from 'axe-core';
 import { HtmlValidate } from 'html-validate';
 import { compact, uniq } from 'lodash';
 
-import { runOptions, spec } from './axe';
+import { runOptions, spec } from './axe.js';
 
 declare global {
   namespace jest {

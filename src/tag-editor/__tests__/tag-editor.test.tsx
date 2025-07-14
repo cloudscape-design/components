@@ -3,10 +3,10 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import TagEditor, { TagEditorProps } from '../../../lib/components/tag-editor';
-import createWrapper, { TagEditorWrapper } from '../../../lib/components/test-utils/dom';
-import { i18nStrings, MAX_KEY_LENGTH, MAX_VALUE_LENGTH } from './common';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import TagEditor, { TagEditorProps } from '../../../lib/components/tag-editor/index.js';
+import createWrapper, { TagEditorWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { i18nStrings, MAX_KEY_LENGTH, MAX_VALUE_LENGTH } from './common.js';
 
 const defaultProps = {
   i18nStrings,

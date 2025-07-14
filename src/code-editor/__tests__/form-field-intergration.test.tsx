@@ -3,10 +3,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import CodeEditor from '../../../lib/components/code-editor';
-import FormField from '../../../lib/components/form-field';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { defaultProps, editorMock } from './util';
+import CodeEditor from '../../../lib/components/code-editor/index.js';
+import FormField from '../../../lib/components/form-field/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { defaultProps, editorMock } from './util.js';
 
 beforeEach(() => {
   editorMock.renderer.textarea = document.createElement('textarea');

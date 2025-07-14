@@ -3,21 +3,21 @@
 import * as React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
-import Autosuggest from '../../../lib/components/autosuggest';
+import Autosuggest from '../../../lib/components/autosuggest/index.js';
 import Button from '../../../lib/components/button/index.js';
-import ButtonDropdown from '../../../lib/components/button-dropdown';
-import DatePicker from '../../../lib/components/date-picker';
-import DateRangePicker from '../../../lib/components/date-range-picker';
-import FormField from '../../../lib/components/form-field';
-import Input from '../../../lib/components/input';
-import Modal, { ModalProps } from '../../../lib/components/modal';
-import Multiselect from '../../../lib/components/multiselect';
-import Popover from '../../../lib/components/popover';
-import Select from '../../../lib/components/select';
-import StatusIndicator from '../../../lib/components/status-indicator';
-import createWrapper, { ElementWrapper, ModalWrapper } from '../../../lib/components/test-utils/dom';
-import { PerformanceMetrics } from '../../internal/analytics';
-import { KeyCode } from '../../internal/keycode';
+import ButtonDropdown from '../../../lib/components/button-dropdown/index.js';
+import DatePicker from '../../../lib/components/date-picker/index.js';
+import DateRangePicker from '../../../lib/components/date-range-picker/index.js';
+import FormField from '../../../lib/components/form-field/index.js';
+import Input from '../../../lib/components/input/index.js';
+import Modal, { ModalProps } from '../../../lib/components/modal/index.js';
+import Multiselect from '../../../lib/components/multiselect/index.js';
+import Popover from '../../../lib/components/popover/index.js';
+import Select from '../../../lib/components/select/index.js';
+import StatusIndicator from '../../../lib/components/status-indicator/index.js';
+import createWrapper, { ElementWrapper, ModalWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { PerformanceMetrics } from '../../internal/analytics/index.js';
+import { KeyCode } from '../../internal/keycode.js';
 
 import styles from '../../../lib/components/modal/styles.css.js';
 class ModalInternalWrapper extends ModalWrapper {

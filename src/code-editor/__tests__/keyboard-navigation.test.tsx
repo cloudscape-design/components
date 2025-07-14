@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { fireEvent } from '@testing-library/react';
 
-import { KeyCode } from '../../internal/keycode';
-import { editorMock, renderCodeEditor } from './util';
+import { KeyCode } from '../../internal/keycode.js';
+import { editorMock, renderCodeEditor } from './util.js';
 
 describe('Keyboard navigation', () => {
   it('focuses editor', () => {

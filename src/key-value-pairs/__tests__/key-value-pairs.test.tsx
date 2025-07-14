@@ -3,11 +3,11 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import Icon from '../../../lib/components/icon';
-import KeyValuePairs from '../../../lib/components/key-value-pairs';
-import Link from '../../../lib/components/link';
-import SpaceBetween from '../../../lib/components/space-between';
-import createWrapper, { IconWrapper } from '../../../lib/components/test-utils/dom';
+import Icon from '../../../lib/components/icon/index.js';
+import KeyValuePairs from '../../../lib/components/key-value-pairs/index.js';
+import Link from '../../../lib/components/link/index.js';
+import SpaceBetween from '../../../lib/components/space-between/index.js';
+import createWrapper, { IconWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 function renderKeyValuePairs(jsx: React.ReactElement) {
   const { container, ...rest } = render(jsx);

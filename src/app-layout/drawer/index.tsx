@@ -6,13 +6,13 @@ import clsx from 'clsx';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 
-import { getVisualContextClassname } from '../../internal/components/visual-context';
-import { AppLayoutProps } from '../interfaces';
-import { CloseButton, ToggleButton, togglesConfig } from '../toggles';
-import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
-import { splitItems } from './drawers-helpers';
-import { DesktopDrawerProps, DrawerTriggersBarProps } from './interfaces';
-import OverflowMenu from './overflow-menu';
+import { getVisualContextClassname } from '../../internal/components/visual-context/index.js';
+import { AppLayoutProps } from '../interfaces.js';
+import { CloseButton, ToggleButton, togglesConfig } from '../toggles/index.js';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers.js';
+import { splitItems } from './drawers-helpers.js';
+import { DesktopDrawerProps, DrawerTriggersBarProps } from './interfaces.js';
+import OverflowMenu from './overflow-menu.js';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';

@@ -3,10 +3,10 @@
 
 import { createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 
-import ButtonWrapper from '../button';
-import CalendarWrapper from '../calendar';
-import BaseInputWrapper from '../input/base-input';
-import DropdownWrapper from '../internal/dropdown';
+import ButtonWrapper from '../button/index.js';
+import CalendarWrapper from '../calendar/index.js';
+import BaseInputWrapper from '../input/base-input.js';
+import DropdownWrapper from '../internal/dropdown.js';
 
 import calendarStyles from '../../../calendar/styles.selectors.js';
 import styles from '../../../date-picker/styles.selectors.js';

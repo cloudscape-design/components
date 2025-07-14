@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { computeOffset } from '../../../lib/components/container/use-sticky-header';
-import * as tokens from '../../../lib/components/internal/generated/styles/tokens';
-import globalVars from '../../../lib/components/internal/styles/global-vars';
+import { computeOffset } from '../../../lib/components/container/use-sticky-header.js';
+import * as tokens from '../../../lib/components/internal/generated/styles/tokens.js';
+import globalVars from '../../../lib/components/internal/styles/global-vars.js';
 
 describe('computeOffset', () => {
   test('should calculate offset for mobile outside overflow parent', () => {

@@ -3,10 +3,10 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import { KeyCode } from '../../../lib/components/internal/keycode';
-import createWrapper, { ButtonDropdownWrapper } from '../../../lib/components/test-utils/dom';
+import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown/index.js';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile/index.js';
+import { KeyCode } from '../../../lib/components/internal/keycode.js';
+import createWrapper, { ButtonDropdownWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 const renderOpenButtonDropdown = (props: ButtonDropdownProps) => {
   const renderResult = render(<ButtonDropdown {...props} />);

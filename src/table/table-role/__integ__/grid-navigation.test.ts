@@ -5,8 +5,8 @@ import { range } from 'lodash';
 
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../../lib/components/test-utils/selectors';
-import { GridNavigationPageObject } from './page-object';
+import createWrapper from '../../../../lib/components/test-utils/selectors/index.js';
+import { GridNavigationPageObject } from './page-object.js';
 
 interface Options {
   actionsMode?: 'dropdown' | 'inline';

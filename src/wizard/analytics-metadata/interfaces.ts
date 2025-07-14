@@ -3,7 +3,7 @@
 
 import { LabelIdentifier } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { WizardProps } from '../interfaces';
+import { WizardProps } from '../interfaces.js';
 
 export interface GeneratedAnalyticsMetadataWizardCancel {
   action: 'cancel';

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Direction } from '../../internal/components/drag-handle-wrapper/interfaces';
-import handleKey from '../../internal/utils/handle-key';
-import { SizeControlProps } from './interfaces';
+import { Direction } from '../../internal/components/drag-handle-wrapper/interfaces.js';
+import handleKey from '../../internal/utils/handle-key.js';
+import { SizeControlProps } from './interfaces.js';
 
 const KEYBOARD_SINGLE_STEP_SIZE = 10;
 const KEYBOARD_MULTIPLE_STEPS_SIZE = 60;

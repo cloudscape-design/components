@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { StructuredItemProps } from './interfaces';
+import { StructuredItemProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 import testClasses from './test-classes/styles.css.js';

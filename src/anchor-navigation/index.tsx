@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { AnchorNavigationProps } from './interfaces';
-import InternalAnchorNavigation from './internal';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { AnchorNavigationProps } from './interfaces.js';
+import InternalAnchorNavigation from './internal.js';
 
 export { AnchorNavigationProps };
 

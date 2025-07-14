@@ -4,7 +4,7 @@ import React from 'react';
 import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 import { render } from '@testing-library/react';
 
-import useLiveAnnouncements from '../../../../../lib/components/internal/components/sortable-area/use-live-announcements';
+import useLiveAnnouncements from '../../../../../lib/components/internal/components/sortable-area/use-live-announcements.js';
 
 const liveAnnouncementDndStarted = jest.fn();
 const liveAnnouncementDndItemReordered = jest.fn();

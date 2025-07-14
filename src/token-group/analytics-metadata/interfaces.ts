@@ -5,7 +5,7 @@ import { LabelIdentifier } from '@cloudscape-design/component-toolkit/internal/a
 import {
   GeneratedAnalyticsMetadataTokenListShowLess,
   GeneratedAnalyticsMetadataTokenListShowMore,
-} from '../../internal/components/token-list/analytics-metadata/interfaces';
+} from '../../internal/components/token-list/analytics-metadata/interfaces.js';
 
 export interface GeneratedAnalyticsMetadataTokenGroupDismiss {
   action: 'dismiss';

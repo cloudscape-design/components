@@ -9,18 +9,18 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import Wizard, { WizardProps } from '../../../lib/components/wizard';
+import BreadcrumbGroup from '../../../lib/components/breadcrumb-group/index.js';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 import {
   GeneratedAnalyticsMetadataWizardCancel,
   GeneratedAnalyticsMetadataWizardNavigate,
   GeneratedAnalyticsMetadataWizardSubmit,
-} from '../../../lib/components/wizard/analytics-metadata/interfaces';
-import InternalWizard from '../../../lib/components/wizard/internal';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
-import { DEFAULT_I18N_SETS } from './common';
+} from '../../../lib/components/wizard/analytics-metadata/interfaces.js';
+import Wizard, { WizardProps } from '../../../lib/components/wizard/index.js';
+import InternalWizard from '../../../lib/components/wizard/internal.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
+import { DEFAULT_I18N_SETS } from './common.js';
 
 import labels from '../../../lib/components/wizard/analytics-metadata/styles.css.js';
 

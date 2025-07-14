@@ -3,11 +3,11 @@
 import React, { Ref } from 'react';
 import clsx from 'clsx';
 
-import { ButtonProps } from '../../button/interfaces';
-import { InternalButton } from '../../button/internal';
-import { IconProps } from '../../icon/interfaces';
-import Icon from '../../icon/internal';
-import { useAppLayoutInternals } from './context';
+import { ButtonProps } from '../../button/interfaces.js';
+import { InternalButton } from '../../button/internal.js';
+import { IconProps } from '../../icon/interfaces.js';
+import Icon from '../../icon/internal.js';
+import { useAppLayoutInternals } from './context.js';
 
 import styles from './styles.css.js';
 

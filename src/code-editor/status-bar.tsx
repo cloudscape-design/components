@@ -3,12 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { InternalButton } from '../button/internal';
+import { InternalButton } from '../button/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
-import InternalLiveRegion from '../live-region/internal';
-import { CodeEditorProps } from './interfaces';
-import { TabButton } from './tab-button';
-import { getStatusButtonId, PaneStatus } from './util';
+import InternalLiveRegion from '../live-region/internal.js';
+import { CodeEditorProps } from './interfaces.js';
+import { TabButton } from './tab-button.js';
+import { getStatusButtonId, PaneStatus } from './util.js';
 
 import styles from './styles.css.js';
 

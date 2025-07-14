@@ -8,8 +8,8 @@ import {
   scaleLog,
   ScaleTime,
   scaleTime,
-} from '../../vendor/d3-scale';
-import { ChartDataTypes, ChartDomain, ScaleRange, ScaleType } from './interfaces';
+} from '../../vendor/d3-scale.js';
+import { ChartDataTypes, ChartDomain, ScaleRange, ScaleType } from './interfaces.js';
 
 interface NumericD3Scale {
   type: 'numeric';

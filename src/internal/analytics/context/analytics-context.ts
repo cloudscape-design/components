@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createContext, MutableRefObject, RefObject } from 'react';
 
-import { AnalyticsMetadata, FunnelType, SubStepConfiguration } from '../interfaces';
-import { getFunnelNameSelector } from '../selectors';
+import { AnalyticsMetadata, FunnelType, SubStepConfiguration } from '../interfaces.js';
+
+import { getFunnelNameSelector } from '../selectors.js';
 
 export type FunnelState = 'default' | 'validating' | 'complete' | 'cancelled';
 

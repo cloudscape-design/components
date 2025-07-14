@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { findLowerAndHigherValues, getPercent, getStepArray } from '../../../lib/components/slider/utils';
+import { findLowerAndHigherValues, getPercent, getStepArray } from '../../../lib/components/slider/utils.js';
 
 describe('getPercent', () => {
   test('works with different min value', () => {

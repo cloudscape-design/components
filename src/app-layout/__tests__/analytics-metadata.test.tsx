@@ -10,7 +10,7 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 
 import AppLayout from '../../../lib/components/app-layout';
 import Header from '../../../lib/components/header';
-import { describeEachAppLayout, renderComponent } from './utils';
+import { describeEachAppLayout, renderComponent } from './utils.js';
 
 const getMetadata = (label = 'Label') => {
   const metadata: GeneratedAnalyticsMetadataFragment = {

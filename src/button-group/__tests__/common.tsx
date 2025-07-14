@@ -4,8 +4,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import ButtonGroup, { ButtonGroupProps } from '../../../lib/components/button-group';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import ButtonGroup, { ButtonGroupProps } from '../../../lib/components/button-group/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 const defaultProps: ButtonGroupProps = {
   variant: 'icon',

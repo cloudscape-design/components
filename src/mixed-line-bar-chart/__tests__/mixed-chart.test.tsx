@@ -6,12 +6,12 @@ import { waitFor } from '@testing-library/react';
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
-import positions from '../../../lib/components/popover/utils/positions';
-import { ElementWrapper } from '../../../lib/components/test-utils/dom';
-import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom';
-import { lineSeries3, renderMixedChart } from './common';
-import createComputedTextLengthMock from './computed-text-length-mock';
+import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/index.js';
+import positions from '../../../lib/components/popover/utils/positions.js';
+import { ElementWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { lineSeries3, renderMixedChart } from './common.js';
+import createComputedTextLengthMock from './computed-text-length-mock.js';
 
 import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';

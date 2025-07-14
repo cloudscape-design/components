@@ -4,9 +4,9 @@
 import React, { useRef, useState } from 'react';
 import { render } from '@testing-library/react';
 import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
-import AppLayoutToolbar, { AppLayoutToolbarProps } from '../../../lib/components/app-layout-toolbar';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
+import AppLayoutToolbar, { AppLayoutToolbarProps } from '../../../lib/components/app-layout-toolbar/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import BreadcrumbGroup from '../../../lib/components/breadcrumb-group/index.js';
 
 function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { pascalCase } from 'change-case';
 
-import { getAllComponents, requireComponent } from '../utils';
+import { getAllComponents, requireComponent } from '../utils.js';
 
 describe('component displayName matches import directory name', () => {
   test.each(getAllComponents())('%s', componentName => {

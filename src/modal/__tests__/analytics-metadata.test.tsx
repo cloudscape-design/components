@@ -6,11 +6,11 @@ import { render } from '@testing-library/react';
 import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import Button from '../../../lib/components/button';
-import Modal from '../../../lib/components/modal';
-import InternalModal from '../../../lib/components/modal/internal';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+import Button from '../../../lib/components/button/index.js';
+import Modal from '../../../lib/components/modal/index.js';
+import InternalModal from '../../../lib/components/modal/internal.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import labels from '../../../lib/components/modal/analytics-metadata/styles.css.js';
 

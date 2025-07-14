@@ -10,61 +10,67 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalContainer, { InternalContainerProps } from '../container/internal';
-import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-component';
-import { getVisualContextClassname } from '../internal/components/visual-context';
-import { CollectionLabelContext } from '../internal/context/collection-label-context';
-import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import InternalContainer, { InternalContainerProps } from '../container/internal.js';
+import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
+import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-component/index.js';
+import { getVisualContextClassname } from '../internal/components/visual-context/index.js';
+import { CollectionLabelContext } from '../internal/context/collection-label-context.js';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
 import {
   FilterRef,
   HeaderRef,
   PaginationRef,
   PreferencesRef,
   TableComponentsContextProvider,
-} from '../internal/context/table-component-context';
-import { fireNonCancelableEvent } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMobile } from '../internal/hooks/use-mobile';
-import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
-import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
-import { usePrevious } from '../internal/hooks/use-previous';
-import { useScrollSync } from '../internal/hooks/use-scroll-sync';
-import { useTableInteractionMetrics } from '../internal/hooks/use-table-interaction-metrics';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { isDevelopment } from '../internal/is-development';
-import { SomeRequired } from '../internal/types';
-import InternalLiveRegion from '../live-region/internal';
-import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
-import { TableBodyCell } from './body-cell';
-import { checkColumnWidths } from './column-widths-utils';
-import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
-import { TableForwardRefType, TableProps, TableRow } from './interfaces';
-import { NoDataCell } from './no-data-cell';
-import { getLoaderContent } from './progressive-loading/items-loader';
-import { TableLoaderCell } from './progressive-loading/loader-cell';
-import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
-import { ResizeTracker } from './resizer';
-import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
-import { TableBodySelectionCell } from './selection/selection-cell';
-import { useStickyColumns } from './sticky-columns';
-import StickyHeader, { StickyHeaderRef } from './sticky-header';
-import { StickyScrollbar } from './sticky-scrollbar';
+} from '../internal/context/table-component-context.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
+import useMouseDownTarget from '../internal/hooks/use-mouse-down-target.js';
+import { usePerformanceMarks } from '../internal/hooks/use-performance-marks/index.js';
+import { usePrevious } from '../internal/hooks/use-previous/index.js';
+import { useScrollSync } from '../internal/hooks/use-scroll-sync/index.js';
+import { useTableInteractionMetrics } from '../internal/hooks/use-table-interaction-metrics/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { isDevelopment } from '../internal/is-development.js';
+import { SomeRequired } from '../internal/types.js';
+import InternalLiveRegion from '../live-region/internal.js';
+import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces.js';
+import { TableBodyCell } from './body-cell/index.js';
+import { checkColumnWidths } from './column-widths-utils.js';
+import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils.js';
+import { TableForwardRefType, TableProps, TableRow } from './interfaces.js';
+import { NoDataCell } from './no-data-cell.js';
+import { getLoaderContent } from './progressive-loading/items-loader.js';
+import { TableLoaderCell } from './progressive-loading/loader-cell.js';
+import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils.js';
+import { ResizeTracker } from './resizer/index.js';
+import { focusMarkers, useSelection, useSelectionFocusMove } from './selection/index.js';
+import { TableBodySelectionCell } from './selection/selection-cell.js';
+import { useStickyColumns } from './sticky-columns/index.js';
+import StickyHeader, { StickyHeaderRef } from './sticky-header.js';
+import { StickyScrollbar } from './sticky-scrollbar/index.js';
 import {
   getTableRoleProps,
   getTableRowRoleProps,
   getTableWrapperRoleProps,
   GridNavigationProvider,
   TableRole,
-} from './table-role';
-import Thead, { TheadProps } from './thead';
-import ToolsHeader from './tools-header';
-import { useCellEditing } from './use-cell-editing';
-import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
-import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
-import { useRowEvents } from './use-row-events';
-import useTableFocusNavigation from './use-table-focus-navigation';
-import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
+} from './table-role/index.js';
+import Thead, { TheadProps } from './thead.js';
+import ToolsHeader from './tools-header.js';
+import { useCellEditing } from './use-cell-editing.js';
+import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths.js';
+import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll.js';
+import { useRowEvents } from './use-row-events.js';
+import useTableFocusNavigation from './use-table-focus-navigation.js';
+import {
+  checkSortingState,
+  getColumnKey,
+  getItemKey,
+  getVisibleColumnDefinitions,
+  toContainerVariant,
+} from './utils.js';
 
 import buttonStyles from '../button/styles.css.js';
 import headerStyles from '../header/styles.css.js';

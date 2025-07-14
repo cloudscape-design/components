@@ -4,8 +4,8 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import InternalIcon from '../../../icon/internal';
-import { useSingleTabStopNavigation } from '../../../internal/context/single-tab-stop-navigation-context';
+import InternalIcon from '../../../icon/internal.js';
+import { useSingleTabStopNavigation } from '../../../internal/context/single-tab-stop-navigation-context.js';
 
 import styles from './styles.css.js';
 

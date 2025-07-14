@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-import createWrapper, { AreaChartWrapper } from '../../../../lib/components/test-utils/selectors';
-import ChartFilterWrapper from '../../../../lib/components/test-utils/selectors/internal/chart-filter';
-import ChartLegendWrapper from '../../../../lib/components/test-utils/selectors/internal/chart-legend';
+import createWrapper, { AreaChartWrapper } from '../../../../lib/components/test-utils/selectors/index.js';
+import ChartFilterWrapper from '../../../../lib/components/test-utils/selectors/internal/chart-filter.js';
+import ChartLegendWrapper from '../../../../lib/components/test-utils/selectors/internal/chart-legend.js';
 
 import cartesianChartStyles from '../../../../lib/components/internal/components/cartesian-chart/styles.selectors.js';
 import seriesDetailStyles from '../../../../lib/components/internal/components/chart-series-details/styles.selectors.js';

@@ -4,11 +4,11 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { GeneratedAnalyticsMetadataLinkFragment } from './analytics-metadata/interfaces';
-import { LinkProps } from './interfaces';
-import InternalLink from './internal';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { GeneratedAnalyticsMetadataLinkFragment } from './analytics-metadata/interfaces.js';
+import { LinkProps } from './interfaces.js';
+import InternalLink from './internal.js';
 
 export { LinkProps };
 

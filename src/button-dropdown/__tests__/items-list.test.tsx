@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import ItemsList from '../../../lib/components/button-dropdown/items-list';
-import { ButtonDropdownProps } from '../interfaces';
+import ItemsList from '../../../lib/components/button-dropdown/items-list.js';
+import { ButtonDropdownProps } from '../interfaces.js';
 
 import itemElementStyles from '../../../lib/components/button-dropdown/item-element/styles.css.js';
 

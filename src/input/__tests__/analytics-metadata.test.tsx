@@ -6,9 +6,9 @@ import { render } from '@testing-library/react';
 import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import Input from '../../../lib/components/input';
-import InternalInput from '../../../lib/components/input/internal';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Input from '../../../lib/components/input/index.js';
+import InternalInput from '../../../lib/components/input/internal.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/input/styles.css.js';
 

@@ -3,9 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { useVisualRefresh } from '../../../../lib/components/internal/hooks/use-visual-mode';
-import { createWidgetizedComponent } from '../../../../lib/components/internal/widgets';
-import { describeWithAppLayoutFeatureFlagEnabled } from './utils';
+import { useVisualRefresh } from '../../../../lib/components/internal/hooks/use-visual-mode/index.js';
+import { createWidgetizedComponent } from '../../../../lib/components/internal/widgets/index.js';
+import { describeWithAppLayoutFeatureFlagEnabled } from './utils.js';
 
 const LoaderSkeleton = () => <div data-testid="loader">Loading...</div>;
 const RealComponent = () => <div data-testid="content">Real content</div>;

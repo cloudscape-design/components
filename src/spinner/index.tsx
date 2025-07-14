@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { SpinnerProps } from './interfaces';
-import InternalSpinner from './internal';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { SpinnerProps } from './interfaces.js';
+import InternalSpinner from './internal.js';
 
 export { SpinnerProps };
 

@@ -5,14 +5,14 @@ import clsx from 'clsx';
 
 import { useCurrentMode, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalGrid from '../grid/internal';
-import { getBaseProps } from '../internal/base-component';
-import customCssProps from '../internal/generated/custom-css-properties';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { highContrastHeaderClassName } from '../internal/utils/content-header-utils';
-import { ContentLayoutProps } from './interfaces';
+import InternalGrid from '../grid/internal.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import customCssProps from '../internal/generated/custom-css-properties/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { highContrastHeaderClassName } from '../internal/utils/content-header-utils.js';
+import { ContentLayoutProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';

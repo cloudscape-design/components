@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { HotspotContext } from '../../../annotation-context/context';
-import { getStepInfo } from '../../../annotation-context/utils';
-import InternalBox from '../../../box/internal';
-import { InternalButton } from '../../../button/internal';
-import InternalSpaceBetween from '../../../space-between/internal';
-import { TutorialPanelProps } from '../../interfaces';
-import { Task } from './task';
+import { HotspotContext } from '../../../annotation-context/context.js';
+import { getStepInfo } from '../../../annotation-context/utils.js';
+import InternalBox from '../../../box/internal.js';
+import { InternalButton } from '../../../button/internal.js';
+import InternalSpaceBetween from '../../../space-between/internal.js';
+import { TutorialPanelProps } from '../../interfaces.js';
+import { Task } from './task.js';
 
 import styles from './styles.css.js';
 

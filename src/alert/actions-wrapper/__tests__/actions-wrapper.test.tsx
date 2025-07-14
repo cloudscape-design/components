@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { ActionsWrapper } from '../../../../lib/components/alert/actions-wrapper';
+import { ActionsWrapper } from '../../../../lib/components/alert/actions-wrapper/index.js';
 
 let mockElementOffsetLeft = 200;
 

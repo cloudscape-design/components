@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useMemo, useRef } from 'react';
 
-import { useVirtual as useVirtualDefault, VirtualItem } from '../../vendor/react-virtual';
-import stickyRangeExtractor from './sticky-range-extractor';
+import { useVirtual as useVirtualDefault, VirtualItem } from '../../vendor/react-virtual.js';
+import stickyRangeExtractor from './sticky-range-extractor.js';
 
 const MAX_ITEM_MOUNTS = 100;
 

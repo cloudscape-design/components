@@ -3,11 +3,11 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import { scrollbarThickness } from '../../__integ__/scrollbars';
-import { Theme } from '../../__integ__/utils';
-import { viewports } from './constants';
-import { getUrlParams } from './utils';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import { scrollbarThickness } from '../../__integ__/scrollbars.js';
+import { Theme } from '../../__integ__/utils.js';
+import { viewports } from './constants.js';
+import { getUrlParams } from './utils.js';
 
 const wrapper = createWrapper().findAppLayout();
 

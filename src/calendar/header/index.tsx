@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { HeaderNextButton, HeaderPrevButton } from './header-button';
+import { HeaderNextButton, HeaderPrevButton } from './header-button.js';
 
 import styles from '../styles.css.js';
 

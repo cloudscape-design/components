@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseCheckboxProps } from '../checkbox/base-checkbox';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseCheckboxProps } from '../checkbox/base-checkbox.js';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
 
 export interface ToggleProps extends BaseCheckboxProps {
   /**

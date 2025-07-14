@@ -4,9 +4,9 @@
 import { useRef } from 'react';
 import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 
-import { CustomHandler } from '../../../i18n/context';
-import { I18nFormatArgTypes } from '../../../i18n/messages-types';
-import { SortableAreaProps } from './interfaces';
+import { CustomHandler } from '../../../i18n/context.js';
+import { I18nFormatArgTypes } from '../../../i18n/messages-types.js';
+import { SortableAreaProps } from './interfaces.js';
 
 export const formatDndStarted: CustomHandler<
   SortableAreaProps.DndAreaI18nStrings['liveAnnouncementDndStarted'],

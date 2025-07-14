@@ -1,17 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
-import { ActionButtonsController, ActionsApiInternal, ActionsApiPublic } from './controllers/action-buttons';
+import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces.js';
+import { ActionButtonsController, ActionsApiInternal, ActionsApiPublic } from './controllers/action-buttons.js';
 import {
   AlertFlashContentApiInternal,
   AlertFlashContentApiPublic,
   AlertFlashContentController,
-} from './controllers/alert-flash-content';
-import { AppLayoutWidgetApiInternal, AppLayoutWidgetController } from './controllers/app-layout-widget';
-import { BreadcrumbsApiInternal, BreadcrumbsController } from './controllers/breadcrumbs';
-import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './controllers/drawers';
-import { SharedReactContexts, SharedReactContextsApiInternal } from './controllers/shared-react-contexts';
-import { reportRuntimeApiLoadMetric } from './helpers/metrics';
+} from './controllers/alert-flash-content.js';
+import { AppLayoutWidgetApiInternal, AppLayoutWidgetController } from './controllers/app-layout-widget.js';
+import { BreadcrumbsApiInternal, BreadcrumbsController } from './controllers/breadcrumbs.js';
+import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './controllers/drawers.js';
+import { SharedReactContexts, SharedReactContextsApiInternal } from './controllers/shared-react-contexts.js';
+import { reportRuntimeApiLoadMetric } from './helpers/metrics.js';
 
 const storageKey = Symbol.for('awsui-plugin-api');
 

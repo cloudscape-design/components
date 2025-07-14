@@ -3,8 +3,8 @@
 
 import React from 'react';
 
-import { I18nProviderProps } from '../../../lib/components/i18n';
-import { useInternalI18n } from '../../../lib/components/i18n/context';
+import { useInternalI18n } from '../../../lib/components/i18n/context.js';
+import { I18nProviderProps } from '../../../lib/components/i18n/index.js';
 
 interface TestComponentProps {
   topLevelString?: string;
