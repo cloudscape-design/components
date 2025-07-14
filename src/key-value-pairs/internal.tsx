@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import Box from '../box/internal';
 import ColumnLayout from '../column-layout/internal';
@@ -51,6 +51,15 @@ const InternalKeyValuePairs = React.forwardRef(
     }: KeyValuePairsProps & Required<Pick<KeyValuePairsProps, 'columns'>>,
     ref: React.Ref<HTMLDivElement>
   ) => {
+    const MAX_COLUMNS = 4;
+
+    if (columns > MAX_COLUMNS) {
+      warnOnce(
+        'Key-value pairs',
+        `\`columns\` (${columns}) must be <= ${MAX_COLUMNS}. Using ${MAX_COLUMNS} as default.`
+      );
+    }
+
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
         <div
@@ -66,7 +75,7 @@ const InternalKeyValuePairs = React.forwardRef(
         */}
           <ColumnLayout
             __tagOverride="dl"
-            columns={Math.min(columns, 4)}
+            columns={Math.min(columns, MAX_COLUMNS)}
             variant="text-grid"
             minColumnWidth={minColumnWidth}
           >
