@@ -39,44 +39,42 @@ function CustomBadge({ children, colorTheme, id }: CustomBadgeProps) {
   const mode = useCurrentMode(useRef(document.body));
   const background = backgrounds[mode][colorTheme];
   const color = colors[mode];
-
   return (
-    <CloudscapeBadge data-testid={id}>
-      <span
-        style={{
+    <CloudscapeBadge
+      data-testid={id}
+      style={{
+        root: {
           background,
-          borderRadius: '4px',
+          borderRadius: '8px',
           borderWidth: '0px',
           color,
-          paddingBlock: '12px',
-          paddingInline: '16px',
-          fontSize: '16px',
-          display: 'inline-block',
-        }}
-      >
-        {children}
-      </span>
+          paddingBlock: '8px',
+          paddingInline: '12px',
+        },
+      }}
+    >
+      <span style={{ fontSize: '16px' }}>{children}</span>
     </CloudscapeBadge>
   );
 }
 
 const backgrounds = {
   light: {
-    grey: palette.neutral80,
-    blue: palette.blue80,
-    critical: palette.red100,
+    grey: palette.neutral90,
+    blue: palette.blue60,
+    critical: palette.red80,
     high: palette.red60,
-    medium: palette.orange80,
+    medium: palette.orange60,
     low: palette.teal60,
-    neutral: palette.neutral40,
+    neutral: palette.neutral60,
   },
   dark: {
     grey: palette.neutral10,
-    blue: palette.blue80,
-    critical: palette.red80,
-    high: palette.red100,
-    medium: palette.orange80,
-    low: palette.teal10,
+    blue: palette.blue40,
+    critical: palette.red60,
+    high: palette.red80,
+    medium: palette.orange40,
+    low: palette.teal20,
     neutral: palette.neutral40,
   },
 };
