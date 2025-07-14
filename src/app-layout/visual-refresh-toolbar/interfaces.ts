@@ -66,4 +66,7 @@ export interface AppLayoutInternals {
   splitPanelAnimationDisabled?: boolean;
   expandedDrawerId: string | null;
   setExpandedDrawerId: (value: string | null) => void;
+  aiDrawer?: InternalDrawer;
+  onActiveAiDrawerChange: (value: string | null) => void;
+  activeAiDrawer: string | null;
 }
