@@ -22,6 +22,7 @@ export interface TriggerButtonProps {
   className?: string;
   iconName?: IconProps.Name;
   iconSvg?: React.ReactNode;
+  customSvg?: React.ReactNode;
   ariaExpanded: boolean | undefined;
   ariaControls?: string;
   disabled?: boolean;
@@ -65,6 +66,7 @@ export interface TriggerButtonProps {
    */
   isForSplitPanel?: boolean;
   tabIndex?: number | undefined;
+  variant?: 'circle' | 'custom';
 }
 
 function TriggerButton(
@@ -73,6 +75,7 @@ function TriggerButton(
     className,
     iconName,
     iconSvg,
+    customSvg,
     ariaExpanded,
     ariaControls,
     onClick,
@@ -86,6 +89,7 @@ function TriggerButton(
     isMobile = false,
     isForPreviousActiveDrawer = false,
     isForSplitPanel = false,
+    variant = 'circle',
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
@@ -217,6 +221,7 @@ function TriggerButton(
         disabled={disabled}
         className={clsx(
           styles.trigger,
+          styles[variant],
           {
             [styles.selected]: selected,
             [styles['trigger-with-badge']]: badge,
@@ -231,7 +236,7 @@ function TriggerButton(
         data-shift-focus="awsui-layout-drawer-trigger"
         {...getAnalyticsMetadataAttribute(triggerEventMetadata)}
       >
-        {(iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />}
+        {customSvg ?? ((iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />)}
       </button>
       {badge && <div className={styles.dot} />}
       {tooltipVisible && (

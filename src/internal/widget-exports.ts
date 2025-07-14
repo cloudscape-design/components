@@ -6,6 +6,7 @@ export { PACKAGE_VERSION } from './environment';
 export {
   AppLayoutDrawerImplementation as AppLayoutDrawer,
   AppLayoutGlobalDrawersImplementation as AppLayoutGlobalDrawers,
+  AppLayoutGlobalAiDrawerImplementation as AppLayoutAiDrawer,
 } from '../app-layout/visual-refresh-toolbar/drawer';
 export { AppLayoutNavigationImplementation as AppLayoutNavigation } from '../app-layout/visual-refresh-toolbar/navigation';
 export { AppLayoutNotificationsImplementation as AppLayoutNotifications } from '../app-layout/visual-refresh-toolbar/notifications';

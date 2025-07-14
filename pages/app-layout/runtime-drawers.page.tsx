@@ -126,7 +126,7 @@ export default function WithDrawers() {
                   >
                     Resize circle3-global drawer to 500px
                   </Button>
-                </SpaceBetween>
+              </SpaceBetween>
               </SpaceBetween>
             }
           >

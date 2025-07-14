@@ -20,7 +20,8 @@ export interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
 export type InternalDrawer = AppLayoutProps.Drawer & {
   defaultActive?: boolean;
   isExpandable?: boolean;
-  ariaLabels: AppLayoutProps.Drawer['ariaLabels'] & { expandedModeButton?: string };
+  ariaLabels: AppLayoutProps.Drawer['ariaLabels'] & { expandedModeButton?: string; exitExpandedModeButton?: string };
+  header?: React.ReactNode;
 };
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.
@@ -69,6 +70,15 @@ export interface AppLayoutInternals {
   splitPanelAnimationDisabled?: boolean;
   expandedDrawerId: string | null;
   setExpandedDrawerId: (value: string | null) => void;
+  aiDrawer?: InternalDrawer | null;
+  onActiveAiDrawerChange?: (newDrawerId: string | null, params: OnChangeParams) => void;
+  activeAiDrawer?: InternalDrawer | null;
+  activeAiDrawerId: string | null;
+  activeAiDrawerSize?: number;
+  minAiDrawerSize?: number;
+  maxAiDrawerSize?: number;
+  aiDrawerFocusControl?: FocusControlState;
+  onActiveAiDrawerResize: (size: number) => void;
 }
 
 interface AppLayoutWidgetizedState extends AppLayoutInternals {
