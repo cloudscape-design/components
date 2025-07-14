@@ -146,6 +146,13 @@ module.exports = ({
       devMiddleware: {
         publicPath: '/',
       },
+      client: {
+        overlay: {
+          errors: true,
+          warnings: true,
+          runtimeErrors: false,
+        },
+      },
     },
   };
 };

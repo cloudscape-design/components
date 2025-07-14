@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+import { useDensityMode, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { getVisualContextClassname } from '../../internal/components/visual-context';
 import { AppLayoutProps } from '../interfaces';
@@ -77,6 +77,8 @@ export const Drawer = React.forwardRef(
       </TagName>
     );
 
+    const closeMergedRef = useMergeRefs(toggleRefs.close, toggleRefs.onMount);
+
     return (
       <div
         ref={ref}
@@ -128,7 +130,7 @@ export const Drawer = React.forwardRef(
           >
             {!isMobile && isOpen && <div className={styles['resize-handle-wrapper']}>{resizeHandle}</div>}
             <CloseButton
-              ref={toggleRefs.close}
+              ref={closeMergedRef}
               className={closeClassName}
               ariaLabel={closeLabel}
               onClick={() => {
