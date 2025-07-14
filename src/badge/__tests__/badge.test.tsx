@@ -57,3 +57,34 @@ describe('Badge', () => {
     expect(badge).toHaveClass(styles[`badge-color-grey`]);
   });
 });
+
+describe('Style API', () => {
+  test('all style properties', () => {
+    const badge = renderBadge(
+      <Badge
+        style={{
+          root: {
+            background: '#fff',
+            borderColor: '#000',
+            borderRadius: '8px',
+            borderWidth: '2px',
+            color: 'blue',
+            paddingBlock: '4px',
+            paddingInline: '8px',
+          },
+        }}
+      >
+        Badge
+      </Badge>
+    );
+
+    expect(badge.style.background).toBe('#fff');
+    expect(badge.style.borderColor).toBe('#000');
+    expect(badge.style.borderRadius).toBe('8px');
+    expect(badge.style.borderWidth).toBe('2px');
+    expect(badge.style.borderStyle).toBe('solid');
+    expect(badge.style.color).toBe('blue');
+    expect(badge.style.paddingBlock).toBe('4px');
+    expect(badge.style.paddingInline).toBe('8px');
+  });
+});
