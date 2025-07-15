@@ -63,15 +63,7 @@ export function AppLayoutToolbarImplementation({
   // not testable in a single-version setup
   toolbarProps = {},
 }: AppLayoutToolbarImplementationProps) {
-  const {
-    breadcrumbs,
-    discoveredBreadcrumbs,
-    verticalOffsets,
-    isMobile,
-    toolbarState,
-    setToolbarState,
-    setToolbarHeight,
-  } = appLayoutInternals;
+  const { breadcrumbs, discoveredBreadcrumbs, verticalOffsets, isMobile, setToolbarHeight } = appLayoutInternals;
   const {
     ariaLabels,
     activeDrawerId,
@@ -93,8 +85,6 @@ export function AppLayoutToolbarImplementation({
     expandedDrawerId,
     setExpandedDrawerId,
   } = toolbarProps;
-  // TODO: expose configuration property
-  const pinnedToolbar = true;
   const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
   useResizeObserver(ref, entry => setToolbarHeight(entry.borderBoxHeight));
@@ -105,31 +95,6 @@ export function AppLayoutToolbarImplementation({
     // unmount effect only
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-
-    /* istanbul ignore next not testable in JSDOM */
-    const updateScrollDirection = () => {
-      if (pinnedToolbar) {
-        setToolbarState('show');
-        return;
-      }
-      const scrollY = window.scrollY;
-      // 80 is an arbitrary number to have a pause before the toolbar scrolls out of view at the top of the page
-      const direction = scrollY > lastScrollY && scrollY > 80 ? 'hide' : 'show';
-      // 2 as a buffer to avoid mistaking minor accidental mouse moves as scroll
-      if (direction !== toolbarState && (scrollY - lastScrollY > 2 || scrollY - lastScrollY < -2)) {
-        setToolbarState(direction);
-      }
-      lastScrollY = scrollY > 0 ? scrollY : 0;
-    };
-
-    window.addEventListener('scroll', updateScrollDirection);
-    return () => {
-      window.removeEventListener('scroll', updateScrollDirection);
-    };
-  }, [pinnedToolbar, setToolbarState, toolbarState]);
 
   const anyPanelOpenInMobile = !!isMobile && (!!activeDrawerId || (!!navigationOpen && !!hasNavigation));
   useEffect(() => {
@@ -143,7 +108,6 @@ export function AppLayoutToolbarImplementation({
     };
   }, [anyPanelOpenInMobile]);
 
-  const toolbarHidden = toolbarState === 'hide' && !pinnedToolbar;
   const navLandmarkAttributes = navigationOpen
     ? { role: 'presentation' }
     : { role: 'navigation', 'aria-label': ariaLabels?.navigation };
@@ -153,10 +117,9 @@ export function AppLayoutToolbarImplementation({
       ref={ref}
       className={clsx(styles['universal-toolbar'], testutilStyles.toolbar, {
         [testutilStyles['mobile-bar']]: isMobile,
-        [styles['toolbar-hidden']]: toolbarHidden,
       })}
       style={{
-        insetBlockStart: toolbarHidden ? '-60px' : verticalOffsets.toolbar,
+        insetBlockStart: verticalOffsets.toolbar,
       }}
     >
       <div className={styles['toolbar-container']}>
