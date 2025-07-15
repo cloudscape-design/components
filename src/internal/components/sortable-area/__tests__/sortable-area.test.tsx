@@ -45,6 +45,18 @@ test('renders all items with correct attributes', () => {
           disabled: false,
           onPointerDown: expect.anything(),
           onKeyDown: expect.anything(),
+          onDirectionClick: expect.anything(),
+          triggerMode: 'keyboard-activate',
+          directions:
+            i === 0
+              ? {
+                  'block-start': 'disabled',
+                  'block-end': 'active',
+                }
+              : {
+                  'block-start': 'active',
+                  'block-end': 'disabled',
+                },
         },
       })
     );

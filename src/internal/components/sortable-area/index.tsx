@@ -11,6 +11,7 @@ import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
 import { fireNonCancelableEvent } from '../../events';
 import { joinStrings } from '../../utils/strings';
+import { Direction } from '../drag-handle-wrapper/interfaces';
 import { SortableAreaProps } from './interfaces';
 import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
@@ -65,14 +66,23 @@ export default function SortableArea<Item>({
         items={items.map(item => itemDefinition.id(item))}
         strategy={verticalListSortingStrategy}
       >
-        {items.map(item => (
+        {items.map((item, index) => (
           <DraggableItem
             key={itemDefinition.id(item)}
             item={item}
             itemDefinition={itemDefinition}
+            isFirst={index === 0}
+            isLast={index === items.length - 1}
             renderItem={renderItem}
             onKeyDown={handleKeyDown}
             dragHandleAriaLabel={i18nStrings?.dragHandleAriaLabel}
+            onDirectionClick={direction => {
+              const movedItem = item;
+              const oldIndex = items.indexOf(item);
+              const newIndex = direction === 'block-end' ? oldIndex + 1 : oldIndex - 1;
+              fireNonCancelableEvent(onItemsChange, { items: arrayMove([...items], oldIndex, newIndex), movedItem });
+              i18nStrings?.liveAnnouncementDndItemCommitted?.(oldIndex + 1, newIndex + 1, items.length);
+            }}
           />
         ))}
       </SortableContext>
@@ -126,13 +136,19 @@ function DraggableItem<Item>({
   item,
   itemDefinition,
   dragHandleAriaLabel,
+  isFirst,
+  isLast,
   onKeyDown,
+  onDirectionClick,
   renderItem,
 }: {
   item: Item;
   itemDefinition: SortableAreaProps.ItemDefinition<Item>;
   dragHandleAriaLabel?: string;
+  isFirst: boolean;
+  isLast: boolean;
   onKeyDown: (event: React.KeyboardEvent) => void;
+  onDirectionClick: (direction: Direction) => void;
   renderItem: (props: SortableAreaProps.RenderItemProps<Item>) => React.ReactNode;
 }) {
   const id = itemDefinition.id(item);
@@ -173,6 +189,12 @@ function DraggableItem<Item>({
           ariaLabel: joinStrings(dragHandleAriaLabel, itemDefinition.label(item)) ?? '',
           ariaDescribedby: attributes['aria-describedby'],
           disabled: attributes['aria-disabled'],
+          directions: {
+            'block-start': isFirst ? 'disabled' : 'active',
+            'block-end': isLast ? 'disabled' : 'active',
+          },
+          triggerMode: 'keyboard-activate',
+          onDirectionClick,
         },
       })}
     </>
