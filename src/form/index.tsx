@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React, { useEffect } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';

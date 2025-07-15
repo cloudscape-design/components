@@ -158,7 +158,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const highlightedOptionIdSource = useUniqueId();
     const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
-    const isEmpty = !value && !autosuggestItemsState.items.length;
+    const isEmpty = !autosuggestItemsState.items.length;
     const dropdownStatus = useDropdownStatus({
       ...props,
       isEmpty,
@@ -173,7 +173,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
           {customForm.content}
         </div>
       );
-    } else if (autosuggestItemsState.items.length > 0) {
+    } else {
       content = (
         <AutosuggestOptionsList
           statusType={statusType}
