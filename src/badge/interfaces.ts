@@ -31,6 +31,7 @@ export interface BadgeProps extends BaseComponentProps {
    * - `root.borderColor` (string) - (Optional) Border color for component states.
    * - `root.borderRadius` (string) - (Optional) Border radius style.
    * - `root.borderWidth` (string) - (Optional) Border width style.
+   * - `root.borderStyle` (string) - (Optional) Border style.
    * - `root.paddingBlock` (string) - (Optional) Block dimension padding.
    * - `root.paddingInline` (string) - (Optional) Inline dimension padding.
    * @awsuiSystem core
@@ -45,6 +46,7 @@ export namespace BadgeProps {
       borderColor?: string;
       borderRadius?: string;
       borderWidth?: string;
+      borderStyle?: string;
       paddingBlock?: string;
       paddingInline?: string;
     };

@@ -14,6 +14,7 @@ export function getBadgeStyles(style: BadgeProps['style']) {
         borderColor: style.root.borderColor,
         borderRadius: style.root.borderRadius,
         borderWidth: style.root.borderWidth,
+        borderStyle: style.root.borderStyle,
         paddingBlock: style.root.paddingBlock,
         paddingInline: style.root.paddingInline,
       }

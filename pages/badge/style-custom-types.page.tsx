@@ -13,7 +13,6 @@ export default function CustomBadgeTypes() {
   return (
     <ScreenshotArea>
       <h1>Custom Badge Types</h1>
-
       <SpaceBetween direction="horizontal" size="m">
         <CustomBadge colorTheme="grey" id="default">
           Grey
@@ -67,12 +66,12 @@ const backgrounds = {
     neutral: palette.neutral60,
   },
   dark: {
-    grey: palette.neutral10,
+    grey: palette.neutral80,
     blue: palette.blue40,
     critical: palette.red60,
-    high: palette.red80,
+    high: palette.red30,
     medium: palette.orange40,
-    low: palette.teal20,
-    neutral: palette.neutral40,
+    low: palette.teal40,
+    neutral: palette.neutral60,
   },
 };

@@ -15,30 +15,26 @@ const permutations = createPermutations<BadgeProps>([
     style: [
       {
         root: {
-          borderColor: 'black',
-          borderRadius: '2px',
-          borderWidth: '1px',
-        },
-      },
-      {
-        root: {
           borderColor: 'red',
           borderRadius: '8px',
           borderWidth: '2px',
+          borderStyle: 'solid',
         },
       },
       {
         root: {
           borderColor: 'blue',
           borderRadius: '12px',
-          borderWidth: '3px',
+          borderWidth: '4px',
+          borderStyle: 'dashed',
         },
       },
       {
         root: {
           borderColor: 'green',
-          borderRadius: '99px',
-          borderWidth: '1px',
+          borderRadius: '4px',
+          borderWidth: '4px',
+          borderStyle: 'solid',
         },
       },
     ],
@@ -74,13 +70,6 @@ const permutations = createPermutations<BadgeProps>([
           borderWidth: '0px',
         },
       },
-      {
-        root: {
-          background: 'transparent',
-          borderWidth: '2px',
-          borderColor: 'red',
-        },
-      },
     ],
     color: [
       'grey',
@@ -98,36 +87,28 @@ const permutations = createPermutations<BadgeProps>([
     style: [
       {
         root: {
-          borderColor: 'blue',
-          borderWidth: '10px',
-          borderRadius: '10px',
+          borderRadius: '8px',
           paddingBlock: '4px',
           paddingInline: '8px',
         },
       },
       {
         root: {
-          borderColor: 'blue',
-          borderWidth: '10px',
-          borderRadius: '10px',
+          borderRadius: '8px',
           paddingBlock: '8px',
           paddingInline: '12px',
         },
       },
       {
         root: {
-          borderColor: 'blue',
-          borderWidth: '10px',
-          borderRadius: '10px',
+          borderRadius: '8px',
           paddingBlock: '12px',
           paddingInline: '16px',
         },
       },
       {
         root: {
-          borderColor: 'blue',
-          borderWidth: '10px',
-          borderRadius: '10px',
+          borderRadius: '8px',
           paddingBlock: '16px',
           paddingInline: '24px',
         },
@@ -147,9 +128,9 @@ const permutations = createPermutations<BadgeProps>([
 
 export default function BadgeStylePermutations() {
   return (
-    <>
+    <div style={{ padding: '20px' }}>
       <h1>Badge Style permutations</h1>
       <PermutationsView permutations={permutations} render={permutation => <Badge {...permutation} />} />
-    </>
+    </div>
   );
 }
