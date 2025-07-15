@@ -7,8 +7,8 @@ import Box from '~components/box';
 import Icon from '~components/icon';
 import TokenList from '~components/internal/components/token-list';
 import SpaceBetween from '~components/space-between';
+import Token from '~components/token';
 import { TokenGroupProps } from '~components/token-group';
-import { Token } from '~components/token-group/token';
 
 import styles from './styles.scss';
 
@@ -31,6 +31,10 @@ export default function GenericTokenGroupPage() {
       <h1>Generic token group</h1>
       <SpaceBetween size="l" direction="vertical">
         <Token ariaLabel="Standalone token">Standalone token</Token>
+
+        <Token ariaLabel="Standalone readonle token" readOnly={true}>
+          Standalone readonly token
+        </Token>
 
         <Token ariaLabel="Standalone disabled token" disabled={true}>
           Standalone disabled token
