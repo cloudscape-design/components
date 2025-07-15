@@ -5,7 +5,7 @@ import React, { forwardRef, Ref } from 'react';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../icon/internal';
-import { GeneratedAnalyticsMetadataTokenGroupDismiss } from './analytics-metadata/interfaces';
+import { GeneratedAnalyticsMetadataTokenGroupDismiss } from '../token-group/analytics-metadata/interfaces';
 
 import styles from './styles.css.js';
 

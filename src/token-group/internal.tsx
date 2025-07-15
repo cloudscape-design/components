@@ -14,8 +14,8 @@ import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
 import { SomeRequired } from '../internal/types';
+import InternalToken from '../token/internal';
 import { TokenGroupProps } from './interfaces';
-import { Token } from './token';
 
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import styles from './styles.css.js';
@@ -71,7 +71,7 @@ export default function InternalTokenGroup({
         items={items}
         limit={limit}
         renderItem={(item, itemIndex) => (
-          <Token
+          <InternalToken
             ariaLabel={item.label}
             dismissLabel={item.dismissLabel}
             onDismiss={() => {
@@ -85,7 +85,7 @@ export default function InternalTokenGroup({
               : getAnalyticsMetadataAttribute({ detail: { position: `${itemIndex + 1}` } }))}
           >
             <Option option={item} />
-          </Token>
+          </InternalToken>
         )}
         i18nStrings={i18nStrings}
         limitShowFewerAriaLabel={limitShowFewerAriaLabel}

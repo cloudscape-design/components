@@ -1,0 +1,79 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use './constants' as constants;
+@use './mixins.scss' as mixins;
+
+.dismiss-button {
+  margin-block-start: -1px;
+  margin-block-end: 0;
+  margin-inline-start: awsui.$space-xxs;
+  margin-inline-end: -1px;
+  border-block: 1px solid transparent;
+  border-inline: 1px solid transparent;
+  padding-block: 0;
+  padding-inline: awsui.$space-xxs;
+  color: awsui.$color-text-button-inline-icon-default;
+  background-color: transparent;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(0px);
+  }
+
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+    color: awsui.$color-text-button-inline-icon-hover;
+  }
+}
+
+.token {
+  block-size: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: awsui.$space-xxs;
+}
+
+.token-box {
+  @include mixins.token-box-styles();
+}
+
+.token-box-readonly {
+  border-color: awsui.$color-border-input-disabled;
+  background-color: awsui.$color-background-container-content;
+  pointer-events: none;
+
+  > .dismiss-button {
+    color: awsui.$color-text-button-inline-icon-disabled;
+
+    &:hover {
+      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+      cursor: initial;
+      color: awsui.$color-text-button-inline-icon-disabled;
+    }
+  }
+}
+.token-box-disabled.token-box-disabled {
+  border-color: awsui.$color-border-control-disabled;
+  background-color: awsui.$color-background-container-content;
+  color: awsui.$color-text-disabled;
+  pointer-events: none;
+
+  > .dismiss-button {
+    color: awsui.$color-text-button-inline-icon-disabled;
+
+    &:hover {
+      cursor: initial;
+      color: awsui.$color-text-button-inline-icon-disabled;
+    }
+  }
+}
