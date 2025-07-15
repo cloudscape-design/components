@@ -101,6 +101,11 @@ export default function PopoverContainer({
       minVisibleBlockSize,
     });
 
+  // Recalculate position when properties change.
+  useLayoutEffect(() => {
+    updatePositionHandler();
+  }, [updatePositionHandler, trackKey]);
+
   // Recalculate position when content size changes.
   useResizeObserver(contentRef, () => {
     updatePositionHandler(true);
@@ -121,7 +126,7 @@ export default function PopoverContainer({
       return;
     }
 
-    updatePositionHandler();
+    requestAnimationFrame(() => positionHandlerRef.current());
   });
 
   // Recalculate position on resize or scroll events.
