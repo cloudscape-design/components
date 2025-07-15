@@ -75,7 +75,7 @@ async function toValidateA11y(this: jest.MatcherUtils, element: HTMLElement) {
     );
     // TODO: remove polyfill with es2019 support
     const flattenAxeViolations = flatMap(axeViolations, violation =>
-      violation.nodes.map(node => `${node.failureSummary} [${violation.id}]`)
+      violation.nodes.map(node => `[${violation.id}] ${node.failureSummary} Selector: ${node.target}`)
     );
 
     return compact(
