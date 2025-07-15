@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { getLogicalBoundingClientRect, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
@@ -125,10 +125,10 @@ export default function PopoverContainer({
   });
 
   // Recalculate position on resize or scroll events.
-  useEffect(() => {
+  useLayoutEffect(() => {
     const controller = new AbortController();
 
-    const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
+    const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler(true));
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
 
     window.addEventListener('resize', updatePositionOnResize, { signal: controller.signal });
@@ -137,7 +137,7 @@ export default function PopoverContainer({
     return () => {
       controller.abort();
     };
-  }, [positionHandlerRef, updatePositionHandler]);
+  }, [hideOnOverscroll, keepPosition, positionHandlerRef, trackRef, updatePositionHandler]);
 
   return isOverscrolling ? null : (
     <div
