@@ -37,6 +37,7 @@ interface CustomBadgeProps {
 function CustomBadge({ children, colorTheme, id }: CustomBadgeProps) {
   const mode = useCurrentMode(useRef(document.body));
   const background = backgrounds[mode][colorTheme];
+  const color = colors[mode];
   return (
     <CloudscapeBadge
       data-testid={id}
@@ -45,6 +46,7 @@ function CustomBadge({ children, colorTheme, id }: CustomBadgeProps) {
           background,
           borderRadius: '8px',
           borderWidth: '0px',
+          color,
           paddingBlock: '8px',
           paddingInline: '12px',
         },
@@ -74,4 +76,9 @@ const backgrounds = {
     low: palette.teal40,
     neutral: palette.neutral60,
   },
+};
+
+const colors = {
+  light: palette.neutral10,
+  dark: palette.neutral100,
 };

@@ -18,7 +18,6 @@ const permutations = createPermutations<BadgeProps>([
           borderColor: 'red',
           borderRadius: '8px',
           borderWidth: '2px',
-          borderStyle: 'solid',
         },
       },
       {
@@ -26,7 +25,6 @@ const permutations = createPermutations<BadgeProps>([
           borderColor: 'blue',
           borderRadius: '12px',
           borderWidth: '4px',
-          borderStyle: 'dashed',
         },
       },
       {
@@ -34,7 +32,6 @@ const permutations = createPermutations<BadgeProps>([
           borderColor: 'green',
           borderRadius: '4px',
           borderWidth: '4px',
-          borderStyle: 'solid',
         },
       },
     ],
@@ -50,35 +47,29 @@ const permutations = createPermutations<BadgeProps>([
   },
 
   {
-    children: ['Background Styles'],
+    children: ['Background and Color Styles'],
     style: [
       {
         root: {
           background: 'purple',
           borderWidth: '0px',
+          color: 'white',
         },
       },
       {
         root: {
           background: 'green',
           borderWidth: '0px',
+          color: 'yellow',
         },
       },
       {
         root: {
           background: 'orange',
           borderWidth: '0px',
+          color: 'blue',
         },
       },
-    ],
-    color: [
-      'grey',
-      'blue',
-      'severity-critical',
-      'severity-high',
-      'severity-medium',
-      'severity-low',
-      'severity-neutral',
     ],
   },
 
@@ -87,28 +78,24 @@ const permutations = createPermutations<BadgeProps>([
     style: [
       {
         root: {
-          borderRadius: '8px',
           paddingBlock: '4px',
           paddingInline: '8px',
         },
       },
       {
         root: {
-          borderRadius: '8px',
           paddingBlock: '8px',
           paddingInline: '12px',
         },
       },
       {
         root: {
-          borderRadius: '8px',
           paddingBlock: '12px',
           paddingInline: '16px',
         },
       },
       {
         root: {
-          borderRadius: '8px',
           paddingBlock: '16px',
           paddingInline: '24px',
         },
