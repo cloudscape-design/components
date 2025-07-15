@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { HTMLAttributes, useRef } from 'react';
+import clsx from 'clsx';
 
 import Tooltip from '../../tooltip';
 import { DragHandleProps } from '../interfaces';
@@ -23,32 +24,32 @@ export interface DragHandleWrapperProps {
   onTooltipDismiss?: () => void;
 }
 
-function DragHandleWrapper(
-  {
-    directions,
-    tooltipText,
-    children,
-    onDirectionClick,
-    onTooltipDismiss,
-    showButtons,
-    showTooltip,
-    nativeAttributes,
-  }: DragHandleWrapperProps,
-  ref: React.Ref<HTMLDivElement>
-) {
-  const dragHandleRef = useRef<HTMLDivElement | null>(null);
+export default function DragHandleWrapper({
+  directions,
+  tooltipText,
+  children,
+  onDirectionClick,
+  onTooltipDismiss,
+  showButtons,
+  showTooltip,
+  nativeAttributes,
+}: DragHandleWrapperProps) {
+  const trackRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <>
-      <div {...nativeAttributes} ref={ref}>
-        <div className={styles['drag-handle']} ref={dragHandleRef}>
-          {children}
-        </div>
-
-        {showTooltip && <Tooltip trackRef={dragHandleRef} value={tooltipText} onDismiss={onTooltipDismiss} />}
+      {/* Rendered using "display: inline", but can be restyled. Mostly serves as a container for listening to events. */}
+      <div
+        {...nativeAttributes}
+        className={clsx(styles['drag-handle-wrapper'], nativeAttributes?.className)}
+        ref={trackRef}
+      >
+        {children}
+        {/* We want events like onPointerEnter/onPointerLeave to include the tooltip. */}
+        {showTooltip && <Tooltip trackRef={trackRef} value={tooltipText} onDismiss={onTooltipDismiss} />}
       </div>
 
-      <PortalOverlay track={dragHandleRef} isDisabled={!showButtons}>
+      <PortalOverlay track={trackRef} isDisabled={!showButtons}>
         {directions['block-start'] && (
           <DirectionButton
             show={showButtons}
@@ -85,5 +86,3 @@ function DragHandleWrapper(
     </>
   );
 }
-
-export default React.forwardRef(DragHandleWrapper);

@@ -92,6 +92,10 @@ $direction-button-offset: awsui.$space-static-xxs;
   }
 }
 
+.drag-handle-wrapper {
+  display: inline;
+}
+
 .portal-overlay {
   position: absolute;
   inset-block-start: 0;
@@ -107,10 +111,6 @@ $direction-button-offset: awsui.$space-static-xxs;
 
 .portal-overlay-contents {
   pointer-events: auto;
-}
-
-.drag-handle {
-  display: contents;
 }
 
 .direction-button-wrapper {
