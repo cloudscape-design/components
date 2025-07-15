@@ -6,20 +6,11 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import DismissButton from './dismiss-button';
+import { TokenProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-interface TokenProps {
-  children: React.ReactNode;
-  ariaLabel?: string;
-  dismissLabel?: string;
-  onDismiss?: () => void;
-  disabled?: boolean;
-  readOnly?: boolean;
-  className?: string;
-}
-
-export function Token({ ariaLabel, disabled, readOnly, dismissLabel, onDismiss, children, ...restProps }: TokenProps) {
+function InternalToken({ ariaLabel, disabled, readOnly, dismissLabel, onDismiss, children, ...restProps }: TokenProps) {
   const baseProps = getBaseProps(restProps);
 
   return (
@@ -45,3 +36,5 @@ export function Token({ ariaLabel, disabled, readOnly, dismissLabel, onDismiss, 
     </div>
   );
 }
+
+export default InternalToken;
