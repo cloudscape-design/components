@@ -126,7 +126,7 @@ export default function PopoverContainer({
       return;
     }
 
-    requestAnimationFrame(() => positionHandlerRef.current());
+    positionHandlerRef.current();
   });
 
   // Recalculate position on resize or scroll events.
