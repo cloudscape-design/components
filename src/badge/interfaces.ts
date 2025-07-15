@@ -6,7 +6,7 @@ import { BaseComponentProps } from '../internal/base-component';
 
 export interface BadgeProps extends BaseComponentProps {
   /**
-   * Specifies the badge color.
+   * Specifies the component color.
    */
   color?:
     | 'blue'
@@ -20,20 +20,20 @@ export interface BadgeProps extends BaseComponentProps {
     | 'severity-neutral';
 
   /**
-   * Text displayed inside the badge.
+   * Text displayed inside the component.
    */
   children?: React.ReactNode;
 
   /**
-   * Specifies an object of selectors and properties that are used to apply custom styles.
+   * Specifies an object of selectors and properties that are used to apply custom styles to the component.
    *
-   * - `root.background` (string) - (Optional) Background for component states.
-   * - `root.borderColor` (string) - (Optional) Border color for component states.
-   * - `root.borderRadius` (string) - (Optional) Border radius style.
-   * - `root.borderWidth` (string) - (Optional) Border width style.
-   * - `root.borderStyle` (string) - (Optional) Border style.
-   * - `root.paddingBlock` (string) - (Optional) Block dimension padding.
-   * - `root.paddingInline` (string) - (Optional) Inline dimension padding.
+   * - `root.background` (string) - (Optional) Background color of the component.
+   * - `root.borderColor` (string) - (Optional) Border color of the component.
+   * - `root.borderRadius` (string) - (Optional) Corner radius of the component.
+   * - `root.borderWidth` (string) - (Optional) Border thickness of the component.
+   * - `root.borderStyle` (string) - (Optional) Border style of the component.
+   * - `root.paddingBlock` (string) - (Optional) Vertical padding inside the component.
+   * - `root.paddingInline` (string) - (Optional) Horizontal padding inside the component.
    * @awsuiSystem core
    */
   style?: BadgeProps.Style;
