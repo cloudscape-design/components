@@ -12,7 +12,7 @@ import { BaseComponentProps } from '../internal/base-component/index.js';
 import Tooltip from '../internal/components/tooltip/index';
 import InternalSpaceBetween from '../space-between/internal.js';
 import InternalSpinner from '../spinner/internal.js';
-import DismissButton from '../token-group/dismiss-button';
+import DismissButton from '../token/dismiss-button.js';
 import { TokenGroupProps } from '../token-group/interfaces.js';
 import * as defaultFormatters from './default-formatters.js';
 import { FileOptionThumbnail } from './thumbnail.js';
