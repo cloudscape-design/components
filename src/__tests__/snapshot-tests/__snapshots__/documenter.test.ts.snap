@@ -2878,7 +2878,7 @@ exports[`Documenter definition for badge matches the snapshot: badge 1`] = `
     },
     {
       "defaultValue": "'grey'",
-      "description": "Specifies the badge color.",
+      "description": "Specifies the component color.",
       "inlineType": {
         "name": ""blue" | "green" | "grey" | "red" | "severity-critical" | "severity-high" | "severity-medium" | "severity-low" | "severity-neutral"",
         "type": "union",
@@ -2907,10 +2907,27 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "optional": true,
       "type": "string",
     },
+    {
+      "description": "Specifies an object of selectors and properties that are used to apply custom styles to the component.
+
+- \`root.background\` (string) - (Optional) Background of the component.
+- \`root.borderColor\` (string) - (Optional) Border color of the component.
+- \`root.borderRadius\` (string) - (Optional) Corner radius of the component.
+- \`root.borderWidth\` (string) - (Optional) Border thickness of the component.
+- \`root.color\` (string) - (Optional) Text color of the component.
+- \`root.paddingBlock\` (string) - (Optional) Vertical padding inside the component.
+- \`root.paddingInline\` (string) - (Optional) Horizontal padding inside the component.",
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "BadgeProps.Style",
+    },
   ],
   "regions": [
     {
-      "description": "Text displayed inside the badge.",
+      "description": "Text displayed inside the component.",
       "isDefault": true,
       "name": "children",
     },
