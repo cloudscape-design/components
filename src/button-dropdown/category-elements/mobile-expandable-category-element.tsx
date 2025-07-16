@@ -83,6 +83,9 @@ const MobileExpandableCategoryElement = ({
             } as GeneratedAnalyticsMetadataButtonDropdownExpand)
       )}
     >
+      {(item.iconName || item.iconUrl || item.iconSvg) && (
+        <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
+      )}
       {item.text}
       <span
         className={clsx(styles['expand-icon'], {
