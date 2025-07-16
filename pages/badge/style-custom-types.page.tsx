@@ -37,6 +37,8 @@ interface CustomBadgeProps {
 function CustomBadge({ children, colorTheme, id }: CustomBadgeProps) {
   const mode = useCurrentMode(useRef(document.body));
   const background = backgrounds[mode][colorTheme];
+  const borderColor = borderColors[mode][colorTheme];
+  const borderWidth = borderWidths[colorTheme];
   const color = colors[mode];
   return (
     <CloudscapeBadge
@@ -44,8 +46,10 @@ function CustomBadge({ children, colorTheme, id }: CustomBadgeProps) {
       style={{
         root: {
           background,
+          borderColor,
           borderRadius: '8px',
           color,
+          borderWidth,
           paddingBlock: '8px',
           paddingInline: '12px',
         },
@@ -80,4 +84,35 @@ const backgrounds = {
 const colors = {
   light: palette.neutral10,
   dark: palette.neutral100,
+};
+
+const borderColors = {
+  light: {
+    grey: palette.red80,
+    blue: palette.orange80,
+    critical: palette.blue90,
+    high: palette.red80,
+    medium: palette.green80,
+    low: palette.neutral80,
+    neutral: palette.teal80,
+  },
+  dark: {
+    grey: palette.neutral60,
+    blue: palette.blue20,
+    critical: palette.blue60,
+    high: palette.red10,
+    medium: palette.green20,
+    low: palette.neutral20,
+    neutral: palette.teal40,
+  },
+};
+
+const borderWidths = {
+  grey: '4px',
+  blue: '2px',
+  critical: '4px',
+  high: '0px',
+  medium: '2px',
+  low: '6px',
+  neutral: '2px',
 };
