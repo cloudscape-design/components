@@ -4,7 +4,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import DragHandleButton from '../../../../../lib/components/internal/components/drag-handle/button.js';
+import DragHandleButton from '../../../../../lib/components/internal/components/drag-handle/components/button.js';
 
 import styles from '../../../../../lib/components/internal/components/drag-handle/styles.css.js';
 

@@ -3,7 +3,7 @@
 import { fireEvent } from '@testing-library/react';
 
 import { useKeyboardEvents } from '../../app-layout/utils/use-keyboard-events';
-import { Direction } from '../../internal/components/drag-handle-wrapper/interfaces';
+import { DragHandleProps } from '../../internal/components/drag-handle/interfaces';
 import { KeyCode } from '../../internal/keycode';
 
 const sizeControlProps: any = {
@@ -56,7 +56,7 @@ describe('useKeyboardEvents.onKeyDown, bottom position', () => {
 });
 
 describe('useKeyboardEvents.onDirectionClick, bottom position', () => {
-  let onDirectionClick: (direction: Direction) => void;
+  let onDirectionClick: (direction: DragHandleProps.Direction) => void;
 
   beforeEach(() => {
     ({ onDirectionClick } = useKeyboardEvents({ ...sizeControlProps, position: 'bottom' }));
@@ -112,7 +112,7 @@ describe('useKeyboardEvents.onKeyDown, side position', () => {
 });
 
 describe('useKeyboardEvents.onDirectionClick, side position', () => {
-  let onDirectionClick: (direction: Direction) => void;
+  let onDirectionClick: (direction: DragHandleProps.Direction) => void;
 
   beforeEach(() => {
     ({ onDirectionClick } = useKeyboardEvents({ ...sizeControlProps, position: 'side' }));
