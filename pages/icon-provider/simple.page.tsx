@@ -6,7 +6,7 @@ import Alert from '~components/alert';
 import Button from '~components/button';
 import CollectionPreferences from '~components/collection-preferences';
 import Icon from '~components/icon';
-import IconProvider from '~components/icon-provider';
+import IconProvider from '~components/icon-provider/internal';
 import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
 import TextFilter from '~components/text-filter';
@@ -22,14 +22,14 @@ import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const CUSTOM_SVG = (
-  <svg>
+  <svg focusable={false}>
     <circle cx="8" cy="8" r="7" />
     <circle cx="8" cy="8" r="3.5" />
   </svg>
 );
 
 const CUSTOM_SIMPLE_SVG = (
-  <svg>
+  <svg focusable={false}>
     <circle cx="8" cy="8" r="7" />
   </svg>
 );

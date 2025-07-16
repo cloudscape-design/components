@@ -1,44 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
 
-import React, { useContext } from 'react';
-
-import generatedIcons from '../icon/generated/icons';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { InternalIconContext } from './context';
 import { IconProviderProps } from './interfaces';
+import InternalIconProvider from './internal';
 
 /**
  * @awsuiSystem core
  */
-export { IconProviderProps };
+export { IconProviderProps } from './interfaces';
 
 /**
  * @awsuiSystem core
  */
-export default function IconProvider({ children, icons }: IconProviderProps) {
+export default function IconProvider(props: IconProviderProps) {
   useBaseComponent('IconProvider');
-  const contextIcons = useContext(InternalIconContext);
-
-  let iconsToProvide: IconProviderProps.Icons = generatedIcons;
-
-  // Merge the context icons with the custom icons, this allows child instances of IconProvider to persist parent configurations
-  if (icons !== null) {
-    const clonedIcons = { ...icons };
-
-    // Reset null icon values to their original definitions
-    Object.keys(clonedIcons).forEach(name => {
-      const iconName = name as keyof typeof generatedIcons;
-      if (iconName in generatedIcons && clonedIcons[iconName] === null) {
-        clonedIcons[iconName] = generatedIcons[iconName];
-      }
-    });
-
-    iconsToProvide = { ...contextIcons, ...clonedIcons };
-  }
-
-  return <InternalIconContext.Provider value={iconsToProvide}>{children}</InternalIconContext.Provider>;
+  return <InternalIconProvider {...props} />;
 }
 
 applyDisplayName(IconProvider, 'IconProvider');
