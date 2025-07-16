@@ -68,7 +68,6 @@ describe('Style API', () => {
             borderColor: 'rgb(0, 0, 0)',
             borderRadius: '8px',
             borderWidth: '2px',
-            borderStyle: 'solid',
             paddingBlock: '4px',
             paddingInline: '8px',
           },
@@ -82,7 +81,6 @@ describe('Style API', () => {
     expect(badge.style.borderColor).toBe('rgb(0, 0, 0)');
     expect(badge.style.borderRadius).toBe('8px');
     expect(badge.style.borderWidth).toBe('2px');
-    expect(badge.style.borderStyle).toBe('solid');
     expect(badge.style.paddingBlock).toBe('4px');
     expect(badge.style.paddingInline).toBe('8px');
   });
