@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 
+import Box from '~components/box';
 import ButtonTrigger, { ButtonTriggerProps } from '~components/internal/components/button-trigger';
 import Option from '~components/internal/components/option';
 import { OptionDefinition } from '~components/internal/components/option/interfaces';
@@ -57,6 +58,18 @@ const permutations = createPermutations<ButtonTriggerProps>([
     children: [<Option option={{ ...option2, disabled: true }} />],
   },
 ]);
+
+const responsivePermutations = createPermutations<ButtonTriggerProps>([
+  {
+    disabled: [true, false],
+    children: ['Long label to check the regression'],
+  },
+  {
+    disabled: [false],
+    readOnly: [true],
+    children: ['Long label to check the regression'],
+  },
+]);
 /* eslint-enable react/jsx-key */
 
 export default function ButtonTriggerPermutations() {
@@ -65,6 +78,20 @@ export default function ButtonTriggerPermutations() {
       <h1>ButtonTrigger permutations</h1>
       <ScreenshotArea>
         <PermutationsView permutations={permutations} render={permutation => <ButtonTrigger {...permutation} />} />
+        <Box margin={{ top: 'm' }}>
+          {/* Permutations to check that the width of the trigger doesn't change between states */}
+          <PermutationsView
+            permutations={responsivePermutations}
+            render={permutation => (
+              <div style={{ display: 'flex' }}>
+                <div>
+                  <ButtonTrigger {...permutation} />
+                </div>
+                <div style={{ border: '1px solid' }}>Test</div>
+              </div>
+            )}
+          />
+        </Box>
       </ScreenshotArea>
     </>
   );
