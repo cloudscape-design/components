@@ -137,7 +137,8 @@ export function AppLayoutToolbarImplementation({
             <TriggerButton
               // ariaLabel={ariaLabels?.navigationToggle ?? undefined}
               ariaExpanded={!!activeAiDrawerId}
-              iconName="add-plus"
+              iconName={aiDrawer.trigger!.iconName}
+              iconSvg={aiDrawer.trigger!.iconSvg}
               className={testutilStyles['ai-drawer-toggle']}
               onClick={() => {
                 if (setExpandedDrawerId) {
