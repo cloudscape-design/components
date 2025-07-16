@@ -83,6 +83,7 @@ const MobileExpandableCategoryElement = ({
             } as GeneratedAnalyticsMetadataButtonDropdownExpand)
       )}
       //Add Rendering of icon image in expandable button
+      //
     >
       {(item.iconName || item.iconUrl || item.iconSvg) && (
         <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
