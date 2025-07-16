@@ -6,9 +6,6 @@ import { ReactNode } from 'react';
 import generatedIcons from '../icon/generated/icons';
 import { BaseComponentProps } from '../internal/base-component';
 
-/**
- * @awsuiSystem core
- */
 export interface IconProviderProps extends BaseComponentProps {
   children: ReactNode;
 
@@ -28,9 +25,6 @@ export interface IconProviderProps extends BaseComponentProps {
   icons: IconProviderProps.Icons | null;
 }
 
-/**
- * @awsuiSystem core
- */
 export namespace IconProviderProps {
   export type Icons = {
     // Generates an object shape using the current set of available icons.
