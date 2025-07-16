@@ -225,12 +225,13 @@ export function useDrawers(
 
     if (newDrawerId) {
       fireNonCancelableEvent(runtimeDrawers?.aiDrawer?.onToggle, { isOpen: true, initiatedByUserAction });
-      onAiDrawerFocus?.();
     }
 
     if (activeDrawerId) {
       fireNonCancelableEvent(runtimeDrawers?.aiDrawer?.onToggle, { isOpen: false, initiatedByUserAction });
     }
+
+    onAiDrawerFocus?.();
   }
 
   function onActiveDrawerChange(

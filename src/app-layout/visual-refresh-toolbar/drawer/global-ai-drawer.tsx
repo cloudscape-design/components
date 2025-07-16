@@ -88,6 +88,21 @@ export function AppLayoutGlobalAiDrawerImplementation({
           }}
           data-testid={activeDrawerId && `awsui-app-layout-drawer-${activeDrawerId}`}
         >
+          {!isMobile && activeAiDrawer?.resizable && (
+            <div className={styles['drawer-slider']}>
+              <PanelResizeHandle
+                ref={aiDrawerFocusControl.refs.slider}
+                position="side"
+                className={testutilStyles['drawers-slider']}
+                ariaLabel={activeAiDrawer?.ariaLabels?.resizeHandle}
+                tooltipText={activeAiDrawer?.ariaLabels?.resizeHandleTooltipText}
+                ariaValuenow={resizeProps.relativeSize}
+                onKeyDown={resizeProps.onKeyDown}
+                onPointerDown={resizeProps.onPointerDown}
+                onDirectionClick={resizeProps.onDirectionClick}
+              />
+            </div>
+          )}
           <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
             <div className={clsx(styles['drawer-close-button'])}>
               <InternalButton
@@ -107,21 +122,6 @@ export function AppLayoutGlobalAiDrawerImplementation({
               {activeAiDrawer?.content}
             </div>
           </div>
-          {!isMobile && activeAiDrawer?.resizable && (
-            <div className={styles['drawer-slider']}>
-              <PanelResizeHandle
-                ref={aiDrawerFocusControl.refs.slider}
-                position="side"
-                className={testutilStyles['drawers-slider']}
-                ariaLabel={activeAiDrawer?.ariaLabels?.resizeHandle}
-                tooltipText={activeAiDrawer?.ariaLabels?.resizeHandleTooltipText}
-                ariaValuenow={resizeProps.relativeSize}
-                onKeyDown={resizeProps.onKeyDown}
-                onPointerDown={resizeProps.onPointerDown}
-                onDirectionClick={resizeProps.onDirectionClick}
-              />
-            </div>
-          )}
         </aside>
       )}
     </Transition>
