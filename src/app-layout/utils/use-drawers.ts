@@ -199,6 +199,7 @@ type UseDrawersProps = Pick<AppLayoutProps, 'drawers' | 'activeDrawerId' | 'onDr
   __disableRuntimeDrawers?: boolean;
   onGlobalDrawerFocus?: (drawerId: string, open: boolean) => void;
   onAddNewActiveDrawer?: (drawerId: string) => void;
+  onAiDrawerFocus?: () => void;
 };
 
 export function useDrawers(
@@ -208,6 +209,7 @@ export function useDrawers(
     onDrawerChange,
     onGlobalDrawerFocus,
     onAddNewActiveDrawer,
+    onAiDrawerFocus,
     __disableRuntimeDrawers: disableRuntimeDrawers,
   }: UseDrawersProps,
   ariaLabels: AppLayoutProps['ariaLabels'],
@@ -240,6 +242,7 @@ export function useDrawers(
 
     if (newDrawerId) {
       fireNonCancelableEvent(runtimeDrawers?.aiDrawer?.onToggle, { isOpen: true, initiatedByUserAction });
+      onAiDrawerFocus?.();
     }
 
     if (activeDrawerId) {

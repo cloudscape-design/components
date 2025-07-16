@@ -134,6 +134,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       closeFirstDrawer();
     };
 
+    const onAiDrawerFocus = () => {
+      aiDrawerFocusControl.setFocus(true);
+    };
+
     const {
       drawers,
       activeDrawer,
@@ -157,7 +161,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onActiveAiDrawerChange,
       activeAiDrawer,
       minAiDrawerSize,
-    } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer }, ariaLabels, {
+    } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer, onAiDrawerFocus }, ariaLabels, {
       ariaLabels,
       toolsHide,
       toolsOpen,
