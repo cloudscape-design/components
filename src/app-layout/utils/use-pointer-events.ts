@@ -27,6 +27,16 @@ export const usePointerEvents = ({ position, panelRef, handleRef, onResize }: Si
         const width = getLogicalBoundingClientRect(panelRef.current).insetInlineEnd - mouseClientX + handleOffset;
 
         onResize(width);
+      } else if (position === 'side-start') {
+        const mouseClientX = getLogicalClientX(event, getIsRtl(panelRef.current)) || 0;
+
+        // The handle offset aligns the cursor with the middle of the resize handle.
+        const handleOffset = getLogicalBoundingClientRect(handleRef.current).inlineSize / 2;
+        const panelBoundingClientRect = getLogicalBoundingClientRect(panelRef.current);
+        const width =
+          panelBoundingClientRect.insetInlineEnd + mouseClientX + handleOffset - panelBoundingClientRect.inlineSize;
+
+        onResize(width);
       } else {
         const mouseClientY = event.clientY || 0;
 

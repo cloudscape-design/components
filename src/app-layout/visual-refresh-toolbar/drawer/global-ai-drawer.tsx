@@ -54,6 +54,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
     panelRef: drawerRef,
     handleRef: aiDrawerFocusControl.refs.slider,
     onResize: size => onActiveDrawerResize({ id: activeDrawerId!, size }),
+    position: 'side-start',
   });
   const size = getLimitedValue(minAiDrawerSize, activeAiDrawerSize, maxAiDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue?.length ? drawersOpenQueue[0] : activeDrawerId;
@@ -92,7 +93,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
             <div className={styles['drawer-slider']}>
               <PanelResizeHandle
                 ref={aiDrawerFocusControl.refs.slider}
-                position="side"
+                position="side-start"
                 className={testutilStyles['drawers-slider']}
                 ariaLabel={activeAiDrawer?.ariaLabels?.resizeHandle}
                 tooltipText={activeAiDrawer?.ariaLabels?.resizeHandleTooltipText}
