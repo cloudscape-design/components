@@ -45,7 +45,8 @@ function CustomBadge({ children, colorTheme, id }: CustomBadgeProps) {
         root: {
           background,
           borderRadius: '8px',
-          borderWidth: '0px',
+          borderWidth: '10x',
+          borderColor: 'blue',
           color,
           paddingBlock: '8px',
           paddingInline: '12px',
