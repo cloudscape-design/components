@@ -50,6 +50,7 @@ const InternalPromptInput = React.forwardRef(
       placeholder,
       readOnly,
       spellcheck,
+      primaryAction,
       secondaryActions,
       secondaryContent,
       disableSecondaryActionsPaddings,
@@ -105,7 +106,7 @@ const InternalPromptInput = React.forwardRef(
       adjustTextareaHeight();
     };
 
-    const hasActionButton = actionButtonIconName || actionButtonIconSvg || actionButtonIconUrl;
+    const hasActionButton = actionButtonIconName || actionButtonIconSvg || actionButtonIconUrl || primaryAction;
 
     const adjustTextareaHeight = useCallback(() => {
       if (textareaRef.current) {
@@ -173,19 +174,21 @@ const InternalPromptInput = React.forwardRef(
     }
 
     const action = (
-      <div className={styles.button}>
-        <InternalButton
-          className={clsx(styles['action-button'], testutilStyles['action-button'])}
-          ariaLabel={actionButtonAriaLabel}
-          disabled={disabled || readOnly || disableActionButton}
-          __focusable={readOnly}
-          iconName={actionButtonIconName}
-          iconUrl={actionButtonIconUrl}
-          iconSvg={actionButtonIconSvg}
-          iconAlt={actionButtonIconAlt}
-          onClick={() => fireNonCancelableEvent(onAction, { value })}
-          variant="icon"
-        />
+      <div className={clsx(styles['primary-action'], testutilStyles['primary-action'])}>
+        {primaryAction ?? (
+          <InternalButton
+            className={clsx(styles['action-button'], testutilStyles['action-button'])}
+            ariaLabel={actionButtonAriaLabel}
+            disabled={disabled || readOnly || disableActionButton}
+            __focusable={readOnly}
+            iconName={actionButtonIconName}
+            iconUrl={actionButtonIconUrl}
+            iconSvg={actionButtonIconSvg}
+            iconAlt={actionButtonIconAlt}
+            onClick={() => fireNonCancelableEvent(onAction, { value })}
+            variant="icon"
+          />
+        )}
       </div>
     );
 
@@ -219,13 +222,18 @@ const InternalPromptInput = React.forwardRef(
         </div>
         {secondaryActions && (
           <div
-            className={clsx(styles['secondary-actions'], testutilStyles['secondary-actions'], {
-              [styles['with-paddings']]: !disableSecondaryActionsPaddings,
+            className={clsx(styles['action-stripe'], {
               [styles.invalid]: invalid,
               [styles.warning]: warning,
             })}
           >
-            {secondaryActions}
+            <div
+              className={clsx(styles['secondary-actions'], testutilStyles['secondary-actions'], {
+                [styles['with-paddings']]: !disableSecondaryActionsPaddings,
+              })}
+            >
+              {secondaryActions}
+            </div>
             <div className={styles.buffer} onClick={() => textareaRef.current?.focus()} />
             {hasActionButton && action}
           </div>

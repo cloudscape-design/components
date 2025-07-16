@@ -14440,6 +14440,16 @@ In most cases, they aren't needed, as the \`svg\` element inherits styles from t
       "name": "actionButtonIconSvg",
     },
     {
+      "description": "Use this to replace the primary action.
+If this is provided then any other \`actionButton*\` properties will be ignored.
+Note that you should still provide an \`onAction\` function in order to handle keyboard submission.",
+      "isDefault": false,
+      "name": "primaryAction",
+      "systemTags": [
+        "core",
+      ],
+    },
+    {
       "description": "Use this slot to add secondary actions to the prompt input.",
       "isDefault": false,
       "name": "secondaryActions",

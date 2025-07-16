@@ -86,6 +86,15 @@ export interface PromptInputProps
   maxRows?: number;
 
   /**
+   * Use this to replace the primary action.
+   * If this is provided then any other `actionButton*` properties will be ignored.
+   * Note that you should still provide an `onAction` function in order to handle keyboard submission.
+   *
+   * @awsuiSystem core
+   */
+  primaryAction?: React.ReactNode;
+
+  /**
    * Use this slot to add secondary actions to the prompt input.
    */
   secondaryActions?: React.ReactNode;
