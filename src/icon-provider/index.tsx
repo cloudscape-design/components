@@ -8,9 +8,6 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { IconProviderProps } from './interfaces';
 import InternalIconProvider from './internal';
 
-/**
- * @awsuiSystem core
- */
 export { IconProviderProps } from './interfaces';
 
 /**
