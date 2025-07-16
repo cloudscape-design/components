@@ -112,7 +112,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
                   [testutilStyles['active-drawer-close-button']]: activeDrawerId,
                 })}
                 formAction="none"
-                iconName={isMobile ? 'close' : 'angle-right'}
+                iconName={isMobile ? 'close' : 'angle-left'}
                 onClick={() => onActiveAiDrawerChange(null, { initiatedByUserAction: true })}
                 ref={aiDrawerFocusControl.refs.close}
                 variant="icon"
