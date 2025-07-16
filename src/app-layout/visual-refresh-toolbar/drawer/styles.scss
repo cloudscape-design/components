@@ -237,4 +237,12 @@ $drawer-resize-handle-size: awsui.$space-m;
       }
     }
   }
+
+  &.ai-drawer {
+    grid-template-columns: 1fr awsui.$space-m;
+
+    > .drawer-slider {
+      grid-column: 2;
+    }
+  }
 }

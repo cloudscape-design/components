@@ -53,7 +53,8 @@ export interface ToolbarProps {
 
   aiDrawer?: AppLayoutProps.Drawer;
   onActiveAiDrawerChange?: (value: string | null) => void;
-  activeAiDrawer?: string | null;
+  activeAiDrawerId?: string | null;
+  aiDrawerFocusRef?: React.Ref<Focusable>;
 }
 
 export interface AppLayoutToolbarImplementationProps {
@@ -89,8 +90,9 @@ export function AppLayoutToolbarImplementation({
     expandedDrawerId,
     setExpandedDrawerId,
     aiDrawer,
-    activeAiDrawer,
+    activeAiDrawerId,
     onActiveAiDrawerChange,
+    aiDrawerFocusRef,
   } = toolbarProps;
   const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
@@ -130,24 +132,24 @@ export function AppLayoutToolbarImplementation({
       }}
     >
       <div className={styles['toolbar-container']}>
-        {aiDrawer && !activeAiDrawer && (
+        {aiDrawer && !activeAiDrawerId && (
           <div className={styles['universal-toolbar-ai-drawer']}>
             <TriggerButton
               // ariaLabel={ariaLabels?.navigationToggle ?? undefined}
-              ariaExpanded={!!activeAiDrawer}
+              ariaExpanded={!!activeAiDrawerId}
               iconName="add-plus"
               className={testutilStyles['ai-drawer-toggle']}
               onClick={() => {
                 if (setExpandedDrawerId) {
                   setExpandedDrawerId(null);
                 }
-                if (navigationOpen && activeAiDrawer) {
+                if (expandedDrawerId && expandedDrawerId) {
                   return;
                 }
                 onActiveAiDrawerChange?.(aiDrawer?.id);
               }}
-              // ref={navigationFocusRef}
-              selected={!drawerExpandedMode && !!activeAiDrawer}
+              ref={aiDrawerFocusRef}
+              selected={!drawerExpandedMode && !!activeAiDrawerId}
               disabled={anyPanelOpenInMobile}
             />
             <div className={styles['group-divider']} />

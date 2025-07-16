@@ -47,6 +47,7 @@ interface SkeletonLayoutProps
   isNested?: boolean;
   drawerExpandedMode: boolean;
   drawerExpandedModeInChildLayout: boolean;
+  aiDrawer?: React.ReactNode;
 }
 
 const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAppLayoutToolbarComponent = {
@@ -85,6 +86,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       isNested,
       drawerExpandedMode,
       drawerExpandedModeInChildLayout,
+      aiDrawer,
     },
     ref
   ) => {
@@ -109,6 +111,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
           {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
         >
           {toolbar}
+          <div className={styles['ai-drawer']}>{aiDrawer}</div>
           {navigation && (
             <div
               className={clsx(
