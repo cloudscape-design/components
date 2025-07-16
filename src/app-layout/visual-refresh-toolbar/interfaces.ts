@@ -67,6 +67,10 @@ export interface AppLayoutInternals {
   expandedDrawerId: string | null;
   setExpandedDrawerId: (value: string | null) => void;
   aiDrawer?: InternalDrawer;
-  onActiveAiDrawerChange: (value: string | null) => void;
-  activeAiDrawer: string | null;
+  onActiveAiDrawerChange: (newDrawerId: string | null, params: OnChangeParams) => void;
+  activeAiDrawer?: InternalDrawer | null;
+  activeAiDrawerSize: number;
+  minAiDrawerSize: number;
+  maxAiDrawerSize: number;
+  aiDrawerFocusControl: FocusControlState;
 }

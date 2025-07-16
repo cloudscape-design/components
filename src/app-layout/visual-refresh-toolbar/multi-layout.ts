@@ -36,7 +36,8 @@ export interface SharedProps {
   setExpandedDrawerId: (value: string | null) => void;
   aiDrawer: AppLayoutProps.Drawer | undefined;
   onActiveAiDrawerChange: (value: string | null) => void;
-  activeAiDrawer?: string | null;
+  activeAiDrawerId?: string | null;
+  aiDrawerFocusRef: React.Ref<Focusable> | undefined;
 }
 
 function checkAlreadyExists(value: boolean, propName: string) {
@@ -76,7 +77,8 @@ export function mergeProps(
     if (props.aiDrawer && !checkAlreadyExists(!!toolbar.aiDrawer, 'aiDrawer')) {
       toolbar.aiDrawer = props.aiDrawer;
       toolbar.onActiveAiDrawerChange = props.onActiveAiDrawerChange;
-      toolbar.activeAiDrawer = props.activeAiDrawer;
+      toolbar.activeAiDrawerId = props.activeAiDrawerId;
+      toolbar.aiDrawerFocusRef = props.aiDrawerFocusRef;
     }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
       toolbar.hasNavigation = true;

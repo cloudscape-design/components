@@ -49,6 +49,8 @@ export function computeHorizontalLayout({
   const maxSplitPanelSize = Math.max(resizableSpaceAvailable - totalActiveGlobalDrawersSize - activeDrawerSize, 0);
   resizableSpaceAvailable -= sideSplitPanelSize;
   const maxDrawerSize = resizableSpaceAvailable - totalActiveGlobalDrawersSize;
+  // TODO replace with a calculated value
+  const maxAiDrawerSize = 600;
   const maxGlobalDrawersSizes: Record<string, number> = Object.keys(activeGlobalDrawersSizes).reduce(
     (acc, drawerId) => {
       return {
@@ -72,6 +74,7 @@ export function computeHorizontalLayout({
     maxGlobalDrawersSizes,
     totalActiveGlobalDrawersSize,
     resizableSpaceAvailable,
+    maxAiDrawerSize,
   };
 }
 

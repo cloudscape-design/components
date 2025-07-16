@@ -50,10 +50,11 @@
   // desktop grid
   @include desktop-only {
     grid-template-areas:
-      'toolbar    toolbar      toolbar       toolbar   toolbar         toolbar  toolbar'
-      'navigation .         notifications    .         sideSplitPanel  tools    global-tools'
-      'navigation .             main         .         sideSplitPanel  tools    global-tools';
+      'ai-drawer toolbar    toolbar      toolbar       toolbar   toolbar         toolbar  toolbar'
+      'ai-drawer navigation .         notifications    .         sideSplitPanel  tools    global-tools'
+      'ai-drawer navigation .             main         .         sideSplitPanel  tools    global-tools';
     grid-template-columns:
+      min-content
       min-content
       minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
       minmax(0, var(#{custom-props.$maxContentWidth}))
@@ -82,6 +83,7 @@
         0
         0
         0
+        0
         auto;
     }
   }
@@ -98,6 +100,10 @@
   @include mobile-only {
     inline-size: 100%;
   }
+}
+
+.ai-drawer {
+  grid-area: ai-drawer;
 }
 
 .navigation {

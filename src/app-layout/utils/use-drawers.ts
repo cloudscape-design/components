@@ -174,6 +174,9 @@ function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout)
 }
 
 export const MIN_DRAWER_SIZE = 290;
+// TODO replace with a real value
+const DEFAULT_AI_DRAWER_SIZE = 350;
+const MIN_AI_DRAWER_SIZE = 300;
 
 type UseDrawersProps = Pick<AppLayoutProps, 'drawers' | 'activeDrawerId' | 'onDrawerChange'> & {
   __disableRuntimeDrawers?: boolean;
@@ -199,7 +202,7 @@ export function useDrawers(
     changeHandler: 'onChange',
   });
   const [activeGlobalDrawersIds, setActiveGlobalDrawersIds] = useState<Array<string>>([]);
-  const [activeAiDrawer, setActiveAiDrawer] = useState<string | null>(null);
+  const [activeAiDrawerId, setActiveAiDrawerId] = useState<string | null>(null);
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
   const [expandedDrawerId, setExpandedDrawerId] = useState<string | null>(null);
   // FIFO queue that keeps track of open drawers, where the first element is the most recently opened drawer
@@ -216,7 +219,7 @@ export function useDrawers(
     newDrawerId: string | null,
     { initiatedByUserAction }: OnChangeParams = DEFAULT_ON_CHANGE_PARAMS
   ) {
-    setActiveAiDrawer(newDrawerId);
+    setActiveAiDrawerId(newDrawerId);
 
     if (newDrawerId) {
       fireNonCancelableEvent(runtimeDrawers?.aiDrawer?.onToggle, { isOpen: true, initiatedByUserAction });
@@ -328,6 +331,12 @@ export function useDrawers(
     },
     {}
   );
+  // sanity check
+  // const activeAiDrawer = aiDrawer?.id === activeAiDrawerId ? aiDrawer : null;
+  const activeAiDrawer = activeAiDrawerId ? aiDrawer : null;
+  const activeAiDrawerSize = activeAiDrawerId
+    ? (drawerSizes[activeAiDrawerId] ?? activeAiDrawer?.defaultSize ?? DEFAULT_AI_DRAWER_SIZE)
+    : 0;
   const minGlobalDrawersSizes: Record<string, number> = runtimeGlobalDrawers.reduce((acc, globalDrawer) => {
     return {
       ...acc,
@@ -338,6 +347,7 @@ export function useDrawers(
     toolsProps?.toolsOpen ? toolsProps.toolsWidth : (activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE),
     MIN_DRAWER_SIZE
   );
+  const minAiDrawerSize = Math.min(activeAiDrawer?.defaultSize ?? MIN_AI_DRAWER_SIZE, MIN_AI_DRAWER_SIZE);
 
   return {
     ariaLabelsWithDrawers: ariaLabels,
@@ -361,5 +371,8 @@ export function useDrawers(
     aiDrawer,
     onActiveAiDrawerChange,
     activeAiDrawer,
+    activeAiDrawerId,
+    activeAiDrawerSize,
+    minAiDrawerSize,
   };
 }
