@@ -136,7 +136,7 @@ describe('action button', () => {
     expect(wrapper.findActionButton().getElement()).toBeInTheDocument();
   });
 
-  test('should render action button inside secondary actions container when secondary actions are present', () => {
+  test('should not find primary button within secondaryActions', () => {
     const { wrapper } = renderPromptInput({
       value: '',
       minRows: 4,
@@ -145,9 +145,9 @@ describe('action button', () => {
     });
 
     const secondaryActionsContainer = wrapper.findSecondaryActions()!.getElement();
-    const actionButton = within(secondaryActionsContainer).getByRole('button');
+    const actionButton = within(secondaryActionsContainer).queryByRole('button');
 
-    expect(actionButton).toBeInTheDocument();
+    expect(actionButton).toBeFalsy();
   });
 
   test('disabled when in disabled state', () => {
@@ -168,6 +168,30 @@ describe('action button', () => {
 
     expect(wrapper.findActionButton().getElement()).toHaveAttribute('aria-disabled', 'true');
     expect(wrapper.findActionButton().getElement()).not.toHaveAttribute('disabled');
+  });
+});
+
+describe('custom primary action', () => {
+  test('custom primaryAction can be provided', () => {
+    const { wrapper } = renderPromptInput({
+      value: '',
+      actionButtonIconName: 'send',
+      primaryAction: (
+        <>
+          <button>One</button>
+          <button>Two</button>
+        </>
+      ),
+    });
+    expect(wrapper.findPrimaryActionSlot()!.getElement().querySelectorAll('button').length).toBe(2);
+  });
+  test('default primary action is removed if custom primaryAction provided', () => {
+    const { wrapper } = renderPromptInput({
+      value: '',
+      actionButtonIconName: 'send',
+      primaryAction: 'custom content',
+    });
+    expect(wrapper.findActionButton()).toBeFalsy();
   });
 });
 
