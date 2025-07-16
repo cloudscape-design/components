@@ -258,6 +258,7 @@ const InternalButtonDropdown = React.forwardRef(
               styles['trigger-item'],
               styles['split-trigger'],
               styles[`variant-${variant}`],
+              mainActionProps.disabled && styles.disabled,
               mainActionProps.loading && styles.loading
             )}
             // Close dropdown upon main action click unless event is cancelled.
@@ -281,6 +282,7 @@ const InternalButtonDropdown = React.forwardRef(
                 styles['dropdown-trigger'],
                 isVisualRefresh && styles['visual-refresh'],
                 styles[`variant-${variant}`],
+                baseTriggerProps.disabled && styles.disabled,
                 baseTriggerProps.loading && styles.loading
               )}
               {...getAnalyticsMetadataAttribute(analyticsMetadata)}
