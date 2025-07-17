@@ -2878,7 +2878,7 @@ exports[`Documenter definition for badge matches the snapshot: badge 1`] = `
     },
     {
       "defaultValue": "'grey'",
-      "description": "Specifies the component color.",
+      "description": "Specifies the badge color.",
       "inlineType": {
         "name": ""blue" | "green" | "grey" | "red" | "severity-critical" | "severity-high" | "severity-medium" | "severity-low" | "severity-neutral"",
         "type": "union",
@@ -2908,15 +2908,15 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "Specifies an object of selectors and properties that are used to apply custom styles to the component.
+      "description": "Specifies an object of selectors and properties that are used to apply custom styles.
 
-- \`root.background\` (string) - (Optional) Background of the component.
-- \`root.borderColor\` (string) - (Optional) Border color of the component.
-- \`root.borderRadius\` (string) - (Optional) Corner radius of the component.
-- \`root.borderWidth\` (string) - (Optional) Border thickness of the component.
-- \`root.color\` (string) - (Optional) Text color of the component.
-- \`root.paddingBlock\` (string) - (Optional) Vertical padding inside the component.
-- \`root.paddingInline\` (string) - (Optional) Horizontal padding inside the component.",
+- \`root.background\` (string) - (Optional) Background for badge.
+- \`root.borderColor\` (string) - (Optional) Border color for badge.
+- \`root.borderRadius\` (string) - (Optional) Border radius style.
+- \`root.borderWidth\` (string) - (Optional) Border width style.
+- \`root.color\` (string) - (Optional) Text color for badge.
+- \`root.paddingBlock\` (string) - (Optional) Block dimension padding.
+- \`root.paddingInline\` (string) - (Optional) Inline dimension padding.",
       "name": "style",
       "optional": true,
       "systemTags": [
@@ -2927,7 +2927,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
   ],
   "regions": [
     {
-      "description": "Text displayed inside the component.",
+      "description": "Text displayed inside the badge.",
       "isDefault": true,
       "name": "children",
     },
