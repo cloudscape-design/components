@@ -14513,7 +14513,7 @@ the default browser context menu behavior.
     Object {
       "cancelable": false,
       "description": "Fired when a user interaction triggers a change in the list of selected items.
-The event \`detail\` contains the current list of \`selectedItems\`.",
+The event \`detail\` contains the new state for \`selectedItems\` and \`selectionInverted\` (when \`selectionType=\\"group\\"\`).",
       "detailInlineType": Object {
         "name": "TableProps.SelectionChangeDetail",
         "properties": Array [
@@ -14521,6 +14521,11 @@ The event \`detail\` contains the current list of \`selectedItems\`.",
             "name": "selectedItems",
             "optional": false,
             "type": "Array<T>",
+          },
+          Object {
+            "name": "selectionInverted",
+            "optional": true,
+            "type": "false | true",
           },
         ],
         "type": "object",
@@ -14716,7 +14721,9 @@ add a meaningful description to the whole selection.
     * \`cellContext.currentValue\` - State to keep track of a value in input fields while editing.
     * \`cellContext.setValue\` - Function to update \`currentValue\`. This should be called when the value in input field changes.
 * \`isRowHeader\` (boolean) - Specifies that cells in this column should be used as row headers.
-* \`verticalAlign\` ('middle' | 'top') - Determines the alignment of the content in the table cell.",
+* \`verticalAlign\` ('middle' | 'top') - Determines the alignment of the content in the table cell.
+* \`loaderCell\` (optional, (null | item) => ReactNode) - Called for every item that has defined loading status other than \\"finished\\".
+   Also called with \`null\` for the root loader if defined.",
       "name": "columnDefinitions",
       "optional": false,
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
@@ -14905,19 +14912,30 @@ Important: in tables with expandable rows the \`firstIndex\`, \`lastIndex\`, and
     },
     Object {
       "defaultValue": "[]",
-      "description": "List of selected items.",
+      "description": "List of selected items.
+When \`selectionType=\\"group\\"\` the \`selectedItems\` represents selection tree and requires \`selectionInverted\` for completeness.
+For example, the combination \`selectionInverted=true\` and \`selectedItems=[{ id: \\"1\\" }]\` means select all but the one with \`id=\\"1\\"\`.
+",
       "name": "selectedItems",
       "optional": true,
       "type": "ReadonlyArray<T>",
     },
     Object {
-      "description": "Specifies the selection type (\`'single' | 'multi'\`).",
+      "defaultValue": "false",
+      "description": "Specifies if select all was used when \`selectionType=\\"group\\"\`.",
+      "name": "selectionInverted",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the selection type (\`'single' | 'multi' | 'group'\`).",
       "inlineType": Object {
         "name": "TableProps.SelectionType",
         "type": "union",
         "values": Array [
           "single",
           "multi",
+          "group",
         ],
       },
       "name": "selectionType",

@@ -40,6 +40,7 @@ import { ItemsLoader } from './progressive-loading/items-loader';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 import { ResizeTracker } from './resizer';
 import { focusMarkers, SelectionControl, useSelection, useSelectionFocusMove } from './selection';
+import { useGroupSelection } from './selection/use-group-selection';
 import { useStickyColumns } from './sticky-columns';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import { StickyScrollbar } from './sticky-scrollbar';
@@ -65,7 +66,10 @@ const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
-type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant' | 'firstIndex'> &
+type InternalTableProps<T> = SomeRequired<
+  TableProps<T>,
+  'items' | 'selectedItems' | 'selectionInverted' | 'variant' | 'firstIndex'
+> &
   InternalBaseComponentProps & {
     __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
   };
@@ -99,6 +103,7 @@ const InternalTable = React.forwardRef(
       loadingText,
       selectionType,
       selectedItems,
+      selectionInverted,
       isItemDisabled,
       ariaLabels,
       onSelectionChange,
@@ -224,16 +229,24 @@ const InternalTable = React.forwardRef(
       visibleColumns,
     });
 
-    const { isItemSelected, getSelectAllProps, getItemSelectionProps } = useSelection({
+    const selectionProps = {
       items: allItems,
       trackBy,
       selectedItems,
+      selectionInverted,
       selectionType,
       isItemDisabled,
       onSelectionChange,
       ariaLabels,
       loading,
-    });
+      getExpandableItemProps,
+      getLoadingStatus,
+    };
+    const normalSelection = useSelection(selectionProps);
+    const groupSelection = useGroupSelection(selectionProps);
+    const { isItemSelected, getSelectAllProps, getItemSelectionProps } =
+      selectionType === 'group' ? groupSelection : normalSelection;
+
     const isRowSelected = (row: TableRow<T>) => row.type === 'data' && isItemSelected(row.item);
 
     if (isDevelopment) {
@@ -610,13 +623,22 @@ const InternalTable = React.forwardRef(
                             </tr>
                           );
                         }
+
+                        const loaderSelectionProps =
+                          getItemSelectionProps &&
+                          getSelectAllProps &&
+                          (row.item ? getItemSelectionProps(row.item) : getSelectAllProps());
+                        if (loaderSelectionProps) {
+                          loaderSelectionProps.indeterminate = false;
+                        }
+
                         return (
                           <tr
                             key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
                             className={styles.row}
                             {...rowRoleProps}
                           >
-                            {getItemSelectionProps && (
+                            {selectionType && (
                               <TableTdElement
                                 {...sharedCellProps}
                                 className={styles['selection-control']}
@@ -624,7 +646,14 @@ const InternalTable = React.forwardRef(
                                 columnId={selectionColumnId}
                                 colIndex={0}
                               >
-                                {null}
+                                {selectionType === 'group' && loaderSelectionProps ? (
+                                  <SelectionControl
+                                    onFocusDown={moveFocusDown}
+                                    onFocusUp={moveFocusUp}
+                                    {...loaderSelectionProps}
+                                    disabled={true}
+                                  />
+                                ) : null}
                               </TableTdElement>
                             )}
                             {visibleColumnDefinitions.map((column, colIndex) => (

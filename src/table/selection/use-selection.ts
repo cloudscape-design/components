@@ -29,7 +29,14 @@ export function useSelection<T>(options: SelectionOptions<T>): {
 } {
   const singleSelectionProps = useSingleSelection(options);
   const multiSelectionProps = useMultiSelection(options);
-  return options.selectionType === 'single' ? singleSelectionProps : multiSelectionProps;
+  switch (options.selectionType) {
+    case 'single':
+      return singleSelectionProps;
+    case 'multi':
+      return multiSelectionProps;
+    default:
+      return { isItemSelected: () => false };
+  }
 }
 
 function useSingleSelection<T>({
