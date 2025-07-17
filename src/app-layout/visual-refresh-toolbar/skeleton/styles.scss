@@ -89,6 +89,7 @@
   }
 }
 
+.ai-drawer,
 .navigation,
 .tools,
 .global-tools {
@@ -103,7 +104,9 @@
 }
 
 .ai-drawer {
-  grid-area: ai-drawer;
+  @include desktop-only {
+    grid-area: ai-drawer;
+  }
 }
 
 .navigation {
