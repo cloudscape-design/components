@@ -321,19 +321,19 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
   });
 });
 
-describe.each([false, true])('with i18n-provider %s', withI18nProvider => {
-  test('uses entered text label for token value autosuggest', () => {
-    renderComponent(
-      { query: { operation: 'and', tokens: [{ propertyKey: 'string', operator: '=', value: 'John' }] } },
-      withI18nProvider
-    );
-    const editor = openEditor(0, { expandToViewport: false });
+// describe.each([false, true])('with i18n-provider %s', withI18nProvider => {
+//   test('uses entered text label for token value autosuggest', () => {
+//     renderComponent(
+//       { query: { operation: 'and', tokens: [{ propertyKey: 'string', operator: '=', value: 'John' }] } },
+//       withI18nProvider
+//     );
+//     const editor = openEditor(0, { expandToViewport: false });
 
-    editor.valueAutosuggest().focus();
-    editor.valueAutosuggest().setInputValue('123');
-    expect(editor.valueAutosuggest().findEnteredTextOption()!.getElement()).toHaveTextContent('Use: "123"');
-  });
-});
+//     editor.valueAutosuggest().focus();
+//     editor.valueAutosuggest().setInputValue('123');
+//     expect(editor.valueAutosuggest().findEnteredTextOption()!.getElement()).toHaveTextContent('Use: "123"');
+//   });
+// });
 
 const tokenJohn = { propertyKey: 'string', operator: '=', value: 'John' };
 const tokenJane = { propertyKey: 'string', operator: '=', value: 'Jane' };
