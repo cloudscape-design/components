@@ -61,6 +61,7 @@ export interface FormProps extends BaseComponentProps {
    * * `resourceType` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.
    * * `errorContext` - Identifies the error category and sub-category.
    * @analytics
+   * @awsuiSystem console
    */
   analyticsMetadata?: FormProps.AnalyticsMetadata;
 }

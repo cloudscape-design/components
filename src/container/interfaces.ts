@@ -9,6 +9,7 @@ export interface ContainerProps extends BaseComponentProps {
    * Specifies additional analytics-related metadata.
    * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
    * @analytics
+   * @awsuiSystem console
    */
   analyticsMetadata?: ContainerProps.AnalyticsMetadata;
 

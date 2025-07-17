@@ -22,6 +22,7 @@ export interface WizardProps extends BaseComponentProps {
    * * `flowType` - Identifies the type of flow represented by the component.
    * * `resourceType` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.
    * @analytics
+   * @awsuiSystem console
    */
   analyticsMetadata?: WizardProps.AnalyticsMetadata;
 

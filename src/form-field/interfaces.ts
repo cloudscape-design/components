@@ -85,6 +85,7 @@ export interface FormFieldProps extends BaseComponentProps {
    * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
    * * `errorContext` - Identifies the error category and sub-category.
    * @analytics
+   * @awsuiSystem console
    */
   analyticsMetadata?: FormFieldProps.AnalyticsMetadata;
 }

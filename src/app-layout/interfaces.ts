@@ -15,6 +15,7 @@ export interface BaseLayoutProps extends BaseComponentProps {
    * * `flowType` -  Identifies the type of flow represented by the component.
    * **Note:** This API is currently experimental.
    * @analytics
+   * @awsuiSystem console
    */
   analyticsMetadata?: AppLayoutProps.AnalyticsMetadata;
 

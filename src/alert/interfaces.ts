@@ -120,6 +120,7 @@ export interface AlertProps extends BaseComponentProps {
    * Specifies additional analytics-related metadata.
    * * `errorContext` - Identifies the error category and sub-category.
    * @analytics
+   * @awsuiSystem console
    */
   analyticsMetadata?: AlertProps.AnalyticsMetadata;
 }
