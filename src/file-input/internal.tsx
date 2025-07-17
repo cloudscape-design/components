@@ -42,6 +42,8 @@ const InternalFileInput = React.forwardRef(
       onChange,
       variant = 'button',
       children,
+      disabled,
+      disabledReason,
       __internalRootRef = null,
       __inputClassName,
       __inputNativeAttributes,
@@ -76,10 +78,12 @@ const InternalFileInput = React.forwardRef(
 
     checkControlled('FileInput', 'value', value, 'onChange', onChange);
 
+    const shouldDecorativeButtonGetFocus = disabled && Boolean(disabledReason);
     const nativeAttributes: React.HTMLAttributes<HTMLInputElement> = {
       'aria-label': ariaLabel || children,
       'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonLabelId),
       'aria-describedby': formFieldContext.ariaDescribedby,
+      'aria-hidden': shouldDecorativeButtonGetFocus,
       ...__inputNativeAttributes,
     };
     if (formFieldContext.invalid) {
@@ -137,6 +141,7 @@ const InternalFileInput = React.forwardRef(
           hidden={false}
           multiple={multiple}
           accept={accept}
+          disabled={disabled}
           onChange={onUploadInputChange}
           onFocus={onUploadInputFocus}
           onBlur={onUploadInputBlur}
@@ -151,12 +156,14 @@ const InternalFileInput = React.forwardRef(
           iconName="upload"
           variant={variant === 'icon' ? 'icon' : undefined}
           formAction="none"
+          disabled={disabled}
+          disabledReason={disabledReason}
           onClick={onUploadButtonClick}
           className={clsx(styles['file-input-button'], {
             [styles['force-focus-outline-button']]: isFocused && variant === 'button',
             [styles['force-focus-outline-icon']]: isFocused && variant === 'icon',
           })}
-          __nativeAttributes={{ tabIndex: -1, 'aria-hidden': true }}
+          __nativeAttributes={shouldDecorativeButtonGetFocus ? { tabIndex } : { tabIndex: -1, 'aria-hidden': true }}
         >
           {variant === 'button' && children}
         </InternalButton>

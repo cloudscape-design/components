@@ -59,6 +59,11 @@ export interface FileTokenGroupProps extends BaseComponentProps {
    */
   readOnly?: boolean;
   /**
+   * Specifies if the control is disabled.
+   * This prevents the user from modifying the value. A disabled control is not focusable.
+   */
+  disabled?: boolean;
+  /**
    * An object containing all the localized strings required by the component:
    * * `removeFileAriaLabel` (function): A function to render the ARIA label for file token remove button.
    * * `errorIconAriaLabel` (string): The ARIA label to be shown on the error file icon.

@@ -8871,6 +8871,19 @@ is provided by its parent form field component.",
       "type": "string",
     },
     {
+      "description": "Renders the file input as disabled and file selection.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Provides a reason why the file input is disabled (only when \`disabled\` is \`true\`).
+If provided, the file input becomes focusable.",
+      "name": "disabledReason",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -8968,6 +8981,13 @@ Make sure that you add a listener to this event to update your application state
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Specifies if the control is disabled.
+This prevents the user from modifying the value. A disabled control is not focusable.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
     },
     {
       "description": "An object containing all the localized strings required by the component:
