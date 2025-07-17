@@ -7,9 +7,10 @@ import clsx from 'clsx';
 import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
+import { usePrevious } from '../../../internal/hooks/use-previous';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
-import { getDrawerStyles } from '../compute-layout';
+// import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
 import { useResize } from './use-resize';
 
@@ -32,11 +33,12 @@ export function AppLayoutGlobalAiDrawerImplementation({
     ariaLabels,
     aiDrawerFocusControl,
     isMobile,
-    placement,
     verticalOffsets,
     drawersOpenQueue,
     onActiveAiDrawerChange,
     onActiveDrawerResize,
+    expandedDrawerId,
+    setExpandedDrawerId,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeAiDrawer?.id;
@@ -46,7 +48,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
     content: activeAiDrawer ? activeAiDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
-  const { drawerHeight, drawerTopOffset } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  // const { drawerHeight, drawerTopOffset } = getDrawerStyles(verticalOffsets, isMobile, placement);
   const resizeProps = useResize({
     currentWidth: activeAiDrawerSize,
     minWidth: minAiDrawerSize,
@@ -58,22 +60,31 @@ export function AppLayoutGlobalAiDrawerImplementation({
   });
   const size = getLimitedValue(minAiDrawerSize, activeAiDrawerSize, maxAiDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue?.length ? drawersOpenQueue[0] : activeDrawerId;
-  const animationDisabled = activeAiDrawer?.defaultActive && !drawersOpenQueue.includes(activeAiDrawer.id);
+  const isExpanded = activeAiDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
+  const wasExpanded = usePrevious(isExpanded);
+  const animationDisabled =
+    (activeAiDrawer?.defaultActive && !drawersOpenQueue.includes(activeAiDrawer.id)) || (wasExpanded && !isExpanded);
 
   return (
-    <Transition nodeRef={drawerRef} in={!!activeAiDrawer} appear={true} timeout={0}>
+    <Transition nodeRef={drawerRef} in={!!activeAiDrawer || isExpanded} appear={true} timeout={0}>
       {state => (
         <aside
           id={activeAiDrawer?.id}
           aria-hidden={!activeAiDrawer}
           aria-label={computedAriaLabels.content}
-          className={clsx(styles.drawer, styles['ai-drawer'], {
-            [sharedStyles['with-motion-horizontal']]: !animationDisabled,
-            [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
-            [testutilStyles['active-drawer']]: activeDrawerId,
-            [styles['drawer-hidden']]: !activeAiDrawer,
-            [testutilStyles['drawer-closed']]: !activeAiDrawer,
-          })}
+          className={clsx(
+            styles.drawer,
+            styles['ai-drawer'],
+            !animationDisabled && isExpanded && styles['with-expanded-motion'],
+            {
+              [sharedStyles['with-motion-horizontal']]: !animationDisabled,
+              [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
+              [testutilStyles['active-drawer']]: activeDrawerId,
+              [styles['drawer-hidden']]: !activeAiDrawer,
+              [testutilStyles['drawer-closed']]: !activeAiDrawer,
+              [styles['drawer-expanded']]: isExpanded,
+            }
+          )}
           ref={drawerRef}
           onBlur={e => {
             if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
@@ -81,8 +92,8 @@ export function AppLayoutGlobalAiDrawerImplementation({
             }
           }}
           style={{
-            blockSize: drawerHeight,
-            insetBlockStart: drawerTopOffset,
+            blockSize: '100vh',
+            insetBlockStart: verticalOffsets.toolbar,
             ...(!isMobile && {
               [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
             }),
@@ -105,21 +116,45 @@ export function AppLayoutGlobalAiDrawerImplementation({
             </div>
           )}
           <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
-            <div className={clsx(styles['drawer-close-button'])}>
-              <InternalButton
-                ariaLabel={computedAriaLabels.closeButton}
-                className={clsx({
-                  [testutilStyles['active-drawer-close-button']]: activeDrawerId,
-                })}
-                formAction="none"
-                iconName={isMobile ? 'close' : 'angle-left'}
-                onClick={() => onActiveAiDrawerChange(null, { initiatedByUserAction: true })}
-                ref={aiDrawerFocusControl.refs.close}
-                variant="icon"
-                analyticsAction="close"
-              />
-            </div>
-            <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
+            <div
+              className={styles['drawer-content']}
+              style={{
+                blockSize: '100vh',
+              }}
+            >
+              <header className={styles['drawer-content-header']}>
+                <div>logo</div>
+                <div className={styles['drawer-actions']}>
+                  {!isMobile && activeAiDrawer?.isExpandable && (
+                    <div className={styles['drawer-expanded-mode-button']}>
+                      <InternalButton
+                        ariaLabel={activeAiDrawer?.ariaLabels?.expandedModeButton}
+                        className={testutilStyles['active-drawer-expanded-mode-button']}
+                        formAction="none"
+                        ariaExpanded={isExpanded}
+                        iconName={isExpanded ? 'shrink' : 'expand'}
+                        onClick={() => setExpandedDrawerId(isExpanded ? null : activeDrawerId!)}
+                        variant="icon"
+                        analyticsAction={isExpanded ? 'expand' : 'collapse'}
+                      />
+                    </div>
+                  )}
+                  <div className={clsx(styles['drawer-close-button'])}>
+                    <InternalButton
+                      ariaLabel={computedAriaLabels.closeButton}
+                      className={clsx({
+                        [testutilStyles['active-drawer-close-button']]: activeDrawerId,
+                      })}
+                      formAction="none"
+                      iconName={isMobile ? 'close' : 'angle-left'}
+                      onClick={() => onActiveAiDrawerChange(null, { initiatedByUserAction: true })}
+                      ref={aiDrawerFocusControl.refs.close}
+                      variant="icon"
+                      analyticsAction="close"
+                    />
+                  </div>
+                </div>
+              </header>
               {activeAiDrawer?.content}
             </div>
           </div>

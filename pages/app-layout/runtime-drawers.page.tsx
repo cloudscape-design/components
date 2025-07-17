@@ -36,6 +36,8 @@ awsuiPlugins.appLayout.registerDrawer({
   id: 'amazon-q',
   type: 'global-ai',
   resizable: true,
+  isExpandable: true,
+  defaultSize: 500,
 
   ariaLabels: {
     closeButton: 'Close button',
@@ -49,7 +51,19 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<div>Tela</div>, container);
+    ReactDOM.render(
+      <div
+        style={{
+          blockSize: '100vh',
+          background: 'white',
+          marginInlineEnd: '16px',
+          borderStartEndRadius: '4px',
+        }}
+      >
+        Tela
+      </div>,
+      container
+    );
   },
   unmountContent: container => unmountComponentAtNode(container),
 });

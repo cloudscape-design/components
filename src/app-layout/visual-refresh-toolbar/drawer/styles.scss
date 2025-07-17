@@ -240,9 +240,28 @@ $drawer-resize-handle-size: awsui.$space-m;
 
   &.ai-drawer {
     grid-template-columns: 1fr awsui.$space-m;
+    background: awsui.$color-gap-global-drawer;
 
     > .drawer-slider {
       grid-column: 2;
+    }
+
+    > .drawer-content-container {
+      > .drawer-content {
+        > .drawer-content-header {
+          block-size: 42px;
+          position: sticky;
+          z-index: 1000;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-inline: awsui.$space-m;
+
+          > .drawer-actions {
+            display: flex;
+          }
+        }
+      }
     }
   }
 }
