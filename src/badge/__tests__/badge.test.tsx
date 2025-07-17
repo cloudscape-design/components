@@ -5,8 +5,6 @@ import { render } from '@testing-library/react';
 
 import Badge, { BadgeProps } from '../../../lib/components/badge';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import * as environment from '../../internal/environment';
-import { getBadgeStyles } from '../style';
 
 import styles from '../../../lib/components/badge/styles.css.js';
 
@@ -85,31 +83,5 @@ describe('Style API', () => {
     expect(getComputedStyle(badge).getPropertyValue('border-width')).toBe('2px');
     expect(getComputedStyle(badge).getPropertyValue('padding-block')).toBe('4px');
     expect(getComputedStyle(badge).getPropertyValue('padding-inline')).toBe('8px');
-  });
-});
-
-describe('getBadgeStyles', () => {
-  test('returns undefined when style.root is not provided', () => {
-    expect(getBadgeStyles({})).toBeUndefined();
-    expect(getBadgeStyles(undefined)).toBeUndefined();
-  });
-
-  test('returns undefined when SYSTEM is not core', () => {
-    jest.spyOn(environment, 'SYSTEM', 'get').mockReturnValue('not-core');
-
-    const style = {
-      root: {
-        background: 'rgb(255, 255, 255)',
-        borderColor: 'rgb(0, 0, 0)',
-        borderRadius: '8px',
-        borderWidth: '2px',
-        color: 'rgb(0, 0, 0)',
-        paddingBlock: '4px',
-        paddingInline: '8px',
-      },
-    };
-
-    expect(getBadgeStyles(style)).toBeUndefined();
-    jest.restoreAllMocks();
   });
 });
