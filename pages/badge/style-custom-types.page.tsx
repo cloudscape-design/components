@@ -14,9 +14,6 @@ export default function CustomBadgeTypes() {
     <ScreenshotArea>
       <h1>Custom Badge Types</h1>
       <SpaceBetween direction="horizontal" size="m">
-        <CustomBadge colorTheme="grey" id="default">
-          Grey
-        </CustomBadge>
         <CustomBadge colorTheme="blue">Blue</CustomBadge>
         <CustomBadge colorTheme="critical">Critical</CustomBadge>
         <CustomBadge colorTheme="high">High</CustomBadge>
@@ -30,11 +27,10 @@ export default function CustomBadgeTypes() {
 
 interface CustomBadgeProps {
   children?: React.ReactNode;
-  colorTheme: 'grey' | 'blue' | 'critical' | 'high' | 'medium' | 'low' | 'neutral';
-  id?: string;
+  colorTheme: 'blue' | 'critical' | 'high' | 'medium' | 'low' | 'neutral';
 }
 
-function CustomBadge({ children, colorTheme, id }: CustomBadgeProps) {
+function CustomBadge({ children, colorTheme }: CustomBadgeProps) {
   const mode = useCurrentMode(useRef(document.body));
   const background = backgrounds[mode][colorTheme];
   const borderColor = borderColors[mode][colorTheme];
@@ -42,7 +38,6 @@ function CustomBadge({ children, colorTheme, id }: CustomBadgeProps) {
   const color = colors[mode];
   return (
     <CloudscapeBadge
-      data-testid={id}
       style={{
         root: {
           background,
@@ -62,7 +57,6 @@ function CustomBadge({ children, colorTheme, id }: CustomBadgeProps) {
 
 const backgrounds = {
   light: {
-    grey: palette.neutral60,
     blue: palette.blue80,
     critical: palette.red80,
     high: palette.red60,
@@ -71,13 +65,12 @@ const backgrounds = {
     neutral: palette.neutral60,
   },
   dark: {
-    grey: palette.neutral80,
     blue: palette.blue40,
     critical: palette.red30,
     high: palette.red30,
-    medium: palette.orange60,
+    medium: palette.orange40,
     low: palette.teal20,
-    neutral: palette.neutral80,
+    neutral: palette.neutral40,
   },
 };
 
@@ -88,7 +81,6 @@ const colors = {
 
 const borderColors = {
   light: {
-    grey: palette.blue80,
     blue: palette.neutral80,
     critical: palette.blue90,
     high: palette.red80,
@@ -97,7 +89,6 @@ const borderColors = {
     neutral: palette.teal80,
   },
   dark: {
-    grey: palette.blue60,
     blue: palette.neutral20,
     critical: palette.red60,
     high: palette.red10,
@@ -108,11 +99,10 @@ const borderColors = {
 };
 
 const borderWidths = {
-  grey: '4px',
   blue: '2px',
   critical: '4px',
   high: '0px',
-  medium: '4px',
+  medium: '0px',
   low: '0px',
-  neutral: '2px',
+  neutral: '0px',
 };
