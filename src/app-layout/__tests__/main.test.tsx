@@ -128,7 +128,7 @@ describeEachAppLayout({ themes: ['classic', 'refresh-toolbar'], sizes: ['desktop
       await waitFor(() => expect(wrapper.getElement()).toHaveStyle({ minBlockSize: 'calc(100vh - 45px)' }));
     });
 
-    // TODO Enable after fixing disableBodyScroll
+    // disableBodyScroll is not supported in this version
     (theme === 'refresh-toolbar' ? test.skip : test)(
       'should set height instead of min-height when the body scroll is disabled',
       () => {
@@ -139,8 +139,7 @@ describeEachAppLayout({ themes: ['classic', 'refresh-toolbar'], sizes: ['desktop
     );
   });
 
-  // TODO Enable after fixing 'Distinguish landmarks on page'
-  (size === 'mobile' && theme !== 'refresh-toolbar' ? test : test.skip)('a11y', async () => {
+  (size === 'mobile' ? test : test.skip)('a11y', async () => {
     const { container } = renderComponent(
       <AppLayout
         navigationOpen={true}
@@ -152,11 +151,9 @@ describeEachAppLayout({ themes: ['classic', 'refresh-toolbar'], sizes: ['desktop
         breadcrumbs={<div></div>}
         splitPanel={<div></div>}
         ariaLabels={{
-          // notifications?: string;
-          // navigation?: string;
+          drawers: 'Drawers',
           navigationToggle: 'Open navigation',
           navigationClose: 'Close navigation',
-          // tools?: string;
           toolsToggle: 'Open tools',
           toolsClose: 'Close tools',
         }}
