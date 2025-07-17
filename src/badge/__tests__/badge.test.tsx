@@ -5,6 +5,8 @@ import { render } from '@testing-library/react';
 
 import Badge, { BadgeProps } from '../../../lib/components/badge';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import * as environment from '../../internal/environment';
+import { getBadgeStyles } from '../style';
 
 import styles from '../../../lib/components/badge/styles.css.js';
 
@@ -86,10 +88,28 @@ describe('Style API', () => {
   });
 });
 
-describe('No Style API', () => {
-  test('without style properties', () => {
-    const badge = renderBadge(<Badge>Badge</Badge>);
+describe('getBadgeStyles', () => {
+  test('returns undefined when style.root is not provided', () => {
+    expect(getBadgeStyles({})).toBeUndefined();
+    expect(getBadgeStyles(undefined)).toBeUndefined();
+  });
 
-    expect(getComputedStyle(badge).getPropertyValue('border-width')).toBe('');
+  test('returns undefined when SYSTEM is not core', () => {
+    jest.spyOn(environment, 'SYSTEM', 'get').mockReturnValue('not-core');
+
+    const style = {
+      root: {
+        background: 'rgb(255, 255, 255)',
+        borderColor: 'rgb(0, 0, 0)',
+        borderRadius: '8px',
+        borderWidth: '2px',
+        color: 'rgb(0, 0, 0)',
+        paddingBlock: '4px',
+        paddingInline: '8px',
+      },
+    };
+
+    expect(getBadgeStyles(style)).toBeUndefined();
+    jest.restoreAllMocks();
   });
 });
