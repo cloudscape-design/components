@@ -62,20 +62,20 @@ function CustomBadge({ children, colorTheme, id }: CustomBadgeProps) {
 
 const backgrounds = {
   light: {
-    grey: palette.neutral40,
+    grey: palette.neutral60,
     blue: palette.blue80,
     critical: palette.red80,
     high: palette.red60,
     medium: palette.orange60,
     low: palette.teal90,
-    neutral: palette.neutral40,
+    neutral: palette.neutral60,
   },
   dark: {
     grey: palette.neutral80,
     blue: palette.blue40,
     critical: palette.red30,
     high: palette.red30,
-    medium: palette.orange40,
+    medium: palette.orange60,
     low: palette.teal20,
     neutral: palette.neutral80,
   },
@@ -101,7 +101,7 @@ const borderColors = {
     blue: palette.neutral20,
     critical: palette.red60,
     high: palette.red10,
-    medium: palette.green20,
+    medium: palette.green30,
     low: palette.neutral20,
     neutral: palette.teal40,
   },
@@ -112,7 +112,7 @@ const borderWidths = {
   blue: '2px',
   critical: '4px',
   high: '0px',
-  medium: '2px',
-  low: '6px',
+  medium: '4px',
+  low: '0px',
   neutral: '2px',
 };
