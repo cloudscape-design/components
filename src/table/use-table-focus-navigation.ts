@@ -4,7 +4,7 @@
 import { RefObject, useCallback, useEffect, useMemo } from 'react';
 
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
-import { TableProps } from './interfaces';
+import { InternalSelectionType, TableProps } from './interfaces';
 
 function iterateTableCells<T extends HTMLElement>(
   table: T,
@@ -19,7 +19,7 @@ function iterateTableCells<T extends HTMLElement>(
 
 interface TableFocusNavigationProps<T> {
   enableKeyboardNavigation?: boolean;
-  selectionType: TableProps['selectionType'];
+  selectionType: undefined | InternalSelectionType;
   tableRoot: RefObject<HTMLTableElement>;
   columnDefinitions: Readonly<T[]>;
   numRows: number;

@@ -15,6 +15,7 @@ import progressiveLoadingStyles from '../../../table/progressive-loading/styles.
 import resizerStyles from '../../../table/resizer/styles.selectors.js';
 import selectionStyles from '../../../table/selection/styles.selectors.js';
 import styles from '../../../table/styles.selectors.js';
+import testUtilStyles from '../../../table/test-classes/styles.selectors.js';
 
 export default class TableWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
@@ -67,6 +68,18 @@ export default class TableWrapper extends ComponentWrapper {
   findBodyCell(rowIndex: number, columnIndex: number): ElementWrapper | null {
     return this.findNativeTable().find(
       `tbody tr:nth-child(${rowIndex}) .${bodyCellStyles['body-cell']}:nth-child(${columnIndex})`
+    );
+  }
+
+  /**
+   * Returns a table cell counter, if defined, based on given row and column indices.
+   *
+   * @param rowIndex 1-based index of the row of the cell to select.
+   * @param columnIndex 1-based index of the column of the cell to select.
+   */
+  findBodyCellCounter(rowIndex: number, columnIndex: number): ElementWrapper | null {
+    return this.findNativeTable().find(
+      `tbody tr:nth-child(${rowIndex}) .${bodyCellStyles['body-cell']}:nth-child(${columnIndex}) .${testUtilStyles['body-cell-counter']}`
     );
   }
 
