@@ -14444,7 +14444,7 @@ In most cases, they aren't needed, as the \`svg\` element inherits styles from t
 If this is provided then any other \`actionButton*\` properties will be ignored.
 Note that you should still provide an \`onAction\` function in order to handle keyboard submission.",
       "isDefault": false,
-      "name": "primaryAction",
+      "name": "customPrimaryAction",
       "systemTags": [
         "core",
       ],

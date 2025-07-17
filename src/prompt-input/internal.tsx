@@ -50,7 +50,7 @@ const InternalPromptInput = React.forwardRef(
       placeholder,
       readOnly,
       spellcheck,
-      primaryAction,
+      customPrimaryAction,
       secondaryActions,
       secondaryContent,
       disableSecondaryActionsPaddings,
@@ -106,7 +106,7 @@ const InternalPromptInput = React.forwardRef(
       adjustTextareaHeight();
     };
 
-    const hasActionButton = actionButtonIconName || actionButtonIconSvg || actionButtonIconUrl || primaryAction;
+    const hasActionButton = actionButtonIconName || actionButtonIconSvg || actionButtonIconUrl || customPrimaryAction;
 
     const adjustTextareaHeight = useCallback(() => {
       if (textareaRef.current) {
@@ -175,7 +175,7 @@ const InternalPromptInput = React.forwardRef(
 
     const action = (
       <div className={clsx(styles['primary-action'], testutilStyles['primary-action'])}>
-        {primaryAction ?? (
+        {customPrimaryAction ?? (
           <InternalButton
             className={clsx(styles['action-button'], testutilStyles['action-button'])}
             ariaLabel={actionButtonAriaLabel}

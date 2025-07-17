@@ -172,11 +172,11 @@ describe('action button', () => {
 });
 
 describe('custom primary action', () => {
-  test('custom primaryAction can be provided', () => {
+  test('customPrimaryAction can be provided', () => {
     const { wrapper } = renderPromptInput({
       value: '',
       actionButtonIconName: 'send',
-      primaryAction: (
+      customPrimaryAction: (
         <>
           <button>One</button>
           <button>Two</button>
@@ -189,7 +189,7 @@ describe('custom primary action', () => {
     const { wrapper } = renderPromptInput({
       value: '',
       actionButtonIconName: 'send',
-      primaryAction: 'custom content',
+      customPrimaryAction: 'custom content',
     });
     expect(wrapper.findActionButton()).toBeFalsy();
   });

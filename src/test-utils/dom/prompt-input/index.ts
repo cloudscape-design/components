@@ -14,8 +14,7 @@ export default class PromptInputWrapper extends ComponentWrapper {
   }
 
   /**
-   * Finds the primary action button. Note that if you provide `primaryAction`
-   * then this will return null, you should use `findPrimaryActionSlot` instead.
+   * Finds the action button. Note that, despite its typings, this may return null.
    */
   findActionButton(): ElementWrapper<HTMLButtonElement> {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['action-button'])!;
