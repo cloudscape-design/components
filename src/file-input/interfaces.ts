@@ -48,6 +48,17 @@ export interface FileInputProps extends BaseComponentProps, FormFieldCommonValid
    * If you want to clear the selection, use empty array.
    */
   value: ReadonlyArray<File>;
+
+  /**
+   * Renders the file input as disabled and file selection.
+   */
+  disabled?: boolean;
+
+  /**
+   * Provides a reason why the file input is disabled (only when `disabled` is `true`).
+   * If provided, the file input becomes focusable.
+   */
+  disabledReason?: string;
 }
 
 export namespace FileInputProps {

@@ -133,6 +133,21 @@ describe('FileInput input', () => {
     expect((onChange as jest.Mock).mock.lastCall[0].detail.value[0]).toBe(file1);
     expect((onChange as jest.Mock).mock.lastCall[0].detail.value[1]).toBe(file2);
   });
+
+  test('disables the native input and the trigger button when `disabled` prop is assigned', () => {
+    const wrapper = render({ disabled: true });
+    const input = wrapper.findNativeInput().getElement();
+
+    expect(input).toBeDisabled();
+    expect(wrapper.findTrigger().isDisabled()).toBe(true);
+  });
+
+  test('shows the disabled upon focus when `disabledReason` prop is assigned', () => {
+    const wrapper = render({ disabled: true, disabledReason: 'Test disabled reason' });
+    wrapper.findTrigger().focus();
+
+    expect(wrapper.findTrigger().findDisabledReason()!.getElement()).toHaveTextContent('Test disabled reason');
+  });
 });
 
 describe('ref', () => {
@@ -171,5 +186,43 @@ describe('a11y', () => {
       value: [file1, file2],
     });
     await expect(wrapper.getElement()).toValidateA11y();
+  });
+
+  describe('when disabled', () => {
+    test('decorative button cannot catch the focus', () => {
+      const wrapper = render({ disabled: true });
+
+      // Asserting against attributes rather than checking the actual focusing behavior.
+      // Reason: JSDom ignores `disabled` and `tabIndex` attributes when focusing on buttons.
+      // Ref: https://github.com/jsdom/jsdom/issues/3029
+      expect(wrapper.findTrigger().getElement()).toHaveAttribute('disabled');
+      expect(wrapper.findTrigger().getElement()).toHaveAttribute('tabIndex', '-1');
+    });
+
+    test('native input cannot catch the focus', () => {
+      const wrapper = render({ disabled: true });
+      wrapper.findNativeInput().focus();
+      expect(wrapper.findNativeInput().getElement()).not.toHaveFocus();
+    });
+  });
+
+  describe('when disabled with disabledReason', () => {
+    test('decorative button can catch the focus', () => {
+      const wrapper = render({ disabled: true, disabledReason: 'Test disabled reason' });
+      wrapper.findTrigger().focus();
+      expect(wrapper.findTrigger().getElement()).toHaveFocus();
+
+      // Asserting against attributes rather than checking the actual focusing behavior.
+      // Reason: JSDom ignores `disabled` and `tabIndex` attributes when focusing on buttons.
+      // Ref: https://github.com/jsdom/jsdom/issues/3029
+      expect(wrapper.findTrigger().getElement()).not.toHaveAttribute('disabled');
+      expect(wrapper.findTrigger().getElement()).not.toHaveAttribute('tabIndex');
+    });
+
+    test('native input cannot catch the focus', () => {
+      const wrapper = render({ disabled: true, disabledReason: 'Test disabled reason' });
+      wrapper.findNativeInput().focus();
+      expect(wrapper.findNativeInput().getElement()).not.toHaveFocus();
+    });
   });
 });
