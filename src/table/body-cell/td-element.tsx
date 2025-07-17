@@ -57,6 +57,7 @@ export interface TableTdElementProps {
   isEditingDisabled?: boolean;
   hasSuccessIcon?: boolean;
   tableVariant?: string;
+  counter?: string;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -97,6 +98,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       isEditingDisabled,
       hasSuccessIcon,
       tableVariant,
+      counter,
       ...rest
     },
     ref
@@ -165,7 +167,10 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           </div>
         )}
 
-        <div className={clsx(styles['body-cell-content'], wrapLines && styles['body-cell-wrap'])}>{children}</div>
+        <div className={clsx(styles['body-cell-content'], wrapLines && styles['body-cell-wrap'])}>
+          {children}
+          {counter ? <div className={styles['body-cell-counter']}> {counter}</div> : null}
+        </div>
       </Element>
     );
   }

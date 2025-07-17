@@ -45,6 +45,7 @@ function isAppLayoutPage(pageId?: string) {
     'content-layout',
     'grid-navigation-custom',
     'expandable-rows-test',
+    'grouped-table-test',
     'container/sticky-permutations',
     'copy-to-clipboard/scenario-split-panel',
     'prompt-input/simple',
