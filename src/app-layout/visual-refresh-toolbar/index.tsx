@@ -278,6 +278,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelPosition: splitPanelPreferences?.position,
       isMobile,
       activeGlobalDrawersSizes,
+      activeAiDrawerSize,
     });
 
     const { ref: intersectionObserverRef, isIntersecting } = useIntersectionObserver({ initialState: true });
@@ -450,7 +451,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
       const activeNavigationWidth = !navigationHide && navigationOpen ? navigationWidth : 0;
       const scrollWidth = activeNavigationWidth + CONTENT_PADDING + totalActiveDrawersMinSize;
-      const hasHorizontalScroll = scrollWidth > placement.inlineSize;
+      const hasHorizontalScroll = scrollWidth > placement.inlineSize - activeAiDrawerSize;
       if (hasHorizontalScroll) {
         if (!navigationHide && navigationOpen) {
           onNavigationToggle(false);
@@ -468,6 +469,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       navigationWidth,
       onNavigationToggle,
       placement.inlineSize,
+      activeAiDrawerSize,
     ]);
 
     /**
