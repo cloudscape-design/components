@@ -76,7 +76,7 @@ const permutations = createPermutations<PromptInputProps>([
   {
     value: ['Short value for custom primary actions'],
     actionButtonIconName: [undefined, 'send'],
-    primaryAction: [undefined, 'Custom primary'],
+    customPrimaryAction: [undefined, 'Custom primary'],
     secondaryActions: [undefined, 'secondary actions'],
     disableSecondaryActionsPaddings: [false, true],
   },

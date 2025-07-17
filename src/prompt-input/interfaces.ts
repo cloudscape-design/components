@@ -92,7 +92,7 @@ export interface PromptInputProps
    *
    * @awsuiSystem core
    */
-  primaryAction?: React.ReactNode;
+  customPrimaryAction?: React.ReactNode;
 
   /**
    * Use this slot to add secondary actions to the prompt input.

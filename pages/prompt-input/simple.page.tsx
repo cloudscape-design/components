@@ -203,7 +203,7 @@ export default function PromptInputPage() {
                   warning={hasWarning}
                   ref={ref}
                   disableSecondaryActionsPaddings={true}
-                  primaryAction={
+                  customPrimaryAction={
                     hasPrimaryActions ? (
                       <Box padding={{ right: 'xxs', top: 'xs' }}>
                         <ButtonGroup
