@@ -42,6 +42,16 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
 
+  const getElementsToAnimate = useCallback(() => {
+    const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
+    return { ...flashElements, notificationBar: notificationBarRef.current };
+  }, [isFlashbarStackExpanded]);
+
+  const prepareAnimations = useCallback(() => {
+    const rects = getDOMRects(getElementsToAnimate());
+    setInitialAnimationState(rects);
+  }, [getElementsToAnimate]);
+
   const collapsedItemRefs = useRef<Record<string, HTMLElement | null>>({});
   const expandedItemRefs = useRef<Record<string, HTMLElement | null>>({});
   const [initialAnimationState, setInitialAnimationState] = useState<Record<string, DOMRect> | null>(null);
@@ -50,9 +60,6 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
   const [transitioning, setTransitioning] = useState(false);
   const flashbarElementId = useUniqueId('flashbar');
   const itemCountElementId = useUniqueId('item-count');
-
-  // Create a ref to hold the prepareAnimations function
-  const prepareAnimationsRef = useRef<(() => void) | null>(null);
 
   const { baseProps, isReducedMotion, isVisualRefresh, mergedRef, ref, flashRefs, handleFlashDismissed } = useFlashbar({
     items,
@@ -65,26 +72,13 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
       // because we can rely on each item's index in the original array,
       // but we can't do that when elements are added or removed, since the index changes.
       if (options?.allItemsHaveId && !options?.isReducedMotion) {
-        prepareAnimationsRef.current?.();
+        prepareAnimations();
       }
     },
     onItemsRemoved: removedItems => {
       setExitingItems([...exitingItems, ...removedItems]);
     },
   });
-
-  const getElementsToAnimate = useCallback(() => {
-    // Use the flashRefs from the hook for animation
-    return { ...flashRefs.current, notificationBar: notificationBarRef.current };
-  }, [flashRefs]);
-
-  const prepareAnimations = useCallback(() => {
-    const rects = getDOMRects(getElementsToAnimate());
-    setInitialAnimationState(rects);
-  }, [getElementsToAnimate]);
-
-  // Update the ref with the current prepareAnimations function
-  prepareAnimationsRef.current = prepareAnimations;
 
   if (items.length <= maxNonCollapsibleItems && isFlashbarStackExpanded) {
     setIsFlashbarStackExpanded(false);
