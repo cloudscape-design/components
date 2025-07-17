@@ -60,17 +60,17 @@ const backgrounds = {
     blue: palette.blue80,
     critical: palette.red80,
     high: palette.red60,
-    medium: palette.orange60,
+    medium: palette.green80,
     low: palette.teal90,
-    neutral: palette.neutral60,
+    neutral: palette.neutral80,
   },
   dark: {
     blue: palette.blue40,
     critical: palette.red30,
     high: palette.red30,
-    medium: palette.orange40,
+    medium: palette.green20,
     low: palette.teal20,
-    neutral: palette.neutral40,
+    neutral: palette.neutral20,
   },
 };
 
