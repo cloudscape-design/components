@@ -9,11 +9,11 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalCheckbox from '../../checkbox/internal';
 import RadioButton from '../../internal/components/radio-button';
 import { KeyCode } from '../../internal/keycode';
-import { SelectionProps } from './interfaces';
+import { ItemSelectionProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface SelectionControlProps extends SelectionProps {
+export interface SelectionControlProps extends ItemSelectionProps {
   onShiftToggle?(shiftPressed: boolean): void;
   onFocusUp?: KeyboardEventHandler;
   onFocusDown?: KeyboardEventHandler;

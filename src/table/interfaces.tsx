@@ -102,6 +102,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *   to reorder the items. This property accepts a custom comparator that is used to compare two items.
    *   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
    *   If present, the `sortingField` property is ignored.
+   * * `counter` ((ItemCounterData) => string) - Specifies secondary cell content, displayed next to the primary. Use it to display
+   *   resource counters in the first column of expandable tables with data grouping.
    * * `editConfig` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.
    *   * `editConfig.ariaLabel` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
    *   * `editConfig.errorIconAriaLabel` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
@@ -185,11 +187,21 @@ export interface TableProps<T = any> extends BaseComponentProps {
 
   /**
    * Specifies alternative text for the selection components (checkboxes and radio buttons) as follows:
-   * * `itemSelectionLabel` ((SelectionState, Item) => string) - Specifies the alternative text for an item.
-   * You can use the first argument of type `SelectionState` to access the current selection state of the component
-   * (for example, the `selectedItems` list). The second argument is the corresponding  `Item` object.
-   * * `allItemsSelectionLabel` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
    * * `selectionGroupLabel` (string) - Specifies the alternative text for the whole selection and single-selection column header.
+   * * `itemSelectionLabel` ((SelectionState, Item) => string) - Specifies the alternative text for item selection controls.
+   * The selection state includes:
+   *  * `selectedItems` (Item[]) - corresponds to table's `selectedItems`.
+   *  * `itemsCount` (optional, number) - corresponds to table's `expandableRows.getItemsCount(item)`.
+   *  * `selectedItemsCount` (optional, number) - corresponds to table's `expandableRows.getItemsCount(item)`.
+   * * `allItemsSelectionLabel` ((SelectionState) => string) - Specifies the alternative text for all items selection control.
+   * The selection state includes:
+   *  * `selectedItems` (Item[]) - corresponds to table's `selectedItems`.
+   *  * `itemsCount` (optional, number) - corresponds to `expandableRows.totalItemsCount` or `totalItemsCount`.
+   *  * `selectedItemsCount` (optional, number) - corresponds to `expandableRows.totalSelectedItemsCount` or `selectedItems.length`.
+   * * `allItemsLoaderSelectionLabel`: ((SelectionState) => string) - Specifies the alternative text for root resource loader selector
+   * in tables with data grouping.
+   * * `itemLoaderSelectionLabel`: ((SelectionState, Item) => string) - Specifies the alternative text for item resource loader selector
+   * in tables with data grouping.
    * * `tableLabel` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
    *                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
    * * `resizerRoleDescription` (string) - Provides role description for table column resizer buttons.
@@ -270,7 +282,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
 
   /**
    * Fired when a user interaction triggers a change in the list of selected items.
-   * The event `detail` contains the current list of `selectedItems`.
+   * The event `detail` contains the new state for `selectedItems`.
    */
   onSelectionChange?: NonCancelableEventHandler<TableProps.SelectionChangeDetail<T>>;
 
@@ -328,8 +340,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    */
   totalItemsCount?: number;
   /**
-   *  Use this property to inform screen readers which range of items is currently displayed in the table.
-   *  It specifies the index (1-based) of the first item in the table.
+   * Use this property to inform screen readers which range of items is currently displayed in the table.
+   * It specifies the index (1-based) of the first item in the table.
    */
   firstIndex?: number;
   /**
@@ -367,7 +379,22 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `getItemChildren` ((Item) => Item[]) - Use it to define nested data that are shown when an item gets expanded.
    * * `isItemExpandable` ((Item) => boolean) - Use it for items that can be expanded to show nested data.
    * * `expandedItems` (Item[]) - Use it to represent the expanded state of items.
-   * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<T>) - Called when an item's expand toggle is clicked.
+   * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<Item>) - Called when an item's expand toggle is clicked.
+   * * `groupSelection` (optional, GroupSelectionState<Item>) - Tree-like selection state for tables with grouped data. When defined, the
+   * properties `selectionType` and `selectedItems` no longer apply. It reads as (assuming item "a.1" is nested under "a"):
+   *  * `{ inverted: false, toggledItems: [] }` - no items are selected;
+   *  * `{ inverted: true, toggledItems: [] }` - all items are selected;
+   *  * `{ inverted: false, toggledItems: ["a", "a.1"] }` - all items nested under "a", unless also nested under "a.1", are selected.
+   *  * `{ inverted: true, toggledItems: ["a", "a.1"] }` - the opposite of above.
+   * * `onGroupSelectionChange` (optional, TableProps.OnGroupSelectionChange<Item>) - Called when group selection changes.
+   * * `getItemsCount` (optional, (Item) => number) - Use it to indicate the number of resources nested under the given item.
+   * The value is passed as `itemsCount` property to the `columnDefinitions[index].counter` and `ariaLabels.itemSelectionLabel` functions.
+   * * `totalItemsCount` (optional, number) - Use it to indicate the total number of resources in the table.
+   * The value is passed as `itemsCount` property to the `ariaLabels.allItemsSelectionLabel`.
+   * * `getSelectedItemsCount` (optional, (Item) => number) - Use it to indicate the number of selected resources nested under the given item.
+   * The value is passed as `selectedItemsCount` property to the `columnDefinitions[index].counter` and `ariaLabels.itemSelectionLabel` functions.
+   * * `totalSelectedItemsCount` (optional, number) - Use it to indicate the total number of selected resources in the table.
+   * The value is passed as `selectedItemsCount` property to the `ariaLabels.allItemsSelectionLabel`.
    */
   expandableRows?: TableProps.ExpandableRows<T>;
 
@@ -400,6 +427,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * the table items array is empty.
    */
   renderLoaderEmpty?: (detail: TableProps.RenderLoaderEmptyDetail<T>) => React.ReactNode;
+  /**
+   * Renders loader counter that is appended to the loader content in all loader states.
+   */
+  renderLoaderCounter?: (detail: TableProps.RenderLoaderCounterDetail<T>) => React.ReactNode;
 }
 
 export namespace TableProps {
@@ -463,19 +494,26 @@ export namespace TableProps {
     disableNativeForm?: boolean;
   }
 
-  export type ColumnDefinition<ItemType> = {
+  export type ColumnDefinition<T> = {
     id?: string;
     header: React.ReactNode;
     ariaLabel?(data: LabelData): string;
     width?: number | string;
     minWidth?: number | string;
     maxWidth?: number | string;
-    editConfig?: EditConfig<ItemType>;
+    counter?(props: ItemCounterData<T>): React.ReactNode;
+    editConfig?: EditConfig<T>;
     isRowHeader?: boolean;
     verticalAlign?: VerticalAlign;
     hasDynamicContent?: boolean;
-    cell(item: ItemType): React.ReactNode;
-  } & SortingColumn<ItemType>;
+    cell(item: T): React.ReactNode;
+  } & SortingColumn<T>;
+
+  export interface ItemCounterData<T> {
+    item: T;
+    itemsCount?: number;
+    selectedItemsCount?: number;
+  }
 
   export interface StickyColumns {
     first?: number;
@@ -487,14 +525,18 @@ export namespace TableProps {
   export type Variant = 'container' | 'embedded' | 'borderless' | 'stacked' | 'full-page';
   export interface SelectionState<T> {
     selectedItems: ReadonlyArray<T>;
+    itemsCount?: number;
+    selectedItemsCount?: number;
   }
   export interface SelectionChangeDetail<T> {
     selectedItems: T[];
   }
   export type IsItemDisabled<T> = (item: T) => boolean;
   export interface AriaLabels<T> {
-    allItemsSelectionLabel?: (data: TableProps.SelectionState<T>) => string;
-    itemSelectionLabel?: (data: TableProps.SelectionState<T>, row: T) => string;
+    allItemsSelectionLabel?: (data: SelectionState<T>) => string;
+    itemSelectionLabel?: (data: SelectionState<T>, row: T) => string;
+    allItemsLoaderSelectionLabel?: (data: SelectionState<T>) => string;
+    itemLoaderSelectionLabel?: (data: SelectionState<T>, row: T) => string;
     selectionGroupLabel?: string;
     tableLabel?: string;
     resizerRoleDescription?: string;
@@ -572,21 +614,44 @@ export namespace TableProps {
     getItemChildren: (item: T) => readonly T[];
     isItemExpandable: (item: T) => boolean;
     expandedItems: ReadonlyArray<T>;
-    onExpandableItemToggle: TableProps.OnExpandableItemToggle<T>;
+    onExpandableItemToggle: OnExpandableItemToggle<T>;
+    groupSelection?: GroupSelectionState<T>;
+    onGroupSelectionChange?: OnGroupSelectionChange<T>;
+    getItemsCount?: (item: T) => number;
+    totalItemsCount?: number;
+    getSelectedItemsCount?: (item: T) => number;
+    totalSelectedItemsCount?: number;
   }
 
-  export type OnExpandableItemToggle<T> = NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
+  export type OnExpandableItemToggle<T> = NonCancelableEventHandler<ExpandableItemToggleDetail<T>>;
 
   export interface ExpandableItemToggleDetail<T> {
     item: T;
     expanded: boolean;
   }
 
-  export type GetLoadingStatus<T> = (item: null | T) => TableProps.LoadingStatus;
+  export type OnGroupSelectionChange<T> = NonCancelableEventHandler<GroupSelectionChangeDetail<T>>;
+
+  export interface GroupSelectionChangeDetail<T> {
+    groupSelection: GroupSelectionState<T>;
+  }
+
+  export interface GroupSelectionState<T> {
+    inverted: boolean;
+    toggledItems: readonly T[];
+  }
+
+  export type GetLoadingStatus<T> = (item: null | T) => LoadingStatus;
 
   export type LoadingStatus = 'pending' | 'loading' | 'error' | 'finished';
 
   export interface RenderLoaderDetail<T> {
+    item: null | T;
+  }
+
+  export interface RenderLoaderCounterDetail<T> {
+    loadingStatus: LoadingStatus;
+    selected: boolean;
     item: null | T;
   }
 
@@ -609,3 +674,5 @@ interface TableLoaderRow<T> {
   status: TableProps.LoadingStatus;
   from: number;
 }
+
+export type InternalSelectionType = TableProps.SelectionType | 'group';
