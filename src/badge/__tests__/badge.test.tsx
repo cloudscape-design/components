@@ -77,11 +77,19 @@ describe('Style API', () => {
       </Badge>
     );
 
-    expect(badge.style.background).toBe('rgb(255, 255, 255)');
-    expect(badge.style.borderColor).toBe('rgb(0, 0, 0)');
-    expect(badge.style.borderRadius).toBe('8px');
-    expect(badge.style.borderWidth).toBe('2px');
-    expect(badge.style.paddingBlock).toBe('4px');
-    expect(badge.style.paddingInline).toBe('8px');
+    expect(getComputedStyle(badge).getPropertyValue('background')).toBe('rgb(255, 255, 255)');
+    expect(getComputedStyle(badge).getPropertyValue('border-color')).toBe('rgb(0, 0, 0)');
+    expect(getComputedStyle(badge).getPropertyValue('border-radius')).toBe('8px');
+    expect(getComputedStyle(badge).getPropertyValue('border-width')).toBe('2px');
+    expect(getComputedStyle(badge).getPropertyValue('padding-block')).toBe('4px');
+    expect(getComputedStyle(badge).getPropertyValue('padding-inline')).toBe('8px');
+  });
+});
+
+describe('No Style API', () => {
+  test('without style properties', () => {
+    const badge = renderBadge(<Badge>Badge</Badge>);
+
+    expect(getComputedStyle(badge).getPropertyValue('border-width')).toBe('');
   });
 });
