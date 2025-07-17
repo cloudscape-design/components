@@ -104,7 +104,7 @@ export interface BaseButtonProps {
 
   /**
    * Attributes to add to the native `button` element.
-   * Some attributes will be automatically combined with Cloudscape-provided attribute values:
+   * Some attributes will be automatically combined with internal attribute values:
    * - `className` will be appended.
    * - Event handlers will be chained, unless the default is prevented.
    *
@@ -116,7 +116,7 @@ export interface BaseButtonProps {
 
   /**
    * Attributes to add to the native `a` element (when `href` is provided).
-   * Some attributes will be automatically combined with Cloudscape-provided attribute values:
+   * Some attributes will be automatically combined with internal attribute values:
    * - `className` will be appended.
    * - Event handlers will be chained, unless the default is prevented.
    *
