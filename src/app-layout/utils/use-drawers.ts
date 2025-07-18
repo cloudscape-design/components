@@ -244,8 +244,12 @@ export function useDrawers(
       fireNonCancelableEvent(runtimeDrawers?.aiDrawer?.onToggle, { isOpen: true, initiatedByUserAction });
     }
 
-    if (activeDrawerId) {
+    if (activeAiDrawerId) {
       fireNonCancelableEvent(runtimeDrawers?.aiDrawer?.onToggle, { isOpen: false, initiatedByUserAction });
+
+      if (activeAiDrawerId === expandedDrawerId) {
+        setExpandedDrawerId(null);
+      }
     }
 
     onAiDrawerFocus?.();

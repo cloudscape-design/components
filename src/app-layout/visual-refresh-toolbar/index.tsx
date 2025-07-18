@@ -518,6 +518,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           // which means the child layout isn't rendered at all in that case
           drawerExpandedModeInChildLayout={!!toolbarProps?.expandedDrawerId}
           drawerExpandedMode={!!expandedDrawerId}
+          aiDrawerExpandedMode={expandedDrawerId === activeAiDrawer?.id}
           style={{
             paddingBlockEnd: splitPanelOffsets.mainContentPaddingBlockEnd,
             ...(hasToolbar || !isNested
