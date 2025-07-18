@@ -129,7 +129,7 @@ function Tutorial({
               id={triggerControldId}
               variant="icon"
               ariaExpanded={expanded}
-              nativeButtonAttributes={{
+              __nativeAttributes={{
                 'aria-controls': controlId,
                 'aria-labelledby': headerId,
               }}
