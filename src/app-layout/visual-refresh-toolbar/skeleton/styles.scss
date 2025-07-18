@@ -85,6 +85,18 @@
         0
         0
         auto;
+
+      &.ai-drawer-expanded-mode {
+        grid-template-columns:
+          auto
+          0
+          0
+          0
+          0
+          0
+          0
+          0;
+      }
     }
   }
 }
