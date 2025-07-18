@@ -68,6 +68,9 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
     const analyticsComponentMetadata: GeneratedAnalyticsMetadataCheckboxComponent = {
       name: 'awsui.Checkbox',
       label: { root: 'self' },
+      properties: {
+        checked: `${!!checked}`,
+      },
     };
     if (__injectAnalyticsComponentMetadata) {
       analyticsMetadata.component = analyticsComponentMetadata;

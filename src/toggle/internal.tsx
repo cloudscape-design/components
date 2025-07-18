@@ -52,6 +52,9 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
     const analyticsComponentMetadata: GeneratedAnalyticsMetadataToggleComponent = {
       name: 'awsui.Toggle',
       label: { root: 'self' },
+      properties: {
+        checked: `${!!checked}`,
+      },
     };
 
     if (__injectAnalyticsComponentMetadata) {
