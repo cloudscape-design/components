@@ -35,6 +35,7 @@ const Autosuggest = React.forwardRef(
       label: 'input',
       properties: {
         disabled: `${!!props.disabled}`,
+        value: props.value || '',
       },
     };
 

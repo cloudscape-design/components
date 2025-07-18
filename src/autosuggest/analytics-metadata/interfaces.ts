@@ -13,5 +13,6 @@ export interface GeneratedAnalyticsMetadataAutosuggestComponent {
   label: string;
   properties: {
     disabled: string;
+    value: string;
   };
 }

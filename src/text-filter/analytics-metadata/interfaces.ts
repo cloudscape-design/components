@@ -9,5 +9,6 @@ export interface GeneratedAnalyticsMetadataTextFilterComponent {
   label: string;
   properties: {
     disabled: string;
+    filteringText: string;
   };
 }

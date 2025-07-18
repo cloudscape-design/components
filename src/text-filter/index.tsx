@@ -23,6 +23,7 @@ const TextFilter = React.forwardRef((props: TextFilterProps, ref: React.Ref<Text
     label: 'input',
     properties: {
       disabled: `${!!props.disabled}`,
+      filteringText: props.filteringText || '',
     },
   };
   return (
