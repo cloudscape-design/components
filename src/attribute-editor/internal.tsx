@@ -152,8 +152,7 @@ const InternalAttributeEditor = React.forwardRef(
             // Using aria-disabled="true" and tabindex="-1" instead of "disabled"
             // because focus can be dynamically moved to this button by calling
             // `focusAddButton()` on the ref.
-            nativeButtonAttributes={disableAddButton ? { tabIndex: -1 } : {}}
-            __skipNativeAttributesWarnings={true}
+            __nativeAttributes={disableAddButton ? { tabIndex: -1 } : {}}
             __focusable={true}
             onClick={onAddButtonClick}
             formAction="none"
