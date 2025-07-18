@@ -48,6 +48,7 @@ const Select = React.forwardRef(
       label: `.${analyticsSelectors['button-trigger']}`,
       properties: {
         disabled: `${!!externalProps.disabled}`,
+        selectedOptionValue: `${externalProps.selectedOption && externalProps.selectedOption.value ? externalProps.selectedOption.value : null}`,
       },
     };
 
