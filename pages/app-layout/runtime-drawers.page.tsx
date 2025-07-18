@@ -56,7 +56,6 @@ awsuiPlugins.appLayout.registerDrawer({
         style={{
           background: 'white',
           marginInlineEnd: '16px',
-          borderStartEndRadius: '4px',
         }}
       >
         {new Array(100).fill(null).map((_, index) => (
