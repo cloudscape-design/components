@@ -5,7 +5,6 @@ import React from 'react';
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface BaseButtonProps {
   /**
@@ -101,30 +100,6 @@ export interface BaseButtonProps {
    * @i18n
    */
   i18nStrings?: ButtonProps.I18nStrings;
-
-  /**
-   * Attributes to add to the native `button` element.
-   * Some attributes will be automatically combined with internal attribute values:
-   * - `className` will be appended.
-   * - Event handlers will be chained, unless the default is prevented.
-   *
-   * We do not support using this attribute to apply custom styling.
-   *
-   * @awsuiSystem core
-   */
-  nativeButtonAttributes?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
-
-  /**
-   * Attributes to add to the native `a` element (when `href` is provided).
-   * Some attributes will be automatically combined with internal attribute values:
-   * - `className` will be appended.
-   * - Event handlers will be chained, unless the default is prevented.
-   *
-   * We do not support using this attribute to apply custom styling.
-   *
-   * @awsuiSystem core
-   */
-  nativeAnchorAttributes?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
 }
 
 export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
