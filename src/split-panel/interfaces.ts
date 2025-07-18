@@ -8,7 +8,7 @@ export interface SplitPanelProps extends BaseComponentProps {
   /**
    * Header of the split panel.
    */
-  header: string;
+  header: React.ReactNode;
   children: React.ReactNode;
   /**
    * Determines whether the split panel collapses or hides completely when closed.
