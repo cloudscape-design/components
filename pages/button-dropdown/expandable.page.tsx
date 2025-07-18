@@ -11,17 +11,17 @@ export const items: ButtonDropdownProps['items'] = [
   {
     id: 'category1',
     text: 'category1',
-    iconName: 'gen-ai',
+    //iconName: 'gen-ai',
     items: [...Array(2)].map((_, index) => ({
       id: 'category1Subitem' + index,
       text: 'Sub item ' + index,
-      iconName: 'star',
+      //iconName: 'star',
     })),
   },
   {
     id: 'category2',
     text: 'category2',
-    iconName: 'settings',
+    //iconName: 'settings',
     items: [...Array(50)].map((_, index) => ({
       id: 'category2Subitem' + index,
       text: 'Cat 2 Sub item ' + index,
@@ -34,7 +34,7 @@ export const items: ButtonDropdownProps['items'] = [
   {
     id: 'category3',
     text: 'category3',
-    iconName: 'settings',
+    //iconName: 'settings',
     items: [...Array(50)].map((_, index) => ({
       id: 'category3Subitem' + index,
       text: 'Sub item ' + index,

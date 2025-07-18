@@ -36,6 +36,7 @@ const nestedExpandableGroup = {
     {
       id: 'id4',
       text: 'option4',
+      iconName: 'gen-ai',
       items: [
         { id: 'id5', text: 'Nested item' },
         { id: 'id6', text: 'Deeply expandable group', items: [{ id: 'id6', text: 'Deeply nested item' }] },
