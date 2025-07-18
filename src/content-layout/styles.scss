@@ -12,7 +12,9 @@
   #{custom-props.$contentLayoutMainGap}: 0px;
   display: grid;
   grid-template-columns: 0 0 1fr minmax(0, var(#{custom-props.$contentLayoutMaxContentWidth})) 1fr 0 0;
-  grid-template-rows: var(#{custom-props.$contentLayoutMainGap}) min-content min-content auto awsui.$space-dark-header-overlap-distance 1fr;
+  grid-template-rows:
+    var(#{custom-props.$contentLayoutMainGap})
+    min-content min-content auto awsui.$space-dark-header-overlap-distance 1fr;
   min-block-size: 100%;
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
@@ -48,10 +50,8 @@
   &.default-padding {
     #{custom-props.$contentLayoutMainGap}: awsui.$space-scaled-m;
     grid-template-columns:
-      var(#{custom-props.$togglesLeftWidth}, 0) var(#{custom-props.$contentLayoutDefaultHorizontalPadding}, 0) 1fr minmax(
-        0,
-        var(#{custom-props.$contentLayoutMaxContentWidth})
-      )
+      var(#{custom-props.$togglesLeftWidth}, 0) var(#{custom-props.$contentLayoutDefaultHorizontalPadding}, 0)
+      1fr minmax(0, var(#{custom-props.$contentLayoutMaxContentWidth}))
       1fr var(#{custom-props.$contentLayoutDefaultHorizontalPadding}, 0) var(#{custom-props.$togglesRightWidth}, 0);
   }
 

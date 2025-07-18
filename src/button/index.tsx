@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React from 'react';
 
 import { getBaseProps } from '../internal/base-component';
@@ -41,6 +42,8 @@ const Button = React.forwardRef(
       form,
       i18nStrings,
       style,
+      nativeButtonAttributes,
+      nativeAnchorAttributes,
       ...props
     }: ButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -82,6 +85,8 @@ const Button = React.forwardRef(
         form={form}
         i18nStrings={i18nStrings}
         style={style}
+        nativeButtonAttributes={nativeButtonAttributes}
+        nativeAnchorAttributes={nativeAnchorAttributes}
         __injectAnalyticsComponentMetadata={true}
       >
         {children}

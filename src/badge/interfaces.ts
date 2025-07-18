@@ -27,14 +27,11 @@ export interface BadgeProps extends BaseComponentProps {
   /**
    * Specifies an object of selectors and properties that are used to apply custom styles.
    *
-   * - `root.background` (string) - (Optional) Background for component states.
-   * - `root.borderColor` (string) - (Optional) Border color for component states.
+   * - `root.background` (string) - (Optional) Background for badge.
+   * - `root.borderColor` (string) - (Optional) Border color for badge.
    * - `root.borderRadius` (string) - (Optional) Border radius style.
    * - `root.borderWidth` (string) - (Optional) Border width style.
-   * - `root.color` (string) - (Optional) Color for component states.
-   * - `root.focusRing.borderColor` (string) - (Optional) Focus ring border color.
-   * - `root.focusRing.borderRadius` (string) - (Optional) Focus ring border radius.
-   * - `root.focusRing.borderWidth` (string) - (Optional) Focus ring border width.
+   * - `root.color` (string) - (Optional) Text color for badge.
    * - `root.paddingBlock` (string) - (Optional) Block dimension padding.
    * - `root.paddingInline` (string) - (Optional) Inline dimension padding.
    * @awsuiSystem core

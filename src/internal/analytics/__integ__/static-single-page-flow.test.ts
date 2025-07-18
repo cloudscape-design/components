@@ -328,8 +328,8 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         stepNumber: 1,
         subStepName: 'Container 1 - header',
         errorContext: {
-          errorCategory: 'input_validation',
-          errorSubCategory: 'access_control',
+          errorCategory: 'INPUT_VALIDATION',
+          errorSubCategory: 'ACCESS_CONTROL_ISSUES',
           errorMessage: 'Trigger error',
         },
         fieldIdentifier: 'field1',

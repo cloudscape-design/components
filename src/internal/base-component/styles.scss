@@ -8,7 +8,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 @use 'awsui:globals';
-@use '../styles/global.scss';
+@use '../styles/global';
 @use '../generated/custom-css-properties' as custom-styles;
 
 :root {

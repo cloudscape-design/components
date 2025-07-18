@@ -39,7 +39,8 @@ export interface BaseSelectProps
    * - `tags` [string[]] - (Optional) A list of tags giving further guidance about the option or group.
    * - `filteringTags` [string[]] - (Optional) A list of additional tags used for automatic filtering.
    * - `iconName` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option or group.
-   * - `iconAlt` (string) - (Optional) Specifies alternate text for a custom icon, for use with `iconUrl`.
+   * - `iconAriaLabel` (string) - (Optional) Specifies alternate text for the icon. We recommend that you provide this for accessibility.
+   * - `iconAlt` (string) - (Optional) **Deprecated**, replaced by \`iconAriaLabel\`. Specifies alternate text for a custom icon, for use with `iconUrl`.
    * - `iconUrl` (string) - (Optional) URL of a custom icon.
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
    *
