@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
@@ -10,7 +10,7 @@ import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
-// import { getDrawerStyles } from '../compute-layout';
+import Toggle from '../../../toggle/internal';
 import { AppLayoutInternals } from '../interfaces';
 import { useResize } from './use-resize';
 
@@ -42,6 +42,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeAiDrawer?.id;
+  const [isWhiteHeader, setIsWhiteHeader] = useState(false);
 
   const computedAriaLabels = {
     closeButton: activeAiDrawer ? activeAiDrawer.ariaLabels?.closeButton : ariaLabels?.toolsClose,
@@ -117,8 +118,12 @@ export function AppLayoutGlobalAiDrawerImplementation({
           )}
           <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
             <div className={styles['drawer-content']}>
-              <header className={styles['drawer-content-header']}>
-                <div>logo</div>
+              <header className={clsx(styles['drawer-content-header'], isWhiteHeader && styles['white-header'])}>
+                <div>
+                  <Toggle checked={isWhiteHeader} onChange={({ detail }) => setIsWhiteHeader(detail.checked)}>
+                    White header
+                  </Toggle>
+                </div>
                 <div className={styles['drawer-actions']}>
                   {!isMobile && activeAiDrawer?.isExpandable && (
                     <div className={styles['drawer-expanded-mode-button']}>
