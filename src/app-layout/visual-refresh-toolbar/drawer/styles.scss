@@ -255,7 +255,9 @@ $drawer-resize-handle-size: awsui.$space-m;
           display: flex;
           justify-content: space-between;
           align-items: center;
+          inset-block-start: 0;
           padding-inline: awsui.$space-m;
+          background: awsui.$color-gap-global-drawer;
 
           > .drawer-actions {
             display: flex;

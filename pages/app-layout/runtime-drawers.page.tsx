@@ -54,13 +54,14 @@ awsuiPlugins.appLayout.registerDrawer({
     ReactDOM.render(
       <div
         style={{
-          blockSize: '100vh',
           background: 'white',
           marginInlineEnd: '16px',
           borderStartEndRadius: '4px',
         }}
       >
-        Tela
+        {new Array(100).fill(null).map((_, index) => (
+          <div key={index}>Tela content</div>
+        ))}
       </div>,
       container
     );

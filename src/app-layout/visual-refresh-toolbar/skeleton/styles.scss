@@ -106,6 +106,7 @@
 .ai-drawer {
   @include desktop-only {
     grid-area: ai-drawer;
+    position: sticky;
   }
 }
 
