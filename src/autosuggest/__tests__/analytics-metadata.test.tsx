@@ -39,7 +39,7 @@ function renderAutosuggest(props: Partial<AutosuggestProps>) {
   return createWrapper(renderResult.container).findAutosuggest()!;
 }
 
-const getMetadataContexts = (label = 'autosuggest with metadatada', disabled?: boolean) => {
+const getMetadataContexts = (label = 'autosuggest with metadatada', disabled = false, value = '') => {
   const metadata: GeneratedAnalyticsMetadataFragment = {
     contexts: [
       {
@@ -49,6 +49,7 @@ const getMetadataContexts = (label = 'autosuggest with metadatada', disabled?: b
           label,
           properties: {
             disabled: disabled ? 'true' : 'false',
+            value,
           },
         },
       },
@@ -106,7 +107,7 @@ describe('Autosuggest renders correct analytics metadata', () => {
     };
     expect(getGeneratedAnalyticsMetadata(clearButton)).toEqual({
       ...clearInputMetadata,
-      ...getMetadataContexts(),
+      ...getMetadataContexts(undefined, undefined, 'something'),
     });
   });
   test('when disabled', () => {
@@ -131,7 +132,7 @@ describe('Autosuggest renders correct analytics metadata', () => {
     };
     expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithoutLabel)).toEqual({
       ...selectAction,
-      ...getMetadataContexts(),
+      ...getMetadataContexts(undefined, undefined, 'something'),
     });
 
     const simpleEnabledItemWithLabel = wrapper.findDropdown().findOptionByValue('value2')!.getElement();
@@ -143,13 +144,13 @@ describe('Autosuggest renders correct analytics metadata', () => {
         position: '2',
         value: 'value2',
       },
-      ...getMetadataContexts(),
+      ...getMetadataContexts(undefined, undefined, 'something'),
     });
 
     const disabledItem = wrapper.findDropdown().findOptionByValue('value4')!.getElement();
     validateComponentNameAndLabels(disabledItem, labels);
     expect(getGeneratedAnalyticsMetadata(disabledItem)).toEqual({
-      ...getMetadataContexts(),
+      ...getMetadataContexts(undefined, undefined, 'something'),
     });
   });
   test.each([false, true])('with groups and expandToViewport=%s', expandToViewport => {
