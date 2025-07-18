@@ -5,6 +5,7 @@ import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import {
   AppLayout,
+  Box,
   Button,
   ContentLayout,
   Header,
@@ -58,6 +59,9 @@ awsuiPlugins.appLayout.registerDrawer({
           marginInlineEnd: '16px',
         }}
       >
+        <Box variant="h2" padding={{ bottom: 'm' }}>
+          Chat demo
+        </Box>
         {new Array(100).fill(null).map((_, index) => (
           <div key={index}>Tela content</div>
         ))}
