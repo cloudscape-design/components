@@ -339,8 +339,6 @@ export function useDrawers(
     },
     {}
   );
-  // sanity check
-  // const activeAiDrawer = aiDrawer?.id === activeAiDrawerId ? aiDrawer : null;
   const activeAiDrawer = activeAiDrawerId ? aiDrawer : null;
   const activeAiDrawerSize = activeAiDrawerId
     ? (drawerSizes[activeAiDrawerId] ?? activeAiDrawer?.defaultSize ?? DEFAULT_AI_DRAWER_SIZE)
