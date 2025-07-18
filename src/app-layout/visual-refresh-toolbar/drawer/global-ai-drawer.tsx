@@ -48,7 +48,6 @@ export function AppLayoutGlobalAiDrawerImplementation({
     content: activeAiDrawer ? activeAiDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
-  // const { drawerHeight, drawerTopOffset } = getDrawerStyles(verticalOffsets, isMobile, placement);
   const resizeProps = useResize({
     currentWidth: activeAiDrawerSize,
     minWidth: minAiDrawerSize,
@@ -64,6 +63,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
   const wasExpanded = usePrevious(isExpanded);
   const animationDisabled =
     (activeAiDrawer?.defaultActive && !drawersOpenQueue.includes(activeAiDrawer.id)) || (wasExpanded && !isExpanded);
+  const drawerHeight = `calc(100vh - ${verticalOffsets.toolbar}}px)`;
 
   return (
     <Transition nodeRef={drawerRef} in={!!activeAiDrawer || isExpanded} appear={true} timeout={0}>
@@ -92,7 +92,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
             }
           }}
           style={{
-            blockSize: '100vh',
+            blockSize: drawerHeight,
             insetBlockStart: verticalOffsets.toolbar,
             ...(!isMobile && {
               [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
@@ -116,12 +116,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
             </div>
           )}
           <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
-            <div
-              className={styles['drawer-content']}
-              style={{
-                blockSize: '100vh',
-              }}
-            >
+            <div className={styles['drawer-content']}>
               <header className={styles['drawer-content-header']}>
                 <div>logo</div>
                 <div className={styles['drawer-actions']}>

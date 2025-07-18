@@ -111,7 +111,16 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
           {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
         >
           {toolbar}
-          <div className={styles['ai-drawer']}>{aiDrawer}</div>
+          <div
+            className={styles['ai-drawer']}
+            style={{
+              // TODO replace with a var
+              insetBlockStart: '41px',
+              blockSize: 'calc(100vh - 41px)',
+            }}
+          >
+            {aiDrawer}
+          </div>
           {navigation && (
             <div
               className={clsx(
