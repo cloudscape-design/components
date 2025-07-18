@@ -136,7 +136,7 @@ describe('WithNativeAttributes', () => {
     expect(element.id).toBe('override-id');
     expect(mockedWarnOnce).toHaveBeenCalledWith(
       'Button',
-      'Overriding native attribute [id] which has a Cloudscape-provided value'
+      'Overriding native attribute [id] which has a component-provided value'
     );
   });
 

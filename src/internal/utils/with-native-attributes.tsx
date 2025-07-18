@@ -49,7 +49,7 @@ export default React.forwardRef(
         // override other attributes, warning if it already exists
       } else {
         if (key in rest && !skipWarnings) {
-          warnOnce('Button', `Overriding native attribute [${key}] which has a Cloudscape-provided value`);
+          warnOnce('Button', `Overriding native attribute [${key}] which has a component-provided value`);
         }
         acc[key] = value;
       }
