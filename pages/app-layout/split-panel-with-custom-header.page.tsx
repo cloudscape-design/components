@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
 
-import { Badge, Button } from '~components';
+import { Badge, Box, Button, Toggle } from '~components';
 import AppLayout, { AppLayoutProps } from '~components/app-layout';
+import FormField from '~components/form-field';
 import Header from '~components/header';
 import Popover from '~components/popover';
 import SpaceBetween from '~components/space-between';
 import SplitPanel from '~components/split-panel';
+import Tiles from '~components/tiles';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -16,12 +18,16 @@ import labels from './utils/labels';
 import { splitPaneli18nStrings } from './utils/strings';
 import * as toolsContent from './utils/tools-content';
 
-type SplitPanelHeaderContentType = 'text' | 'short' | 'long';
+type SplitPanelHeaderContentType = 'text' | 'react-node';
+type SplitPanelHeaderLength = 'short' | 'long' | 'very-long';
 
 type SplitPanelDemoContext = React.Context<
   AppContextType<{
+    renderBadge: boolean;
+    renderActions: boolean;
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
     splitPanelHeaderContentType: SplitPanelHeaderContentType;
+    splitPanelHeaderLength: SplitPanelHeaderLength;
   }>
 >;
 
@@ -78,29 +84,36 @@ const DEMO_CONTENT = (
   </div>
 );
 
-const baseHeaderText = 'Split panel header withlongwordthatshouldbesplitinsteadofmakingthepanelscroll';
+const baseHeaderText = 'Split panel header';
+const headerTextWithLongWord = baseHeaderText + ' withlongwordthatshouldbesplitinsteadofmakingthepanelscroll';
 
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as SplitPanelDemoContext);
 
   const headerText =
-    urlParams.splitPanelHeaderContentType === 'long'
-      ? baseHeaderText + baseHeaderText + baseHeaderText + baseHeaderText
-      : baseHeaderText;
+    urlParams.splitPanelHeaderLength === 'short'
+      ? baseHeaderText
+      : urlParams.splitPanelHeaderLength === 'long'
+        ? headerTextWithLongWord
+        : new Array(20).fill(baseHeaderText);
 
   const header =
     urlParams.splitPanelHeaderContentType === 'text' ? (
       headerText
     ) : (
       <div style={{ display: 'flex', justifyContent: 'space-between', inlineSize: '100%' }}>
-        <SpaceBetween direction="horizontal" size="xs">
-          <Badge>Badge</Badge>
-          {headerText}
+        <SpaceBetween direction="horizontal" size="xs" alignItems="center">
+          {urlParams.renderBadge && <Badge>Badge</Badge>}
+          <Box variant="h3" tagOverride="h2" margin={{ vertical: 'n' }} padding={{ vertical: 'n' }}>
+            <span style={{ letterSpacing: 'normal' }}>{headerText}</span>
+          </Box>
         </SpaceBetween>
-        <SpaceBetween direction="horizontal" size="xs">
-          <Button>Button</Button>
-          <Button>Button</Button>
-        </SpaceBetween>
+        {urlParams.renderActions && (
+          <SpaceBetween direction="horizontal" size="xs">
+            <Button>Button</Button>
+            <Button>Button</Button>
+          </SpaceBetween>
+        )}
       </div>
     );
 
@@ -131,6 +144,53 @@ export default function () {
               </Header>
             </div>
             <SpaceBetween size="l">
+              <FormField label="Split panel header text length">
+                <Tiles
+                  value={urlParams.splitPanelHeaderLength}
+                  items={[
+                    { label: 'Short', value: 'short' },
+                    { label: 'Long', value: 'long' },
+                    { label: 'Very long', value: 'very-long' },
+                  ]}
+                  onChange={({ detail }) =>
+                    setUrlParams({
+                      ...urlParams,
+                      splitPanelHeaderLength: detail.value as SplitPanelHeaderLength,
+                    })
+                  }
+                />
+              </FormField>
+              <FormField label="Split panel header content type">
+                <Tiles
+                  value={urlParams.splitPanelHeaderContentType}
+                  items={[
+                    { label: 'Text', value: 'text' },
+                    { label: 'Custom React node', value: 'react-node' },
+                  ]}
+                  onChange={({ detail }) =>
+                    setUrlParams({
+                      ...urlParams,
+                      splitPanelHeaderContentType: detail.value as SplitPanelHeaderContentType,
+                    })
+                  }
+                />
+              </FormField>
+              <SpaceBetween direction="horizontal" size="xs">
+                <Toggle
+                  checked={urlParams.renderBadge}
+                  disabled={urlParams.splitPanelHeaderContentType !== 'react-node'}
+                  onChange={({ detail }) => setUrlParams({ ...urlParams, renderBadge: detail.checked })}
+                >
+                  With badge
+                </Toggle>
+                <Toggle
+                  checked={urlParams.renderActions}
+                  disabled={urlParams.splitPanelHeaderContentType !== 'react-node'}
+                  onChange={({ detail }) => setUrlParams({ ...urlParams, renderActions: detail.checked })}
+                >
+                  With action buttons
+                </Toggle>
+              </SpaceBetween>
               <Containers />
             </SpaceBetween>
           </>
