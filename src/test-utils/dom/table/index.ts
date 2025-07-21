@@ -178,7 +178,7 @@ export default class TableWrapper extends ComponentWrapper {
    */
   findExpandToggle(rowIndex: number): ElementWrapper | null {
     // the file was moved, which changed the hash, so we cannot use old test class anymore.
-    const oldSelector = `tbody tr:nth-child(${rowIndex}) .awsui_expand-toggle_1ss49`;
+    const oldSelector = `tbody tr:nth-child(${rowIndex}) .awsui_expand-toggle_1ss49_1w02f_153`;
     const newSelector = `tbody tr:nth-child(${rowIndex}) .${expandToggleStyles['expand-toggle']}`;
     return this.findNativeTable().findAny(oldSelector, newSelector);
   }
