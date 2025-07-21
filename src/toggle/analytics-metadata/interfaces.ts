@@ -20,4 +20,7 @@ export interface GeneratedAnalyticsMetadataToggleDeselect {
 export interface GeneratedAnalyticsMetadataToggleComponent {
   name: 'awsui.Toggle';
   label: string | LabelIdentifier;
+  properties: {
+    checked: string;
+  };
 }

@@ -19,4 +19,7 @@ export interface GeneratedAnalyticsMetadataCheckboxDeselect {
 export interface GeneratedAnalyticsMetadataCheckboxComponent {
   name: 'awsui.Checkbox';
   label: string | LabelIdentifier;
+  properties: {
+    checked: string;
+  };
 }
