@@ -814,8 +814,8 @@ describe('table grid navigation support', () => {
   test('does not override explicit tab index with 0', () => {
     const { setCurrentTarget } = renderWithSingleTabStopNavigation(
       <div>
-        <InternalButton id="button1" nativeButtonAttributes={{ tabIndex: -2 }} />
-        <InternalButton id="button2" nativeButtonAttributes={{ tabIndex: -2 }} />
+        <InternalButton id="button1" __nativeAttributes={{ tabIndex: -2 }} />
+        <InternalButton id="button2" __nativeAttributes={{ tabIndex: -2 }} />
       </div>
     );
     setCurrentTarget(getButton('#button1'));
