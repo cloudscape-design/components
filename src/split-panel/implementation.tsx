@@ -90,11 +90,18 @@ export function SplitPanelImplementation({
 
   const panelHeaderId = useUniqueId('split-panel-header');
 
+  const headerTextAttributes = {
+    className: clsx(styles['header-text'], testUtilStyles['header-text']),
+    id: panelHeaderId,
+  };
+
   const wrappedHeader = (
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
-      <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
-        {header}
-      </h2>
+      {typeof header === 'string' ? (
+        <h2 {...headerTextAttributes}>{header}</h2>
+      ) : (
+        <div {...headerTextAttributes}>{header}</div>
+      )}
       <div className={styles['header-actions']}>
         {!hidePreferencesButton && isOpen && (
           <>
