@@ -32,7 +32,11 @@ function renderSelect(props: Partial<SelectProps>) {
   return createWrapper(renderResult.container).findSelect()!;
 }
 
-const getMetadataContexts = (label = 'select with metadata', disabled?: boolean) => {
+const getMetadataContexts = (
+  label = 'select with metadata',
+  disabled: boolean = false,
+  selectedOptionValue = 'null'
+) => {
   const metadata: GeneratedAnalyticsMetadataFragment = {
     contexts: [
       {
@@ -42,6 +46,7 @@ const getMetadataContexts = (label = 'select with metadata', disabled?: boolean)
           label,
           properties: {
             disabled: disabled ? 'true' : 'false',
+            selectedOptionValue,
           },
         },
       },
@@ -128,6 +133,21 @@ describe('Select renders correct analytics metadata', () => {
     const wrapper = renderSelect({ readOnly: true });
     expect(getGeneratedAnalyticsMetadata(wrapper.findTrigger()!.getElement())).toEqual({
       ...getMetadataContexts(),
+    });
+  });
+
+  describe('with selectedOption', () => {
+    test('and defined value', () => {
+      const wrapper = renderSelect({ selectedOption: { value: 'value1' } });
+      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
+        ...getMetadataContexts(undefined, undefined, 'value1'),
+      });
+    });
+    test('and undefined value', () => {
+      const wrapper = renderSelect({ selectedOption: { label: 'label1' } });
+      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
+        ...getMetadataContexts(),
+      });
     });
   });
 
