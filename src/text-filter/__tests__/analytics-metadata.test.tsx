@@ -16,19 +16,18 @@ import InternalTextFilter from '../../../lib/components/text-filter/internal';
 
 const label = 'text filter label';
 
-const props: TextFilterProps = {
-  filteringText: 'whatever',
+const props: Partial<TextFilterProps> = {
   onChange: () => {},
   filteringAriaLabel: label,
   filteringClearAriaLabel: 'clear',
 };
 
-function renderTextFilter(disabled = false) {
-  const renderResult = render(<TextFilter {...props} disabled={disabled} />);
+function renderTextFilter(disabled = false, filteringText = 'whatever') {
+  const renderResult = render(<TextFilter {...props} disabled={disabled} filteringText={filteringText} />);
   return createWrapper(renderResult.container).findTextFilter()!;
 }
 
-const getMetadata = (disabled = false) => {
+const getMetadata = (disabled = false, filteringText = 'whatever') => {
   const metadata: GeneratedAnalyticsMetadataFragment = {
     contexts: [
       {
@@ -38,6 +37,7 @@ const getMetadata = (disabled = false) => {
           label,
           properties: {
             disabled: disabled ? 'true' : 'false',
+            filteringText,
           },
         },
       },
@@ -65,13 +65,13 @@ describe('TextFilter renders correct analytics metadata', () => {
     });
   });
   test('when disabled', () => {
-    const wrapper = renderTextFilter(true);
-    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata(true));
+    const wrapper = renderTextFilter(true, '');
+    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata(true, ''));
   });
 });
 
 test('Internal TextFilter does not render "component" metadata', () => {
-  const renderResult = render(<InternalTextFilter {...props} />);
+  const renderResult = render(<InternalTextFilter {...props} filteringText="whatever" />);
   const wrapper = createWrapper(renderResult.container).findTextFilter()!;
   expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({});
 });
