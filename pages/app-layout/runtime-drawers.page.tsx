@@ -16,6 +16,7 @@ import {
   Toggle,
 } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
+import { useMobile } from '~components/internal/hooks/use-mobile';
 import awsuiPlugins from '~components/internal/plugins';
 
 import './utils/external-widget';
@@ -32,6 +33,26 @@ type DemoContext = React.Context<
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
   }>
 >;
+
+const AIDrawer = () => {
+  const isMobile = useMobile();
+
+  return (
+    <div
+      style={{
+        background: 'white',
+        marginInlineEnd: isMobile ? undefined : '16px',
+      }}
+    >
+      <Box variant="h2" padding={{ bottom: 'm' }}>
+        Chat demo
+      </Box>
+      {new Array(100).fill(null).map((_, index) => (
+        <div key={index}>Tela content</div>
+      ))}
+    </div>
+  );
+};
 
 awsuiPlugins.appLayout.registerDrawer({
   id: 'amazon-q',
@@ -52,22 +73,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(
-      <div
-        style={{
-          background: 'white',
-          marginInlineEnd: '16px',
-        }}
-      >
-        <Box variant="h2" padding={{ bottom: 'm' }}>
-          Chat demo
-        </Box>
-        {new Array(100).fill(null).map((_, index) => (
-          <div key={index}>Tela content</div>
-        ))}
-      </div>,
-      container
-    );
+    ReactDOM.render(<AIDrawer />, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
