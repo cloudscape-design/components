@@ -7,3 +7,11 @@ export interface GeneratedAnalyticsMetadataInputClearInput {
     label: string;
   };
 }
+
+export interface GeneratedAnalyticsMetadataInputComponent {
+  name: 'awsui.Input';
+  label: string;
+  properties: {
+    value: string;
+  };
+}
