@@ -15,7 +15,10 @@ import { FormFieldValidationControlProps, useFormFieldContext } from '../interna
 import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
-import { GeneratedAnalyticsMetadataInputClearInput } from './analytics-metadata/interfaces';
+import {
+  GeneratedAnalyticsMetadataInputClearInput,
+  GeneratedAnalyticsMetadataInputComponent,
+} from './analytics-metadata/interfaces';
 import { BaseChangeDetail, BaseInputProps, InputAutoCorrect, InputProps } from './interfaces';
 import { convertAutoComplete, useSearchProps } from './utils';
 
@@ -43,6 +46,7 @@ export interface InternalInputProps
   __onBlurWithDetail?: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
 
   __inheritFormFieldProps?: boolean;
+  __injectAnalyticsComponentMetadata?: boolean;
 }
 
 function InternalInput(
@@ -82,6 +86,7 @@ function InternalInput(
     __nativeAttributes,
     __internalRootRef,
     __inheritFormFieldProps,
+    __injectAnalyticsComponentMetadata,
     ...rest
   }: InternalInputProps,
   ref: Ref<HTMLInputElement>
@@ -177,12 +182,23 @@ function InternalInput(
     attributes.type = 'text';
   }
 
+  const componentAnalyticsMetadata: GeneratedAnalyticsMetadataInputComponent = {
+    name: 'awsui.Input',
+    label: 'input',
+    properties: {
+      value: value || '',
+    },
+  };
+
   return (
     <div
       {...baseProps}
       className={clsx(baseProps.className, styles['input-container'])}
       ref={__internalRootRef}
       dir={type === 'email' ? 'ltr' : undefined}
+      {...(__injectAnalyticsComponentMetadata
+        ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
+        : {})}
     >
       {__leftIcon && (
         <span onClick={__onLeftIconClick} className={styles['input-icon-left']}>
