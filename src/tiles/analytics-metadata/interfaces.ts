@@ -15,4 +15,7 @@ export interface GeneratedAnalyticsMetadataTilesSelect {
 export interface GeneratedAnalyticsMetadataTilesComponent {
   name: 'awsui.Tiles';
   label: string | LabelIdentifier;
+  properties: {
+    value: string;
+  };
 }
