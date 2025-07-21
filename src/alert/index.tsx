@@ -15,13 +15,14 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { GeneratedAnalyticsMetadataAlertComponent } from './analytics-metadata/interfaces';
 import { AlertProps } from './interfaces';
 import InternalAlert from './internal';
+import { getAlertStyles } from './style';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 
 export { AlertProps };
 
 const Alert = React.forwardRef(
-  ({ type = 'info', visible = true, ...props }: AlertProps, ref: React.Ref<AlertProps.Ref>) => {
+  ({ type = 'info', visible = true, style, ...props }: AlertProps, ref: React.Ref<AlertProps.Ref>) => {
     const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
     const baseComponentProps = useBaseComponent<HTMLDivElement>(
       'Alert',
@@ -114,6 +115,7 @@ const Alert = React.forwardRef(
         {...baseComponentProps}
         ref={ref}
         messageSlotId={messageSlotId}
+        style={getAlertStyles(style)}
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
       />
     );

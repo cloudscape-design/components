@@ -39,6 +39,7 @@ const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
 type InternalAlertProps = SomeRequired<AlertProps, 'type'> &
   InternalBaseComponentProps<HTMLDivElement> & {
     messageSlotId?: string;
+    style?: React.CSSProperties;
   };
 
 const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.alert.onActionRegistered);
@@ -61,6 +62,7 @@ const InternalAlert = React.forwardRef(
       statusIconAriaLabel: deprecatedStatusIconAriaLabel,
       dismissAriaLabel: deprecatedDismissAriaLabel,
       messageSlotId,
+      style,
       ...rest
     }: InternalAlertProps,
     ref: React.Ref<AlertProps.Ref>
@@ -121,6 +123,7 @@ const InternalAlert = React.forwardRef(
           baseProps.className
         )}
         ref={containerRef}
+        style={style}
       >
         <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
           <VisualContext contextName="alert">
