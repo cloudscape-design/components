@@ -16,7 +16,10 @@ import {
   Tiles,
 } from '~components';
 import ButtonDropdown from '~components/button-dropdown';
+import { useMobile } from '~components/internal/hooks/use-mobile';
 import awsuiPlugins from '~components/internal/plugins';
+
+import Chat from '../chat/chat';
 
 function Details() {
   const [value, setValue] = React.useState('item1');
@@ -236,6 +239,30 @@ awsuiPlugins.appLayout.registerDrawer({
       </SpaceBetween>,
       container
     );
+  },
+  unmountContent: container => unmountComponentAtNode(container),
+});
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'amazon-q',
+  type: 'global-ai',
+  resizable: true,
+  isExpandable: true,
+  defaultSize: 500,
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Content',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+  },
+
+  trigger: {
+    iconSvg: `<svg viewBox="0 0 16 16" data-analytics-type="widgetDetail" data-analytics="ChatExperienceEntry" data-analytics-render="true" data-analytics-processed="true"><path d="m14.22,3.41L8.87.32c-.24-.14-.55-.21-.87-.21s-.63.07-.87.21L1.78,3.41c-.48.27-.87.95-.87,1.5v6.18c0,.55.39,1.22.87,1.5l5.36,3.09c.24.14.55.21.87.21s.63-.07.87-.21l5.36-3.09c.48-.28.87-.95.87-1.5v-6.18c0-.55-.39-1.23-.87-1.5Zm-6.22,10.47l-5.09-2.94v-5.88l5.09-2.94,5.09,2.94v4.72l-3.09-1.78v-.74c0-.26-.14-.49-.36-.62l-1.28-.74c-.11-.06-.24-.1-.36-.1s-.25.03-.36.1l-1.28.74c-.22.13-.36.37-.36.62v1.48c0,.26.14.49.36.62l1.28.74c.11.06.24.1.36.1s.25-.03.36-.1l.64-.37,3.09,1.78-4.09,2.36Z" fill="currentColor" stroke-width="0"></path></svg>`,
+  },
+
+  mountContent: container => {
+    ReactDOM.render(<Chat />, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
