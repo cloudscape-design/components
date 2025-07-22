@@ -37,7 +37,13 @@
 
     > .universal-toolbar-ai-drawer {
       grid-column: 1;
-      padding-inline-end: awsui.$space-static-xxs;
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      block-size: 100%;
+      align-items: center;
+      gap: awsui.$space-xs;
+      padding-inline-end: awsui.$space-static-xs;
     }
 
     > .universal-toolbar-nav {
