@@ -4,6 +4,8 @@
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { convertAutoComplete } from '../input/utils';
 import { getBaseProps } from '../internal/base-component';
 import { useFormFieldContext } from '../internal/context/form-field-context';
@@ -11,6 +13,7 @@ import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { GeneratedAnalyticsMetadataTextareaComponent } from './analytics-metadata/interfaces';
 import { TextareaProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -89,8 +92,21 @@ const Textarea = React.forwardRef(
       attributes.spellCheck = 'false';
     }
 
+    const componentAnalyticsMetadata: GeneratedAnalyticsMetadataTextareaComponent = {
+      name: 'awsui.Textarea',
+      label: 'textarea',
+      properties: {
+        value: value || '',
+      },
+    };
+
     return (
-      <span {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
+      <span
+        {...baseProps}
+        className={clsx(styles.root, baseProps.className)}
+        ref={__internalRootRef}
+        {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
+      >
         <textarea ref={textareaRef} id={controlId} {...attributes} />
       </span>
     );
