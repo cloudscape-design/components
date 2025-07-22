@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "End time",
     "i18nStrings.dateTimeConstraintText": "For date, use DD/MM/YYYY. For time, use 24-hr format.",
     "i18nStrings.dateConstraintText": "For date, use YYYY/MM/DD.",
+    "i18nStrings.slashedDateTimeConstraintText": "For date, use DD/MM/YYYY. For time, use 24-hr format.",
+    "i18nStrings.isoDateTimeConstraintText": "For date, use DD/MM/YYYY. For time, use 24-hr format.",
+    "i18nStrings.slashedDateConstraintText": "For date, use DD/MM/YYYY.",
+    "i18nStrings.isoDateConstraintText": "For date, use DD/MM/YYYY.",
+    "i18nStrings.slashedMonthConstraintText": "For month, use MM/YYYY.",
+    "i18nStrings.isoMonthConstraintText": "For month, use MM/YYYY.",
     "i18nStrings.monthConstraintText": "For month, use YYYY/MM.",
     "i18nStrings.errorIconAriaLabel": "Error",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Range selected from {startDate} to {endDate}",
@@ -206,6 +212,14 @@
   },
   "link": {
     "externalIconAriaLabel": "Opens in a new tab"
+  },
+  "list": {
+    "dragHandleAriaLabel": "Drag handle",
+    "dragHandleAriaDescription": "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",
+    "liveAnnouncementDndStarted": "Picked up item at position {position} of {total}",
+    "liveAnnouncementDndDiscarded": "Reordering cancelled",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Moving item back to position {currentPosition} of {total}} false {Moving item to position {currentPosition} of {total}} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item moved back to its original position {initialPosition} of {total}} false {Item moved from position {initialPosition} to position {finalPosition} of {total}} other {}}"
   },
   "modal": {
     "closeAriaLabel": "Close modal"
@@ -403,6 +417,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Close menu",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Back",
     "i18nStrings.overflowMenuTitleText": "All"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "Expand",
+    "i18nStrings.collapseButtonLabel": "Collapse"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "Loading",

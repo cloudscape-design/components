@@ -45,3 +45,27 @@ describe('Button', () => {
     })
   );
 });
+
+describe('Button Style API', () => {
+  test(
+    'active, hover and focus states',
+    useBrowser(async browser => {
+      await browser.url('#/light/button/style-custom-types');
+      const page = new ButtonPageObject(browser);
+      const buttonSelector = '[data-testid=default]';
+
+      await page.click(buttonSelector);
+      await page.hoverElement(buttonSelector);
+      await expect((await browser.$(buttonSelector).getCSSProperty('background-color')).value).toBe('rgba(0,85,102,1)');
+
+      await page.buttonDownOnElement('[data-testid=default]');
+      await expect((await browser.$(buttonSelector).getCSSProperty('background-color')).value).toBe('rgba(0,64,77,1)');
+
+      await page.buttonUp();
+      await page.keys('a');
+      await expect((await browser.$(buttonSelector).getCSSProperty('box-shadow', '::before')).value).toBe(
+        'rgb(0,64,77)0px0px0px2px'
+      );
+    })
+  );
+});

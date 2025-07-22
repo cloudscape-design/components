@@ -12,7 +12,9 @@ declare const window: ExtendedWindow;
 
 class TableWithAnalyticsPageObject extends BasePageObject {
   async getComponentMetricsLog() {
-    const componentsLog = await this.browser.execute(() => window.__awsuiComponentlMetrics__);
+    const componentsLog: ExtendedWindow['__awsuiComponentlMetrics__'] = await this.browser.execute(
+      () => window.__awsuiComponentlMetrics__
+    );
     return componentsLog;
   }
 
@@ -53,6 +55,7 @@ const baseComponentConfiguration = {
   },
   filtered: false,
   filteredBy: [],
+  filteredCount: 4000,
   totalNumberOfResources: 4000,
   pagination: {
     currentPageIndex: 1,
@@ -80,6 +83,7 @@ const basePropertyFilterConfiguration = {
   },
   filtered: false,
   filteredBy: [],
+  filteredCount: 4000,
   totalNumberOfResources: 4000,
   pagination: {
     currentPageIndex: 1,
@@ -298,7 +302,7 @@ describe('filtering', () => {
         componentConfiguration: {
           ...baseComponentConfiguration,
           filtered: true,
-          totalNumberOfResources: 92,
+          filteredCount: 92,
           pagination: {
             currentPageIndex: 1,
             openEnd: false,
@@ -327,7 +331,7 @@ describe('filtering', () => {
           ...basePropertyFilterConfiguration,
           filtered: true,
           filteredBy: ['state'],
-          totalNumberOfResources: 852,
+          filteredCount: 852,
           pagination: {
             currentPageIndex: 1,
             openEnd: false,
@@ -356,7 +360,7 @@ describe('filtering', () => {
           ...basePropertyFilterConfiguration,
           filtered: true,
           filteredBy: [],
-          totalNumberOfResources: 852,
+          filteredCount: 852,
           pagination: {
             currentPageIndex: 1,
             openEnd: false,

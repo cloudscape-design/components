@@ -3,14 +3,12 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { KeyCode } from '../../internal/keycode';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
 import { ColumnWidthStyle } from '../column-widths-utils';
@@ -51,6 +49,7 @@ export interface TableHeaderCellProps<ItemType> {
   isExpandable?: boolean;
   hasDynamicContent?: boolean;
   variant: TableProps.Variant;
+  tableVariant?: string;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -80,6 +79,7 @@ export function TableHeaderCell<ItemType>({
   isExpandable,
   hasDynamicContent,
   variant,
+  tableVariant,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -128,6 +128,7 @@ export function TableHeaderCell<ItemType>({
       focusedComponent={focusedComponent}
       stuck={stuck}
       sticky={sticky}
+      resizable={resizableColumns}
       hidden={hidden}
       stripedRows={stripedRows}
       colIndex={colIndex}
@@ -135,6 +136,7 @@ export function TableHeaderCell<ItemType>({
       stickyState={stickyState}
       tableRole={tableRole}
       variant={variant}
+      tableVariant={tableVariant}
       {...(sortingDisabled
         ? {}
         : getAnalyticsMetadataAttribute({

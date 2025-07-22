@@ -1,6 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import { FOCUS_THROTTLE_DELAY } from '../utils';
+import { FlashbarBasePage } from './pages/base';
 import { setupTest } from './pages/interactive-page';
 import { setupTest as setupStickyFlashbarTest } from './pages/sticky-page';
 
@@ -149,4 +152,42 @@ describe('Collapsible Flashbar', () => {
       })
     );
   });
+});
+
+describe('Flashbar Style API', () => {
+  test(
+    'active, hover and focus states',
+    useBrowser(async browser => {
+      await browser.url('#/light/flashbar/style-custom');
+
+      const page = new FlashbarBasePage(browser);
+      const dismissButton = page.getDismissButton();
+      const notificationBar = page.getNotificationBar();
+      const expandButton = page.getExpandButton();
+
+      await page.hoverElement(dismissButton);
+      await expect((await browser.$(dismissButton).getCSSProperty('color')).value).toBe('rgba(63,125,74,1)');
+
+      await page.buttonDownOnElement(dismissButton);
+      await expect((await browser.$(dismissButton).getCSSProperty('color')).value).toBe('rgba(46,72,50,1)');
+
+      await page.click('[data-testid=collapsed]');
+      await page.keys('Tab');
+      await expect((await browser.$(dismissButton).getCSSProperty('box-shadow', '::before')).value).toBe(
+        'rgb(63,125,74)0px0px0px1px'
+      );
+
+      await page.click('[data-testid=collapsed]');
+      await page.keys(['Shift', 'Tab']);
+      await expect((await browser.$(expandButton).getCSSProperty('box-shadow', '::before')).value).toBe(
+        'rgb(239,240,240)0px0px0px1px'
+      );
+      await expect((await browser.$(expandButton).getCSSProperty('border-radius', '::before')).value).toBe('4px');
+
+      await page.buttonDownOnElement(notificationBar);
+      await expect((await browser.$(notificationBar).getCSSProperty('background-color')).value).toBe(
+        'rgba(92,102,112,1)'
+      );
+    })
+  );
 });

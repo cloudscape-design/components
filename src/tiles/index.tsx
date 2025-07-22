@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
@@ -19,6 +20,9 @@ const Tiles = React.forwardRef((props: TilesProps, ref: React.Ref<TilesProps.Ref
   const componentAnalyticsMetadata: GeneratedAnalyticsMetadataTilesComponent = {
     name: 'awsui.Tiles',
     label: { root: 'self' },
+    properties: {
+      value: `${props.value}`,
+    },
   };
   return (
     <InternalTiles

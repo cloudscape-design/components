@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { HotspotProps } from '../hotspot/interfaces';
@@ -221,8 +222,6 @@ export default function AnnotationContext({
         return { ...availableHotspots, [id]: true } as const;
       });
     },
-    // We need to react on id2index changes for registering new hotspots when the map changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [id2index]
   );
 

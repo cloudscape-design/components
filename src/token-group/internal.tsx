@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { getBaseProps } from '../internal/base-component';
@@ -12,7 +13,6 @@ import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { TokenGroupProps } from './interfaces';
 import { Token } from './token';
@@ -20,7 +20,10 @@ import { Token } from './token';
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import styles from './styles.css.js';
 
-type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignment'> & InternalBaseComponentProps;
+type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignment'> &
+  InternalBaseComponentProps & {
+    isItemReadOnly?: (item: TokenGroupProps.Item) => boolean;
+  };
 
 export default function InternalTokenGroup({
   alignment,
@@ -32,6 +35,7 @@ export default function InternalTokenGroup({
   limitShowFewerAriaLabel,
   limitShowMoreAriaLabel,
   readOnly,
+  isItemReadOnly,
   __internalRootRef,
   ...props
 }: InternalTokenGroupProps) {
@@ -75,7 +79,7 @@ export default function InternalTokenGroup({
               setNextFocusIndex(itemIndex);
             }}
             disabled={item.disabled}
-            readOnly={readOnly}
+            readOnly={readOnly || isItemReadOnly?.(item)}
             {...(item.disabled || readOnly
               ? {}
               : getAnalyticsMetadataAttribute({ detail: { position: `${itemIndex + 1}` } }))}

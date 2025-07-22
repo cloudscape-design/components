@@ -66,7 +66,7 @@
     "i18nStrings.currentMonthAriaLabel": "Mois en cours"
   },
   "cards": {
-    "ariaLabels.selectionGroupLabel": "Sélection de l'élément"
+    "ariaLabels.selectionGroupLabel": "Sélection de l’élément"
   },
   "code-editor": {
     "i18nStrings.loadingState": "Chargement de l'éditeur de code en cours",
@@ -156,6 +156,12 @@
     "i18nStrings.endTimeLabel": "Heure de fin",
     "i18nStrings.dateTimeConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ. Pour l'heure, utilisez le format 24 heures.",
     "i18nStrings.dateConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ.",
+    "i18nStrings.slashedDateTimeConstraintText": "Pour la date, utilisez le format JJ/MM/AAAA. Pour l’heure, utilisez le format 24 heures.",
+    "i18nStrings.isoDateTimeConstraintText": "Pour la date, utilisez le format JJ/MM/AAAA. Pour l’heure, utilisez le format 24 heures.",
+    "i18nStrings.slashedDateConstraintText": "Pour la date, utilisez le format JJ/MM/AAAA.",
+    "i18nStrings.isoDateConstraintText": "Pour la date, utilisez le format JJ/MM/AAAA.",
+    "i18nStrings.slashedMonthConstraintText": "Pour le mois, utilisez le format MM/AAAA.",
+    "i18nStrings.isoMonthConstraintText": "Pour le mois, utilisez le format MM/AAAA.",
     "i18nStrings.monthConstraintText": "Pour le mois, utilisez le format AAAA/MM.",
     "i18nStrings.errorIconAriaLabel": "Erreur",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Plage sélectionnée de {startDate} à {endDate}",
@@ -206,6 +212,14 @@
   },
   "link": {
     "externalIconAriaLabel": "S’ouvre dans un nouvel onglet"
+  },
+  "list": {
+    "dragHandleAriaLabel": "Faire glisser",
+    "dragHandleAriaDescription": "Utilisez Espace ou Entrée pour activer le glissement pour un élément, puis utilisez les touches fléchées pour déplacer la position de l'élément. Pour terminer le déplacement de la position, utilisez Espace ou Entrée. Pour ignorer le déplacement, utilisez Échap.",
+    "liveAnnouncementDndStarted": "Élément sélectionné à la position {position} de {total}",
+    "liveAnnouncementDndDiscarded": "Réorganisation annulée",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Remettre l'élément à la position {currentPosition} de {total}} false {Déplacer l'élément vers la position {currentPosition} de {total}} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {L'élément a été replacé dans sa position initiale {initialPosition} de {total}} false {L'élément a été déplacé de la position {initialPosition} à {finalPosition} de {total}} other {}}"
   },
   "modal": {
     "closeAriaLabel": "Fermer le modal"
@@ -403,6 +417,10 @@
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Fermer le menu",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Retour",
     "i18nStrings.overflowMenuTitleText": "Tous"
+  },
+  "tree-view": {
+    "i18nStrings.expandButtonLabel": "Élargir",
+    "i18nStrings.collapseButtonLabel": "Réduire"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "Chargement en cours",

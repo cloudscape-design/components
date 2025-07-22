@@ -3,7 +3,7 @@
 import React, { useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalBox from '../box/internal';
@@ -14,7 +14,6 @@ import { getBaseProps } from '../internal/base-component';
 import Dropdown from '../internal/components/dropdown';
 import OptionsList from '../internal/components/options-list';
 import { useMobile } from '../internal/hooks/use-mobile';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { isDevelopment } from '../internal/is-development';
 import { spinWhenOpen } from '../internal/styles/motion/utils';
@@ -56,6 +55,7 @@ const InternalButtonDropdown = React.forwardRef(
       analyticsMetadataTransformer,
       linkStyle,
       fullWidth,
+      position,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -409,6 +409,7 @@ const InternalButtonDropdown = React.forwardRef(
               variant={variant}
               analyticsMetadataTransformer={analyticsMetadataTransformer}
               linkStyle={linkStyle}
+              position={position}
             />
           </OptionsList>
         </Dropdown>

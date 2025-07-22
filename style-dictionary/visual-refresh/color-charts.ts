@@ -101,13 +101,13 @@ const tokens: StyleDictionary.ColorChartsDictionary = {
   colorChartsStatusPositive: { light: '{colorChartsGreen300}', dark: '{colorChartsGreen500}' },
   colorChartsStatusInfo: { light: '{colorChartsBlue1400}', dark: '{colorChartsBlue1500}' },
   colorChartsStatusNeutral: '{colorGrey500}',
-  colorChartsThresholdNegative: { light: '{colorRed600}', dark: '{colorRed500}' },
+  colorChartsThresholdNegative: { light: '{colorRed600}', dark: '{colorRed400}' },
   colorChartsThresholdPositive: { light: '{colorGreen600}', dark: '{colorGreen500}' },
-  colorChartsThresholdInfo: { light: '{colorBlue600}', dark: '{colorBlue400}' },
-  colorChartsThresholdNeutral: { light: '{colorGrey550}', dark: '{colorGrey450}' },
-  colorChartsLineGrid: { light: '{colorGrey300}', dark: '{colorGrey600}' },
-  colorChartsLineTick: { light: '{colorGrey300}', dark: '{colorGrey600}' },
-  colorChartsLineAxis: { light: '{colorGrey300}', dark: '{colorGrey600}' },
+  colorChartsThresholdInfo: { light: '{colorBlue600}', dark: '{colorBlue300}' },
+  colorChartsThresholdNeutral: { light: '{colorGrey600}', dark: '{colorGrey450}' },
+  colorChartsLineGrid: { light: '{colorGrey300}', dark: '{colorGrey650}' },
+  colorChartsLineTick: { light: '{colorGrey300}', dark: '{colorGrey650}' },
+  colorChartsLineAxis: { light: '{colorGrey300}', dark: '{colorGrey650}' },
   colorChartsPaletteCategorical1: '{colorChartsBlue2300}',
   colorChartsPaletteCategorical2: '{colorChartsPink500}',
   colorChartsPaletteCategorical3: '{colorChartsTeal300}',
@@ -158,6 +158,7 @@ const tokens: StyleDictionary.ColorChartsDictionary = {
   colorChartsPaletteCategorical48: '{colorChartsTeal1000}',
   colorChartsPaletteCategorical49: '{colorChartsPurple1200}',
   colorChartsPaletteCategorical50: '{colorChartsOrange1000}',
+  colorChartsErrorBarMarker: { light: '{colorGrey900}', dark: '{colorWhite}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

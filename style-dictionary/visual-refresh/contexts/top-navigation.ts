@@ -7,8 +7,8 @@ import { StyleDictionary } from '../../utils/interfaces.js';
 import { tokens as parentTokens } from '../colors.js';
 
 const tokens = {
-  colorBackgroundContainerContent: '{colorGrey800}',
-  colorBackgroundDropdownItemDefault: '{colorGrey800}',
+  colorBackgroundContainerContent: '{colorGrey850}',
+  colorBackgroundDropdownItemDefault: '{colorGrey850}',
 };
 
 const darkModeValues = pickState(parentTokens, 'dark');

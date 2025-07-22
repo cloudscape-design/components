@@ -1,18 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo, useState } from 'react';
-import clsx from 'clsx';
+
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalBox from '../../box/internal';
 import InternalButton from '../../button/internal';
 import { useInternalI18n } from '../../i18n/context';
-import SortableArea from '../../internal/components/sortable-area';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import {
+  formatDndItemCommitted,
+  formatDndItemReordered,
+  formatDndStarted,
+} from '../../internal/components/sortable-area/use-live-announcements';
+import InternalList from '../../list/internal';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalTextFilter from '../../text-filter/internal';
 import { getAnalyticsInnerContextAttribute } from '../analytics-metadata/utils';
 import { CollectionPreferencesProps } from '../interfaces';
-import ContentDisplayOption, { getClassName as getOptionClassName } from './content-display-option';
+import ContentDisplayOption from './content-display-option';
 import { getFilteredOptions, getSortedOptions, OptionWithVisibility } from './utils';
 
 import styles from '../styles.css.js';
@@ -121,68 +126,48 @@ export default function ContentDisplayPreference({
         </div>
       )}
 
-      {/* Use explicit list role to work around Safari not announcing lists as such when list-style is set to none.
-            See https://bugs.webkit.org/show_bug.cgi?id=170179 */}
-      <ul
-        className={getClassName('option-list')}
-        aria-describedby={descriptionId}
-        aria-labelledby={titleId}
-        role="list"
-      >
-        <SortableArea
-          items={sortedAndFilteredOptions}
-          itemDefinition={{ id: item => item.id, label: item => item.label }}
-          onItemsChange={({ detail }) => onChange(detail.items)}
-          disableReorder={columnFilteringText.trim().length > 0}
-          renderItem={({ ref, item, style, className, dragHandleProps, isDragGhost }) => {
-            className = clsx(className, getOptionClassName());
-            const content = (
-              <ContentDisplayOption ref={ref} option={item} onToggle={onToggle} dragHandleProps={dragHandleProps} />
-            );
-            if (isDragGhost) {
-              return content;
-            }
-            return (
-              <li className={className} style={style}>
-                {content}
-              </li>
-            );
-          }}
-          i18nStrings={{
-            liveAnnouncementDndStarted: i18n(
-              'contentDisplayPreference.liveAnnouncementDndStarted',
-              liveAnnouncementDndStarted,
-              format => (position, total) => format({ position, total })
-            ),
-            liveAnnouncementDndItemReordered: i18n(
-              'contentDisplayPreference.liveAnnouncementDndItemReordered',
-              liveAnnouncementDndItemReordered,
-              format => (initialPosition, currentPosition, total) =>
-                format({ currentPosition, total, isInitialPosition: `${initialPosition === currentPosition}` })
-            ),
-            liveAnnouncementDndItemCommitted: i18n(
-              'contentDisplayPreference.liveAnnouncementDndItemCommitted',
-              liveAnnouncementDndItemCommitted,
-              format => (initialPosition, finalPosition, total) =>
-                format({
-                  initialPosition,
-                  finalPosition,
-                  total,
-                  isInitialPosition: `${initialPosition === finalPosition}`,
-                })
-            ),
-            liveAnnouncementDndDiscarded: i18n(
-              'contentDisplayPreference.liveAnnouncementDndDiscarded',
-              liveAnnouncementDndDiscarded
-            ),
-            dragHandleAriaLabel: i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel),
-            dragHandleAriaDescription: i18n(
-              'contentDisplayPreference.dragHandleAriaDescription',
-              dragHandleAriaDescription
-            ),
-          }}
-        />
-      </ul>
+      <InternalList
+        items={sortedAndFilteredOptions}
+        renderItem={item => ({
+          id: item.id,
+          content: <ContentDisplayOption option={item} onToggle={onToggle} />,
+          announcementLabel: item.label,
+        })}
+        disableItemPaddings={true}
+        sortable={true}
+        sortDisabled={columnFilteringText.trim().length > 0}
+        onSortingChange={({ detail: { items } }) => {
+          onChange(items);
+        }}
+        ariaDescribedby={descriptionId}
+        ariaLabelledby={titleId}
+        i18nStrings={{
+          liveAnnouncementDndStarted: i18n(
+            'contentDisplayPreference.liveAnnouncementDndStarted',
+            liveAnnouncementDndStarted,
+            formatDndStarted
+          ),
+          liveAnnouncementDndItemReordered: i18n(
+            'contentDisplayPreference.liveAnnouncementDndItemReordered',
+            liveAnnouncementDndItemReordered,
+            formatDndItemReordered
+          ),
+          liveAnnouncementDndItemCommitted: i18n(
+            'contentDisplayPreference.liveAnnouncementDndItemCommitted',
+            liveAnnouncementDndItemCommitted,
+            formatDndItemCommitted
+          ),
+          liveAnnouncementDndDiscarded: i18n(
+            'contentDisplayPreference.liveAnnouncementDndDiscarded',
+            liveAnnouncementDndDiscarded
+          ),
+          dragHandleAriaLabel: i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel),
+          dragHandleAriaDescription: i18n(
+            'contentDisplayPreference.dragHandleAriaDescription',
+            dragHandleAriaDescription
+          ),
+        }}
+      />
     </div>
   );
 }

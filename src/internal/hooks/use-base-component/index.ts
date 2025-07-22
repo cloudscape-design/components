@@ -13,6 +13,7 @@ import { AnalyticsMetadata } from '../../analytics/interfaces';
 import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../../environment';
 import { getVisualTheme } from '../../utils/get-visual-theme';
 import { useVisualRefresh } from '../use-visual-mode';
+import { useMissingStylesCheck } from './styles-check';
 
 export interface InternalBaseComponentProps<T = any> {
   __internalRootRef?: MutableRefObject<T | null> | null;
@@ -31,11 +32,12 @@ export default function useBaseComponent<T = any>(
   const isVisualRefresh = useVisualRefresh();
   const theme = getVisualTheme(THEME, isVisualRefresh);
   useComponentMetrics(componentName, { packageSource: PACKAGE_SOURCE, packageVersion: PACKAGE_VERSION, theme }, config);
-  useFocusVisible();
+  useMissingStylesCheck();
   const elementRef = useComponentMetadata<T>(
     componentName,
     { packageName: PACKAGE_SOURCE, version: PACKAGE_VERSION, theme },
     analyticsMetadata as any
   );
+  useFocusVisible(elementRef as MutableRefObject<HTMLElement>);
   return { __internalRootRef: elementRef };
 }

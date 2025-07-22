@@ -10,7 +10,9 @@ function writeEnvironmentFile(theme) {
   const values = {
     PACKAGE_SOURCE: workspace.packageSource,
     PACKAGE_VERSION: workspace.packageVersion,
+    GIT_SHA: workspace.gitCommitVersion,
     THEME: theme.name,
+    SYSTEM: 'core',
     ALWAYS_VISUAL_REFRESH: !!theme.alwaysVisualRefresh,
   };
   const basePath = path.join(theme.outputPath, filepath);

@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { Portal } from '@cloudscape-design/component-toolkit/internal';
+import { Portal, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
@@ -13,9 +13,7 @@ import ResetContextsForModal from '../internal/context/reset-contexts-for-modal'
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { KeyCode } from '../internal/keycode';
 import Arrow from './arrow';
 import PopoverBody from './body';
@@ -30,11 +28,6 @@ export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType' |
   size: PopoverProps.Size | 'content';
   __closeAnalyticsAction?: string;
   isInline?: boolean;
-}
-
-export interface InternalPopoverRef {
-  dismissPopover: () => void;
-  focus: HTMLElement['focus'];
 }
 
 export default React.forwardRef(InternalPopover);
@@ -62,7 +55,7 @@ function InternalPopover(
 
     ...restProps
   }: InternalPopoverProps,
-  ref: React.Ref<InternalPopoverRef>
+  ref: React.Ref<PopoverProps.Ref>
 ) {
   const baseProps = getBaseProps(restProps);
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -77,8 +70,8 @@ function InternalPopover(
   const focusTrigger = useCallback(() => {
     if (['text', 'text-inline'].includes(triggerType)) {
       triggerRef.current?.focus();
-    } else {
-      triggerRef.current && getFirstFocusable(triggerRef.current)?.focus();
+    } else if (triggerRef.current) {
+      getFirstFocusable(triggerRef.current)?.focus();
     }
   }, [triggerType]);
 
@@ -107,7 +100,9 @@ function InternalPopover(
   );
 
   useImperativeHandle(ref, () => ({
-    dismissPopover: onDismiss,
+    dismiss: () => {
+      setVisible(false);
+    },
     focus: () => {
       setVisible(false);
       focusTrigger();
@@ -138,7 +133,6 @@ function InternalPopover(
 
   const triggerProps = {
     // https://github.com/microsoft/TypeScript/issues/36659
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ref: triggerRef as any,
     onClick: onTriggerClick,
     onKeyDown: onTriggerKeyDown,

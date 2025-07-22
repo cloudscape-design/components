@@ -12,4 +12,6 @@ export interface DragHandleWrapperProps {
   children: React.ReactNode;
   triggerMode?: TriggerMode;
   initialShowButtons?: boolean;
+  hideButtonsOnDrag: boolean;
+  clickDragThreshold: number;
 }

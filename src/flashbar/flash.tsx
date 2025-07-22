@@ -3,7 +3,12 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { useComponentMetadata, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import {
+  useComponentMetadata,
+  useMergeRefs,
+  useUniqueId,
+  warnOnce,
+} from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
 
@@ -16,8 +21,6 @@ import {
 } from '../internal/analytics/selectors';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { PACKAGE_VERSION } from '../internal/environment';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
@@ -27,6 +30,7 @@ import InternalLiveRegion from '../live-region/internal';
 import InternalSpinner from '../spinner/internal';
 import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
 import { FlashbarProps } from './interfaces';
+import { getDismissButtonStyles, getFlashStyles } from './style';
 import { FOCUS_THROTTLE_DELAY } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -45,7 +49,9 @@ const useDiscoveredContent = createUseDiscoveredContent('flash', awsuiPluginsInt
 
 function dismissButton(
   dismissLabel: FlashbarProps.MessageDefinition['dismissLabel'],
-  onDismiss: FlashbarProps.MessageDefinition['onDismiss']
+  onDismiss: FlashbarProps.MessageDefinition['onDismiss'],
+  style?: FlashbarProps.Style,
+  type?: string
 ) {
   return (
     <div
@@ -61,6 +67,7 @@ function dismissButton(
         iconName="close"
         formAction="none"
         ariaLabel={dismissLabel}
+        style={getDismissButtonStyles(style, type)}
       />
     </div>
   );
@@ -79,6 +86,7 @@ interface FlashProps extends FlashbarProps.MessageDefinition {
   className: string;
   transitionState?: string;
   i18nStrings?: FlashbarProps.I18nStrings;
+  style?: FlashbarProps.Style;
 }
 
 export const Flash = React.forwardRef(
@@ -100,6 +108,7 @@ export const Flash = React.forwardRef(
       i18nStrings,
       type = 'info',
       analyticsMetadata,
+      style,
       ...props
     }: FlashProps,
     ref: React.Ref<HTMLDivElement>
@@ -169,7 +178,7 @@ export const Flash = React.forwardRef(
 
     return (
       // We're not using "polite" or "assertive" here, just turning default behavior off.
-      // eslint-disable-next-line @cloudscape-design/prefer-live-region
+      // eslint-disable-next-line @cloudscape-design/components/prefer-live-region
       <div
         ref={mergedRef}
         role={ariaRole}
@@ -190,6 +199,7 @@ export const Flash = React.forwardRef(
           getVisualContextClassname(type === 'warning' && !loading ? 'flashbar-warning' : 'flashbar'),
           initialHidden && styles['initial-hidden']
         )}
+        style={getFlashStyles(style, effectiveType)}
         {...analyticsAttributes}
       >
         <div className={styles['flash-body']}>
@@ -245,7 +255,7 @@ export const Flash = React.forwardRef(
             wrappedClass={styles['action-wrapped']}
           />
         </div>
-        {dismissible && dismissButton(dismissLabel, onDismiss)}
+        {dismissible && dismissButton(dismissLabel, onDismiss, style, effectiveType)}
         {ariaRole === 'status' && (
           <InternalLiveRegion sources={[statusIconAriaLabel, headerRefObject, contentRefObject]} />
         )}

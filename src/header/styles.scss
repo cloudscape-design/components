@@ -204,8 +204,9 @@
     }
   }
   &-variant-h3 {
-    @include styles.font-body-s;
+    @include styles.font-body-m;
     &:not(.refresh) {
+      @include styles.font-body-s;
       padding-block-end: awsui.$space-scaled-xxs;
     }
   }

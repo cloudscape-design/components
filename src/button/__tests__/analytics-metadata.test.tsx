@@ -75,6 +75,15 @@ describe('Button renders correct analytics metadata', () => {
     validateComponentNameAndLabels(wrapper.getElement(), labels);
     expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata('button text aria', 'inline-icon'));
   });
+  test('when it has icon variant and children', () => {
+    const wrapper = renderButton({
+      ariaLabel: 'button text aria',
+      variant: 'inline-icon',
+      children: 'invisible but there',
+    });
+    validateComponentNameAndLabels(wrapper.getElement(), labels);
+    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata('button text aria', 'inline-icon'));
+  });
 });
 describe('Internal Button', () => {
   test('does not render "component" metadata', () => {

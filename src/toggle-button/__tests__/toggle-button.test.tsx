@@ -90,7 +90,7 @@ describe('ToggleButton Component', () => {
 
   test('throws a warning when pressedIconSvg icon is not set', () => {
     const svg = (
-      <svg className="test-svg">
+      <svg className="test-svg" focusable="false">
         <circle className="test-svg-inner" cx="8" cy="8" r="7" />
       </svg>
     );

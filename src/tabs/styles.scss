@@ -7,7 +7,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
-@import './tab-header-bar';
+@use './tab-header-bar';
 
 .root {
   /* used in test-utils or tests */

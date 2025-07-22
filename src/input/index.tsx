@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React, { Ref, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
@@ -99,6 +100,7 @@ const Input = React.forwardRef(
         }}
         className={clsx(styles.root, baseProps.className)}
         __inheritFormFieldProps={true}
+        __injectAnalyticsComponentMetadata={true}
       />
     );
   }

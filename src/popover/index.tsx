@@ -1,16 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+'use client';
+import React from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import useForwardFocus from '../internal/hooks/forward-focus';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { isDevelopment } from '../internal/is-development';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
 import { PopoverProps } from './interfaces';
-import InternalPopover, { InternalPopoverRef } from './internal';
+import InternalPopover from './internal';
 
 export { PopoverProps };
 
@@ -40,12 +40,9 @@ const Popover = React.forwardRef(
     });
     const externalProps = getExternalProps(rest);
 
-    const internalRef = useRef<InternalPopoverRef | null>(null);
-    useForwardFocus(ref, internalRef);
-
     return (
       <InternalPopover
-        ref={internalRef}
+        ref={ref}
         header={header}
         position={position}
         size={size}

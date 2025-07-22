@@ -3,12 +3,12 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { getLogicalBoundingClientRect, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { InternalPosition, PopoverProps } from './interfaces';
 import usePopoverPosition from './use-popover-position.js';
+import usePositionObserver from './use-position-observer';
 
 import styles from './styles.css.js';
 
@@ -18,7 +18,7 @@ interface PopoverContainerProps {
   getTrack?: () => null | HTMLElement | SVGElement;
   /**
     Used to update the container position in case track or track position changes:
-    
+
     const trackRef = useRef<Element>(null)
     return (<>
       <Track style={getPosition(selectedItemId)} ref={trackRef} />
@@ -111,51 +111,31 @@ export default function PopoverContainer({
     updatePositionHandler(true);
   });
 
-  // Recalculate position on DOM events.
-  useLayoutEffect(() => {
-    /*
-    This is a heuristic. Some layout changes are caused by user clicks (e.g. toggling the tools panel, submitting a form),
-    and by tracking the click event we can adapt the popover's position to the new layout.
-    */
+  // Recalculate position when the DOM changes.
+  // istanbul ignore next - tested via integration tests
+  usePositionObserver(trackRef, trackKey, () => {
+    // Do not update position if popover moved offscreen
+    const popoverOffset = popoverRef.current && getLogicalBoundingClientRect(popoverRef.current);
 
+    if (
+      keepPosition ||
+      !popoverOffset ||
+      popoverOffset.insetBlockStart < 0 ||
+      popoverOffset.insetBlockEnd > window.innerHeight
+    ) {
+      return;
+    }
+
+    positionHandlerRef.current();
+  });
+
+  // Recalculate position on resize or scroll events.
+  useLayoutEffect(() => {
     const controller = new AbortController();
 
-    const onClick = async (event: UIEvent | KeyboardEvent) => {
-      if (
-        // Do not update position if keepPosition is true.
-        keepPosition ||
-        // If the click was on the trigger, this will make the popover appear or disappear,
-        // so no need to update its position either in this case.
-        nodeContains(getTrack.current(), event.target)
-      ) {
-        return;
-      }
-
-      // Continuously update the popover position for one second to account for any layout changes
-      // and animations. On browsers where `requestIdleCallback` is supported,
-      // this runs only while the CPU is otherwise idle. In other browsers (mainly Safari), we call it
-      // with a low frequency.
-      const targetTime = performance.now() + 1_000;
-
-      while (performance.now() < targetTime) {
-        if (controller.signal.aborted) {
-          break;
-        }
-
-        updatePositionHandler();
-
-        if (typeof requestIdleCallback !== 'undefined') {
-          await new Promise(r => requestIdleCallback(r));
-        } else {
-          await new Promise(r => setTimeout(r, 50));
-        }
-      }
-    };
-
-    const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
+    const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler(true));
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
 
-    window.addEventListener('click', onClick, { signal: controller.signal });
     window.addEventListener('resize', updatePositionOnResize, { signal: controller.signal });
     window.addEventListener('scroll', refreshPosition, { capture: true, signal: controller.signal });
 

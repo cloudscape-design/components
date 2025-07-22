@@ -1,6 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React from 'react';
+
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import {
   AnalyticsFunnel,
@@ -11,7 +14,6 @@ import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 import { DATA_ATTR_MODAL_ID } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { ModalProps } from './interfaces';
 import InternalModal, { InternalModalAsFunnel } from './internal';

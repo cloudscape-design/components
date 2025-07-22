@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
@@ -47,6 +48,7 @@ const Select = React.forwardRef(
       label: `.${analyticsSelectors['button-trigger']}`,
       properties: {
         disabled: `${!!externalProps.disabled}`,
+        selectedOptionValue: `${externalProps.selectedOption && externalProps.selectedOption.value ? externalProps.selectedOption.value : null}`,
       },
     };
 

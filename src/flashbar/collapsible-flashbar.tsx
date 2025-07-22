@@ -5,6 +5,7 @@ import { TransitionGroup } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../i18n/context';
@@ -15,7 +16,6 @@ import { Transition } from '../internal/components/transition';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { throttle } from '../internal/utils/throttle';
 import {
@@ -26,6 +26,7 @@ import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './anal
 import { useFlashbar } from './common';
 import { Flash, focusFlashById } from './flash';
 import { FlashbarProps } from './interfaces';
+import { getCollapsibleFlashStyles, getNotificationBarStyles } from './style';
 import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils';
 
 import styles from './styles.css.js';
@@ -36,7 +37,7 @@ const maxNonCollapsibleItems = 1;
 
 const resizeListenerThrottleDelay = 100;
 
-export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps) {
+export default function CollapsibleFlashbar({ items, style, ...restProps }: FlashbarProps) {
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
@@ -265,20 +266,18 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                     collapsedItemRefs.current[getAnimationElementId(item)] = element;
                   }
                 }}
-                style={
-                  !isFlashbarStackExpanded || transitioning
-                    ? {
-                        [customCssProps.flashbarStackIndex]:
-                          (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
-                      }
-                    : undefined
-                }
+                style={{
+                  ...(index > 0 && !isFlashbarStackExpanded && getCollapsibleFlashStyles(style, item.type)),
+                  ...((!isFlashbarStackExpanded || transitioning) && {
+                    [customCssProps.flashbarStackIndex]:
+                      (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
+                  }),
+                }}
                 key={getItemId(item)}
                 {...getAnalyticsMetadataAttribute(getItemAnalyticsMetadata(index + 1, item.type || 'info', item.id))}
               >
                 {showInnerContent(item) && (
                   <Flash
-                    // eslint-disable-next-line react/forbid-component-props
                     className={clsx(
                       animateFlash && styles['flash-with-motion'],
                       isVisualRefresh && styles['flash-refresh']
@@ -287,6 +286,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                     ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
                     transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
                     i18nStrings={iconAriaLabels}
+                    style={style}
                     {...item}
                   />
                 )}
@@ -326,6 +326,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
           )}
           onClick={toggleCollapseExpand}
           ref={notificationBarRef}
+          style={getNotificationBarStyles(style)}
           {...getAnalyticsMetadataAttribute({
             action: !isFlashbarStackExpanded ? 'expand' : 'collapse',
             detail: {

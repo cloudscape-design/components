@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { getBaseProps } from '../internal/base-component';
@@ -10,8 +11,6 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { GeneratedAnalyticsMetadataTilesSelect } from './analytics-metadata/interfaces';
 import { TilesProps } from './interfaces';
 import { Tile } from './tile';

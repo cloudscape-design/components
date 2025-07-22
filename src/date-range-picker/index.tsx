@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React, { Ref, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
@@ -17,10 +18,8 @@ import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useFocusTracker } from '../internal/hooks/use-focus-tracker';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { usePrevious } from '../internal/hooks/use-previous';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development.js';
 import { KeyCode } from '../internal/keycode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -56,7 +55,7 @@ function renderDateRange({
 }) {
   const firstPart = range
     ? range.type === 'relative'
-      ? formatRelativeRange?.(range) ?? ''
+      ? (formatRelativeRange?.(range) ?? '')
       : formatDateTimeWithOffset({
           date: range.startDate,
           timeOffset: timeOffset.startDate,

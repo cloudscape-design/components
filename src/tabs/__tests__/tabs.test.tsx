@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
@@ -623,7 +623,7 @@ describe('Tabs', () => {
       if (tabs.length === 3) {
         testMessage = 'With one enable tab';
       }
-      describe(testMessage, () => {
+      describe(`${testMessage}`, () => {
         test('keeps the same tab active upon key interactions', () => {
           const wrapper = renderTabs(<Tabs tabs={tabs} />).wrapper;
 
@@ -784,6 +784,7 @@ describe('Tabs', () => {
       expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
     });
 
+    // eslint-disable-next-line jest/no-done-callback
     test('prevents the default anchor behaviour when clicked', done => {
       expect.assertions(1);
       const wrapper = renderTabs(<Tabs tabs={defaultTabs} />).wrapper;
@@ -798,6 +799,7 @@ describe('Tabs', () => {
       wrapper.findTabLinkByIndex(2)!.click();
     });
 
+    // eslint-disable-next-line jest/no-done-callback
     test('does not prevent the default anchor behaviour when key modifier used', done => {
       const wrapper = renderTabs(<Tabs tabs={defaultTabs} />).wrapper;
 
@@ -811,6 +813,7 @@ describe('Tabs', () => {
       wrapper.findTabLinkByIndex(2)!.click({ ctrlKey: true });
     });
 
+    // eslint-disable-next-line jest/no-done-callback
     test('prevents the default anchor behaviour when key modifier used, but no href provided', done => {
       const wrapper = renderTabs(<Tabs tabs={defaultTabs} />).wrapper;
       const callback = (event: MouseEvent) => {
@@ -937,6 +940,35 @@ describe('Tabs', () => {
       pressLeft(wrapper);
       wrapper.findActiveTab()!.keydown({ keyCode: KeyCode.tab });
       expect(wrapper.findTabContent()?.getElement()).toHaveFocus();
+    });
+  });
+
+  describe('Dismissible mixed with non-dismissible', () => {
+    test('moves focus from the last dismissible button to non-dismissible', () => {
+      const TabsWrapper = () => {
+        const [tabsDismissibles, setTabDismissibles] = useState([
+          {
+            label: 'First tab',
+            id: 'first',
+            content: <>first</>,
+          },
+          {
+            label: 'Second tab',
+            id: 'second',
+            dismissible: true,
+            dismissLabel: 'Dismiss second tab (dismissibles variant)',
+            onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(0, 1)),
+            content: <>second</>,
+          },
+        ]);
+
+        return <Tabs tabs={tabsDismissibles} />;
+      };
+      const { wrapper } = renderTabs(<TabsWrapper />);
+
+      wrapper.findDismissibleButtonByTabId('second')!.click();
+
+      expect(wrapper.findTabLinkById('first')!.getElement()).toHaveFocus();
     });
   });
 

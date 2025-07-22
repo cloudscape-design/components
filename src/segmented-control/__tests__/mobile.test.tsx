@@ -5,7 +5,7 @@ import React from 'react';
 import SegmentedControl, { SegmentedControlProps } from '../../../lib/components/segmented-control';
 import { renderSegmentedControl } from './utils';
 
-export const defaultOptions: SegmentedControlProps.Option[] = [
+const defaultOptions: SegmentedControlProps.Option[] = [
   { text: 'Segment-1', iconName: 'settings', id: 'seg-1' },
   { text: '', iconName: 'settings', iconAlt: 'Settings', id: 'seg-2' },
   { text: 'Segment-3', id: 'seg-3', disabled: true },

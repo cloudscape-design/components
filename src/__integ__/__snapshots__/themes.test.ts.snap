@@ -2,6 +2,7 @@
 
 exports[`CSS Custom Properties match previous snapshot for mode "compact" 1`] = `
 {
+  "awsui-version-info": "true",
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -217,6 +218,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "compact" 1`] = 
   "color-charts-blue-2-700": "#314fbf",
   "color-charts-blue-2-800": "#2c46b1",
   "color-charts-blue-2-900": "#273ea5",
+  "color-charts-error-bar-marker": "#131920",
   "color-charts-green-1000": "#104d01",
   "color-charts-green-1100": "#0f4601",
   "color-charts-green-1200": "#0d4000",
@@ -467,6 +469,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "compact" 1`] = 
   "color-text-toggle-button-icon-pressed": "#16191f",
   "color-text-toggle-button-normal-pressed": "#16191f",
   "color-text-top-navigation-title": "#16191f",
+  "color-text-tutorial-hotspot-default": "#0073bb",
+  "color-text-tutorial-hotspot-hover": "#0a4a74",
   "color-transparent": "transparent",
   "font-box-value-large-weight": "300",
   "font-button-letter-spacing": "0.25px",
@@ -677,6 +681,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "compact" 1`] = 
 
 exports[`CSS Custom Properties match previous snapshot for mode "dark" 1`] = `
 {
+  "awsui-version-info": "true",
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -892,6 +897,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "dark" 1`] = `
   "color-charts-blue-2-700": "#a2b8ff",
   "color-charts-blue-2-800": "#b1c5ff",
   "color-charts-blue-2-900": "#c3d1ff",
+  "color-charts-error-bar-marker": "#ffffff",
   "color-charts-green-1000": "#c5e7a8",
   "color-charts-green-1100": "#d5efbe",
   "color-charts-green-1200": "#e4f7d5",
@@ -1142,6 +1148,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "dark" 1`] = `
   "color-text-toggle-button-icon-pressed": "#fafafa",
   "color-text-toggle-button-normal-pressed": "#fafafa",
   "color-text-top-navigation-title": "#fafafa",
+  "color-text-tutorial-hotspot-default": "#44b9d6",
+  "color-text-tutorial-hotspot-hover": "#99cbe4",
   "color-transparent": "transparent",
   "font-box-value-large-weight": "300",
   "font-button-letter-spacing": "0.25px",
@@ -1352,6 +1360,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "dark" 1`] = `
 
 exports[`CSS Custom Properties match previous snapshot for mode "light" 1`] = `
 {
+  "awsui-version-info": "true",
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -1567,6 +1576,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "light" 1`] = `
   "color-charts-blue-2-700": "#314fbf",
   "color-charts-blue-2-800": "#2c46b1",
   "color-charts-blue-2-900": "#273ea5",
+  "color-charts-error-bar-marker": "#131920",
   "color-charts-green-1000": "#104d01",
   "color-charts-green-1100": "#0f4601",
   "color-charts-green-1200": "#0d4000",
@@ -1817,6 +1827,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "light" 1`] = `
   "color-text-toggle-button-icon-pressed": "#16191f",
   "color-text-toggle-button-normal-pressed": "#16191f",
   "color-text-top-navigation-title": "#16191f",
+  "color-text-tutorial-hotspot-default": "#0073bb",
+  "color-text-tutorial-hotspot-hover": "#0a4a74",
   "color-transparent": "transparent",
   "font-box-value-large-weight": "300",
   "font-button-letter-spacing": "0.25px",
@@ -2027,6 +2039,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "light" 1`] = `
 
 exports[`CSS Custom Properties match previous snapshot for mode "reduced-motion" 1`] = `
 {
+  "awsui-version-info": "true",
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -2242,6 +2255,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "reduced-motion"
   "color-charts-blue-2-700": "#314fbf",
   "color-charts-blue-2-800": "#2c46b1",
   "color-charts-blue-2-900": "#273ea5",
+  "color-charts-error-bar-marker": "#131920",
   "color-charts-green-1000": "#104d01",
   "color-charts-green-1100": "#0f4601",
   "color-charts-green-1200": "#0d4000",
@@ -2492,6 +2506,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "reduced-motion"
   "color-text-toggle-button-icon-pressed": "#16191f",
   "color-text-toggle-button-normal-pressed": "#16191f",
   "color-text-top-navigation-title": "#16191f",
+  "color-text-tutorial-hotspot-default": "#0073bb",
+  "color-text-tutorial-hotspot-hover": "#0a4a74",
   "color-transparent": "transparent",
   "font-box-value-large-weight": "300",
   "font-button-letter-spacing": "0.25px",
@@ -2702,6 +2718,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "reduced-motion"
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh" 1`] = `
 {
+  "awsui-version-info": "true",
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "1px",
   "border-container-sticky-width": "0px",
@@ -2917,6 +2934,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh"
   "color-charts-blue-2-700": "#314fbf",
   "color-charts-blue-2-800": "#2c46b1",
   "color-charts-blue-2-900": "#273ea5",
+  "color-charts-error-bar-marker": "#131920",
   "color-charts-green-1000": "#104d01",
   "color-charts-green-1100": "#0f4601",
   "color-charts-green-1200": "#0d4000",
@@ -3167,6 +3185,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh"
   "color-text-toggle-button-icon-pressed": "#0f141a",
   "color-text-toggle-button-normal-pressed": "#002b66",
   "color-text-top-navigation-title": "#0f141a",
+  "color-text-tutorial-hotspot-default": "#006ce0",
+  "color-text-tutorial-hotspot-hover": "#002b66",
   "color-transparent": "transparent",
   "font-box-value-large-weight": "700",
   "font-button-letter-spacing": "0.005em",
@@ -3377,6 +3397,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh"
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-compact" 1`] = `
 {
+  "awsui-version-info": "true",
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "1px",
   "border-container-sticky-width": "0px",
@@ -3592,6 +3613,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "color-charts-blue-2-700": "#314fbf",
   "color-charts-blue-2-800": "#2c46b1",
   "color-charts-blue-2-900": "#273ea5",
+  "color-charts-error-bar-marker": "#131920",
   "color-charts-green-1000": "#104d01",
   "color-charts-green-1100": "#0f4601",
   "color-charts-green-1200": "#0d4000",
@@ -3842,6 +3864,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "color-text-toggle-button-icon-pressed": "#0f141a",
   "color-text-toggle-button-normal-pressed": "#002b66",
   "color-text-top-navigation-title": "#0f141a",
+  "color-text-tutorial-hotspot-default": "#006ce0",
+  "color-text-tutorial-hotspot-hover": "#002b66",
   "color-transparent": "transparent",
   "font-box-value-large-weight": "700",
   "font-button-letter-spacing": "0.005em",
@@ -4052,6 +4076,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-content-header" 1`] = `
 {
+  "awsui-version-info": "true",
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "1px",
   "border-container-sticky-width": "0px",
@@ -4267,6 +4292,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "color-charts-blue-2-700": "#314fbf",
   "color-charts-blue-2-800": "#2c46b1",
   "color-charts-blue-2-900": "#273ea5",
+  "color-charts-error-bar-marker": "#131920",
   "color-charts-green-1000": "#104d01",
   "color-charts-green-1100": "#0f4601",
   "color-charts-green-1200": "#0d4000",
@@ -4517,6 +4543,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "color-text-toggle-button-icon-pressed": "#f9f9fa",
   "color-text-toggle-button-normal-pressed": "#75cfff",
   "color-text-top-navigation-title": "#f9f9fa",
+  "color-text-tutorial-hotspot-default": "#42b4ff",
+  "color-text-tutorial-hotspot-hover": "#75cfff",
   "color-transparent": "transparent",
   "font-box-value-large-weight": "700",
   "font-button-letter-spacing": "0.005em",
@@ -4727,6 +4755,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-dark" 1`] = `
 {
+  "awsui-version-info": "true",
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "1px",
   "border-container-sticky-width": "0px",
@@ -4942,6 +4971,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "color-charts-blue-2-700": "#a2b8ff",
   "color-charts-blue-2-800": "#b1c5ff",
   "color-charts-blue-2-900": "#c3d1ff",
+  "color-charts-error-bar-marker": "#ffffff",
   "color-charts-green-1000": "#c5e7a8",
   "color-charts-green-1100": "#d5efbe",
   "color-charts-green-1200": "#e4f7d5",
@@ -5192,6 +5222,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "color-text-toggle-button-icon-pressed": "#f9f9fa",
   "color-text-toggle-button-normal-pressed": "#75cfff",
   "color-text-top-navigation-title": "#f9f9fa",
+  "color-text-tutorial-hotspot-default": "#42b4ff",
+  "color-text-tutorial-hotspot-hover": "#75cfff",
   "color-transparent": "transparent",
   "font-box-value-large-weight": "700",
   "font-button-letter-spacing": "0.005em",

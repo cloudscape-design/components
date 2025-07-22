@@ -90,6 +90,7 @@ function RenderChartModelHook(props: UseChartModelProps<ChartDataTypes>) {
         onMouseOut={handlers.onSVGMouseOut}
         className={UseChartModelWrapper.selectors.plot}
         ref={svgRef}
+        focusable="false"
       >
         area plot
       </svg>

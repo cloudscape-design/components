@@ -26,8 +26,6 @@ import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/vi
 import toolbarNotificationsStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/notifications/styles.css.js';
 import toolbarSkeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
-import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
-import iconStyles from '../../../lib/components/icon/styles.css.js';
 
 function AppLayoutWithControlledNavigation({
   initialNavigationOpen,
@@ -77,8 +75,6 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
     classic: `.${styles['notifications-sticky']}`,
   };
 
-  const triggerBadgeClassName =
-    theme === 'refresh-toolbar' ? toolbarTriggerButtonStyles['trigger-badge-wrapper'] : iconStyles.badge;
   const isUnfocusable = (element: HTMLElement) =>
     !!findUpUntil(element, current => current.classList.contains(unfocusableClassName));
 
@@ -577,7 +573,8 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
 
   test('should render badge when defined', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
-    expect(wrapper.findDrawerTriggerById('security')!.getElement().children[0]).toHaveClass(triggerBadgeClassName);
+    expect(wrapper.findDrawerTriggerById('security')).toBeTruthy();
+    expect(wrapper.findDrawerTriggerById('security', { hasBadge: true })).toBeTruthy();
   });
 
   test('renders roles only when aria labels are not provided', () => {

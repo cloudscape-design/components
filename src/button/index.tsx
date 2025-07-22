@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React from 'react';
 
 import { getBaseProps } from '../internal/base-component';
@@ -40,6 +41,7 @@ const Button = React.forwardRef(
       fullWidth,
       form,
       i18nStrings,
+      style,
       ...props
     }: ButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -80,6 +82,7 @@ const Button = React.forwardRef(
         fullWidth={fullWidth}
         form={form}
         i18nStrings={i18nStrings}
+        style={style}
         __injectAnalyticsComponentMetadata={true}
       >
         {children}

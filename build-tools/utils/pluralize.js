@@ -45,6 +45,7 @@ const pluralizationMap = {
   KeyValuePairs: 'KeyValuePairs',
   LineChart: 'LineCharts',
   Link: 'Links',
+  List: 'Lists',
   LiveRegion: 'LiveRegions',
   MixedLineBarChart: 'MixedLineBarCharts',
   Modal: 'Modals',
@@ -79,6 +80,7 @@ const pluralizationMap = {
   ToggleButton: 'ToggleButtons',
   TokenGroup: 'TokenGroups',
   TopNavigation: 'TopNavigations',
+  TreeView: 'TreeViews',
   TutorialPanel: 'TutorialPanels',
   Wizard: 'Wizards',
 };

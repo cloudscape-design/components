@@ -161,7 +161,7 @@ describe('Dropdown Component', () => {
       fireEvent.scroll(window, { target: { scrollY: 100 } });
       expect(calculatePosition).toHaveBeenCalledTimes(0);
     });
-    test('dropdown position is not calculated when dropdown closes ', () => {
+    test('dropdown position is not calculated when dropdown closes', () => {
       const renderResult = render(<Dropdown trigger={<button />} open={true} />);
       renderResult.rerender(<Dropdown trigger={<button />} open={false} />);
       (calculatePosition as jest.Mock).mockClear();

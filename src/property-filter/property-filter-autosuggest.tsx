@@ -4,6 +4,8 @@
 import React, { Ref, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { AutosuggestItem, AutosuggestProps } from '../autosuggest/interfaces';
 import { useAutosuggestLoadMore } from '../autosuggest/load-more-controller';
 import { useAutosuggestItems } from '../autosuggest/options-controller';
@@ -22,8 +24,6 @@ import {
 } from '../internal/events';
 import { fireCancelableEvent } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
 import { filterOptions } from './filter-options';
 
@@ -158,7 +158,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const highlightedOptionIdSource = useUniqueId();
     const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
-    const isEmpty = !value && !autosuggestItemsState.items.length;
+    const isEmpty = !autosuggestItemsState.items.length;
     const dropdownStatus = useDropdownStatus({
       ...props,
       isEmpty,
@@ -173,7 +173,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
           {customForm.content}
         </div>
       );
-    } else if (autosuggestItemsState.items.length > 0) {
+    } else {
       content = (
         <AutosuggestOptionsList
           statusType={statusType}

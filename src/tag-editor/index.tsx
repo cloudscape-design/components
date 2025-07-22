@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React, { useCallback, useImperativeHandle, useLayoutEffect, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
@@ -314,9 +315,9 @@ const TagEditor = React.forwardRef(
               ) ?? ''}
             </FormFieldError>
           ) : remainingTags === 0 ? (
-            i18n('i18nStrings.tagLimitReached', i18nStrings?.tagLimitReached?.(tagLimit), format =>
+            (i18n('i18nStrings.tagLimitReached', i18nStrings?.tagLimitReached?.(tagLimit), format =>
               format({ tagLimit })
-            ) ?? ''
+            ) ?? '')
           ) : (
             i18n('i18nStrings.tagLimit', i18nStrings?.tagLimit?.(remainingTags, tagLimit), format =>
               format({ tagLimitAvailable: `${remainingTags === tagLimit}`, availableTags: remainingTags, tagLimit })

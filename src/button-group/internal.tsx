@@ -3,7 +3,7 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonProps } from '../button/interfaces';
 import { getBaseProps } from '../internal/base-component';
@@ -13,7 +13,6 @@ import {
   SingleTabStopNavigationProvider,
 } from '../internal/context/single-tab-stop-navigation-context';
 import { hasModifierKeys } from '../internal/events';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import handleKey from '../internal/utils/handle-key';
@@ -150,7 +149,7 @@ const InternalButtonGroup = forwardRef(
           onUnregisterActive={onUnregisterActive}
         >
           {items.map((itemOrGroup, index) => {
-            const itemContent = (item: ButtonGroupProps.Item) => (
+            const itemContent = (item: ButtonGroupProps.Item, position: string) => (
               <ItemElement
                 key={item.id}
                 item={item}
@@ -160,6 +159,7 @@ const InternalButtonGroup = forwardRef(
                 onItemClick={onItemClick}
                 onFilesChange={onFilesChange}
                 ref={element => (itemsRef.current[item.id] = element)}
+                position={position}
               />
             );
 
@@ -177,10 +177,10 @@ const InternalButtonGroup = forwardRef(
                 {shouldAddDivider && <div className={styles.divider} />}
                 {itemOrGroup.type === 'group' ? (
                   <div key={index} role="group" aria-label={itemOrGroup.text} className={styles.group}>
-                    {itemOrGroup.items.map(item => itemContent(item))}
+                    {itemOrGroup.items.map((item, subIndex) => itemContent(item, `${index + 1},${subIndex + 1}`))}
                   </div>
                 ) : (
-                  itemContent(itemOrGroup)
+                  itemContent(itemOrGroup, `${index + 1}`)
                 )}
               </React.Fragment>
             );

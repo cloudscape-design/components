@@ -1,0 +1,21 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+
+.root {
+  @include styles.styles-reset;
+
+  font-family: awsui.$font-family-base;
+  font-size: awsui.$font-size-body-m;
+  line-height: awsui.$line-height-heading-m;
+
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline: awsui.$space-scaled-xxs;
+}
+
+.tree {
+  @include styles.styles-reset-ul;
+}

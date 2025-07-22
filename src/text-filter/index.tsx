@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
@@ -22,6 +23,7 @@ const TextFilter = React.forwardRef((props: TextFilterProps, ref: React.Ref<Text
     label: 'input',
     properties: {
       disabled: `${!!props.disabled}`,
+      filteringText: props.filteringText || '',
     },
   };
   return (

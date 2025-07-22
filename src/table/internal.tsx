@@ -4,7 +4,7 @@ import React, { useCallback, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import {
   GeneratedAnalyticsMetadataFragment,
   getAnalyticsMetadataAttribute,
@@ -18,13 +18,13 @@ import { CollectionLabelContext } from '../internal/context/collection-label-con
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import {
   FilterRef,
+  HeaderRef,
   PaginationRef,
   PreferencesRef,
   TableComponentsContextProvider,
 } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
@@ -194,6 +194,7 @@ const InternalTable = React.forwardRef(
     const paginationRef = useRef<PaginationRef>({});
     const filterRef = useRef<FilterRef>({});
     const preferencesRef = useRef<PreferencesRef>({});
+    const headerRef = useRef<HeaderRef>({});
     /* istanbul ignore next: performance marks do not work in JSDOM */
     const getHeaderText = () =>
       toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
@@ -233,6 +234,7 @@ const InternalTable = React.forwardRef(
       });
     };
     const getComponentConfiguration = () => {
+      const headerData = headerRef.current;
       const filterData = filterRef.current;
       const paginationData = paginationRef.current;
       const preferencesData = preferencesRef.current;
@@ -249,16 +251,17 @@ const InternalTable = React.forwardRef(
           columnId: sortingColumn?.sortingField,
           sortingOrder: sortingColumn ? (sortingDescending ? 'desc' : 'asc') : undefined,
         },
-        filtered: Boolean(filterData.filtered),
+        filtered: filterData?.filtered ?? null,
         filteredBy: filterData?.filteredBy ?? [],
-        totalNumberOfResources: filterRef.current?.filterCount ?? null,
+        filteredCount: filterData?.filterCount ?? null,
+        totalNumberOfResources: headerData?.totalCount ?? null,
         tablePreferences: {
           visibleColumns: preferencesData?.visibleColumns ?? [],
           resourcesPerPage: preferencesData?.pageSize ?? null,
         },
         pagination: {
           currentPageIndex: paginationData?.currentPageIndex ?? 0,
-          totalNumberOfPages: paginationData?.openEnd ? null : paginationData?.totalPageCount ?? null,
+          totalNumberOfPages: paginationData?.openEnd ? null : (paginationData?.totalPageCount ?? null),
           openEnd: Boolean(paginationData?.openEnd),
         },
         resourcesSelected: selectedItems?.length > 0,
@@ -304,7 +307,11 @@ const InternalTable = React.forwardRef(
       selectionType,
       isItemDisabled,
       onSelectionChange,
-      ariaLabels,
+      ariaLabels: {
+        ...ariaLabels,
+        // `selectionGroupLabel` should not be part of the selection control, it is already part of the selection column header.
+        selectionGroupLabel: undefined,
+      },
       loading,
       setLastUserAction,
     });
@@ -372,6 +379,7 @@ const InternalTable = React.forwardRef(
       getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
       variant: computedVariant,
+      tableVariant: computedVariant,
       wrapLines,
       resizableColumns,
       sortingColumn,
@@ -430,7 +438,7 @@ const InternalTable = React.forwardRef(
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <TableComponentsContextProvider value={{ paginationRef, filterRef, preferencesRef }}>
+        <TableComponentsContextProvider value={{ paginationRef, filterRef, preferencesRef, headerRef }}>
           <ColumnWidthsProvider
             visibleColumns={visibleColumnWidthsWithSelection}
             resizableColumns={resizableColumns}
@@ -482,8 +490,8 @@ const InternalTable = React.forwardRef(
               }
               disableHeaderPaddings={true}
               disableContentPaddings={true}
+              disableFooterPaddings={true}
               variant={toContainerVariant(computedVariant)}
-              __disableFooterPaddings={true}
               __disableFooterDivider={true}
               __disableStickyMobile={false}
               footer={
@@ -623,6 +631,7 @@ const InternalTable = React.forwardRef(
                                       itemKey: rowId,
                                     }}
                                     verticalAlign={cellVerticalAlign}
+                                    tableVariant={computedVariant}
                                   />
                                 )}
 
@@ -673,6 +682,7 @@ const InternalTable = React.forwardRef(
                                       columnId={column.id ?? colIndex}
                                       colIndex={colIndex + colIndexOffset}
                                       verticalAlign={column.verticalAlign ?? cellVerticalAlign}
+                                      tableVariant={computedVariant}
                                       {...cellExpandableProps}
                                       {...getAnalyticsMetadataAttribute(analyticsMetadata)}
                                     />
@@ -702,6 +712,7 @@ const InternalTable = React.forwardRef(
                                     {...sharedCellProps}
                                     columnId={selectionColumnId}
                                     verticalAlign={cellVerticalAlign}
+                                    tableVariant={computedVariant}
                                   />
                                 )}
                                 {visibleColumnDefinitions.map((column, colIndex) => (

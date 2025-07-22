@@ -220,18 +220,49 @@ describe('Option component', () => {
       expect(findIcon(optionWrapper)).toBeNull();
       expect(optionWrapper.find('.custom-icon')).not.toBeNull();
     });
+    test('with custom icon url and iconAriaLabel', () => {
+      const optionWrapper = renderOption({
+        option: {
+          ...baseOption,
+          iconUrl: 'about:blank',
+          iconAriaLabel: 'test icon aria label',
+        },
+      });
+
+      const icon = findIcon(optionWrapper)!;
+      const iconImageEl = icon.find('img')!.getElement();
+      expect(iconImageEl.getAttribute('alt')).toBe('test icon aria label');
+      expect(iconImageEl.getAttribute('src')).toBe('about:blank');
+    });
     test('with custom svg icon', () => {
       const optionWrapper = renderOption({
         option: {
           ...baseOption,
           iconSvg: (
-            <svg className="test-svg">
+            <svg className="test-svg" focusable="false">
               <circle cx="8" cy="8" r="7" />
             </svg>
           ),
         },
       });
 
+      expect(optionWrapper.findByClassName('test-svg')).not.toBeNull();
+      expect(optionWrapper.find('[aria-label="test svg aria label"]')).toBeNull();
+    });
+    test('with custom svg icon and iconAriaLabel', () => {
+      const optionWrapper = renderOption({
+        option: {
+          ...baseOption,
+          iconAriaLabel: 'test svg aria label',
+          iconSvg: (
+            <svg className="test-svg" focusable="false">
+              <circle cx="8" cy="8" r="7" />
+            </svg>
+          ),
+        },
+      });
+
+      expect(optionWrapper.find('[aria-label="test svg aria label"]')).not.toBeNull();
       expect(optionWrapper.findByClassName('test-svg')).not.toBeNull();
     });
   });

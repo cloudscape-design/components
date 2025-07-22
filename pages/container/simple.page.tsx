@@ -85,6 +85,10 @@ export default function SimpleContainers() {
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
             tortor, mollis vitae molestie sed, malesuada.
           </Container>
+          <Container disableFooterPaddings={true} footer="Spaceless container footer">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
+            tortor, mollis vitae molestie sed, malesuada.
+          </Container>
           <div>
             <Container variant="stacked" header="Stacked Container 1">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui

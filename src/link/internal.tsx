@@ -3,6 +3,8 @@
 import React, { useContext, useRef } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
 import { FunnelMetrics } from '../internal/analytics';
@@ -20,8 +22,6 @@ import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-
 import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
@@ -221,8 +221,6 @@ const InternalLink = React.forwardRef(
     }
 
     return (
-      // we dynamically set proper rel in the code above
-      // eslint-disable-next-line react/jsx-no-target-blank
       <a
         {...sharedProps}
         tabIndex={tabIndex}

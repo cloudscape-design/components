@@ -3,13 +3,13 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { ColumnWidthStyle } from '../column-widths-utils';
-import { ExpandToggleButton } from '../expandable-rows/expand-toggle-button';
 import { TableProps } from '../interfaces.js';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { getTableCellRoleProps, TableRole } from '../table-role';
@@ -56,6 +56,7 @@ export interface TableTdElementProps {
   isEditing: boolean;
   isEditingDisabled?: boolean;
   hasSuccessIcon?: boolean;
+  tableVariant?: string;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -95,6 +96,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       isEditing,
       isEditingDisabled,
       hasSuccessIcon,
+      tableVariant,
       ...rest
     },
     ref
@@ -141,6 +143,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasSuccessIcon && styles['body-cell-has-success'],
           level !== undefined && !isEditingActive && styles['body-cell-expandable'],
           level !== undefined && !isEditingActive && styles[`expandable-level-${getLevelClassSuffix(level)}`],
+          tableVariant && styles[`table-variant-${tableVariant}`],
           stickyStyles.className
         )}
         onClick={onClick}

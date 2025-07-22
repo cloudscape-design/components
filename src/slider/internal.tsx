@@ -3,7 +3,7 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component/index.js';
@@ -12,7 +12,6 @@ import { useFormFieldContext } from '../internal/context/form-field-context.js';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import customCssProps from '../internal/generated/custom-css-properties/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { SliderProps } from './interfaces.js';
 import SliderLabels from './slider-labels.js';
 import SliderTickMarks from './tick-marks.js';

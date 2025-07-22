@@ -3,11 +3,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '@cloudscape-design/component-toolkit/internal';
 
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
@@ -46,6 +46,8 @@ export function Resizer({
 }: ResizerProps) {
   onWidthUpdate = useStableCallback(onWidthUpdate);
   onWidthUpdateCommit = useStableCallback(onWidthUpdateCommit);
+
+  const isVisualRefresh = useVisualRefresh();
 
   const separatorId = useUniqueId();
   const resizerToggleRef = useRef<HTMLButtonElement>(null);
@@ -133,7 +135,7 @@ export function Resizer({
         if (keys.indexOf(event.keyCode) !== -1) {
           event.preventDefault();
 
-          isEventLike(event) &&
+          if (isEventLike(event)) {
             handleKey(event, {
               onActivate: () => {
                 setIsKeyboardDragging(false);
@@ -146,19 +148,21 @@ export function Resizer({
               onInlineStart: () => updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize - 10),
               onInlineEnd: () => updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize + 10),
             });
+          }
         }
       }
       // Enter keyboard dragging mode
       else if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
         event.preventDefault();
 
-        isEventLike(event) &&
+        if (isEventLike(event)) {
           handleKey(event, {
             onActivate: () => {
               setIsKeyboardDragging(true);
               resizerSeparatorRef.current?.focus();
             },
           });
+        }
       }
     };
 
@@ -194,7 +198,8 @@ export function Resizer({
         ref={resizerToggleRef}
         className={clsx(
           styles.resizer,
-          (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus']
+          (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus'],
+          isVisualRefresh && styles['is-visual-refresh']
         )}
         onMouseDown={event => {
           if (event.button !== 0) {
@@ -230,7 +235,11 @@ export function Resizer({
         data-focus-id={focusId}
       />
       <span
-        className={clsx(styles.divider, isDragging && styles['divider-active'])}
+        className={clsx(
+          styles['divider-interactive'],
+          isDragging && styles['divider-active'],
+          isVisualRefresh && styles['is-visual-refresh']
+        )}
         data-awsui-table-suppress-navigation={true}
         ref={resizerSeparatorRef}
         id={separatorId}

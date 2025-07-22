@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalBox from '../box/internal';
@@ -16,7 +17,6 @@ import { useTableComponentsContext } from '../internal/context/table-component-c
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import InternalModal from '../modal/internal';
 import InternalSpaceBetween from '../space-between/internal';
@@ -90,7 +90,9 @@ export default function CollectionPreferences({
 
   useEffect(() => {
     if (!modalVisible) {
-      dialogPreviouslyOpen.current && triggerRef.current && triggerRef.current.focus();
+      if (dialogPreviouslyOpen.current) {
+        triggerRef.current?.focus();
+      }
     } else {
       dialogPreviouslyOpen.current = true;
     }

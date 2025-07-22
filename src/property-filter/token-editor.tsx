@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalButton from '../button/internal.js';
@@ -15,7 +16,6 @@ import { FormFieldContext } from '../internal/context/form-field-context.js';
 import { NonCancelableEventHandler } from '../internal/events/index.js';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
 import { useMobile } from '../internal/hooks/use-mobile/index.js';
-import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import {
   GeneratedAnalyticsMetadataPropertyEditCancel,
   GeneratedAnalyticsMetadataPropertyEditConfirm,

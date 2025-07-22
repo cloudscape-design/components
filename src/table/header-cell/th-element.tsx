@@ -3,10 +3,10 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
@@ -25,6 +25,7 @@ export interface TableThElementProps {
   focusedComponent?: null | string;
   stuck?: boolean;
   sticky?: boolean;
+  resizable?: boolean;
   hidden?: boolean;
   stripedRows?: boolean;
   isSelection?: boolean;
@@ -36,6 +37,7 @@ export interface TableThElementProps {
   children: React.ReactNode;
   variant: TableProps.Variant;
   ariaLabel?: string;
+  tableVariant?: string;
 }
 
 export function TableThElement({
@@ -45,6 +47,7 @@ export function TableThElement({
   focusedComponent,
   stuck,
   sticky,
+  resizable,
   hidden,
   stripedRows,
   isSelection,
@@ -56,6 +59,7 @@ export function TableThElement({
   children,
   variant,
   ariaLabel,
+  tableVariant,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -77,10 +81,12 @@ export function TableThElement({
         styles['header-cell'],
         styles[`header-cell-variant-${variant}`],
         sticky && styles['header-cell-sticky'],
+        resizable && styles['header-cell-resizable'],
         stuck && styles['header-cell-stuck'],
         stripedRows && styles['has-striped-rows'],
         isVisualRefresh && styles['is-visual-refresh'],
         isSelection && clsx(tableStyles['selection-control'], tableStyles['selection-control-header']),
+        tableVariant && styles[`table-variant-${tableVariant}`],
         {
           [styles['header-cell-fake-focus']]: focusedComponent === `header-${String(columnId)}`,
           [styles['header-cell-sortable']]: sortingStatus,

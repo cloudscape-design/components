@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 
-import { useUniqueId } from '../../hooks/use-unique-id';
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import {
   AlertFlashContentApiInternal,
   AlertFlashContentResult,

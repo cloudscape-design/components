@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import Dropdown from '../internal/components/dropdown';
@@ -10,7 +12,6 @@ import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
 import Filter from '../select/parts/filter';
@@ -29,6 +30,8 @@ type InternalMultiselectProps = SomeRequired<
   'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'keepOpen' | 'hideTokens'
 > &
   InternalBaseComponentProps;
+
+type ExtendedToken = TokenGroupProps.Item & { _readOnly: boolean };
 
 const InternalMultiselect = React.forwardRef(
   (
@@ -115,9 +118,9 @@ const InternalMultiselect = React.forwardRef(
       />
     );
 
-    const tokens: TokenGroupProps['items'] = selectedOptions.map(option => ({
+    const tokens: Array<ExtendedToken> = selectedOptions.map(option => ({
       label: option.label,
-      disabled: disabled || option.disabled,
+      disabled,
       labelTag: option.labelTag,
       description: option.description,
       iconAlt: option.iconAlt,
@@ -128,6 +131,7 @@ const InternalMultiselect = React.forwardRef(
       dismissLabel: i18n('deselectAriaLabel', deselectAriaLabel?.(option), format =>
         format({ option__label: option.label ?? '' })
       ),
+      _readOnly: !!option.disabled,
     }));
 
     const ListComponent = virtualScroll ? VirtualList : PlainList;
@@ -199,6 +203,7 @@ const InternalMultiselect = React.forwardRef(
             limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
             disableOuterPadding={true}
             readOnly={readOnly}
+            isItemReadOnly={item => (item as ExtendedToken)._readOnly}
           />
         )}
 

@@ -1,8 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { pie } from 'd3-shape';
+
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import Filter, { ChartFilterProps } from '../internal/components/chart-filter';
@@ -13,7 +16,6 @@ import { ChartWrapper } from '../internal/components/chart-wrapper';
 import { fireNonCancelableEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import createCategoryColorScale from '../internal/utils/create-category-color-scale';
@@ -133,7 +135,9 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
 
   const onBlur = (event: React.FocusEvent) => {
     if (event.relatedTarget && !nodeBelongs(containerRef.current, event.relatedTarget)) {
-      highlightedSegment && onHighlightChange(null);
+      if (highlightedSegment) {
+        onHighlightChange(null);
+      }
       setLegendSegment(null);
     }
   };

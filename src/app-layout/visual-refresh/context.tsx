@@ -11,7 +11,7 @@ import React, {
   useState,
 } from 'react';
 
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getOffsetInlineStart } from '@cloudscape-design/component-toolkit/internal';
 
 import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
@@ -19,7 +19,6 @@ import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-co
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useMobile } from '../../internal/hooks/use-mobile';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
@@ -135,7 +134,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const maxContentWidth =
       props.maxContentWidth && props.maxContentWidth > halfGeckoMaxCssLength
         ? halfGeckoMaxCssLength
-        : props.maxContentWidth ?? 0;
+        : (props.maxContentWidth ?? 0);
     const minContentWidth = props.minContentWidth ?? 280;
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
@@ -168,7 +167,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const handleToolsClick = useCallback(
       function handleToolsChange(isOpen: boolean, skipFocusControl?: boolean) {
         setIsToolsOpen(isOpen);
-        !skipFocusControl && focusToolsButtons();
+        if (!skipFocusControl) {
+          focusToolsButtons();
+        }
         fireNonCancelableEvent(props.onToolsChange, { open: isOpen });
       },
       [props.onToolsChange, setIsToolsOpen, focusToolsButtons]
@@ -330,7 +331,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
       onActiveDrawerChange(newActiveDrawerId, { initiatedByUserAction: true });
 
-      !skipFocusControl && focusDrawersButtons();
+      if (!skipFocusControl) {
+        focusDrawersButtons();
+      }
     };
 
     let drawersTriggerCount = drawers ? drawers.length : !toolsHide ? 1 : 0;
@@ -472,7 +475,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       function createImperativeHandle() {
         return {
           closeNavigationIfNecessary: function () {
-            isMobile && handleNavigationClick(false);
+            if (isMobile) {
+              handleNavigationClick(false);
+            }
           },
           openTools: function () {
             handleToolsClick(true, hasDrawers);
