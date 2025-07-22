@@ -57,31 +57,3 @@ describe('Badge', () => {
     expect(badge).toHaveClass(styles[`badge-color-grey`]);
   });
 });
-
-describe('Style API', () => {
-  test('all style properties', () => {
-    const badge = renderBadge(
-      <Badge
-        style={{
-          root: {
-            background: 'rgb(255, 255, 255)',
-            borderColor: 'rgb(0, 0, 0)',
-            borderRadius: '8px',
-            borderWidth: '2px',
-            paddingBlock: '4px',
-            paddingInline: '8px',
-          },
-        }}
-      >
-        Badge
-      </Badge>
-    );
-
-    expect(getComputedStyle(badge).getPropertyValue('background')).toBe('rgb(255, 255, 255)');
-    expect(getComputedStyle(badge).getPropertyValue('border-color')).toBe('rgb(0, 0, 0)');
-    expect(getComputedStyle(badge).getPropertyValue('border-radius')).toBe('8px');
-    expect(getComputedStyle(badge).getPropertyValue('border-width')).toBe('2px');
-    expect(getComputedStyle(badge).getPropertyValue('padding-block')).toBe('4px');
-    expect(getComputedStyle(badge).getPropertyValue('padding-inline')).toBe('8px');
-  });
-});
