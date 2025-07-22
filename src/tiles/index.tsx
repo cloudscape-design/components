@@ -20,9 +20,6 @@ const Tiles = React.forwardRef((props: TilesProps, ref: React.Ref<TilesProps.Ref
   const componentAnalyticsMetadata: GeneratedAnalyticsMetadataTilesComponent = {
     name: 'awsui.Tiles',
     label: { root: 'self' },
-    properties: {
-      value: `${props.value}`,
-    },
   };
   return (
     <InternalTiles

@@ -24,9 +24,6 @@ const RadioGroup = React.forwardRef((props: RadioGroupProps, ref: React.Ref<Radi
         component: {
           name: 'awsui.RadioGroup',
           label: { root: 'self' },
-          properties: {
-            value: `${props.value}`,
-          },
         } as GeneratedAnalyticsMetadataRadioGroupComponent,
       })}
     />

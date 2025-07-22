@@ -40,9 +40,6 @@ const getMetadata = (label: string, checked: boolean, disabled?: boolean) => {
         detail: {
           name: 'awsui.Toggle',
           label,
-          properties: {
-            checked: `${!!checked}`,
-          },
         },
       },
     ],
