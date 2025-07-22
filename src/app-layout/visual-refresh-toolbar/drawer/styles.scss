@@ -240,13 +240,24 @@ $drawer-resize-handle-size: awsui.$space-m;
 
   &.ai-drawer {
     grid-template-columns: 1fr awsui.$space-m;
-    background: awsui.$color-gap-global-drawer;
+
+    > .drawer-gap {
+      grid-column: 3;
+      grid-row: 1;
+      block-size: 100%;
+      inline-size: $global-drawer-gap-size;
+      background: awsui.$color-gap-global-drawer;
+      border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    }
 
     > .drawer-slider {
       grid-column: 2;
     }
 
     > .drawer-content-container {
+      min-inline-size: auto;
+
       > .drawer-content {
         > .drawer-content-header {
           block-size: 41px;
