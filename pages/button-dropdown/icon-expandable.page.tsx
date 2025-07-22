@@ -22,7 +22,7 @@ export const items: ButtonDropdownProps['items'] = [
     id: 'category2',
     text: 'category2',
     iconName: 'settings',
-    items: [...Array(5)].map((_, index) => ({
+    items: [...Array(3)].map((_, index) => ({
       id: 'category2Subitem' + index,
       text: 'Cat 2 Sub item ' + index,
     })),
@@ -35,21 +35,21 @@ export const items: ButtonDropdownProps['items'] = [
     id: 'category3',
     text: 'category3',
     iconName: 'folder',
-    items: [...Array(3)].map((_, index) => ({
+    items: [...Array(2)].map((_, index) => ({
       id: 'category3Subitem' + index,
       text: 'Sub item ' + index,
     })),
   },
 ];
 
-export default function SimpleButtonDropdownScenario() {
+export default function IconExpandableButtonDropdown() {
   const [expandToViewport, setExpandToViewport] = useState(false);
   const [expandableGroups, setExpandableGroups] = useState(true);
 
   return (
     <div className={styles.container}>
       <article>
-        <h1>Simple Expandable Dropdown</h1>
+        <h1>Icon Expandable Dropdown</h1>
         <SpaceBetween size="m" direction="horizontal">
           <label>
             <input
@@ -71,23 +71,13 @@ export default function SimpleButtonDropdownScenario() {
           </label>
         </SpaceBetween>
 
-        <div style={{ padding: '100px', display: 'inline-block' }} id="dropdown-container">
+        <div style={{ padding: '10px', display: 'inline-block', marginTop: '10px' }} id="dropdown-container">
           <ButtonDropdown
             id="simpleDropdown"
             expandToViewport={expandToViewport}
             expandableGroups={expandableGroups}
             items={items}
-          >
-            Dropdown with Icons
-          </ButtonDropdown>
-        </div>
-
-        <div style={{ margin: '20px 0' }}>
-          <ButtonDropdown
-            id="simpleDropdown"
-            expandToViewport={expandToViewport}
-            expandableGroups={expandableGroups}
-            items={items}
+            data-testid="icon-dropdown"
           >
             Dropdown with Icons
           </ButtonDropdown>
