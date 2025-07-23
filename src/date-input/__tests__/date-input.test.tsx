@@ -314,4 +314,10 @@ describe('Date Input component', () => {
       expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2019-02-28' } }));
     });
   }); // end entering value in middle of input
+
+  test('uses setInputValue test utils method', () => {
+    const { wrapper, onChangeSpy } = renderDateInput({ value: '' });
+    wrapper.setInputValue('2019/01/31');
+    expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2019-01-31' } }));
+  });
 });
