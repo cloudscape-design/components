@@ -52,7 +52,9 @@ const Multiselect = React.forwardRef(
       properties: {
         disabled: `${!!restProps.disabled}`,
         selectedOptionsCount: `${selectedOptions.length}`,
-        selectedOptionsValues: selectedOptions.map(option => `${option.value}`).filter(value => value !== undefined),
+        selectedOptionsValues: selectedOptions
+          .filter(option => option.value !== undefined)
+          .map(option => `${option.value}`),
       },
     };
 
