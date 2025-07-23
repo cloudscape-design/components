@@ -10,9 +10,8 @@ import { AppLayoutProps } from '../../interfaces';
 import { OnChangeParams } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import { AppLayoutInternals } from '../interfaces';
-import { BreadcrumbsSlot } from '../skeleton/breadcrumbs';
-import { ToolbarSkeleton } from '../skeleton/slot-skeletons';
-import { ToolbarSlot } from '../skeleton/slot-wrappers';
+import { ToolbarSkeleton } from '../skeleton/skeleton-parts';
+import { BreadcrumbsSlot, ToolbarSlot } from '../skeleton/slots';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
 import TriggerButton from './trigger-button';
 
@@ -53,7 +52,7 @@ export interface ToolbarProps {
 }
 
 export interface AppLayoutToolbarImplementationProps {
-  appLayoutInternals: Partial<AppLayoutInternals>;
+  appLayoutInternals: AppLayoutInternals;
   toolbarProps: ToolbarProps;
 }
 
@@ -84,13 +83,13 @@ export function AppLayoutToolbarImplementation({
     onSplitPanelToggle,
     expandedDrawerId,
     setExpandedDrawerId,
-  } = toolbarProps ?? {};
+  } = toolbarProps;
   const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
-  useResizeObserver(ref, entry => setToolbarHeight?.(entry.borderBoxHeight));
+  useResizeObserver(ref, entry => setToolbarHeight(entry.borderBoxHeight));
   useEffect(() => {
     return () => {
-      setToolbarHeight?.(0);
+      setToolbarHeight(0);
     };
     // unmount effect only
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -119,7 +118,7 @@ export function AppLayoutToolbarImplementation({
         [testutilStyles['mobile-bar']]: isMobile,
       })}
       style={{
-        insetBlockStart: verticalOffsets?.toolbar,
+        insetBlockStart: verticalOffsets.toolbar,
       }}
     >
       <div className={styles['toolbar-container']}>

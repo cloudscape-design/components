@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createRef, RefObject, useCallback, useEffect, useRef } from 'react';
 
-import { Deferred } from './defer';
-
 export interface Focusable {
   focus(): void;
 }
@@ -12,8 +10,6 @@ export interface FocusControlRefs {
   toggle: RefObject<Focusable>;
   close: RefObject<Focusable>;
   slider: RefObject<HTMLDivElement>;
-  onMount?: () => void;
-  focusPromise?: Deferred<HTMLElement>;
 }
 
 export interface FocusControlState {
@@ -40,19 +36,12 @@ export function useMultipleFocusControl(
         toggle: createRef<Focusable>(),
         close: createRef<Focusable>(),
         slider: createRef<HTMLDivElement>(),
-        onMount: () => {
-          refs.current[drawerId].focusPromise?.resolve();
-        },
-        focusPromise: new Deferred(),
       };
     }
   });
 
   const doFocus = useCallback(
     (drawerId: string, open = true) => {
-      if (!shouldFocus.current) {
-        return;
-      }
       const ref = refs.current[drawerId];
       if (open) {
         previousFocusedElement.current =
@@ -70,16 +59,16 @@ export function useMultipleFocusControl(
           ref?.toggle?.current?.focus();
         }
       }
-      shouldFocus.current = false;
     },
     [refs, restoreFocus]
   );
 
   const setFocus = (params?: { force?: boolean; drawerId?: string; open?: boolean }) => {
     const { force = false, drawerId = null, open = true } = params || {};
-    shouldFocus.current = true;
     if (force && (!drawerId || activeDrawersIds.includes(drawerId))) {
       doFocus(drawerId!, open);
+    } else {
+      shouldFocus.current = true;
     }
   };
 
@@ -92,9 +81,12 @@ export function useMultipleFocusControl(
 
   useEffect(() => {
     const drawerId = activeDrawersIds[0];
-    refs.current[drawerId]?.focusPromise?.promise?.then(() => {
-      doFocus(drawerId);
-    });
+    if (shouldFocus.current) {
+      Promise.resolve().then(() => {
+        doFocus(drawerId);
+        shouldFocus.current = false;
+      });
+    }
   }, [activeDrawersIds, doFocus]);
 
   return {
@@ -166,22 +158,15 @@ export function useAsyncFocusControl(
   restoreFocus = false,
   activeDrawerId?: string | null
 ): FocusControlState {
-  const focusPromise = useRef<Deferred<HTMLElement>>(new Deferred());
   const refs = {
     toggle: useRef<Focusable>(null),
     close: useRef<Focusable>(null),
     slider: useRef<HTMLDivElement>(null),
-    onMount: () => {
-      focusPromise.current.resolve();
-    },
   };
   const previousFocusedElement = useRef<HTMLElement>();
   const shouldFocus = useRef(false);
 
   const doFocus = () => {
-    if (!shouldFocus.current) {
-      return;
-    }
     if (isOpen) {
       previousFocusedElement.current =
         document.activeElement !== document.body ? (document.activeElement as HTMLElement) : undefined;
@@ -198,20 +183,23 @@ export function useAsyncFocusControl(
         refs.toggle.current?.focus();
       }
     }
-    shouldFocus.current = false;
   };
 
   const setFocus = (force?: boolean) => {
-    shouldFocus.current = true;
     if (force && isOpen) {
       doFocus();
+    } else {
+      shouldFocus.current = true;
     }
   };
 
   useEffect(() => {
-    focusPromise.current.promise.then(() => {
-      doFocus();
-    });
+    if (shouldFocus.current) {
+      Promise.resolve().then(() => {
+        doFocus();
+        shouldFocus.current = false;
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, activeDrawerId]);
 

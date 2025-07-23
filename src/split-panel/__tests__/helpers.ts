@@ -21,6 +21,5 @@ export const defaultSplitPanelContextProps: SplitPanelContextProps = {
     preferences: { current: null },
     slider: { current: null },
     toggle: { current: null },
-    onMount: () => {},
   },
 };

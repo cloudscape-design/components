@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import { AppLayoutProps } from '../../../lib/components/app-layout/interfaces';
@@ -55,7 +55,7 @@ afterEach(() => {
 });
 
 describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
-  test('should render split panel in bottom position', async () => {
+  test('should render split panel in bottom position', () => {
     const { wrapper } = renderComponent(
       <AppLayout
         splitPanel={defaultSplitPanel}
@@ -65,13 +65,10 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
         onSplitPanelPreferencesChange={noop}
       />
     );
-
-    await waitFor(() => {
-      expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
-    });
+    expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
   });
 
-  test('should render split panel in side position', async () => {
+  test('should render split panel in side position', () => {
     isMocked = true;
     const { wrapper } = renderComponent(
       <AppLayout
@@ -82,15 +79,12 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
         onSplitPanelPreferencesChange={noop}
       />
     );
-
-    await waitFor(() => {
-      expect(wrapper.findSplitPanel()!.findOpenPanelSide()).not.toBeNull();
-    });
+    expect(wrapper.findSplitPanel()!.findOpenPanelSide()).not.toBeNull();
     isMocked = false;
   });
 
   describe.each(['bottom', 'side'] as const)('%s position', position => {
-    test('split panel can open and close', async () => {
+    test('split panel can open and close', () => {
       const { wrapper } = renderComponent(
         <AppLayout
           splitPanel={defaultSplitPanel}
@@ -98,11 +92,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
           onSplitPanelPreferencesChange={noop}
         />
       );
-
-      await waitFor(() => {
-        expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
-      });
-
+      expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
       wrapper.findSplitPanelOpenButton()!.click();
       if (theme === 'classic' || (theme === 'refresh' && position === 'bottom')) {
         expect(wrapper.findSplitPanelOpenButton()).toBeNull();
@@ -121,12 +111,11 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
           onSplitPanelPreferencesChange={noop}
         />
       );
+      wrapper.findSplitPanelOpenButton()!.click();
 
       await waitFor(() => {
-        wrapper.findSplitPanelOpenButton()!.click();
+        expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
       });
-
-      expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
     });
 
     test('Moves focus to open button when closed', async () => {
@@ -137,10 +126,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
           onSplitPanelPreferencesChange={noop}
         />
       );
-
-      await waitFor(() => {
-        expect(wrapper.findSplitPanelOpenButton()).toBeTruthy();
-      });
+      await act(() => Promise.resolve());
       wrapper.findSplitPanelOpenButton()!.click();
       wrapper.findSplitPanel()!.findCloseButton()!.click();
       const button =
@@ -163,13 +149,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
           onSplitPanelPreferencesChange={noop}
         />
       );
-
-      await waitFor(() => {
-        expect(wrapper.findSplitPanel()).toBeTruthy();
-      });
-
-      ref.current!.focusSplitPanel();
-
+      act(() => ref.current!.focusSplitPanel());
       await waitFor(() => {
         expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
       });
@@ -191,16 +171,14 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     });
   });
 
-  test('should not render split panel when it is not defined', async () => {
+  test('should not render split panel when it is not defined', () => {
     const { wrapper, rerender } = renderComponent(<AppLayout splitPanel={defaultSplitPanel} />);
-    await waitFor(() => {
-      expect(wrapper.findSplitPanel()).toBeTruthy();
-    });
+    expect(wrapper.findSplitPanel()).toBeTruthy();
     rerender(<AppLayout />);
     expect(wrapper.findSplitPanel()).toBeFalsy();
   });
 
-  test('should fire split panel toggle event', async () => {
+  test('should fire split panel toggle event', () => {
     const onSplitPanelToggle = jest.fn();
     const { wrapper } = renderComponent(
       <AppLayout
@@ -210,16 +188,14 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
         onSplitPanelPreferencesChange={noop}
       />
     );
-    await waitFor(() => {
-      wrapper.findSplitPanel()!.findOpenButton()!.click();
-    });
+    wrapper.findSplitPanel()!.findOpenButton()!.click();
     expect(onSplitPanelToggle).toHaveBeenCalledWith({ open: true });
     onSplitPanelToggle.mockClear();
     wrapper.findSplitPanel()!.findCloseButton()!.click();
     expect(onSplitPanelToggle).toHaveBeenCalledWith({ open: false });
   });
 
-  test('should change split panel position in uncontrolled mode', async () => {
+  test('should change split panel position in uncontrolled mode', () => {
     const onPreferencesChange = jest.fn();
     const { wrapper } = renderComponent(
       <AppLayout
@@ -229,9 +205,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
         onSplitPanelPreferencesChange={event => onPreferencesChange(event.detail)}
       />
     );
-    await waitFor(() => {
-      expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
-    });
+    expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
     wrapper.findSplitPanel()!.findPreferencesButton()!.click();
     expect(screen.getByRole('radio', { name: 'Bottom' })).toBeChecked();
     expect(screen.getByRole('radio', { name: 'Side' })).toBeEnabled();
@@ -241,7 +215,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     expect(onPreferencesChange).toHaveBeenCalledWith({ position: 'side' });
   });
 
-  test('should fire split panel resize event', async () => {
+  test('should fire split panel resize event', () => {
     const onSplitPanelResize = jest.fn();
     const { wrapper } = renderComponent(
       <AppLayout
@@ -251,13 +225,11 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
         onSplitPanelResize={event => onSplitPanelResize(event.detail)}
       />
     );
-    await waitFor(() => {
-      wrapper.findSplitPanel()!.findSlider()!.keydown(KeyCode.pageUp);
-    });
+    wrapper.findSplitPanel()!.findSlider()!.keydown(KeyCode.pageUp);
     expect(onSplitPanelResize).toHaveBeenCalled();
   });
 
-  test('should dynamically show and hide split panel based on "splitPanel" prop', async () => {
+  test('should dynamically show and hide split panel based on "splitPanel" prop', () => {
     const CustomAppLayout = () => {
       const [splitPanelEnabled, setSplitPanelEnabled] = useState(true);
       return (
@@ -273,9 +245,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     };
     const { wrapper } = renderComponent(<CustomAppLayout />);
 
-    await waitFor(() => {
-      expect(wrapper.findSplitPanelOpenButton()!.getElement()).toBeInTheDocument();
-    });
+    expect(wrapper.findSplitPanelOpenButton()!.getElement()).toBeInTheDocument();
 
     wrapper.find('[data-testid="toggle-split-panel"]')!.click();
 

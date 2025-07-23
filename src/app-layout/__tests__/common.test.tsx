@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { waitFor } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
@@ -13,15 +13,13 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 }));
 
 describeEachAppLayout(({ theme, size }) => {
-  test('Default state', async () => {
+  test('Default state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
 
     expect(wrapper.findNavigationToggle()).toBeTruthy();
     expect(wrapper.findNavigation()).toBeTruthy();
     expect(wrapper.findNavigationClose()).toBeTruthy();
-    await waitFor(() => {
-      expect(wrapper.findToolsToggle()).toBeTruthy();
-    });
+    expect(wrapper.findToolsToggle()).toBeTruthy();
     expect(wrapper.findTools()).toBeTruthy();
     expect(wrapper.findToolsClose()).toBeTruthy();
     expect(wrapper.findContentRegion()).toBeTruthy();
@@ -41,11 +39,9 @@ describeEachAppLayout(({ theme, size }) => {
     expect(wrapper.findBreadcrumbs()).toBeTruthy();
   });
 
-  test('should not find tools slot as findActiveDrawer utility', async () => {
+  test('should not find tools slot as findActiveDrawer utility', () => {
     const { wrapper } = renderComponent(<AppLayout toolsOpen={true} tools="test content" />);
-    await waitFor(() => {
-      expect(wrapper.findTools()!.getElement()).toHaveTextContent('test content');
-    });
+    expect(wrapper.findTools()!.getElement()).toHaveTextContent('test content');
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
@@ -85,39 +81,26 @@ describeEachAppLayout(({ theme, size }) => {
       findClose,
     }) => {
       describe(`${openProp} prop`, () => {
-        const waitForAppLayoutLoaded = (wrapper: AppLayoutWrapper) => {
-          return waitFor(() => {
-            if (openProp === 'navigationOpen') {
-              expect(wrapper.findNavigationToggle()).toBeTruthy();
-            } else {
-              expect(wrapper.findToolsToggle()).toBeTruthy();
-            }
-          });
-        };
-        test(`Should call handler once on open when toggle is clicked`, async () => {
+        test(`Should call handler once on open when toggle is clicked`, () => {
           const onToggle = jest.fn();
           const props = {
             [openProp]: false,
             [handler]: onToggle,
           };
           const { wrapper } = renderComponent(<AppLayout {...props} />);
-
-          await waitForAppLayoutLoaded(wrapper);
 
           findToggle(wrapper).click();
           expect(onToggle).toHaveBeenCalledTimes(size === 'mobile' ? expectedCallsOnMobileToggle : 1);
           expect(onToggle).toHaveBeenLastCalledWith(expect.objectContaining({ detail: { open: true } }));
         });
 
-        test(`Should call handler once on open when span inside toggle is clicked`, async () => {
+        test(`Should call handler once on open when span inside toggle is clicked`, () => {
           const onToggle = jest.fn();
           const props = {
             [openProp]: false,
             [handler]: onToggle,
           };
           const { wrapper } = renderComponent(<AppLayout {...props} />);
-
-          await waitForAppLayoutLoaded(wrapper);
 
           // Chrome bubbles up events from specific elements inside <button>s.
           findToggle(wrapper).find('span')!.click();
@@ -125,7 +108,7 @@ describeEachAppLayout(({ theme, size }) => {
           expect(onToggle).toHaveBeenLastCalledWith(expect.objectContaining({ detail: { open: true } }));
         });
 
-        test(`Should call handler once on close`, async () => {
+        test(`Should call handler once on close`, () => {
           const onToggle = jest.fn();
           const props = {
             [openProp]: true,
@@ -133,22 +116,17 @@ describeEachAppLayout(({ theme, size }) => {
           };
           const { wrapper } = renderComponent(<AppLayout {...props} />);
 
-          await waitForAppLayoutLoaded(wrapper);
-
           findClose(wrapper).click();
           expect(onToggle).toHaveBeenCalledTimes(size === 'mobile' ? expectedCallsOnMobileToggle : 1);
           expect(onToggle).toHaveBeenLastCalledWith(expect.objectContaining({ detail: { open: false } }));
         });
 
-        test('Renders two landmarks in closed state', async () => {
+        test('Renders two landmarks in closed state', () => {
           const props = {
             [openProp]: false,
             [handler]: () => {},
           };
           const { wrapper } = renderComponent(<AppLayout {...props} />);
-
-          await waitForAppLayoutLoaded(wrapper);
-
           const landmarks = findLandmarks(wrapper);
           expect(landmarks).toHaveLength(2);
 
@@ -170,15 +148,12 @@ describeEachAppLayout(({ theme, size }) => {
           }
         });
 
-        test('Renders two landmarks in open state', async () => {
+        test('Renders two landmarks in open state', () => {
           const props = {
             [openProp]: true,
             [handler]: () => {},
           };
           const { wrapper } = renderComponent(<AppLayout {...props} />);
-
-          await waitForAppLayoutLoaded(wrapper);
-
           const landmarks = findLandmarks(wrapper);
           expect(landmarks).toHaveLength(2);
           const toggleElement = findToggle(wrapper).getElement();
@@ -199,30 +174,26 @@ describeEachAppLayout(({ theme, size }) => {
           }
         });
 
-        test('Renders aria-expanded only on toggle', async () => {
+        test('Renders aria-expanded only on toggle', () => {
           const props = {
             [openProp]: false,
             [handler]: () => {},
           };
 
           const { wrapper } = renderComponent(<AppLayout {...props} />);
-
-          await waitForAppLayoutLoaded(wrapper);
-
           expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-expanded', 'false');
           expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-haspopup', 'true');
           expect(findClose(wrapper).getElement()).not.toHaveAttribute('aria-expanded');
           expect(findClose(wrapper).getElement()).not.toHaveAttribute('aria-haspopup');
         });
 
-        test('Does not add a label to the toggle and landmark when they are not defined', async () => {
+        test('Does not add a label to the toggle and landmark when they are not defined', () => {
           const { wrapper } = renderComponent(<AppLayout />);
-          await waitForAppLayoutLoaded(wrapper);
           expect(findToggle(wrapper).getElement()).not.toHaveAttribute('aria-label');
           expect(findLandmarks(wrapper)[0].getElement()).not.toHaveAttribute('aria-label');
         });
 
-        test('Adds labels to toggle button and landmark when defined', async () => {
+        test('Adds labels to toggle button and landmark when defined', () => {
           const labels = {
             navigationToggle: 'toggle',
             toolsToggle: 'toggle',
@@ -231,7 +202,6 @@ describeEachAppLayout(({ theme, size }) => {
           };
 
           const { wrapper } = renderComponent(<AppLayout ariaLabels={labels} />);
-          await waitForAppLayoutLoaded(wrapper);
           expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-label', 'toggle');
           expect(findLandmarks(wrapper)[theme === 'refresh-toolbar' ? 1 : 0].getElement()).toHaveAttribute(
             'aria-label',
@@ -239,7 +209,7 @@ describeEachAppLayout(({ theme, size }) => {
           );
         });
 
-        test('Close button does have a label if it is defined', async () => {
+        test('Close button does have a label if it is defined', () => {
           const props = { [openProp]: true, [handler]: () => {} };
           const labels = {
             navigationClose: 'close label',
@@ -247,26 +217,19 @@ describeEachAppLayout(({ theme, size }) => {
           };
           const { wrapper } = renderComponent(<AppLayout {...props} ariaLabels={labels} />);
 
-          await waitForAppLayoutLoaded(wrapper);
-
           expect(findClose(wrapper).getElement()).toHaveAttribute('aria-label', 'close label');
         });
 
-        test('Close button does not render a label if is not defined', async () => {
+        test('Close button does not render a label if is not defined', () => {
           const props = { [openProp]: true, [handler]: () => {} };
           const { wrapper } = renderComponent(<AppLayout {...props} />);
-
-          await waitForAppLayoutLoaded(wrapper);
 
           expect(findClose(wrapper).getElement()).not.toHaveAttribute('aria-label');
         });
 
-        test('Opens and closes drawer in uncontrolled mode', async () => {
+        test('Opens and closes drawer in uncontrolled mode', () => {
           // use content type with initial closed state for all drawers
           const { wrapper } = renderComponent(<AppLayout contentType="form" />);
-
-          await waitForAppLayoutLoaded(wrapper);
-
           expect(findOpenElement(wrapper)).toBeFalsy();
 
           findToggle(wrapper).click();
@@ -280,16 +243,14 @@ describeEachAppLayout(({ theme, size }) => {
           // use content type with initial closed state for all drawers
           const { wrapper } = renderComponent(<AppLayout contentType="form" />);
 
-          await waitForAppLayoutLoaded(wrapper);
+          await act(() => Promise.resolve());
 
           findToggle(wrapper).click();
-
           await waitFor(() => {
             expect(findClose(wrapper).getElement()).toHaveFocus();
           });
 
           findClose(wrapper).click();
-
           await waitFor(() => {
             expect(findToggle(wrapper).getElement()).toHaveFocus();
           });
@@ -309,33 +270,28 @@ describeEachAppLayout(({ theme, size }) => {
   // Drawers tests
 
   describe(`Drawers`, () => {
-    test(`Should call handler once on open when toggle is clicked`, async () => {
+    test(`Should call handler once on open when toggle is clicked`, () => {
       const onChange = jest.fn();
       const { wrapper } = renderComponent(
         <AppLayout drawers={[testDrawer]} onDrawerChange={event => onChange(event.detail)} />
       );
-      await waitFor(() => {
-        expect(wrapper.findDrawerTriggerById('security')).toBeTruthy();
-      });
       wrapper.findDrawerTriggerById('security')!.click();
       expect(onChange).toHaveBeenCalledWith({ activeDrawerId: 'security' });
     });
 
-    test(`Should call handler once on open when span inside toggle is clicked`, async () => {
+    test(`Should call handler once on open when span inside toggle is clicked`, () => {
       const onChange = jest.fn();
       const { wrapper } = renderComponent(
         <AppLayout drawers={[testDrawer]} onDrawerChange={event => onChange(event.detail)} />
       );
-      await waitFor(() => {
-        expect(wrapper.findDrawerTriggerById('security')).toBeTruthy();
-      });
+
       // Chrome bubbles up events from specific elements inside <button>s.
       wrapper.findDrawerTriggerById('security')!.find('span')!.click();
       expect(onChange).toHaveBeenCalledTimes(1);
       expect(onChange).toHaveBeenCalledWith({ activeDrawerId: 'security' });
     });
 
-    test(`Should call handler once on close`, async () => {
+    test(`Should call handler once on close`, () => {
       const onChange = jest.fn();
       const { wrapper } = renderComponent(
         <AppLayout
@@ -344,20 +300,14 @@ describeEachAppLayout(({ theme, size }) => {
           onDrawerChange={event => onChange(event.detail)}
         />
       );
-      await waitFor(() => {
-        expect(wrapper.findActiveDrawerCloseButton()).toBeTruthy();
-      });
+
       wrapper.findActiveDrawerCloseButton()!.click();
       expect(onChange).toHaveBeenCalledTimes(1);
       expect(onChange).toHaveBeenCalledWith({ activeDrawerId: null });
     });
 
-    test('Renders aria-expanded only on toggle', async () => {
+    test('Renders aria-expanded only on toggle', () => {
       const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
-
-      await waitFor(() => {
-        expect(wrapper.findDrawerTriggerById('security')).toBeTruthy();
-      });
 
       const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
       expect(drawerTrigger.getElement()).toHaveAttribute('aria-expanded', 'false');
@@ -369,14 +319,10 @@ describeEachAppLayout(({ theme, size }) => {
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveAttribute('aria-haspopup');
     });
 
-    test('Close button does have a label if it is defined', async () => {
+    test('Close button does have a label if it is defined', () => {
       const { wrapper } = renderComponent(
         <AppLayout activeDrawerId={testDrawer.id} drawers={[testDrawer]} onDrawerChange={() => {}} />
       );
-
-      await waitFor(() => {
-        expect(wrapper.findActiveDrawerCloseButton()).toBeTruthy();
-      });
 
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveAttribute(
         'aria-label',
@@ -384,26 +330,18 @@ describeEachAppLayout(({ theme, size }) => {
       );
     });
 
-    test('Close button does not render a label if is not defined', async () => {
+    test('Close button does not render a label if is not defined', () => {
       const { wrapper } = renderComponent(
         <AppLayout activeDrawerId={testDrawerWithoutLabels.id} drawers={[testDrawerWithoutLabels]} />
       );
 
-      await waitFor(() => {
-        expect(wrapper.findActiveDrawerCloseButton()).toBeTruthy();
-      });
-
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveAttribute('aria-label');
     });
 
-    test('Opens and closes drawer in uncontrolled mode', async () => {
+    test('Opens and closes drawer in uncontrolled mode', () => {
       // use content type with initial closed state for all drawers
       const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
       expect(wrapper.findActiveDrawer()).toBeNull();
-
-      await waitFor(() => {
-        expect(wrapper.findDrawerTriggerById('security')).toBeTruthy();
-      });
 
       wrapper.findDrawerTriggerById('security')!.find('span')!.click();
       expect(wrapper.findActiveDrawer()).not.toBeNull();

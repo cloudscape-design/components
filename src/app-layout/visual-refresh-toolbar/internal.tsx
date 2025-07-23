@@ -1,22 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
 
-import { isAppLayoutDelayedWidget } from '../utils/feature-flags';
-import { AppLayoutState as AppLayoutStateImplementation, createWidgetizedAppLayoutState } from './app-layout-state';
+import { createLoadableComponent } from '../../internal/widgets/loader-mock';
 import { createWidgetizedAppLayoutDrawer, createWidgetizedAppLayoutGlobalDrawers } from './drawer';
 import { createWidgetizedAppLayoutNavigation } from './navigation';
 import { createWidgetizedAppLayoutNotifications } from './notifications';
-import { createWidgetizedAppLayoutBottomPageContentSlot } from './skeleton/widget-slots/bottom-page-content-slot';
-import { createWidgetizedAppLayoutSidePageSlot } from './skeleton/widget-slots/side-page-slot';
-import { createWidgetizedAppLayoutTopPageContentSlot } from './skeleton/widget-slots/top-page-content-slot';
-import { createWidgetizedAppLayoutTopPageSlot, TopPageSlot } from './skeleton/widget-slots/top-page-slot';
 import {
   createWidgetizedAppLayoutSplitPanelDrawerBottom,
   createWidgetizedAppLayoutSplitPanelDrawerSide,
 } from './split-panel';
+import { AppLayoutStateProvider as AppLayoutStateImplementation, createWidgetizedAppLayoutState } from './state';
 import { createWidgetizedAppLayoutToolbar } from './toolbar';
+import { AfterMainSlotImplementation, createWidgetizedAppLayoutAfterMainSlot } from './widget-areas/after-main-slot';
+import { BeforeMainSlotImplementation, createWidgetizedAppLayoutBeforeMainSlot } from './widget-areas/before-main-slot';
+import {
+  BottomContentSlotImplementation,
+  createWidgetizedAppLayoutBottomContentSlot,
+} from './widget-areas/bottom-content-slot';
+import { createWidgetizedAppLayoutTopContentSlot, TopContentSlotImplementation } from './widget-areas/top-content-slot';
 
+// Legacy widgetized parts
 export const AppLayoutNavigation = createWidgetizedAppLayoutNavigation();
 export const AppLayoutDrawer = createWidgetizedAppLayoutDrawer();
 export const AppLayoutGlobalDrawers = createWidgetizedAppLayoutGlobalDrawers();
@@ -24,39 +27,20 @@ export const AppLayoutNotifications = createWidgetizedAppLayoutNotifications();
 export const AppLayoutToolbar = createWidgetizedAppLayoutToolbar();
 export const AppLayoutSplitPanelBottom = createWidgetizedAppLayoutSplitPanelDrawerBottom();
 export const AppLayoutSplitPanelSide = createWidgetizedAppLayoutSplitPanelDrawerSide();
-export const AppLayoutSkeletonTopSlot = createWidgetizedAppLayoutTopPageSlot(
-  createAppLayoutPart({ Component: TopPageSlot })
+
+// Refactored widgetized parts
+export const AppLayoutBeforeMainSlot = createWidgetizedAppLayoutBeforeMainSlot(
+  createLoadableComponent(BeforeMainSlotImplementation)
 );
-export const AppLayoutSkeletonSideSlot = createWidgetizedAppLayoutSidePageSlot();
-export const AppLayoutSkeletonTopContentSlot = createWidgetizedAppLayoutTopPageContentSlot();
-export const AppLayoutSkeletonBottomContentSlot = createWidgetizedAppLayoutBottomPageContentSlot();
+export const AppLayoutAfterMainSlot = createWidgetizedAppLayoutAfterMainSlot(
+  createLoadableComponent(AfterMainSlotImplementation)
+);
+export const AppLayoutTopContentSlot = createWidgetizedAppLayoutTopContentSlot(
+  createLoadableComponent(TopContentSlotImplementation)
+);
+export const AppLayoutBottomContentSlot = createWidgetizedAppLayoutBottomContentSlot(
+  createLoadableComponent(BottomContentSlotImplementation)
+);
 export const AppLayoutWidgetizedState = createWidgetizedAppLayoutState(
-  createAppLayoutPart({ Component: AppLayoutStateImplementation })
+  createLoadableComponent(AppLayoutStateImplementation)
 );
-
-const enableDelayedComponents = isAppLayoutDelayedWidget();
-
-export function createAppLayoutPart({ Component }: { Component: React.JSXElementConstructor<any> }) {
-  const AppLayoutPartLoader = ({ Skeleton, ...props }: any) => {
-    const [mount, setMount] = useState(false);
-    const ref = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-      const timeoutId = setTimeout(() => {
-        setMount(true);
-      }, 1000);
-
-      return () => clearTimeout(timeoutId);
-    }, []);
-
-    if (!enableDelayedComponents || (mount && enableDelayedComponents)) {
-      return <Component {...props} />;
-    }
-
-    if (Skeleton) {
-      return <Skeleton ref={ref} {...props} />;
-    }
-    return <div ref={ref} />;
-  };
-  return AppLayoutPartLoader;
-}

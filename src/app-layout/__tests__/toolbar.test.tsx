@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { waitFor } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
@@ -17,16 +16,14 @@ describe('toolbar mode only features', () => {
       expect(wrapper.findToolbar()).toBeFalsy();
     });
 
-    test('renders toggle buttons when drawers are closed', async () => {
+    test('renders toggle buttons when drawers are closed', () => {
       const { wrapper } = renderComponent(
         <AppLayout navigationOpen={false} toolsOpen={false} onNavigationChange={noop} onToolsChange={noop} />
       );
       expect(wrapper.findActiveDrawer()).toBeNull();
       expect(wrapper.findToolbar()).toBeTruthy();
       expect(wrapper.findToolbar()!.getElement()).toContainElement(wrapper.findNavigationToggle()!.getElement());
-      await waitFor(() => {
-        expect(wrapper.findToolbar()!.getElement()).toContainElement(wrapper.findToolsToggle()!.getElement());
-      });
+      expect(wrapper.findToolbar()!.getElement()).toContainElement(wrapper.findToolsToggle()!.getElement());
     });
 
     test('renders navigation toggle button for open state', () => {
@@ -35,17 +32,15 @@ describe('toolbar mode only features', () => {
       expect(wrapper.findNavigationToggle()).toBeTruthy();
     });
 
-    test('renders toolbar with split panel trigger', async () => {
+    test('renders toolbar with split panel trigger', () => {
       const { wrapper } = renderComponent(
         <AppLayout splitPanel={<SplitPanel header="Testing">Dummy for testing</SplitPanel>} />
       );
       expect(wrapper.findToolbar()).toBeTruthy();
-      await waitFor(() => {
-        expect(wrapper.findToolbar()!.getElement()).toContainElement(wrapper.findSplitPanelOpenButton()!.getElement());
-      });
+      expect(wrapper.findToolbar()!.getElement()).toContainElement(wrapper.findSplitPanelOpenButton()!.getElement());
     });
 
-    test('renders toolbar with split panel trigger in active state', async () => {
+    test('renders toolbar with split panel trigger in active state', () => {
       const { wrapper } = renderComponent(
         <AppLayout
           splitPanelOpen={true}
@@ -54,9 +49,7 @@ describe('toolbar mode only features', () => {
         />
       );
       expect(wrapper.findToolbar()).toBeTruthy();
-      await waitFor(() => {
-        expect(wrapper.findToolbar()!.getElement()).toContainElement(wrapper.findSplitPanelOpenButton()!.getElement());
-      });
+      expect(wrapper.findToolbar()!.getElement()).toContainElement(wrapper.findSplitPanelOpenButton()!.getElement());
       expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveAttribute('aria-expanded', 'true');
     });
 

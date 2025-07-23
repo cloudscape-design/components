@@ -138,11 +138,9 @@ export function SplitPanelImplementation({
     </div>
   );
 
-  const sliderMergedRef = useMergeRefs(refs.slider, refs.onMount);
-
   const resizeHandle = (
     <PanelResizeHandle
-      ref={sliderMergedRef}
+      ref={refs.slider}
       className={testUtilStyles.slider}
       tooltipText={i18nStrings.resizeHandleTooltipText}
       ariaLabel={i18nStrings.resizeHandleAriaLabel}

@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* eslint simple-import-sort/imports: 0 */
 import React, { useRef, useState } from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
+
 import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import AppLayoutToolbar, { AppLayoutToolbarProps } from '../../../lib/components/app-layout-toolbar';
-import createWrapper from '../../../lib/components/test-utils/dom';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
@@ -35,7 +36,7 @@ describe('AppLayoutToolbar component', () => {
     );
   });
 
-  test('triggerless navigation', () => {
+  test('triggerless navigation', async () => {
     const AppLayoutToolbarWrapper = () => {
       const [isNavigationOpen, setIsNavigationOpen] = useState(false);
       const appLayoutToolbarRef = useRef<AppLayoutToolbarProps.Ref>(null);
@@ -72,8 +73,9 @@ describe('AppLayoutToolbar component', () => {
     wrapper.find(`[data-testid="toggle-navigation"]`)!.click();
 
     expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
-    // TODO: for some reason this does not work in the JSDOM env, but does in an actual browser
-    // expect(wrapper.findNavigationClose()!.getElement()).toHaveFocus();
+    await waitFor(() => {
+      expect(wrapper.findNavigationClose()!.getElement()).toHaveFocus();
+    });
   });
 
   test('triggerless drawers', () => {

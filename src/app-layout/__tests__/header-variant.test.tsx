@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { waitFor } from '@testing-library/react';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
@@ -32,13 +31,11 @@ describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['desktop
       }
     });
 
-    test('high-contrast', async () => {
+    test('high-contrast', () => {
       const { wrapper } = renderComponent(
         <AppLayout notifications="Notifications" breadcrumbs="Breadcrumbs" headerVariant="high-contrast" />
       );
-      await waitFor(() => {
-        expect(hasHighContrastContext(wrapper.findNotifications()!.getElement())).toBeTruthy();
-      });
+      expect(hasHighContrastContext(wrapper.findNotifications()!.getElement())).toBeTruthy();
       if (theme === 'refresh') {
         // For refresh toolbar, high-contrast header is not implemented in contentHeader slot, or in conjunction with ContentLayout
         expect(hasHighContrastContext(wrapper.findBreadcrumbs()!.getElement())).toBeTruthy();

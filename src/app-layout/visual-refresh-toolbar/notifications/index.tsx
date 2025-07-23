@@ -8,14 +8,14 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutInternals } from '../interfaces';
-import { NotificationsSkeleton } from '../skeleton/slot-skeletons';
-import { NotificationsSlot } from '../skeleton/slot-wrappers';
+import { NotificationsSkeleton } from '../skeleton/skeleton-parts';
+import { NotificationsSlot } from '../skeleton/slots';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 export interface AppLayoutNotificationsImplementationProps {
-  appLayoutInternals: Partial<AppLayoutInternals>;
+  appLayoutInternals: AppLayoutInternals;
   children: React.ReactNode;
 }
 
@@ -29,12 +29,12 @@ export function AppLayoutNotificationsImplementation({
 
   useResizeObserver(rootRef, entry => {
     const hasContent = entry.contentBoxHeight > 0;
-    setNotificationsHeight?.(hasContent ? entry.borderBoxHeight : 0);
+    setNotificationsHeight(hasContent ? entry.borderBoxHeight : 0);
     setHasNotificationsContent(hasContent);
   });
   useEffect(() => {
     return () => {
-      setNotificationsHeight?.(0);
+      setNotificationsHeight(0);
     };
     // unmount effect only
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,7 +49,7 @@ export function AppLayoutNotificationsImplementation({
         appLayoutInternals.headerVariant !== 'high-contrast' && styles['sticky-notifications-with-background']
       )}
       style={{
-        insetBlockStart: stickyNotifications ? verticalOffsets?.notifications : undefined,
+        insetBlockStart: stickyNotifications ? verticalOffsets.notifications : undefined,
       }}
     >
       <div className={testutilStyles.notifications} role="region" aria-label={ariaLabels?.notifications}>
