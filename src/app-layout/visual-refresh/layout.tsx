@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import customCssProps from '../../internal/generated/custom-css-properties';
+import { useGlobalScrollPadding } from '../utils/use-global-scroll-padding';
 import { useAppLayoutInternals } from './context';
 
 import testutilStyles from '../test-classes/styles.css.js';
@@ -45,6 +46,8 @@ export default function Layout({ children }: LayoutProps) {
     splitPanelPosition,
     splitPanelDisplayed,
   } = useAppLayoutInternals();
+
+  useGlobalScrollPadding(headerHeight);
 
   // Determine the first content child so the gap will vertically align with the trigger buttons
   const contentFirstChild = getContentFirstChild(breadcrumbs, contentHeader, hasNotificationsContent, isMobile);

@@ -87,7 +87,9 @@ export function AppLayoutToolbarImplementation({
   } = toolbarProps;
   const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
-  useResizeObserver(ref, entry => setToolbarHeight(entry.borderBoxHeight));
+  useResizeObserver(ref, entry => {
+    setToolbarHeight(entry.borderBoxHeight);
+  });
   useEffect(() => {
     return () => {
       setToolbarHeight(0);
