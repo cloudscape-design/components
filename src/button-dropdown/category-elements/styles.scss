@@ -17,7 +17,7 @@
   border-inline-width: 0;
   font-weight: bold;
   display: flex;
-  //  justify-content: flex-start;
+  justify-content: space-between;
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)
   padding-block: styles.$option-padding-with-border-placeholder-vertical;
@@ -113,7 +113,7 @@
 
   &-right {
     transform: rotate(-90deg);
-    // margin-left: auto;
+    margin-inline-start: auto;
     @include styles.with-direction('rtl') {
       transform: rotate(90deg);
     }
@@ -132,9 +132,3 @@
 .in-dropdown {
   margin-block-end: -1px;
 }
-/*
-.header > svg, 
-.header > img {
-  margin-inline-end: awsui.$space-xs;
-}
-  */
