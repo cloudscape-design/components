@@ -16,7 +16,7 @@ import { SkeletonLayoutProps } from '../index';
 import sharedStyles from '../../../resize/styles.css.js';
 import styles from '../styles.css.js';
 
-const SidePageSlot = (props: SkeletonLayoutProps) => {
+export const SidePageSlot = (props: SkeletonLayoutProps) => {
   const {
     appLayoutProps: { splitPanel },
     appLayoutState,

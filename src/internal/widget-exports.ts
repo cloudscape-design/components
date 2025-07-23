@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 export { PACKAGE_VERSION } from './environment';
+
+// Legacy widgetized parts
 export {
   AppLayoutDrawerImplementation as AppLayoutDrawer,
   AppLayoutGlobalDrawersImplementation as AppLayoutGlobalDrawers,
@@ -12,6 +14,14 @@ export {
   AppLayoutSplitPanelDrawerSideImplementation as AppLayoutSplitPanelSide,
 } from '../app-layout/visual-refresh-toolbar/split-panel';
 export { AppLayoutToolbarImplementation as AppLayoutToolbar } from '../app-layout/visual-refresh-toolbar/toolbar';
+
+// Refactored widgetized parts
+export { TopPageSlot as AppLayoutTopPageSlot } from '../app-layout/visual-refresh-toolbar/skeleton/widget-slots/top-page-slot';
+export { SidePageSlot as AppLayoutSidePageSlot } from '../app-layout/visual-refresh-toolbar/skeleton/widget-slots/side-page-slot';
+export { TopPageContentSlot as AppLayoutTopContentSlot } from '../app-layout/visual-refresh-toolbar/skeleton/widget-slots/top-page-content-slot';
+export { BottomPageContentSlot as AppLayoutBottomContentSlot } from '../app-layout/visual-refresh-toolbar/skeleton/widget-slots/bottom-page-content-slot';
+export { AppLayoutState as AppLayoutWidgetizedState } from '../app-layout/visual-refresh-toolbar/app-layout-state';
+
 export { SplitPanelImplementation as SplitPanel } from '../split-panel/implementation';
 export { BreadcrumbGroupImplementation as BreadcrumbGroup } from '../breadcrumb-group/implementation';
 export { DrawerImplementation as Drawer } from '../drawer/implementation';
