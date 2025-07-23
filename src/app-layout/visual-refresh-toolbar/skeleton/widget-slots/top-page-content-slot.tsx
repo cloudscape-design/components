@@ -10,7 +10,7 @@ import { SkeletonLayoutProps } from '../index';
 
 import styles from '../styles.css.js';
 
-const TopPageContentSlot = (props: SkeletonLayoutProps) => {
+export const TopPageContentSlot = (props: SkeletonLayoutProps) => {
   const {
     appLayoutProps: { headerVariant, notifications },
     appLayoutState,

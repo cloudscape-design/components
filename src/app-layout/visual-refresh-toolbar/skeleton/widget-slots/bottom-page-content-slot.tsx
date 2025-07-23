@@ -8,7 +8,7 @@ import { SkeletonLayoutProps } from '../index';
 
 import styles from '../styles.css.js';
 
-const BottomPageContentSlot = (props: SkeletonLayoutProps) => {
+export const BottomPageContentSlot = (props: SkeletonLayoutProps) => {
   const {
     appLayoutState,
     appLayoutProps: { placement, splitPanel },
