@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import SpaceBetween from '~components/space-between';
 
+import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 export const items: ButtonDropdownProps['items'] = [
@@ -71,17 +73,19 @@ export default function IconExpandableButtonDropdown() {
           </label>
         </SpaceBetween>
 
-        <div style={{ padding: '10px', display: 'inline-block', marginTop: '10px' }} id="dropdown-container">
-          <ButtonDropdown
-            id="simpleDropdown"
-            expandToViewport={expandToViewport}
-            expandableGroups={expandableGroups}
-            items={items}
-            data-testid="icon-dropdown"
-          >
-            Dropdown with Icons
-          </ButtonDropdown>
-        </div>
+        <ScreenshotArea style={{ paddingBlockEnd: 300, paddingInlineEnd: 100 }}>
+          <div style={{ padding: '10px', display: 'inline-block', marginTop: '10px' }} id="dropdown-container">
+            <ButtonDropdown
+              id="simpleDropdown"
+              expandToViewport={expandToViewport}
+              expandableGroups={expandableGroups}
+              items={items}
+              data-testid="icon-dropdown"
+            >
+              Dropdown with Icons
+            </ButtonDropdown>
+          </div>
+        </ScreenshotArea>
       </article>
     </div>
   );
