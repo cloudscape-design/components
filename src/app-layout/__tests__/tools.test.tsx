@@ -7,22 +7,18 @@ import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { describeEachAppLayout, renderComponent } from './utils';
 
 describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, () => {
-  test('opens tools drawer', async () => {
+  test('opens tools drawer', () => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} />);
-    await waitFor(() => {
-      expect(wrapper.findOpenToolsPanel()).toBeFalsy();
-    });
+    expect(wrapper.findOpenToolsPanel()).toBeFalsy();
     act(() => ref!.openTools());
     expect(wrapper.findOpenToolsPanel()).toBeTruthy();
   });
 
-  test('focuses tools close button', async () => {
+  test('focuses tools close button', () => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} toolsOpen={true} />);
-    await waitFor(() => {
-      expect(wrapper.findOpenToolsPanel()).toBeTruthy();
-    });
+    expect(wrapper.findOpenToolsPanel()).toBeTruthy();
     act(() => ref!.focusToolsClose());
     expect(wrapper.findToolsClose().getElement()).toHaveFocus();
   });

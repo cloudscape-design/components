@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, fireEvent, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils.js';
 
@@ -32,11 +32,9 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 }));
 
 describeEachAppLayout(({ size, theme }) => {
-  test(`should not render drawer when it is not defined`, async () => {
+  test(`should not render drawer when it is not defined`, () => {
     const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} drawers={[testDrawer]} />);
-    await waitFor(() => {
-      expect(wrapper.findDrawersTriggers()).toHaveLength(1);
-    });
+    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
     rerender(<AppLayout />);
 
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
@@ -50,40 +48,33 @@ describeEachAppLayout(({ size, theme }) => {
     expect(wrapper.findToolsToggle()).toBeFalsy();
   });
 
-  test('ignores tools when drawers API is used', async () => {
+  test('ignores tools when drawers API is used', () => {
     const { wrapper } = renderComponent(<AppLayout tools="Test" drawers={[testDrawer]} />);
 
-    await waitFor(() => {
-      expect(wrapper.findToolsToggle()).toBeFalsy();
-    });
+    expect(wrapper.findToolsToggle()).toBeFalsy();
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
   });
 
-  test('should open active drawer on click of overflow item', async () => {
+  test('should open active drawer on click of overflow item', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
+    const buttonDropdown = wrapper.findDrawersOverflowTrigger();
 
-    await waitFor(() => {
-      const buttonDropdown = wrapper.findDrawersOverflowTrigger();
-      expect(wrapper.findActiveDrawer()).toBeFalsy();
-      buttonDropdown!.openDropdown();
-      buttonDropdown!.findItemById('5')!.click();
-      expect(wrapper.findActiveDrawer()).toBeTruthy();
-    });
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+    buttonDropdown!.openDropdown();
+    buttonDropdown!.findItemById('5')!.click();
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
   });
 
-  test('renders correct aria-label on overflow menu', async () => {
+  test('renders correct aria-label on overflow menu', () => {
     const ariaLabels: AppLayoutProps.Labels = {
       drawersOverflow: 'Overflow drawers',
       drawersOverflowWithBadge: 'Overflow drawers (Unread notifications)',
     };
     const { wrapper, rerender } = renderComponent(<AppLayout drawers={manyDrawers} ariaLabels={ariaLabels} />);
-
-    await waitFor(() => {
-      const buttonDropdown = wrapper.findDrawersOverflowTrigger();
-      expect(buttonDropdown!.findNativeButton().getElement()).toHaveAttribute('aria-label', 'Overflow drawers');
-    });
-
     const buttonDropdown = wrapper.findDrawersOverflowTrigger();
+
+    expect(buttonDropdown!.findNativeButton().getElement()).toHaveAttribute('aria-label', 'Overflow drawers');
+
     rerender(<AppLayout drawers={manyDrawersWithBadges} ariaLabels={ariaLabels} />);
     expect(buttonDropdown!.findNativeButton().getElement()).toHaveAttribute(
       'aria-label',
@@ -91,36 +82,33 @@ describeEachAppLayout(({ size, theme }) => {
     );
   });
 
-  test('overflow menu item have aria-role set to `menuitem`', async () => {
+  test('overflow menu item have aria-role set to `menuitem`', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
+    const buttonDropdown = wrapper.findDrawersOverflowTrigger();
 
-    await waitFor(() => {
-      const buttonDropdown = wrapper.findDrawersOverflowTrigger();
-      buttonDropdown!.openDropdown();
-      const countItems = buttonDropdown!.findItems();
-      const countRoleMenuItemRole = buttonDropdown!
-        .findOpenDropdown()!
-        .find('[role="menu"]')!
-        .findAll('[role="menuitem"]');
+    buttonDropdown!.openDropdown();
 
-      expect(countItems.length).toBe(countRoleMenuItemRole.length);
-    });
+    const countItems = buttonDropdown!.findItems();
+    const countRoleMenuItemRole = buttonDropdown!
+      .findOpenDropdown()!
+      .find('[role="menu"]')!
+      .findAll('[role="menuitem"]');
+
+    expect(countItems.length).toBe(countRoleMenuItemRole.length);
   });
 
-  test('renders aria-labels', async () => {
+  test('renders aria-labels', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
-    await waitFor(() => {
-      expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
-        'aria-label',
-        'Security trigger button'
-      );
-    });
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Security trigger button'
+    );
     wrapper.findDrawerTriggerById('security')!.click();
     expect(findActiveDrawerLandmark(wrapper)!.getElement()).toHaveAttribute('aria-label', 'Security drawer content');
     expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveAttribute('aria-label', 'Security close button');
   });
 
-  test('renders resize only on resizable drawer', async () => {
+  test('renders resize only on resizable drawer', () => {
     const { wrapper } = renderComponent(
       <AppLayout
         drawers={[
@@ -134,9 +122,7 @@ describeEachAppLayout(({ size, theme }) => {
       />
     );
 
-    await waitFor(() => {
-      wrapper.findDrawerTriggerById('security')!.click();
-    });
+    wrapper.findDrawerTriggerById('security')!.click();
     expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
 
     wrapper.findDrawerTriggerById('security-resizable')!.click();
@@ -151,7 +137,7 @@ describeEachAppLayout(({ size, theme }) => {
     }
   });
 
-  test('focuses drawer close button', async () => {
+  test('focuses drawer close button', () => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper } = renderComponent(
       <AppLayout
@@ -161,9 +147,7 @@ describeEachAppLayout(({ size, theme }) => {
         onDrawerChange={() => {}}
       />
     );
-    await waitFor(() => {
-      expect(wrapper.findActiveDrawer()).toBeTruthy();
-    });
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
     act(() => ref!.focusActiveDrawer());
     expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveFocus();
   });
@@ -194,31 +178,23 @@ describeEachAppLayout(({ size, theme }) => {
     expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveFocus();
   });
 
-  test('registers public drawers api', async () => {
+  test('registers public drawers api', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
-    await waitFor(() => {
-      expect(wrapper.findDrawersTriggers()).toHaveLength(1);
-    });
+    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
   });
 
-  testIf(size !== 'mobile')('aria-controls points to an existing drawer id', async () => {
+  testIf(size !== 'mobile')('aria-controls points to an existing drawer id', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
-    await waitFor(() => {
-      const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
-      expect(drawerTrigger!.getElement()).not.toHaveAttribute('aria-controls');
-    });
-
     const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
+    expect(drawerTrigger!.getElement()).not.toHaveAttribute('aria-controls');
+
     drawerTrigger.click();
     expect(drawerTrigger!.getElement()).toHaveAttribute('aria-controls', 'security');
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveAttribute('id', 'security');
   });
 
-  testIf(size !== 'mobile' && theme !== 'classic')('shows trigger button as selected when drawer opened', async () => {
+  testIf(size !== 'mobile' && theme !== 'classic')('shows trigger button as selected when drawer opened', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
-    await waitFor(() => {
-      expect(wrapper.findDrawerTriggerById('security')!).toBeTruthy();
-    });
     const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
     const selectedClass = theme === 'refresh' ? visualRefreshStyles.selected : toolbarTriggerButtonStyles.selected;
     expect(drawerTrigger!.getElement()).not.toHaveClass(selectedClass);
@@ -231,55 +207,46 @@ describeEachAppLayout(({ size, theme }) => {
     expect(drawerTrigger!.getElement()).not.toHaveClass(selectedClass);
   });
 
-  testIf(theme === 'refresh-toolbar')(
-    'tooltip renders correctly on focus, blur, and escape key press events',
-    async () => {
-      const mockDrawers = [testDrawer];
-      const result = render(<AppLayout drawers={mockDrawers} />);
-      const wrapper = createWrapper(result.container).findAppLayout();
-      expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
-      expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+  testIf(theme === 'refresh-toolbar')('tooltip renders correctly on focus, blur, and escape key press events', () => {
+    const mockDrawers = [testDrawer];
+    const result = render(<AppLayout drawers={mockDrawers} />);
+    const wrapper = createWrapper(result.container).findAppLayout();
+    expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
+    expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
 
-      await waitFor(() => {
-        expect(wrapper!.findDrawersTriggers()).toBeTruthy();
-      });
-      const items = wrapper!.findDrawersTriggers();
-      expect(items.length).toEqual(mockDrawers.length);
+    const items = wrapper!.findDrawersTriggers();
+    expect(items.length).toEqual(mockDrawers.length);
 
-      fireEvent.focus(items![0].getElement());
-      expect(wrapper!.findDrawerTriggerTooltip()).toBeTruthy();
-      expect(result.getByText(testDrawer.ariaLabels.drawerName)).toBeTruthy();
+    fireEvent.focus(items![0].getElement());
+    expect(wrapper!.findDrawerTriggerTooltip()).toBeTruthy();
+    expect(result.getByText(testDrawer.ariaLabels.drawerName)).toBeTruthy();
 
-      fireEvent.blur(items![0].getElement());
-      expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
-      expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+    fireEvent.blur(items![0].getElement());
+    expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
+    expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
 
-      fireEvent.focus(items![0].getElement());
-      expect(wrapper!.findDrawerTriggerTooltip()).toBeTruthy();
-      expect(result.getByText(testDrawer.ariaLabels.drawerName)).toBeTruthy();
+    fireEvent.focus(items![0].getElement());
+    expect(wrapper!.findDrawerTriggerTooltip()).toBeTruthy();
+    expect(result.getByText(testDrawer.ariaLabels.drawerName)).toBeTruthy();
 
-      fireEvent.keyDown(items![0].getElement(), {
-        ...mockEventBubble,
-        key: 'Escape',
-        code: KeyCode.escape,
-      });
-      expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
-      expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
-    }
-  );
+    fireEvent.keyDown(items![0].getElement(), {
+      ...mockEventBubble,
+      key: 'Escape',
+      code: KeyCode.escape,
+    });
+    expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
+    expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+  });
 
   testIf(theme === 'refresh-toolbar')(
     'tooltip renders correctly on pointer events and is removed on escape key press',
-    async () => {
+    () => {
       const mockDrawers = [testDrawer];
       const result = render(<AppLayout drawers={mockDrawers} />);
       const wrapper = createWrapper(result.container).findAppLayout();
       expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
       expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
 
-      await waitFor(() => {
-        expect(wrapper!.findDrawersTriggers()).toBeTruthy();
-      });
       const items = wrapper!.findDrawersTriggers();
       expect(items?.length).toEqual(mockDrawers.length);
 
@@ -305,15 +272,12 @@ describeEachAppLayout(({ size, theme }) => {
     }
   );
 
-  testIf(theme === 'refresh-toolbar')('tooltip does not render on trigger focus via close button', async () => {
+  testIf(theme === 'refresh-toolbar')('tooltip does not render on trigger focus via close button', () => {
     const mockDrawers = [testDrawer];
     const result = render(<AppLayout drawers={mockDrawers} />);
     const wrapper = createWrapper(result.container).findAppLayout();
     expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
     expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
-    await waitFor(() => {
-      expect(wrapper?.findDrawerTriggerById(testDrawer.id)!.getElement()).toBeTruthy();
-    });
     wrapper?.findDrawerTriggerById(testDrawer.id)!.click();
     expect(wrapper?.findActiveDrawer()).toBeTruthy();
     wrapper?.findActiveDrawerCloseButton()!.click();

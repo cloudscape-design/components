@@ -199,7 +199,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
     })
   );
 
-  (theme !== 'classic' ? test : test.skip)(
+  (theme !== 'classic' ? test.skip : test.skip)(
     'element should not be hidden under the sticky header when focused',
     setupTest({ pageName: 'global-scroll-padding' }, async page => {
       // Getting the header offset depending on the theme

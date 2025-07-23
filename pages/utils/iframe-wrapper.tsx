@@ -32,37 +32,35 @@ export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: 
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setTimeout(() => {
-      const container = ref.current;
-      if (!container) {
-        return;
-      }
-      const iframeEl = container.ownerDocument.createElement('iframe');
-      iframeEl.className = styles['full-screen'];
-      iframeEl.id = id;
-      iframeEl.title = id;
-      container.appendChild(iframeEl);
+    const container = ref.current;
+    if (!container) {
+      return;
+    }
+    const iframeEl = container.ownerDocument.createElement('iframe');
+    iframeEl.className = styles['full-screen'];
+    iframeEl.id = id;
+    iframeEl.title = id;
+    container.appendChild(iframeEl);
 
-      const iframeDocument = iframeEl.contentDocument!;
-      // Prevent iframe document instance from reload
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=543435
-      iframeDocument.open();
-      // set html5 doctype
-      iframeDocument.writeln('<!DOCTYPE html>');
-      iframeDocument.close();
+    const iframeDocument = iframeEl.contentDocument!;
+    // Prevent iframe document instance from reload
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=543435
+    iframeDocument.open();
+    // set html5 doctype
+    iframeDocument.writeln('<!DOCTYPE html>');
+    iframeDocument.close();
 
-      const innerAppRoot = iframeDocument.createElement('div');
-      iframeDocument.body.appendChild(innerAppRoot);
-      copyStyles(document, iframeDocument);
-      iframeDocument.dir = document.dir;
-      const syncClassesCleanup = syncClasses(document.body, iframeDocument.body);
-      ReactDOM.render(<AppComponent />, innerAppRoot);
-      return () => {
-        syncClassesCleanup();
-        ReactDOM.unmountComponentAtNode(innerAppRoot);
-        container.removeChild(iframeEl);
-      };
-    }, 50);
+    const innerAppRoot = iframeDocument.createElement('div');
+    iframeDocument.body.appendChild(innerAppRoot);
+    copyStyles(document, iframeDocument);
+    iframeDocument.dir = document.dir;
+    const syncClassesCleanup = syncClasses(document.body, iframeDocument.body);
+    ReactDOM.render(<AppComponent />, innerAppRoot);
+    return () => {
+      syncClassesCleanup();
+      ReactDOM.unmountComponentAtNode(innerAppRoot);
+      container.removeChild(iframeEl);
+    };
   }, [id, AppComponent]);
 
   return <div ref={ref}></div>;

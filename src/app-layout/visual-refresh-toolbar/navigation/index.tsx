@@ -4,20 +4,19 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalButton } from '../../../button/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
-import { NotificationsSlot } from '../skeleton/slot-wrappers';
+import { NotificationsSlot } from '../skeleton/slots';
 
 import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 interface AppLayoutNavigationImplementationProps {
-  appLayoutInternals: Partial<AppLayoutInternals>;
+  appLayoutInternals: AppLayoutInternals;
 }
 
 export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLayoutNavigationImplementationProps) {
@@ -32,7 +31,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
     verticalOffsets,
   } = appLayoutInternals;
 
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets!, isMobile!, placement!);
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.
   const onNavigationClick = (event: React.MouseEvent) => {
@@ -41,10 +40,9 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
       node => node.tagName === 'A' && !!(node as HTMLAnchorElement).href
     );
     if (hasLink && isMobile) {
-      onNavigationToggle?.(false);
+      onNavigationToggle(false);
     }
   };
-  const closeMergedRef = useMergeRefs(navigationFocusControl?.refs?.close, navigationFocusControl?.refs?.onMount);
 
   return (
     <div
@@ -72,11 +70,11 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
           <InternalButton
             ariaLabel={ariaLabels?.navigationClose ?? undefined}
             iconName={isMobile ? 'close' : 'angle-left'}
-            onClick={() => onNavigationToggle?.(false)}
+            onClick={() => onNavigationToggle(false)}
             variant="icon"
             formAction="none"
             className={testutilStyles['navigation-close']}
-            ref={closeMergedRef}
+            ref={navigationFocusControl.refs.close}
             analyticsAction="close"
           />
         </div>

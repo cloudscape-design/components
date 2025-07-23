@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
 import {
   AppLayout,
@@ -30,18 +30,6 @@ type DemoContext = React.Context<
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
   }>
 >;
-
-const CustomContent = () => {
-  useEffect(() => {
-    console.log('mount');
-
-    return () => {
-      console.log('unmount');
-    };
-  }, []);
-
-  return <div>Custom content</div>;
-};
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
@@ -158,7 +146,6 @@ export default function WithDrawers() {
             >
               Content
             </Header>
-            <CustomContent />
             <Containers />
           </ContentLayout>
         </div>

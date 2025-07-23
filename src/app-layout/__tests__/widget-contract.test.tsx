@@ -27,7 +27,7 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => {
   };
 });
 
-describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'], skipInitialTest: true }, () => {
+describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
   beforeEach(() => {
     renderedProps.clear();
   });

@@ -5,7 +5,6 @@ import React from 'react';
 import AppLayout from '../../../lib/components/app-layout';
 import { describeEachAppLayout, renderComponent } from './utils';
 
-import visualRefreshTestUtlsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import visualRefreshToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop', 'mobile'] }, ({ size }) => {
@@ -27,7 +26,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop', 'mobile'
     expect(wrapper.findNavigationToggle()).toBeFalsy();
     expect(wrapper.findByClassName(visualRefreshToolbarStyles['main-landmark'])).not.toBeNull();
     expect(wrapper.findByClassName(visualRefreshToolbarStyles['unfocusable-mobile'])).toBeNull();
-    expect(wrapper.findByClassName(visualRefreshTestUtlsStyles.content)?.getElement()).toBeVisible();
+    expect(wrapper.findByClassName(visualRefreshToolbarStyles.content)?.getElement()).toBeVisible();
   });
 
   test('hide navigation trigger when navigationTriggerHide is set to true', () => {

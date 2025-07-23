@@ -4,7 +4,6 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalButton } from '../../button/internal';
 import { Transition } from '../../internal/components/transition';
@@ -38,7 +37,6 @@ export default function Navigation() {
     toolsHide,
     headerVariant,
   } = useAppLayoutInternals();
-  const closeMergedRef = useMergeRefs(navigationRefs.close, navigationRefs.onMount);
 
   if (navigationHide) {
     return null;
@@ -109,7 +107,7 @@ export default function Navigation() {
                   variant="icon"
                   formAction="none"
                   className={testutilStyles['navigation-close']}
-                  ref={closeMergedRef}
+                  ref={navigationRefs.close}
                 />
               </div>
               {navigation}
