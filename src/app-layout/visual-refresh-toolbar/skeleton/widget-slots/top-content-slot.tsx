@@ -10,7 +10,7 @@ import { SkeletonLayoutProps } from '../index';
 
 import styles from '../styles.css.js';
 
-export const TopPageContentSlot = (props: SkeletonLayoutProps) => {
+export const TopContentSlotImplementation = (props: SkeletonLayoutProps) => {
   const {
     appLayoutProps: { headerVariant, notifications },
     appLayoutState,
@@ -33,4 +33,4 @@ export const TopPageContentSlot = (props: SkeletonLayoutProps) => {
   );
 };
 
-export const createWidgetizedAppLayoutTopPageContentSlot = createWidgetizedComponent(TopPageContentSlot);
+export const createWidgetizedAppLayoutTopContentSlot = createWidgetizedComponent(TopContentSlotImplementation);

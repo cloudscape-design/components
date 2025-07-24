@@ -9,7 +9,7 @@ import { AppLayoutInternals } from '../interfaces';
 
 import styles from './styles.css.js';
 
-interface AppLayoutSplitPanelDrawerSideImplementationProps {
+export interface AppLayoutSplitPanelDrawerSideImplementationProps {
   appLayoutInternals: Partial<AppLayoutInternals>;
   splitPanelInternals: SplitPanelProviderProps;
   children: React.ReactNode;
@@ -39,7 +39,7 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
   );
 }
 
-interface AppLayoutSplitPanelDrawerBottomImplementationProps {
+export interface AppLayoutSplitPanelDrawerBottomImplementationProps {
   appLayoutInternals: Partial<AppLayoutInternals>;
   splitPanelInternals: SplitPanelProviderProps;
   children: React.ReactNode;

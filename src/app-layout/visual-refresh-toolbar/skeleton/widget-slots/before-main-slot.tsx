@@ -13,7 +13,7 @@ import { ToolbarSkeleton } from '../slot-skeletons';
 import sharedStyles from '../../../resize/styles.css.js';
 import styles from '../styles.css.js';
 
-export const TopPageSlot = (props: SkeletonLayoutProps) => {
+export const BeforeMainSlotImplementation = (props: SkeletonLayoutProps) => {
   const { appLayoutState } = props;
   const {
     resolvedNavigationOpen,
@@ -67,4 +67,7 @@ export const TopPageSlotSkeleton = React.forwardRef<HTMLElement, SkeletonLayoutP
   );
 });
 
-export const createWidgetizedAppLayoutTopPageSlot = createWidgetizedComponent(TopPageSlot, TopPageSlotSkeleton);
+export const createWidgetizedAppLayoutBeforeMainSlot = createWidgetizedComponent(
+  BeforeMainSlotImplementation,
+  TopPageSlotSkeleton
+);
