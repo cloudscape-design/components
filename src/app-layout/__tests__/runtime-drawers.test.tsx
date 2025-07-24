@@ -18,6 +18,7 @@ import {
   findActiveDrawerLandmark,
   getActiveDrawerWidth,
   getGlobalDrawersTestUtils,
+  getGlobalDrawerWidth,
   manyDrawers,
   testDrawer,
 } from './utils';
@@ -792,6 +793,30 @@ describeEachAppLayout(({ size }) => {
     await delay();
 
     expect(wrapper.findActiveDrawer()).toBeFalsy();
+  });
+
+  // skip these tests on mobile mode, because it only works for desktop view
+  (size === 'desktop' ? describe : describe.skip)('resizing', () => {
+    test('resizes a drawer when resizeDrawer is called', async () => {
+      awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      awsuiPlugins.appLayout.openDrawer('test');
+
+      await delay();
+
+      expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+      expect(getActiveDrawerWidth(wrapper)).toEqual('290px');
+
+      awsuiPlugins.appLayout.resizeDrawer('test', 800);
+
+      expect(getActiveDrawerWidth(wrapper)).toEqual('800px');
+
+      awsuiPlugins.appLayout.resizeDrawer('test', 300);
+
+      expect(getActiveDrawerWidth(wrapper)).toEqual('300px');
+    });
   });
 });
 
@@ -1645,6 +1670,33 @@ describe('toolbar mode only features', () => {
           );
         });
       });
+    });
+
+    test('resizes multiple global drawers when resizeDrawer is called', async () => {
+      awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, type: 'global' });
+      awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, type: 'global', id: 'test1' });
+
+      const { globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+      awsuiPlugins.appLayout.openDrawer('test');
+      awsuiPlugins.appLayout.openDrawer('test1');
+
+      await delay();
+
+      expect(globalDrawersWrapper.findDrawerById('test')!.getElement()).toHaveTextContent('runtime drawer content');
+      expect(globalDrawersWrapper.findDrawerById('test1')!.getElement()).toHaveTextContent('runtime drawer content');
+      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('290px');
+      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('290px');
+
+      awsuiPlugins.appLayout.resizeDrawer('test', 800);
+
+      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('800px');
+      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('290px');
+
+      awsuiPlugins.appLayout.resizeDrawer('test1', 801);
+
+      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('800px');
+      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('801px');
     });
   });
 
