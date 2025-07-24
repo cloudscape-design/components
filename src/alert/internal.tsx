@@ -25,6 +25,7 @@ import useContainerWidth from '../internal/utils/use-container-width';
 import { ActionsWrapper } from './actions-wrapper';
 import { GeneratedAnalyticsMetadataAlertDismiss } from './analytics-metadata/interfaces';
 import { AlertProps } from './interfaces';
+import { getDismissButtonStyles } from './style';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -40,6 +41,7 @@ type InternalAlertProps = SomeRequired<AlertProps, 'type'> &
   InternalBaseComponentProps<HTMLDivElement> & {
     messageSlotId?: string;
     style?: React.CSSProperties;
+    originalStyle?: AlertProps['style'];
   };
 
 const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.alert.onActionRegistered);
@@ -63,6 +65,7 @@ const InternalAlert = React.forwardRef(
       dismissAriaLabel: deprecatedDismissAriaLabel,
       messageSlotId,
       style,
+      originalStyle,
       ...rest
     }: InternalAlertProps,
     ref: React.Ref<AlertProps.Ref>
@@ -123,7 +126,6 @@ const InternalAlert = React.forwardRef(
           baseProps.className
         )}
         ref={containerRef}
-        style={style}
       >
         <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
           <VisualContext contextName="alert">
@@ -135,6 +137,7 @@ const InternalAlert = React.forwardRef(
                 hasAction && styles['with-action'],
                 dismissible && styles['with-dismiss']
               )}
+              style={style}
             >
               <div className={styles['alert-wrapper']}>
                 <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
@@ -201,6 +204,7 @@ const InternalAlert = React.forwardRef(
                     formAction="none"
                     ariaLabel={dismissAriaLabel}
                     onClick={() => fireNonCancelableEvent(onDismiss)}
+                    style={getDismissButtonStyles(originalStyle)}
                   />
                 </div>
               )}

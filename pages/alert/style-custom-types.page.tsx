@@ -58,6 +58,18 @@ function CustomAlert({ children, type, dismissible, i18nStrings }: CustomAlertPr
           borderWidth,
           color,
         },
+        dismissButton: {
+          color: {
+            default: dismissButtonColors[mode][type].default,
+            hover: dismissButtonColors[mode][type].hover,
+            active: dismissButtonColors[mode][type].active,
+          },
+          focusRing: {
+            borderColor: palette.blue40,
+            borderRadius: '4px',
+            borderWidth: '2px',
+          },
+        },
       }}
     >
       <span style={{ fontSize: '16px' }}>{children}</span>
@@ -68,15 +80,15 @@ function CustomAlert({ children, type, dismissible, i18nStrings }: CustomAlertPr
 const backgrounds = {
   light: {
     info: palette.blue80,
-    success: palette.blue80,
-    error: palette.red60,
-    warning: palette.orange80,
+    success: palette.green80,
+    error: palette.red80,
+    warning: palette.teal90,
   },
   dark: {
-    info: palette.blue80,
-    success: palette.green80,
-    error: palette.red60,
-    warning: palette.orange80,
+    info: palette.blue40,
+    success: palette.green20,
+    error: palette.red30,
+    warning: palette.teal20,
   },
 };
 
@@ -87,13 +99,13 @@ const colors = {
 
 const borderColors = {
   light: {
-    info: palette.blue80,
+    info: palette.neutral80,
     success: palette.green80,
-    error: palette.red80,
+    error: palette.blue90,
     warning: palette.orange80,
   },
   dark: {
-    info: palette.blue40,
+    info: palette.neutral20,
     success: palette.green30,
     error: palette.red60,
     warning: palette.orange40,
@@ -101,9 +113,55 @@ const borderColors = {
 };
 
 const borderWidths = {
-  info: '2px',
-  success: '4px',
-  error: '2px',
-  warning: '6px',
-  button: '8px',
+  info: '4px',
+  success: '0px',
+  error: '6px',
+  warning: '0px',
+};
+
+const dismissButtonColors = {
+  light: {
+    info: {
+      default: palette.green60,
+      hover: palette.neutral80,
+      active: palette.neutral90,
+    },
+    success: {
+      default: palette.green60,
+      hover: palette.green80,
+      active: palette.green90,
+    },
+    error: {
+      default: palette.red60,
+      hover: palette.red60,
+      active: palette.red80,
+    },
+    warning: {
+      default: palette.orange60,
+      hover: palette.orange80,
+      active: palette.orange90,
+    },
+  },
+  dark: {
+    info: {
+      default: palette.neutral40,
+      hover: palette.neutral20,
+      active: palette.neutral10,
+    },
+    success: {
+      default: palette.green30,
+      hover: palette.green20,
+      active: palette.green10,
+    },
+    error: {
+      default: palette.red60,
+      hover: palette.red20,
+      active: palette.red10,
+    },
+    warning: {
+      default: palette.orange40,
+      hover: palette.orange20,
+      active: palette.orange10,
+    },
+  },
 };

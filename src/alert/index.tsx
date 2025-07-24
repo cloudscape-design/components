@@ -116,6 +116,7 @@ const Alert = React.forwardRef(
         ref={ref}
         messageSlotId={messageSlotId}
         style={getAlertStyles(style)}
+        originalStyle={style}
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
       />
     );
