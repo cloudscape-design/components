@@ -112,6 +112,19 @@ export default function WithDrawers() {
                 <Button onClick={() => awsuiPlugins.appLayout.closeDrawer('circle4-global')}>
                   Close a drawer without a trigger
                 </Button>
+
+                <Button
+                  onClick={() => awsuiPlugins.appLayout.resizeDrawer('circle-global', 400)}
+                  data-testid="button-circle-global-resize"
+                >
+                  Resize circle-global drawer to 400px
+                </Button>
+                <Button
+                  onClick={() => awsuiPlugins.appLayout.resizeDrawer('circle3-global', 500)}
+                  data-testid="button-circle3-global-resize"
+                >
+                  Resize circle3-global drawer to 500px
+                </Button>
               </SpaceBetween>
             </SpaceBetween>
           }

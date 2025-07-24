@@ -107,6 +107,15 @@ export function getActiveDrawerWidth(wrapper: AppLayoutWrapper): string {
   return drawerElement.style.width;
 }
 
+export function getGlobalDrawerWidth(
+  wrapper: ReturnType<typeof getGlobalDrawersTestUtils>,
+  drawerId: string
+): string | null {
+  const drawerElement = wrapper.findDrawerById(drawerId)!.getElement();
+  const value = drawerElement.style.getPropertyValue(customCssProps.drawerSize);
+  return value ?? null;
+}
+
 export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {
   closeButtonAriaLabel: 'Close panel',
   openButtonAriaLabel: 'Open panel',

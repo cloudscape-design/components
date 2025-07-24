@@ -59,6 +59,7 @@ type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
 type DrawersUpdateListener = (drawers: Array<DrawerConfig>) => void;
 
 export type DrawersToggledListener = (drawerId: string, params?: OpenCloseDrawerParams) => void;
+type DrawersResizeListener = (drawerId: string, size: number) => void;
 
 interface OpenCloseDrawerParams {
   initiatedByUserAction: boolean;
@@ -69,6 +70,7 @@ export interface DrawersApiPublic {
   updateDrawer(config: UpdateDrawerConfig): void;
   openDrawer(drawerId: string, params?: OpenCloseDrawerParams): void;
   closeDrawer(drawerId: string, params?: OpenCloseDrawerParams): void;
+  resizeDrawer(drawerId: string, size: number): void;
 }
 
 export interface DrawersApiInternal {
@@ -76,6 +78,7 @@ export interface DrawersApiInternal {
   onDrawersRegistered(listener: DrawersRegistrationListener): () => void;
   onDrawerOpened(listener: DrawersToggledListener): () => void;
   onDrawerClosed(listener: DrawersToggledListener): () => void;
+  onDrawerResize(listener: DrawersResizeListener): () => void;
   onDrawersUpdated(listener: DrawersUpdateListener): void;
   getDrawersState(): Array<DrawerConfig>;
 }
@@ -86,6 +89,7 @@ export class DrawersController {
   private drawerOpenedListener: DrawersToggledListener | null = null;
   private drawerClosedListener: DrawersToggledListener | null = null;
   private drawersUpdateListeners: Array<DrawersUpdateListener> = [];
+  private drawerResizeListener: DrawersResizeListener | null = null;
 
   scheduleUpdate = debounce(() => {
     this.drawersRegistrationListener?.(this.drawers);
@@ -185,6 +189,25 @@ export class DrawersController {
     };
   };
 
+  onDrawerResize = (listener: DrawersResizeListener) => {
+    if (this.drawerResizeListener !== null) {
+      reportRuntimeApiWarning(
+        'app-layout-drawers',
+        'multiple app layout instances detected when calling onDrawerResize'
+      );
+    }
+
+    this.drawerResizeListener = listener;
+
+    return () => {
+      this.drawerResizeListener = null;
+    };
+  };
+
+  resizeDrawer = (drawerId: string, size: number) => {
+    this.drawerResizeListener?.(drawerId, size);
+  };
+
   getDrawersState = () => {
     return this.drawers;
   };
@@ -194,6 +217,7 @@ export class DrawersController {
     api.updateDrawer ??= this.updateDrawer;
     api.openDrawer ??= this.openDrawer;
     api.closeDrawer ??= this.closeDrawer;
+    api.resizeDrawer ??= this.resizeDrawer;
     return api as DrawersApiPublic;
   }
 
@@ -202,6 +226,7 @@ export class DrawersController {
     internalApi.onDrawersRegistered ??= this.onDrawersRegistered;
     internalApi.onDrawerOpened ??= this.onDrawerOpened;
     internalApi.onDrawerClosed ??= this.onDrawerClosed;
+    internalApi.onDrawerResize ??= this.onDrawerResize;
     internalApi.onDrawersUpdated ??= this.onDrawersUpdated;
     internalApi.getDrawersState ??= this.getDrawersState;
     return internalApi as DrawersApiInternal;
