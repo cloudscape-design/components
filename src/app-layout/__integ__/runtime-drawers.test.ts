@@ -378,16 +378,22 @@ describe('Visual refresh toolbar only', () => {
       await page.click(wrapper.findDrawerTriggerById(drawerId1).toSelector());
       await page.click(wrapper.findDrawerTriggerById(drawerId2).toSelector());
 
-      await expect(page.getDrawerWidth(drawerId1)).resolves.toBe(351);
-      await expect(page.getDrawerWidth(drawerId2)).resolves.toBe(321);
+      await page.waitForAssertion(async () => {
+        await expect(page.getDrawerWidth(drawerId1)).resolves.toBe(351);
+        await expect(page.getDrawerWidth(drawerId2)).resolves.toBe(321);
+      });
 
       await page.click(wrapper.find('[data-testid="button-circle-global-resize"]').toSelector());
 
-      await expect(page.getDrawerWidth(drawerId1)).resolves.toBe(401);
+      await page.waitForAssertion(async () => {
+        await expect(page.getDrawerWidth(drawerId1)).resolves.toBe(401);
+      });
 
       await page.click(wrapper.find('[data-testid="button-circle3-global-resize"]').toSelector());
 
-      await expect(page.getDrawerWidth(drawerId2)).resolves.toBe(501);
+      await page.waitForAssertion(async () => {
+        await expect(page.getDrawerWidth(drawerId2)).resolves.toBe(501);
+      });
     })
   );
 });
