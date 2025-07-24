@@ -1,18 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+
+import React, { useRef } from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import DateInput, { DateInputProps } from '../../../lib/components/date-input';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import createWrapper, { DateInputWrapper } from '../../../lib/components/test-utils/dom';
 
 function renderDateInput(props: DateInputProps) {
   const onChangeSpy = jest.fn();
   const { container } = render(<DateInput onChange={onChangeSpy} {...props} />);
   const wrapper = createWrapper(container).findDateInput()!;
-  return { wrapper, onChangeSpy };
+  const inputValue = wrapper.findNativeInput()!.getElement().value;
+  return { wrapper, inputValue, onChangeSpy };
 }
 
 describe('Date Input component', () => {
@@ -319,5 +321,93 @@ describe('Date Input component', () => {
     const { wrapper, onChangeSpy } = renderDateInput({ value: '' });
     wrapper.setInputValue('2019/01/31');
     expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2019-01-31' } }));
+  });
+
+  test.each([{ inputFormat: undefined }, { inputFormat: 'iso' }, { inputFormat: 'slashed' }] as const)(
+    'accepts value in slashed format, inputFormat=$inputFormat',
+    ({ inputFormat }) => {
+      const getValue = (wrapper: DateInputWrapper) => wrapper.findNativeInput()!.getElement().value;
+      expect(getValue(renderDateInput({ value: '2001/02/03', inputFormat }).wrapper)).toBe('2001/02/03');
+    }
+  );
+
+  test.each([{ inputFormat: undefined }, { inputFormat: 'iso' }, { inputFormat: 'slashed' }] as const)(
+    'accepts value in iso format, inputFormat=$inputFormat',
+    ({ inputFormat }) => {
+      expect(renderDateInput({ value: '2001-02-03', inputFormat }).inputValue).toBe('2001/02/03');
+    }
+  );
+
+  test('displays value in slashed format', () => {
+    expect(renderDateInput({ value: '2001-02-03', format: 'slashed' }).inputValue).toBe('2001/02/03');
+  });
+
+  test('displays value in iso format', () => {
+    expect(renderDateInput({ value: '2001-02-03', format: 'iso' }).inputValue).toBe('2001-02-03');
+  });
+
+  test('displays value in long-localized format', () => {
+    expect(renderDateInput({ value: '2001-02-03', format: 'long-localized', locale: 'en-GB' }).inputValue).toBe(
+      '3 February 2001'
+    );
+  });
+
+  test.each([{ inputFormat: 'iso' }, { inputFormat: 'slashed' }] as const)(
+    'displays value in input format instead of long-localized when focused, inputFormat=$inputFormat',
+    ({ inputFormat }) => {
+      const { wrapper } = renderDateInput({
+        value: '2001-02-03',
+        inputFormat,
+        format: 'long-localized',
+        locale: 'en-GB',
+      });
+      expect(wrapper.findNativeInput().getElement().value).toBe('3 February 2001');
+
+      wrapper.focus();
+      expect(wrapper.findNativeInput().getElement().value).toBe(inputFormat === 'iso' ? '2001-02-03' : '2001/02/03');
+
+      wrapper.blur();
+      expect(wrapper.findNativeInput().getElement().value).toBe('3 February 2001');
+    }
+  );
+
+  test('keeps displaying value in long-localized format when focused but readonly', () => {
+    const { wrapper } = renderDateInput({
+      value: '2001-02-03',
+      format: 'long-localized',
+      locale: 'en-GB',
+      readOnly: true,
+    });
+    expect(wrapper.findNativeInput().getElement().value).toBe('3 February 2001');
+
+    wrapper.focus();
+    expect(wrapper.findNativeInput().getElement().value).toBe('3 February 2001');
+  });
+
+  test('does not call onChange on focus/blur events when format is long-localized', () => {
+    const { wrapper, onChangeSpy } = renderDateInput({
+      value: '2001-02-03',
+      format: 'long-localized',
+      locale: 'en-GB',
+    });
+    wrapper.focus();
+    wrapper.blur();
+    expect(onChangeSpy).not.toHaveBeenCalled();
+  });
+
+  test('focuses input programmatically', () => {
+    function TestComponent() {
+      const inputRef = useRef<DateInputProps.Ref>(null);
+      return (
+        <div>
+          <button onClick={() => inputRef.current!.focus()}>Focus input</button>
+          <DateInput ref={inputRef} value="2020-01-01" onChange={() => {}} />
+        </div>
+      );
+    }
+    const { container } = render(<TestComponent />);
+
+    container.querySelector('button')!.click();
+    expect(createWrapper().findDateInput()!.findNativeInput().getElement()).toHaveFocus();
   });
 });
