@@ -21,7 +21,7 @@ export interface DrawersLayout {
   global: Array<RuntimeDrawer>;
   localBefore: Array<RuntimeDrawer>;
   localAfter: Array<RuntimeDrawer>;
-  aiDrawer?: RuntimeDrawer;
+  aiDrawer: RuntimeDrawer | null;
 }
 
 type VisibilityCallback = (isVisible: boolean) => void;
@@ -103,8 +103,6 @@ export function convertRuntimeDrawers(
     global: sortByPriority(globalDrawers.map(mapRuntimeConfigToDrawer)),
     localBefore: sorted.filter(item => (item.orderPriority ?? 0) > 0),
     localAfter: sorted.filter(item => (item.orderPriority ?? 0) <= 0),
-    ...(aiDrawer && {
-      aiDrawer: mapRuntimeConfigToDrawer(aiDrawer),
-    }),
+    aiDrawer: aiDrawer ? mapRuntimeConfigToDrawer(aiDrawer) : null,
   };
 }

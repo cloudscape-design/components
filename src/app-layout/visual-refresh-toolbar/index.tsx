@@ -311,7 +311,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         onSplitPanelToggle: onSplitPanelToggleHandler,
         expandedDrawerId,
         setExpandedDrawerId,
-        aiDrawer,
+        aiDrawer: aiDrawer ?? undefined,
         onActiveAiDrawerChange,
         activeAiDrawerId: activeAiDrawer?.id ?? null,
         aiDrawerFocusRef: aiDrawerFocusControl.refs.toggle,
