@@ -125,6 +125,27 @@ If the label is assigned via the \`i18nStrings\` property, this label will be ig
       "type": "string",
     },
     {
+      "description": "Specifies an object of selectors and properties that are used to apply custom styles.
+
+- \`root.background\` - (Optional) Background for alert.
+- \`root.borderColor\` - (Optional) Border color for alert.
+- \`root.borderRadius\` (string) - (Optional) Alert border radius.
+- \`root.borderWidth\` (string) - (Optional) Alert border width.
+- \`root.color\`  - (Optional) Text color for alert.
+- \`dismissButton.color.active\` - (Optional) Color for dismiss button active state.
+- \`dismissButton.color.default\` - (Optional) Color for dismiss button default state.
+- \`dismissButton.color.hover\` - (Optional) Color for dismiss button hover state.
+- \`dismissButton.focusRing.borderColor\` - (Optional) Dismiss button focus ring border color.
+- \`dismissButton.focusRing.borderRadius\` (string) - (Optional) Dismiss button focus ring border radius.
+- \`dismissButton.focusRing.borderWidth\` (string) - (Optional) Dismiss button focus ring border width.",
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "AlertProps.Style",
+    },
+    {
       "defaultValue": "'info'",
       "description": "Specifies the type of message you want to display.",
       "inlineType": {
@@ -2712,7 +2733,8 @@ The options can be grouped using \`OptionGroup\` objects.
 - \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the option.
 - \`filteringTags\` [string[]] - (Optional) A list of additional tags used for automatic filtering.
 - \`iconName\` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option.
-- \`iconAlt\` (string) - (Optional) Specifies alternate text for a custom icon, for use with \`iconUrl\`.
+- \`iconAriaLabel\` (string) - (Optional) Specifies alternate text for the icon. We recommend that you provide this for accessibility.
+- \`iconAlt\` (string) - (Optional) **Deprecated**, replaced by \\\`iconAriaLabel\\\`. Specifies alternate text for a custom icon, for use with \`iconUrl\`.
 - \`iconUrl\` (string) - (Optional) URL of a custom icon.
 - \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
 
@@ -2905,6 +2927,23 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "name": "id",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Specifies an object of selectors and properties that are used to apply custom styles.
+
+- \`root.background\` (string) - (Optional) Background for badge.
+- \`root.borderColor\` (string) - (Optional) Border color for badge.
+- \`root.borderRadius\` (string) - (Optional) Border radius style.
+- \`root.borderWidth\` (string) - (Optional) Border width style.
+- \`root.color\` (string) - (Optional) Text color for badge.
+- \`root.paddingBlock\` (string) - (Optional) Block dimension padding.
+- \`root.paddingInline\` (string) - (Optional) Inline dimension padding.",
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "BadgeProps.Style",
     },
   ],
   "regions": [
@@ -4214,6 +4253,50 @@ It prevents users from clicking the button, but it can still be focused.",
       "name": "loadingText",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native \`a\` element (when \`href\` is provided).
+Some attributes will be automatically combined with Cloudscape-provided attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAnchorAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "description": "Attributes to add to the native \`button\` element.
+Some attributes will be automatically combined with Cloudscape-provided attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeButtonAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
       "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to "noopener noreferrer" when \`target\` is \`"_blank"\`.
@@ -12784,7 +12867,8 @@ The options can be grouped using \`OptionGroup\` objects.
 - \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the option or group.
 - \`filteringTags\` [string[]] - (Optional) A list of additional tags used for automatic filtering.
 - \`iconName\` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option or group.
-- \`iconAlt\` (string) - (Optional) Specifies alternate text for a custom icon, for use with \`iconUrl\`.
+- \`iconAriaLabel\` (string) - (Optional) Specifies alternate text for the icon. We recommend that you provide this for accessibility.
+- \`iconAlt\` (string) - (Optional) **Deprecated**, replaced by \\\`iconAriaLabel\\\`. Specifies alternate text for a custom icon, for use with \`iconUrl\`.
 - \`iconUrl\` (string) - (Optional) URL of a custom icon.
 - \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
 
@@ -16306,7 +16390,8 @@ The options can be grouped using \`OptionGroup\` objects.
 - \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the option or group.
 - \`filteringTags\` [string[]] - (Optional) A list of additional tags used for automatic filtering.
 - \`iconName\` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option or group.
-- \`iconAlt\` (string) - (Optional) Specifies alternate text for a custom icon, for use with \`iconUrl\`.
+- \`iconAriaLabel\` (string) - (Optional) Specifies alternate text for the icon. We recommend that you provide this for accessibility.
+- \`iconAlt\` (string) - (Optional) **Deprecated**, replaced by \\\`iconAriaLabel\\\`. Specifies alternate text for a custom icon, for use with \`iconUrl\`.
 - \`iconUrl\` (string) - (Optional) URL of a custom icon.
 - \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
 
@@ -16413,6 +16498,11 @@ If you want to clear the selection, use \`null\`.",
           },
           {
             "name": "iconAlt",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "iconAriaLabel",
             "optional": true,
             "type": "string",
           },
@@ -20156,6 +20246,50 @@ It prevents users from clicking the button, but it can still be focused.",
       "name": "loadingText",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native \`a\` element (when \`href\` is provided).
+Some attributes will be automatically combined with Cloudscape-provided attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAnchorAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "description": "Attributes to add to the native \`button\` element.
+Some attributes will be automatically combined with Cloudscape-provided attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeButtonAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
       "defaultValue": "false",
