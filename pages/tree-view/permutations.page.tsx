@@ -46,7 +46,7 @@ export default function TreeViewPermuations() {
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
 
   return (
-    <ScreenshotArea>
+    <ScreenshotArea disableAnimations={true}>
       <h1>Tree view permutations</h1>
 
       <Checkbox

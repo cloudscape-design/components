@@ -276,7 +276,10 @@ describe('Multiselect renders correct analytics metadata', () => {
       });
 
       const disabledToken = wrapper.findToken(3)!.findDismiss().getElement();
-      expect(getGeneratedAnalyticsMetadata(disabledToken)).toEqual(getMetadataContexts(5));
+      expect(getGeneratedAnalyticsMetadata(disabledToken)).toEqual({
+        detail: { position: '3' },
+        ...getMetadataContexts(5),
+      });
     });
 
     test('in show more', () => {

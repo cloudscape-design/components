@@ -16,7 +16,8 @@
 $handle-width: awsui.$space-xl;
 $active-separator-width: 2px;
 
-th:not(:last-child) > .divider {
+th:not(:last-child) > .divider,
+.divider-interactive {
   $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
 
   position: absolute;
@@ -40,6 +41,10 @@ th:not(:last-child) > .divider {
   }
 }
 
+th:last-child > .divider-interactive:not(.is-visual-refresh) {
+  inset-inline-end: calc(#{$handle-width} / 2);
+}
+
 .resizer {
   @include styles.styles-reset;
   border-block: none;
@@ -59,10 +64,6 @@ th:not(:last-child) > .divider {
   .resize-active & {
     pointer-events: none;
   }
-  th:last-child > & {
-    inline-size: calc(#{$handle-width} / 2);
-    inset-inline-end: 0;
-  }
   &:hover + .divider {
     border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
   }
@@ -74,6 +75,10 @@ th:not(:last-child) > .divider {
       }
     }
   }
+}
+
+th:last-child > .resizer:not(.is-visual-refresh) {
+  inset-inline-end: 0;
 }
 
 .tracker {
