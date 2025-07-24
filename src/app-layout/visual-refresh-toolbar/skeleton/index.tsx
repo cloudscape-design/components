@@ -15,10 +15,10 @@ import { useGetGlobalBreadcrumbs } from '../../../internal/plugins/helpers/use-g
 import { computeVerticalLayout } from '../compute-layout';
 import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
 import {
-  AppLayoutSkeletonBottomContentSlot,
-  AppLayoutSkeletonSideSlot,
-  AppLayoutSkeletonTopContentSlot,
-  AppLayoutSkeletonTopSlot,
+  AppLayoutAfterMainSlot,
+  AppLayoutBeforeMainSlot,
+  AppLayoutBottomContentSlot,
+  AppLayoutTopContentSlot,
 } from '../internal';
 import { useMultiAppLayout } from '../multi-layout';
 import { useAppLayout } from '../use-app-layout';
@@ -179,9 +179,9 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
           }
           ref={ref}
         >
-          <AppLayoutSkeletonTopSlot {...mergedProps} />
+          <AppLayoutBeforeMainSlot {...mergedProps} />
           <main {...mainElAttributes} className={mainElAttributes?.className ?? styles['main-landmark']}>
-            <AppLayoutSkeletonTopContentSlot {...mergedProps} />
+            <AppLayoutTopContentSlot {...mergedProps} />
             <div
               {...contentWrapperElAttributes}
               className={
@@ -195,9 +195,9 @@ export const SkeletonLayout = (props: RootSkeletonLayoutProps) => {
                 {registered ? content : null}
               </div>
             </div>
-            <AppLayoutSkeletonBottomContentSlot {...mergedProps} />
+            <AppLayoutBottomContentSlot {...mergedProps} />
           </main>
-          <AppLayoutSkeletonSideSlot {...mergedProps} />
+          <AppLayoutAfterMainSlot {...mergedProps} />
         </div>
       </VisualContext>
     </>

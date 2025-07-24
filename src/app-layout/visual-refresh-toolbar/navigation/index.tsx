@@ -16,7 +16,7 @@ import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
-interface AppLayoutNavigationImplementationProps {
+export interface AppLayoutNavigationImplementationProps {
   appLayoutInternals: Partial<AppLayoutInternals>;
 }
 

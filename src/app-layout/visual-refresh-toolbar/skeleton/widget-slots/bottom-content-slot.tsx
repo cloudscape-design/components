@@ -8,7 +8,7 @@ import { SkeletonLayoutProps } from '../index';
 
 import styles from '../styles.css.js';
 
-export const BottomPageContentSlot = (props: SkeletonLayoutProps) => {
+export const BottomContentSlotImplementation = (props: SkeletonLayoutProps) => {
   const {
     appLayoutState,
     appLayoutProps: { placement, splitPanel },
@@ -30,4 +30,4 @@ export const BottomPageContentSlot = (props: SkeletonLayoutProps) => {
   );
 };
 
-export const createWidgetizedAppLayoutBottomPageContentSlot = createWidgetizedComponent(BottomPageContentSlot);
+export const createWidgetizedAppLayoutBottomContentSlot = createWidgetizedComponent(BottomContentSlotImplementation);
