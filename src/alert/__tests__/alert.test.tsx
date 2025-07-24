@@ -258,3 +258,47 @@ describe('Alert Component', () => {
     });
   });
 });
+
+describe('Style API', () => {
+  test('custom properties', () => {
+    const { wrapper } = renderAlert({
+      dismissible: true,
+      children: 'Alert',
+      style: {
+        root: {
+          background: 'rgb(255, 255, 255)',
+          borderColor: 'rgb(0, 0, 0)',
+          borderRadius: '8px',
+          borderWidth: '2px',
+          color: 'rgb(0, 0, 0)',
+        },
+        dismissButton: {
+          color: {
+            active: 'rgb(12, 136, 22)',
+            default: 'rgb(189, 37, 40)',
+            hover: 'rgb(119, 12, 12)',
+          },
+          focusRing: {
+            borderColor: 'rgb(23, 31, 118)',
+            borderRadius: '6px',
+            borderWidth: '4px',
+          },
+        },
+      },
+    });
+
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('background')).toBe('rgb(255, 255, 255)');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-color')).toBe('rgb(0, 0, 0)');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-radius')).toBe('8px');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-width')).toBe('2px');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('color')).toBe('rgb(0, 0, 0)');
+
+    const dismissButton = wrapper.findDismissButton()!.getElement();
+    expect(getComputedStyle(dismissButton).getPropertyValue('--color-default')).toBe('rgb(189, 37, 40)');
+    expect(getComputedStyle(dismissButton).getPropertyValue('--color-hover')).toBe('rgb(119, 12, 12)');
+    expect(getComputedStyle(dismissButton).getPropertyValue('--color-active')).toBe('rgb(12, 136, 22)');
+    expect(getComputedStyle(dismissButton).getPropertyValue('--focus-ring-border-color')).toBe('rgb(23, 31, 118)');
+    expect(getComputedStyle(dismissButton).getPropertyValue('--focus-ring-border-radius')).toBe('6px');
+    expect(getComputedStyle(dismissButton).getPropertyValue('--focus-ring-border-width')).toBe('4px');
+  });
+});

@@ -47,6 +47,28 @@ export namespace AlertProps {
   export interface AnalyticsMetadata {
     errorContext?: ErrorContext;
   }
+
+  export interface Style {
+    root?: {
+      background?: string;
+      borderColor?: string;
+      borderRadius?: string;
+      borderWidth?: string;
+      color?: string;
+    };
+    dismissButton?: {
+      color?: {
+        active?: string;
+        default?: string;
+        hover?: string;
+      };
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+    };
+  }
 }
 
 export interface AlertProps extends BaseComponentProps {
@@ -122,4 +144,21 @@ export interface AlertProps extends BaseComponentProps {
    * @analytics
    */
   analyticsMetadata?: AlertProps.AnalyticsMetadata;
+  /**
+   * Specifies an object of selectors and properties that are used to apply custom styles.
+   *
+   * - `root.background` - (Optional) Background for alert.
+   * - `root.borderColor` - (Optional) Border color for alert.
+   * - `root.borderRadius` (string) - (Optional) Alert border radius.
+   * - `root.borderWidth` (string) - (Optional) Alert border width.
+   * - `root.color`  - (Optional) Text color for alert.
+   * - `dismissButton.color.active` - (Optional) Color for dismiss button active state.
+   * - `dismissButton.color.default` - (Optional) Color for dismiss button default state.
+   * - `dismissButton.color.hover` - (Optional) Color for dismiss button hover state.
+   * - `dismissButton.focusRing.borderColor` - (Optional) Dismiss button focus ring border color.
+   * - `dismissButton.focusRing.borderRadius` (string) - (Optional) Dismiss button focus ring border radius.
+   * - `dismissButton.focusRing.borderWidth` (string) - (Optional) Dismiss button focus ring border width.
+   * @awsuiSystem core
+   */
+  style?: AlertProps.Style;
 }
