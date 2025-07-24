@@ -15,13 +15,14 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { GeneratedAnalyticsMetadataAlertComponent } from './analytics-metadata/interfaces';
 import { AlertProps } from './interfaces';
 import InternalAlert from './internal';
+import { getAlertStyles } from './style';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 
 export { AlertProps };
 
 const Alert = React.forwardRef(
-  ({ type = 'info', visible = true, ...props }: AlertProps, ref: React.Ref<AlertProps.Ref>) => {
+  ({ type = 'info', visible = true, style, ...props }: AlertProps, ref: React.Ref<AlertProps.Ref>) => {
     const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
     const baseComponentProps = useBaseComponent<HTMLDivElement>(
       'Alert',
@@ -30,25 +31,19 @@ const Alert = React.forwardRef(
       },
       analyticsMetadata
     );
-
     const { funnelIdentifier, funnelInteractionId, funnelErrorContext, submissionAttempt, funnelState, errorCount } =
       useFunnel();
     const { stepNumber, stepNameSelector, stepIdentifier, subStepCount, stepErrorContext, subStepConfiguration } =
       useFunnelStep();
     const { subStepSelector, subStepNameSelector, subStepIdentifier, subStepErrorContext } = useFunnelSubStep();
-
     const messageSlotId = useUniqueId('alert-');
-
     useEffect(() => {
       if (funnelInteractionId && visible && type === 'error' && funnelState.current !== 'complete') {
         const stepName = getTextFromSelector(stepNameSelector);
         const subStepName = getTextFromSelector(subStepNameSelector);
-
         errorCount.current++;
-
         // We don't want to report an error if it is hidden, e.g. inside an Expandable Section.
         const errorIsVisible = (baseComponentProps.__internalRootRef.current?.getBoundingClientRect()?.width ?? 0) > 0;
-
         if (errorIsVisible) {
           if (subStepSelector) {
             FunnelMetrics.funnelSubStepError({
@@ -88,16 +83,13 @@ const Alert = React.forwardRef(
             });
           }
         }
-
         return () => {
           // eslint-disable-next-line react-hooks/exhaustive-deps
           errorCount.current--;
         };
       }
-
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [funnelInteractionId, visible, submissionAttempt, errorCount]);
-
     const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAlertComponent = {
       name: 'awsui.Alert',
       label: `.${analyticsSelectors.header}`,
@@ -105,7 +97,6 @@ const Alert = React.forwardRef(
         type,
       },
     };
-
     return (
       <InternalAlert
         type={type}
@@ -114,11 +105,12 @@ const Alert = React.forwardRef(
         {...baseComponentProps}
         ref={ref}
         messageSlotId={messageSlotId}
+        style={getAlertStyles(style)}
+        originalStyle={style}
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
       />
     );
   }
 );
-
 applyDisplayName(Alert, 'Alert');
 export default Alert;
