@@ -330,11 +330,22 @@ export const InternalButton = React.forwardRef(
         : undefined;
 
     if (isAnchor) {
+      const getAnchorTabIndex = () => {
+        if (isNotInteractive) {
+          // If disabled with a reason, make it focusable so users can access the tooltip
+          // Otherwise, resolve to the default button props tabIndex.
+          return disabledReason ? 0 : buttonProps.tabIndex;
+        }
+        return buttonProps.tabIndex;
+      };
+
       return (
         <>
           <a
             {...buttonProps}
-            href={href}
+            href={isNotInteractive ? undefined : href}
+            role={isNotInteractive ? 'link' : undefined}
+            tabIndex={getAnchorTabIndex()}
             target={target}
             // security recommendation: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
             rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
