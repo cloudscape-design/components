@@ -7433,11 +7433,61 @@ receive focus.",
       "type": "boolean",
     },
     {
+      "description": "The format as it is displayed. It can take the following values:
+* \`iso\`: ISO 8601 format without time, e.g.: 2024-01-30 (or 2024-01).
+* \`long-localized\`: a more human-readable, localized format, e.g.: January 30, 2024 (or January, 2024).
+* \`slashed\`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01).",
+      "inlineType": {
+        "name": "DateFormat",
+        "type": "union",
+        "values": [
+          "iso",
+          "long-localized",
+          "slashed",
+        ],
+      },
+      "name": "format",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the granularity at which users will be able to select a date.
+Defaults to \`day\`.",
+      "inlineType": {
+        "name": "DateGranularity",
+        "type": "union",
+        "values": [
+          "day",
+          "month",
+        ],
+      },
+      "name": "granularity",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the date format to use when the format is 'long-localized' and the user needs to edit the date.
+The format of the input as it is being interacted with. It can take the following values:
+* \`iso\`: ISO 8601 format without time, e.g.: 2024-01-30 (or 2024-01).
+* \`slashed\`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01).",
+      "inlineType": {
+        "name": "EditableDateFormat",
+        "type": "union",
+        "values": [
+          "iso",
+          "slashed",
+        ],
+      },
+      "name": "inputFormat",
       "optional": true,
       "type": "string",
     },
@@ -7450,6 +7500,14 @@ single form field.",
       "name": "invalid",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "description": "Specifies the locale to use to render month names and determine the starting day of the week.
+If you don't provide this, the locale is determined by the page and browser locales.
+Supported values and formats are listed in the [JavaScript Intl API specification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).",
+      "name": "locale",
+      "optional": true,
+      "type": "string",
     },
     {
       "description": "Specifies the name of the control used in HTML forms.",

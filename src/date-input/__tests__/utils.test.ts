@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { generateMaskArgs, GenerateMaskArgsProps } from '../utils';
+
+import { generateMaskArgs, GenerateMaskArgsProps, normalizeIsoDateString } from '../utils';
 
 describe('generateMaskArgs', () => {
   test.each([
@@ -53,4 +54,37 @@ describe('generateMaskArgs', () => {
       }
     }
   );
+});
+
+describe('normalizeIsoDateString', () => {
+  test('normalizes date with day granularity', () => {
+    expect(normalizeIsoDateString('', 'day')).toBe('');
+    expect(normalizeIsoDateString('invalid', 'day')).toBe('');
+    expect(normalizeIsoDateString('201', 'day')).toBe('');
+    expect(normalizeIsoDateString('2012', 'day')).toBe('2012');
+    expect(normalizeIsoDateString('2012-', 'day')).toBe('2012');
+    expect(normalizeIsoDateString('2012-0', 'day')).toBe('2012');
+    expect(normalizeIsoDateString('2012-01', 'day')).toBe('2012-01');
+    expect(normalizeIsoDateString('2012-01-', 'day')).toBe('2012-01');
+    expect(normalizeIsoDateString('2012-01-0', 'day')).toBe('2012-01');
+    expect(normalizeIsoDateString('2012-01-01', 'day')).toBe('2012-01-01');
+    expect(normalizeIsoDateString('2012-1', 'day')).toBe('2012');
+    expect(normalizeIsoDateString('2012-12', 'day')).toBe('2012-12');
+    expect(normalizeIsoDateString('2012-12-1', 'day')).toBe('2012-12');
+  });
+
+  test('normalizes date with month granularity', () => {
+    expect(normalizeIsoDateString('', 'month')).toBe('');
+    expect(normalizeIsoDateString('invalid', 'month')).toBe('');
+    expect(normalizeIsoDateString('201', 'month')).toBe('');
+    expect(normalizeIsoDateString('2012', 'month')).toBe('2012');
+    expect(normalizeIsoDateString('2012-', 'month')).toBe('2012');
+    expect(normalizeIsoDateString('2012-0', 'month')).toBe('2012');
+    expect(normalizeIsoDateString('2012-01', 'month')).toBe('2012-01');
+    expect(normalizeIsoDateString('2012-01-', 'month')).toBe('2012-01');
+    expect(normalizeIsoDateString('2012-01-0', 'month')).toBe('2012-01');
+    expect(normalizeIsoDateString('2012-01-01', 'month')).toBe('2012-01');
+    expect(normalizeIsoDateString('2012-1', 'month')).toBe('2012');
+    expect(normalizeIsoDateString('2012-12', 'month')).toBe('2012-12');
+  });
 });
