@@ -45,19 +45,23 @@ export function useExpandableTableProps<T>({
   if (isExpandable) {
     const visibleItems = new Array<T>();
 
-    const traverse = (item: T, detail: Omit<ExpandableItemDetail<T>, 'children'>) => {
+    const traverse = (item: T, detail: Omit<ExpandableItemDetail<T>, 'children'>, visible: boolean) => {
       const children = expandableRows.getItemChildren(item);
       itemToDetail.set(item, { ...detail, children });
 
-      visibleItems.push(item);
-      if (expandedSet.has(item)) {
-        children.forEach((child, index) =>
-          traverse(child, { level: detail.level + 1, setSize: children.length, posInSet: index + 1, parent: item })
-        );
+      if (visible) {
+        visibleItems.push(item);
       }
+      children.forEach((child, index) =>
+        traverse(
+          child,
+          { level: detail.level + 1, setSize: children.length, posInSet: index + 1, parent: item },
+          visible && expandedSet.has(item)
+        )
+      );
     };
     items.forEach((item, index) =>
-      traverse(item, { level: 1, setSize: items.length, posInSet: index + 1, parent: null })
+      traverse(item, { level: 1, setSize: items.length, posInSet: index + 1, parent: null }, true)
     );
 
     for (let index = 0; index < visibleItems.length; index++) {

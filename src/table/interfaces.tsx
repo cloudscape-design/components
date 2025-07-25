@@ -134,13 +134,20 @@ export interface TableProps<T = any> extends BaseComponentProps {
   cellVerticalAlign?: 'middle' | 'top';
 
   /**
-   * Specifies the selection type (`'single' | 'multi'`).
+   * Specifies the selection type (`'single' | 'multi' | 'group`).
    */
   selectionType?: TableProps.SelectionType;
   /**
    * List of selected items.
+   *
+   * When `selectionType="group"` the `selectedItems` represents selection tree and requires `selectionInverted` for completeness.
+   * For example, the combination `selectionInverted=true` and `selectedItems=[{ id: "1" }]` means select all but the one with `id="1"`.
    */
   selectedItems?: ReadonlyArray<T>;
+  /**
+   * Specifies if select all was used when `selectionType="group"`.
+   */
+  selectionInverted?: boolean;
 
   /**
    * Use this slot to add filtering controls to the table.
@@ -269,7 +276,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
 
   /**
    * Fired when a user interaction triggers a change in the list of selected items.
-   * The event `detail` contains the current list of `selectedItems`.
+   * The event `detail` contains the new state for `selectedItems` (and `selectionInverted`, when `selectionType="group"`).
    */
   onSelectionChange?: NonCancelableEventHandler<TableProps.SelectionChangeDetail<T>>;
 
@@ -482,13 +489,15 @@ export namespace TableProps {
   }
 
   export type VerticalAlign = 'middle' | 'top';
-  export type SelectionType = 'single' | 'multi';
+  export type SelectionType = 'single' | 'multi' | 'group';
   export type Variant = 'container' | 'embedded' | 'borderless' | 'stacked' | 'full-page';
   export interface SelectionState<T> {
     selectedItems: ReadonlyArray<T>;
+    selectionInverted?: boolean;
   }
   export interface SelectionChangeDetail<T> {
     selectedItems: T[];
+    selectionInverted?: boolean;
   }
   export type IsItemDisabled<T> = (item: T) => boolean;
   export interface AriaLabels<T> {

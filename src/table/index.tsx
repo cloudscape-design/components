@@ -21,6 +21,7 @@ const Table = React.forwardRef(
     {
       items = [],
       selectedItems = [],
+      selectionInverted = false,
       variant = 'container',
       contentDensity = 'comfortable',
       cellVerticalAlign = 'middle',
@@ -93,6 +94,7 @@ const Table = React.forwardRef(
     const tableProps: Parameters<typeof InternalTable<T>>[0] = {
       items,
       selectedItems,
+      selectionInverted,
       variant,
       contentDensity,
       firstIndex,
