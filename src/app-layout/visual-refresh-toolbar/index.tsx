@@ -136,7 +136,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     };
 
     const onAiDrawerFocus = () => {
-      aiDrawerFocusControl.setFocus(true);
+      aiDrawerFocusControl.setFocus();
     };
 
     const {
