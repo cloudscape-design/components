@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { padLeftZeros } from '../../../utils/strings';
 import { insertAt } from './strings';
 
@@ -51,6 +52,7 @@ class MaskFormat {
   }
 
   isValid(value: string): boolean {
+    // No inputSeparators will be present as they are replaced with the separator prior.
     const inputSegments = value.split(this.separator);
 
     if (inputSegments.length > this.segments.length) {
@@ -60,33 +62,33 @@ class MaskFormat {
     return inputSegments.every((segmentValue, i) => {
       const segment = this.segments[i];
 
-      // disallow empty segments
+      // Disallow empty segments
       if (segmentValue === '') {
-        // except empty last segment (e.g. trailing separator "12:")
+        // except empty last segment (e.g. trailing separator "12:").
         if (i === inputSegments.length - 1) {
           return true;
         } else {
           return false;
         }
       }
-      // only allow numerals
+      // Only allow numerals.
       if (!segmentValue.match(/^\d+$/)) {
         return false;
       }
-      // disallow incomplete segments, except at end
+      // Disallow incomplete segments, except at end.
       if (segmentValue.length < segment.length && i !== inputSegments.length - 1) {
         return false;
       }
-      // limit numerical value
+      // Limit numerical value.
       const intValue = parseInt(segmentValue, 10);
 
-      // Handles values padded with 0s that are lost during parsing
+      // Handle values padded with 0s that are lost during parsing.
       if (segmentValue.length > segment.length) {
         return false;
       }
 
       if (intValue < segment.min || intValue > segment.max(value)) {
-        // allow incomplete segments in final position
+        // Allow incomplete segments in final position.
         if (i === inputSegments.length - 1 && segmentValue.length < segment.length) {
           return true;
         }
@@ -111,16 +113,14 @@ class MaskFormat {
   }
 
   autoComplete(value: string): string {
-    // aka [...completeSegments, lastSegment] = value.split(':')
-    // but that's not valid :/
     const [lastSegmentValue, ...completeSegmentValues] = value.split(this.separator).reverse();
     const lastSegment = this.segments[completeSegmentValues.length];
 
-    // if the last segment isn't complete, pad it with a preceding 0
-    // e.g. 10:1 -> 10:01
+    // If the last segment isn't complete, pad it with a preceding 0,
+    // e.g. 10:1 -> 10:01.
     const paddedLastSegmentValue = this.padWithDefaultValue(lastSegmentValue, lastSegment);
 
-    // recombine, and pad with extra segments for the full format
+    // Recombine, and pad with extra segments for the full format.
     const partial = [...completeSegmentValues.reverse(), paddedLastSegmentValue];
     while (partial.length < this.segments.length) {
       const nextSegment = this.segments[partial.length];
@@ -143,19 +143,19 @@ class MaskFormat {
   replaceDigitsWithZeroes(value: string, cursorStart: number, cursorEnd: number): ChangeResult {
     const position = this.isCursorAtSeparator(cursorStart) ? cursorStart + 1 : cursorStart;
 
-    // move selection forwards if it starts with a separator
+    // Move selection forwards if it starts with a separator.
     if (this.isCursorAtSeparator(cursorStart)) {
       cursorStart++;
     }
 
-    // first, insert zeros in a partial segment at beginning of selection
+    // First, insert zeros in a partial segment at beginning of selection.
     if (!this.isSegmentStart(cursorStart)) {
       const segment = this.positionFormats.get(cursorStart)!;
       value = insertAt(value, padLeftZeros('', segment.end - cursorStart), cursorStart, segment.end);
       cursorStart = segment.end + 1;
     }
 
-    // then loop through remaining segments, filling with zeros
+    // Then, loop through remaining segments, filling with zeros.
     let currentSegment: FormatSegmentFull;
     while (cursorStart < cursorEnd && (currentSegment = this.positionFormats.get(cursorStart + 1)!)) {
       const insertionEnd = Math.min(cursorEnd, currentSegment.end);
@@ -259,8 +259,8 @@ class MaskFormat {
     let position = cursorStart;
 
     let formattedValue = value;
-    // if a selection range captures the end of the current value
-    // we replace it with the value in buffer even if the value in buffer is shorter
+    // If a selection range captures the end of the current value,
+    // we replace it with the value in buffer even if the value in buffer is shorter.
     if (cursorEnd > cursorStart && cursorEnd === value.length) {
       formattedValue = value.slice(0, cursorStart);
     }
@@ -323,7 +323,7 @@ class MaskFormat {
 
     value = this.tryAppendSeparator(value);
 
-    // Move cursor in front of separator if behind after overwriting a character
+    // Move cursor in front of separator if behind after overwriting a character.
     if (this.isCursorAtSeparator(position)) {
       position++;
     }
@@ -350,11 +350,11 @@ class MaskFormat {
         end: position + segment.length,
       };
       this.segments.push(fullSegment);
-      // insert this format segment for every char in the max value
+      // Insert this format segment for every char in the max value.
       for (let j = 0; j < fullSegment.length; j++) {
         this.positionFormats.set(position++, fullSegment);
       }
-      // skip a position for separator
+      // Skip a position for separator.
       position++;
     }
   }
