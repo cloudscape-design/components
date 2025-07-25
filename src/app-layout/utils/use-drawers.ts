@@ -156,7 +156,7 @@ function useDrawerRuntimeOpenClose({
       onActiveGlobalDrawersChange(drawerId, params);
     }
 
-    if (aiDrawer && activeAiDrawerId !== drawerId) {
+    if (aiDrawer && aiDrawer?.id === drawerId) {
       onActiveAiDrawerChange(drawerId, params);
     }
   });
@@ -395,7 +395,7 @@ export function useDrawers(
     },
     {}
   );
-  const activeAiDrawer = activeAiDrawerId ? aiDrawer : null;
+  const activeAiDrawer = activeAiDrawerId && activeAiDrawerId === aiDrawer?.id ? aiDrawer : null;
   const activeAiDrawerSize = activeAiDrawerId
     ? (drawerSizes[activeAiDrawerId] ?? activeAiDrawer?.defaultSize ?? DEFAULT_AI_DRAWER_SIZE)
     : 0;
