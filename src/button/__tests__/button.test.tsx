@@ -116,6 +116,8 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).toHaveClass(styles.disabled);
       expect(wrapper.getElement()).not.toHaveAttribute('disabled');
       expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
+      expect(wrapper.getElement()).toHaveAttribute('role', 'link');
+      expect(wrapper.getElement()).not.toHaveAttribute('href');
       expect(wrapper.isDisabled()).toBe(true);
     });
 
@@ -552,6 +554,8 @@ describe('Button Component', () => {
     test('adds a tab index -1 to the link button', () => {
       const wrapper = renderButton({ loading: true, href: 'https://amazon.com' });
       expect(wrapper.getElement()).toHaveAttribute('tabIndex', '-1');
+      expect(wrapper.getElement()).not.toHaveAttribute('href');
+      expect(wrapper.getElement()).toHaveAttribute('role', 'link');
     });
   });
 
@@ -617,6 +621,18 @@ describe('Button Component', () => {
     test('mirrors the href property as href attribute', () => {
       const wrapper = renderButton({ href: 'https://amazon.com' });
       expect(wrapper.getElement()).toHaveAttribute('href', 'https://amazon.com');
+    });
+
+    test('removes href attribute and adds role="link" when button is disabled', () => {
+      const wrapper = renderButton({ href: 'https://amazon.com', disabled: true });
+      expect(wrapper.getElement()).not.toHaveAttribute('href');
+      expect(wrapper.getElement()).toHaveAttribute('role', 'link');
+    });
+
+    test('removes href attribute and adds role="link" when button is loading', () => {
+      const wrapper = renderButton({ href: 'https://amazon.com', loading: true });
+      expect(wrapper.getElement()).not.toHaveAttribute('href');
+      expect(wrapper.getElement()).toHaveAttribute('role', 'link');
     });
 
     test.each(buttonTargetExpectations)('"target" property %s', (props, expectation) => {
