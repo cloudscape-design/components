@@ -230,23 +230,24 @@
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 
   &-text {
-    @include styles.font-panel-header;
     color: awsui.$color-text-heading-default;
     flex: 1;
     margin-block: 0;
     margin-inline: 0;
     text-align: center;
 
+    &--title {
+      /* used in test-utils */
+      @include styles.font-panel-header;
+    }
+
     &--secondary {
       font-size: awsui.$font-header-h2-description-size;
       line-height: awsui.$font-header-h2-description-line-height;
       font-weight: styles.$font-weight-normal;
+      @include styles.font-smoothing;
     }
   }
-}
-
-.overflow-menu-header-text--title {
-  /* used in test-utils */
 }
 
 .overflow-menu-back-button {

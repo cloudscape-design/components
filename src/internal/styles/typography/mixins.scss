@@ -105,6 +105,7 @@
 
 @mixin font-panel-header {
   font-size: awsui.$font-panel-header-size;
+  letter-spacing: awsui.$letter-spacing-heading-m;
   line-height: awsui.$font-panel-header-line-height;
   font-weight: awsui.$font-weight-heading-l;
   @include font-smoothing;
