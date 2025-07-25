@@ -135,7 +135,7 @@ export function AppLayoutToolbarImplementation({
         {aiDrawer?.trigger && !activeAiDrawerId && (
           <div className={styles['universal-toolbar-ai-drawer']}>
             <TriggerButton
-              // ariaLabel={ariaLabels?.navigationToggle ?? undefined}
+              ariaLabel={aiDrawer?.ariaLabels?.triggerButton}
               ariaExpanded={!!activeAiDrawerId}
               iconName={aiDrawer.trigger!.iconName}
               iconSvg={aiDrawer.trigger!.iconSvg}

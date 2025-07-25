@@ -67,7 +67,7 @@ awsuiPlugins.appLayout.registerDrawer({
   ariaLabels: {
     closeButton: 'Close button',
     content: 'Content',
-    triggerButton: 'Trigger button',
+    triggerButton: 'Trigger button for ai drawer',
     resizeHandle: 'Resize handle',
   },
 
