@@ -125,6 +125,27 @@ If the label is assigned via the \`i18nStrings\` property, this label will be ig
       "type": "string",
     },
     {
+      "description": "Specifies an object of selectors and properties that are used to apply custom styles.
+
+- \`root.background\` - (Optional) Background for alert.
+- \`root.borderColor\` - (Optional) Border color for alert.
+- \`root.borderRadius\` (string) - (Optional) Alert border radius.
+- \`root.borderWidth\` (string) - (Optional) Alert border width.
+- \`root.color\`  - (Optional) Text color for alert.
+- \`dismissButton.color.active\` - (Optional) Color for dismiss button active state.
+- \`dismissButton.color.default\` - (Optional) Color for dismiss button default state.
+- \`dismissButton.color.hover\` - (Optional) Color for dismiss button hover state.
+- \`dismissButton.focusRing.borderColor\` - (Optional) Dismiss button focus ring border color.
+- \`dismissButton.focusRing.borderRadius\` (string) - (Optional) Dismiss button focus ring border radius.
+- \`dismissButton.focusRing.borderWidth\` (string) - (Optional) Dismiss button focus ring border width.",
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "AlertProps.Style",
+    },
+    {
       "defaultValue": "'info'",
       "description": "Specifies the type of message you want to display.",
       "inlineType": {
@@ -37350,15 +37371,14 @@ Returns the current value of the input.
           },
         },
         {
-          "description": "Sets the value of the component and calls the \`onChange\` handler",
-          "inheritedFrom": {
-            "name": "BaseInputWrapper.setInputValue",
-          },
+          "description": "Sets the value of the component and calls the \`onChange\` handler.
+The value needs to use the "YYYY/MM/DD" format,
+but the subsequent \`onChange\` handler will contain the value in the "YYYY-MM-DD" format.",
           "name": "setInputValue",
           "parameters": [
             {
               "description": "
-The value the input is set to.
+The value the input is set to, using the "YYYY/MM/DD" format.
 ",
               "flags": {
                 "isOptional": false,
