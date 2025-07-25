@@ -33,7 +33,7 @@ export default function DateInputPermutations() {
   return (
     <Box padding="l">
       <h1>Date Input permutations - formats</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutationsFormats}
           render={permutation => <DateInput {...permutation} onChange={() => {}} />}
