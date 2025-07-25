@@ -7475,7 +7475,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "Specifies the date format to use when the format is 'long-localized' and the user needs to edit the date.
+      "description": "Specifies the date format to use when the format is 'long-localized' and editing the date.
 The format of the input as it is being interacted with. It can take the following values:
 * \`iso\`: ISO 8601 format without time, e.g.: 2024-01-30 (or 2024-01).
 * \`slashed\`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01).",

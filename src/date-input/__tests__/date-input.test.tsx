@@ -11,10 +11,15 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 
 function renderDateInput(props: DateInputProps) {
   const onChangeSpy = jest.fn();
-  const { container } = render(<DateInput onChange={onChangeSpy} {...props} />);
+  const { container, rerender } = render(<DateInput onChange={onChangeSpy} {...props} />);
   const wrapper = createWrapper(container).findDateInput()!;
   const inputValue = wrapper.findNativeInput()!.getElement().value;
-  return { wrapper, inputValue, onChangeSpy };
+  return {
+    wrapper,
+    inputValue,
+    onChangeSpy,
+    rerender: (newProps: DateInputProps) => rerender(<DateInput onChange={onChangeSpy} {...newProps} />),
+  };
 }
 
 describe('Date Input component', () => {
@@ -391,6 +396,22 @@ describe('Date Input component', () => {
     });
     wrapper.focus();
     wrapper.blur();
+    expect(onChangeSpy).not.toHaveBeenCalled();
+  });
+
+  test('does not call onChange when changing format or locale', () => {
+    const { wrapper, onChangeSpy, rerender } = renderDateInput({
+      value: '2001-02-03',
+      format: 'long-localized',
+      locale: 'en-GB',
+    });
+    expect(wrapper.findNativeInput().getElement().value).toBe('3 February 2001');
+
+    rerender({ value: '2001-02-03', format: 'long-localized', locale: 'de-DE' });
+    expect(wrapper.findNativeInput().getElement().value).toBe('3. Februar 2001');
+
+    rerender({ value: '2001-02-03', format: 'iso' });
+    expect(wrapper.findNativeInput().getElement().value).toBe('2001-02-03');
     expect(onChangeSpy).not.toHaveBeenCalled();
   });
 

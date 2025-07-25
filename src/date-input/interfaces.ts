@@ -30,18 +30,14 @@ export interface DateInputProps extends BaseInputProps, FormFieldValidationContr
    * * `iso`: ISO 8601 format without time, e.g.: 2024-01-30 (or 2024-01).
    * * `long-localized`: a more human-readable, localized format, e.g.: January 30, 2024 (or January, 2024).
    * * `slashed`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01).
-   *
-   * @default 'slashed'
    */
   format?: DateInputProps.Format;
 
   /**
-   * Specifies the date format to use when the format is 'long-localized' and the user needs to edit the date.
+   * Specifies the date format to use when the format is 'long-localized' and editing the date.
    * The format of the input as it is being interacted with. It can take the following values:
    * * `iso`: ISO 8601 format without time, e.g.: 2024-01-30 (or 2024-01).
    * * `slashed`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01).
-   *
-   * @default 'slashed'.
    */
   inputFormat?: DateInputProps.InputFormat;
 }

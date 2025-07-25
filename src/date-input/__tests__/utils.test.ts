@@ -85,6 +85,8 @@ describe('normalizeIsoDateString', () => {
     expect(normalizeIsoDateString('2012-01-0', 'month')).toBe('2012-01');
     expect(normalizeIsoDateString('2012-01-01', 'month')).toBe('2012-01');
     expect(normalizeIsoDateString('2012-1', 'month')).toBe('2012');
+    expect(normalizeIsoDateString('2012-1-1', 'month')).toBe('2012');
     expect(normalizeIsoDateString('2012-12', 'month')).toBe('2012-12');
+    expect(normalizeIsoDateString('2012-12-1', 'month')).toBe('2012-12');
   });
 });
