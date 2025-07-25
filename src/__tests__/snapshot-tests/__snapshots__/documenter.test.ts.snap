@@ -37371,15 +37371,14 @@ Returns the current value of the input.
           },
         },
         {
-          "description": "Sets the value of the component and calls the \`onChange\` handler",
-          "inheritedFrom": {
-            "name": "BaseInputWrapper.setInputValue",
-          },
+          "description": "Sets the value of the component and calls the \`onChange\` handler.
+The value needs to use the "YYYY/MM/DD" format,
+but the subsequent \`onChange\` handler will contain the value in the "YYYY-MM-DD" format.",
           "name": "setInputValue",
           "parameters": [
             {
               "description": "
-The value the input is set to.
+The value the input is set to, using the "YYYY/MM/DD" format.
 ",
               "flags": {
                 "isOptional": false,
