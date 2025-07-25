@@ -38,7 +38,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     return (
       <>
-        <AppLayoutWidgetizedState props={props} forwardRef={forwardRef} stateManager={stateManager} />
         <AppLayoutStateProvider stateManager={stateManager}>
           {(appLayoutState, skeletonSlotsAttributes) => {
             return (
@@ -52,6 +51,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
             );
           }}
         </AppLayoutStateProvider>
+        <AppLayoutWidgetizedState props={props} forwardRef={forwardRef} stateManager={stateManager} />
       </>
     );
   }
