@@ -42,17 +42,19 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
 
-  const getElementsToAnimate = useCallback(() => {
-    const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
-    return { ...flashElements, notificationBar: notificationBarRef.current };
-  }, [isFlashbarStackExpanded]);
+  const collapsedItemRefs = useRef<Record<string, HTMLElement | null>>({});
+  const expandedItemRefs = useRef<Record<string, HTMLElement | null>>({});
+  const [initialAnimationState, setInitialAnimationState] = useState<Record<string, DOMRect> | null>(null);
+  const listElementRef = useRef<HTMLUListElement | null>(null);
+  const notificationBarRef = useRef<HTMLDivElement | null>(null);
+  const [transitioning, setTransitioning] = useState(false);
+  const flashbarElementId = useUniqueId('flashbar');
+  const itemCountElementId = useUniqueId('item-count');
 
-  const prepareAnimations = useCallback(() => {
-    const rects = getDOMRects(getElementsToAnimate());
-    setInitialAnimationState(rects);
-  }, [getElementsToAnimate]);
+  // Create a ref to hold the prepareAnimations function
+  const prepareAnimationsRef = useRef<(() => void) | null>(null);
 
-  const { baseProps, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const { baseProps, isReducedMotion, isVisualRefresh, mergedRef, ref, flashRefs, handleFlashDismissed } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
@@ -63,7 +65,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
       // because we can rely on each item's index in the original array,
       // but we can't do that when elements are added or removed, since the index changes.
       if (options?.allItemsHaveId && !options?.isReducedMotion) {
-        prepareAnimations();
+        prepareAnimationsRef.current?.();
       }
     },
     onItemsRemoved: removedItems => {
@@ -71,14 +73,18 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
     },
   });
 
-  const collapsedItemRefs = useRef<Record<string, HTMLElement | null>>({});
-  const expandedItemRefs = useRef<Record<string, HTMLElement | null>>({});
-  const [initialAnimationState, setInitialAnimationState] = useState<Record<string, DOMRect> | null>(null);
-  const listElementRef = useRef<HTMLUListElement | null>(null);
-  const notificationBarRef = useRef<HTMLDivElement | null>(null);
-  const [transitioning, setTransitioning] = useState(false);
-  const flashbarElementId = useUniqueId('flashbar');
-  const itemCountElementId = useUniqueId('item-count');
+  const getElementsToAnimate = useCallback(() => {
+    // Use the flashRefs from the hook for animation
+    return { ...flashRefs.current, notificationBar: notificationBarRef.current };
+  }, [flashRefs]);
+
+  const prepareAnimations = useCallback(() => {
+    const rects = getDOMRects(getElementsToAnimate());
+    setInitialAnimationState(rects);
+  }, [getElementsToAnimate]);
+
+  // Update the ref with the current prepareAnimations function
+  prepareAnimationsRef.current = prepareAnimations;
 
   if (items.length <= maxNonCollapsibleItems && isFlashbarStackExpanded) {
     setIsFlashbarStackExpanded(false);
@@ -283,10 +289,26 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
                       isVisualRefresh && styles['flash-refresh']
                     )}
                     key={getItemId(item)}
-                    ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
+                    ref={(el: HTMLDivElement | null) => {
+                      // Store the Flash element reference for focus management
+                      flashRefs.current[getItemId(item)] = el;
+
+                      if (shouldUseStandardAnimation(item, index) && transitionRootElement) {
+                        if (typeof transitionRootElement === 'function') {
+                          transitionRootElement(el);
+                        } else if (
+                          transitionRootElement &&
+                          typeof transitionRootElement === 'object' &&
+                          'current' in transitionRootElement
+                        ) {
+                          (transitionRootElement as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                        }
+                      }
+                    }}
                     transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
                     i18nStrings={iconAriaLabels}
                     style={style}
+                    onDismissed={handleFlashDismissed}
                     {...item}
                   />
                 )}

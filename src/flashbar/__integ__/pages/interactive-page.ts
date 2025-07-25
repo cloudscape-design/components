@@ -37,6 +37,9 @@ export class FlashbarInteractivePage extends FlashbarBasePage {
   async removeAll() {
     await this.click('[data-id="remove-all"]');
   }
+  getBrowser() {
+    return this.browser;
+  }
 }
 
 export const setupTest = (testFn: (page: FlashbarInteractivePage) => Promise<void>) => {

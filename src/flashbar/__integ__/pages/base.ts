@@ -30,9 +30,21 @@ export class FlashbarBasePage extends BasePageObject {
     return createWrapper().findFlashbar().findByClassName(selectors['dismiss-button']).toSelector();
   }
 
-  isFlashFocused(index: number) {
-    return this.isFocused(
-      flashbar.findItems().get(index).findByClassName(selectors['flash-focus-container']).toSelector()
-    );
+  isDismissButtonFocused() {
+    const dismissButton = this.getDismissButton();
+    return this.isFocused(dismissButton);
+  }
+
+  isFlashDismissButtonFocused(index: number) {
+    const dismissButton = flashbar.findItems().get(index).findDismissButton().toSelector();
+    return this.isFocused(dismissButton);
+  }
+
+  async isFlashFocused(index: number) {
+    const flash = flashbar.findItems().get(index);
+    const container = flash.findByClassName(selectors['flash-focus-container']).toSelector();
+    const containerFocused = await this.isFocused(container);
+    const dismissButtonFocused = await this.isFlashDismissButtonFocused(index);
+    return containerFocused || dismissButtonFocused;
   }
 }
