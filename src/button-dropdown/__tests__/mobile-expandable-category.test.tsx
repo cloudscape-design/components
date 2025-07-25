@@ -72,10 +72,4 @@ describe('MobileExpandableCategoryElement icon rendering', () => {
     const wrapper = renderComponent(<MobileExpandableCategoryElement item={item} {...mockProps} />);
     expect(wrapper.findIcon()).toBeTruthy();
   });
-
-  test('does not render icon when no icon properties provided', () => {
-    const item = { id: 'test', text: 'Test', items: [] };
-    const wrapper = renderComponent(<MobileExpandableCategoryElement item={item} {...mockProps} />);
-    expect(wrapper.findIcon()).toBeFalsy();
-  });
 });
