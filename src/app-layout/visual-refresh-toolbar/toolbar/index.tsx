@@ -132,7 +132,7 @@ export function AppLayoutToolbarImplementation({
       }}
     >
       <div className={styles['toolbar-container']}>
-        {aiDrawer && !activeAiDrawerId && (
+        {aiDrawer?.trigger && !activeAiDrawerId && (
           <div className={styles['universal-toolbar-ai-drawer']}>
             <TriggerButton
               // ariaLabel={ariaLabels?.navigationToggle ?? undefined}
