@@ -19,7 +19,6 @@ import { splitPaneli18nStrings } from './utils/strings';
 import * as toolsContent from './utils/tools-content';
 
 type SplitPanelHeaderContentType = 'text' | 'react-node';
-type SplitPanelHeaderLength = 'short' | 'long' | 'very-long';
 
 type SplitPanelDemoContext = React.Context<
   AppContextType<{
@@ -27,7 +26,6 @@ type SplitPanelDemoContext = React.Context<
     renderActions: boolean;
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
     splitPanelHeaderContentType: SplitPanelHeaderContentType;
-    splitPanelHeaderLength: SplitPanelHeaderLength;
   }>
 >;
 
@@ -84,28 +82,20 @@ const DEMO_CONTENT = (
   </div>
 );
 
-const baseHeaderText = 'Split panel header';
-const headerTextWithLongWord = baseHeaderText + ' withlongwordthatshouldbesplitinsteadofmakingthepanelscroll';
-
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as SplitPanelDemoContext);
 
-  const headerText =
-    urlParams.splitPanelHeaderLength === 'short'
-      ? baseHeaderText
-      : urlParams.splitPanelHeaderLength === 'long'
-        ? headerTextWithLongWord
-        : new Array(20).fill(baseHeaderText);
-
   const header =
     urlParams.splitPanelHeaderContentType === 'text' ? (
-      headerText
+      'This split panel can be opened by clicking anywhere on it'
     ) : (
       <div style={{ display: 'flex', justifyContent: 'space-between', inlineSize: '100%' }}>
         <SpaceBetween direction="horizontal" size="xs" alignItems="center">
           {urlParams.renderBadge && <Badge>Badge</Badge>}
           <Box variant="h3" tagOverride="h2" margin={{ vertical: 'n' }} padding={{ vertical: 'n' }}>
-            <span style={{ letterSpacing: 'normal' }}>{headerText}</span>
+            <span style={{ letterSpacing: 'normal' }}>
+              This split panel can be opened only by clicking on the caret icon
+            </span>
           </Box>
         </SpaceBetween>
         {urlParams.renderActions && (
@@ -144,22 +134,6 @@ export default function () {
               </Header>
             </div>
             <SpaceBetween size="l">
-              <FormField label="Split panel header text length">
-                <Tiles
-                  value={urlParams.splitPanelHeaderLength}
-                  items={[
-                    { label: 'Short', value: 'short' },
-                    { label: 'Long', value: 'long' },
-                    { label: 'Very long', value: 'very-long' },
-                  ]}
-                  onChange={({ detail }) =>
-                    setUrlParams({
-                      ...urlParams,
-                      splitPanelHeaderLength: detail.value as SplitPanelHeaderLength,
-                    })
-                  }
-                />
-              </FormField>
               <FormField label="Split panel header content type">
                 <Tiles
                   value={urlParams.splitPanelHeaderContentType}

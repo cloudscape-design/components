@@ -62,5 +62,5 @@ export interface SplitPanelContentProps {
   resizeHandle: React.ReactNode;
   header: React.ReactNode;
   children: React.ReactNode;
-  onToggle: () => void;
+  onToggle?: () => void;
 }

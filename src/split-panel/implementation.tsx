@@ -95,6 +95,8 @@ export function SplitPanelImplementation({
     id: panelHeaderId,
   };
 
+  const restrictClickableArea = typeof header !== 'string' && position === 'bottom';
+
   const wrappedHeader = (
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
       {typeof header === 'string' ? (
@@ -139,6 +141,7 @@ export function SplitPanelImplementation({
             ariaLabel={i18nStrings.openButtonAriaLabel}
             ref={refs.toggle}
             ariaExpanded={isOpen}
+            onClick={restrictClickableArea ? onToggle : undefined}
           />
         )}
       </div>
@@ -232,7 +235,7 @@ export function SplitPanelImplementation({
           isOpen={isOpen}
           splitPanelRef={mergedRef}
           cappedSize={size}
-          onToggle={onToggle}
+          onToggle={!restrictClickableArea ? onToggle : undefined}
           header={wrappedHeader}
           panelHeaderId={panelHeaderId}
           appLayoutMaxWidth={appLayoutMaxWidth}

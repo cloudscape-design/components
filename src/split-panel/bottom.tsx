@@ -79,8 +79,9 @@ export function SplitPanelContentBottom({
         [styles.refresh]: isRefresh,
         [styles['with-toolbar']]: isToolbar,
         [styles.hidden]: closeBehavior === 'hide' && !isOpen,
+        [styles.clickable]: !!onToggle,
       })}
-      onClick={() => !isOpen && onToggle()}
+      onClick={() => !isOpen && onToggle && onToggle()}
       style={{
         insetBlockEnd: bottomOffset,
         insetInlineStart: leftOffset,
