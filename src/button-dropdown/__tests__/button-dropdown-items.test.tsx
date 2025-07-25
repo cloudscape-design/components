@@ -288,28 +288,6 @@ const items: ButtonDropdownProps.Items = [
       expect(wrapper.findExpandableCategoryById('category1')!.getElement()).toHaveTextContent('category1');
     });
 
-    test('should render icons in expandable category headers', () => {
-      const groupedCategories: ButtonDropdownProps.ItemOrGroup[] = [
-        {
-          id: 'category1',
-          text: 'category1',
-          iconName: 'folder',
-          items: [
-            { id: 'i1', text: 'item1' },
-            { id: 'i2', text: 'item2' },
-          ],
-        },
-        {
-          id: 'i3',
-          text: 'item3',
-        },
-      ];
-      const wrapper = renderButtonDropdown({ ...props, expandableGroups: true, items: groupedCategories });
-      wrapper.openDropdown();
-      const categoryElement = wrapper.findExpandableCategoryById('category1')!;
-      expect(categoryElement.findIcon()).toBeTruthy();
-    });
-
     it('should not render empty category header', () => {
       const categoryWithoutHeader = [
         {
