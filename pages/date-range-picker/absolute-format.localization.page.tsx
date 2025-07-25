@@ -5,6 +5,7 @@ import React, { useContext, useState } from 'react';
 import { Box, DateRangePicker, DateRangePickerProps, FormField, Grid, SpaceBetween } from '~components';
 
 import AppContext from '../app/app-context';
+import { locales } from '../date-input/common';
 import {
   applyDisabledReason,
   checkIfDisabled,
@@ -15,27 +16,6 @@ import {
   i18nStrings,
   isValid,
 } from './common';
-
-const locales = [
-  'ar',
-  'de',
-  'en-GB',
-  'en-US',
-  'es',
-  'fr',
-  'he',
-  'id',
-  'it',
-  'ja',
-  'ko',
-  'ms',
-  'pt-BR',
-  'th',
-  'tr',
-  'vi',
-  'zh-CN',
-  'zh-TW',
-];
 
 const rtlLocales = new Set(['ar', 'he']);
 
