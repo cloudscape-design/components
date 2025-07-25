@@ -17,6 +17,7 @@ import { AppLayoutProps } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
 import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers';
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
+import { useGlobalScrollPadding } from '../utils/use-global-scroll-padding';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 import {
@@ -312,6 +313,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       toolbarHeight: toolbarHeight ?? 0,
       stickyNotifications: resolvedStickyNotifications,
     });
+
+    useGlobalScrollPadding(verticalOffsets.header);
 
     const appLayoutInternals: AppLayoutInternals = {
       ariaLabels: ariaLabelsWithDrawers,
