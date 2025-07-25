@@ -80,6 +80,18 @@ describe('Analytics', () => {
     );
   });
 
+  test('does not send an externalLinkInteracted metric when button is disabled', () => {
+    const { container } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <Button iconName="external" href="https://example.com" disabled={true} />
+      </AnalyticsFunnel>
+    );
+    act(() => void jest.runAllTimers());
+    createWrapper(container).findButton()!.click();
+
+    expect(FunnelMetrics.externalLinkInteracted).not.toHaveBeenCalled();
+  });
+
   test('does not send an externalLinkInteracted metric when the button is not a link', () => {
     const onClick = jest.fn();
     const { container } = render(
@@ -113,6 +125,18 @@ describe('Analytics', () => {
         elementSelector: expect.any(String),
       })
     );
+  });
+
+  test('does not send an externalLinkInteracted metric when button with target=_blank is disabled', () => {
+    const { container } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <Button target="_blank" href="https://example.com" disabled={true} />
+      </AnalyticsFunnel>
+    );
+    act(() => void jest.runAllTimers());
+    createWrapper(container).findButton()!.click();
+
+    expect(FunnelMetrics.externalLinkInteracted).not.toHaveBeenCalled();
   });
 
   test('does not send an externalLinkInteracted metric for non-external links', () => {
