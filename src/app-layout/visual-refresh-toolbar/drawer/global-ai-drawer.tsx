@@ -11,7 +11,7 @@ import { usePrevious } from '../../../internal/hooks/use-previous';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import Toggle from '../../../toggle/internal';
-import { AppLayoutInternals } from '../interfaces';
+import { AppLayoutInternals, InternalDrawer } from '../interfaces';
 import { useResize } from './use-resize';
 
 import sharedStyles from '../../resize/styles.css.js';
@@ -20,13 +20,16 @@ import styles from './styles.css.js';
 
 interface AppLayoutGlobalAiDrawerImplementationProps {
   appLayoutInternals: AppLayoutInternals;
+  show: boolean;
+  activeAiDrawer: InternalDrawer | null;
 }
 
 export function AppLayoutGlobalAiDrawerImplementation({
   appLayoutInternals,
+  show,
+  activeAiDrawer,
 }: AppLayoutGlobalAiDrawerImplementationProps) {
   const {
-    activeAiDrawer,
     activeAiDrawerSize,
     minAiDrawerSize,
     maxAiDrawerSize,
@@ -77,6 +80,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
             styles.drawer,
             styles['ai-drawer'],
             !animationDisabled && isExpanded && styles['with-expanded-motion'],
+            !show && styles['drawer-hidden'],
             {
               [sharedStyles['with-motion-horizontal']]: !animationDisabled,
               [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,

@@ -87,6 +87,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [splitPanelAnimationDisabled, setSplitPanelAnimationDisabled] = useState(true);
     const [isNested, setIsNested] = useState(false);
     const rootRef = useRef<HTMLDivElement>(null);
+    const wasAiDrawerOpenRef = useRef(false);
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -579,7 +580,18 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           contentType={contentType}
           maxContentWidth={maxContentWidth}
           disableContentPaddings={disableContentPaddings}
-          aiDrawer={activeAiDrawer && <AppLayoutGlobalAiDrawer appLayoutInternals={appLayoutInternals} />}
+          aiDrawer={
+            (activeAiDrawer || (aiDrawer?.preserveInactiveContent && wasAiDrawerOpenRef.current)) && (
+              <>
+                {(wasAiDrawerOpenRef.current = true)}
+                <AppLayoutGlobalAiDrawer
+                  show={!!activeAiDrawer}
+                  activeAiDrawer={aiDrawer}
+                  appLayoutInternals={appLayoutInternals}
+                />
+              </>
+            )
+          }
         />
       </AppLayoutVisibilityContext.Provider>
     );

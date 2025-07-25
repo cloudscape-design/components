@@ -118,13 +118,7 @@ function useRuntimeDrawers(
       unsubscribe();
       setRuntimeDrawers({ localBefore: [], localAfter: [], global: [], aiDrawer: null });
     };
-  }, [
-    activeAiDrawerId,
-    disableRuntimeDrawers,
-    onAiDrawersChangeStable,
-    onGlobalDrawersChangeStable,
-    onLocalDrawerChangeStable,
-  ]);
+  }, [disableRuntimeDrawers, onAiDrawersChangeStable, onGlobalDrawersChangeStable, onLocalDrawerChangeStable]);
 
   return runtimeDrawers;
 }

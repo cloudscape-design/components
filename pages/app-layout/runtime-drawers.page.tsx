@@ -23,6 +23,7 @@ import './utils/external-widget';
 import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Containers, CustomDrawerContent } from './utils/content-blocks';
 import { drawerLabels } from './utils/drawers';
+import { AutoIncrementCounter } from './utils/external-widget';
 import appLayoutLabels from './utils/labels';
 import { splitPaneli18nStrings } from './utils/strings';
 
@@ -47,6 +48,7 @@ const AIDrawer = () => {
       <Box variant="h2" padding={{ bottom: 'm' }}>
         Chat demo
       </Box>
+      <AutoIncrementCounter />
       {new Array(100).fill(null).map((_, index) => (
         <div key={index}>Tela content</div>
       ))}
@@ -60,6 +62,7 @@ awsuiPlugins.appLayout.registerDrawer({
   resizable: true,
   isExpandable: true,
   defaultSize: 500,
+  preserveInactiveContent: false,
 
   ariaLabels: {
     closeButton: 'Close button',
