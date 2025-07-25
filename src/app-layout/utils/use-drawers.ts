@@ -263,6 +263,7 @@ export function useDrawers(
     fireNonCancelableEvent(activeDrawer?.onResize, { id, size });
     const activeGlobalDrawer = runtimeGlobalDrawers.find(drawer => drawer.id === id);
     fireNonCancelableEvent(activeGlobalDrawer?.onResize, { id, size });
+    fireNonCancelableEvent(activeAiDrawer?.onResize, { id, size });
   }
 
   function onActiveAiDrawerChange(
