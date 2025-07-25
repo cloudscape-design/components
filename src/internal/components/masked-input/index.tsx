@@ -51,9 +51,13 @@ const MaskedInput = React.forwardRef(
       setPosition: setCursorPosition,
     });
 
-    const inputProps = showUnmaskedValue
-      ? { ...rest, ...baseProps, ...formFieldContext, value }
-      : { ...rest, ...baseProps, ...formFieldContext, ...maskProps };
+    const inputProps = {
+      ...rest,
+      ...baseProps,
+      ...formFieldContext,
+      ...maskProps,
+      value: showUnmaskedValue ? value : maskProps.value,
+    };
 
     const mergedRef = useMergeRefs(ref, inputRef);
     return (
