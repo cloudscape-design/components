@@ -8,6 +8,7 @@ import { Alert as CloudscapeAlert, SpaceBetween } from '~components';
 
 import { palette } from '../app/themes/style-api';
 import ScreenshotArea from '../utils/screenshot-area';
+import { i18nStrings } from './common';
 
 export default function CustomAlertTypes() {
   return (
@@ -34,12 +35,9 @@ interface CustomAlertProps {
   children?: React.ReactNode;
   type: 'info' | 'success' | 'error' | 'warning';
   dismissible?: boolean;
-  i18nStrings?: {
-    dismissAriaLabel?: string;
-  };
 }
 
-function CustomAlert({ children, type, dismissible, i18nStrings }: CustomAlertProps) {
+function CustomAlert({ children, type, dismissible }: CustomAlertProps) {
   const mode = useCurrentMode(useRef(document.body));
   const background = backgrounds[mode][type];
   const borderColor = borderColors[mode][type];

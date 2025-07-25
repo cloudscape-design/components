@@ -287,18 +287,34 @@ describe('Style API', () => {
       },
     });
 
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('background')).toBe('rgb(255, 255, 255)');
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-color')).toBe('rgb(0, 0, 0)');
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-radius')).toBe('8px');
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-width')).toBe('2px');
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('color')).toBe('rgb(0, 0, 0)');
+    expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('background')).toBe(
+      'rgb(255, 255, 255)'
+    );
+    expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('border-color')).toBe(
+      'rgb(0, 0, 0)'
+    );
+    expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('border-radius')).toBe('8px');
+    expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('border-width')).toBe('2px');
+    expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('color')).toBe('rgb(0, 0, 0)');
 
     const dismissButton = wrapper.findDismissButton()!.getElement();
-    expect(getComputedStyle(dismissButton).getPropertyValue('--color-default')).toBe('rgb(189, 37, 40)');
-    expect(getComputedStyle(dismissButton).getPropertyValue('--color-hover')).toBe('rgb(119, 12, 12)');
-    expect(getComputedStyle(dismissButton).getPropertyValue('--color-active')).toBe('rgb(12, 136, 22)');
-    expect(getComputedStyle(dismissButton).getPropertyValue('--focus-ring-border-color')).toBe('rgb(23, 31, 118)');
-    expect(getComputedStyle(dismissButton).getPropertyValue('--focus-ring-border-radius')).toBe('6px');
-    expect(getComputedStyle(dismissButton).getPropertyValue('--focus-ring-border-width')).toBe('4px');
+    expect(getComputedStyle(dismissButton).getPropertyValue('--awsui-style-color-active-kcc2gu')).toBe(
+      'rgb(12, 136, 22)'
+    );
+    expect(getComputedStyle(dismissButton).getPropertyValue('--awsui-style-color-default-kcc2gu')).toBe(
+      'rgb(189, 37, 40)'
+    );
+    expect(getComputedStyle(dismissButton).getPropertyValue('--awsui-style-color-hover-kcc2gu')).toBe(
+      'rgb(119, 12, 12)'
+    );
+    expect(getComputedStyle(dismissButton).getPropertyValue('--awsui-style-focus-ring-border-color-kcc2gu')).toBe(
+      'rgb(23, 31, 118)'
+    );
+    expect(getComputedStyle(dismissButton).getPropertyValue('--awsui-style-focus-ring-border-radius-kcc2gu')).toBe(
+      '6px'
+    );
+    expect(getComputedStyle(dismissButton).getPropertyValue('--awsui-style-focus-ring-border-width-kcc2gu')).toBe(
+      '4px'
+    );
   });
 });
