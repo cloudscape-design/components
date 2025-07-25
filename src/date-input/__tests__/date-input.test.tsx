@@ -7,7 +7,7 @@ import { fireEvent, render } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import DateInput, { DateInputProps } from '../../../lib/components/date-input';
-import createWrapper, { DateInputWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 function renderDateInput(props: DateInputProps) {
   const onChangeSpy = jest.fn();
@@ -326,8 +326,7 @@ describe('Date Input component', () => {
   test.each([{ inputFormat: undefined }, { inputFormat: 'iso' }, { inputFormat: 'slashed' }] as const)(
     'accepts value in slashed format, inputFormat=$inputFormat',
     ({ inputFormat }) => {
-      const getValue = (wrapper: DateInputWrapper) => wrapper.findNativeInput()!.getElement().value;
-      expect(getValue(renderDateInput({ value: '2001/02/03', inputFormat }).wrapper)).toBe('2001/02/03');
+      expect(renderDateInput({ value: '2001/02/03', inputFormat }).inputValue).toBe('2001/02/03');
     }
   );
 
