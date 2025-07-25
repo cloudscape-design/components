@@ -78,6 +78,9 @@ awsuiPlugins.appLayout.registerDrawer({
   onResize: event => {
     console.log('resize', event.detail);
   },
+  onToggle: event => {
+    console.log('toggle', event.detail);
+  },
 
   mountContent: container => {
     ReactDOM.render(<AIDrawer />, container);
