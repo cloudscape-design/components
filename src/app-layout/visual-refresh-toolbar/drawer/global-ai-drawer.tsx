@@ -105,7 +105,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
           }}
           data-testid={activeDrawerId && `awsui-app-layout-drawer-${activeDrawerId}`}
         >
-          {!isMobile && activeAiDrawer?.resizable && (
+          {!isMobile && activeAiDrawer?.resizable && !isExpanded && (
             <div className={styles['drawer-slider']}>
               <PanelResizeHandle
                 ref={aiDrawerFocusControl.refs.slider}
@@ -162,7 +162,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
               {activeAiDrawer?.content}
             </div>
           </div>
-          {!isMobile && <div className={styles['drawer-gap']} />}
+          {!isMobile && !isExpanded && <div className={styles['drawer-gap']} />}
         </aside>
       )}
     </Transition>
