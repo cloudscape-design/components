@@ -29,6 +29,7 @@ import { AppLayoutVisibilityContext } from './contexts';
 import { AppLayoutInternalProps, AppLayoutInternals } from './interfaces';
 import {
   AppLayoutDrawer,
+  AppLayoutGlobalAiDrawer,
   AppLayoutGlobalDrawers,
   AppLayoutNavigation,
   AppLayoutNotifications,
@@ -86,6 +87,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [splitPanelAnimationDisabled, setSplitPanelAnimationDisabled] = useState(true);
     const [isNested, setIsNested] = useState(false);
     const rootRef = useRef<HTMLDivElement>(null);
+    const wasAiDrawerOpenRef = useRef(false);
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -133,12 +135,17 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       closeFirstDrawer();
     };
 
+    const onAiDrawerFocus = () => {
+      aiDrawerFocusControl.setFocus();
+    };
+
     const {
       drawers,
       activeDrawer,
       minDrawerSize,
       minGlobalDrawersSizes,
       activeDrawerSize,
+      activeAiDrawerSize,
       ariaLabelsWithDrawers,
       globalDrawers,
       activeGlobalDrawers,
@@ -151,7 +158,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onActiveGlobalDrawersChange,
       expandedDrawerId,
       setExpandedDrawerId,
-    } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer }, ariaLabels, {
+      aiDrawer,
+      onActiveAiDrawerChange,
+      activeAiDrawer,
+      minAiDrawerSize,
+    } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer, onAiDrawerFocus }, ariaLabels, {
       ariaLabels,
       toolsHide,
       toolsOpen,
@@ -225,6 +236,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const globalDrawersFocusControl = useMultipleFocusControl(true, activeGlobalDrawersIds);
     const drawersFocusControl = useFocusControl(!!activeDrawer?.id, true, activeDrawer?.id);
+    const aiDrawerFocusControl = useFocusControl(!!activeAiDrawer?.id, true, activeAiDrawer?.id);
     const navigationFocusControl = useFocusControl(navigationOpen, navigationTriggerHide);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
@@ -255,6 +267,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelPosition,
       maxGlobalDrawersSizes,
       resizableSpaceAvailable,
+      maxAiDrawerSize,
     } = computeHorizontalLayout({
       activeDrawerSize: activeDrawer ? activeDrawerSize : 0,
       splitPanelSize,
@@ -266,6 +279,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelPosition: splitPanelPreferences?.position,
       isMobile,
       activeGlobalDrawersSizes,
+      activeAiDrawerSize,
     });
 
     const { ref: intersectionObserverRef, isIntersecting } = useIntersectionObserver({ initialState: true });
@@ -298,6 +312,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         onSplitPanelToggle: onSplitPanelToggleHandler,
         expandedDrawerId,
         setExpandedDrawerId,
+        aiDrawer: aiDrawer ?? undefined,
+        onActiveAiDrawerChange,
+        activeAiDrawerId: activeAiDrawer?.id ?? null,
+        aiDrawerFocusRef: aiDrawerFocusControl.refs.toggle,
       },
       isIntersecting
     );
@@ -356,6 +374,13 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelAnimationDisabled,
       expandedDrawerId,
       setExpandedDrawerId,
+      aiDrawer,
+      onActiveAiDrawerChange,
+      activeAiDrawer,
+      activeAiDrawerSize,
+      minAiDrawerSize,
+      maxAiDrawerSize,
+      aiDrawerFocusControl,
     };
 
     const splitPanelInternals: SplitPanelProviderProps = {
@@ -427,7 +452,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
       const activeNavigationWidth = !navigationHide && navigationOpen ? navigationWidth : 0;
       const scrollWidth = activeNavigationWidth + CONTENT_PADDING + totalActiveDrawersMinSize;
-      const hasHorizontalScroll = scrollWidth > placement.inlineSize;
+      const hasHorizontalScroll = scrollWidth > placement.inlineSize - activeAiDrawerSize;
       if (hasHorizontalScroll) {
         if (!navigationHide && navigationOpen) {
           onNavigationToggle(false);
@@ -445,6 +470,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       navigationWidth,
       onNavigationToggle,
       placement.inlineSize,
+      activeAiDrawerSize,
     ]);
 
     /**
@@ -493,6 +519,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           // which means the child layout isn't rendered at all in that case
           drawerExpandedModeInChildLayout={!!toolbarProps?.expandedDrawerId}
           drawerExpandedMode={!!expandedDrawerId}
+          aiDrawerExpandedMode={expandedDrawerId === activeAiDrawer?.id}
           style={{
             paddingBlockEnd: splitPanelOffsets.mainContentPaddingBlockEnd,
             ...(hasToolbar || !isNested
@@ -553,6 +580,18 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           contentType={contentType}
           maxContentWidth={maxContentWidth}
           disableContentPaddings={disableContentPaddings}
+          aiDrawer={
+            (activeAiDrawer || (aiDrawer?.preserveInactiveContent && wasAiDrawerOpenRef.current)) && (
+              <>
+                {(wasAiDrawerOpenRef.current = true)}
+                <AppLayoutGlobalAiDrawer
+                  show={!!activeAiDrawer}
+                  activeAiDrawer={aiDrawer}
+                  appLayoutInternals={appLayoutInternals}
+                />
+              </>
+            )
+          }
         />
       </AppLayoutVisibilityContext.Provider>
     );

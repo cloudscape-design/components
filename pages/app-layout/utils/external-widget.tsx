@@ -92,7 +92,7 @@ awsuiPlugins.appLayout.registerDrawer({
   unmountContent: container => unmountComponentAtNode(container),
 });
 
-const AutoIncrementCounter: React.FC<{
+export const AutoIncrementCounter: React.FC<{
   onVisibilityChange?: (callback: (isVisible: boolean) => void) => void;
 }> = ({ children, onVisibilityChange }) => {
   const [count, setCount] = useState(0);
