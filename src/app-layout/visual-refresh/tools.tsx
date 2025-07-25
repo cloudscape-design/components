@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import { InternalButton } from '../../button/internal';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
@@ -61,6 +63,7 @@ export default function Tools({ children }: ToolsProps) {
   );
   const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
   const isUnfocusable = hasDrawerViewportOverlay && !isToolsOpen;
+  const closeMergedRef = useMergeRefs(toolsRefs.close, toolsRefs.onMount);
 
   /**
    * If the drawers property is defined the SplitPanel will be mounted and rendered
@@ -116,7 +119,7 @@ export default function Tools({ children }: ToolsProps) {
                     variant="icon"
                     formAction="none"
                     className={testutilStyles['tools-close']}
-                    ref={toolsRefs.close}
+                    ref={closeMergedRef}
                   />
                 </div>
 

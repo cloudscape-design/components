@@ -43,6 +43,7 @@ describe.each(['bottom', 'side'] as const)('position=%s', position => {
       slider: { current: null },
       toggle: { current: null },
       preferences: { current: null },
+      onMount: () => {},
     },
     reportHeaderHeight: () => {},
     reportSize: () => {},

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import {
   AppLayout,
@@ -30,6 +30,18 @@ type DemoContext = React.Context<
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
   }>
 >;
+
+const CustomContent = () => {
+  useEffect(() => {
+    console.log('mount');
+
+    return () => {
+      console.log('unmount');
+    };
+  }, []);
+
+  return <div>Custom content</div>;
+};
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
@@ -70,83 +82,86 @@ export default function WithDrawers() {
       breadcrumbs={<Breadcrumbs />}
       ref={appLayoutRef}
       content={
-        <ContentLayout
-          disableOverlap={true}
-          header={
-            <SpaceBetween size="m">
-              <Header
-                variant="h1"
-                description="Sometimes you need custom drawers to get the job done."
-                info={
-                  <Link
-                    data-testid="info-link-header"
-                    variant="info"
-                    onFollow={() => {
-                      setHelpPathSlug('header');
-                      setIsToolsOpen(true);
-                      appLayoutRef.current?.focusToolsClose();
-                    }}
+        <div data-testid="app-layout-content-area">
+          <ContentLayout
+            disableOverlap={true}
+            header={
+              <SpaceBetween size="m">
+                <Header
+                  variant="h1"
+                  description="Sometimes you need custom drawers to get the job done."
+                  info={
+                    <Link
+                      data-testid="info-link-header"
+                      variant="info"
+                      onFollow={() => {
+                        setHelpPathSlug('header');
+                        setIsToolsOpen(true);
+                        appLayoutRef.current?.focusToolsClose();
+                      }}
+                    >
+                      Info
+                    </Link>
+                  }
+                >
+                  Testing Custom Drawers!
+                </Header>
+
+                <SpaceBetween size="xs">
+                  <Toggle checked={hasTools} onChange={({ detail }) => setUrlParams({ hasTools: detail.checked })}>
+                    Use Tools
+                  </Toggle>
+
+                  <Toggle checked={hasDrawers} onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}>
+                    Use Drawers
+                  </Toggle>
+
+                  <Button
+                    onClick={() => awsuiPlugins.appLayout.openDrawer('circle4-global')}
+                    data-testid="open-drawer-button"
                   >
-                    Info
-                  </Link>
-                }
-              >
-                Testing Custom Drawers!
-              </Header>
+                    Open a drawer without a trigger
+                  </Button>
+                  <Button onClick={() => awsuiPlugins.appLayout.closeDrawer('circle4-global')}>
+                    Close a drawer without a trigger
+                  </Button>
 
-              <SpaceBetween size="xs">
-                <Toggle checked={hasTools} onChange={({ detail }) => setUrlParams({ hasTools: detail.checked })}>
-                  Use Tools
-                </Toggle>
-
-                <Toggle checked={hasDrawers} onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}>
-                  Use Drawers
-                </Toggle>
-
-                <Button
-                  onClick={() => awsuiPlugins.appLayout.openDrawer('circle4-global')}
-                  data-testid="open-drawer-button"
-                >
-                  Open a drawer without a trigger
-                </Button>
-                <Button onClick={() => awsuiPlugins.appLayout.closeDrawer('circle4-global')}>
-                  Close a drawer without a trigger
-                </Button>
-
-                <Button
-                  onClick={() => awsuiPlugins.appLayout.resizeDrawer('circle-global', 400)}
-                  data-testid="button-circle-global-resize"
-                >
-                  Resize circle-global drawer to 400px
-                </Button>
-                <Button
-                  onClick={() => awsuiPlugins.appLayout.resizeDrawer('circle3-global', 500)}
-                  data-testid="button-circle3-global-resize"
-                >
-                  Resize circle3-global drawer to 500px
-                </Button>
+                  <Button
+                    onClick={() => awsuiPlugins.appLayout.resizeDrawer('circle-global', 400)}
+                    data-testid="button-circle-global-resize"
+                  >
+                    Resize circle-global drawer to 400px
+                  </Button>
+                  <Button
+                    onClick={() => awsuiPlugins.appLayout.resizeDrawer('circle3-global', 500)}
+                    data-testid="button-circle3-global-resize"
+                  >
+                    Resize circle3-global drawer to 500px
+                  </Button>
+                </SpaceBetween>
               </SpaceBetween>
-            </SpaceBetween>
-          }
-        >
-          <Header
-            info={
-              <Link
-                data-testid="info-link-content"
-                variant="info"
-                onFollow={() => {
-                  setHelpPathSlug('content');
-                  setIsToolsOpen(true);
-                }}
-              >
-                Info
-              </Link>
             }
           >
-            Content
-          </Header>
-          <Containers />
-        </ContentLayout>
+            <Header
+              info={
+                <Link
+                  data-testid="info-link-content"
+                  variant="info"
+                  onFollow={() => {
+                    setHelpPathSlug('content');
+                    setIsToolsOpen(true);
+                  }}
+                >
+                  Info
+                </Link>
+              }
+            >
+              Content
+            </Header>
+            <CustomContent />
+            <Containers />
+          </ContentLayout>
+        </div>
       }
       splitPanel={
         <SplitPanel header="Split panel header" i18nStrings={splitPaneli18nStrings}>
