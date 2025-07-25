@@ -24,7 +24,7 @@ import './utils/external-sidecar-widget-demo';
 import AppContext, { AppContextType } from '../app/app-context';
 import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
-import { Breadcrumbs } from './utils/content-blocks';
+import { Breadcrumbs, CustomDrawerContent } from './utils/content-blocks';
 import { drawerLabels } from './utils/drawers';
 import appLayoutLabels from './utils/labels';
 import { splitPaneli18nStrings } from './utils/strings';
@@ -44,12 +44,35 @@ export default function WithDrawers() {
   const [activeHref, setActiveHref] = useState('#/');
   const [navigationOpen, setNavigationOpen] = useState(true);
   const [toolsOpen, setToolsOpen] = useState(false);
+  const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
 
   const items = generateItems(20);
 
   function openHelp() {
     setToolsOpen(true);
   }
+
+  const drawersProps: Pick<AppLayoutProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = {
+    activeDrawerId: activeDrawerId,
+    drawers: [
+      {
+        ariaLabels: {
+          closeButton: 'ProHelp close button',
+          drawerName: 'ProHelp drawer content',
+          triggerButton: 'ProHelp trigger button',
+          resizeHandle: 'ProHelp resize handle',
+        },
+        content: <CustomDrawerContent />,
+        id: 'pro-help',
+        trigger: {
+          iconName: 'contact',
+        },
+      },
+    ],
+    onDrawerChange: event => {
+      setActiveDrawerId(event.detail.activeDrawerId);
+    },
+  };
 
   return (
     <AppLayout
@@ -193,6 +216,7 @@ export default function WithDrawers() {
           </ul>
         </HelpPanel>
       }
+      {...drawersProps}
     />
   );
 }
