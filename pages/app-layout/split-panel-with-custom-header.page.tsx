@@ -1,0 +1,175 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useContext } from 'react';
+
+import { Badge, Box, Button, Toggle } from '~components';
+import AppLayout, { AppLayoutProps } from '~components/app-layout';
+import FormField from '~components/form-field';
+import Header from '~components/header';
+import Popover from '~components/popover';
+import SpaceBetween from '~components/space-between';
+import SplitPanel from '~components/split-panel';
+import Tiles from '~components/tiles';
+
+import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
+import { Breadcrumbs, Containers, Navigation, Tools } from './utils/content-blocks';
+import labels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
+import * as toolsContent from './utils/tools-content';
+
+type SplitPanelHeaderContentType = 'text' | 'react-node';
+
+type SplitPanelDemoContext = React.Context<
+  AppContextType<{
+    renderBadge: boolean;
+    renderActions: boolean;
+    splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
+    splitPanelHeaderContentType: SplitPanelHeaderContentType;
+  }>
+>;
+
+const DEMO_CONTENT = (
+  <div>
+    <Popover
+      content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+    magna aliqua. Augue neque gravida in fermentum."
+    >
+      Launch popover
+    </Popover>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+      magna aliqua. Augue neque gravida in fermentum. Suspendisse sed nisi lacus sed viverra tellus in hac. Nec sagittis
+      aliquam malesuada bibendum arcu vitae elementum. Lectus proin nibh nisl condimentum id venenatis. Penatibus et
+      magnis dis parturient montes nascetur ridiculus mus mauris. Nisi porta lorem mollis aliquam ut porttitor leo a.
+      Facilisi morbi tempus iaculis urna. Odio tempor orci dapibus ultrices in iaculis nunc.
+    </p>
+    <div data-testid="scroll-me">The end</div>
+    <p>
+      Ut diam quam nulla porttitor massa id neque. Duis at tellus at urna condimentum mattis pellentesque id nibh. Metus
+      vulputate eu scelerisque felis imperdiet proin fermentum.
+    </p>
+    <p>
+      Orci porta non pulvinar neque laoreet suspendisse interdum consectetur libero. Varius quam quisque id diam vel.
+      Risus viverra adipiscing at in. Orci sagittis eu volutpat odio facilisis mauris. Mauris vitae ultricies leo
+      integer malesuada nunc. Sem et tortor consequat id porta nibh. Semper auctor neque vitae tempus quam pellentesque.
+    </p>
+    <p>Ante in nibh mauris cursus mattis molestie.</p>
+    <p>
+      Pharetra et ultrices neque ornare. Bibendum neque egestas congue quisque egestas diam in arcu cursus. Porttitor
+      eget dolor morbi non arcu risus quis. Integer quis auctor elit sed vulputate mi sit. Mauris nunc congue nisi vitae
+      suscipit tellus mauris a diam. Diam donec adipiscing tristique risus nec feugiat in. Arcu felis bibendum ut
+      tristique et egestas quis. Nulla porttitor massa id neque aliquam vestibulum morbi blandit. In hac habitasse
+      platea dictumst quisque sagittis. Sollicitudin tempor id eu nisl nunc mi ipsum. Ornare aenean euismod elementum
+      nisi quis. Elementum curabitur vitae nunc sed velit dignissim sodales. Amet tellus cras adipiscing enim eu. Id
+      interdum velit laoreet id donec ultrices tincidunt. Ullamcorper eget nulla facilisi etiam. Sodales neque sodales
+      ut etiam sit amet nisl purus. Auctor urna nunc id cursus metus aliquam eleifend mi in. Urna condimentum mattis
+      pellentesque id. Porta lorem mollis aliquam ut porttitor leo a. Lectus quam id leo in vitae turpis massa sed.
+      Pharetra pharetra massa massa ultricies mi.
+    </p>
+    <p>
+      Pharetra et ultrices neque ornare. Bibendum neque egestas congue quisque egestas diam in arcu cursus. Porttitor
+      eget dolor morbi non arcu risus quis. Integer quis auctor elit sed vulputate mi sit. Mauris nunc congue nisi vitae
+      suscipit tellus mauris a diam. Diam donec adipiscing tristique risus nec feugiat in. Arcu felis bibendum ut
+      tristique et egestas quis. Nulla porttitor massa id neque aliquam vestibulum morbi blandit. In hac habitasse
+      platea dictumst quisque sagittis. Sollicitudin tempor id eu nisl nunc mi ipsum. Ornare aenean euismod elementum
+      nisi quis. Elementum curabitur vitae nunc sed velit dignissim sodales. Amet tellus cras adipiscing enim eu. Id
+      interdum velit laoreet id donec ultrices tincidunt. Ullamcorper eget nulla facilisi etiam. Sodales neque sodales
+      ut etiam sit amet nisl purus. Auctor urna nunc id cursus metus aliquam eleifend mi in. Urna condimentum mattis
+      pellentesque id. Porta lorem mollis aliquam ut porttitor leo a. Lectus quam id leo in vitae turpis massa sed.
+      Pharetra pharetra massa massa ultricies mi.
+    </p>
+  </div>
+);
+
+export default function () {
+  const { urlParams, setUrlParams } = useContext(AppContext as SplitPanelDemoContext);
+
+  const header =
+    urlParams.splitPanelHeaderContentType === 'text' ? (
+      'This split panel can be opened by clicking anywhere on it'
+    ) : (
+      <div style={{ display: 'flex', justifyContent: 'space-between', inlineSize: '100%' }}>
+        <SpaceBetween direction="horizontal" size="xs" alignItems="center">
+          {urlParams.renderBadge && <Badge>Badge</Badge>}
+          <Box variant="h3" tagOverride="h2" margin={{ vertical: 'n' }} padding={{ vertical: 'n' }}>
+            <span style={{ letterSpacing: 'normal' }}>
+              This split panel can be opened only by clicking on the caret icon
+            </span>
+          </Box>
+        </SpaceBetween>
+        {urlParams.renderActions && (
+          <SpaceBetween direction="horizontal" size="xs">
+            <Button>Button</Button>
+            <Button>Button</Button>
+          </SpaceBetween>
+        )}
+      </div>
+    );
+
+  return (
+    <ScreenshotArea gutters={false}>
+      <AppLayout
+        ariaLabels={labels}
+        breadcrumbs={<Breadcrumbs />}
+        navigation={<Navigation />}
+        tools={<Tools>{toolsContent.long}</Tools>}
+        splitPanelPreferences={{
+          position: urlParams.splitPanelPosition,
+        }}
+        onSplitPanelPreferencesChange={event => {
+          const { position } = event.detail;
+          setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
+        }}
+        splitPanel={
+          <SplitPanel header={header} i18nStrings={splitPaneli18nStrings}>
+            {DEMO_CONTENT}
+          </SplitPanel>
+        }
+        content={
+          <>
+            <div style={{ marginBottom: '1rem' }}>
+              <Header variant="h1" description="Basic demo with split panel">
+                Demo page
+              </Header>
+            </div>
+            <SpaceBetween size="l">
+              <FormField label="Split panel header content type">
+                <Tiles
+                  value={urlParams.splitPanelHeaderContentType}
+                  items={[
+                    { label: 'Text', value: 'text' },
+                    { label: 'Custom React node', value: 'react-node' },
+                  ]}
+                  onChange={({ detail }) =>
+                    setUrlParams({
+                      ...urlParams,
+                      splitPanelHeaderContentType: detail.value as SplitPanelHeaderContentType,
+                    })
+                  }
+                />
+              </FormField>
+              <SpaceBetween direction="horizontal" size="xs">
+                <Toggle
+                  checked={urlParams.renderBadge}
+                  disabled={urlParams.splitPanelHeaderContentType !== 'react-node'}
+                  onChange={({ detail }) => setUrlParams({ ...urlParams, renderBadge: detail.checked })}
+                >
+                  With badge
+                </Toggle>
+                <Toggle
+                  checked={urlParams.renderActions}
+                  disabled={urlParams.splitPanelHeaderContentType !== 'react-node'}
+                  onChange={({ detail }) => setUrlParams({ ...urlParams, renderActions: detail.checked })}
+                >
+                  With action buttons
+                </Toggle>
+              </SpaceBetween>
+              <Containers />
+            </SpaceBetween>
+          </>
+        }
+      />
+    </ScreenshotArea>
+  );
+}

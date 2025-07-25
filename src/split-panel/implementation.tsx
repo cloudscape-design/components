@@ -90,11 +90,20 @@ export function SplitPanelImplementation({
 
   const panelHeaderId = useUniqueId('split-panel-header');
 
+  const headerTextAttributes = {
+    className: clsx(styles['header-text'], testUtilStyles['header-text']),
+    id: panelHeaderId,
+  };
+
+  const restrictClickableArea = typeof header !== 'string' && position === 'bottom';
+
   const wrappedHeader = (
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
-      <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
-        {header}
-      </h2>
+      {typeof header === 'string' ? (
+        <h2 {...headerTextAttributes}>{header}</h2>
+      ) : (
+        <div {...headerTextAttributes}>{header}</div>
+      )}
       <div className={styles['header-actions']}>
         {!hidePreferencesButton && isOpen && (
           <>
@@ -132,6 +141,7 @@ export function SplitPanelImplementation({
             ariaLabel={i18nStrings.openButtonAriaLabel}
             ref={refs.toggle}
             ariaExpanded={isOpen}
+            onClick={restrictClickableArea ? onToggle : undefined}
           />
         )}
       </div>
@@ -225,7 +235,7 @@ export function SplitPanelImplementation({
           isOpen={isOpen}
           splitPanelRef={mergedRef}
           cappedSize={size}
-          onToggle={onToggle}
+          onToggle={!restrictClickableArea ? onToggle : undefined}
           header={wrappedHeader}
           panelHeaderId={panelHeaderId}
           appLayoutMaxWidth={appLayoutMaxWidth}

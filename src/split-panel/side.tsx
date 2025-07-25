@@ -62,7 +62,7 @@ export function SplitPanelContentSide({
           top: topOffset,
           bottom: bottomOffset,
         }}
-        onClick={() => !isOpen && onToggle()}
+        onClick={() => !isOpen && onToggle && onToggle()}
         aria-labelledby={panelHeaderId}
         role="region"
       >
