@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import SpaceBetween from '~components/space-between';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 
 import styles from './styles.scss';
@@ -17,14 +18,13 @@ export const items: ButtonDropdownProps['items'] = [
     items: [...Array(2)].map((_, index) => ({
       id: 'category1Subitem' + index,
       text: 'Sub item ' + index,
-      iconName: 'star',
     })),
   },
   {
     id: 'category2',
     text: 'category2',
-    iconName: 'settings',
-    items: [...Array(3)].map((_, index) => ({
+    iconUrl: 'data:image/png;base64,aaaa',
+    items: [...Array(2)].map((_, index) => ({
       id: 'category2Subitem' + index,
       text: 'Cat 2 Sub item ' + index,
     })),
@@ -32,11 +32,19 @@ export const items: ButtonDropdownProps['items'] = [
   {
     id: 'item1',
     text: 'Item 1',
+    iconName: 'settings',
   },
   {
     id: 'category3',
     text: 'category3',
-    iconName: 'folder',
+    iconSvg: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" focusable="false">
+        <path
+          d="M2 4V12C2 12.5523 2.44772 13 3 13H13C13.5523 13 14 12.5523 14 12V6C14 5.44772 13.5523 5 13 5H8L6 3H3C2.44772 3 2 3.44772 2 4Z"
+          fill="currentColor"
+        />
+      </svg>
+    ),
     items: [...Array(2)].map((_, index) => ({
       id: 'category3Subitem' + index,
       text: 'Sub item ' + index,
@@ -44,9 +52,17 @@ export const items: ButtonDropdownProps['items'] = [
   },
 ];
 
+type DemoContext = React.Context<
+  AppContextType<{
+    expandableGroups: boolean;
+  }>
+>;
+
 export default function IconExpandableButtonDropdown() {
-  const [expandToViewport, setExpandToViewport] = useState(false);
-  const [expandableGroups, setExpandableGroups] = useState(true);
+  const {
+    urlParams: { expandableGroups = true },
+    setUrlParams,
+  } = useContext(AppContext as DemoContext);
 
   return (
     <div className={styles.container}>
@@ -54,37 +70,32 @@ export default function IconExpandableButtonDropdown() {
         <h1>Icon Expandable Dropdown</h1>
         <SpaceBetween size="m" direction="horizontal">
           <label>
-            <input
-              id="expandToViewport"
-              type="checkbox"
-              checked={expandToViewport}
-              onChange={e => setExpandToViewport(!!e.target.checked)}
-            />{' '}
-            expandToViewport
+            <input id="expandToViewport" type="checkbox" /> expandToViewport
           </label>
           <label>
             <input
               id="expandableGroups"
               type="checkbox"
               checked={expandableGroups}
-              onChange={e => setExpandableGroups(!!e.target.checked)}
+              onChange={e => setUrlParams({ expandableGroups: !!e.target.checked })}
             />{' '}
             expandableGroups
           </label>
         </SpaceBetween>
 
-        <ScreenshotArea style={{ paddingBlockEnd: 300, paddingInlineEnd: 100 }}>
-          <div style={{ padding: '10px', display: 'inline-block', marginTop: '10px' }} id="dropdown-container">
-            <ButtonDropdown
-              id="simpleDropdown"
-              expandToViewport={expandToViewport}
-              expandableGroups={expandableGroups}
-              items={items}
-              data-testid="icon-dropdown"
-            >
-              Dropdown with Icons
-            </ButtonDropdown>
-          </div>
+        <ScreenshotArea
+          style={{
+            paddingBlockStart: 10,
+            paddingBlockEnd: 300,
+            paddingInlineStart: 10,
+            paddingInlineEnd: 100,
+            display: 'inline-block',
+            marginTop: '10px',
+          }}
+        >
+          <ButtonDropdown expandableGroups={expandableGroups} items={items}>
+            Dropdown with Icons
+          </ButtonDropdown>
         </ScreenshotArea>
       </article>
     </div>
