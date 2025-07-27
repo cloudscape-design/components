@@ -437,7 +437,7 @@ const items: ButtonDropdownProps.Items = [
         expect(wrapper.findItemById('i1')!.findAllIcons()).toHaveLength(2);
       });
 
-      test('in expandable category headers', () => {
+      test.each([true, false])('in category headers when expandableGroups is %s', expandableGroups => {
         const svg = (
           <svg className="test-svg" focusable="false">
             <circle className="test-svg-inner" cx="8" cy="8" r="7" />
@@ -463,24 +463,16 @@ const items: ButtonDropdownProps.Items = [
             items: [{ id: 'i3', text: 'item3' }],
           },
         ];
-        const wrapper = renderButtonDropdown({ ...props, expandableGroups: true, items: groupedCategories });
+        const wrapper = renderButtonDropdown({ ...props, expandableGroups, items: groupedCategories });
         wrapper.openDropdown();
-        expect(wrapper.findExpandableCategoryById('category1')!.findIcon()).toBeTruthy();
-        expect(wrapper.findExpandableCategoryById('category2')!.findIcon()).toBeTruthy();
-        expect(wrapper.findExpandableCategoryById('category3')!.findIcon()).toBeTruthy();
-      });
 
-      test('in category headers when expandableGroups is false', () => {
-        const items: ButtonDropdownProps.ItemOrGroup[] = [
-          {
-            text: 'category with icon',
-            iconName: 'settings',
-            items: [{ id: 'i1', text: 'item1' }],
-          },
-        ];
-        const wrapper = renderButtonDropdown({ ...props, expandableGroups: false, items });
-        wrapper.openDropdown();
-        expect(wrapper.findOpenDropdown()!.findIcon()).toBeTruthy();
+        if (expandableGroups) {
+          expect(wrapper.findExpandableCategoryById('category1')!.findIcon()).toBeTruthy();
+          expect(wrapper.findExpandableCategoryById('category2')!.findIcon()).toBeTruthy();
+          expect(wrapper.findExpandableCategoryById('category3')!.findIcon()).toBeTruthy();
+        } else {
+          expect(wrapper.findOpenDropdown()!.findAllIcons()).toHaveLength(3);
+        }
       });
     });
   });

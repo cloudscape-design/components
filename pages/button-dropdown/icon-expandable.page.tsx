@@ -68,10 +68,7 @@ export default function IconExpandableButtonDropdown() {
     <div className={styles.container}>
       <article>
         <h1>Icon Expandable Dropdown</h1>
-        <SpaceBetween size="m" direction="horizontal">
-          <label>
-            <input id="expandToViewport" type="checkbox" /> expandToViewport
-          </label>
+        <SpaceBetween size="m">
           <label>
             <input
               id="expandableGroups"
@@ -81,21 +78,20 @@ export default function IconExpandableButtonDropdown() {
             />{' '}
             expandableGroups
           </label>
+          <ScreenshotArea
+            style={{
+              paddingBlockStart: 10,
+              paddingBlockEnd: 300,
+              paddingInlineStart: 10,
+              paddingInlineEnd: 100,
+              display: 'inline-block',
+            }}
+          >
+            <ButtonDropdown expandableGroups={expandableGroups} items={items}>
+              Dropdown with Icons
+            </ButtonDropdown>
+          </ScreenshotArea>
         </SpaceBetween>
-
-        <ScreenshotArea
-          style={{
-            paddingBlockEnd: 300,
-            paddingInlineEnd: 100,
-            padding: '10px',
-            display: 'inline-block',
-            marginTop: '10px',
-          }}
-        >
-          <ButtonDropdown expandableGroups={expandableGroups} items={items}>
-            Dropdown with Icons
-          </ButtonDropdown>
-        </ScreenshotArea>
       </article>
     </div>
   );
