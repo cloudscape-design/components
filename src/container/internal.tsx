@@ -108,8 +108,6 @@ export default function InternalContainer({
   const hasMedia = !!media?.content;
   const mediaPosition = media?.position ?? 'top';
 
-  console.log(style);
-
   return (
     <div
       {...baseProps}
