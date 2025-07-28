@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 
 import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 
-import { Alert as CloudscapeAlert, SpaceBetween } from '~components';
+import { Alert as CloudscapeAlert, Button, SpaceBetween } from '~components';
 
 import { palette } from '../app/themes/style-api';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -23,7 +23,7 @@ export default function CustomAlertTypes() {
           Error
         </CustomAlert>
         <CustomAlert type="warning">Warning</CustomAlert>
-        <CustomAlert type="info" dismissible={true}>
+        <CustomAlert type="info" dismissible={true} action={<Button>Button</Button>}>
           With button
         </CustomAlert>
       </SpaceBetween>
@@ -35,9 +35,10 @@ interface CustomAlertProps {
   children?: React.ReactNode;
   type: 'info' | 'success' | 'error' | 'warning';
   dismissible?: boolean;
+  action?: React.ReactNode;
 }
 
-function CustomAlert({ children, type, dismissible }: CustomAlertProps) {
+function CustomAlert({ children, type, dismissible, action }: CustomAlertProps) {
   const mode = useCurrentMode(useRef(document.body));
   const background = backgrounds[mode][type];
   const borderColor = borderColors[mode][type];
@@ -48,6 +49,7 @@ function CustomAlert({ children, type, dismissible }: CustomAlertProps) {
       dismissible={dismissible}
       type={type}
       i18nStrings={i18nStrings}
+      action={action}
       style={{
         root: {
           background,
@@ -63,7 +65,7 @@ function CustomAlert({ children, type, dismissible }: CustomAlertProps) {
             active: dismissButtonColors[mode][type].active,
           },
           focusRing: {
-            borderColor: palette.blue40,
+            borderColor: palette.red60,
             borderRadius: '4px',
             borderWidth: '2px',
           },
