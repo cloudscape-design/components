@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 
 import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 
-import { Alert as CloudscapeAlert, Button, SpaceBetween } from '~components';
+import { Alert as CloudscapeAlert, SpaceBetween } from '~components';
 
 import { palette } from '../app/themes/style-api';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -23,9 +23,6 @@ export default function CustomAlertTypes() {
           Error
         </CustomAlert>
         <CustomAlert type="warning">Warning</CustomAlert>
-        <CustomAlert type="error" dismissible={true} action={<Button>Button</Button>}>
-          With button
-        </CustomAlert>
       </SpaceBetween>
     </ScreenshotArea>
   );
@@ -38,7 +35,7 @@ interface CustomAlertProps {
   action?: React.ReactNode;
 }
 
-function CustomAlert({ children, type, dismissible, action }: CustomAlertProps) {
+function CustomAlert({ children, type, dismissible }: CustomAlertProps) {
   const mode = useCurrentMode(useRef(document.body));
   const background = backgrounds[mode][type];
   const borderColor = borderColors[mode][type];
@@ -49,7 +46,6 @@ function CustomAlert({ children, type, dismissible, action }: CustomAlertProps) 
       dismissible={dismissible}
       type={type}
       i18nStrings={i18nStrings}
-      action={action}
       style={{
         root: {
           background,
