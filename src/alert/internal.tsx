@@ -25,25 +25,27 @@ import useContainerWidth from '../internal/utils/use-container-width';
 import { ActionsWrapper } from './actions-wrapper';
 import { GeneratedAnalyticsMetadataAlertDismiss } from './analytics-metadata/interfaces';
 import { AlertProps } from './interfaces';
-import { getDismissButtonStyles } from './style';
+import { getAlertStyles, getDismissButtonStyles } from './style';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
+
 const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   error: 'status-negative',
   warning: 'status-warning',
   success: 'status-positive',
   info: 'status-info',
 };
+
 type InternalAlertProps = SomeRequired<AlertProps, 'type'> &
   InternalBaseComponentProps<HTMLDivElement> & {
     messageSlotId?: string;
-    style?: React.CSSProperties;
-    originalStyle?: AlertProps['style'];
+    style?: AlertProps['style'];
   };
 
 const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.alert.onActionRegistered);
 const useDiscoveredContent = createUseDiscoveredContent('alert', awsuiPluginsInternal.alertContent);
+
 const InternalAlert = React.forwardRef(
   (
     {
@@ -62,15 +64,16 @@ const InternalAlert = React.forwardRef(
       dismissAriaLabel: deprecatedDismissAriaLabel,
       messageSlotId,
       style,
-      originalStyle,
       ...rest
     }: InternalAlertProps,
     ref: React.Ref<AlertProps.Ref>
   ) => {
     const baseProps = getBaseProps(rest);
     const i18n = useInternalI18n('alert');
+
     const focusRef = useRef<HTMLDivElement>(null);
     useForwardFocus(ref, focusRef);
+
     const { discoveredActions, headerRef: headerRefAction, contentRef: contentRefAction } = useDiscoveredAction(type);
     const {
       initialHidden,
@@ -81,28 +84,35 @@ const InternalAlert = React.forwardRef(
       replacementHeaderRef,
       replacementContentRef,
     } = useDiscoveredContent({ type, header, children });
+
     const [containerWidth, containerMeasureRef] = useContainerWidth();
     const containerRef = useMergeRefs(containerMeasureRef, __internalRootRef);
     const headerRef = useMergeRefs(headerRefAction, headerRefContent);
     const contentRef = useMergeRefs(contentRefAction, contentRefContent);
+
     const isRefresh = useVisualRefresh();
     const size = isRefresh
       ? 'normal'
       : headerReplacementType !== 'remove' && header && contentReplacementType !== 'remove' && children
         ? 'big'
         : 'normal';
+
     const hasAction = Boolean(action || buttonText || discoveredActions.length);
+
     const analyticsAttributes = {
       [DATA_ATTR_ANALYTICS_ALERT]: type,
     };
+
     const statusIconAriaLabel = i18n(
       `i18nStrings.${type}IconAriaLabel`,
       i18nStrings?.[`${type}IconAriaLabel`] ?? deprecatedStatusIconAriaLabel
     );
+
     const dismissAriaLabel = i18n(
       'i18nStrings.dismissAriaLabel',
       i18nStrings?.dismissAriaLabel ?? i18n('dismissAriaLabel', deprecatedDismissAriaLabel)
     );
+
     return (
       <div
         {...baseProps}
@@ -125,7 +135,7 @@ const InternalAlert = React.forwardRef(
                 hasAction && styles['with-action'],
                 dismissible && styles['with-dismiss']
               )}
-              style={style}
+              style={getAlertStyles(style)}
             >
               <div className={styles['alert-wrapper']}>
                 <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
@@ -192,7 +202,7 @@ const InternalAlert = React.forwardRef(
                     formAction="none"
                     ariaLabel={dismissAriaLabel}
                     onClick={() => fireNonCancelableEvent(onDismiss)}
-                    style={getDismissButtonStyles(originalStyle)}
+                    style={getDismissButtonStyles(style)}
                   />
                 </div>
               )}
@@ -203,4 +213,5 @@ const InternalAlert = React.forwardRef(
     );
   }
 );
+
 export default InternalAlert;

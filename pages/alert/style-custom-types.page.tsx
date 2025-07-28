@@ -23,9 +23,6 @@ export default function CustomAlertTypes() {
           Error
         </CustomAlert>
         <CustomAlert type="warning">Warning</CustomAlert>
-        <CustomAlert type="info" dismissible={true}>
-          With button
-        </CustomAlert>
       </SpaceBetween>
     </ScreenshotArea>
   );
@@ -35,6 +32,7 @@ interface CustomAlertProps {
   children?: React.ReactNode;
   type: 'info' | 'success' | 'error' | 'warning';
   dismissible?: boolean;
+  action?: React.ReactNode;
 }
 
 function CustomAlert({ children, type, dismissible }: CustomAlertProps) {
@@ -63,7 +61,7 @@ function CustomAlert({ children, type, dismissible }: CustomAlertProps) {
             active: dismissButtonColors[mode][type].active,
           },
           focusRing: {
-            borderColor: palette.blue40,
+            borderColor: palette.red60,
             borderRadius: '4px',
             borderWidth: '2px',
           },

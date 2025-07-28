@@ -9,11 +9,11 @@ export function getAlertStyles(style: AlertProps['style']) {
   }
 
   return {
-    background: style.root.background,
-    borderColor: style.root.borderColor,
-    borderRadius: style.root.borderRadius,
-    borderWidth: style.root.borderWidth,
-    color: style.root.color,
+    background: style.root?.background,
+    borderColor: style.root?.borderColor,
+    borderRadius: style.root?.borderRadius,
+    borderWidth: style.root?.borderWidth,
+    color: style.root?.color,
   };
 }
 
@@ -25,14 +25,14 @@ export function getDismissButtonStyles(style: AlertProps['style']) {
   return {
     root: {
       color: {
-        default: style.dismissButton.color?.default,
-        hover: style.dismissButton.color?.hover,
-        active: style.dismissButton.color?.active,
+        active: style.dismissButton?.color?.active,
+        default: style.dismissButton?.color?.default,
+        hover: style.dismissButton?.color?.hover,
       },
       focusRing: {
-        borderColor: style.dismissButton.focusRing?.borderColor,
-        borderRadius: style.dismissButton.focusRing?.borderRadius,
-        borderWidth: style.dismissButton.focusRing?.borderWidth,
+        borderColor: style.dismissButton?.focusRing?.borderColor,
+        borderRadius: style.dismissButton?.focusRing?.borderRadius,
+        borderWidth: style.dismissButton?.focusRing?.borderWidth,
       },
     },
   };

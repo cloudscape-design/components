@@ -2,12 +2,11 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+
 @use 'sass:map';
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
-@use '../internal/styles/foundation' as foundation;
-@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 @use './motion';
 
@@ -15,10 +14,12 @@
   @include styles.styles-reset;
   @include styles.text-flex-wrapping;
   display: block;
+
   &.hidden {
     display: none;
   }
 }
+
 .alert {
   @include styles.styles-reset;
   position: relative;
@@ -33,10 +34,6 @@
   padding-block: awsui.$space-alert-vertical;
   padding-inline: awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;
-
-  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 }
 
 .alert-wrapper {
@@ -46,6 +43,7 @@
   flex-wrap: wrap;
   column-gap: awsui.$space-alert-action-left;
 }
+
 .hidden {
   display: none;
 }
@@ -54,31 +52,32 @@
   overflow: hidden;
   block-size: 0;
 }
+
 .header,
 .header-replacement {
   font-weight: styles.$font-weight-bold;
 }
+
 .action {
   white-space: nowrap;
 }
+
 .action-slot,
 .action-button {
   /* used in test-utils */
 }
+
 .alert-focus-wrapper {
   flex: 1;
   min-inline-size: 70%;
   display: grid;
   grid-template-columns: min-content auto;
+
   &:focus {
     outline: none;
   }
   @include focus-visible.when-visible {
-    @include styles.focus-highlight(
-      $gutter: awsui.$space-button-focus-outline-gutter,
-      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
-      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
-    );
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
   }
 }
 
@@ -96,9 +95,11 @@
     margin-inline-end: awsui.$space-alert-message-right;
   }
 }
+
 .action-wrapped {
   margin-block-end: awsui.$space-xxs;
 }
+
 .icon-size-medium > .alert-wrapper > .action-wrapped {
   margin-inline-start: calc(#{awsui.$size-icon-medium} + #{awsui.$space-xs});
 }
@@ -108,35 +109,42 @@
 .icon-size-normal > .alert-wrapper > .action-wrapped {
   margin-inline-start: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
 }
+
 .content,
 .content-replacement {
   /* used in test-utils */
 }
+
 .dismiss {
   margin-inline-end: calc(-1 * #{awsui.$space-xxs});
   margin-inline-start: awsui.$space-s;
 }
+
 .dismiss-button {
   /* used in test-utils */
 }
+
 $_border-colors: (
   'error': awsui.$color-border-status-error,
   'warning': awsui.$color-border-status-warning,
   'success': awsui.$color-border-status-success,
   'info': awsui.$color-border-status-info,
 );
+
 $_background-colors: (
   'error': awsui.$color-background-status-error,
   'warning': awsui.$color-background-status-warning,
   'success': awsui.$color-background-status-success,
   'info': awsui.$color-background-status-info,
 );
+
 $_text-colors: (
   'error': awsui.$color-text-status-error,
   'warning': awsui.$color-text-status-warning,
   'success': awsui.$color-text-status-success,
   'info': awsui.$color-text-status-info,
 );
+
 @each $type in map.keys($_text-colors) {
   .type-#{$type} {
     border-color: #{map.get($_border-colors, $type)};

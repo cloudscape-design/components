@@ -67,7 +67,7 @@ function TriggerButton(
           badge={badge}
           onClick={onClick}
           variant="icon"
-          __nativeAttributes={{
+          nativeButtonAttributes={{
             'aria-haspopup': true,
             ...(testId && {
               'data-testid': testId,
