@@ -138,7 +138,7 @@ export function AppLayoutToolbarImplementation({
               ariaLabel={aiDrawer?.ariaLabels?.triggerButton}
               ariaExpanded={!!activeAiDrawerId}
               iconName={aiDrawer.trigger!.iconName}
-              iconSvg={aiDrawer.trigger!.iconSvg}
+              customSvg={aiDrawer.trigger!.iconSvg}
               className={testutilStyles['ai-drawer-toggle']}
               onClick={() => {
                 if (setExpandedDrawerId) {
@@ -152,8 +152,8 @@ export function AppLayoutToolbarImplementation({
               ref={aiDrawerFocusRef}
               selected={!drawerExpandedMode && !!activeAiDrawerId}
               disabled={anyPanelOpenInMobile}
+              inheritSize={true}
             />
-            <div className={styles['group-divider']} />
           </div>
         )}
         {hasNavigation && (

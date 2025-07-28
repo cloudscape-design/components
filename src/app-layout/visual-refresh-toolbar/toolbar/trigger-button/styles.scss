@@ -13,13 +13,14 @@
 
   cursor: pointer;
   color: awsui.$color-text-interactive-default;
-  border-start-start-radius: 50%;
-  border-start-end-radius: 50%;
-  border-end-start-radius: 50%;
-  border-end-end-radius: 50%;
-  block-size: 30px;
-  inline-size: 30px;
   text-align: center;
+
+  &.inherit-size {
+    block-size: 100%;
+    inline-size: 100%;
+    // FIXME temporary workaround for tela demo
+    padding-block-start: awsui.$space-xxs;
+  }
 
   &-with-badge {
     clip-path: path(
@@ -33,19 +34,28 @@
     }
   }
 
-  &:hover {
+  &:focus {
+    // custom outline attached on the wrapping element
+    outline: none;
+  }
+
+  &:not(&.inherit-size) {
+    border-start-start-radius: 50%;
+    border-start-end-radius: 50%;
+    border-end-start-radius: 50%;
+    border-end-end-radius: 50%;
+    block-size: 30px;
+    inline-size: 30px;
+  }
+
+  &:not(&.inherit-size):hover {
     background: awsui.$color-background-input-disabled;
     color: awsui.$color-text-interactive-hover;
   }
 
-  &:active {
+  &:not(&.inherit-size):active {
     background: awsui.$color-background-control-disabled;
     color: awsui.$color-text-interactive-hover;
-  }
-
-  &:focus {
-    // custom outline attached on the wrapping element
-    outline: none;
   }
 
   &.selected {
