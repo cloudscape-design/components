@@ -102,6 +102,7 @@ const InternalAlert = React.forwardRef(
     const analyticsAttributes = {
       [DATA_ATTR_ANALYTICS_ALERT]: type,
     };
+
     const statusIconAriaLabel = i18n(
       `i18nStrings.${type}IconAriaLabel`,
       i18nStrings?.[`${type}IconAriaLabel`] ?? deprecatedStatusIconAriaLabel
