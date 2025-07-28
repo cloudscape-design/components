@@ -31,7 +31,7 @@ export default class PromptInputWrapper extends ComponentWrapper {
     return this.findByClassName<HTMLDivElement>(testutilStyles['secondary-content']);
   }
 
-  findPrimaryActionSlot(): ElementWrapper<HTMLDivElement> | null {
+  findCustomPrimaryAction(): ElementWrapper<HTMLDivElement> | null {
     return this.findByClassName<HTMLDivElement>(testutilStyles['primary-action']);
   }
 

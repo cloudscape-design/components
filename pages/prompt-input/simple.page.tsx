@@ -205,27 +205,25 @@ export default function PromptInputPage() {
                   disableSecondaryActionsPaddings={true}
                   customPrimaryAction={
                     hasPrimaryActions ? (
-                      <Box padding={{ right: 'xxs', top: 'xs' }}>
-                        <ButtonGroup
-                          variant="icon"
-                          items={[
-                            {
-                              type: 'icon-button',
-                              id: 'record',
-                              text: 'Record',
-                              iconName: 'microphone',
-                              disabled: isDisabled || isReadOnly,
-                            },
-                            {
-                              type: 'icon-button',
-                              id: 'submit',
-                              text: 'Submit',
-                              iconName: 'send',
-                              disabled: isDisabled || isReadOnly,
-                            },
-                          ]}
-                        />
-                      </Box>
+                      <ButtonGroup
+                        variant="icon"
+                        items={[
+                          {
+                            type: 'icon-button',
+                            id: 'record',
+                            text: 'Record',
+                            iconName: 'microphone',
+                            disabled: isDisabled || isReadOnly,
+                          },
+                          {
+                            type: 'icon-button',
+                            id: 'submit',
+                            text: 'Submit',
+                            iconName: 'send',
+                            disabled: isDisabled || isReadOnly,
+                          },
+                        ]}
+                      />
                     ) : undefined
                   }
                   secondaryActions={

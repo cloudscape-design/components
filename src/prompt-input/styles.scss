@@ -140,20 +140,13 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   align-self: flex-end;
   flex-shrink: 0;
   padding-inline-start: calc(styles.$control-padding-horizontal / 2);
+  
+  .textarea-wrapper > & {
+    padding-inline-end: calc(styles.$control-padding-horizontal / 2);
 
-  > .action-button {
-    padding: 0;
-    margin-block-end: awsui.$space-scaled-xxxs;
-    margin-inline-end: calc(styles.$control-padding-horizontal / 2);
-
-    // offset the focus ring by 1px per side so it doesn't blend into the textarea border
-    @include focus-visible.when-visible {
-      @include styles.focus-highlight(
-        (
-          'vertical': calc((-1 * #{awsui.$space-xxxs}) - 1px),
-          'horizontal': calc((#{awsui.$space-xxxs}) - 1px),
-        )
-      );
+    > .action-button {
+      margin-block-end: awsui.$space-scaled-xxxs;
+      padding: 0;
     }
   }
 }
@@ -181,9 +174,6 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  >.primary-action>.action-button {
-    margin-block-end: awsui.$space-scaled-xxs;
-  }
 }
 
 .secondary-actions {

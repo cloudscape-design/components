@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { Button } from '~components';
 import PromptInput, { PromptInputProps } from '~components/prompt-input';
 
 import img from '../icon/custom-icon.png';
@@ -76,7 +77,10 @@ const permutations = createPermutations<PromptInputProps>([
   {
     value: ['Short value for custom primary actions'],
     actionButtonIconName: [undefined, 'send'],
-    customPrimaryAction: [undefined, 'Custom primary'],
+    customPrimaryAction: [
+      undefined,
+      <Button variant="icon" iconName="add-plus" ariaLabel="Custom action" key="button" />,
+    ],
     secondaryActions: [undefined, 'secondary actions'],
     disableSecondaryActionsPaddings: [false, true],
   },

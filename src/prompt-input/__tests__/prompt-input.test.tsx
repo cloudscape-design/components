@@ -183,7 +183,7 @@ describe('custom primary action', () => {
         </>
       ),
     });
-    expect(wrapper.findPrimaryActionSlot()!.getElement().querySelectorAll('button').length).toBe(2);
+    expect(wrapper.findCustomPrimaryAction()!.getElement().querySelectorAll('button').length).toBe(2);
   });
   test('default primary action is removed if custom primaryAction provided', () => {
     const { wrapper } = renderPromptInput({

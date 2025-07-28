@@ -230,6 +230,8 @@ const InternalPromptInput = React.forwardRef(
             <div
               className={clsx(styles['secondary-actions'], testutilStyles['secondary-actions'], {
                 [styles['with-paddings']]: !disableSecondaryActionsPaddings,
+                [styles.invalid]: invalid,
+                [styles.warning]: warning,
               })}
             >
               {secondaryActions}
