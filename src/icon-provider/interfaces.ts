@@ -10,7 +10,7 @@ export interface IconProviderProps extends BaseComponentProps {
   children: ReactNode;
 
   /**
-   * Specifies icon overrides using existing icon names, e.g. `{'add-plus': <svg>...</svg>}`.
+   * Specifies icon overrides using existing icon names, for example, `{'add-plus': <svg>...</svg>}`.
    *
    * These icon overrides will automatically be applied to any component that is a descendant of this provider, including nested providers.
    *
@@ -18,9 +18,9 @@ export interface IconProviderProps extends BaseComponentProps {
    *
    * For example, override `AppLayout` icons but not icons in the content slot by wrapping content with an `IconProvider` with this property set to `null`.
    *
-   * `<Icon ... />` component can be used as an override (e.g. `{'close': <Icon name='arrow-left' />}`).
-   * However, if the icon name is the same as the key, e.g. `{'close': <Icon name='close' />}` an infinite loop will be created.
-   * The same applies to switching icons in the same configuration (e.g. `{'close': <Icon name='arrow-left' />, 'arrow-left': <Icon name='close' />}`).
+   * `<Icon ... />` component can be used as an override (for example, `{'close': <Icon name='arrow-left' />}`).
+   * However, if the icon name is the same as the key, for example, `{'close': <Icon name='close' />}` an infinite loop will be created.
+   * The same applies to switching icons in the same configuration (for example, `{'close': <Icon name='arrow-left' />, 'arrow-left': <Icon name='close' />}`).
    */
   icons: IconProviderProps.Icons | null;
 }
@@ -28,7 +28,7 @@ export interface IconProviderProps extends BaseComponentProps {
 export namespace IconProviderProps {
   export type Icons = {
     // Generates an object shape using the current set of available icons.
-    // For example: {'add-plus': JSX.Element, 'anchor-link': ...}
+    // For example, {'add-plus': JSX.Element, 'anchor-link': ...}
     [name in keyof typeof generatedIcons]?: ReactNode | null;
   };
 }
