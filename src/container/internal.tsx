@@ -14,6 +14,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { ContainerProps } from './interfaces';
+import { getContentStyles, getFooterStyles, getHeaderStyles, getMediaStyles, getRootStyles } from './style';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -65,6 +66,7 @@ export default function InternalContainer({
   disableFooterPaddings = false,
   fitHeight,
   media,
+  style,
   __stickyOffset,
   __mobileStickyOffset,
   __stickyHeader = false,
@@ -105,6 +107,9 @@ export default function InternalContainer({
 
   const hasMedia = !!media?.content;
   const mediaPosition = media?.position ?? 'top';
+
+  console.log(style);
+
   return (
     <div
       {...baseProps}
@@ -123,11 +128,16 @@ export default function InternalContainer({
       {...getAnalyticsLabelAttribute(
         `.${analyticsSelectors.header} h1, .${analyticsSelectors.header} h2, .${analyticsSelectors.header} h3`
       )}
+      style={getRootStyles(style)}
     >
       {hasMedia && (
         <div
           className={clsx(styles[`media-${mediaPosition === 'side' ? 'side' : 'top'}`], styles.media)}
-          style={mediaPosition === 'top' ? { height: media?.height || '' } : { width: media?.width || '' }}
+          style={
+            mediaPosition === 'top'
+              ? { ...getMediaStyles(style), height: media?.height || '' }
+              : { ...getMediaStyles(style), width: media?.width || '' }
+          }
         >
           {media.content}
         </div>
@@ -159,6 +169,7 @@ export default function InternalContainer({
                 )}
                 {...stickyStyles}
                 ref={headerMergedRef}
+                style={getHeaderStyles(style)}
               >
                 {isStuck && !isMobile && isRefresh && __fullPage && <div className={styles['header-cover']}></div>}
                 {header}
@@ -172,6 +183,7 @@ export default function InternalContainer({
               [styles['with-paddings']]: !disableContentPaddings,
               [styles['with-header']]: !!header,
             })}
+            style={getContentStyles(style)}
           >
             {children}
           </div>
@@ -182,6 +194,7 @@ export default function InternalContainer({
               [styles['with-divider']]: !__disableFooterDivider,
               [styles['with-paddings']]: !disableFooterPaddings,
             })}
+            style={getFooterStyles(style)}
           >
             {footer}
           </div>

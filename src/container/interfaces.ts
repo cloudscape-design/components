@@ -81,6 +81,25 @@ export interface ContainerProps extends BaseComponentProps {
    * @visualrefresh `stacked` variant
    */
   variant?: 'default' | 'stacked';
+
+  /**
+   * Specifies an object of selectors and properties that are used to apply custom styles.
+   *
+   * - `root.background` (string) - (Optional) Background color of the container.
+   * - `root.borderColor` (string) - (Optional) Border color of the container.
+   * - `root.borderRadius` (string) - (Optional) Border radius of the container.
+   * - `root.borderWidth` (string) - (Optional) Border width of the container.
+   * - `content.paddingBlock` (string) - (Optional) Block dimension padding of the content slot.
+   * - `content.paddingInline` (string) - (Optional) Inline dimension padding of the content slot.
+   * - `header.paddingBlock` (string) - (Optional) Block dimension padding of the header slot.
+   * - `header.paddingInline` (string) - (Optional) Inline dimension padding of the header slot.
+   * - `footer.borderColor` (string) - (Optional) Border color of the footer divider.
+   * - `footer.borderWidth` (string) - (Optional) Border width of the footer divider.
+   * - `footer.paddingBlock` (string) - (Optional) Block dimension padding of the footer slot.
+   * - `footer.paddingInline` (string) - (Optional) Inline dimension padding of the footer slot.
+   * @awsuiSystem core
+   */
+  style?: ContainerProps.Style;
 }
 
 export namespace ContainerProps {
@@ -115,5 +134,28 @@ export namespace ContainerProps {
      * If no height is provided, the media slot will be displayed at its full height.
      */
     height?: string | number;
+  }
+
+  export interface Style {
+    root?: {
+      background?: string;
+      borderColor?: string;
+      borderRadius?: string;
+      borderWidth?: string;
+    };
+    content?: {
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+    header?: {
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+    footer?: {
+      borderColor?: string;
+      borderWidth?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
   }
 }
