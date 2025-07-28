@@ -145,7 +145,7 @@ export function AppLayoutToolbarImplementation({
                 if (setExpandedDrawerId) {
                   setExpandedDrawerId(null);
                 }
-                if (expandedDrawerId && expandedDrawerId) {
+                if (activeAiDrawerId && expandedDrawerId) {
                   return;
                 }
                 onActiveAiDrawerChange?.(aiDrawer?.id);
