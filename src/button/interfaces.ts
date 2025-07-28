@@ -5,6 +5,9 @@ import React from 'react';
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
+/**
+ * @awsuiSystem core
+ */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface BaseButtonProps {
@@ -104,7 +107,7 @@ export interface BaseButtonProps {
 
   /**
    * Attributes to add to the native `button` element.
-   * Some attributes will be automatically combined with Cloudscape-provided attribute values:
+   * Some attributes will be automatically combined with internal attribute values:
    * - `className` will be appended.
    * - Event handlers will be chained, unless the default is prevented.
    *
@@ -116,7 +119,7 @@ export interface BaseButtonProps {
 
   /**
    * Attributes to add to the native `a` element (when `href` is provided).
-   * Some attributes will be automatically combined with Cloudscape-provided attribute values:
+   * Some attributes will be automatically combined with internal attribute values:
    * - `className` will be appended.
    * - Event handlers will be chained, unless the default is prevented.
    *
