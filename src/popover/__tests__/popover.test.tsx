@@ -153,6 +153,45 @@ describe('Dismiss button', () => {
       });
       expect(wrapper.findBody({ renderWithPortal })).toBeTruthy();
     });
+
+    it('does not render the popover body if content is null when a click is fired on the trigger', () => {
+      const wrapper = renderPopover({ children: 'Trigger', content: null, renderWithPortal });
+      wrapper.findTrigger().click();
+      act(() => {
+        wrapper
+          .findTrigger()
+          .getElement()
+          .dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+      });
+      expect(wrapper.findBody({ renderWithPortal })).toBeNull();
+    });
+
+    it('renders the popover body if content becomes non-null after a click is fired on the trigger', () => {
+      const { container, rerender } = render(
+        <Popover content={null} renderWithPortal={renderWithPortal}>
+          Trigger
+        </Popover>
+      );
+      const wrapper = new PopoverInternalWrapper(container);
+
+      wrapper.findTrigger().click();
+      act(() => {
+        wrapper
+          .findTrigger()
+          .getElement()
+          .dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+      });
+      expect(wrapper.findBody({ renderWithPortal })).toBeNull();
+
+      // Update the props with non-null content
+      rerender(
+        <Popover content="Popover Content" renderWithPortal={renderWithPortal}>
+          Trigger
+        </Popover>
+      );
+
+      expect(wrapper.findBody({ renderWithPortal })).toBeTruthy();
+    });
   });
 });
 

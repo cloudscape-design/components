@@ -89,7 +89,9 @@ export default function InternalCopyToClipboard({
       triggerType="custom"
       dismissButton={false}
       renderWithPortal={popoverRenderWithPortal}
-      content={<InternalStatusIndicator type={status}>{statusText}</InternalStatusIndicator>}
+      content={
+        status === 'pending' ? null : <InternalStatusIndicator type={status}>{statusText}</InternalStatusIndicator>
+      }
       __onOpen={onClick}
     >
       {button}
