@@ -281,5 +281,13 @@ $ai-drawer-background: #0f1b2a;
         }
       }
     }
+
+    &.drawer-expanded {
+      grid-template-columns: 1fr;
+
+      > .drawer-content-container {
+        border-start-end-radius: 0;
+      }
+    }
   }
 }
