@@ -9,11 +9,11 @@ export function getAlertStyles(style: AlertProps['style']) {
   }
 
   return {
-    background: style.root.background,
-    borderColor: style.root.borderColor,
-    borderRadius: style.root.borderRadius,
-    borderWidth: style.root.borderWidth,
-    color: style.root.color,
+    background: style.root?.background,
+    borderColor: style.root?.borderColor,
+    borderRadius: style.root?.borderRadius,
+    borderWidth: style.root?.borderWidth,
+    color: style.root?.color,
   };
 }
 
