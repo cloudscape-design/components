@@ -30,17 +30,22 @@ const Alert = React.forwardRef(
       },
       analyticsMetadata
     );
+
     const { funnelIdentifier, funnelInteractionId, funnelErrorContext, submissionAttempt, funnelState, errorCount } =
       useFunnel();
     const { stepNumber, stepNameSelector, stepIdentifier, subStepCount, stepErrorContext, subStepConfiguration } =
       useFunnelStep();
     const { subStepSelector, subStepNameSelector, subStepIdentifier, subStepErrorContext } = useFunnelSubStep();
+
     const messageSlotId = useUniqueId('alert-');
+
     useEffect(() => {
       if (funnelInteractionId && visible && type === 'error' && funnelState.current !== 'complete') {
         const stepName = getTextFromSelector(stepNameSelector);
         const subStepName = getTextFromSelector(subStepNameSelector);
+
         errorCount.current++;
+
         // We don't want to report an error if it is hidden, e.g. inside an Expandable Section.
         const errorIsVisible = (baseComponentProps.__internalRootRef.current?.getBoundingClientRect()?.width ?? 0) > 0;
         if (errorIsVisible) {
@@ -82,13 +87,16 @@ const Alert = React.forwardRef(
             });
           }
         }
+
         return () => {
           // eslint-disable-next-line react-hooks/exhaustive-deps
           errorCount.current--;
         };
       }
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [funnelInteractionId, visible, submissionAttempt, errorCount]);
+
     const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAlertComponent = {
       name: 'awsui.Alert',
       label: `.${analyticsSelectors.header}`,
@@ -96,6 +104,7 @@ const Alert = React.forwardRef(
         type,
       },
     };
+
     return (
       <InternalAlert
         type={type}
@@ -110,5 +119,6 @@ const Alert = React.forwardRef(
     );
   }
 );
+
 applyDisplayName(Alert, 'Alert');
 export default Alert;
