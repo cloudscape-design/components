@@ -37,7 +37,13 @@ function renderTiles(props: TilesProps) {
   return createWrapper(renderResult.container).findTiles()!;
 }
 
-const getMetadata = (label: string, position: string, value: string, disabled?: boolean) => {
+const getMetadata = (
+  label: string,
+  position: string,
+  value: string,
+  disabled: boolean = false,
+  currentValue: string | null
+) => {
   const eventMetadata = {
     action: 'select',
     detail: {
@@ -54,6 +60,9 @@ const getMetadata = (label: string, position: string, value: string, disabled?: 
         detail: {
           name: 'awsui.Tiles',
           label: componentLabel,
+          properties: {
+            value: `${currentValue}`,
+          },
         },
       },
     ],
@@ -74,12 +83,18 @@ describe('Tiles renders correct analytics metadata', () => {
     // in the whole tile
     validateComponentNameAndLabels(wrapper.findItemByValue('second')!.getElement(), labels);
     expect(getGeneratedAnalyticsMetadata(wrapper.findItemByValue('second')!.getElement())).toEqual(
-      getMetadata('Second choice', '2', 'second', false)
+      getMetadata('Second choice', '2', 'second', false, 'second')
     );
     // in the radio within the tile
     validateComponentNameAndLabels(wrapper.findInputByValue('first')!.getElement(), labels);
     expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('first')!.getElement())).toEqual(
-      getMetadata('First choice', '2', 'first', true)
+      getMetadata('First choice', '2', 'first', true, 'second')
+    );
+  });
+  test('with null value', () => {
+    const wrapper = renderTiles({ value: null });
+    expect(getGeneratedAnalyticsMetadata(wrapper.findItemByValue('second')!.getElement())).toEqual(
+      getMetadata('Second choice', '2', 'second', false, null)
     );
   });
   test('readonly', () => {
@@ -87,7 +102,7 @@ describe('Tiles renders correct analytics metadata', () => {
 
     validateComponentNameAndLabels(wrapper.findInputByValue('second')!.getElement(), labels);
     expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('second')!.getElement())).toEqual(
-      getMetadata('Second choice', '2', 'second', true)
+      getMetadata('Second choice', '2', 'second', true, 'second')
     );
   });
   describe('when rendered in a form field', () => {
@@ -105,6 +120,9 @@ describe('Tiles renders correct analytics metadata', () => {
             detail: {
               name: 'awsui.Tiles',
               label: 'form field label',
+              properties: {
+                value: '2',
+              },
             },
           },
           {
@@ -131,6 +149,9 @@ describe('Tiles renders correct analytics metadata', () => {
             detail: {
               name: 'awsui.Tiles',
               label: 'aria label',
+              properties: {
+                value: '2',
+              },
             },
           },
           {

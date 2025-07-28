@@ -4,9 +4,9 @@ import * as React from 'react';
 
 import Badge, { BadgeProps } from '~components/badge';
 
-import createPermutations from './utils/permutations';
-import PermutationsView from './utils/permutations-view';
-import ScreenshotArea from './utils/screenshot-area';
+import createPermutations from '../utils/permutations';
+import PermutationsView from '../utils/permutations-view';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<BadgeProps>([
   {

@@ -15,4 +15,7 @@ export interface GeneratedAnalyticsMetadataRadioGroupSelect {
 export interface GeneratedAnalyticsMetadataRadioGroupComponent {
   name: 'awsui.RadioGroup';
   label: string | LabelIdentifier;
+  properties: {
+    value: string;
+  };
 }
