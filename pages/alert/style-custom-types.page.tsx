@@ -23,7 +23,7 @@ export default function CustomAlertTypes() {
           Error
         </CustomAlert>
         <CustomAlert type="warning">Warning</CustomAlert>
-        <CustomAlert type="info" dismissible={true} action={<Button>Button</Button>}>
+        <CustomAlert type="error" dismissible={true} action={<Button>Button</Button>}>
           With button
         </CustomAlert>
       </SpaceBetween>
