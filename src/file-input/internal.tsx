@@ -156,7 +156,8 @@ const InternalFileInput = React.forwardRef(
             [styles['force-focus-outline-button']]: isFocused && variant === 'button',
             [styles['force-focus-outline-icon']]: isFocused && variant === 'icon',
           })}
-          __nativeAttributes={{ tabIndex: -1, 'aria-hidden': true }}
+          nativeButtonAttributes={{ tabIndex: -1, 'aria-hidden': true }}
+          __skipNativeAttributesWarnings={true}
         >
           {variant === 'button' && children}
         </InternalButton>
