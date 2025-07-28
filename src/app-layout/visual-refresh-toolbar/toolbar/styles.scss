@@ -22,6 +22,24 @@
     transition-property: inset-block-start, opacity;
   }
 
+  &.with-open-ai-drawer {
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      inline-size: 5px;
+      block-size: 5px;
+      background: black;
+    }
+
+    &:after {
+      background-color: awsui.$color-background-layout-panel-content;
+      border-start-start-radius: awsui.$space-xxs;
+    }
+  }
+
   &.disable-body-scroll {
     inset-block-start: 0px;
   }

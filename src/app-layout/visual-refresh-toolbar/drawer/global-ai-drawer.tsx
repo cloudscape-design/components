@@ -155,7 +155,6 @@ export function AppLayoutGlobalAiDrawerImplementation({
               {activeAiDrawer?.content}
             </div>
           </div>
-          {!isMobile && !isExpanded && <div className={styles['drawer-gap']} />}
         </aside>
       )}
     </Transition>

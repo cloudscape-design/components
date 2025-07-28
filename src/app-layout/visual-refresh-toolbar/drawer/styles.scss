@@ -240,7 +240,8 @@ $ai-drawer-background: #0f1b2a;
   }
 
   &.ai-drawer {
-    grid-template-columns: 1fr awsui.$space-m;
+    grid-template-columns: 1fr awsui.$space-s;
+    background: $ai-drawer-background;
 
     > .drawer-gap {
       grid-column: 3;
@@ -252,10 +253,13 @@ $ai-drawer-background: #0f1b2a;
 
     > .drawer-slider {
       grid-column: 2;
+      background: $ai-drawer-background;
     }
 
     > .drawer-content-container {
       min-inline-size: auto;
+      grid-column: 1 / span 1;
+      border-start-end-radius: awsui.$space-xxs;
 
       > .drawer-content {
         > .drawer-content-header {
