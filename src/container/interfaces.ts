@@ -85,18 +85,19 @@ export interface ContainerProps extends BaseComponentProps {
   /**
    * Specifies an object of selectors and properties that are used to apply custom styles.
    *
-   * - `root.background` (string) - (Optional) Background color of the container.
+   * - `root.background` (string) - (Optional) Background of the container.
    * - `root.borderColor` (string) - (Optional) Border color of the container.
    * - `root.borderRadius` (string) - (Optional) Border radius of the container.
    * - `root.borderWidth` (string) - (Optional) Border width of the container.
+   * - `root.boxShadow` (string) - (Optional) Box shadow of the container.
    * - `content.paddingBlock` (string) - (Optional) Block dimension padding of the content slot.
    * - `content.paddingInline` (string) - (Optional) Inline dimension padding of the content slot.
    * - `header.paddingBlock` (string) - (Optional) Block dimension padding of the header slot.
    * - `header.paddingInline` (string) - (Optional) Inline dimension padding of the header slot.
-   * - `footer.borderColor` (string) - (Optional) Border color of the footer divider.
-   * - `footer.borderWidth` (string) - (Optional) Border width of the footer divider.
-   * - `footer.paddingBlock` (string) - (Optional) Block dimension padding of the footer slot.
-   * - `footer.paddingInline` (string) - (Optional) Inline dimension padding of the footer slot.
+   * - `footer.root.paddingBlock` (string) - (Optional) Block dimension padding of the footer slot.
+   * - `footer.root.paddingInline` (string) - (Optional) Inline dimension padding of the footer slot.
+   * - `footer.divider.borderColor` (string) - (Optional) Border color of the footer divider.
+   * - `footer.divider.borderWidth` (string) - (Optional) Border width of the footer divider.
    * @awsuiSystem core
    */
   style?: ContainerProps.Style;
@@ -142,6 +143,7 @@ export namespace ContainerProps {
       borderColor?: string;
       borderRadius?: string;
       borderWidth?: string;
+      boxShadow?: string;
     };
     content?: {
       paddingBlock?: string;
@@ -152,10 +154,14 @@ export namespace ContainerProps {
       paddingInline?: string;
     };
     footer?: {
-      borderColor?: string;
-      borderWidth?: string;
-      paddingBlock?: string;
-      paddingInline?: string;
+      root: {
+        paddingBlock?: string;
+        paddingInline?: string;
+      };
+      divider: {
+        borderColor?: string;
+        borderWidth?: string;
+      };
     };
   }
 }

@@ -133,8 +133,8 @@ export default function InternalContainer({
           className={clsx(styles[`media-${mediaPosition === 'side' ? 'side' : 'top'}`], styles.media)}
           style={
             mediaPosition === 'top'
-              ? { ...getMediaStyles(style), height: media?.height || '' }
-              : { ...getMediaStyles(style), width: media?.width || '' }
+              ? { ...getMediaStyles(mediaPosition, style), height: media?.height || '' }
+              : { ...getMediaStyles(mediaPosition, style), width: media?.width || '' }
           }
         >
           {media.content}

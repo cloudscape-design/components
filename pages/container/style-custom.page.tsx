@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Container, SpaceBetween } from '~components';
+import { Box, Container, SpaceBetween } from '~components';
 
 import ScreenshotArea from '../utils/screenshot-area';
+import image43 from './images/4-3.png';
 
 export default function CustomContainer() {
   return (
@@ -19,6 +20,7 @@ export default function CustomContainer() {
               borderColor: 'green',
               borderRadius: '8px',
               borderWidth: '4px',
+              boxShadow: '0px 5px 5px red',
             },
             content: {
               paddingBlock: '0px',
@@ -37,6 +39,7 @@ export default function CustomContainer() {
               borderColor: 'magenta',
               borderRadius: '0px',
               borderWidth: '1px',
+              boxShadow: '0px 5px 5px green',
             },
             content: {
               paddingBlock: '20px',
@@ -59,16 +62,21 @@ export default function CustomContainer() {
               borderColor: '#000',
               borderRadius: '20px',
               borderWidth: '3px',
+              boxShadow: '0px 5px 5px blue',
             },
             content: {
               paddingBlock: '40px',
               paddingInline: '40px',
             },
             footer: {
-              borderColor: '#000',
-              borderWidth: '3px',
-              paddingBlock: '40px',
-              paddingInline: '40px',
+              root: {
+                paddingBlock: '40px',
+                paddingInline: '40px',
+              },
+              divider: {
+                borderColor: '#000',
+                borderWidth: '3px',
+              },
             },
           }}
         >
@@ -84,15 +92,20 @@ export default function CustomContainer() {
               borderColor: 'blue',
               borderRadius: '40px',
               borderWidth: '4px',
+              boxShadow: '5px 5px 5px pink',
             },
             header: {
               paddingBlock: '60px',
               paddingInline: '10px',
             },
             footer: {
-              borderWidth: '0px',
-              paddingBlock: '60px',
-              paddingInline: '10px',
+              root: {
+                paddingBlock: '60px',
+                paddingInline: '10px',
+              },
+              divider: {
+                borderWidth: '0px',
+              },
             },
           }}
         />
@@ -106,6 +119,7 @@ export default function CustomContainer() {
               borderColor: 'purple',
               borderRadius: '240px',
               borderWidth: '6px',
+              boxShadow: '0px 5px 5px orange',
             },
             content: {
               paddingBlock: '20px',
@@ -116,10 +130,77 @@ export default function CustomContainer() {
               paddingInline: '140px',
             },
             footer: {
-              borderColor: 'purple',
-              borderWidth: '6px',
-              paddingBlock: '40px',
-              paddingInline: '140px',
+              root: {
+                paddingBlock: '40px',
+                paddingInline: '140px',
+              },
+              divider: {
+                borderColor: 'purple',
+                borderWidth: '6px',
+              },
+            },
+          }}
+        >
+          Container content
+        </Container>
+        <Box>
+          <Container
+            header="Header content"
+            variant="stacked"
+            style={{
+              root: {
+                borderColor: 'green',
+                borderWidth: '2px',
+              },
+            }}
+          >
+            Container content
+          </Container>
+
+          <Container
+            header="Header content"
+            variant="stacked"
+            style={{
+              root: {
+                borderColor: 'purple',
+                borderWidth: '10px',
+              },
+            }}
+          >
+            Container content
+          </Container>
+        </Box>
+
+        <Container
+          header="Header content"
+          media={{
+            content: <img src={image43} alt="placeholder" />,
+            height: 200,
+            position: 'top',
+          }}
+          style={{
+            root: {
+              borderColor: 'green',
+              borderWidth: '1px',
+              borderRadius: '40px',
+            },
+          }}
+        >
+          Container content
+        </Container>
+
+        <Container
+          header="Header content"
+          media={{
+            content: <img src={image43} alt="placeholder" />,
+            width: 200,
+            position: 'side',
+          }}
+          style={{
+            root: {
+              borderColor: 'green',
+              borderWidth: '1px',
+              borderRadius: '40px',
             },
           }}
         >

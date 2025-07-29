@@ -12,6 +12,7 @@ export function getRootStyles(style: ContainerProps.Style | undefined) {
       borderColor: style.root?.borderColor,
       borderRadius: style.root?.borderRadius,
       borderWidth: style.root?.borderWidth,
+      boxShadow: style.root?.boxShadow,
     };
   }
 
@@ -51,22 +52,24 @@ export function getFooterStyles(style: ContainerProps.Style | undefined) {
 
   if (SYSTEM === 'core' && style?.footer) {
     properties = {
-      borderColor: style.footer?.borderColor,
-      borderWidth: style.footer?.borderWidth,
-      paddingBlock: style.footer?.paddingBlock,
-      paddingInline: style.footer?.paddingInline,
+      borderColor: style.footer?.divider?.borderColor,
+      borderWidth: style.footer?.divider?.borderWidth,
+      paddingBlock: style.footer?.root?.paddingBlock,
+      paddingInline: style.footer?.root?.paddingInline,
     };
   }
 
   return properties;
 }
 
-export function getMediaStyles(style: ContainerProps.Style | undefined) {
+export function getMediaStyles(mediaPosition: string, style: ContainerProps.Style | undefined) {
   let properties = {};
 
   if (SYSTEM === 'core' && style?.root?.borderRadius) {
     properties = {
       borderRadius: style?.root?.borderRadius,
+      ...(mediaPosition === 'top' && { borderEndStartRadius: '0px', borderEndEndRadius: '0px' }),
+      ...(mediaPosition === 'side' && { borderStartEndRadius: '0px', borderEndEndRadius: '0px' }),
     };
   }
 
