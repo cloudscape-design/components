@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
+
+import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 
 import { Box, Container, SpaceBetween } from '~components';
 
@@ -8,6 +10,9 @@ import ScreenshotArea from '../utils/screenshot-area';
 import image43 from './images/4-3.png';
 
 export default function CustomContainer() {
+  const mode = useCurrentMode(useRef(document.body));
+  const background = mode === 'light' ? '#fcfcfc' : '#000';
+
   return (
     <ScreenshotArea>
       <h1>Custom Container</h1>
@@ -16,7 +21,7 @@ export default function CustomContainer() {
         <Container
           style={{
             root: {
-              background: '#fcfcfc',
+              background,
               borderColor: 'green',
               borderRadius: '8px',
               borderWidth: '4px',
@@ -35,7 +40,7 @@ export default function CustomContainer() {
           header="Container header"
           style={{
             root: {
-              background: '#fcfcfc',
+              background,
               borderColor: 'magenta',
               borderRadius: '0px',
               borderWidth: '1px',
@@ -58,7 +63,7 @@ export default function CustomContainer() {
           footer="Container footer"
           style={{
             root: {
-              background: '#fcfcfc',
+              background,
               borderColor: '#000',
               borderRadius: '20px',
               borderWidth: '3px',
@@ -88,7 +93,7 @@ export default function CustomContainer() {
           footer="Container footer"
           style={{
             root: {
-              background: '#fcfcfc',
+              background,
               borderColor: 'blue',
               borderRadius: '40px',
               borderWidth: '4px',
@@ -115,7 +120,7 @@ export default function CustomContainer() {
           footer="Container footer"
           style={{
             root: {
-              background: '#fcfcfc',
+              background,
               borderColor: 'purple',
               borderRadius: '240px',
               borderWidth: '6px',
