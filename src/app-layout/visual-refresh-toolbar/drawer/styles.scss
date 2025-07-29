@@ -274,13 +274,54 @@ $ai-drawer-background: #0f1b2a;
           justify-content: space-between;
           align-items: center;
           inset-block-start: 0;
-          padding-inline: awsui.$space-m;
-          background-color: awsui.$color-background-layout-panel-content;
+          background-color: $ai-drawer-background;
           border-block-end: awsui.$border-divider-section-width solid;
           border-image: linear-gradient(90deg, #962eff 0%, #5c7fff 30%, #09f 50%, #b8e7ff 70%, #8575ff 100%) 1;
 
-          > .drawer-actions {
+          > .drawer-content-header-content {
             display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: space-between;
+            block-size: 100%;
+            background-color: awsui.$color-background-layout-panel-content;
+            padding-inline-start: awsui.$space-l;
+            padding-inline-end: awsui.$space-m;
+
+            &:not(:only-child) {
+              border-start-end-radius: awsui.$space-xxs;
+            }
+
+            > .drawer-actions {
+              display: flex;
+            }
+          }
+
+          > .drawer-back-to-console-button {
+            position: relative;
+            display: flex;
+            box-sizing: border-box;
+            block-size: 100%;
+            padding-inline: awsui.$space-xxs;
+            padding-block: awsui.$space-xxs;
+            background: $ai-drawer-background;
+            border-end-start-radius: 7px;
+
+            &:before,
+            &:after {
+              content: '';
+              position: absolute;
+              inset-inline-start: 0;
+              inset-block-end: 0;
+              inline-size: 4px;
+              block-size: 4px;
+              background-color: awsui.$color-background-layout-panel-content;
+            }
+
+            &:after {
+              background: $ai-drawer-background;
+              border-end-start-radius: awsui.$space-xxs;
+            }
           }
         }
       }

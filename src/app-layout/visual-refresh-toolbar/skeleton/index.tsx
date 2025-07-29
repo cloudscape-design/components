@@ -113,7 +113,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
           }}
           {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
         >
-          {toolbar}
+          {!aiDrawerExpandedMode && toolbar}
           <div
             className={styles['ai-drawer']}
             style={{

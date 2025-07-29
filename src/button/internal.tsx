@@ -47,7 +47,8 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
     | 'breadcrumb-group'
     | 'menu-trigger'
     | 'modal-dismiss'
-    | 'inline-icon-pointer-target';
+    | 'inline-icon-pointer-target'
+    | 'expanded-mode-dismiss';
   badge?: boolean;
   analyticsAction?: string;
   __nativeAttributes?:

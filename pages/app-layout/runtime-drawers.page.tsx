@@ -70,6 +70,7 @@ awsuiPlugins.appLayout.registerDrawer({
     content: 'Content',
     triggerButton: 'Trigger button for ai drawer',
     resizeHandle: 'Resize handle',
+    exitExpandedModeButton: 'Service Console',
   },
 
   trigger: {
