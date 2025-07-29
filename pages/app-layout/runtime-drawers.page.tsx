@@ -43,6 +43,7 @@ const AIDrawer = () => {
       style={{
         background: 'white',
         paddingInlineEnd: isMobile ? undefined : '16px',
+        paddingInlineStart: isMobile ? undefined : '16px',
       }}
     >
       <Box variant="h2" padding={{ bottom: 'm' }}>

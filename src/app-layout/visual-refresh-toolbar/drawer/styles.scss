@@ -240,20 +240,23 @@ $ai-drawer-background: #0f1b2a;
   }
 
   &.ai-drawer {
-    grid-template-columns: 1fr awsui.$space-s;
+    grid-template-columns: 1fr awsui.$space-xs;
     background: $ai-drawer-background;
-
-    > .drawer-gap {
-      grid-column: 3;
-      grid-row: 1;
-      block-size: 100%;
-      inline-size: $global-drawer-gap-size;
-      background: $ai-drawer-background;
-    }
 
     > .drawer-slider {
       grid-column: 2;
-      background: $ai-drawer-background;
+    }
+
+    // to override styles in PanelResizeHandle component
+    // maybe we need to introduce an additional prop in the component to make it more flexible?
+    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+    .ai-drawer-slider-handle {
+      transform: translate(-4px);
+      color: awsui.$color-text-interactive-inverted-default;
+
+      &:hover {
+        stroke: awsui.$color-text-interactive-inverted-hover;
+      }
     }
 
     > .drawer-content-container {

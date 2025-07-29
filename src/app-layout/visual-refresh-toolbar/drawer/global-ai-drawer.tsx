@@ -107,7 +107,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
               <PanelResizeHandle
                 ref={aiDrawerFocusControl.refs.slider}
                 position="side-start"
-                className={testutilStyles['drawers-slider']}
+                className={clsx(testutilStyles['drawers-slider'], styles['ai-drawer-slider-handle'])}
                 ariaLabel={activeAiDrawer?.ariaLabels?.resizeHandle}
                 tooltipText={activeAiDrawer?.ariaLabels?.resizeHandleTooltipText}
                 ariaValuenow={resizeProps.relativeSize}
