@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { SYSTEM } from '../internal/environment';
+import customCssProps from '../internal/generated/custom-css-properties';
 import { AlertProps } from './interfaces';
 
 export function getAlertStyles(style: AlertProps['style']) {
@@ -14,6 +15,11 @@ export function getAlertStyles(style: AlertProps['style']) {
     borderRadius: style.root?.borderRadius,
     borderWidth: style.root?.borderWidth,
     color: style.root?.color,
+    ...(style.root?.focusRing && {
+      [customCssProps.styleFocusRingBorderColor]: style.root.focusRing?.borderColor,
+      [customCssProps.styleFocusRingBorderRadius]: style.root.focusRing?.borderRadius,
+      [customCssProps.styleFocusRingBorderWidth]: style.root.focusRing?.borderWidth,
+    }),
   };
 }
 

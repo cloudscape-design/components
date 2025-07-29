@@ -53,6 +53,11 @@ function CustomAlert({ children, type, dismissible }: CustomAlertProps) {
           borderRadius: '8px',
           borderWidth,
           color,
+          focusRing: {
+            borderColor: palette.red60,
+            borderRadius: '4px',
+            borderWidth: '2px',
+          },
         },
         dismissButton: {
           color: {
