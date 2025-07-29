@@ -271,6 +271,11 @@ describe('Style API', () => {
           borderRadius: '8px',
           borderWidth: '2px',
           color: 'rgb(0, 0, 0)',
+          focusRing: {
+            borderColor: 'rgb(23, 31, 118)',
+            borderRadius: '6px',
+            borderWidth: '4px',
+          },
         },
         dismissButton: {
           color: {
@@ -296,6 +301,21 @@ describe('Style API', () => {
     expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('border-radius')).toBe('8px');
     expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('border-width')).toBe('2px');
     expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('color')).toBe('rgb(0, 0, 0)');
+    expect(
+      getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue(
+        '--awsui-style-focus-ring-border-color-kcc2gu'
+      )
+    ).toBe('rgb(23, 31, 118)');
+    expect(
+      getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue(
+        '--awsui-style-focus-ring-border-radius-kcc2gu'
+      )
+    ).toBe('6px');
+    expect(
+      getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue(
+        '--awsui-style-focus-ring-border-width-kcc2gu'
+      )
+    ).toBe('4px');
 
     const dismissButton = wrapper.findDismissButton()!.getElement();
     expect(getComputedStyle(dismissButton).getPropertyValue('--awsui-style-color-active-kcc2gu')).toBe(
