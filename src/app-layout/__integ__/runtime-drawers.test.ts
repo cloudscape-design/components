@@ -109,7 +109,9 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
           await page.click(wrapper.findNavigation().findSideNavigation().findLinkByHref('page2').toSelector());
           await page.runInsideIframe('#page2', true, async () => {
             await page.waitForVisible(wrapper.findActiveDrawer().toSelector());
-            expect((await page.getBoundingBox(wrapper.findActiveDrawer().toSelector())).width).toEqual(newWidth!);
+            await page.waitForAssertion(async () => {
+              expect((await page.getBoundingBox(wrapper.findActiveDrawer().toSelector())).width).toEqual(newWidth!);
+            });
             await expect(page.getText(wrapper.findActiveDrawer().toSelector())).resolves.toContain('Security');
           });
         }
