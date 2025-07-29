@@ -54,7 +54,12 @@ function renderMultiselectWithSelectedOptions(props: Partial<MultiselectProps>) 
   return createWrapper(renderResult.container).findMultiselect()!;
 }
 
-const getMetadataContexts = (selectedOptionsCount = 0, label = 'multiselect with metadata', disabled?: boolean) => {
+const getMetadataContexts = (
+  selectedOptionsCount = 0,
+  label = 'multiselect with metadata',
+  disabled: boolean = false,
+  selectedOptions: MultiselectProps['selectedOptions'] = []
+) => {
   const metadata: GeneratedAnalyticsMetadataFragment = {
     contexts: [
       {
@@ -65,6 +70,7 @@ const getMetadataContexts = (selectedOptionsCount = 0, label = 'multiselect with
           properties: {
             disabled: disabled ? 'true' : 'false',
             selectedOptionsCount: `${selectedOptionsCount}`,
+            selectedOptionsValues: selectedOptions.map(option => option.value) as Array<string>,
           },
         },
       },
@@ -256,10 +262,23 @@ describe('Multiselect renders correct analytics metadata', () => {
     });
   });
   describe('with selected options', () => {
+    test('with one selected option', () => {
+      const wrapper = renderMultiselectWithSelectedOptions({ selectedOptions: [selectedOptions[0]] });
+      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(
+        getMetadataContexts(1, undefined, false, [selectedOptions[0]])
+      );
+    });
+    test('with selected options without value', () => {
+      const wrapper = renderMultiselectWithSelectedOptions({ selectedOptions: [{ label: 'label1' }] });
+      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadataContexts(1));
+    });
+
     test('when readonly', () => {
       const wrapper = renderMultiselectWithSelectedOptions({ readOnly: true });
       const simpleToken = wrapper.findToken(1)!.findDismiss().getElement();
-      expect(getGeneratedAnalyticsMetadata(simpleToken)).toEqual(getMetadataContexts(5));
+      expect(getGeneratedAnalyticsMetadata(simpleToken)).toEqual(
+        getMetadataContexts(5, undefined, false, selectedOptions)
+      );
     });
 
     test('in dismiss button', () => {
@@ -272,13 +291,13 @@ describe('Multiselect renders correct analytics metadata', () => {
           label: 'Dismiss label1',
           position: '1',
         },
-        ...getMetadataContexts(5),
+        ...getMetadataContexts(5, undefined, false, selectedOptions),
       });
 
       const disabledToken = wrapper.findToken(3)!.findDismiss().getElement();
       expect(getGeneratedAnalyticsMetadata(disabledToken)).toEqual({
         detail: { position: '3' },
-        ...getMetadataContexts(5),
+        ...getMetadataContexts(5, undefined, false, selectedOptions),
       });
     });
 
@@ -298,7 +317,7 @@ describe('Multiselect renders correct analytics metadata', () => {
       };
       expect(getGeneratedAnalyticsMetadata(tokenToggle)).toEqual({
         ...showMoreMetadata,
-        ...getMetadataContexts(5),
+        ...getMetadataContexts(5, undefined, false, selectedOptions),
       });
 
       wrapper.findTokenToggle()!.click();
@@ -310,7 +329,7 @@ describe('Multiselect renders correct analytics metadata', () => {
       };
       expect(getGeneratedAnalyticsMetadata(wrapper.findTokenToggle()!.getElement())).toEqual({
         ...showLessMetadata,
-        ...getMetadataContexts(5),
+        ...getMetadataContexts(5, undefined, false, selectedOptions),
       });
     });
   });

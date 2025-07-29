@@ -25,5 +25,6 @@ export interface GeneratedAnalyticsMetadataMultiselectComponent {
   properties: {
     disabled: string;
     selectedOptionsCount: string;
+    selectedOptionsValues: Array<string>;
   };
 }

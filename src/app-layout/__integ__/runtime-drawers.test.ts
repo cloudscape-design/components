@@ -109,7 +109,9 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
           await page.click(wrapper.findNavigation().findSideNavigation().findLinkByHref('page2').toSelector());
           await page.runInsideIframe('#page2', true, async () => {
             await page.waitForVisible(wrapper.findActiveDrawer().toSelector());
-            expect((await page.getBoundingBox(wrapper.findActiveDrawer().toSelector())).width).toEqual(newWidth!);
+            await page.waitForAssertion(async () => {
+              expect((await page.getBoundingBox(wrapper.findActiveDrawer().toSelector())).width).toEqual(newWidth!);
+            });
             await expect(page.getText(wrapper.findActiveDrawer().toSelector())).resolves.toContain('Security');
           });
         }
@@ -147,6 +149,12 @@ describe('Visual refresh toolbar only', () => {
   class PageObject extends BasePageObject {
     hasHorizontalScroll() {
       return this.browser.execute(() => document.body.scrollWidth - document.body.clientWidth > 0);
+    }
+
+    async getDrawerWidth(drawerId: string) {
+      const { width } = await this.getBoundingBox(findDrawerById(wrapper, drawerId)!.toSelector());
+
+      return width;
     }
   }
   function setupTest(testFn: (page: PageObject) => Promise<void>) {
@@ -360,6 +368,34 @@ describe('Visual refresh toolbar only', () => {
       await expect(page.isClickable(findDrawerById(wrapper, 'circle3-global')!.toSelector())).resolves.toBe(false);
       await expect(page.isClickable(findDrawerById(wrapper, 'circle')!.toSelector())).resolves.toBe(false);
       await expect(page.isClickable(wrapper.findOpenNavigationPanel().toSelector())).resolves.toBe(false);
+    })
+  );
+
+  test(
+    'should programmatically resize drawers',
+    setupTest(async page => {
+      await page.setWindowSize(viewports.desktopWide);
+      const drawerId1 = 'circle-global';
+      const drawerId2 = 'circle3-global';
+      await page.click(wrapper.findDrawerTriggerById(drawerId1).toSelector());
+      await page.click(wrapper.findDrawerTriggerById(drawerId2).toSelector());
+
+      await page.waitForAssertion(async () => {
+        await expect(page.getDrawerWidth(drawerId1)).resolves.toBe(351);
+        await expect(page.getDrawerWidth(drawerId2)).resolves.toBe(321);
+      });
+
+      await page.click(wrapper.find('[data-testid="button-circle-global-resize"]').toSelector());
+
+      await page.waitForAssertion(async () => {
+        await expect(page.getDrawerWidth(drawerId1)).resolves.toBe(401);
+      });
+
+      await page.click(wrapper.find('[data-testid="button-circle3-global-resize"]').toSelector());
+
+      await page.waitForAssertion(async () => {
+        await expect(page.getDrawerWidth(drawerId2)).resolves.toBe(501);
+      });
     })
   );
 });
