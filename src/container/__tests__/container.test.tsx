@@ -109,4 +109,50 @@ describe('Style API', () => {
     expect(getComputedStyle(wrapper.findFooter()!.getElement()).getPropertyValue('padding-block')).toBe('40px');
     expect(getComputedStyle(wrapper.findFooter()!.getElement()).getPropertyValue('padding-inline')).toBe('140px');
   });
+
+  test('media top', () => {
+    const url = '/test.png';
+
+    const wrapper = renderContainer(
+      <Container
+        header="Container header"
+        footer="Container footer"
+        media={{ content: <img src={url} />, position: 'top', height: '100px' }}
+        style={{
+          root: {
+            borderRadius: '20px',
+          },
+        }}
+      >
+        Container content
+      </Container>
+    );
+
+    expect(getComputedStyle(wrapper.findMedia()!.getElement()).getPropertyValue('border-radius')).toBe('20px');
+    expect(getComputedStyle(wrapper.findMedia()!.getElement()).getPropertyValue('border-end-start-radius')).toBe('0px');
+    expect(getComputedStyle(wrapper.findMedia()!.getElement()).getPropertyValue('border-end-end-radius')).toBe('0px');
+  });
+
+  test('media side', () => {
+    const url = '/test.png';
+
+    const wrapper = renderContainer(
+      <Container
+        header="Container header"
+        footer="Container footer"
+        media={{ content: <img src={url} />, position: 'side', width: '100px' }}
+        style={{
+          root: {
+            borderRadius: '20px',
+          },
+        }}
+      >
+        Container content
+      </Container>
+    );
+
+    expect(getComputedStyle(wrapper.findMedia()!.getElement()).getPropertyValue('border-radius')).toBe('20px');
+    expect(getComputedStyle(wrapper.findMedia()!.getElement()).getPropertyValue('border-start-end-radius')).toBe('0px');
+    expect(getComputedStyle(wrapper.findMedia()!.getElement()).getPropertyValue('border-end-end-radius')).toBe('0px');
+  });
 });
