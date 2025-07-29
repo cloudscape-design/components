@@ -31,6 +31,7 @@ type DemoContext = React.Context<
     hasText: boolean;
     hasSecondaryContent: boolean;
     hasSecondaryActions: boolean;
+    hasPrimaryActions: boolean;
     hasInfiniteMaxRows: boolean;
   }>
 >;
@@ -52,6 +53,7 @@ export default function PromptInputPage() {
     hasText,
     hasSecondaryActions,
     hasSecondaryContent,
+    hasPrimaryActions,
     hasInfiniteMaxRows,
   } = urlParams;
 
@@ -142,6 +144,16 @@ export default function PromptInputPage() {
                 Secondary actions
               </Checkbox>
               <Checkbox
+                checked={hasPrimaryActions}
+                onChange={() =>
+                  setUrlParams({
+                    hasPrimaryActions: !hasPrimaryActions,
+                  })
+                }
+              >
+                Custom primary actions
+              </Checkbox>
+              <Checkbox
                 checked={hasInfiniteMaxRows}
                 onChange={() =>
                   setUrlParams({
@@ -191,6 +203,29 @@ export default function PromptInputPage() {
                   warning={hasWarning}
                   ref={ref}
                   disableSecondaryActionsPaddings={true}
+                  customPrimaryAction={
+                    hasPrimaryActions ? (
+                      <ButtonGroup
+                        variant="icon"
+                        items={[
+                          {
+                            type: 'icon-button',
+                            id: 'record',
+                            text: 'Record',
+                            iconName: 'microphone',
+                            disabled: isDisabled || isReadOnly,
+                          },
+                          {
+                            type: 'icon-button',
+                            id: 'submit',
+                            text: 'Submit',
+                            iconName: 'send',
+                            disabled: isDisabled || isReadOnly,
+                          },
+                        ]}
+                      />
+                    ) : undefined
+                  }
                   secondaryActions={
                     hasSecondaryActions ? (
                       <Box padding={{ left: 'xxs', top: 'xs' }}>
