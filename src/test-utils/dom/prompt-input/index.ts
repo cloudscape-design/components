@@ -13,16 +13,26 @@ export default class PromptInputWrapper extends ComponentWrapper {
     return this.findByClassName<HTMLTextAreaElement>(testutilStyles.textarea)!;
   }
 
+  /**
+   * Finds the action button. Note that, despite its typings, this may return null.
+   */
   findActionButton(): ElementWrapper<HTMLButtonElement> {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['action-button'])!;
   }
 
+  /**
+   * Finds the secondary actions slot. Note that, despite its typings, this may return null.
+   */
   findSecondaryActions(): ElementWrapper<HTMLDivElement> {
     return this.findByClassName<HTMLDivElement>(testutilStyles['secondary-actions'])!;
   }
 
-  findSecondaryContent(): ElementWrapper<HTMLDivElement> {
-    return this.findByClassName<HTMLDivElement>(testutilStyles['secondary-content'])!;
+  findSecondaryContent(): ElementWrapper<HTMLDivElement> | null {
+    return this.findByClassName<HTMLDivElement>(testutilStyles['secondary-content']);
+  }
+
+  findCustomPrimaryAction(): ElementWrapper<HTMLDivElement> | null {
+    return this.findByClassName<HTMLDivElement>(testutilStyles['primary-action']);
   }
 
   /**
