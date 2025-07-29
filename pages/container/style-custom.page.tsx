@@ -15,7 +15,7 @@ export default function CustomContainer() {
         <Container
           style={{
             root: {
-              background: '#f0f0f0',
+              background: '#fcfcfc',
               borderColor: 'green',
               borderRadius: '8px',
               borderWidth: '4px',
@@ -33,7 +33,7 @@ export default function CustomContainer() {
           header="Container header"
           style={{
             root: {
-              background: '#f0f0f0',
+              background: '#fcfcfc',
               borderColor: 'magenta',
               borderRadius: '0px',
               borderWidth: '1px',
@@ -55,7 +55,7 @@ export default function CustomContainer() {
           footer="Container footer"
           style={{
             root: {
-              background: '#f0f0f0',
+              background: '#fcfcfc',
               borderColor: '#000',
               borderRadius: '20px',
               borderWidth: '3px',
@@ -80,7 +80,7 @@ export default function CustomContainer() {
           footer="Container footer"
           style={{
             root: {
-              background: '#f0f0f0',
+              background: '#fcfcfc',
               borderColor: 'blue',
               borderRadius: '40px',
               borderWidth: '4px',
@@ -102,7 +102,7 @@ export default function CustomContainer() {
           footer="Container footer"
           style={{
             root: {
-              background: '#f0f0f0',
+              background: '#fcfcfc',
               borderColor: 'purple',
               borderRadius: '240px',
               borderWidth: '6px',

@@ -6,6 +6,8 @@ import { render } from '@testing-library/react';
 import Container from '../../../lib/components/container';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+import styles from '../../../lib/components/container/styles.css.js';
+
 function renderContainer(jsx: React.ReactElement) {
   const { container } = render(jsx);
   return createWrapper(container).findContainer()!;
@@ -49,4 +51,58 @@ test('renders everything together', () => {
   expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Test header');
   expect(wrapper.findFooter()!.getElement()).toHaveTextContent('Test footer');
   expect(wrapper.findContent().getElement()).toHaveTextContent('test content');
+});
+
+describe('Style API', () => {
+  test('all style properties', () => {
+    const wrapper = renderContainer(
+      <Container
+        header="Container header"
+        footer="Container footer"
+        style={{
+          root: {
+            background: 'rgb(240, 240, 235)',
+            borderColor: 'purple',
+            borderRadius: '240px',
+            borderWidth: '6px',
+          },
+          content: {
+            paddingBlock: '20px',
+            paddingInline: '140px',
+          },
+          header: {
+            paddingBlock: '20px 0px',
+            paddingInline: '140px',
+          },
+          footer: {
+            borderColor: 'purple',
+            borderWidth: '6px',
+            paddingBlock: '40px',
+            paddingInline: '140px',
+          },
+        }}
+      >
+        Container content
+      </Container>
+    );
+
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('background')).toBe('rgb(240, 240, 235)');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-color')).toBe('purple');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-radius')).toBe('240px');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-width')).toBe('6px');
+    expect(
+      getComputedStyle(wrapper.findByClassName(styles['content-inner'])!.getElement()).getPropertyValue('padding-block')
+    ).toBe('20px');
+    expect(
+      getComputedStyle(wrapper.findByClassName(styles['content-inner'])!.getElement()).getPropertyValue(
+        'padding-inline'
+      )
+    ).toBe('140px');
+    expect(getComputedStyle(wrapper.findHeader()!.getElement()).getPropertyValue('padding-block')).toBe('20px 0px');
+    expect(getComputedStyle(wrapper.findHeader()!.getElement()).getPropertyValue('padding-inline')).toBe('140px');
+    expect(getComputedStyle(wrapper.findFooter()!.getElement()).getPropertyValue('border-color')).toBe('purple');
+    expect(getComputedStyle(wrapper.findFooter()!.getElement()).getPropertyValue('border-width')).toBe('6px');
+    expect(getComputedStyle(wrapper.findFooter()!.getElement()).getPropertyValue('padding-block')).toBe('40px');
+    expect(getComputedStyle(wrapper.findFooter()!.getElement()).getPropertyValue('padding-inline')).toBe('140px');
+  });
 });
