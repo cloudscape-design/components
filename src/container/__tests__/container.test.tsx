@@ -75,10 +75,14 @@ describe('Style API', () => {
             paddingInline: '140px',
           },
           footer: {
-            borderColor: 'purple',
-            borderWidth: '6px',
-            paddingBlock: '40px',
-            paddingInline: '140px',
+            root: {
+              paddingBlock: '40px',
+              paddingInline: '140px',
+            },
+            divider: {
+              borderColor: 'purple',
+              borderWidth: '6px',
+            },
           },
         }}
       >
