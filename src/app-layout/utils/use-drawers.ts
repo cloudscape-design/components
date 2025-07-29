@@ -159,6 +159,23 @@ function useDrawerRuntimeOpenClose(
   }, [disableRuntimeDrawers, onDrawerClosed]);
 }
 
+function useDrawerRuntimeResize(
+  disableRuntimeDrawers: boolean | undefined,
+  onActiveDrawerResize: ({ id, size }: { id: string; size: number }) => void
+) {
+  const onRuntimeDrawerResize = useStableCallback((drawerId: string, size: number) => {
+    onActiveDrawerResize({ id: drawerId, size });
+  });
+
+  useEffect(() => {
+    if (disableRuntimeDrawers) {
+      return;
+    }
+
+    return awsuiPluginsInternal.appLayout.onDrawerResize(onRuntimeDrawerResize);
+  }, [disableRuntimeDrawers, onRuntimeDrawerResize]);
+}
+
 function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout) {
   const drawers = [...runtimeDrawers.localBefore, ...runtimeDrawers.localAfter];
   if (drawers.length === 0 && toolsProps.disableDrawersMerge) {
@@ -296,6 +313,8 @@ export function useDrawers(
     activeGlobalDrawersIds,
     onActiveGlobalDrawersChange
   );
+
+  useDrawerRuntimeResize(disableRuntimeDrawers, onActiveDrawerResize);
 
   const activeDrawerSize = activeDrawerIdResolved
     ? (drawerSizes[activeDrawerIdResolved] ?? activeDrawer?.defaultSize ?? toolsProps.toolsWidth)
