@@ -8,11 +8,18 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/foundation' as foundation;
 
 .link {
   @include styles.styles-reset;
   display: inline;
   white-space: inherit;
+
+  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+
   @include styles.link-default;
 
   @each $variant in map.keys(constants.$link-variants) {
@@ -45,7 +52,11 @@
   }
 
   @include focus-visible.when-visible {
-    @include styles.link-focus;
+    @include styles.focus-highlight(
+      $gutter: awsui.$space-button-focus-outline-gutter,
+      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+    );
   }
 
   @each $font-size, $properties in constants.$link-font-sizes {

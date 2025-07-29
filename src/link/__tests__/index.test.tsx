@@ -377,3 +377,40 @@ describe('"onClick" event', () => {
     );
   });
 });
+
+describe('Style API', () => {
+  test('all style properties', () => {
+    const { container } = render(
+      <Link
+        style={{
+          root: {
+            background: 'rgb(22, 12, 116)',
+            color: 'rgb(0, 0, 0)',
+            paddingBlock: '4px',
+            paddingInline: '8px',
+            fontSize: '12px',
+            focusRing: {
+              borderColor: 'rgba(157, 18, 10, 1)',
+              borderRadius: '6px',
+              borderWidth: '4px',
+            },
+          },
+        }}
+      >
+        Link
+      </Link>
+    );
+
+    const link = createWrapper(container).findLink()!.getElement();
+    expect(getComputedStyle(link).getPropertyValue('background')).toBe('rgb(22, 12, 116)');
+    expect(getComputedStyle(link).getPropertyValue('color')).toBe('rgb(0, 0, 0)');
+    expect(getComputedStyle(link).getPropertyValue('padding-block')).toBe('4px');
+    expect(getComputedStyle(link).getPropertyValue('padding-inline')).toBe('8px');
+    expect(getComputedStyle(link).getPropertyValue('font-size')).toBe('12px');
+    expect(getComputedStyle(link).getPropertyValue('--awsui-style-focus-ring-border-color-kcc2gu')).toBe(
+      'rgba(157, 18, 10, 1)'
+    );
+    expect(getComputedStyle(link).getPropertyValue('--awsui-style-focus-ring-border-radius-kcc2gu')).toBe('6px');
+    expect(getComputedStyle(link).getPropertyValue('--awsui-style-focus-ring-border-width-kcc2gu')).toBe('4px');
+  });
+});
