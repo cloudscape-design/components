@@ -11488,6 +11488,24 @@ By default, the component sets the \`rel\` attribute to "noopener noreferrer" wh
       "type": "string",
     },
     {
+      "description": "Specifies an object of selectors and properties that are used to apply custom styles.
+
+- \`root.background\` (string) - (Optional) Background for link.
+- \`root.color\` (string) - (Optional) Text color for link.
+- \`root.paddingBlock\` (string) - (Optional) Block dimension padding.
+- \`root.paddingInline\` (string) - (Optional) Inline dimension padding.
+- \`root.fontSize\` (string) - (Optional) Text size for link.
+- \`root.focusRing.borderColor\` (string) - (Optional) Focus ring border color.
+- \`root.focusRing.borderRadius\` (string) - (Optional) Focus ring border radius.
+- \`root.focusRing.borderWidth\` (string) - (Optional) Focus ring border width.",
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "LinkProps.Style",
+    },
+    {
       "description": "Specifies where to open the linked URL. Set this to \`_blank\` to open the URL
 in a new tab. If you set this property to \`_blank\`, the component
 automatically adds \`rel="noopener noreferrer"\` to avoid performance
