@@ -276,7 +276,8 @@ $ai-drawer-background: #0f1b2a;
           inset-block-start: 0;
           padding-inline: awsui.$space-m;
           background-color: awsui.$color-background-layout-panel-content;
-          border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+          border-block-end: awsui.$border-divider-section-width solid;
+          border-image: linear-gradient(90deg, #962eff 0%, #5c7fff 30%, #09f 50%, #b8e7ff 70%, #8575ff 100%) 1;
 
           > .drawer-actions {
             display: flex;
