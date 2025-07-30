@@ -104,7 +104,7 @@ $padding-block-inner-filtering-token: 0px;
   // read-only in-filtering-token (i.e. for property filter readOnlyOperations)
   // should retain standard borders, only the icon changes
   &.readonly:not(&.disabled):not(&.in-filtering-token) {
-    @include styles.button-trigger-readonly-element;
+    @include styles.form-readonly-element;
   }
 
   &:focus {
