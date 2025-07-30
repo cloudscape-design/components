@@ -165,9 +165,11 @@ export default function InternalContainer({
                     [styles['header-full-page']]: __fullPage && isRefresh,
                   }
                 )}
-                {...stickyStyles}
                 ref={headerMergedRef}
-                style={getHeaderStyles(style)}
+                style={{
+                  ...stickyStyles.style,
+                  ...getHeaderStyles(style),
+                }}
               >
                 {isStuck && !isMobile && isRefresh && __fullPage && <div className={styles['header-cover']}></div>}
                 {header}
