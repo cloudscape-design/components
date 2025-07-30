@@ -12,28 +12,33 @@ function Inputs() {
   return (
     <SpaceBetween size="xs">
       <div>
-        <Input ariaLabel="input" placeholder="Enter something" value="" />
-        <Select placeholder="Enter something" selectedOption={null} />
+        <Input ariaLabel="input" placeholder="Enter something" value="" onChange={() => {}} />
+        <Select placeholder="Enter something" selectedOption={null} onChange={() => {}} />
       </div>
 
       <div>
-        <Input ariaLabel="input" value="Something" />
-        <Select selectedOption={{ label: 'Label', value: 'value' }} />
+        <Input ariaLabel="input" value="Something" onChange={() => {}} />
+        <Select selectedOption={{ label: 'Label', value: 'value' }} onChange={() => {}} />
       </div>
 
       <div>
-        <Input ariaLabel="input" value="Something" readOnly={true} />
-        <Select selectedOption={{ label: 'Label', value: 'value' }} readOnly={true} />
+        <Input ariaLabel="input" value="Something" readOnly={true} onChange={() => {}} />
+        <Select selectedOption={{ label: 'Label', value: 'value' }} readOnly={true} onChange={() => {}} />
       </div>
 
       <div>
-        <Input ariaLabel="input" value="Something" disabled={true} />
-        <Select selectedOption={{ label: 'Label', value: 'value' }} disabled={true} />
+        <Input ariaLabel="input" value="Something" disabled={true} onChange={() => {}} />
+        <Select selectedOption={{ label: 'Label', value: 'value' }} disabled={true} onChange={() => {}} />
       </div>
 
       <div>
-        <Input ariaLabel="input" value="Something" readOnly={true} disabled={true} />
-        <Select selectedOption={{ label: 'Label', value: 'value' }} readOnly={true} disabled={true} />
+        <Input ariaLabel="input" value="Something" readOnly={true} disabled={true} onChange={() => {}} />
+        <Select
+          selectedOption={{ label: 'Label', value: 'value' }}
+          readOnly={true}
+          disabled={true}
+          onChange={() => {}}
+        />
       </div>
     </SpaceBetween>
   );
