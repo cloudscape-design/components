@@ -10,6 +10,10 @@ import { BaseComponentProps } from '../internal/base-component';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+/**
+ * @awsuiSystem core
+ */
+import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewport {
   /**
@@ -119,6 +123,36 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * Sets the button width to be 100% of the parent container width. Button content is centered.
    */
   fullWidth?: boolean;
+
+  /**
+   * Attributes to add to the native `button` element.
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeTriggerAttributes?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
+
+  /**
+   * Attributes to add to the native element of the `mainAction`.
+   *
+   * Specify either `button` for a standard main action, or `anchor` if `html` is set.
+   *
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeMainActionAttributes?: {
+    button?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
+    anchor?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
+  };
 }
 
 export namespace ButtonDropdownProps {
