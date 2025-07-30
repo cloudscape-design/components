@@ -35,7 +35,8 @@ export interface DrawerConfig {
   orderPriority?: number;
   defaultActive?: boolean;
   trigger?: {
-    iconSvg: string;
+    iconSvg?: string;
+    customIcon?: string;
   };
   mountContent: (container: HTMLElement, mountContext: MountContentContext) => void;
   unmountContent: (container: HTMLElement) => void;

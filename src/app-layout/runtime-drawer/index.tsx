@@ -72,10 +72,18 @@ const mapRuntimeConfigToDrawer = (
     ariaLabels: { drawerName: runtimeDrawer.ariaLabels.content ?? '', ...runtimeDrawer.ariaLabels },
     trigger: trigger
       ? {
-          iconSvg: (
-            // eslint-disable-next-line react/no-danger
-            <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
-          ),
+          ...(trigger.iconSvg && {
+            iconSvg: (
+              // eslint-disable-next-line react/no-danger
+              <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
+            ),
+          }),
+          ...(trigger.customIcon && {
+            customIcon: (
+              // eslint-disable-next-line react/no-danger
+              <span dangerouslySetInnerHTML={{ __html: trigger.customIcon }} />
+            ),
+          }),
         }
       : undefined,
     content: (

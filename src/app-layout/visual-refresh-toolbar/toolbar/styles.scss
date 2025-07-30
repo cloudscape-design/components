@@ -55,16 +55,18 @@ $ai-drawer-background: #0f1b2a;
     grid-template-columns: min-content min-content minmax(0, 4fr) minmax(auto, 1fr);
     grid-template-rows: 1fr;
 
-    > .universal-toolbar-ai-drawer {
+    > .universal-toolbar-ai-custom {
       grid-column: 1;
       position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
       margin-inline-start: calc(-1 * #{awsui.$space-m});
+      padding-inline: awsui.$space-static-xxs;
+      padding-block-start: awsui.$space-static-xxs;
+      box-sizing: border-box;
 
       block-size: 100%;
-      inline-size: 66px;
       border-end-end-radius: 8px;
       background: $ai-drawer-background;
     }

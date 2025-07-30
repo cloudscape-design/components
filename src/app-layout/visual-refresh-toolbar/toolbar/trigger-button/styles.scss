@@ -18,8 +18,7 @@
   &.inherit-size {
     block-size: 100%;
     inline-size: 100%;
-    // FIXME temporary workaround for tela demo
-    padding-block-start: awsui.$space-xxs;
+    box-sizing: border-box;
   }
 
   &-with-badge {

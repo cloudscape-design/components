@@ -134,12 +134,13 @@ export function AppLayoutToolbarImplementation({
     >
       <div className={styles['toolbar-container']}>
         {aiDrawer?.trigger && !activeAiDrawerId && (
-          <div className={styles['universal-toolbar-ai-drawer']}>
+          <div className={clsx(!!aiDrawer.trigger?.customIcon && styles['universal-toolbar-ai-custom'])}>
             <TriggerButton
               ariaLabel={aiDrawer?.ariaLabels?.triggerButton}
               ariaExpanded={!!activeAiDrawerId}
               iconName={aiDrawer.trigger!.iconName}
-              customSvg={aiDrawer.trigger!.iconSvg}
+              iconSvg={aiDrawer.trigger!.iconSvg}
+              customSvg={aiDrawer.trigger!.customIcon}
               className={testutilStyles['ai-drawer-toggle']}
               onClick={() => {
                 if (setExpandedDrawerId) {
@@ -153,7 +154,8 @@ export function AppLayoutToolbarImplementation({
               ref={aiDrawerFocusRef}
               selected={!drawerExpandedMode && !!activeAiDrawerId}
               disabled={anyPanelOpenInMobile}
-              inheritSize={true}
+              inheritSize={!!aiDrawer.trigger?.customIcon}
+              hasTooltip={true}
             />
           </div>
         )}
