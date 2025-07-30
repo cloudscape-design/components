@@ -110,11 +110,7 @@ export interface LinkProps extends BaseComponentProps {
   /**
    * Specifies an object of selectors and properties that are used to apply custom styles.
    *
-   * - `root.background` (string) - (Optional) Background for link.
-   * - `root.color` (string) - (Optional) Text color for link.
-   * - `root.paddingBlock` (string) - (Optional) Block dimension padding.
-   * - `root.paddingInline` (string) - (Optional) Inline dimension padding.
-   * - `root.fontSize` (string) - (Optional) Text size for link.
+   * - `root.color` {active, default, hover} (string) - (Optional) Text color for link.
    * - `root.focusRing.borderColor` (string) - (Optional) Focus ring border color.
    * - `root.focusRing.borderRadius` (string) - (Optional) Focus ring border radius.
    * - `root.focusRing.borderWidth` (string) - (Optional) Focus ring border width.
@@ -149,11 +145,11 @@ export namespace LinkProps {
   export type ClickDetail = _ClickDetail;
   export interface Style {
     root?: {
-      background?: string;
-      color?: string;
-      paddingBlock?: string;
-      paddingInline?: string;
-      fontSize?: string;
+      color?: {
+        active?: string;
+        default?: string;
+        hover?: string;
+      };
       focusRing?: {
         borderColor?: string;
         borderRadius?: string;

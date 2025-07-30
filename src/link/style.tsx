@@ -9,11 +9,11 @@ export function getLinkStyles(style: LinkProps['style']) {
 
   if (style?.root && SYSTEM === 'core') {
     properties = {
-      background: style.root?.background,
-      color: style.root?.color,
-      paddingBlock: style.root?.paddingBlock,
-      paddingInline: style.root?.paddingInline,
-      fontSize: style.root?.fontSize,
+      ...(style?.root?.color && {
+        [customCssProps.styleColorActive]: style.root.color?.active,
+        [customCssProps.styleColorDefault]: style.root.color?.default,
+        [customCssProps.styleColorHover]: style.root.color?.hover,
+      }),
       ...(style.root?.focusRing && {
         [customCssProps.styleFocusRingBorderColor]: style.root.focusRing?.borderColor,
         [customCssProps.styleFocusRingBorderRadius]: style.root.focusRing?.borderRadius,
