@@ -25,20 +25,6 @@
   padding-inline: calc(#{awsui.$space-button-horizontal} + #{awsui.$border-item-width});
   z-index: 1;
 
-  // Show arrow for non-expandable groups to maintain consistent layout
-  &:not(.expandable-header)::after {
-    content: '';
-    display: inline-block;
-    inline-size: awsui.$space-m;
-    block-size: awsui.$space-m;
-    background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="%23414d5c"><path d="M8 10.5L4.5 7h7L8 10.5z"/></svg>');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    margin-inline-start: awsui.$space-s;
-    opacity: 0.6;
-  }
-
   &.disabled {
     color: awsui.$color-text-dropdown-item-disabled;
     cursor: default;
@@ -48,7 +34,7 @@
     border-block-start-color: awsui.$color-border-dropdown-group;
     border-block-end-color: awsui.$color-border-dropdown-group;
     cursor: pointer;
-    justify-content: flex-start;
+    //justify-content: flex-start;
 
     &.disabled {
       cursor: default;
