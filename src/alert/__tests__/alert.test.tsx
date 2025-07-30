@@ -160,6 +160,15 @@ describe('Alert Component', () => {
     await expect(container).toValidateA11y();
   });
 
+  describe('a11y', () => {
+    it('has role group on the element referenced by the focus ref', () => {
+      let ref: AlertProps.Ref | null = null;
+      render(<Alert header="Important" ref={element => (ref = element)} />);
+      ref!.focus();
+      expect(document.activeElement).toHaveAttribute('role', 'group');
+    });
+  });
+
   describe('analytics', () => {
     test(`adds ${DATA_ATTR_ANALYTICS_ALERT} attribute with the alert type`, () => {
       const { container } = renderAlert({
