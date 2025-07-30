@@ -34,7 +34,6 @@
     border-block-start-color: awsui.$color-border-dropdown-group;
     border-block-end-color: awsui.$color-border-dropdown-group;
     cursor: pointer;
-    //justify-content: flex-start;
 
     &.disabled {
       cursor: default;
@@ -105,6 +104,7 @@
   inline-size: awsui.$space-m;
   display: inline-block;
   margin-inline-start: auto;
+  margin-inline-end: calc(-1 * #{awsui.$space-s});
 
   @include styles.with-motion {
     transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
