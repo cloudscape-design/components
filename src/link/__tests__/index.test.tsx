@@ -384,13 +384,13 @@ describe('Style API', () => {
       <Link
         style={{
           root: {
-            background: 'rgb(22, 12, 116)',
-            color: 'rgb(0, 0, 0)',
-            paddingBlock: '4px',
-            paddingInline: '8px',
-            fontSize: '12px',
+            color: {
+              active: 'rgb(163, 15, 15)',
+              default: 'rgb(15, 77, 163)',
+              hover: 'rgb(22, 104, 9)',
+            },
             focusRing: {
-              borderColor: 'rgba(157, 18, 10, 1)',
+              borderColor: 'rgb(157, 18, 10)',
               borderRadius: '6px',
               borderWidth: '4px',
             },
@@ -402,13 +402,13 @@ describe('Style API', () => {
     );
 
     const link = createWrapper(container).findLink()!.getElement();
-    expect(getComputedStyle(link).getPropertyValue('background')).toBe('rgb(22, 12, 116)');
-    expect(getComputedStyle(link).getPropertyValue('color')).toBe('rgb(0, 0, 0)');
-    expect(getComputedStyle(link).getPropertyValue('padding-block')).toBe('4px');
-    expect(getComputedStyle(link).getPropertyValue('padding-inline')).toBe('8px');
-    expect(getComputedStyle(link).getPropertyValue('font-size')).toBe('12px');
+
+    expect(getComputedStyle(link).getPropertyValue('--awsui-style-color-active-kcc2gu')).toBe('rgb(163, 15, 15)');
+    expect(getComputedStyle(link).getPropertyValue('--awsui-style-color-default-kcc2gu')).toBe('rgb(15, 77, 163)');
+    expect(getComputedStyle(link).getPropertyValue('--awsui-style-color-hover-kcc2gu')).toBe('rgb(22, 104, 9)');
+
     expect(getComputedStyle(link).getPropertyValue('--awsui-style-focus-ring-border-color-kcc2gu')).toBe(
-      'rgba(157, 18, 10, 1)'
+      'rgb(157, 18, 10)'
     );
     expect(getComputedStyle(link).getPropertyValue('--awsui-style-focus-ring-border-radius-kcc2gu')).toBe('6px');
     expect(getComputedStyle(link).getPropertyValue('--awsui-style-focus-ring-border-width-kcc2gu')).toBe('4px');
