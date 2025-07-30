@@ -3,7 +3,6 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalIcon from '../../icon/internal';
 import { CategoryProps } from '../interfaces';
 import ItemsList from '../items-list';
 
@@ -32,9 +31,6 @@ const CategoryElement = ({
     >
       {item.text && (
         <p className={clsx(styles.header, { [styles.disabled]: disabled })} aria-hidden="true">
-          {(item.iconName || item.iconUrl || item.iconSvg) && (
-            <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
-          )}
           {item.text}
         </p>
       )}

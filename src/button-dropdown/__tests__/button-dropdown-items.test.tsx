@@ -45,10 +45,6 @@ const checkRenderedGroup = (
       );
     }
   }
-
-  if (group.iconName || group.iconSvg || group.iconUrl) {
-    expect(renderedItem.findIcon()).toBeTruthy();
-  }
 };
 
 const checkElementItem = (
@@ -435,44 +431,6 @@ const items: ButtonDropdownProps.Items = [
 
         wrapper.openDropdown();
         expect(wrapper.findItemById('i1')!.findAllIcons()).toHaveLength(2);
-      });
-
-      test.each([true, false])('in category headers when expandableGroups is %s', expandableGroups => {
-        const svg = (
-          <svg className="test-svg" focusable="false">
-            <circle className="test-svg-inner" cx="8" cy="8" r="7" />
-          </svg>
-        );
-        const groupedCategories: ButtonDropdownProps.ItemOrGroup[] = [
-          {
-            id: 'category1',
-            text: 'category1',
-            iconName: 'folder',
-            items: [{ id: 'i1', text: 'item1' }],
-          },
-          {
-            id: 'category2',
-            text: 'category2',
-            iconUrl: 'data:image/png;base64,aaaa',
-            items: [{ id: 'i2', text: 'item2' }],
-          },
-          {
-            id: 'category3',
-            text: 'category3',
-            iconSvg: svg,
-            items: [{ id: 'i3', text: 'item3' }],
-          },
-        ];
-        const wrapper = renderButtonDropdown({ ...props, expandableGroups, items: groupedCategories });
-        wrapper.openDropdown();
-
-        if (expandableGroups) {
-          expect(wrapper.findExpandableCategoryById('category1')!.findIcon()).toBeTruthy();
-          expect(wrapper.findExpandableCategoryById('category2')!.findIcon()).toBeTruthy();
-          expect(wrapper.findExpandableCategoryById('category3')!.findIcon()).toBeTruthy();
-        } else {
-          expect(wrapper.findOpenDropdown()!.findAllIcons()).toHaveLength(3);
-        }
       });
     });
   });
