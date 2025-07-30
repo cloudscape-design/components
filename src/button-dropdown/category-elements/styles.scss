@@ -18,11 +18,26 @@
   font-weight: bold;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)
   padding-block: styles.$option-padding-with-border-placeholder-vertical;
   padding-inline: calc(#{awsui.$space-button-horizontal} + #{awsui.$border-item-width});
   z-index: 1;
+
+  // Show arrow for non-expandable groups to maintain consistent layout
+  &:not(.expandable-header)::after {
+    content: '';
+    display: inline-block;
+    inline-size: awsui.$space-m;
+    block-size: awsui.$space-m;
+    background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="%23414d5c"><path d="M8 10.5L4.5 7h7L8 10.5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    margin-inline-start: awsui.$space-s;
+    opacity: 0.6;
+  }
 
   &.disabled {
     color: awsui.$color-text-dropdown-item-disabled;
@@ -33,6 +48,8 @@
     border-block-start-color: awsui.$color-border-dropdown-group;
     border-block-end-color: awsui.$color-border-dropdown-group;
     cursor: pointer;
+    justify-content: flex-start;
+
     &.disabled {
       cursor: default;
     }
@@ -99,9 +116,9 @@
 
 .expand-icon {
   position: relative;
-  inset-inline-start: awsui.$space-s;
   inline-size: awsui.$space-m;
   display: inline-block;
+  margin-inline-start: auto;
 
   @include styles.with-motion {
     transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
@@ -113,7 +130,6 @@
 
   &-right {
     transform: rotate(-90deg);
-    margin-inline-start: auto;
     @include styles.with-direction('rtl') {
       transform: rotate(90deg);
     }
