@@ -84,13 +84,15 @@ $padding-block-inner-filtering-token: 0px;
   }
 
   &.disabled {
-    @include styles.button-trigger-disabled-element;
+    @include styles.form-disabled-element;
 
     > .arrow {
       color: awsui.$color-text-button-inline-icon-disabled;
     }
 
     &.in-filtering-token {
+      // select in property filter has different border style
+      @include styles.button-trigger-disabled-element;
       border-color: awsui.$color-border-control-disabled;
     }
 
