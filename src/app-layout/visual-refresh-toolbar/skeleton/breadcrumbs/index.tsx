@@ -6,8 +6,6 @@ import { BreadcrumbGroupImplementation } from '../../../../breadcrumb-group/impl
 import { BreadcrumbGroupProps } from '../../../../breadcrumb-group/interfaces';
 import { BreadcrumbsSlotContext } from '../../contexts';
 
-import styles from './styles.css.js';
-
 interface BreadcrumbsSlotProps {
   ownBreadcrumbs: React.ReactNode;
   discoveredBreadcrumbs: BreadcrumbGroupProps | null;
@@ -16,15 +14,13 @@ interface BreadcrumbsSlotProps {
 export function BreadcrumbsSlot({ ownBreadcrumbs, discoveredBreadcrumbs }: BreadcrumbsSlotProps) {
   return (
     <BreadcrumbsSlotContext.Provider value={{ isInToolbar: true }}>
-      <div className={styles['breadcrumbs-own']}>{ownBreadcrumbs}</div>
+      {ownBreadcrumbs}
       {discoveredBreadcrumbs && (
-        <div className={styles['breadcrumbs-discovered']}>
-          <BreadcrumbGroupImplementation
-            {...discoveredBreadcrumbs}
-            data-awsui-discovered-breadcrumbs={true}
-            __injectAnalyticsComponentMetadata={true}
-          />
-        </div>
+        <BreadcrumbGroupImplementation
+          {...discoveredBreadcrumbs}
+          data-awsui-discovered-breadcrumbs={true}
+          __injectAnalyticsComponentMetadata={true}
+        />
       )}
     </BreadcrumbsSlotContext.Provider>
   );
