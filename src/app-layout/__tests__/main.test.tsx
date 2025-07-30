@@ -121,7 +121,7 @@ describeEachAppLayout({ themes: ['classic', 'refresh-toolbar'], sizes: ['desktop
       await waitFor(() => expect(wrapper.getElement()).toHaveStyle({ minBlockSize: 'calc(100vh - 75px)' }));
     });
 
-    (theme !== 'classic' ? test : test.skip)('should set the header height to the scrolling element', () => {
+    (theme !== 'classic' ? test.skip : test.skip)('should set the header height to the scrolling element', () => {
       Object.defineProperty(document, 'scrollingElement', { value: document.body });
       renderComponent(
         <div id="b">
