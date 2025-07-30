@@ -222,9 +222,7 @@ function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout)
 }
 
 export const MIN_DRAWER_SIZE = 290;
-// TODO replace with a real value
 const DEFAULT_AI_DRAWER_SIZE = 350;
-const MIN_AI_DRAWER_SIZE = 300;
 
 type UseDrawersProps = Pick<AppLayoutProps, 'drawers' | 'activeDrawerId' | 'onDrawerChange'> & {
   __disableRuntimeDrawers?: boolean;
@@ -409,7 +407,7 @@ export function useDrawers(
     toolsProps?.toolsOpen ? toolsProps.toolsWidth : (activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE),
     MIN_DRAWER_SIZE
   );
-  const minAiDrawerSize = Math.min(activeAiDrawer?.defaultSize ?? MIN_AI_DRAWER_SIZE, MIN_AI_DRAWER_SIZE);
+  const minAiDrawerSize = Math.min(activeAiDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
 
   return {
     ariaLabelsWithDrawers: ariaLabels,
