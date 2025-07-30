@@ -56,6 +56,8 @@ const InternalButtonDropdown = React.forwardRef(
       linkStyle,
       fullWidth,
       position,
+      nativeMainActionAttributes,
+      nativeTriggerAttributes,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -76,7 +78,7 @@ const InternalButtonDropdown = React.forwardRef(
         warnOnce('ButtonDropdown', 'Main action is only supported for "primary" and "normal" component variant.');
       }
     }
-    const isMainAction = mainAction && (variant === 'primary' || variant === 'normal');
+    const hasMainAction = mainAction && (variant === 'primary' || variant === 'normal');
     const isVisualRefresh = useVisualRefresh();
 
     const {
@@ -117,13 +119,13 @@ const InternalButtonDropdown = React.forwardRef(
       ref,
       () => ({
         focus(...args) {
-          (isMainAction ? mainActionRef : triggerRef).current?.focus(...args);
+          (hasMainAction ? mainActionRef : triggerRef).current?.focus(...args);
         },
         focusDropdownTrigger(...args) {
           triggerRef.current?.focus(...args);
         },
       }),
-      [mainActionRef, triggerRef, isMainAction]
+      [mainActionRef, triggerRef, hasMainAction]
     );
 
     const clickHandler = () => {
@@ -170,6 +172,7 @@ const InternalButtonDropdown = React.forwardRef(
       formAction: 'none',
       nativeButtonAttributes: {
         'aria-haspopup': true,
+        ...nativeTriggerAttributes,
       },
     };
 
@@ -222,7 +225,7 @@ const InternalButtonDropdown = React.forwardRef(
           })}
         </div>
       );
-    } else if (isMainAction) {
+    } else if (hasMainAction) {
       const { text, iconName, iconAlt, iconSvg, iconUrl, external, externalIconAriaLabel, ...mainActionProps } =
         mainAction;
       const mainActionIconProps = external
@@ -247,6 +250,8 @@ const InternalButtonDropdown = React.forwardRef(
           variant={variant}
           ariaLabel={mainActionAriaLabel}
           formAction="none"
+          nativeAnchorAttributes={nativeMainActionAttributes?.anchor}
+          nativeButtonAttributes={nativeMainActionAttributes?.button}
         >
           {text}
         </InternalButton>
