@@ -94,7 +94,7 @@
 .text {
   min-inline-size: 0;
   // To account for vertical misalignment due to button borders
-  padding-block: awsui.$border-width-alert;
+  padding-block: awsui.$space-scaled-xxs;
   padding-inline: 0;
   margin-block: awsui.$space-scaled-xxs;
   margin-inline: awsui.$space-xxs;
