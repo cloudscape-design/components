@@ -1,7 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { createWidgetizedAppLayoutDrawer, createWidgetizedAppLayoutGlobalDrawers } from './drawer';
-import { createWidgetizedGlobalAppLayoutAiDrawer } from './drawer/global-ai-drawer';
+import {
+  createWidgetizedAppLayoutDrawer,
+  createWidgetizedAppLayoutGlobalDrawers,
+  createWidgetizedGlobalAppLayoutAiDrawer,
+} from './drawer';
 import { createWidgetizedAppLayoutNavigation } from './navigation';
 import { createWidgetizedAppLayoutNotifications } from './notifications';
 import {
