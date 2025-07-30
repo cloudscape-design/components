@@ -199,6 +199,38 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
     })
   );
 
+  (theme !== 'classic' ? test : test.skip)(
+    'element should not be hidden under the sticky header when focused',
+    setupTest({ pageName: 'global-scroll-padding' }, async page => {
+      // Getting the header offset depending on the theme
+      let headerOffset = (await page.getBoundingBox('#h')).height;
+      if (theme === 'refresh-toolbar') {
+        headerOffset += (await page.getBoundingBox(wrapper.findToolbar().toSelector())).height;
+      }
+
+      // Set the focus to the second button
+      await page.click(wrapper.findContentRegion().findHeader().toSelector());
+      await page.keys('Tab');
+      await page.keys('Tab');
+      const secondButtonSelector = wrapper.findContentRegion().findButton('[data-testid="button-2"]').toSelector();
+      await expect(page.isFocused(secondButtonSelector)).resolves.toBe(true);
+
+      // Scroll to a point where half of the first button is visible
+      const firstButtonSelector = wrapper.findContentRegion().findButton('[data-testid="button-1"]').toSelector();
+      const firstButtonBoundingBox = await page.getBoundingBox(firstButtonSelector);
+      const firstButtonTopOffset = firstButtonBoundingBox.top - headerOffset;
+      const firstButtonHalfOffset = firstButtonTopOffset + firstButtonBoundingBox.height / 2;
+      await page.windowScrollTo({ top: firstButtonHalfOffset });
+
+      // Set the focus back to the first button
+      await page.keys(['Shift', 'Tab']);
+      await expect(page.isFocused(firstButtonSelector)).resolves.toBe(true);
+
+      // Assert that whole of the first button is visible and not only the half of it
+      await expect(page.getWindowScroll()).resolves.toEqual({ top: firstButtonTopOffset, left: 0 });
+    })
+  );
+
   testIf(theme === 'refresh-toolbar')(
     'should keep header visible and in position while scrolling',
     setupTest({ pageName: 'multi-layout-with-table-sticky-header' }, async page => {
