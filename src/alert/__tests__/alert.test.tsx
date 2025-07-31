@@ -10,6 +10,7 @@ import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { DATA_ATTR_ANALYTICS_ALERT } from '../../../lib/components/internal/analytics/selectors';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import customCssProps from '../../internal/generated/custom-css-properties';
 
 import styles from '../../../lib/components/alert/styles.css.js';
 
@@ -265,5 +266,75 @@ describe('Alert Component', () => {
         expect(dismissButton).toHaveAccessibleName('deprecated dismiss label');
       });
     });
+  });
+});
+
+describe('Style API', () => {
+  test('custom properties', () => {
+    const { wrapper } = renderAlert({
+      dismissible: true,
+      children: 'Alert',
+      style: {
+        root: {
+          background: 'rgb(255, 255, 255)',
+          borderColor: 'rgb(0, 0, 0)',
+          borderRadius: '8px',
+          borderWidth: '2px',
+          color: 'rgb(0, 0, 0)',
+          focusRing: {
+            borderColor: 'rgb(23, 31, 118)',
+            borderRadius: '6px',
+            borderWidth: '4px',
+          },
+        },
+        dismissButton: {
+          color: {
+            active: 'rgb(12, 136, 22)',
+            default: 'rgb(189, 37, 40)',
+            hover: 'rgb(119, 12, 12)',
+          },
+          focusRing: {
+            borderColor: 'rgb(23, 31, 118)',
+            borderRadius: '6px',
+            borderWidth: '4px',
+          },
+        },
+      },
+    });
+
+    expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('background')).toBe(
+      'rgb(255, 255, 255)'
+    );
+    expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('border-color')).toBe(
+      'rgb(0, 0, 0)'
+    );
+    expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('border-radius')).toBe('8px');
+    expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('border-width')).toBe('2px');
+    expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('color')).toBe('rgb(0, 0, 0)');
+    expect(
+      getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue(
+        customCssProps.styleFocusRingBorderColor
+      )
+    ).toBe('rgb(23, 31, 118)');
+    expect(
+      getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue(
+        customCssProps.styleFocusRingBorderRadius
+      )
+    ).toBe('6px');
+    expect(
+      getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue(
+        customCssProps.styleFocusRingBorderWidth
+      )
+    ).toBe('4px');
+
+    const dismissButton = wrapper.findDismissButton()!.getElement();
+    expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleColorActive)).toBe('rgb(12, 136, 22)');
+    expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleColorDefault)).toBe('rgb(189, 37, 40)');
+    expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleColorHover)).toBe('rgb(119, 12, 12)');
+    expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe(
+      'rgb(23, 31, 118)'
+    );
+    expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('6px');
+    expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('4px');
   });
 });
