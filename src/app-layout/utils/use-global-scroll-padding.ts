@@ -8,7 +8,7 @@ export function useGlobalScrollPadding(headerHeight: number) {
   useEffect(() => {
     const scrollingElement = document.scrollingElement;
     if (scrollingElement instanceof HTMLElement) {
-      scrollingElement.style.scrollPaddingBlockStart = `${headerHeight}px`;
+      scrollingElement.style.scrollPaddingTop = `${headerHeight}px`;
     }
   }, [headerHeight]);
 }

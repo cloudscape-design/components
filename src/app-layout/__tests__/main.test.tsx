@@ -129,7 +129,7 @@ describeEachAppLayout({ themes: ['classic', 'refresh-toolbar'], sizes: ['desktop
       // Note: The toolbar height in jsdom environment is calculated as `0`.
       // For this reason both `refresh` and `refresh-toolbar` only consider the height of `#h` element which is `40px`.
       // We have covered this case with real values in integration tests.
-      expect(document.scrollingElement).toHaveStyle('scroll-padding-block-start: 40px');
+      expect(document.scrollingElement).toHaveStyle('scroll-padding-top: 40px');
     });
 
     test('should use alternative header and footer selector', async () => {
