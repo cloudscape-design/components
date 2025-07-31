@@ -48,7 +48,6 @@ const checkRenderedGroup = (
 
   if (group.iconName || group.iconSvg || group.iconUrl) {
     expect(renderedItem.findIcon()).toBeTruthy();
-    //
   }
 };
 
