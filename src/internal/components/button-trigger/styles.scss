@@ -84,13 +84,15 @@ $padding-block-inner-filtering-token: 0px;
   }
 
   &.disabled {
-    @include styles.button-trigger-disabled-element;
+    @include styles.form-disabled-element;
 
     > .arrow {
       color: awsui.$color-text-button-inline-icon-disabled;
     }
 
     &.in-filtering-token {
+      // select in property filter has different border style
+      @include styles.button-trigger-disabled-element;
       border-color: awsui.$color-border-control-disabled;
     }
 
@@ -102,7 +104,7 @@ $padding-block-inner-filtering-token: 0px;
   // read-only in-filtering-token (i.e. for property filter readOnlyOperations)
   // should retain standard borders, only the icon changes
   &.readonly:not(&.disabled):not(&.in-filtering-token) {
-    @include styles.button-trigger-readonly-element;
+    @include styles.form-readonly-element;
   }
 
   &:focus {
