@@ -9,17 +9,15 @@ import {
   Portal,
 } from '@cloudscape-design/component-toolkit/internal';
 
-import styles from './styles.css.js';
+import styles from '../styles.css.js';
 
-export default function PortalOverlay({
-  track,
-  isDisabled,
-  children,
-}: {
+interface PortalOverlayProps {
   track: React.RefObject<HTMLElement | null>;
   isDisabled: boolean;
   children: React.ReactNode;
-}) {
+}
+
+export default function PortalOverlay({ track, isDisabled, children }: PortalOverlayProps) {
   const ref = useRef<HTMLSpanElement | null>(null);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
