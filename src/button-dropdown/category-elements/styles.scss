@@ -101,10 +101,10 @@
 
 .expand-icon {
   position: relative;
+  inset-inline-end: calc(-1 * #{awsui.$space-s});
   inline-size: awsui.$space-m;
   display: inline-block;
   margin-inline-start: auto;
-  margin-inline-end: calc(-1 * #{awsui.$space-s});
 
   @include styles.with-motion {
     transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
