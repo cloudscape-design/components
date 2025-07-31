@@ -279,9 +279,12 @@ describe('ARIA labels', () => {
   });
 
   it('uses aria-live if dismissButton is false', () => {
-    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', dismissButton: false });
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover content', dismissButton: false });
     wrapper.findTrigger().click();
-    expect(wrapper.find('[aria-live="polite"]')).toBeTruthy();
+
+    const liveRegion = createWrapper().findLiveRegion()!;
+    expect(liveRegion).toBeDefined();
+    expect(liveRegion.getElement()).toHaveTextContent('Popover content');
   });
 
   it('does not pass the dismissAriaLabel to the dismiss button if not defined', () => {
@@ -308,15 +311,39 @@ describe('ARIA labels', () => {
     expect(wrapper.findBody()!.getElement()).not.toHaveAttribute('role', 'dialog');
   });
 
-  it('accessibility validation basic popover', async () => {
-    const wrapper = renderPopover({
-      children: 'Trigger',
-      content: 'Popover',
-      dismissButton: false,
-      renderWithPortal: true,
+  describe('live region', () => {
+    it('do not render live region when closed', () => {
+      renderPopover({
+        children: 'Trigger',
+        content: 'Popover',
+        dismissButton: false,
+        renderWithPortal: true,
+      });
+      expect(createWrapper().findLiveRegion()).toBeNull();
     });
-    wrapper.findTrigger().click();
-    await expect(document.body).toValidateA11y();
+
+    it('render live region when opened and dismissButton = false', () => {
+      const wrapper = renderPopover({
+        children: 'Trigger',
+        content: 'Popover',
+        dismissButton: false,
+        renderWithPortal: true,
+      });
+      wrapper.findTrigger().click();
+      const liveRegion = createWrapper().findLiveRegion()!.getElement()!;
+      expect(liveRegion).toHaveTextContent('Popover');
+    });
+
+    it('do not render live region when opened and dismissButton = true', () => {
+      const wrapper = renderPopover({
+        children: 'Trigger',
+        content: 'Popover',
+        dismissButton: true,
+        renderWithPortal: true,
+      });
+      wrapper.findTrigger().click();
+      expect(createWrapper().findLiveRegion()).toBeNull();
+    });
   });
 
   it('accessibility validation for popover with dismiss button and header', async () => {
