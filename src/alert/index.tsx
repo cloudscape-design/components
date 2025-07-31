@@ -21,7 +21,7 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 export { AlertProps };
 
 const Alert = React.forwardRef(
-  ({ type = 'info', visible = true, ...props }: AlertProps, ref: React.Ref<AlertProps.Ref>) => {
+  ({ type = 'info', visible = true, style, ...props }: AlertProps, ref: React.Ref<AlertProps.Ref>) => {
     const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
     const baseComponentProps = useBaseComponent<HTMLDivElement>(
       'Alert',
@@ -114,6 +114,7 @@ const Alert = React.forwardRef(
         {...baseComponentProps}
         ref={ref}
         messageSlotId={messageSlotId}
+        style={style}
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
       />
     );
