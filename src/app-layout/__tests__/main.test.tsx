@@ -117,6 +117,21 @@ describeEachAppLayout({ themes: ['classic', 'refresh-toolbar'], sizes: ['desktop
       await waitFor(() => expect(wrapper.getElement()).toHaveStyle({ minBlockSize: 'calc(100vh - 75px)' }));
     });
 
+    (theme !== 'classic' ? test : test.skip)('should set the header height to the scrolling element', () => {
+      Object.defineProperty(document, 'scrollingElement', { value: document.body });
+      renderComponent(
+        <div id="b">
+          <div style={{ height: 40 }} id="h" />
+          <AppLayout />
+        </div>
+      );
+
+      // Note: The toolbar height in jsdom environment is calculated as `0`.
+      // For this reason both `refresh` and `refresh-toolbar` only consider the height of `#h` element which is `40px`.
+      // We have covered this case with real values in integration tests.
+      expect(document.scrollingElement).toHaveStyle('scroll-padding-block-start: 40px');
+    });
+
     test('should use alternative header and footer selector', async () => {
       const { wrapper } = renderComponent(
         <>
