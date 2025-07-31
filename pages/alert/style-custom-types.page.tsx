@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 
 import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 
-import { Alert as CloudscapeAlert, SpaceBetween } from '~components';
+import { Alert as CloudscapeAlert, Button, SpaceBetween } from '~components';
 
 import { palette } from '../app/themes/style-api';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -22,6 +22,38 @@ export default function CustomAlertTypes() {
         <CustomAlert type="error" dismissible={true}>
           Error
         </CustomAlert>
+        <CustomAlert
+          type="error"
+          action={
+            <Button
+              style={{
+                root: {
+                  background: {
+                    default: palette.blue90,
+                    hover: palette.green90,
+                    active: palette.blue90,
+                  },
+                  borderColor: {
+                    default: palette.neutral10,
+                    hover: palette.neutral10,
+                    active: palette.neutral10,
+                  },
+                  color: {
+                    default: palette.neutral10,
+                    hover: palette.neutral10,
+                    active: palette.neutral10,
+                  },
+                  paddingBlock: '4px',
+                  paddingInline: '12px',
+                },
+              }}
+            >
+              Retry
+            </Button>
+          }
+        >
+          With Button
+        </CustomAlert>
         <CustomAlert type="warning">Warning</CustomAlert>
       </SpaceBetween>
     </ScreenshotArea>
@@ -35,7 +67,7 @@ interface CustomAlertProps {
   action?: React.ReactNode;
 }
 
-function CustomAlert({ children, type, dismissible }: CustomAlertProps) {
+function CustomAlert({ children, type, dismissible, action }: CustomAlertProps) {
   const mode = useCurrentMode(useRef(document.body));
   const background = backgrounds[mode][type];
   const borderColor = borderColors[mode][type];
@@ -45,6 +77,7 @@ function CustomAlert({ children, type, dismissible }: CustomAlertProps) {
     <CloudscapeAlert
       dismissible={dismissible}
       type={type}
+      action={action}
       i18nStrings={i18nStrings}
       style={{
         root: {
