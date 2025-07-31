@@ -8,7 +8,7 @@ import { MaskArgs } from './utils/mask-format';
 
 export interface MaskedInputProps extends InternalInputProps, FormFieldValidationControlProps, BaseComponentProps {
   /**
-   * Mask config definition to describe segments and seperators
+   * Mask config definition to describe segments and separators
    */
   mask: MaskArgs;
 
@@ -21,6 +21,12 @@ export interface MaskedInputProps extends InternalInputProps, FormFieldValidatio
    * Disable value autocompletion when input is blurred
    */
   disableAutocompleteOnBlur?: boolean;
+
+  /**
+   * When true, the provided value is shown as is, ignoring masking.
+   * This is useful when rendering an alternative value when the input is not focused or disabled.
+   */
+  showUnmaskedValue?: boolean;
 }
 
 export namespace MaskedInputProps {
