@@ -10,7 +10,7 @@ import wrapper from '../../../lib/components/test-utils/dom';
 import generatedIcons from '../../icon/generated/icons';
 
 const CUSTOM_SVG = (
-  <svg>
+  <svg focusable={false}>
     <circle cx="8" cy="8" r="7" />
   </svg>
 );
