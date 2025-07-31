@@ -15,6 +15,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
 import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
+import customCssProps from '../../internal/generated/custom-css-properties';
 
 import styles from '../../../lib/components/link/styles.css.js';
 
@@ -403,14 +404,12 @@ describe('Style API', () => {
 
     const link = createWrapper(container).findLink()!.getElement();
 
-    expect(getComputedStyle(link).getPropertyValue('--awsui-style-color-active-kcc2gu')).toBe('rgb(163, 15, 15)');
-    expect(getComputedStyle(link).getPropertyValue('--awsui-style-color-default-kcc2gu')).toBe('rgb(15, 77, 163)');
-    expect(getComputedStyle(link).getPropertyValue('--awsui-style-color-hover-kcc2gu')).toBe('rgb(22, 104, 9)');
+    expect(getComputedStyle(link).getPropertyValue(customCssProps.styleColorActive)).toBe('rgb(163, 15, 15)');
+    expect(getComputedStyle(link).getPropertyValue(customCssProps.styleColorDefault)).toBe('rgb(15, 77, 163)');
+    expect(getComputedStyle(link).getPropertyValue(customCssProps.styleColorHover)).toBe('rgb(22, 104, 9)');
 
-    expect(getComputedStyle(link).getPropertyValue('--awsui-style-focus-ring-border-color-kcc2gu')).toBe(
-      'rgb(157, 18, 10)'
-    );
-    expect(getComputedStyle(link).getPropertyValue('--awsui-style-focus-ring-border-radius-kcc2gu')).toBe('6px');
-    expect(getComputedStyle(link).getPropertyValue('--awsui-style-focus-ring-border-width-kcc2gu')).toBe('4px');
+    expect(getComputedStyle(link).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('rgb(157, 18, 10)');
+    expect(getComputedStyle(link).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('6px');
+    expect(getComputedStyle(link).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('4px');
   });
 });
