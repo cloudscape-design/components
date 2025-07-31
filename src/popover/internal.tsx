@@ -17,6 +17,7 @@ import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes'
 import { KeyCode } from '../internal/keycode';
 import Arrow from './arrow';
 import PopoverBody from './body';
+import ConditionalLiveRegion from './conditional-live-region';
 import PopoverContainer from './container';
 import { PopoverProps } from './interfaces';
 
@@ -144,8 +145,6 @@ function InternalPopover(
 
   const popoverContent = (
     <div
-      aria-live={dismissButton ? undefined : 'polite'}
-      aria-atomic={dismissButton ? undefined : true}
       className={clsx(popoverClasses, !renderWithPortal && styles['popover-inline-content'])}
       data-awsui-referrer-id={referrerId}
     >
@@ -167,7 +166,7 @@ function InternalPopover(
             overflowVisible="both"
             closeAnalyticsAction={__closeAnalyticsAction}
           >
-            {content}
+            <ConditionalLiveRegion condition={!dismissButton}>{content}</ConditionalLiveRegion>
           </PopoverBody>
         </LinkDefaultVariantContext.Provider>
       </PopoverContainer>
