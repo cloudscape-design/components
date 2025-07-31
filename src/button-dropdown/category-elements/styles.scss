@@ -17,7 +17,7 @@
   border-inline-width: 0;
   font-weight: bold;
   display: flex;
-  justify-content: space-between;
+  gap: awsui.$space-xxs;
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)
   padding-block: styles.$option-padding-with-border-placeholder-vertical;
@@ -113,7 +113,7 @@
 
   &-right {
     transform: rotate(-90deg);
-
+    margin-inline-start: auto;
     @include styles.with-direction('rtl') {
       transform: rotate(90deg);
     }
