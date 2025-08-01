@@ -10,19 +10,35 @@
 @use '../foundation' as foundation;
 @use '../utils' as utils;
 @use './constants' as constants;
+@use '../../generated/custom-css-properties/index.scss' as custom-props;
 
 @mixin link-focus {
   // For classic
   outline: thin dotted;
   outline: awsui.$border-link-focus-ring-outline;
   outline-offset: 2px;
-  outline-color: awsui.$color-border-item-focused;
+  outline-color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
   // For visual refresh
-  border-start-start-radius: awsui.$border-radius-control-default-focus-ring;
-  border-start-end-radius: awsui.$border-radius-control-default-focus-ring;
-  border-end-start-radius: awsui.$border-radius-control-default-focus-ring;
-  border-end-end-radius: awsui.$border-radius-control-default-focus-ring;
-  box-shadow: 0 0 0 awsui.$border-link-focus-ring-shadow-spread awsui.$color-border-item-focused;
+  border-start-start-radius: var(
+    #{custom-props.$styleFocusRingBorderRadius},
+    awsui.$border-radius-control-default-focus-ring
+  );
+  border-start-end-radius: var(
+    #{custom-props.$styleFocusRingBorderRadius},
+    awsui.$border-radius-control-default-focus-ring
+  );
+  border-end-start-radius: var(
+    #{custom-props.$styleFocusRingBorderRadius},
+    awsui.$border-radius-control-default-focus-ring
+  );
+  border-end-end-radius: var(
+    #{custom-props.$styleFocusRingBorderRadius},
+    awsui.$border-radius-control-default-focus-ring
+  );
+  box-shadow: var(
+    #{custom-props.$styleFocusRingBoxShadow},
+    0 0 0 awsui.$border-link-focus-ring-shadow-spread awsui.$color-border-item-focused
+  );
 }
 
 @mixin container-focus($border-radius: awsui.$border-radius-container) {
