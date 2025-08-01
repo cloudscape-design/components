@@ -14761,6 +14761,89 @@ By default, the component sets the \`rel\` attribute to "noopener noreferrer" wh
       "type": "string",
     },
     {
+      "description": "Specifies an object of selectors and properties that are used to apply custom styles.
+
+- \`root.color\` {active, default, hover} (string) - (Optional) Text color for link.
+- \`root.focusRing.borderColor\` (string) - (Optional) Focus ring border color.
+- \`root.focusRing.borderRadius\` (string) - (Optional) Focus ring border radius.
+- \`root.focusRing.borderWidth\` (string) - (Optional) Focus ring border width.",
+      "inlineType": {
+        "name": "LinkProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "{ active?: string | undefined; default?: string | undefined; hover?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ active?: string | undefined; default?: string | undefined; hover?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "borderColor",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderRadius",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderWidth",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "focusRing",
+                  "optional": true,
+                  "type": "{ borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "root",
+            "optional": true,
+            "type": "{ color?: { active?: string | undefined; default?: string | undefined; hover?: string | undefined; } | undefined; focusRing?: { borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; } | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "LinkProps.Style",
+    },
+    {
       "description": "Specifies where to open the linked URL. Set this to \`_blank\` to open the URL
 in a new tab. If you set this property to \`_blank\`, the component
 automatically adds \`rel="noopener noreferrer"\` to avoid performance

@@ -10,8 +10,13 @@
 @use '../foundation' as foundation;
 @use '../utils' as utils;
 @use './constants' as constants;
+@use '../../generated/custom-css-properties/index.scss' as custom-props;
 
-@mixin link-focus {
+@mixin link-focus(
+  $color: awsui.$color-border-item-focused,
+  $border-radius: awsui.$border-radius-control-default-focus-ring,
+  $box-shadow: 0 0 0 awsui.$border-link-focus-ring-shadow-spread awsui.$color-border-item-focused
+) {
   // For classic
   outline: thin dotted;
   outline: awsui.$border-link-focus-ring-outline;
