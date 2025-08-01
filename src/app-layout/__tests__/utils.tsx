@@ -221,5 +221,9 @@ export const getGlobalDrawersTestUtils = (wrapper: AppLayoutWrapper) => {
     isLayoutInDrawerExpandedMode(): boolean {
       return !!wrapper.matches(`.${visualRefreshToolbarStyles['drawer-expanded-mode']}`);
     },
+
+    findAiDrawerTrigger(): ElementWrapper | null {
+      return wrapper.find(`.${testutilStyles['ai-drawer-toggle']}`);
+    },
   };
 };

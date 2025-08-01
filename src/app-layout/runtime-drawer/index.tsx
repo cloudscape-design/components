@@ -21,6 +21,7 @@ export interface DrawersLayout {
   global: Array<RuntimeDrawer>;
   localBefore: Array<RuntimeDrawer>;
   localAfter: Array<RuntimeDrawer>;
+  aiDrawer: RuntimeDrawer | null;
 }
 
 type VisibilityCallback = (isVisible: boolean) => void;
@@ -58,6 +59,26 @@ function RuntimeDrawerWrapper({ mountContent, unmountContent, id }: RuntimeConte
   return <div ref={ref} className={styles['runtime-content-wrapper']} data-awsui-runtime-drawer-root-id={id}></div>;
 }
 
+interface RuntimeContentHeaderProps {
+  mountHeader: RuntimeDrawerConfig['mountHeader'];
+  unmountHeader: RuntimeDrawerConfig['unmountHeader'];
+}
+
+function RuntimeDrawerHeader({ mountHeader, unmountHeader }: RuntimeContentHeaderProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = ref.current!;
+    mountHeader?.(container);
+    return () => {
+      unmountHeader?.(container);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return <div className={styles['runtime-header-wrapper']} ref={ref} />;
+}
+
 const mapRuntimeConfigToDrawer = (
   runtimeConfig: RuntimeDrawerConfig
 ): AppLayoutProps.Drawer & {
@@ -71,10 +92,18 @@ const mapRuntimeConfigToDrawer = (
     ariaLabels: { drawerName: runtimeDrawer.ariaLabels.content ?? '', ...runtimeDrawer.ariaLabels },
     trigger: trigger
       ? {
-          iconSvg: (
-            // eslint-disable-next-line react/no-danger
-            <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
-          ),
+          ...(trigger.iconSvg && {
+            iconSvg: (
+              // eslint-disable-next-line react/no-danger
+              <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
+            ),
+          }),
+          ...(trigger.customIcon && {
+            customIcon: (
+              // eslint-disable-next-line react/no-danger
+              <span dangerouslySetInnerHTML={{ __html: trigger.customIcon }} />
+            ),
+          }),
         }
       : undefined,
     content: (
@@ -85,6 +114,11 @@ const mapRuntimeConfigToDrawer = (
         id={runtimeDrawer.id}
       />
     ),
+    ...(runtimeDrawer.mountHeader && {
+      header: (
+        <RuntimeDrawerHeader mountHeader={runtimeDrawer.mountHeader} unmountHeader={runtimeDrawer.unmountHeader} />
+      ),
+    }),
     onResize: event => {
       fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
     },
@@ -93,7 +127,8 @@ const mapRuntimeConfigToDrawer = (
 
 export function convertRuntimeDrawers(
   localDrawers: Array<RuntimeDrawerConfig>,
-  globalDrawers: Array<RuntimeDrawerConfig>
+  globalDrawers: Array<RuntimeDrawerConfig>,
+  aiDrawer?: RuntimeDrawerConfig
 ): DrawersLayout {
   const converted = localDrawers.map(mapRuntimeConfigToDrawer);
   const sorted = sortByPriority(converted);
@@ -101,5 +136,6 @@ export function convertRuntimeDrawers(
     global: sortByPriority(globalDrawers.map(mapRuntimeConfigToDrawer)),
     localBefore: sorted.filter(item => (item.orderPriority ?? 0) > 0),
     localAfter: sorted.filter(item => (item.orderPriority ?? 0) <= 0),
+    aiDrawer: aiDrawer ? mapRuntimeConfigToDrawer(aiDrawer) : null,
   };
 }
