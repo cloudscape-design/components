@@ -17,7 +17,7 @@
   white-space: inherit;
 
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, awsui.$border-width-field)
+    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
     var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
   @include styles.link-default;
@@ -52,7 +52,11 @@
   }
 
   @include focus-visible.when-visible {
-    @include styles.link-focus;
+    @include styles.link-focus(
+      $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused),
+      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+    );
   }
 
   @each $font-size, $properties in constants.$link-font-sizes {
