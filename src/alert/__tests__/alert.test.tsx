@@ -10,6 +10,7 @@ import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { DATA_ATTR_ANALYTICS_ALERT } from '../../../lib/components/internal/analytics/selectors';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import customCssProps from '../../internal/generated/custom-css-properties';
 
 import styles from '../../../lib/components/alert/styles.css.js';
 
@@ -160,6 +161,15 @@ describe('Alert Component', () => {
     await expect(container).toValidateA11y();
   });
 
+  describe('a11y', () => {
+    it('has role group on the element referenced by the focus ref', () => {
+      let ref: AlertProps.Ref | null = null;
+      render(<Alert header="Important" ref={element => (ref = element)} />);
+      ref!.focus();
+      expect(document.activeElement).toHaveAttribute('role', 'group');
+    });
+  });
+
   describe('analytics', () => {
     test(`adds ${DATA_ATTR_ANALYTICS_ALERT} attribute with the alert type`, () => {
       const { container } = renderAlert({
@@ -303,38 +313,28 @@ describe('Style API', () => {
     expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('color')).toBe('rgb(0, 0, 0)');
     expect(
       getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue(
-        '--awsui-style-focus-ring-border-color-kcc2gu'
+        customCssProps.styleFocusRingBorderColor
       )
     ).toBe('rgb(23, 31, 118)');
     expect(
       getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue(
-        '--awsui-style-focus-ring-border-radius-kcc2gu'
+        customCssProps.styleFocusRingBorderRadius
       )
     ).toBe('6px');
     expect(
       getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue(
-        '--awsui-style-focus-ring-border-width-kcc2gu'
+        customCssProps.styleFocusRingBorderWidth
       )
     ).toBe('4px');
 
     const dismissButton = wrapper.findDismissButton()!.getElement();
-    expect(getComputedStyle(dismissButton).getPropertyValue('--awsui-style-color-active-kcc2gu')).toBe(
-      'rgb(12, 136, 22)'
-    );
-    expect(getComputedStyle(dismissButton).getPropertyValue('--awsui-style-color-default-kcc2gu')).toBe(
-      'rgb(189, 37, 40)'
-    );
-    expect(getComputedStyle(dismissButton).getPropertyValue('--awsui-style-color-hover-kcc2gu')).toBe(
-      'rgb(119, 12, 12)'
-    );
-    expect(getComputedStyle(dismissButton).getPropertyValue('--awsui-style-focus-ring-border-color-kcc2gu')).toBe(
+    expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleColorActive)).toBe('rgb(12, 136, 22)');
+    expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleColorDefault)).toBe('rgb(189, 37, 40)');
+    expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleColorHover)).toBe('rgb(119, 12, 12)');
+    expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe(
       'rgb(23, 31, 118)'
     );
-    expect(getComputedStyle(dismissButton).getPropertyValue('--awsui-style-focus-ring-border-radius-kcc2gu')).toBe(
-      '6px'
-    );
-    expect(getComputedStyle(dismissButton).getPropertyValue('--awsui-style-focus-ring-border-width-kcc2gu')).toBe(
-      '4px'
-    );
+    expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('6px');
+    expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('4px');
   });
 });

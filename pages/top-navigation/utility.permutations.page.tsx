@@ -3,7 +3,7 @@
 import React from 'react';
 
 import VisualContext from '~components/internal/components/visual-context';
-import Utility, { UtilityProps } from '~components/top-navigation/1.0-beta/parts/utility';
+import Utility, { UtilityProps } from '~components/top-navigation/parts/utility';
 
 import img from '../icon/custom-icon.png';
 import createPermutations from '../utils/permutations';
@@ -67,16 +67,6 @@ const permutations = createPermutations<UtilityProps>([
       { type: 'menu-dropdown', iconName: 'folder', ariaLabel: 'New folder', items: [] },
     ],
     hideText: [true],
-  },
-  // Responsive treatments
-  {
-    definition: [
-      { type: 'button', text: 'Button', iconName: 'undo' },
-      { type: 'button', text: 'Button', iconName: 'undo', disableTextCollapse: true },
-      { type: 'button', text: 'Button', iconName: 'undo', disableUtilityCollapse: true },
-    ],
-    hideText: [false, true],
-    isNarrowViewport: [false, true],
   },
 ]);
 

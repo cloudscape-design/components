@@ -53,11 +53,6 @@
 
   @include focus-visible.when-visible {
     @include styles.link-focus;
-    @include styles.focus-highlight(
-      $gutter: awsui.$space-button-focus-outline-gutter,
-      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
-      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
-    );
   }
 
   @each $font-size, $properties in constants.$link-font-sizes {
