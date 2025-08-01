@@ -19,6 +19,7 @@ export type InternalDrawer = AppLayoutProps.Drawer & {
   defaultActive?: boolean;
   isExpandable?: boolean;
   ariaLabels: AppLayoutProps.Drawer['ariaLabels'] & { expandedModeButton?: string; exitExpandedModeButton?: string };
+  header?: React.ReactNode;
 };
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.

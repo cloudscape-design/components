@@ -59,6 +59,26 @@ function RuntimeDrawerWrapper({ mountContent, unmountContent, id }: RuntimeConte
   return <div ref={ref} className={styles['runtime-content-wrapper']} data-awsui-runtime-drawer-root-id={id}></div>;
 }
 
+interface RuntimeContentHeaderProps {
+  mountHeader: RuntimeDrawerConfig['mountHeader'];
+  unmountHeader: RuntimeDrawerConfig['unmountHeader'];
+}
+
+function RuntimeDrawerHeader({ mountHeader, unmountHeader }: RuntimeContentHeaderProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = ref.current!;
+    mountHeader?.(container);
+    return () => {
+      unmountHeader?.(container);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return <div className={styles['runtime-header-wrapper']} ref={ref} />;
+}
+
 const mapRuntimeConfigToDrawer = (
   runtimeConfig: RuntimeDrawerConfig
 ): AppLayoutProps.Drawer & {
@@ -94,6 +114,11 @@ const mapRuntimeConfigToDrawer = (
         id={runtimeDrawer.id}
       />
     ),
+    ...(runtimeDrawer.mountHeader && {
+      header: (
+        <RuntimeDrawerHeader mountHeader={runtimeDrawer.mountHeader} unmountHeader={runtimeDrawer.unmountHeader} />
+      ),
+    }),
     onResize: event => {
       fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
     },

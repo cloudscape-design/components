@@ -42,6 +42,8 @@ export interface DrawerConfig {
   unmountContent: (container: HTMLElement) => void;
   preserveInactiveContent?: boolean;
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
+  mountHeader?: (container: HTMLElement) => void;
+  unmountHeader?: (container: HTMLElement) => void;
 }
 
 const updatableProperties = [
