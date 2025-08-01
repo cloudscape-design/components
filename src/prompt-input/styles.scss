@@ -177,8 +177,13 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 }
 
 .secondary-actions {
+  flex-basis: max-content;
+  flex-grow: 0;
+  flex-shrink: 1;
+  box-sizing: border-box;
+  @include styles.text-flex-wrapping;
   &.with-paddings {
-    padding-inline-start: styles.$control-padding-horizontal;
+    padding-inline: styles.$control-padding-horizontal;
     padding-block-start: awsui.$space-scaled-s;
     padding-block-end: styles.$control-padding-vertical;
 
@@ -186,6 +191,9 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     &.warning {
       padding-inline-start: $invalid-border-offset;
     }
+  }
+  &.with-paddings-and-actions {
+    padding-inline-end: 0;
   }
 }
 
