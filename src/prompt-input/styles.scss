@@ -174,9 +174,12 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  width: 100%;
 }
 
 .secondary-actions {
+  overflow: hidden;
+
   &.with-paddings {
     padding-inline-start: styles.$control-padding-horizontal;
     padding-block-start: awsui.$space-scaled-s;
