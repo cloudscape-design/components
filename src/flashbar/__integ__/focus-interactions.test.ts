@@ -73,3 +73,49 @@ test(
     return expect(page.isFlashFocused(initialCount + 1)).resolves.toBe(true);
   })
 );
+
+test(
+  'dismissing flash item moves focus to next item',
+  setupTest(async page => {
+    await page.addSequentialErrorFlashes();
+    await page.pause(FOCUS_THROTTLE_DELAY);
+
+    await page.dismissFirstItem();
+    await page.pause(FOCUS_THROTTLE_DELAY);
+
+    return expect(await page.isFlashFocused(1)).toBe(true);
+  })
+);
+
+test(
+  'dismissing flash in expanded collapsible state moves focus to next item',
+  setupTest(async page => {
+    await page.removeAll();
+    await page.toggleStackingFeature();
+    await page.addSequentialErrorFlashes();
+    await page.toggleCollapsedState();
+    await page.pause(FOCUS_THROTTLE_DELAY);
+
+    await page.dismissFirstItem();
+    await page.pause(FOCUS_THROTTLE_DELAY);
+
+    return expect(await page.isFlashFocused(1)).toBe(true);
+  })
+);
+
+test(
+  'dismissing flash in collapsed state moves focus to notification bar',
+  setupTest(async page => {
+    await page.removeAll();
+    await page.toggleStackingFeature();
+    await page.addSequentialErrorFlashes();
+    await page.pause(FOCUS_THROTTLE_DELAY);
+
+    await page.dismissFirstItem();
+    await page.pause(FOCUS_THROTTLE_DELAY);
+
+    const isDismissButtonFocused = await page.isDismissButtonFocused();
+
+    return expect(isDismissButtonFocused).toBe(true);
+  })
+);
