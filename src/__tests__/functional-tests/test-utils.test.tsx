@@ -30,7 +30,7 @@ afterEach(() => {
 });
 
 const componentWithMultipleRootElements = ['top-navigation', 'app-layout', 'app-layout-toolbar'];
-const componentsWithExceptions = ['annotation-context', ...componentWithMultipleRootElements];
+const componentsWithExceptions = ['annotation-context', 'icon-provider', ...componentWithMultipleRootElements];
 const components = getAllComponents().filter(component => !componentsWithExceptions.includes(component));
 
 const RENDER_COMPONENTS_DEFAULT_PROPS: Record<string, unknown>[] = [

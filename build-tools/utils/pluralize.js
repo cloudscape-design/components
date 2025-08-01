@@ -41,6 +41,7 @@ const pluralizationMap = {
   HelpPanel: 'HelpPanels',
   Hotspot: 'Hotspots',
   Icon: 'Icons',
+  IconProvider: 'IconProviders',
   Input: 'Inputs',
   KeyValuePairs: 'KeyValuePairs',
   LineChart: 'LineCharts',
