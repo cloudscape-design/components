@@ -4,6 +4,8 @@ import React, { useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
@@ -63,6 +65,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue?.length ? drawersOpenQueue[0] : activeDrawerId;
   const animationDisabled = activeDrawer?.defaultActive && !drawersOpenQueue.includes(activeDrawer.id);
+  const closeMergedRef = useMergeRefs(drawersFocusControl.refs.close, drawersFocusControl.refs.onMount);
 
   return (
     <Transition nodeRef={drawerRef} in={!!activeDrawer} appear={true} timeout={0}>
@@ -122,7 +125,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
                 formAction="none"
                 iconName={isMobile ? 'close' : 'angle-right'}
                 onClick={() => onActiveDrawerChange(null, { initiatedByUserAction: true })}
-                ref={drawersFocusControl.refs.close}
+                ref={closeMergedRef}
                 variant="icon"
                 analyticsAction="close"
               />

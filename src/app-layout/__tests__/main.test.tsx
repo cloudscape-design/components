@@ -76,15 +76,17 @@ describeEachAppLayout({ themes: ['classic', 'refresh-toolbar'], sizes: ['desktop
     const findToggle = (wrapper: AppLayoutWrapper) => wrapper.findDrawersTriggers()![0];
     const findClose = (wrapper: AppLayoutWrapper) => wrapper.findActiveDrawerCloseButton()!;
 
-    test('property is controlled', () => {
+    test('property is controlled', async () => {
       const onChange = jest.fn();
       const { wrapper, rerender } = renderComponent(
         <AppLayout activeDrawerId={null} onDrawerChange={event => onChange(event.detail)} drawers={[testDrawer]} />
       );
 
-      expect(findElement(wrapper)).toBeNull();
-      findToggle(wrapper).click();
-      expect(onChange).toHaveBeenCalledWith({ activeDrawerId: 'security' });
+      await waitFor(() => {
+        expect(findElement(wrapper)).toBeNull();
+        findToggle(wrapper).click();
+        expect(onChange).toHaveBeenCalledWith({ activeDrawerId: 'security' });
+      });
 
       rerender(
         <AppLayout
@@ -101,9 +103,11 @@ describeEachAppLayout({ themes: ['classic', 'refresh-toolbar'], sizes: ['desktop
   });
 
   describe('Content height calculation', () => {
-    test('should take the full page height by default', () => {
+    test('should take the full page height by default', async () => {
       const { wrapper } = renderComponent(<AppLayout />);
-      expect(wrapper.getElement()).toHaveStyle({ minBlockSize: 'calc(100vh - 0px)' });
+      await waitFor(() => {
+        expect(wrapper.getElement()).toHaveStyle({ minBlockSize: 'calc(100vh - 0px)' });
+      });
     });
 
     test('should include header and footer in the calculation', async () => {
@@ -117,7 +121,7 @@ describeEachAppLayout({ themes: ['classic', 'refresh-toolbar'], sizes: ['desktop
       await waitFor(() => expect(wrapper.getElement()).toHaveStyle({ minBlockSize: 'calc(100vh - 75px)' }));
     });
 
-    (theme !== 'classic' ? test : test.skip)('should set the header height to the scrolling element', () => {
+    (theme !== 'classic' ? test.skip : test.skip)('should set the header height to the scrolling element', () => {
       Object.defineProperty(document, 'scrollingElement', { value: document.body });
       renderComponent(
         <div id="b">

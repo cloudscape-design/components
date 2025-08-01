@@ -9,8 +9,8 @@ import { AppLayoutInternals } from '../interfaces';
 
 import styles from './styles.css.js';
 
-interface AppLayoutSplitPanelDrawerSideImplementationProps {
-  appLayoutInternals: AppLayoutInternals;
+export interface AppLayoutSplitPanelDrawerSideImplementationProps {
+  appLayoutInternals: Partial<AppLayoutInternals>;
   splitPanelInternals: SplitPanelProviderProps;
   children: React.ReactNode;
 }
@@ -21,7 +21,7 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
   splitPanelInternals,
 }: AppLayoutSplitPanelDrawerSideImplementationProps) {
   const { splitPanelControlId, placement, verticalOffsets, isMobile, splitPanelAnimationDisabled } = appLayoutInternals;
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets!, isMobile!, placement!);
 
   return (
     <SplitPanelProvider {...splitPanelInternals} animationDisabled={splitPanelAnimationDisabled}>
@@ -39,8 +39,8 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
   );
 }
 
-interface AppLayoutSplitPanelDrawerBottomImplementationProps {
-  appLayoutInternals: AppLayoutInternals;
+export interface AppLayoutSplitPanelDrawerBottomImplementationProps {
+  appLayoutInternals: Partial<AppLayoutInternals>;
   splitPanelInternals: SplitPanelProviderProps;
   children: React.ReactNode;
 }
