@@ -82,8 +82,8 @@ export function AppLayoutGlobalAiDrawerImplementation({
             {
               [sharedStyles['with-motion-horizontal']]: !animationDisabled,
               [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
-              [testutilStyles['active-drawer']]: activeDrawerId,
-              [styles['drawer-hidden']]: !activeAiDrawer,
+              [testutilStyles['active-drawer']]: show,
+              [styles['drawer-hidden']]: !show,
               [testutilStyles['drawer-closed']]: !activeAiDrawer,
               [styles['drawer-expanded']]: isExpanded,
             }

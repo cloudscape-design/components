@@ -584,16 +584,18 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           maxContentWidth={maxContentWidth}
           disableContentPaddings={disableContentPaddings}
           aiDrawer={
-            (activeAiDrawer || (aiDrawer?.preserveInactiveContent && wasAiDrawerOpenRef.current)) && (
-              <>
-                {(wasAiDrawerOpenRef.current = true)}
-                <AppLayoutGlobalAiDrawer
-                  show={!!activeAiDrawer}
-                  activeAiDrawer={aiDrawer}
-                  appLayoutInternals={appLayoutInternals}
-                />
-              </>
-            )
+            <ActiveDrawersContext.Provider value={activeAiDrawer ? [activeAiDrawer.id] : []}>
+              {(activeAiDrawer || (aiDrawer?.preserveInactiveContent && wasAiDrawerOpenRef.current)) && (
+                <>
+                  {(wasAiDrawerOpenRef.current = true)}
+                  <AppLayoutGlobalAiDrawer
+                    show={!!activeAiDrawer}
+                    activeAiDrawer={aiDrawer}
+                    appLayoutInternals={appLayoutInternals}
+                  />
+                </>
+              )}
+            </ActiveDrawersContext.Provider>
           }
         />
       </AppLayoutVisibilityContext.Provider>

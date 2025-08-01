@@ -156,6 +156,7 @@ export function AppLayoutToolbarImplementation({
               disabled={anyPanelOpenInMobile}
               inheritSize={!!aiDrawer.trigger?.customIcon}
               hasTooltip={true}
+              testId={`awsui-app-layout-trigger-${aiDrawer.id}`}
             />
           </div>
         )}
