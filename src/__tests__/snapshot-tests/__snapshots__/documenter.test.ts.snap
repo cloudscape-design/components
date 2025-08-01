@@ -6106,18 +6106,49 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 * \`text\` (string) - The name of the group rendered as ARIA label for this group.
 * \`items\` ((ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown)[]) - The array of items that belong to this group.",
       "name": "items",
-      "optional": false,
+      "optional": true,
       "type": "ReadonlyArray<ButtonGroupProps.ItemOrGroup>",
     },
     {
       "description": "Determines the general styling of the button dropdown.
 * \`icon\` for icon buttons.",
+      "inlineType": {
+        "name": "ButtonGroupProps.Variant",
+        "type": "union",
+        "valueDescriptions": {
+          "icon": {
+            "systemTags": [
+              "core",
+            ],
+          },
+        },
+        "values": [
+          "children",
+          "icon",
+        ],
+      },
       "name": "variant",
       "optional": false,
-      "type": ""icon"",
+      "type": "string",
     },
   ],
-  "regions": [],
+  "regions": [
+    {
+      "description": "Instead of passing \`items\`, group items can be passed as children. When using this,
+you will need to manage click handlers and state of buttons.
+
+Each item should contain a single focusable element which must have a unique \`data-itemid\` attribute.
+
+For example:
+- \`<Button data-itemid="button-one">One</Button>\`
+- \`<ButtonDropdown nativeButtonAttributes={{'data-itemid': 'button-two'}} items={...} />\`",
+      "isDefault": true,
+      "name": "children",
+      "systemTags": [
+        "core",
+      ],
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
@@ -31953,6 +31984,14 @@ Note: This function returns the specified component's wrapper even if the specif
           ],
           "returnType": {
             "name": "Wrapper | null",
+          },
+        },
+        {
+          "description": "Finds all content of the group.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "name": "ElementWrapper<HTMLElement>",
           },
         },
         {
@@ -60911,6 +60950,14 @@ Note: This function returns the specified component's wrapper even if the specif
           ],
           "returnType": {
             "name": "Wrapper",
+          },
+        },
+        {
+          "description": "Finds all content of the group.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "name": "ElementWrapper",
           },
         },
         {

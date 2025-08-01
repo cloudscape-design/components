@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { ReactNode } from 'react';
+
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
@@ -90,7 +92,20 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `text` (string) - The name of the group rendered as ARIA label for this group.
    * * `items` ((ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown)[]) - The array of items that belong to this group.
    */
-  items: ReadonlyArray<ButtonGroupProps.ItemOrGroup>;
+  items?: ReadonlyArray<ButtonGroupProps.ItemOrGroup>;
+  /**
+   * Instead of passing `items`, group items can be passed as children. When using this,
+   * you will need to manage click handlers and state of buttons.
+   *
+   * Each item should contain a single focusable element which must have a unique `data-itemid` attribute.
+   *
+   * For example:
+   * - `<Button data-itemid="button-one">One</Button>`
+   * - `<ButtonDropdown nativeButtonAttributes={{'data-itemid': 'button-two'}} items={...} />`
+   *
+   * @awsuiSystem core
+   */
+  children?: ReactNode;
   /**
    * Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.
    */
@@ -106,7 +121,12 @@ export interface InternalButtonGroupProps
     InternalBaseComponentProps {}
 
 export namespace ButtonGroupProps {
-  export type Variant = 'icon';
+  export type Variant =
+    | 'icon'
+    /**
+     * @awsuiSystem core
+     */
+    | 'children';
 
   export type ItemOrGroup = Item | Group;
   export type Item = IconButton | IconToggleButton | IconFileInput | MenuDropdown;

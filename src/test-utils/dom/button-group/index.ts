@@ -62,4 +62,11 @@ export default class ButtonGroupWrapper extends ComponentWrapper {
   findTooltip(): null | ElementWrapper {
     return createWrapper().findByClassName(testUtilStyles['button-group-tooltip']);
   }
+
+  /**
+   * Finds all content of the group.
+   */
+  findContent(): ElementWrapper {
+    return new ElementWrapper(this.getElement());
+  }
 }
