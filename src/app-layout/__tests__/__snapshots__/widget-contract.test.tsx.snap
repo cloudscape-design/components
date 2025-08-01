@@ -11,7 +11,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -84,7 +84,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -162,7 +162,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -235,7 +235,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -344,7 +344,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -417,7 +417,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -495,7 +495,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -568,7 +568,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -646,7 +646,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -719,7 +719,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -842,7 +842,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -919,7 +919,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -999,7 +999,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1076,7 +1076,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1159,7 +1159,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1236,7 +1236,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1349,7 +1349,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1426,7 +1426,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1506,7 +1506,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1583,7 +1583,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1663,7 +1663,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1740,7 +1740,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1882,7 +1882,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1957,7 +1957,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -2049,7 +2049,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -2124,7 +2124,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -2247,7 +2247,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -2322,7 +2322,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -2414,7 +2414,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -2489,7 +2489,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -2581,7 +2581,7 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
-      "aiDrawer": undefined,
+      "aiDrawer": null,
       "aiDrawerFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -2656,7 +2656,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 300,
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
