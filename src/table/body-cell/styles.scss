@@ -500,7 +500,6 @@ $cell-negative-space-vertical: 2px;
           background-color: awsui.$color-background-dropdown-item-hover;
           border-block: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
           border-inline: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
-          inset-inline: calc(-1 * #{awsui.$border-divider-list-width});
         }
 
         &.sticky-cell {
