@@ -17,7 +17,7 @@
   white-space: inherit;
 
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    var(#{custom-props.$styleFocusRingBorderWidth}, awsui.$border-width-field)
     var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
   @include styles.link-default;
