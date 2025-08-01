@@ -3,7 +3,7 @@
 const { parallel } = require('gulp');
 const path = require('path');
 const fs = require('fs');
-const { writeFile, listPublicItems, listBetaVersions } = require('../utils/files');
+const { writeFile, listPublicItems } = require('../utils/files');
 const themes = require('../utils/themes');
 const { task, copyTask } = require('../utils/gulp-utils');
 const workspace = require('../utils/workspace');
@@ -39,16 +39,7 @@ function getComponentsExports() {
     './test-utils/dom/internal/chart-filter': './test-utils/dom/internal/chart-filter.js',
     './test-utils/selectors/internal/chart-filter': './test-utils/selectors/internal/chart-filter.js',
   };
-  let components = listPublicItems('src');
-
-  // Also target nested beta versions of components by naming convention.
-  for (const component of components) {
-    const betaVersions = listBetaVersions(path.join('src', component));
-    if (betaVersions.length > 0) {
-      const betaComponents = betaVersions.map(subComponent => `${component}/${subComponent}`);
-      components = components.concat(betaComponents);
-    }
-  }
+  const components = listPublicItems('src');
 
   for (const component of components) {
     result[`./${component}`] = `./${component}/index.js`;

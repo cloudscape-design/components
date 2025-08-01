@@ -8,10 +8,6 @@ function writeFile(filepath, content) {
   fs.writeFileSync(filepath, content);
 }
 
-function listBetaVersions(baseDir) {
-  return fs.readdirSync(baseDir).filter(elem => /^\d+\.\d+-beta$/.test(elem));
-}
-
 function listPublicItems(baseDir) {
   return fs
     .readdirSync(baseDir)
@@ -30,4 +26,4 @@ function listPublicItems(baseDir) {
     );
 }
 
-module.exports = { writeFile, listPublicItems, listBetaVersions };
+module.exports = { writeFile, listPublicItems };
