@@ -52,7 +52,16 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
     setInitialAnimationState(rects);
   }, [getElementsToAnimate]);
 
-  const { baseProps, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const collapsedItemRefs = useRef<Record<string, HTMLElement | null>>({});
+  const expandedItemRefs = useRef<Record<string, HTMLElement | null>>({});
+  const [initialAnimationState, setInitialAnimationState] = useState<Record<string, DOMRect> | null>(null);
+  const listElementRef = useRef<HTMLUListElement | null>(null);
+  const notificationBarRef = useRef<HTMLDivElement | null>(null);
+  const [transitioning, setTransitioning] = useState(false);
+  const flashbarElementId = useUniqueId('flashbar');
+  const itemCountElementId = useUniqueId('item-count');
+
+  const { baseProps, isReducedMotion, isVisualRefresh, mergedRef, ref, flashRefs, handleFlashDismissed } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
@@ -70,15 +79,6 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
       setExitingItems([...exitingItems, ...removedItems]);
     },
   });
-
-  const collapsedItemRefs = useRef<Record<string, HTMLElement | null>>({});
-  const expandedItemRefs = useRef<Record<string, HTMLElement | null>>({});
-  const [initialAnimationState, setInitialAnimationState] = useState<Record<string, DOMRect> | null>(null);
-  const listElementRef = useRef<HTMLUListElement | null>(null);
-  const notificationBarRef = useRef<HTMLDivElement | null>(null);
-  const [transitioning, setTransitioning] = useState(false);
-  const flashbarElementId = useUniqueId('flashbar');
-  const itemCountElementId = useUniqueId('item-count');
 
   if (items.length <= maxNonCollapsibleItems && isFlashbarStackExpanded) {
     setIsFlashbarStackExpanded(false);
@@ -283,10 +283,26 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
                       isVisualRefresh && styles['flash-refresh']
                     )}
                     key={getItemId(item)}
-                    ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
+                    ref={(el: HTMLDivElement | null) => {
+                      // Store the Flash element reference for focus management
+                      flashRefs.current[getItemId(item)] = el;
+
+                      if (shouldUseStandardAnimation(item, index) && transitionRootElement) {
+                        if (typeof transitionRootElement === 'function') {
+                          transitionRootElement(el);
+                        } else if (
+                          transitionRootElement &&
+                          typeof transitionRootElement === 'object' &&
+                          'current' in transitionRootElement
+                        ) {
+                          (transitionRootElement as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                        }
+                      }
+                    }}
                     transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
                     i18nStrings={iconAriaLabels}
                     style={style}
+                    onDismissed={handleFlashDismissed}
                     {...item}
                   />
                 )}

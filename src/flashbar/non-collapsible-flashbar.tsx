@@ -17,10 +17,11 @@ import { FlashbarProps } from './interfaces';
 import styles from './styles.css.js';
 
 export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...restProps }: FlashbarProps) {
-  const { allItemsHaveId, baseProps, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
-    items,
-    ...restProps,
-  });
+  const { allItemsHaveId, baseProps, isReducedMotion, isVisualRefresh, mergedRef, flashRefs, handleFlashDismissed } =
+    useFlashbar({
+      items,
+      ...restProps,
+    });
 
   const i18n = useInternalI18n('flashbar');
   const ariaLabel = i18n('i18nStrings.ariaLabel', i18nStrings?.ariaLabel);
@@ -113,14 +114,29 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
       <Flash
         className={clsx(animateFlash && styles['flash-with-motion'], isVisualRefresh && styles['flash-refresh'])}
         key={key}
-        ref={transitionRootElement}
+        ref={el => {
+          flashRefs.current[key] = el;
+          // If there's a transition root element ref, update it too
+          if (transitionRootElement && typeof transitionRootElement === 'function') {
+            transitionRootElement(el);
+          } else if (
+            transitionRootElement &&
+            typeof transitionRootElement === 'object' &&
+            'current' in transitionRootElement
+          ) {
+            (transitionRootElement as React.MutableRefObject<HTMLDivElement | null>).current = el;
+          }
+        }}
         transitionState={transitionState}
         i18nStrings={iconAriaLabels}
         style={style}
+        onDismissed={handleFlashDismissed}
         {...item}
       />
     );
   }
+
+  // The handleFlashDismissed function is now provided by the useFlashbar hook
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.flashbar)} ref={mergedRef}>

@@ -13,6 +13,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
 
 import { ActionsWrapper } from '../alert/actions-wrapper';
+import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import InternalIcon from '../icon/internal';
 import {
@@ -51,17 +52,26 @@ function dismissButton(
   dismissLabel: FlashbarProps.MessageDefinition['dismissLabel'],
   onDismiss: FlashbarProps.MessageDefinition['onDismiss'],
   style?: FlashbarProps.Style,
-  type?: string
+  type?: string,
+  ref?: React.Ref<ButtonProps.Ref>,
+  id?: string,
+  onDismissed?: (id?: string) => void
 ) {
   return (
     <div
       className={styles['dismiss-button-wrapper']}
-      {...getAnalyticsMetadataAttribute({
-        action: 'dismiss',
-      } as Partial<GeneratedAnalyticsMetadataFlashbarDismiss>)}
+      {...getAnalyticsMetadataAttribute({ action: 'dismiss' } as Partial<GeneratedAnalyticsMetadataFlashbarDismiss>)}
     >
       <InternalButton
-        onClick={onDismiss}
+        ref={ref}
+        onClick={event => {
+          if (onDismiss) {
+            onDismiss(event);
+          }
+          if (onDismissed) {
+            onDismissed(id);
+          }
+        }}
         className={styles['dismiss-button']}
         variant="flashbar-icon"
         iconName="close"
@@ -72,11 +82,34 @@ function dismissButton(
     </div>
   );
 }
+export const focusFlashFocusableArea = (flash: HTMLElement | null) => {
+  if (!flash) {
+    return;
+  }
+  const dismissButton = flash.querySelector(`.${styles['dismiss-button']}`);
+  const focusContainer = flash.querySelector(`.${styles['flash-focus-container']}`);
+
+  if (dismissButton) {
+    (dismissButton as HTMLElement).focus();
+  } else if (focusContainer) {
+    (focusContainer as HTMLElement).focus();
+  }
+};
 
 export const focusFlashById = throttle(
   (element: HTMLElement | null, itemId: string) => {
-    const selector = `[data-itemid="${CSS.escape(itemId)}"] .${styles['flash-focus-container']}`;
-    element?.querySelector<HTMLElement>(selector)?.focus();
+    if (!element) {
+      return;
+    }
+
+    const flashElement = element.querySelector<HTMLElement>(`[data-itemid="${CSS.escape(itemId)}"]`);
+    if (!flashElement) {
+      return;
+    }
+
+    const focusContainer = flashElement.querySelector<HTMLElement>(`.${styles['flash-focus-container']}`);
+
+    focusContainer?.focus();
   },
   FOCUS_THROTTLE_DELAY,
   { trailing: false }
@@ -87,6 +120,8 @@ interface FlashProps extends FlashbarProps.MessageDefinition {
   transitionState?: string;
   i18nStrings?: FlashbarProps.I18nStrings;
   style?: FlashbarProps.Style;
+  rootRef?: React.Ref<HTMLDivElement>;
+  onDismissed?: (id?: string) => void;
 }
 
 export const Flash = React.forwardRef(
@@ -109,6 +144,8 @@ export const Flash = React.forwardRef(
       type = 'info',
       analyticsMetadata,
       style,
+      rootRef,
+      onDismissed,
       ...props
     }: FlashProps,
     ref: React.Ref<HTMLDivElement>
@@ -133,12 +170,14 @@ export const Flash = React.forwardRef(
 
     const elementRef = useComponentMetadata('Flash', PACKAGE_VERSION, analyticsMetadata as AnalyticsMetadata);
 
-    const mergedRef = useMergeRefs(ref, elementRef, containerMeasureRef);
+    // Merge all refs including the rootRef if provided
+    const mergedRef = useMergeRefs(ref, rootRef, elementRef, containerMeasureRef);
     const flashIconId = useUniqueId('flash-icon');
     const flashMessageId = useUniqueId('flash-message');
 
     const headerRefObject = useRef<HTMLDivElement>(null);
     const contentRefObject = useRef<HTMLDivElement>(null);
+    const dismissButtonRefObject = useRef<ButtonProps.Ref>(null);
     const { discoveredActions, headerRef: headerRefAction, contentRef: contentRefAction } = useDiscoveredAction(type);
     const {
       initialHidden,
@@ -168,9 +207,7 @@ export const Flash = React.forwardRef(
 
     const effectiveType = loading ? 'info' : type;
 
-    const analyticsAttributes: Record<string, string> = {
-      [DATA_ATTR_ANALYTICS_FLASHBAR]: effectiveType,
-    };
+    const analyticsAttributes: Record<string, string> = { [DATA_ATTR_ANALYTICS_FLASHBAR]: effectiveType };
 
     if (analyticsMetadata?.suppressFlowMetricEvents) {
       analyticsAttributes[DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS] = 'true';
@@ -243,10 +280,7 @@ export const Flash = React.forwardRef(
           </div>
           <ActionsWrapper
             className={styles['action-button-wrapper']}
-            testUtilClasses={{
-              actionSlot: styles['action-slot'],
-              actionButton: styles['action-button'],
-            }}
+            testUtilClasses={{ actionSlot: styles['action-slot'], actionButton: styles['action-button'] }}
             action={action}
             discoveredActions={discoveredActions}
             buttonText={buttonText}
@@ -255,7 +289,8 @@ export const Flash = React.forwardRef(
             wrappedClass={styles['action-wrapped']}
           />
         </div>
-        {dismissible && dismissButton(dismissLabel, onDismiss, style, effectiveType)}
+        {dismissible &&
+          dismissButton(dismissLabel, onDismiss, style, effectiveType, dismissButtonRefObject, id, onDismissed)}
         {ariaRole === 'status' && (
           <InternalLiveRegion sources={[statusIconAriaLabel, headerRefObject, contentRefObject]} />
         )}
