@@ -1117,6 +1117,54 @@ describe('toolbar mode only features', () => {
         globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
         expect(onVisibilityChangeMock).toHaveBeenCalledWith(false);
       });
+
+      test(`closes a drawer when closeDrawer is called (${type} drawer)`, async () => {
+        awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, resizable: true, type });
+
+        const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+        awsuiPlugins.appLayout.openDrawer('test');
+
+        await delay();
+
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+
+        awsuiPlugins.appLayout.closeDrawer('test');
+
+        await delay();
+
+        expect(wrapper.findActiveDrawer()).toBeFalsy();
+      });
+
+      test('should render trigger buttons for global drawers even if local drawers are not present', async () => {
+        const renderProps = await renderComponent(<AppLayout toolsHide={true} />);
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global1',
+          type,
+        });
+
+        await delay();
+
+        expect(findDrawerTriggerById('global1', renderProps)!.getElement()).toBeInTheDocument();
+      });
+
+      test(`calls onToggle handler by clicking on drawers trigger button (${type} runtime drawers)`, async () => {
+        const onToggle = jest.fn();
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global-drawer',
+          type,
+          onToggle: event => onToggle(event.detail),
+        });
+        const renderProps = await renderComponent(<AppLayout />);
+
+        findDrawerTriggerById('global-drawer', renderProps)!.click();
+        expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
+        renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer')!.click();
+        expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
+      });
     });
 
     test('the order of the opened global drawers should match the positions of their corresponding toggle buttons on the toolbar', async () => {
@@ -1197,24 +1245,6 @@ describe('toolbar mode only features', () => {
       expect(getByTestId('trigger-button')).toHaveFocus();
     });
 
-    test('closes a drawer when closeDrawer is called (global drawer)', async () => {
-      awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, resizable: true, type: 'global' });
-
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
-
-      awsuiPlugins.appLayout.openDrawer('test');
-
-      await delay();
-
-      expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
-
-      awsuiPlugins.appLayout.closeDrawer('test');
-
-      await delay();
-
-      expect(wrapper.findActiveDrawer()).toBeFalsy();
-    });
-
     test('should not render a trigger button if registered drawer does not have a trigger prop', async () => {
       awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, trigger: undefined });
 
@@ -1227,36 +1257,6 @@ describe('toolbar mode only features', () => {
       await delay();
 
       expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
-    });
-
-    test('should render trigger buttons for global drawers even if local drawers are not present', async () => {
-      const { wrapper } = await renderComponent(<AppLayout toolsHide={true} />);
-
-      awsuiPlugins.appLayout.registerDrawer({
-        ...drawerDefaults,
-        id: 'global1',
-        type: 'global',
-      });
-
-      await delay();
-
-      expect(wrapper.findDrawerTriggerById('global1')!.getElement()).toBeInTheDocument();
-    });
-
-    test('calls onToggle handler by clicking on drawers trigger button (global runtime drawers)', async () => {
-      const onToggle = jest.fn();
-      awsuiPlugins.appLayout.registerDrawer({
-        ...drawerDefaults,
-        id: 'global-drawer',
-        type: 'global',
-        onToggle: event => onToggle(event.detail),
-      });
-      const { wrapper } = await renderComponent(<AppLayout />);
-
-      wrapper.findDrawerTriggerById('global-drawer')!.click();
-      expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
-      wrapper.findDrawerTriggerById('global-drawer')!.click();
-      expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
     });
 
     test.each([true, false] as const)(
