@@ -3,35 +3,32 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { createWidgetizedComponent } from '../../../../internal/widgets';
-import { ActiveDrawersContext } from '../../../utils/visibility-context';
+import { createWidgetizedComponent } from '../../../internal/widgets';
+import { ActiveDrawersContext } from '../../utils/visibility-context';
 import {
   AppLayoutDrawerImplementation as AppLayoutDrawer,
   AppLayoutGlobalDrawersImplementation as AppLayoutGlobalDrawers,
-} from '../../drawer';
-import { AppLayoutInternals } from '../../interfaces';
-import { AppLayoutSplitPanelDrawerSideImplementation as AppLayoutSplitPanelSide } from '../../split-panel';
-import { SkeletonLayoutProps } from '../index';
+} from '../drawer';
+import { SkeletonPartProps } from '../skeleton/interfaces';
+import { AppLayoutSplitPanelDrawerSideImplementation as AppLayoutSplitPanelSide } from '../split-panel';
 
-import sharedStyles from '../../../resize/styles.css.js';
-import styles from '../styles.css.js';
+import sharedStyles from '../../resize/styles.css.js';
+import styles from '../skeleton/styles.css.js';
 
-export const AfterMainSlotImplementation = (props: SkeletonLayoutProps) => {
+export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: SkeletonPartProps) => {
+  if (!appLayoutState.appLayoutInternals || !appLayoutState.splitPanelInternals) {
+    return null;
+  }
   const {
-    appLayoutProps: { splitPanel },
-    appLayoutState,
-  } = props;
-  const {
-    resolvedNavigationOpen,
+    navigationOpen,
     activeGlobalDrawersIds,
+    expandedDrawerId,
     activeDrawer,
     splitPanelOpen,
     drawers,
-    appLayoutInternals,
-    splitPanelInternals,
     splitPanelPosition,
-    drawerExpandedMode,
-  } = appLayoutState ?? {};
+  } = appLayoutState.widgetizedState ?? {};
+  const drawerExpandedMode = !!expandedDrawerId;
   const toolsOpen = !!activeDrawer;
   const globalToolsOpen = !!activeGlobalDrawersIds?.length;
   return (
@@ -44,8 +41,11 @@ export const AfterMainSlotImplementation = (props: SkeletonLayoutProps) => {
             drawerExpandedMode && styles.hidden
           )}
         >
-          <AppLayoutSplitPanelSide appLayoutInternals={appLayoutInternals!} splitPanelInternals={splitPanelInternals!}>
-            {splitPanel}
+          <AppLayoutSplitPanelSide
+            appLayoutInternals={appLayoutState.appLayoutInternals}
+            splitPanelInternals={appLayoutState.splitPanelInternals}
+          >
+            {appLayoutProps.splitPanel}
           </AppLayoutSplitPanelSide>
         </div>
       )}
@@ -54,20 +54,16 @@ export const AfterMainSlotImplementation = (props: SkeletonLayoutProps) => {
           styles.tools,
           !toolsOpen && styles['panel-hidden'],
           sharedStyles['with-motion-horizontal'],
-          resolvedNavigationOpen && !toolsOpen && styles['unfocusable-mobile'],
+          navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
           toolsOpen && styles['tools-open'],
           drawerExpandedMode && styles.hidden
         )}
       >
-        {drawers && drawers.length > 0 && (
-          // type casting is safe here since 'drawers' only exists at runtime after appLayoutInternals
-          // has been initialized
-          <AppLayoutDrawer appLayoutInternals={appLayoutInternals as AppLayoutInternals} />
-        )}
+        {drawers && drawers.length > 0 && <AppLayoutDrawer appLayoutInternals={appLayoutState.appLayoutInternals} />}
       </div>
       <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>
         <ActiveDrawersContext.Provider value={activeGlobalDrawersIds ?? []}>
-          <AppLayoutGlobalDrawers appLayoutInternals={appLayoutInternals as AppLayoutInternals} />
+          <AppLayoutGlobalDrawers appLayoutInternals={appLayoutState.appLayoutInternals} />
         </ActiveDrawersContext.Provider>
       </div>
     </>

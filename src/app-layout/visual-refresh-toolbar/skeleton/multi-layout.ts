@@ -4,20 +4,24 @@ import React, { useLayoutEffect, useState } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { awsuiPluginsInternal } from '../../internal/plugins/api';
-import { RegistrationState } from '../../internal/plugins/controllers/app-layout-widget';
-import { AppLayoutProps } from '../interfaces';
-import { useAppLayoutFlagEnabled } from '../utils/feature-flags';
-import { OnChangeParams } from '../utils/use-drawers';
-import { Focusable, FocusControlMultipleStates } from '../utils/use-focus-control';
-import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
+import { awsuiPluginsInternal } from '../../../internal/plugins/api';
+import { RegistrationState } from '../../../internal/plugins/controllers/app-layout-widget';
+import { AppLayoutProps } from '../../interfaces';
+import { useAppLayoutFlagEnabled } from '../../utils/feature-flags';
+import { OnChangeParams } from '../../utils/use-drawers';
+import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
+import { SplitPanelToggleProps, ToolbarProps } from '../toolbar';
+
+export type DeduplicationType = 'primary' | 'secondary' | 'suspended' | 'off';
 
 export interface SharedProps {
-  forceDeduplicationType?: 'primary' | 'secondary' | 'suspended' | 'off';
+  // forceDeduplicationType?: 'primary' | 'secondary' | 'suspended' | 'off';
+  mergeWidgetizedProps?: (toolbar: ToolbarProps, props: Partial<SharedProps>) => ToolbarProps['widgetizedProps'];
+  navigationOpen: boolean;
+  // legacy values
   ariaLabels: AppLayoutProps.Labels | undefined;
   navigation: React.ReactNode;
-  navigationOpen: boolean;
-  onNavigationToggle: (open: boolean) => void;
+  onNavigationToggle?: (open: boolean) => void;
   navigationFocusRef: React.Ref<Focusable> | undefined;
   breadcrumbs: React.ReactNode;
   activeDrawerId: string | null;
@@ -26,7 +30,7 @@ export interface SharedProps {
   drawersFocusRef: React.Ref<Focusable> | undefined;
   globalDrawersFocusControl?: FocusControlMultipleStates | undefined;
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
-  activeGlobalDrawersIds?: Array<string> | undefined;
+  activeGlobalDrawersIds?: ReadonlyArray<string> | undefined;
   onActiveGlobalDrawersChange?: ((newDrawerId: string, params: OnChangeParams) => void) | undefined;
   splitPanel: React.ReactNode;
   splitPanelToggleProps: SplitPanelToggleProps | undefined;
@@ -51,57 +55,60 @@ export function mergeProps(
   ownProps: SharedProps,
   additionalProps: ReadonlyArray<Partial<SharedProps>>
 ): ToolbarProps | null {
-  const toolbar: ToolbarProps = {};
+  const toolbar: ToolbarProps = { widgetizedProps: {} };
   for (const props of [ownProps, ...additionalProps]) {
     toolbar.ariaLabels = Object.assign(toolbar.ariaLabels ?? {}, props.ariaLabels);
-    if (
-      props.drawers &&
-      props.drawers.some(drawer => drawer.trigger) &&
-      !checkAlreadyExists(!!toolbar.drawers, 'tools or drawers')
-    ) {
-      toolbar.drawers = props.drawers;
-      toolbar.activeDrawerId = props.activeDrawerId;
-      toolbar.drawersFocusRef = props.drawersFocusRef;
-      toolbar.onActiveDrawerChange = props.onActiveDrawerChange;
+    if (ownProps.mergeWidgetizedProps) {
+      toolbar.widgetizedProps = ownProps.mergeWidgetizedProps(toolbar, props);
     }
-    if (props.globalDrawers && !checkAlreadyExists(!!toolbar.globalDrawers, 'globalDrawers')) {
-      toolbar.globalDrawersFocusControl = props.globalDrawersFocusControl;
-      toolbar.globalDrawers = props.globalDrawers;
-      toolbar.activeGlobalDrawersIds = props.activeGlobalDrawersIds;
-      toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
-    }
+    // if (
+    //   props.drawers &&
+    //   props.drawers.some(drawer => drawer.trigger) &&
+    //   !checkAlreadyExists(!!toolbar.drawers, 'tools or drawers')
+    // ) {
+    //   toolbar.drawers = props.drawers;
+    //   toolbar.activeDrawerId = props.activeDrawerId;
+    //   toolbar.drawersFocusRef = props.drawersFocusRef;
+    //   toolbar.onActiveDrawerChange = props.onActiveDrawerChange;
+    // }
+    // if (props.globalDrawers && !checkAlreadyExists(!!toolbar.globalDrawers, 'globalDrawers')) {
+    //   toolbar.globalDrawersFocusControl = props.globalDrawersFocusControl;
+    //   toolbar.globalDrawers = props.globalDrawers;
+    //   toolbar.activeGlobalDrawersIds = props.activeGlobalDrawersIds;
+    //   toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
+    // }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
       toolbar.hasNavigation = true;
       toolbar.navigationOpen = props.navigationOpen;
-      toolbar.navigationFocusRef = props.navigationFocusRef;
-      toolbar.onNavigationToggle = props.onNavigationToggle;
+      // toolbar.navigationFocusRef = props.navigationFocusRef;
+      // toolbar.onNavigationToggle = props.onNavigationToggle;
     }
-    if (
-      props.splitPanel &&
-      props.splitPanelToggleProps?.displayed &&
-      !checkAlreadyExists(!!toolbar.hasSplitPanel, 'splitPanel')
-    ) {
-      toolbar.hasSplitPanel = true;
-      toolbar.splitPanelFocusRef = props.splitPanelFocusRef;
-      toolbar.splitPanelToggleProps = props.splitPanelToggleProps;
-      toolbar.onSplitPanelToggle = props.onSplitPanelToggle;
-    }
+    // if (
+    //   props.splitPanel &&
+    //   props.splitPanelToggleProps?.displayed &&
+    //   !checkAlreadyExists(!!toolbar.hasSplitPanel, 'splitPanel')
+    // ) {
+    //   toolbar.hasSplitPanel = true;
+    //   toolbar.splitPanelFocusRef = props.splitPanelFocusRef;
+    //   toolbar.splitPanelToggleProps = props.splitPanelToggleProps;
+    //   toolbar.onSplitPanelToggle = props.onSplitPanelToggle;
+    // }
     if (props.breadcrumbs && !checkAlreadyExists(!!toolbar.hasBreadcrumbsPortal, 'hasBreadcrumbsPortal')) {
       toolbar.hasBreadcrumbsPortal = true;
     }
-    if (props.expandedDrawerId && !checkAlreadyExists(!!toolbar.expandedDrawerId, 'expandedDrawerId')) {
-      toolbar.expandedDrawerId = props.expandedDrawerId;
-      toolbar.setExpandedDrawerId = props.setExpandedDrawerId;
-    }
+    // if (props.expandedDrawerId && !checkAlreadyExists(!!toolbar.expandedDrawerId, 'expandedDrawerId')) {
+    //   toolbar.expandedDrawerId = props.expandedDrawerId;
+    //   toolbar.setExpandedDrawerId = props.setExpandedDrawerId;
+    // }
   }
   // do not render toolbar if no fields are defined, except ariaLabels, which are always there
   return Object.keys(toolbar).filter(key => key !== 'ariaLabels').length > 0 ? toolbar : null;
 }
 
-export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
+export function useMultiAppLayout(forceDeduplicationType: DeduplicationType, props: SharedProps | null) {
   const [registration, setRegistration] = useState<RegistrationState<SharedProps> | null>(null);
-  const { forceDeduplicationType } = props;
   const isToolbar = useAppLayoutFlagEnabled();
+  const isEnabled = !!props;
 
   useLayoutEffect(() => {
     if (!isEnabled || forceDeduplicationType === 'suspended' || !isToolbar) {
@@ -117,14 +124,14 @@ export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
   }, [forceDeduplicationType, isEnabled, isToolbar]);
 
   useLayoutEffect(() => {
-    if (registration?.type === 'secondary') {
+    if (registration?.type === 'secondary' && props) {
       registration.update(props);
     }
   });
 
   if (!isToolbar) {
     return {
-      registered: 'primary',
+      registered: true,
       // mergeProps is needed here because the toolbar's behavior depends on reconciliation logic
       // in this function. For example, navigation trigger visibility
       toolbarProps: mergeProps(props, []),

@@ -10,9 +10,8 @@ import { AppLayoutProps } from '../../interfaces';
 import { OnChangeParams } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import { AppLayoutInternals } from '../interfaces';
-import { BreadcrumbsSlot } from '../skeleton/breadcrumbs';
-import { ToolbarSkeleton } from '../skeleton/slot-skeletons';
-import { ToolbarSlot } from '../skeleton/slot-wrappers';
+import { ToolbarSkeleton } from '../skeleton/skeleton-parts';
+import { BreadcrumbsSlot, ToolbarSlot } from '../skeleton/slots';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
 import TriggerButton from './trigger-button';
 
@@ -22,23 +21,47 @@ import styles from './styles.css.js';
 export { SplitPanelToggleProps };
 
 export interface ToolbarProps {
-  ariaLabels?: AppLayoutProps.Labels;
-  // navigation
+  widgetizedProps?: {
+    ariaLabels?: AppLayoutProps.Labels;
+    // navigation
+    // onNavigationToggle?: (open: boolean) => void;
+    // navigationFocusRef?: React.Ref<Focusable>;
+    //
+    // // breadcrumbs
+    // hasBreadcrumbsPortal?: boolean;
+    //
+    // // split panel
+    // hasSplitPanel?: boolean;
+    // splitPanelToggleProps?: SplitPanelToggleProps;
+    // splitPanelFocusRef?: React.Ref<Focusable>;
+    // onSplitPanelToggle?: () => void;
+    //
+    // // drawers
+    // activeDrawerId?: string | null;
+    // drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
+    // drawersFocusRef?: React.Ref<Focusable>;
+    // globalDrawersFocusControl?: FocusControlMultipleStates;
+    // onActiveDrawerChange?: (drawerId: string | null, params: OnChangeParams) => void;
+    // globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
+    // activeGlobalDrawersIds?: ReadonlyArray<string>;
+    // onActiveGlobalDrawersChange?: ((drawerId: string, params: OnChangeParams) => void) | undefined;
+
+    expandedDrawerId?: string | null;
+    setExpandedDrawerId?: (value: string | null) => void;
+  };
+
   hasNavigation?: boolean;
   navigationOpen?: boolean;
+
+  // legacy Props
+  ariaLabels?: AppLayoutProps.Labels;
   onNavigationToggle?: (open: boolean) => void;
   navigationFocusRef?: React.Ref<Focusable>;
-
-  // breadcrumbs
   hasBreadcrumbsPortal?: boolean;
-
-  // split panel
   hasSplitPanel?: boolean;
   splitPanelToggleProps?: SplitPanelToggleProps;
   splitPanelFocusRef?: React.Ref<Focusable>;
   onSplitPanelToggle?: () => void;
-
-  // drawers
   activeDrawerId?: string | null;
   drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusRef?: React.Ref<Focusable>;
@@ -47,7 +70,6 @@ export interface ToolbarProps {
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   activeGlobalDrawersIds?: ReadonlyArray<string>;
   onActiveGlobalDrawersChange?: ((drawerId: string, params: OnChangeParams) => void) | undefined;
-
   expandedDrawerId?: string | null;
   setExpandedDrawerId?: (value: string | null) => void;
 }

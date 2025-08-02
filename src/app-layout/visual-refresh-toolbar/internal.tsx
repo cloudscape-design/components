@@ -4,31 +4,22 @@ import React, { useEffect, useState } from 'react';
 
 import { FunctionComponent } from '../../internal/widgets';
 import { isAppLayoutDelayedWidget } from '../utils/feature-flags';
-import { AppLayoutState as AppLayoutStateImplementation, createWidgetizedAppLayoutState } from './app-layout-state';
 import { createWidgetizedAppLayoutDrawer, createWidgetizedAppLayoutGlobalDrawers } from './drawer';
 import { createWidgetizedAppLayoutNavigation } from './navigation';
 import { createWidgetizedAppLayoutNotifications } from './notifications';
 import {
-  AfterMainSlotImplementation,
-  createWidgetizedAppLayoutAfterMainSlot,
-} from './skeleton/widget-slots/after-main-slot';
-import {
-  BeforeMainSlotImplementation,
-  createWidgetizedAppLayoutBeforeMainSlot,
-} from './skeleton/widget-slots/before-main-slot';
-import {
-  BottomContentSlotImplementation,
-  createWidgetizedAppLayoutBottomContentSlot,
-} from './skeleton/widget-slots/bottom-content-slot';
-import {
-  createWidgetizedAppLayoutTopContentSlot,
-  TopContentSlotImplementation,
-} from './skeleton/widget-slots/top-content-slot';
-import {
   createWidgetizedAppLayoutSplitPanelDrawerBottom,
   createWidgetizedAppLayoutSplitPanelDrawerSide,
 } from './split-panel';
+import { AppLayoutStateProvider as AppLayoutStateImplementation, createWidgetizedAppLayoutState } from './state';
 import { createWidgetizedAppLayoutToolbar } from './toolbar';
+import { AfterMainSlotImplementation, createWidgetizedAppLayoutAfterMainSlot } from './widget-areas/after-main-slot';
+import { BeforeMainSlotImplementation, createWidgetizedAppLayoutBeforeMainSlot } from './widget-areas/before-main-slot';
+import {
+  BottomContentSlotImplementation,
+  createWidgetizedAppLayoutBottomContentSlot,
+} from './widget-areas/bottom-content-slot';
+import { createWidgetizedAppLayoutTopContentSlot, TopContentSlotImplementation } from './widget-areas/top-content-slot';
 
 const enableDelayedComponents = isAppLayoutDelayedWidget();
 
@@ -66,8 +57,8 @@ export function createLoadableComponent<Props extends Record<string, any>>(Compo
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-      const timeoutId = setTimeout(() => setMounted(true), 1000);
-      return () => clearTimeout(timeoutId);
+      // const timeoutId = setTimeout(() => setMounted(true), 1000);
+      // return () => clearTimeout(timeoutId);
     }, []);
 
     if (mounted) {

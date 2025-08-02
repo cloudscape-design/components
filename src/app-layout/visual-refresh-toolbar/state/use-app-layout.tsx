@@ -4,23 +4,30 @@ import React, { ForwardedRef, useCallback, useEffect, useImperativeHandle, useRe
 
 import { useMergeRefs, useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
-import { fireNonCancelableEvent } from '../../internal/events';
-import { useControllable } from '../../internal/hooks/use-controllable';
-import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
-import { useMobile } from '../../internal/hooks/use-mobile';
-import globalVars from '../../internal/styles/global-vars';
-import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
-import { AppLayoutProps } from '../interfaces';
-import { SplitPanelProviderProps } from '../split-panel';
-import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers';
-import { useAsyncFocusControl, useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
-import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
-import { computeHorizontalLayout, computeSplitPanelOffsets, CONTENT_PADDING } from './compute-layout';
-import { AppLayoutInternalProps, AppLayoutInternals } from './interfaces';
+import { SplitPanelSideToggleProps } from '../../../internal/context/split-panel-context';
+import { fireNonCancelableEvent } from '../../../internal/events';
+import { useControllable } from '../../../internal/hooks/use-controllable';
+import { useIntersectionObserver } from '../../../internal/hooks/use-intersection-observer';
+import { useMobile } from '../../../internal/hooks/use-mobile';
+import globalVars from '../../../internal/styles/global-vars';
+import { getSplitPanelDefaultSize } from '../../../split-panel/utils/size-utils';
+import { AppLayoutProps } from '../../interfaces';
+import { SplitPanelProviderProps } from '../../split-panel';
+import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../../utils/use-drawers';
+import { useAsyncFocusControl, useFocusControl, useMultipleFocusControl } from '../../utils/use-focus-control';
+import { useSplitPanelFocusControl } from '../../utils/use-split-panel-focus-control';
+import {
+  computeHorizontalLayout,
+  computeSplitPanelOffsets,
+  computeVerticalLayout,
+  CONTENT_PADDING,
+} from '../compute-layout';
+import { AppLayoutState } from '../interfaces';
+import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
 
-export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: ForwardedRef<AppLayoutProps.Ref>) => {
-  const {
+export const useAppLayout = (
+  hasToolbar: boolean,
+  {
     ariaLabels,
     navigationOpen,
     navigationWidth,
@@ -46,7 +53,9 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
     placement,
     navigationTriggerHide,
     ...rest
-  } = props;
+  }: AppLayoutInternalProps,
+  forwardRef: ForwardedRef<AppLayoutProps.Ref>
+): AppLayoutState => {
   const isMobile = useMobile();
   const splitPanelControlId = useUniqueId('split-panel');
   const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
@@ -245,6 +254,14 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
     activeGlobalDrawersSizes,
   });
 
+  const verticalOffsets = computeVerticalLayout({
+    topOffset: placement.insetBlockStart,
+    hasVisibleToolbar: hasToolbar && toolbarState !== 'hide',
+    notificationsHeight: notificationsHeight ?? 0,
+    toolbarHeight: toolbarHeight ?? 0,
+    stickyNotifications: resolvedStickyNotifications,
+  });
+
   const { ref: intersectionObserverRef, isIntersecting } = useIntersectionObserver({ initialState: true });
 
   const appLayoutInternals: AppLayoutInternals = {
@@ -279,12 +296,7 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
     placement,
     toolbarState,
     setToolbarState,
-    verticalOffsets: {
-      toolbar: 0,
-      notifications: 0,
-      header: 0,
-      drawers: 0,
-    },
+    verticalOffsets,
     drawersOpenQueue,
     setToolbarHeight,
     setNotificationsHeight,
@@ -299,12 +311,12 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
 
   const splitPanelInternals: SplitPanelProviderProps = {
     bottomOffset: 0,
-    getMaxHeight: () => {
+    getMaxHeight: useStableCallback(() => {
       const availableHeight =
         document.documentElement.clientHeight - placement.insetBlockStart - placement.insetBlockEnd;
       // If the page is likely zoomed in at 200%, allow the split panel to fill the content area.
       return availableHeight < 400 ? availableHeight - 40 : availableHeight - 250;
-    },
+    }),
     maxWidth: maxSplitPanelSize,
     isForcedPosition: splitPanelForcedPosition,
     isOpen: splitPanelOpen,
@@ -313,8 +325,8 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
     onResize: onSplitPanelResizeHandler,
     onToggle: onSplitPanelToggleHandler,
     position: splitPanelPosition,
-    reportSize: size => setSplitPanelReportedSize(size),
-    reportHeaderHeight: size => setSplitPanelHeaderBlockSize(size),
+    reportSize: useStableCallback(size => setSplitPanelReportedSize(size)),
+    reportHeaderHeight: useStableCallback(size => setSplitPanelHeaderBlockSize(size)),
     headerHeight: splitPanelHeaderBlockSize,
     rightOffset: 0,
     size: splitPanelSize,
@@ -415,27 +427,14 @@ export const useAppLayout = (props: AppLayoutInternalProps, forwardRef: Forwarde
   });
 
   return {
-    navigationAnimationDisabled,
-    isNested,
     isIntersecting,
-    intersectionObserverRef,
-    rootRef,
-    splitPanelOffsets,
-    isMobile,
     appLayoutInternals,
-    resolvedNavigation,
-    resolvedNavigationOpen,
-    drawers,
-    activeGlobalDrawersIds,
-    activeDrawer,
-    activeDrawerSize,
-    splitPanelPosition,
-    splitPanelOpen,
     splitPanelInternals,
-    toolbarHeight,
-    notificationsHeight,
-    setExpandedDrawerId,
-    expandedDrawerId,
-    drawerExpandedMode: !!expandedDrawerId,
+    widgetizedState: {
+      ...appLayoutInternals,
+      isNested,
+      verticalOffsets,
+      splitPanelOffsets,
+    },
   };
 };

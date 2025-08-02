@@ -92,9 +92,13 @@ function App() {
 }
 
 const history = createHashHistory();
-const { direction, visualRefresh, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
-  history.location.search
-);
+const {
+  direction,
+  visualRefresh,
+  appLayoutWidget,
+  appLayoutToolbar = true,
+  appLayoutDelayedWidget,
+} = parseQuery(history.location.search);
 
 // The VR class needs to be set before any React rendering occurs.
 window[awsuiVisualRefreshFlag] = () => visualRefresh;

@@ -8,8 +8,8 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutInternals } from '../interfaces';
-import { NotificationsSkeleton } from '../skeleton/slot-skeletons';
-import { NotificationsSlot } from '../skeleton/slot-wrappers';
+import { NotificationsSkeleton } from '../skeleton/skeleton-parts';
+import { NotificationsSlot } from '../skeleton/slots';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';

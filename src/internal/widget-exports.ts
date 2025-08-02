@@ -16,11 +16,11 @@ export {
 export { AppLayoutToolbarImplementation as AppLayoutToolbar } from '../app-layout/visual-refresh-toolbar/toolbar';
 
 // Refactored widgetized parts
-export { BeforeMainSlotImplementation as AppLayoutBeforeMainSlot } from '../app-layout/visual-refresh-toolbar/skeleton/widget-slots/before-main-slot';
-export { AfterMainSlotImplementation as AppLayoutAfterMainSlot } from '../app-layout/visual-refresh-toolbar/skeleton/widget-slots/after-main-slot';
-export { TopContentSlotImplementation as AppLayoutTopContentSlot } from '../app-layout/visual-refresh-toolbar/skeleton/widget-slots/top-content-slot';
-export { BottomContentSlotImplementation as AppLayoutBottomContentSlot } from '../app-layout/visual-refresh-toolbar/skeleton/widget-slots/bottom-content-slot';
-export { AppLayoutState as AppLayoutWidgetizedState } from '../app-layout/visual-refresh-toolbar/app-layout-state';
+export { BeforeMainSlotImplementation as AppLayoutBeforeMainSlot } from '../app-layout/visual-refresh-toolbar/widget-areas/before-main-slot';
+export { AfterMainSlotImplementation as AppLayoutAfterMainSlot } from '../app-layout/visual-refresh-toolbar/widget-areas/after-main-slot';
+export { TopContentSlotImplementation as AppLayoutTopContentSlot } from '../app-layout/visual-refresh-toolbar/widget-areas/top-content-slot';
+export { BottomContentSlotImplementation as AppLayoutBottomContentSlot } from '../app-layout/visual-refresh-toolbar/widget-areas/bottom-content-slot';
+export { AppLayoutStateProvider as AppLayoutWidgetizedState } from '../app-layout/visual-refresh-toolbar/state';
 
 export { SplitPanelImplementation as SplitPanel } from '../split-panel/implementation';
 export { BreadcrumbGroupImplementation as BreadcrumbGroup } from '../breadcrumb-group/implementation';
