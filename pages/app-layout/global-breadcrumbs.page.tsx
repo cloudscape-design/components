@@ -16,7 +16,7 @@ type DemoContext = React.Context<
 >;
 
 export default function () {
-  const { urlParams } = useContext(AppContext as DemoContext);
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [extraBreadcrumb, setExtraBreadcrumb] = useState(false);
 
   return (
@@ -45,9 +45,19 @@ export default function () {
             <input
               type="checkbox"
               data-testid="toggle-extra-breadcrumb"
+              checked={extraBreadcrumb}
               onChange={event => setExtraBreadcrumb(event.target.checked)}
             />{' '}
             Extra breadcrumb
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              data-testid="toggle-own-breadcrumb"
+              checked={urlParams.hasOwnBreadcrumbs || false}
+              onChange={event => setUrlParams({ hasOwnBreadcrumbs: event.target.checked || undefined })}
+            />{' '}
+            Own breadcrumb
           </label>
           {extraBreadcrumb && (
             <BreadcrumbGroup
