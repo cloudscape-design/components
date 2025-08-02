@@ -60,9 +60,13 @@ export function useGetGlobalBreadcrumbs(enabled: boolean) {
     if (!enabled) {
       return;
     }
-    return awsuiPluginsInternal.breadcrumbs.registerAppLayout(breadcrumbs => {
+    const unregisterAppLayout = awsuiPluginsInternal.breadcrumbs.registerAppLayout(breadcrumbs => {
       setDiscoveredBreadcrumbs(breadcrumbs);
     });
+    return () => {
+      unregisterAppLayout?.();
+      setDiscoveredBreadcrumbs(null);
+    };
   }, [enabled]);
 
   return discoveredBreadcrumbs;
