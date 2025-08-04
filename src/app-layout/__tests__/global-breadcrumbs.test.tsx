@@ -49,11 +49,12 @@ function delay() {
 }
 
 async function renderAsync(jsx: React.ReactElement) {
-  render(jsx);
+  const result = render(jsx);
   await waitFor(() => {
     expect(findDiscoveredBreadcrumbs()).toBeTruthy();
     expect(findAllBreadcrumbsInstances()).toHaveLength(1);
   });
+  return result;
 }
 
 afterEach(() => {
@@ -128,6 +129,32 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(findAllBreadcrumbsInstances()).toHaveLength(2);
     expect(findDiscoveredBreadcrumbs()).toBeFalsy();
     expect(findRootBreadcrumb().getElement()).toHaveTextContent('First');
+  });
+
+  test('breadcrumbs in the own slot replaces the discovered version', async () => {
+    const { rerender } = await renderAsync(
+      <AppLayout content={<BreadcrumbGroup items={[{ text: 'Inner', href: '/inner' }]} />} />
+    );
+    expect(findRootBreadcrumb().getElement()).toHaveTextContent('Inner');
+
+    rerender(
+      <AppLayout
+        breadcrumbs={<BreadcrumbGroup items={[{ text: 'Own', href: '/own' }]} />}
+        content={<BreadcrumbGroup items={[{ text: 'Inner', href: '/inner' }]} />}
+      />
+    );
+    await waitFor(() => {
+      expect(findDiscoveredBreadcrumbs()).toBeFalsy();
+      expect(findRootBreadcrumb().getElement()).toHaveTextContent('Own');
+    });
+    expect(findAllBreadcrumbsInstances()).toHaveLength(2);
+    expect(wrapper.findAppLayout()!.findBreadcrumbs()!.findAllBreadcrumbGroups()).toHaveLength(1);
+
+    rerender(<AppLayout content={<BreadcrumbGroup items={[{ text: 'Inner', href: '/inner' }]} />} />);
+    await waitFor(() => {
+      expect(findDiscoveredBreadcrumbs()).toBeTruthy();
+      expect(findRootBreadcrumb().getElement()).toHaveTextContent('Inner');
+    });
   });
 
   test('when multiple breadcrumbs instances are present the latest is applied', async () => {
