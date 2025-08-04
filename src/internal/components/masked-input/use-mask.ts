@@ -19,7 +19,7 @@ interface UseMaskHook {
   onPaste: (event: React.ClipboardEvent) => void;
 }
 
-interface UseMaskProps {
+export interface UseMaskProps {
   value: string;
   onChange: (value: string) => void;
   onKeyDown?: (event: CustomEvent) => void;
@@ -111,13 +111,15 @@ const useMask = ({
       onBlur?.();
     },
     onPaste: (event: React.ClipboardEvent) => {
-      const text = (event.clipboardData || (window as any).clipboardData).getData('text');
+      if (event.clipboardData) {
+        const text = event.clipboardData.getData('text');
 
-      const selectionStart = inputRef.current?.selectionStart || 0;
-      const selectionEnd = inputRef.current?.selectionEnd || 0;
+        const selectionStart = inputRef.current?.selectionStart || 0;
+        const selectionEnd = inputRef.current?.selectionEnd || 0;
 
-      const formattedText = format.formatPastedText(text, maskedValue, selectionStart, selectionEnd);
-      onMaskChange(formattedText);
+        const formattedText = format.formatPastedText(text, maskedValue, selectionStart, selectionEnd);
+        onMaskChange(formattedText);
+      }
     },
   };
 };
