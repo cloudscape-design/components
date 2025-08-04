@@ -36,7 +36,7 @@ class DateInputPage extends BasePageObject {
 
   async type(text: string) {
     // `await this.keys(text);` doesn't work as it key presses too quickly and doesn't
-    // allow the seperator to be appended so the cursor position gets messed up.
+    // allow the separator to be appended so the cursor position gets messed up.
     for (let k = 0; k < text.length; k++) {
       await this.keys(text[k]);
     }
