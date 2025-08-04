@@ -3,8 +3,9 @@
 import React, { forwardRef } from 'react';
 
 import { getBaseProps } from '../../base-component';
-import DragHandleWrapper from '../drag-handle-wrapper';
-import DragHandleButton from './button';
+import DragHandleButton from './components/button';
+import DragHandleWrapper from './components/wrapper';
+import { useDefaultDragBehavior } from './hooks/use-default-drag-behavior';
 import { DragHandleProps } from './interfaces';
 
 export { DragHandleProps };
@@ -24,8 +25,8 @@ const InternalDragHandle = forwardRef(
       onPointerDown,
       onKeyDown,
       onDirectionClick,
-      triggerMode,
-      initialShowButtons,
+      triggerMode = 'focus',
+      initialShowButtons = false,
       hideButtonsOnDrag = false,
       clickDragThreshold = 3,
       active,
@@ -34,17 +35,17 @@ const InternalDragHandle = forwardRef(
     ref: React.Ref<Element>
   ) => {
     const baseProps = getBaseProps(rest);
+    const { wrapperProps } = useDefaultDragBehavior({
+      directions,
+      triggerMode,
+      initialShowButtons,
+      hideButtonsOnDrag,
+      clickDragThreshold,
+      onDirectionClick,
+    });
 
     return (
-      <DragHandleWrapper
-        directions={!disabled ? directions : {}}
-        tooltipText={tooltipText}
-        onDirectionClick={onDirectionClick}
-        triggerMode={triggerMode}
-        initialShowButtons={initialShowButtons}
-        hideButtonsOnDrag={hideButtonsOnDrag}
-        clickDragThreshold={clickDragThreshold}
-      >
+      <DragHandleWrapper tooltipText={tooltipText} {...wrapperProps}>
         <DragHandleButton
           ref={ref}
           className={baseProps.className}
@@ -56,8 +57,8 @@ const InternalDragHandle = forwardRef(
           ariaValue={ariaValue}
           disabled={disabled}
           active={active}
-          onPointerDown={onPointerDown}
           onKeyDown={onKeyDown}
+          onPointerDown={onPointerDown}
         />
       </DragHandleWrapper>
     );

@@ -3,36 +3,35 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import dragHandleStyles from '../../../internal/components/drag-handle/test-classes/styles.selectors.js';
-import dragHandleWrapperStyles from '../../../internal/components/drag-handle-wrapper/test-classes/styles.selectors.js';
 
 export default class DragHandleWrapper extends ComponentWrapper {
   static rootSelector: string = dragHandleStyles.root;
 
   findAllVisibleDirectionButtons(): Array<ElementWrapper> | null {
-    return this.findAll(`.${dragHandleWrapperStyles['direction-button-visible']}`);
+    return this.findAll(`.${dragHandleStyles['direction-button-visible']}`);
   }
 
   findVisibleDirectionButtonBlockStart(): ElementWrapper | null {
     return this.find(
-      `.${dragHandleWrapperStyles['direction-button-block-start']}.${dragHandleWrapperStyles['direction-button-visible']}`
+      `.${dragHandleStyles['direction-button-block-start']}.${dragHandleStyles['direction-button-visible']}`
     );
   }
 
   findVisibleDirectionButtonBlockEnd(): ElementWrapper | null {
     return this.find(
-      `.${dragHandleWrapperStyles['direction-button-block-end']}.${dragHandleWrapperStyles['direction-button-visible']}`
+      `.${dragHandleStyles['direction-button-block-end']}.${dragHandleStyles['direction-button-visible']}`
     );
   }
 
   findVisibleDirectionButtonInlineStart(): ElementWrapper | null {
     return this.find(
-      `.${dragHandleWrapperStyles['direction-button-inline-start']}.${dragHandleWrapperStyles['direction-button-visible']}`
+      `.${dragHandleStyles['direction-button-inline-start']}.${dragHandleStyles['direction-button-visible']}`
     );
   }
 
   findVisibleDirectionButtonInlineEnd(): ElementWrapper | null {
     return this.find(
-      `.${dragHandleWrapperStyles['direction-button-inline-end']}.${dragHandleWrapperStyles['direction-button-visible']}`
+      `.${dragHandleStyles['direction-button-inline-end']}.${dragHandleStyles['direction-button-visible']}`
     );
   }
 }

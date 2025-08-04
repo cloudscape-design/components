@@ -4,18 +4,18 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { IconProps } from '../../../icon/interfaces';
-import InternalIcon from '../../../icon/internal';
-import { Transition } from '../transition';
-import { Direction, DirectionState } from './interfaces';
+import { IconProps } from '../../../../icon/interfaces';
+import InternalIcon from '../../../../icon/internal';
+import { Transition } from '../../transition';
+import { DragHandleProps } from '../interfaces';
 
-import styles from './styles.css.js';
-import testUtilsStyles from './test-classes/styles.css.js';
+import styles from '../styles.css.js';
+import testUtilsStyles from '../test-classes/styles.css.js';
 
 // Mapping from CSS logical property direction to icon name. The icon component
 // already flips the left/right icons automatically based on RTL, so we don't
 // need to do anything special.
-const ICON_LOGICAL_PROPERTY_MAP: Record<Direction, IconProps.Name> = {
+const ICON_LOGICAL_PROPERTY_MAP: Record<DragHandleProps.Direction, IconProps.Name> = {
   'block-start': 'arrow-up',
   'block-end': 'arrow-down',
   'inline-start': 'arrow-left',
@@ -23,8 +23,8 @@ const ICON_LOGICAL_PROPERTY_MAP: Record<Direction, IconProps.Name> = {
 };
 
 interface DirectionButtonProps {
-  direction: Direction;
-  state: DirectionState;
+  direction: DragHandleProps.Direction;
+  state: DragHandleProps.DirectionState;
   onClick: React.MouseEventHandler;
   show: boolean;
 }

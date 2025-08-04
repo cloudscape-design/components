@@ -4,9 +4,9 @@
 import React, { createRef } from 'react';
 import { render, waitFor } from '@testing-library/react';
 
-import PortalOverlay from '../../../../../lib/components/internal/components/drag-handle-wrapper/portal-overlay.js';
+import PortalOverlay from '../../../../../lib/components/internal/components/drag-handle/components/portal-overlay.js';
 
-import styles from '../../../../../lib/components/internal/components/drag-handle-wrapper/styles.css.js';
+import styles from '../../../../../lib/components/internal/components/drag-handle/styles.css.js';
 
 let isRtl = false;
 
