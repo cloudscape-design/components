@@ -10,10 +10,9 @@
 @use '../foundation' as foundation;
 @use '../utils' as utils;
 @use './constants' as constants;
-@use '../../generated/custom-css-properties/index.scss' as custom-props;
 
 @mixin link-focus(
-  $color: awsui.$color-border-item-focused,
+  $border-color: awsui.$color-border-item-focused,
   $border-radius: awsui.$border-radius-control-default-focus-ring,
   $box-shadow: 0 0 0 awsui.$border-link-focus-ring-shadow-spread awsui.$color-border-item-focused
 ) {
@@ -21,13 +20,13 @@
   outline: thin dotted;
   outline: awsui.$border-link-focus-ring-outline;
   outline-offset: 2px;
-  outline-color: awsui.$color-border-item-focused;
+  outline-color: $border-color;
   // For visual refresh
-  border-start-start-radius: awsui.$border-radius-control-default-focus-ring;
-  border-start-end-radius: awsui.$border-radius-control-default-focus-ring;
-  border-end-start-radius: awsui.$border-radius-control-default-focus-ring;
-  border-end-end-radius: awsui.$border-radius-control-default-focus-ring;
-  box-shadow: 0 0 0 awsui.$border-link-focus-ring-shadow-spread awsui.$color-border-item-focused;
+  border-start-start-radius: $border-radius;
+  border-start-end-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  border-end-end-radius: $border-radius;
+  box-shadow: $box-shadow;
 }
 
 @mixin container-focus($border-radius: awsui.$border-radius-container) {
