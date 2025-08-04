@@ -8,8 +8,63 @@ import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
-import { focusFlashById } from './flash';
+import { focusFlashById, focusFlashFocusableArea } from './flash';
 import { FlashbarProps } from './interfaces';
+
+import styles from './styles.css.js';
+
+// Exported for testing
+export const handleFlashDismissedInternal = (
+  dismissedId: string | undefined,
+  items: ReadonlyArray<FlashbarProps.MessageDefinition> | undefined,
+  refCurrent: HTMLDivElement | null,
+  flashRefsCurrent: Record<string | number, HTMLDivElement | null>
+) => {
+  if (!items || !dismissedId || !refCurrent) {
+    return;
+  }
+
+  const dismissedIndex = items.findIndex(item => (item.id ?? '') === dismissedId);
+  if (dismissedIndex === -1) {
+    return;
+  }
+
+  let nextItemIndex = dismissedIndex + 1;
+  if (nextItemIndex >= items.length) {
+    nextItemIndex = dismissedIndex - 1;
+  }
+
+  // If there's no next item, focus the first instance of the main element (or element with role=main)
+  if (nextItemIndex < 0 || nextItemIndex >= items.length) {
+    const mainElement = document.querySelector('main') ?? document.querySelector('[role="main"]');
+    mainElement?.focus();
+    return;
+  }
+
+  const nextItemId = items[nextItemIndex].id ?? nextItemIndex;
+
+  // Try to focus on the next item, but with a small delay to ensure the DOM is updated
+  // This is especially important for collapsible flashbars where the next item might become visible
+  const attemptFocus = () => {
+    const nextFlashElement = flashRefsCurrent[nextItemId];
+    if (!nextFlashElement) {
+      // If the next flash element is not available, it might be because the flashbar is collapsed
+      // In that case, try to focus on the notification bar button or the main element
+      const notificationBarButton = refCurrent?.querySelector(`.${styles.button}`);
+      if (notificationBarButton) {
+        (notificationBarButton as HTMLElement).focus();
+        return;
+      }
+
+      const mainElement = document.querySelector('main') ?? document.querySelector('[role="main"]');
+      mainElement?.focus();
+      return;
+    }
+    focusFlashFocusableArea(nextFlashElement);
+  };
+
+  setTimeout(attemptFocus, 0);
+};
 
 // Common logic for collapsible and non-collapsible Flashbar
 export function useFlashbar({
@@ -29,6 +84,7 @@ export function useFlashbar({
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
   const baseProps = getBaseProps(restProps);
   const ref = useRef<HTMLDivElement | null>(null);
+  const flashRefs = useRef<Record<string | number, HTMLDivElement | null>>({});
   const mergedRef = useMergeRefs(ref, __internalRootRef);
   const isReducedMotion = useReducedMotion(ref);
   const isVisualRefresh = useVisualRefresh();
@@ -68,6 +124,10 @@ export function useFlashbar({
     }
   }, [nextFocusId, ref]);
 
+  const handleFlashDismissed = (dismissedId?: string) => {
+    handleFlashDismissedInternal(dismissedId, items, ref.current, flashRefs.current);
+  };
+
   return {
     allItemsHaveId,
     baseProps,
@@ -75,5 +135,7 @@ export function useFlashbar({
     isVisualRefresh,
     mergedRef,
     ref,
+    flashRefs,
+    handleFlashDismissed,
   };
 }

@@ -31,7 +31,7 @@ mockInnerText();
 
 const noop = () => void 0;
 
-let consoleWarnSpy: jest.SpyInstance;
+let consoleWarnSpy: jest.SpyInstance | undefined;
 afterEach(() => {
   consoleWarnSpy?.mockRestore();
 });
