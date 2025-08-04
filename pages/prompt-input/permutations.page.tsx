@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Button } from '~components';
+import { Button, FileTokenGroup } from '~components';
 import PromptInput, { PromptInputProps } from '~components/prompt-input';
 
 import img from '../icon/custom-icon.png';
@@ -83,6 +83,37 @@ const permutations = createPermutations<PromptInputProps>([
     ],
     secondaryActions: [undefined, 'secondary actions'],
     disableSecondaryActionsPaddings: [false, true],
+  },
+  {
+    value: ['Short value for secondary action responsiveness'],
+    actionButtonIconName: [undefined, 'send'],
+    secondaryActions: [
+      'short',
+      'longer but breakable secondary action content',
+      'longerbutunbreakablesecondaryactioncontent',
+      <FileTokenGroup
+        key="file-token"
+        items={[
+          {
+            file: new File([new Blob(['Test content'])], 'test-for-venue-use-case.pdf', {
+              type: 'application/pdf',
+              lastModified: 1590962400000,
+            }),
+          },
+        ]}
+        onDismiss={() => {}}
+        showFileSize={true}
+        showFileLastModified={true}
+        showFileThumbnail={true}
+        i18nStrings={{
+          removeFileAriaLabel: () => 'Remove file',
+          limitShowFewer: 'Show fewer files',
+          limitShowMore: 'Show more files',
+          errorIconAriaLabel: 'Error',
+          warningIconAriaLabel: 'Warning',
+        }}
+      />,
+    ],
   },
 ]);
 
