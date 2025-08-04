@@ -1,0 +1,9 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// backward compatibility before this commit: TODO_REPLACE_ME
+.breadcrumbs-own:not(:empty) + .breadcrumbs-discovered {
+  display: none;
+}
