@@ -6,6 +6,8 @@ import { reportRuntimeApiWarning } from '../helpers/metrics';
 
 type DrawerVisibilityChange = (callback: (isVisible: boolean) => void) => void;
 
+export type DrawerPosition = 'side' | 'bottom';
+
 interface MountContentContext {
   onVisibilityChange: DrawerVisibilityChange;
 }
@@ -13,6 +15,10 @@ interface MountContentContext {
 export interface DrawerStateChangeParams {
   isOpen: boolean;
   initiatedByUserAction?: boolean;
+}
+
+export interface DrawerPositionChangeParams {
+  position: DrawerPosition;
 }
 
 export interface DrawerConfig {
@@ -40,6 +46,9 @@ export interface DrawerConfig {
   unmountContent: (container: HTMLElement) => void;
   preserveInactiveContent?: boolean;
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
+  movable?: boolean;
+  position?: DrawerPosition;
+  onPositionChange?: NonCancelableEventHandler<DrawerPositionChangeParams>;
 }
 
 const updatableProperties = [

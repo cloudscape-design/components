@@ -135,6 +135,9 @@ awsuiPlugins.appLayout.registerDrawer({
 
   isExpandable: true,
 
+  movable: true,
+  position: 'bottom',
+
   ariaLabels: {
     closeButton: 'Close button',
     content: 'Content',

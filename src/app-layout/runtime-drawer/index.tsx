@@ -5,6 +5,8 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
 import {
   DrawerConfig as RuntimeDrawerConfig,
+  DrawerPosition,
+  DrawerPositionChangeParams,
   DrawerStateChangeParams,
 } from '../../internal/plugins/controllers/drawers';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
@@ -15,6 +17,9 @@ import styles from './styles.css.js';
 
 export interface RuntimeDrawer extends AppLayoutProps.Drawer {
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
+  movable?: boolean;
+  position?: DrawerPosition;
+  onPositionChange?: NonCancelableEventHandler<DrawerPositionChangeParams>;
 }
 
 export interface DrawersLayout {

@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { GeneratedAnalyticsMetadataAppLayoutToolbarComponent } from '../../../app-layout-toolbar/analytics-metadata/interfaces';
@@ -47,6 +48,8 @@ interface SkeletonLayoutProps
   isNested?: boolean;
   drawerExpandedMode: boolean;
   drawerExpandedModeInChildLayout: boolean;
+  activeBottomDrawerSize: number;
+  activeBottomDrawerId?: string;
 }
 
 const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAppLayoutToolbarComponent = {
@@ -85,12 +88,25 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       isNested,
       drawerExpandedMode,
       drawerExpandedModeInChildLayout,
+      activeBottomDrawerSize,
+      activeBottomDrawerId,
     },
     ref
   ) => {
     const isMobile = useMobile();
     const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
     const anyPanelOpen = navigationOpen || toolsOpen;
+    const bottomDrawerWrapperRef = useRef<HTMLDivElement>(null);
+    useResizeObserver(bottomDrawerWrapperRef, entry => {
+      if (activeBottomDrawerId) {
+        // TODO: turn this into a global css var and apply to the drawer
+        if (!isMobile) {
+          document.getElementById(activeBottomDrawerId)!.style.inlineSize = `${entry.contentBoxWidth}px`;
+        } else {
+          document.getElementById(activeBottomDrawerId)!.style.inlineSize = '100%';
+        }
+      }
+    });
     return (
       <VisualContext contextName="app-layout-toolbar">
         <div
@@ -105,6 +121,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             [customCssProps.maxContentWidth]: isMaxWidth ? '100%' : maxContentWidth ? `${maxContentWidth}px` : '',
             [customCssProps.navigationWidth]: `${navigationWidth}px`,
             [customCssProps.toolsWidth]: `${toolsWidth}px`,
+            [customCssProps.activeGlobalBottomDrawerHeight]: `${activeBottomDrawerSize}px`,
           }}
           {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
         >
@@ -146,7 +163,10 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
               <div className={clsx(styles.content, testutilStyles.content)}>{content}</div>
             </div>
             {bottomSplitPanel && (
-              <div className={clsx(styles['split-panel-bottom'])} style={{ insetBlockEnd: placement.insetBlockEnd }}>
+              <div
+                className={clsx(styles['split-panel-bottom'])}
+                style={{ insetBlockEnd: placement.insetBlockEnd + activeBottomDrawerSize }}
+              >
                 {bottomSplitPanel}
               </div>
             )}
@@ -175,6 +195,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             {tools}
           </div>
           <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>{globalTools}</div>
+          <div ref={bottomDrawerWrapperRef} className={clsx(styles['global-tools-bottom-stub'])} />
         </div>
       </VisualContext>
     );
