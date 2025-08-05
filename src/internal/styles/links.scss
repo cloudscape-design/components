@@ -10,9 +10,10 @@
 @use './forms/' as mixins;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../link/constants.scss' as constants;
+@use '../generated/custom-css-properties/index.scss' as custom-props;
 
 @mixin link-variant-style($variant) {
-  color: map.get($variant, 'text-color-default');
+  color: var(#{custom-props.$styleColorDefault}, map.get($variant, 'text-color-default'));
   font-weight: map.get($variant, 'font-weight');
   letter-spacing: map.get($variant, 'letter-spacing');
   text-decoration-line: map.get($variant, 'decoration-line');
@@ -25,7 +26,7 @@
 
   &:hover {
     cursor: pointer;
-    color: map.get($variant, 'text-color-hover');
+    color: var(#{custom-props.$styleColorHover}, map.get($variant, 'text-color-hover'));
   }
 
   &:focus {
@@ -33,7 +34,7 @@
   }
 
   &:active {
-    color: map.get($variant, 'text-color-active');
+    color: var(#{custom-props.$styleColorActive}, map.get($variant, 'text-color-active'));
   }
 
   &:active,

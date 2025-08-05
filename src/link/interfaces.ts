@@ -106,6 +106,17 @@ export interface LinkProps extends BaseComponentProps {
    * By default, the component sets the `rel` attribute to "noopener noreferrer" when `external` is `true` or `target` is `"_blank"`.
    */
   rel?: string;
+
+  /**
+   * Specifies an object of selectors and properties that are used to apply custom styles.
+   *
+   * - `root.color` {active, default, hover} (string) - (Optional) Text color for link.
+   * - `root.focusRing.borderColor` (string) - (Optional) Focus ring border color.
+   * - `root.focusRing.borderRadius` (string) - (Optional) Focus ring border radius.
+   * - `root.focusRing.borderWidth` (string) - (Optional) Focus ring border width.
+   * @awsuiSystem core
+   */
+  style?: LinkProps.Style;
 }
 
 export namespace LinkProps {
@@ -132,4 +143,18 @@ export namespace LinkProps {
   }
 
   export type ClickDetail = _ClickDetail;
+  export interface Style {
+    root?: {
+      color?: {
+        active?: string;
+        default?: string;
+        hover?: string;
+      };
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+    };
+  }
 }
