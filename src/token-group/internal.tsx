@@ -7,7 +7,6 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { getBaseProps } from '../internal/base-component';
-import Option from '../internal/components/option';
 import TokenList from '../internal/components/token-list';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -72,7 +71,11 @@ export default function InternalTokenGroup({
         limit={limit}
         renderItem={(item, itemIndex) => (
           <InternalToken
+            key={itemIndex}
+            label={item.label}
+            labelTag={item.labelTag}
             ariaLabel={item.label}
+            description={item.description}
             dismissLabel={item.dismissLabel}
             onDismiss={() => {
               fireNonCancelableEvent(onDismiss, { itemIndex });
@@ -80,12 +83,16 @@ export default function InternalTokenGroup({
             }}
             disabled={item.disabled}
             readOnly={readOnly || isItemReadOnly?.(item)}
+            iconAlt={item.iconAlt}
+            iconName={item.iconName}
+            iconSvg={item.iconSvg}
+            iconUrl={item.iconUrl}
+            tags={item.tags}
+            variant={'normal'}
             {...(item.disabled || readOnly
               ? {}
               : getAnalyticsMetadataAttribute({ detail: { position: `${itemIndex + 1}` } }))}
-          >
-            <Option option={item} />
-          </InternalToken>
+          />
         )}
         i18nStrings={i18nStrings}
         limitShowFewerAriaLabel={limitShowFewerAriaLabel}
