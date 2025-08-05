@@ -18,6 +18,7 @@
   font-weight: bold;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)
   padding-block: styles.$option-padding-with-border-placeholder-vertical;
@@ -33,6 +34,7 @@
     border-block-start-color: awsui.$color-border-dropdown-group;
     border-block-end-color: awsui.$color-border-dropdown-group;
     cursor: pointer;
+
     &.disabled {
       cursor: default;
     }
@@ -99,9 +101,10 @@
 
 .expand-icon {
   position: relative;
-  inset-inline-start: awsui.$space-s;
+  inset-inline-end: calc(-1 * #{awsui.$space-s});
   inline-size: awsui.$space-m;
   display: inline-block;
+  margin-inline-start: auto;
 
   @include styles.with-motion {
     transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
@@ -113,7 +116,6 @@
 
   &-right {
     transform: rotate(-90deg);
-
     @include styles.with-direction('rtl') {
       transform: rotate(90deg);
     }
@@ -131,4 +133,13 @@
 
 .in-dropdown {
   margin-block-end: -1px;
+}
+
+.icon-wrapper {
+  margin-inline-end: awsui.$space-xxs;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
 }
