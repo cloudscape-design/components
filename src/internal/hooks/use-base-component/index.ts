@@ -6,7 +6,6 @@ import {
   ComponentConfiguration,
   useComponentMetadata,
   useComponentMetrics,
-  useFocusVisible,
 } from '@cloudscape-design/component-toolkit/internal';
 
 import { AnalyticsMetadata } from '../../analytics/interfaces';
