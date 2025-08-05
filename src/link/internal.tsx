@@ -26,6 +26,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { LinkProps } from './interfaces';
+import { getLinkStyles } from './style';
 
 import styles from './styles.css.js';
 
@@ -50,6 +51,7 @@ const InternalLink = React.forwardRef(
       onClick,
       children,
       __internalRootRef = null,
+      style,
       ...props
     }: InternalLinkProps,
     ref: React.Ref<LinkProps.Ref>
@@ -171,6 +173,7 @@ const InternalLink = React.forwardRef(
         styles[getFontSizeStyle(variant, fontSize)],
         styles[getColorStyle(variant, color)]
       ),
+      style: getLinkStyles(style),
       'aria-label': ariaLabel,
       'aria-labelledby': undefined as string | undefined,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,

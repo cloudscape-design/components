@@ -14,7 +14,10 @@ import InternalLink from './internal';
 export { LinkProps };
 
 const Link = React.forwardRef(
-  ({ fontSize = 'body-m', color = 'normal', external = false, ...props }: LinkProps, ref: React.Ref<LinkProps.Ref>) => {
+  (
+    { fontSize = 'body-m', color = 'normal', external = false, style, ...props }: LinkProps,
+    ref: React.Ref<LinkProps.Ref>
+  ) => {
     const baseComponentProps = useBaseComponent('Link', {
       props: { color, external, fontSize, rel: props.rel, target: props.target, variant: props.variant },
     });
@@ -45,6 +48,7 @@ const Link = React.forwardRef(
         {...baseComponentProps}
         ref={ref}
         {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+        style={style}
       />
     );
   }

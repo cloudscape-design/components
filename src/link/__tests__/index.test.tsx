@@ -15,6 +15,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
 import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
+import customCssProps from '../../internal/generated/custom-css-properties';
 
 import styles from '../../../lib/components/link/styles.css.js';
 
@@ -375,5 +376,40 @@ describe('"onClick" event', () => {
         detail: { button: 0, ctrlKey: false, shiftKey: false, altKey: false, metaKey: false },
       })
     );
+  });
+});
+
+describe('Style API', () => {
+  test('all style properties', () => {
+    const { container } = render(
+      <Link
+        style={{
+          root: {
+            color: {
+              active: 'rgb(163, 15, 15)',
+              default: 'rgb(15, 77, 163)',
+              hover: 'rgb(22, 104, 9)',
+            },
+            focusRing: {
+              borderColor: 'rgb(157, 18, 10)',
+              borderRadius: '6px',
+              borderWidth: '4px',
+            },
+          },
+        }}
+      >
+        Link
+      </Link>
+    );
+
+    const link = createWrapper(container).findLink()!.getElement();
+
+    expect(getComputedStyle(link).getPropertyValue(customCssProps.styleColorActive)).toBe('rgb(163, 15, 15)');
+    expect(getComputedStyle(link).getPropertyValue(customCssProps.styleColorDefault)).toBe('rgb(15, 77, 163)');
+    expect(getComputedStyle(link).getPropertyValue(customCssProps.styleColorHover)).toBe('rgb(22, 104, 9)');
+
+    expect(getComputedStyle(link).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('rgb(157, 18, 10)');
+    expect(getComputedStyle(link).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('6px');
+    expect(getComputedStyle(link).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('4px');
   });
 });
