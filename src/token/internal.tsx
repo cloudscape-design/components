@@ -5,22 +5,43 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
+import Option from '../internal/components/option';
+import { OptionDefinition } from '../internal/components/option/interfaces';
 import DismissButton from './dismiss-button';
 import { TokenProps } from './interfaces';
 
 import styles from './styles.css.js';
 
 function InternalToken({
+  children,
+  onDismiss,
+  label,
   ariaLabel,
+  labelTag,
+  description,
+  variant = 'normal',
   disabled,
   readOnly,
+  iconAlt,
+  iconName,
+  iconUrl,
+  iconSvg,
+  tags,
   dismissLabel,
-  onDismiss,
-  children,
-  variant = 'normal',
   ...restProps
 }: TokenProps) {
   const baseProps = getBaseProps(restProps);
+  const optionDefinition: OptionDefinition = {
+    label,
+    labelTag,
+    description,
+    disabled,
+    iconAlt,
+    iconName,
+    iconUrl,
+    iconSvg,
+    tags,
+  };
 
   return (
     <div
@@ -38,7 +59,7 @@ function InternalToken({
           readOnly && styles['token-box-readonly']
         )}
       >
-        {children}
+        {children ?? <Option option={optionDefinition} isGenericGroup={false} />}
         {onDismiss && (
           <DismissButton
             disabled={disabled}
