@@ -32,7 +32,7 @@ const CategoryElement = ({
     >
       {item.text && (
         <p className={clsx(styles.header, { [styles.disabled]: disabled })} aria-hidden="true">
-          <span style={{ display: 'flex', alignItems: 'center' }}>
+          <span className={styles['header-content']}>
             {(item.iconName || item.iconUrl || item.iconSvg) && (
               <span className={styles['icon-wrapper']}>
                 <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
