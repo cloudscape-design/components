@@ -10,12 +10,20 @@ import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { locales } from './common';
 
-const permutationsFormats = createPermutations<DateInputProps>([
+const permutationsFormatsDay = createPermutations<DateInputProps>([
   {
     value: ['2020-01-02'],
     ariaLabel: ['Some label'],
     format: ['iso', 'slashed', 'long-localized'],
-    granularity: ['day', 'month'],
+    granularity: ['day'],
+  },
+]);
+const permutationsFormatsMonth = createPermutations<DateInputProps>([
+  {
+    value: ['2020-01'],
+    ariaLabel: ['Some label'],
+    format: ['iso', 'slashed', 'long-localized'],
+    granularity: ['month'],
   },
 ]);
 
@@ -35,7 +43,11 @@ export default function DateInputPermutations() {
       <h1>Date Input permutations - formats</h1>
       <ScreenshotArea>
         <PermutationsView
-          permutations={permutationsFormats}
+          permutations={permutationsFormatsDay}
+          render={permutation => <DateInput {...permutation} onChange={() => {}} />}
+        />
+        <PermutationsView
+          permutations={permutationsFormatsMonth}
           render={permutation => <DateInput {...permutation} onChange={() => {}} />}
         />
 
