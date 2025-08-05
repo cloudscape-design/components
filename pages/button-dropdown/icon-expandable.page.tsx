@@ -6,7 +6,10 @@ import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown
 import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
+<<<<<<< HEAD
 import img from '../icon/custom-icon.png';
+=======
+>>>>>>> eb48d6630 (fix: Support icons for button dropdown groups (#3710))
 import ScreenshotArea from '../utils/screenshot-area';
 
 import styles from './styles.scss';
@@ -24,8 +27,12 @@ export const items: ButtonDropdownProps['items'] = [
   {
     id: 'category2',
     text: 'category2',
+<<<<<<< HEAD
     //added
     iconUrl: img,
+=======
+    iconUrl: 'data:image/png;base64,aaaa',
+>>>>>>> eb48d6630 (fix: Support icons for button dropdown groups (#3710))
     items: [...Array(2)].map((_, index) => ({
       id: 'category2Subitem' + index,
       text: 'Cat 2 Sub item ' + index,
