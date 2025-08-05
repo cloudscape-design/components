@@ -34,6 +34,10 @@
     cursor: pointer;
     color: awsui.$color-text-button-inline-icon-hover;
   }
+
+  &-inline {
+    padding-inline: 0;
+  }
 }
 
 .token {
@@ -45,6 +49,10 @@
 
 .token-box {
   @include mixins.token-box-styles();
+}
+
+.token-inline {
+  @include mixins.token-inline-styles();
 }
 
 .token-box-readonly {

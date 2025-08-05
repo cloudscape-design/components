@@ -26341,6 +26341,77 @@ In most cases, they aren't needed, as the \`svg\` element inherits styles from t
 }
 `;
 
+exports[`Components definition for token matches the snapshot: token 1`] = `
+{
+  "dashCaseName": "token",
+  "events": [
+    {
+      "cancelable": false,
+      "name": "onDismiss",
+    },
+  ],
+  "functions": [],
+  "name": "Token",
+  "properties": [
+    {
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "name": "dismissLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "inlineType": {
+        "name": "TokenProps.Variant",
+        "type": "union",
+        "values": [
+          "inline",
+          "normal",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for token-group matches the snapshot: token-group 1`] = `
 {
   "dashCaseName": "token-group",
