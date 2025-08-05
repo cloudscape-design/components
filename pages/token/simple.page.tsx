@@ -5,7 +5,9 @@ import { range } from 'lodash';
 
 import Box from '~components/box';
 import Icon from '~components/icon';
+import Input from '~components/input';
 import TokenList from '~components/internal/components/token-list';
+import Popover from '~components/popover';
 import SpaceBetween from '~components/space-between';
 import Token from '~components/token';
 import { TokenGroupProps } from '~components/token-group';
@@ -28,11 +30,80 @@ export default function GenericTokenGroupPage() {
 
   return (
     <Box padding="xl">
-      <h1>Generic token group</h1>
+      <h1>Generic token</h1>
+      <h2>Inline</h2>
+      <SpaceBetween size="l" direction="vertical">
+        <Token variant="inline" ariaLabel="Inline token">
+          Inline token
+        </Token>
+        <Token variant="inline" ariaLabel="Inline token">
+          D Inline token
+        </Token>
+        <Token variant="inline" ariaLabel="Inline token">
+          A Inline token
+        </Token>
+        <Token variant="inline" ariaLabel="Inline token">
+          tiny
+        </Token>
+        <Token variant="inline" ariaLabel="Inline token">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+          est laborum.
+        </Token>
+        <Token variant="inline" ariaLabel="Inline readonly token" readOnly={true}>
+          Inline readonly token
+        </Token>
+        <Token variant="inline" ariaLabel="Inline disabled token" disabled={true}>
+          Inline disabled token
+        </Token>
+
+        <Token variant="inline" ariaLabel="Inline dismissable token" onDismiss={() => {}}>
+          Inline dismissable token
+        </Token>
+        <Token variant="inline" ariaLabel="Inline readonly token" readOnly={true} onDismiss={() => {}}>
+          Inline dismissable readonly token
+        </Token>
+        <Token variant="inline" ariaLabel="Inline disabled token" disabled={true} onDismiss={() => {}}>
+          Inline dismissable disabled token
+        </Token>
+
+        <Token variant="inline" ariaLabel="Inline dismissable token" onDismiss={() => {}}>
+          <Box margin={{ right: 'xxs' }}>
+            <Icon name="edit" />
+          </Box>
+          <Popover triggerType="text-inline" position="top" content={<Input value="test" />}>
+            Inline dismissable token
+          </Popover>
+        </Token>
+        <Token variant="inline" ariaLabel="Inline readonly token" readOnly={true} onDismiss={() => {}}>
+          <Box margin={{ right: 'xxs' }}>
+            <Icon name="edit" />
+          </Box>
+          Inline dismissable readonly token
+        </Token>
+        <Token variant="inline" ariaLabel="Inline disabled token" disabled={true} onDismiss={() => {}}>
+          <Box margin={{ right: 'xxs' }}>
+            <Icon name="edit" />
+          </Box>
+          Inline dismissable disabled token
+        </Token>
+      </SpaceBetween>
+
+      <h2>Normal</h2>
       <SpaceBetween size="l" direction="vertical">
         <Token ariaLabel="Standalone token">Standalone token</Token>
 
-        <Token ariaLabel="Standalone readonle token" readOnly={true}>
+        <Token ariaLabel="Standalone token">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+          est laborum.
+        </Token>
+
+        <Token ariaLabel="Standalone readonly token" readOnly={true}>
           Standalone readonly token
         </Token>
 
