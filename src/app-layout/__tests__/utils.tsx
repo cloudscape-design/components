@@ -10,9 +10,9 @@ import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
+import { forceMobileModeSymbol } from '../../../lib/components/internal/hooks/use-mobile';
 import { SplitPanelProps } from '../../../lib/components/split-panel';
 import createWrapper, { AppLayoutWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
-import { forceMobileModeSymbol } from '../../internal/hooks/use-mobile';
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
