@@ -249,7 +249,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     display: flex;
     flex-grow: 1;
     flex-wrap: wrap;
-    gap: awsui.$space-scaled-xs;
+    column-gap: awsui.$space-scaled-xs;
+    row-gap: awsui.$space-scaled-xxs;
   }
 
   &-start {
