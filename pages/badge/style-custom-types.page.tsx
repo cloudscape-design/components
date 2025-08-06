@@ -75,8 +75,8 @@ const backgrounds = {
 };
 
 const colors = {
-  light: palette.neutral10,
-  dark: palette.neutral100,
+  light: 'white',
+  dark: 'black',
 };
 
 const borderColors = {
