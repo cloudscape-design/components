@@ -221,32 +221,14 @@ test('all style api properties', () => {
     </Toggle>
   );
 
-  expect(
-    getComputedStyle(wrapper.findByClassName(styles['toggle-control'])!.getElement()).getPropertyValue(
-      'background-color'
-    )
-  ).toBe('green');
-  expect(
-    getComputedStyle(wrapper.findByClassName(styles['toggle-control'])!.getElement()).getPropertyValue(
-      customCssProps.styleFocusRingBorderColor
-    )
-  ).toBe('magenta');
-  expect(
-    getComputedStyle(wrapper.findByClassName(styles['toggle-control'])!.getElement()).getPropertyValue(
-      customCssProps.styleFocusRingBorderRadius
-    )
-  ).toBe('10px');
-  expect(
-    getComputedStyle(wrapper.findByClassName(styles['toggle-control'])!.getElement()).getPropertyValue(
-      customCssProps.styleFocusRingBorderWidth
-    )
-  ).toBe('5px');
-  expect(
-    getComputedStyle(wrapper.findByClassName(styles['toggle-handle'])!.getElement()).getPropertyValue(
-      'background-color'
-    )
-  ).toBe('blue');
-  expect(
-    getComputedStyle(wrapper.findByClassName(abstractSwitchStyles.label)!.getElement()).getPropertyValue('color')
-  ).toBe('orange');
+  const toggleControl = wrapper.findByClassName(styles['toggle-control'])!.getElement();
+  const toggleHandle = wrapper.findByClassName(styles['toggle-handle'])!.getElement();
+  const toggleLabel = wrapper.findByClassName(abstractSwitchStyles.label)!.getElement();
+
+  expect(getComputedStyle(toggleControl).getPropertyValue('background-color')).toBe('green');
+  expect(getComputedStyle(toggleControl).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('magenta');
+  expect(getComputedStyle(toggleControl).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('10px');
+  expect(getComputedStyle(toggleControl).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('5px');
+  expect(getComputedStyle(toggleHandle).getPropertyValue('background-color')).toBe('blue');
+  expect(getComputedStyle(toggleLabel).getPropertyValue('color')).toBe('orange');
 });
