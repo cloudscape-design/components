@@ -26,6 +26,7 @@ type SplitPanelDemoContext = React.Context<
     headerText?: string;
     renderActions: boolean;
     renderBadge: boolean;
+    renderInput: boolean;
     renderInfoLink: boolean;
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
   }>
@@ -57,7 +58,14 @@ export default function () {
           <SplitPanel
             header={header}
             i18nStrings={splitPaneli18nStrings}
-            headerBefore={urlParams.renderBadge && <Badge>Badge</Badge>}
+            headerBefore={
+              (urlParams.renderBadge || urlParams.renderInput) && (
+                <SpaceBetween direction="horizontal" size="xs" alignItems="center">
+                  {urlParams.renderBadge && <Badge>Badge</Badge>}
+                  {urlParams.renderInput && <Input value="" />}
+                </SpaceBetween>
+              )
+            }
             headerActions={
               urlParams.renderActions && (
                 <SpaceBetween direction="horizontal" size="xs">
@@ -86,12 +94,18 @@ export default function () {
               </Header>
             </div>
             <SpaceBetween size="l">
-              <SpaceBetween direction="horizontal" size="xs">
+              <SpaceBetween direction="horizontal" size="xl">
                 <Toggle
                   checked={urlParams.renderBadge}
                   onChange={({ detail }) => setUrlParams({ ...urlParams, renderBadge: detail.checked })}
                 >
                   With badge
+                </Toggle>
+                <Toggle
+                  checked={urlParams.renderInput}
+                  onChange={({ detail }) => setUrlParams({ ...urlParams, renderInput: detail.checked })}
+                >
+                  With input
                 </Toggle>
                 <Toggle
                   checked={urlParams.renderInfoLink}
