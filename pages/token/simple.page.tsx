@@ -5,6 +5,7 @@ import { range } from 'lodash';
 
 import Box from '~components/box';
 import Icon from '~components/icon';
+import Input from '~components/input';
 import TokenList from '~components/internal/components/token-list';
 import SpaceBetween from '~components/space-between';
 import Token from '~components/token';
@@ -31,7 +32,25 @@ export default function GenericTokenGroupPage() {
       <h1>Generic token</h1>
       <h2>Inline</h2>
       <SpaceBetween size="l" direction="vertical">
-        <Token variant="inline" label="Inline token" ariaLabel="Inline token" />
+        <Token
+          variant="inline"
+          label="Inline token"
+          ariaLabel="Inline token"
+          popoverProps={{ content: <Input value="test" /> }}
+        />
+        <Box display="inline-block" variant="p">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo{' '}
+          <Token
+            variant="inline"
+            label="<some-variable-name>"
+            ariaLabel="Variable token"
+            popoverProps={{ content: <Input value="test" /> }}
+          />{' '}
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+          est laborum.
+        </Box>
         <Token
           variant="inline"
           ariaLabel="Inline token"
@@ -93,8 +112,19 @@ export default function GenericTokenGroupPage() {
 
       <h2>Normal</h2>
       <SpaceBetween size="l" direction="vertical">
-        <Token ariaLabel="Standalone token" label="Standalone token" />
-        <Token ariaLabel="dismissable token" label="Dismissable token" onDismiss={() => {}} />
+        <Token
+          ariaLabel="Standalone token"
+          label="Standalone token"
+          popoverProps={{ content: <Input value="test" /> }}
+        />
+        <Token
+          ariaLabel="Standalone token with icon"
+          label="Standalone token with icon"
+          iconName="bug"
+          onDismiss={() => {}}
+          popoverProps={{ content: <Input value="test" /> }}
+        />
+        <Token ariaLabel="dismissable token" label="Dismissable token" labelTag="test" onDismiss={() => {}} />
 
         <Token
           ariaLabel="Standalone token"

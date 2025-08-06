@@ -4,13 +4,11 @@
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { PopoverProps } from '../popover/interfaces';
 
 export interface TokenProps extends BaseComponentProps {
   /** @awsUiSystem core */
   children?: React.ReactNode;
-
-  onDismiss?: NonCancelableEventHandler;
-
   label?: string;
   ariaLabel?: string;
   labelTag?: string;
@@ -24,6 +22,9 @@ export interface TokenProps extends BaseComponentProps {
   iconSvg?: React.ReactNode;
   tags?: ReadonlyArray<string>;
   dismissLabel?: string;
+  popoverProps?: PopoverProps;
+
+  onDismiss?: NonCancelableEventHandler;
 }
 
 export namespace TokenProps {

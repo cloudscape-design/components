@@ -47,7 +47,7 @@ function DismissButton(
       aria-label={dismissLabel}
       {...(disabled || readOnly ? {} : getAnalyticsMetadataAttribute(analyticsMetadata))}
     >
-      <InternalIcon name="close" />
+      <InternalIcon className={clsx(inline && styles['dismiss-icon-inline'])} name="close" />
     </button>
   );
 }
