@@ -32,6 +32,7 @@ export function SplitPanelContentBottom({
   children,
   appLayoutMaxWidth,
   panelHeaderId,
+  ariaLabel,
   onToggle,
 }: SplitPanelContentBottomProps) {
   const isRefresh = useVisualRefresh();
@@ -98,7 +99,12 @@ export function SplitPanelContentBottom({
       {closeBehavior === 'hide' && !isOpen ? null : (
         <>
           {isOpen && <div className={styles['slider-wrapper-bottom']}>{resizeHandle}</div>}
-          <div className={styles['drawer-content-bottom']} aria-labelledby={panelHeaderId} role="region">
+          <div
+            className={styles['drawer-content-bottom']}
+            aria-labelledby={panelHeaderId}
+            aria-label={ariaLabel}
+            role="region"
+          >
             <div className={clsx(styles['pane-header-wrapper-bottom'], centeredMaxWidthClasses)} ref={headerRef}>
               {header}
             </div>

@@ -83,7 +83,8 @@ export interface SplitPanelContentProps {
   isOpen?: boolean;
   splitPanelRef?: React.Ref<any>;
   cappedSize: number;
-  panelHeaderId: string;
+  panelHeaderId?: string;
+  ariaLabel?: string;
   resizeHandle: React.ReactNode;
   header: React.ReactNode;
   children: React.ReactNode;

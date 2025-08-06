@@ -5,7 +5,9 @@ import React, { useContext } from 'react';
 import AppLayout, { AppLayoutProps } from '~components/app-layout';
 import Badge from '~components/badge';
 import Button from '~components/button';
+import FormField from '~components/form-field';
 import Header from '~components/header';
+import Input from '~components/input';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import SplitPanel from '~components/split-panel';
@@ -20,8 +22,9 @@ import * as toolsContent from './utils/tools-content';
 
 type SplitPanelDemoContext = React.Context<
   AppContextType<{
-    renderBadge: boolean;
+    ariaLabel?: string;
     renderActions: boolean;
+    renderBadge: boolean;
     renderInfoLink: boolean;
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
   }>
@@ -63,6 +66,7 @@ export default function () {
               )
             }
             headerInfo={urlParams.renderInfoLink && <Link variant="info">Info</Link>}
+            ariaLabel={urlParams.ariaLabel}
           >
             <ScrollableDrawerContent />
           </SplitPanel>
@@ -95,6 +99,12 @@ export default function () {
                   With action buttons
                 </Toggle>
               </SpaceBetween>
+              <FormField label="ARIA label">
+                <Input
+                  value={urlParams.ariaLabel || ''}
+                  onChange={({ detail }) => setUrlParams({ ...urlParams, ariaLabel: detail.value })}
+                />
+              </FormField>
               <Containers />
             </SpaceBetween>
           </>
