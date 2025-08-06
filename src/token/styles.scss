@@ -9,13 +9,16 @@
 @use './constants' as constants;
 @use './mixins.scss' as mixins;
 
+$trigger-underline-offset: 0.25em;
+$trigger-underline-offset-inline: 0.1em;
+
 .dismiss-button {
   margin-block-start: -1px;
   margin-block-end: 0;
   margin-inline-start: awsui.$space-xxs;
   margin-inline-end: -1px;
-  border-block: 1px solid transparent;
-  border-inline: 1px solid transparent;
+  border-block: awsui.$border-width-field solid transparent;
+  border-inline: awsui.$border-width-field solid transparent;
   padding-block: 0;
   padding-inline: awsui.$space-xxs;
   color: awsui.$color-text-button-inline-icon-default;
@@ -37,7 +40,14 @@
 
   &-inline {
     padding-inline: 0;
+    max-block-size: 18px;
   }
+}
+
+.dismiss-icon-inline {
+  max-block-size: 18px;
+  display: flex;
+  align-items: center;
 }
 
 .token {
@@ -47,12 +57,18 @@
   gap: awsui.$space-xxs;
 }
 
+.token-inline {
+  block-size: 100%;
+  display: inline-flex;
+  max-inline-size: 100%;
+}
+
 .token-box {
   @include mixins.token-box-styles();
 }
 
-.token-inline {
-  @include mixins.token-inline-styles();
+.token-box-inline {
+  @include mixins.token-box-inline-styles();
 }
 
 .token-box-readonly {
@@ -83,5 +99,19 @@
       cursor: initial;
       color: awsui.$color-text-button-inline-icon-disabled;
     }
+  }
+}
+
+.popover-trigger-wrapper {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  overflow: hidden;
+}
+
+.popover-trigger {
+  max-inline-size: 100%;
+
+  &-inline-button {
+    text-underline-offset: $trigger-underline-offset-inline;
   }
 }
