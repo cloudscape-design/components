@@ -77,6 +77,7 @@ export function SplitPanelContentBottom({
         [sharedStyles['with-motion-vertical']]: !animationDisabled,
         [testUtilStyles['open-position-bottom']]: isOpen,
         [styles['drawer-closed']]: !isOpen,
+        [styles['drawer-clickable']]: !hasCustomElements,
         [styles['drawer-mobile']]: isMobile,
         [styles['drawer-disable-content-paddings']]: disableContentPaddings,
         [styles.refresh]: isRefresh,
