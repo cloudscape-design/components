@@ -115,49 +115,54 @@ export function SplitPanelImplementation({
           </div>
           {headerActions && <div className={styles['header-actions-slot']}>{headerActions}</div>}
         </div>
-        {showDescription && <p className={styles['header-description']}>{headerDescription}</p>}
-      </div>
-      <div className={styles['header-actions']}>
-        {!hidePreferencesButton && isOpen && (
-          <>
-            <InternalButton
-              className={testUtilStyles['preferences-button']}
-              iconName="settings"
-              variant="icon"
-              onClick={() => setPreferencesOpen(true)}
-              formAction="none"
-              ariaLabel={i18nStrings.preferencesTitle}
-              ref={refs.preferences}
-            />
-            <span className={styles.divider} />
-          </>
-        )}
+        <div className={styles['header-actions']}>
+          {!hidePreferencesButton && isOpen && (
+            <>
+              <InternalButton
+                className={testUtilStyles['preferences-button']}
+                iconName="settings"
+                variant="icon"
+                onClick={() => setPreferencesOpen(true)}
+                formAction="none"
+                ariaLabel={i18nStrings.preferencesTitle}
+                ref={refs.preferences}
+              />
+              <span className={styles.divider} />
+            </>
+          )}
 
-        {isOpen ? (
-          <InternalButton
-            className={testUtilStyles['close-button']}
-            iconName={
-              isRefresh && closeBehavior === 'collapse' ? (position === 'side' ? 'angle-right' : 'angle-down') : 'close'
-            }
-            variant="icon"
-            onClick={onToggle}
-            formAction="none"
-            ariaLabel={i18nStrings.closeButtonAriaLabel}
-            ariaExpanded={isOpen}
-          />
-        ) : position === 'side' || closeBehavior === 'hide' ? null : (
-          <InternalButton
-            className={testUtilStyles['open-button']}
-            iconName="angle-up"
-            variant="icon"
-            formAction="none"
-            ariaLabel={i18nStrings.openButtonAriaLabel}
-            ref={refs.toggle}
-            ariaExpanded={isOpen}
-            onClick={hasCustomElements ? onToggle : undefined}
-          />
-        )}
+          {isOpen ? (
+            <InternalButton
+              className={testUtilStyles['close-button']}
+              iconName={
+                isRefresh && closeBehavior === 'collapse'
+                  ? position === 'side'
+                    ? 'angle-right'
+                    : 'angle-down'
+                  : 'close'
+              }
+              variant="icon"
+              onClick={onToggle}
+              formAction="none"
+              ariaLabel={i18nStrings.closeButtonAriaLabel}
+              ariaExpanded={isOpen}
+            />
+          ) : position === 'side' || closeBehavior === 'hide' ? null : (
+            <InternalButton
+              className={testUtilStyles['open-button']}
+              iconName="angle-up"
+              variant="icon"
+              formAction="none"
+              ariaLabel={i18nStrings.openButtonAriaLabel}
+              ref={refs.toggle}
+              ariaExpanded={isOpen}
+              onClick={hasCustomElements ? onToggle : undefined}
+            />
+          )}
+        </div>
       </div>
+
+      {showDescription && <p className={styles['header-description']}>{headerDescription}</p>}
     </div>
   );
 
