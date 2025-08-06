@@ -45,6 +45,7 @@
 
 .content {
   @include styles.text-wrapping;
+  align-self: center;
 }
 .empty-content {
   inline-size: 0px;
