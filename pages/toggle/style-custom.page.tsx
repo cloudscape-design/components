@@ -4,37 +4,38 @@ import React from 'react';
 
 import { SpaceBetween, Toggle } from '~components';
 
+import { palette } from '../app/themes/style-api';
 import ScreenshotArea from '../utils/screenshot-area';
 
 export default function CustomToggle() {
   const style = {
     root: {
       background: {
-        checked: 'brown',
-        default: 'green',
-        disabled: 'blue',
-        readOnly: 'orange',
+        checked: palette.teal80,
+        default: palette.teal80,
+        disabled: palette.teal40,
+        readOnly: palette.teal40,
       },
       focusRing: {
-        borderColor: 'magenta',
-        borderRadius: '0px',
+        borderColor: palette.teal80,
+        borderRadius: '4px',
         borderWidth: '3px',
       },
     },
     handle: {
       background: {
-        checked: 'yellow',
-        default: 'green',
-        disabled: 'magenta',
-        readOnly: 'brown',
+        checked: palette.neutral10,
+        default: palette.neutral10,
+        disabled: palette.neutral10,
+        readOnly: palette.neutral80,
       },
     },
     label: {
       color: {
-        checked: 'orange',
-        default: 'green',
-        disabled: 'blue',
-        readOnly: 'red',
+        checked: palette.neutral100,
+        default: palette.neutral100,
+        disabled: palette.neutral60,
+        readOnly: palette.neutral100,
       },
     },
   };
