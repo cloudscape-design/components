@@ -228,16 +228,19 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 }
 
 .header {
-  display: flex;
-  flex: auto;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
   inline-size: 100%;
   margin-block: awsui.$size-vertical-panel-icon-offset;
   margin-inline: 0;
   &.with-toolbar {
     margin-block: constants.$toolbar-vertical-panel-icon-offset;
+  }
+
+  &-content,
+  &-start,
+  &-main-row,
+  &-text-and-info {
+    display: flex;
+    flex-grow: 1;
   }
 
   &-content,
@@ -249,10 +252,20 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   &-main-row,
   &-start,
   &-text-and-info {
-    display: flex;
     flex-wrap: wrap;
     column-gap: awsui.$space-scaled-xs;
     row-gap: awsui.$space-scaled-xxs;
+  }
+
+  &-content {
+    align-items: flex-start;
+  }
+
+  &-main-row {
+    flex: auto;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
   }
 
   &-start {
