@@ -34,7 +34,7 @@ export default function CustomToggle() {
       color: {
         checked: palette.neutral100,
         default: palette.neutral100,
-        disabled: palette.neutral60,
+        disabled: palette.neutral90,
         readOnly: palette.neutral100,
       },
     },
