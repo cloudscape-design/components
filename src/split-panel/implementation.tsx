@@ -37,6 +37,10 @@ export function SplitPanelImplementation({
   closeBehavior,
   i18nStrings = {},
   ariaLabel,
+  headerActions,
+  headerBefore,
+  // headerDescription,
+  headerInfo,
   ...restProps
 }: SplitPanelImplementationProps) {
   const isRefresh = useVisualRefresh();
@@ -94,9 +98,18 @@ export function SplitPanelImplementation({
 
   const wrappedHeader = (
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
-      <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
-        {header}
-      </h2>
+      <div className={styles['header-slots']}>
+        <div className={styles['header-start']}>
+          {headerBefore && <span className={styles['header-before-slot']}>{headerBefore}</span>}
+          <div className={styles['header-text-and-info']}>
+            <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
+              {header}
+            </h2>
+            {headerInfo && <span className={styles['header-info-slot']}>{headerInfo}</span>}
+          </div>
+        </div>
+        {headerActions && <div className={styles['header-actions-slot']}>{headerActions}</div>}
+      </div>
       <div className={styles['header-actions']}>
         {!hidePreferencesButton && isOpen && (
           <>
