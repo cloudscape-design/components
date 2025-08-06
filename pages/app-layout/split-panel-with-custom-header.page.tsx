@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import AppLayout, { AppLayoutProps } from '~components/app-layout';
 import Badge from '~components/badge';
@@ -23,6 +23,7 @@ import * as toolsContent from './utils/tools-content';
 type SplitPanelDemoContext = React.Context<
   AppContextType<{
     ariaLabel?: string;
+    headerText?: string;
     renderActions: boolean;
     renderBadge: boolean;
     renderInfoLink: boolean;
@@ -32,11 +33,9 @@ type SplitPanelDemoContext = React.Context<
 
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as SplitPanelDemoContext);
+  const [toolsOpen, setToolsOpen] = useState(false);
 
-  const header =
-    urlParams.renderActions || urlParams.renderBadge || urlParams.renderInfoLink
-      ? 'This split panel can be opened only by clicking on the caret icon becaues the header has custm elements'
-      : 'This split panel can be opened by clicking anywhere on it because the header has no custom elements';
+  const header = urlParams.headerText || '';
 
   return (
     <ScreenshotArea gutters={false}>
@@ -45,6 +44,7 @@ export default function () {
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}
+        toolsOpen={toolsOpen}
         splitPanelPreferences={{
           position: urlParams.splitPanelPosition,
         }}
@@ -52,6 +52,7 @@ export default function () {
           const { position } = event.detail;
           setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
         }}
+        onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         splitPanel={
           <SplitPanel
             header={header}
@@ -65,7 +66,13 @@ export default function () {
                 </SpaceBetween>
               )
             }
-            headerInfo={urlParams.renderInfoLink && <Link variant="info">Info</Link>}
+            headerInfo={
+              urlParams.renderInfoLink && (
+                <Link variant="info" onFollow={() => setToolsOpen(true)}>
+                  Info
+                </Link>
+              )
+            }
             ariaLabel={urlParams.ariaLabel}
           >
             <ScrollableDrawerContent />
@@ -99,6 +106,12 @@ export default function () {
                   With action buttons
                 </Toggle>
               </SpaceBetween>
+              <FormField label="Header text">
+                <Input
+                  value={urlParams.headerText || ''}
+                  onChange={({ detail }) => setUrlParams({ ...urlParams, headerText: detail.value })}
+                />
+              </FormField>
               <FormField label="ARIA label">
                 <Input
                   value={urlParams.ariaLabel || ''}

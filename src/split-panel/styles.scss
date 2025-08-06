@@ -239,13 +239,29 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     margin-block: constants.$toolbar-vertical-panel-icon-offset;
   }
 
+  &-slots,
+  &-start,
+  &-text-and-info {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    gap: awsui.$space-scaled-xs;
+  }
+
+  &-start {
+    margin-block-start: calc(#{awsui.$space-scaled-xxs} + 1px);
+  }
+
+  &-text-and-info {
+    align-items: baseline;
+  }
+
   &-text {
     @include styles.font-panel-header;
     padding-block: 0;
     padding-inline: 0;
     margin-block: 0;
     margin-inline: 0;
-    margin-block-start: calc(#{awsui.$space-scaled-xxs} + 1px);
   }
 }
 
