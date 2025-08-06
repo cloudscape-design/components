@@ -39,7 +39,7 @@ export default function GenericTokenGroupPage() {
           ariaLabel="Inline token"
           popoverProps={{ content: <Input value="test" /> }}
         />
-        <p style={{ maxWidth: '100%', display: 'inline-block' }}>
+        <div style={{ maxWidth: '100%', display: 'inline-block' }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
           magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo{' '}
           <Token
@@ -59,7 +59,7 @@ export default function GenericTokenGroupPage() {
           consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
           est laborum.
-        </p>
+        </div>
         <Token
           variant="inline"
           ariaLabel="Inline token"
