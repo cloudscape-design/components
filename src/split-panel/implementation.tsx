@@ -96,6 +96,8 @@ export function SplitPanelImplementation({
   const panelHeaderUniqueId = useUniqueId('split-panel-header');
   const panelHeaderId = ariaLabel ? undefined : panelHeaderUniqueId;
 
+  const hasCustomElements = !!headerActions || !!headerBefore || !!headerInfo;
+
   const wrappedHeader = (
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
       <div className={styles['header-slots']}>
@@ -147,6 +149,7 @@ export function SplitPanelImplementation({
             ariaLabel={i18nStrings.openButtonAriaLabel}
             ref={refs.toggle}
             ariaExpanded={isOpen}
+            onClick={hasCustomElements ? onToggle : undefined}
           />
         )}
       </div>
@@ -247,6 +250,7 @@ export function SplitPanelImplementation({
           appLayoutMaxWidth={appLayoutMaxWidth}
           ariaLabel={ariaLabel}
           closeBehavior={closeBehavior}
+          hasCustomElements={hasCustomElements}
         >
           {children}
         </SplitPanelContentBottom>
