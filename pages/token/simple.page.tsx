@@ -20,6 +20,7 @@ const i18nStrings: TokenGroupProps.I18nStrings = {
 
 export default function GenericTokenGroupPage() {
   const [files, setFiles] = useState(range(0, 4));
+  const [variableValue, setVariableValue] = useState('');
 
   const onDismiss = (itemIndex: number) => {
     const newItems = [...files];
@@ -38,19 +39,27 @@ export default function GenericTokenGroupPage() {
           ariaLabel="Inline token"
           popoverProps={{ content: <Input value="test" /> }}
         />
-        <Box display="inline-block" variant="p">
+        <p style={{ maxWidth: '100%', display: 'inline-block' }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
           magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo{' '}
           <Token
             variant="inline"
-            label="<some-variable-name>"
+            label={variableValue.length > 0 ? variableValue : '<some-variable-name>'}
             ariaLabel="Variable token"
-            popoverProps={{ content: <Input value="test" /> }}
+            popoverProps={{
+              content: (
+                <Input
+                  placeholder="<some-variable-name>"
+                  value={variableValue}
+                  onChange={({ detail }) => setVariableValue(detail.value)}
+                />
+              ),
+            }}
           />{' '}
           consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
           est laborum.
-        </Box>
+        </p>
         <Token
           variant="inline"
           ariaLabel="Inline token"
