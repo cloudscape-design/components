@@ -53,6 +53,20 @@ const permutations = createPermutations<MultiselectProps & { inlineTokens?: bool
     i18nStrings: [i18nStrings],
     inlineTokens: [undefined, true],
   },
+  // Inline label text permutations
+  {
+    placeholder: ['Select an item'],
+    disabled: [false, true],
+    options: [options],
+    selectedOptions: [[], [options[0], options[1]]],
+    deselectAriaLabel: [deselectAriaLabel],
+    i18nStrings: [i18nStrings],
+    inlineLabelText: [
+      'Inline label',
+      'Very long inline label that should wrap into multiple lines on narrow enough viewports',
+    ],
+    inlineTokens: [undefined, true],
+  },
   {
     placeholder: ['Select an item'],
     invalid: [false, true],
