@@ -60,7 +60,7 @@ export default function CustomToggle() {
 
       <SpaceBetween size="m" direction="vertical">
         <SpaceBetween size="m" direction="horizontal">
-          <Toggle checked={false} style={style}>
+          <Toggle checked={false} style={style} data-testid="1">
             Toggle
           </Toggle>
 
