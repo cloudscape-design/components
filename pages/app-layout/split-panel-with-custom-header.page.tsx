@@ -23,6 +23,7 @@ import * as toolsContent from './utils/tools-content';
 type SplitPanelDemoContext = React.Context<
   AppContextType<{
     ariaLabel?: string;
+    description?: string;
     headerText?: string;
     renderActions: boolean;
     renderBadge: boolean;
@@ -58,14 +59,6 @@ export default function () {
           <SplitPanel
             header={header}
             i18nStrings={splitPaneli18nStrings}
-            headerBefore={
-              (urlParams.renderBadge || urlParams.renderInput) && (
-                <SpaceBetween direction="horizontal" size="xs" alignItems="center">
-                  {urlParams.renderBadge && <Badge>Badge</Badge>}
-                  {urlParams.renderInput && <Input value="" />}
-                </SpaceBetween>
-              )
-            }
             headerActions={
               urlParams.renderActions && (
                 <SpaceBetween direction="horizontal" size="xs">
@@ -74,6 +67,15 @@ export default function () {
                 </SpaceBetween>
               )
             }
+            headerBefore={
+              (urlParams.renderBadge || urlParams.renderInput) && (
+                <SpaceBetween direction="horizontal" size="xs" alignItems="center">
+                  {urlParams.renderBadge && <Badge>Badge</Badge>}
+                  {urlParams.renderInput && <Input value="" />}
+                </SpaceBetween>
+              )
+            }
+            headerDescription={urlParams.description}
             headerInfo={
               urlParams.renderInfoLink && (
                 <Link variant="info" onFollow={() => setToolsOpen(true)}>
@@ -124,6 +126,12 @@ export default function () {
                 <Input
                   value={urlParams.headerText || ''}
                   onChange={({ detail }) => setUrlParams({ ...urlParams, headerText: detail.value })}
+                />
+              </FormField>
+              <FormField label="Description">
+                <Input
+                  value={urlParams.description || ''}
+                  onChange={({ detail }) => setUrlParams({ ...urlParams, description: detail.value })}
                 />
               </FormField>
               <FormField label="ARIA label">
