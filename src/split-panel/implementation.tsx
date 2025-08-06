@@ -39,7 +39,7 @@ export function SplitPanelImplementation({
   ariaLabel,
   headerActions,
   headerBefore,
-  // headerDescription,
+  headerDescription,
   headerInfo,
   ...restProps
 }: SplitPanelImplementationProps) {
@@ -98,19 +98,24 @@ export function SplitPanelImplementation({
 
   const hasCustomElements = !!headerActions || !!headerBefore || !!headerInfo;
 
+  const showDescription = headerDescription && isOpen;
+
   const wrappedHeader = (
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
-      <div className={styles['header-slots']}>
-        <div className={styles['header-start']}>
-          {headerBefore && <span className={styles['header-before-slot']}>{headerBefore}</span>}
-          <div className={styles['header-text-and-info']}>
-            <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
-              {header}
-            </h2>
-            {headerInfo && <span className={styles['header-info-slot']}>{headerInfo}</span>}
+      <div className={styles['header-content']}>
+        <div className={clsx(styles['header-main-row'], showDescription && styles['with-description'])}>
+          <div className={styles['header-start']}>
+            {headerBefore && <span className={styles['header-before-slot']}>{headerBefore}</span>}
+            <div className={styles['header-text-and-info']}>
+              <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
+                {header}
+              </h2>
+              {headerInfo && <span className={styles['header-info-slot']}>{headerInfo}</span>}
+            </div>
           </div>
+          {headerActions && <div className={styles['header-actions-slot']}>{headerActions}</div>}
         </div>
-        {headerActions && <div className={styles['header-actions-slot']}>{headerActions}</div>}
+        {showDescription && <p className={styles['header-description']}>{headerDescription}</p>}
       </div>
       <div className={styles['header-actions']}>
         {!hidePreferencesButton && isOpen && (
