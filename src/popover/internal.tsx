@@ -29,6 +29,7 @@ export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType' |
   size: PopoverProps.Size | 'content';
   __closeAnalyticsAction?: string;
   isInline?: boolean;
+  triggerClassName?: string;
 }
 
 export default React.forwardRef(InternalPopover);
@@ -49,6 +50,7 @@ function InternalPopover(
     wrapTriggerText = true,
     isInline = false,
     renderWithPortal = false,
+    triggerClassName,
 
     __onOpen,
     __internalRootRef,
@@ -195,7 +197,11 @@ function InternalPopover(
       {['text', 'text-inline'].includes(triggerType) ? (
         <button
           {...triggerProps}
-          className={clsx(triggerProps.className, wrapTriggerText === false && styles['overflow-ellipsis'])}
+          className={clsx(
+            triggerProps.className,
+            wrapTriggerText === false && styles['overflow-ellipsis'],
+            triggerClassName
+          )}
           tabIndex={triggerTabIndex}
           type="button"
           aria-haspopup="dialog"
