@@ -239,6 +239,10 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     margin-block: constants.$toolbar-vertical-panel-icon-offset;
   }
 
+  &-slots {
+    min-block-size: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-scaled-xxs} + 1px);
+  }
+
   &-slots,
   &-start,
   &-text-and-info {
@@ -249,7 +253,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
 
   &-start {
-    margin-block-start: calc(#{awsui.$space-scaled-xxs} + 1px);
+    align-items: center;
   }
 
   &-text-and-info {
