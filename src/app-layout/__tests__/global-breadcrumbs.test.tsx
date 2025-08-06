@@ -9,6 +9,7 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
+import { metrics } from '../../../lib/components/internal/metrics';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { describeEachAppLayout } from './utils';
@@ -57,6 +58,11 @@ async function renderAsync(jsx: React.ReactElement) {
   return result;
 }
 
+let sendPanoramaMetricSpy: jest.SpyInstance;
+beforeEach(() => {
+  sendPanoramaMetricSpy = jest.spyOn(metrics, 'sendOpsMetricObject').mockImplementation(() => {});
+});
+
 afterEach(() => {
   // force unmount for all rendered component to run clean state assertions
   cleanup();
@@ -66,6 +72,7 @@ afterEach(() => {
     breadcrumbInstances: [],
     breadcrumbRegistrations: [],
   });
+  jest.resetAllMocks();
 });
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
@@ -74,6 +81,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     await delay();
     expect(findAllBreadcrumbsInstances()).toHaveLength(1);
     expect(wrapper.findBreadcrumbGroup()!.findBreadcrumbLinks()).toHaveLength(2);
+    expect(sendPanoramaMetricSpy).not.toHaveBeenCalled();
   });
 
   test('renders normal breadcrumbs when placed inside the breadcrumbs slot', async () => {
@@ -81,6 +89,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     await delay();
     expect(findDiscoveredBreadcrumbs()).toBeFalsy();
     expect(findAppLayoutBreadcrumbItems()).toHaveLength(2);
+    expect(sendPanoramaMetricSpy).not.toHaveBeenCalled();
   });
 
   test('no relocation happens on the initial render', () => {
@@ -104,6 +113,18 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
   test('renders breadcrumbs inside app layout content slot', async () => {
     await renderAsync(<AppLayout content={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
     expect(findAppLayoutBreadcrumbItems()).toHaveLength(2);
+  });
+
+  test('reports a single metric when global breadcrumbs used', async () => {
+    const { rerender } = await renderAsync(<AppLayout content={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+    expect(sendPanoramaMetricSpy).toHaveBeenCalledTimes(1);
+    expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-global-breadcrumbs-used', { breadcrumbs: 'Home > Page' });
+
+    sendPanoramaMetricSpy.mockClear();
+    rerender(
+      <AppLayout content={<BreadcrumbGroup items={[defaultBreadcrumbs[0], { text: 'Another', href: '/another' }]} />} />
+    );
+    expect(sendPanoramaMetricSpy).toHaveBeenCalledTimes(0);
   });
 
   test('event handlers work for relocated breadcrumbs', async () => {
@@ -334,6 +355,14 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     );
     expect(findAllBreadcrumbsInstances()).toHaveLength(2);
   });
+
+  test('does not report metrics if globalization is disabled', async () => {
+    render(
+      <AppLayout content={<BreadcrumbGroup items={defaultBreadcrumbs} {...{ __disableGlobalization: true }} />} />
+    );
+    await delay();
+    expect(sendPanoramaMetricSpy).toHaveBeenCalledTimes(0);
+  });
 });
 
 describe('without feature flag', () => {
@@ -343,6 +372,7 @@ describe('without feature flag', () => {
     expect(findAllBreadcrumbsInstances()).toHaveLength(1);
     expect(wrapper.findAppLayout()!.findBreadcrumbs()).toBeFalsy();
     expect(wrapper.findAppLayout()!.findContentRegion().findBreadcrumbGroup()).toBeTruthy();
+    expect(sendPanoramaMetricSpy).not.toHaveBeenCalled();
   });
 });
 
