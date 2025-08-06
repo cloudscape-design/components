@@ -26,18 +26,16 @@
   box-sizing: border-box;
 }
 
-@mixin token-inline-styles {
+@mixin token-box-inline-styles {
   position: relative;
-  block-size: auto;
-  border-block: 1px solid constants.$token-border-color;
-  border-inline: 1px solid constants.$token-border-color;
-  // padding-block-start: 2px;
-  // padding-block-end: 2px;
+  block-size: 20px;
+  max-block-size: 20px;
+  border-block: awsui.$border-width-field solid constants.$token-border-color;
+  border-inline: awsui.$border-width-field solid constants.$token-border-color;
   padding-inline-start: awsui.$space-scaled-xxs;
   padding-inline-end: awsui.$space-scaled-xxs;
-  display: inline-flex;
-  // align-items: self-start;
-  vertical-align: start;
+  display: flex;
+  align-items: center;
   background: constants.$token-background;
   border-start-start-radius: awsui.$space-scaled-xxs;
   border-start-end-radius: awsui.$space-scaled-xxs;
@@ -45,11 +43,5 @@
   border-end-end-radius: awsui.$space-scaled-xxs;
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
-  max-block-size: 20px;
-  max-inline-size: max-content;
-  text-underline-offset: -1px;
-  line-height: 18px;
-  overflow-x: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  max-inline-size: 100%;
 }

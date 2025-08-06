@@ -13,7 +13,7 @@ import InternalToken from './internal';
 export { TokenProps };
 
 export default function Token(props: TokenProps) {
-  const baseComponentProps = useBaseComponent('TokenGroup');
+  const baseComponentProps = useBaseComponent('Token');
 
   // const componentAnalyticsMetadata: GeneratedAnalyticsMetadataTokenGroupComponent = {
   //   name: 'awsui.Token',
