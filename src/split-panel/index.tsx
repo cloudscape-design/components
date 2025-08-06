@@ -15,10 +15,20 @@ export default function SplitPanel({
   hidePreferencesButton = false,
   closeBehavior = 'collapse',
   i18nStrings = {},
+  headerActions,
+  headerBefore,
+  headerDescription,
+  headerInfo,
   ...restProps
 }: SplitPanelProps) {
   const { __internalRootRef } = useBaseComponent('SplitPanel', {
     props: { closeBehavior, hidePreferencesButton },
+    metadata: {
+      hasHeaderActions: Boolean(headerActions),
+      hasHeaderDescription: Boolean(headerDescription),
+      hasHeaderInfo: Boolean(headerInfo),
+      hasBeforeHeaderhasHeaderBefore: Boolean(headerBefore),
+    },
   });
   const i18n = useInternalI18n('split-panel');
   const i18nModal = useInternalI18n('modal');

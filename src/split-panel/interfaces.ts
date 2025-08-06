@@ -33,6 +33,31 @@ export interface SplitPanelProps extends BaseComponentProps {
    * @i18n
    */
   i18nStrings?: SplitPanelProps.I18nStrings;
+
+  /**
+   * ARIA label for the panel. Use this if the value passed in the `header` property is not descriptive as a label for the panel.
+   */
+  ariaLabel?: string;
+
+  /**
+   * Actions for the header. Available only if you specify the `header` property.
+   */
+  headerActions?: React.ReactNode;
+
+  /**
+   * Supplementary text below the heading.
+   */
+  headerDescription?: React.ReactNode;
+
+  /**
+   * The area next to the heading, used to display an Info link.
+   */
+  headerInfo?: React.ReactNode;
+
+  /**
+   * Content displayed before the header text.
+   */
+  headerBefore?: React.ReactNode;
 }
 
 export namespace SplitPanelProps {
