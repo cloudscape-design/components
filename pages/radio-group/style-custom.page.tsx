@@ -86,7 +86,7 @@ export default function CustomRadio() {
 
       <SpaceBetween size="m" direction="vertical">
         <SpaceBetween size="m" direction="horizontal">
-          <RadioGroup value="first" items={items} style={style} />
+          <RadioGroup value="first" items={items} style={style} data-testid="1" />
           <RadioGroup value="second" items={items} style={style} />
           <RadioGroup value="third" items={items} style={style} readOnly={true} />
         </SpaceBetween>

@@ -64,3 +64,19 @@ test(
     expect(positionBefore - positionAfter).toEqual(scrollDistance);
   })
 );
+
+test(
+  'style api focus state',
+  useBrowser(async browser => {
+    await browser.url('#/light/radio-group/style-custom/');
+    const radioSelector = '[data-testid="1"]';
+    const page = new RadioPage(browser);
+    const focusRingSelector = `${radioSelector} > span:first-of-type > span:first-of-type > span:first-of-type > span:last-of-type`;
+
+    await page.click(radioSelector);
+    await page.keys('a');
+    await expect((await browser.$(focusRingSelector).getCSSProperty('box-shadow', '::before')).value).toBe(
+      'rgb(4,125,149)0px0px0px1px'
+    );
+  })
+);
