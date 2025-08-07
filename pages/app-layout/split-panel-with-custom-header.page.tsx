@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import AppLayout, { AppLayoutProps } from '~components/app-layout';
 import Badge from '~components/badge';
@@ -37,7 +37,9 @@ export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as SplitPanelDemoContext);
   const [toolsOpen, setToolsOpen] = useState(false);
 
-  const header = urlParams.headerText || '';
+  // Initialize the header to a default value if not set.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setUrlParams({ ...urlParams, headerText: urlParams.headerText || 'Header text' }), []);
 
   return (
     <ScreenshotArea gutters={false}>
@@ -57,7 +59,7 @@ export default function () {
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         splitPanel={
           <SplitPanel
-            header={header}
+            header={urlParams.headerText || ''}
             i18nStrings={splitPaneli18nStrings}
             headerActions={
               urlParams.renderActions && (
