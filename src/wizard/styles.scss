@@ -256,6 +256,12 @@
   }
 }
 
+.navigation-custom {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  padding-block-start: calc(awsui.$space-xs + awsui.$space-scaled-xxs);
+}
+
 .navigation.hidden {
   display: none;
 }

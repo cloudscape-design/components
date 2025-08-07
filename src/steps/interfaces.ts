@@ -33,10 +33,12 @@ export interface StepsProps extends BaseComponentProps {
 
 export namespace StepsProps {
   export type Status = StatusIndicatorProps.Type;
+  export type Color = StatusIndicatorProps.Color;
 
   export interface Step {
     status: Status;
     statusIconAriaLabel?: string;
+    statusColorOverride?: Color;
     header: React.ReactNode;
     details?: React.ReactNode;
   }

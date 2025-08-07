@@ -1,0 +1,41 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.steps-button {
+  border-block: none;
+  border-inline: none;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  background: none;
+  cursor: pointer;
+  color: awsui.$color-text-status-inactive;
+
+  &.steps-button-visited {
+    text-decoration: underline;
+    color: awsui.$color-text-link-default;
+  }
+
+  &-active {
+    font-weight: bold;
+    color: awsui.$color-text-interactive-active;
+    cursor: text;
+    user-select: text;
+
+    &.steps-button-visited {
+      text-decoration: none;
+      color: awsui.$color-text-interactive-active;
+    }
+  }
+
+  &:focus {
+    outline-color: awsui.$color-border-item-focused;
+  }
+}

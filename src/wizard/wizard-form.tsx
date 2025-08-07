@@ -31,6 +31,7 @@ interface WizardFormProps extends InternalBaseComponentProps {
   steps: ReadonlyArray<WizardProps.Step>;
   activeStepIndex: number;
   showCollapsedSteps: boolean;
+  customCollapsedSteps?: React.ReactNode;
   i18nStrings: WizardProps.I18nStrings;
   submitButtonText?: string;
   isPrimaryLoading: boolean;
@@ -76,6 +77,7 @@ function WizardForm({
   steps,
   activeStepIndex,
   showCollapsedSteps,
+  customCollapsedSteps,
   i18nStrings,
   submitButtonText,
   isPrimaryLoading,
@@ -128,9 +130,15 @@ function WizardForm({
   return (
     <>
       <WizardFormHeader>
-        <div className={clsx(styles['collapsed-steps'], !showCollapsedSteps && styles['collapsed-steps-hidden'])}>
-          {i18nStrings.collapsedStepsLabel?.(activeStepIndex + 1, steps.length)}
-        </div>
+        {customCollapsedSteps ? (
+          showCollapsedSteps ? (
+            <div className={styles['collapsed-steps']}>{customCollapsedSteps}</div>
+          ) : null
+        ) : (
+          <div className={clsx(styles['collapsed-steps'], !showCollapsedSteps && styles['collapsed-steps-hidden'])}>
+            {i18nStrings.collapsedStepsLabel?.(activeStepIndex + 1, steps.length)}
+          </div>
+        )}
         <InternalHeader
           className={styles['form-header-component']}
           variant="h1"
