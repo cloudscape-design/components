@@ -104,16 +104,14 @@ export function SplitPanelImplementation({
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
       <div className={styles['header-content']}>
         <div className={styles['header-main-row']}>
-          <div className={styles['header-start']}>
-            {headerBefore && <span className={styles['header-before-slot']}>{headerBefore}</span>}
-            <div className={styles['header-text-and-info']}>
-              {header && (
-                <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
-                  {header}
-                </h2>
-              )}
-              {headerInfo && <span className={styles['header-info-slot']}>{headerInfo}</span>}
-            </div>
+          <div className={styles['header-text-and-info']}>
+            <h2 className={styles['header-tag']}>
+              {headerBefore && <span className={styles['header-before-slot']}>{headerBefore}</span>}
+              <div className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
+                {header}
+              </div>
+            </h2>
+            {headerInfo && <span className={styles['header-info-slot']}>{headerInfo}</span>}
           </div>
           {headerActions && <div className={styles['header-actions-slot']}>{headerActions}</div>}
         </div>

@@ -236,19 +236,26 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
 
   &-content,
-  &-start,
+  &-tag,
   &-main-row,
-  &-text-and-info {
+  &-text-and-info,
+  &-text {
     display: flex;
   }
 
   &-main-row,
-  &-start,
-  &-text-and-info {
+  &-tag,
+  &-text-and-info,
+  &-text {
     flex-wrap: wrap;
     column-gap: awsui.$space-scaled-xs;
     row-gap: awsui.$space-scaled-xxs;
   }
+
+  &-content {
+    align-items: flex-start;
+  }
+
   &-main-row {
     flex: auto;
     flex-direction: row;
@@ -256,16 +263,13 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     justify-content: space-between;
   }
 
-  &-start {
-    align-items: center;
+  &-tag {
     flex-grow: 1;
+    margin-block: 0;
   }
 
-  &-content {
-    align-items: flex-start;
-  }
-
-  &-text-and-info {
+  &-text-and-info,
+  &-tag {
     align-items: baseline;
   }
 
