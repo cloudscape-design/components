@@ -28,25 +28,25 @@ export default function CustomToggle() {
   };
 
   const style = {
-    root: {
+    input: {
       background: {
         checked: palette.teal80,
         default: palette.teal80,
         disabled: palette.teal40,
         readOnly: palette.teal40,
       },
+      handle: {
+        background: {
+          checked: palette.neutral10,
+          default: palette.neutral10,
+          disabled: palette.neutral10,
+          readOnly: palette.neutral80,
+        },
+      },
       focusRing: {
         borderColor: palette.teal80,
         borderRadius: '4px',
         borderWidth: '3px',
-      },
-    },
-    handle: {
-      background: {
-        checked: palette.neutral10,
-        default: palette.neutral10,
-        disabled: palette.neutral10,
-        readOnly: palette.neutral80,
       },
     },
     label: {
