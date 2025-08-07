@@ -443,6 +443,7 @@ const items: ButtonDropdownProps.Items = [
             <circle className="test-svg-inner" cx="8" cy="8" r="7" />
           </svg>
         );
+        const iconUrl = 'data:image/png;base64,aaaa';
         const groupedCategories: ButtonDropdownProps.ItemOrGroup[] = [
           {
             id: 'category1',
@@ -453,7 +454,7 @@ const items: ButtonDropdownProps.Items = [
           {
             id: 'category2',
             text: 'category2',
-            iconUrl: 'data:image/png;base64,aaaa',
+            iconUrl,
             items: [{ id: 'i2', text: 'item2' }],
           },
           {
