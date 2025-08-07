@@ -270,17 +270,21 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
 
   &-text {
+    $vertical-margin: calc(#{awsui.$space-scaled-xxs} + 1px);
     @include styles.font-panel-header;
     padding-block: 0;
     padding-inline: 0;
     margin-inline: 0;
-    margin-block: calc(#{awsui.$space-scaled-xxs} + 1px);
+    margin-block-start: $vertical-margin;
+    margin-block-end: 0;
+    min-block-size: calc(#{awsui.$font-panel-header-line-height} + #{$vertical-margin});
   }
 
   &-description {
     color: awsui.$color-text-heading-secondary;
     @include styles.font-body-m;
-    margin-block: 0;
+    margin-block-start: awsui.$space-scaled-xxxs;
+    margin-block-end: 0;
   }
 }
 
