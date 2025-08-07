@@ -6,9 +6,7 @@ import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown
 import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
-
 import img from '../icon/custom-icon.png';
-
 import ScreenshotArea from '../utils/screenshot-area';
 
 import styles from './styles.scss';
@@ -26,6 +24,7 @@ export const items: ButtonDropdownProps['items'] = [
   {
     id: 'category2',
     text: 'category2',
+    //New source for iconUrl
     iconUrl: img,
     items: [...Array(2)].map((_, index) => ({
       id: 'category2Subitem' + index,
