@@ -3,7 +3,9 @@
 import React, { useState } from 'react';
 import { range } from 'lodash';
 
+import { FormField } from '~components';
 import Box from '~components/box';
+import Button from '~components/button';
 import Icon from '~components/icon';
 import Input from '~components/input';
 import TokenList from '~components/internal/components/token-list';
@@ -47,12 +49,23 @@ export default function GenericTokenGroupPage() {
             label={variableValue.length > 0 ? variableValue : '<some-variable-name>'}
             ariaLabel="Variable token"
             popoverProps={{
+              dismissButton: false,
+              size: 'large',
               content: (
-                <Input
-                  placeholder="<some-variable-name>"
-                  value={variableValue}
-                  onChange={({ detail }) => setVariableValue(detail.value)}
-                />
+                <SpaceBetween size="m">
+                  <FormField label={'<some-variable-name>'}>
+                    <div style={{ width: '300px' }}>
+                      <Input
+                        placeholder="Enter value for variable"
+                        value={variableValue}
+                        onChange={({ detail }) => setVariableValue(detail.value)}
+                      />
+                    </div>
+                  </FormField>
+                  <Box float="right">
+                    <Button onClick={() => setVariableValue('')}>Clear</Button>
+                  </Box>
+                </SpaceBetween>
               ),
             }}
           />{' '}
