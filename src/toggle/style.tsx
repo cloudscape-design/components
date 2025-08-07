@@ -14,18 +14,18 @@ export function getAbstractSwitchStyles(
 
   const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly);
 
-  if (SYSTEM === 'core' && (style?.root || style?.label)) {
+  if (SYSTEM === 'core' && (style?.input || style?.label)) {
     properties = {
       control: {
-        background: style?.root?.background && style.root.background[computedState],
+        background: style?.input?.background && style.input.background[computedState],
       },
       label: {
         color: style?.label?.color && style.label.color[computedState],
       },
       focusRing: {
-        borderColor: style?.root?.focusRing?.borderColor,
-        borderRadius: style?.root?.focusRing?.borderRadius,
-        borderWidth: style?.root?.focusRing?.borderWidth,
+        borderColor: style?.input?.focusRing?.borderColor,
+        borderRadius: style?.input?.focusRing?.borderRadius,
+        borderWidth: style?.input?.focusRing?.borderWidth,
       },
     };
   }
@@ -43,9 +43,9 @@ export function getStyledControlStyle(
 
   const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly);
 
-  if (SYSTEM === 'core' && style?.handle) {
+  if (SYSTEM === 'core' && style?.input?.handle?.background) {
     properties = {
-      background: style?.handle?.background && style?.handle?.background[computedState],
+      background: style.input.handle.background[computedState],
     };
   }
 

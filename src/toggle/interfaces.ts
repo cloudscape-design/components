@@ -38,25 +38,25 @@ export namespace ToggleProps {
   }
 
   export interface Style {
-    root?: {
+    input: {
       background?: {
         checked?: string;
         default?: string;
         disabled?: string;
         readOnly?: string;
+      };
+      handle?: {
+        background?: {
+          checked?: string;
+          default?: string;
+          disabled?: string;
+          readOnly?: string;
+        };
       };
       focusRing?: {
         borderColor?: string;
         borderRadius?: string;
         borderWidth?: string;
-      };
-    };
-    handle?: {
-      background?: {
-        checked?: string;
-        default?: string;
-        disabled?: string;
-        readOnly?: string;
       };
     };
     label?: {

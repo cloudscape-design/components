@@ -201,16 +201,16 @@ test('all style api properties', () => {
     <Toggle
       checked={true}
       style={{
-        root: {
+        input: {
           background: { checked: 'green' },
+          handle: {
+            background: { checked: 'blue' },
+          },
           focusRing: {
             borderColor: 'magenta',
             borderRadius: '10px',
             borderWidth: '5px',
           },
-        },
-        handle: {
-          background: { checked: 'blue' },
         },
         label: {
           color: { checked: 'orange' },
