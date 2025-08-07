@@ -67,3 +67,7 @@
   inset-block-start: 0px;
   inset-inline-end: -3px;
 }
+
+.prevent-pointer-events {
+  pointer-events: none;
+}

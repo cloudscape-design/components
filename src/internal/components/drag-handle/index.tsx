@@ -22,10 +22,12 @@ const InternalDragHandle = forwardRef(
       disabled,
       directions = {},
       onPointerDown,
+      onClick,
       onKeyDown,
       onDirectionClick,
       triggerMode,
       initialShowButtons,
+      controlledShowButtons,
       hideButtonsOnDrag = false,
       clickDragThreshold = 3,
       active,
@@ -42,6 +44,7 @@ const InternalDragHandle = forwardRef(
         onDirectionClick={onDirectionClick}
         triggerMode={triggerMode}
         initialShowButtons={initialShowButtons}
+        controlledShowButtons={controlledShowButtons}
         hideButtonsOnDrag={hideButtonsOnDrag}
         clickDragThreshold={clickDragThreshold}
       >
@@ -57,6 +60,7 @@ const InternalDragHandle = forwardRef(
           disabled={disabled}
           active={active}
           onPointerDown={onPointerDown}
+          onClick={onClick}
           onKeyDown={onKeyDown}
         />
       </DragHandleWrapper>
