@@ -17,7 +17,7 @@ export function getOuterCircleStyle(
   if (SYSTEM === 'core' && style?.input) {
     properties = {
       fill: style.input?.fill && style.input.fill[computedState],
-      stroke: style.input?.stroke?.default,
+      stroke: style.input?.stroke && style.input.stroke[computedState as keyof typeof style.input.stroke],
     };
   }
 

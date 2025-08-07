@@ -101,6 +101,8 @@ export namespace RadioGroupProps {
       };
       stroke?: {
         default?: string;
+        disabled?: string;
+        readOnly?: string;
       };
       circle?: {
         fill?: {
