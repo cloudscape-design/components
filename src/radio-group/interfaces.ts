@@ -102,7 +102,7 @@ export namespace RadioGroupProps {
       stroke?: {
         default?: string;
       };
-      circle: {
+      circle?: {
         fill?: {
           checked?: string;
           disabled?: string;
