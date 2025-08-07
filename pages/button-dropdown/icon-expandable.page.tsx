@@ -24,6 +24,7 @@ export const items: ButtonDropdownProps['items'] = [
   {
     id: 'category2',
     text: 'category2',
+    //added
     iconUrl: img,
     items: [...Array(2)].map((_, index) => ({
       id: 'category2Subitem' + index,
