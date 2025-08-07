@@ -104,14 +104,8 @@ $trigger-underline-offset-inline: 0.1em;
 
 .popover-trigger-wrapper {
   inline-size: 100%;
-  max-inline-size: 100%;
-  overflow: hidden;
 }
 
-.popover-trigger {
-  max-inline-size: 100%;
-
-  &-inline-button {
-    text-underline-offset: $trigger-underline-offset-inline;
-  }
+.popover-trigger-inline-button {
+  text-underline-offset: $trigger-underline-offset-inline;
 }
