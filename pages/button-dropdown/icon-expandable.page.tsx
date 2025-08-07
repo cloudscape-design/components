@@ -6,7 +6,9 @@ import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown
 import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
+
 import img from '../icon/custom-icon.png';
+
 import ScreenshotArea from '../utils/screenshot-area';
 
 import styles from './styles.scss';
