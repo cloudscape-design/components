@@ -9,17 +9,17 @@ const wrapper = createWrapper();
 
 class TogglePage extends BasePageObject {}
 
-const setupTest = (url: string, testFn: (page: TogglePage) => Promise<void>) => {
+const setupTest = (testFn: (page: TogglePage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new TogglePage(browser);
-    await browser.url(url);
+    await browser.url('#/light/toggle/simple');
     await testFn(page);
   });
 };
 
 test(
   'Clicking on form field label should not change toggle state',
-  setupTest('#/light/toggle/simple', async page => {
+  setupTest(async page => {
     await page.click(wrapper.findFormField().findLabel().toSelector());
     await expect(
       page.isSelected(wrapper.find('#formfield-with-toggle').findToggle().find('input').toSelector())
