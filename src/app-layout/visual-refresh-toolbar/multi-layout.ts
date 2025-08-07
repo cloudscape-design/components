@@ -98,7 +98,10 @@ export function mergeProps(
   return Object.keys(toolbar).filter(key => key !== 'ariaLabels').length > 0 ? toolbar : null;
 }
 
-export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
+export function useMultiAppLayout(
+  props: SharedProps,
+  isEnabled: boolean
+): { registered: boolean; toolbarProps: ToolbarProps | null } {
   const [registration, setRegistration] = useState<RegistrationState<SharedProps> | null>(null);
   const { forceDeduplicationType } = props;
   const isToolbar = useAppLayoutFlagEnabled();
@@ -111,9 +114,13 @@ export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
       setRegistration({ type: 'primary', discoveredProps: [] });
       return;
     }
-    return awsuiPluginsInternal.appLayoutWidget.register(forceDeduplicationType, props =>
+    const unregister = awsuiPluginsInternal.appLayoutWidget.register(forceDeduplicationType, props =>
       setRegistration(props as RegistrationState<SharedProps>)
     );
+    return () => {
+      unregister();
+      setRegistration({ type: 'suspended' });
+    };
   }, [forceDeduplicationType, isEnabled, isToolbar]);
 
   useLayoutEffect(() => {
@@ -124,7 +131,7 @@ export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
 
   if (!isToolbar) {
     return {
-      registered: 'primary',
+      registered: true,
       // mergeProps is needed here because the toolbar's behavior depends on reconciliation logic
       // in this function. For example, navigation trigger visibility
       toolbarProps: mergeProps(props, []),
