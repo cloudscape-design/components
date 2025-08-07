@@ -3,7 +3,16 @@
 export function getComputedAbstractSwitchState(
   checked: boolean | undefined,
   disabled: boolean | undefined,
-  readOnly: boolean | undefined
+  readOnly: boolean | undefined,
+  indeterminate: boolean | undefined
 ) {
-  return disabled ? 'disabled' : readOnly ? 'readOnly' : checked ? 'checked' : 'default';
+  return disabled
+    ? 'disabled'
+    : readOnly
+      ? 'readOnly'
+      : indeterminate
+        ? 'indeterminate'
+        : checked
+          ? 'checked'
+          : 'default';
 }

@@ -12,15 +12,16 @@ export function getAbstractSwitchStyles(
 ) {
   let properties = {};
 
-  const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly);
+  const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, false);
 
   if (SYSTEM === 'core' && (style?.input || style?.label)) {
     properties = {
       control: {
-        background: style?.input?.background && style.input.background[computedState],
+        background:
+          style?.input?.background && style.input.background[computedState as keyof typeof style.input.background],
       },
       label: {
-        color: style?.label?.color && style.label.color[computedState],
+        color: style?.label?.color && style.label.color[computedState as keyof typeof style.label.color],
       },
       focusRing: {
         borderColor: style?.input?.focusRing?.borderColor,
@@ -41,11 +42,11 @@ export function getStyledControlStyle(
 ) {
   let properties = {};
 
-  const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly);
+  const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, undefined);
 
   if (SYSTEM === 'core' && style?.input?.handle?.background) {
     properties = {
-      background: style.input.handle.background[computedState],
+      background: style.input.handle.background[computedState as keyof typeof style.input.handle.background],
     };
   }
 
