@@ -35,8 +35,9 @@ export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, 
   style?: {
     control?: {
       background?: string;
-      blockSize?: string;
-      inlineSize?: string;
+    };
+    description?: {
+      color?: string;
     };
     label?: {
       color?: string;
@@ -122,8 +123,6 @@ export default function AbstractSwitch({
           className={clsx(styles.control, controlClassName)}
           style={{
             background: style?.control?.background,
-            blockSize: style?.control?.blockSize,
-            inlineSize: style?.control?.inlineSize,
             ...(style?.focusRing && {
               [customCssProps.styleFocusRingBorderColor]: style.focusRing?.borderColor,
               [customCssProps.styleFocusRingBorderRadius]: style.focusRing?.borderRadius,
@@ -160,6 +159,7 @@ export default function AbstractSwitch({
                 [styles['description-disabled']]: disabled,
                 [styles['description-bottom-padding']]: descriptionBottomPadding,
               })}
+              style={{ color: style?.description?.color }}
             >
               {description}
             </span>
