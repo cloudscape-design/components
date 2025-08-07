@@ -16,6 +16,8 @@ const isAppLayoutDelayedWidget = () => {
 
 const enableDelayedComponents = isAppLayoutDelayedWidget();
 
+let loadPromise: Promise<void>;
+
 export function createLoadableComponent<ComponentType extends FunctionComponent<any>>(
   Component: ComponentType
 ): ComponentType | undefined {
@@ -26,8 +28,18 @@ export function createLoadableComponent<ComponentType extends FunctionComponent<
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-      const timeoutId = setTimeout(() => setMounted(true), 1000);
-      return () => clearTimeout(timeoutId);
+      if (!loadPromise) {
+        loadPromise = new Promise(resolve => setTimeout(() => resolve(), 1000));
+      }
+      let mounted = true;
+      loadPromise.then(() => {
+        if (mounted) {
+          setMounted(true);
+        }
+      });
+      return () => {
+        mounted = false;
+      };
     }, []);
 
     if (mounted) {

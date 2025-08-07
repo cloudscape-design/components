@@ -34,7 +34,24 @@ Map {
     "appLayoutState": {
       "isIntersecting": true,
     },
-    "toolbarProps": null,
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
   },
   [Function] => {
     "appLayoutProps": {
@@ -68,7 +85,24 @@ Map {
     "appLayoutState": {
       "isIntersecting": true,
     },
-    "toolbarProps": null,
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
   },
   [Function] => {
     "appLayoutProps": {
@@ -102,7 +136,24 @@ Map {
     "appLayoutState": {
       "isIntersecting": true,
     },
-    "toolbarProps": null,
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
   },
   [Function] => {
     "appLayoutProps": {
@@ -136,7 +187,24 @@ Map {
     "appLayoutState": {
       "isIntersecting": true,
     },
-    "toolbarProps": null,
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
   },
   [Function] => {
     "appLayoutProps": {
@@ -170,7 +238,7 @@ Map {
     "forwardRef": null,
     "stateManager": {
       "current": {
-        "hasToolbar": false,
+        "hasToolbar": true,
         "setState": [Function],
         "setToolbar": undefined,
       },
@@ -573,7 +641,24 @@ Map {
     "appLayoutState": {
       "isIntersecting": true,
     },
-    "toolbarProps": null,
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
   },
   [Function] => {
     "appLayoutProps": {
@@ -626,7 +711,24 @@ Map {
     "appLayoutState": {
       "isIntersecting": true,
     },
-    "toolbarProps": null,
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
   },
   [Function] => {
     "appLayoutProps": {
@@ -679,7 +781,24 @@ Map {
     "appLayoutState": {
       "isIntersecting": true,
     },
-    "toolbarProps": null,
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
   },
   [Function] => {
     "appLayoutProps": {
@@ -732,7 +851,24 @@ Map {
     "appLayoutState": {
       "isIntersecting": true,
     },
-    "toolbarProps": null,
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
   },
   [Function] => {
     "appLayoutProps": {
@@ -785,7 +921,7 @@ Map {
     "forwardRef": null,
     "stateManager": {
       "current": {
-        "hasToolbar": false,
+        "hasToolbar": true,
         "setState": [Function],
         "setToolbar": undefined,
       },

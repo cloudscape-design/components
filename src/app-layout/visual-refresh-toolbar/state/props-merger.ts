@@ -70,7 +70,7 @@ export const getPropsToMerge = (props: AppLayoutInternalProps, appLayoutState: A
   return {
     breadcrumbs: props.breadcrumbs,
     ariaLabels: state ? state.ariaLabels : props.ariaLabels,
-    navigation: !props.navigationTriggerHide && (state ? state.navigation : props.navigation),
+    navigation: !props.navigationTriggerHide && !props.navigationHide,
     navigationOpen: state ? state.navigationOpen : props.navigationOpen,
     onNavigationToggle: state?.onNavigationToggle,
     navigationFocusRef: state?.navigationFocusControl.refs.toggle,
