@@ -47,21 +47,19 @@ function InternalToken({
   };
 
   const getTokenContent = () => {
-    const mainContent = children ?? <Option triggerVariant={true} option={optionDefinition} isGenericGroup={false} />;
+    const mainContent = children ?? (
+      <Option triggerVariant={variant === 'inline'} option={optionDefinition} isGenericGroup={false} />
+    );
     if (children || labelTag || description || tags || !popoverProps?.content) {
+      // dev warning
       return mainContent;
     }
     return (
-      <div
-        className={clsx(
-          styles['popover-trigger-wrapper'],
-          variant === 'inline' && styles['popover-trigger-wrapper-inline']
-        )}
-      >
+      <div className={styles['popover-trigger-wrapper']}>
         <InternalPopover
-          className={clsx(styles['popover-trigger'], popoverProps.className)}
+          className={popoverProps.className}
           triggerClassName={clsx(variant === 'inline' && styles['popover-trigger-inline-button'])}
-          size={popoverProps.size ?? 'content'}
+          size={popoverProps.size ?? 'medium'}
           triggerType="text-inline"
           position={popoverProps?.position ?? 'top'}
           content={popoverProps?.content}
