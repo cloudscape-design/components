@@ -12,7 +12,14 @@ interface SecondaryRegistration<Props> {
   update: (props: Props) => void;
 }
 
-export type RegistrationState<Props> = PrimaryRegistration<Props> | SecondaryRegistration<Props>;
+interface SuspendedRegistration {
+  type: 'suspended';
+}
+
+export type RegistrationState<Props> =
+  | PrimaryRegistration<Props>
+  | SecondaryRegistration<Props>
+  | SuspendedRegistration;
 type RegistrationType = RegistrationState<unknown>['type'];
 
 type RegistrationChangeHandler<Props> = (
