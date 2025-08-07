@@ -12,7 +12,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 export default function CustomRadio() {
   const mode = useCurrentMode(useRef(document.body));
 
-  const standardItems = [
+  const items = [
     {
       value: 'first',
       label: 'First choice',
@@ -20,7 +20,7 @@ export default function CustomRadio() {
     },
     {
       disabled: true,
-      value: 'first',
+      value: 'second',
       label: 'Second choice',
       description: 'This is the second option.',
     },
@@ -30,8 +30,6 @@ export default function CustomRadio() {
       description: 'This is the third option.',
     },
   ];
-
-  const value = 'first';
 
   const colors = {
     light: {
@@ -52,11 +50,13 @@ export default function CustomRadio() {
     input: {
       stroke: {
         default: palette.neutral80,
+        disabled: palette.neutral100,
+        readOnly: palette.neutral90,
       },
       fill: {
         checked: palette.teal80,
         default: palette.neutral10,
-        disabled: palette.neutral40,
+        disabled: palette.neutral60,
         readOnly: palette.neutral40,
       },
       circle: {
@@ -86,12 +86,10 @@ export default function CustomRadio() {
 
       <SpaceBetween size="m" direction="vertical">
         <SpaceBetween size="m" direction="horizontal">
-          <RadioGroup value={value} items={standardItems} style={style} />
-
-          <RadioGroup value={value} items={standardItems} style={style} readOnly={true} />
+          <RadioGroup value="first" items={items} style={style} />
+          <RadioGroup value="second" items={items} style={style} />
+          <RadioGroup value="third" items={items} style={style} readOnly={true} />
         </SpaceBetween>
-
-        <SpaceBetween size="m" direction="horizontal"></SpaceBetween>
       </SpaceBetween>
     </ScreenshotArea>
   );
