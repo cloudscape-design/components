@@ -6,6 +6,7 @@ import { fireEvent, render } from '@testing-library/react';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import List, { ListProps } from '../../../lib/components/list';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import InternalDragHandleWrapper from '../../../lib/components/test-utils/dom/internal/drag-handle';
 
 interface Item {
   id: string;
@@ -129,6 +130,29 @@ describe('List - Sortable', () => {
     pressKey(dragHandle, 'ArrowDown');
     await expectAnnouncement('Moving item to position 2 of 3');
     pressKey(dragHandle, 'Space');
+    expect(wrapper.findItemByIndex(1)!.getElement()).toHaveTextContent('Item 2');
+    expect(wrapper.findItemByIndex(2)!.getElement()).toHaveTextContent('Item 1');
+    await expectAnnouncement('Item moved from position 1 to position 2 of 3');
+  });
+
+  test('can move an item with UAP buttons', async () => {
+    const { wrapper } = renderSortableList();
+    const dragHandle = wrapper.findItemByIndex(1)!.findDragHandle()!.getElement();
+    const dragWrapper = new InternalDragHandleWrapper(document.body);
+    expect(dragWrapper.findVisibleDirectionButtonBlockEnd()).toBeFalsy();
+
+    dragHandle.click();
+    expect(dragWrapper.findVisibleDirectionButtonBlockEnd()).toBeTruthy();
+    await expectAnnouncement('Picked up item at position 1 of 3');
+
+    dragWrapper.findVisibleDirectionButtonBlockEnd()!.click();
+    await expectAnnouncement('Moving item to position 2 of 3');
+    dragWrapper.findVisibleDirectionButtonBlockEnd()!.click();
+    await expectAnnouncement('Moving item to position 3 of 3');
+    dragWrapper.findVisibleDirectionButtonBlockStart()!.click();
+    await expectAnnouncement('Moving item to position 2 of 3');
+
+    pressKey(dragHandle, 'Enter');
     expect(wrapper.findItemByIndex(1)!.getElement()).toHaveTextContent('Item 2');
     expect(wrapper.findItemByIndex(2)!.getElement()).toHaveTextContent('Item 1');
     await expectAnnouncement('Item moved from position 1 to position 2 of 3');

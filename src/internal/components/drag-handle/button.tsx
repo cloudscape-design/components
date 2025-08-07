@@ -26,6 +26,7 @@ const DragHandleButton = forwardRef(
       ariaValue,
       disabled,
       onPointerDown,
+      onClick,
       onKeyDown,
     }: DragHandleProps,
     ref: React.Ref<Element>
@@ -33,7 +34,12 @@ const DragHandleButton = forwardRef(
     const dragHandleRefObject = useRef<HTMLDivElement>(null);
 
     const iconProps: IconProps = (() => {
-      const shared = { variant: disabled ? ('disabled' as const) : undefined, size };
+      const shared = {
+        variant: disabled ? ('disabled' as const) : undefined,
+        size,
+        // ensure that events happen on the div, not the icon
+        __preventPointerEvents: true,
+      };
       switch (variant) {
         case 'drag-indicator':
           return { ...shared, name: 'drag-indicator' };
@@ -73,6 +79,7 @@ const DragHandleButton = forwardRef(
         aria-valuemin={ariaValue?.valueMin}
         aria-valuenow={ariaValue?.valueNow}
         onPointerDown={onPointerDown}
+        onClick={onClick}
         onKeyDown={onKeyDown}
       >
         <InternalIcon {...iconProps} />

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
+import React, { CSSProperties, useContext, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -16,6 +16,7 @@ import styles from './styles.css.js';
 type InternalIconProps = IconProps &
   InternalBaseComponentProps & {
     badge?: boolean;
+    __preventPointerEvents?: boolean;
   };
 
 function iconSizeMap(height: number | null) {
@@ -46,6 +47,7 @@ const InternalIcon = ({
   ariaLabel,
   svg,
   badge,
+  __preventPointerEvents,
   __internalRootRef = null,
   ...props
 }: InternalIconProps) => {
@@ -56,7 +58,7 @@ const InternalIcon = ({
   const [parentHeight, setParentHeight] = useState<number | null>(null);
   const contextualSize = size === 'inherit';
   const iconSize = contextualSize ? iconSizeMap(parentHeight) : size;
-  const inlineStyles = contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {};
+  const inlineStyles: CSSProperties = contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {};
   const baseProps = getBaseProps(props);
 
   baseProps.className = clsx(
@@ -67,7 +69,8 @@ const InternalIcon = ({
     !contextualSize && styles[`size-${iconSize}-mapped-height`],
     styles[`size-${iconSize}`],
     styles[`variant-${variant}`],
-    styles[`name-${name}`]
+    styles[`name-${name}`],
+    __preventPointerEvents && styles['prevent-pointer-events']
   );
 
   // Possible infinite loop is not a concern here because line
