@@ -209,7 +209,7 @@ const InternalMultiselect = React.forwardRef(
           />
         )}
 
-        <ScreenreaderOnly id={ariaLabelId}>{ariaLabel || inlineLabelText}</ScreenreaderOnly>
+        <ScreenreaderOnly id={ariaLabelId}>{ariaLabel}</ScreenreaderOnly>
       </div>
     );
   }
