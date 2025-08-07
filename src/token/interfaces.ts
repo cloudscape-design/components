@@ -22,11 +22,12 @@ export interface TokenProps extends BaseComponentProps {
   iconSvg?: React.ReactNode;
   tags?: ReadonlyArray<string>;
   dismissLabel?: string;
-  popoverProps?: PopoverProps;
+  popoverProps?: TokenProps.TokenPopoverProps;
 
   onDismiss?: NonCancelableEventHandler;
 }
 
 export namespace TokenProps {
   export type Variant = 'normal' | 'inline';
+  export type TokenPopoverProps = Omit<PopoverProps, 'triggerType' | 'wrapTriggerText' | 'children'>;
 }
