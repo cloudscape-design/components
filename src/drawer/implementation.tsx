@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { useRuntimeDrawerContext } from '../app-layout/runtime-drawer/use-runtime-drawer-context';
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
+import InternalErrorBoundary from '../error-boundary/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -36,7 +37,7 @@ export function DrawerImplementation({
   };
 
   const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: __internalRootRef as RefObject<HTMLElement> });
-  const hasAdditioalDrawerAction = !!runtimeDrawerContext?.isExpandable;
+  const hasAdditionalDrawerAction = !!runtimeDrawerContext?.isExpandable;
 
   return loading ? (
     <div
@@ -57,7 +58,7 @@ export function DrawerImplementation({
           className={clsx(
             styles.header,
             runtimeDrawerContext && styles['with-runtime-context'],
-            hasAdditioalDrawerAction && styles['with-additional-action']
+            hasAdditionalDrawerAction && styles['with-additional-action']
           )}
         >
           {header}
@@ -70,7 +71,7 @@ export function DrawerImplementation({
           !disableContentPaddings && styles['content-with-paddings']
         )}
       >
-        {children}
+        <InternalErrorBoundary>{children}</InternalErrorBoundary>
       </div>
     </div>
   );

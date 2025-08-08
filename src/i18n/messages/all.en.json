@@ -1,4 +1,10 @@
 {
+  "error-boundary": {
+    "i18nStrings.imageAltText": "Application error",
+    "i18nStrings.messageHeader": "There was an unexpected issue",
+    "i18nStrings.messageDescription": "An unexpected issue led to a crash. [Refresh](refresh) the page to try again.",
+    "i18nStrings.messageFeedback": "If the issue persists, please provide us feedback [here](feedback)."
+  },
   "[charts]": {
     "loadingText": "Loading chart",
     "errorText": "The data couldn't be fetched. Try again later.",
