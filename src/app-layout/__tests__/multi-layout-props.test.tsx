@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { mergeProps, SharedProps } from '../../../lib/components/app-layout/visual-refresh-toolbar/multi-layout';
+import { SharedProps } from '../../../lib/components/app-layout/visual-refresh-toolbar/state/interfaces';
+import { mergeProps } from '../../../lib/components/app-layout/visual-refresh-toolbar/state/props-merger';
 
 describe('mergeMultiAppLayoutProps', () => {
   const mockParentNavigationToggle = jest.fn();
@@ -11,7 +12,6 @@ describe('mergeMultiAppLayoutProps', () => {
   const mockParentSplitPanelToggle = jest.fn();
   const mockSetExpandedDrawerId = jest.fn();
   const ownProps: SharedProps = {
-    forceDeduplicationType: 'primary',
     ariaLabels: {
       navigation: 'Navigation',
       drawers: 'Drawers',
