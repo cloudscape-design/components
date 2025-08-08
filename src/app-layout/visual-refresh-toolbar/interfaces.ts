@@ -67,11 +67,11 @@ export interface AppLayoutInternals {
   splitPanelAnimationDisabled?: boolean;
   expandedDrawerId: string | null;
   setExpandedDrawerId: (value: string | null) => void;
-  aiDrawer: InternalDrawer | null;
-  onActiveAiDrawerChange: (newDrawerId: string | null, params: OnChangeParams) => void;
+  aiDrawer?: InternalDrawer | null;
+  onActiveAiDrawerChange?: (newDrawerId: string | null, params: OnChangeParams) => void;
   activeAiDrawer?: InternalDrawer | null;
-  activeAiDrawerSize: number;
-  minAiDrawerSize: number;
-  maxAiDrawerSize: number;
-  aiDrawerFocusControl: FocusControlState;
+  activeAiDrawerSize?: number;
+  minAiDrawerSize?: number;
+  maxAiDrawerSize?: number;
+  aiDrawerFocusControl?: FocusControlState;
 }
