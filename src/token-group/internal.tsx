@@ -71,23 +71,13 @@ export default function InternalTokenGroup({
         limit={limit}
         renderItem={(item, itemIndex) => (
           <InternalToken
+            {...item}
             key={itemIndex}
-            label={item.label}
-            labelTag={item.labelTag}
-            ariaLabel={item.label}
-            description={item.description}
-            dismissLabel={item.dismissLabel}
             onDismiss={() => {
               fireNonCancelableEvent(onDismiss, { itemIndex });
               setNextFocusIndex(itemIndex);
             }}
-            disabled={item.disabled}
             readOnly={readOnly || isItemReadOnly?.(item)}
-            iconAlt={item.iconAlt}
-            iconName={item.iconName}
-            iconSvg={item.iconSvg}
-            iconUrl={item.iconUrl}
-            tags={item.tags}
             variant={'normal'}
             {...(item.disabled || readOnly
               ? {}
