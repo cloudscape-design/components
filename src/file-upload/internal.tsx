@@ -44,7 +44,7 @@ function InternalFileUpload(
     showFileLastModified,
     showFileThumbnail,
     i18nStrings,
-    __internalRootRef = null,
+    __internalRootRef,
     constraintText,
     errorText,
     warningText,

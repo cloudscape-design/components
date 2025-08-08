@@ -38,7 +38,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
       onFocus,
       onBlur,
       onChange,
-      __internalRootRef = null,
+      __internalRootRef,
       __injectAnalyticsComponentMetadata,
       ...rest
     },

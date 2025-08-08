@@ -29,7 +29,7 @@ const InternalRadioGroup = React.forwardRef(
       ariaControls,
       onChange,
       readOnly,
-      __internalRootRef = null,
+      __internalRootRef,
       ...props
     }: InternalRadioGroupProps,
     ref: React.Ref<RadioGroupProps.Ref>

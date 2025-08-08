@@ -10,7 +10,7 @@ import { StepsProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-type InternalStepsProps = SomeRequired<StepsProps, 'steps'> & InternalBaseComponentProps<HTMLDivElement>;
+type InternalStepsProps = SomeRequired<StepsProps, 'steps'> & InternalBaseComponentProps;
 
 const InternalStep = ({ status, statusIconAriaLabel, header, details }: StepsProps.Step) => {
   return (
