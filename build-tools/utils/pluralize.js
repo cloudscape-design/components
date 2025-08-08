@@ -79,6 +79,7 @@ const pluralizationMap = {
   TimeInput: 'TimeInputs',
   Toggle: 'Toggles',
   ToggleButton: 'ToggleButtons',
+  Token: 'Tokens',
   TokenGroup: 'TokenGroups',
   TopNavigation: 'TopNavigations',
   TreeView: 'TreeViews',
