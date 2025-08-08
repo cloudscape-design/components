@@ -65,6 +65,14 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
     })
   );
 
+  test(
+    'can focus split panel programmatically after opening',
+    setupTest(async page => {
+      await page.click('button=Add widget');
+      await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
+    }, '#/light/app-layout/dashboard-content-type')
+  );
+
   (theme === 'classic' ? test : test.skip).each([
     { position: 'side', repeatKey: 'ArrowLeft', expectedValue: 0 },
     { position: 'side', repeatKey: 'ArrowRight', expectedValue: 100 },
