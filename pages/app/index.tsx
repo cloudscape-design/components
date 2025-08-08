@@ -42,6 +42,7 @@ function isAppLayoutPage(pageId?: string) {
     'prompt-input/simple',
     'funnel-analytics/static-single-page-flow',
     'funnel-analytics/static-multi-page-flow',
+    'error-boundaries',
   ];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
 }
