@@ -28,7 +28,7 @@ $checkbox-size: awsui.$size-control;
 
   @include styles.focus-highlight(
     $gutter: 2px,
-    $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-circular-focus-ring),
+    $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
     $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
   );
 }
