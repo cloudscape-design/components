@@ -12,9 +12,9 @@ export function getAbstractSwitchStyles(
 ) {
   let properties = {};
 
-  const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, false);
-
   if (SYSTEM === 'core' && (style?.input || style?.label)) {
+    const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, false);
+
     properties = {
       control: {
         background:
@@ -42,9 +42,9 @@ export function getStyledControlStyle(
 ) {
   let properties = {};
 
-  const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, undefined);
-
   if (SYSTEM === 'core' && style?.input?.handle?.background) {
+    const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, undefined);
+
     properties = {
       background: style.input.handle.background[computedState as keyof typeof style.input.handle.background],
     };

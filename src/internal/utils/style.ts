@@ -4,15 +4,22 @@ export function getComputedAbstractSwitchState(
   checked: boolean | undefined,
   disabled: boolean | undefined,
   readOnly: boolean | undefined,
-  indeterminate: boolean | undefined
+  indeterminate: boolean | undefined,
+  defaultValue: string = 'default'
 ) {
-  return disabled
-    ? 'disabled'
-    : readOnly
-      ? 'readOnly'
-      : indeterminate
-        ? 'indeterminate'
-        : checked
-          ? 'checked'
-          : 'default';
+  let computedState;
+
+  if (disabled) {
+    computedState = 'disabled';
+  } else if (readOnly) {
+    computedState = 'readOnly';
+  } else if (indeterminate) {
+    computedState = 'indeterminate';
+  } else if (checked) {
+    computedState = 'checked';
+  } else {
+    computedState = defaultValue;
+  }
+
+  return computedState;
 }
