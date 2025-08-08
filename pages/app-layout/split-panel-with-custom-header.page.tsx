@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import AppLayout, { AppLayoutProps } from '~components/app-layout';
 import Badge from '~components/badge';
+import Box from '~components/box';
 import Button from '~components/button';
 import FormField from '~components/form-field';
 import Header from '~components/header';
@@ -24,23 +25,60 @@ type SplitPanelDemoContext = React.Context<
   AppContextType<{
     ariaLabel?: string;
     description?: string;
+    editableHeader: boolean;
     headerText?: string;
     renderActions: boolean;
     renderBadge: boolean;
-    renderInput: boolean;
     renderInfoLink: boolean;
     splitPanelOpen: boolean;
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
   }>
 >;
 
+function EditableHeader({ onChange, value }: { onChange: (text: string) => void; value: string }) {
+  const [internalValue, setInternalValue] = useState(value);
+  const [editing, setEditing] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (editing) {
+      inputRef.current?.focus();
+    }
+  }, [editing]);
+
+  return editing ? (
+    <SpaceBetween direction="horizontal" size="xs">
+      <Input value={internalValue} onChange={({ detail }) => setInternalValue(detail.value)} ref={inputRef} />
+      <Button
+        variant="icon"
+        iconName="check"
+        onClick={() => {
+          onChange(internalValue);
+          setEditing(false);
+        }}
+      />
+      <Button variant="icon" iconName="close" onClick={() => setEditing(false)} />
+    </SpaceBetween>
+  ) : (
+    <>
+      <Box variant="h3" tagOverride="h2" display="inline" margin={{ vertical: 'n' }}>
+        {value}
+      </Box>{' '}
+      <Button variant="icon" iconName="edit" onClick={() => setEditing(true)}></Button>
+    </>
+  );
+}
+
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as SplitPanelDemoContext);
   const [toolsOpen, setToolsOpen] = useState(false);
 
   // Initialize the header to a default value if not set.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => setUrlParams({ ...urlParams, headerText: urlParams.headerText || 'Header text' }), []);
+  useEffect(() => {
+    if (!urlParams.editableHeader) {
+      setUrlParams({ ...urlParams, headerText: urlParams.headerText || 'Header text' });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ScreenshotArea gutters={false}>
@@ -62,7 +100,7 @@ export default function () {
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         splitPanel={
           <SplitPanel
-            header={urlParams.headerText || ''}
+            header={(!urlParams.editableHeader && urlParams.headerText) || ''}
             i18nStrings={splitPaneli18nStrings}
             headerActions={
               urlParams.renderActions && (
@@ -73,10 +111,15 @@ export default function () {
               )
             }
             headerBefore={
-              (urlParams.renderBadge || urlParams.renderInput) && (
+              (urlParams.renderBadge || urlParams.editableHeader) && (
                 <SpaceBetween direction="horizontal" size="xs" alignItems="center">
                   {urlParams.renderBadge && <Badge>Badge</Badge>}
-                  {urlParams.renderInput && <Input value="" />}
+                  {urlParams.editableHeader && (
+                    <EditableHeader
+                      value={urlParams.headerText || ''}
+                      onChange={value => setUrlParams({ ...urlParams, headerText: value })}
+                    />
+                  )}
                 </SpaceBetween>
               )
             }
@@ -109,10 +152,10 @@ export default function () {
                   With badge
                 </Toggle>
                 <Toggle
-                  checked={urlParams.renderInput}
-                  onChange={({ detail }) => setUrlParams({ ...urlParams, renderInput: detail.checked })}
+                  checked={urlParams.editableHeader}
+                  onChange={({ detail }) => setUrlParams({ ...urlParams, editableHeader: detail.checked })}
                 >
-                  With input
+                  Editable header text
                 </Toggle>
                 <Toggle
                   checked={urlParams.renderInfoLink}
