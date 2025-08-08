@@ -125,19 +125,6 @@ export default function WithDrawers() {
                 >
                   Resize circle3-global drawer to 500px
                 </Button>
-                <Button
-                  onClick={() => awsuiPlugins.appLayout.resizeDrawer('amazon-q', 700)}
-                  data-testid="button-amazon-q"
-                >
-                  Resize amazon-q drawer to 500px
-                </Button>
-
-                <Button onClick={() => awsuiPlugins.appLayout.openDrawer('amazon-q')} data-testid="open-drawer-button">
-                  Open the left global drawer
-                </Button>
-                <Button onClick={() => awsuiPlugins.appLayout.closeDrawer('amazon-q')}>
-                  Close the left global drawer
-                </Button>
               </SpaceBetween>
             </SpaceBetween>
           }
