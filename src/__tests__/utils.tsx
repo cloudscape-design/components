@@ -36,7 +36,7 @@ export function getAllComponents(): string[] {
  * @param componentName the name of the component in kebap-case
  */
 export function supportsDOMProperties(componentName: string) {
-  const componentsWithoutDOMPropertiesSupport = ['annotation-context', 'icon-provider'];
+  const componentsWithoutDOMPropertiesSupport = ['annotation-context', 'icon-provider', 'error-boundary'];
   return !componentsWithoutDOMPropertiesSupport.includes(componentName);
 }
 
