@@ -12,9 +12,9 @@ export function getOuterCircleStyle(
 ) {
   let properties;
 
-  const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, undefined);
-
   if (SYSTEM === 'core' && style?.input) {
+    const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, undefined);
+
     properties = {
       fill: style.input?.fill && style.input.fill[computedState as keyof typeof style.input.fill],
       stroke: style.input?.stroke && style.input.stroke[computedState as keyof typeof style.input.stroke],
@@ -32,9 +32,9 @@ export function getInnerCircleStyle(
 ) {
   let properties;
 
-  const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, undefined);
-
   if (SYSTEM === 'core' && style?.input) {
+    const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, undefined);
+
     properties = {
       fill: style.input?.circle?.fill && style.input.circle.fill[computedState as keyof typeof style.input.circle.fill],
       stroke: style.input?.fill && style.input.fill[computedState as keyof typeof style.input.fill],
@@ -52,9 +52,9 @@ export function getAbstractSwitchStyles(
 ) {
   let properties = {};
 
-  const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, undefined);
-
   if (SYSTEM === 'core' && (style?.label || style?.description || style?.input)) {
+    const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, undefined);
+
     properties = {
       label: {
         color: style?.label?.color && style.label.color[computedState as keyof typeof style.label.color],

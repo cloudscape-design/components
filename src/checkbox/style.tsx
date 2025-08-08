@@ -13,12 +13,12 @@ export function getAbstractSwitchStyles(
 ) {
   let properties = {};
 
-  const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, indeterminate);
-
   if (SYSTEM === 'core' && (style?.label || style?.input)) {
+    const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, indeterminate);
+
     properties = {
       label: {
-        color: style?.label?.color && style.label.color[computedState],
+        color: style?.label?.color && style.label.color[computedState as keyof typeof style.label.color],
       },
       focusRing: {
         borderColor: style?.input?.focusRing?.borderColor,
@@ -40,13 +40,13 @@ export function getCheckboxIconStyles(
 ) {
   let properties = {};
 
-  const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, indeterminate);
-
   if (SYSTEM === 'core' && style?.input) {
+    const computedState = getComputedAbstractSwitchState(checked, disabled, readOnly, indeterminate);
+
     properties = {
       box: {
-        fill: style.input?.fill && style.input.fill[computedState],
-        stroke: style.input?.stroke && style.input.stroke[computedState],
+        fill: style.input?.fill && style.input.fill[computedState as keyof typeof style.input.fill],
+        stroke: style.input?.stroke && style.input.stroke[computedState as keyof typeof style.input.stroke],
       },
       line: {
         stroke:
