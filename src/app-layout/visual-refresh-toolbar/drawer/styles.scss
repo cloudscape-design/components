@@ -263,6 +263,7 @@ $ai-drawer-background: #161d26;
       min-inline-size: auto;
       grid-column: 1 / span 1;
       border-start-end-radius: awsui.$space-xxs;
+      clip-path: inset(0 0 0 -9999px round awsui.$space-xxs);
 
       > .drawer-content {
         background-color: awsui.$color-background-layout-panel-content;
