@@ -23,7 +23,7 @@ export default function InternalBox({
   fontWeight,
   color,
   children,
-  __internalRootRef = null,
+  __internalRootRef,
   ...props
 }: InternalBoxProps) {
   const baseProps = getBaseProps(props);

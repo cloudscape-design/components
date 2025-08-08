@@ -34,7 +34,7 @@ const InternalTiles = React.forwardRef(
       columns,
       onChange,
       readOnly,
-      __internalRootRef = null,
+      __internalRootRef,
       ...rest
     }: InternalTilesProps,
     ref: React.Ref<TilesProps.Ref>
