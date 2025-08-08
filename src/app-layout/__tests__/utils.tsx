@@ -59,12 +59,12 @@ export function describeEachAppLayout(
         beforeEach(() => {
           globalWithFlags[forceMobileModeSymbol] = size === 'mobile';
           globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => theme !== 'classic';
-          setGlobalFlag('appLayoutWidget', theme === 'refresh-toolbar');
+          setGlobalFlag('appLayoutToolbar', theme === 'refresh-toolbar');
         });
         afterEach(() => {
           delete globalWithFlags[forceMobileModeSymbol];
           delete globalWithFlags[Symbol.for('awsui-visual-refresh-flag')];
-          setGlobalFlag('appLayoutWidget', undefined);
+          setGlobalFlag('appLayoutToolbar', undefined);
           clearVisualRefreshState();
         });
         test('mocks applied correctly', () => {
