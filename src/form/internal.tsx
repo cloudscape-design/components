@@ -7,6 +7,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import InternalAlert from '../alert/internal';
 import InternalBox from '../box/internal';
+import { ErrorBoundariesProvider } from '../error-boundary/context';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -48,36 +49,38 @@ export default function InternalForm({
   };
 
   return (
-    <div
-      {...baseProps}
-      ref={__internalRootRef}
-      className={clsx(styles.root, baseProps.className)}
-      {...(__injectAnalyticsComponentMetadata ? getAnalyticsMetadataAttribute(analyticsComponentMetadata) : {})}
-    >
-      {header && <div className={clsx(styles.header, analyticsSelectors.header)}>{header}</div>}
-      {children && <div className={styles.content}>{children}</div>}
-      {errorText && (
-        <InternalBox margin={{ top: 'l' }}>
-          <InternalAlert type="error" statusIconAriaLabel={errorIconAriaLabel}>
-            <div className={styles.error} id={__errorSlotId}>
-              {errorText}
+    <ErrorBoundariesProvider active={false}>
+      <div
+        {...baseProps}
+        ref={__internalRootRef}
+        className={clsx(styles.root, baseProps.className)}
+        {...(__injectAnalyticsComponentMetadata ? getAnalyticsMetadataAttribute(analyticsComponentMetadata) : {})}
+      >
+        {header && <div className={clsx(styles.header, analyticsSelectors.header)}>{header}</div>}
+        {children && <div className={styles.content}>{children}</div>}
+        {errorText && (
+          <InternalBox margin={{ top: 'l' }}>
+            <InternalAlert type="error" statusIconAriaLabel={errorIconAriaLabel}>
+              <div className={styles.error} id={__errorSlotId}>
+                {errorText}
+              </div>
+            </InternalAlert>
+          </InternalBox>
+        )}
+        {(actions || secondaryActions) && (
+          <div className={styles.footer}>
+            <div className={styles['actions-section']}>
+              {actions && <div className={styles.actions}>{actions}</div>}
+              {secondaryActions && <div className={styles['secondary-actions']}>{secondaryActions}</div>}
             </div>
-          </InternalAlert>
-        </InternalBox>
-      )}
-      {(actions || secondaryActions) && (
-        <div className={styles.footer}>
-          <div className={styles['actions-section']}>
-            {actions && <div className={styles.actions}>{actions}</div>}
-            {secondaryActions && <div className={styles['secondary-actions']}>{secondaryActions}</div>}
           </div>
-        </div>
-      )}
-      {errorText && (
-        <InternalLiveRegion hidden={true} tagName="span" assertive={true}>
-          {errorIconAriaLabel}, {errorText}
-        </InternalLiveRegion>
-      )}
-    </div>
+        )}
+        {errorText && (
+          <InternalLiveRegion hidden={true} tagName="span" assertive={true}>
+            {errorIconAriaLabel}, {errorText}
+          </InternalLiveRegion>
+        )}
+      </div>
+    </ErrorBoundariesProvider>
   );
 }
