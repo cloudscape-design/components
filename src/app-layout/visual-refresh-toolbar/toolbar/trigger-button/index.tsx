@@ -66,7 +66,7 @@ export interface TriggerButtonProps {
    */
   isForSplitPanel?: boolean;
   tabIndex?: number | undefined;
-  inheritSize?: boolean;
+  variant?: 'circle' | 'custom';
 }
 
 function TriggerButton(
@@ -89,7 +89,7 @@ function TriggerButton(
     isMobile = false,
     isForPreviousActiveDrawer = false,
     isForSplitPanel = false,
-    inheritSize = false,
+    variant = 'circle',
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
@@ -221,8 +221,8 @@ function TriggerButton(
         disabled={disabled}
         className={clsx(
           styles.trigger,
+          styles[variant],
           {
-            [styles['inherit-size']]: inheritSize,
             [styles.selected]: selected,
             [styles['trigger-with-badge']]: badge,
             [testutilStyles['drawers-trigger-with-badge']]: badge,
