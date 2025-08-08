@@ -18,6 +18,7 @@ import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { GeneratedAnalyticsMetadataCheckboxComponent } from './analytics-metadata/interfaces';
 import { CheckboxProps } from './interfaces';
+import { getAbstractSwitchStyles, getCheckboxIconStyles } from './style';
 
 import styles from './styles.css.js';
 
@@ -46,6 +47,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       tabIndex: explicitTabIndex,
       showOutline,
       ariaControls,
+      style,
       __internalRootRef,
       __injectAnalyticsComponentMetadata = false,
       ...rest
@@ -121,8 +123,15 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
           );
         }}
         styledControl={
-          <CheckboxIcon checked={checked} indeterminate={indeterminate} disabled={disabled} readOnly={readOnly} />
+          <CheckboxIcon
+            checked={checked}
+            indeterminate={indeterminate}
+            disabled={disabled}
+            readOnly={readOnly}
+            style={getCheckboxIconStyles(style, checked, disabled, readOnly, indeterminate)}
+          />
         }
+        style={getAbstractSwitchStyles(style, checked, disabled, readOnly, indeterminate)}
         __internalRootRef={__internalRootRef}
         {...getAnalyticsMetadataAttribute(analyticsMetadata)}
       />
