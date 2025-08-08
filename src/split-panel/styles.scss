@@ -236,31 +236,22 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
 
   &-content,
-  &-tag,
-  &-main-row,
-  &-text-and-info,
-  &-text {
+  &-main-row {
     display: flex;
-  }
-
-  &-main-row,
-  &-tag,
-  &-text-and-info,
-  &-text {
-    flex-wrap: wrap;
-    column-gap: awsui.$space-scaled-xs;
-    row-gap: awsui.$space-scaled-xxs;
-  }
-
-  &-content {
-    align-items: flex-start;
   }
 
   &-main-row {
     flex: auto;
     flex-direction: row;
-    align-items: flex-start;
+    flex-wrap: wrap;
+    column-gap: awsui.$space-scaled-xs;
+    row-gap: awsui.$space-scaled-xxs;
+    align-items: center;
     justify-content: space-between;
+  }
+
+  &-content {
+    align-items: flex-start;
   }
 
   &-tag {
@@ -273,15 +264,26 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     align-items: baseline;
   }
 
+  &-tag,
+  &-info-slot {
+    display: inline;
+  }
+
   &-text {
     $vertical-margin: calc(#{awsui.$space-scaled-xxs} + 1px);
+    display: inline-block;
     @include styles.font-panel-header;
     padding-block: 0;
     padding-inline: 0;
     margin-inline: 0;
+    margin-block: 0;
     margin-block-start: $vertical-margin;
-    margin-block-end: 0;
     min-block-size: calc(#{awsui.$font-panel-header-line-height} + #{$vertical-margin});
+  }
+
+  &-before-slot + &-text,
+  &-tag + &-info-slot {
+    margin-inline-start: awsui.$space-scaled-xs;
   }
 
   &-description {
