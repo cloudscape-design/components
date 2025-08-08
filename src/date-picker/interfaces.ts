@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { CalendarProps } from '../calendar/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
+import { DateFormat, DateGranularity, EditableDateFormat } from '../internal/utils/date-time/interfaces';
 
 export interface DatePickerProps
   extends BaseComponentProps,
@@ -67,6 +69,27 @@ export interface DatePickerProps
   ariaRequired?: boolean;
 
   /**
+   * The format as it is displayed. It can take the following values:
+   * * `iso`: ISO 8601 format without time, e.g.: 2024-01-30 (or 2024-01)
+   * * `long-localized`: a more human-readable, localized format, e.g.: January 30, 2024 (or January, 2024)
+   * * `slashed`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01)
+   *
+   * @default 'slashed'
+   */
+  format?: DatePickerProps.Format;
+
+  /**
+   * Specifies the date format to use when the format is 'long-localized' and the user needs to edit the date.
+   *
+   * The format of the input as it is being interacted with. It can take the following values:
+   * * `iso`: ISO 8601 format without time, e.g.: 2024-01-30 (or 2024-01)
+   * * `slashed`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01)
+   *
+   * @default 'slashed'.
+   */
+  inputFormat?: DatePickerProps.InputFormat;
+
+  /**
    * Called when input focus is moved to the UI control.
    */
   onFocus?: NonCancelableEventHandler<null>;
@@ -108,4 +131,10 @@ export namespace DatePickerProps {
   }
 
   export type I18nStrings = CalendarProps.I18nStrings;
+
+  export type Granularity = DateGranularity;
+
+  export type Format = DateFormat;
+
+  export type InputFormat = EditableDateFormat;
 }
