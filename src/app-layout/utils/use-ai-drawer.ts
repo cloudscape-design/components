@@ -31,8 +31,7 @@ function useRuntimeAiDrawer(
       return;
     }
 
-    const unsubscribe = awsuiPluginsInternal.appLayout.onAiDrawerRegistered(drawers => {
-      const aiDrawer = drawers.find(drawer => drawer.type === 'global-ai');
+    const unsubscribe = awsuiPluginsInternal.appLayout.onAiDrawerRegistered(aiDrawer => {
       if (!aiDrawer) {
         return;
       }

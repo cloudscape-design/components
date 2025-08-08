@@ -63,6 +63,7 @@ export type UpdateDrawerConfig = { id: DrawerConfig['id'] } & {
 };
 
 type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
+type AiDrawerRegistrationListener = (drawer: DrawerConfig | null) => void;
 type DrawersUpdateListener = (drawers: Array<DrawerConfig>) => void;
 
 export type DrawersToggledListener = (drawerId: string, params?: OpenCloseDrawerParams) => void;
@@ -83,7 +84,7 @@ export interface DrawersApiPublic {
 export interface DrawersApiInternal {
   clearRegisteredDrawers(): void;
   onDrawersRegistered(listener: DrawersRegistrationListener): () => void;
-  onAiDrawerRegistered(listener: DrawersRegistrationListener): () => void;
+  onAiDrawerRegistered(listener: AiDrawerRegistrationListener): () => void;
   onDrawerOpened(listener: DrawersToggledListener): () => void;
   onAiDrawerOpened(listener: DrawersToggledListener): () => void;
   onDrawerClosed(listener: DrawersToggledListener): () => void;
@@ -97,7 +98,7 @@ export interface DrawersApiInternal {
 export class DrawersController {
   private drawers: Array<DrawerConfig> = [];
   private drawersRegistrationListener: DrawersRegistrationListener | null = null;
-  private aiDrawersRegistrationListener: DrawersRegistrationListener | null = null;
+  private aiDrawersRegistrationListener: AiDrawerRegistrationListener | null = null;
   private drawerOpenedListener: DrawersToggledListener | null = null;
   private aiDrawerOpenedListener: DrawersToggledListener | null = null;
   private drawerClosedListener: DrawersToggledListener | null = null;
@@ -112,7 +113,7 @@ export class DrawersController {
 
   scheduleUpdate = debounce(() => {
     this.drawersRegistrationListener?.(this.drawers.filter(drawer => drawer.type !== 'global-ai'));
-    this.aiDrawersRegistrationListener?.(this.drawers.filter(drawer => drawer.type === 'global-ai'));
+    this.aiDrawersRegistrationListener?.(this.drawers.find(drawer => drawer.type === 'global-ai') ?? null);
     this.drawersUpdateListeners.forEach(drawersUpdateListeners => {
       drawersUpdateListeners?.(this.drawers);
     });
@@ -168,7 +169,7 @@ export class DrawersController {
     };
   };
 
-  onAiDrawerRegistered = (listener: DrawersRegistrationListener) => {
+  onAiDrawerRegistered = (listener: AiDrawerRegistrationListener) => {
     if (this.aiDrawersRegistrationListener !== null) {
       reportRuntimeApiWarning(
         'app-layout-drawers',
