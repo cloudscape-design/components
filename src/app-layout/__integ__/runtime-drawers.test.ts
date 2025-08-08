@@ -256,7 +256,7 @@ describe('Visual refresh toolbar only', () => {
       'first opened drawer should be closed when active drawers can not be shrunk to accommodate it (1345px)',
       setupTest(async page => {
         // Give the toolbar enough horizontal space to make sure the triggers are not collapsed into a dropdown
-        await page.setWindowSize({ ...viewports.desktop, width: 1345 });
+        await page.setWindowSize({ ...viewports.desktop, width: 1360 });
         await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
         await page.click(wrapper.findDrawerTriggerById('security').toSelector());
         await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());

@@ -17,7 +17,7 @@ export interface DrawerStateChangeParams {
 
 export interface DrawerConfig {
   id: string;
-  type?: 'local' | 'global';
+  type?: 'local' | 'global' | 'global-ai';
   ariaLabels: {
     content?: string;
     closeButton?: string;
@@ -25,6 +25,7 @@ export interface DrawerConfig {
     resizeHandle?: string;
     resizeHandleTooltipText?: string;
     expandedModeButton?: string;
+    exitExpandedModeButton?: string;
   };
   isExpandable?: boolean;
   badge?: boolean;
@@ -34,12 +35,15 @@ export interface DrawerConfig {
   orderPriority?: number;
   defaultActive?: boolean;
   trigger?: {
-    iconSvg: string;
+    iconSvg?: string;
+    customIcon?: string;
   };
   mountContent: (container: HTMLElement, mountContext: MountContentContext) => void;
   unmountContent: (container: HTMLElement) => void;
   preserveInactiveContent?: boolean;
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
+  mountHeader?: (container: HTMLElement) => void;
+  unmountHeader?: (container: HTMLElement) => void;
 }
 
 const updatableProperties = [
@@ -49,13 +53,17 @@ const updatableProperties = [
   'orderPriority',
   'defaultActive',
   'onResize',
+  'ariaLabels',
 ] as const;
 
-export type UpdateDrawerConfig = { id: DrawerConfig['id'] } & Partial<
-  Pick<DrawerConfig, (typeof updatableProperties)[number]>
->;
+export type UpdateDrawerConfig = { id: DrawerConfig['id'] } & {
+  [K in Exclude<(typeof updatableProperties)[number], 'ariaLabels'>]?: DrawerConfig[K];
+} & {
+  ariaLabels?: Partial<DrawerConfig['ariaLabels']>;
+};
 
 type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
+type AiDrawerRegistrationListener = (drawer: DrawerConfig | null) => void;
 type DrawersUpdateListener = (drawers: Array<DrawerConfig>) => void;
 
 export type DrawersToggledListener = (drawerId: string, params?: OpenCloseDrawerParams) => void;
@@ -76,9 +84,13 @@ export interface DrawersApiPublic {
 export interface DrawersApiInternal {
   clearRegisteredDrawers(): void;
   onDrawersRegistered(listener: DrawersRegistrationListener): () => void;
+  onAiDrawerRegistered(listener: AiDrawerRegistrationListener): () => void;
   onDrawerOpened(listener: DrawersToggledListener): () => void;
+  onAiDrawerOpened(listener: DrawersToggledListener): () => void;
   onDrawerClosed(listener: DrawersToggledListener): () => void;
+  onAiDrawerClosed(listener: DrawersToggledListener): () => void;
   onDrawerResize(listener: DrawersResizeListener): () => void;
+  onAiDrawerResize(listener: DrawersResizeListener): () => void;
   onDrawersUpdated(listener: DrawersUpdateListener): void;
   getDrawersState(): Array<DrawerConfig>;
 }
@@ -86,13 +98,22 @@ export interface DrawersApiInternal {
 export class DrawersController {
   private drawers: Array<DrawerConfig> = [];
   private drawersRegistrationListener: DrawersRegistrationListener | null = null;
+  private aiDrawersRegistrationListener: AiDrawerRegistrationListener | null = null;
   private drawerOpenedListener: DrawersToggledListener | null = null;
+  private aiDrawerOpenedListener: DrawersToggledListener | null = null;
   private drawerClosedListener: DrawersToggledListener | null = null;
+  private aiDrawerClosedListener: DrawersToggledListener | null = null;
   private drawersUpdateListeners: Array<DrawersUpdateListener> = [];
   private drawerResizeListener: DrawersResizeListener | null = null;
+  private aiDrawerResizeListener: DrawersResizeListener | null = null;
+
+  private isAiDrawer = (drawerId: string) => {
+    return this.drawers.find(drawer => drawer?.id === drawerId)?.type === 'global-ai';
+  };
 
   scheduleUpdate = debounce(() => {
-    this.drawersRegistrationListener?.(this.drawers);
+    this.drawersRegistrationListener?.(this.drawers.filter(drawer => drawer.type !== 'global-ai'));
+    this.aiDrawersRegistrationListener?.(this.drawers.find(drawer => drawer.type === 'global-ai') ?? null);
     this.drawersUpdateListeners.forEach(drawersUpdateListeners => {
       drawersUpdateListeners?.(this.drawers);
     });
@@ -114,9 +135,18 @@ export class DrawersController {
     }
     const drawers = this.drawers.slice();
     const updatedDrawer = { ...oldDrawerConfig };
-    for (const key of updatableProperties) {
+
+    if ('ariaLabels' in rest && rest.ariaLabels) {
+      updatedDrawer.ariaLabels = {
+        ...updatedDrawer.ariaLabels,
+        ...rest.ariaLabels,
+      };
+    }
+
+    const otherProps = updatableProperties.filter(prop => prop !== 'ariaLabels');
+    for (const key of otherProps) {
       if (key in rest) {
-        updatedDrawer[key] = (rest as any)[key];
+        (updatedDrawer as any)[key] = rest[key as keyof typeof rest];
       }
     }
     drawers[drawerIndex] = updatedDrawer;
@@ -135,6 +165,21 @@ export class DrawersController {
     this.scheduleUpdate();
     return () => {
       this.drawersRegistrationListener = null;
+      this.drawersUpdateListeners = [];
+    };
+  };
+
+  onAiDrawerRegistered = (listener: AiDrawerRegistrationListener) => {
+    if (this.aiDrawersRegistrationListener !== null) {
+      reportRuntimeApiWarning(
+        'app-layout-drawers',
+        'multiple app layout instances detected when calling onAiDrawerRegistered'
+      );
+    }
+    this.aiDrawersRegistrationListener = listener;
+    this.scheduleUpdate();
+    return () => {
+      this.aiDrawersRegistrationListener = null;
       this.drawersUpdateListeners = [];
     };
   };
@@ -158,6 +203,21 @@ export class DrawersController {
     };
   };
 
+  onAiDrawerOpened = (listener: DrawersToggledListener) => {
+    if (this.aiDrawerOpenedListener !== null) {
+      reportRuntimeApiWarning(
+        'app-layout-drawers',
+        'multiple app layout instances detected when calling onAiDrawerOpened'
+      );
+    }
+
+    this.aiDrawerOpenedListener = listener;
+
+    return () => {
+      this.aiDrawerOpenedListener = null;
+    };
+  };
+
   onDrawerClosed = (listener: DrawersToggledListener) => {
     if (this.drawerClosedListener !== null) {
       reportRuntimeApiWarning(
@@ -173,12 +233,35 @@ export class DrawersController {
     };
   };
 
+  onAiDrawerClosed = (listener: DrawersToggledListener) => {
+    if (this.aiDrawerClosedListener !== null) {
+      reportRuntimeApiWarning(
+        'app-layout-drawers',
+        'multiple app layout instances detected when calling onAiDrawerClosed'
+      );
+    }
+
+    this.aiDrawerClosedListener = listener;
+
+    return () => {
+      this.aiDrawerClosedListener = null;
+    };
+  };
+
   openDrawer = (drawerId: string, params?: OpenCloseDrawerParams) => {
-    this.drawerOpenedListener?.(drawerId, params);
+    if (this.isAiDrawer(drawerId)) {
+      this.aiDrawerOpenedListener?.(drawerId, params);
+    } else {
+      this.drawerOpenedListener?.(drawerId, params);
+    }
   };
 
   closeDrawer = (drawerId: string, params?: OpenCloseDrawerParams) => {
-    this.drawerClosedListener?.(drawerId, params);
+    if (this.isAiDrawer(drawerId)) {
+      this.aiDrawerClosedListener?.(drawerId, params);
+    } else {
+      this.drawerClosedListener?.(drawerId, params);
+    }
   };
 
   onDrawersUpdated = (listener: DrawersUpdateListener) => {
@@ -204,8 +287,27 @@ export class DrawersController {
     };
   };
 
+  onAiDrawerResize = (listener: DrawersResizeListener) => {
+    if (this.aiDrawerResizeListener !== null) {
+      reportRuntimeApiWarning(
+        'app-layout-drawers',
+        'multiple app layout instances detected when calling onAiDrawerResize'
+      );
+    }
+
+    this.aiDrawerResizeListener = listener;
+
+    return () => {
+      this.aiDrawerResizeListener = null;
+    };
+  };
+
   resizeDrawer = (drawerId: string, size: number) => {
-    this.drawerResizeListener?.(drawerId, size);
+    if (this.isAiDrawer(drawerId)) {
+      this.aiDrawerResizeListener?.(drawerId, size);
+    } else {
+      this.drawerResizeListener?.(drawerId, size);
+    }
   };
 
   getDrawersState = () => {
@@ -224,9 +326,13 @@ export class DrawersController {
   installInternal(internalApi: Partial<DrawersApiInternal> = {}): DrawersApiInternal {
     internalApi.clearRegisteredDrawers ??= this.clearRegisteredDrawers;
     internalApi.onDrawersRegistered ??= this.onDrawersRegistered;
+    internalApi.onAiDrawerRegistered ??= this.onAiDrawerRegistered;
     internalApi.onDrawerOpened ??= this.onDrawerOpened;
+    internalApi.onAiDrawerOpened ??= this.onAiDrawerOpened;
     internalApi.onDrawerClosed ??= this.onDrawerClosed;
+    internalApi.onAiDrawerClosed ??= this.onAiDrawerClosed;
     internalApi.onDrawerResize ??= this.onDrawerResize;
+    internalApi.onAiDrawerResize ??= this.onAiDrawerResize;
     internalApi.onDrawersUpdated ??= this.onDrawersUpdated;
     internalApi.getDrawersState ??= this.getDrawersState;
     return internalApi as DrawersApiInternal;
