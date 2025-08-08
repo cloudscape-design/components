@@ -5,6 +5,8 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 
+import styles from '../../../lib/components/toggle/styles.selectors.js';
+
 const wrapper = createWrapper();
 
 class TogglePage extends BasePageObject {}
@@ -31,13 +33,11 @@ test(
   'style api focus state',
   useBrowser(async browser => {
     await browser.url('#/light/toggle/style-custom/');
-    const toggleSelector = '[data-testid="1"]';
     const page = new TogglePage(browser);
-    const focusRingSelector = `${toggleSelector} > span:first-of-type > span:first-of-type > span:last-of-type`;
 
-    await page.click(toggleSelector);
-    await page.keys('a');
-    await expect((await browser.$(focusRingSelector).getCSSProperty('box-shadow', '::before')).value).toBe(
+    await page.click('[data-testid="1"]');
+    await page.keys('Tab');
+    await expect((await browser.$(`.${styles.outline}`).getCSSProperty('box-shadow', '::before')).value).toBe(
       'rgb(4,125,149)0px0px0px3px'
     );
   })
