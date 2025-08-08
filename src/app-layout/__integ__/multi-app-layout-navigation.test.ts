@@ -28,6 +28,10 @@ describe('Multi app layout navigation', () => {
         await browser.url(
           `#/light/app-layout/multi-layout-with-hidden-instances${iframe ? '-iframe' : ''}?${getUrlParams(theme)}`
         );
+        await page.waitForExist(mainLayout.toSelector());
+        await page.runInsideIframe('iframe', iframe, async () => {
+          await page.waitForExist(secondaryLayout.toSelector());
+        });
         await testFn(page);
       });
 
