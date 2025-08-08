@@ -4495,9 +4495,9 @@ Override the HTML tag by using property \`tagOverride\`.",
           "samp",
           "span",
           "strong",
-          "awsui-value-large",
           "awsui-key-label",
           "awsui-gen-ai-label",
+          "awsui-value-large",
         ],
       },
       "name": "variant",
@@ -10999,6 +10999,171 @@ It should contain the only \`h2\` used in the drawer.",
 }
 `;
 
+exports[`Components definition for error-boundary matches the snapshot: error-boundary 1`] = `
+{
+  "dashCaseName": "error-boundary",
+  "events": [],
+  "functions": [],
+  "name": "ErrorBoundary",
+  "properties": [
+    {
+      "description": "Optional error boundary identifier that is passed as detail to the \`onError\` callback and used in test-utils.",
+      "name": "errorBoundaryId",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "This function is invoked when an error is captured. Use it to override the default fallback message parts:
+* \`header\` (slot) - fallback message header.
+* \`description\` (slot) - fallback message description.
+* \`action\` (slot) - fallback message action.",
+      "inlineType": {
+        "name": "() => ErrorBoundaryProps.FallbackProps",
+        "parameters": [],
+        "returnType": "ErrorBoundaryProps.FallbackProps",
+        "type": "function",
+      },
+      "name": "fallback",
+      "optional": true,
+      "type": "(() => ErrorBoundaryProps.FallbackProps)",
+    },
+    {
+      "description": "Fallback message feedback properties. The feedback properties are not applicable
+if the custom fallback description is used.
+
+Supported properties:
+* \`href\` - external navigation link to the feedback form. Cannot be used together with \`onClick\`.
+* \`onClick\` - click handler for the feedback action. Cannot be used together with \`href\`.",
+      "inlineType": {
+        "name": "ErrorBoundaryProps.FeedbackProps",
+        "properties": [
+          {
+            "name": "href",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "CancelableEventHandler<ClickDetail>",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": "CustomEvent<Detail>",
+                },
+              ],
+              "returnType": "void",
+              "type": "function",
+            },
+            "name": "onClick",
+            "optional": true,
+            "type": "CancelableEventHandler<ClickDetail>",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "feedback",
+      "optional": true,
+      "type": "ErrorBoundaryProps.FeedbackProps",
+    },
+    {
+      "description": "An object containing all the localized strings required by the component:
+* \`headerText\` (string): The text of the fallback message header.
+* \`descriptionText\` (function): A function to return the text of the fallback message description. It takes optional feedback action text,
+                                which requires the \`feedback\` property to be defined.
+* \`feedbackActionText\` (string): The text of the feedback action button.
+* \`refreshActionText\` (string): The text of the refresh action button.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "ErrorBoundaryProps.I18nStrings",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(feedbackAction: string | undefined) => string",
+              "parameters": [
+                {
+                  "name": "feedbackAction",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "descriptionText",
+            "optional": true,
+            "type": "((feedbackAction: string | undefined) => string)",
+          },
+          {
+            "name": "feedbackActionText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "headerText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "refreshActionText",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ErrorBoundaryProps.I18nStrings",
+    },
+    {
+      "description": "This function is invoked when an error is captured. Use it to report errors for telemetry.",
+      "inlineType": {
+        "name": "(error: Error, info: React.ErrorInfo, detail: ErrorBoundaryProps.OnErrorAdditionalDetail) => void",
+        "parameters": [
+          {
+            "name": "error",
+            "type": "Error",
+          },
+          {
+            "name": "info",
+            "type": "React.ErrorInfo",
+          },
+          {
+            "name": "detail",
+            "type": "ErrorBoundaryProps.OnErrorAdditionalDetail",
+          },
+        ],
+        "returnType": "void",
+        "type": "function",
+      },
+      "name": "onError",
+      "optional": false,
+      "type": "(error: Error, info: React.ErrorInfo, detail: ErrorBoundaryProps.OnErrorAdditionalDetail) => void",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Some components including app layout, container, modal, and more have built-in error boundaries. They activate
+when there is an error boundary component up in the hierarchy with \`suppressNested != true\` (default). When active,
+they will use the props (\`fallback\`, \`feedback\`,\`i18nStrings\`, \`onError\`) of the closest error boundary up in the hierarchy.
+
+The standalone error boundaries can also be nested. When \`suppressNested == true\`, all nested error boundaries,
+built-in and standalone, are inactive, so the error passes through to the first non-suppressed error boundary up
+in the hierarchy.",
+      "name": "suppressNested",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Content rendered by default.",
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for expandable-section matches the snapshot: expandable-section 1`] = `
 {
   "dashCaseName": "expandable-section",
@@ -15561,8 +15726,8 @@ The default is \`secondary\`, except inside the following components where it de
         "values": [
           "info",
           "primary",
-          "secondary",
           "awsui-value-large",
+          "secondary",
         ],
       },
       "name": "variant",
