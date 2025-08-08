@@ -8,8 +8,6 @@
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../constants.scss' as constants;
 
-$ai-drawer-background: #161d26;
-
 .universal-toolbar {
   background-color: awsui.$color-background-layout-panel-content;
   box-sizing: border-box;
@@ -33,7 +31,7 @@ $ai-drawer-background: #161d26;
       inset-inline-start: 0;
       inline-size: 5px;
       block-size: 5px;
-      background: $ai-drawer-background;
+      background: constants.$ai-drawer-background;
     }
 
     &:after {
@@ -68,7 +66,7 @@ $ai-drawer-background: #161d26;
 
       block-size: 100%;
       border-end-end-radius: 8px;
-      background: $ai-drawer-background;
+      background: constants.$ai-drawer-background;
     }
 
     > .universal-toolbar-nav {
