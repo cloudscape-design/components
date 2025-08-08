@@ -70,44 +70,44 @@ export default function CustomCheckbox() {
 
       <SpaceBetween size="m" direction="vertical">
         <SpaceBetween size="m" direction="horizontal">
-          <Checkbox checked={false} style={style}>
-            Expire 1
+          <Checkbox checked={false} style={style} data-testid="1">
+            Custom 1
           </Checkbox>
 
           <Checkbox checked={false} disabled={true} style={style}>
-            Expire 2
+            Custom 2
           </Checkbox>
 
           <Checkbox checked={false} disabled={false} readOnly={true} style={style}>
-            Expire 3
+            Custom 3
           </Checkbox>
         </SpaceBetween>
 
         <SpaceBetween size="m" direction="horizontal">
-          <Checkbox checked={true} style={style}>
-            Expire 4
+          <Checkbox checked={true} style={style} data-testid="4">
+            Custom 4
           </Checkbox>
 
           <Checkbox checked={true} disabled={true} readOnly={false} style={style}>
-            Expire 5
+            Custom 5
           </Checkbox>
 
           <Checkbox checked={true} disabled={false} readOnly={true} style={style}>
-            Expire 6
+            Custom 6
           </Checkbox>
         </SpaceBetween>
 
         <SpaceBetween size="m" direction="horizontal">
           <Checkbox checked={true} indeterminate={true} style={style}>
-            Expire 7
+            Custom 7
           </Checkbox>
 
           <Checkbox checked={true} indeterminate={true} disabled={true} readOnly={false} style={style}>
-            Expire 8
+            Custom 8
           </Checkbox>
 
           <Checkbox checked={true} indeterminate={true} disabled={false} readOnly={true} style={style}>
-            Expire 9
+            Custom 9
           </Checkbox>
         </SpaceBetween>
       </SpaceBetween>
