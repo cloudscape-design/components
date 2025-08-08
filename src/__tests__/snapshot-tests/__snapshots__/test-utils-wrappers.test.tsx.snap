@@ -37,6 +37,7 @@ import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
 import DrawerWrapper from './drawer';
+import ErrorBoundaryWrapper from './error-boundary';
 import ExpandableSectionWrapper from './expandable-section';
 import FileDropzoneWrapper from './file-dropzone';
 import FileInputWrapper from './file-input';
@@ -124,6 +125,7 @@ export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
 export { DrawerWrapper };
+export { ErrorBoundaryWrapper };
 export { ExpandableSectionWrapper };
 export { FileDropzoneWrapper };
 export { FileInputWrapper };
@@ -717,6 +719,25 @@ findDrawer(selector?: string): DrawerWrapper | null;
  * @returns {Array<DrawerWrapper>}
  */
 findAllDrawers(selector?: string): Array<DrawerWrapper>;
+/**
+ * Returns the wrapper of the first ErrorBoundary that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ErrorBoundary.
+ * If no matching ErrorBoundary is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ErrorBoundaryWrapper | null}
+ */
+findErrorBoundary(selector?: string): ErrorBoundaryWrapper | null;
+
+/**
+ * Returns an array of ErrorBoundary wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ErrorBoundaries inside the current wrapper.
+ * If no matching ErrorBoundary is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ErrorBoundaryWrapper>}
+ */
+findAllErrorBoundaries(selector?: string): Array<ErrorBoundaryWrapper>;
 /**
  * Returns the wrapper of the first ExpandableSection that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first ExpandableSection.
@@ -2168,6 +2189,19 @@ ElementWrapper.prototype.findDrawer = function(selector) {
 ElementWrapper.prototype.findAllDrawers = function(selector) {
   return this.findAllComponents(DrawerWrapper, selector);
 };
+ElementWrapper.prototype.findErrorBoundary = function(selector) {
+  let rootSelector = \`.\${ErrorBoundaryWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ErrorBoundaryWrapper && ErrorBoundaryWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ErrorBoundaryWrapper.rootSelector}, .\${ErrorBoundaryWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ErrorBoundaryWrapper);
+};
+
+ElementWrapper.prototype.findAllErrorBoundaries = function(selector) {
+  return this.findAllComponents(ErrorBoundaryWrapper, selector);
+};
 ElementWrapper.prototype.findExpandableSection = function(selector) {
   let rootSelector = \`.\${ExpandableSectionWrapper.rootSelector}\`;
   if("legacyRootSelector" in ExpandableSectionWrapper && ExpandableSectionWrapper.legacyRootSelector){
@@ -2957,6 +2991,7 @@ import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
 import DrawerWrapper from './drawer';
+import ErrorBoundaryWrapper from './error-boundary';
 import ExpandableSectionWrapper from './expandable-section';
 import FileDropzoneWrapper from './file-dropzone';
 import FileInputWrapper from './file-input';
@@ -3044,6 +3079,7 @@ export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
 export { DrawerWrapper };
+export { ErrorBoundaryWrapper };
 export { ExpandableSectionWrapper };
 export { FileDropzoneWrapper };
 export { FileInputWrapper };
@@ -3581,6 +3617,23 @@ findDrawer(selector?: string): DrawerWrapper;
  * @returns {MultiElementWrapper<DrawerWrapper>}
  */
 findAllDrawers(selector?: string): MultiElementWrapper<DrawerWrapper>;
+/**
+ * Returns a wrapper that matches the ErrorBoundaries with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches ErrorBoundaries.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ErrorBoundaryWrapper}
+ */
+findErrorBoundary(selector?: string): ErrorBoundaryWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches ErrorBoundaries with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches ErrorBoundaries.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<ErrorBoundaryWrapper>}
+ */
+findAllErrorBoundaries(selector?: string): MultiElementWrapper<ErrorBoundaryWrapper>;
 /**
  * Returns a wrapper that matches the ExpandableSections with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches ExpandableSections.
@@ -4917,6 +4970,19 @@ ElementWrapper.prototype.findDrawer = function(selector) {
 
 ElementWrapper.prototype.findAllDrawers = function(selector) {
   return this.findAllComponents(DrawerWrapper, selector);
+};
+ElementWrapper.prototype.findErrorBoundary = function(selector) {
+  let rootSelector = \`.\${ErrorBoundaryWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ErrorBoundaryWrapper && ErrorBoundaryWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ErrorBoundaryWrapper.rootSelector}, .\${ErrorBoundaryWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ErrorBoundaryWrapper);
+};
+
+ElementWrapper.prototype.findAllErrorBoundaries = function(selector) {
+  return this.findAllComponents(ErrorBoundaryWrapper, selector);
 };
 ElementWrapper.prototype.findExpandableSection = function(selector) {
   let rootSelector = \`.\${ExpandableSectionWrapper.rootSelector}\`;

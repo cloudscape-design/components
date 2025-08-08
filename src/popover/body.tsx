@@ -8,6 +8,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
+import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useInternalI18n } from '../i18n/context';
 import FocusLock from '../internal/components/focus-lock';
 import { KeyCode } from '../internal/keycode';
@@ -102,22 +103,24 @@ export default function PopoverBody({
       onKeyDown={onKeyDown}
       {...dialogProps}
     >
-      <FocusLock disabled={!shouldTrapFocus} autoFocus={false}>
-        {header && (
-          <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
-            {dismissButton}
-            <div className={styles.header} id={labelledById}>
-              <h2>{header}</h2>
+      <BuiltInErrorBoundary>
+        <FocusLock disabled={!shouldTrapFocus} autoFocus={false}>
+          {header && (
+            <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
+              {dismissButton}
+              <div className={styles.header} id={labelledById}>
+                <h2>{header}</h2>
+              </div>
+            </div>
+          )}
+          <div className={!header && showDismissButton ? styles['has-dismiss'] : undefined}>
+            {!header && dismissButton}
+            <div className={clsx(styles.content, { [styles['content-overflow-visible']]: !!overflowVisible })}>
+              {children}
             </div>
           </div>
-        )}
-        <div className={!header && showDismissButton ? styles['has-dismiss'] : undefined}>
-          {!header && dismissButton}
-          <div className={clsx(styles.content, { [styles['content-overflow-visible']]: !!overflowVisible })}>
-            {children}
-          </div>
-        </div>
-      </FocusLock>
+        </FocusLock>
+      </BuiltInErrorBoundary>
     </div>
   );
 }
