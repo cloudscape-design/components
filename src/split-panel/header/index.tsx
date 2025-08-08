@@ -4,7 +4,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalButton from '../button/internal';
+import InternalButton from '../../button/internal';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -52,7 +52,7 @@ export default function SplitPanelHeader({
       <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
         {headerText}
       </h2>
-      <div className={styles['header-actions']}>
+      <div className={styles['header-buttons']}>
         {!hidePreferencesButton && isOpen && (
           <>
             <InternalButton
