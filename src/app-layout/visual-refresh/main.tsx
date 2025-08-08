@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { BuiltInErrorBoundary } from '../../error-boundary/internal';
 import customCssProps from '../../internal/generated/custom-css-properties';
 import * as tokens from '../../internal/generated/styles/tokens';
 import { getStickyOffsetVars } from '../utils/sticky-offsets';
@@ -63,7 +64,7 @@ export default function Main() {
         ),
       }}
     >
-      {content}
+      <BuiltInErrorBoundary>{content}</BuiltInErrorBoundary>
     </div>
   );
 }
