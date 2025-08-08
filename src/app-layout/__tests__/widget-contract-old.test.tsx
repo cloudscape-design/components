@@ -3,10 +3,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import './widget-new-mocks'; // should be imported before components to activate mocks
+import './widget-old-mocks'; // should be imported before components to activate mocks
 import AppLayout from '../../../lib/components/app-layout';
 import { describeEachAppLayout, testDrawer } from './utils';
-import { renderedProps } from './widget-new-mocks';
+import { renderedProps } from './widget-old-mocks';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => {
   let counter = 0;

@@ -2,7 +2,7 @@
 
 exports[`Theme=refresh-toolbar, Size=desktop contract for default use-case 1`] = `
 Map {
-  [Function] => {
+  "BeforeMainSlotImplementation" => {
     "appLayoutProps": {
       "ariaLabels": {
         "drawers": undefined,
@@ -53,7 +53,7 @@ Map {
       "onNavigationToggle": undefined,
     },
   },
-  [Function] => {
+  "TopContentSlotImplementation" => {
     "appLayoutProps": {
       "ariaLabels": {
         "drawers": undefined,
@@ -104,7 +104,7 @@ Map {
       "onNavigationToggle": undefined,
     },
   },
-  [Function] => {
+  "BottomContentSlotImplementation" => {
     "appLayoutProps": {
       "ariaLabels": {
         "drawers": undefined,
@@ -155,7 +155,7 @@ Map {
       "onNavigationToggle": undefined,
     },
   },
-  [Function] => {
+  "AfterMainSlotImplementation" => {
     "appLayoutProps": {
       "ariaLabels": {
         "drawers": undefined,
@@ -206,7 +206,7 @@ Map {
       "onNavigationToggle": undefined,
     },
   },
-  [Function] => {
+  "AppLayoutStateProvider" => {
     "appLayoutProps": {
       "ariaLabels": {
         "drawers": undefined,
@@ -249,7 +249,7 @@ Map {
 
 exports[`Theme=refresh-toolbar, Size=desktop contract with all slots provided 1`] = `
 Map {
-  [Function] => {
+  "BeforeMainSlotImplementation" => {
     "appLayoutProps": {
       "ariaLabels": {
         "drawers": undefined,
@@ -319,7 +319,7 @@ Map {
       "onNavigationToggle": undefined,
     },
   },
-  [Function] => {
+  "TopContentSlotImplementation" => {
     "appLayoutProps": {
       "ariaLabels": {
         "drawers": undefined,
@@ -389,7 +389,7 @@ Map {
       "onNavigationToggle": undefined,
     },
   },
-  [Function] => {
+  "BottomContentSlotImplementation" => {
     "appLayoutProps": {
       "ariaLabels": {
         "drawers": undefined,
@@ -459,7 +459,7 @@ Map {
       "onNavigationToggle": undefined,
     },
   },
-  [Function] => {
+  "AfterMainSlotImplementation" => {
     "appLayoutProps": {
       "ariaLabels": {
         "drawers": undefined,
@@ -529,7 +529,7 @@ Map {
       "onNavigationToggle": undefined,
     },
   },
-  [Function] => {
+  "AppLayoutStateProvider" => {
     "appLayoutProps": {
       "ariaLabels": {
         "drawers": undefined,
@@ -590,7 +590,7 @@ Map {
 
 exports[`Theme=refresh-toolbar, Size=desktop contract with drawers 1`] = `
 Map {
-  [Function] => {
+  "BeforeMainSlotImplementation" => {
     "appLayoutProps": {
       "activeDrawerId": "security",
       "ariaLabels": {
@@ -660,7 +660,7 @@ Map {
       "onNavigationToggle": undefined,
     },
   },
-  [Function] => {
+  "TopContentSlotImplementation" => {
     "appLayoutProps": {
       "activeDrawerId": "security",
       "ariaLabels": {
@@ -730,7 +730,7 @@ Map {
       "onNavigationToggle": undefined,
     },
   },
-  [Function] => {
+  "BottomContentSlotImplementation" => {
     "appLayoutProps": {
       "activeDrawerId": "security",
       "ariaLabels": {
@@ -800,7 +800,7 @@ Map {
       "onNavigationToggle": undefined,
     },
   },
-  [Function] => {
+  "AfterMainSlotImplementation" => {
     "appLayoutProps": {
       "activeDrawerId": "security",
       "ariaLabels": {
@@ -870,7 +870,7 @@ Map {
       "onNavigationToggle": undefined,
     },
   },
-  [Function] => {
+  "AppLayoutStateProvider" => {
     "appLayoutProps": {
       "activeDrawerId": "security",
       "ariaLabels": {
