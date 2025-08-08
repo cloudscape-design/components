@@ -17,7 +17,7 @@ export interface KeyValuePairsProps extends BaseComponentProps {
    *
    * Each key-value pair definition has the following properties:
    *   * `type` (string) - (Optional) Item type (pair).
-   *   * `label` (string) - The key label.
+   *   * `label` (React.ReactNode) - The key label.
    *   * `info` (React.ReactNode) - (Optional) Area next to the key to display an info link.
    *   * `value` (React.ReactNode) - The corresponding value for the key.
    *
