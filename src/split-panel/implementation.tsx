@@ -106,16 +106,26 @@ export function SplitPanelImplementation({
         <div className={styles['header-main-row']}>
           <div className={styles['header-text-and-info']}>
             <h2 className={styles['header-tag']}>
-              {headerBefore && <span className={styles['header-before-slot']}>{headerBefore}</span>}
+              {headerBefore && (
+                <span className={clsx(styles['header-before-slot'], testUtilStyles['header-before-slot'])}>
+                  {headerBefore}
+                </span>
+              )}
               {header && (
                 <div className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
                   {header}
                 </div>
               )}
             </h2>
-            {headerInfo && <span className={styles['header-info-slot']}>{headerInfo}</span>}
+            {headerInfo && (
+              <span className={clsx(styles['header-info-slot'], testUtilStyles['header-info-slot'])}>{headerInfo}</span>
+            )}
           </div>
-          {headerActions && <div className={styles['header-actions-slot']}>{headerActions}</div>}
+          {headerActions && (
+            <div className={clsx(styles['header-actions-slot'], testUtilStyles['header-actions-slot'])}>
+              {headerActions}
+            </div>
+          )}
         </div>
         <div className={styles['header-actions']}>
           {!hidePreferencesButton && isOpen && (
@@ -164,7 +174,9 @@ export function SplitPanelImplementation({
         </div>
       </div>
 
-      {showDescription && <p className={styles['header-description']}>{headerDescription}</p>}
+      {showDescription && (
+        <p className={clsx(styles['header-description'], testUtilStyles['header-description'])}>{headerDescription}</p>
+      )}
     </div>
   );
 
