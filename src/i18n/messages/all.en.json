@@ -1,4 +1,10 @@
 {
+  "error-boundary": {
+    "i18nStrings.headerText": "Unexpected error, content failed to show",
+    "i18nStrings.descriptionText": "{feedbackAction, select, null {You can refresh the page to try again.} other {You can refresh the page to try again. We are tracking this issue, but you can {feedbackAction}.}}",
+    "i18nStrings.feedbackActionText": "share more information here",
+    "i18nStrings.refreshActionText": "Refresh page"
+  },
   "[charts]": {
     "loadingText": "Loading chart",
     "errorText": "The data couldn't be fetched. Try again later.",

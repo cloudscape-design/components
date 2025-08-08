@@ -8,6 +8,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { GeneratedAnalyticsMetadataAppLayoutToolbarComponent } from '../../../app-layout-toolbar/analytics-metadata/interfaces';
 import VisualContext from '../../../internal/components/visual-context';
 import customCssProps from '../../../internal/generated/custom-css-properties';
+import { ErrorBoundaryMain } from '../../error-boundary';
 import { AppLayoutInternalProps, AppLayoutPendingState } from '../interfaces';
 import {
   AppLayoutAfterMainSlot,
@@ -86,7 +87,7 @@ export const SkeletonLayout = ({
             {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
             {/*delay rendering the content until registration of this instance is complete*/}
             <div {...contentElAttributes} className={contentElAttributes?.className ?? testutilStyles.content}>
-              {registered ? content : null}
+              {registered ? <ErrorBoundaryMain>{content}</ErrorBoundaryMain> : null}
             </div>
           </div>
           <AppLayoutBottomContentSlot {...mergedProps} />

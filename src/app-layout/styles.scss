@@ -35,6 +35,7 @@
   min-inline-size: 0;
   background-color: awsui.$color-background-layout-main;
   position: relative;
+
   &-scrollable {
     overflow: auto;
   }
@@ -67,4 +68,11 @@
   // extra top padding when there are no breadcrumbs above,
   // applied to content or content header, whatever comes first
   padding-block-start: awsui.$space-scaled-m;
+}
+
+.error-boundary-wrapper {
+  block-size: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
