@@ -112,6 +112,7 @@ export default function GenericTokenGroupPage() {
           label="Inline dismissable token"
           iconName="edit"
           onDismiss={() => {}}
+          popoverProps={{ content: <Input value="test" /> }}
         />
         <Token
           variant="inline"
