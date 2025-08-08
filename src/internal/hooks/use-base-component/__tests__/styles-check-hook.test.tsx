@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import { render, waitFor } from '@testing-library/react';
 
 import { useMissingStylesCheck } from '../../../../../lib/components/internal/hooks/use-base-component/styles-check';
 
 function Test() {
-  useMissingStylesCheck();
-  return null;
+  const ref = useRef<HTMLDivElement>(null);
+  useMissingStylesCheck(ref);
+  return <div></div>;
 }
 
 let consoleMock: jest.SpyInstance;
