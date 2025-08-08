@@ -254,11 +254,20 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     align-items: flex-start;
   }
 
+  &-tag {
+    flex-grow: 1;
+    margin-block: 0;
+  }
+
+  &-tag,
+  &-info {
+    display: inline;
+  }
+
   &-text {
     $vertical-margin: calc(#{awsui.$space-scaled-xxs} + 1px);
-    @include styles.font-panel-header;
-    flex-grow: 1;
     display: inline-block;
+    @include styles.font-panel-header;
     padding-block: 0;
     padding-inline: 0;
     margin-inline: 0;
@@ -267,8 +276,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     min-block-size: calc(#{awsui.$font-panel-header-line-height} + #{$vertical-margin});
   }
 
-  &-info {
-    display: inline;
+  &-before + &-text,
+  &-tag + &-info {
     margin-inline-start: awsui.$space-scaled-xs;
   }
 

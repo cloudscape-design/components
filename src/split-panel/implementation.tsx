@@ -36,7 +36,9 @@ export function SplitPanelImplementation({
   hidePreferencesButton,
   closeBehavior,
   i18nStrings = {},
+  ariaLabel,
   headerActions,
+  headerBefore,
   headerDescription,
   headerInfo,
   ...restProps
@@ -92,9 +94,9 @@ export function SplitPanelImplementation({
   };
 
   const panelHeaderUniqueId = useUniqueId('split-panel-header');
-  const panelHeaderId = panelHeaderUniqueId;
+  const panelHeaderId = ariaLabel ? undefined : panelHeaderUniqueId;
 
-  const hasCustomElements = !!headerActions || !!headerInfo;
+  const hasCustomElements = !!headerActions || !!headerBefore || !!headerInfo;
 
   const showDescription = headerDescription && isOpen;
 
@@ -102,9 +104,16 @@ export function SplitPanelImplementation({
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
       <div className={styles['header-content']}>
         <div className={styles['header-main-row']}>
-          <div>
-            <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
-              {header}
+          <div className={styles['header-text-and-info']}>
+            <h2 className={styles['header-tag']}>
+              {headerBefore && (
+                <span className={clsx(styles['header-before'], testUtilStyles['header-before'])}>{headerBefore}</span>
+              )}
+              {header && (
+                <div className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
+                  {header}
+                </div>
+              )}
             </h2>
             {headerInfo && (
               <span className={clsx(styles['header-info'], testUtilStyles['header-info'])}>{headerInfo}</span>
@@ -240,6 +249,7 @@ export function SplitPanelImplementation({
           toggleRef={refs.toggle}
           header={wrappedHeader}
           panelHeaderId={panelHeaderId}
+          ariaLabel={ariaLabel}
           closeBehavior={closeBehavior}
         >
           {children}
@@ -258,6 +268,7 @@ export function SplitPanelImplementation({
           header={wrappedHeader}
           panelHeaderId={panelHeaderId}
           appLayoutMaxWidth={appLayoutMaxWidth}
+          ariaLabel={ariaLabel}
           closeBehavior={closeBehavior}
           hasCustomElements={hasCustomElements}
         >
