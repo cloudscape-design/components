@@ -259,11 +259,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     margin-block: 0;
   }
 
-  &-text-and-info,
-  &-tag {
-    align-items: baseline;
-  }
-
   &-tag,
   &-info-slot {
     display: inline;
