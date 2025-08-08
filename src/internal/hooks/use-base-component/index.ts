@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { MutableRefObject } from 'react';
+import React, { MutableRefObject } from 'react';
 
 import {
   ComponentConfiguration,
@@ -32,12 +32,12 @@ export default function useBaseComponent<T = any>(
   const isVisualRefresh = useVisualRefresh();
   const theme = getVisualTheme(THEME, isVisualRefresh);
   useComponentMetrics(componentName, { packageSource: PACKAGE_SOURCE, packageVersion: PACKAGE_VERSION, theme }, config);
-  useMissingStylesCheck();
   const elementRef = useComponentMetadata<T>(
     componentName,
     { packageName: PACKAGE_SOURCE, version: PACKAGE_VERSION, theme },
     analyticsMetadata as any
   );
-  useFocusVisible(elementRef as MutableRefObject<HTMLElement>);
+  useMissingStylesCheck(elementRef as React.RefObject<HTMLElement>);
+  useFocusVisible(elementRef as React.RefObject<HTMLElement>);
   return { __internalRootRef: elementRef };
 }
