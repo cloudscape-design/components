@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import customCssProps from '../../internal/generated/custom-css-properties';
 import * as tokens from '../../internal/generated/styles/tokens';
+import { ErrorBoundaryMain } from '../error-boundary';
 import { getStickyOffsetVars } from '../utils/sticky-offsets';
 import { useAppLayoutInternals } from './context';
 
@@ -63,7 +64,7 @@ export default function Main() {
         ),
       }}
     >
-      {content}
+      <ErrorBoundaryMain>{content}</ErrorBoundaryMain>
     </div>
   );
 }

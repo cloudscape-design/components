@@ -4,6 +4,14 @@
 
 /** Auto-generated argument types based on "en" i18n strings. Do not edit manually. */
 export interface I18nFormatArgTypes {
+  "error-boundary": {
+    "i18nStrings.headerText"?: never;
+    "i18nStrings.descriptionText"?: {
+      "feedbackAction": undefined | string;
+    },
+    "i18nStrings.feedbackActionText"?: never;
+    "i18nStrings.refreshActionText"?: never;
+  },
   "[charts]": {
     "loadingText": never;
     "errorText": never;
