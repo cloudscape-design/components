@@ -267,7 +267,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     min-block-size: calc(#{awsui.$font-panel-header-line-height} + #{$vertical-margin});
   }
 
-  &-info-slot {
+  &-info {
     display: inline;
     margin-inline-start: awsui.$space-scaled-xs;
   }
@@ -280,7 +280,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
 }
 
-.header-actions {
+.header-buttons {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

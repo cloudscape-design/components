@@ -102,21 +102,19 @@ export function SplitPanelImplementation({
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
       <div className={styles['header-content']}>
         <div className={styles['header-main-row']}>
-          <div className={styles['header-text-and-info']}>
+          <div>
             <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
               {header}
             </h2>
             {headerInfo && (
-              <span className={clsx(styles['header-info-slot'], testUtilStyles['header-info-slot'])}>{headerInfo}</span>
+              <span className={clsx(styles['header-info'], testUtilStyles['header-info'])}>{headerInfo}</span>
             )}
           </div>
           {headerActions && (
-            <div className={clsx(styles['header-actions-slot'], testUtilStyles['header-actions-slot'])}>
-              {headerActions}
-            </div>
+            <div className={clsx(styles['header-actions'], testUtilStyles['header-actions'])}>{headerActions}</div>
           )}
         </div>
-        <div className={styles['header-actions']}>
+        <div className={styles['header-buttons']}>
           {!hidePreferencesButton && isOpen && (
             <>
               <InternalButton
