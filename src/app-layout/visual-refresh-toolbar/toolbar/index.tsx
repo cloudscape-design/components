@@ -158,7 +158,7 @@ export function AppLayoutToolbarImplementation({
               ref={aiDrawerFocusRef}
               selected={!drawerExpandedMode && !!activeAiDrawerId}
               disabled={anyPanelOpenInMobile}
-              inheritSize={!!aiDrawer.trigger?.customIcon}
+              variant={aiDrawer.trigger?.customIcon ? 'custom' : 'circle'}
               hasTooltip={true}
               testId={`awsui-app-layout-trigger-${aiDrawer.id}`}
             />
