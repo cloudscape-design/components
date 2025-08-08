@@ -155,6 +155,21 @@ test('does not render tokens when no tokens are present', () => {
   expect(wrapper.findTokens()).toHaveLength(0);
 });
 
+test('renders inline label text when provided', () => {
+  const { wrapper } = renderMultiselect(
+    <Multiselect selectedOptions={[]} options={defaultOptions} {...({ inlineLabelText: 'Select items:' } as any)} />
+  );
+  const inlineLabel = wrapper.findByClassName(selectPartsStyles['inline-label']);
+  expect(inlineLabel).not.toBeNull();
+  expect(inlineLabel!.getElement()).toHaveTextContent('Select items:');
+});
+
+test('does not render inline label when inlineLabelText is not provided', () => {
+  const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
+  const inlineLabel = wrapper.findByClassName(selectPartsStyles['inline-label']);
+  expect(inlineLabel).toBeNull();
+});
+
 test('allows deselecting an option without object equality', () => {
   const onChange = jest.fn();
   const { wrapper } = renderMultiselect(
