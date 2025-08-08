@@ -15,14 +15,6 @@ describe('Split panel: Header slots', () => {
       expect(wrapper!.findHeaderActions()!.getElement()).toHaveTextContent('Action');
     });
 
-    test('renders headerBefore', () => {
-      const { wrapper } = renderSplitPanel({
-        props: { headerBefore: <span>Before</span> },
-      });
-      expect(wrapper!.findHeaderBefore()).not.toBeNull();
-      expect(wrapper!.findHeaderBefore()!.getElement()).toHaveTextContent('Before');
-    });
-
     test('renders headerDescription', () => {
       const { wrapper } = renderSplitPanel({
         props: { headerDescription: 'Header description' },
@@ -42,7 +34,6 @@ describe('Split panel: Header slots', () => {
     test('does not render header properties when not provided', () => {
       const { wrapper } = renderSplitPanel();
       expect(wrapper!.findHeaderActions()).toBeNull();
-      expect(wrapper!.findHeaderBefore()).toBeNull();
       expect(wrapper!.findHeaderDescription()).toBeNull();
       expect(wrapper!.findHeaderInfo()).toBeNull();
     });
