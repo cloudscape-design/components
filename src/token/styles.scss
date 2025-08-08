@@ -104,8 +104,17 @@ $trigger-underline-offset-inline: 0.1em;
 
 .popover-trigger-wrapper {
   inline-size: 100%;
+
+  &-inline {
+    max-block-size: 20px;
+  }
 }
 
 .popover-trigger-inline-button {
+  max-block-size: 20px;
   text-underline-offset: $trigger-underline-offset-inline;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(-1px);
+  }
 }
