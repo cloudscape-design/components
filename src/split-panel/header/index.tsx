@@ -4,30 +4,27 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { Focusable } from '../../app-layout/utils/use-focus-control';
 import InternalButton from '../../button/internal';
+import { SplitPanelProps } from '../interfaces';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-interface SplitPanelHeaderProps {
+interface SplitPanelHeaderProps extends Pick<SplitPanelProps, 'closeBehavior'> {
   isToolbar?: boolean;
-  appLayoutMaxWidth: React.CSSProperties | undefined;
+  appLayoutMaxWidth?: React.CSSProperties;
   headerText: string;
   panelHeaderId: string;
   hidePreferencesButton: boolean;
   isOpen?: boolean;
   setPreferencesOpen: (open: boolean) => void;
-  i18nStrings: {
-    preferencesTitle?: string;
-    closeButtonAriaLabel?: string;
-    openButtonAriaLabel?: string;
-  };
+  i18nStrings: Pick<SplitPanelProps.I18nStrings, 'preferencesTitle' | 'closeButtonAriaLabel' | 'openButtonAriaLabel'>;
   refs: {
-    preferences: React.RefObject<any>;
-    toggle: React.RefObject<any>;
+    preferences: React.RefObject<Focusable>;
+    toggle: React.RefObject<Focusable>;
   };
   isRefresh: boolean;
-  closeBehavior: 'collapse' | 'hide';
   position: 'side' | 'bottom';
   onToggle: () => void;
 }
