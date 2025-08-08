@@ -45,26 +45,32 @@ function EditableHeader({ onChange, value }: { onChange: (text: string) => void;
     }
   }, [editing]);
 
-  return editing ? (
-    <SpaceBetween direction="horizontal" size="xs">
-      <Input value={internalValue} onChange={({ detail }) => setInternalValue(detail.value)} ref={inputRef} />
-      <Button
-        variant="icon"
-        iconName="check"
-        onClick={() => {
-          onChange(internalValue);
-          setEditing(false);
-        }}
-      />
-      <Button variant="icon" iconName="close" onClick={() => setEditing(false)} />
-    </SpaceBetween>
-  ) : (
-    <>
-      <Box variant="h3" tagOverride="h2" display="inline" margin={{ vertical: 'n' }}>
-        {value}
-      </Box>{' '}
-      <Button variant="icon" iconName="edit" onClick={() => setEditing(true)}></Button>
-    </>
+  return (
+    <Box display="inline-block">
+      <SpaceBetween direction="horizontal" size="xxs" alignItems="center">
+        {editing ? (
+          <>
+            <Input value={internalValue} onChange={({ detail }) => setInternalValue(detail.value)} ref={inputRef} />
+            <Button
+              variant="icon"
+              iconName="check"
+              onClick={() => {
+                onChange(internalValue);
+                setEditing(false);
+              }}
+            />
+            <Button variant="icon" iconName="close" onClick={() => setEditing(false)} />
+          </>
+        ) : (
+          <>
+            <Box variant="h3" tagOverride="h2" display="inline" margin={{ vertical: 'n' }} padding={{ vertical: 'n' }}>
+              {value}
+            </Box>
+            <Button variant="icon" iconName="edit" onClick={() => setEditing(true)}></Button>
+          </>
+        )}
+      </SpaceBetween>
+    </Box>
   );
 }
 
@@ -112,15 +118,17 @@ export default function () {
             }
             headerBefore={
               (urlParams.renderBadge || urlParams.editableHeader) && (
-                <SpaceBetween direction="horizontal" size="xs" alignItems="center">
+                <>
                   {urlParams.renderBadge && <Badge>Badge</Badge>}
                   {urlParams.editableHeader && (
-                    <EditableHeader
-                      value={urlParams.headerText || ''}
-                      onChange={value => setUrlParams({ ...urlParams, headerText: value })}
-                    />
+                    <Box display="inline-block" margin={{ left: urlParams.renderBadge ? 'xs' : 'n' }}>
+                      <EditableHeader
+                        value={urlParams.headerText || ''}
+                        onChange={value => setUrlParams({ ...urlParams, headerText: value })}
+                      />
+                    </Box>
                   )}
-                </SpaceBetween>
+                </>
               )
             }
             headerDescription={urlParams.description}
