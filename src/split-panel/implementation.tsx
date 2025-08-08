@@ -102,8 +102,15 @@ export function SplitPanelImplementation({
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
       <div className={styles['header-content']}>
         <div className={styles['header-main-row']}>
-          <div>
-            <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
+          <div className={styles['header-text-and-info']}>
+            <h2
+              className={clsx(
+                styles['header-text'],
+                testUtilStyles['header-text'],
+                !!headerInfo && styles['with-info']
+              )}
+              id={panelHeaderId}
+            >
               {header}
             </h2>
             {headerInfo && (
