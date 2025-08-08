@@ -55,7 +55,12 @@ function InternalToken({
       return mainContent;
     }
     return (
-      <div className={styles['popover-trigger-wrapper']}>
+      <div
+        className={clsx(
+          styles['popover-trigger-wrapper'],
+          variant === 'inline' && styles['popover-trigger-wrapper-inline']
+        )}
+      >
         <InternalPopover
           className={popoverProps.className}
           triggerClassName={clsx(variant === 'inline' && styles['popover-trigger-inline-button'])}
