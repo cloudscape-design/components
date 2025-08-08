@@ -26,3 +26,21 @@ test(
     ).resolves.toBe(false);
   })
 );
+
+test(
+  'style api focus state',
+  useBrowser(async browser => {
+    await browser.url('#/light/checkbox/style-custom/');
+    const page = new CheckboxPage(browser);
+
+    const focusRingSelector = `[data-testid="4"] > span:first-of-type > span:first-of-type > span:last-of-type`;
+
+    await page.click('[data-testid="1"]');
+    await page.keys('Tab');
+    await page.keys('Tab');
+
+    await expect((await browser.$(focusRingSelector).getCSSProperty('box-shadow', '::before')).value).toBe(
+      'rgb(4,125,149)0px0px0px3px'
+    );
+  })
+);
