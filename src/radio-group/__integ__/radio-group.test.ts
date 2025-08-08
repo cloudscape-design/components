@@ -5,6 +5,8 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper, { RadioGroupWrapper } from '../../../lib/components/test-utils/selectors';
 
+import styles from '../../../lib/components/radio-group/styles.selectors.js';
+
 const radioGroupWrapper = createWrapper().findRadioGroup('#simple');
 
 class RadioPage extends BasePageObject {
@@ -69,13 +71,11 @@ test(
   'style api focus state',
   useBrowser(async browser => {
     await browser.url('#/light/radio-group/style-custom/');
-    const radioSelector = '[data-testid="1"]';
     const page = new RadioPage(browser);
-    const focusRingSelector = `${radioSelector} > span:first-of-type > span:first-of-type > span:first-of-type > span:last-of-type`;
 
-    await page.click(radioSelector);
-    await page.keys('a');
-    await expect((await browser.$(focusRingSelector).getCSSProperty('box-shadow', '::before')).value).toBe(
+    await page.click('[data-testid="1"]');
+    await page.keys('Tab');
+    await expect((await browser.$(`.${styles.outline}`).getCSSProperty('box-shadow', '::before')).value).toBe(
       'rgb(4,125,149)0px0px0px1px'
     );
   })
