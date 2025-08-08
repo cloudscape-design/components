@@ -29,6 +29,7 @@ type SplitPanelDemoContext = React.Context<
     renderBadge: boolean;
     renderInput: boolean;
     renderInfoLink: boolean;
+    splitPanelOpen: boolean;
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
   }>
 >;
@@ -49,6 +50,8 @@ export default function () {
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}
         toolsOpen={toolsOpen}
+        splitPanelOpen={urlParams.splitPanelOpen}
+        onSplitPanelToggle={({ detail }) => setUrlParams({ ...urlParams, splitPanelOpen: detail.open })}
         splitPanelPreferences={{
           position: urlParams.splitPanelPosition,
         }}
