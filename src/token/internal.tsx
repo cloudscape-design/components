@@ -51,7 +51,11 @@ function InternalToken({
       <Option triggerVariant={variant === 'inline'} option={optionDefinition} isGenericGroup={false} />
     );
     if (children || labelTag || description || tags || !popoverProps?.content) {
-      // dev warning
+      if (popoverProps) {
+        throw new Error(
+          'Invariant violation: labelTag, description, and tags are not supported in combination with a popover.'
+        );
+      }
       return mainContent;
     }
     return (
@@ -62,18 +66,11 @@ function InternalToken({
         )}
       >
         <InternalPopover
-          className={popoverProps.className}
+          triggerType="text-inline"
           triggerClassName={clsx(variant === 'inline' && styles['popover-trigger-inline-button'])}
           size={popoverProps.size ?? 'medium'}
-          triggerType="text-inline"
           position={popoverProps?.position ?? 'top'}
-          content={popoverProps?.content}
-          fixedWidth={popoverProps.fixedWidth}
-          dismissAriaLabel={popoverProps.dismissAriaLabel}
-          dismissButton={popoverProps.dismissButton}
-          header={popoverProps.header}
-          renderWithPortal={popoverProps.renderWithPortal}
-          triggerAriaLabel={popoverProps.triggerAriaLabel}
+          {...popoverProps}
         >
           {mainContent}
         </InternalPopover>
