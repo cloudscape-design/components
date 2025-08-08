@@ -31,7 +31,7 @@ export default class SplitPanelWrapper extends ComponentWrapper {
   }
 
   findHeaderActions() {
-    return this.findByClassName(testUtilStyles['header-actions-slot']);
+    return this.findByClassName(testUtilStyles['header-actions']);
   }
 
   findHeaderDescription() {
@@ -39,7 +39,7 @@ export default class SplitPanelWrapper extends ComponentWrapper {
   }
 
   findHeaderInfo() {
-    return this.findByClassName(testUtilStyles['header-info-slot']);
+    return this.findByClassName(testUtilStyles['header-info']);
   }
 
   /**
