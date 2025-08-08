@@ -13,6 +13,7 @@ import { useMobile } from '../../internal/hooks/use-mobile';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
 import globalVars from '../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
+import { ErrorBoundaryMain } from '../error-boundary';
 import { AppLayoutProps } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
 import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers';
@@ -517,7 +518,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           headerVariant={headerVariant}
           contentHeader={contentHeader}
           // delay rendering the content until registration of this instance is complete
-          content={registered ? content : null}
+          content={registered ? <ErrorBoundaryMain>{content}</ErrorBoundaryMain> : null}
           navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
           navigationOpen={resolvedNavigationOpen}
           navigationWidth={navigationWidth}
