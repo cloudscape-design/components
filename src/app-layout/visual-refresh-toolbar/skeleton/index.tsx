@@ -115,7 +115,10 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
         >
           {!aiDrawerExpandedMode && toolbar}
           <div
-            className={styles['ai-drawer']}
+            className={clsx(
+              styles['ai-drawer'],
+              (drawerExpandedMode || drawerExpandedModeInChildLayout) && !aiDrawerExpandedMode && styles.hidden
+            )}
             style={
               aiDrawer
                 ? {
