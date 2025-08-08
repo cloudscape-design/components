@@ -652,10 +652,12 @@ exports[`test-utils selectors 1`] = `
   "toggle": [
     "awsui_root_4yi2u",
   ],
+  "token": [
+    "awsui_dismiss-button_1i2wg",
+    "awsui_token_1i2wg",
+  ],
   "token-group": [
-    "awsui_dismiss-button_dm8gx",
     "awsui_root_dm8gx",
-    "awsui_token_dm8gx",
   ],
   "top-navigation": [
     "awsui_hidden_k5dlb",
