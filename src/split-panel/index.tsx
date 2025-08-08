@@ -23,7 +23,6 @@ export default function SplitPanel({
       hasHeaderActions: Boolean(restProps.headerActions),
       hasHeaderDescription: Boolean(restProps.headerDescription),
       hasHeaderInfo: Boolean(restProps.headerInfo),
-      hasBeforeHeaderhasHeaderBefore: Boolean(restProps.headerBefore),
     },
   });
   const i18n = useInternalI18n('split-panel');
