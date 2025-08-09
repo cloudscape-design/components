@@ -90,19 +90,19 @@ export function SplitPanelImplementation({
 
   const wrappedHeader = (
     <SplitPanelHeader
-      isToolbar={isToolbar}
-      appLayoutMaxWidth={appLayoutMaxWidth}
-      headerText={header}
+      text={header}
+      position={position}
+      isOpen={isOpen}
+      onToggle={onToggle}
+      setPreferencesOpen={setPreferencesOpen}
+      closeBehavior={closeBehavior}
       panelHeaderId={panelHeaderId}
       hidePreferencesButton={hidePreferencesButton}
-      isOpen={isOpen}
-      setPreferencesOpen={setPreferencesOpen}
       i18nStrings={i18nStrings}
-      refs={refs}
       isRefresh={isRefresh}
-      closeBehavior={closeBehavior}
-      position={position}
-      onToggle={onToggle}
+      isToolbar={isToolbar}
+      appLayoutMaxWidth={appLayoutMaxWidth}
+      refs={refs}
     />
   );
 

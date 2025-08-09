@@ -12,42 +12,42 @@ import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 interface SplitPanelHeaderProps extends Pick<SplitPanelProps, 'closeBehavior'> {
-  isToolbar?: boolean;
-  appLayoutMaxWidth?: React.CSSProperties;
-  headerText: string;
+  text: string;
+  position: 'side' | 'bottom';
+  isOpen?: boolean;
+  onToggle: () => void;
+  setPreferencesOpen: (open: boolean) => void;
   panelHeaderId: string;
   hidePreferencesButton: boolean;
-  isOpen?: boolean;
-  setPreferencesOpen: (open: boolean) => void;
   i18nStrings: Pick<SplitPanelProps.I18nStrings, 'preferencesTitle' | 'closeButtonAriaLabel' | 'openButtonAriaLabel'>;
+  isRefresh: boolean;
+  isToolbar?: boolean;
+  appLayoutMaxWidth?: React.CSSProperties;
   refs: {
     preferences: React.RefObject<Focusable>;
     toggle: React.RefObject<Focusable>;
   };
-  isRefresh: boolean;
-  position: 'side' | 'bottom';
-  onToggle: () => void;
 }
 
 export default function SplitPanelHeader({
-  isToolbar,
-  appLayoutMaxWidth,
-  headerText,
+  text,
+  position,
+  isOpen,
+  onToggle,
+  setPreferencesOpen,
+  closeBehavior,
   panelHeaderId,
   hidePreferencesButton,
-  isOpen,
-  setPreferencesOpen,
   i18nStrings,
-  refs,
   isRefresh,
-  closeBehavior,
-  position,
-  onToggle,
+  isToolbar,
+  appLayoutMaxWidth,
+  refs,
 }: SplitPanelHeaderProps) {
   return (
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
       <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
-        {headerText}
+        {text}
       </h2>
       <div className={styles['header-buttons']}>
         {!hidePreferencesButton && isOpen && (
