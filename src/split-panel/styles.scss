@@ -267,6 +267,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 
   &-text {
     @include styles.font-panel-header;
+    line-height: awsui.$line-height-heading-s;
     flex-grow: 1;
     padding-block: 0;
     padding-inline: 0;
