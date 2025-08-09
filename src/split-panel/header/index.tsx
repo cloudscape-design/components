@@ -8,6 +8,7 @@ import { Focusable } from '../../app-layout/utils/use-focus-control';
 import InternalButton from '../../button/internal';
 import { SplitPanelProps } from '../interfaces';
 
+import panelTestUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
@@ -79,7 +80,7 @@ export default function SplitPanelHeader({
           />
         ) : position === 'side' || closeBehavior === 'hide' ? null : (
           <InternalButton
-            className={testUtilStyles['open-button']}
+            className={panelTestUtilStyles['open-button']}
             iconName="angle-up"
             variant="icon"
             formAction="none"
