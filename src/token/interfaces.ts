@@ -7,7 +7,6 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { PopoverProps } from '../popover/interfaces';
 
 export interface TokenProps extends BaseComponentProps {
-  /** @awsuiSystem core */
   children?: React.ReactNode;
 
   label?: string;
