@@ -4,21 +4,22 @@ import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-des
 
 import ButtonWrapper from '../button';
 
+import headerTestUtilStyles from '../../../split-panel/header/test-classes/styles.selectors.js';
 import testUtilStyles from '../../../split-panel/test-classes/styles.selectors.js';
 
 export default class SplitPanelWrapper extends ComponentWrapper {
   static rootSelector: string = testUtilStyles.root;
 
   findHeader(): ElementWrapper {
-    return this.find(`.${testUtilStyles['header-text']}`)!;
+    return this.find(`.${headerTestUtilStyles['header-text']}`)!;
   }
 
   findPreferencesButton(): ButtonWrapper | null {
-    return this.findComponent(`.${testUtilStyles['preferences-button']}`, ButtonWrapper);
+    return this.findComponent(`.${headerTestUtilStyles['preferences-button']}`, ButtonWrapper);
   }
 
   findCloseButton(): ButtonWrapper | null {
-    return this.findComponent(`.${testUtilStyles['close-button']}`, ButtonWrapper);
+    return this.findComponent(`.${headerTestUtilStyles['close-button']}`, ButtonWrapper);
   }
 
   findOpenButton(): ButtonWrapper | null {
