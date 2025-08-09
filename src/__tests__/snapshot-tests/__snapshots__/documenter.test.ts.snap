@@ -26660,9 +26660,6 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     {
       "isDefault": true,
       "name": "children",
-      "systemTags": [
-        "core",
-      ],
     },
     {
       "isDefault": false,
