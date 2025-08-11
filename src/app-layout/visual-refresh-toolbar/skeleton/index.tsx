@@ -114,22 +114,20 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
           {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
         >
           {!aiDrawerExpandedMode && toolbar}
-          <div
-            className={clsx(
-              styles['ai-drawer'],
-              (drawerExpandedMode || drawerExpandedModeInChildLayout) && !aiDrawerExpandedMode && styles.hidden
-            )}
-            style={
-              aiDrawer
-                ? {
-                    insetBlockStart: `${placement.insetBlockStart}px`,
-                    blockSize: `calc(100vh - ${placement.insetBlockStart}px)`,
-                  }
-                : {}
-            }
-          >
-            {aiDrawer}
-          </div>
+          {aiDrawer && (
+            <div
+              className={clsx(
+                styles['ai-drawer'],
+                (drawerExpandedMode || drawerExpandedModeInChildLayout) && !aiDrawerExpandedMode && styles.hidden
+              )}
+              style={{
+                insetBlockStart: `${placement.insetBlockStart}px`,
+                blockSize: `calc(100vh - ${placement.insetBlockStart}px)`,
+              }}
+            >
+              {aiDrawer}
+            </div>
+          )}
           {navigation && (
             <div
               className={clsx(
