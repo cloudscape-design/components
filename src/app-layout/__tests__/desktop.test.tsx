@@ -303,23 +303,15 @@ describeEachAppLayout({ themes: ['classic'], sizes: ['desktop'] }, () => {
 });
 
 describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['desktop'] }, ({ theme }) => {
-  const triggersContainerClassName = {
-    refresh: visualRefreshStyles['drawers-desktop-triggers-container'],
-    'refresh-toolbar': toolbarStyles['drawers-desktop-triggers-container'],
-    classic: '',
-  }[theme];
-  const drawerBarClassName = {
-    refresh: visualRefreshStyles['drawers-trigger-content'],
-    'refresh-toolbar': toolbarStyles['drawers-trigger-toolbar'],
-    classic: '',
-  }[theme];
-
+  const styles = theme === 'refresh' ? visualRefreshStyles : toolbarStyles;
   test(`${theme} - renders roles only when aria labels are not provided`, () => {
     const { wrapper } = renderComponent(<AppLayout navigationHide={true} drawers={[testDrawerWithoutLabels]} />);
 
     expect(wrapper.findDrawerTriggerById(testDrawer.id)!.getElement()).not.toHaveAttribute('aria-label');
-    expect(wrapper.findByClassName(triggersContainerClassName)!.getElement()).not.toHaveAttribute('aria-label');
-    expect(wrapper.findByClassName(drawerBarClassName)!.getElement()).toHaveAttribute('role', 'toolbar');
+    expect(wrapper.findByClassName(styles['drawers-desktop-triggers-container'])!.getElement()).not.toHaveAttribute(
+      'aria-label'
+    );
+    expect(wrapper.findByClassName(styles['drawers-trigger-content'])!.getElement()).toHaveAttribute('role', 'toolbar');
   });
 
   test(`${theme} - renders roles and aria labels when provided`, () => {
@@ -329,7 +321,10 @@ describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['desktop
       'aria-label',
       'Security trigger button'
     );
-    expect(wrapper.findByClassName(triggersContainerClassName)!.getElement()).toHaveAttribute('aria-label', 'Drawers');
-    expect(wrapper.findByClassName(drawerBarClassName)!.getElement()).toHaveAttribute('role', 'toolbar');
+    expect(wrapper.findByClassName(styles['drawers-desktop-triggers-container'])!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Drawers'
+    );
+    expect(wrapper.findByClassName(styles['drawers-trigger-content'])!.getElement()).toHaveAttribute('role', 'toolbar');
   });
 });

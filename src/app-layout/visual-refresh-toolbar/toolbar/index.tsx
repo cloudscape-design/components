@@ -140,55 +140,52 @@ export function AppLayoutToolbarImplementation({
       }}
     >
       <div className={styles['toolbar-container']}>
-        <div className={clsx(styles['drawers-trigger-content'], styles['toolbar-start-actions'])}>
-          {aiDrawer?.trigger && !activeAiDrawerId && (
-            <div className={clsx(!!aiDrawer.trigger?.customIcon && styles['universal-toolbar-ai-custom'])}>
-              <TriggerButton
-                ariaLabel={aiDrawer?.ariaLabels?.triggerButton}
-                ariaExpanded={!!activeAiDrawerId}
-                iconName={aiDrawer.trigger!.iconName}
-                iconSvg={aiDrawer.trigger!.iconSvg}
-                customSvg={aiDrawer.trigger!.customIcon}
-                className={testutilStyles['ai-drawer-toggle']}
-                onClick={() => {
-                  if (setExpandedDrawerId) {
-                    setExpandedDrawerId(null);
-                  }
-                  onActiveAiDrawerChange?.(aiDrawer?.id, { initiatedByUserAction: true });
-                }}
-                ref={aiDrawerFocusRef}
-                selected={!drawerExpandedMode && !!activeAiDrawerId}
-                disabled={anyPanelOpenInMobile}
-                variant={aiDrawer.trigger?.customIcon ? 'custom' : 'circle'}
-                hasTooltip={true}
-                testId={`awsui-app-layout-trigger-${aiDrawer.id}`}
-              />
-            </div>
-          )}
-          {hasNavigation && (
-            <nav {...navLandmarkAttributes} className={clsx(styles['universal-toolbar-nav'])}>
-              <TriggerButton
-                ariaLabel={ariaLabels?.navigationToggle ?? undefined}
-                ariaExpanded={!drawerExpandedMode && navigationOpen}
-                iconName="menu"
-                className={testutilStyles['navigation-toggle']}
-                onClick={() => {
-                  if (setExpandedDrawerId) {
-                    setExpandedDrawerId(null);
-                  }
-                  if (navigationOpen && expandedDrawerId) {
-                    return;
-                  }
-                  onNavigationToggle?.(!navigationOpen);
-                }}
-                ref={navigationFocusRef}
-                selected={!drawerExpandedMode && navigationOpen}
-                disabled={anyPanelOpenInMobile}
-              />
-            </nav>
-          )}
-        </div>
-
+        {aiDrawer?.trigger && !activeAiDrawerId && (
+          <div className={clsx(!!aiDrawer.trigger?.customIcon && styles['universal-toolbar-ai-custom'])}>
+            <TriggerButton
+              ariaLabel={aiDrawer?.ariaLabels?.triggerButton}
+              ariaExpanded={!!activeAiDrawerId}
+              iconName={aiDrawer.trigger!.iconName}
+              iconSvg={aiDrawer.trigger!.iconSvg}
+              customSvg={aiDrawer.trigger!.customIcon}
+              className={testutilStyles['ai-drawer-toggle']}
+              onClick={() => {
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(null);
+                }
+                onActiveAiDrawerChange?.(aiDrawer?.id, { initiatedByUserAction: true });
+              }}
+              ref={aiDrawerFocusRef}
+              selected={!drawerExpandedMode && !!activeAiDrawerId}
+              disabled={anyPanelOpenInMobile}
+              variant={aiDrawer.trigger?.customIcon ? 'custom' : 'circle'}
+              hasTooltip={true}
+              testId={`awsui-app-layout-trigger-${aiDrawer.id}`}
+            />
+          </div>
+        )}
+        {hasNavigation && (
+          <nav {...navLandmarkAttributes} className={clsx(styles['universal-toolbar-nav'])}>
+            <TriggerButton
+              ariaLabel={ariaLabels?.navigationToggle ?? undefined}
+              ariaExpanded={!drawerExpandedMode && navigationOpen}
+              iconName="menu"
+              className={testutilStyles['navigation-toggle']}
+              onClick={() => {
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(null);
+                }
+                if (navigationOpen && expandedDrawerId) {
+                  return;
+                }
+                onNavigationToggle?.(!navigationOpen);
+              }}
+              ref={navigationFocusRef}
+              selected={!drawerExpandedMode && navigationOpen}
+              disabled={anyPanelOpenInMobile}
+            />
+          </nav>
+        )}
         {(breadcrumbs || discoveredBreadcrumbs) && (
           <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
             <BreadcrumbsSlot
@@ -198,7 +195,7 @@ export function AppLayoutToolbarImplementation({
           </div>
         )}
         {(drawers?.length || globalDrawers?.length || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
-          <div className={clsx(styles['toolbar-end-actions'])}>
+          <div className={clsx(styles['universal-toolbar-drawers'])}>
             <DrawerTriggers
               ariaLabels={ariaLabels}
               activeDrawerId={activeDrawerId ?? null}

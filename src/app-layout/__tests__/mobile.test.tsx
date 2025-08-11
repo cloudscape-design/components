@@ -56,7 +56,7 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
   }[theme];
   const drawerBarClassName = {
     refresh: visualRefreshRefactoredStyles['drawers-mobile-triggers-container'],
-    'refresh-toolbar': toolbarStyles['drawers-trigger-toolbar'],
+    'refresh-toolbar': toolbarStyles['drawers-trigger-content'],
     classic: drawersMobileStyles['drawers-container'],
   }[theme];
   const blockBodyScrollClassName = {

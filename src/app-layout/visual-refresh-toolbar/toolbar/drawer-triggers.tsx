@@ -130,7 +130,7 @@ export function DrawerTriggers({
       role="region"
     >
       <div
-        className={clsx(styles['drawers-trigger-content'], styles['drawers-trigger-toolbar'])}
+        className={styles['drawers-trigger-content']}
         aria-label={ariaLabels?.drawers}
         role="toolbar"
         aria-orientation="horizontal"
