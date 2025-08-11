@@ -33,6 +33,7 @@ function InternalToken({
   ...restProps
 }: TokenProps) {
   const baseProps = getBaseProps(restProps);
+  const isInline = variant === 'inline';
 
   const optionDefinition: OptionDefinition = {
     label,
@@ -48,7 +49,7 @@ function InternalToken({
 
   const getTokenContent = () => {
     const mainContent = children ?? (
-      <Option triggerVariant={variant === 'inline'} option={optionDefinition} isGenericGroup={false} />
+      <Option triggerVariant={isInline} option={optionDefinition} isGenericGroup={false} />
     );
     if (children || labelTag || description || tags || !popoverProps?.content) {
       if (popoverProps) {
@@ -59,15 +60,10 @@ function InternalToken({
       return mainContent;
     }
     return (
-      <div
-        className={clsx(
-          styles['popover-trigger-wrapper'],
-          variant === 'inline' && styles['popover-trigger-wrapper-inline']
-        )}
-      >
+      <div className={clsx(styles['popover-trigger-wrapper'], isInline && styles['popover-trigger-wrapper-inline'])}>
         <InternalPopover
           triggerType="text-inline"
-          triggerClassName={clsx(variant === 'inline' && styles['popover-trigger-inline-button'])}
+          triggerClassName={clsx(isInline && styles['popover-trigger-inline-button'])}
           size={popoverProps.size ?? 'medium'}
           position={popoverProps?.position ?? 'top'}
           {...popoverProps}
@@ -81,19 +77,13 @@ function InternalToken({
   return (
     <div
       {...baseProps}
-      className={clsx(
-        variant === 'normal' && styles.token,
-        variant === 'inline' && styles['token-inline'],
-        baseProps.className
-      )}
-      role="group"
+      className={clsx(!isInline ? styles.token : styles['token-inline'], baseProps.className)}
       aria-label={ariaLabel}
       aria-disabled={disabled}
     >
       <div
         className={clsx(
-          variant === 'normal' && styles['token-box'],
-          variant === 'inline' && styles['token-box-inline'],
+          !isInline ? styles['token-box'] : styles['token-box-inline'],
           disabled && styles['token-box-disabled'],
           readOnly && styles['token-box-readonly']
         )}
@@ -105,7 +95,7 @@ function InternalToken({
             dismissLabel={dismissLabel}
             onDismiss={onDismiss}
             readOnly={readOnly}
-            inline={variant === 'inline'}
+            inline={isInline}
           />
         )}
       </div>
