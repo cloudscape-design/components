@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldControlProps } from '../internal/context/form-field-context';
+import { FormFieldControlProps } from '../internal/context/form-field-context.js';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface BaseCheckboxProps extends BaseComponentProps, FormFieldControlProps {

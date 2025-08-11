@@ -4,7 +4,7 @@ import React from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
 import { CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
-import { Optional } from '../internal/types';
+import { Optional } from '../internal/types.js';
 import ColumnDisplayProperties = TableProps.ColumnDisplayProperties;
 
 /*

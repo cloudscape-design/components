@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { SYSTEM } from '../internal/environment';
+import { SYSTEM } from '../internal/environment.js';
 import customCssProps from '../internal/generated/custom-css-properties';
-import { AlertProps } from './interfaces';
+import { AlertProps } from './interfaces.js';
 
 export function getAlertStyles(style: AlertProps['style']) {
   if (SYSTEM !== 'core' || !style?.root) {

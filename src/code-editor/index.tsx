@@ -8,26 +8,26 @@ import clsx from 'clsx';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useCurrentMode, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../i18n/context';
+import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
-import { useFormFieldContext } from '../internal/context/form-field-context';
+import { useFormFieldContext } from '../internal/context/form-field-context.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { KeyCode } from '../internal/keycode';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import InternalLiveRegion from '../live-region/internal';
-import ErrorScreen from './error-screen';
-import { CodeEditorProps } from './interfaces';
-import { useChangeEffect } from './listeners';
-import LoadingScreen from './loading-screen';
-import { Pane } from './pane';
-import PreferencesModal from './preferences-modal';
+import { KeyCode } from '../internal/keycode.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import InternalLiveRegion from '../live-region/internal.js';
+import ErrorScreen from './error-screen.js';
+import { CodeEditorProps } from './interfaces.js';
+import { useChangeEffect } from './listeners.js';
+import LoadingScreen from './loading-screen.js';
+import { Pane } from './pane.js';
+import PreferencesModal from './preferences-modal.js';
 import { ResizableBox } from './resizable-box';
-import { setupEditor } from './setup-editor';
-import { StatusBar } from './status-bar';
+import { setupEditor } from './setup-editor.js';
+import { StatusBar } from './status-bar.js';
 import {
   useEditor,
   useSyncEditorLabels,
@@ -36,8 +36,8 @@ import {
   useSyncEditorTheme,
   useSyncEditorValue,
   useSyncEditorWrapLines,
-} from './use-editor';
-import { DEFAULT_AVAILABLE_THEMES, getDefaultTheme, getLanguageLabel, PaneStatus } from './util';
+} from './use-editor.js';
+import { DEFAULT_AVAILABLE_THEMES, getDefaultTheme, getLanguageLabel, PaneStatus } from './util.js';
 
 import styles from './styles.css.js';
 

@@ -10,12 +10,12 @@ import {
 
 import { getBaseProps } from '../internal/base-component';
 import AbstractSwitch from '../internal/components/abstract-switch';
-import { useFormFieldContext } from '../internal/context/form-field-context';
+import { useFormFieldContext } from '../internal/context/form-field-context.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { GeneratedAnalyticsMetadataToggleComponent } from './analytics-metadata/interfaces';
-import { ToggleProps } from './interfaces';
+import { GeneratedAnalyticsMetadataToggleComponent } from './analytics-metadata/interfaces.js';
+import { ToggleProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

@@ -2,12 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
+import { useOpenState } from '../../internal/components/options-list/utils/use-open-state.js';
 import { CancelableEventHandler, fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
-import { KeyCode } from '../../internal/keycode';
-import { ButtonDropdownProps, ButtonDropdownSettings, GroupToggle, HighlightProps, ItemActivate } from '../interfaces';
-import useHighlightedMenu from './use-highlighted-menu';
-import { getItemTarget, isCheckboxItem, isItemGroup, isLinkItem } from './utils';
+import { KeyCode } from '../../internal/keycode.js';
+import {
+  ButtonDropdownProps,
+  ButtonDropdownSettings,
+  GroupToggle,
+  HighlightProps,
+  ItemActivate,
+} from '../interfaces.js';
+import useHighlightedMenu from './use-highlighted-menu.js';
+import { getItemTarget, isCheckboxItem, isItemGroup, isLinkItem } from './utils.js';
 
 interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   items: ButtonDropdownProps.Items;

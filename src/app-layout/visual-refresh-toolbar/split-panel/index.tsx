@@ -4,8 +4,8 @@ import React from 'react';
 
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { SplitPanelProvider, SplitPanelProviderProps } from '../../split-panel';
-import { getDrawerStyles } from '../compute-layout';
-import { AppLayoutInternals } from '../interfaces';
+import { getDrawerStyles } from '../compute-layout.js';
+import { AppLayoutInternals } from '../interfaces.js';
 
 import styles from './styles.css.js';
 

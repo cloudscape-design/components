@@ -4,9 +4,9 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { SpaceBetweenProps } from './interfaces';
-import InternalSpaceBetween from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { SpaceBetweenProps } from './interfaces.js';
+import InternalSpaceBetween from './internal.js';
 
 export { SpaceBetweenProps };
 

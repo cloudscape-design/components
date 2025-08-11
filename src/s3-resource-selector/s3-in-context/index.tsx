@@ -2,20 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 
-import InternalBox from '../../box/internal';
-import { InternalButton } from '../../button/internal';
-import InternalFormField from '../../form-field/internal';
-import { useInternalI18n } from '../../i18n/context';
-import { InputProps } from '../../input/interfaces';
+import InternalBox from '../../box/internal.js';
+import { InternalButton } from '../../button/internal.js';
+import InternalFormField from '../../form-field/internal.js';
+import { useInternalI18n } from '../../i18n/context.js';
+import { InputProps } from '../../input/interfaces.js';
 import { NonCancelableCustomEvent } from '../../internal/events';
 import useForwardFocus from '../../internal/hooks/forward-focus';
-import InternalLiveRegion from '../../live-region/internal';
-import InternalSelect from '../../select/internal';
-import InternalStatusIndicator from '../../status-indicator/internal';
-import { S3ResourceSelectorProps } from '../interfaces';
-import { SearchInput } from './search-input';
-import { useVersionsFetch } from './use-versions-fetch';
-import { getErrorText, validate } from './validation';
+import InternalLiveRegion from '../../live-region/internal.js';
+import InternalSelect from '../../select/internal.js';
+import InternalStatusIndicator from '../../status-indicator/internal.js';
+import { S3ResourceSelectorProps } from '../interfaces.js';
+import { SearchInput } from './search-input.js';
+import { useVersionsFetch } from './use-versions-fetch.js';
+import { getErrorText, validate } from './validation.js';
 
 import styles from './styles.css.js';
 

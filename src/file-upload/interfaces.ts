@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldCommonValidationControlProps } from '../internal/context/form-field-context';
+import { FormFieldCommonValidationControlProps } from '../internal/context/form-field-context.js';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface FileUploadProps extends BaseComponentProps, FormFieldCommonValidationControlProps {

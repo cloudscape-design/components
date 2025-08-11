@@ -3,12 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { IconProps } from '../icon/interfaces';
-import InternalIcon from '../icon/internal';
+import { IconProps } from '../icon/interfaces.js';
+import InternalIcon from '../icon/internal.js';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { SomeRequired } from '../internal/types';
-import InternalSpinner from '../spinner/internal';
+import { SomeRequired } from '../internal/types.js';
+import InternalSpinner from '../spinner/internal.js';
 
 import styles from './styles.css.js';
 

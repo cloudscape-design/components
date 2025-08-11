@@ -7,10 +7,10 @@ import {
   BaseDropdownHostProps,
   OptionsFilteringType,
   OptionsLoadItemsDetail,
-} from '../internal/components/dropdown/interfaces';
-import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
-import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+} from '../internal/components/dropdown/interfaces.js';
+import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
+import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces.js';
+import { FormFieldValidationControlProps } from '../internal/context/form-field-context.js';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface BaseSelectProps

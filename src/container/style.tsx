@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { SYSTEM } from '../internal/environment';
-import { ContainerProps } from './interfaces';
+import { SYSTEM } from '../internal/environment.js';
+import { ContainerProps } from './interfaces.js';
 
 export function getRootStyles(style: ContainerProps.Style | undefined) {
   let properties = {};

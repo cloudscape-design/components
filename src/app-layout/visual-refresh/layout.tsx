@@ -4,8 +4,8 @@ import React from 'react';
 import clsx from 'clsx';
 
 import customCssProps from '../../internal/generated/custom-css-properties';
-import { useGlobalScrollPadding } from '../utils/use-global-scroll-padding';
-import { useAppLayoutInternals } from './context';
+import { useGlobalScrollPadding } from '../utils/use-global-scroll-padding.js';
+import { useAppLayoutInternals } from './context.js';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';

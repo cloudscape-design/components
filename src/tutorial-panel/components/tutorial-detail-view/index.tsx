@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useMemo } from 'react';
 
-import { HotspotContext } from '../../../annotation-context/context';
-import InternalBox from '../../../box/internal';
-import { InternalButton } from '../../../button/internal';
-import { fireNonCancelableEvent } from '../../../internal/events/index';
+import { HotspotContext } from '../../../annotation-context/context.js';
+import InternalBox from '../../../box/internal.js';
+import { InternalButton } from '../../../button/internal.js';
+import { fireNonCancelableEvent } from '../../../internal/events/index.js';
 import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
-import InternalSpaceBetween from '../../../space-between/internal';
-import { TutorialPanelProps } from '../../interfaces';
-import { CongratulationScreen } from './congratulation-screen';
-import { TaskList } from './task-list';
+import InternalSpaceBetween from '../../../space-between/internal.js';
+import { TutorialPanelProps } from '../../interfaces.js';
+import { CongratulationScreen } from './congratulation-screen.js';
+import { TaskList } from './task-list.js';
 
 import styles from './styles.css.js';
 

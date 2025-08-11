@@ -6,14 +6,14 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { ButtonProps } from '../button/interfaces.js';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
-import { FileInputProps } from '../file-input/interfaces';
+import { FileInputProps } from '../file-input/interfaces.js';
 import { fireCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { nodeBelongs } from '../internal/utils/node-belongs';
-import FileInputItem from './file-input-item';
-import IconButtonItem from './icon-button-item';
+import { nodeBelongs } from '../internal/utils/node-belongs.js';
+import FileInputItem from './file-input-item.js';
+import IconButtonItem from './icon-button-item.js';
 import IconToggleButtonItem from './icon-toggle-button-item.js';
-import { ButtonGroupProps } from './interfaces';
-import MenuDropdownItem from './menu-dropdown-item';
+import { ButtonGroupProps } from './interfaces.js';
+import MenuDropdownItem from './menu-dropdown-item.js';
 
 import styles from './styles.css.js';
 

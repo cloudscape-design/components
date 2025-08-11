@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { LinkItem } from '../button-dropdown/interfaces';
+import { LinkItem } from '../button-dropdown/interfaces.js';
 import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';

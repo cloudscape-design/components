@@ -5,18 +5,18 @@ import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { ButtonProps } from '../button/interfaces';
+import { ButtonProps } from '../button/interfaces.js';
 import { getBaseProps } from '../internal/base-component';
-import { getAllFocusables } from '../internal/components/focus-lock/utils';
+import { getAllFocusables } from '../internal/components/focus-lock/utils.js';
 import {
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
-} from '../internal/context/single-tab-stop-navigation-context';
+} from '../internal/context/single-tab-stop-navigation-context.js';
 import { hasModifierKeys } from '../internal/events';
-import { KeyCode } from '../internal/keycode';
-import { circleIndex } from '../internal/utils/circle-index';
-import handleKey from '../internal/utils/handle-key';
-import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
+import { KeyCode } from '../internal/keycode.js';
+import { circleIndex } from '../internal/utils/circle-index.js';
+import handleKey from '../internal/utils/handle-key.js';
+import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces.js';
 import ItemElement from './item-element.js';
 
 import styles from './styles.css.js';

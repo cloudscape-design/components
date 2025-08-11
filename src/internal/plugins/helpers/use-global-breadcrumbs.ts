@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-import { useAppLayoutFlagEnabled } from '../../../app-layout/utils/feature-flags';
+import { useAppLayoutFlagEnabled } from '../../../app-layout/utils/feature-flags.js';
 import {
   AppLayoutVisibilityContext,
   BreadcrumbsSlotContext,
-} from '../../../app-layout/visual-refresh-toolbar/contexts';
-import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
-import { metrics } from '../../metrics';
-import { awsuiPluginsInternal } from '../api';
-import { BreadcrumbsGlobalRegistration } from '../controllers/breadcrumbs';
+} from '../../../app-layout/visual-refresh-toolbar/contexts.js';
+import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces.js';
+import { metrics } from '../../metrics.js';
+import { awsuiPluginsInternal } from '../api.js';
+import { BreadcrumbsGlobalRegistration } from '../controllers/breadcrumbs.js';
 
 function useSetGlobalBreadcrumbsImplementation({
   __disableGlobalization,

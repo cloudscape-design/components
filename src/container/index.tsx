@@ -5,14 +5,14 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel.js';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { getExternalProps } from '../internal/utils/external-props';
-import { GeneratedAnalyticsMetadataContainerComponent } from './analytics-metadata/interfaces';
-import { ContainerProps } from './interfaces';
-import { InternalContainerAsSubstep } from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { getExternalProps } from '../internal/utils/external-props.js';
+import { GeneratedAnalyticsMetadataContainerComponent } from './analytics-metadata/interfaces.js';
+import { ContainerProps } from './interfaces.js';
+import { InternalContainerAsSubstep } from './internal.js';
 
 export { ContainerProps };
 

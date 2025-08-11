@@ -3,13 +3,13 @@
 
 import React from 'react';
 
-import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
-import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
-import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
-import { OnChangeParams } from '../utils/use-drawers';
-import { FocusControlMultipleStates, FocusControlState } from '../utils/use-focus-control';
-import { SplitPanelFocusControlState } from '../utils/use-split-panel-focus-control';
-import { VerticalLayoutOutput } from './compute-layout';
+import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces.js';
+import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context.js';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces.js';
+import { OnChangeParams } from '../utils/use-drawers.js';
+import { FocusControlMultipleStates, FocusControlState } from '../utils/use-focus-control.js';
+import { SplitPanelFocusControlState } from '../utils/use-split-panel-focus-control.js';
+import { VerticalLayoutOutput } from './compute-layout.js';
 
 export interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
   navigationTriggerHide?: boolean;

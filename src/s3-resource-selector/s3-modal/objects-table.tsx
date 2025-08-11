@@ -2,17 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useInternalI18n } from '../../i18n/context';
-import { IconProps } from '../../icon/interfaces';
-import InternalIcon from '../../icon/internal';
+import { useInternalI18n } from '../../i18n/context.js';
+import { IconProps } from '../../icon/interfaces.js';
+import InternalIcon from '../../icon/internal.js';
 import { ForwardFocusRef } from '../../internal/hooks/forward-focus';
-import InternalLink from '../../link/internal';
-import { TableProps } from '../../table/interfaces';
-import { S3ResourceSelectorProps } from '../interfaces';
-import { joinObjectPath } from '../utils';
-import { BasicS3Table, getSharedI18Strings } from './basic-table';
-import { formatDefault, formatSize } from './column-formats';
-import { compareDates, getColumnAriaLabel, includes } from './table-utils';
+import InternalLink from '../../link/internal.js';
+import { TableProps } from '../../table/interfaces.js';
+import { S3ResourceSelectorProps } from '../interfaces.js';
+import { joinObjectPath } from '../utils.js';
+import { BasicS3Table, getSharedI18Strings } from './basic-table.js';
+import { formatDefault, formatSize } from './column-formats.js';
+import { compareDates, getColumnAriaLabel, includes } from './table-utils.js';
 
 interface ObjectsTableProps {
   forwardFocusRef: React.Ref<ForwardFocusRef>;

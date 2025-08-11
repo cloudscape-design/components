@@ -5,10 +5,10 @@ import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import { IconProps } from '../../../icon/interfaces';
-import InternalIcon from '../../../icon/internal';
-import { DragHandleProps } from './interfaces';
-import { ResizeIcon } from './resize-icon';
+import { IconProps } from '../../../icon/interfaces.js';
+import InternalIcon from '../../../icon/internal.js';
+import { DragHandleProps } from './interfaces.js';
+import { ResizeIcon } from './resize-icon.js';
 
 import styles from './styles.css.js';
 import testUtilsStyles from './test-classes/styles.css.js';

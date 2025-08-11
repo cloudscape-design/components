@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { isModifierKey } from '@cloudscape-design/component-toolkit/internal';
 
-import { Offset } from '../interfaces';
+import { Offset } from '../interfaces.js';
 
 import styles from './styles.css.js';
 

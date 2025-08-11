@@ -3,10 +3,10 @@
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
 import { ChartPlotRef } from '../../internal/components/chart-plot';
-import { VerticalMarkerX } from '../interfaces';
-import { ScaledBarGroup } from '../make-scaled-bar-groups';
-import { ScaledPoint } from '../make-scaled-series';
-import { isYThreshold } from '../utils';
+import { VerticalMarkerX } from '../interfaces.js';
+import { ScaledBarGroup } from '../make-scaled-bar-groups.js';
+import { ScaledPoint } from '../make-scaled-series.js';
+import { isYThreshold } from '../utils.js';
 
 import styles from '../styles.css.js';
 

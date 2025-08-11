@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { SYSTEM } from '../internal/environment';
+import { SYSTEM } from '../internal/environment.js';
 import customCssProps from '../internal/generated/custom-css-properties';
-import { LinkProps } from './interfaces';
+import { LinkProps } from './interfaces.js';
 
 export function getLinkStyles(style: LinkProps['style']) {
   let properties = {};

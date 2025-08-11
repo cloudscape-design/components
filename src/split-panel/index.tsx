@@ -3,11 +3,11 @@
 'use client';
 import React from 'react';
 
-import { useInternalI18n } from '../i18n/context';
+import { useInternalI18n } from '../i18n/context.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { SplitPanelProps } from './interfaces';
-import { SplitPanelInternal } from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { SplitPanelProps } from './interfaces.js';
+import { SplitPanelInternal } from './internal.js';
 
 export { SplitPanelProps };
 

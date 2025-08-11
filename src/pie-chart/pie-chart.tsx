@@ -7,22 +7,22 @@ import { PieArcDatum } from 'd3-shape';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalBox from '../box/internal';
-import { useInternalI18n } from '../i18n/context';
+import InternalBox from '../box/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import ChartPopover from '../internal/components/chart-popover';
 import SeriesDetails from '../internal/components/chart-series-details';
 import SeriesMarker from '../internal/components/chart-series-marker';
-import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
+import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { KeyCode } from '../internal/keycode';
-import { SomeRequired } from '../internal/types';
-import { nodeBelongs } from '../internal/utils/node-belongs';
-import InternalLiveRegion from '../live-region/internal';
-import { PieChartProps, SeriesInfo } from './interfaces';
-import Labels from './labels';
-import Segments from './segments';
-import { defaultDetails, getDimensionsBySize } from './utils';
+import { KeyCode } from '../internal/keycode.js';
+import { SomeRequired } from '../internal/types.js';
+import { nodeBelongs } from '../internal/utils/node-belongs.js';
+import InternalLiveRegion from '../live-region/internal.js';
+import { PieChartProps, SeriesInfo } from './interfaces.js';
+import Labels from './labels.js';
+import Segments from './segments.js';
+import { defaultDetails, getDimensionsBySize } from './utils.js';
 
 import styles from './styles.css.js';
 

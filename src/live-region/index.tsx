@@ -5,9 +5,9 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { LiveRegionProps } from './interfaces';
-import InternalLiveRegion from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { LiveRegionProps } from './interfaces.js';
+import InternalLiveRegion from './internal.js';
 
 export { LiveRegionProps };
 

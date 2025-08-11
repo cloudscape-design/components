@@ -3,9 +3,9 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalIcon from '../../icon/internal';
-import { CategoryProps } from '../interfaces';
-import ItemsList from '../items-list';
+import InternalIcon from '../../icon/internal.js';
+import { CategoryProps } from '../interfaces.js';
+import ItemsList from '../items-list.js';
 
 import styles from './styles.css.js';
 

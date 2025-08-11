@@ -3,11 +3,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useInternalI18n } from '../../i18n/context';
+import { useInternalI18n } from '../../i18n/context.js';
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 import InternalStructuredItem from '../../internal/components/structured-item';
 import { joinStrings } from '../../internal/utils/strings';
-import { TreeViewProps } from '../interfaces';
+import { TreeViewProps } from '../interfaces.js';
 
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';

@@ -3,12 +3,12 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
-import { ButtonProps } from '../../button/interfaces';
-import { splitItems } from '../drawer/drawers-helpers';
-import OverflowMenu from '../drawer/overflow-menu';
-import { AppLayoutProps } from '../interfaces';
+import { ButtonProps } from '../../button/interfaces.js';
+import { splitItems } from '../drawer/drawers-helpers.js';
+import OverflowMenu from '../drawer/overflow-menu.js';
+import { AppLayoutProps } from '../interfaces.js';
 import { ToggleButton, togglesConfig } from '../toggles';
-import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers.js';
 
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';

@@ -7,13 +7,13 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { getBaseProps } from '../internal/base-component';
-import { useFormFieldContext } from '../internal/context/form-field-context';
+import { useFormFieldContext } from '../internal/context/form-field-context.js';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
+import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { GeneratedAnalyticsMetadataTilesSelect } from './analytics-metadata/interfaces';
-import { TilesProps } from './interfaces';
-import { Tile } from './tile';
+import { GeneratedAnalyticsMetadataTilesSelect } from './analytics-metadata/interfaces.js';
+import { TilesProps } from './interfaces.js';
+import { Tile } from './tile.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

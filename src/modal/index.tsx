@@ -9,16 +9,16 @@ import {
   AnalyticsFunnel,
   AnalyticsFunnelStep,
   AnalyticsFunnelSubStep,
-} from '../internal/analytics/components/analytics-funnel';
-import { useFunnel } from '../internal/analytics/hooks/use-funnel';
-import { DATA_ATTR_MODAL_ID } from '../internal/analytics/selectors';
+} from '../internal/analytics/components/analytics-funnel.js';
+import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { ModalProps } from './interfaces';
-import InternalModal, { InternalModalAsFunnel } from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { ModalProps } from './interfaces.js';
+import InternalModal, { InternalModalAsFunnel } from './internal.js';
 
 import styles from './styles.css.js';
+import { DATA_ATTR_MODAL_ID } from '../internal/analytics/selectors.js';
 
 export { ModalProps };
 

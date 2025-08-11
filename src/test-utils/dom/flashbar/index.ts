@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import FlashWrapper from './flash';
+import FlashWrapper from './flash.js';
 
 import styles from '../../../flashbar/styles.selectors.js';
 

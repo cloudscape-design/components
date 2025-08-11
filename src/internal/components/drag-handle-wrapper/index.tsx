@@ -6,11 +6,11 @@ import clsx from 'clsx';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
-import { getFirstFocusable } from '../focus-lock/utils';
+import { getFirstFocusable } from '../focus-lock/utils.js';
 import Tooltip from '../tooltip';
-import DirectionButton from './direction-button';
-import { Direction, DragHandleWrapperProps } from './interfaces';
-import PortalOverlay from './portal-overlay';
+import DirectionButton from './direction-button.js';
+import { Direction, DragHandleWrapperProps } from './interfaces.js';
+import PortalOverlay from './portal-overlay.js';
 
 import styles from './styles.css.js';
 

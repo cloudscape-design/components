@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import ChartFilterWrapper from './chart-filter';
-import ChartLegendWrapper from './chart-legend';
-import ChartPopoverWrapper from './chart-popover';
+import ChartFilterWrapper from './chart-filter.js';
+import ChartLegendWrapper from './chart-legend.js';
+import ChartPopoverWrapper from './chart-popover.js';
 
 import filterStyles from '../../../internal/components/chart-filter/styles.selectors.js';
 import legendStyles from '../../../internal/components/chart-legend/styles.selectors.js';

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+import { FormFieldValidationControlProps } from '../internal/context/form-field-context.js';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface SliderProps extends BaseComponentProps, FormFieldValidationControlProps {

@@ -8,10 +8,10 @@ import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '@clouds
 
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
-import { KeyCode } from '../../internal/keycode';
-import handleKey, { isEventLike } from '../../internal/utils/handle-key';
-import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
-import { getHeaderWidth, getResizerElements } from './resizer-lookup';
+import { KeyCode } from '../../internal/keycode.js';
+import handleKey, { isEventLike } from '../../internal/utils/handle-key.js';
+import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths.js';
+import { getHeaderWidth, getResizerElements } from './resizer-lookup.js';
 
 import styles from './styles.css.js';
 

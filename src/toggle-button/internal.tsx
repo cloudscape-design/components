@@ -5,11 +5,11 @@ import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalButton from '../button/internal';
+import InternalButton from '../button/internal.js';
 import { fireNonCancelableEvent } from '../internal/events';
-import { isDevelopment } from '../internal/is-development';
-import { ToggleButtonProps } from './interfaces';
-import { getToggleIcon } from './util';
+import { isDevelopment } from '../internal/is-development.js';
+import { ToggleButtonProps } from './interfaces.js';
+import { getToggleIcon } from './util.js';
 
 import styles from './styles.css.js';
 

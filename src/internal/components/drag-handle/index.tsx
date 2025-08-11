@@ -4,8 +4,8 @@ import React, { forwardRef } from 'react';
 
 import { getBaseProps } from '../../base-component';
 import DragHandleWrapper from '../drag-handle-wrapper';
-import DragHandleButton from './button';
-import { DragHandleProps } from './interfaces';
+import DragHandleButton from './button.js';
+import { DragHandleProps } from './interfaces.js';
 
 export { DragHandleProps };
 

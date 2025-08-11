@@ -3,15 +3,19 @@
 import React, { Ref } from 'react';
 import clsx from 'clsx';
 
-import { CustomTriggerProps } from '../button-dropdown/interfaces';
-import InternalButtonDropdown from '../button-dropdown/internal';
-import InternalIcon from '../icon/internal';
-import { DATA_ATTR_FUNNEL_KEY, DATA_ATTR_RESOURCE_TYPE, FUNNEL_KEY_FUNNEL_NAME } from '../internal/analytics/selectors';
+import { CustomTriggerProps } from '../button-dropdown/interfaces.js';
+import InternalButtonDropdown from '../button-dropdown/internal.js';
+import InternalIcon from '../icon/internal.js';
 import { CancelableEventHandler } from '../internal/events';
-import { spinWhenOpen } from '../internal/styles/motion/utils';
-import { BreadcrumbGroupProps } from './interfaces';
+import { spinWhenOpen } from '../internal/styles/motion/utils.js';
+import { BreadcrumbGroupProps } from './interfaces.js';
 
 import styles from './styles.css.js';
+import {
+  DATA_ATTR_FUNNEL_KEY,
+  DATA_ATTR_RESOURCE_TYPE,
+  FUNNEL_KEY_FUNNEL_NAME,
+} from '../internal/analytics/selectors.js';
 
 interface FullCollapsedDropdownProps {
   items: ReadonlyArray<BreadcrumbGroupProps.Item>;

@@ -5,10 +5,10 @@ import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalExpandableSection from '../../../expandable-section/internal';
+import InternalExpandableSection from '../../../expandable-section/internal.js';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
-import getSeriesDetailsText, { screenReaderTextClass } from './series-details-text';
+import getSeriesDetailsText, { screenReaderTextClass } from './series-details-text.js';
 
 import styles from './styles.css.js';
 

@@ -4,7 +4,7 @@ import { useCallback, useEffect } from 'react';
 
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
-import { AreaChartProps } from '../interfaces';
+import { AreaChartProps } from '../interfaces.js';
 
 type FilterProps<T> = [readonly AreaChartProps.Series<T>[], (series: readonly AreaChartProps.Series<T>[]) => void];
 

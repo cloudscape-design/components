@@ -12,10 +12,10 @@ import TokenList from '../internal/components/token-list';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
-import { SomeRequired } from '../internal/types';
-import { TokenGroupProps } from './interfaces';
-import { Token } from './token';
+import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
+import { SomeRequired } from '../internal/types.js';
+import { TokenGroupProps } from './interfaces.js';
+import { Token } from './token.js';
 
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import styles from './styles.css.js';

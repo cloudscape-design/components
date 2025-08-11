@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalIcon from '../../icon/internal';
+import InternalIcon from '../../icon/internal.js';
 import Dropdown from '../../internal/components/dropdown';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
@@ -13,10 +13,10 @@ import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
 } from '../analytics-metadata/interfaces.js';
-import { CategoryProps } from '../interfaces';
-import ItemsList from '../items-list';
+import { CategoryProps } from '../interfaces.js';
+import ItemsList from '../items-list.js';
 import Tooltip from '../tooltip.js';
-import { getMenuItemProps } from '../utils/menu-item';
+import { getMenuItemProps } from '../utils/menu-item.js';
 
 import styles from './styles.css.js';
 

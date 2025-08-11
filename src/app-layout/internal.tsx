@@ -3,9 +3,9 @@
 import React from 'react';
 
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import ClassicAppLayout from './classic';
-import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces';
-import { useAppLayoutFlagEnabled } from './utils/feature-flags';
+import ClassicAppLayout from './classic.js';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces.js';
+import { useAppLayoutFlagEnabled } from './utils/feature-flags.js';
 import RefreshedAppLayout from './visual-refresh';
 import ToolbarAppLayout from './visual-refresh-toolbar';
 

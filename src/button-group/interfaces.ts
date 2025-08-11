@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ButtonDropdownProps } from '../button-dropdown/interfaces';
-import { IconProps } from '../icon/interfaces';
+import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
+import { IconProps } from '../icon/interfaces.js';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { SomeRequired } from '../internal/types';
+import { SomeRequired } from '../internal/types.js';
 
 export interface ButtonGroupProps extends BaseComponentProps {
   /**

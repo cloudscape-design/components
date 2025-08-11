@@ -5,16 +5,16 @@ import clsx from 'clsx';
 
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalButton from '../button/internal';
-import { convertAutoComplete } from '../input/utils';
+import InternalButton from '../button/internal.js';
+import { convertAutoComplete } from '../input/utils.js';
 import { getBaseProps } from '../internal/base-component';
-import { useFormFieldContext } from '../internal/context/form-field-context';
+import { useFormFieldContext } from '../internal/context/form-field-context.js';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
-import * as tokens from '../internal/generated/styles/tokens';
+import * as tokens from '../internal/generated/styles/tokens.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { SomeRequired } from '../internal/types';
-import { PromptInputProps } from './interfaces';
+import { SomeRequired } from '../internal/types.js';
+import { PromptInputProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';

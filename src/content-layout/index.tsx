@@ -4,9 +4,9 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { ContentLayoutProps } from './interfaces';
-import InternalContentLayout from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { ContentLayoutProps } from './interfaces.js';
+import InternalContentLayout from './internal.js';
 
 export { ContentLayoutProps };
 

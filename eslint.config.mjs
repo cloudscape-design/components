@@ -11,12 +11,16 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import tsEslint from 'typescript-eslint';
 
 import cloudscapeCommonRules from '@cloudscape-design/build-tools/eslint/index.js';
 
 import cloudscapeComponentsRules from './build-tools/eslint/index.js';
+
+const require = createRequire(import.meta.url);
+const requireExtensionsPlugin = require('eslint-plugin-require-extensions');
 
 // https://github.com/Stuk/eslint-plugin-header/issues/57
 headerPlugin.rules.header.meta.schema = false;
@@ -51,6 +55,7 @@ export default tsEslint.config(
       '@cloudscape-design/build-tools': cloudscapeCommonRules,
       unicorn: unicornPlugin,
       header: headerPlugin,
+      'require-extensions': requireExtensionsPlugin,
     },
     rules: {
       '@typescript-eslint/no-unused-expressions': ['error', { allowTernary: true }],
@@ -151,6 +156,7 @@ export default tsEslint.config(
     files: ['src/**'],
     ignores: ['**/__tests__/**', '**/__integ__/**', '**/__motion__/**', '**/__a11y__/**', 'src/internal/vendor/**'],
     rules: {
+      'require-extensions/require-extensions': 'error',
       'no-restricted-imports': [
         'error',
         {

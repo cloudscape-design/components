@@ -5,23 +5,23 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../i18n/context';
+import { useInternalI18n } from '../i18n/context.js';
 import { DropdownStatusProps, useDropdownStatus } from '../internal/components/dropdown-status';
-import { DropdownOption, OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
-import { isGroup } from '../internal/components/option/utils/filter-options';
-import { prepareOptions } from '../internal/components/option/utils/prepare-options';
+import { DropdownOption, OptionDefinition, OptionGroup } from '../internal/components/option/interfaces.js';
+import { isGroup } from '../internal/components/option/utils/filter-options.js';
+import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
 import { fireNonCancelableEvent } from '../internal/events';
-import { SomeRequired } from '../internal/types';
+import { SomeRequired } from '../internal/types.js';
 import { joinStrings } from '../internal/utils/strings';
-import { SelectListProps } from '../select/parts/plain-list';
+import { SelectListProps } from '../select/parts/plain-list.js';
 import { checkOptionValueField } from '../select/utils/check-option-value-field.js';
-import { findOptionIndex } from '../select/utils/connect-options';
-import { useAnnouncement } from '../select/utils/use-announcement';
-import { useLoadItems } from '../select/utils/use-load-items';
-import { useNativeSearch } from '../select/utils/use-native-search';
-import { useSelect } from '../select/utils/use-select';
-import { TokenGroupProps } from '../token-group/interfaces';
-import { MultiselectProps } from './interfaces';
+import { findOptionIndex } from '../select/utils/connect-options.js';
+import { useAnnouncement } from '../select/utils/use-announcement.js';
+import { useLoadItems } from '../select/utils/use-load-items.js';
+import { useNativeSearch } from '../select/utils/use-native-search.js';
+import { useSelect } from '../select/utils/use-select.js';
+import { TokenGroupProps } from '../token-group/interfaces.js';
+import { MultiselectProps } from './interfaces.js';
 
 type UseMultiselectOptions = SomeRequired<
   Pick<

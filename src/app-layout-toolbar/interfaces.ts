@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { AppLayoutProps, BaseLayoutProps } from '../app-layout/interfaces';
+import { AppLayoutProps, BaseLayoutProps } from '../app-layout/interfaces.js';
 
 export interface AppLayoutToolbarProps extends BaseLayoutProps {
   /**

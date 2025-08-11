@@ -4,10 +4,10 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { FileDropzoneProps } from './interfaces';
-import InternalFileDropzone from './internal';
-import { useFilesDragging } from './use-files-dragging';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { FileDropzoneProps } from './interfaces.js';
+import InternalFileDropzone from './internal.js';
+import { useFilesDragging } from './use-files-dragging.js';
 
 export { FileDropzoneProps, useFilesDragging };
 

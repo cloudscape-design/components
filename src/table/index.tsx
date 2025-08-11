@@ -5,15 +5,15 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel.js';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import { CollectionPreferencesMetadata } from '../internal/context/collection-preferences-metadata-context';
+import { CollectionPreferencesMetadata } from '../internal/context/collection-preferences-metadata-context.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
-import { getSortingColumnId } from './header-cell/utils';
-import { TableForwardRefType, TableProps } from './interfaces';
-import InternalTable, { InternalTableAsSubstep } from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces.js';
+import { getSortingColumnId } from './header-cell/utils.js';
+import { TableForwardRefType, TableProps } from './interfaces.js';
+import InternalTable, { InternalTableAsSubstep } from './internal.js';
 
 export { TableProps };
 const Table = React.forwardRef(

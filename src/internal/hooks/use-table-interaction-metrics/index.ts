@@ -6,11 +6,11 @@ import { useEffect, useRef } from 'react';
 import { useRandomId } from '@cloudscape-design/component-toolkit/internal';
 
 import { ComponentMetrics, PerformanceMetrics } from '../../analytics';
-import { useFunnel } from '../../analytics/hooks/use-funnel';
-import { JSONObject } from '../../analytics/interfaces';
+import { useFunnel } from '../../analytics/hooks/use-funnel.js';
+import { JSONObject } from '../../analytics/interfaces.js';
 import { useDebounceCallback } from '../use-debounce-callback';
 import { useDOMAttribute } from '../use-dom-attribute';
-import { useEffectOnUpdate } from '../use-effect-on-update';
+import { useEffectOnUpdate } from '../use-effect-on-update.js';
 
 /*
 If the last user interaction is more than this time ago, it is not considered

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { SYSTEM } from '../internal/environment';
-import { BadgeProps } from './interfaces';
+import { SYSTEM } from '../internal/environment.js';
+import { BadgeProps } from './interfaces.js';
 
 export function getBadgeStyles(style: BadgeProps['style']) {
   let properties = {};

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useEffect, useMemo } from 'react';
 
-import { parseCountValue } from '../../internal/analytics/utils/parse-count-text';
-import { useTableComponentsContext } from '../../internal/context/table-component-context';
+import { parseCountValue } from '../../internal/analytics/utils/parse-count-text.js';
+import { useTableComponentsContext } from '../../internal/context/table-component-context.js';
 
 /**
  * Custom hook that integrates table counter values with table component context.

@@ -3,12 +3,12 @@
 import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { StickyHeaderContext } from '../container/use-sticky-header';
+import { StickyHeaderContext } from '../container/use-sticky-header.js';
 import { getVisualContextClassname } from '../internal/components/visual-context';
-import { TableProps } from './interfaces';
+import { TableProps } from './interfaces.js';
 import { getTableRoleProps, TableRole } from './table-role';
-import Thead, { TheadProps } from './thead';
-import { useStickyHeader } from './use-sticky-header';
+import Thead, { TheadProps } from './thead.js';
+import { useStickyHeader } from './use-sticky-header.js';
 
 import styles from './styles.css.js';
 

@@ -6,15 +6,15 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { convertAutoComplete } from '../input/utils';
+import { convertAutoComplete } from '../input/utils.js';
 import { getBaseProps } from '../internal/base-component';
-import { useFormFieldContext } from '../internal/context/form-field-context';
+import { useFormFieldContext } from '../internal/context/form-field-context.js';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { GeneratedAnalyticsMetadataTextareaComponent } from './analytics-metadata/interfaces';
-import { TextareaProps } from './interfaces';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { GeneratedAnalyticsMetadataTextareaComponent } from './analytics-metadata/interfaces.js';
+import { TextareaProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

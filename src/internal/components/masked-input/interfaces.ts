@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseChangeDetail } from '../../../input/interfaces';
-import { InternalInputProps } from '../../../input/internal';
+import { BaseChangeDetail } from '../../../input/interfaces.js';
+import { InternalInputProps } from '../../../input/internal.js';
 import { BaseComponentProps } from '../../base-component';
-import { FormFieldValidationControlProps } from '../../context/form-field-context';
-import { MaskArgs } from './utils/mask-format';
+import { FormFieldValidationControlProps } from '../../context/form-field-context.js';
+import { MaskArgs } from './utils/mask-format.js';
 
 export interface MaskedInputProps extends InternalInputProps, FormFieldValidationControlProps, BaseComponentProps {
   /**

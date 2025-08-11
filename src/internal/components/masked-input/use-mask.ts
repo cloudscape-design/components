@@ -4,12 +4,12 @@ import { RefObject } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { InputProps } from '../../../input/interfaces';
+import { InputProps } from '../../../input/interfaces.js';
 import { CancelableEventHandler, NonCancelableEventHandler } from '../../events';
-import { KeyCode } from '../../keycode';
-import { backspaceHandler, enterHandler, HandlerResult, keyHandler } from './keyboard-handler';
-import { isCommand, isDigit } from './utils/keys';
-import MaskFormat from './utils/mask-format';
+import { KeyCode } from '../../keycode.js';
+import { backspaceHandler, enterHandler, HandlerResult, keyHandler } from './keyboard-handler.js';
+import { isCommand, isDigit } from './utils/keys.js';
+import MaskFormat from './utils/mask-format.js';
 
 interface UseMaskHook {
   value: string;

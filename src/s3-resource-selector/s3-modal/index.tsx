@@ -2,19 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useReducer, useRef } from 'react';
 
-import { BreadcrumbGroupImplementation } from '../../breadcrumb-group/implementation';
-import { InternalButton } from '../../button/internal';
-import { useInternalI18n } from '../../i18n/context';
+import { BreadcrumbGroupImplementation } from '../../breadcrumb-group/implementation.js';
+import { InternalButton } from '../../button/internal.js';
+import { useInternalI18n } from '../../i18n/context.js';
 import { ForwardFocusRef } from '../../internal/hooks/forward-focus';
-import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
+import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
-import InternalModal from '../../modal/internal';
-import InternalSpaceBetween from '../../space-between/internal';
-import { S3ResourceSelectorProps } from '../interfaces';
-import { joinObjectPath } from '../utils';
-import { BucketsTable } from './buckets-table';
-import { ObjectsTable } from './objects-table';
-import { VersionsTable } from './versions-table';
+import InternalModal from '../../modal/internal.js';
+import InternalSpaceBetween from '../../space-between/internal.js';
+import { S3ResourceSelectorProps } from '../interfaces.js';
+import { joinObjectPath } from '../utils.js';
+import { BucketsTable } from './buckets-table.js';
+import { ObjectsTable } from './objects-table.js';
+import { VersionsTable } from './versions-table.js';
 
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';

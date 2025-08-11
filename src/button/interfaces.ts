@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { IconProps } from '../icon/interfaces';
+import { IconProps } from '../icon/interfaces.js';
 import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
 /**
  * @awsuiSystem core
  */
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
+import { NativeAttributes } from '../internal/utils/with-native-attributes.js';
 
 export interface BaseButtonProps {
   /**

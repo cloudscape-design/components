@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { FileDropzoneProps } from './interfaces';
+import { FileDropzoneProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

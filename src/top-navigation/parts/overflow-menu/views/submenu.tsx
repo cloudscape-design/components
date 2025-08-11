@@ -7,11 +7,11 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import FocusLock from '../../../../internal/components/focus-lock';
 import { fireCancelableEvent, isPlainLeftClick } from '../../../../internal/events';
-import { TopNavigationProps } from '../../../interfaces';
+import { TopNavigationProps } from '../../../interfaces.js';
 import { View } from '..';
-import Header from '../header';
-import { SubmenuItem } from '../menu-item';
-import { useNavigate } from '../router';
+import Header from '../header.js';
+import { SubmenuItem } from '../menu-item.js';
+import { useNavigate } from '../router.js';
 
 import styles from '../../../styles.css.js';
 

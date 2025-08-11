@@ -5,17 +5,17 @@ import clsx from 'clsx';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
-import Icon from '../../icon/internal';
-import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
+import Icon from '../../icon/internal.js';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { usePortalModeClasses } from '../../internal/hooks/use-portal-mode-classes';
-import InternalLiveRegion from '../../live-region/internal';
-import Arrow from '../../popover/arrow';
-import PopoverBody from '../../popover/body';
-import PopoverContainer from '../../popover/container';
-import { useClickAway } from './click-away';
-import { TableBodyCellProps } from './index';
-import { TableTdElement, TableTdElementProps } from './td-element';
+import InternalLiveRegion from '../../live-region/internal.js';
+import Arrow from '../../popover/arrow.js';
+import PopoverBody from '../../popover/body.js';
+import PopoverContainer from '../../popover/container.js';
+import { useClickAway } from './click-away.js';
+import { TableBodyCellProps } from './index.js';
+import { TableTdElement, TableTdElementProps } from './td-element.js';
 
 import styles from './styles.css.js';
 

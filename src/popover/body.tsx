@@ -6,11 +6,11 @@ import clsx from 'clsx';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { ButtonProps } from '../button/interfaces';
-import { InternalButton } from '../button/internal';
-import { useInternalI18n } from '../i18n/context';
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton } from '../button/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
 import FocusLock from '../internal/components/focus-lock';
-import { KeyCode } from '../internal/keycode';
+import { KeyCode } from '../internal/keycode.js';
 
 import styles from './styles.css.js';
 

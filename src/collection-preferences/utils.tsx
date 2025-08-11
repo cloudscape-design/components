@@ -3,15 +3,15 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import InternalCheckbox from '../checkbox/internal';
-import InternalColumnLayout from '../column-layout/internal';
-import InternalFormField from '../form-field/internal';
-import { useInternalI18n } from '../i18n/context';
+import InternalCheckbox from '../checkbox/internal.js';
+import InternalColumnLayout from '../column-layout/internal.js';
+import InternalFormField from '../form-field/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import InternalRadioGroup from '../radio-group/internal';
-import InternalSpaceBetween from '../space-between/internal';
-import { getAnalyticsInnerContextAttribute } from './analytics-metadata/utils';
-import { CollectionPreferencesProps } from './interfaces';
+import InternalRadioGroup from '../radio-group/internal.js';
+import InternalSpaceBetween from '../space-between/internal.js';
+import { getAnalyticsInnerContextAttribute } from './analytics-metadata/utils.js';
+import { CollectionPreferencesProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

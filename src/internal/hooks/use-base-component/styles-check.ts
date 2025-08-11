@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 
-import { GIT_SHA, PACKAGE_VERSION, THEME } from '../../environment';
-import { metrics } from '../../metrics';
+import { GIT_SHA, PACKAGE_VERSION, THEME } from '../../environment.js';
+import { metrics } from '../../metrics.js';
 
 export function checkMissingStyles(ownerDocument: Document) {
   const result = getComputedStyle(ownerDocument.body).getPropertyValue(`--awsui-version-info-${GIT_SHA}`);

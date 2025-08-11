@@ -4,23 +4,23 @@
 import React, { Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { AutosuggestProps } from '../../../autosuggest/interfaces';
+import { AutosuggestProps } from '../../../autosuggest/interfaces.js';
 import {
   BaseChangeDetail,
   BaseInputProps,
   InputAutoCorrect,
   InputClearLabel,
   InputKeyEvents,
-} from '../../../input/interfaces';
-import InternalInput, { InternalInputProps } from '../../../input/internal';
+} from '../../../input/interfaces.js';
+import InternalInput, { InternalInputProps } from '../../../input/internal.js';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
+import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context.js';
 import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
-import { KeyCode } from '../../keycode';
-import { nodeBelongs } from '../../utils/node-belongs';
+import { KeyCode } from '../../keycode.js';
+import { nodeBelongs } from '../../utils/node-belongs.js';
 import Dropdown from '../dropdown';
-import { ExpandToViewport } from '../dropdown/interfaces';
+import { ExpandToViewport } from '../dropdown/interfaces.js';
 
 import styles from './styles.css.js';
 

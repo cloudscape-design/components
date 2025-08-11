@@ -15,14 +15,14 @@ import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { formatDate, parseDate } from '../internal/utils/date-time';
 import { normalizeLocale } from '../internal/utils/locale';
 import Grid from './grid';
-import CalendarGridHeader from './grid/calendar-grid-header';
-import useCalendarGridKeyboardNavigation from './grid/use-calendar-grid-keyboard-navigation';
-import useCalendarGridRows from './grid/use-calendar-grid-rows';
+import CalendarGridHeader from './grid/calendar-grid-header.js';
+import useCalendarGridKeyboardNavigation from './grid/use-calendar-grid-keyboard-navigation.js';
+import useCalendarGridRows from './grid/use-calendar-grid-rows.js';
 import CalendarHeader from './header';
 import { CalendarProps } from './interfaces.js';
-import useCalendarLabels from './use-calendar-labels';
-import { getBaseDay } from './utils/navigation-day';
-import { getBaseMonth } from './utils/navigation-month';
+import useCalendarLabels from './use-calendar-labels.js';
+import { getBaseDay } from './utils/navigation-day.js';
+import { getBaseMonth } from './utils/navigation-month.js';
 
 import styles from './styles.css.js';
 

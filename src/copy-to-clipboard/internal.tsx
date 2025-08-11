@@ -3,12 +3,12 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import InternalButton from '../button/internal';
+import InternalButton from '../button/internal.js';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import InternalPopover from '../popover/internal';
-import InternalStatusIndicator from '../status-indicator/internal';
-import { CopyToClipboardProps } from './interfaces';
+import InternalPopover from '../popover/internal.js';
+import InternalStatusIndicator from '../status-indicator/internal.js';
+import { CopyToClipboardProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';

@@ -8,16 +8,16 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalIcon, { InternalIconProps } from '../../icon/internal';
-import { useDropdownContext } from '../../internal/components/dropdown/context';
+import InternalIcon, { InternalIconProps } from '../../icon/internal.js';
+import { useDropdownContext } from '../../internal/components/dropdown/context.js';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
-import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
-import { InternalCheckboxItem, InternalItem, ItemProps, LinkItem } from '../interfaces';
-import Tooltip from '../tooltip';
-import { getMenuItemCheckboxProps, getMenuItemProps } from '../utils/menu-item';
-import { isCheckboxItem, isLinkItem } from '../utils/utils';
-import { getItemTarget } from '../utils/utils';
+import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces.js';
+import { InternalCheckboxItem, InternalItem, ItemProps, LinkItem } from '../interfaces.js';
+import Tooltip from '../tooltip.js';
+import { getMenuItemCheckboxProps, getMenuItemProps } from '../utils/menu-item.js';
+import { isCheckboxItem, isLinkItem } from '../utils/utils.js';
+import { getItemTarget } from '../utils/utils.js';
 
 import analyticsLabels from '../analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

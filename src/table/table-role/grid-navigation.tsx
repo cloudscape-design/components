@@ -6,15 +6,15 @@ import { useEffect, useMemo } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { getAllFocusables } from '../../internal/components/focus-lock/utils';
+import { getAllFocusables } from '../../internal/components/focus-lock/utils.js';
 import {
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
-} from '../../internal/context/single-tab-stop-navigation-context';
-import { KeyCode } from '../../internal/keycode';
-import handleKey, { isEventLike } from '../../internal/utils/handle-key';
-import { nodeBelongs } from '../../internal/utils/node-belongs';
-import { FocusedCell, GridNavigationProps } from './interfaces';
+} from '../../internal/context/single-tab-stop-navigation-context.js';
+import { KeyCode } from '../../internal/keycode.js';
+import handleKey, { isEventLike } from '../../internal/utils/handle-key.js';
+import { nodeBelongs } from '../../internal/utils/node-belongs.js';
+import { FocusedCell, GridNavigationProps } from './interfaces.js';
 import {
   defaultIsSuppressed,
   findTableRowByAriaRowIndex,
@@ -23,7 +23,7 @@ import {
   getClosestCell,
   isElementDisabled,
   isTableCell,
-} from './utils';
+} from './utils.js';
 
 /**
  * Makes table navigable with keyboard commands.

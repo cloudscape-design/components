@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { memo } from 'react';
 
-import { ChartScale } from '../../internal/components/cartesian-chart/scales';
+import { ChartScale } from '../../internal/components/cartesian-chart/scales.js';
 import { ChartModel } from '../model';
 
 interface ThresholdSeriesProps<T> {

@@ -4,9 +4,9 @@ import React from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalLiveRegion from '../../live-region/internal';
-import { TableProps } from '../interfaces';
-import { applyTrackBy } from '../utils';
+import InternalLiveRegion from '../../live-region/internal.js';
+import { TableProps } from '../interfaces.js';
+import { applyTrackBy } from '../utils.js';
 
 import styles from './styles.css.js';
 

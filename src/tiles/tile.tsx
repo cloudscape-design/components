@@ -9,8 +9,8 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 import { fireNonCancelableEvent } from '../internal/events';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import RadioButton from '../radio-group/radio-button';
-import { TilesProps } from './interfaces';
+import RadioButton from '../radio-group/radio-button.js';
+import { TilesProps } from './interfaces.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

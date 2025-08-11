@@ -5,9 +5,9 @@
 import React, { Ref } from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { DateInputProps } from './interfaces';
-import InternalDateInput from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { DateInputProps } from './interfaces.js';
+import InternalDateInput from './internal.js';
 
 export { DateInputProps };
 

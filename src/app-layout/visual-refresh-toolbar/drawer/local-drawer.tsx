@@ -4,15 +4,15 @@ import React, { useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
-import { InternalButton } from '../../../button/internal';
+import { InternalButton } from '../../../button/internal.js';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { createWidgetizedComponent } from '../../../internal/widgets';
-import { getLimitedValue } from '../../../split-panel/utils/size-utils';
-import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
-import { getDrawerStyles } from '../compute-layout';
-import { AppLayoutInternals } from '../interfaces';
-import { useResize } from './use-resize';
+import { getLimitedValue } from '../../../split-panel/utils/size-utils.js';
+import { TOOLS_DRAWER_ID } from '../../utils/use-drawers.js';
+import { getDrawerStyles } from '../compute-layout.js';
+import { AppLayoutInternals } from '../interfaces.js';
+import { useResize } from './use-resize.js';
 
 import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';

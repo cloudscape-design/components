@@ -4,9 +4,9 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { HeaderProps } from './interfaces';
-import InternalHeader from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { HeaderProps } from './interfaces.js';
+import InternalHeader from './internal.js';
 
 export { HeaderProps };
 

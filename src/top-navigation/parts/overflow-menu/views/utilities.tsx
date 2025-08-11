@@ -5,10 +5,10 @@ import React, { useEffect, useRef } from 'react';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import FocusLock from '../../../../internal/components/focus-lock';
-import { TopNavigationProps } from '../../../interfaces';
+import { TopNavigationProps } from '../../../interfaces.js';
 import { View } from '..';
-import Header from '../header';
-import { UtilityMenuItem } from '../menu-item';
+import Header from '../header.js';
+import { UtilityMenuItem } from '../menu-item.js';
 
 import styles from '../../../styles.css.js';
 

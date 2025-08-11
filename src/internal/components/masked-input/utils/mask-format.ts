@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { padLeftZeros } from '../../../utils/strings';
-import { insertAt } from './strings';
+import { insertAt } from './strings.js';
 
 interface FormatSegment {
   min: number;

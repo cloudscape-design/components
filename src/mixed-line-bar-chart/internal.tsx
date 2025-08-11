@@ -14,15 +14,15 @@ import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { usePrevious } from '../internal/hooks/use-previous';
-import { isDevelopment } from '../internal/is-development';
-import { SomeRequired } from '../internal/types';
-import createCategoryColorScale from '../internal/utils/create-category-color-scale';
-import { nodeBelongs } from '../internal/utils/node-belongs';
-import ChartContainer from './chart-container';
-import InternalChartLegend from './chart-legend';
-import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
-import { ScaledPoint } from './make-scaled-series';
-import { chartLegendMap, isXThreshold, isYThreshold } from './utils';
+import { isDevelopment } from '../internal/is-development.js';
+import { SomeRequired } from '../internal/types.js';
+import createCategoryColorScale from '../internal/utils/create-category-color-scale.js';
+import { nodeBelongs } from '../internal/utils/node-belongs.js';
+import ChartContainer from './chart-container.js';
+import InternalChartLegend from './chart-legend.js';
+import { ChartDataTypes, MixedLineBarChartProps } from './interfaces.js';
+import { ScaledPoint } from './make-scaled-series.js';
+import { chartLegendMap, isXThreshold, isYThreshold } from './utils.js';
 
 import styles from './styles.css.js';
 

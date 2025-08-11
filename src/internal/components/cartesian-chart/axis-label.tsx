@@ -3,7 +3,7 @@
 import React, { memo } from 'react';
 import clsx from 'clsx';
 
-import InternalBox from '../../../box/internal';
+import InternalBox from '../../../box/internal.js';
 
 import styles from './styles.css.js';
 

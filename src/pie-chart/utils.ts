@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentFormatFunction } from '../i18n/context';
-import { PieChartProps } from './interfaces';
+import { ComponentFormatFunction } from '../i18n/context.js';
+import { PieChartProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

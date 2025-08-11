@@ -3,7 +3,7 @@
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { NonCancelableEventHandler } from '../../events';
-import { isDevelopment } from '../../is-development';
+import { isDevelopment } from '../../is-development.js';
 
 export default function checkControlled<ValueType, EventDetailType>(
   componentName: string,

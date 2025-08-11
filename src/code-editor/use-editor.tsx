@@ -6,8 +6,8 @@ import { Ace } from 'ace-builds';
 
 import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 
-import { CodeEditorProps } from './interfaces';
-import { getAceTheme, getDefaultConfig, getDefaultTheme } from './util';
+import { CodeEditorProps } from './interfaces.js';
+import { getAceTheme, getDefaultConfig, getDefaultTheme } from './util.js';
 
 export function useEditor(ace: any, themes?: CodeEditorProps.AvailableThemes, loading?: boolean) {
   const editorRef = useRef<HTMLDivElement>(null);

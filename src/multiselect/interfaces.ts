@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
+import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces.js';
 import { NonCancelableEventHandler } from '../internal/events';
-import { BaseSelectProps } from '../select/interfaces';
+import { BaseSelectProps } from '../select/interfaces.js';
 
 export interface MultiselectProps extends BaseSelectProps {
   /**

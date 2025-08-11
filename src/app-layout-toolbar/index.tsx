@@ -5,21 +5,21 @@ import React from 'react';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { applyDefaults } from '../app-layout/defaults';
-import { AppLayoutProps } from '../app-layout/interfaces';
-import { useAppLayoutPlacement } from '../app-layout/utils/use-app-layout-placement';
+import { applyDefaults } from '../app-layout/defaults.js';
+import { AppLayoutProps } from '../app-layout/interfaces.js';
+import { useAppLayoutPlacement } from '../app-layout/utils/use-app-layout-placement.js';
 import AppLayoutToolbarInternal from '../app-layout/visual-refresh-toolbar';
-import { AppLayoutToolbarPublicContext } from '../app-layout/visual-refresh-toolbar/contexts';
-import { useInternalI18n } from '../i18n/context';
+import { AppLayoutToolbarPublicContext } from '../app-layout/visual-refresh-toolbar/contexts.js';
+import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
 import { NonCancelableCustomEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { isDevelopment } from '../internal/is-development';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { AppLayoutToolbarProps } from './interfaces';
+import { isDevelopment } from '../internal/is-development.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { AppLayoutToolbarProps } from './interfaces.js';
 
 export { AppLayoutToolbarProps };
 

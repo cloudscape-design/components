@@ -6,26 +6,26 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { AutosuggestItem, AutosuggestProps } from '../autosuggest/interfaces';
-import { useAutosuggestLoadMore } from '../autosuggest/load-more-controller';
-import { useAutosuggestItems } from '../autosuggest/options-controller';
-import AutosuggestOptionsList from '../autosuggest/options-list';
-import { BaseChangeDetail } from '../input/interfaces';
+import { AutosuggestItem, AutosuggestProps } from '../autosuggest/interfaces.js';
+import { useAutosuggestLoadMore } from '../autosuggest/load-more-controller.js';
+import { useAutosuggestItems } from '../autosuggest/options-controller.js';
+import AutosuggestOptionsList from '../autosuggest/options-list.js';
+import { BaseChangeDetail } from '../input/interfaces.js';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
-import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
+import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces.js';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
-import { getFirstFocusable } from '../internal/components/focus-lock/utils';
+import { getFirstFocusable } from '../internal/components/focus-lock/utils.js';
 import {
   BaseKeyDetail,
   CancelableEventHandler,
   fireNonCancelableEvent,
   NonCancelableCustomEvent,
 } from '../internal/events';
-import { fireCancelableEvent } from '../internal/events/index';
+import { fireCancelableEvent } from '../internal/events/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { joinStrings } from '../internal/utils/strings';
-import { filterOptions } from './filter-options';
+import { filterOptions } from './filter-options.js';
 
 import autosuggestStyles from '../autosuggest/styles.css.js';
 import styles from './styles.css.js';

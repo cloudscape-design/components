@@ -4,10 +4,10 @@ import React from 'react';
 
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import OptionComponent from '../internal/components/option';
-import { getTestOptionIndexes } from '../internal/components/options-list/utils/test-indexes';
-import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option';
+import { getTestOptionIndexes } from '../internal/components/options-list/utils/test-indexes.js';
+import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option.js';
 import SelectableItem from '../internal/components/selectable-item';
-import { AutosuggestItem } from './interfaces';
+import { AutosuggestItem } from './interfaces.js';
 
 import styles from './styles.css.js';
 

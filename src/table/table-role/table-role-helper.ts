@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { TableRole } from './interfaces';
+import { TableRole } from './interfaces.js';
 
 type SortingStatus = 'sortable' | 'ascending' | 'descending';
 

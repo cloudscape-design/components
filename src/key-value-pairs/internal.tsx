@@ -5,11 +5,11 @@ import clsx from 'clsx';
 
 import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import Box from '../box/internal';
-import ColumnLayout from '../column-layout/internal';
-import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
-import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { KeyValuePairsProps } from './interfaces';
+import Box from '../box/internal.js';
+import ColumnLayout from '../column-layout/internal.js';
+import { InfoLinkLabelContext } from '../internal/context/info-link-label-context.js';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
+import { KeyValuePairsProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

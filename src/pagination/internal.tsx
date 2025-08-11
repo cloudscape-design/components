@@ -8,15 +8,15 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useInternalI18n } from '../i18n/context';
-import InternalIcon from '../icon/internal';
+import { useInternalI18n } from '../i18n/context.js';
+import InternalIcon from '../icon/internal.js';
 import { getBaseProps } from '../internal/base-component';
-import { useTableComponentsContext } from '../internal/context/table-component-context';
+import { useTableComponentsContext } from '../internal/context/table-component-context.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { GeneratedAnalyticsMetadataPaginationClick } from './analytics-metadata/interfaces';
-import { PaginationProps } from './interfaces';
-import { getPaginationState, range } from './utils';
+import { GeneratedAnalyticsMetadataPaginationClick } from './analytics-metadata/interfaces.js';
+import { PaginationProps } from './interfaces.js';
+import { getPaginationState, range } from './utils.js';
 
 import styles from './styles.css.js';
 

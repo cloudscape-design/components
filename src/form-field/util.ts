@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { GridProps } from '../grid/interfaces';
+import { GridProps } from '../grid/interfaces.js';
 
 interface FormFieldIds {
   label?: string;

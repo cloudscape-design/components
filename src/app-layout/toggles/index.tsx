@@ -3,11 +3,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { ButtonProps } from '../../button/interfaces';
-import { InternalButton } from '../../button/internal';
-import InternalIcon from '../../icon/internal';
-import { AppLayoutProps } from '../interfaces';
-import { AppLayoutButtonProps } from './interfaces';
+import { ButtonProps } from '../../button/interfaces.js';
+import { InternalButton } from '../../button/internal.js';
+import InternalIcon from '../../icon/internal.js';
+import { AppLayoutProps } from '../interfaces.js';
+import { AppLayoutButtonProps } from './interfaces.js';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';

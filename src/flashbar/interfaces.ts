@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ButtonProps } from '../button/interfaces';
-import { ErrorContext } from '../internal/analytics/interfaces';
+import { ButtonProps } from '../button/interfaces.js';
+import { ErrorContext } from '../internal/analytics/interfaces.js';
 import { BaseComponentProps } from '../internal/base-component';
 
 export namespace FlashbarProps {

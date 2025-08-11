@@ -7,24 +7,24 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { getLogicalBoundingClientRect, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { InternalButton } from '../button/internal';
-import { CustomTriggerProps, LinkItem } from '../button-dropdown/interfaces';
-import InternalButtonDropdown from '../button-dropdown/internal';
-import { useInternalI18n } from '../i18n/context';
-import InternalIcon from '../icon/internal';
+import { InternalButton } from '../button/internal.js';
+import { CustomTriggerProps, LinkItem } from '../button-dropdown/interfaces.js';
+import InternalButtonDropdown from '../button-dropdown/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
+import InternalIcon from '../icon/internal.js';
 import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent } from '../internal/events';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
 import { createWidgetizedComponent } from '../internal/widgets';
-import { AllItemsDropdown } from './all-items-dropdown';
+import { AllItemsDropdown } from './all-items-dropdown.js';
 import {
   GeneratedAnalyticsMetadataBreadcrumbGroupClick,
   GeneratedAnalyticsMetadataBreadcrumbGroupComponent,
-} from './analytics-metadata/interfaces';
-import { BreadcrumbGroupProps, EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './interfaces';
-import { BreadcrumbItem } from './item/item';
-import { BreadcrumbGroupSkeleton } from './skeleton';
-import { getEventDetail, getItemsDisplayProperties } from './utils';
+} from './analytics-metadata/interfaces.js';
+import { BreadcrumbGroupProps, EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './interfaces.js';
+import { BreadcrumbItem } from './item/item.js';
+import { BreadcrumbGroupSkeleton } from './skeleton.js';
+import { getEventDetail, getItemsDisplayProperties } from './utils.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

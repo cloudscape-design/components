@@ -4,11 +4,11 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { IconProviderProps } from './interfaces';
-import InternalIconProvider from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { IconProviderProps } from './interfaces.js';
+import InternalIconProvider from './internal.js';
 
-export { IconProviderProps } from './interfaces';
+export { IconProviderProps } from './interfaces.js';
 
 /**
  * @awsuiSystem core

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import debounce from '../../debounce';
-import { sortByPriority } from '../helpers/utils';
+import debounce from '../../debounce.js';
+import { sortByPriority } from '../helpers/utils.js';
 
 // this code should not depend on React typings, because it is portable between major versions
 interface RefShim<T> {

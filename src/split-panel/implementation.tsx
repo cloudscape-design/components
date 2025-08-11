@@ -5,23 +5,23 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
-import { SizeControlProps } from '../app-layout/utils/interfaces';
-import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
-import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
-import { InternalButton } from '../button/internal';
+import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags.js';
+import { SizeControlProps } from '../app-layout/utils/interfaces.js';
+import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events.js';
+import { usePointerEvents } from '../app-layout/utils/use-pointer-events.js';
+import { InternalButton } from '../button/internal.js';
 import { getBaseProps } from '../internal/base-component';
 import PanelResizeHandle from '../internal/components/panel-resize-handle';
-import { useSplitPanelContext } from '../internal/context/split-panel-context';
+import { useSplitPanelContext } from '../internal/context/split-panel-context.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import globalVars from '../internal/styles/global-vars';
-import { SomeRequired } from '../internal/types';
+import globalVars from '../internal/styles/global-vars.js';
+import { SomeRequired } from '../internal/types.js';
 import { createWidgetizedComponent } from '../internal/widgets';
-import { SplitPanelContentBottom } from './bottom';
-import { SplitPanelProps } from './interfaces';
-import PreferencesModal from './preferences-modal';
-import { SplitPanelContentSide } from './side';
+import { SplitPanelContentBottom } from './bottom.js';
+import { SplitPanelProps } from './interfaces.js';
+import PreferencesModal from './preferences-modal.js';
+import { SplitPanelContentSide } from './side.js';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';

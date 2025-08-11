@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
-import { PopoverProps } from '../popover/interfaces';
+import { PopoverProps } from '../popover/interfaces.js';
 
 export interface SeriesInfo {
   label: string;

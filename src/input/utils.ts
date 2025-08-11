@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { RefObject, useCallback } from 'react';
 
-import { InternalInputProps } from './internal';
+import { InternalInputProps } from './internal.js';
 
 export const useSearchProps = (
   type: string,

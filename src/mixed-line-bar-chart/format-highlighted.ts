@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
+import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces.js';
 import { ChartSeriesDetailItem } from '../internal/components/chart-series-details';
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
-import { isDataSeries, isXThreshold, isYThreshold, matchesX } from './utils';
+import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces.js';
+import { isDataSeries, isXThreshold, isYThreshold, matchesX } from './utils.js';
 
 export interface HighlightDetails {
   position: string;

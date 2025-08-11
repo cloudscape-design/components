@@ -4,9 +4,9 @@ import React from 'react';
 
 import ChartPopover from '../../internal/components/chart-popover';
 import ChartSeriesDetails from '../../internal/components/chart-series-details';
-import { AreaChartProps } from '../interfaces';
+import { AreaChartProps } from '../interfaces.js';
 import { ChartModel } from '../model';
-import { HighlightDetails } from './use-highlight-details';
+import { HighlightDetails } from './use-highlight-details.js';
 
 import styles from '../styles.css.js';
 

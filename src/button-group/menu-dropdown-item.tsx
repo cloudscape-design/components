@@ -5,12 +5,12 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalButton from '../button/internal';
-import { ButtonDropdownProps } from '../button-dropdown/interfaces';
-import ButtonDropdown from '../button-dropdown/internal';
+import InternalButton from '../button/internal.js';
+import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
+import ButtonDropdown from '../button-dropdown/internal.js';
 import Tooltip from '../internal/components/tooltip';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
-import { ButtonGroupProps } from './interfaces';
+import { ButtonGroupProps } from './interfaces.js';
 
 import testUtilStyles from './test-classes/styles.css.js';
 

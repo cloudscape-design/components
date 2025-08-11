@@ -5,15 +5,15 @@ import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-import { InternalButton } from '../../button/internal';
+import { InternalButton } from '../../button/internal.js';
 import customCssProps from '../../internal/generated/custom-css-properties';
-import { getLimitedValue } from '../../split-panel/utils/size-utils';
-import { splitItems } from '../drawer/drawers-helpers';
-import OverflowMenu from '../drawer/overflow-menu';
-import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
-import { useAppLayoutInternals } from './context';
-import SplitPanel from './split-panel';
-import TriggerButton from './trigger-button';
+import { getLimitedValue } from '../../split-panel/utils/size-utils.js';
+import { splitItems } from '../drawer/drawers-helpers.js';
+import OverflowMenu from '../drawer/overflow-menu.js';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers.js';
+import { useAppLayoutInternals } from './context.js';
+import SplitPanel from './split-panel.js';
+import TriggerButton from './trigger-button.js';
 
 import splitPanelTestUtilStyles from '../../split-panel/test-classes/styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';

@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-import { Breakpoint, getMatchingBreakpoint } from '../../breakpoints';
+import { Breakpoint, getMatchingBreakpoint } from '../../breakpoints.js';
 
 /**
  * Re-renders the component when the breakpoint for the component changes. Scopes the re-renders to the specific

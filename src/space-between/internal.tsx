@@ -8,7 +8,7 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { SpaceBetweenProps } from './interfaces';
+import { SpaceBetweenProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

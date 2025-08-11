@@ -4,10 +4,10 @@ import React from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalSpaceBetween from '../space-between/internal';
-import InternalToggle from '../toggle/internal';
-import { getAnalyticsInnerContextAttribute } from './analytics-metadata/utils';
-import { CollectionPreferencesProps } from './interfaces';
+import InternalSpaceBetween from '../space-between/internal.js';
+import InternalToggle from '../toggle/internal.js';
+import { getAnalyticsInnerContextAttribute } from './analytics-metadata/utils.js';
+import { CollectionPreferencesProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

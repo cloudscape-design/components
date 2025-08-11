@@ -3,8 +3,7 @@
 import React from 'react';
 
 // It's okay for import for tests, because it's internal non-user code.
-// eslint-disable-next-line @cloudscape-design/components/ban-files
-import { I18nProvider } from './provider';
+import { I18nProvider } from './provider.js';
 
 interface TestI18nProviderProps {
   messages: Record<string, Record<string, string>>;

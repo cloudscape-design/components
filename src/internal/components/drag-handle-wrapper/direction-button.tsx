@@ -4,10 +4,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { IconProps } from '../../../icon/interfaces';
-import InternalIcon from '../../../icon/internal';
+import { IconProps } from '../../../icon/interfaces.js';
+import InternalIcon from '../../../icon/internal.js';
 import { Transition } from '../transition';
-import { Direction, DirectionState } from './interfaces';
+import { Direction, DirectionState } from './interfaces.js';
 
 import styles from './styles.css.js';
 import testUtilsStyles from './test-classes/styles.css.js';

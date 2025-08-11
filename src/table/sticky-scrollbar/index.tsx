@@ -1,4 +1,4 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export { default as StickyScrollbar } from './sticky-scrollbar';
+export { default as StickyScrollbar } from './sticky-scrollbar.js';

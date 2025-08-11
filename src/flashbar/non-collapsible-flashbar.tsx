@@ -6,13 +6,13 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useInternalI18n } from '../i18n/context';
+import { useInternalI18n } from '../i18n/context.js';
 import { Transition } from '../internal/components/transition';
-import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
-import { useFlashbar } from './common';
-import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
-import { Flash } from './flash';
-import { FlashbarProps } from './interfaces';
+import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils.js';
+import { useFlashbar } from './common.js';
+import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant.js';
+import { Flash } from './flash.js';
+import { FlashbarProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

@@ -6,24 +6,24 @@ import clsx from 'clsx';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { AttributeEditorProps } from '../attribute-editor/interfaces';
-import InternalAttributeEditor from '../attribute-editor/internal';
-import { AutosuggestProps } from '../autosuggest/interfaces';
-import InternalBox from '../box/internal';
-import { FormFieldError } from '../form-field/internal';
-import { useInternalI18n } from '../i18n/context';
-import { InputProps } from '../input/interfaces';
+import { AttributeEditorProps } from '../attribute-editor/interfaces.js';
+import InternalAttributeEditor from '../attribute-editor/internal.js';
+import { AutosuggestProps } from '../autosuggest/interfaces.js';
+import InternalBox from '../box/internal.js';
+import { FormFieldError } from '../form-field/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
+import { InputProps } from '../input/interfaces.js';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import InternalLiveRegion from '../live-region/internal';
-import InternalStatusIndicator from '../status-indicator/internal';
-import { TagEditorProps } from './interfaces';
-import { TagControl, UndoButton } from './internal';
-import { findIndex, useMemoizedArray } from './utils';
-import { getTagsDiff } from './utils';
-import { validate, ValidationError } from './validation';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import InternalLiveRegion from '../live-region/internal.js';
+import InternalStatusIndicator from '../status-indicator/internal.js';
+import { TagEditorProps } from './interfaces.js';
+import { TagControl, UndoButton } from './internal.js';
+import { findIndex, useMemoizedArray } from './utils.js';
+import { getTagsDiff } from './utils.js';
+import { validate, ValidationError } from './validation.js';
 
 import styles from './styles.css.js';
 

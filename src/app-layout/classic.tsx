@@ -7,7 +7,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { SplitPanelSideToggleProps } from '../internal/context/split-panel-context';
+import { SplitPanelSideToggleProps } from '../internal/context/split-panel-context.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -16,20 +16,20 @@ import {
   CONSTRAINED_PAGE_HEIGHT,
   getSplitPanelDefaultSize,
   MAIN_PANEL_MIN_HEIGHT,
-} from '../split-panel/utils/size-utils';
+} from '../split-panel/utils/size-utils.js';
 import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
 import { Drawer, DrawerTriggersBar } from './drawer';
-import { ResizableDrawer } from './drawer/resizable-drawer';
-import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces';
+import { ResizableDrawer } from './drawer/resizable-drawer.js';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces.js';
 import { MobileToolbar } from './mobile-toolbar';
 import { Notifications } from './notifications';
 import { SideSplitPanelDrawer, SplitPanelProvider, SplitPanelProviderProps } from './split-panel';
-import { shouldSplitPanelBeForcedToBottom } from './split-panel/split-panel-forced-position';
+import { shouldSplitPanelBeForcedToBottom } from './split-panel/split-panel-forced-position.js';
 import { togglesConfig } from './toggles';
-import { getStickyOffsetVars } from './utils/sticky-offsets';
-import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers';
-import { useFocusControl } from './utils/use-focus-control';
-import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control';
+import { getStickyOffsetVars } from './utils/sticky-offsets.js';
+import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers.js';
+import { useFocusControl } from './utils/use-focus-control.js';
+import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control.js';
 
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import CommonChartWrapper from '../internal/charts';
+import CommonChartWrapper from '../internal/charts.js';
 
 import chartPlotStyles from '../../../internal/components/chart-plot/styles.selectors.js';
 import chartWrapperStyles from '../../../internal/components/chart-wrapper/styles.selectors.js';

@@ -2,5 +2,5 @@
 // SPDX-License-Identifier: Apache-2.0
 
 'use client';
-export { I18nProvider as default, I18nProvider, I18nProviderProps } from './provider';
-export { importMessages } from './dynamic';
+export { I18nProvider as default, I18nProvider, I18nProviderProps } from './provider.js';
+export { importMessages } from './dynamic.js';

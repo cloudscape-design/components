@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { HotspotProps } from '../hotspot/interfaces';
-import { AnnotationContextProps } from './interfaces';
+import { HotspotProps } from '../hotspot/interfaces.js';
+import { AnnotationContextProps } from './interfaces.js';
 
 export interface HotspotContext {
   getContentForId(id: string, direction: HotspotProps['direction']): JSX.Element | null;

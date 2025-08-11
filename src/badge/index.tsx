@@ -6,9 +6,9 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { BadgeProps } from './interfaces';
-import { getBadgeStyles } from './style';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { BadgeProps } from './interfaces.js';
+import { getBadgeStyles } from './style.js';
 
 import styles from './styles.css.js';
 

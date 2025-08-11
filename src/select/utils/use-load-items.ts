@@ -3,9 +3,9 @@
 import { useRef } from 'react';
 
 import { DropdownStatusProps } from '../../internal/components/dropdown-status';
-import { OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
+import { OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces.js';
 import { fireNonCancelableEvent } from '../../internal/events';
-import { SelectProps } from '../interfaces';
+import { SelectProps } from '../interfaces.js';
 
 interface UseLoadItemsProps {
   onLoadItems: SelectProps['onLoadItems'];

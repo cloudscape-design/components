@@ -6,8 +6,8 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 import OptionsList from '../internal/components/options-list';
 import { useVirtual } from '../internal/hooks/use-virtual';
-import AutosuggestOption from './autosuggest-option';
-import { getOptionProps, ListProps } from './plain-list';
+import AutosuggestOption from './autosuggest-option.js';
+import { getOptionProps, ListProps } from './plain-list.js';
 
 import styles from './styles.css.js';
 

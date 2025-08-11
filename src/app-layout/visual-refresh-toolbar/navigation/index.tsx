@@ -5,11 +5,11 @@ import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-import { InternalButton } from '../../../button/internal';
+import { InternalButton } from '../../../button/internal.js';
 import { createWidgetizedComponent } from '../../../internal/widgets';
-import { getDrawerStyles } from '../compute-layout';
-import { AppLayoutInternals } from '../interfaces';
-import { NotificationsSlot } from '../skeleton/slot-wrappers';
+import { getDrawerStyles } from '../compute-layout.js';
+import { AppLayoutInternals } from '../interfaces.js';
+import { NotificationsSlot } from '../skeleton/slot-wrappers.js';
 
 import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';

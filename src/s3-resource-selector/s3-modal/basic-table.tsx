@@ -5,21 +5,21 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalButton } from '../../button/internal';
-import InternalHeader from '../../header/internal';
-import { ComponentFormatFunction } from '../../i18n/context';
+import { InternalButton } from '../../button/internal.js';
+import InternalHeader from '../../header/internal.js';
+import { ComponentFormatFunction } from '../../i18n/context.js';
 import useForwardFocus, { ForwardFocusRef } from '../../internal/hooks/forward-focus';
-import formatDateLocalized from '../../internal/utils/date-time/format-date-localized';
-import InternalLiveRegion from '../../live-region/internal';
-import { PaginationProps } from '../../pagination/interfaces';
-import InternalPagination from '../../pagination/internal';
-import InternalSpaceBetween from '../../space-between/internal';
-import { TableProps } from '../../table/interfaces';
-import InternalTable from '../../table/internal';
-import { TextFilterProps } from '../../text-filter/interfaces';
-import InternalTextFilter from '../../text-filter/internal';
-import { S3ResourceSelectorProps } from '../interfaces';
-import { EmptyState } from './empty-state';
+import formatDateLocalized from '../../internal/utils/date-time/format-date-localized.js';
+import InternalLiveRegion from '../../live-region/internal.js';
+import { PaginationProps } from '../../pagination/interfaces.js';
+import InternalPagination from '../../pagination/internal.js';
+import InternalSpaceBetween from '../../space-between/internal.js';
+import { TableProps } from '../../table/interfaces.js';
+import InternalTable from '../../table/internal.js';
+import { TextFilterProps } from '../../text-filter/interfaces.js';
+import InternalTextFilter from '../../text-filter/internal.js';
+import { S3ResourceSelectorProps } from '../interfaces.js';
+import { EmptyState } from './empty-state.js';
 
 import styles from './styles.css.js';
 

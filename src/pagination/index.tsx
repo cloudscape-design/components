@@ -6,10 +6,10 @@ import React from 'react';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { GeneratedAnalyticsMetadataPaginationComponent } from './analytics-metadata/interfaces';
-import { PaginationProps } from './interfaces';
-import InternalPagination from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { GeneratedAnalyticsMetadataPaginationComponent } from './analytics-metadata/interfaces.js';
+import { PaginationProps } from './interfaces.js';
+import InternalPagination from './internal.js';
 
 export { PaginationProps };
 

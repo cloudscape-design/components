@@ -4,8 +4,8 @@ import React, { ForwardedRef, forwardRef } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalToggle from '../../toggle/internal';
-import { OptionWithVisibility } from './utils';
+import InternalToggle from '../../toggle/internal.js';
+import { OptionWithVisibility } from './utils.js';
 
 import styles from '../styles.css.js';
 

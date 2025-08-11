@@ -7,36 +7,36 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { ButtonProps } from '../button/interfaces';
-import { InternalButton } from '../button/internal';
-import { useInternalI18n } from '../i18n/context';
-import { getAllFocusables } from '../internal/components/focus-lock/utils';
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton } from '../button/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
+import { getAllFocusables } from '../internal/components/focus-lock/utils.js';
 import Tooltip from '../internal/components/tooltip';
 import {
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
   useSingleTabStopNavigation,
-} from '../internal/context/single-tab-stop-navigation-context';
+} from '../internal/context/single-tab-stop-navigation-context.js';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { KeyCode } from '../internal/keycode';
-import { circleIndex } from '../internal/utils/circle-index';
-import handleKey from '../internal/utils/handle-key';
+import { KeyCode } from '../internal/keycode.js';
+import { circleIndex } from '../internal/utils/circle-index.js';
+import handleKey from '../internal/utils/handle-key.js';
 import {
   GeneratedAnalyticsMetadataTabsComponent,
   GeneratedAnalyticsMetadataTabsDismiss,
   GeneratedAnalyticsMetadataTabsSelect,
-} from './analytics-metadata/interfaces';
-import { TabsProps } from './interfaces';
+} from './analytics-metadata/interfaces.js';
+import { TabsProps } from './interfaces.js';
 import {
   hasHorizontalOverflow,
   hasInlineEndOverflow,
   hasInlineStartOverflow,
   onPaginationClick,
   scrollIntoView,
-} from './scroll-utils';
+} from './scroll-utils.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

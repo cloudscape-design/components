@@ -105,6 +105,7 @@ module.exports = parallel([
         main: './index.js',
         exports: getComponentsExports(),
         sideEffects: getSideEffects(),
+        type: 'module',
       },
       { injectDependencies: true }
     ),

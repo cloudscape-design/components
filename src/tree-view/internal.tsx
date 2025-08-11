@@ -7,7 +7,7 @@ import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
-import { TreeViewProps } from './interfaces';
+import { TreeViewProps } from './interfaces.js';
 import InternalTreeItem from './tree-item';
 
 import styles from './styles.css.js';

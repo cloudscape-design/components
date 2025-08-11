@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { BaseComponentProps } from '../../base-component';
-import { HighlightType } from '../options-list/utils/use-highlight-option';
+import { HighlightType } from '../options-list/utils/use-highlight-option.js';
 
 export type SelectableItemProps = BaseComponentProps & {
   children: React.ReactNode;

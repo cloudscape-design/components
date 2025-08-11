@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 /* istanbul ignore file */
 
-import { IComponentMetrics, IFunnelMetrics, IPerformanceMetrics } from './interfaces';
+import { IComponentMetrics, IFunnelMetrics, IPerformanceMetrics } from './interfaces.js';
 
 export function setFunnelMetrics(funnelMetrics: IFunnelMetrics) {
   FunnelMetrics = funnelMetrics;

@@ -4,9 +4,9 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { SomeRequired } from '../internal/types';
-import StatusIndicator from '../status-indicator/internal';
-import { StepsProps } from './interfaces';
+import { SomeRequired } from '../internal/types.js';
+import StatusIndicator from '../status-indicator/internal.js';
+import { StepsProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

@@ -6,14 +6,14 @@ import clsx from 'clsx';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { createWidgetizedComponent } from '../../../internal/widgets';
-import { AppLayoutProps } from '../../interfaces';
-import { OnChangeParams } from '../../utils/use-drawers';
-import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
-import { AppLayoutInternals } from '../interfaces';
+import { AppLayoutProps } from '../../interfaces.js';
+import { OnChangeParams } from '../../utils/use-drawers.js';
+import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control.js';
+import { AppLayoutInternals } from '../interfaces.js';
 import { BreadcrumbsSlot } from '../skeleton/breadcrumbs';
-import { ToolbarSkeleton } from '../skeleton/slot-skeletons';
-import { ToolbarSlot } from '../skeleton/slot-wrappers';
-import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
+import { ToolbarSkeleton } from '../skeleton/slot-skeletons.js';
+import { ToolbarSlot } from '../skeleton/slot-wrappers.js';
+import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers.js';
 import TriggerButton from './trigger-button';
 
 import testutilStyles from '../../test-classes/styles.css.js';

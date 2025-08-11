@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import InternalButton from '../../../button/internal';
+import InternalButton from '../../../button/internal.js';
 
 import styles from '../../styles.css.js';
 export interface HeaderProps {

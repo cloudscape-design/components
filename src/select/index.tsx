@@ -6,11 +6,11 @@ import React from 'react';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { getExternalProps } from '../internal/utils/external-props';
-import { GeneratedAnalyticsMetadataSelectComponent } from './analytics-metadata/interfaces';
-import { SelectProps } from './interfaces';
-import InternalSelect from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { getExternalProps } from '../internal/utils/external-props.js';
+import { GeneratedAnalyticsMetadataSelectComponent } from './analytics-metadata/interfaces.js';
+import { SelectProps } from './interfaces.js';
+import InternalSelect from './internal.js';
 
 export { SelectProps };
 

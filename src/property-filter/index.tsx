@@ -7,10 +7,10 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { GeneratedAnalyticsMetadataPropertyFilterComponent } from './analytics-metadata/interfaces';
-import { PropertyFilterProps, Ref } from './interfaces';
-import PropertyFilterInternal from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { GeneratedAnalyticsMetadataPropertyFilterComponent } from './analytics-metadata/interfaces.js';
+import { PropertyFilterProps, Ref } from './interfaces.js';
+import PropertyFilterInternal from './internal.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 

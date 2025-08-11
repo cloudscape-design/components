@@ -5,9 +5,9 @@ import React from 'react';
 
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { ExpandableSectionProps } from './interfaces';
-import InternalExpandableSection from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { ExpandableSectionProps } from './interfaces.js';
+import InternalExpandableSection from './internal.js';
 
 export { ExpandableSectionProps };
 

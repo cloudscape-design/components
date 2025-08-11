@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef, memo } from 'react';
 
-import HighlightedPoint from '../../internal/components/cartesian-chart/highlighted-point';
+import HighlightedPoint from '../../internal/components/cartesian-chart/highlighted-point.js';
 import { useSelector } from '../async-store';
 import { ChartModel } from '../model';
 

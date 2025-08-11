@@ -12,20 +12,20 @@ import customCssProps from '../../generated/custom-css-properties';
 import { useMobile } from '../../hooks/use-mobile';
 import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
-import { nodeBelongs } from '../../utils/node-belongs';
+import { nodeBelongs } from '../../utils/node-belongs.js';
 import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
 import TabTrap from '../tab-trap/index.js';
 import { Transition, TransitionStatus } from '../transition';
-import { DropdownContextProvider, DropdownContextProviderProps } from './context';
+import { DropdownContextProvider, DropdownContextProviderProps } from './context.js';
 import {
   calculatePosition,
   defaultMaxDropdownWidth,
   DropdownPosition,
   hasEnoughSpaceToStretchBeyondTriggerWidth,
   InteriorDropdownPosition,
-} from './dropdown-fit-handler';
-import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position';
-import { DropdownProps } from './interfaces';
+} from './dropdown-fit-handler.js';
+import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position.js';
+import { DropdownProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

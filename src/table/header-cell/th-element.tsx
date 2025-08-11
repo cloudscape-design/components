@@ -6,14 +6,14 @@ import clsx from 'clsx';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
-import { ColumnWidthStyle } from '../column-widths-utils';
-import { TableProps } from '../interfaces';
+import { ColumnWidthStyle } from '../column-widths-utils.js';
+import { TableProps } from '../interfaces.js';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { getTableColHeaderRoleProps, TableRole } from '../table-role';
-import { getStickyClassNames } from '../utils';
-import { SortingStatus } from './utils';
+import { getStickyClassNames } from '../utils.js';
+import { SortingStatus } from './utils.js';
 
 import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';

@@ -4,9 +4,9 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { BoxProps } from './interfaces';
-import InternalBox from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { BoxProps } from './interfaces.js';
+import InternalBox from './internal.js';
 
 export { BoxProps };
 

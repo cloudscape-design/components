@@ -5,14 +5,14 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { ButtonDropdownProps } from '../../../button-dropdown/interfaces';
-import { isLinkItem } from '../../../button-dropdown/utils/utils';
-import InternalIcon from '../../../icon/internal';
+import { ButtonDropdownProps } from '../../../button-dropdown/interfaces.js';
+import { isLinkItem } from '../../../button-dropdown/utils/utils.js';
+import InternalIcon from '../../../icon/internal.js';
 import { fireCancelableEvent, isPlainLeftClick } from '../../../internal/events';
-import { spinWhenOpen } from '../../../internal/styles/motion/utils';
-import { LinkProps } from '../../../link/interfaces';
-import { TopNavigationProps } from '../../interfaces';
-import { useNavigate } from './router';
+import { spinWhenOpen } from '../../../internal/styles/motion/utils.js';
+import { LinkProps } from '../../../link/interfaces.js';
+import { TopNavigationProps } from '../../interfaces.js';
+import { useNavigate } from './router.js';
 
 import styles from '../../styles.css.js';
 

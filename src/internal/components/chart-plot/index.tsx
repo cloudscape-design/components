@@ -5,12 +5,12 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../../../i18n/context';
-import InternalLiveRegion from '../../../live-region/internal';
-import { KeyCode } from '../../keycode';
-import { Offset } from '../interfaces';
-import ApplicationController, { ApplicationRef } from './application-controller';
-import FocusOutline from './focus-outline';
+import { useInternalI18n } from '../../../i18n/context.js';
+import InternalLiveRegion from '../../../live-region/internal.js';
+import { KeyCode } from '../../keycode.js';
+import { Offset } from '../interfaces.js';
+import ApplicationController, { ApplicationRef } from './application-controller.js';
+import FocusOutline from './focus-outline.js';
 
 import styles from './styles.css.js';
 

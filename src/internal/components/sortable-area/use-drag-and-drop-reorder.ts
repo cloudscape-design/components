@@ -14,7 +14,7 @@ import {
 } from '@dnd-kit/core';
 import { hasSortableData } from '@dnd-kit/sortable';
 
-import { SortableAreaProps } from './interfaces';
+import { SortableAreaProps } from './interfaces.js';
 import { KeyboardSensor } from './keyboard-sensor';
 
 enum KeyboardCode {

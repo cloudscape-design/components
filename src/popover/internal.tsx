@@ -5,21 +5,21 @@ import clsx from 'clsx';
 
 import { Portal, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../i18n/context';
+import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
-import { getFirstFocusable } from '../internal/components/focus-lock/utils';
-import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index';
+import { getFirstFocusable } from '../internal/components/focus-lock/utils.js';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
+import ResetContextsForModal from '../internal/context/reset-contexts-for-modal.js';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context.js';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
-import { KeyCode } from '../internal/keycode';
-import Arrow from './arrow';
-import PopoverBody from './body';
-import ConditionalLiveRegion from './conditional-live-region';
-import PopoverContainer from './container';
-import { PopoverProps } from './interfaces';
+import { KeyCode } from '../internal/keycode.js';
+import Arrow from './arrow.js';
+import PopoverBody from './body.js';
+import ConditionalLiveRegion from './conditional-live-region.js';
+import PopoverContainer from './container.js';
+import { PopoverProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

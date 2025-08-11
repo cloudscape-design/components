@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentFormatFunction } from '../../i18n/context';
-import { S3ResourceSelectorProps } from '../interfaces';
+import { ComponentFormatFunction } from '../../i18n/context.js';
+import { S3ResourceSelectorProps } from '../interfaces.js';
 
 // https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
 const SCHEME = 's3://';

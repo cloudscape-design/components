@@ -4,12 +4,12 @@ import React from 'react';
 import flattenChildren from 'react-keyed-flatten-children';
 import clsx from 'clsx';
 
-import { GridProps } from '../grid/interfaces';
-import InternalGrid from '../grid/internal';
+import { GridProps } from '../grid/interfaces.js';
+import InternalGrid from '../grid/internal.js';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { InternalColumnLayoutProps } from './interfaces';
-import { COLUMN_TRIGGERS, ColumnLayoutBreakpoint } from './internal';
-import { repeat } from './util';
+import { InternalColumnLayoutProps } from './interfaces.js';
+import { COLUMN_TRIGGERS, ColumnLayoutBreakpoint } from './internal.js';
+import { repeat } from './util.js';
 
 import styles from './styles.css.js';
 

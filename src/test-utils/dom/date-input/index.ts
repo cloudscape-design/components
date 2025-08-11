@@ -3,7 +3,7 @@
 
 import { usesDom } from '@cloudscape-design/test-utils-core/dom';
 
-import BaseInputWrapper from '../input/base-input';
+import BaseInputWrapper from '../input/base-input.js';
 
 import selectors from '../../../date-input/styles.selectors.js';
 

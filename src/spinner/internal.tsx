@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useModalContextLoadingComponent } from '../internal/hooks/use-modal-component-analytics';
-import { SpinnerProps } from './interfaces';
+import { SpinnerProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

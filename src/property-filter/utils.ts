@@ -7,7 +7,7 @@ import {
   InternalFilteringProperty,
   InternalToken,
   Token,
-} from './interfaces';
+} from './interfaces.js';
 
 // Finds the longest property the filtering text starts from.
 export function matchFilteringProperty(

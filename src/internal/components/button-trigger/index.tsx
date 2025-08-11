@@ -5,13 +5,13 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalIcon from '../../../icon/internal';
+import InternalIcon from '../../../icon/internal.js';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { BaseKeyDetail, CancelableEventHandler, fireCancelableEvent, fireKeyboardEvent } from '../../events';
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,
   GeneratedAnalyticsMetadataButtonTriggerExpand,
-} from './analytics-metadata/interfaces';
+} from './analytics-metadata/interfaces.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

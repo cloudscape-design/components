@@ -3,11 +3,11 @@
 import { Ace } from 'ace-builds';
 
 import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldControlProps } from '../internal/context/form-field-context';
+import { FormFieldControlProps } from '../internal/context/form-field-context.js';
 import { NonCancelableEventHandler } from '../internal/events';
-import { BaseModalProps } from '../modal/interfaces';
-import { AceModes } from './ace-modes';
-import { DarkThemes, LightThemes } from './ace-themes';
+import { BaseModalProps } from '../modal/interfaces.js';
+import { AceModes } from './ace-modes.js';
+import { DarkThemes, LightThemes } from './ace-themes.js';
 
 export interface CodeEditorProps extends BaseComponentProps, FormFieldControlProps, BaseModalProps {
   /**

@@ -4,9 +4,9 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { TopNavigationProps } from './interfaces';
-import InternalTopNavigation from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { TopNavigationProps } from './interfaces.js';
+import InternalTopNavigation from './internal.js';
 
 export { TopNavigationProps };
 

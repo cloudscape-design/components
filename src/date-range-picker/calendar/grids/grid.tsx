@@ -4,14 +4,19 @@ import React, { useMemo } from 'react';
 import clsx from 'clsx';
 import { isLastDayOfMonth, isSameDay, isSameMonth, isSameYear, isThisMonth, isToday } from 'date-fns';
 
-import { useInternalI18n } from '../../../i18n/context';
+import { useInternalI18n } from '../../../i18n/context.js';
 import ScreenreaderOnly from '../../../internal/components/screenreader-only';
 import { formatDate } from '../../../internal/utils/date-time';
-import { CalendarQuarter, CalendarWeek, MonthCalendar, YearCalendar } from '../../../internal/utils/date-time/calendar';
+import {
+  CalendarQuarter,
+  CalendarWeek,
+  MonthCalendar,
+  YearCalendar,
+} from '../../../internal/utils/date-time/calendar.js';
 import { normalizeStartOfWeek } from '../../../internal/utils/locale/index.js';
-import { GridCell } from './grid-cell';
-import { GridProps } from './interfaces';
-import { renderDateAnnouncement, renderDayName } from './intl';
+import { GridCell } from './grid-cell.js';
+import { GridProps } from './interfaces.js';
+import { renderDateAnnouncement, renderDayName } from './intl.js';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';

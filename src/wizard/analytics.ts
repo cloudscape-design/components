@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 
 import { FunnelMetrics } from '../internal/analytics';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import { WizardProps } from './interfaces';
+import { WizardProps } from './interfaces.js';
 
 export function useFunnelChangeEvent(
   funnelInteractionId: string | undefined,

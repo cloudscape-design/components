@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useAnnouncement } from '../select/utils/use-announcement';
-import { AutosuggestProps } from './interfaces';
-import { AutosuggestItemsHandlers, AutosuggestItemsState } from './options-controller';
-import PlainList from './plain-list';
-import VirtualList from './virtual-list';
+import { useAnnouncement } from '../select/utils/use-announcement.js';
+import { AutosuggestProps } from './interfaces.js';
+import { AutosuggestItemsHandlers, AutosuggestItemsState } from './options-controller.js';
+import PlainList from './plain-list.js';
+import VirtualList from './virtual-list.js';
 
 interface AutosuggestOptionsListProps
   extends Pick<AutosuggestProps, 'virtualScroll' | 'selectedAriaLabel' | 'renderHighlightedAriaLive'> {

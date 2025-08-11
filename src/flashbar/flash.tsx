@@ -13,29 +13,29 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
 
 import { ActionsWrapper } from '../alert/actions-wrapper';
-import { ButtonProps } from '../button/interfaces';
-import { InternalButton } from '../button/internal';
-import InternalIcon from '../icon/internal';
-import {
-  DATA_ATTR_ANALYTICS_FLASHBAR,
-  DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS,
-} from '../internal/analytics/selectors';
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton } from '../button/internal.js';
+import InternalIcon from '../icon/internal.js';
 import { getVisualContextClassname } from '../internal/components/visual-context';
-import { PACKAGE_VERSION } from '../internal/environment';
-import { isDevelopment } from '../internal/is-development';
-import { awsuiPluginsInternal } from '../internal/plugins/api';
+import { PACKAGE_VERSION } from '../internal/environment.js';
+import { isDevelopment } from '../internal/is-development.js';
+import { awsuiPluginsInternal } from '../internal/plugins/api.js';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
-import { throttle } from '../internal/utils/throttle';
-import useContainerWidth from '../internal/utils/use-container-width';
-import InternalLiveRegion from '../live-region/internal';
-import InternalSpinner from '../spinner/internal';
-import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
-import { FlashbarProps } from './interfaces';
-import { getDismissButtonStyles, getFlashStyles } from './style';
-import { FOCUS_THROTTLE_DELAY } from './utils';
+import { throttle } from '../internal/utils/throttle.js';
+import useContainerWidth from '../internal/utils/use-container-width.js';
+import InternalLiveRegion from '../live-region/internal.js';
+import InternalSpinner from '../spinner/internal.js';
+import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces.js';
+import { FlashbarProps } from './interfaces.js';
+import { getDismissButtonStyles, getFlashStyles } from './style.js';
+import { FOCUS_THROTTLE_DELAY } from './utils.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
+import {
+  DATA_ATTR_ANALYTICS_FLASHBAR,
+  DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS,
+} from '../internal/analytics/selectors.js';
 
 const ICON_TYPES = {
   success: 'status-positive',

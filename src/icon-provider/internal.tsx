@@ -3,9 +3,9 @@
 
 import React, { useContext } from 'react';
 
-import generatedIcons from '../icon/generated/icons';
-import { InternalIconContext } from './context';
-import { IconProviderProps } from './interfaces';
+import generatedIcons from '../icon/generated/icons.js';
+import { InternalIconContext } from './context.js';
+import { IconProviderProps } from './interfaces.js';
 
 function InternalIconProvider({ children, icons }: IconProviderProps) {
   const contextIcons = useContext(InternalIconContext);

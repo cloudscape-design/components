@@ -7,12 +7,12 @@ import clsx from 'clsx';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalBox from '../box/internal.js';
-import { FormFieldError, FormFieldWarning } from '../form-field/internal';
+import { FormFieldError, FormFieldWarning } from '../form-field/internal.js';
 import { BaseComponentProps } from '../internal/base-component/index.js';
-import Tooltip from '../internal/components/tooltip/index';
+import Tooltip from '../internal/components/tooltip/index.js';
 import InternalSpaceBetween from '../space-between/internal.js';
 import InternalSpinner from '../spinner/internal.js';
-import DismissButton from '../token-group/dismiss-button';
+import DismissButton from '../token-group/dismiss-button.js';
 import { TokenGroupProps } from '../token-group/interfaces.js';
 import * as defaultFormatters from './default-formatters.js';
 import { FileOptionThumbnail } from './thumbnail.js';

@@ -8,10 +8,10 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import {
   GeneratedAnalyticsMetadataAppLayoutToolbarClose,
   GeneratedAnalyticsMetadataAppLayoutToolbarOpen,
-} from '../../../../app-layout-toolbar/analytics-metadata/interfaces';
-import { ButtonProps } from '../../../../button/interfaces';
-import { IconProps } from '../../../../icon/interfaces';
-import Icon from '../../../../icon/internal';
+} from '../../../../app-layout-toolbar/analytics-metadata/interfaces.js';
+import { ButtonProps } from '../../../../button/interfaces.js';
+import { IconProps } from '../../../../icon/interfaces.js';
+import Icon from '../../../../icon/internal.js';
 import Tooltip from '../../../../internal/components/tooltip';
 
 import testutilStyles from '../../../test-classes/styles.css.js';

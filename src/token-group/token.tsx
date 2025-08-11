@@ -5,7 +5,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
-import DismissButton from './dismiss-button';
+import DismissButton from './dismiss-button.js';
 
 import styles from './styles.css.js';
 

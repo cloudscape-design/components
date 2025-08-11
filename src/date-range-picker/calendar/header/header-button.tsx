@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { InternalButton } from '../../../button/internal';
+import { InternalButton } from '../../../button/internal.js';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 

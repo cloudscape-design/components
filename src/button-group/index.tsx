@@ -7,11 +7,11 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { getExternalProps } from '../internal/utils/external-props';
-import { GeneratedAnalyticsMetadataButtonGroupComponent } from './analytics-metadata/interfaces';
-import { ButtonGroupProps } from './interfaces';
-import InternalButtonGroup from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { getExternalProps } from '../internal/utils/external-props.js';
+import { GeneratedAnalyticsMetadataButtonGroupComponent } from './analytics-metadata/interfaces.js';
+import { ButtonGroupProps } from './interfaces.js';
+import InternalButtonGroup from './internal.js';
 
 export { ButtonGroupProps };
 

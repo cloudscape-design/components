@@ -3,12 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
+import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { ScaleContinuousNumeric, ScaleTime } from '../internal/vendor/d3-scale';
-import { createOneSideRoundedRectPath } from './create-one-side-rounded-rect-path';
-import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
-import { getKeyValue, matchesX, StackedBarValues } from './utils';
+import { ScaleContinuousNumeric, ScaleTime } from '../internal/vendor/d3-scale.js';
+import { createOneSideRoundedRectPath } from './create-one-side-rounded-rect-path.js';
+import { ChartDataTypes, MixedLineBarChartProps } from './interfaces.js';
+import { getKeyValue, matchesX, StackedBarValues } from './utils.js';
 
 import styles from './styles.css.js';
 

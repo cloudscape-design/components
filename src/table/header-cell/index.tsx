@@ -6,18 +6,18 @@ import clsx from 'clsx';
 import { useMergeRefs, useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useInternalI18n } from '../../i18n/context';
-import InternalIcon from '../../icon/internal';
-import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
-import { KeyCode } from '../../internal/keycode';
-import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
-import { ColumnWidthStyle } from '../column-widths-utils';
-import { TableProps } from '../interfaces';
+import { useInternalI18n } from '../../i18n/context.js';
+import InternalIcon from '../../icon/internal.js';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
+import { KeyCode } from '../../internal/keycode.js';
+import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces.js';
+import { ColumnWidthStyle } from '../column-widths-utils.js';
+import { TableProps } from '../interfaces.js';
 import { Divider, Resizer } from '../resizer';
 import { StickyColumnsModel } from '../sticky-columns';
 import { TableRole } from '../table-role';
-import { TableThElement } from './th-element';
-import { getSortingIconName, getSortingStatus, isSorted } from './utils';
+import { TableThElement } from './th-element.js';
+import { getSortingIconName, getSortingStatus, isSorted } from './utils.js';
 
 import analyticsSelectors from '../analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

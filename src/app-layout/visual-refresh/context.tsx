@@ -14,21 +14,21 @@ import React, {
 import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getOffsetInlineStart } from '@cloudscape-design/component-toolkit/internal';
 
-import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
-import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context.js';
+import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context.js';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useMobile } from '../../internal/hooks/use-mobile';
-import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
-import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
+import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils.js';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces.js';
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
-import { shouldSplitPanelBeForcedToBottom } from '../split-panel/split-panel-forced-position';
-import { useDrawers } from '../utils/use-drawers';
-import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
-import useResize from '../utils/use-resize';
-import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
-import { getSplitPanelPosition } from './split-panel';
-import useBackgroundOverlap from './use-background-overlap';
+import { shouldSplitPanelBeForcedToBottom } from '../split-panel/split-panel-forced-position.js';
+import { useDrawers } from '../utils/use-drawers.js';
+import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control.js';
+import useResize from '../utils/use-resize.js';
+import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control.js';
+import { getSplitPanelPosition } from './split-panel.js';
+import useBackgroundOverlap from './use-background-overlap.js';
 
 import styles from './styles.css.js';
 

@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { isDevelopment } from '../../is-development';
+import { isDevelopment } from '../../is-development.js';
 
 interface PropertyDescription {
   componentName: string;

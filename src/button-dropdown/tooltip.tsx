@@ -5,9 +5,9 @@ import React, { KeyboardEventHandler, useRef, useState } from 'react';
 import { Portal, useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
 
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
-import Arrow from '../popover/arrow';
-import PopoverBody from '../popover/body';
-import PopoverContainer from '../popover/container';
+import Arrow from '../popover/arrow.js';
+import PopoverBody from '../popover/body.js';
+import PopoverContainer from '../popover/container.js';
 
 interface TooltipProps {
   children?: React.ReactNode;

@@ -19,7 +19,7 @@ import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import {
   GeneratedAnalyticsMetadataPropertyEditCancel,
   GeneratedAnalyticsMetadataPropertyEditConfirm,
-} from './analytics-metadata/interfaces';
+} from './analytics-metadata/interfaces.js';
 import { getAllowedOperators } from './controller.js';
 import { I18nStringsInternal } from './i18n-utils.js';
 import {

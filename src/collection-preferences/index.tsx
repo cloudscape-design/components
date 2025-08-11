@@ -7,22 +7,22 @@ import clsx from 'clsx';
 import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalBox from '../box/internal';
-import { ButtonProps } from '../button/interfaces';
-import { InternalButton } from '../button/internal';
-import { useInternalI18n } from '../i18n/context';
+import InternalBox from '../box/internal.js';
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton } from '../button/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
-import { CollectionPreferencesMetadata } from '../internal/context/collection-preferences-metadata-context';
-import { useTableComponentsContext } from '../internal/context/table-component-context';
+import { CollectionPreferencesMetadata } from '../internal/context/collection-preferences-metadata-context.js';
+import { useTableComponentsContext } from '../internal/context/table-component-context.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import InternalModal from '../modal/internal';
-import InternalSpaceBetween from '../space-between/internal';
-import { getComponentAnalyticsMetadata } from './analytics-metadata/utils';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import InternalModal from '../modal/internal.js';
+import InternalSpaceBetween from '../space-between/internal.js';
+import { getComponentAnalyticsMetadata } from './analytics-metadata/utils.js';
 import ContentDisplayPreference from './content-display';
-import { CollectionPreferencesProps } from './interfaces';
+import { CollectionPreferencesProps } from './interfaces.js';
 import {
   ContentDensityPreference,
   copyPreferences,
@@ -33,8 +33,8 @@ import {
   StickyColumnsPreference,
   StripedRowsPreference,
   WrapLinesPreference,
-} from './utils';
-import VisibleContentPreference from './visible-content';
+} from './utils.js';
+import VisibleContentPreference from './visible-content.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

@@ -6,8 +6,8 @@ import clsx from 'clsx';
 import ChartPopover from '../internal/components/chart-popover';
 import ChartSeriesDetails, { ExpandedSeries } from '../internal/components/chart-series-details';
 import { Transition } from '../internal/components/transition';
-import { HighlightDetails } from './format-highlighted';
-import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
+import { HighlightDetails } from './format-highlighted.js';
+import { ChartDataTypes, MixedLineBarChartProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

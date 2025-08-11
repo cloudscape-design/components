@@ -2,17 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import InternalBox from '../box/internal';
-import { InternalButton } from '../button/internal';
-import InternalFormField from '../form-field/internal';
+import InternalBox from '../box/internal.js';
+import { InternalButton } from '../button/internal.js';
+import InternalFormField from '../form-field/internal.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import InternalModal from '../modal/internal';
-import InternalSpaceBetween from '../space-between/internal';
-import InternalTiles from '../tiles/internal';
-import bottomPositionIconClassic from './icons/bottom-icon';
-import bottomPositionIconRefresh from './icons/bottom-icon-refresh';
-import sidePositionIconClassic from './icons/side-position';
-import sidePositionIconRefresh from './icons/side-position-refresh';
+import InternalModal from '../modal/internal.js';
+import InternalSpaceBetween from '../space-between/internal.js';
+import InternalTiles from '../tiles/internal.js';
+import bottomPositionIconClassic from './icons/bottom-icon.js';
+import bottomPositionIconRefresh from './icons/bottom-icon-refresh.js';
+import sidePositionIconClassic from './icons/side-position.js';
+import sidePositionIconRefresh from './icons/side-position-refresh.js';
 
 interface PreferencesModali18nStrings {
   header?: string;

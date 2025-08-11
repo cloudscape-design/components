@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { SideNavigationProps } from './interfaces';
+import { SideNavigationProps } from './interfaces.js';
 
 type ExpandableItem = SideNavigationProps.Section | SideNavigationProps.ExpandableLinkGroup;
 

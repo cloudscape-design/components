@@ -4,9 +4,9 @@ import React from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
-import { BaseModalProps } from '../modal/interfaces';
-import { PaginationProps } from '../pagination/interfaces';
-import { TableProps } from '../table/interfaces';
+import { BaseModalProps } from '../modal/interfaces.js';
+import { PaginationProps } from '../pagination/interfaces.js';
+import { TableProps } from '../table/interfaces.js';
 
 export interface S3ResourceSelectorProps extends BaseComponentProps, BaseModalProps {
   /**

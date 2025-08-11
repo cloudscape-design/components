@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../i18n/context';
+import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component/index.js';
 import TokenList from '../internal/components/token-list/index.js';
 import { fireNonCancelableEvent } from '../internal/events/index.js';

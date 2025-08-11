@@ -6,13 +6,13 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { ButtonProps } from '../button/interfaces';
-import { InternalButton } from '../button/internal';
-import InternalCalendar from '../calendar/internal';
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton } from '../button/internal.js';
+import InternalCalendar from '../calendar/internal.js';
 import { useFormFieldContext } from '../contexts/form-field.js';
-import InternalDateInput from '../date-input/internal';
+import InternalDateInput from '../date-input/internal.js';
 import { useLocale } from '../i18n/context.js';
-import { InputProps } from '../input/interfaces';
+import { InputProps } from '../input/interfaces.js';
 import { getBaseProps } from '../internal/base-component';
 import Dropdown from '../internal/components/dropdown';
 import FocusLock from '../internal/components/focus-lock';
@@ -21,13 +21,13 @@ import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useFocusTracker } from '../internal/hooks/use-focus-tracker.js';
-import { KeyCode } from '../internal/keycode';
+import { KeyCode } from '../internal/keycode.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { parseDate } from '../internal/utils/date-time';
 import { normalizeLocale } from '../internal/utils/locale';
-import InternalLiveRegion from '../live-region/internal';
-import { DatePickerProps } from './interfaces';
-import { getBaseDateLabel, getSelectedDateLabel, isValidFullDate } from './utils';
+import InternalLiveRegion from '../live-region/internal.js';
+import { DatePickerProps } from './interfaces.js';
+import { getBaseDateLabel, getSelectedDateLabel, isValidFullDate } from './utils.js';
 
 import styles from './styles.css.js';
 

@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ChartDataTypes, XDomain, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces';
-import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
-import { AreaChartProps } from '../interfaces';
-import { ChartModel } from './index';
+import { ChartDataTypes, XDomain, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces.js';
+import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales.js';
+import { AreaChartProps } from '../interfaces.js';
+import { ChartModel } from './index.js';
 
 // A sufficiently small value.
 // The Number.EPSILON is not available in the target ECMA version.

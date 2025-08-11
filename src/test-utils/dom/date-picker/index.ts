@@ -5,8 +5,8 @@ import { createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-
 
 import ButtonWrapper from '../button';
 import CalendarWrapper from '../calendar';
-import BaseInputWrapper from '../input/base-input';
-import DropdownWrapper from '../internal/dropdown';
+import BaseInputWrapper from '../input/base-input.js';
+import DropdownWrapper from '../internal/dropdown.js';
 
 import calendarStyles from '../../../calendar/styles.selectors.js';
 import styles from '../../../date-picker/styles.selectors.js';

@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useInternalI18n } from '../../i18n/context';
+import { useInternalI18n } from '../../i18n/context.js';
 import { fireNonCancelableEvent } from '../../internal/events';
-import { TableProps } from '../interfaces';
-import { ItemSet } from '../selection/utils';
+import { TableProps } from '../interfaces.js';
+import { ItemSet } from '../selection/utils.js';
 
 interface ExpandableItemProps<T> extends ExpandableItemDetail<T> {
   isExpandable: boolean;

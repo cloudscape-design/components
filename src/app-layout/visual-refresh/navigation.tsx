@@ -5,11 +5,11 @@ import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-import { InternalButton } from '../../button/internal';
+import { InternalButton } from '../../button/internal.js';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
-import { useAppLayoutInternals } from './context';
-import TriggerButton from './trigger-button';
+import { useAppLayoutInternals } from './context.js';
+import TriggerButton from './trigger-button.js';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';

@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { AutosuggestProps } from '../autosuggest/interfaces';
+import { AutosuggestProps } from '../autosuggest/interfaces.js';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { I18nStringsOperators, operatorToDescription } from './i18n-utils';
+import { I18nStringsOperators, operatorToDescription } from './i18n-utils.js';
 import {
   ComparisonOperator,
   GroupText,
@@ -19,7 +19,7 @@ import {
   Query,
   Token,
   TokenGroup,
-} from './interfaces';
+} from './interfaces.js';
 import {
   matchFilteringProperty,
   matchOperator,
@@ -28,7 +28,7 @@ import {
   removeOperator,
   tokenGroupToTokens,
   trimStart,
-} from './utils';
+} from './utils.js';
 
 type I18nStringsController = I18nStringsOperators &
   Pick<I18nStrings, 'operatorsText' | 'groupPropertiesText' | 'groupValuesText'>;

@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ButtonContext } from './button-context';
-import { CollectionLabelContext } from './collection-label-context';
-import { FormFieldContext } from './form-field-context';
-import { InfoLinkLabelContext } from './info-link-label-context';
-import { defaultValue as linkDefaultValue, LinkDefaultVariantContext } from './link-default-variant-context';
+import { ButtonContext } from './button-context.js';
+import { CollectionLabelContext } from './collection-label-context.js';
+import { FormFieldContext } from './form-field-context.js';
+import { InfoLinkLabelContext } from './info-link-label-context.js';
+import { defaultValue as linkDefaultValue, LinkDefaultVariantContext } from './link-default-variant-context.js';
 import {
   defaultValue as singleTabStopDefaultValue,
   SingleTabStopNavigationContext,
-} from './single-tab-stop-navigation-context';
+} from './single-tab-stop-navigation-context.js';
 
 /*
  Use this context-resetter when creating a new modal-type context where typically the contents

@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { BaseInputProps, InputProps } from '../input/interfaces';
+import { BaseInputProps, InputProps } from '../input/interfaces.js';
 import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { DateFormat, DateGranularity, EditableDateFormat } from '../internal/utils/date-time/interfaces';
+import { FormFieldValidationControlProps } from '../internal/context/form-field-context.js';
+import { DateFormat, DateGranularity, EditableDateFormat } from '../internal/utils/date-time/interfaces.js';
 
 export interface DateInputProps extends BaseInputProps, FormFieldValidationControlProps, BaseComponentProps {
   /**

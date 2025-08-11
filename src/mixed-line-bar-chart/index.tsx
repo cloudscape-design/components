@@ -4,9 +4,9 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { MixedLineBarChartProps } from './interfaces';
-import InternalMixedLineBarChart from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { MixedLineBarChartProps } from './interfaces.js';
+import InternalMixedLineBarChart from './internal.js';
 
 export { MixedLineBarChartProps };
 

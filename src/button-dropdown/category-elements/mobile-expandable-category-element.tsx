@@ -5,12 +5,12 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalIcon from '../../icon/internal';
+import InternalIcon from '../../icon/internal.js';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { GeneratedAnalyticsMetadataButtonDropdownExpand } from '../analytics-metadata/interfaces.js';
-import { CategoryProps } from '../interfaces';
-import ItemsList from '../items-list';
-import MobileExpandableGroup from '../mobile-expandable-group/mobile-expandable-group';
+import { CategoryProps } from '../interfaces.js';
+import ItemsList from '../items-list.js';
+import MobileExpandableGroup from '../mobile-expandable-group/mobile-expandable-group.js';
 import Tooltip from '../tooltip.js';
 import { getMenuItemProps } from '../utils/menu-item.js';
 

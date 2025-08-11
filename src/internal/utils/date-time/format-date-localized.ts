@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { isValid, parseISO } from 'date-fns';
 
-import { formatTimeOffsetLocalized } from './format-time-offset';
+import { formatTimeOffsetLocalized } from './format-time-offset.js';
 
 export default function formatDateLocalized({
   date: isoDate,

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { GeneratedAnalyticsMetadataInputClearInput } from '../../input/analytics-metadata/interfaces';
-import { GeneratedAnalyticsMetadataSelectableItemSelect } from '../../internal/components/selectable-item/analytics-metadata/interfaces';
+import { GeneratedAnalyticsMetadataInputClearInput } from '../../input/analytics-metadata/interfaces.js';
+import { GeneratedAnalyticsMetadataSelectableItemSelect } from '../../internal/components/selectable-item/analytics-metadata/interfaces.js';
 
 export type GeneratedAnalyticsMetadataAutosuggestSelect = GeneratedAnalyticsMetadataSelectableItemSelect;
 

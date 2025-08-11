@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalContainerProps } from '../container/internal';
-import { TableProps } from './interfaces';
+import { InternalContainerProps } from '../container/internal.js';
+import { TableProps } from './interfaces.js';
 import { StickyColumnsCellState } from './sticky-columns';
 
 export const applyTrackBy = <T>(trackBy: TableProps.TrackBy<T>, item: T) => {

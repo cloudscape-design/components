@@ -4,35 +4,46 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSta
 
 import { getIsRtl, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import AxisLabel from '../internal/components/cartesian-chart/axis-label';
-import BlockEndLabels, { useBLockEndLabels } from '../internal/components/cartesian-chart/block-end-labels';
-import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
-import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline';
-import HighlightedPoint from '../internal/components/cartesian-chart/highlighted-point';
-import InlineStartLabels from '../internal/components/cartesian-chart/inline-start-labels';
-import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
-import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
-import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
-import { createXTicks, createYTicks, getXTickCount, getYTickCount } from '../internal/components/cartesian-chart/ticks';
-import VerticalGridLines from '../internal/components/cartesian-chart/vertical-grid-lines';
-import VerticalMarker from '../internal/components/cartesian-chart/vertical-marker';
+import AxisLabel from '../internal/components/cartesian-chart/axis-label.js';
+import BlockEndLabels, { useBLockEndLabels } from '../internal/components/cartesian-chart/block-end-labels.js';
+import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container.js';
+import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline.js';
+import HighlightedPoint from '../internal/components/cartesian-chart/highlighted-point.js';
+import InlineStartLabels from '../internal/components/cartesian-chart/inline-start-labels.js';
+import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces.js';
+import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure.js';
+import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales.js';
+import {
+  createXTicks,
+  createYTicks,
+  getXTickCount,
+  getYTickCount,
+} from '../internal/components/cartesian-chart/ticks.js';
+import VerticalGridLines from '../internal/components/cartesian-chart/vertical-grid-lines.js';
+import VerticalMarker from '../internal/components/cartesian-chart/vertical-marker.js';
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
-import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
+import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { nodeBelongs } from '../internal/utils/node-belongs';
-import useContainerWidth from '../internal/utils/use-container-width';
-import BarGroups from './bar-groups';
-import MixedChartPopover from './chart-popover';
-import DataSeries from './data-series';
-import { computeDomainX, computeDomainY } from './domain';
-import formatHighlighted from './format-highlighted';
-import { useMouseHover } from './hooks/use-mouse-hover';
-import { useNavigation } from './hooks/use-navigation';
-import { usePopover } from './hooks/use-popover';
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps, ScaleType, VerticalMarkerX } from './interfaces';
-import makeScaledBarGroups, { ScaledBarGroup } from './make-scaled-bar-groups';
-import makeScaledSeries, { ScaledPoint } from './make-scaled-series';
-import { isXThreshold } from './utils';
+import { nodeBelongs } from '../internal/utils/node-belongs.js';
+import useContainerWidth from '../internal/utils/use-container-width.js';
+import BarGroups from './bar-groups.js';
+import MixedChartPopover from './chart-popover.js';
+import DataSeries from './data-series.js';
+import { computeDomainX, computeDomainY } from './domain.js';
+import formatHighlighted from './format-highlighted.js';
+import { useMouseHover } from './hooks/use-mouse-hover.js';
+import { useNavigation } from './hooks/use-navigation.js';
+import { usePopover } from './hooks/use-popover.js';
+import {
+  ChartDataTypes,
+  InternalChartSeries,
+  MixedLineBarChartProps,
+  ScaleType,
+  VerticalMarkerX,
+} from './interfaces.js';
+import makeScaledBarGroups, { ScaledBarGroup } from './make-scaled-bar-groups.js';
+import makeScaledSeries, { ScaledPoint } from './make-scaled-series.js';
+import { isXThreshold } from './utils.js';
 
 const INLINE_START_LABELS_MARGIN = 16;
 const BLOCK_END_LABELS_OFFSET = 12;

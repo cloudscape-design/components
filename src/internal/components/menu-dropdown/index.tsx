@@ -3,13 +3,13 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { CustomTriggerProps } from '../../../button-dropdown/interfaces';
-import InternalButtonDropdown from '../../../button-dropdown/internal';
-import InternalIcon from '../../../icon/internal';
+import { CustomTriggerProps } from '../../../button-dropdown/interfaces.js';
+import InternalButtonDropdown from '../../../button-dropdown/internal.js';
+import InternalIcon from '../../../icon/internal.js';
 import { getBaseProps } from '../../base-component';
-import { spinWhenOpen } from '../../styles/motion/utils';
-import { applyDisplayName } from '../../utils/apply-display-name';
-import { ButtonTriggerProps, MenuDropdownProps } from './interfaces';
+import { spinWhenOpen } from '../../styles/motion/utils.js';
+import { applyDisplayName } from '../../utils/apply-display-name.js';
+import { ButtonTriggerProps, MenuDropdownProps } from './interfaces.js';
 
 import buttonDropdownStyles from '../../../button-dropdown/styles.css.js';
 import styles from './styles.css.js';

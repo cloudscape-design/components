@@ -3,15 +3,15 @@
 'use client';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { HotspotProps } from '../hotspot/interfaces';
+import { HotspotProps } from '../hotspot/interfaces.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { ClosedAnnotation } from './annotation/closed-annotation';
-import { OpenAnnotation } from './annotation/open-annotation';
-import { HotspotContext, hotspotContext } from './context';
-import { AnnotationContextProps } from './interfaces';
-import { getStepInfo } from './utils';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { ClosedAnnotation } from './annotation/closed-annotation.js';
+import { OpenAnnotation } from './annotation/open-annotation.js';
+import { HotspotContext, hotspotContext } from './context.js';
+import { AnnotationContextProps } from './interfaces.js';
+import { getStepInfo } from './utils.js';
 
 export { AnnotationContextProps };
 

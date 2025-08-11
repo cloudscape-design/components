@@ -4,13 +4,13 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import PanelResizeHandle from '../../internal/components/panel-resize-handle';
-import { getLimitedValue } from '../../split-panel/utils/size-utils';
-import { SizeControlProps } from '../utils/interfaces';
-import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
-import { useKeyboardEvents } from '../utils/use-keyboard-events';
-import { usePointerEvents } from '../utils/use-pointer-events';
-import { Drawer } from './index';
-import { ResizableDrawerProps } from './interfaces';
+import { getLimitedValue } from '../../split-panel/utils/size-utils.js';
+import { SizeControlProps } from '../utils/interfaces.js';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers.js';
+import { useKeyboardEvents } from '../utils/use-keyboard-events.js';
+import { usePointerEvents } from '../utils/use-pointer-events.js';
+import { Drawer } from './index.js';
+import { ResizableDrawerProps } from './interfaces.js';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';

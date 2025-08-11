@@ -4,8 +4,8 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } 
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import TabTrap from '../tab-trap/index';
-import { getFirstFocusable, getLastFocusable } from './utils';
+import TabTrap from '../tab-trap/index.js';
+import { getFirstFocusable, getLastFocusable } from './utils.js';
 
 export interface FocusLockProps {
   className?: string;

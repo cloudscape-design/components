@@ -4,9 +4,9 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { FileTokenGroupProps } from './interfaces';
-import InternalFileTokenGroup from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { FileTokenGroupProps } from './interfaces.js';
+import InternalFileTokenGroup from './internal.js';
 
 export { FileTokenGroupProps };
 

@@ -3,15 +3,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useInternalI18n } from '../../i18n/context';
-import Icon from '../../icon/internal';
+import { useInternalI18n } from '../../i18n/context.js';
+import Icon from '../../icon/internal.js';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
 import { usePrevious } from '../../internal/hooks/use-previous';
-import InternalLiveRegion from '../../live-region/internal';
-import { TableProps } from '../interfaces';
-import { DisabledInlineEditor } from './disabled-inline-editor';
-import { InlineEditor } from './inline-editor';
-import { TableTdElement, TableTdElementProps } from './td-element';
+import InternalLiveRegion from '../../live-region/internal.js';
+import { TableProps } from '../interfaces.js';
+import { DisabledInlineEditor } from './disabled-inline-editor.js';
+import { InlineEditor } from './inline-editor.js';
+import { TableTdElement, TableTdElementProps } from './td-element.js';
 
 import styles from './styles.css.js';
 

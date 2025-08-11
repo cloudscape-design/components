@@ -9,11 +9,11 @@ import {
   useFocusVisible,
 } from '@cloudscape-design/component-toolkit/internal';
 
-import { AnalyticsMetadata } from '../../analytics/interfaces';
-import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../../environment';
-import { getVisualTheme } from '../../utils/get-visual-theme';
+import { AnalyticsMetadata } from '../../analytics/interfaces.js';
+import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../../environment.js';
+import { getVisualTheme } from '../../utils/get-visual-theme.js';
 import { useVisualRefresh } from '../use-visual-mode';
-import { useMissingStylesCheck } from './styles-check';
+import { useMissingStylesCheck } from './styles-check.js';
 
 export interface InternalBaseComponentProps<T = any> {
   __internalRootRef?: MutableRefObject<T | null> | null;

@@ -4,10 +4,10 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { PACKAGE_VERSION, THEME } from '../../environment';
+import { PACKAGE_VERSION, THEME } from '../../environment.js';
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
-import { nodeBelongs } from '../../utils/node-belongs';
+import { nodeBelongs } from '../../utils/node-belongs.js';
 import {
   FunnelContext,
   FunnelContextValue,
@@ -16,9 +16,9 @@ import {
   FunnelStepContextValue,
   FunnelSubStepContext,
   FunnelSubStepContextValue,
-} from '../context/analytics-context';
-import { useFunnel, useFunnelStep } from '../hooks/use-funnel';
-import { FunnelMetrics, PerformanceMetrics } from '../index';
+} from '../context/analytics-context.js';
+import { useFunnel, useFunnelStep } from '../hooks/use-funnel.js';
+import { FunnelMetrics, PerformanceMetrics } from '../index.js';
 import {
   AnalyticsMetadata,
   FunnelStartProps,
@@ -26,7 +26,8 @@ import {
   StepConfiguration,
   SubStepConfiguration,
   TaskCompletionDataProps,
-} from '../interfaces';
+} from '../interfaces.js';
+
 import {
   DATA_ATTR_FUNNEL_STEP,
   DATA_ATTR_RESOURCE_TYPE,
@@ -35,7 +36,7 @@ import {
   getSubStepNameSelector,
   getSubStepSelector,
   getTextFromSelector,
-} from '../selectors';
+} from '../selectors.js';
 
 const FUNNEL_VERSION = '1.4';
 

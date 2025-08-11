@@ -7,23 +7,23 @@ import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { InternalButton } from '../button/internal';
+import { InternalButton } from '../button/internal.js';
 import { getBaseProps } from '../internal/base-component';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import TokenList from '../internal/components/token-list';
-import { useTableComponentsContext } from '../internal/context/table-component-context';
+import { useTableComponentsContext } from '../internal/context/table-component-context.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
-import { SomeRequired } from '../internal/types';
+import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
+import { SomeRequired } from '../internal/types.js';
 import { joinStrings } from '../internal/utils/strings';
-import { InternalLiveRegionRef } from '../live-region/internal';
-import InternalSpaceBetween from '../space-between/internal';
-import { SearchResults } from '../text-filter/search-results';
-import useDebounceSearchResultCallback from '../text-filter/use-debounce-search-result-callback';
-import { GeneratedAnalyticsMetadataPropertyFilterClearFilters } from './analytics-metadata/interfaces';
-import { getAllowedOperators, getAutosuggestOptions, getQueryActions, parseText } from './controller';
-import { usePropertyFilterI18n } from './i18n-utils';
+import { InternalLiveRegionRef } from '../live-region/internal.js';
+import InternalSpaceBetween from '../space-between/internal.js';
+import { SearchResults } from '../text-filter/search-results.js';
+import useDebounceSearchResultCallback from '../text-filter/use-debounce-search-result-callback.js';
+import { GeneratedAnalyticsMetadataPropertyFilterClearFilters } from './analytics-metadata/interfaces.js';
+import { getAllowedOperators, getAutosuggestOptions, getQueryActions, parseText } from './controller.js';
+import { usePropertyFilterI18n } from './i18n-utils.js';
 import {
   ComparisonOperator,
   ExtendedOperator,
@@ -39,12 +39,12 @@ import {
   Ref,
   Token,
   TokenGroup,
-} from './interfaces';
-import { PropertyEditorContentCustom, PropertyEditorContentEnum, PropertyEditorFooter } from './property-editor';
-import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
-import { TokenButton } from './token';
-import { useLoadItems } from './use-load-items';
-import { tokenGroupToTokens } from './utils';
+} from './interfaces.js';
+import { PropertyEditorContentCustom, PropertyEditorContentEnum, PropertyEditorFooter } from './property-editor.js';
+import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest.js';
+import { TokenButton } from './token.js';
+import { useLoadItems } from './use-load-items.js';
+import { tokenGroupToTokens } from './utils.js';
 
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import analyticsSelectors from './analytics-metadata/styles.css.js';

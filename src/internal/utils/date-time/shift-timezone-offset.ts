@@ -4,9 +4,9 @@
 import { addMinutes } from 'date-fns';
 
 import { joinDateTime } from '.';
-import { formatDate } from './format-date';
-import { formatTime } from './format-time';
-import { parseTimezoneOffset } from './parse-timezone-offset';
+import { formatDate } from './format-date.js';
+import { formatTime } from './format-time.js';
+import { parseTimezoneOffset } from './parse-timezone-offset.js';
 
 /**
  * Re-formats an ISO8601 date string so that it is expressed using the

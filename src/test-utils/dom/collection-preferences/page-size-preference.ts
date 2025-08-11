@@ -4,7 +4,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import FormFieldWrapper from '../form-field';
 import RadioGroupWrapper from '../radio-group';
-import RadioButtonWrapper from '../radio-group/radio-button';
+import RadioButtonWrapper from '../radio-group/radio-button.js';
 
 import styles from '../../../collection-preferences/styles.selectors.js';
 

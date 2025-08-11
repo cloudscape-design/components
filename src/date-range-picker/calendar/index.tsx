@@ -18,23 +18,23 @@ import {
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { CalendarProps } from '../../calendar/interfaces';
-import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
-import { getBaseDay } from '../../calendar/utils/navigation-day';
-import { getBaseMonth } from '../../calendar/utils/navigation-month';
+import { CalendarProps } from '../../calendar/interfaces.js';
+import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl.js';
+import { getBaseDay } from '../../calendar/utils/navigation-day.js';
+import { getBaseMonth } from '../../calendar/utils/navigation-month.js';
 import { useInternalI18n } from '../../i18n/context.js';
 import { BaseComponentProps } from '../../internal/base-component';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import { formatDate, formatDateTime, parseDate, splitDateTime } from '../../internal/utils/date-time';
 import { normalizeLocale, normalizeStartOfWeek } from '../../internal/utils/locale';
-import InternalLiveRegion from '../../live-region/internal';
-import SpaceBetween from '../../space-between/internal';
-import { TimeInputProps } from '../../time-input/interfaces';
-import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces';
+import InternalLiveRegion from '../../live-region/internal.js';
+import SpaceBetween from '../../space-between/internal.js';
+import { TimeInputProps } from '../../time-input/interfaces.js';
+import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces.js';
 import { Grids } from './grids';
 import CalendarHeader from './header';
 import RangeInputs from './range-inputs.js';
-import { findDateToFocus, findMonthToDisplay, findMonthToFocus, findYearToDisplay } from './utils';
+import { findDateToFocus, findMonthToDisplay, findMonthToFocus, findYearToDisplay } from './utils.js';
 
 import styles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';

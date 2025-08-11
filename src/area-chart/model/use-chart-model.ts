@@ -5,21 +5,21 @@ import React, { MouseEvent, RefObject, useEffect, useMemo, useRef } from 'react'
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { XDomain, XScaleType, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces';
+import { XDomain, XScaleType, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces.js';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
-import { useHeightMeasure } from '../../internal/hooks/container-queries/use-height-measure';
-import { KeyCode } from '../../internal/keycode';
-import { circleIndex } from '../../internal/utils/circle-index';
-import handleKey from '../../internal/utils/handle-key';
-import { nodeBelongs } from '../../internal/utils/node-belongs';
-import { throttle } from '../../internal/utils/throttle';
+import { useHeightMeasure } from '../../internal/hooks/container-queries/use-height-measure.js';
+import { KeyCode } from '../../internal/keycode.js';
+import { circleIndex } from '../../internal/utils/circle-index.js';
+import handleKey from '../../internal/utils/handle-key.js';
+import { nodeBelongs } from '../../internal/utils/node-belongs.js';
+import { throttle } from '../../internal/utils/throttle.js';
 import { useReaction } from '../async-store';
-import { AreaChartProps } from '../interfaces';
-import computeChartProps from './compute-chart-props';
-import createSeriesDecorator from './create-series-decorator';
-import { ChartModel } from './index';
-import InteractionsStore from './interactions-store';
-import { findClosest } from './utils';
+import { AreaChartProps } from '../interfaces.js';
+import computeChartProps from './compute-chart-props.js';
+import createSeriesDecorator from './create-series-decorator.js';
+import { ChartModel } from './index.js';
+import InteractionsStore from './interactions-store.js';
+import { findClosest } from './utils.js';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;

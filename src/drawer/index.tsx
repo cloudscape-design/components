@@ -4,9 +4,9 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { DrawerProps } from './interfaces';
-import { InternalDrawer } from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { DrawerProps } from './interfaces.js';
+import { InternalDrawer } from './internal.js';
 
 export { DrawerProps };
 

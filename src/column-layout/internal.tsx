@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import FlexibleColumnLayout from './flexible-column-layout';
-import GridColumnLayout from './grid-column-layout';
-import { InternalColumnLayoutProps } from './interfaces';
+import GridColumnLayout from './grid-column-layout.js';
+import { InternalColumnLayoutProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useInternalI18n } from '../i18n/context';
-import { ComparisonOperator, FormattedToken, I18nStrings, InternalToken, InternalTokenGroup } from './interfaces';
-import { tokenGroupToTokens } from './utils';
+import { useInternalI18n } from '../i18n/context.js';
+import { ComparisonOperator, FormattedToken, I18nStrings, InternalToken, InternalTokenGroup } from './interfaces.js';
+import { tokenGroupToTokens } from './utils.js';
 
 export type I18nStringsOperators = Pick<
   I18nStrings,

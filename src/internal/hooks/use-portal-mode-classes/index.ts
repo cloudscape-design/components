@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useCurrentMode, useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 
 import { useVisualContext } from '../../components/visual-context';
-import { ALWAYS_VISUAL_REFRESH } from '../../environment';
+import { ALWAYS_VISUAL_REFRESH } from '../../environment.js';
 import { useVisualRefresh } from '../use-visual-mode';
 
 export function usePortalModeClasses(ref: React.RefObject<HTMLElement>) {

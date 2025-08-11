@@ -4,10 +4,10 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { getExternalProps } from '../internal/utils/external-props';
-import { CopyToClipboardProps } from './interfaces';
-import InternalCopyToClipboard from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { getExternalProps } from '../internal/utils/external-props.js';
+import { CopyToClipboardProps } from './interfaces.js';
+import InternalCopyToClipboard from './internal.js';
 
 export { CopyToClipboardProps };
 

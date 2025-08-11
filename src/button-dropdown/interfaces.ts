@@ -4,16 +4,16 @@ import React from 'react';
 
 import { GeneratedAnalyticsMetadataFragment } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { ButtonProps } from '../button/interfaces';
-import { IconProps } from '../icon/interfaces';
+import { ButtonProps } from '../button/interfaces.js';
+import { IconProps } from '../icon/interfaces.js';
 import { BaseComponentProps } from '../internal/base-component';
-import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
+import { ExpandToViewport } from '../internal/components/dropdown/interfaces.js';
 import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 /**
  * @awsuiSystem core
  */
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
+import { NativeAttributes } from '../internal/utils/with-native-attributes.js';
 
 export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewport {
   /**

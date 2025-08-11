@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { NonCancelableEventHandler } from '../internal/events';
-import { TutorialPanelProps } from '../tutorial-panel/interfaces';
+import { TutorialPanelProps } from '../tutorial-panel/interfaces.js';
 
 export interface AnnotationContextProps {
   /**

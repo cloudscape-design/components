@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ReactNode } from 'react';
 
-import InternalLiveRegion from '../live-region/internal';
+import InternalLiveRegion from '../live-region/internal.js';
 
 interface ConditionalLiveRegionProps {
   condition: boolean;

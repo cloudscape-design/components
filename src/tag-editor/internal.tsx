@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 
-import { AutosuggestProps } from '../autosuggest/interfaces';
-import InternalAutosuggest from '../autosuggest/internal';
-import { InputProps } from '../input/interfaces';
+import { AutosuggestProps } from '../autosuggest/interfaces.js';
+import InternalAutosuggest from '../autosuggest/internal.js';
+import { InputProps } from '../input/interfaces.js';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { KeyCode } from '../internal/keycode';
-import { makeCancellable, PromiseCancelledSignal } from '../internal/utils/promises';
+import { KeyCode } from '../internal/keycode.js';
+import { makeCancellable, PromiseCancelledSignal } from '../internal/utils/promises.js';
 
 import styles from './styles.css.js';
 

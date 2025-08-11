@@ -5,13 +5,13 @@ import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import { DatePickerProps } from '../../date-picker/interfaces';
+import { DatePickerProps } from '../../date-picker/interfaces.js';
 import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
 import Tooltip from '../../internal/components/tooltip';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
-import { applyDisplayName } from '../../internal/utils/apply-display-name';
-import { CalendarProps } from '../interfaces';
+import { applyDisplayName } from '../../internal/utils/apply-display-name.js';
+import { CalendarProps } from '../interfaces.js';
 
 import styles from '../styles.css.js';
 

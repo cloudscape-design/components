@@ -4,8 +4,8 @@ import { KeyboardEvent } from 'react';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-import { TableProps } from '../interfaces';
-import { SELECTION_ITEM } from './utils';
+import { TableProps } from '../interfaces.js';
+import { SELECTION_ITEM } from './utils.js';
 
 import selectionStyles from './styles.css.js';
 

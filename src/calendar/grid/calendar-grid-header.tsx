@@ -5,7 +5,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
-import { renderDayName } from '../utils/intl';
+import { renderDayName } from '../utils/intl.js';
 
 import styles from '../styles.css.js';
 

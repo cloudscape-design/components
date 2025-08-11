@@ -4,7 +4,7 @@ import React, { memo } from 'react';
 
 import ChartFilter from '../../internal/components/chart-filter';
 import ChartSeriesMarker from '../../internal/components/chart-series-marker';
-import { AreaChartProps } from '../interfaces';
+import { AreaChartProps } from '../interfaces.js';
 import { ChartModel } from '../model';
 
 export default memo(AreaChartFilter) as typeof AreaChartFilter;

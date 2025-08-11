@@ -3,7 +3,7 @@
 import { MutableRefObject, useEffect, useRef } from 'react';
 
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../events';
-import FocusTracker from '../focus-tracker';
+import FocusTracker from '../focus-tracker.js';
 
 interface UseFocusTracker {
   (inputProps: {

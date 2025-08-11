@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useRef } from 'react';
 
-import { AutosuggestProps } from '../autosuggest/interfaces';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index';
-import { ComparisonOperator, FilteringProperty, LoadItemsDetail } from './interfaces';
+import { AutosuggestProps } from '../autosuggest/interfaces.js';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
+import { ComparisonOperator, FilteringProperty, LoadItemsDetail } from './interfaces.js';
 
 /**
  * This hook generates `onBlur`, `onFocus` and `onLoadItems` handlers that make sure an `onLoadItems` event

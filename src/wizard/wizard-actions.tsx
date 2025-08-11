@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 
-import { ButtonProps } from '../button/interfaces';
-import { InternalButton } from '../button/internal';
-import InternalSpaceBetween from '../space-between/internal';
-import { getNavigationActionDetail } from './analytics-metadata/utils';
-import Unmount from './unmount';
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton } from '../button/internal.js';
+import InternalSpaceBetween from '../space-between/internal.js';
+import { getNavigationActionDetail } from './analytics-metadata/utils.js';
+import Unmount from './unmount.js';
 
 import styles from './styles.css.js';
 

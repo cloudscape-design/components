@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { CartesianChartProps, ChartDataTypes } from '../internal/components/cartesian-chart/interfaces';
+import { CartesianChartProps, ChartDataTypes } from '../internal/components/cartesian-chart/interfaces.js';
 
 export interface AreaChartProps<T extends AreaChartProps.DataTypes>
   extends CartesianChartProps<T, AreaChartProps.Series<T>> {

@@ -3,7 +3,7 @@
 import React, { ReactNode } from 'react';
 import clsx from 'clsx';
 
-import { useInternalI18n } from '../i18n/context';
+import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
 import InternalDragHandle from '../internal/components/drag-handle';
 import SortableArea from '../internal/components/sortable-area';
@@ -11,11 +11,11 @@ import {
   formatDndItemCommitted,
   formatDndItemReordered,
   formatDndStarted,
-} from '../internal/components/sortable-area/use-live-announcements';
+} from '../internal/components/sortable-area/use-live-announcements.js';
 import InternalStructuredItem, { StructuredItemProps } from '../internal/components/structured-item';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { ListProps } from './interfaces';
+import { ListProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 import testClasses from './test-classes/styles.css.js';

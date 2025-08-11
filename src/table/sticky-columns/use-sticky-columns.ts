@@ -14,8 +14,8 @@ import {
   StickyColumnsProps,
   StickyColumnsState,
   StickyColumnsWrapperState,
-} from './interfaces';
-import { isCellStatesEqual, isWrapperStatesEqual, updateCellOffsets } from './utils';
+} from './interfaces.js';
+import { isCellStatesEqual, isWrapperStatesEqual, updateCellOffsets } from './utils.js';
 
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 // This value is an UX recommendation and is approximately 1/3 of our smallest breakpoint (465px)

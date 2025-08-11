@@ -3,15 +3,15 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { InternalButton } from '../../button/internal';
-import { isLinkItem } from '../../button-dropdown/utils/utils';
-import InternalIcon from '../../icon/internal';
+import { InternalButton } from '../../button/internal.js';
+import { isLinkItem } from '../../button-dropdown/utils/utils.js';
+import InternalIcon from '../../icon/internal.js';
 import MenuDropdown, { MenuDropdownProps } from '../../internal/components/menu-dropdown';
 import { fireCancelableEvent } from '../../internal/events';
-import { checkSafeUrl } from '../../internal/utils/check-safe-url';
+import { checkSafeUrl } from '../../internal/utils/check-safe-url.js';
 import { joinStrings } from '../../internal/utils/strings';
-import InternalLink from '../../link/internal';
-import { TopNavigationProps } from '../interfaces';
+import InternalLink from '../../link/internal.js';
+import { TopNavigationProps } from '../interfaces.js';
 
 import styles from '../styles.css.js';
 

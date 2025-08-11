@@ -6,11 +6,11 @@ import clsx from 'clsx';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import PopoverBody from '../../../popover/body';
-import PopoverContainer from '../../../popover/container';
-import { PopoverProps } from '../../../popover/interfaces';
+import PopoverBody from '../../../popover/body.js';
+import PopoverContainer from '../../../popover/container.js';
+import { PopoverProps } from '../../../popover/interfaces.js';
 import { getBaseProps } from '../../base-component';
-import { nodeBelongs } from '../../utils/node-belongs';
+import { nodeBelongs } from '../../utils/node-belongs.js';
 
 import popoverStyles from '../../../popover/styles.css.js';
 import styles from './styles.css.js';

@@ -6,9 +6,9 @@ import clsx from 'clsx';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../../base-component';
-import { isDevelopment } from '../../is-development';
-import { OptionProps } from './interfaces';
-import { Description, FilteringTags, Label, LabelTag, OptionIcon, Tags } from './option-parts';
+import { isDevelopment } from '../../is-development.js';
+import { OptionProps } from './interfaces.js';
+import { Description, FilteringTags, Label, LabelTag, OptionIcon, Tags } from './option-parts.js';
 
 import styles from './styles.css.js';
 

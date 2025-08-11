@@ -6,26 +6,26 @@ import clsx from 'clsx';
 import { useComponentMetadata, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
 
-import InternalForm from '../form/internal';
-import InternalHeader from '../header/internal';
+import InternalForm from '../form/internal.js';
+import InternalHeader from '../header/internal.js';
 import { FunnelMetrics } from '../internal/analytics';
-import { AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
-import { useFunnel, useFunnelStepRef } from '../internal/analytics/hooks/use-funnel';
+import { AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel.js';
+import { useFunnel, useFunnelStepRef } from '../internal/analytics/hooks/use-funnel.js';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
+import { PACKAGE_VERSION } from '../internal/environment.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update.js';
+import { WizardProps } from './interfaces.js';
+import WizardActions from './wizard-actions.js';
+import WizardFormHeader from './wizard-form-header.js';
+
+import styles from './styles.css.js';
 import {
   DATA_ATTR_FUNNEL_KEY,
   FUNNEL_KEY_STEP_NAME,
   getSubStepAllSelector,
   getTextFromSelector,
-} from '../internal/analytics/selectors';
-import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import { PACKAGE_VERSION } from '../internal/environment';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
-import { WizardProps } from './interfaces';
-import WizardActions from './wizard-actions';
-import WizardFormHeader from './wizard-form-header';
-
-import styles from './styles.css.js';
+} from '../internal/analytics/selectors.js';
 
 interface WizardFormProps extends InternalBaseComponentProps {
   steps: ReadonlyArray<WizardProps.Step>;

@@ -10,18 +10,18 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalButton from '../button/internal';
-import { useFormFieldContext } from '../contexts/form-field';
+import InternalButton from '../button/internal.js';
+import { useFormFieldContext } from '../contexts/form-field.js';
 import { getBaseProps } from '../internal/base-component/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { joinStrings } from '../internal/utils/strings';
-import { GeneratedAnalyticsMetadataFileInputComponent } from './analytics-metadata/interfaces';
-import { FileInputProps } from './interfaces';
+import { GeneratedAnalyticsMetadataFileInputComponent } from './analytics-metadata/interfaces.js';
+import { FileInputProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

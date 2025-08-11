@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { XDomain, YDomain } from '../../internal/components/cartesian-chart/interfaces';
-import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
+import { XDomain, YDomain } from '../../internal/components/cartesian-chart/interfaces.js';
+import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales.js';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { ChartSeriesMarkerType } from '../../internal/components/chart-series-marker';
 import { ReadonlyAsyncStore } from '../async-store';
-import { AreaChartProps } from '../interfaces';
+import { AreaChartProps } from '../interfaces.js';
 
 export interface ChartModel<T extends AreaChartProps.DataTypes> {
   height: number;

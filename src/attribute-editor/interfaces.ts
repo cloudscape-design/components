@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ButtonDropdownProps } from '../button-dropdown/interfaces';
+import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
 import { BaseComponentProps } from '../internal/base-component';
-import { Breakpoint as InternalBreakpoint } from '../internal/breakpoints';
+import { Breakpoint as InternalBreakpoint } from '../internal/breakpoints.js';
 import { NonCancelableEventHandler } from '../internal/events';
 
 /*

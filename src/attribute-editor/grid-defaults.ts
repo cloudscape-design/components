@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { AttributeEditorProps } from './interfaces';
+import { AttributeEditorProps } from './interfaces.js';
 
 export const gridDefaults: Record<number, AttributeEditorProps.GridLayout[]> = {
   1: [

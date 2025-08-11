@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useInternalI18n } from '../i18n/context';
-import InternalSegmentedControl from '../segmented-control/internal';
-import { DateRangePickerProps } from './interfaces';
+import { useInternalI18n } from '../i18n/context.js';
+import InternalSegmentedControl from '../segmented-control/internal.js';
+import { DateRangePickerProps } from './interfaces.js';
 
 import testutilStyles from './test-classes/styles.css.js';
 

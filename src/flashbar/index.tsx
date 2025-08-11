@@ -3,10 +3,10 @@
 'use client';
 import React from 'react';
 
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import CollapsibleFlashbar from './collapsible-flashbar';
-import { FlashbarProps } from './interfaces';
-import NonCollapsibleFlashbar from './non-collapsible-flashbar';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import CollapsibleFlashbar from './collapsible-flashbar.js';
+import { FlashbarProps } from './interfaces.js';
+import NonCollapsibleFlashbar from './non-collapsible-flashbar.js';
 
 export { FlashbarProps };
 

@@ -17,13 +17,13 @@ import { fireNonCancelableEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import createCategoryColorScale from '../internal/utils/create-category-color-scale';
-import { nodeBelongs } from '../internal/utils/node-belongs';
-import useContainerWidth from '../internal/utils/use-container-width';
-import { PieChartProps } from './interfaces';
-import InternalPieChart, { InternalChartDatum } from './pie-chart';
-import { getDimensionsBySize } from './utils';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import createCategoryColorScale from '../internal/utils/create-category-color-scale.js';
+import { nodeBelongs } from '../internal/utils/node-belongs.js';
+import useContainerWidth from '../internal/utils/use-container-width.js';
+import { PieChartProps } from './interfaces.js';
+import InternalPieChart, { InternalChartDatum } from './pie-chart.js';
+import { getDimensionsBySize } from './utils.js';
 
 import styles from './styles.css.js';
 

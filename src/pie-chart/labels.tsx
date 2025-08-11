@@ -6,10 +6,10 @@ import { arc, PieArcDatum } from 'd3-shape';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { PieChartProps } from './interfaces';
-import { InternalChartDatum } from './pie-chart';
-import ResponsiveText from './responsive-text';
-import { balanceLabelNodes, computeSmartAngle, Dimension } from './utils';
+import { PieChartProps } from './interfaces.js';
+import { InternalChartDatum } from './pie-chart.js';
+import ResponsiveText from './responsive-text.js';
+import { balanceLabelNodes, computeSmartAngle, Dimension } from './utils.js';
 
 import styles from './styles.css.js';
 

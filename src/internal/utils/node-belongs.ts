@@ -3,7 +3,7 @@
 
 import { findUpUntil, nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
-import { isHTMLElement, isNode } from './dom';
+import { isHTMLElement, isNode } from './dom.js';
 
 /**
  * Checks whether the given node (target) belongs to the container.

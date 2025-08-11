@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import AbstractSwitchWrapper from '../internal/abstract-switch';
+import AbstractSwitchWrapper from '../internal/abstract-switch.js';
 
 import styles from '../../../toggle/styles.selectors.js';
 

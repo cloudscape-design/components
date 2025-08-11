@@ -5,9 +5,9 @@ import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 import { act } from '@cloudscape-design/test-utils-core/utils-dom';
 
 import InputWrapper from '../input';
-import DropdownWrapper from '../internal/dropdown';
-import OptionWrapper from '../internal/option';
-import OptionsListWrapper from '../internal/options-list';
+import DropdownWrapper from '../internal/dropdown.js';
+import OptionWrapper from '../internal/option.js';
+import OptionsListWrapper from '../internal/options-list.js';
 
 import mainStyles from '../../../autosuggest/styles.selectors.js';
 import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';

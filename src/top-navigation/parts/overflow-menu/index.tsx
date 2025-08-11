@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useInternalI18n } from '../../../i18n/context';
-import { TopNavigationProps } from '../../interfaces';
-import { HeaderProps } from './header';
-import Router, { Route } from './router';
-import SubmenuView from './views/submenu';
-import UtilitiesView from './views/utilities';
+import { useInternalI18n } from '../../../i18n/context.js';
+import { TopNavigationProps } from '../../interfaces.js';
+import { HeaderProps } from './header.js';
+import Router, { Route } from './router.js';
+import SubmenuView from './views/submenu.js';
+import UtilitiesView from './views/utilities.js';
 
 import styles from '../../styles.css.js';
 interface OverflowMenuProps {

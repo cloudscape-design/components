@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ChartSeriesMarkerType } from '../internal/components/chart-series-marker';
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
-import { ScaledBarGroup } from './make-scaled-bar-groups';
+import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces.js';
+import { ScaledBarGroup } from './make-scaled-bar-groups.js';
 
 export const chartLegendMap: Record<string, ChartSeriesMarkerType> = {
   line: 'line',

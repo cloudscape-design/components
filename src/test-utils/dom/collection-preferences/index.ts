@@ -5,10 +5,10 @@ import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-des
 import ButtonWrapper from '../button';
 import CheckboxWrapper from '../checkbox';
 import ModalWrapper from '../modal';
-import ContentDisplayPreferenceWrapper from './content-display-preference';
-import PageSizePreferenceWrapper from './page-size-preference';
-import StickyColumnsPreferenceWrapper from './sticky-columns-preference';
-import VisibleContentPreferenceWrapper from './visible-content-preference';
+import ContentDisplayPreferenceWrapper from './content-display-preference.js';
+import PageSizePreferenceWrapper from './page-size-preference.js';
+import StickyColumnsPreferenceWrapper from './sticky-columns-preference.js';
+import VisibleContentPreferenceWrapper from './visible-content-preference.js';
 
 import styles from '../../../collection-preferences/styles.selectors.js';
 

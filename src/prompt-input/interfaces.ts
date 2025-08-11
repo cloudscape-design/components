@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { IconProps } from '../icon/interfaces';
+import { IconProps } from '../icon/interfaces.js';
 import {
   BaseChangeDetail,
   BaseInputProps,
@@ -8,9 +8,9 @@ import {
   InputAutoCorrect,
   InputKeyEvents,
   InputSpellcheck,
-} from '../input/interfaces';
+} from '../input/interfaces.js';
 import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+import { FormFieldValidationControlProps } from '../internal/context/form-field-context.js';
 import { BaseKeyDetail, NonCancelableEventHandler } from '../internal/events';
 
 export interface PromptInputProps

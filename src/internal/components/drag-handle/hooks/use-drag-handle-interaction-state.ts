@@ -9,7 +9,7 @@ import type {
   DragHandleInteractionState,
   StateTransitionCallbacks,
   UseDragHandleInteractionStateProps,
-} from './interfaces';
+} from './interfaces.js';
 
 export { UseDragHandleInteractionStateProps };
 

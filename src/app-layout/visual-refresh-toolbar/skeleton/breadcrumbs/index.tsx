@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BreadcrumbGroupImplementation } from '../../../../breadcrumb-group/implementation';
-import { BreadcrumbGroupProps } from '../../../../breadcrumb-group/interfaces';
-import { BreadcrumbsSlotContext } from '../../contexts';
+import { BreadcrumbGroupImplementation } from '../../../../breadcrumb-group/implementation.js';
+import { BreadcrumbGroupProps } from '../../../../breadcrumb-group/interfaces.js';
+import { BreadcrumbsSlotContext } from '../../contexts.js';
 
 import styles from './styles.css.js';
 

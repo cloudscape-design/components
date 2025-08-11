@@ -3,12 +3,12 @@
 import React, { useEffect, useState } from 'react';
 
 import PanelResizeHandle from '../../internal/components/panel-resize-handle';
-import { getLimitedValue } from '../../split-panel/utils/size-utils';
-import { AppLayoutProps } from '../interfaces';
-import { SizeControlProps } from './interfaces';
-import { FocusControlRefs } from './use-focus-control';
-import { useKeyboardEvents } from './use-keyboard-events';
-import { usePointerEvents } from './use-pointer-events';
+import { getLimitedValue } from '../../split-panel/utils/size-utils.js';
+import { AppLayoutProps } from '../interfaces.js';
+import { SizeControlProps } from './interfaces.js';
+import { FocusControlRefs } from './use-focus-control.js';
+import { useKeyboardEvents } from './use-keyboard-events.js';
+import { usePointerEvents } from './use-pointer-events.js';
 
 import testutilStyles from '../test-classes/styles.css.js';
 

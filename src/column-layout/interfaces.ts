@@ -4,7 +4,7 @@ import React from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { ColumnLayoutBreakpoint } from './internal';
+import { ColumnLayoutBreakpoint } from './internal.js';
 
 export interface ColumnLayoutProps extends BaseComponentProps {
   /**

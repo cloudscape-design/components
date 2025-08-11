@@ -3,11 +3,11 @@
 import React, { memo, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useInternalI18n } from '../../../i18n/context';
-import { TICK_LENGTH, TICK_LINE_HEIGHT, TICK_MARGIN } from './constants';
-import { ChartDataTypes } from './interfaces';
-import { FormattedTick, formatTicks, getVisibleTicks } from './label-utils';
-import { ChartScale, NumericChartScale } from './scales';
+import { useInternalI18n } from '../../../i18n/context.js';
+import { TICK_LENGTH, TICK_LINE_HEIGHT, TICK_MARGIN } from './constants.js';
+import { ChartDataTypes } from './interfaces.js';
+import { FormattedTick, formatTicks, getVisibleTicks } from './label-utils.js';
+import { ChartScale, NumericChartScale } from './scales.js';
 
 import styles from './styles.css.js';
 

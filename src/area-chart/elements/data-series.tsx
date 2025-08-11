@@ -6,10 +6,10 @@ import clsx from 'clsx';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { useSelector } from '../async-store';
-import { AreaChartProps } from '../interfaces';
+import { AreaChartProps } from '../interfaces.js';
 import { ChartModel } from '../model';
-import AreaSeries from './area-series';
-import ThresholdSeries from './threshold-series';
+import AreaSeries from './area-series.js';
+import ThresholdSeries from './threshold-series.js';
 
 import styles from '../styles.css.js';
 

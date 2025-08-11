@@ -7,11 +7,11 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { GeneratedAnalyticsMetadataButtonDropdownComponent } from './analytics-metadata/interfaces';
-import { ButtonDropdownProps } from './interfaces';
-import InternalButtonDropdown from './internal';
-import { hasCheckboxItems, hasDisabledReasonItems } from './utils/utils';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { GeneratedAnalyticsMetadataButtonDropdownComponent } from './analytics-metadata/interfaces.js';
+import { ButtonDropdownProps } from './interfaces.js';
+import InternalButtonDropdown from './internal.js';
+import { hasCheckboxItems, hasDisabledReasonItems } from './utils/utils.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 

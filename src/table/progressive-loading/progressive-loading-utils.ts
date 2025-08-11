@@ -3,7 +3,7 @@
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { TableProps, TableRow } from '../interfaces';
+import { TableProps, TableRow } from '../interfaces.js';
 
 export function useProgressiveLoadingProps<T>({
   items,

@@ -7,12 +7,12 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { getBaseProps } from '../internal/base-component';
-import { useFormFieldContext } from '../internal/context/form-field-context';
-import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
+import { useFormFieldContext } from '../internal/context/form-field-context.js';
+import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { GeneratedAnalyticsMetadataRadioGroupSelect } from './analytics-metadata/interfaces';
-import { RadioGroupProps } from './interfaces';
-import RadioButton from './radio-button';
+import { GeneratedAnalyticsMetadataRadioGroupSelect } from './analytics-metadata/interfaces.js';
+import { RadioGroupProps } from './interfaces.js';
+import RadioButton from './radio-button.js';
 
 import styles from './styles.css.js';
 

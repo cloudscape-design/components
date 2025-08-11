@@ -4,9 +4,9 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { ToggleProps } from './interfaces';
-import InternalToggle from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { ToggleProps } from './interfaces.js';
+import InternalToggle from './internal.js';
 
 export { ToggleProps };
 

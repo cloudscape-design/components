@@ -7,10 +7,10 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { GeneratedAnalyticsMetadataFormFieldComponent } from './analytics-metadata/interfaces';
-import { FormFieldProps } from './interfaces';
-import InternalFormField from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { GeneratedAnalyticsMetadataFormFieldComponent } from './analytics-metadata/interfaces.js';
+import { FormFieldProps } from './interfaces.js';
+import InternalFormField from './internal.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 

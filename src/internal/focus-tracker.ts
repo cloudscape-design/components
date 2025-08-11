@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { nodeBelongs } from './utils/node-belongs';
+import { nodeBelongs } from './utils/node-belongs.js';
 
 interface FocusTrackerOptions {
   onFocusEnter: () => void;

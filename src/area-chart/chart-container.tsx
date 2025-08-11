@@ -4,21 +4,21 @@ import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import AxisLabel from '../internal/components/cartesian-chart/axis-label';
-import BlockEndLabels, { useBLockEndLabels } from '../internal/components/cartesian-chart/block-end-labels';
-import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
-import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline';
-import InlineStartLabels from '../internal/components/cartesian-chart/inline-start-labels';
-import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
+import AxisLabel from '../internal/components/cartesian-chart/axis-label.js';
+import BlockEndLabels, { useBLockEndLabels } from '../internal/components/cartesian-chart/block-end-labels.js';
+import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container.js';
+import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline.js';
+import InlineStartLabels from '../internal/components/cartesian-chart/inline-start-labels.js';
+import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure.js';
 import ChartPlot from '../internal/components/chart-plot';
-import useContainerWidth from '../internal/utils/use-container-width';
+import useContainerWidth from '../internal/utils/use-container-width.js';
 import { useSelector } from './async-store';
-import AreaChartPopover from './elements/chart-popover';
-import AreaDataSeries from './elements/data-series';
-import AreaHighlightedPoint from './elements/highlighted-point';
-import useHighlightDetails from './elements/use-highlight-details';
-import AreaVerticalMarker from './elements/vertical-marker';
-import { AreaChartProps } from './interfaces';
+import AreaChartPopover from './elements/chart-popover.js';
+import AreaDataSeries from './elements/data-series.js';
+import AreaHighlightedPoint from './elements/highlighted-point.js';
+import useHighlightDetails from './elements/use-highlight-details.js';
+import AreaVerticalMarker from './elements/vertical-marker.js';
+import { AreaChartProps } from './interfaces.js';
 import { ChartModel } from './model';
 
 const DEFAULT_CHART_WIDTH = 500;

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { AutosuggestItem } from '../interfaces';
+import { AutosuggestItem } from '../interfaces.js';
 
 type SearchableFields = 'value' | 'label' | 'description' | 'labelTag';
 type SearchableTagFields = 'tags' | 'filteringTags';

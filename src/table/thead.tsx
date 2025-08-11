@@ -7,13 +7,13 @@ import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { TableHeaderCell } from './header-cell';
-import { TableProps } from './interfaces';
+import { TableProps } from './interfaces.js';
 import { focusMarkers, SelectionProps } from './selection';
-import { TableHeaderSelectionCell } from './selection/selection-cell';
+import { TableHeaderSelectionCell } from './selection/selection-cell.js';
 import { StickyColumnsModel } from './sticky-columns';
 import { getTableHeaderRowRoleProps, TableRole } from './table-role';
-import { useColumnWidths } from './use-column-widths';
-import { getColumnKey } from './utils';
+import { useColumnWidths } from './use-column-widths.js';
+import { getColumnKey } from './utils.js';
 
 import styles from './styles.css.js';
 

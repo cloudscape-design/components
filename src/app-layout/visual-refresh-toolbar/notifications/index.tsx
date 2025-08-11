@@ -5,11 +5,11 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
+import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils.js';
 import { createWidgetizedComponent } from '../../../internal/widgets';
-import { AppLayoutInternals } from '../interfaces';
-import { NotificationsSkeleton } from '../skeleton/slot-skeletons';
-import { NotificationsSlot } from '../skeleton/slot-wrappers';
+import { AppLayoutInternals } from '../interfaces.js';
+import { NotificationsSkeleton } from '../skeleton/slot-skeletons.js';
+import { NotificationsSlot } from '../skeleton/slot-wrappers.js';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';

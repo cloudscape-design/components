@@ -4,9 +4,9 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { ListProps } from './interfaces';
-import InternalList from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { ListProps } from './interfaces.js';
+import InternalList from './internal.js';
 
 export { ListProps };
 

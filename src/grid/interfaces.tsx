@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
-import { Breakpoint as _Breakpoint } from '../internal/breakpoints';
+import { Breakpoint as _Breakpoint } from '../internal/breakpoints.js';
 
 export interface GridProps extends BaseComponentProps {
   /**

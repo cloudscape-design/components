@@ -7,7 +7,7 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
-import { CodeEditorProps } from './interfaces';
+import { CodeEditorProps } from './interfaces.js';
 
 export function useChangeEffect(
   editor: null | Ace.Editor,

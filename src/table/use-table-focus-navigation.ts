@@ -3,8 +3,8 @@
 
 import { RefObject, useCallback, useEffect, useMemo } from 'react';
 
-import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
-import { TableProps } from './interfaces';
+import { scrollElementIntoView } from '../internal/utils/scrollable-containers.js';
+import { TableProps } from './interfaces.js';
 
 function iterateTableCells<T extends HTMLElement>(
   table: T,

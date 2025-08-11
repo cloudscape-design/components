@@ -8,9 +8,9 @@ import IntlMessageFormat from 'intl-messageformat';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { CustomHandler, FormatFunction, InternalI18nContext } from './context';
-import { getMatchableLocales } from './get-matchable-locales';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { CustomHandler, FormatFunction, InternalI18nContext } from './context.js';
+import { getMatchableLocales } from './get-matchable-locales.js';
 
 export interface I18nProviderProps {
   messages: ReadonlyArray<I18nProviderProps.Messages>;

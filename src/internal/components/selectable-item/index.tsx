@@ -7,8 +7,8 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
 import { getBaseProps } from '../../base-component';
-import { getAnalyticsSelectActionMetadata } from './analytics-metadata/utils';
-import { SelectableItemProps } from './interfaces';
+import { getAnalyticsSelectActionMetadata } from './analytics-metadata/utils.js';
+import { SelectableItemProps } from './interfaces.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

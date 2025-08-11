@@ -5,14 +5,14 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalAlert from '../alert/internal';
-import InternalBox from '../box/internal';
-import { useInternalI18n } from '../i18n/context';
+import InternalAlert from '../alert/internal.js';
+import InternalBox from '../box/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import InternalLiveRegion from '../live-region/internal';
-import { GeneratedAnalyticsMetadataFormFragment } from './analytics-metadata/interfaces';
-import { FormProps } from './interfaces';
+import InternalLiveRegion from '../live-region/internal.js';
+import { GeneratedAnalyticsMetadataFormFragment } from './analytics-metadata/interfaces.js';
+import { FormProps } from './interfaces.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

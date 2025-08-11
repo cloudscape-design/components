@@ -5,9 +5,9 @@ import React from 'react';
 
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { ButtonProps } from './interfaces';
-import { InternalButton } from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { ButtonProps } from './interfaces.js';
+import { InternalButton } from './internal.js';
 
 export { ButtonProps };
 

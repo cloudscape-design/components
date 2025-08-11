@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../i18n/context';
+import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component/index.js';
 import Tooltip from '../internal/components/tooltip/index.js';
 import { useFormFieldContext } from '../internal/context/form-field-context.js';

@@ -5,10 +5,10 @@ import React from 'react';
 
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { getExternalProps } from '../internal/utils/external-props';
-import { StepsProps } from './interfaces';
-import InternalSteps from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { getExternalProps } from '../internal/utils/external-props.js';
+import { StepsProps } from './interfaces.js';
+import InternalSteps from './internal.js';
 
 export { StepsProps };
 

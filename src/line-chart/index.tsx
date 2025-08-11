@@ -6,9 +6,9 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import InternalMixedLineBarChart from '../mixed-line-bar-chart/internal';
-import { LineChartProps } from './interfaces';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import InternalMixedLineBarChart from '../mixed-line-bar-chart/internal.js';
+import { LineChartProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

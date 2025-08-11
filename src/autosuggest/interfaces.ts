@@ -2,16 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces';
+import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces.js';
 import { BaseComponentProps } from '../internal/base-component';
 import {
   BaseDropdownHostProps,
   OptionsFilteringType,
   OptionsLoadItemsDetail,
-} from '../internal/components/dropdown/interfaces';
+} from '../internal/components/dropdown/interfaces.js';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces.js';
+import { FormFieldValidationControlProps } from '../internal/context/form-field-context.js';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface AutosuggestProps

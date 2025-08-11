@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { CalendarProps } from '../../../calendar/interfaces';
+import { CalendarProps } from '../../../calendar/interfaces.js';
 import { padLeftZeros } from '../strings';
 
 /**

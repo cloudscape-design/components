@@ -9,12 +9,12 @@ import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/inte
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { joinStrings } from '../internal/utils/strings';
-import { throttle } from '../internal/utils/throttle';
-import InternalLiveRegion from '../live-region/internal';
-import { ProgressBarProps } from './interfaces';
-import { Progress, ResultState, SmallText } from './internal';
+import { throttle } from '../internal/utils/throttle.js';
+import InternalLiveRegion from '../live-region/internal.js';
+import { ProgressBarProps } from './interfaces.js';
+import { Progress, ResultState, SmallText } from './internal.js';
 
 import styles from './styles.css.js';
 

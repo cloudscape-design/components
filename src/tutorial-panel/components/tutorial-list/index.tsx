@@ -6,19 +6,19 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalAlert from '../../../alert/internal';
+import InternalAlert from '../../../alert/internal.js';
 import { HotspotContext } from '../../../annotation-context/context.js';
-import InternalBox from '../../../box/internal';
-import { InternalButton } from '../../../button/internal';
-import InternalIcon from '../../../icon/internal';
+import InternalBox from '../../../box/internal.js';
+import { InternalButton } from '../../../button/internal.js';
+import InternalIcon from '../../../icon/internal.js';
 import { fireNonCancelableEvent } from '../../../internal/events/index.js';
 import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
-import { checkSafeUrl } from '../../../internal/utils/check-safe-url';
-import InternalLink from '../../../link/internal';
-import InternalLiveRegion from '../../../live-region/internal';
-import InternalSpaceBetween from '../../../space-between/internal';
-import InternalStatusIndicator from '../../../status-indicator/internal';
-import { TutorialPanelProps } from '../../interfaces';
+import { checkSafeUrl } from '../../../internal/utils/check-safe-url.js';
+import InternalLink from '../../../link/internal.js';
+import InternalLiveRegion from '../../../live-region/internal.js';
+import InternalSpaceBetween from '../../../space-between/internal.js';
+import InternalStatusIndicator from '../../../status-indicator/internal.js';
+import { TutorialPanelProps } from '../../interfaces.js';
 
 import styles from './styles.css.js';
 

@@ -5,9 +5,9 @@ import React from 'react';
 
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { KeyValuePairsProps } from './interfaces';
-import InternalKeyValuePairs from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { KeyValuePairsProps } from './interfaces.js';
+import InternalKeyValuePairs from './internal.js';
 
 export { KeyValuePairsProps };
 

@@ -5,23 +5,23 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../i18n/context';
+import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
 import Dropdown from '../internal/components/dropdown';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { useFormFieldContext } from '../internal/context/form-field-context';
+import { useFormFieldContext } from '../internal/context/form-field-context.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { SomeRequired } from '../internal/types';
+import { SomeRequired } from '../internal/types.js';
 import { joinStrings } from '../internal/utils/strings';
-import Filter from '../select/parts/filter';
-import PlainList from '../select/parts/plain-list';
-import Trigger from '../select/parts/trigger';
-import VirtualList from '../select/parts/virtual-list';
-import { TokenGroupProps } from '../token-group/interfaces';
-import InternalTokenGroup from '../token-group/internal';
-import { MultiselectProps } from './interfaces';
-import { useMultiselect } from './use-multiselect';
+import Filter from '../select/parts/filter.js';
+import PlainList from '../select/parts/plain-list.js';
+import Trigger from '../select/parts/trigger.js';
+import VirtualList from '../select/parts/virtual-list.js';
+import { TokenGroupProps } from '../token-group/interfaces.js';
+import InternalTokenGroup from '../token-group/internal.js';
+import { MultiselectProps } from './interfaces.js';
+import { useMultiselect } from './use-multiselect.js';
 
 import styles from './styles.css.js';
 

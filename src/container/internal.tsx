@@ -6,16 +6,16 @@ import clsx from 'clsx';
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
 import { getBaseProps } from '../internal/base-component';
-import { ContainerHeaderContextProvider } from '../internal/context/container-header';
-import { useModalContext } from '../internal/context/modal-context';
+import { ContainerHeaderContextProvider } from '../internal/context/container-header.js';
+import { useModalContext } from '../internal/context/modal-context.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { ContainerProps } from './interfaces';
-import { getContentStyles, getFooterStyles, getHeaderStyles, getMediaStyles, getRootStyles } from './style';
-import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
+import { ContainerProps } from './interfaces.js';
+import { getContentStyles, getFooterStyles, getHeaderStyles, getMediaStyles, getRootStyles } from './style.js';
+import { StickyHeaderContext, useStickyHeader } from './use-sticky-header.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

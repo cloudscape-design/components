@@ -5,7 +5,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import ButtonWrapper from '../button';
 import ExpandableSectionWrapper from '../expandable-section';
 import LinkWrapper from '../link';
-import TutorialItemWrapper from './tutorial';
+import TutorialItemWrapper from './tutorial.js';
 
 import detailStyles from '../../../tutorial-panel/components/tutorial-detail-view/styles.selectors.js';
 import listStyles from '../../../tutorial-panel/components/tutorial-list/styles.selectors.js';

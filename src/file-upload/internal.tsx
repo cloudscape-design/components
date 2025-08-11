@@ -6,23 +6,23 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalBox from '../box/internal';
-import { ButtonProps } from '../button/interfaces';
-import { useFormFieldContext } from '../contexts/form-field';
-import InternalFileDropzone from '../file-dropzone/internal';
-import { useFilesDragging } from '../file-dropzone/use-files-dragging';
-import InternalFileInput from '../file-input/internal';
-import InternalFileTokenGroup from '../file-token-group/internal';
-import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
-import { useInternalI18n } from '../i18n/context';
+import InternalBox from '../box/internal.js';
+import { ButtonProps } from '../button/interfaces.js';
+import { useFormFieldContext } from '../contexts/form-field.js';
+import InternalFileDropzone from '../file-dropzone/internal.js';
+import { useFilesDragging } from '../file-dropzone/use-files-dragging.js';
+import InternalFileInput from '../file-input/internal.js';
+import InternalFileTokenGroup from '../file-token-group/internal.js';
+import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
+import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
 import { joinStrings } from '../internal/utils/strings';
-import InternalSpaceBetween from '../space-between/internal';
-import { FileUploadProps } from './interfaces';
+import InternalSpaceBetween from '../space-between/internal.js';
+import { FileUploadProps } from './interfaces.js';
 
 import fileInputStyles from '../file-input/styles.css.js';
 import tokenListStyles from '../internal/components/token-list/styles.css.js';

@@ -4,21 +4,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import InternalAlert from '../alert/internal';
-import InternalBox from '../box/internal';
-import { ButtonProps } from '../button/interfaces';
-import { InternalButton } from '../button/internal';
-import { CalendarProps } from '../calendar/interfaces';
-import { useInternalI18n } from '../i18n/context';
+import InternalAlert from '../alert/internal.js';
+import InternalBox from '../box/internal.js';
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton } from '../button/internal.js';
+import { CalendarProps } from '../calendar/interfaces.js';
+import { useInternalI18n } from '../i18n/context.js';
 import FocusLock from '../internal/components/focus-lock';
-import InternalLiveRegion, { InternalLiveRegionRef } from '../live-region/internal';
-import InternalSpaceBetween from '../space-between/internal';
+import InternalLiveRegion, { InternalLiveRegionRef } from '../live-region/internal.js';
+import InternalSpaceBetween from '../space-between/internal.js';
 import Calendar from './calendar';
-import { DateRangePickerProps } from './interfaces';
-import ModeSwitcher from './mode-switcher';
+import { DateRangePickerProps } from './interfaces.js';
+import ModeSwitcher from './mode-switcher.js';
 import RelativeRangePicker from './relative-range';
-import { normalizeTimeOffset } from './time-offset';
-import { formatValue, getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils';
+import { normalizeTimeOffset } from './time-offset.js';
+import { formatValue, getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils.js';
 
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';

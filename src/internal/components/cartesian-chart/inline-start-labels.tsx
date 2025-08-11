@@ -5,12 +5,12 @@ import clsx from 'clsx';
 
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../../../i18n/context';
-import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
+import { useInternalI18n } from '../../../i18n/context.js';
+import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces.js';
 import ResponsiveText from '../responsive-text';
-import { TICK_LENGTH, TICK_LINE_HEIGHT, TICK_MARGIN } from './constants';
-import { formatTicks, getSVGTextSize, getVisibleTicks } from './label-utils';
-import { ChartScale, NumericChartScale } from './scales';
+import { TICK_LENGTH, TICK_LINE_HEIGHT, TICK_MARGIN } from './constants.js';
+import { formatTicks, getSVGTextSize, getVisibleTicks } from './label-utils.js';
+import { ChartScale, NumericChartScale } from './scales.js';
 
 import styles from './styles.css.js';
 

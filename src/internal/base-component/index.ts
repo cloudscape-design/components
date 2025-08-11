@@ -3,9 +3,9 @@
 
 import { initAwsUiVersions } from '@cloudscape-design/component-toolkit/internal';
 
-import { AnalyticsMetadata } from '../analytics/interfaces';
-import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../environment';
-import { isDevelopment } from '../is-development';
+import { AnalyticsMetadata } from '../analytics/interfaces.js';
+import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../environment.js';
+import { isDevelopment } from '../is-development.js';
 
 // these styles needed to be imported for every public component
 import './styles.css.js';

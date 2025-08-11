@@ -9,10 +9,10 @@ import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/ev
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { displayToIso, isoToDisplay } from '../internal/utils/date-time';
-import formatDateIso from '../internal/utils/date-time/format-date-iso';
-import formatDateLocalized from '../internal/utils/date-time/format-date-localized';
-import { DateInputProps } from './interfaces';
-import { generateMaskArgs, normalizeIsoDateString } from './utils';
+import formatDateIso from '../internal/utils/date-time/format-date-iso.js';
+import formatDateLocalized from '../internal/utils/date-time/format-date-localized.js';
+import { DateInputProps } from './interfaces.js';
+import { generateMaskArgs, normalizeIsoDateString } from './utils.js';
 
 import styles from './styles.css.js';
 

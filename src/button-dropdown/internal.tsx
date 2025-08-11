@@ -6,25 +6,25 @@ import clsx from 'clsx';
 import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalBox from '../box/internal';
-import { ButtonProps } from '../button/interfaces';
-import { InternalButton, InternalButtonProps } from '../button/internal';
+import InternalBox from '../box/internal.js';
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton, InternalButtonProps } from '../button/internal.js';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { getBaseProps } from '../internal/base-component';
 import Dropdown from '../internal/components/dropdown';
 import OptionsList from '../internal/components/options-list';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
-import { isDevelopment } from '../internal/is-development';
-import { spinWhenOpen } from '../internal/styles/motion/utils';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { isDevelopment } from '../internal/is-development.js';
+import { spinWhenOpen } from '../internal/styles/motion/utils.js';
+import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
 import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
 } from './analytics-metadata/interfaces.js';
-import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
-import ItemsList from './items-list';
-import { useButtonDropdown } from './utils/use-button-dropdown';
+import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces.js';
+import ItemsList from './items-list.js';
+import { useButtonDropdown } from './utils/use-button-dropdown.js';
 import { isLinkItem } from './utils/utils.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';

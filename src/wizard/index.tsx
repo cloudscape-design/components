@@ -3,15 +3,15 @@
 'use client';
 import React, { useEffect } from 'react';
 
-import { AnalyticsFunnel } from '../internal/analytics/components/analytics-funnel';
-import { useFunnel } from '../internal/analytics/hooks/use-funnel';
+import { AnalyticsFunnel } from '../internal/analytics/components/analytics-funnel.js';
+import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { getExternalProps } from '../internal/utils/external-props';
-import { getStepConfiguration } from './analytics';
-import { WizardProps } from './interfaces';
-import InternalWizard from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { getExternalProps } from '../internal/utils/external-props.js';
+import { getStepConfiguration } from './analytics.js';
+import { WizardProps } from './interfaces.js';
+import InternalWizard from './internal.js';
 
 function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: WizardProps) {
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);

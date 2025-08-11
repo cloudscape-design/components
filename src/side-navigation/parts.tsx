@@ -5,16 +5,16 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalBox from '../box/internal';
-import { ExpandableSectionProps } from '../expandable-section/interfaces';
-import InternalExpandableSection from '../expandable-section/internal';
-import InternalIcon from '../icon/internal';
+import InternalBox from '../box/internal.js';
+import { ExpandableSectionProps } from '../expandable-section/interfaces.js';
+import InternalExpandableSection from '../expandable-section/internal.js';
+import InternalIcon from '../icon/internal.js';
 import { isPlainLeftClick, NonCancelableCustomEvent } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { GeneratedAnalyticsMetadataSideNavigationClick } from './analytics-metadata/interfaces';
-import { SideNavigationProps } from './interfaces';
-import { hasActiveLink } from './util';
+import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
+import { GeneratedAnalyticsMetadataSideNavigationClick } from './analytics-metadata/interfaces.js';
+import { SideNavigationProps } from './interfaces.js';
+import { hasActiveLink } from './util.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

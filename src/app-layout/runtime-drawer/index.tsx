@@ -6,10 +6,10 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../interna
 import {
   DrawerConfig as RuntimeDrawerConfig,
   DrawerStateChangeParams,
-} from '../../internal/plugins/controllers/drawers';
-import { sortByPriority } from '../../internal/plugins/helpers/utils';
-import { AppLayoutProps } from '../interfaces';
-import { ActiveDrawersContext } from '../utils/visibility-context';
+} from '../../internal/plugins/controllers/drawers.js';
+import { sortByPriority } from '../../internal/plugins/helpers/utils.js';
+import { AppLayoutProps } from '../interfaces.js';
+import { ActiveDrawersContext } from '../utils/visibility-context.js';
 
 import styles from './styles.css.js';
 

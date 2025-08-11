@@ -4,8 +4,8 @@
 import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import InternalStatusIndicator, { StatusIndicatorProps } from './internal';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import InternalStatusIndicator, { StatusIndicatorProps } from './internal.js';
 
 export { StatusIndicatorProps };
 

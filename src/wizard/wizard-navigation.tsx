@@ -3,11 +3,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalBox from '../box/internal';
+import InternalBox from '../box/internal.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import InternalLink from '../link/internal';
-import { getNavigationActionDetail } from './analytics-metadata/utils';
-import { WizardProps } from './interfaces';
+import InternalLink from '../link/internal.js';
+import { getNavigationActionDetail } from './analytics-metadata/utils.js';
+import { WizardProps } from './interfaces.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

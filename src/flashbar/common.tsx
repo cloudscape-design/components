@@ -7,9 +7,9 @@ import { useMergeRefs, useReducedMotion, warnOnce } from '@cloudscape-design/com
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { isDevelopment } from '../internal/is-development';
-import { focusFlashById, focusFlashFocusableArea } from './flash';
-import { FlashbarProps } from './interfaces';
+import { isDevelopment } from '../internal/is-development.js';
+import { focusFlashById, focusFlashFocusableArea } from './flash.js';
+import { FlashbarProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

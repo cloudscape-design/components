@@ -3,12 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
-import { ButtonProps } from '../button/interfaces';
-import InternalButton from '../button/internal';
-import { useSplitPanelContext } from '../internal/context/split-panel-context';
+import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags.js';
+import { ButtonProps } from '../button/interfaces.js';
+import InternalButton from '../button/internal.js';
+import { useSplitPanelContext } from '../internal/context/split-panel-context.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { SplitPanelContentProps, SplitPanelProps } from './interfaces';
+import { SplitPanelContentProps, SplitPanelProps } from './interfaces.js';
 
 import sharedStyles from '../app-layout/resize/styles.css.js';
 import styles from './styles.css.js';

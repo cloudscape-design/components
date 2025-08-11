@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ReactNode } from 'react';
 
-import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
+import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces.js';
 
 export type ChartDataTypes = number | string | Date;
 

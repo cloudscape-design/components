@@ -8,7 +8,7 @@ import {
   getLogicalClientX,
 } from '@cloudscape-design/component-toolkit/internal';
 
-import { SizeControlProps } from './interfaces';
+import { SizeControlProps } from './interfaces.js';
 
 import styles from '../resize/styles.css.js';
 

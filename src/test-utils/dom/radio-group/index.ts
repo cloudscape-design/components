@@ -3,7 +3,7 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
-import RadioButtonWrapper from './radio-button';
+import RadioButtonWrapper from './radio-button.js';
 
 import styles from '../../../radio-group/styles.selectors.js';
 

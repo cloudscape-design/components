@@ -5,12 +5,12 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
-import { useSplitPanelContext } from '../internal/context/split-panel-context';
-import * as tokens from '../internal/generated/styles/tokens';
+import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags.js';
+import { useSplitPanelContext } from '../internal/context/split-panel-context.js';
+import * as tokens from '../internal/generated/styles/tokens.js';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { SplitPanelContentProps, SplitPanelProps } from './interfaces';
+import { SplitPanelContentProps, SplitPanelProps } from './interfaces.js';
 
 import sharedStyles from '../app-layout/resize/styles.css.js';
 import styles from './styles.css.js';

@@ -4,21 +4,21 @@ import React, { useMemo, useState } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalBox from '../../box/internal';
-import InternalButton from '../../button/internal';
-import { useInternalI18n } from '../../i18n/context';
+import InternalBox from '../../box/internal.js';
+import InternalButton from '../../button/internal.js';
+import { useInternalI18n } from '../../i18n/context.js';
 import {
   formatDndItemCommitted,
   formatDndItemReordered,
   formatDndStarted,
-} from '../../internal/components/sortable-area/use-live-announcements';
-import InternalList from '../../list/internal';
-import InternalSpaceBetween from '../../space-between/internal';
-import InternalTextFilter from '../../text-filter/internal';
-import { getAnalyticsInnerContextAttribute } from '../analytics-metadata/utils';
-import { CollectionPreferencesProps } from '../interfaces';
-import ContentDisplayOption from './content-display-option';
-import { getFilteredOptions, getSortedOptions, OptionWithVisibility } from './utils';
+} from '../../internal/components/sortable-area/use-live-announcements.js';
+import InternalList from '../../list/internal.js';
+import InternalSpaceBetween from '../../space-between/internal.js';
+import InternalTextFilter from '../../text-filter/internal.js';
+import { getAnalyticsInnerContextAttribute } from '../analytics-metadata/utils.js';
+import { CollectionPreferencesProps } from '../interfaces.js';
+import ContentDisplayOption from './content-display-option.js';
+import { getFilteredOptions, getSortedOptions, OptionWithVisibility } from './utils.js';
 
 import styles from '../styles.css.js';
 

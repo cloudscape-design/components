@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BreadcrumbGroupProps } from './interfaces';
+import { BreadcrumbGroupProps } from './interfaces.js';
 
 export const getEventDetail = <T extends BreadcrumbGroupProps.Item>(item: T) => ({
   item,

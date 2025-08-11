@@ -4,8 +4,8 @@ import { useEffect, useRef } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { isDevelopment } from '../internal/is-development';
-import { TagEditorProps } from './interfaces';
+import { isDevelopment } from '../internal/is-development.js';
+import { TagEditorProps } from './interfaces.js';
 
 /**
  * Ponyfill for Array.prototype.findIndex.

@@ -7,13 +7,13 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 
 import ButtonTrigger from '../../internal/components/button-trigger';
 import Option from '../../internal/components/option';
-import { OptionDefinition } from '../../internal/components/option/interfaces';
-import { FormFieldValidationControlProps } from '../../internal/context/form-field-context';
+import { OptionDefinition } from '../../internal/components/option/interfaces.js';
+import { FormFieldValidationControlProps } from '../../internal/context/form-field-context.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { joinStrings } from '../../internal/utils/strings';
-import { MultiselectProps } from '../../multiselect/interfaces';
-import { SelectProps } from '../interfaces';
-import { SelectTriggerProps } from '../utils/use-select';
+import { MultiselectProps } from '../../multiselect/interfaces.js';
+import { SelectProps } from '../interfaces.js';
+import { SelectTriggerProps } from '../utils/use-select.js';
 
 import styles from './styles.css.js';
 

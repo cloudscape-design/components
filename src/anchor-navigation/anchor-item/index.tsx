@@ -4,8 +4,8 @@ import React, { useCallback } from 'react';
 import clsx from 'clsx';
 
 import { isPlainLeftClick } from '../../internal/events';
-import { checkSafeUrl } from '../../internal/utils/check-safe-url';
-import { AnchorNavigationProps } from '../interfaces';
+import { checkSafeUrl } from '../../internal/utils/check-safe-url.js';
+import { AnchorNavigationProps } from '../interfaces.js';
 
 import styles from '../styles.css.js';
 import testUtilsStyles from '../test-classes/styles.css.js';

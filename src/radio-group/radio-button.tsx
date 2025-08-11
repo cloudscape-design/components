@@ -7,9 +7,9 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import AbstractSwitch from '../internal/components/abstract-switch';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context.js';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { RadioGroupProps } from './interfaces';
+import { RadioGroupProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

@@ -4,4 +4,4 @@
 export {
   FormFieldValidationControlProps as FormFieldContextValue,
   useFormFieldContext,
-} from '../internal/context/form-field-context';
+} from '../internal/context/form-field-context.js';

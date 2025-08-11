@@ -7,15 +7,15 @@ import clsx from 'clsx';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
-import { screenReaderTextClass } from '../internal/components/chart-series-details/series-details-text';
+import { screenReaderTextClass } from '../internal/components/chart-series-details/series-details-text.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
-import { KeyCode } from '../internal/keycode';
-import { ExpandableSectionContainer } from './expandable-section-container';
-import { ExpandableSectionHeader } from './expandable-section-header';
-import { ExpandableSectionProps, InternalVariant } from './interfaces';
-import { variantSupportsDescription } from './utils';
+import { KeyCode } from '../internal/keycode.js';
+import { ExpandableSectionContainer } from './expandable-section-container.js';
+import { ExpandableSectionHeader } from './expandable-section-header.js';
+import { ExpandableSectionProps, InternalVariant } from './interfaces.js';
+import { variantSupportsDescription } from './utils.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

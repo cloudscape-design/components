@@ -3,13 +3,13 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalFormField from '../form-field/internal';
+import InternalFormField from '../form-field/internal.js';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import InternalSelect, { InternalSelectProps } from '../select/internal';
-import { SegmentedControlProps } from './interfaces';
-import InternalSegmentedControlComponent from './internal-segmented-control';
+import InternalSelect, { InternalSelectProps } from '../select/internal.js';
+import { SegmentedControlProps } from './interfaces.js';
+import InternalSegmentedControlComponent from './internal-segmented-control.js';
 
 import styles from './styles.css.js';
 

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { CSSProperties } from 'react';
 
-import { AnalyticsMetadata, ErrorContext } from '../internal/analytics/interfaces';
+import { AnalyticsMetadata, ErrorContext } from '../internal/analytics/interfaces.js';
 import { BaseComponentProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 

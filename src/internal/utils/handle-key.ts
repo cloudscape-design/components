@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
-import { KeyCode } from '../keycode';
-import { isHTMLElement, isSVGElement } from './dom';
+import { KeyCode } from '../keycode.js';
+import { isHTMLElement, isSVGElement } from './dom.js';
 
 export function isEventLike(event: any): event is EventLike {
   return isHTMLElement(event.currentTarget) || isSVGElement(event.currentTarget);

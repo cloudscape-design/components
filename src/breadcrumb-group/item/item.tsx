@@ -3,12 +3,12 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import InternalIcon from '../../icon/internal';
+import InternalIcon from '../../icon/internal.js';
 import Tooltip from '../../internal/components/tooltip';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
-import { BreadcrumbGroupProps, BreadcrumbItemProps } from '../interfaces';
-import { getEventDetail } from '../utils';
-import { FunnelBreadcrumbItem } from './funnel';
+import { BreadcrumbGroupProps, BreadcrumbItemProps } from '../interfaces.js';
+import { getEventDetail } from '../utils.js';
+import { FunnelBreadcrumbItem } from './funnel.js';
 
 import styles from './styles.css.js';
 

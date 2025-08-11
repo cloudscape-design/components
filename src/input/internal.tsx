@@ -6,21 +6,21 @@ import clsx from 'clsx';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalButton from '../button/internal';
-import { useInternalI18n } from '../i18n/context';
-import { IconProps } from '../icon/interfaces';
-import InternalIcon from '../icon/internal';
+import InternalButton from '../button/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
+import { IconProps } from '../icon/interfaces.js';
+import InternalIcon from '../icon/internal.js';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
-import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
+import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context.js';
 import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import {
   GeneratedAnalyticsMetadataInputClearInput,
   GeneratedAnalyticsMetadataInputComponent,
-} from './analytics-metadata/interfaces';
-import { BaseChangeDetail, BaseInputProps, InputAutoCorrect, InputProps } from './interfaces';
-import { convertAutoComplete, useSearchProps } from './utils';
+} from './analytics-metadata/interfaces.js';
+import { BaseChangeDetail, BaseInputProps, InputAutoCorrect, InputProps } from './interfaces.js';
+import { convertAutoComplete, useSearchProps } from './utils.js';
 
 import styles from './styles.css.js';
 

@@ -6,21 +6,21 @@ import clsx from 'clsx';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { StickyHeaderContext } from '../container/use-sticky-header';
-import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../internal/analytics/selectors';
+import { StickyHeaderContext } from '../container/use-sticky-header.js';
 import { getBaseProps } from '../internal/base-component';
-import { CollectionLabelContext } from '../internal/context/collection-label-context';
-import { useContainerHeader } from '../internal/context/container-header';
-import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
+import { CollectionLabelContext } from '../internal/context/collection-label-context.js';
+import { useContainerHeader } from '../internal/context/container-header.js';
+import { InfoLinkLabelContext } from '../internal/context/info-link-label-context.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { SomeRequired } from '../internal/types';
-import { useTableIntegration } from './analytics/use-table-integration';
-import { HeaderProps } from './interfaces';
+import { SomeRequired } from '../internal/types.js';
+import { useTableIntegration } from './analytics/use-table-integration.js';
+import { HeaderProps } from './interfaces.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
+import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../internal/analytics/selectors.js';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;

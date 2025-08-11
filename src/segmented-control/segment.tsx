@@ -5,11 +5,11 @@ import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalIcon from '../icon/internal';
+import InternalIcon from '../icon/internal.js';
 import Tooltip from '../internal/components/tooltip';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { SegmentedControlProps } from './interfaces';
+import { SegmentedControlProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

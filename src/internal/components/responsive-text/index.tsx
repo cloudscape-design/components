@@ -4,7 +4,7 @@ import React, { memo, useEffect, useRef } from 'react';
 
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
-import { getTextWidth } from './responsive-text-utils';
+import { getTextWidth } from './responsive-text-utils.js';
 
 interface ResponsiveTextProps {
   x: number;

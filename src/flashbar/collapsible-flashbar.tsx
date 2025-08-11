@@ -8,26 +8,26 @@ import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useInternalI18n } from '../i18n/context';
-import { IconProps } from '../icon/interfaces';
-import InternalIcon from '../icon/internal';
-import { animate, getDOMRects } from '../internal/animate';
+import { useInternalI18n } from '../i18n/context.js';
+import { IconProps } from '../icon/interfaces.js';
+import InternalIcon from '../icon/internal.js';
+import { animate, getDOMRects } from '../internal/animate.js';
 import { Transition } from '../internal/components/transition';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import customCssProps from '../internal/generated/custom-css-properties';
-import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
-import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
-import { throttle } from '../internal/utils/throttle';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update.js';
+import { scrollElementIntoView } from '../internal/utils/scrollable-containers.js';
+import { throttle } from '../internal/utils/throttle.js';
 import {
   GeneratedAnalyticsMetadataFlashbarCollapse,
   GeneratedAnalyticsMetadataFlashbarExpand,
-} from './analytics-metadata/interfaces';
-import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
-import { useFlashbar } from './common';
-import { Flash, focusFlashById } from './flash';
-import { FlashbarProps } from './interfaces';
-import { getCollapsibleFlashStyles, getNotificationBarStyles } from './style';
-import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils';
+} from './analytics-metadata/interfaces.js';
+import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils.js';
+import { useFlashbar } from './common.js';
+import { Flash, focusFlashById } from './flash.js';
+import { FlashbarProps } from './interfaces.js';
+import { getCollapsibleFlashStyles, getNotificationBarStyles } from './style.js';
+import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils.js';
 
 import styles from './styles.css.js';
 

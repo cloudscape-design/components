@@ -3,8 +3,8 @@
 
 import { createContext } from 'react';
 
-import generatedIcons from '../icon/generated/icons';
-import { IconProviderProps } from './interfaces';
+import generatedIcons from '../icon/generated/icons.js';
+import { IconProviderProps } from './interfaces.js';
 
 /**
  * Preload the context with the existing icon set.

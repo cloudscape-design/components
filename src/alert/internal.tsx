@@ -6,29 +6,29 @@ import clsx from 'clsx';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { InternalButton } from '../button/internal';
-import { useInternalI18n } from '../i18n/context';
-import { IconProps } from '../icon/interfaces';
-import InternalIcon from '../icon/internal';
-import { DATA_ATTR_ANALYTICS_ALERT } from '../internal/analytics/selectors';
+import { InternalButton } from '../button/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
+import { IconProps } from '../icon/interfaces.js';
+import InternalIcon from '../icon/internal.js';
 import { getBaseProps } from '../internal/base-component';
 import VisualContext from '../internal/components/visual-context';
-import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { awsuiPluginsInternal } from '../internal/plugins/api';
+import { awsuiPluginsInternal } from '../internal/plugins/api.js';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
-import { SomeRequired } from '../internal/types';
-import useContainerWidth from '../internal/utils/use-container-width';
+import { SomeRequired } from '../internal/types.js';
+import useContainerWidth from '../internal/utils/use-container-width.js';
 import { ActionsWrapper } from './actions-wrapper';
-import { GeneratedAnalyticsMetadataAlertDismiss } from './analytics-metadata/interfaces';
-import { AlertProps } from './interfaces';
-import { getAlertStyles, getDismissButtonStyles } from './style';
+import { GeneratedAnalyticsMetadataAlertDismiss } from './analytics-metadata/interfaces.js';
+import { AlertProps } from './interfaces.js';
+import { getAlertStyles, getDismissButtonStyles } from './style.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
+import { DATA_ATTR_ANALYTICS_ALERT } from '../internal/analytics/selectors.js';
 
 const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   error: 'status-negative',

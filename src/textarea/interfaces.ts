@@ -6,9 +6,9 @@ import {
   InputAutoCorrect,
   InputKeyEvents,
   InputSpellcheck,
-} from '../input/interfaces';
+} from '../input/interfaces.js';
 import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+import { FormFieldValidationControlProps } from '../internal/context/form-field-context.js';
 import { BaseKeyDetail } from '../internal/events';
 
 export interface TextareaProps

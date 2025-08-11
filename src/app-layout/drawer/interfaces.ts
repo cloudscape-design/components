@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { AppLayoutProps } from '../interfaces';
+import { AppLayoutProps } from '../interfaces.js';
 import { togglesConfig } from '../toggles';
-import { FocusControlRefs } from '../utils/use-focus-control';
+import { FocusControlRefs } from '../utils/use-focus-control.js';
 
 export interface DesktopDrawerProps {
   id?: string;

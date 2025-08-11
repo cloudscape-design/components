@@ -6,7 +6,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { TopNavigationProps } from './interfaces';
+import { TopNavigationProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

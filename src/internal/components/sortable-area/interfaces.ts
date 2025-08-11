@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { NonCancelableEventHandler } from '../../events';
-import { DragHandleProps } from '../drag-handle/interfaces';
+import { DragHandleProps } from '../drag-handle/interfaces.js';
 
 export interface SortableAreaProps<Item> {
   items: readonly Item[];

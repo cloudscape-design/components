@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { CardsProps } from './interfaces';
+import { CardsProps } from './interfaces.js';
 
 const WIDTHS = [1920, 1400, 1200, 992, 768];
 

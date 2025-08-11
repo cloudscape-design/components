@@ -4,8 +4,8 @@
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,
   GeneratedAnalyticsMetadataButtonTriggerExpand,
-} from '../../internal/components/button-trigger/analytics-metadata/interfaces';
-import { GeneratedAnalyticsMetadataSelectableItemSelect } from '../../internal/components/selectable-item/analytics-metadata/interfaces';
+} from '../../internal/components/button-trigger/analytics-metadata/interfaces.js';
+import { GeneratedAnalyticsMetadataSelectableItemSelect } from '../../internal/components/selectable-item/analytics-metadata/interfaces.js';
 
 export type GeneratedAnalyticsMetadataSelectSelect = GeneratedAnalyticsMetadataSelectableItemSelect;
 

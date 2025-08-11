@@ -2,18 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import InternalBox from '../box/internal';
-import { InternalButton } from '../button/internal';
-import InternalCheckbox from '../checkbox/internal';
-import InternalColumnLayout from '../column-layout/internal';
-import InternalFormField from '../form-field/internal';
+import InternalBox from '../box/internal.js';
+import { InternalButton } from '../button/internal.js';
+import InternalCheckbox from '../checkbox/internal.js';
+import InternalColumnLayout from '../column-layout/internal.js';
+import InternalFormField from '../form-field/internal.js';
 import { NonCancelableCustomEvent } from '../internal/events';
-import InternalModal from '../modal/internal';
-import { SelectProps } from '../select/interfaces';
-import InternalSelect from '../select/internal';
-import InternalSpaceBetween from '../space-between/internal';
-import { DarkThemes, LightThemes } from './ace-themes';
-import { CodeEditorProps } from './interfaces';
+import InternalModal from '../modal/internal.js';
+import { SelectProps } from '../select/interfaces.js';
+import InternalSelect from '../select/internal.js';
+import InternalSpaceBetween from '../space-between/internal.js';
+import { DarkThemes, LightThemes } from './ace-themes.js';
+import { CodeEditorProps } from './interfaces.js';
 
 interface PreferencesModali18nStrings {
   header?: string;

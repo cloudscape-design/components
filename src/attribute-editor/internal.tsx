@@ -5,20 +5,20 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { ButtonProps } from '../button/interfaces';
-import { InternalButton } from '../button/internal';
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton } from '../button/internal.js';
 import { getBaseProps } from '../internal/base-component';
-import { matchBreakpointMapping } from '../internal/breakpoints';
+import { matchBreakpointMapping } from '../internal/breakpoints.js';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { usePrevious } from '../internal/hooks/use-previous';
-import { SomeRequired } from '../internal/types';
-import InternalLiveRegion from '../live-region/internal';
-import { AdditionalInfo } from './additional-info';
-import { gridDefaults } from './grid-defaults';
-import { AttributeEditorForwardRefType, AttributeEditorProps } from './interfaces';
-import { Row } from './row';
-import { getGridTemplateColumns } from './utils';
+import { SomeRequired } from '../internal/types.js';
+import InternalLiveRegion from '../live-region/internal.js';
+import { AdditionalInfo } from './additional-info.js';
+import { gridDefaults } from './grid-defaults.js';
+import { AttributeEditorForwardRefType, AttributeEditorProps } from './interfaces.js';
+import { Row } from './row.js';
+import { getGridTemplateColumns } from './utils.js';
 
 import styles from './styles.css.js';
 

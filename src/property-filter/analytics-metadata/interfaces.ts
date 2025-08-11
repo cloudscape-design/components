@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { GeneratedAnalyticsMetadataSelectableItemSelect } from '../../internal/components/selectable-item/analytics-metadata/interfaces';
+import { GeneratedAnalyticsMetadataSelectableItemSelect } from '../../internal/components/selectable-item/analytics-metadata/interfaces.js';
 import {
   GeneratedAnalyticsMetadataTokenListShowLess,
   GeneratedAnalyticsMetadataTokenListShowMore,
-} from '../../internal/components/token-list/analytics-metadata/interfaces';
+} from '../../internal/components/token-list/analytics-metadata/interfaces.js';
 
 export interface GeneratedAnalyticsMetadataPropertyFilterClearFilters {
   action: 'clearFilters';

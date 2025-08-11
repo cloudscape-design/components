@@ -5,7 +5,7 @@ import React from 'react';
 import { AppLayoutNotificationsImplementationProps } from '../notifications';
 import { AppLayoutToolbarImplementationProps } from '../toolbar';
 import { BreadcrumbsSlot } from './breadcrumbs';
-import { NotificationsSlot, ToolbarSlot } from './slot-wrappers';
+import { NotificationsSlot, ToolbarSlot } from './slot-wrappers.js';
 
 export const ToolbarSkeleton = React.forwardRef<HTMLElement, AppLayoutToolbarImplementationProps>(
   ({ appLayoutInternals }: AppLayoutToolbarImplementationProps, ref) => (

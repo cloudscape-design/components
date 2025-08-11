@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { SYSTEM } from '../internal/environment';
+import { SYSTEM } from '../internal/environment.js';
 import customCssProps from '../internal/generated/custom-css-properties';
-import { FlashbarProps } from './interfaces';
+import { FlashbarProps } from './interfaces.js';
 
 export function getCollapsibleFlashStyles(style: FlashbarProps['style'], type: string = 'info') {
   if (SYSTEM !== 'core' || !style) {
