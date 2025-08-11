@@ -35,13 +35,13 @@ describe('checkMissingStyles', () => {
         --awsui-version-info-${GIT_SHA}: true;
       }
   `;
-    checkMissingStyles();
+    checkMissingStyles(document);
     expect(consoleWarnSpy).not.toHaveBeenCalled();
     expect(sendPanoramaMetricSpy).not.toHaveBeenCalled();
   });
 
   test('should detect missing styles', () => {
-    checkMissingStyles();
+    checkMissingStyles(document);
     expect(consoleWarnSpy).toHaveBeenCalledWith(
       'Missing AWS-UI CSS for theme "default", version "3.0.0 (abc)", and git sha "abc".'
     );
@@ -54,11 +54,54 @@ describe('checkMissingStyles', () => {
         --awsui-version-info-c4d5e6: true;
       }
   `;
-    checkMissingStyles();
+    checkMissingStyles(document);
     expect(consoleWarnSpy).toHaveBeenCalledWith(
       'Missing AWS-UI CSS for theme "default", version "3.0.0 (abc)", and git sha "abc".'
     );
     expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-missing-css-asset', {});
+  });
+
+  describe('in iframe', () => {
+    let iframe: HTMLIFrameElement;
+    let iframeDocument: Document;
+
+    beforeEach(() => {
+      iframe = document.createElement('iframe');
+      document.body.appendChild(iframe);
+      iframeDocument = iframe.contentDocument!;
+    });
+
+    afterEach(() => {
+      iframe.remove();
+    });
+
+    test('should pass the check if styles found inside an iframe', () => {
+      const iframeStyle = document.createElement('style');
+      iframeDocument.body.append(iframeStyle);
+      // using :root does not work in JSDOM: https://github.com/jsdom/jsdom/issues/3563
+      iframeStyle.textContent = `
+          body {
+            --awsui-version-info-${GIT_SHA}: true;
+          }
+      `;
+      checkMissingStyles(iframeDocument);
+      expect(consoleWarnSpy).not.toHaveBeenCalled();
+      expect(sendPanoramaMetricSpy).not.toHaveBeenCalled();
+    });
+
+    test('should report missing styles if rendered in a different iframe', () => {
+      style.textContent = `
+          body {
+            --awsui-version-info-${GIT_SHA}: true;
+          }
+      `;
+
+      checkMissingStyles(iframeDocument);
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        'Missing AWS-UI CSS for theme "default", version "3.0.0 (abc)", and git sha "abc".'
+      );
+      expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-missing-css-asset', {});
+    });
   });
 });
 
