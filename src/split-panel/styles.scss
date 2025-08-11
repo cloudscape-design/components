@@ -246,10 +246,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     align-items: flex-start;
   }
 
-  &-text-and-info {
-    line-height: 0;
-  }
-
   &-main-row {
     flex: auto;
     flex-direction: row;
