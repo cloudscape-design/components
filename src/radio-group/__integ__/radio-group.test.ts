@@ -5,6 +5,8 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper, { RadioGroupWrapper } from '../../../lib/components/test-utils/selectors';
 
+import styles from '../../../lib/components/radio-group/styles.selectors.js';
+
 const radioGroupWrapper = createWrapper().findRadioGroup('#simple');
 
 class RadioPage extends BasePageObject {
@@ -62,5 +64,19 @@ test(
     await page.elementScrollTo('#scrollable-container', { top: scrollDistance });
     const { top: positionAfter } = await page.getBoundingBox(radioInContainerSelector);
     expect(positionBefore - positionAfter).toEqual(scrollDistance);
+  })
+);
+
+test(
+  'style api focus state',
+  useBrowser(async browser => {
+    await browser.url('#/light/radio-group/style-custom/');
+    const page = new RadioPage(browser);
+
+    await page.click('[data-testid="1"]');
+    await page.keys('Tab');
+    await expect((await browser.$(`.${styles.outline}`).getCSSProperty('box-shadow', '::before')).value).toBe(
+      'rgb(4,125,149)0px0px0px1px'
+    );
   })
 );
