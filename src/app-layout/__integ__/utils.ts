@@ -74,7 +74,7 @@ export const setupTest = (
     const page = new AppLayoutDrawersPage(browser);
     const params = new URLSearchParams({
       visualRefresh: `${theme !== 'classic'}`,
-      appLayoutWidget: `${theme === 'refresh-toolbar'}`,
+      appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
       ...(splitPanelPosition ? { splitPanelPosition } : {}),
     }).toString();
     await browser.url(`#/light/app-layout/with-drawers?${params}`);
