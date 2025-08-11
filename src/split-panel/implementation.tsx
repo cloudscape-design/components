@@ -99,8 +99,8 @@ export function SplitPanelImplementation({
 
   const wrappedHeader = (
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
-      <div className={styles['header-content']}>
-        <div className={styles['header-main-row']}>
+      <div className={styles['header-main-row']}>
+        <div className={styles['header-main-content']}>
           <div className={styles['header-text-and-info']}>
             <h2
               className={clsx(
