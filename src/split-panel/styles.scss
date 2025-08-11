@@ -228,8 +228,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 }
 
 .header {
-  $vertical-margin: calc(#{awsui.$space-scaled-xxs} + 1px);
-
   inline-size: 100%;
   margin-block: awsui.$size-vertical-panel-icon-offset;
   margin-inline: 0;
@@ -254,13 +252,12 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     row-gap: awsui.$space-scaled-xxs;
     align-items: center;
     justify-content: space-between;
-    &.with-actions {
-      min-block-size: calc(#{awsui.$font-panel-header-line-height} + 2 * #{$vertical-margin});
-    }
-    &:not(.with-actions) > .header-text-and-info {
-      margin-block-start: $vertical-margin;
-      min-block-size: calc(#{awsui.$font-panel-header-line-height} + #{$vertical-margin});
-    }
+  }
+
+  &-text-and-info {
+    $vertical-margin: calc(#{awsui.$space-scaled-xxs} + 1px);
+    margin-block-start: $vertical-margin;
+    min-block-size: calc(#{awsui.$font-panel-header-line-height} + #{$vertical-margin});
   }
 
   &-text,
