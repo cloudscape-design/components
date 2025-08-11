@@ -58,7 +58,7 @@ describe('classic', () => {
     'does not react to the feature flag even if it is enabled',
     setupTest(
       {
-        url: `#/light/app-layout/global-breadcrumbs/?${new URLSearchParams({ visualRefresh: 'false', appLayoutWidget: 'true', hasOwnBreadcrumbs: 'true' }).toString()}`,
+        url: `#/light/app-layout/global-breadcrumbs/?${new URLSearchParams({ visualRefresh: 'false', appLayoutToolbar: 'true', hasOwnBreadcrumbs: 'true' }).toString()}`,
       },
       async page => {
         await page.toggleExtraBreadcrumb();
