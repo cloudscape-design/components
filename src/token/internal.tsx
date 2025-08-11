@@ -7,11 +7,15 @@ import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
 import { OptionDefinition } from '../internal/components/option/interfaces';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import InternalPopover from '../popover/internal';
 import DismissButton from './dismiss-button';
 import { TokenProps } from './interfaces';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
+
+type InternalTokenProps = TokenProps & InternalBaseComponentProps;
 
 function InternalToken({
   children,
@@ -31,7 +35,7 @@ function InternalToken({
   dismissLabel,
   popoverProps,
   ...restProps
-}: TokenProps) {
+}: InternalTokenProps) {
   const baseProps = getBaseProps(restProps);
   const isInline = variant === 'inline';
 
@@ -77,7 +81,7 @@ function InternalToken({
   return (
     <div
       {...baseProps}
-      className={clsx(!isInline ? styles.token : styles['token-inline'], baseProps.className)}
+      className={clsx(!isInline ? styles.token : styles['token-inline'], analyticsSelectors.token, baseProps.className)}
       aria-label={ariaLabel}
       aria-disabled={disabled}
     >
