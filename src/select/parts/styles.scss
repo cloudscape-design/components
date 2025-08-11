@@ -147,8 +147,8 @@ $inlineLabel-border-radius: 2px;
   position: relative;
   inset-inline-start: calc(awsui.$border-width-field + awsui.$space-field-horizontal - awsui.$space-scaled-xxs);
   margin-block-start: awsui.$space-scaled-xs;
-  padding-block-end: 2px;
-  padding-inline: awsui.$space-scaled-xxs;
+  padding-block: 0;
+  padding-inline: 1px;
   max-inline-size: calc(100% - (2 * awsui.$space-field-horizontal));
   z-index: 1;
 }
