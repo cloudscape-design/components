@@ -157,17 +157,26 @@ test('does not render tokens when no tokens are present', () => {
 
 test('renders inline label text when provided', () => {
   const { wrapper } = renderMultiselect(
-    <Multiselect selectedOptions={[]} options={defaultOptions} {...({ inlineLabelText: 'Select items:' } as any)} />
+    <Multiselect selectedOptions={[]} options={defaultOptions} inlineLabelText="Select items:" />
   );
-  const inlineLabel = wrapper.findByClassName(selectPartsStyles['inline-label']);
+  const inlineLabel = wrapper.findInlineLabel();
   expect(inlineLabel).not.toBeNull();
   expect(inlineLabel!.getElement()).toHaveTextContent('Select items:');
 });
 
 test('does not render inline label when inlineLabelText is not provided', () => {
   const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
-  const inlineLabel = wrapper.findByClassName(selectPartsStyles['inline-label']);
+  const inlineLabel = wrapper.findInlineLabel();
   expect(inlineLabel).toBeNull();
+});
+
+test('associate label with trigger button', () => {
+  const { wrapper } = renderMultiselect(
+    <Multiselect selectedOptions={[]} options={defaultOptions} inlineLabelText="Select items:" />
+  );
+  const labelForAttribute = wrapper.findInlineLabel()!.getElement()!.getAttribute('for');
+  const triggerId = wrapper.findTrigger().getElement()!.id;
+  expect(labelForAttribute).toBe(triggerId);
 });
 
 test('allows deselecting an option without object equality', () => {
