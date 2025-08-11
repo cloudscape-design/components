@@ -11,10 +11,6 @@
 .universal-toolbar {
   background-color: awsui.$color-background-layout-panel-content;
   box-sizing: border-box;
-  padding-block: 0;
-  padding-inline: awsui.$space-m;
-  //right padding set in child trigger-container below for focus indicator to show correctly
-  padding-inline-end: 0;
   position: sticky;
   z-index: constants.$toolbar-z-index;
   @include styles.with-motion {
@@ -48,7 +44,6 @@
     block-size: 100%;
     align-items: center;
     display: grid;
-    column-gap: awsui.$space-static-xs;
     inline-size: 100%;
     grid-template-columns: min-content min-content minmax(0, 3fr) minmax(auto, 1fr);
     grid-template-rows: 1fr;
@@ -59,7 +54,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-inline-start: calc(-1 * #{awsui.$space-m});
       padding-inline: awsui.$space-static-xxs;
       padding-block-start: awsui.$space-static-xxs;
       box-sizing: border-box;
@@ -71,13 +65,18 @@
 
     > .universal-toolbar-nav {
       grid-column: 2;
+      padding-inline-start: awsui.$space-m;
       padding-inline-end: awsui.$space-static-xxs;
     }
 
     > .universal-toolbar-breadcrumbs {
       grid-column: 3;
+      padding-inline: awsui.$space-static-xs;
       background-color: transparent;
       flex: 1 0;
+      &:first-child {
+        padding-inline: calc(#{awsui.$space-static-xs} + #{awsui.$space-static-m});
+      }
     }
 
     > .universal-toolbar-drawers {
@@ -94,9 +93,7 @@
 .drawers-mobile-triggers-container {
   @include styles.styles-reset;
   background-color: transparent;
-  padding-inline: 0;
-  //matches the left padding of .universal-toolbar but allows for focus indicator to show correctly
-  padding-inline-end: awsui.$space-m;
+  padding-inline: awsui.$space-m;
   box-sizing: border-box;
   overflow-y: hidden;
   overflow-x: hidden;
