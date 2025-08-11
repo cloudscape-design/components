@@ -39,7 +39,7 @@ export default function GenericTokenGroupPage() {
           variant="inline"
           label="Inline token"
           ariaLabel="Inline token"
-          popoverProps={{ content: <Input value="test" /> }}
+          popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
         />
         <div style={{ maxWidth: '100%', display: 'inline-block' }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
@@ -112,7 +112,7 @@ export default function GenericTokenGroupPage() {
           label="Inline dismissable token"
           iconName="edit"
           onDismiss={() => {}}
-          popoverProps={{ content: <Input value="test" /> }}
+          popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
         />
         <Token
           variant="inline"
@@ -138,14 +138,14 @@ export default function GenericTokenGroupPage() {
         <Token
           ariaLabel="Standalone token"
           label="Standalone token"
-          popoverProps={{ content: <Input value="test" /> }}
+          popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
         />
         <Token
           ariaLabel="Standalone token with icon"
           label="Standalone token with icon"
           iconName="bug"
           onDismiss={() => {}}
-          popoverProps={{ content: <Input value="test" /> }}
+          popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
         />
         <Token ariaLabel="dismissable token" label="Dismissable token" labelTag="test" onDismiss={() => {}} />
 
