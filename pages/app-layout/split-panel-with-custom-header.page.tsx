@@ -47,30 +47,28 @@ function EditableHeader({ onChange, value }: { onChange: (text: string) => void;
   }, [editing]);
 
   return (
-    <Box display="inline-block">
-      <SpaceBetween direction="horizontal" size="xxs" alignItems="center">
-        {editing ? (
-          <>
-            <Input value={internalValue} onChange={({ detail }) => setInternalValue(detail.value)} ref={inputRef} />
-            <Button
-              variant="icon"
-              iconName="check"
-              onClick={() => {
-                onChange(internalValue);
-                setEditing(false);
-              }}
-            />
-            <Button variant="icon" iconName="close" onClick={() => setEditing(false)} />
-          </>
-        ) : (
-          <>
-            <Box variant="h3" tagOverride="h2" display="inline" margin={{ vertical: 'n' }} padding={{ vertical: 'n' }}>
-              {value}
-            </Box>
-            <Button variant="inline-icon" iconName="edit" onClick={() => setEditing(true)}></Button>
-          </>
-        )}
-      </SpaceBetween>
+    <Box display="inline">
+      {editing ? (
+        <SpaceBetween direction="horizontal" size="xxs">
+          <Input value={internalValue} onChange={({ detail }) => setInternalValue(detail.value)} ref={inputRef} />
+          <Button
+            variant="icon"
+            iconName="check"
+            onClick={() => {
+              onChange(internalValue);
+              setEditing(false);
+            }}
+          />
+          <Button variant="icon" iconName="close" onClick={() => setEditing(false)} />
+        </SpaceBetween>
+      ) : (
+        <span style={{ position: 'relative', insetBlockStart: '5px' }}>
+          <Box variant="h3" tagOverride="span" display="inline" margin={{ vertical: 'n' }} padding={{ vertical: 'n' }}>
+            {value}
+          </Box>
+          <Button variant="inline-icon" iconName="edit" onClick={() => setEditing(true)}></Button>
+        </span>
+      )}
     </Box>
   );
 }
