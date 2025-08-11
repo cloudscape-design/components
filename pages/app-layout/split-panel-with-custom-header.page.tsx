@@ -21,6 +21,7 @@ import * as toolsContent from './utils/tools-content';
 
 type SplitPanelDemoContext = React.Context<
   AppContextType<{
+    actionsAsLinks: boolean;
     description?: string;
     headerText?: string;
     renderActions: boolean;
@@ -61,12 +62,15 @@ export default function () {
             header={urlParams.headerText || ''}
             i18nStrings={splitPaneli18nStrings}
             headerActions={
-              urlParams.renderActions && (
+              urlParams.renderActions &&
+              (urlParams.actionsAsLinks ? (
+                <Link>Action</Link>
+              ) : (
                 <SpaceBetween direction="horizontal" size="xs">
                   <Button>Button</Button>
                   <Button>Button</Button>
                 </SpaceBetween>
-              )
+              ))
             }
             headerDescription={urlParams.description}
             headerInfo={
@@ -88,19 +92,27 @@ export default function () {
               </Header>
             </div>
             <SpaceBetween size="l">
+              <Toggle
+                checked={urlParams.renderInfoLink}
+                onChange={({ detail }) => setUrlParams({ ...urlParams, renderInfoLink: detail.checked })}
+              >
+                With info link
+              </Toggle>
               <SpaceBetween direction="horizontal" size="xl">
-                <Toggle
-                  checked={urlParams.renderInfoLink}
-                  onChange={({ detail }) => setUrlParams({ ...urlParams, renderInfoLink: detail.checked })}
-                >
-                  With info link
-                </Toggle>
                 <Toggle
                   checked={urlParams.renderActions}
                   onChange={({ detail }) => setUrlParams({ ...urlParams, renderActions: detail.checked })}
                 >
                   With action buttons
                 </Toggle>
+                {urlParams.renderActions && (
+                  <Toggle
+                    checked={urlParams.actionsAsLinks}
+                    onChange={({ detail }) => setUrlParams({ ...urlParams, actionsAsLinks: detail.checked })}
+                  >
+                    As links
+                  </Toggle>
+                )}
               </SpaceBetween>
               <FormField label="Header text">
                 <Input
