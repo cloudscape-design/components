@@ -91,8 +91,7 @@ export function SplitPanelImplementation({
     [globalVars.stickyVerticalBottomOffset]: bottomOffset,
   };
 
-  const panelHeaderUniqueId = useUniqueId('split-panel-header');
-  const panelHeaderId = panelHeaderUniqueId;
+  const panelHeaderId = useUniqueId('split-panel-header');
 
   const hasCustomElements = !!headerActions || !!headerInfo;
 
