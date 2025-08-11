@@ -5,6 +5,8 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/foundation' as foundation;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $checkbox-size: awsui.$size-control;
@@ -20,5 +22,13 @@ $checkbox-size: awsui.$size-control;
 }
 
 .outline {
-  @include styles.focus-highlight(2px);
+  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+
+  @include styles.focus-highlight(
+    $gutter: 2px,
+    $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+    $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+  );
 }
