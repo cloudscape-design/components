@@ -228,6 +228,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 }
 
 .header {
+  $vertical-margin: calc(#{awsui.$space-scaled-xxs} + 1px);
+
   inline-size: 100%;
   margin-block: awsui.$size-vertical-panel-icon-offset;
   margin-inline: 0;
@@ -241,23 +243,24 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
 
   &-main-row {
+    // Make sure that the panel buttons are always anchored to the block start,
+    // even if the main content (before-header slot, header text, actions) wraps into multiple lines.
     align-items: flex-start;
   }
 
+  // Area containing the before-header slot, the header text and the actions
   &-main-content {
     flex: auto;
     flex-direction: row;
     flex-wrap: wrap;
     column-gap: awsui.$space-scaled-xs;
-    row-gap: awsui.$space-scaled-xxs;
-    align-items: center;
+    row-gap: calc(#{awsui.$space-scaled-xxs} + $vertical-margin);
     justify-content: space-between;
+    align-items: center;
   }
 
   &-tag-and-info {
-    $vertical-margin: calc(#{awsui.$space-scaled-xxs} + 1px);
-    margin-block-start: $vertical-margin;
-    min-block-size: calc(#{awsui.$font-panel-header-line-height} + #{$vertical-margin});
+    min-block-size: calc(#{awsui.$font-panel-header-line-height} + 2 * #{$vertical-margin});
     // The line height of the header text might not be respected in non-high pixel density screens
     // unless it is set to a smaller value in its parent container.
     line-height: awsui.$line-height-body-s;
@@ -271,15 +274,16 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
 
   &-tag {
-    $vertical-margin: calc(#{awsui.$space-scaled-xxs} + 1px);
     @include styles.font-panel-header;
-    padding-block: 0;
-    padding-inline: 0;
-    margin-inline: 0;
-    margin-block: 0;
     &.with-info {
       margin-inline-end: awsui.$space-scaled-xs;
     }
+  }
+
+  &-text,
+  &-info {
+    position: relative;
+    inset-block-start: $vertical-margin;
   }
 
   &-before + &-text {
