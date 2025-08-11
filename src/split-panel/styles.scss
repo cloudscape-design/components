@@ -252,6 +252,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     row-gap: awsui.$space-scaled-xxs;
     align-items: center;
     justify-content: space-between;
+    line-height: awsui.$line-height-body-s;
   }
 
   &-text-and-info {
