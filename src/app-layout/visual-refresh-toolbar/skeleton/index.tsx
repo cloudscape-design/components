@@ -47,6 +47,8 @@ interface SkeletonLayoutProps
   isNested?: boolean;
   drawerExpandedMode: boolean;
   drawerExpandedModeInChildLayout: boolean;
+  aiDrawerExpandedMode: boolean;
+  aiDrawer?: React.ReactNode;
 }
 
 const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAppLayoutToolbarComponent = {
@@ -85,6 +87,8 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       isNested,
       drawerExpandedMode,
       drawerExpandedModeInChildLayout,
+      aiDrawerExpandedMode,
+      aiDrawer,
     },
     ref
   ) => {
@@ -99,6 +103,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             [styles['has-adaptive-widths-default']]: !contentTypeCustomWidths.includes(contentType),
             [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
             [styles['drawer-expanded-mode']]: drawerExpandedMode,
+            [styles['ai-drawer-expanded-mode']]: aiDrawerExpandedMode,
           })}
           style={{
             minBlockSize: isNested ? '100%' : `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
@@ -108,7 +113,21 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
           }}
           {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
         >
-          {toolbar}
+          {!aiDrawerExpandedMode && toolbar}
+          {aiDrawer && (
+            <div
+              className={clsx(
+                styles['ai-drawer'],
+                (drawerExpandedMode || drawerExpandedModeInChildLayout) && !aiDrawerExpandedMode && styles.hidden
+              )}
+              style={{
+                insetBlockStart: `${placement.insetBlockStart}px`,
+                blockSize: `calc(100vh - ${placement.insetBlockStart}px)`,
+              }}
+            >
+              {aiDrawer}
+            </div>
+          )}
           {navigation && (
             <div
               className={clsx(

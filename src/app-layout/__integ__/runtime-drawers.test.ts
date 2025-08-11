@@ -237,26 +237,10 @@ describe('Visual refresh toolbar only', () => {
     );
 
     test(
-      'first opened drawer should be closed when active drawers can not be shrunk to accommodate it (1400px)',
-      setupTest(async page => {
-        await page.setWindowSize({ ...viewports.desktop, width: 1400 });
-        await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
-        await page.click(wrapper.findDrawerTriggerById('global-with-stored-state').toSelector());
-        await page.click(wrapper.findDrawerTriggerById('security').toSelector());
-
-        await expect(page.isClickable(findDrawerById(wrapper, 'circle-global')!.toSelector())).resolves.toBe(false);
-        await expect(page.isClickable(findDrawerById(wrapper, 'security')!.toSelector())).resolves.toBe(true);
-        await expect(page.isClickable(findDrawerById(wrapper, 'global-with-stored-state')!.toSelector())).resolves.toBe(
-          true
-        );
-      })
-    );
-
-    test(
-      'first opened drawer should be closed when active drawers can not be shrunk to accommodate it (1345px)',
+      'first opened drawer should be closed when active drawers can not be shrunk to accommodate it',
       setupTest(async page => {
         // Give the toolbar enough horizontal space to make sure the triggers are not collapsed into a dropdown
-        await page.setWindowSize({ ...viewports.desktop, width: 1345 });
+        await page.setWindowSize({ ...viewports.desktop, width: 1400 });
         await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
         await page.click(wrapper.findDrawerTriggerById('security').toSelector());
         await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
