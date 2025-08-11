@@ -34,6 +34,10 @@ export default class SplitPanelWrapper extends ComponentWrapper {
     return this.findByClassName(testUtilStyles['header-actions']);
   }
 
+  findHeaderBefore() {
+    return this.findByClassName(testUtilStyles['header-before']);
+  }
+
   findHeaderDescription() {
     return this.findByClassName(testUtilStyles['header-description']);
   }
