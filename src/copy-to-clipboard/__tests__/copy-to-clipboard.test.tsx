@@ -3,8 +3,8 @@
 import React from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 
-import CopyToClipboard from '../../../lib/components/copy-to-clipboard';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import CopyToClipboard from '../../../lib/components/copy-to-clipboard/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 const defaultProps = {
   copyTarget: 'Test content',

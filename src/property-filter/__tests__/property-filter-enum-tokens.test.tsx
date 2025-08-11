@@ -10,9 +10,9 @@ import {
   FilteringOption,
   FilteringProperty,
   PropertyFilterProps,
-} from '../../../lib/components/property-filter/interfaces';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { createDefaultProps, StatefulPropertyFilter } from './common';
+} from '../../../lib/components/property-filter/interfaces.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { createDefaultProps, StatefulPropertyFilter } from './common.js';
 
 const states: Record<string, string> = {
   0: 'Stopped',

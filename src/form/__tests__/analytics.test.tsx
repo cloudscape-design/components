@@ -3,15 +3,15 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import Button from '../../../lib/components/button';
-import Container from '../../../lib/components/container';
-import Form from '../../../lib/components/form';
-import Header from '../../../lib/components/header';
-import { FunnelMetrics } from '../../../lib/components/internal/analytics';
-import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
-import Modal from '../../../lib/components/modal';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { mockFunnelMetrics, mockInnerText } from '../../internal/analytics/__tests__/mocks';
+import Button from '../../../lib/components/button/index.js';
+import Container from '../../../lib/components/container/index.js';
+import Form from '../../../lib/components/form/index.js';
+import Header from '../../../lib/components/header/index.js';
+import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel.js';
+import { FunnelMetrics } from '../../../lib/components/internal/analytics/index.js';
+import Modal from '../../../lib/components/modal/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { mockFunnelMetrics, mockInnerText } from '../../internal/analytics/__tests__/mocks.js';
 
 mockInnerText();
 

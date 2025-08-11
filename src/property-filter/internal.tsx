@@ -8,15 +8,15 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { InternalButton } from '../button/internal.js';
-import { getBaseProps } from '../internal/base-component';
-import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
-import TokenList from '../internal/components/token-list';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { AutosuggestInputRef } from '../internal/components/autosuggest-input/index.js';
+import TokenList from '../internal/components/token-list/index.js';
 import { useTableComponentsContext } from '../internal/context/table-component-context.js';
-import { fireNonCancelableEvent } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
 import { SomeRequired } from '../internal/types.js';
-import { joinStrings } from '../internal/utils/strings';
+import { joinStrings } from '../internal/utils/strings/index.js';
 import { InternalLiveRegionRef } from '../live-region/internal.js';
 import InternalSpaceBetween from '../space-between/internal.js';
 import { SearchResults } from '../text-filter/search-results.js';

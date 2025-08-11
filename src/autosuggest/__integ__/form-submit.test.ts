@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper, { AutosuggestWrapper } from '../../../lib/components/test-utils/selectors';
+import createWrapper, { AutosuggestWrapper } from '../../../lib/components/test-utils/selectors/index.js';
 
 class FormSubmitPageObject extends BasePageObject {
   isDropdownOpen(wrapper: AutosuggestWrapper) {

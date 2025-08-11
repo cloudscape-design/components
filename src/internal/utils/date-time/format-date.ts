@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { CalendarProps } from '../../../calendar/interfaces.js';
-import { padLeftZeros } from '../strings';
+import { padLeftZeros } from '../strings/index.js';
 
 /**
  * Transforms Date's object date part to a string.

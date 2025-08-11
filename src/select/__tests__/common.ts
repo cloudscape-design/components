@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { SelectProps } from '../../../lib/components/select';
+import { SelectProps } from '../../../lib/components/select/index.js';
 
 export const VALUE_WITH_SPECIAL_CHARS = 'Option 4, test"2';
 

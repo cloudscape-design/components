@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import FocusLock from '../../../../internal/components/focus-lock';
-import { fireCancelableEvent, isPlainLeftClick } from '../../../../internal/events';
+import FocusLock from '../../../../internal/components/focus-lock/index.js';
+import { fireCancelableEvent, isPlainLeftClick } from '../../../../internal/events/index.js';
 import { TopNavigationProps } from '../../../interfaces.js';
 import { View } from '..';
 import Header from '../header.js';

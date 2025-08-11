@@ -8,12 +8,12 @@ import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal
 
 import InternalForm from '../form/internal.js';
 import InternalHeader from '../header/internal.js';
-import { FunnelMetrics } from '../internal/analytics';
 import { AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel.js';
 import { useFunnel, useFunnelStepRef } from '../internal/analytics/hooks/use-funnel.js';
-import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
+import { FunnelMetrics } from '../internal/analytics/index.js';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component/index.js';
 import { PACKAGE_VERSION } from '../internal/environment.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update.js';
 import { WizardProps } from './interfaces.js';
 import WizardActions from './wizard-actions.js';

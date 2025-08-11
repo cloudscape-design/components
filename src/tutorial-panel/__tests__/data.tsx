@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { TutorialPanelProps } from '../../../lib/components/tutorial-panel/interfaces';
+import { TutorialPanelProps } from '../../../lib/components/tutorial-panel/interfaces.js';
 
 export const i18nStrings: TutorialPanelProps.I18nStrings = {
   loadingText: 'LOADING',

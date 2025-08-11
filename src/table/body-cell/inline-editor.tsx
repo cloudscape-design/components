@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Button from '../../button/internal.js';
 import FormField from '../../form-field/internal.js';
 import { useInternalI18n } from '../../i18n/context.js';
-import FocusLock, { FocusLockRef } from '../../internal/components/focus-lock';
+import FocusLock, { FocusLockRef } from '../../internal/components/focus-lock/index.js';
 import { Optional } from '../../internal/types.js';
 import InternalLiveRegion from '../../live-region/internal.js';
 import SpaceBetween from '../../space-between/internal.js';

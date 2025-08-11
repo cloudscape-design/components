@@ -3,9 +3,9 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import Button from '../../../lib/components/button';
-import FileDropzone, { FileDropzoneProps, useFilesDragging } from '../../../lib/components/file-dropzone';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Button from '../../../lib/components/button/index.js';
+import FileDropzone, { FileDropzoneProps, useFilesDragging } from '../../../lib/components/file-dropzone/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import selectors from '../../../lib/components/file-dropzone/styles.selectors.js';
 

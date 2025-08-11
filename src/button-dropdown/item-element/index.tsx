@@ -10,8 +10,8 @@ import {
 
 import InternalIcon, { InternalIconProps } from '../../icon/internal.js';
 import { useDropdownContext } from '../../internal/components/dropdown/context.js';
-import useHiddenDescription from '../../internal/hooks/use-hidden-description';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description/index.js';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode/index.js';
 import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces.js';
 import { InternalCheckboxItem, InternalItem, ItemProps, LinkItem } from '../interfaces.js';
 import Tooltip from '../tooltip.js';

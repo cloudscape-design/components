@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import InternalButton from '../button/internal.js';
-import { getBaseProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import InternalPopover from '../popover/internal.js';
 import InternalStatusIndicator from '../status-indicator/internal.js';
 import { CopyToClipboardProps } from './interfaces.js';

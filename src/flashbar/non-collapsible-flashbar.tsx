@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../i18n/context.js';
-import { Transition } from '../internal/components/transition';
+import { Transition } from '../internal/components/transition/index.js';
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils.js';
 import { useFlashbar } from './common.js';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant.js';

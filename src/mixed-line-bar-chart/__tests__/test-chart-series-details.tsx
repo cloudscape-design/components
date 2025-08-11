@@ -8,9 +8,9 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { BarChartProps } from '../../../lib/components/bar-chart/interfaces.js';
 import { LineChartProps } from '../../../lib/components/line-chart/interfaces.js';
-import Link from '../../../lib/components/link';
-import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
-import createWrapper, { BarChartWrapper, LineChartWrapper } from '../../../lib/components/test-utils/dom';
+import Link from '../../../lib/components/link/index.js';
+import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/index.js';
+import createWrapper, { BarChartWrapper, LineChartWrapper } from '../../../lib/components/test-utils/dom/index.js';
 import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import chartSeriesDetailsStyles from '../../../lib/components/internal/components/chart-series-details/styles.css.js';

@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 import { InternalButton } from '../../button/internal.js';
-import customCssProps from '../../internal/generated/custom-css-properties';
+import customCssProps from '../../internal/generated/custom-css-properties/index.js';
 import { getLimitedValue } from '../../split-panel/utils/size-utils.js';
 import { splitItems } from '../drawer/drawers-helpers.js';
 import OverflowMenu from '../drawer/overflow-menu.js';

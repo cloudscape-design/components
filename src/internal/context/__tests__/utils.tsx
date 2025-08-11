@@ -7,7 +7,7 @@ import { render } from '@testing-library/react';
 import {
   FocusableChangeHandler,
   SingleTabStopNavigationContext,
-} from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
+} from '../../../../lib/components/internal/context/single-tab-stop-navigation-context.js';
 
 interface ProviderRef {
   setCurrentTarget(focusTarget: null | Element, suppressed?: (null | Element)[]): void;

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import A11yPageObject from './a11y-page-object';
+import A11yPageObject from './a11y-page-object.js';
 
 test(
   'undefined texts finder works',

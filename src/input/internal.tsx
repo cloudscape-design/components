@@ -10,11 +10,11 @@ import InternalButton from '../button/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
 import { IconProps } from '../icon/interfaces.js';
 import InternalIcon from '../icon/internal.js';
-import { BaseComponentProps, getBaseProps } from '../internal/base-component';
+import { BaseComponentProps, getBaseProps } from '../internal/base-component/index.js';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context.js';
-import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
+import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useDebounceCallback } from '../internal/hooks/use-debounce-callback/index.js';
 import {
   GeneratedAnalyticsMetadataInputClearInput,
   GeneratedAnalyticsMetadataInputComponent,

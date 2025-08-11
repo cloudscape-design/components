@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { CollectionLabelContext } from '../internal/context/collection-label-context.js';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
 
 import styles from './styles.css.js';
 

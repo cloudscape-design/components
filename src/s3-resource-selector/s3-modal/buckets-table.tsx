@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { useInternalI18n } from '../../i18n/context.js';
-import { ForwardFocusRef } from '../../internal/hooks/forward-focus';
+import { ForwardFocusRef } from '../../internal/hooks/forward-focus/index.js';
 import InternalLink from '../../link/internal.js';
 import { TableProps } from '../../table/interfaces.js';
 import { S3ResourceSelectorProps } from '../interfaces.js';

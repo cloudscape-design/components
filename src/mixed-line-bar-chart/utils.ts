@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ChartSeriesMarkerType } from '../internal/components/chart-series-marker';
+import { ChartSeriesMarkerType } from '../internal/components/chart-series-marker/index.js';
 import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces.js';
 import { ScaledBarGroup } from './make-scaled-bar-groups.js';
 

@@ -9,14 +9,14 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import ButtonGroup, { ButtonGroupProps } from '../../../lib/components/button-group';
 import {
   GeneratedAnalyticsMetadataButtonGroupClick,
   GeneratedAnalyticsMetadataButtonGroupCollapse,
   GeneratedAnalyticsMetadataButtonGroupExpand,
-} from '../../../lib/components/button-group/analytics-metadata/interfaces';
-import InternalButtonGroup from '../../../lib/components/button-group/internal';
-import createWrapper from '../../../lib/components/test-utils/dom';
+} from '../../../lib/components/button-group/analytics-metadata/interfaces.js';
+import ButtonGroup, { ButtonGroupProps } from '../../../lib/components/button-group/index.js';
+import InternalButtonGroup from '../../../lib/components/button-group/internal.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 const getMenuDropdownItem = (suffix = ''): ButtonGroupProps.MenuDropdown => ({
   type: 'menu-dropdown',

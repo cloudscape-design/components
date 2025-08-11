@@ -9,18 +9,18 @@ import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/inte
 import { useFormFieldContext } from '../contexts/form-field.js';
 import { useInternalI18n } from '../i18n/context.js';
 import { BaseChangeDetail } from '../input/interfaces.js';
-import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
+import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input/index.js';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces.js';
-import DropdownFooter from '../internal/components/dropdown-footer';
-import { useDropdownStatus } from '../internal/components/dropdown-status';
+import DropdownFooter from '../internal/components/dropdown-footer/index.js';
+import { useDropdownStatus } from '../internal/components/dropdown-status/index.js';
 import {
   BaseKeyDetail,
   fireCancelableEvent,
   fireNonCancelableEvent,
   NonCancelableCustomEvent,
-} from '../internal/events';
-import checkControlled from '../internal/hooks/check-controlled';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+} from '../internal/events/index.js';
+import checkControlled from '../internal/hooks/check-controlled/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { checkOptionValueField } from '../select/utils/check-option-value-field.js';
 import { AutosuggestItem, AutosuggestProps } from './interfaces.js';
 import { useAutosuggestLoadMore } from './load-more-controller.js';

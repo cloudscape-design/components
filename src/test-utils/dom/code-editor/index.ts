@@ -3,7 +3,7 @@
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 import { act } from '@cloudscape-design/test-utils-core/utils-dom';
 
-import ButtonWrapper from '../button';
+import ButtonWrapper from '../button/index.js';
 
 import styles from '../../../code-editor/styles.selectors.js';
 

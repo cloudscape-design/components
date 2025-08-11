@@ -7,7 +7,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import FormField from '../../../lib/components/form-field';
+import FormField from '../../../lib/components/form-field/index.js';
 
 import styles from '../../../lib/components/grid/styles.css.js';
 

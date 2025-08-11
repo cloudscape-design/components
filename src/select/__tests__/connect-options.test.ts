@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { connectOptionsByValue, findOptionIndex } from '../utils/connect-options';
+import { connectOptionsByValue, findOptionIndex } from '../utils/connect-options.js';
 
 describe('findOptionIndex', () => {
   test('should return -1 when no match', () => {

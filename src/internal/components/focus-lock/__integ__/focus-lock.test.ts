@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper, { ElementWrapper } from '../../../../../lib/components/test-utils/selectors';
+import createWrapper, { ElementWrapper } from '../../../../../lib/components/test-utils/selectors/index.js';
 
 function setupTest(testFn: (page: BasePageObject, wrapper: ElementWrapper) => Promise<void>) {
   return useBrowser(async browser => {

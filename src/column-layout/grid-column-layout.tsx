@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 import { GridProps } from '../grid/interfaces.js';
 import InternalGrid from '../grid/internal.js';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
 import { InternalColumnLayoutProps } from './interfaces.js';
 import { COLUMN_TRIGGERS, ColumnLayoutBreakpoint } from './internal.js';
 import { repeat } from './util.js';

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
 
-import PanelResizeHandle from '../../internal/components/panel-resize-handle';
+import PanelResizeHandle from '../../internal/components/panel-resize-handle/index.js';
 import { getLimitedValue } from '../../split-panel/utils/size-utils.js';
 import { AppLayoutProps } from '../interfaces.js';
 import { SizeControlProps } from './interfaces.js';

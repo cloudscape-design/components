@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils.js';
-import { createWidgetizedComponent } from '../../../internal/widgets';
+import { createWidgetizedComponent } from '../../../internal/widgets/index.js';
 import { AppLayoutInternals } from '../interfaces.js';
 import { NotificationsSkeleton } from '../skeleton/slot-skeletons.js';
 import { NotificationsSlot } from '../skeleton/slot-wrappers.js';

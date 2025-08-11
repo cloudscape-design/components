@@ -5,12 +5,12 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import ButtonTrigger from '../../internal/components/button-trigger';
-import Option from '../../internal/components/option';
+import ButtonTrigger from '../../internal/components/button-trigger/index.js';
+import Option from '../../internal/components/option/index.js';
 import { OptionDefinition } from '../../internal/components/option/interfaces.js';
 import { FormFieldValidationControlProps } from '../../internal/context/form-field-context.js';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
-import { joinStrings } from '../../internal/utils/strings';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode/index.js';
+import { joinStrings } from '../../internal/utils/strings/index.js';
 import { MultiselectProps } from '../../multiselect/interfaces.js';
 import { SelectProps } from '../interfaces.js';
 import { SelectTriggerProps } from '../utils/use-select.js';

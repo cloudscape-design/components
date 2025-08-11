@@ -4,10 +4,10 @@ import * as React from 'react';
 import { act, render, within } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
-import { KeyCode } from '../../../lib/components/internal/keycode';
-import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import PromptInputWrapper from '../../../lib/components/test-utils/dom/prompt-input';
+import { KeyCode } from '../../../lib/components/internal/keycode.js';
+import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import PromptInputWrapper from '../../../lib/components/test-utils/dom/prompt-input/index.js';
 
 import styles from '../../../lib/components/prompt-input/styles.selectors.js';
 

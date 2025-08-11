@@ -5,10 +5,10 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
-import InternalButtonDropdown from '../../../lib/components/button-dropdown/internal';
-import { KeyCode } from '../../../lib/components/internal/keycode';
-import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
+import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown/index.js';
+import InternalButtonDropdown from '../../../lib/components/button-dropdown/internal.js';
+import { KeyCode } from '../../../lib/components/internal/keycode.js';
+import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import iconStyles from '../../../lib/components/icon/styles.css.js';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';

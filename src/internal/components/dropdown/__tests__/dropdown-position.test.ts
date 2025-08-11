@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { applyDropdownPositionRelativeToViewport } from '../../../../../lib/components/internal/components/dropdown/dropdown-position';
+import { applyDropdownPositionRelativeToViewport } from '../../../../../lib/components/internal/components/dropdown/dropdown-position.js';
 
 describe('applyDropdownPositionRelativeToViewport', () => {
   const triggerRect = {

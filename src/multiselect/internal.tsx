@@ -6,14 +6,14 @@ import clsx from 'clsx';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context.js';
-import { getBaseProps } from '../internal/base-component';
-import Dropdown from '../internal/components/dropdown';
+import { getBaseProps } from '../internal/base-component/index.js';
+import Dropdown from '../internal/components/dropdown/index.js';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
-import ScreenreaderOnly from '../internal/components/screenreader-only';
+import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 import { useFormFieldContext } from '../internal/context/form-field-context.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { SomeRequired } from '../internal/types.js';
-import { joinStrings } from '../internal/utils/strings';
+import { joinStrings } from '../internal/utils/strings/index.js';
 import Filter from '../select/parts/filter.js';
 import PlainList from '../select/parts/plain-list.js';
 import Trigger from '../select/parts/trigger.js';

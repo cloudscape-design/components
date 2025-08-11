@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { AnnotationContextProps } from '../../../lib/components/annotation-context/interfaces';
-import { TutorialPanelProps } from '../../../lib/components/tutorial-panel/interfaces';
+import { AnnotationContextProps } from '../../../lib/components/annotation-context/interfaces.js';
+import { TutorialPanelProps } from '../../../lib/components/tutorial-panel/interfaces.js';
 
 export const i18nStrings: AnnotationContextProps.I18nStrings = {
   nextButtonText: 'NEXT_BUTTON_TEST',

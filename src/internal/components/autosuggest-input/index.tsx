@@ -13,13 +13,18 @@ import {
   InputKeyEvents,
 } from '../../../input/interfaces.js';
 import InternalInput, { InternalInputProps } from '../../../input/internal.js';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { BaseComponentProps, getBaseProps } from '../../base-component/index.js';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context.js';
-import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
-import { InternalBaseComponentProps } from '../../hooks/use-base-component';
+import {
+  BaseKeyDetail,
+  fireCancelableEvent,
+  fireNonCancelableEvent,
+  NonCancelableEventHandler,
+} from '../../events/index.js';
+import { InternalBaseComponentProps } from '../../hooks/use-base-component/index.js';
 import { KeyCode } from '../../keycode.js';
 import { nodeBelongs } from '../../utils/node-belongs.js';
-import Dropdown from '../dropdown';
+import Dropdown from '../dropdown/index.js';
 import { ExpandToViewport } from '../dropdown/interfaces.js';
 
 import styles from './styles.css.js';

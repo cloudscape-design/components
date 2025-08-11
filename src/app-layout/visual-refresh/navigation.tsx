@@ -6,8 +6,8 @@ import clsx from 'clsx';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import { InternalButton } from '../../button/internal.js';
-import { Transition } from '../../internal/components/transition';
-import customCssProps from '../../internal/generated/custom-css-properties';
+import { Transition } from '../../internal/components/transition/index.js';
+import customCssProps from '../../internal/generated/custom-css-properties/index.js';
 import { useAppLayoutInternals } from './context.js';
 import TriggerButton from './trigger-button.js';
 

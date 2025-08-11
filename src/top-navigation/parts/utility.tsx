@@ -6,10 +6,10 @@ import clsx from 'clsx';
 import { InternalButton } from '../../button/internal.js';
 import { isLinkItem } from '../../button-dropdown/utils/utils.js';
 import InternalIcon from '../../icon/internal.js';
-import MenuDropdown, { MenuDropdownProps } from '../../internal/components/menu-dropdown';
-import { fireCancelableEvent } from '../../internal/events';
+import MenuDropdown, { MenuDropdownProps } from '../../internal/components/menu-dropdown/index.js';
+import { fireCancelableEvent } from '../../internal/events/index.js';
 import { checkSafeUrl } from '../../internal/utils/check-safe-url.js';
-import { joinStrings } from '../../internal/utils/strings';
+import { joinStrings } from '../../internal/utils/strings/index.js';
 import InternalLink from '../../link/internal.js';
 import { TopNavigationProps } from '../interfaces.js';
 

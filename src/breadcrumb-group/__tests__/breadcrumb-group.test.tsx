@@ -3,13 +3,16 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { DATA_ATTR_RESOURCE_TYPE, getFunnelNameSelector } from '../../../lib/components/internal/analytics/selectors';
-import createWrapper, { BreadcrumbGroupWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
+import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import createWrapper, { BreadcrumbGroupWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import itemStyles from '../../../lib/components/breadcrumb-group/item/styles.css.js';
 import styles from '../../../lib/components/breadcrumb-group/styles.css.js';
+import {
+  DATA_ATTR_RESOURCE_TYPE,
+  getFunnelNameSelector,
+} from '../../../lib/components/internal/analytics/selectors.js';
 
 let mockMobileViewport = false;
 jest.mock('@cloudscape-design/component-toolkit', () => {

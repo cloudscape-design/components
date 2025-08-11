@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { getVisualTheme } from '../../../../lib/components/internal/utils/get-visual-theme';
+import { getVisualTheme } from '../../../../lib/components/internal/utils/get-visual-theme.js';
 
 describe('getVisualTheme', () => {
   it('returns vr when theme is polaris and VR is active', () => {

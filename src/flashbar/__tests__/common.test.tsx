@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { handleFlashDismissedInternal } from '../../../lib/components/flashbar/common';
-import { FlashbarProps } from '../../../lib/components/flashbar/interfaces';
+import { handleFlashDismissedInternal } from '../../../lib/components/flashbar/common.js';
+import { FlashbarProps } from '../../../lib/components/flashbar/interfaces.js';
 
 // Mock the focus utility function
 jest.mock('../../../lib/components/flashbar/flash', () => ({
@@ -9,7 +9,7 @@ jest.mock('../../../lib/components/flashbar/flash', () => ({
   focusFlashFocusableArea: jest.fn(),
 }));
 
-import { focusFlashFocusableArea } from '../../../lib/components/flashbar/flash';
+import { focusFlashFocusableArea } from '../../../lib/components/flashbar/flash.js';
 const mockFocusFlashFocusableArea = focusFlashFocusableArea as jest.MockedFunction<typeof focusFlashFocusableArea>;
 
 import styles from '../../../lib/components/flashbar/styles.css.js';

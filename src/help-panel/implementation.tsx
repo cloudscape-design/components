@@ -5,10 +5,10 @@ import clsx from 'clsx';
 
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags.js';
 import { useInternalI18n } from '../i18n/context.js';
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { createWidgetizedComponent } from '../internal/widgets';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { createWidgetizedComponent } from '../internal/widgets/index.js';
 import InternalLiveRegion from '../live-region/internal.js';
 import InternalStatusIndicator from '../status-indicator/internal.js';
 import { HelpPanelProps } from './interfaces.js';

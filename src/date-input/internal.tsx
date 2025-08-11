@@ -4,13 +4,13 @@
 import React, { Ref, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import MaskedInput from '../internal/components/masked-input';
-import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { displayToIso, isoToDisplay } from '../internal/utils/date-time';
+import MaskedInput from '../internal/components/masked-input/index.js';
+import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events/index.js';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import formatDateIso from '../internal/utils/date-time/format-date-iso.js';
 import formatDateLocalized from '../internal/utils/date-time/format-date-localized.js';
+import { displayToIso, isoToDisplay } from '../internal/utils/date-time/index.js';
 import { DateInputProps } from './interfaces.js';
 import { generateMaskArgs, normalizeIsoDateString } from './utils.js';
 

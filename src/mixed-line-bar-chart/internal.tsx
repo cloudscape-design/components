@@ -5,15 +5,15 @@ import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../internal/base-component';
-import Filter from '../internal/components/chart-filter';
-import ChartSeriesMarker from '../internal/components/chart-series-marker';
-import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
-import { ChartWrapper } from '../internal/components/chart-wrapper';
-import { fireNonCancelableEvent } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useControllable } from '../internal/hooks/use-controllable';
-import { usePrevious } from '../internal/hooks/use-previous';
+import { getBaseProps } from '../internal/base-component/index.js';
+import Filter from '../internal/components/chart-filter/index.js';
+import ChartSeriesMarker from '../internal/components/chart-series-marker/index.js';
+import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container/index.js';
+import { ChartWrapper } from '../internal/components/chart-wrapper/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useControllable } from '../internal/hooks/use-controllable/index.js';
+import { usePrevious } from '../internal/hooks/use-previous/index.js';
 import { isDevelopment } from '../internal/is-development.js';
 import { SomeRequired } from '../internal/types.js';
 import createCategoryColorScale from '../internal/utils/create-category-color-scale.js';

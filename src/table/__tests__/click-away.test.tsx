@@ -4,10 +4,10 @@
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import Box from '../../../lib/components/box';
-import Select from '../../../lib/components/select';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { useClickAway } from '../body-cell/click-away';
+import Box from '../../../lib/components/box/index.js';
+import Select from '../../../lib/components/select/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { useClickAway } from '../body-cell/click-away.js';
 
 const onHookClickAway = jest.fn() as () => void;
 

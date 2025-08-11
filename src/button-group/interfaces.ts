@@ -3,9 +3,9 @@
 
 import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
 import { IconProps } from '../icon/interfaces.js';
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { BaseComponentProps } from '../internal/base-component/index.js';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { SomeRequired } from '../internal/types.js';
 
 export interface ButtonGroupProps extends BaseComponentProps {

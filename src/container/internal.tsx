@@ -7,12 +7,12 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { ContainerHeaderContextProvider } from '../internal/context/container-header.js';
 import { useModalContext } from '../internal/context/modal-context.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMobile } from '../internal/hooks/use-mobile';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { ContainerProps } from './interfaces.js';
 import { getContentStyles, getFooterStyles, getHeaderStyles, getMediaStyles, getRootStyles } from './style.js';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header.js';

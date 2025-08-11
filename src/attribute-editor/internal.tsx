@@ -7,11 +7,11 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 
 import { ButtonProps } from '../button/interfaces.js';
 import { InternalButton } from '../button/internal.js';
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { matchBreakpointMapping } from '../internal/breakpoints.js';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { usePrevious } from '../internal/hooks/use-previous';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { usePrevious } from '../internal/hooks/use-previous/index.js';
 import { SomeRequired } from '../internal/types.js';
 import InternalLiveRegion from '../live-region/internal.js';
 import { AdditionalInfo } from './additional-info.js';

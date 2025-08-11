@@ -5,8 +5,8 @@ import React from 'react';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { useFormFieldContext } from '../contexts/form-field.js';
-import DropdownFooter from '../internal/components/dropdown-footer';
-import ScreenreaderOnly from '../internal/components/screenreader-only';
+import DropdownFooter from '../internal/components/dropdown-footer/index.js';
+import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 import { SomeRequired } from '../internal/types.js';
 import PlainList from '../select/parts/plain-list.js';
 import VirtualList from '../select/parts/virtual-list.js';

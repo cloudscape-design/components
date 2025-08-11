@@ -5,7 +5,7 @@ import { getDaysInMonth } from 'date-fns';
 
 import { CalendarProps } from '../calendar/interfaces.js';
 import { MaskArgs } from '../internal/components/masked-input/utils/mask-format.js';
-import { displayToIso, parseDate } from '../internal/utils/date-time';
+import { displayToIso, parseDate } from '../internal/utils/date-time/index.js';
 
 const yearMask = { min: 0, max: 9999, default: 2000, length: 4 };
 const monthMask = { min: 1, max: 12, length: 2 };

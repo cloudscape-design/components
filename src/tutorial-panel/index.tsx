@@ -5,11 +5,11 @@ import React, { useContext } from 'react';
 import clsx from 'clsx';
 
 import { hotspotContext } from '../annotation-context/context.js';
-import { getBaseProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
-import TutorialDetailView from './components/tutorial-detail-view';
-import TutorialList from './components/tutorial-list';
+import TutorialDetailView from './components/tutorial-detail-view/index.js';
+import TutorialList from './components/tutorial-list/index.js';
 import { TutorialPanelProps } from './interfaces.js';
 
 import styles from './styles.css.js';

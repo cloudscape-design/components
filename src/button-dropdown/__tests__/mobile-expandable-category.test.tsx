@@ -3,9 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import MobileExpandableCategoryElement from '../../../lib/components/button-dropdown/category-elements/mobile-expandable-category-element';
-import MobileExpandableGroup from '../../../lib/components/button-dropdown/mobile-expandable-group/mobile-expandable-group';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import MobileExpandableCategoryElement from '../../../lib/components/button-dropdown/category-elements/mobile-expandable-category-element.js';
+import MobileExpandableGroup from '../../../lib/components/button-dropdown/mobile-expandable-group/mobile-expandable-group.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 const renderComponent = (component: React.ReactElement) => {
   const renderResult = render(component);

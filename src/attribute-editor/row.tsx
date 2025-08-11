@@ -10,7 +10,7 @@ import { InternalButton } from '../button/internal.js';
 import InternalFormField from '../form-field/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
 import { Breakpoint } from '../internal/breakpoints.js';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
 import { AttributeEditorProps } from './interfaces.js';
 import { getItemGridColumns, getRemoveButtonGridColumns, isRemoveButtonOnSameLine } from './utils.js';
 

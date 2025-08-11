@@ -9,8 +9,8 @@ import clsx from 'clsx';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
-import { fireNonCancelableEvent } from '../../events';
-import { joinStrings } from '../../utils/strings';
+import { fireNonCancelableEvent } from '../../events/index.js';
+import { joinStrings } from '../../utils/strings/index.js';
 import { SortableAreaProps } from './interfaces.js';
 import useDragAndDropReorder from './use-drag-and-drop-reorder.js';
 import useLiveAnnouncements from './use-live-announcements.js';

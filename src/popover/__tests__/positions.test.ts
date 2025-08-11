@@ -5,7 +5,7 @@ import {
   intersectRectangles,
   isCenterOutside,
   PRIORITY_MAPPING,
-} from '../../../lib/components/popover/utils/positions';
+} from '../../../lib/components/popover/utils/positions.js';
 
 const arrow = { inlineSize: 15, blockSize: 15 };
 const body = { inlineSize: 250, blockSize: 250 };

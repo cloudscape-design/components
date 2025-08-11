@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Container from '../../../lib/components/container';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Container from '../../../lib/components/container/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/container/styles.css.js';
 

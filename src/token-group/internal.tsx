@@ -6,12 +6,12 @@ import clsx from 'clsx';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { getBaseProps } from '../internal/base-component';
-import Option from '../internal/components/option';
-import TokenList from '../internal/components/token-list';
-import { fireNonCancelableEvent } from '../internal/events';
-import checkControlled from '../internal/hooks/check-controlled';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
+import Option from '../internal/components/option/index.js';
+import TokenList from '../internal/components/token-list/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import checkControlled from '../internal/hooks/check-controlled/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
 import { SomeRequired } from '../internal/types.js';
 import { TokenGroupProps } from './interfaces.js';

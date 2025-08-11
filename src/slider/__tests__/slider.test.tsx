@@ -6,11 +6,11 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import '../../__a11y__/to-validate-a11y';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
-import Slider, { SliderProps } from '../../../lib/components/slider';
-import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
-import SliderWrapper from '../../../lib/components/test-utils/dom/slider';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties/index.js';
+import Slider, { SliderProps } from '../../../lib/components/slider/index.js';
+import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import SliderWrapper from '../../../lib/components/test-utils/dom/slider/index.js';
 
 import styles from '../../../lib/components/slider/styles.css.js';
 

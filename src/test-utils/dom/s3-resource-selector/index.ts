@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import createWrapper from '../';
-import ButtonWrapper from '../button';
-import InputWrapper from '../input';
-import ModalWrapper from '../modal';
-import SelectWrapper from '../select';
-import TableWrapper from '../table';
+import ButtonWrapper from '../button/index.js';
+import createWrapper from '../index.js';
+import InputWrapper from '../input/index.js';
+import ModalWrapper from '../modal/index.js';
+import SelectWrapper from '../select/index.js';
+import TableWrapper from '../table/index.js';
 
 import inContextStyles from '../../../s3-resource-selector/s3-in-context/styles.selectors.js';
 import modalStyles from '../../../s3-resource-selector/s3-modal/styles.selectors.js';

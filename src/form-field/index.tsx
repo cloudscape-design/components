@@ -5,8 +5,8 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { GeneratedAnalyticsMetadataFormFieldComponent } from './analytics-metadata/interfaces.js';
 import { FormFieldProps } from './interfaces.js';

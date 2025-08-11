@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
 
 const wrapper = createWrapper().findS3ResourceSelector();
 const uriInputSelector = wrapper.findInContext().findUriInput().findNativeInput().toSelector();

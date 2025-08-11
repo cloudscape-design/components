@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { getBreakpointValue, getMatchingBreakpoint, matchBreakpointMapping } from '../breakpoints';
+import { getBreakpointValue, getMatchingBreakpoint, matchBreakpointMapping } from '../breakpoints.js';
 
 describe('getMatchingBreakpoint', () => {
   it('returns the correct breakpoint value', () => {

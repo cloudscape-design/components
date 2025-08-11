@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { NonCancelableEventHandler } from '../internal/events';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
 import { BaseCheckboxProps } from './base-checkbox.js';
 
 export interface CheckboxProps extends BaseCheckboxProps {

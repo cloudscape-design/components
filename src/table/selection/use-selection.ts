@@ -4,8 +4,8 @@ import { useState } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { fireNonCancelableEvent } from '../../internal/events';
-import { joinStrings } from '../../internal/utils/strings';
+import { fireNonCancelableEvent } from '../../internal/events/index.js';
+import { joinStrings } from '../../internal/utils/strings/index.js';
 import { TableProps } from '../interfaces.js';
 import { getTrackableValue } from '../utils.js';
 import { SelectionProps } from './interfaces.js';

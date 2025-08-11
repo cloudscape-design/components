@@ -5,12 +5,12 @@ import React, { useEffect } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { FunnelMetrics } from '../internal/analytics';
 import { AnalyticsFunnel, AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel.js';
 import { useFunnel, useFunnelNameSelector, useFunnelStepRef } from '../internal/analytics/hooks/use-funnel.js';
-import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
+import { FunnelMetrics } from '../internal/analytics/index.js';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component/index.js';
 import { ButtonContext, ButtonContextProps } from '../internal/context/button-context.js';
-import useBaseComponent from '../internal/hooks/use-base-component';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { FormProps } from './interfaces.js';
 import InternalForm from './internal.js';

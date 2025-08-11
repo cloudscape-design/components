@@ -9,10 +9,10 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import FormField from '../../../lib/components/form-field';
-import Input from '../../../lib/components/input';
-import InternalInput from '../../../lib/components/input/internal';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import FormField from '../../../lib/components/form-field/index.js';
+import Input from '../../../lib/components/input/index.js';
+import InternalInput from '../../../lib/components/input/internal.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/input/styles.css.js';
 

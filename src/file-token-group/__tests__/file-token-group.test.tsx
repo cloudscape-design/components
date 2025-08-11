@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { fireEvent, render as testingLibraryRender, screen } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
-import FileTokenGroup, { FileTokenGroupProps } from '../../../lib/components/file-token-group';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import FileTokenGroup, { FileTokenGroupProps } from '../../../lib/components/file-token-group/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/file-token-group/styles.css.js';
 import testStyles from '../../../lib/components/file-token-group/test-classes/styles.css.js';

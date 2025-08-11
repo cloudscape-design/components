@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import Pagination from '../../../lib/components/pagination';
-import createWrapper, { PaginationWrapper } from '../../../lib/components/test-utils/dom';
+import Pagination from '../../../lib/components/pagination/index.js';
+import createWrapper, { PaginationWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 const getItemsContent = (wrapper: PaginationWrapper) =>
   wrapper

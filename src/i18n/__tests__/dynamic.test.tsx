@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { importMessages } from '../../../lib/components/i18n';
+import { importMessages } from '../../../lib/components/i18n/index.js';
 
 afterEach(() => {
   jest.restoreAllMocks();

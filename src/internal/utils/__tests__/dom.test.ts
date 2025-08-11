@@ -7,7 +7,7 @@ import {
   isNode,
   isSVGElement,
   parseCssVariable,
-} from '../../../../lib/components/internal/utils/dom';
+} from '../../../../lib/components/internal/utils/dom.js';
 
 describe('parseCssVariable', () => {
   [true, false].forEach(supports => {

@@ -3,8 +3,8 @@
 import {
   formatTicks,
   getVisibleTicks,
-} from '../../../../../lib/components/internal/components/cartesian-chart/label-utils';
-import { NumericChartScale } from '../../../../../lib/components/internal/components/cartesian-chart/scales';
+} from '../../../../../lib/components/internal/components/cartesian-chart/label-utils.js';
+import { NumericChartScale } from '../../../../../lib/components/internal/components/cartesian-chart/scales.js';
 
 describe('formatTicks', () => {
   it('uses formatter or falls back to toString', () => {

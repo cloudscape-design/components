@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import MockDate from 'mockdate';
 
-import { findDateToFocus, findMonthToDisplay, findMonthToFocus, findYearToDisplay } from '../utils';
+import { findDateToFocus, findMonthToDisplay, findMonthToFocus, findYearToDisplay } from '../utils.js';
 // Helper function to create Date objects from YYYY-MM-DD strings
 const createDate = (dateString: string) => new Date(dateString);
 describe('findDateToFocus', () => {

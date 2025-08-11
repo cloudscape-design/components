@@ -3,10 +3,10 @@
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { KeyCode } from '../../../lib/components/internal/keycode';
-import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import { KeyCode } from '../../../lib/components/internal/keycode.js';
+import Table, { TableProps } from '../../../lib/components/table/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 interface Instance {
   name: string;

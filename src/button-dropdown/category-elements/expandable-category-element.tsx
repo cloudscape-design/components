@@ -6,9 +6,9 @@ import clsx from 'clsx';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../icon/internal.js';
-import Dropdown from '../../internal/components/dropdown';
-import useHiddenDescription from '../../internal/hooks/use-hidden-description';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import Dropdown from '../../internal/components/dropdown/index.js';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description/index.js';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode/index.js';
 import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,

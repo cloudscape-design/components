@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { screen } from '@testing-library/react';
 
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { i18nStrings } from './common';
-import { renderCodeEditor } from './util';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { i18nStrings } from './common.js';
+import { renderCodeEditor } from './util.js';
 
 function submitPreferences() {
   screen.getByText(i18nStrings.preferencesModalConfirm!).click();

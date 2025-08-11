@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper, { LineChartWrapper } from '../../../lib/components/test-utils/selectors';
+import createWrapper, { LineChartWrapper } from '../../../lib/components/test-utils/selectors/index.js';
 
 class LineChartPageObject extends BasePageObject {
   constructor(browser: ConstructorParameters<typeof BasePageObject>[0]) {

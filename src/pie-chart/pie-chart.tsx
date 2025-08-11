@@ -9,12 +9,12 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalBox from '../box/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
-import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
-import ChartPopover from '../internal/components/chart-popover';
-import SeriesDetails from '../internal/components/chart-series-details';
-import SeriesMarker from '../internal/components/chart-series-marker';
+import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot/index.js';
+import ChartPopover from '../internal/components/chart-popover/index.js';
+import SeriesDetails from '../internal/components/chart-series-details/index.js';
+import SeriesMarker from '../internal/components/chart-series-marker/index.js';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure.js';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { KeyCode } from '../internal/keycode.js';
 import { SomeRequired } from '../internal/types.js';
 import { nodeBelongs } from '../internal/utils/node-belongs.js';

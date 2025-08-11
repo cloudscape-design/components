@@ -7,7 +7,7 @@ import { ButtonProps } from '../../button/interfaces.js';
 import { splitItems } from '../drawer/drawers-helpers.js';
 import OverflowMenu from '../drawer/overflow-menu.js';
 import { AppLayoutProps } from '../interfaces.js';
-import { ToggleButton, togglesConfig } from '../toggles';
+import { ToggleButton, togglesConfig } from '../toggles/index.js';
 import { TOOLS_DRAWER_ID } from '../utils/use-drawers.js';
 
 import sharedStyles from '../styles.css.js';

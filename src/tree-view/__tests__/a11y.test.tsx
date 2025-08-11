@@ -3,10 +3,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
-import { defaultProps, Item } from './common';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import TreeView, { TreeViewProps } from '../../../lib/components/tree-view/index.js';
+import { defaultProps, Item } from './common.js';
 
 import styles from '../../../lib/components/tree-view/styles.css.js';
 

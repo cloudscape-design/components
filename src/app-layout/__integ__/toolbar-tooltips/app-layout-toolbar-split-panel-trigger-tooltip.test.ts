@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import createWrapper from '../../../../lib/components/test-utils/selectors';
-import { AppLayoutDrawersPage, setupTest } from '../utils';
+import createWrapper from '../../../../lib/components/test-utils/selectors/index.js';
+import { AppLayoutDrawersPage, setupTest } from '../utils.js';
 
 const wrapper = createWrapper().findAppLayout();
 
@@ -9,7 +9,7 @@ describe('refresh-toolbar', () => {
   const theme = 'refresh-toolbar';
 
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
-    //matches drawerItems[0].id from '../../../../lib/dev-pages/pages/app-layout/utils/drawers';
+    //matches drawerItems[0].id from '../../../../lib/dev-pages/pages/app-layout/utils/drawers.js';
     const firstDrawerId = 'security';
     const firstDrawerTriggerSelector = wrapper.findDrawerTriggerById(firstDrawerId).toSelector();
     const splitPanelTriggerSelector = wrapper.findSplitPanelOpenButton().toSelector();

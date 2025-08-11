@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { runAllIntersectionObservers } from '../../../utils/__tests__/mock-intersection-observer';
+import { runAllIntersectionObservers } from '../../../utils/__tests__/mock-intersection-observer.js';
 
 jest.useFakeTimers();
 

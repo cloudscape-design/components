@@ -9,7 +9,7 @@ import {
   isGroupInteractive,
   isInteractive,
 } from '../../internal/components/option/utils/filter-options.js';
-import { useDebounceCallback } from '../../internal/hooks/use-debounce-callback';
+import { useDebounceCallback } from '../../internal/hooks/use-debounce-callback/index.js';
 
 const isRepeatedChar = (str: string) => str.split('').every(c => c === str[0]);
 

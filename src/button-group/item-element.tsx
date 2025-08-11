@@ -7,7 +7,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { ButtonProps } from '../button/interfaces.js';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
 import { FileInputProps } from '../file-input/interfaces.js';
-import { fireCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
 import { nodeBelongs } from '../internal/utils/node-belongs.js';
 import FileInputItem from './file-input-item.js';
 import IconButtonItem from './icon-button-item.js';

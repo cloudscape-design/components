@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import ButtonWrapper from '../button';
-import CheckboxWrapper from '../checkbox';
-import ModalWrapper from '../modal';
+import ButtonWrapper from '../button/index.js';
+import CheckboxWrapper from '../checkbox/index.js';
+import ModalWrapper from '../modal/index.js';
 import ContentDisplayPreferenceWrapper from './content-display-preference.js';
 import PageSizePreferenceWrapper from './page-size-preference.js';
 import StickyColumnsPreferenceWrapper from './sticky-columns-preference.js';

@@ -7,7 +7,7 @@ import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../../../i18n/context.js';
 import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces.js';
-import ResponsiveText from '../responsive-text';
+import ResponsiveText from '../responsive-text/index.js';
 import { TICK_LENGTH, TICK_LINE_HEIGHT, TICK_MARGIN } from './constants.js';
 import { formatTicks, getSVGTextSize, getVisibleTicks } from './label-utils.js';
 import { ChartScale, NumericChartScale } from './scales.js';

@@ -3,9 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import CodeEditor, { CodeEditorProps } from '../../../lib/components/code-editor';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { i18nStrings } from './common';
+import CodeEditor, { CodeEditorProps } from '../../../lib/components/code-editor/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { i18nStrings } from './common.js';
 
 export let annotationCallback: (event?: any) => void;
 

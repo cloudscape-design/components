@@ -5,12 +5,12 @@ import { render as reactRender, waitFor } from '@testing-library/react';
 
 import { disableMotion } from '@cloudscape-design/global-styles';
 
-import Button from '../../../lib/components/button';
-import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
+import Button from '../../../lib/components/button/index.js';
+import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar/index.js';
 import { LiveRegionController } from '../../../lib/components/live-region/controller.js';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
-import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { mockInnerText } from '../../internal/analytics/__tests__/mocks.js';
+import { createFlashbarWrapper, findList, testFlashDismissal } from './common.js';
 
 import styles from '../../../lib/components/flashbar/styles.css.js';
 

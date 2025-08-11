@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps, getBaseProps } from '../internal/base-component';
-import OptionComponent from '../internal/components/option';
+import { BaseComponentProps, getBaseProps } from '../internal/base-component/index.js';
+import OptionComponent from '../internal/components/option/index.js';
 import { getTestOptionIndexes } from '../internal/components/options-list/utils/test-indexes.js';
 import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option.js';
-import SelectableItem from '../internal/components/selectable-item';
+import SelectableItem from '../internal/components/selectable-item/index.js';
 import { AutosuggestItem } from './interfaces.js';
 
 import styles from './styles.css.js';

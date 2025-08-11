@@ -3,8 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { useVisualRefresh } from '../../hooks/use-visual-mode';
+import { BaseComponentProps, getBaseProps } from '../../base-component/index.js';
+import { useVisualRefresh } from '../../hooks/use-visual-mode/index.js';
 
 import styles from './styles.css.js';
 

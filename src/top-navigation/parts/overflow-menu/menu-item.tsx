@@ -8,7 +8,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { ButtonDropdownProps } from '../../../button-dropdown/interfaces.js';
 import { isLinkItem } from '../../../button-dropdown/utils/utils.js';
 import InternalIcon from '../../../icon/internal.js';
-import { fireCancelableEvent, isPlainLeftClick } from '../../../internal/events';
+import { fireCancelableEvent, isPlainLeftClick } from '../../../internal/events/index.js';
 import { spinWhenOpen } from '../../../internal/styles/motion/utils.js';
 import { LinkProps } from '../../../link/interfaces.js';
 import { TopNavigationProps } from '../../interfaces.js';

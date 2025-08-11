@@ -5,7 +5,7 @@ import React, { useRef, useState } from 'react';
 import { AutosuggestProps } from '../autosuggest/interfaces.js';
 import InternalAutosuggest from '../autosuggest/internal.js';
 import { InputProps } from '../input/interfaces.js';
-import { DropdownStatusProps } from '../internal/components/dropdown-status';
+import { DropdownStatusProps } from '../internal/components/dropdown-status/index.js';
 import { KeyCode } from '../internal/keycode.js';
 import { makeCancellable, PromiseCancelledSignal } from '../internal/utils/promises.js';
 

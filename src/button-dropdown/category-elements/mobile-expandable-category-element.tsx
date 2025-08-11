@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../icon/internal.js';
-import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description/index.js';
 import { GeneratedAnalyticsMetadataButtonDropdownExpand } from '../analytics-metadata/interfaces.js';
 import { CategoryProps } from '../interfaces.js';
 import ItemsList from '../items-list.js';

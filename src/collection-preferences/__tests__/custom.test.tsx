@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Checkbox from '../../../lib/components/checkbox';
-import { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom';
-import { renderCollectionPreferences } from './shared';
+import Checkbox from '../../../lib/components/checkbox/index.js';
+import { CollectionPreferencesProps } from '../../../lib/components/collection-preferences/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { renderCollectionPreferences } from './shared.js';
 
 const customPreferencesProps = (
   value: boolean

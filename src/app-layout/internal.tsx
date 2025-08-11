@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import ClassicAppLayout from './classic.js';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces.js';
 import { useAppLayoutFlagEnabled } from './utils/feature-flags.js';
-import RefreshedAppLayout from './visual-refresh';
-import ToolbarAppLayout from './visual-refresh-toolbar';
+import RefreshedAppLayout from './visual-refresh/index.js';
+import ToolbarAppLayout from './visual-refresh-toolbar/index.js';
 
 export const AppLayoutInternal = React.forwardRef<AppLayoutProps.Ref, AppLayoutPropsWithDefaults>((props, ref) => {
   const isRefresh = useVisualRefresh();

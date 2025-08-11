@@ -4,9 +4,9 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.selectors.js';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';

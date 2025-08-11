@@ -6,10 +6,10 @@ import { render } from '@testing-library/react';
 import {
   HotspotContext as HotspotContextType,
   hotspotContext as HotspotContext,
-} from '../../../lib/components/annotation-context/context';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import TutorialPanel, { TutorialPanelProps } from '../../../lib/components/tutorial-panel';
-import { getTutorials, i18nStrings } from './data';
+} from '../../../lib/components/annotation-context/context.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import TutorialPanel, { TutorialPanelProps } from '../../../lib/components/tutorial-panel/index.js';
+import { getTutorials, i18nStrings } from './data.js';
 
 function getContext(props?: Partial<HotspotContextType>): HotspotContextType {
   return {

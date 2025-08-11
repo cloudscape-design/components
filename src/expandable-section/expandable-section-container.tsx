@@ -9,8 +9,8 @@ import {
 
 import { InternalContainerAsSubstep } from '../container/internal.js';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel.js';
-import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { GeneratedAnalyticsMetadataExpandableSectionComponent } from './analytics-metadata/interfaces.js';
 import { InternalVariant } from './interfaces.js';
 

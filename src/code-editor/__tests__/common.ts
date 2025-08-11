@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { CodeEditorProps } from '../../../lib/components/code-editor';
+import { CodeEditorProps } from '../../../lib/components/code-editor/index.js';
 
 export const i18nStrings: CodeEditorProps.I18nStrings = {
   loadingState: 'Loading code editor',

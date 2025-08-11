@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { formatDateTimeWithOffset } from '../../../../../lib/components/internal/utils/date-time/format-date-time-with-offset';
+import { formatDateTimeWithOffset } from '../../../../../lib/components/internal/utils/date-time/format-date-time-with-offset.js';
 
 const browser = undefined;
 const berlin = 120;

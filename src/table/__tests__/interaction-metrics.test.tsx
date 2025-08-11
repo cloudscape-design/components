@@ -5,14 +5,14 @@ import { render as rtlRender } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import CollectionPreferences from '../../../lib/components/collection-preferences';
-import { PerformanceMetrics } from '../../../lib/components/internal/analytics';
-import Pagination from '../../../lib/components/pagination';
-import PropertyFilter from '../../../lib/components/property-filter';
-import Table from '../../../lib/components/table';
-import createWrapper, { InputWrapper } from '../../../lib/components/test-utils/dom';
-import TextFilter from '../../../lib/components/text-filter';
-import { mockPerformanceMetrics } from '../../internal/analytics/__tests__/mocks';
+import CollectionPreferences from '../../../lib/components/collection-preferences/index.js';
+import { PerformanceMetrics } from '../../../lib/components/internal/analytics/index.js';
+import Pagination from '../../../lib/components/pagination/index.js';
+import PropertyFilter from '../../../lib/components/property-filter/index.js';
+import Table from '../../../lib/components/table/index.js';
+import createWrapper, { InputWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import TextFilter from '../../../lib/components/text-filter/index.js';
+import { mockPerformanceMetrics } from '../../internal/analytics/__tests__/mocks.js';
 
 beforeEach(() => {
   jest.resetAllMocks();

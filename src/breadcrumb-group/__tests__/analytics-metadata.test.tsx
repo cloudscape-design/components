@@ -6,14 +6,14 @@ import { render } from '@testing-library/react';
 import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 import {
   GeneratedAnalyticsMetadataBreadcrumbGroupCollapse,
   GeneratedAnalyticsMetadataBreadcrumbGroupExpand,
-} from '../../../lib/components/breadcrumb-group/analytics-metadata/interfaces';
-import { getItemsDisplayProperties } from '../../../lib/components/breadcrumb-group/utils';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+} from '../../../lib/components/breadcrumb-group/analytics-metadata/interfaces.js';
+import BreadcrumbGroup from '../../../lib/components/breadcrumb-group/index.js';
+import { getItemsDisplayProperties } from '../../../lib/components/breadcrumb-group/utils.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import ownLabels from '../../../lib/components/breadcrumb-group/analytics-metadata/styles.css.js';
 import buttonDropdownLabels from '../../../lib/components/button-dropdown/analytics-metadata/styles.css.js';

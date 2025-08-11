@@ -4,8 +4,8 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent } from '../internal/events';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { FileDropzoneProps } from './interfaces.js';
 

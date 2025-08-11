@@ -3,9 +3,9 @@
 import React from 'react';
 import { act } from '@testing-library/react';
 
-import AppLayout from '../../../lib/components/app-layout';
-import { forceMobileModeSymbol } from '../../../lib/components/internal/hooks/use-mobile';
-import { describeEachAppLayout, renderComponent } from './utils';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import { forceMobileModeSymbol } from '../../../lib/components/internal/hooks/use-mobile/index.js';
+import { describeEachAppLayout, renderComponent } from './utils.js';
 
 describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
   test('content dom reference is preserved when changing state', () => {

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { SplitPanelContextProps } from '../../../lib/components/internal/context/split-panel-context';
+import { SplitPanelContextProps } from '../../../lib/components/internal/context/split-panel-context.js';
 
 export const defaultSplitPanelContextProps: SplitPanelContextProps = {
   topOffset: 0,

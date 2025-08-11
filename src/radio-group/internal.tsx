@@ -6,10 +6,10 @@ import clsx from 'clsx';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { useFormFieldContext } from '../internal/context/form-field-context.js';
 import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { GeneratedAnalyticsMetadataRadioGroupSelect } from './analytics-metadata/interfaces.js';
 import { RadioGroupProps } from './interfaces.js';
 import RadioButton from './radio-button.js';

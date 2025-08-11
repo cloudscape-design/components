@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { getLogicalBoundingClientRect, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { InternalPosition, PopoverProps } from './interfaces.js';
 import usePopoverPosition from './use-popover-position.js';
 import usePositionObserver from './use-position-observer.js';

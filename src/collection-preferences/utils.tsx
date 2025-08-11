@@ -7,7 +7,7 @@ import InternalCheckbox from '../checkbox/internal.js';
 import InternalColumnLayout from '../column-layout/internal.js';
 import InternalFormField from '../form-field/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
 import InternalRadioGroup from '../radio-group/internal.js';
 import InternalSpaceBetween from '../space-between/internal.js';
 import { getAnalyticsInnerContextAttribute } from './analytics-metadata/utils.js';

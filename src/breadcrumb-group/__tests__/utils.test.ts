@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { getItemsDisplayProperties } from '../utils';
+import { getItemsDisplayProperties } from '../utils.js';
 
 describe('getItemsDisplayProperties', () => {
   test('does not break with zero items', () => {

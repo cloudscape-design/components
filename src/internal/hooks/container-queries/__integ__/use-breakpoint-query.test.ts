@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { PageObject } from './page-object';
+import { PageObject } from './page-object.js';
 
 describe('use-breakpoint-query', () => {
   const setupTest = (testFn: (page: PageObject) => Promise<void>) => {

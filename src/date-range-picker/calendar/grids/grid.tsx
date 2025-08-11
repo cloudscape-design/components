@@ -5,14 +5,14 @@ import clsx from 'clsx';
 import { isLastDayOfMonth, isSameDay, isSameMonth, isSameYear, isThisMonth, isToday } from 'date-fns';
 
 import { useInternalI18n } from '../../../i18n/context.js';
-import ScreenreaderOnly from '../../../internal/components/screenreader-only';
-import { formatDate } from '../../../internal/utils/date-time';
+import ScreenreaderOnly from '../../../internal/components/screenreader-only/index.js';
 import {
   CalendarQuarter,
   CalendarWeek,
   MonthCalendar,
   YearCalendar,
 } from '../../../internal/utils/date-time/calendar.js';
+import { formatDate } from '../../../internal/utils/date-time/index.js';
 import { normalizeStartOfWeek } from '../../../internal/utils/locale/index.js';
 import { GridCell } from './grid-cell.js';
 import { GridProps } from './interfaces.js';

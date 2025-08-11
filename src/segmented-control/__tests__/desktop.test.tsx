@@ -5,9 +5,9 @@ import { fireEvent } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import SegmentedControl, { SegmentedControlProps } from '../../../lib/components/segmented-control';
-import { SegmentedControlWrapper } from '../../../lib/components/test-utils/dom';
-import { renderSegmentedControl } from './utils';
+import SegmentedControl, { SegmentedControlProps } from '../../../lib/components/segmented-control/index.js';
+import { SegmentedControlWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { renderSegmentedControl } from './utils.js';
 
 import styles from '../../../lib/components/segmented-control/styles.css.js';
 

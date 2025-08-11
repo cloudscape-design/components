@@ -3,16 +3,16 @@
 import React from 'react';
 
 import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces.js';
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../internal/base-component/index.js';
 import {
   BaseDropdownHostProps,
   OptionsFilteringType,
   OptionsLoadItemsDetail,
 } from '../internal/components/dropdown/interfaces.js';
-import { DropdownStatusProps } from '../internal/components/dropdown-status';
+import { DropdownStatusProps } from '../internal/components/dropdown-status/index.js';
 import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces.js';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context.js';
-import { NonCancelableEventHandler } from '../internal/events';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
 
 export interface AutosuggestProps
   extends BaseComponentProps,

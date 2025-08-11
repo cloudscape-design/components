@@ -3,12 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useControllable } from '../internal/hooks/use-controllable';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useControllable } from '../internal/hooks/use-controllable/index.js';
 import { TreeViewProps } from './interfaces.js';
-import InternalTreeItem from './tree-item';
+import InternalTreeItem from './tree-item/index.js';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';

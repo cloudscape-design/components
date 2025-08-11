@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { parseDate } from '../../../../../lib/components/internal/utils/date-time/parse-date';
+import { parseDate } from '../../../../../lib/components/internal/utils/date-time/parse-date.js';
 
 describe('parseDate', () => {
   test.each(['2020-01-0x', '2020-11', '2020'])(

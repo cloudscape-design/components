@@ -4,7 +4,7 @@
 import { addMonths, isAfter, isBefore, isSameDay, isSameMonth, isSameYear, subMonths } from 'date-fns';
 import { getCalendarMonth } from 'mnth';
 
-import { DayIndex } from '../locale';
+import { DayIndex } from '../locale/index.js';
 
 // Returns a 3-by-4 matrix with dates corresponding to the initial date-time of each month of the year for a given date.
 export function getCalendarYear(date: Date): Date[][] {

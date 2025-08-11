@@ -14,7 +14,7 @@ const targetI18nDir = path.resolve(targetPath, 'components/i18n');
 const targetMessagesDir = path.resolve(targetI18nDir, 'messages');
 
 const namespace = '@cloudscape-design/components';
-const messagesDeclarationFile = `import { I18nProviderProps } from "../provider";
+const messagesDeclarationFile = `import { I18nProviderProps } from "../provider.js";
 declare const messages: I18nProviderProps.Messages;
 export default messages;
 `;
@@ -52,8 +52,8 @@ module.exports = function generateI18nMessages() {
   // Generate a dynamic provider function for automatic bundler splitting and imports.
   const dynamicFile = [
     `import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { isDevelopment } from '../internal/is-development';
-import { getMatchableLocales } from './get-matchable-locales';
+import { isDevelopment } from '../internal/is-development.js';
+import { getMatchableLocales } from './get-matchable-locales.js';
 
 export function importMessages(locale) {
   for (const matchableLocale of getMatchableLocales(locale)) {

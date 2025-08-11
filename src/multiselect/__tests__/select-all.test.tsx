@@ -3,12 +3,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import Multiselect from '../../../lib/components/multiselect';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { KeyCode } from '../../internal/keycode';
-import { MultiselectProps } from '../interfaces';
-import { optionsWithGroups } from './common';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import Multiselect from '../../../lib/components/multiselect/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { KeyCode } from '../../internal/keycode.js';
+import { MultiselectProps } from '../interfaces.js';
+import { optionsWithGroups } from './common.js';
 
 const optionsWithoutGroups = optionsWithGroups.reduce(
   (previousValue: MultiselectProps.Option[], currentValue: MultiselectProps.Option) => {

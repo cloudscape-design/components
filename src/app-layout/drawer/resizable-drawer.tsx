@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import PanelResizeHandle from '../../internal/components/panel-resize-handle';
+import PanelResizeHandle from '../../internal/components/panel-resize-handle/index.js';
 import { getLimitedValue } from '../../split-panel/utils/size-utils.js';
 import { SizeControlProps } from '../utils/interfaces.js';
 import { TOOLS_DRAWER_ID } from '../utils/use-drawers.js';

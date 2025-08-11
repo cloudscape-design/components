@@ -8,7 +8,7 @@ import { CalendarProps } from '../../calendar/interfaces.js';
 import InternalDateInput from '../../date-input/internal.js';
 import InternalFormField from '../../form-field/internal.js';
 import { useInternalI18n } from '../../i18n/context.js';
-import { BaseComponentProps } from '../../internal/base-component';
+import { BaseComponentProps } from '../../internal/base-component/index.js';
 import { TimeInputProps } from '../../time-input/interfaces.js';
 import InternalTimeInput from '../../time-input/internal.js';
 import { RangeCalendarI18nStrings } from '../interfaces.js';

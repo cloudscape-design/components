@@ -3,7 +3,7 @@
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces.js';
-import { ChartSeriesDetailItem } from '../internal/components/chart-series-details';
+import { ChartSeriesDetailItem } from '../internal/components/chart-series-details/index.js';
 import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces.js';
 import { isDataSeries, isXThreshold, isYThreshold, matchesX } from './utils.js';
 

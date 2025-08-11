@@ -6,10 +6,10 @@ import clsx from 'clsx';
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../internal/base-component';
-import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
-import { ChartWrapper } from '../internal/components/chart-wrapper';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
+import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container/index.js';
+import { ChartWrapper } from '../internal/components/chart-wrapper/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { isDevelopment } from '../internal/is-development.js';
 import { SomeRequired } from '../internal/types.js';
 import { nodeBelongs } from '../internal/utils/node-belongs.js';

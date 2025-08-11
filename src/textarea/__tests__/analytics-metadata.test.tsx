@@ -9,9 +9,9 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import FormField from '../../../lib/components/form-field';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import Textarea, { TextareaProps } from '../../../lib/components/textarea';
+import FormField from '../../../lib/components/form-field/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import Textarea, { TextareaProps } from '../../../lib/components/textarea/index.js';
 
 const getComponentMetadata = (label: string, value: string) => {
   const metadata: GeneratedAnalyticsMetadataFragment = {

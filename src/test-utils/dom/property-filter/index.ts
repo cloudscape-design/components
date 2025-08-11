@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import AutosuggestWrapper from '../autosuggest';
-import ButtonWrapper from '../button';
-import ButtonDropdownWrapper from '../button-dropdown';
-import FormFieldWrapper from '../form-field';
-import SelectWrapper from '../select';
+import AutosuggestWrapper from '../autosuggest/index.js';
+import ButtonWrapper from '../button/index.js';
+import ButtonDropdownWrapper from '../button-dropdown/index.js';
+import FormFieldWrapper from '../form-field/index.js';
+import SelectWrapper from '../select/index.js';
 
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
 import popoverStyles from '../../../popover/styles.selectors.js';

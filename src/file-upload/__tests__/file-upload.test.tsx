@@ -6,10 +6,10 @@ import { fireEvent, render as testingLibraryRender, screen } from '@testing-libr
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import '../../__a11y__/to-validate-a11y';
-import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import FileDropzoneWrapper from '../../../lib/components/test-utils/dom/file-dropzone';
+import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import FileDropzoneWrapper from '../../../lib/components/test-utils/dom/file-dropzone/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

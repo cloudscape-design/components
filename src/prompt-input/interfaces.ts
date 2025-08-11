@@ -9,9 +9,9 @@ import {
   InputKeyEvents,
   InputSpellcheck,
 } from '../input/interfaces.js';
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../internal/base-component/index.js';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context.js';
-import { BaseKeyDetail, NonCancelableEventHandler } from '../internal/events';
+import { BaseKeyDetail, NonCancelableEventHandler } from '../internal/events/index.js';
 
 export interface PromptInputProps
   extends BaseInputProps,

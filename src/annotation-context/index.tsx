@@ -4,8 +4,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { HotspotProps } from '../hotspot/interfaces.js';
-import { fireNonCancelableEvent } from '../internal/events';
-import useBaseComponent from '../internal/hooks/use-base-component';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { ClosedAnnotation } from './annotation/closed-annotation.js';
 import { OpenAnnotation } from './annotation/open-annotation.js';

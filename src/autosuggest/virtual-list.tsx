@@ -4,8 +4,8 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'reac
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-import OptionsList from '../internal/components/options-list';
-import { useVirtual } from '../internal/hooks/use-virtual';
+import OptionsList from '../internal/components/options-list/index.js';
+import { useVirtual } from '../internal/hooks/use-virtual/index.js';
 import AutosuggestOption from './autosuggest-option.js';
 import { getOptionProps, ListProps } from './plain-list.js';
 

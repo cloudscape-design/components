@@ -4,9 +4,9 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import Select from '../../../lib/components/select';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { SelectProps } from '../interfaces';
+import Select from '../../../lib/components/select/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { SelectProps } from '../interfaces.js';
 
 const options: SelectProps.Options = [
   { label: 'First option', value: '1' },

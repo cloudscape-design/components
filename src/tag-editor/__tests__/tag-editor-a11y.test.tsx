@@ -4,8 +4,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
-import TagEditor, { TagEditorProps } from '../../../lib/components/tag-editor';
-import { i18nStrings } from './common';
+import TagEditor, { TagEditorProps } from '../../../lib/components/tag-editor/index.js';
+import { i18nStrings } from './common.js';
 
 const defaultProps: TagEditorProps = {
   i18nStrings,

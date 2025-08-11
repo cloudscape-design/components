@@ -3,9 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import DropdownFooter from '../../../../../lib/components/internal/components/dropdown-footer';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
-import DropdownWrapper from '../../../../../lib/components/test-utils/dom/internal/dropdown';
+import DropdownFooter from '../../../../../lib/components/internal/components/dropdown-footer/index.js';
+import createWrapper from '../../../../../lib/components/test-utils/dom/index.js';
+import DropdownWrapper from '../../../../../lib/components/test-utils/dom/internal/dropdown.js';
 
 import dropdownFooterStyles from '../../../../../lib/components/internal/components/dropdown-footer/styles.css.js';
 

@@ -7,8 +7,8 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
-import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
 import tokenGroupStyles from '../../../lib/components/token-group/styles.css.js';

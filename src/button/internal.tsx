@@ -11,19 +11,19 @@ import {
 
 import { useInternalI18n } from '../i18n/context.js';
 import Icon from '../icon/internal.js';
-import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
+import { FunnelMetrics } from '../internal/analytics/index.js';
 import Tooltip from '../internal/components/tooltip/index.js';
 import { useButtonContext } from '../internal/context/button-context.js';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context.js';
 import { SYSTEM } from '../internal/environment.js';
-import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
-import customCssProps from '../internal/generated/custom-css-properties';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import useHiddenDescription from '../internal/hooks/use-hidden-description';
-import { useModalContextLoadingButtonComponent } from '../internal/hooks/use-modal-component-analytics';
-import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
+import { fireCancelableEvent, isPlainLeftClick } from '../internal/events/index.js';
+import customCssProps from '../internal/generated/custom-css-properties/index.js';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import useHiddenDescription from '../internal/hooks/use-hidden-description/index.js';
+import { useModalContextLoadingButtonComponent } from '../internal/hooks/use-modal-component-analytics/index.js';
+import { usePerformanceMarks } from '../internal/hooks/use-performance-marks/index.js';
 import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
 import WithNativeAttributes from '../internal/utils/with-native-attributes.js';
 import InternalLiveRegion from '../live-region/internal.js';

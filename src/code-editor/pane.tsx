@@ -5,9 +5,9 @@ import { Ace } from 'ace-builds';
 import clsx from 'clsx';
 
 import { InternalButton } from '../button/internal.js';
-import FocusLock from '../internal/components/focus-lock';
+import FocusLock from '../internal/components/focus-lock/index.js';
 import { KeyCode } from '../internal/keycode.js';
-import { ResizableBox } from './resizable-box';
+import { ResizableBox } from './resizable-box/index.js';
 import { getStatusButtonId, PaneStatus } from './util.js';
 
 import styles from './styles.css.js';

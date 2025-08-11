@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import List, { ListProps } from '../../../lib/components/list';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import List, { ListProps } from '../../../lib/components/list/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 interface Item {
   id: string;

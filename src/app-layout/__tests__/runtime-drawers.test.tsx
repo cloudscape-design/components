@@ -6,13 +6,13 @@ import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import { Button } from '../../../lib/components';
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
-import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
-import SplitPanel from '../../../lib/components/split-panel';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout/index.js';
+import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers.js';
+import { Button } from '../../../lib/components/index.js';
+import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api.js';
+import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers.js';
+import SplitPanel from '../../../lib/components/split-panel/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
@@ -21,7 +21,7 @@ import {
   getGlobalDrawerWidth,
   manyDrawers,
   testDrawer,
-} from './utils';
+} from './utils.js';
 
 import skeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.selectors.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';

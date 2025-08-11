@@ -5,11 +5,11 @@ import { useEffect, useRef } from 'react';
 
 import { useRandomId } from '@cloudscape-design/component-toolkit/internal';
 
-import { ComponentMetrics, PerformanceMetrics } from '../../analytics';
 import { useFunnel } from '../../analytics/hooks/use-funnel.js';
+import { ComponentMetrics, PerformanceMetrics } from '../../analytics/index.js';
 import { JSONObject } from '../../analytics/interfaces.js';
-import { useDebounceCallback } from '../use-debounce-callback';
-import { useDOMAttribute } from '../use-dom-attribute';
+import { useDebounceCallback } from '../use-debounce-callback/index.js';
+import { useDOMAttribute } from '../use-dom-attribute/index.js';
 import { useEffectOnUpdate } from '../use-effect-on-update.js';
 
 /*

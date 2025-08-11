@@ -3,11 +3,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import FormField, { FormFieldProps } from '../../../lib/components/form-field';
-import { FormFieldValidationControlProps } from '../../../lib/components/internal/context/form-field-context';
-import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
-import { getRequiredPropsForComponent } from '../required-props-for-components';
-import { requireComponent } from '../utils';
+import FormField, { FormFieldProps } from '../../../lib/components/form-field/index.js';
+import { FormFieldValidationControlProps } from '../../../lib/components/internal/context/form-field-context.js';
+import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { getRequiredPropsForComponent } from '../required-props-for-components.js';
+import { requireComponent } from '../utils.js';
 
 const formFieldControlComponents = [
   {

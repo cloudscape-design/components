@@ -6,7 +6,7 @@ import React from 'react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { GeneratedAnalyticsMetadataPropertyFilterComponent } from './analytics-metadata/interfaces.js';
 import { PropertyFilterProps, Ref } from './interfaces.js';

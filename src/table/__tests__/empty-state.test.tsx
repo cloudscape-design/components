@@ -6,9 +6,9 @@ import { render } from '@testing-library/react';
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import Table, { TableProps } from '../../../lib/components/table';
-import { useStickyCellStyles, useStickyColumns } from '../../../lib/components/table/sticky-columns';
-import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
+import Table, { TableProps } from '../../../lib/components/table/index.js';
+import { useStickyCellStyles, useStickyColumns } from '../../../lib/components/table/sticky-columns/index.js';
+import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/table/styles.css.js';
 

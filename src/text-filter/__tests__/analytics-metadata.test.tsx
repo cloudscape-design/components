@@ -9,10 +9,10 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import createWrapper from '../../../lib/components/test-utils/dom';
-import TextFilter, { TextFilterProps } from '../../../lib/components/text-filter';
-import { GeneratedAnalyticsMetadataTextFilterClearInput } from '../../../lib/components/text-filter/analytics-metadata/interfaces';
-import InternalTextFilter from '../../../lib/components/text-filter/internal';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { GeneratedAnalyticsMetadataTextFilterClearInput } from '../../../lib/components/text-filter/analytics-metadata/interfaces.js';
+import TextFilter, { TextFilterProps } from '../../../lib/components/text-filter/index.js';
+import InternalTextFilter from '../../../lib/components/text-filter/internal.js';
 
 const label = 'text filter label';
 

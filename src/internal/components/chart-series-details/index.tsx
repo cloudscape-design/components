@@ -6,8 +6,8 @@ import clsx from 'clsx';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalExpandableSection from '../../../expandable-section/internal.js';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
-import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
+import { BaseComponentProps, getBaseProps } from '../../base-component/index.js';
+import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker/index.js';
 import getSeriesDetailsText, { screenReaderTextClass } from './series-details-text.js';
 
 import styles from './styles.css.js';

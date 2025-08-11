@@ -4,8 +4,8 @@ import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import InternalIcon from '../../icon/internal.js';
-import Tooltip from '../../internal/components/tooltip';
-import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
+import Tooltip from '../../internal/components/tooltip/index.js';
+import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events/index.js';
 import { BreadcrumbGroupProps, BreadcrumbItemProps } from '../interfaces.js';
 import { getEventDetail } from '../utils.js';
 import { FunnelBreadcrumbItem } from './funnel.js';

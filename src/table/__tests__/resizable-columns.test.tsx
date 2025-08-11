@@ -8,9 +8,9 @@ import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
-import { fakeBoundingClientRect, fireMousedown, fireMouseMove, fireMouseup } from './utils/resize-actions';
+import Table, { TableProps } from '../../../lib/components/table/index.js';
+import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { fakeBoundingClientRect, fireMousedown, fireMouseMove, fireMouseup } from './utils/resize-actions.js';
 
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
 

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import ButtonWrapper from '../button';
-import { FileTokenWrapper } from '../file-token-group';
+import ButtonWrapper from '../button/index.js';
+import { FileTokenWrapper } from '../file-token-group/index.js';
 
 import fileUploadInputSelectors from '../../../file-input/styles.selectors.js';
 import tokenGroupSelectors from '../../../file-token-group/styles.selectors.js';

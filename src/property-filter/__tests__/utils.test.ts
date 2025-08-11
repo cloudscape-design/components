@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ComparisonOperator, InternalToken } from '../interfaces';
-import { matchFilteringProperty, matchOperator, matchOperatorPrefix, matchTokenValue } from '../utils';
-import { toInternalProperties } from './common';
+import { ComparisonOperator, InternalToken } from '../interfaces.js';
+import { matchFilteringProperty, matchOperator, matchOperatorPrefix, matchTokenValue } from '../utils.js';
+import { toInternalProperties } from './common.js';
 
 const filteringProperties = toInternalProperties([
   {

@@ -6,8 +6,8 @@ import { useInternalI18n } from '../../../i18n/context.js';
 import InternalLink from '../../../link/internal.js';
 import InternalLiveRegion from '../../../live-region/internal.js';
 import InternalStatusIndicator from '../../../status-indicator/internal.js';
-import { BaseComponentProps } from '../../base-component';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
+import { BaseComponentProps } from '../../base-component/index.js';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events/index.js';
 
 import styles from './styles.css.js';
 

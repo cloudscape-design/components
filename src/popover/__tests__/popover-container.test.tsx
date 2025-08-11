@@ -4,8 +4,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
-import PopoverContainer from '../../../lib/components/popover/container';
-import * as usePopoverPosition from '../../../lib/components/popover/use-popover-position';
+import PopoverContainer from '../../../lib/components/popover/container.js';
+import * as usePopoverPosition from '../../../lib/components/popover/use-popover-position.js';
 
 const usePopoverPositionSpy = jest.spyOn(usePopoverPosition, 'default');
 

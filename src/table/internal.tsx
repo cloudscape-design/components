@@ -12,8 +12,8 @@ import {
 
 import InternalContainer, { InternalContainerProps } from '../container/internal.js';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
-import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-component';
-import { getVisualContextClassname } from '../internal/components/visual-context';
+import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-component/index.js';
+import { getVisualContextClassname } from '../internal/components/visual-context/index.js';
 import { CollectionLabelContext } from '../internal/context/collection-label-context.js';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
 import {
@@ -23,20 +23,20 @@ import {
   PreferencesRef,
   TableComponentsContextProvider,
 } from '../internal/context/table-component-context.js';
-import { fireNonCancelableEvent } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMobile } from '../internal/hooks/use-mobile';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target.js';
-import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
-import { usePrevious } from '../internal/hooks/use-previous';
-import { useScrollSync } from '../internal/hooks/use-scroll-sync';
-import { useTableInteractionMetrics } from '../internal/hooks/use-table-interaction-metrics';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { usePerformanceMarks } from '../internal/hooks/use-performance-marks/index.js';
+import { usePrevious } from '../internal/hooks/use-previous/index.js';
+import { useScrollSync } from '../internal/hooks/use-scroll-sync/index.js';
+import { useTableInteractionMetrics } from '../internal/hooks/use-table-interaction-metrics/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { isDevelopment } from '../internal/is-development.js';
 import { SomeRequired } from '../internal/types.js';
 import InternalLiveRegion from '../live-region/internal.js';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces.js';
-import { TableBodyCell } from './body-cell';
+import { TableBodyCell } from './body-cell/index.js';
 import { checkColumnWidths } from './column-widths-utils.js';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils.js';
 import { TableForwardRefType, TableProps, TableRow } from './interfaces.js';
@@ -44,19 +44,19 @@ import { NoDataCell } from './no-data-cell.js';
 import { getLoaderContent } from './progressive-loading/items-loader.js';
 import { TableLoaderCell } from './progressive-loading/loader-cell.js';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils.js';
-import { ResizeTracker } from './resizer';
-import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
+import { ResizeTracker } from './resizer/index.js';
+import { focusMarkers, useSelection, useSelectionFocusMove } from './selection/index.js';
 import { TableBodySelectionCell } from './selection/selection-cell.js';
-import { useStickyColumns } from './sticky-columns';
+import { useStickyColumns } from './sticky-columns/index.js';
 import StickyHeader, { StickyHeaderRef } from './sticky-header.js';
-import { StickyScrollbar } from './sticky-scrollbar';
+import { StickyScrollbar } from './sticky-scrollbar/index.js';
 import {
   getTableRoleProps,
   getTableRowRoleProps,
   getTableWrapperRoleProps,
   GridNavigationProvider,
   TableRole,
-} from './table-role';
+} from './table-role/index.js';
 import Thead, { TheadProps } from './thead.js';
 import ToolsHeader from './tools-header.js';
 import { useCellEditing } from './use-cell-editing.js';

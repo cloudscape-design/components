@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import AutosuggestPage from './autosuggest-page';
+import AutosuggestPage from './autosuggest-page.js';
 interface ExtendedWindow extends Window {
   __eventsLog?: string[];
   __clearEvents?: () => void;

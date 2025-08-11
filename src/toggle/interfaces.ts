@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { BaseCheckboxProps } from '../checkbox/base-checkbox.js';
-import { NonCancelableEventHandler } from '../internal/events';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
 
 export interface ToggleProps extends BaseCheckboxProps {
   /**

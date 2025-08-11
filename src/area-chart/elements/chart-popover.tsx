@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import ChartPopover from '../../internal/components/chart-popover';
-import ChartSeriesDetails from '../../internal/components/chart-series-details';
+import ChartPopover from '../../internal/components/chart-popover/index.js';
+import ChartSeriesDetails from '../../internal/components/chart-series-details/index.js';
 import { AreaChartProps } from '../interfaces.js';
-import { ChartModel } from '../model';
+import { ChartModel } from '../model/index.js';
 import { HighlightDetails } from './use-highlight-details.js';
 
 import styles from '../styles.css.js';

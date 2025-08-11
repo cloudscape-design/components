@@ -3,8 +3,8 @@
 import React, { CSSProperties } from 'react';
 
 import { AnalyticsMetadata, ErrorContext } from '../internal/analytics/interfaces.js';
-import { BaseComponentProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { BaseComponentProps } from '../internal/base-component/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 
 export interface FormFieldProps extends BaseComponentProps {
   /**

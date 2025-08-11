@@ -4,8 +4,8 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
-import Select, { SelectProps } from '../../../lib/components/select';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Select, { SelectProps } from '../../../lib/components/select/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 const VALUE_WITH_SPECIAL_CHARS = 'Option 4, test"2';
 const defaultOptions: SelectProps.Options = [

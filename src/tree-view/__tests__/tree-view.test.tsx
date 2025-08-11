@@ -5,12 +5,12 @@ import { render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import ButtonDropdown from '../../../lib/components/button-dropdown';
-import Icon from '../../../lib/components/icon';
-import Link from '../../../lib/components/link';
-import Popover from '../../../lib/components/popover';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
+import ButtonDropdown from '../../../lib/components/button-dropdown/index.js';
+import Icon from '../../../lib/components/icon/index.js';
+import Link from '../../../lib/components/link/index.js';
+import Popover from '../../../lib/components/popover/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import TreeView, { TreeViewProps } from '../../../lib/components/tree-view/index.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

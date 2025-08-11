@@ -7,7 +7,7 @@ import { useStableCallback, useUniqueId } from '@cloudscape-design/component-too
 import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '@cloudscape-design/component-toolkit/internal';
 
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode/index.js';
 import { KeyCode } from '../../internal/keycode.js';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key.js';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths.js';

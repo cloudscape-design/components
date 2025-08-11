@@ -4,7 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import InternalBox from '../box/internal.js';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import InternalLink from '../link/internal.js';
 import { getNavigationActionDetail } from './analytics-metadata/utils.js';
 import { WizardProps } from './interfaces.js';

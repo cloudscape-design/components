@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { FunnelStepContext } from '../../../../../lib/components/internal/analytics/context/analytics-context';
-import { useFunnelStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
+import { FunnelStepContext } from '../../../../../lib/components/internal/analytics/context/analytics-context.js';
+import { useFunnelStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel.js';
 
 describe('useFunnelStep hook', () => {
   test('returns the correct initial context value', () => {

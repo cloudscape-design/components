@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import formatHighlighted from '../../../lib/components/mixed-line-bar-chart/format-highlighted';
-import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/interfaces';
-import { barSeries, barSeries2, lineSeries1, lineSeries3, thresholdSeries, xThresholdSeries1 } from './common';
+import formatHighlighted from '../../../lib/components/mixed-line-bar-chart/format-highlighted.js';
+import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/interfaces.js';
+import { barSeries, barSeries2, lineSeries1, lineSeries3, thresholdSeries, xThresholdSeries1 } from './common.js';
 
 function createInternalSeries<T>(externalSeries: readonly MixedLineBarChartProps.ChartSeries<T>[]) {
   return externalSeries.map((series, index) => ({ series, index, color: '' }));

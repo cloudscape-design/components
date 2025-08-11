@@ -4,9 +4,9 @@ import React from 'react';
 import clsx from 'clsx';
 
 import InternalFormField from '../form-field/internal.js';
-import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import InternalSelect, { InternalSelectProps } from '../select/internal.js';
 import { SegmentedControlProps } from './interfaces.js';
 import InternalSegmentedControlComponent from './internal-segmented-control.js';

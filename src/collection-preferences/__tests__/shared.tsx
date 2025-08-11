@@ -3,10 +3,12 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import CollectionPreferences, { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom';
+import CollectionPreferences, {
+  CollectionPreferencesProps,
+} from '../../../lib/components/collection-preferences/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 const i18nMessages = {
   'collection-preferences': {

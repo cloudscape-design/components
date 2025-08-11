@@ -10,16 +10,16 @@ import { CartesianChartContainer } from '../internal/components/cartesian-chart/
 import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline.js';
 import InlineStartLabels from '../internal/components/cartesian-chart/inline-start-labels.js';
 import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure.js';
-import ChartPlot from '../internal/components/chart-plot';
+import ChartPlot from '../internal/components/chart-plot/index.js';
 import useContainerWidth from '../internal/utils/use-container-width.js';
-import { useSelector } from './async-store';
+import { useSelector } from './async-store/index.js';
 import AreaChartPopover from './elements/chart-popover.js';
 import AreaDataSeries from './elements/data-series.js';
 import AreaHighlightedPoint from './elements/highlighted-point.js';
 import useHighlightDetails from './elements/use-highlight-details.js';
 import AreaVerticalMarker from './elements/vertical-marker.js';
 import { AreaChartProps } from './interfaces.js';
-import { ChartModel } from './model';
+import { ChartModel } from './model/index.js';
 
 const DEFAULT_CHART_WIDTH = 500;
 const INLINE_START_LABELS_MARGIN = 16;

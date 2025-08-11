@@ -10,13 +10,13 @@ import { ButtonProps } from '../button/interfaces.js';
 import { InternalButton } from '../button/internal.js';
 import { CalendarProps } from '../calendar/interfaces.js';
 import { useInternalI18n } from '../i18n/context.js';
-import FocusLock from '../internal/components/focus-lock';
+import FocusLock from '../internal/components/focus-lock/index.js';
 import InternalLiveRegion, { InternalLiveRegionRef } from '../live-region/internal.js';
 import InternalSpaceBetween from '../space-between/internal.js';
-import Calendar from './calendar';
+import Calendar from './calendar/index.js';
 import { DateRangePickerProps } from './interfaces.js';
 import ModeSwitcher from './mode-switcher.js';
-import RelativeRangePicker from './relative-range';
+import RelativeRangePicker from './relative-range/index.js';
 import { normalizeTimeOffset } from './time-offset.js';
 import { formatValue, getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils.js';
 

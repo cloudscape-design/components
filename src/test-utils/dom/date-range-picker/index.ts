@@ -3,11 +3,11 @@
 import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 import { act } from '@cloudscape-design/test-utils-core/utils-dom';
 
-import ButtonWrapper from '../button';
-import InputWrapper from '../input';
-import RadioGroupWrapper from '../radio-group';
-import SegmentedControlWrapper from '../segmented-control';
-import SelectWrapper from '../select';
+import ButtonWrapper from '../button/index.js';
+import InputWrapper from '../input/index.js';
+import RadioGroupWrapper from '../radio-group/index.js';
+import SegmentedControlWrapper from '../segmented-control/index.js';
+import SelectWrapper from '../select/index.js';
 
 import testutilStyles from '../../../date-range-picker/test-classes/styles.selectors.js';
 

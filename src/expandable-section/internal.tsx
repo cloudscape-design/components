@@ -6,11 +6,11 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { screenReaderTextClass } from '../internal/components/chart-series-details/series-details-text.js';
-import { fireNonCancelableEvent } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useControllable } from '../internal/hooks/use-controllable';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useControllable } from '../internal/hooks/use-controllable/index.js';
 import { KeyCode } from '../internal/keycode.js';
 import { ExpandableSectionContainer } from './expandable-section-container.js';
 import { ExpandableSectionHeader } from './expandable-section-header.js';

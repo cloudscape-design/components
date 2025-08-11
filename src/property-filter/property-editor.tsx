@@ -8,9 +8,9 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal.js';
 import InternalCheckbox from '../checkbox/internal.js';
-import { DropdownStatusProps } from '../internal/components/dropdown-status';
+import { DropdownStatusProps } from '../internal/components/dropdown-status/index.js';
 import { FormFieldContext } from '../internal/context/form-field-context.js';
-import { NonCancelableEventHandler } from '../internal/events';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
 import EmbeddedMultiselect from '../multiselect/embedded.js';
 import { filterOptions } from './filter-options.js';
 import { I18nStringsInternal } from './i18n-utils.js';

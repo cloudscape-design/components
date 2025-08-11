@@ -4,14 +4,14 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { fireNonCancelableEvent } from '../../internal/events';
-import { useControllable } from '../../internal/hooks/use-controllable';
+import { fireNonCancelableEvent } from '../../internal/events/index.js';
+import { useControllable } from '../../internal/hooks/use-controllable/index.js';
 import { awsuiPluginsInternal } from '../../internal/plugins/api.js';
 import { DrawersToggledListener } from '../../internal/plugins/controllers/drawers.js';
 import { sortByPriority } from '../../internal/plugins/helpers/utils.js';
 import { AppLayoutProps } from '../interfaces.js';
-import { convertRuntimeDrawers, DrawersLayout } from '../runtime-drawer';
-import { togglesConfig } from '../toggles';
+import { convertRuntimeDrawers, DrawersLayout } from '../runtime-drawer/index.js';
+import { togglesConfig } from '../toggles/index.js';
 
 export const TOOLS_DRAWER_ID = 'awsui-internal-tools';
 

@@ -4,12 +4,12 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import DragHandleWrapper from '../../../../../lib/components/internal/components/drag-handle-wrapper';
+import DragHandleWrapper from '../../../../../lib/components/internal/components/drag-handle-wrapper/index.js';
 import {
   Direction,
   DragHandleWrapperProps,
-} from '../../../../../lib/components/internal/components/drag-handle-wrapper/interfaces';
-import { PointerEventMock } from '../../../../../lib/components/internal/utils/pointer-events-mock';
+} from '../../../../../lib/components/internal/components/drag-handle-wrapper/interfaces.js';
+import { PointerEventMock } from '../../../../../lib/components/internal/utils/pointer-events-mock.js';
 
 import styles from '../../../../../lib/components/internal/components/drag-handle-wrapper/styles.css.js';
 import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.css.js';

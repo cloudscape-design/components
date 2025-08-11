@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import AppLayout from '../../../lib/components/app-layout';
-import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
-import { describeEachAppLayout, renderComponent, testDrawer, testDrawerWithoutLabels } from './utils';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { describeEachAppLayout, renderComponent, testDrawer, testDrawerWithoutLabels } from './utils.js';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),

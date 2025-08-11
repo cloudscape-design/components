@@ -5,7 +5,7 @@ import { render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import WithNativeAttributes from '../with-native-attributes';
+import WithNativeAttributes from '../with-native-attributes.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   warnOnce: jest.fn(),

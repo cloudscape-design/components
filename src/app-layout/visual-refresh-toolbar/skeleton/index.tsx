@@ -6,9 +6,9 @@ import clsx from 'clsx';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { GeneratedAnalyticsMetadataAppLayoutToolbarComponent } from '../../../app-layout-toolbar/analytics-metadata/interfaces.js';
-import VisualContext from '../../../internal/components/visual-context';
-import customCssProps from '../../../internal/generated/custom-css-properties';
-import { useMobile } from '../../../internal/hooks/use-mobile';
+import VisualContext from '../../../internal/components/visual-context/index.js';
+import customCssProps from '../../../internal/generated/custom-css-properties/index.js';
+import { useMobile } from '../../../internal/hooks/use-mobile/index.js';
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils.js';
 import { AppLayoutPropsWithDefaults } from '../../interfaces.js';
 

@@ -8,8 +8,8 @@ import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
 import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import '../../__a11y__/to-validate-a11y';
-import { MultiselectProps } from '../../../lib/components/multiselect';
-import EmbeddedMultiselect, { EmbeddedMultiselectProps } from '../../../lib/components/multiselect/embedded';
+import EmbeddedMultiselect, { EmbeddedMultiselectProps } from '../../../lib/components/multiselect/embedded.js';
+import { MultiselectProps } from '../../../lib/components/multiselect/index.js';
 
 import dropdownFooterStyles from '../../../lib/components/internal/components/dropdown-footer/styles.css.js';
 import selectableItemsStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';

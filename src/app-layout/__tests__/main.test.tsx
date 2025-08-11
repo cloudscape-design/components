@@ -4,9 +4,9 @@ import * as React from 'react';
 import { waitFor } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
-import AppLayout from '../../../lib/components/app-layout';
-import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
-import { describeEachAppLayout, renderComponent, testDrawer } from './utils';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { describeEachAppLayout, renderComponent, testDrawer } from './utils.js';
 
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import sharedStyles from '../../../lib/components/app-layout/styles.css.js';

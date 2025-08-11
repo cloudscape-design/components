@@ -6,13 +6,13 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context.js';
-import { DropdownStatusProps, useDropdownStatus } from '../internal/components/dropdown-status';
+import { DropdownStatusProps, useDropdownStatus } from '../internal/components/dropdown-status/index.js';
 import { DropdownOption, OptionDefinition, OptionGroup } from '../internal/components/option/interfaces.js';
 import { isGroup } from '../internal/components/option/utils/filter-options.js';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
-import { fireNonCancelableEvent } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
 import { SomeRequired } from '../internal/types.js';
-import { joinStrings } from '../internal/utils/strings';
+import { joinStrings } from '../internal/utils/strings/index.js';
 import { SelectListProps } from '../select/parts/plain-list.js';
 import { checkOptionValueField } from '../select/utils/check-option-value-field.js';
 import { findOptionIndex } from '../select/utils/connect-options.js';

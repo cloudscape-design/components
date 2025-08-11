@@ -3,11 +3,11 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { UtilityMenuItem } from '../../../lib/components/top-navigation/parts/overflow-menu/menu-item';
-import SubmenuView from '../../../lib/components/top-navigation/parts/overflow-menu/views/submenu';
-import UtilitiesView from '../../../lib/components/top-navigation/parts/overflow-menu/views/utilities';
-import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { UtilityMenuItem } from '../../../lib/components/top-navigation/parts/overflow-menu/menu-item.js';
+import SubmenuView from '../../../lib/components/top-navigation/parts/overflow-menu/views/submenu.js';
+import UtilitiesView from '../../../lib/components/top-navigation/parts/overflow-menu/views/utilities.js';
+import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper.js';
 
 describe('Submenu', () => {
   test('onFollow event is fired when an href is set', () => {

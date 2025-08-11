@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseCartesianChartWrapper } from '../mixed-line-bar-chart';
+import { BaseCartesianChartWrapper } from '../mixed-line-bar-chart/index.js';
 
 import styles from '../../../line-chart/styles.selectors.js';
 

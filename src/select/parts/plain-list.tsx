@@ -6,7 +6,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { DropdownOption } from '../../internal/components/option/interfaces.js';
-import OptionsList from '../../internal/components/options-list';
+import OptionsList from '../../internal/components/options-list/index.js';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
 import { renderOptions } from '../utils/render-options.js';
 import scrollToIndex from '../utils/scroll-to-index.js';

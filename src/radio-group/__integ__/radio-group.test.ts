@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper, { RadioGroupWrapper } from '../../../lib/components/test-utils/selectors';
+import createWrapper, { RadioGroupWrapper } from '../../../lib/components/test-utils/selectors/index.js';
 
 const radioGroupWrapper = createWrapper().findRadioGroup('#simple');
 

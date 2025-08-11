@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { padLeftZeros } from '../strings';
+import { padLeftZeros } from '../strings/index.js';
 
 export function formatTimeOffsetISO(isoDate: string, offsetInMinutes?: number) {
   offsetInMinutes = defaultToLocal(isoDate, offsetInMinutes);

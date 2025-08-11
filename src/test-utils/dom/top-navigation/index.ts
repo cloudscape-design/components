@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import ButtonWrapper from '../button';
-import ButtonDropdownWrapper from '../button-dropdown';
-import LinkWrapper from '../link';
+import ButtonWrapper from '../button/index.js';
+import ButtonDropdownWrapper from '../button-dropdown/index.js';
+import LinkWrapper from '../link/index.js';
 
 import buttonDropdownStyles from '../../../button-dropdown/styles.selectors.js';
 import menuDropdownStyles from '../../../internal/components/menu-dropdown/styles.selectors.js';

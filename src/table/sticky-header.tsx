@@ -4,9 +4,9 @@ import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } 
 import clsx from 'clsx';
 
 import { StickyHeaderContext } from '../container/use-sticky-header.js';
-import { getVisualContextClassname } from '../internal/components/visual-context';
+import { getVisualContextClassname } from '../internal/components/visual-context/index.js';
 import { TableProps } from './interfaces.js';
-import { getTableRoleProps, TableRole } from './table-role';
+import { getTableRoleProps, TableRole } from './table-role/index.js';
 import Thead, { TheadProps } from './thead.js';
 import { useStickyHeader } from './use-sticky-header.js';
 

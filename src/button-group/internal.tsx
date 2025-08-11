@@ -6,13 +6,13 @@ import clsx from 'clsx';
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonProps } from '../button/interfaces.js';
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { getAllFocusables } from '../internal/components/focus-lock/utils.js';
 import {
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
 } from '../internal/context/single-tab-stop-navigation-context.js';
-import { hasModifierKeys } from '../internal/events';
+import { hasModifierKeys } from '../internal/events/index.js';
 import { KeyCode } from '../internal/keycode.js';
 import { circleIndex } from '../internal/utils/circle-index.js';
 import handleKey from '../internal/utils/handle-key.js';

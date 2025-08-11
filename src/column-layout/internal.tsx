@@ -3,8 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-import FlexibleColumnLayout from './flexible-column-layout';
+import { getBaseProps } from '../internal/base-component/index.js';
+import FlexibleColumnLayout from './flexible-column-layout/index.js';
 import GridColumnLayout from './grid-column-layout.js';
 import { InternalColumnLayoutProps } from './interfaces.js';
 

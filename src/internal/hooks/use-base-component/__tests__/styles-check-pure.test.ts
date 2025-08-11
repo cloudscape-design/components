@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { GIT_SHA } from '../../../../../lib/components/internal/environment';
-import { checkMissingStyles } from '../../../../../lib/components/internal/hooks/use-base-component/styles-check';
-import { metrics } from '../../../../../lib/components/internal/metrics';
-import { idleWithDelay } from '../styles-check';
+import { GIT_SHA } from '../../../../../lib/components/internal/environment.js';
+import { checkMissingStyles } from '../../../../../lib/components/internal/hooks/use-base-component/styles-check.js';
+import { metrics } from '../../../../../lib/components/internal/metrics.js';
+import { idleWithDelay } from '../styles-check.js';
 
 jest.mock('../../../../../lib/components/internal/environment', () => ({
   ...jest.requireActual('../../../../../lib/components/internal/environment'),

@@ -7,12 +7,12 @@ import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal.js';
 import { convertAutoComplete } from '../input/utils.js';
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { useFormFieldContext } from '../internal/context/form-field-context.js';
-import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
+import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events/index.js';
 import * as tokens from '../internal/generated/styles/tokens.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { SomeRequired } from '../internal/types.js';
 import { PromptInputProps } from './interfaces.js';
 

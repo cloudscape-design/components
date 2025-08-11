@@ -7,7 +7,7 @@ import { InternalButton } from '../button/internal.js';
 import InternalCheckbox from '../checkbox/internal.js';
 import InternalColumnLayout from '../column-layout/internal.js';
 import InternalFormField from '../form-field/internal.js';
-import { NonCancelableCustomEvent } from '../internal/events';
+import { NonCancelableCustomEvent } from '../internal/events/index.js';
 import InternalModal from '../modal/internal.js';
 import { SelectProps } from '../select/interfaces.js';
 import InternalSelect from '../select/internal.js';

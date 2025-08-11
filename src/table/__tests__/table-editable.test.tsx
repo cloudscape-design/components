@@ -4,8 +4,8 @@
 import * as React from 'react';
 import { act, fireEvent, render, waitFor } from '@testing-library/react';
 
-import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Table, { TableProps } from '../../../lib/components/table/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import bodyCellStyles from '../../../lib/components/table/body-cell/styles.css.js';
 

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
-import { CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../internal/base-component/index.js';
+import { CancelableEventHandler, NonCancelableEventHandler } from '../internal/events/index.js';
 import { Optional } from '../internal/types.js';
 import ColumnDisplayProperties = TableProps.ColumnDisplayProperties;
 

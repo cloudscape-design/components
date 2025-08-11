@@ -4,17 +4,17 @@ import React, { ReactNode } from 'react';
 import clsx from 'clsx';
 
 import { useInternalI18n } from '../i18n/context.js';
-import { getBaseProps } from '../internal/base-component';
-import InternalDragHandle from '../internal/components/drag-handle';
-import SortableArea from '../internal/components/sortable-area';
+import { getBaseProps } from '../internal/base-component/index.js';
+import InternalDragHandle from '../internal/components/drag-handle/index.js';
+import SortableArea from '../internal/components/sortable-area/index.js';
 import {
   formatDndItemCommitted,
   formatDndItemReordered,
   formatDndStarted,
 } from '../internal/components/sortable-area/use-live-announcements.js';
-import InternalStructuredItem, { StructuredItemProps } from '../internal/components/structured-item';
-import { fireNonCancelableEvent } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import InternalStructuredItem, { StructuredItemProps } from '../internal/components/structured-item/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { ListProps } from './interfaces.js';
 
 import styles from './styles.css.js';

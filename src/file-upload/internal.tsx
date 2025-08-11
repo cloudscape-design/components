@@ -15,12 +15,12 @@ import InternalFileInput from '../file-input/internal.js';
 import InternalFileTokenGroup from '../file-token-group/internal.js';
 import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
-import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent } from '../internal/events';
-import checkControlled from '../internal/hooks/check-controlled';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import checkControlled from '../internal/hooks/check-controlled/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
-import { joinStrings } from '../internal/utils/strings';
+import { joinStrings } from '../internal/utils/strings/index.js';
 import InternalSpaceBetween from '../space-between/internal.js';
 import { FileUploadProps } from './interfaces.js';
 

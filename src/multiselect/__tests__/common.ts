@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { MultiselectProps } from '../interfaces';
+import { MultiselectProps } from '../interfaces.js';
 
 export const optionsWithGroups: MultiselectProps.Options = [
   { label: 'First option', value: '1' },

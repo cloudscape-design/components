@@ -6,10 +6,10 @@ import range from 'lodash/range';
 
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
-import Pagination from '../../../lib/components/pagination';
-import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import TextFilter from '../../../lib/components/text-filter';
+import Pagination from '../../../lib/components/pagination/index.js';
+import Table, { TableProps } from '../../../lib/components/table/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import TextFilter from '../../../lib/components/text-filter/index.js';
 
 interface Item {
   id: string;

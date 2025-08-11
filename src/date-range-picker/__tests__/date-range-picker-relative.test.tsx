@@ -7,13 +7,13 @@ import Mockdate from 'mockdate';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import '../../__a11y__/to-validate-a11y';
-import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
-import createWrapper, { DateRangePickerWrapper } from '../../../lib/components/test-utils/dom';
-import { changeMode } from './change-mode';
-import { i18nStrings } from './i18n-strings';
-import { isValidRange } from './is-valid-range';
+import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import { NonCancelableEventHandler } from '../../../lib/components/internal/events/index.js';
+import createWrapper, { DateRangePickerWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { changeMode } from './change-mode.js';
+import { i18nStrings } from './i18n-strings.js';
+import { isValidRange } from './is-valid-range.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

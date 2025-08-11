@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { AutosuggestProps } from '../autosuggest/interfaces.js';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
 import { I18nStringsOperators, operatorToDescription } from './i18n-utils.js';
 import {
   ComparisonOperator,

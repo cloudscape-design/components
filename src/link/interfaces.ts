@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../internal/base-component/index.js';
 import {
   BaseNavigationDetail,
   CancelableEventHandler,
   ClickDetail as _ClickDetail,
   NonCancelableEventHandler,
-} from '../internal/events';
+} from '../internal/events/index.js';
 
 export interface LinkProps extends BaseComponentProps {
   /**

@@ -5,9 +5,9 @@ import { fireEvent } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { ButtonGroupProps } from '../../../lib/components/button-group';
-import * as baseComponentHooks from '../../../lib/components/internal/hooks/use-base-component';
-import { renderButtonGroup } from './common';
+import { ButtonGroupProps } from '../../../lib/components/button-group/index.js';
+import * as baseComponentHooks from '../../../lib/components/internal/hooks/use-base-component/index.js';
+import { renderButtonGroup } from './common.js';
 
 import buttonStyles from '../../../lib/components/button/styles.css.js';
 

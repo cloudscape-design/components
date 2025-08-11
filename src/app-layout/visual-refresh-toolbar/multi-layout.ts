@@ -10,7 +10,7 @@ import { AppLayoutProps } from '../interfaces.js';
 import { useAppLayoutFlagEnabled } from '../utils/feature-flags.js';
 import { OnChangeParams } from '../utils/use-drawers.js';
 import { Focusable, FocusControlMultipleStates } from '../utils/use-focus-control.js';
-import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
+import { SplitPanelToggleProps, ToolbarProps } from './toolbar/index.js';
 
 export interface SharedProps {
   forceDeduplicationType?: 'primary' | 'secondary' | 'suspended' | 'off';

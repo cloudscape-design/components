@@ -3,9 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Header from '../../../lib/components/header';
-import { ComponentMetrics, setComponentMetrics } from '../../../lib/components/internal/analytics';
-import Table from '../../../lib/components/table';
+import Header from '../../../lib/components/header/index.js';
+import { ComponentMetrics, setComponentMetrics } from '../../../lib/components/internal/analytics/index.js';
+import Table from '../../../lib/components/table/index.js';
 
 const componentMounted = jest.fn();
 const componentUpdated = jest.fn();

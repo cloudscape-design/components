@@ -6,9 +6,9 @@ import { waitFor } from '@testing-library/react';
 
 import { isMotionDisabled } from '@cloudscape-design/component-toolkit/internal';
 
-import nativeSupport from '../../../lib/components/tabs/native-smooth-scroll-supported';
-import smoothScroll from '../../../lib/components/tabs/smooth-scroll';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import nativeSupport from '../../../lib/components/tabs/native-smooth-scroll-supported.js';
+import smoothScroll from '../../../lib/components/tabs/smooth-scroll.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 jest.mock('../../../lib/components/tabs/native-smooth-scroll-supported', () => {
   return jest.fn();

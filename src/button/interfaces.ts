@@ -3,8 +3,8 @@
 import React from 'react';
 
 import { IconProps } from '../icon/interfaces.js';
-import { BaseComponentProps } from '../internal/base-component';
-import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
+import { BaseComponentProps } from '../internal/base-component/index.js';
+import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events/index.js';
 /**
  * @awsuiSystem core
  */

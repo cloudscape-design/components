@@ -5,7 +5,7 @@ import { createContext, RefObject, useCallback, useEffect, useLayoutEffect, useS
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import * as tokens from '../internal/generated/styles/tokens.js';
-import { useMobile } from '../internal/hooks/use-mobile';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import globalVars from '../internal/styles/global-vars.js';
 import { getOverflowParents } from '../internal/utils/scrollable-containers.js';
 

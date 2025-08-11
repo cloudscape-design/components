@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { focusFlashById, focusFlashFocusableArea } from '../../../lib/components/flashbar/flash';
+import { focusFlashById, focusFlashFocusableArea } from '../../../lib/components/flashbar/flash.js';
 
 import styles from '../../../lib/components/flashbar/styles.css.js';
 

@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import { scrollbarThickness } from '../../__integ__/scrollbars';
-import { viewports } from './constants';
-import { AppLayoutSplitViewPage } from './utils';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import { scrollbarThickness } from '../../__integ__/scrollbars.js';
+import { viewports } from './constants.js';
+import { AppLayoutSplitViewPage } from './utils.js';
 
 interface SetupTestOptions {
   scrollbarDisplayCondition: string;

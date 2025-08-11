@@ -4,7 +4,6 @@
 import { useContext, useRef } from 'react';
 
 import { nodeBelongs } from '../../utils/node-belongs.js';
-import { FunnelMetrics } from '../';
 import {
   FunnelContext,
   FunnelContextValue,
@@ -12,6 +11,7 @@ import {
   FunnelStepContext,
   FunnelSubStepContext,
 } from '../context/analytics-context.js';
+import { FunnelMetrics } from '../index.js';
 
 import {
   DATA_ATTR_FUNNEL_INTERACTION_ID,

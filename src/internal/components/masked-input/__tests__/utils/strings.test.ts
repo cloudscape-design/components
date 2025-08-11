@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { insertAt } from '../../../../../../lib/components/internal/components/masked-input/utils/strings';
+import { insertAt } from '../../../../../../lib/components/internal/components/masked-input/utils/strings.js';
 
 describe('insertAt', () => {
   test('should insert at the beginning of given text', () => {

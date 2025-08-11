@@ -11,16 +11,16 @@ import { ButtonProps } from '../button/interfaces.js';
 import { InternalButton } from '../button/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
 import { getAllFocusables } from '../internal/components/focus-lock/utils.js';
-import Tooltip from '../internal/components/tooltip';
+import Tooltip from '../internal/components/tooltip/index.js';
 import {
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
   useSingleTabStopNavigation,
 } from '../internal/context/single-tab-stop-navigation-context.js';
-import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
-import useHiddenDescription from '../internal/hooks/use-hidden-description';
-import { usePrevious } from '../internal/hooks/use-previous';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { hasModifierKeys, isPlainLeftClick } from '../internal/events/index.js';
+import useHiddenDescription from '../internal/hooks/use-hidden-description/index.js';
+import { usePrevious } from '../internal/hooks/use-previous/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { KeyCode } from '../internal/keycode.js';
 import { circleIndex } from '../internal/utils/circle-index.js';
 import handleKey from '../internal/utils/handle-key.js';

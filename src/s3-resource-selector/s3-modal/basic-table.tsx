@@ -8,7 +8,7 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 import { InternalButton } from '../../button/internal.js';
 import InternalHeader from '../../header/internal.js';
 import { ComponentFormatFunction } from '../../i18n/context.js';
-import useForwardFocus, { ForwardFocusRef } from '../../internal/hooks/forward-focus';
+import useForwardFocus, { ForwardFocusRef } from '../../internal/hooks/forward-focus/index.js';
 import formatDateLocalized from '../../internal/utils/date-time/format-date-localized.js';
 import InternalLiveRegion from '../../live-region/internal.js';
 import { PaginationProps } from '../../pagination/interfaces.js';

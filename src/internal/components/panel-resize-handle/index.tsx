@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalDragHandle, { DragHandleProps } from '../drag-handle';
+import InternalDragHandle, { DragHandleProps } from '../drag-handle/index.js';
 
 import styles from './styles.css.js';
 

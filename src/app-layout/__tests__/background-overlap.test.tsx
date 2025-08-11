@@ -5,9 +5,9 @@ import { render, screen } from '@testing-library/react';
 
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import { useAppLayoutInternals } from '../../../lib/components/app-layout/visual-refresh/context';
-import { useDynamicOverlap } from '../../../lib/components/internal/hooks/use-dynamic-overlap';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout/index.js';
+import { useAppLayoutInternals } from '../../../lib/components/app-layout/visual-refresh/context.js';
+import { useDynamicOverlap } from '../../../lib/components/internal/hooks/use-dynamic-overlap/index.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   ...jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode'),

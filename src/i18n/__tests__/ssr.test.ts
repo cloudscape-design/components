@@ -7,8 +7,8 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { I18nProvider, I18nProviderProps } from '../../../lib/components/i18n';
-import { MESSAGES, TestComponent } from './test-component';
+import { I18nProvider, I18nProviderProps } from '../../../lib/components/i18n/index.js';
+import { MESSAGES, TestComponent } from './test-component.js';
 
 let consoleWarnSpy: jest.SpyInstance;
 beforeEach(() => {

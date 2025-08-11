@@ -5,10 +5,10 @@ import { render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import Button from '../../../lib/components/button';
-import ExpandableSection, { ExpandableSectionProps } from '../../../lib/components/expandable-section';
-import Link from '../../../lib/components/link';
-import createWrapper, { ExpandableSectionWrapper } from '../../../lib/components/test-utils/dom';
+import Button from '../../../lib/components/button/index.js';
+import ExpandableSection, { ExpandableSectionProps } from '../../../lib/components/expandable-section/index.js';
+import Link from '../../../lib/components/link/index.js';
+import createWrapper, { ExpandableSectionWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 function renderExpandableSection(props: ExpandableSectionProps = {}): ExpandableSectionWrapper {
   const { container } = render(<ExpandableSection {...props} />);

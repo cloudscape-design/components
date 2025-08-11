@@ -3,15 +3,15 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import Alert from '../../../lib/components/alert';
-import { FunnelMetrics } from '../../../lib/components/internal/analytics';
+import Alert from '../../../lib/components/alert/index.js';
 import {
   AnalyticsFunnel,
   AnalyticsFunnelStep,
   AnalyticsFunnelSubStep,
-} from '../../../lib/components/internal/analytics/components/analytics-funnel';
-import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
-import { mockFunnelMetrics, mockGetBoundingClientRect } from '../../internal/analytics/__tests__/mocks';
+} from '../../../lib/components/internal/analytics/components/analytics-funnel.js';
+import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel.js';
+import { FunnelMetrics } from '../../../lib/components/internal/analytics/index.js';
+import { mockFunnelMetrics, mockGetBoundingClientRect } from '../../internal/analytics/__tests__/mocks.js';
 
 mockGetBoundingClientRect();
 

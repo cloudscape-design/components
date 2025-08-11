@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { AnchorItem } from './anchor-item';
+import { AnchorItem } from './anchor-item/index.js';
 import { AnchorNavigationProps } from './interfaces.js';
 
 import styles from './styles.css.js';

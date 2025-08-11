@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import { render, waitFor } from '@testing-library/react';
 
-import { useMissingStylesCheck } from '../../../../../lib/components/internal/hooks/use-base-component/styles-check';
+import { useMissingStylesCheck } from '../../../../../lib/components/internal/hooks/use-base-component/styles-check.js';
 
 function Test() {
   const ref = useRef<HTMLDivElement>(null);

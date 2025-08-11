@@ -4,7 +4,7 @@ import React from 'react';
 
 import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
 
-import { useVisualRefresh } from '../hooks/use-visual-mode';
+import { useVisualRefresh } from '../hooks/use-visual-mode/index.js';
 
 // Built-in React.FunctionComponent has always present `children` property which is not desired
 export type FunctionComponent<Props> = (props: Props) => JSX.Element;

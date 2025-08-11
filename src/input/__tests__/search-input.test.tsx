@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Input, { InputProps } from '../../../lib/components/input';
-import createWrapper, { InputWrapper } from '../../../lib/components/test-utils/dom';
+import Input, { InputProps } from '../../../lib/components/input/index.js';
+import createWrapper, { InputWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 function renderInput(
   props: Omit<InputProps, 'value'> & { value?: string } & React.RefAttributes<HTMLInputElement> = {}

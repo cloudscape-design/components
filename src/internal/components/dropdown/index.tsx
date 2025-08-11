@@ -7,15 +7,15 @@ import clsx from 'clsx';
 import { useMergeRefs, useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { fireNonCancelableEvent } from '../../events';
-import customCssProps from '../../generated/custom-css-properties';
-import { useMobile } from '../../hooks/use-mobile';
-import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
-import { useVisualRefresh } from '../../hooks/use-visual-mode';
+import { fireNonCancelableEvent } from '../../events/index.js';
+import customCssProps from '../../generated/custom-css-properties/index.js';
+import { useMobile } from '../../hooks/use-mobile/index.js';
+import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes/index.js';
+import { useVisualRefresh } from '../../hooks/use-visual-mode/index.js';
 import { nodeBelongs } from '../../utils/node-belongs.js';
 import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
 import TabTrap from '../tab-trap/index.js';
-import { Transition, TransitionStatus } from '../transition';
+import { Transition, TransitionStatus } from '../transition/index.js';
 import { DropdownContextProvider, DropdownContextProviderProps } from './context.js';
 import {
   calculatePosition,

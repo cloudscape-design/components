@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../internal/base-component/index.js';
 import { Breakpoint as _Breakpoint } from '../internal/breakpoints.js';
 
 export interface GridProps extends BaseComponentProps {

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 
-import { createWidgetizedComponent } from '../../../internal/widgets';
+import { createWidgetizedComponent } from '../../../internal/widgets/index.js';
 import { AppLayoutInternals } from '../interfaces.js';
 import AppLayoutGlobalDrawer from './global-drawer.js';
 

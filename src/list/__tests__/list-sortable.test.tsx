@@ -3,9 +3,9 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import List, { ListProps } from '../../../lib/components/list';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import List, { ListProps } from '../../../lib/components/list/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 interface Item {
   id: string;

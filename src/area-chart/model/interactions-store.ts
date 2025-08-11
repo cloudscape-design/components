@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import AsyncStore from '../async-store';
+import AsyncStore from '../async-store/index.js';
 import { AreaChartProps } from '../interfaces.js';
 import { ChartModel } from './index.js';
 

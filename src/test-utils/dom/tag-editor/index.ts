@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import AttributeEditorWrapper, { AttributeEditorRowWrapper } from '../attribute-editor';
-import LinkWrapper from '../link';
+import AttributeEditorWrapper, { AttributeEditorRowWrapper } from '../attribute-editor/index.js';
+import LinkWrapper from '../link/index.js';
 
 import attributeEditorStyles from '../../../attribute-editor/styles.selectors.js';
 import styles from '../../../tag-editor/styles.selectors.js';

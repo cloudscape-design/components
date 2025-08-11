@@ -5,8 +5,8 @@ import React, { useEffect } from 'react';
 
 import { AnalyticsFunnel } from '../internal/analytics/components/analytics-funnel.js';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
-import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { getExternalProps } from '../internal/utils/external-props.js';
 import { getStepConfiguration } from './analytics.js';

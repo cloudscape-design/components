@@ -5,11 +5,11 @@ import { fireEvent } from '@testing-library/react';
 
 import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import { CollectionPreferencesProps } from '../../../../lib/components';
+import { CollectionPreferencesProps } from '../../../../lib/components/index.js';
 import ContentDisplayPreferenceWrapper, {
   ContentDisplayOptionWrapper,
-} from '../../../../lib/components/test-utils/dom/collection-preferences/content-display-preference';
-import { contentDisplayPreference, renderCollectionPreferences } from '../../__tests__/shared';
+} from '../../../../lib/components/test-utils/dom/collection-preferences/content-display-preference.js';
+import { contentDisplayPreference, renderCollectionPreferences } from '../../__tests__/shared.js';
 
 describe('Content Display preference', () => {
   describe('Rendering', () => {

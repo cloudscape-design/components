@@ -13,13 +13,13 @@ import {
 import InternalButton from '../button/internal.js';
 import { useFormFieldContext } from '../contexts/form-field.js';
 import { getBaseProps } from '../internal/base-component/index.js';
-import ScreenreaderOnly from '../internal/components/screenreader-only';
+import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context.js';
-import { fireNonCancelableEvent } from '../internal/events';
-import checkControlled from '../internal/hooks/check-controlled';
-import useForwardFocus from '../internal/hooks/forward-focus';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import checkControlled from '../internal/hooks/check-controlled/index.js';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { joinStrings } from '../internal/utils/strings';
+import { joinStrings } from '../internal/utils/strings/index.js';
 import { GeneratedAnalyticsMetadataFileInputComponent } from './analytics-metadata/interfaces.js';
 import { FileInputProps } from './interfaces.js';
 

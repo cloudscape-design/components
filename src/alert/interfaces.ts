@@ -3,8 +3,8 @@
 import React from 'react';
 
 import { ErrorContext } from '../internal/analytics/interfaces.js';
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../internal/base-component/index.js';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
 
 export namespace AlertProps {
   export type Type = 'success' | 'error' | 'warning' | 'info';

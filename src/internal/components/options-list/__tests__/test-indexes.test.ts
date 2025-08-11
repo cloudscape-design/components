@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { generateTestIndexes, getTestOptionIndexes } from '../utils/test-indexes';
+import { generateTestIndexes, getTestOptionIndexes } from '../utils/test-indexes.js';
 
 interface ListItem {
   type?: string;

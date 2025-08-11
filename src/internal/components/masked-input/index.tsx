@@ -5,9 +5,9 @@ import React, { Ref, useLayoutEffect, useState } from 'react';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalInput from '../../../input/internal.js';
-import { getBaseProps } from '../../base-component';
+import { getBaseProps } from '../../base-component/index.js';
 import { useFormFieldContext } from '../../context/form-field-context.js';
-import { fireCancelableEvent, fireNonCancelableEvent } from '../../events';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../../events/index.js';
 import { MaskedInputProps } from './interfaces.js';
 import useMask from './use-mask.js';
 import MaskFormat from './utils/mask-format.js';

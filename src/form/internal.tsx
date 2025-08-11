@@ -8,8 +8,8 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalAlert from '../alert/internal.js';
 import InternalBox from '../box/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
-import { getBaseProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import InternalLiveRegion from '../live-region/internal.js';
 import { GeneratedAnalyticsMetadataFormFragment } from './analytics-metadata/interfaces.js';
 import { FormProps } from './interfaces.js';

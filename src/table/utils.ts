@@ -4,7 +4,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalContainerProps } from '../container/internal.js';
 import { TableProps } from './interfaces.js';
-import { StickyColumnsCellState } from './sticky-columns';
+import { StickyColumnsCellState } from './sticky-columns/index.js';
 
 export const applyTrackBy = <T>(trackBy: TableProps.TrackBy<T>, item: T) => {
   if (typeof trackBy === 'function') {

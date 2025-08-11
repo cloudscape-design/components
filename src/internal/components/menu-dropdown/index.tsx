@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { CustomTriggerProps } from '../../../button-dropdown/interfaces.js';
 import InternalButtonDropdown from '../../../button-dropdown/internal.js';
 import InternalIcon from '../../../icon/internal.js';
-import { getBaseProps } from '../../base-component';
+import { getBaseProps } from '../../base-component/index.js';
 import { spinWhenOpen } from '../../styles/motion/utils.js';
 import { applyDisplayName } from '../../utils/apply-display-name.js';
 import { ButtonTriggerProps, MenuDropdownProps } from './interfaces.js';

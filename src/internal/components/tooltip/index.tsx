@@ -8,7 +8,7 @@ import PopoverArrow from '../../../popover/arrow.js';
 import PopoverBody from '../../../popover/body.js';
 import PopoverContainer from '../../../popover/container.js';
 import { PopoverProps } from '../../../popover/interfaces.js';
-import { Transition } from '../transition';
+import { Transition } from '../transition/index.js';
 
 import styles from './styles.css.js';
 

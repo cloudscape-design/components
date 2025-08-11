@@ -6,15 +6,15 @@ import clsx from 'clsx';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { useMergeRefs, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { BaseComponentProps, getBaseProps } from '../../base-component/index.js';
 import {
   BaseKeyDetail,
   CancelableEventHandler,
   fireKeyboardEvent,
   fireNonCancelableEvent,
   NonCancelableEventHandler,
-} from '../../events';
-import { DropdownStatusProps } from '../dropdown-status';
+} from '../../events/index.js';
+import { DropdownStatusProps } from '../dropdown-status/index.js';
 
 import styles from './styles.css.js';
 

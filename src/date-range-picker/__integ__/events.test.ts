@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import DateRangePickerPage from './page-objects/date-range-picker-page';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import DateRangePickerPage from './page-objects/date-range-picker-page.js';
 
 class DateRangePickerEventPage extends DateRangePickerPage {
   async clickPosition(x: number, y: number) {

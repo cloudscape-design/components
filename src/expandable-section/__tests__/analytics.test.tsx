@@ -3,14 +3,15 @@
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
-import ExpandableSection from '../../../lib/components/expandable-section';
-import { FunnelMetrics } from '../../../lib/components/internal/analytics';
+import ExpandableSection from '../../../lib/components/expandable-section/index.js';
 import {
   AnalyticsFunnel,
   AnalyticsFunnelStep,
-} from '../../../lib/components/internal/analytics/components/analytics-funnel';
-import { DATA_ATTR_FUNNEL_SUBSTEP } from '../../../lib/components/internal/analytics/selectors';
-import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
+} from '../../../lib/components/internal/analytics/components/analytics-funnel.js';
+import { FunnelMetrics } from '../../../lib/components/internal/analytics/index.js';
+import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks.js';
+
+import { DATA_ATTR_FUNNEL_SUBSTEP } from '../../../lib/components/internal/analytics/selectors.js';
 
 describe('Expandable section funnel analytics', () => {
   beforeEach(() => {

@@ -3,8 +3,8 @@
 'use client';
 import React from 'react';
 
-import { getBaseProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { ButtonProps } from './interfaces.js';
 import { InternalButton } from './internal.js';

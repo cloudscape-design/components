@@ -8,7 +8,7 @@ import {
   InternalItemOrGroup,
 } from '../../button-dropdown/interfaces.js';
 import InternalButtonDropdown from '../../button-dropdown/internal.js';
-import { CancelableEventHandler } from '../../internal/events';
+import { CancelableEventHandler } from '../../internal/events/index.js';
 import { AppLayoutProps } from '../interfaces.js';
 
 import testutilStyles from '../test-classes/styles.css.js';

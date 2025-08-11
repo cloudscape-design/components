@@ -4,10 +4,10 @@ import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
 
 import { LiveRegionController } from '../../../../lib/components/live-region/controller.js';
-import { S3Modal } from '../../../../lib/components/s3-resource-selector/s3-modal';
-import createWrapper, { ElementWrapper } from '../../../../lib/components/test-utils/dom';
-import { buckets, i18nStrings, objects, versions, waitForFetch } from '../../__tests__/fixtures';
-import { getElementsText, modalDefaultProps, navigateToTableItem } from './utils';
+import { S3Modal } from '../../../../lib/components/s3-resource-selector/s3-modal/index.js';
+import createWrapper, { ElementWrapper } from '../../../../lib/components/test-utils/dom/index.js';
+import { buckets, i18nStrings, objects, versions, waitForFetch } from '../../__tests__/fixtures.js';
+import { getElementsText, modalDefaultProps, navigateToTableItem } from './utils.js';
 
 import styles from '../../../../lib/components/s3-resource-selector/s3-modal/styles.css.js';
 

@@ -3,10 +3,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Header from '../../../lib/components/header';
-import Modal from '../../../lib/components/modal';
-import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Header from '../../../lib/components/header/index.js';
+import Modal from '../../../lib/components/modal/index.js';
+import Table, { TableProps } from '../../../lib/components/table/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 

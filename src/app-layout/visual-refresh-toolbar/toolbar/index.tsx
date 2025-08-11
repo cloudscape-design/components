@@ -5,16 +5,16 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { createWidgetizedComponent } from '../../../internal/widgets';
+import { createWidgetizedComponent } from '../../../internal/widgets/index.js';
 import { AppLayoutProps } from '../../interfaces.js';
 import { OnChangeParams } from '../../utils/use-drawers.js';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control.js';
 import { AppLayoutInternals } from '../interfaces.js';
-import { BreadcrumbsSlot } from '../skeleton/breadcrumbs';
+import { BreadcrumbsSlot } from '../skeleton/breadcrumbs/index.js';
 import { ToolbarSkeleton } from '../skeleton/slot-skeletons.js';
 import { ToolbarSlot } from '../skeleton/slot-wrappers.js';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers.js';
-import TriggerButton from './trigger-button';
+import TriggerButton from './trigger-button/index.js';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';

@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect, getScrollInlineStart } from '@cloudscape-design/component-toolkit/internal';
 
-import AsyncStore, { ReadonlyAsyncStore } from '../../area-chart/async-store';
+import AsyncStore, { ReadonlyAsyncStore } from '../../area-chart/async-store/index.js';
 import {
   CellOffsets,
   StickyColumnsCellState,

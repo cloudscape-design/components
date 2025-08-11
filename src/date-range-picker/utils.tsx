@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { joinDateTime, splitDateTime } from '../internal/utils/date-time';
-import { isIsoDateOnly, isIsoMonthOnly } from '../internal/utils/date-time';
+import { joinDateTime, splitDateTime } from '../internal/utils/date-time/index.js';
+import { isIsoDateOnly, isIsoMonthOnly } from '../internal/utils/date-time/index.js';
 import { normalizeTimeString } from '../internal/utils/date-time/join-date-time.js';
 import { DateRangePickerProps } from './interfaces.js';
 import { setTimeOffset, shiftTimeOffset } from './time-offset.js';

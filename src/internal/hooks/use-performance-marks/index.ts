@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRandomId } from '@cloudscape-design/component-toolkit/internal';
 
 import { useModalContext } from '../../context/modal-context.js';
-import { useDOMAttribute } from '../use-dom-attribute';
+import { useDOMAttribute } from '../use-dom-attribute/index.js';
 import { useEffectOnUpdate } from '../use-effect-on-update.js';
 import { isInViewport } from './is-in-viewport.js';
 

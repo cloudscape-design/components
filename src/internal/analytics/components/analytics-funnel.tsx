@@ -5,8 +5,8 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { PACKAGE_VERSION, THEME } from '../../environment.js';
-import { useDebounceCallback } from '../../hooks/use-debounce-callback';
-import { useVisualRefresh } from '../../hooks/use-visual-mode';
+import { useDebounceCallback } from '../../hooks/use-debounce-callback/index.js';
+import { useVisualRefresh } from '../../hooks/use-visual-mode/index.js';
 import { nodeBelongs } from '../../utils/node-belongs.js';
 import {
   FunnelContext,

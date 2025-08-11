@@ -7,9 +7,9 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import AutosuggestInput, {
   AutosuggestInputRef,
-} from '../../../../../lib/components/internal/components/autosuggest-input';
-import Dropdown from '../../../../../lib/components/internal/components/dropdown';
-import AutosuggestInputWrapper from '../../../../../lib/components/test-utils/dom/internal/autosuggest-input';
+} from '../../../../../lib/components/internal/components/autosuggest-input/index.js';
+import Dropdown from '../../../../../lib/components/internal/components/dropdown/index.js';
+import AutosuggestInputWrapper from '../../../../../lib/components/test-utils/dom/internal/autosuggest-input.js';
 
 function render(jsx: React.ReactElement) {
   const { container, rerender, getByTestId } = renderJsx(jsx);

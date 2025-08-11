@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state.js';
-import { CancelableEventHandler, fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
+import { CancelableEventHandler, fireCancelableEvent, isPlainLeftClick } from '../../internal/events/index.js';
 import { KeyCode } from '../../internal/keycode.js';
 import {
   ButtonDropdownProps,

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-import createWrapper, { InputWrapper } from '../../../../lib/components/test-utils/selectors';
+import createWrapper, { InputWrapper } from '../../../../lib/components/test-utils/selectors/index.js';
 
 export default class InputPage extends BasePageObject {
   protected wrapper: InputWrapper = createWrapper('#test').findInput();

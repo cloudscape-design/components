@@ -8,8 +8,8 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags.js';
 import { useSplitPanelContext } from '../internal/context/split-panel-context.js';
 import * as tokens from '../internal/generated/styles/tokens.js';
-import { useMobile } from '../internal/hooks/use-mobile';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { SplitPanelContentProps, SplitPanelProps } from './interfaces.js';
 
 import sharedStyles from '../app-layout/resize/styles.css.js';

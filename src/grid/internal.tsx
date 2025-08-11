@@ -6,10 +6,10 @@ import clsx, { ClassValue } from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { Breakpoint, matchBreakpointMapping } from '../internal/breakpoints.js';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { isDevelopment } from '../internal/is-development.js';
 import { GridProps } from './interfaces.js';
 

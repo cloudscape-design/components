@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import { act, render } from '@testing-library/react';
 
-import { useHasRendered } from '../index';
+import { useHasRendered } from '../index.js';
 
 function Demo() {
   const renderCount = useRef(0);

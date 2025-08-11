@@ -5,17 +5,17 @@ import { act, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import FormField from '../../../lib/components/form-field';
-import Header from '../../../lib/components/header';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { FunnelMetrics } from '../../../lib/components/internal/analytics';
-import { AnalyticsFunnel } from '../../../lib/components/internal/analytics/components/analytics-funnel';
-import Link, { LinkProps } from '../../../lib/components/link';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
-import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
-import customCssProps from '../../internal/generated/custom-css-properties';
+import FormField from '../../../lib/components/form-field/index.js';
+import Header from '../../../lib/components/header/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import { AnalyticsFunnel } from '../../../lib/components/internal/analytics/components/analytics-funnel.js';
+import { FunnelMetrics } from '../../../lib/components/internal/analytics/index.js';
+import Link, { LinkProps } from '../../../lib/components/link/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper.js';
+import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks.js';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils.js';
+import customCssProps from '../../internal/generated/custom-css-properties/index.js';
 
 import styles from '../../../lib/components/link/styles.css.js';
 

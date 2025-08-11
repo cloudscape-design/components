@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import MaskFormat from '../../../../../../lib/components/internal/components/masked-input/utils/mask-format';
+import MaskFormat from '../../../../../../lib/components/internal/components/masked-input/utils/mask-format.js';
 
 const hourMask = { min: 0, max: 23, length: 2 };
 const minuteMask = { min: 0, max: 59, length: 2 };

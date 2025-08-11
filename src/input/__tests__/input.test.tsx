@@ -3,9 +3,9 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import FormField from '../../../lib/components/form-field';
-import Input, { InputProps } from '../../../lib/components/input';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import FormField from '../../../lib/components/form-field/index.js';
+import Input, { InputProps } from '../../../lib/components/input/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/input/styles.css.js';
 

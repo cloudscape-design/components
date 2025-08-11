@@ -4,8 +4,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
-import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 const renderButtonDropdown = (props: ButtonDropdownProps) => {
   const renderResult = render(<ButtonDropdown {...props} />);

@@ -4,7 +4,7 @@ import { useContext } from 'react';
 
 import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
 
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode/index.js';
 import { AppLayoutToolbarPublicContext } from '../visual-refresh-toolbar/contexts.js';
 
 //   useAppLayoutFlagEnabled is set to true only in consoles. It controls if AppLayout theme is toolbar

@@ -11,17 +11,17 @@ import InternalBox from '../box/internal.js';
 import { ButtonProps } from '../button/interfaces.js';
 import { InternalButton } from '../button/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { CollectionPreferencesMetadata } from '../internal/context/collection-preferences-metadata-context.js';
 import { useTableComponentsContext } from '../internal/context/table-component-context.js';
-import { fireNonCancelableEvent } from '../internal/events';
-import checkControlled from '../internal/hooks/check-controlled';
-import useBaseComponent from '../internal/hooks/use-base-component';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import checkControlled from '../internal/hooks/check-controlled/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import InternalModal from '../modal/internal.js';
 import InternalSpaceBetween from '../space-between/internal.js';
 import { getComponentAnalyticsMetadata } from './analytics-metadata/utils.js';
-import ContentDisplayPreference from './content-display';
+import ContentDisplayPreference from './content-display/index.js';
 import { CollectionPreferencesProps } from './interfaces.js';
 import {
   ContentDensityPreference,

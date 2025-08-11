@@ -3,9 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import BarChart from '../../../lib/components/bar-chart';
-import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
-import InternalMixedLineBarChart from '../../../lib/components/mixed-line-bar-chart/internal';
+import BarChart from '../../../lib/components/bar-chart/index.js';
+import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/index.js';
+import InternalMixedLineBarChart from '../../../lib/components/mixed-line-bar-chart/internal.js';
 
 jest.mock('../../../lib/components/mixed-line-bar-chart/internal', () => {
   return jest.fn(() => null);

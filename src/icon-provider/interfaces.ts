@@ -3,7 +3,7 @@
 
 import { ReactNode } from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../internal/base-component/index.js';
 
 export interface IconProviderProps extends BaseComponentProps {
   children: ReactNode;

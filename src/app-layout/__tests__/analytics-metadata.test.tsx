@@ -8,9 +8,9 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import AppLayout from '../../../lib/components/app-layout';
-import Header from '../../../lib/components/header';
-import { describeEachAppLayout, renderComponent } from './utils';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import Header from '../../../lib/components/header/index.js';
+import { describeEachAppLayout, renderComponent } from './utils.js';
 
 const getMetadata = (label = 'Label') => {
   const metadata: GeneratedAnalyticsMetadataFragment = {

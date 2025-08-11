@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef } from 'react';
 
-import { getBaseProps } from '../../base-component';
-import DragHandleWrapper from '../drag-handle-wrapper';
+import { getBaseProps } from '../../base-component/index.js';
+import DragHandleWrapper from '../drag-handle-wrapper/index.js';
 import DragHandleButton from './button.js';
 import { DragHandleProps } from './interfaces.js';
 

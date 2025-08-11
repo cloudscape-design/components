@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
-import RadioGroup, { RadioGroupProps } from '../../../lib/components/radio-group';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-group/radio-button';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
+import RadioGroup, { RadioGroupProps } from '../../../lib/components/radio-group/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-group/radio-button.js';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils.js';
 
 const defaultItems: RadioGroupProps.RadioButtonDefinition[] = [
   { value: 'val1', label: 'Option one' },

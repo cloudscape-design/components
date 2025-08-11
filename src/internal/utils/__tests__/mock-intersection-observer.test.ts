@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { runAllIntersectionObservers } from './mock-intersection-observer';
+import { runAllIntersectionObservers } from './mock-intersection-observer.js';
 
 describe('IntersectionObserver mock', () => {
   it('runs the callback for observed elements', () => {

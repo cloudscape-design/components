@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { AppLayoutProps } from '../interfaces.js';
-import { togglesConfig } from '../toggles';
+import { togglesConfig } from '../toggles/index.js';
 import { FocusControlRefs } from '../utils/use-focus-control.js';
 
 export interface DesktopDrawerProps {

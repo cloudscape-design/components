@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../../../lib/components/test-utils/selectors';
-import { AsyncResponsePage } from '../../../../__integ__/page-objects/async-response-page';
+import createWrapper from '../../../../../lib/components/test-utils/selectors/index.js';
+import { AsyncResponsePage } from '../../../../__integ__/page-objects/async-response-page.js';
 
 type ComponentId = 'autosuggest' | 'multiselect' | 'select';
 

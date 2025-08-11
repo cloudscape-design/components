@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
-import { getBaseProps } from '../../base-component';
+import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode/index.js';
+import { getBaseProps } from '../../base-component/index.js';
 import { getAnalyticsSelectActionMetadata } from './analytics-metadata/utils.js';
 import { SelectableItemProps } from './interfaces.js';
 

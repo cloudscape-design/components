@@ -9,13 +9,13 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import createWrapper from '../../../lib/components/test-utils/dom';
-import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 import {
   GeneratedAnalyticsMetadataTokenGroupShowLess,
   GeneratedAnalyticsMetadataTokenGroupShowMore,
-} from '../../../lib/components/token-group/analytics-metadata/interfaces';
-import InternalTokenGroup from '../../../lib/components/token-group/internal';
+} from '../../../lib/components/token-group/analytics-metadata/interfaces.js';
+import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group/index.js';
+import InternalTokenGroup from '../../../lib/components/token-group/internal.js';
 
 function renderTokenGroup(props: TokenGroupProps) {
   const renderResult = render(<TokenGroup items={items} onDismiss={() => {}} {...props} />);

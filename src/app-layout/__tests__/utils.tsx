@@ -8,11 +8,11 @@ import { render } from '@testing-library/react';
 import { clearVisualRefreshState, setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
 import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
-import { forceMobileModeSymbol } from '../../../lib/components/internal/hooks/use-mobile';
-import { SplitPanelProps } from '../../../lib/components/split-panel';
-import createWrapper, { AppLayoutWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout/index.js';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties/index.js';
+import { forceMobileModeSymbol } from '../../../lib/components/internal/hooks/use-mobile/index.js';
+import { SplitPanelProps } from '../../../lib/components/split-panel/index.js';
+import createWrapper, { AppLayoutWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';

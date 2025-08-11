@@ -4,12 +4,12 @@ import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { LiveRegionController } from '../../../lib/components/live-region/controller.js';
-import { TableBodyCell, TableBodyCellProps } from '../../../lib/components/table/body-cell';
-import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
-import wrapper from '../../../lib/components/test-utils/dom';
-import { renderHook } from '../../__tests__/render-hook';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
-import { TableProps } from '../interfaces';
+import { TableBodyCell, TableBodyCellProps } from '../../../lib/components/table/body-cell/index.js';
+import { useStickyColumns } from '../../../lib/components/table/sticky-columns/index.js';
+import wrapper from '../../../lib/components/test-utils/dom/index.js';
+import { renderHook } from '../../__tests__/render-hook.js';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils.js';
+import { TableProps } from '../interfaces.js';
 
 import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
 

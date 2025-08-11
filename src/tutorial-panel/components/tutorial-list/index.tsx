@@ -12,7 +12,7 @@ import InternalBox from '../../../box/internal.js';
 import { InternalButton } from '../../../button/internal.js';
 import InternalIcon from '../../../icon/internal.js';
 import { fireNonCancelableEvent } from '../../../internal/events/index.js';
-import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode/index.js';
 import { checkSafeUrl } from '../../../internal/utils/check-safe-url.js';
 import InternalLink from '../../../link/internal.js';
 import InternalLiveRegion from '../../../live-region/internal.js';

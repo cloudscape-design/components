@@ -10,13 +10,13 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { InternalContainerAsSubstep } from '../container/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel.js';
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { CollectionLabelContext } from '../internal/context/collection-label-context.js';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useMobile } from '../internal/hooks/use-mobile';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target.js';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import InternalLiveRegion from '../live-region/internal.js';
 import InternalStatusIndicator from '../status-indicator/internal.js';
@@ -26,7 +26,7 @@ import {
   SelectionControlProps,
   useSelection,
   useSelectionFocusMove,
-} from '../table/selection';
+} from '../table/selection/index.js';
 import stickyScrolling from '../table/sticky-scrolling.js';
 import ToolsHeader from '../table/tools-header.js';
 import { getItemKey } from '../table/utils.js';

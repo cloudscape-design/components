@@ -4,7 +4,7 @@ import { addMinutes } from 'date-fns';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { formatTimeOffsetISO, parseTimezoneOffset, shiftTimezoneOffset } from '../internal/utils/date-time';
+import { formatTimeOffsetISO, parseTimezoneOffset, shiftTimezoneOffset } from '../internal/utils/date-time/index.js';
 import { DateRangePickerProps } from './interfaces.js';
 
 /**

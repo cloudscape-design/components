@@ -4,7 +4,7 @@
 'use client';
 import React, { Ref } from 'react';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { DateInputProps } from './interfaces.js';
 import InternalDateInput from './internal.js';

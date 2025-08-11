@@ -4,9 +4,9 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import Calendar, { CalendarProps } from '../../../lib/components/calendar';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Calendar, { CalendarProps } from '../../../lib/components/calendar/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/calendar/styles.selectors.js';
 import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';

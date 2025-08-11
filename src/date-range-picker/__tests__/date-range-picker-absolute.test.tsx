@@ -4,13 +4,13 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
-import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { KeyCode } from '../../../lib/components/internal/keycode';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { testIf } from '../../__tests__/utils';
-import { i18nStrings } from './i18n-strings';
-import { isValidRange } from './is-valid-range';
+import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import { KeyCode } from '../../../lib/components/internal/keycode.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { testIf } from '../../__tests__/utils.js';
+import { i18nStrings } from './i18n-strings.js';
+import { isValidRange } from './is-valid-range.js';
 
 const defaultProps: DateRangePickerProps = {
   locale: 'en-US',

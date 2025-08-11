@@ -4,8 +4,8 @@ import React, { forwardRef, TdHTMLAttributes, useRef, useState } from 'react';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import Tooltip from '../../../internal/components/tooltip';
-import useHiddenDescription from '../../../internal/hooks/use-hidden-description';
+import Tooltip from '../../../internal/components/tooltip/index.js';
+import useHiddenDescription from '../../../internal/hooks/use-hidden-description/index.js';
 import { applyDisplayName } from '../../../internal/utils/apply-display-name.js';
 
 import testutilStyles from '../../test-classes/styles.css.js';

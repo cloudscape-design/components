@@ -6,10 +6,10 @@ import React, { useEffect } from 'react';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
-import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
+import { FunnelMetrics } from '../internal/analytics/index.js';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { GeneratedAnalyticsMetadataAlertComponent } from './analytics-metadata/interfaces.js';
 import { AlertProps } from './interfaces.js';

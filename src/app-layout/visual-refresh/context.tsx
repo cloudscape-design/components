@@ -16,12 +16,12 @@ import { getOffsetInlineStart } from '@cloudscape-design/component-toolkit/inter
 
 import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context.js';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context.js';
-import { fireNonCancelableEvent } from '../../internal/events';
-import { useControllable } from '../../internal/hooks/use-controllable';
-import { useMobile } from '../../internal/hooks/use-mobile';
+import { fireNonCancelableEvent } from '../../internal/events/index.js';
+import { useControllable } from '../../internal/hooks/use-controllable/index.js';
+import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils.js';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces.js';
-import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
+import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel/index.js';
 import { shouldSplitPanelBeForcedToBottom } from '../split-panel/split-panel-forced-position.js';
 import { useDrawers } from '../utils/use-drawers.js';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control.js';

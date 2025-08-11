@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import FormField from '../../../lib/components/form-field';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import FormField from '../../../lib/components/form-field/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 describe('test-util selectors', () => {
   test('find the correct elements even when nesting', () => {

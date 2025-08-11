@@ -3,7 +3,7 @@
 import React, { useCallback } from 'react';
 import clsx from 'clsx';
 
-import { isPlainLeftClick } from '../../internal/events';
+import { isPlainLeftClick } from '../../internal/events/index.js';
 import { checkSafeUrl } from '../../internal/utils/check-safe-url.js';
 import { AnchorNavigationProps } from '../interfaces.js';
 

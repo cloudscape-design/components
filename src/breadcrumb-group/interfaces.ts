@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { LinkItem } from '../button-dropdown/interfaces.js';
-import { BaseComponentProps } from '../internal/base-component';
-import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { BaseComponentProps } from '../internal/base-component/index.js';
+import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 
 export interface BreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>
   extends BaseComponentProps {

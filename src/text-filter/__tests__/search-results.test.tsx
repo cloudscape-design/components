@@ -3,9 +3,9 @@
 import React, { createRef } from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 
-import { InternalLiveRegionRef } from '../../../lib/components/live-region/internal';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { SearchResults } from '../../../lib/components/text-filter/search-results';
+import { InternalLiveRegionRef } from '../../../lib/components/live-region/internal.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { SearchResults } from '../../../lib/components/text-filter/search-results.js';
 
 import styles from '../../../lib/components/text-filter/styles.css.js';
 

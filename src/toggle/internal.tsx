@@ -8,12 +8,12 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { getBaseProps } from '../internal/base-component';
-import AbstractSwitch from '../internal/components/abstract-switch';
+import { getBaseProps } from '../internal/base-component/index.js';
+import AbstractSwitch from '../internal/components/abstract-switch/index.js';
 import { useFormFieldContext } from '../internal/context/form-field-context.js';
-import { fireNonCancelableEvent } from '../internal/events';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { GeneratedAnalyticsMetadataToggleComponent } from './analytics-metadata/interfaces.js';
 import { ToggleProps } from './interfaces.js';
 

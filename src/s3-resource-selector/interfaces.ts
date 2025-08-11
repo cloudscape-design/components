@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../internal/base-component/index.js';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
 import { BaseModalProps } from '../modal/interfaces.js';
 import { PaginationProps } from '../pagination/interfaces.js';
 import { TableProps } from '../table/interfaces.js';

@@ -9,14 +9,14 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox';
 import {
   GeneratedAnalyticsMetadataCheckboxDeselect,
   GeneratedAnalyticsMetadataCheckboxSelect,
-} from '../../../lib/components/checkbox/analytics-metadata/interfaces';
-import InternalCheckbox from '../../../lib/components/checkbox/internal';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+} from '../../../lib/components/checkbox/analytics-metadata/interfaces.js';
+import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox/index.js';
+import InternalCheckbox from '../../../lib/components/checkbox/internal.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import labels from '../../../lib/components/internal/components/abstract-switch/analytics-metadata/styles.css.js';
 

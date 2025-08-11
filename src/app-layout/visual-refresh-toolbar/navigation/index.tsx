@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import { InternalButton } from '../../../button/internal.js';
-import { createWidgetizedComponent } from '../../../internal/widgets';
+import { createWidgetizedComponent } from '../../../internal/widgets/index.js';
 import { getDrawerStyles } from '../compute-layout.js';
 import { AppLayoutInternals } from '../interfaces.js';
 import { NotificationsSlot } from '../skeleton/slot-wrappers.js';

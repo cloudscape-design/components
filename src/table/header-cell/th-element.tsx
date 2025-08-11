@@ -7,11 +7,11 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode/index.js';
 import { ColumnWidthStyle } from '../column-widths-utils.js';
 import { TableProps } from '../interfaces.js';
-import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
-import { getTableColHeaderRoleProps, TableRole } from '../table-role';
+import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns/index.js';
+import { getTableColHeaderRoleProps, TableRole } from '../table-role/index.js';
 import { getStickyClassNames } from '../utils.js';
 import { SortingStatus } from './utils.js';
 

@@ -8,14 +8,14 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import * as AllContext from '../../../lib/components/app-layout/visual-refresh/context.js';
 import VisualRefreshTriggerButton, {
   TriggerButtonProps as VisualRefreshTriggerButtonProps,
-} from '../../../lib/components/app-layout/visual-refresh/trigger-button';
+} from '../../../lib/components/app-layout/visual-refresh/trigger-button.js';
 import VisualRefreshToolbarTriggerButton, {
   TriggerButtonProps as VisualRefreshToolbarTriggerButtonProps,
 } from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/index.js';
-import { ButtonProps } from '../../../lib/components/button';
+import { ButtonProps } from '../../../lib/components/button/index.js';
 import { IconProps } from '../../../lib/components/icon/interfaces.js';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { testIf } from '../../__tests__/utils';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { testIf } from '../../__tests__/utils.js';
 
 import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';

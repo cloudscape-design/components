@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { CustomTriggerProps } from '../button-dropdown/interfaces.js';
 import InternalButtonDropdown from '../button-dropdown/internal.js';
 import InternalIcon from '../icon/internal.js';
-import { CancelableEventHandler } from '../internal/events';
+import { CancelableEventHandler } from '../internal/events/index.js';
 import { spinWhenOpen } from '../internal/styles/motion/utils.js';
 import { BreadcrumbGroupProps } from './interfaces.js';
 

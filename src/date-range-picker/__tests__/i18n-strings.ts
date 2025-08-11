@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DateRangePickerProps } from '../interfaces';
+import { DateRangePickerProps } from '../interfaces.js';
 
 export const i18nStrings: DateRangePickerProps.I18nStrings = {
   ariaLabel: 'date range picker',

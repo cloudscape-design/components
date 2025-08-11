@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../internal/base-component/index.js';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context.js';
-import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
+import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../internal/events/index.js';
 
 export interface BaseInputProps {
   /**

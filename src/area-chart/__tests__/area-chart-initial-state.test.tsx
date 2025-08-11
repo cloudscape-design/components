@@ -8,9 +8,9 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
-import AreaChart, { AreaChartProps } from '../../../lib/components/area-chart';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { AreaChartWrapper } from '../../../lib/components/test-utils/dom';
+import AreaChart, { AreaChartProps } from '../../../lib/components/area-chart/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import { AreaChartWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';

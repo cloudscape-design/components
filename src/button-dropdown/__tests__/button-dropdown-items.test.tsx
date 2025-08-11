@@ -5,10 +5,10 @@ import { render } from '@testing-library/react';
 
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
-import { InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { isItemGroup, isLinkItem } from '../utils/utils';
+import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown/index.js';
+import { InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { isItemGroup, isLinkItem } from '../utils/utils.js';
 
 import categoryStyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';
 import categoryItemStyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';

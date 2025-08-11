@@ -12,15 +12,15 @@ import {
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
 
-import { ActionsWrapper } from '../alert/actions-wrapper';
+import { ActionsWrapper } from '../alert/actions-wrapper/index.js';
 import { ButtonProps } from '../button/interfaces.js';
 import { InternalButton } from '../button/internal.js';
 import InternalIcon from '../icon/internal.js';
-import { getVisualContextClassname } from '../internal/components/visual-context';
+import { getVisualContextClassname } from '../internal/components/visual-context/index.js';
 import { PACKAGE_VERSION } from '../internal/environment.js';
 import { isDevelopment } from '../internal/is-development.js';
 import { awsuiPluginsInternal } from '../internal/plugins/api.js';
-import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
+import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers/index.js';
 import { throttle } from '../internal/utils/throttle.js';
 import useContainerWidth from '../internal/utils/use-container-width.js';
 import InternalLiveRegion from '../live-region/internal.js';

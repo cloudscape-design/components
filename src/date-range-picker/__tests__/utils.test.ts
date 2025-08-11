@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DateRangePickerProps } from '../interfaces';
-import * as AllTimeOffset from '../time-offset';
-import { formatInitialValue, formatValue, getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from '../utils';
+import { DateRangePickerProps } from '../interfaces.js';
+import * as AllTimeOffset from '../time-offset.js';
+import { formatInitialValue, formatValue, getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from '../utils.js';
 
 const SetTimeOffsetSpy = jest.spyOn(AllTimeOffset, 'setTimeOffset');
 const ShiftTimeOffsetSpy = jest.spyOn(AllTimeOffset, 'shiftTimeOffset');

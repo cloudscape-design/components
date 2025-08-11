@@ -4,17 +4,17 @@ import React, { useEffect, useImperativeHandle, useLayoutEffect, useRef, useStat
 
 import { useMergeRefs, useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import ScreenreaderOnly from '../../internal/components/screenreader-only';
+import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context.js';
-import { fireNonCancelableEvent } from '../../internal/events';
-import { useControllable } from '../../internal/hooks/use-controllable';
-import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
-import { useMobile } from '../../internal/hooks/use-mobile';
+import { fireNonCancelableEvent } from '../../internal/events/index.js';
+import { useControllable } from '../../internal/hooks/use-controllable/index.js';
+import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer/index.js';
+import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs.js';
 import globalVars from '../../internal/styles/global-vars.js';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils.js';
 import { AppLayoutProps } from '../interfaces.js';
-import { SplitPanelProviderProps } from '../split-panel';
+import { SplitPanelProviderProps } from '../split-panel/index.js';
 import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers.js';
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control.js';
 import { useGlobalScrollPadding } from '../utils/use-global-scroll-padding.js';
@@ -38,7 +38,7 @@ import {
   AppLayoutToolbar,
 } from './internal.js';
 import { useMultiAppLayout } from './multi-layout.js';
-import { SkeletonLayout } from './skeleton';
+import { SkeletonLayout } from './skeleton/index.js';
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
   (

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
-import { CollectionPreferencesWrapper, RadioGroupWrapper } from '../../../lib/components/test-utils/dom';
-import { pageSizePreference, renderCollectionPreferences } from './shared';
+import { CollectionPreferencesProps } from '../../../lib/components/collection-preferences/index.js';
+import { CollectionPreferencesWrapper, RadioGroupWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { pageSizePreference, renderCollectionPreferences } from './shared.js';
 
 import styles from '../../../lib/components/collection-preferences/styles.css.js';
 

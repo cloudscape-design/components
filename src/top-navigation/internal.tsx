@@ -7,16 +7,16 @@ import { isDevelopment, warnOnce } from '@cloudscape-design/component-toolkit/in
 
 import { hasCheckboxItems } from '../button-dropdown/utils/utils.js';
 import { useInternalI18n } from '../i18n/context.js';
-import { getBaseProps } from '../internal/base-component';
-import { ButtonTrigger } from '../internal/components/menu-dropdown';
-import VisualContext from '../internal/components/visual-context';
-import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { ButtonTrigger } from '../internal/components/menu-dropdown/index.js';
+import VisualContext from '../internal/components/visual-context/index.js';
+import { fireCancelableEvent, isPlainLeftClick } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update.js';
 import { SomeRequired } from '../internal/types.js';
 import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
 import { TopNavigationProps } from './interfaces.js';
-import OverflowMenu from './parts/overflow-menu';
+import OverflowMenu from './parts/overflow-menu/index.js';
 import Utility from './parts/utility.js';
 import { useTopNavigation } from './use-top-navigation.js';
 

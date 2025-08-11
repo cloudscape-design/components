@@ -7,14 +7,14 @@ import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/int
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../i18n/context.js';
-import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
-import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent } from '../internal/events';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useControllable } from '../internal/hooks/use-controllable';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { FunnelMetrics } from '../internal/analytics/index.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useControllable } from '../internal/hooks/use-controllable/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { useFunnelChangeEvent } from './analytics.js';
 import { GeneratedAnalyticsMetadataWizardComponent } from './analytics-metadata/interfaces.js';
 import { WizardProps } from './interfaces.js';

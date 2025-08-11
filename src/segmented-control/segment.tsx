@@ -6,9 +6,9 @@ import clsx from 'clsx';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalIcon from '../icon/internal.js';
-import Tooltip from '../internal/components/tooltip';
-import useHiddenDescription from '../internal/hooks/use-hidden-description';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import Tooltip from '../internal/components/tooltip/index.js';
+import useHiddenDescription from '../internal/hooks/use-hidden-description/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { SegmentedControlProps } from './interfaces.js';
 
 import styles from './styles.css.js';

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { applyDefaults } from '../../../lib/components/app-layout/defaults';
+import { applyDefaults } from '../../../lib/components/app-layout/defaults.js';
 
 test('returns defaults for content type', () => {
   expect(applyDefaults('default', {}, false)).toEqual({

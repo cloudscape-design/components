@@ -7,14 +7,14 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
-import PropertyFilter from '../../../lib/components/property-filter';
+import PropertyFilter from '../../../lib/components/property-filter/index.js';
 import {
   FilteringOption,
   FilteringProperty,
   PropertyFilterProps,
-} from '../../../lib/components/property-filter/interfaces';
-import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
-import { createDefaultProps } from './common';
+} from '../../../lib/components/property-filter/interfaces.js';
+import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { createDefaultProps } from './common.js';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
 

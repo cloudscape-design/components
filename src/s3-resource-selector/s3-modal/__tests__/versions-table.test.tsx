@@ -3,10 +3,10 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import { VersionsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/versions-table';
-import createWrapper from '../../../../lib/components/test-utils/dom';
-import { i18nStrings, versions } from '../../__tests__/fixtures';
-import { getColumnAriaLabels, getHeaderVisibleText, getTableBodyContent } from './utils';
+import { VersionsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/versions-table.js';
+import createWrapper from '../../../../lib/components/test-utils/dom/index.js';
+import { i18nStrings, versions } from '../../__tests__/fixtures.js';
+import { getColumnAriaLabels, getHeaderVisibleText, getTableBodyContent } from './utils.js';
 
 async function renderTable(jsx: React.ReactElement) {
   const { container } = render(jsx);

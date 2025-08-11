@@ -5,10 +5,10 @@ import {
   StickyColumnsModel,
   useStickyCellStyles,
   useStickyColumns,
-} from '../../../../lib/components/table/sticky-columns';
-import { updateCellOffsets } from '../../../../lib/components/table/sticky-columns/utils';
-import { getStickyClassNames } from '../../../../lib/components/table/utils';
-import { renderHook } from '../../../__tests__/render-hook';
+} from '../../../../lib/components/table/sticky-columns/index.js';
+import { updateCellOffsets } from '../../../../lib/components/table/sticky-columns/utils.js';
+import { getStickyClassNames } from '../../../../lib/components/table/utils.js';
+import { renderHook } from '../../../__tests__/render-hook.js';
 
 function createElementWithWidth(tag: string, width = 0) {
   const element = document.createElement(tag);

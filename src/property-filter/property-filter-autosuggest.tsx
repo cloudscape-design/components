@@ -11,20 +11,20 @@ import { useAutosuggestLoadMore } from '../autosuggest/load-more-controller.js';
 import { useAutosuggestItems } from '../autosuggest/options-controller.js';
 import AutosuggestOptionsList from '../autosuggest/options-list.js';
 import { BaseChangeDetail } from '../input/interfaces.js';
-import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
+import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input/index.js';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces.js';
-import DropdownFooter from '../internal/components/dropdown-footer';
-import { useDropdownStatus } from '../internal/components/dropdown-status';
+import DropdownFooter from '../internal/components/dropdown-footer/index.js';
+import { useDropdownStatus } from '../internal/components/dropdown-status/index.js';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils.js';
 import {
   BaseKeyDetail,
   CancelableEventHandler,
   fireNonCancelableEvent,
   NonCancelableCustomEvent,
-} from '../internal/events';
+} from '../internal/events/index.js';
 import { fireCancelableEvent } from '../internal/events/index.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { joinStrings } from '../internal/utils/strings';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { joinStrings } from '../internal/utils/strings/index.js';
 import { filterOptions } from './filter-options.js';
 
 import autosuggestStyles from '../autosuggest/styles.css.js';

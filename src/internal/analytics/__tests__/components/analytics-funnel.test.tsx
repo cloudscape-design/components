@@ -3,24 +3,25 @@
 import React from 'react';
 import { act, fireEvent, render, waitFor } from '@testing-library/react';
 
-import Button from '../../../../../lib/components/button';
-import Cards from '../../../../../lib/components/cards';
-import Container from '../../../../../lib/components/container';
-import ExpandableSection from '../../../../../lib/components/expandable-section';
-import FormField from '../../../../../lib/components/form-field';
-import Header from '../../../../../lib/components/header';
-import { FunnelMetrics, PerformanceMetrics } from '../../../../../lib/components/internal/analytics';
+import Button from '../../../../../lib/components/button/index.js';
+import Cards from '../../../../../lib/components/cards/index.js';
+import Container from '../../../../../lib/components/container/index.js';
+import ExpandableSection from '../../../../../lib/components/expandable-section/index.js';
+import FormField from '../../../../../lib/components/form-field/index.js';
+import Header from '../../../../../lib/components/header/index.js';
 import {
   AnalyticsFunnel,
   AnalyticsFunnelStep,
   AnalyticsFunnelSubStep,
   CREATION_EDIT_FLOW_DONE_EVENT_NAME,
-} from '../../../../../lib/components/internal/analytics/components/analytics-funnel';
-import { useFunnel, useFunnelSubStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
-import { DATA_ATTR_FUNNEL_INTERACTION_ID } from '../../../../../lib/components/internal/analytics/selectors';
-import Modal from '../../../../../lib/components/modal';
-import Table from '../../../../../lib/components/table';
-import { mockedFunnelInteractionId, mockFunnelMetrics, mockInnerText, mockPerformanceMetrics } from '../mocks';
+} from '../../../../../lib/components/internal/analytics/components/analytics-funnel.js';
+import { useFunnel, useFunnelSubStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel.js';
+import { FunnelMetrics, PerformanceMetrics } from '../../../../../lib/components/internal/analytics/index.js';
+import Modal from '../../../../../lib/components/modal/index.js';
+import Table from '../../../../../lib/components/table/index.js';
+import { mockedFunnelInteractionId, mockFunnelMetrics, mockInnerText, mockPerformanceMetrics } from '../mocks.js';
+
+import { DATA_ATTR_FUNNEL_INTERACTION_ID } from '../../../../../lib/components/internal/analytics/selectors.js';
 
 jest.mock('../../../../../lib/components/internal/environment', () => ({
   THEME: 'polaris',

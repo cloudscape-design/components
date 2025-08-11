@@ -13,9 +13,9 @@ import { KeyCode } from '../../internal/keycode.js';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces.js';
 import { ColumnWidthStyle } from '../column-widths-utils.js';
 import { TableProps } from '../interfaces.js';
-import { Divider, Resizer } from '../resizer';
-import { StickyColumnsModel } from '../sticky-columns';
-import { TableRole } from '../table-role';
+import { Divider, Resizer } from '../resizer/index.js';
+import { StickyColumnsModel } from '../sticky-columns/index.js';
+import { TableRole } from '../table-role/index.js';
 import { TableThElement } from './th-element.js';
 import { getSortingIconName, getSortingStatus, isSorted } from './utils.js';
 

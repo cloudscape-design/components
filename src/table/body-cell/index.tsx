@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useInternalI18n } from '../../i18n/context.js';
 import Icon from '../../icon/internal.js';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
-import { usePrevious } from '../../internal/hooks/use-previous';
+import { usePrevious } from '../../internal/hooks/use-previous/index.js';
 import InternalLiveRegion from '../../live-region/internal.js';
 import { TableProps } from '../interfaces.js';
 import { DisabledInlineEditor } from './disabled-inline-editor.js';

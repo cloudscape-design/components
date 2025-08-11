@@ -5,12 +5,12 @@ import { RefObject } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { renderHook } from '../../../../__tests__/render-hook';
-import { InputProps } from '../../../../input/interfaces';
-import { BaseKeyDetail } from '../../../events';
-import { KeyCode } from '../../../keycode';
-import useMask, { UseMaskProps } from '../use-mask';
-import MaskFormat from '../utils/mask-format';
+import { renderHook } from '../../../../__tests__/render-hook.js';
+import { InputProps } from '../../../../input/interfaces.js';
+import { BaseKeyDetail } from '../../../events/index.js';
+import { KeyCode } from '../../../keycode.js';
+import useMask, { UseMaskProps } from '../use-mask.js';
+import MaskFormat from '../utils/mask-format.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

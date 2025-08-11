@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { SomeRequired } from '../internal/types.js';
 import StatusIndicator from '../status-indicator/internal.js';
 import { StepsProps } from './interfaces.js';

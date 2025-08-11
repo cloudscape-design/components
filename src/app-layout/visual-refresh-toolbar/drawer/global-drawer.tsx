@@ -5,9 +5,9 @@ import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal.js';
-import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
-import customCssProps from '../../../internal/generated/custom-css-properties';
-import { usePrevious } from '../../../internal/hooks/use-previous';
+import PanelResizeHandle from '../../../internal/components/panel-resize-handle/index.js';
+import customCssProps from '../../../internal/generated/custom-css-properties/index.js';
+import { usePrevious } from '../../../internal/hooks/use-previous/index.js';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils.js';
 import { getDrawerStyles } from '../compute-layout.js';
 import { AppLayoutInternals, InternalDrawer } from '../interfaces.js';

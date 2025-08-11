@@ -5,12 +5,12 @@ import { fireEvent, render } from '@testing-library/react';
 
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit/internal/container-queries/interfaces.js';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { TableHeaderCell, TableHeaderCellProps } from '../../../lib/components/table/header-cell';
-import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
-import { renderHook } from '../../__tests__/render-hook';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
-import { TableProps } from '../interfaces';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import { TableHeaderCell, TableHeaderCellProps } from '../../../lib/components/table/header-cell/index.js';
+import { useStickyColumns } from '../../../lib/components/table/sticky-columns/index.js';
+import { renderHook } from '../../__tests__/render-hook.js';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils.js';
+import { TableProps } from '../interfaces.js';
 
 import styles from '../../../lib/components/table/header-cell/styles.css.js';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';

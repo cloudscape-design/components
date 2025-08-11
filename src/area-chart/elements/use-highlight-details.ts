@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useInternalI18n } from '../../i18n/context.js';
 import { CartesianChartProps } from '../../internal/components/cartesian-chart/interfaces.js';
-import { ChartSeriesDetailItem } from '../../internal/components/chart-series-details';
-import { useSelector } from '../async-store';
+import { ChartSeriesDetailItem } from '../../internal/components/chart-series-details/index.js';
+import { useSelector } from '../async-store/index.js';
 import { AreaChartProps } from '../interfaces.js';
-import { ChartModel } from '../model';
+import { ChartModel } from '../model/index.js';
 
 export interface HighlightDetails {
   isPopoverPinned: boolean;

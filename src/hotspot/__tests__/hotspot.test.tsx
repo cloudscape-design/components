@@ -6,8 +6,8 @@ import { render } from '@testing-library/react';
 import {
   HotspotContext as HotspotContextType,
   hotspotContext as HotspotContext,
-} from '../../../lib/components/annotation-context/context';
-import Hotspot from '../../../lib/components/hotspot';
+} from '../../../lib/components/annotation-context/context.js';
+import Hotspot from '../../../lib/components/hotspot/index.js';
 
 function getContext(props?: Partial<HotspotContextType>): HotspotContextType {
   return {

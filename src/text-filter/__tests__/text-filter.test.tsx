@@ -4,10 +4,10 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
-import FormField from '../../../lib/components/form-field';
-import { DEBOUNCE_DEFAULT_DELAY } from '../../../lib/components/internal/debounce';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import TextFilter, { TextFilterProps } from '../../../lib/components/text-filter';
+import FormField from '../../../lib/components/form-field/index.js';
+import { DEBOUNCE_DEFAULT_DELAY } from '../../../lib/components/internal/debounce.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import TextFilter, { TextFilterProps } from '../../../lib/components/text-filter/index.js';
 
 function renderTextFilter(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);

@@ -15,7 +15,7 @@ import {
 import { hasSortableData } from '@dnd-kit/sortable';
 
 import { SortableAreaProps } from './interfaces.js';
-import { KeyboardSensor } from './keyboard-sensor';
+import { KeyboardSensor } from './keyboard-sensor/index.js';
 
 enum KeyboardCode {
   Space = 'Space',

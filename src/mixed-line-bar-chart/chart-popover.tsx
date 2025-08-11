@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import ChartPopover from '../internal/components/chart-popover';
-import ChartSeriesDetails, { ExpandedSeries } from '../internal/components/chart-series-details';
-import { Transition } from '../internal/components/transition';
+import ChartPopover from '../internal/components/chart-popover/index.js';
+import ChartSeriesDetails, { ExpandedSeries } from '../internal/components/chart-series-details/index.js';
+import { Transition } from '../internal/components/transition/index.js';
 import { HighlightDetails } from './format-highlighted.js';
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces.js';
 

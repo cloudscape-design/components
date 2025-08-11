@@ -18,7 +18,7 @@ import {
   moveNextMonth,
   movePrevMonth,
 } from '../../../calendar/utils/navigation-month.js';
-import { useDateCache } from '../../../internal/hooks/use-date-cache';
+import { useDateCache } from '../../../internal/hooks/use-date-cache/index.js';
 import { KeyCode } from '../../../internal/keycode.js';
 import handleKey from '../../../internal/utils/handle-key.js';
 import { hasValue } from '../../../internal/utils/has-value.js';

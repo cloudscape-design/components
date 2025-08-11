@@ -3,7 +3,7 @@
 
 import { useCallback, useState } from 'react';
 
-import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
+import { CancelableEventHandler, fireCancelableEvent } from '../internal/events/index.js';
 import { TableProps } from './interfaces.js';
 
 interface CellId {

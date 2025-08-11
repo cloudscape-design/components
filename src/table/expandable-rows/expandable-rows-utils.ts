@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useInternalI18n } from '../../i18n/context.js';
-import { fireNonCancelableEvent } from '../../internal/events';
+import { fireNonCancelableEvent } from '../../internal/events/index.js';
 import { TableProps } from '../interfaces.js';
 import { ItemSet } from '../selection/utils.js';
 

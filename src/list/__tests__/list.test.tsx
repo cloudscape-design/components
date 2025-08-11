@@ -3,9 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { Icon } from '../../../lib/components';
-import List, { ListProps } from '../../../lib/components/list';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import { Icon } from '../../../lib/components/index.js';
+import List, { ListProps } from '../../../lib/components/list/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 interface Item {
   id: string;

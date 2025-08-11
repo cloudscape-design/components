@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { createWidgetizedComponent } from '../../../internal/widgets';
-import { SplitPanelProvider, SplitPanelProviderProps } from '../../split-panel';
+import { createWidgetizedComponent } from '../../../internal/widgets/index.js';
+import { SplitPanelProvider, SplitPanelProviderProps } from '../../split-panel/index.js';
 import { getDrawerStyles } from '../compute-layout.js';
 import { AppLayoutInternals } from '../interfaces.js';
 

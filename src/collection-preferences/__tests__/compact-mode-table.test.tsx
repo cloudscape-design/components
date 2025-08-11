@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
-import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom';
-import { contentDensityPreference, renderCollectionPreferences } from './shared';
+import { CollectionPreferencesProps } from '../../../lib/components/collection-preferences/index.js';
+import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { contentDensityPreference, renderCollectionPreferences } from './shared.js';
 
 function renderWithContentDensity(props: Partial<CollectionPreferencesProps>): CollectionPreferencesWrapper {
   return renderCollectionPreferences({ contentDensityPreference, ...props });

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import formatDateISO from '../format-date-iso';
-import * as formatTimeOffsetModule from '../format-time-offset';
+import formatDateISO from '../format-date-iso.js';
+import * as formatTimeOffsetModule from '../format-time-offset.js';
 
 describe('formatDateISO', () => {
   let formatTimeOffsetISOMock: jest.SpyInstance;

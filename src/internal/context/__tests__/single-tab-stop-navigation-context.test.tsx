@@ -7,8 +7,8 @@ import { render } from '@testing-library/react';
 import {
   SingleTabStopNavigationContext,
   useSingleTabStopNavigation,
-} from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
-import { renderWithSingleTabStopNavigation } from './utils';
+} from '../../../../lib/components/internal/context/single-tab-stop-navigation-context.js';
+import { renderWithSingleTabStopNavigation } from './utils.js';
 
 function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
   const buttonRef = useRef<HTMLButtonElement>(null);

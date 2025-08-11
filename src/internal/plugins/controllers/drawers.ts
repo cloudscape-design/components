@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import debounce from '../../debounce.js';
-import { NonCancelableEventHandler } from '../../events';
+import { NonCancelableEventHandler } from '../../events/index.js';
 import { reportRuntimeApiWarning } from '../helpers/metrics.js';
 
 type DrawerVisibilityChange = (callback: (isVisible: boolean) => void) => void;

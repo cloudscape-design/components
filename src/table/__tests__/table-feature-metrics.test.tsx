@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import * as baseComponentHooks from '../../../lib/components/internal/hooks/use-base-component';
-import Table from '../../../lib/components/table';
+import * as baseComponentHooks from '../../../lib/components/internal/hooks/use-base-component/index.js';
+import Table from '../../../lib/components/table/index.js';
 
 const useBaseComponentSpy = jest.spyOn(baseComponentHooks, 'default');
 

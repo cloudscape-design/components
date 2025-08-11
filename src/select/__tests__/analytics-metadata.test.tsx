@@ -9,15 +9,15 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import FormField from '../../../lib/components/form-field';
-import Select, { SelectProps } from '../../../lib/components/select';
+import FormField from '../../../lib/components/form-field/index.js';
 import {
   GeneratedAnalyticsMetadataSelectCollapse,
   GeneratedAnalyticsMetadataSelectExpand,
-} from '../../../lib/components/select/analytics-metadata/interfaces';
-import InternalSelect from '../../../lib/components/select/internal';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+} from '../../../lib/components/select/analytics-metadata/interfaces.js';
+import Select, { SelectProps } from '../../../lib/components/select/index.js';
+import InternalSelect from '../../../lib/components/select/internal.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import buttonTriggerLabels from '../../../lib/components/internal/components/button-trigger/analytics-metadata/styles.css.js';
 import optionLabels from '../../../lib/components/internal/components/option/analytics-metadata/styles.css.js';

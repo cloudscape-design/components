@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import wrapper from '../../../../../lib/components/test-utils/selectors';
+import wrapper from '../../../../../lib/components/test-utils/selectors/index.js';
 
 interface ExtendedWindow extends Window {
   __loadMoreCalls?: number;

@@ -9,7 +9,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { ButtonProps } from '../button/interfaces.js';
 import { InternalButton } from '../button/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
-import FocusLock from '../internal/components/focus-lock';
+import FocusLock from '../internal/components/focus-lock/index.js';
 import { KeyCode } from '../internal/keycode.js';
 
 import styles from './styles.css.js';

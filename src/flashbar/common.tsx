@@ -4,9 +4,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useMergeRefs, useReducedMotion, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { getBaseProps } from '../internal/base-component/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { isDevelopment } from '../internal/is-development.js';
 import { focusFlashById, focusFlashFocusableArea } from './flash.js';
 import { FlashbarProps } from './interfaces.js';

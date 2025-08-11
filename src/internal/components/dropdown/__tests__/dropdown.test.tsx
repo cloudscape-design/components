@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 
-import Dropdown from '../../../../../lib/components/internal/components/dropdown';
-import { calculatePosition } from '../../../../../lib/components/internal/components/dropdown/dropdown-fit-handler';
-import DropdownWrapper from '../../../../../lib/components/test-utils/dom/internal/dropdown';
+import { calculatePosition } from '../../../../../lib/components/internal/components/dropdown/dropdown-fit-handler.js';
+import Dropdown from '../../../../../lib/components/internal/components/dropdown/index.js';
+import DropdownWrapper from '../../../../../lib/components/test-utils/dom/internal/dropdown.js';
 
 const outsideId = 'outside';
 

@@ -6,8 +6,8 @@ import { act, render } from '@testing-library/react';
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import ChartLegend from '../../../../../lib/components/internal/components/chart-legend';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
+import ChartLegend from '../../../../../lib/components/internal/components/chart-legend/index.js';
+import createWrapper from '../../../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../../../lib/components/internal/components/chart-legend/styles.selectors.js';
 

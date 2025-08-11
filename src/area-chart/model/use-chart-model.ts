@@ -6,14 +6,14 @@ import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import { XDomain, XScaleType, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces.js';
-import { ChartPlotRef } from '../../internal/components/chart-plot';
+import { ChartPlotRef } from '../../internal/components/chart-plot/index.js';
 import { useHeightMeasure } from '../../internal/hooks/container-queries/use-height-measure.js';
 import { KeyCode } from '../../internal/keycode.js';
 import { circleIndex } from '../../internal/utils/circle-index.js';
 import handleKey from '../../internal/utils/handle-key.js';
 import { nodeBelongs } from '../../internal/utils/node-belongs.js';
 import { throttle } from '../../internal/utils/throttle.js';
-import { useReaction } from '../async-store';
+import { useReaction } from '../async-store/index.js';
 import { AreaChartProps } from '../interfaces.js';
 import computeChartProps from './compute-chart-props.js';
 import createSeriesDecorator from './create-series-decorator.js';

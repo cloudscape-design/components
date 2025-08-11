@@ -7,9 +7,9 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
-import Select, { SelectProps } from '../../../lib/components/select';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { defaultOptions, defaultProps, VALUE_WITH_SPECIAL_CHARS } from './common';
+import Select, { SelectProps } from '../../../lib/components/select/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { defaultOptions, defaultProps, VALUE_WITH_SPECIAL_CHARS } from './common.js';
 
 import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';

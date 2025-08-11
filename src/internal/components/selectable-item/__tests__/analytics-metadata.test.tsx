@@ -6,14 +6,14 @@ import { render } from '@testing-library/react';
 import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import createWrapper from '../../../../..//lib/components/test-utils/dom';
-import Option from '../../../../../lib/components/internal/components/option';
-import SelectableItems from '../../../../../lib/components/internal/components/selectable-item';
+import createWrapper from '../../../../..//lib/components/test-utils/dom/index.js';
+import Option from '../../../../../lib/components/internal/components/option/index.js';
+import SelectableItems from '../../../../../lib/components/internal/components/selectable-item/index.js';
 import {
   ItemDataAttributes,
   SelectableItemProps,
-} from '../../../../../lib/components/internal/components/selectable-item/interfaces';
-import { validateComponentNameAndLabels } from '../../../../internal/__tests__/analytics-metadata-test-utils';
+} from '../../../../../lib/components/internal/components/selectable-item/interfaces.js';
+import { validateComponentNameAndLabels } from '../../../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import optionLabels from '../../../../../lib/components/internal/components/option/analytics-metadata/styles.css.js';
 import selectableItemsLabels from '../../../../../lib/components/internal/components/selectable-item/analytics-metadata/styles.css.js';

@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 import { IconProps } from '../../../icon/interfaces.js';
 import InternalIcon from '../../../icon/internal.js';
-import { Transition } from '../transition';
+import { Transition } from '../transition/index.js';
 import { Direction, DirectionState } from './interfaces.js';
 
 import styles from './styles.css.js';

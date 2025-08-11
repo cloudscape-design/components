@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { InternalPosition } from './interfaces.js';
 
 import styles from './styles.css.js';

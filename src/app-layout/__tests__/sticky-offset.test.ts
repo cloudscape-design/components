@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { getStickyOffsetVars } from '../../../lib/components/app-layout/utils/sticky-offsets';
-import globalVars from '../../../lib/components/internal/styles/global-vars';
+import { getStickyOffsetVars } from '../../../lib/components/app-layout/utils/sticky-offsets.js';
+import globalVars from '../../../lib/components/internal/styles/global-vars.js';
 
 const HEADER = 5;
 const FOOTER = 10;

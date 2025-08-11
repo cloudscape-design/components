@@ -8,10 +8,10 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalContainer from '../container/internal.js';
-import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent } from '../internal/events';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useControllable } from '../internal/hooks/use-controllable';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { useControllable } from '../internal/hooks/use-controllable/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
 import { GeneratedAnalyticsMetadataTabsComponent } from './analytics-metadata/interfaces.js';

@@ -10,23 +10,23 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { InternalButton } from '../button/internal.js';
 import InternalHeader from '../header/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
-import { PerformanceMetrics } from '../internal/analytics';
 import {
   FunnelNameSelectorContext,
   FunnelStepContextValue,
   FunnelSubStepContextValue,
 } from '../internal/analytics/context/analytics-context.js';
 import { FunnelProps, useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
-import { getBaseProps } from '../internal/base-component';
-import FocusLock from '../internal/components/focus-lock';
+import { PerformanceMetrics } from '../internal/analytics/index.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import FocusLock from '../internal/components/focus-lock/index.js';
 import { ButtonContext, ButtonContextProps } from '../internal/context/button-context.js';
 import { ModalContext } from '../internal/context/modal-context.js';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal.js';
-import { fireNonCancelableEvent } from '../internal/events';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { KeyCode } from '../internal/keycode.js';
 import { SomeRequired } from '../internal/types.js';
 import {

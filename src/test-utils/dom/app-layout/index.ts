@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import ButtonDropdownWrapper from '../button-dropdown';
-import SplitPanelWrapper from '../split-panel';
+import ButtonDropdownWrapper from '../button-dropdown/index.js';
+import SplitPanelWrapper from '../split-panel/index.js';
 
 import testutilStyles from '../../../app-layout/test-classes/styles.selectors.js';
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.selectors.js';

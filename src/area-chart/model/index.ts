@@ -4,9 +4,9 @@ import React from 'react';
 
 import { XDomain, YDomain } from '../../internal/components/cartesian-chart/interfaces.js';
 import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales.js';
-import { ChartPlotRef } from '../../internal/components/chart-plot';
-import { ChartSeriesMarkerType } from '../../internal/components/chart-series-marker';
-import { ReadonlyAsyncStore } from '../async-store';
+import { ChartPlotRef } from '../../internal/components/chart-plot/index.js';
+import { ChartSeriesMarkerType } from '../../internal/components/chart-series-marker/index.js';
+import { ReadonlyAsyncStore } from '../async-store/index.js';
 import { AreaChartProps } from '../interfaces.js';
 
 export interface ChartModel<T extends AreaChartProps.DataTypes> {

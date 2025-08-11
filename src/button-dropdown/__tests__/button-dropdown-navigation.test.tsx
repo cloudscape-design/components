@@ -3,11 +3,14 @@
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
-import ButtonDropdown from '../../../lib/components/button-dropdown';
-import { ButtonDropdownProps, InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
-import InternalButtonDropdown from '../../../lib/components/button-dropdown/internal';
-import createWrapper, { ButtonDropdownWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
-import { KeyCode } from '../../internal/keycode';
+import ButtonDropdown from '../../../lib/components/button-dropdown/index.js';
+import {
+  ButtonDropdownProps,
+  InternalButtonDropdownProps,
+} from '../../../lib/components/button-dropdown/interfaces.js';
+import InternalButtonDropdown from '../../../lib/components/button-dropdown/internal.js';
+import createWrapper, { ButtonDropdownWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { KeyCode } from '../../internal/keycode.js';
 
 import categoryElementStyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';
 import itemStyles from '../../../lib/components/button-dropdown/item-element/styles.css.js';

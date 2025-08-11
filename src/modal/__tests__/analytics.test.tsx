@@ -3,13 +3,17 @@
 import * as React from 'react';
 import { act, render } from '@testing-library/react';
 
-import Alert from '../../../lib/components/alert';
-import Button from '../../../lib/components/button';
-import FormField from '../../../lib/components/form-field';
-import { FunnelMetrics } from '../../../lib/components/internal/analytics';
-import Modal, { ModalProps } from '../../../lib/components/modal';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { mockFunnelMetrics, mockGetBoundingClientRect, mockInnerText } from '../../internal/analytics/__tests__/mocks';
+import Alert from '../../../lib/components/alert/index.js';
+import Button from '../../../lib/components/button/index.js';
+import FormField from '../../../lib/components/form-field/index.js';
+import { FunnelMetrics } from '../../../lib/components/internal/analytics/index.js';
+import Modal, { ModalProps } from '../../../lib/components/modal/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import {
+  mockFunnelMetrics,
+  mockGetBoundingClientRect,
+  mockInnerText,
+} from '../../internal/analytics/__tests__/mocks.js';
 
 mockInnerText();
 mockGetBoundingClientRect();

@@ -4,10 +4,10 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import ScreenreaderOnly from '../../internal/components/screenreader-only';
+import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
 import { TableTdElement, TableTdElementProps } from '../body-cell/td-element.js';
 import { TableThElement, TableThElementProps } from '../header-cell/th-element.js';
-import { Divider } from '../resizer';
+import { Divider } from '../resizer/index.js';
 import { SelectionProps } from './interfaces.js';
 import { SelectionControl, SelectionControlProps } from './selection-control.js';
 

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import ListWrapper, { ListItemWrapper } from '../list';
-import TextFilterWrapper from '../text-filter';
-import ToggleWrapper from '../toggle';
+import ListWrapper, { ListItemWrapper } from '../list/index.js';
+import TextFilterWrapper from '../text-filter/index.js';
+import ToggleWrapper from '../toggle/index.js';
 
 import styles from '../../../collection-preferences/styles.selectors.js';
 

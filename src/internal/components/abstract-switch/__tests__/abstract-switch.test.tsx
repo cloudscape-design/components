@@ -4,8 +4,10 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import '../../../../__a11y__/to-validate-a11y';
-import AbstractSwitch, { AbstractSwitchProps } from '../../../../../lib/components/internal/components/abstract-switch';
-import AbstractSwitchWrapper from '../../../../../lib/components/test-utils/dom/internal/abstract-switch';
+import AbstractSwitch, {
+  AbstractSwitchProps,
+} from '../../../../../lib/components/internal/components/abstract-switch/index.js';
+import AbstractSwitchWrapper from '../../../../../lib/components/test-utils/dom/internal/abstract-switch.js';
 
 function renderAbstractSwitch(props: AbstractSwitchProps) {
   const { container } = render(<AbstractSwitch {...props} />);

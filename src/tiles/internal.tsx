@@ -6,11 +6,11 @@ import clsx from 'clsx';
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { useFormFieldContext } from '../internal/context/form-field-context.js';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
 import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { GeneratedAnalyticsMetadataTilesSelect } from './analytics-metadata/interfaces.js';
 import { TilesProps } from './interfaces.js';
 import { Tile } from './tile.js';

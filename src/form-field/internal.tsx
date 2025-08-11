@@ -9,13 +9,13 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 import InternalGrid from '../grid/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
 import InternalIcon from '../icon/internal.js';
-import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
-import { getBaseProps } from '../internal/base-component';
+import { FunnelMetrics } from '../internal/analytics/index.js';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context.js';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context.js';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { joinStrings } from '../internal/utils/strings';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { joinStrings } from '../internal/utils/strings/index.js';
 import InternalLiveRegion from '../live-region/internal.js';
 import { InternalFormFieldProps } from './interfaces.js';
 import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util.js';

@@ -4,16 +4,16 @@
 import React from 'react';
 import { act, fireEvent, render as reactRender } from '@testing-library/react';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import PropertyFilter from '../../../lib/components/property-filter';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile/index.js';
+import PropertyFilter from '../../../lib/components/property-filter/index.js';
 import {
   FilteringOption,
   FilteringProperty,
   PropertyFilterProps,
-} from '../../../lib/components/property-filter/interfaces';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { createDefaultProps, i18nStrings, providedI18nStrings, StatefulPropertyFilter } from './common';
+} from '../../../lib/components/property-filter/interfaces.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { createDefaultProps, i18nStrings, providedI18nStrings, StatefulPropertyFilter } from './common.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   ...jest.requireActual('../../../lib/components/internal/hooks/use-mobile'),

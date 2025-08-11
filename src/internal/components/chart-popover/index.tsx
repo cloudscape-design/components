@@ -9,7 +9,7 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import PopoverBody from '../../../popover/body.js';
 import PopoverContainer from '../../../popover/container.js';
 import { PopoverProps } from '../../../popover/interfaces.js';
-import { getBaseProps } from '../../base-component';
+import { getBaseProps } from '../../base-component/index.js';
 import { nodeBelongs } from '../../utils/node-belongs.js';
 
 import popoverStyles from '../../../popover/styles.css.js';

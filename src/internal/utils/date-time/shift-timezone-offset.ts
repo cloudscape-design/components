@@ -3,9 +3,9 @@
 
 import { addMinutes } from 'date-fns';
 
-import { joinDateTime } from '.';
 import { formatDate } from './format-date.js';
 import { formatTime } from './format-time.js';
+import { joinDateTime } from './index.js';
 import { parseTimezoneOffset } from './parse-timezone-offset.js';
 
 /**

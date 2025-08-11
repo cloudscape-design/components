@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import createWrapper, { IconWrapper, TokenGroupWrapper } from '../../../lib/components/test-utils/dom';
-import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group';
-import { getIconHTML } from '../../icon/__tests__/utils';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import createWrapper, { IconWrapper, TokenGroupWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group/index.js';
+import { getIconHTML } from '../../icon/__tests__/utils.js';
 
 import optionSelectors from '../../../lib/components/internal/components/option/styles.selectors.js';
 import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';

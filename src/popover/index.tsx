@@ -5,7 +5,7 @@ import React from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { isDevelopment } from '../internal/is-development.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { getExternalProps } from '../internal/utils/external-props.js';

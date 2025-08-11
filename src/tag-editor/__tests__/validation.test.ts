@@ -8,8 +8,8 @@ import {
   maxKeyLengthCheck,
   maxValueLengthCheck,
   validate,
-} from '../../../lib/components/tag-editor/validation';
-import { i18nStrings, MAX_KEY_LENGTH, MAX_VALUE_LENGTH } from './common';
+} from '../../../lib/components/tag-editor/validation.js';
+import { i18nStrings, MAX_KEY_LENGTH, MAX_VALUE_LENGTH } from './common.js';
 
 let mockFormatFn = jest.fn();
 

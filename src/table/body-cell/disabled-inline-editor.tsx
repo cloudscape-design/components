@@ -7,8 +7,8 @@ import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
 import Icon from '../../icon/internal.js';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
-import useHiddenDescription from '../../internal/hooks/use-hidden-description';
-import { usePortalModeClasses } from '../../internal/hooks/use-portal-mode-classes';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description/index.js';
+import { usePortalModeClasses } from '../../internal/hooks/use-portal-mode-classes/index.js';
 import InternalLiveRegion from '../../live-region/internal.js';
 import Arrow from '../../popover/arrow.js';
 import PopoverBody from '../../popover/body.js';

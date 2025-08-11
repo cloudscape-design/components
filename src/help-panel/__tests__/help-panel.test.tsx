@@ -3,9 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import HelpPanel from '../../../lib/components/help-panel';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import HelpPanel from '../../../lib/components/help-panel/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 function renderHelpPanel(jsx: React.ReactElement) {
   const { container } = render(jsx);

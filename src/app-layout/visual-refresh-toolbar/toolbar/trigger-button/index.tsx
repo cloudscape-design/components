@@ -12,7 +12,7 @@ import {
 import { ButtonProps } from '../../../../button/interfaces.js';
 import { IconProps } from '../../../../icon/interfaces.js';
 import Icon from '../../../../icon/internal.js';
-import Tooltip from '../../../../internal/components/tooltip';
+import Tooltip from '../../../../internal/components/tooltip/index.js';
 
 import testutilStyles from '../../../test-classes/styles.css.js';
 import styles from './styles.css.js';

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { addMonths, addYears, isSameMonth, isSameYear, startOfMonth, startOfYear } from 'date-fns';
 
-import { parseDate } from '../../internal/utils/date-time';
+import { parseDate } from '../../internal/utils/date-time/index.js';
 import { DateRangePickerProps } from '../interfaces.js';
 
 export function findDateToFocus(

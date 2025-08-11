@@ -7,13 +7,13 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { StickyHeaderContext } from '../container/use-sticky-header.js';
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { CollectionLabelContext } from '../internal/context/collection-label-context.js';
 import { useContainerHeader } from '../internal/context/container-header.js';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMobile } from '../internal/hooks/use-mobile';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { SomeRequired } from '../internal/types.js';
 import { useTableIntegration } from './analytics/use-table-integration.js';
 import { HeaderProps } from './interfaces.js';

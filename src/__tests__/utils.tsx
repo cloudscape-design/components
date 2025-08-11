@@ -4,8 +4,8 @@ import React from 'react';
 import fs from 'fs';
 import path from 'path';
 
-import { SplitPanelContextProvider } from '../../lib/components/internal/context/split-panel-context';
-import { defaultSplitPanelContextProps } from './required-props-for-components';
+import { SplitPanelContextProvider } from '../../lib/components/internal/context/split-panel-context.js';
+import { defaultSplitPanelContextProps } from './required-props-for-components.js';
 
 const componentsDir = path.resolve(__dirname, '../../lib/components');
 const designTokensDir = path.resolve(__dirname, '../../lib/design-tokens');

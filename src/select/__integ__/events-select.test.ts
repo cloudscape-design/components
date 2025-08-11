@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import EventsSelectPage from './page-objects/events-select-page';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import EventsSelectPage from './page-objects/events-select-page.js';
 
 function setupTest(
   testFn: (page: EventsSelectPage) => Promise<void>,

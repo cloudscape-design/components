@@ -4,10 +4,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { KeyCode } from '../../../lib/components/internal/keycode';
-import MixedLineBarChart from '../../../lib/components/mixed-line-bar-chart';
-import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom';
-import { barSeries, lineSeries3, thresholdSeries } from './common';
+import { KeyCode } from '../../../lib/components/internal/keycode.js';
+import MixedLineBarChart from '../../../lib/components/mixed-line-bar-chart/index.js';
+import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { barSeries, lineSeries3, thresholdSeries } from './common.js';
 
 describe('Keyboard navigation', () => {
   test('opens popover for each series', () => {

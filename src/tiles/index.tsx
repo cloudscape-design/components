@@ -5,7 +5,7 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { GeneratedAnalyticsMetadataTilesComponent } from './analytics-metadata/interfaces.js';
 import { TilesProps } from './interfaces.js';

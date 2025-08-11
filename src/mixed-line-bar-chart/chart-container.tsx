@@ -21,9 +21,9 @@ import {
 } from '../internal/components/cartesian-chart/ticks.js';
 import VerticalGridLines from '../internal/components/cartesian-chart/vertical-grid-lines.js';
 import VerticalMarker from '../internal/components/cartesian-chart/vertical-marker.js';
-import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
+import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot/index.js';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure.js';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { nodeBelongs } from '../internal/utils/node-belongs.js';
 import useContainerWidth from '../internal/utils/use-container-width.js';
 import BarGroups from './bar-groups.js';

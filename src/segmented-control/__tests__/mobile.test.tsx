@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import SegmentedControl, { SegmentedControlProps } from '../../../lib/components/segmented-control';
-import { renderSegmentedControl } from './utils';
+import SegmentedControl, { SegmentedControlProps } from '../../../lib/components/segmented-control/index.js';
+import { renderSegmentedControl } from './utils.js';
 
 const defaultOptions: SegmentedControlProps.Option[] = [
   { text: 'Segment-1', iconName: 'settings', id: 'seg-1' },

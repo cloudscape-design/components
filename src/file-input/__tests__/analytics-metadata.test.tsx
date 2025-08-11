@@ -9,11 +9,11 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import FileInput, { FileInputProps } from '../../../lib/components/file-input';
-import { GeneratedAnalyticsMetadataFileInputClick } from '../../../lib/components/file-input/analytics-metadata/interfaces';
-import InternalFileInput from '../../../lib/components/file-input/internal';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+import { GeneratedAnalyticsMetadataFileInputClick } from '../../../lib/components/file-input/analytics-metadata/interfaces.js';
+import FileInput, { FileInputProps } from '../../../lib/components/file-input/index.js';
+import InternalFileInput from '../../../lib/components/file-input/internal.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import labels from '../../../lib/components/button/analytics-metadata/styles.css.js';
 

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { act, renderHook } from '../../__tests__/render-hook';
-import { ButtonDropdownProps } from '../interfaces';
-import useHighlightedMenu from '../utils/use-highlighted-menu';
+import { act, renderHook } from '../../__tests__/render-hook.js';
+import { ButtonDropdownProps } from '../interfaces.js';
+import useHighlightedMenu from '../utils/use-highlighted-menu.js';
 
 const itemGroup1: ButtonDropdownProps.ItemGroup = {
   text: 'category1',

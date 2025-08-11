@@ -5,8 +5,8 @@ import React, { useContext, useEffect } from 'react';
 import clsx from 'clsx';
 
 import { hotspotContext as hotspotContextType } from '../annotation-context/context.js';
-import { getBaseProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { HotspotProps } from './interfaces.js';
 

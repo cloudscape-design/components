@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import customCssProps from '../../internal/generated/custom-css-properties';
+import customCssProps from '../../internal/generated/custom-css-properties/index.js';
 import { useGlobalScrollPadding } from '../utils/use-global-scroll-padding.js';
 import { useAppLayoutInternals } from './context.js';
 

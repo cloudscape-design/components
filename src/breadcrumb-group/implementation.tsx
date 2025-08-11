@@ -12,10 +12,10 @@ import { CustomTriggerProps, LinkItem } from '../button-dropdown/interfaces.js';
 import InternalButtonDropdown from '../button-dropdown/internal.js';
 import { useInternalI18n } from '../i18n/context.js';
 import InternalIcon from '../icon/internal.js';
-import { getBaseProps } from '../internal/base-component';
-import { fireCancelableEvent } from '../internal/events';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { fireCancelableEvent } from '../internal/events/index.js';
 import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
-import { createWidgetizedComponent } from '../internal/widgets';
+import { createWidgetizedComponent } from '../internal/widgets/index.js';
 import { AllItemsDropdown } from './all-items-dropdown.js';
 import {
   GeneratedAnalyticsMetadataBreadcrumbGroupClick,

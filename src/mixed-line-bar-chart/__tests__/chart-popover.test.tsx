@@ -3,9 +3,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import MixedChartPopover, { MixedChartPopoverProps } from '../../../lib/components/mixed-line-bar-chart/chart-popover';
-import { ChartDataTypes } from '../../../lib/components/mixed-line-bar-chart/interfaces';
-import ChartPopoverWrapper from '../../../lib/components/test-utils/dom/internal/chart-popover';
+import MixedChartPopover, {
+  MixedChartPopoverProps,
+} from '../../../lib/components/mixed-line-bar-chart/chart-popover.js';
+import { ChartDataTypes } from '../../../lib/components/mixed-line-bar-chart/interfaces.js';
+import ChartPopoverWrapper from '../../../lib/components/test-utils/dom/internal/chart-popover.js';
 
 const dummyRef = { current: null };
 function renderChart<T extends ChartDataTypes>(props: Partial<MixedChartPopoverProps<T>>) {

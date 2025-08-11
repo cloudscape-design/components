@@ -7,7 +7,7 @@ import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-fl
 import { ButtonProps } from '../button/interfaces.js';
 import InternalButton from '../button/internal.js';
 import { useSplitPanelContext } from '../internal/context/split-panel-context.js';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { SplitPanelContentProps, SplitPanelProps } from './interfaces.js';
 
 import sharedStyles from '../app-layout/resize/styles.css.js';

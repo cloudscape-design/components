@@ -7,16 +7,16 @@ import { pie } from 'd3-shape';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../internal/base-component';
-import Filter, { ChartFilterProps } from '../internal/components/chart-filter';
-import Legend, { ChartLegendProps } from '../internal/components/chart-legend';
-import ChartSeriesMarker from '../internal/components/chart-series-marker';
-import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
-import { ChartWrapper } from '../internal/components/chart-wrapper';
-import { fireNonCancelableEvent } from '../internal/events';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useControllable } from '../internal/hooks/use-controllable';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { getBaseProps } from '../internal/base-component/index.js';
+import Filter, { ChartFilterProps } from '../internal/components/chart-filter/index.js';
+import Legend, { ChartLegendProps } from '../internal/components/chart-legend/index.js';
+import ChartSeriesMarker from '../internal/components/chart-series-marker/index.js';
+import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container/index.js';
+import { ChartWrapper } from '../internal/components/chart-wrapper/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { useControllable } from '../internal/hooks/use-controllable/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import createCategoryColorScale from '../internal/utils/create-category-color-scale.js';
 import { nodeBelongs } from '../internal/utils/node-belongs.js';

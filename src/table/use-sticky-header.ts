@@ -4,7 +4,7 @@ import { RefObject, useCallback, useLayoutEffect } from 'react';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { useMobile } from '../internal/hooks/use-mobile';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import stickyScrolling, { calculateScrollingOffset, scrollUpBy } from './sticky-scrolling.js';
 
 export const useStickyHeader = (

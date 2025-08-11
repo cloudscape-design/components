@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 import { IconProps } from '../icon/interfaces.js';
 import InternalIcon from '../icon/internal.js';
-import { BaseComponentProps, getBaseProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { BaseComponentProps, getBaseProps } from '../internal/base-component/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { SomeRequired } from '../internal/types.js';
 import InternalSpinner from '../spinner/internal.js';
 

@@ -6,14 +6,14 @@ import clsx from 'clsx';
 import { Portal, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context.js';
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils.js';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal.js';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context.js';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes/index.js';
 import { KeyCode } from '../internal/keycode.js';
 import Arrow from './arrow.js';
 import PopoverBody from './body.js';

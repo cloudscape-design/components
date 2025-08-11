@@ -5,11 +5,11 @@ import { render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import Icon from '../../../lib/components/icon';
-import KeyValuePairs from '../../../lib/components/key-value-pairs';
-import Link from '../../../lib/components/link';
-import SpaceBetween from '../../../lib/components/space-between';
-import createWrapper, { IconWrapper } from '../../../lib/components/test-utils/dom';
+import Icon from '../../../lib/components/icon/index.js';
+import KeyValuePairs from '../../../lib/components/key-value-pairs/index.js';
+import Link from '../../../lib/components/link/index.js';
+import SpaceBetween from '../../../lib/components/space-between/index.js';
+import createWrapper, { IconWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

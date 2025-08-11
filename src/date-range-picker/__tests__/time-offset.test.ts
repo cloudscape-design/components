@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { DateRangePickerProps } from '../interfaces';
-import { normalizeTimeOffset, setTimeOffset, shiftTimeOffset } from '../time-offset';
+import { DateRangePickerProps } from '../interfaces.js';
+import { normalizeTimeOffset, setTimeOffset, shiftTimeOffset } from '../time-offset.js';
 
 describe('Date range picker', () => {
   describe('time offset handling', () => {

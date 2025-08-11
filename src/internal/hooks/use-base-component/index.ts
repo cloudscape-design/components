@@ -12,7 +12,7 @@ import {
 import { AnalyticsMetadata } from '../../analytics/interfaces.js';
 import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../../environment.js';
 import { getVisualTheme } from '../../utils/get-visual-theme.js';
-import { useVisualRefresh } from '../use-visual-mode';
+import { useVisualRefresh } from '../use-visual-mode/index.js';
 import { useMissingStylesCheck } from './styles-check.js';
 
 export interface InternalBaseComponentProps<T = any> {

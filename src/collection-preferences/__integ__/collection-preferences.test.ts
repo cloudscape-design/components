@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import CollectionPreferencesPageObject from './pages/collection-preferences-page';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import CollectionPreferencesPageObject from './pages/collection-preferences-page.js';
 
 const setupTest = (testFn: (page: CollectionPreferencesPageObject) => Promise<void>) => {
   return useBrowser(async browser => {

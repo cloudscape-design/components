@@ -5,13 +5,13 @@ import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-import { useMobile } from '../../../internal/hooks/use-mobile';
+import { useMobile } from '../../../internal/hooks/use-mobile/index.js';
 import { splitItems } from '../../drawer/drawers-helpers.js';
 import OverflowMenu from '../../drawer/overflow-menu.js';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces.js';
 import { OnChangeParams, TOOLS_DRAWER_ID } from '../../utils/use-drawers.js';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control.js';
-import TriggerButton from './trigger-button';
+import TriggerButton from './trigger-button/index.js';
 
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';

@@ -5,8 +5,8 @@ import { render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import createWrapper from '../../../lib/components/test-utils/dom';
-import TimeInput, { TimeInputProps } from '../../../lib/components/time-input';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import TimeInput, { TimeInputProps } from '../../../lib/components/time-input/index.js';
 
 const defaultProps: TimeInputProps = { value: '' };
 

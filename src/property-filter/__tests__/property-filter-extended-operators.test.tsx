@@ -6,11 +6,11 @@ import { act, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import Input from '../../../lib/components/input';
-import PropertyFilter from '../../../lib/components/property-filter';
+import Input from '../../../lib/components/input/index.js';
+import PropertyFilter from '../../../lib/components/property-filter/index.js';
 import { FilteringProperty, PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces.js';
-import createWrapper, { PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
-import { createDefaultProps } from './common';
+import createWrapper, { PropertyFilterWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { createDefaultProps } from './common.js';
 
 const defaultProps = createDefaultProps([], []);
 

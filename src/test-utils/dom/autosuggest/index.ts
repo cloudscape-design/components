@@ -4,7 +4,7 @@ import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloud
 import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 import { act } from '@cloudscape-design/test-utils-core/utils-dom';
 
-import InputWrapper from '../input';
+import InputWrapper from '../input/index.js';
 import DropdownWrapper from '../internal/dropdown.js';
 import OptionWrapper from '../internal/option.js';
 import OptionsListWrapper from '../internal/options-list.js';

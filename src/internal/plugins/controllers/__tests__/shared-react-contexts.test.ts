@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { SharedReactContexts } from '../../../../../lib/components/internal/plugins/controllers/shared-react-contexts';
+import { SharedReactContexts } from '../../../../../lib/components/internal/plugins/controllers/shared-react-contexts.js';
 
 test('returns the same context for the same React and the name', () => {
   const contexts = new SharedReactContexts();

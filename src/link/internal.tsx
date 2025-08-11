@@ -7,16 +7,16 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 
 import { useInternalI18n } from '../i18n/context.js';
 import InternalIcon from '../icon/internal.js';
-import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
-import { getBaseProps } from '../internal/base-component';
+import { FunnelMetrics } from '../internal/analytics/index.js';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context.js';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context.js';
-import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events/index.js';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { KeyCode } from '../internal/keycode.js';
 import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
 import { LinkProps } from './interfaces.js';

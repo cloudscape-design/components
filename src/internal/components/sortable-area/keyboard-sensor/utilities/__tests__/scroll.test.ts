@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { applyScroll } from '../scroll';
+import { applyScroll } from '../scroll.js';
 
 describe('applyScroll', () => {
   const element = document.createElement('div');

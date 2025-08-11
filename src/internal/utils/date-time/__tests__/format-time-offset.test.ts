@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { formatTimeOffsetISO } from '../../../../../lib/components/internal/utils/date-time/format-time-offset';
+import { formatTimeOffsetISO } from '../../../../../lib/components/internal/utils/date-time/format-time-offset.js';
 
 test('formatTimeOffsetISO', () => {
   for (let offset = -120; offset <= 120; offset++) {

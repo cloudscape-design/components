@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import InternalBox from '../box/internal.js';
 import { InternalButton } from '../button/internal.js';
 import InternalFormField from '../form-field/internal.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import InternalModal from '../modal/internal.js';
 import InternalSpaceBetween from '../space-between/internal.js';
 import InternalTiles from '../tiles/internal.js';

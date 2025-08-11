@@ -3,14 +3,14 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import Autosuggest from '../../../lib/components/autosuggest';
-import DatePicker from '../../../lib/components/date-picker';
-import Input from '../../../lib/components/input';
-import PropertyFilter from '../../../lib/components/property-filter';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import BaseInputWrapper from '../../../lib/components/test-utils/dom/input/base-input';
-import TextFilter from '../../../lib/components/text-filter';
-import TimeInput from '../../../lib/components/time-input';
+import Autosuggest from '../../../lib/components/autosuggest/index.js';
+import DatePicker from '../../../lib/components/date-picker/index.js';
+import Input from '../../../lib/components/input/index.js';
+import PropertyFilter from '../../../lib/components/property-filter/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import BaseInputWrapper from '../../../lib/components/test-utils/dom/input/base-input.js';
+import TextFilter from '../../../lib/components/text-filter/index.js';
+import TimeInput from '../../../lib/components/time-input/index.js';
 
 function renderInputs(jsx: React.ReactElement) {
   const { container } = render(jsx);

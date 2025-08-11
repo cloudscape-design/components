@@ -3,8 +3,8 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 
-import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 describe('Flashbar focus handling on dismiss', () => {
   let mockMainElement: HTMLElement;

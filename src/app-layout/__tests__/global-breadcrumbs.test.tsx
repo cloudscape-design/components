@@ -7,12 +7,12 @@ import { act, cleanup, render, waitFor } from '@testing-library/react';
 import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import AppLayout from '../../../lib/components/app-layout';
-import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
-import { metrics } from '../../../lib/components/internal/metrics';
-import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { describeEachAppLayout } from './utils';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group/index.js';
+import { metrics } from '../../../lib/components/internal/metrics.js';
+import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { describeEachAppLayout } from './utils.js';
 
 const wrapper = createWrapper();
 

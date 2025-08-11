@@ -3,11 +3,13 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import CollectionPreferences, { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
-import { ComponentMetrics } from '../../../lib/components/internal/analytics';
-import Table from '../../../lib/components/table';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { mockComponentMetrics } from '../../internal/analytics/__tests__/mocks';
+import CollectionPreferences, {
+  CollectionPreferencesProps,
+} from '../../../lib/components/collection-preferences/index.js';
+import { ComponentMetrics } from '../../../lib/components/internal/analytics/index.js';
+import Table from '../../../lib/components/table/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { mockComponentMetrics } from '../../internal/analytics/__tests__/mocks.js';
 
 beforeEach(() => {
   jest.useFakeTimers();

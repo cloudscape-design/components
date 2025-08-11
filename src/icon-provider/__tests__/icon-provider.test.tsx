@@ -4,10 +4,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Icon, { IconProps } from '../../../lib/components/icon';
-import IconProvider, { IconProviderProps } from '../../../lib/components/icon-provider';
-import wrapper from '../../../lib/components/test-utils/dom';
-import generatedIcons from '../../icon/generated/icons';
+import Icon, { IconProps } from '../../../lib/components/icon/index.js';
+import IconProvider, { IconProviderProps } from '../../../lib/components/icon-provider/index.js';
+import wrapper from '../../../lib/components/test-utils/dom/index.js';
+import generatedIcons from '../../icon/generated/icons.js';
 
 const CUSTOM_SVG = (
   <svg focusable={false}>

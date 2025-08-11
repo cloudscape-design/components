@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import definitions from '../../../lib/components-definitions/components';
+import definitions from '../../../lib/components-definitions/components/index.js';
 // @ts-expect-error no typings
-import testUtilDomDefinitions from '../../../lib/components-definitions/test-utils-doc/dom';
+import testUtilDomDefinitions from '../../../lib/components-definitions/test-utils-doc/dom.js';
+import { getAllComponents } from '../utils.js';
+
 // @ts-expect-error no typings
-import testUtilSelectorsDefinitions from '../../../lib/components-definitions/test-utils-doc/selectors';
-import { getAllComponents } from '../utils';
+import testUtilSelectorsDefinitions from '../../../lib/components-definitions/test-utils-doc/selectors.js';
 
 function requireComponentDefinition(componentName: string) {
   return definitions[componentName];

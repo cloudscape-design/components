@@ -7,7 +7,7 @@ import IntlMessageFormat from 'intl-messageformat';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { CustomHandler, FormatFunction, InternalI18nContext } from './context.js';
 import { getMatchableLocales } from './get-matchable-locales.js';

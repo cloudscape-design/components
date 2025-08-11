@@ -10,10 +10,10 @@ import {
 
 import { useInternalI18n } from '../i18n/context.js';
 import InternalIcon from '../icon/internal.js';
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component/index.js';
 import { useTableComponentsContext } from '../internal/context/table-component-context.js';
-import { fireNonCancelableEvent } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { GeneratedAnalyticsMetadataPaginationClick } from './analytics-metadata/interfaces.js';
 import { PaginationProps } from './interfaces.js';
 import { getPaginationState, range } from './utils.js';

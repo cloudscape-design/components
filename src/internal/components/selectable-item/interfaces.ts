@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { BaseComponentProps } from '../../base-component';
+import { BaseComponentProps } from '../../base-component/index.js';
 import { HighlightType } from '../options-list/utils/use-highlight-option.js';
 
 export type SelectableItemProps = BaseComponentProps & {

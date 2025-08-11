@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Ace } from 'ace-builds';
 
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../internal/base-component/index.js';
 import { FormFieldControlProps } from '../internal/context/form-field-context.js';
-import { NonCancelableEventHandler } from '../internal/events';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
 import { BaseModalProps } from '../modal/interfaces.js';
 import { AceModes } from './ace-modes.js';
 import { DarkThemes, LightThemes } from './ace-themes.js';
