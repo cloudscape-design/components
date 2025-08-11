@@ -7,7 +7,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import InternalIcon from '../icon/internal';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { GeneratedAnalyticsMetadataTokenGroupDismiss } from '../token-group/analytics-metadata/interfaces';
+import { GeneratedAnalyticsMetadataTokenDismiss } from './analytics-metadata/interfaces';
 
 import styles from './styles.css.js';
 
@@ -25,7 +25,7 @@ function DismissButton(
   { disabled, dismissLabel, onDismiss, readOnly, inline }: DismissButtonProps,
   ref: Ref<HTMLButtonElement>
 ) {
-  const analyticsMetadata: GeneratedAnalyticsMetadataTokenGroupDismiss = {
+  const analyticsMetadata: GeneratedAnalyticsMetadataTokenDismiss = {
     action: 'dismiss',
     detail: {
       label: { root: 'self' },
