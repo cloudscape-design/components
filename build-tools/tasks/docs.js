@@ -29,7 +29,7 @@ function testUtilDocs() {
       `**/{${testUtilType},types}/**/*`
     );
 
-    const definitions = [...baseWrapperDefinitions, ...componentWrapperDefinitions];
+    const definitions = [...baseWrapperDefinitions.classes, ...componentWrapperDefinitions];
     const indexContent = `module.exports = {
       classes: ${JSON.stringify(definitions)}
     }

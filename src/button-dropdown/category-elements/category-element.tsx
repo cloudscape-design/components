@@ -32,10 +32,14 @@ const CategoryElement = ({
     >
       {item.text && (
         <p className={clsx(styles.header, { [styles.disabled]: disabled })} aria-hidden="true">
-          {(item.iconName || item.iconUrl || item.iconSvg) && (
-            <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
-          )}
-          {item.text}
+          <span className={styles['header-content']}>
+            {(item.iconName || item.iconUrl || item.iconSvg) && (
+              <span className={styles['icon-wrapper']}>
+                <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
+              </span>
+            )}
+            {item.text}
+          </span>
         </p>
       )}
       <ul className={styles['items-list-container']} role="group" aria-label={item.text} aria-disabled={disabled}>

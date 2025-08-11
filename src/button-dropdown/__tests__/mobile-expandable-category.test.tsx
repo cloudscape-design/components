@@ -11,7 +11,6 @@ const renderComponent = (component: React.ReactElement) => {
   const renderResult = render(component);
   return createWrapper(renderResult.container);
 };
-
 describe('MobileExpandableGroup Component', () => {
   test('is closed by default', () => {
     const wrapper = renderComponent(

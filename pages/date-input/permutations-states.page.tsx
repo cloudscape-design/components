@@ -23,18 +23,11 @@ const permutations = createPermutations<DateInputProps>([
 export default function DateInputPermutations() {
   return (
     <Box padding="l">
-      <h1>Date Input permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <h1>Date Input permutations - states</h1>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
-          render={permutation => (
-            <DateInput
-              onChange={() => {
-                /*empty handler to suppress react controlled property warning*/
-              }}
-              {...permutation}
-            />
-          )}
+          render={permutation => <DateInput {...permutation} onChange={() => {}} />}
         />
       </ScreenshotArea>
     </Box>
