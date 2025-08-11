@@ -20,7 +20,7 @@ const i18nStrings: TokenGroupProps.I18nStrings = {
   limitShowFewer: 'Show fewer chosen options',
 };
 
-export default function GenericTokenGroupPage() {
+export default function GenericTokenPage() {
   const [files, setFiles] = useState(range(0, 4));
   const [variableValue, setVariableValue] = useState('');
 
@@ -32,7 +32,7 @@ export default function GenericTokenGroupPage() {
 
   return (
     <Box padding="xl">
-      <h1>Generic token</h1>
+      <h1>Standalone token</h1>
       <h2>Inline</h2>
       <SpaceBetween size="l" direction="vertical">
         <Token
