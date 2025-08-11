@@ -235,16 +235,16 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     margin-block: constants.$toolbar-vertical-panel-icon-offset;
   }
 
-  &-content,
-  &-main-row {
+  &-main-row,
+  &-main-content {
     display: flex;
   }
 
-  &-content {
+  &-main-row {
     align-items: flex-start;
   }
 
-  &-main-row {
+  &-main-content {
     flex: auto;
     flex-direction: row;
     flex-wrap: wrap;
