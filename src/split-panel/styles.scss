@@ -252,6 +252,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     row-gap: awsui.$space-scaled-xxs;
     align-items: center;
     justify-content: space-between;
+    // The line height of the header text might not be respected in non-high pixel density screens
+    // unless it is set to a smaller value in the parent container.
     line-height: awsui.$line-height-body-s;
   }
 
