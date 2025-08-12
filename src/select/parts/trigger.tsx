@@ -129,15 +129,7 @@ const Trigger = React.forwardRef(
       <>
         {inlineLabelText ? (
           <div className={styles['inline-label-wrapper']}>
-            <label
-              htmlFor={controlId}
-              className={clsx(
-                styles['inline-label'],
-                triggerVariant === 'tokens' && styles['inline-label-multiselect']
-              )}
-            >
-              {inlineLabelText}
-            </label>
+            <label htmlFor={controlId} className={styles['inline-label']}></label>
             <div className={styles['inline-label-trigger-wrapper']}>{triggerButton}</div>
           </div>
         ) : (
