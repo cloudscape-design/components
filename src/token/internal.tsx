@@ -86,6 +86,10 @@ function InternalToken({
   };
 
   const getActionButton = () => {
+    if (!onDismiss && !customActionProps) {
+      return null;
+    }
+
     const popoverProps = customActionProps?.popoverProps;
     const button = (
       <ActionButton
