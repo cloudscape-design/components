@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { FormEvent, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -166,6 +166,11 @@ export default function InternalWizard({
     },
   };
 
+  const handleNativeFormOnSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onPrimaryClick();
+  };
+
   return (
     <div
       {...baseProps}
@@ -193,20 +198,23 @@ export default function InternalWizard({
         <div
           className={clsx(styles.form, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
         >
-          <WizardForm
-            steps={steps}
-            showCollapsedSteps={smallContainer}
-            i18nStrings={i18nStrings}
-            submitButtonText={submitButtonText}
-            activeStepIndex={actualActiveStepIndex}
-            isPrimaryLoading={isLoadingNextStep}
-            allowSkipTo={allowSkipTo}
-            secondaryActions={secondaryActions}
-            onCancelClick={onCancelClick}
-            onPreviousClick={onPreviousClick}
-            onSkipToClick={onSkipToClick}
-            onPrimaryClick={onPrimaryClick}
-          />
+          <form onSubmit={handleNativeFormOnSubmit}>
+            <WizardForm
+              steps={steps}
+              showCollapsedSteps={smallContainer}
+              i18nStrings={i18nStrings}
+              submitButtonText={submitButtonText}
+              activeStepIndex={actualActiveStepIndex}
+              isPrimaryLoading={isLoadingNextStep}
+              allowSkipTo={allowSkipTo}
+              secondaryActions={secondaryActions}
+              onCancelClick={onCancelClick}
+              onPreviousClick={onPreviousClick}
+              onSkipToClick={onSkipToClick}
+              onPrimaryClick={onPrimaryClick}
+            />
+          </form>
+          <button type="submit" className={styles['wizard-hidden-form-submit-button']} />
         </div>
       </div>
     </div>
