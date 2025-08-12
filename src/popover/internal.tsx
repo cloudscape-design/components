@@ -139,7 +139,7 @@ function InternalPopover(
     ref: triggerRef as any,
     onClick: onTriggerClick,
     onKeyDown: onTriggerKeyDown,
-    className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`]),
+    className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`], triggerClassName),
   };
   const { tabIndex: triggerTabIndex } = useSingleTabStopNavigation(triggerRef);
 

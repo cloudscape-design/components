@@ -12,7 +12,7 @@
 $trigger-underline-offset: 0.25em;
 $trigger-underline-offset-inline: 0.1em;
 
-.dismiss-button {
+.action-button {
   margin-block-start: -1px;
   margin-block-end: 0;
   margin-inline-start: awsui.$space-xxs;
@@ -44,10 +44,18 @@ $trigger-underline-offset-inline: 0.1em;
   }
 }
 
-.dismiss-icon-inline {
+.action-icon-inline {
   max-block-size: 18px;
   display: flex;
   align-items: center;
+}
+
+.action-button-popover {
+  line-height: 18px;
+}
+.action-button-popover-trigger {
+  display: flex;
+  align-items: start;
 }
 
 .token {
@@ -71,12 +79,19 @@ $trigger-underline-offset-inline: 0.1em;
   @include mixins.token-box-inline-styles();
 }
 
+.disable-padding {
+  padding-block-start: 0;
+  padding-block-end: 0;
+  padding-inline-start: 0;
+  padding-inline-end: 0;
+}
+
 .token-box-readonly {
   border-color: awsui.$color-border-input-disabled;
   background-color: awsui.$color-background-container-content;
   pointer-events: none;
 
-  > .dismiss-button {
+  > .action-button {
     color: awsui.$color-text-button-inline-icon-disabled;
 
     &:hover {
@@ -92,7 +107,7 @@ $trigger-underline-offset-inline: 0.1em;
   color: awsui.$color-text-disabled;
   pointer-events: none;
 
-  > .dismiss-button {
+  > .action-button {
     color: awsui.$color-text-button-inline-icon-disabled;
 
     &:hover {
