@@ -23,7 +23,6 @@ import * as toolsContent from './utils/tools-content';
 
 type SplitPanelDemoContext = React.Context<
   AppContextType<{
-    actionsAsLinks: boolean;
     ariaLabel?: string;
     description?: string;
     editableHeader: boolean;
@@ -31,6 +30,7 @@ type SplitPanelDemoContext = React.Context<
     renderActions: boolean;
     renderActionsBefore: boolean;
     renderBadge: boolean;
+    renderButtonLinks: boolean;
     renderInfoLink: boolean;
     splitPanelOpen: boolean;
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
@@ -115,8 +115,8 @@ export default function () {
                     <Button>Button</Button> <Button>Button</Button>
                   </>
                 )}
-                {urlParams.renderActions && urlParams.actionsAsLinks && ' '}
-                {urlParams.actionsAsLinks && (
+                {urlParams.renderActions && urlParams.renderButtonLinks && ' '}
+                {urlParams.renderButtonLinks && (
                   <>
                     <Link>Action</Link> <Link>Action</Link>
                   </>
@@ -127,7 +127,7 @@ export default function () {
               (urlParams.renderBadge || urlParams.editableHeader || urlParams.renderActionsBefore) && (
                 <>
                   {(urlParams.renderBadge || urlParams.renderActionsBefore) && (
-                    <>
+                    <Box display="inline-block" margin={{ right: urlParams.editableHeader ? 'xs' : 'n' }}>
                       {urlParams.renderActionsBefore && (
                         <>
                           <Button>Button</Button> <Button>Button</Button>
@@ -136,7 +136,7 @@ export default function () {
                       {urlParams.renderBadge && urlParams.renderActionsBefore && ' '}
                       {urlParams.renderBadge && <Badge>Badge</Badge>}
                       {urlParams.editableHeader && ' '}
-                    </>
+                    </Box>
                   )}
                   {urlParams.editableHeader && (
                     <EditableHeader
@@ -208,8 +208,8 @@ export default function () {
                     <label>
                       <input
                         type="checkbox"
-                        checked={urlParams.actionsAsLinks}
-                        onChange={({ target }) => setUrlParams({ ...urlParams, actionsAsLinks: target.checked })}
+                        checked={urlParams.renderButtonLinks}
+                        onChange={({ target }) => setUrlParams({ ...urlParams, renderButtonLinks: target.checked })}
                       />{' '}
                       Inline link buttons
                     </label>
