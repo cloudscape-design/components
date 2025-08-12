@@ -15,12 +15,14 @@ export function ExpandToggleButton({
   expandButtonLabel,
   collapseButtonLabel,
   customIcon,
+  invisible = false,
 }: {
   isExpanded?: boolean;
   onExpandableItemToggle?: () => void;
   expandButtonLabel?: string;
   collapseButtonLabel?: string;
   customIcon?: React.ReactNode;
+  invisible?: boolean;
 }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(buttonRef);
@@ -31,8 +33,9 @@ export function ExpandToggleButton({
       tabIndex={tabIndex}
       aria-label={isExpanded ? collapseButtonLabel : expandButtonLabel}
       aria-expanded={isExpanded}
-      className={styles['expand-toggle']}
+      className={clsx(styles['expand-toggle'], invisible && styles['expand-toggle-invisible'])}
       onClick={onExpandableItemToggle}
+      data-tree-view-toggle-button={true} // to do: make it an api
     >
       {customIcon ?? (
         <InternalIcon

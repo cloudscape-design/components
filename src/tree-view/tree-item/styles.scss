@@ -14,6 +14,9 @@ $item-toggle-column-width: 28px;
 .treeitem {
   @include styles.styles-reset-ul;
 
+  // background-color: yellow;
+
+  position: relative;
   align-items: baseline;
 
   display: grid;
@@ -23,7 +26,16 @@ $item-toggle-column-width: 28px;
   > .expand-toggle-wrapper {
     grid-column: 1;
     grid-row: 1;
-    margin-inline-end: awsui.$space-scaled-xxs;
+    padding-inline-end: awsui.$space-scaled-xxs;
+    // margin-inline-end: awsui.$space-scaled-xxs;
+
+    // background-color: green;
+
+    // position: relative;
+    // align-self: stretch;
+    // height: 100%;
+
+    // align-self: center;
 
     > .toggle {
       justify-self: center;
@@ -32,14 +44,40 @@ $item-toggle-column-width: 28px;
     }
   }
 
+  > .connector-wrapper {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
   > .structured-item-wrapper {
     grid-column: 2;
+    // grid-row: 1;
     grid-row: 1 / span 2;
     padding-block: awsui.$space-scaled-xxs;
+    // margin-block: awsui.$space-scaled-xxs;
+    padding-inline-start: awsui.$space-scaled-xxs;
+    // border-left: 1px solid awsui.$color-border-divider-default;
   }
 
   > .treeitem-group {
     grid-column: 2;
     grid-row: 3;
   }
+
+  > .vertical-connector-wrapper {
+    grid-row: 1 / span 3;
+    grid-column: 1;
+    block-size: 100%;
+    justify-self: center;
+    position: relative;
+    margin-inline-end: awsui.$space-scaled-xxs;
+
+    &.expandable {
+      grid-row: 2 / span 3;
+    }
+  }
 }
+
+// .hovered {
+//   background-color: grey;
+// }
