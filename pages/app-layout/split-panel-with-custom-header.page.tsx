@@ -6,17 +6,17 @@ import AppLayout, { AppLayoutProps } from '~components/app-layout';
 import Badge from '~components/badge';
 import Box from '~components/box';
 import Button from '~components/button';
+import ColumnLayout from '~components/column-layout';
 import FormField from '~components/form-field';
 import Header from '~components/header';
 import Input from '~components/input';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import SplitPanel from '~components/split-panel';
-import Toggle from '~components/toggle';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Breadcrumbs, Containers, Navigation, ScrollableDrawerContent, Tools } from './utils/content-blocks';
+import { Breadcrumbs, Navigation, ScrollableDrawerContent, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
 import { splitPaneli18nStrings } from './utils/strings';
 import * as toolsContent from './utils/tools-content';
@@ -29,6 +29,7 @@ type SplitPanelDemoContext = React.Context<
     editableHeader: boolean;
     headerText?: string;
     renderActions: boolean;
+    renderActionsBefore: boolean;
     renderBadge: boolean;
     renderInfoLink: boolean;
     splitPanelOpen: boolean;
@@ -47,7 +48,7 @@ function EditableHeader({ onChange, value }: { onChange: (text: string) => void;
   }, [editing]);
 
   return (
-    <Box display="inline">
+    <Box display="inline-block">
       {editing ? (
         <SpaceBetween direction="horizontal" size="xxs">
           <Input value={internalValue} onChange={({ detail }) => setInternalValue(detail.value)} ref={inputRef} />
@@ -62,10 +63,10 @@ function EditableHeader({ onChange, value }: { onChange: (text: string) => void;
           <Button variant="icon" iconName="close" onClick={() => setEditing(false)} />
         </SpaceBetween>
       ) : (
-        <span style={{ position: 'relative', insetBlockStart: '5px' }}>
+        <span style={{ display: 'inline-block', marginBlockStart: 5 }}>
           <Box variant="h3" tagOverride="span" display="inline" margin={{ vertical: 'n' }} padding={{ vertical: 'n' }}>
             {value}
-          </Box>
+          </Box>{' '}
           <Button variant="inline-icon" iconName="edit" onClick={() => setEditing(true)}></Button>
         </span>
       )}
@@ -108,27 +109,40 @@ export default function () {
             header={(!urlParams.editableHeader && urlParams.headerText) || ''}
             i18nStrings={splitPaneli18nStrings}
             headerActions={
-              urlParams.renderActions &&
-              (urlParams.actionsAsLinks ? (
-                <Link>Action</Link>
-              ) : (
-                <SpaceBetween direction="horizontal" size="xs">
-                  <Button>Button</Button>
-                  <Button>Button</Button>
-                </SpaceBetween>
-              ))
+              <>
+                {urlParams.renderActions && (
+                  <>
+                    <Button>Button</Button> <Button>Button</Button>
+                  </>
+                )}
+                {urlParams.renderActions && urlParams.actionsAsLinks && ' '}
+                {urlParams.actionsAsLinks && (
+                  <>
+                    <Link>Action</Link> <Link>Action</Link>
+                  </>
+                )}
+              </>
             }
             headerBefore={
-              (urlParams.renderBadge || urlParams.editableHeader) && (
+              (urlParams.renderBadge || urlParams.editableHeader || urlParams.renderActionsBefore) && (
                 <>
-                  {urlParams.renderBadge && <Badge>Badge</Badge>}
+                  {(urlParams.renderBadge || urlParams.renderActionsBefore) && (
+                    <>
+                      {urlParams.renderActionsBefore && (
+                        <>
+                          <Button>Button</Button> <Button>Button</Button>
+                        </>
+                      )}
+                      {urlParams.renderBadge && urlParams.renderActionsBefore && ' '}
+                      {urlParams.renderBadge && <Badge>Badge</Badge>}
+                      {urlParams.editableHeader && ' '}
+                    </>
+                  )}
                   {urlParams.editableHeader && (
-                    <Box display="inline-block" margin={{ left: urlParams.renderBadge ? 'xs' : 'n' }}>
-                      <EditableHeader
-                        value={urlParams.headerText || ''}
-                        onChange={value => setUrlParams({ ...urlParams, headerText: value })}
-                      />
-                    </Box>
+                    <EditableHeader
+                      value={urlParams.headerText || ''}
+                      onChange={value => setUrlParams({ ...urlParams, headerText: value })}
+                    />
                   )}
                 </>
               )
@@ -149,64 +163,85 @@ export default function () {
         content={
           <>
             <div style={{ marginBottom: '1rem' }}>
-              <Header variant="h1" description="Basic demo with split panel">
-                Demo page
-              </Header>
+              <Header variant="h1">Split panel with custom header elements</Header>
             </div>
             <SpaceBetween size="l">
-              <Toggle
-                checked={urlParams.renderBadge}
-                onChange={({ detail }) => setUrlParams({ ...urlParams, renderBadge: detail.checked })}
-              >
-                With badge
-              </Toggle>
-              <Toggle
-                checked={urlParams.editableHeader}
-                onChange={({ detail }) => setUrlParams({ ...urlParams, editableHeader: detail.checked })}
-              >
-                Editable header text
-              </Toggle>
-              <Toggle
-                checked={urlParams.renderInfoLink}
-                onChange={({ detail }) => setUrlParams({ ...urlParams, renderInfoLink: detail.checked })}
-              >
-                With info link
-              </Toggle>
-              <SpaceBetween direction="horizontal" size="xl">
-                <Toggle
-                  checked={urlParams.renderActions}
-                  onChange={({ detail }) => setUrlParams({ ...urlParams, renderActions: detail.checked })}
-                >
-                  With action buttons
-                </Toggle>
-                {urlParams.renderActions && (
-                  <Toggle
-                    checked={urlParams.actionsAsLinks}
-                    onChange={({ detail }) => setUrlParams({ ...urlParams, actionsAsLinks: detail.checked })}
-                  >
-                    As links
-                  </Toggle>
-                )}
-              </SpaceBetween>
+              <ColumnLayout columns={2}>
+                <FormField label="beforeHeader slot">
+                  <SpaceBetween size="xxs">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={urlParams.renderActionsBefore}
+                        onChange={({ target }) => setUrlParams({ ...urlParams, renderActionsBefore: target.checked })}
+                      />{' '}
+                      Buttons
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={urlParams.renderBadge}
+                        onChange={({ target }) => setUrlParams({ ...urlParams, renderBadge: target.checked })}
+                      />{' '}
+                      Badge
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={urlParams.editableHeader}
+                        onChange={({ target }) => setUrlParams({ ...urlParams, editableHeader: target.checked })}
+                      />{' '}
+                      Editable header text
+                    </label>
+                  </SpaceBetween>
+                </FormField>
+                <FormField label="headerActions slot">
+                  <SpaceBetween size="xxs">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={urlParams.renderActions}
+                        onChange={({ target }) => setUrlParams({ ...urlParams, renderActions: target.checked })}
+                      />{' '}
+                      Buttons
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={urlParams.actionsAsLinks}
+                        onChange={({ target }) => setUrlParams({ ...urlParams, actionsAsLinks: target.checked })}
+                      />{' '}
+                      Inline link buttons
+                    </label>
+                  </SpaceBetween>
+                </FormField>
+              </ColumnLayout>
               <FormField label="Header text">
-                <Input
+                <input
                   value={urlParams.headerText || ''}
-                  onChange={({ detail }) => setUrlParams({ ...urlParams, headerText: detail.value })}
+                  onChange={({ target }) => setUrlParams({ ...urlParams, headerText: target.value })}
                 />
               </FormField>
               <FormField label="Description">
-                <Input
+                <input
                   value={urlParams.description || ''}
-                  onChange={({ detail }) => setUrlParams({ ...urlParams, description: detail.value })}
+                  onChange={({ target }) => setUrlParams({ ...urlParams, description: target.value })}
                 />
               </FormField>
               <FormField label="ARIA label">
-                <Input
+                <input
                   value={urlParams.ariaLabel || ''}
-                  onChange={({ detail }) => setUrlParams({ ...urlParams, ariaLabel: detail.value })}
+                  onChange={({ target }) => setUrlParams({ ...urlParams, ariaLabel: target.value })}
                 />
               </FormField>
-              <Containers />
+              <label>
+                <input
+                  type="checkbox"
+                  checked={urlParams.renderInfoLink}
+                  onChange={({ target }) => setUrlParams({ ...urlParams, renderInfoLink: target.checked })}
+                />{' '}
+                Info link
+              </label>
             </SpaceBetween>
           </>
         }
