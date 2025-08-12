@@ -143,10 +143,11 @@ export default function GenericTokenPage() {
 
         <Token
           variant="inline"
+          iconName="bug"
           label="Custom action without popover and inline"
           ariaLabel="Custom action without popover and inline"
           customActionProps={{
-            iconName: 'edit',
+            iconName: 'settings',
             onClick: () => {},
           }}
         />
@@ -191,10 +192,22 @@ export default function GenericTokenPage() {
         />
 
         <Token
-          label="Custom action without popover"
-          ariaLabel="Custom action without popover"
+          iconName="bug"
+          label="Custom action with two popovers and an icon"
+          ariaLabel="Custom action with two popovers and an icon"
+          popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
           customActionProps={{
             iconName: 'edit',
+            popoverProps: { content: <Input value="test" onChange={() => {}} /> },
+          }}
+        />
+
+        <Token
+          label="Custom action without popover"
+          description="Some description text"
+          ariaLabel="Custom action without popover"
+          customActionProps={{
+            iconName: 'settings',
             onClick: () => {},
           }}
         />
