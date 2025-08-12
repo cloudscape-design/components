@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { LabelIdentifier } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-export interface GeneratedAnalyticsMetadataTokenDismiss {
-  action: 'dismiss';
+export interface GeneratedAnalyticsMetadataTokenActionButton {
+  action: 'custom' | 'dismiss';
   detail: {
     label: LabelIdentifier;
     position?: string;
