@@ -264,7 +264,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 
   &-tag-and-info {
     margin-block-start: $vertical-margin;
-    min-block-size: calc(#{awsui.$font-panel-header-line-height} + #{$vertical-margin});
     // The line height of the header text might not be respected in non-high pixel density screens
     // unless it is set to a smaller value in its parent container.
     line-height: awsui.$line-height-body-s;
@@ -280,10 +279,11 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   &-tag {
     font-size: 0;
     line-height: 0;
+  }
 
-    &.with-info {
-      margin-inline-end: awsui.$space-scaled-xs;
-    }
+  &-before-slot.with-header-text,
+  &-tag.with-info {
+    margin-inline-end: awsui.$space-scaled-xs;
   }
 
   &-before-slot,
@@ -294,10 +294,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   &-before-slot {
     display: inline-block;
     margin-block-start: calc(-1 * #{$vertical-margin});
-  }
-
-  &-before-slot + &-text {
-    margin-inline-start: awsui.$space-scaled-xs;
   }
 
   &-description {
