@@ -17,6 +17,6 @@ export default class TokenWrapper extends ComponentWrapper {
   }
 
   findDismiss(): ElementWrapper {
-    return this.findByClassName(selectors['dismiss-button'])!;
+    return this.findByClassName(selectors['action-button'])!;
   }
 }

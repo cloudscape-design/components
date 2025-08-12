@@ -12,7 +12,7 @@ import { BaseComponentProps } from '../internal/base-component/index.js';
 import Tooltip from '../internal/components/tooltip/index';
 import InternalSpaceBetween from '../space-between/internal.js';
 import InternalSpinner from '../spinner/internal.js';
-import DismissButton from '../token/dismiss-button.js';
+import ActionButton from '../token/action-button.js';
 import { TokenGroupProps } from '../token-group/interfaces.js';
 import * as defaultFormatters from './default-formatters.js';
 import { FileOptionThumbnail } from './thumbnail.js';
@@ -171,7 +171,7 @@ function InternalFileToken({
             </InternalSpaceBetween>
           </div>
         </InternalBox>
-        {onDismiss && !readOnly && <DismissButton dismissLabel={getDismissLabel(index)} onDismiss={onDismiss} />}
+        {onDismiss && !readOnly && <ActionButton ariaLabel={getDismissLabel(index)} onClick={onDismiss} />}
       </div>
       {errorText && (
         <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
