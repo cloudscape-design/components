@@ -11,11 +11,10 @@ import Input from '~components/input';
 import TokenList from '~components/internal/components/token-list';
 import SpaceBetween from '~components/space-between';
 import Token from '~components/token';
-import { TokenGroupProps } from '~components/token-group';
 
 import styles from './styles.scss';
 
-const i18nStrings: TokenGroupProps.I18nStrings = {
+const i18nStrings = {
   limitShowMore: 'Show more chosen options',
   limitShowFewer: 'Show fewer chosen options',
 };
@@ -131,6 +130,26 @@ export default function GenericTokenPage() {
           disabled={true}
           onDismiss={() => {}}
         />
+
+        <Token
+          variant="inline"
+          label="Custom action with popover and inline"
+          ariaLabel="Custom action with popover and inline"
+          customActionProps={{
+            iconName: 'edit',
+            popoverProps: { content: <Input value="test" onChange={() => {}} /> },
+          }}
+        />
+
+        <Token
+          variant="inline"
+          label="Custom action without popover and inline"
+          ariaLabel="Custom action without popover and inline"
+          customActionProps={{
+            iconName: 'edit',
+            onClick: () => {},
+          }}
+        />
       </SpaceBetween>
 
       <h2>Normal</h2>
@@ -161,6 +180,24 @@ export default function GenericTokenPage() {
         <Token ariaLabel="Standalone readonly token" label="Standalone readonly token" readOnly={true} />
 
         <Token ariaLabel="Standalone disabled token" label="Standalone disabled token" disabled={true} />
+
+        <Token
+          label="Custom action with popover"
+          ariaLabel="Custom action with popover"
+          customActionProps={{
+            iconName: 'edit',
+            popoverProps: { content: <Input value="test" onChange={() => {}} /> },
+          }}
+        />
+
+        <Token
+          label="Custom action without popover"
+          ariaLabel="Custom action without popover"
+          customActionProps={{
+            iconName: 'edit',
+            onClick: () => {},
+          }}
+        />
 
         <TokenList
           alignment="vertical"

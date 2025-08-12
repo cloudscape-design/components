@@ -9,13 +9,17 @@ import Option from '../internal/components/option';
 import { OptionDefinition } from '../internal/components/option/interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import InternalPopover from '../popover/internal';
-import DismissButton from './dismiss-button';
+import ActionButton from './action-button';
 import { TokenProps } from './interfaces';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-type InternalTokenProps = TokenProps & InternalBaseComponentProps;
+type InternalTokenProps = TokenProps &
+  InternalBaseComponentProps & {
+    disableInnerPadding?: boolean;
+    role?: string;
+  };
 
 function InternalToken({
   children,
@@ -33,7 +37,10 @@ function InternalToken({
   iconSvg,
   tags,
   dismissLabel,
+  customActionProps,
   popoverProps,
+  disableInnerPadding,
+  role = 'option',
   ...restProps
 }: InternalTokenProps) {
   const baseProps = getBaseProps(restProps);
@@ -78,30 +85,56 @@ function InternalToken({
     );
   };
 
+  const getActionButton = () => {
+    const popoverProps = customActionProps?.popoverProps;
+    const button = (
+      <ActionButton
+        {...customActionProps}
+        isCustom={!!customActionProps}
+        disabled={customActionProps?.disabled ?? disabled}
+        ariaLabel={customActionProps?.ariaLabel ?? dismissLabel}
+        onClick={customActionProps?.onClick ?? onDismiss}
+        readOnly={readOnly}
+        inline={isInline}
+      />
+    );
+
+    if (!popoverProps) {
+      return button;
+    }
+
+    return (
+      <InternalPopover
+        className={styles['action-button-popover']}
+        triggerClassName={styles['action-button-popover-trigger']}
+        triggerType="custom"
+        size={popoverProps.size ?? 'medium'}
+        position={popoverProps?.position ?? 'top'}
+        {...popoverProps}
+      >
+        {button}
+      </InternalPopover>
+    );
+  };
+
   return (
     <div
       {...baseProps}
       className={clsx(!isInline ? styles.token : styles['token-inline'], analyticsSelectors.token, baseProps.className)}
       aria-label={ariaLabel}
       aria-disabled={disabled}
+      role={role}
     >
       <div
         className={clsx(
           !isInline ? styles['token-box'] : styles['token-box-inline'],
           disabled && styles['token-box-disabled'],
-          readOnly && styles['token-box-readonly']
+          readOnly && styles['token-box-readonly'],
+          disableInnerPadding && styles['disable-padding']
         )}
       >
         {getTokenContent()}
-        {onDismiss && (
-          <DismissButton
-            disabled={disabled}
-            dismissLabel={dismissLabel}
-            onDismiss={onDismiss}
-            readOnly={readOnly}
-            inline={isInline}
-          />
-        )}
+        {getActionButton()}
       </div>
     </div>
   );
