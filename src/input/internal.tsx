@@ -201,8 +201,7 @@ function InternalInput(
       dir={type === 'email' ? 'ltr' : undefined}
       {...(__injectAnalyticsComponentMetadata
         ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
-        : {})}
-      {...copyAnalyticsMetadataAttribute(rest)}
+        : copyAnalyticsMetadataAttribute(rest))}
     >
       {__leftIcon && (
         <span onClick={__onLeftIconClick} className={styles['input-icon-left']}>
