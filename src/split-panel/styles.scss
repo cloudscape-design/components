@@ -242,51 +242,61 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     display: flex;
   }
 
+  // Area containing the before-header slot, the header text, the actions slot
+  // and the built-in panel buttons.
   &-main-row {
     // Make sure that the panel buttons are always anchored to the block start,
     // even if the main content (before-header slot, header text, actions) wraps into multiple lines.
     align-items: flex-start;
   }
 
-  // Area containing the before-header slot, the header text and the actions
+  // Area containing the before-header slot, the header text and the actions slot
+  // --not the description nor the built-in panel buttons.
   &-main-content {
     flex: auto;
     flex-direction: row;
     flex-wrap: wrap;
     column-gap: awsui.$space-scaled-xs;
-    row-gap: calc(#{awsui.$space-scaled-xxs} + $vertical-margin);
+    row-gap: awsui.$space-scaled-xxs;
     justify-content: space-between;
-    align-items: center;
+    // align-items: center;
   }
 
   &-tag-and-info {
-    min-block-size: calc(#{awsui.$font-panel-header-line-height} + 2 * #{$vertical-margin});
+    margin-block-start: $vertical-margin;
+    min-block-size: calc(#{awsui.$font-panel-header-line-height} + #{$vertical-margin});
     // The line height of the header text might not be respected in non-high pixel density screens
     // unless it is set to a smaller value in its parent container.
     line-height: awsui.$line-height-body-s;
   }
 
   &-tag,
-  &-before,
   &-text,
-  &-info {
+  &-info-slot {
     display: inline;
   }
 
+  // The h2 tag, which contains the elements in the `headerBefore` slot, if defined, and the header text
   &-tag {
-    @include styles.font-panel-header;
+    font-size: 0;
+    line-height: 0;
+
     &.with-info {
       margin-inline-end: awsui.$space-scaled-xs;
     }
   }
 
-  &-text,
-  &-info {
-    position: relative;
-    inset-block-start: $vertical-margin;
+  &-before-slot,
+  &-text {
+    @include styles.font-panel-header;
   }
 
-  &-before + &-text {
+  &-before-slot {
+    display: inline-block;
+    margin-block-start: calc(-1 * #{$vertical-margin});
+  }
+
+  &-before-slot + &-text {
     margin-inline-start: awsui.$space-scaled-xs;
   }
 
