@@ -109,11 +109,7 @@ export function SplitPanelImplementation({
               {headerBefore && (
                 <span className={clsx(styles['header-before'], testUtilStyles['header-before'])}>{headerBefore}</span>
               )}
-              {header && (
-                <div className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
-                  {header}
-                </div>
-              )}{' '}
+              {header && <div className={clsx(styles['header-text'], testUtilStyles['header-text'])}>{header}</div>}
             </h2>
             {headerInfo && (
               <span className={clsx(styles['header-info'], testUtilStyles['header-info'])}>{headerInfo}</span>
