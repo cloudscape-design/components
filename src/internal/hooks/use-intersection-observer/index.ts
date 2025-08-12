@@ -41,7 +41,15 @@ export function useIntersectionObserver<T extends HTMLElement>({
       } catch {
         // Tried to access a cross-origin iframe. Fall back to current IntersectionObserver.
       }
-      observerRef.current = new TopLevelIntersectionObserver(([entry]) => setIsIntersecting(entry.isIntersecting));
+      observerRef.current = new TopLevelIntersectionObserver(entries => {
+        let latestEntry = entries[0];
+        for (const entry of entries) {
+          if (entry.time > latestEntry.time) {
+            latestEntry = entry;
+          }
+        }
+        setIsIntersecting(latestEntry.isIntersecting);
+      });
       observerRef.current.observe(targetElement);
     }
   }, []);
