@@ -153,9 +153,10 @@ $inlineLabel-border-radius: 2px;
   z-index: 1;
 }
 
-.inline-label-multiselect {
+// Specific Styling for Inline Label Text to not overlap with Inline Tokens
+.inline-label-inline-tokens {
   padding-block-end: 0;
-  transform: translateY(-1px);
+  transform: translateY(-1.5px);
 }
 
 .disabled-reason-tooltip {
