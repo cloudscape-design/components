@@ -130,27 +130,6 @@ export default function GenericTokenPage() {
           disabled={true}
           onDismiss={() => {}}
         />
-
-        <Token
-          variant="inline"
-          label="Custom action with popover and inline"
-          ariaLabel="Custom action with popover and inline"
-          customActionProps={{
-            iconName: 'edit',
-            popoverProps: { content: <Input value="test" onChange={() => {}} /> },
-          }}
-        />
-
-        <Token
-          variant="inline"
-          iconName="bug"
-          label="Custom action without popover and inline"
-          ariaLabel="Custom action without popover and inline"
-          customActionProps={{
-            iconName: 'settings',
-            onClick: () => {},
-          }}
-        />
       </SpaceBetween>
 
       <h2>Normal</h2>
@@ -181,6 +160,30 @@ export default function GenericTokenPage() {
         <Token ariaLabel="Standalone readonly token" label="Standalone readonly token" readOnly={true} />
 
         <Token ariaLabel="Standalone disabled token" label="Standalone disabled token" disabled={true} />
+      </SpaceBetween>
+
+      <h2>Custom</h2>
+      <SpaceBetween size="l" direction="vertical">
+        <Token
+          variant="inline"
+          label="Custom action with popover and inline"
+          ariaLabel="Custom action with popover and inline"
+          customActionProps={{
+            iconName: 'edit',
+            popoverProps: { content: <Input value="test" onChange={() => {}} /> },
+          }}
+        />
+
+        <Token
+          variant="inline"
+          iconName="bug"
+          label="Custom action without popover and inline"
+          ariaLabel="Custom action without popover and inline"
+          customActionProps={{
+            iconName: 'settings',
+            onClick: () => {},
+          }}
+        />
 
         <Token
           label="Custom action with popover"
