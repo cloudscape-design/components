@@ -154,25 +154,25 @@ export default function () {
               </Header>
             </div>
             <SpaceBetween size="l">
+              <Toggle
+                checked={urlParams.renderBadge}
+                onChange={({ detail }) => setUrlParams({ ...urlParams, renderBadge: detail.checked })}
+              >
+                With badge
+              </Toggle>
+              <Toggle
+                checked={urlParams.editableHeader}
+                onChange={({ detail }) => setUrlParams({ ...urlParams, editableHeader: detail.checked })}
+              >
+                Editable header text
+              </Toggle>
+              <Toggle
+                checked={urlParams.renderInfoLink}
+                onChange={({ detail }) => setUrlParams({ ...urlParams, renderInfoLink: detail.checked })}
+              >
+                With info link
+              </Toggle>
               <SpaceBetween direction="horizontal" size="xl">
-                <Toggle
-                  checked={urlParams.renderBadge}
-                  onChange={({ detail }) => setUrlParams({ ...urlParams, renderBadge: detail.checked })}
-                >
-                  With badge
-                </Toggle>
-                <Toggle
-                  checked={urlParams.editableHeader}
-                  onChange={({ detail }) => setUrlParams({ ...urlParams, editableHeader: detail.checked })}
-                >
-                  Editable header text
-                </Toggle>
-                <Toggle
-                  checked={urlParams.renderInfoLink}
-                  onChange={({ detail }) => setUrlParams({ ...urlParams, renderInfoLink: detail.checked })}
-                >
-                  With info link
-                </Toggle>
                 <Toggle
                   checked={urlParams.renderActions}
                   onChange={({ detail }) => setUrlParams({ ...urlParams, renderActions: detail.checked })}
