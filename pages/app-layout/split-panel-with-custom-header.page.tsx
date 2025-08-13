@@ -6,6 +6,7 @@ import AppLayout, { AppLayoutProps } from '~components/app-layout';
 import Badge from '~components/badge';
 import Box from '~components/box';
 import Button from '~components/button';
+import ButtonDropdown from '~components/button-dropdown';
 import ColumnLayout from '~components/column-layout';
 import FormField from '~components/form-field';
 import Header from '~components/header';
@@ -30,10 +31,11 @@ type SplitPanelDemoContext = React.Context<
     editableHeader: boolean;
     headerText?: string;
     linkedHeader?: boolean;
-    renderActions: boolean;
-    renderActionsBefore: boolean;
-    renderBadge: boolean;
-    renderButtonLinks: boolean;
+    renderActionsButton: boolean;
+    renderActionsButtonDropdown: boolean;
+    renderActionsButtonLink: boolean;
+    renderBeforeButton: boolean;
+    renderBeforeBadge: boolean;
     renderInfoLink: boolean;
     splitPanelOpen: boolean;
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
@@ -115,43 +117,41 @@ export default function () {
             i18nStrings={splitPaneli18nStrings}
             headerActions={
               <>
-                {urlParams.renderActions && (
-                  <>
-                    <Button>Button</Button> <Button>Button</Button>
-                  </>
-                )}
-                {urlParams.renderActions && urlParams.renderButtonLinks && ' '}
-                {urlParams.renderButtonLinks && (
-                  <>
-                    <Link>Action</Link> <Link>Action</Link>
-                  </>
+                {urlParams.renderActionsButton && <Button>Button</Button>}
+                {urlParams.renderActionsButtonLink && <Link>Action</Link>}
+                {urlParams.renderActionsButtonDropdown && (
+                  <ButtonDropdown
+                    items={[{ id: 'settings', text: 'Settings' }]}
+                    ariaLabel="Control drawer"
+                    variant="icon"
+                  />
                 )}
               </>
             }
             headerBefore={
-              (urlParams.renderBadge ||
+              (urlParams.renderBeforeBadge ||
                 urlParams.editableHeader ||
-                urlParams.renderActionsBefore ||
+                urlParams.renderBeforeButton ||
                 urlParams.linkedHeader) && (
                 <span
                   className={
-                    renderHeaderTextAsLink && !urlParams.renderActionsBefore
+                    renderHeaderTextAsLink && !urlParams.renderBeforeButton
                       ? styles['split-panel-header-margin']
                       : undefined
                   }
                 >
-                  {(urlParams.renderBadge || urlParams.renderActionsBefore) && (
+                  {(urlParams.renderBeforeBadge || urlParams.renderBeforeButton) && (
                     <Box
                       display="inline-block"
                       margin={{ right: urlParams.editableHeader || urlParams.linkedHeader ? 'xs' : 'n' }}
                     >
-                      {urlParams.renderActionsBefore && (
+                      {urlParams.renderBeforeButton && (
                         <>
                           <Button>Button</Button> <Button>Button</Button>
                         </>
                       )}
-                      {urlParams.renderBadge && urlParams.renderActionsBefore && ' '}
-                      {urlParams.renderBadge && <Badge>3</Badge>}
+                      {urlParams.renderBeforeBadge && urlParams.renderBeforeButton && ' '}
+                      {urlParams.renderBeforeBadge && <Badge>3</Badge>}
                       {(urlParams.editableHeader || urlParams.linkedHeader) && ' '}
                     </Box>
                   )}
@@ -194,16 +194,16 @@ export default function () {
                     <label>
                       <input
                         type="checkbox"
-                        checked={urlParams.renderActionsBefore}
-                        onChange={({ target }) => setUrlParams({ ...urlParams, renderActionsBefore: target.checked })}
+                        checked={urlParams.renderBeforeButton}
+                        onChange={({ target }) => setUrlParams({ ...urlParams, renderBeforeButton: target.checked })}
                       />{' '}
                       Buttons
                     </label>
                     <label>
                       <input
                         type="checkbox"
-                        checked={urlParams.renderBadge}
-                        onChange={({ target }) => setUrlParams({ ...urlParams, renderBadge: target.checked })}
+                        checked={urlParams.renderBeforeBadge}
+                        onChange={({ target }) => setUrlParams({ ...urlParams, renderBeforeBadge: target.checked })}
                       />{' '}
                       Badge
                     </label>
@@ -231,18 +231,30 @@ export default function () {
                     <label>
                       <input
                         type="checkbox"
-                        checked={urlParams.renderActions}
-                        onChange={({ target }) => setUrlParams({ ...urlParams, renderActions: target.checked })}
+                        checked={urlParams.renderActionsButton}
+                        onChange={({ target }) => setUrlParams({ ...urlParams, renderActionsButton: target.checked })}
                       />{' '}
                       Buttons
                     </label>
                     <label>
                       <input
                         type="checkbox"
-                        checked={urlParams.renderButtonLinks}
-                        onChange={({ target }) => setUrlParams({ ...urlParams, renderButtonLinks: target.checked })}
+                        checked={urlParams.renderActionsButtonLink}
+                        onChange={({ target }) =>
+                          setUrlParams({ ...urlParams, renderActionsButtonLink: target.checked })
+                        }
                       />{' '}
                       Inline link buttons
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={urlParams.renderActionsButtonDropdown}
+                        onChange={({ target }) =>
+                          setUrlParams({ ...urlParams, renderActionsButtonDropdown: target.checked })
+                        }
+                      />{' '}
+                      Button dropdown
                     </label>
                   </SpaceBetween>
                 </FormField>

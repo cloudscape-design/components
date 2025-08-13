@@ -24,7 +24,8 @@ describe.each(['refresh', 'refresh-toolbar'] as const)('%s', theme => {
 
     describe('only the expand button is clickable in collapsed bottom split panel when certain header slots are populated', () => {
       const cases = [
-        { slotName: 'headerActions', devPageParam: 'renderActions' },
+        { slotName: 'headerActions', devPageParam: 'renderActionsButtonDropdown' },
+        { slotName: 'headerBefore', devPageParam: 'renderBeforeBadge' },
         { slotName: 'headerInfo', devPageParam: 'renderInfoLink' },
       ];
       test.each(cases)('$slotName', ({ devPageParam }) =>
