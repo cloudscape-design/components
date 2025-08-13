@@ -19,6 +19,7 @@ import testUtilStyles from './test-classes/styles.css.js';
 interface SplitPanelContentBottomProps extends SplitPanelContentProps {
   appLayoutMaxWidth: React.CSSProperties | undefined;
   closeBehavior: SplitPanelProps['closeBehavior'];
+  hasCustomElements?: boolean;
 }
 
 export function SplitPanelContentBottom({
@@ -33,6 +34,7 @@ export function SplitPanelContentBottom({
   appLayoutMaxWidth,
   panelHeaderId,
   onToggle,
+  hasCustomElements,
 }: SplitPanelContentBottomProps) {
   const isRefresh = useVisualRefresh();
   const isToolbar = useAppLayoutToolbarDesignEnabled();
@@ -74,13 +76,14 @@ export function SplitPanelContentBottom({
         [sharedStyles['with-motion-vertical']]: !animationDisabled,
         [testUtilStyles['open-position-bottom']]: isOpen,
         [styles['drawer-closed']]: !isOpen,
+        [styles['drawer-clickable']]: !hasCustomElements,
         [styles['drawer-mobile']]: isMobile,
         [styles['drawer-disable-content-paddings']]: disableContentPaddings,
         [styles.refresh]: isRefresh,
         [styles['with-toolbar']]: isToolbar,
         [styles.hidden]: closeBehavior === 'hide' && !isOpen,
       })}
-      onClick={() => !isOpen && onToggle()}
+      onClick={() => !isOpen && !hasCustomElements && onToggle()}
       style={{
         insetBlockEnd: bottomOffset,
         insetInlineStart: leftOffset,

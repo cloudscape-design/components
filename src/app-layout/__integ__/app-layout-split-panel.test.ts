@@ -140,7 +140,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   );
 
   test(
-    'switches to bottom position when when tools panel opens and available space is too small',
+    'switches to bottom position when tools panel opens and available space is too small',
     setupTest(async page => {
       await page.setWindowSize({ ...viewports.desktop, width: 1100 });
       await page.openPanel();
