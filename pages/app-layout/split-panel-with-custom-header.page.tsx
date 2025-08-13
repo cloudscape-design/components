@@ -8,16 +8,17 @@ import Box from '~components/box';
 import Button from '~components/button';
 import ButtonDropdown from '~components/button-dropdown';
 import ColumnLayout from '~components/column-layout';
-import FormField from '~components/form-field';
+import FormField from '~components/form-field/internal';
 import Header from '~components/header';
 import Input from '~components/input';
+import FocusLock, { FocusLockRef } from '~components/internal/components/focus-lock';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import SplitPanel from '~components/split-panel';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Breadcrumbs, Navigation, ScrollableDrawerContent, Tools } from './utils/content-blocks';
+import { Breadcrumbs, ScrollableDrawerContent, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
 import { splitPaneli18nStrings } from './utils/strings';
 import * as toolsContent from './utils/tools-content';
@@ -46,6 +47,8 @@ function EditableHeader({ onChange, value }: { onChange: (text: string) => void;
   const [internalValue, setInternalValue] = useState(value);
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const focusLockRef = useRef<FocusLockRef>(null);
+
   useEffect(() => {
     if (editing) {
       inputRef.current?.focus();
@@ -55,18 +58,34 @@ function EditableHeader({ onChange, value }: { onChange: (text: string) => void;
   return (
     <Box display="inline-block">
       {editing ? (
-        <SpaceBetween direction="horizontal" size="xxs">
-          <Input value={internalValue} onChange={({ detail }) => setInternalValue(detail.value)} ref={inputRef} />
-          <Button
-            variant="icon"
-            iconName="check"
-            onClick={() => {
-              onChange(internalValue);
-              setEditing(false);
-            }}
-          />
-          <Button variant="icon" iconName="close" onClick={() => setEditing(false)} />
-        </SpaceBetween>
+        <span role="dialog" aria-label="Edit split panel header">
+          <FocusLock ref={focusLockRef}>
+            <form
+              onSubmit={() => {
+                onChange(internalValue);
+                setEditing(false);
+              }}
+            >
+              <FormField label="Header" __hideLabel={true}>
+                <SpaceBetween direction="horizontal" size="xxs">
+                  <Input
+                    value={internalValue}
+                    onChange={({ detail }) => setInternalValue(detail.value)}
+                    ref={inputRef}
+                  />
+                  <Button variant="icon" iconName="check" formAction="submit" ariaLabel="Submit" />
+                  <Button
+                    variant="icon"
+                    iconName="close"
+                    formAction="none"
+                    ariaLabel="Submit"
+                    onClick={() => setEditing(false)}
+                  />
+                </SpaceBetween>
+              </FormField>
+            </form>
+          </FocusLock>
+        </span>
       ) : (
         <span className={styles['split-panel-header-margin']}>
           <Box variant="h3" tagOverride="span" display="inline" margin={{ vertical: 'n' }} padding={{ vertical: 'n' }}>
@@ -102,7 +121,7 @@ export default function () {
       <AppLayout
         ariaLabels={labels}
         breadcrumbs={<Breadcrumbs />}
-        navigation={<Navigation />}
+        navigationHide={true}
         tools={<Tools>{toolsContent.long}</Tools>}
         toolsOpen={toolsOpen}
         splitPanelOpen={urlParams.splitPanelOpen}
