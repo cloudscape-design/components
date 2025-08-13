@@ -32,10 +32,9 @@ type SplitPanelDemoContext = React.Context<
     editableHeader: boolean;
     headerText?: string;
     linkedHeader?: boolean;
-    renderActionsButton: boolean;
     renderActionsButtonDropdown: boolean;
     renderActionsButtonLink: boolean;
-    renderBeforeButton: boolean;
+    renderBeforeButtons: boolean;
     renderBeforeBadge: boolean;
     renderInfoLink: boolean;
     splitPanelOpen: boolean;
@@ -107,19 +106,33 @@ export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as SplitPanelDemoContext);
   const [toolsOpen, setToolsOpen] = useState(false);
 
+  const {
+    ariaLabel,
+    description,
+    editableHeader,
+    linkedHeader,
+    headerText,
+    renderActionsButtonDropdown,
+    renderActionsButtonLink,
+    renderBeforeBadge,
+    renderBeforeButtons,
+    renderInfoLink,
+    splitPanelOpen,
+    splitPanelPosition,
+  } = urlParams;
+
   // Initialize the header to a default value if not set.
   useEffect(() => {
-    if (!urlParams.editableHeader) {
-      setUrlParams({ ...urlParams, headerText: urlParams.headerText || 'Resource name' });
+    if (!editableHeader) {
+      setUrlParams({ ...urlParams, headerText: headerText || 'Resource name' });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const renderHeaderTextAsLink = !urlParams.editableHeader && urlParams.linkedHeader && urlParams.headerText;
-  const renderActions =
-    urlParams.renderActionsButton || urlParams.renderActionsButtonDropdown || urlParams.renderActionsButtonLink;
-  const renderBefore =
-    urlParams.renderBeforeBadge || urlParams.editableHeader || urlParams.renderBeforeButton || urlParams.linkedHeader;
+  const renderHeaderTextAsLink = !editableHeader && linkedHeader && headerText;
+  const renderActions = renderActionsButtonDropdown || renderActionsButtonLink;
+  const renderBefore = editableHeader || linkedHeader || renderBeforeBadge || renderBeforeButtons;
+  const renderHeaderText = !editableHeader && !linkedHeader && !renderBeforeButtons && headerText;
 
   return (
     <ScreenshotArea gutters={false}>
@@ -129,10 +142,10 @@ export default function () {
         navigationHide={true}
         tools={<Tools>{toolsContent.long}</Tools>}
         toolsOpen={toolsOpen}
-        splitPanelOpen={urlParams.splitPanelOpen}
+        splitPanelOpen={splitPanelOpen}
         onSplitPanelToggle={({ detail }) => setUrlParams({ ...urlParams, splitPanelOpen: detail.open })}
         splitPanelPreferences={{
-          position: urlParams.splitPanelPosition,
+          position: splitPanelPosition,
         }}
         onSplitPanelPreferencesChange={event => {
           const { position } = event.detail;
@@ -141,14 +154,13 @@ export default function () {
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         splitPanel={
           <SplitPanel
-            header={(!urlParams.editableHeader && !urlParams.linkedHeader && urlParams.headerText) || ''}
+            header={renderHeaderText || ''}
             i18nStrings={splitPaneli18nStrings}
             headerActions={
               renderActions && (
                 <SpaceBetween direction="horizontal" size="xs" alignItems="center">
-                  {urlParams.renderActionsButton && <Button>Button</Button>}
-                  {urlParams.renderActionsButtonLink && <Link>Action</Link>}
-                  {urlParams.renderActionsButtonDropdown && (
+                  {renderActionsButtonLink && <Link>Action</Link>}
+                  {renderActionsButtonDropdown && (
                     <ButtonDropdown
                       items={[{ id: 'settings', text: 'Settings' }]}
                       ariaLabel="Control drawer"
@@ -163,49 +175,54 @@ export default function () {
               renderBefore && (
                 <span
                   className={
-                    renderHeaderTextAsLink && !urlParams.renderBeforeButton
-                      ? styles['split-panel-header-margin']
-                      : undefined
+                    renderBeforeButtons
+                      ? styles['split-panel-header-full-width']
+                      : renderHeaderTextAsLink
+                        ? styles['split-panel-header-margin']
+                        : undefined
                   }
                 >
-                  {(urlParams.renderBeforeBadge || urlParams.renderBeforeButton) && (
-                    <Box
-                      display="inline-block"
-                      margin={{ right: urlParams.editableHeader || urlParams.linkedHeader ? 'xs' : 'n' }}
-                    >
-                      {urlParams.renderBeforeButton && (
-                        <>
-                          <Button>Button</Button> <Button>Button</Button>
-                        </>
-                      )}
-                      {urlParams.renderBeforeBadge && urlParams.renderBeforeButton && ' '}
-                      {urlParams.renderBeforeBadge && <Badge>3</Badge>}
-                      {(urlParams.editableHeader || urlParams.linkedHeader) && ' '}
-                    </Box>
-                  )}
-                  {urlParams.editableHeader && (
-                    <EditableHeader
-                      value={urlParams.headerText || ''}
-                      onChange={value => setUrlParams({ ...urlParams, headerText: value })}
-                    />
-                  )}
-                  {renderHeaderTextAsLink && (
-                    <Link fontSize="inherit" href="#">
-                      {urlParams.headerText}
-                    </Link>
+                  <span>
+                    {renderBeforeBadge && (
+                      <Box
+                        display="inline-block"
+                        margin={{ right: editableHeader || linkedHeader || renderBeforeButtons ? 'xs' : 'n' }}
+                      >
+                        {renderBeforeBadge && <Badge>3</Badge>}
+                      </Box>
+                    )}
+                    {editableHeader && (
+                      <EditableHeader
+                        value={headerText || ''}
+                        onChange={value => setUrlParams({ ...urlParams, headerText: value })}
+                      />
+                    )}
+                    {renderHeaderTextAsLink && (
+                      <Link fontSize="inherit" href="#">
+                        {headerText}
+                      </Link>
+                    )}
+                    {!renderHeaderText && !editableHeader && !renderHeaderTextAsLink && (
+                      <span className={styles['split-panel-header-margin']}>{headerText}</span>
+                    )}
+                  </span>
+                  {renderBeforeButtons && (
+                    <span>
+                      <Button>Button</Button> <Button>Button</Button>
+                    </span>
                   )}
                 </span>
               )
             }
-            headerDescription={urlParams.description}
+            headerDescription={description}
             headerInfo={
-              urlParams.renderInfoLink && (
+              renderInfoLink && (
                 <Link variant="info" onFollow={() => setToolsOpen(true)}>
                   Info
                 </Link>
               )
             }
-            ariaLabel={urlParams.ariaLabel}
+            ariaLabel={ariaLabel}
           >
             <ScrollableDrawerContent />
           </SplitPanel>
@@ -222,15 +239,15 @@ export default function () {
                     <label>
                       <input
                         type="checkbox"
-                        checked={urlParams.renderBeforeButton}
-                        onChange={({ target }) => setUrlParams({ ...urlParams, renderBeforeButton: target.checked })}
+                        checked={renderBeforeButtons}
+                        onChange={({ target }) => setUrlParams({ ...urlParams, renderBeforeButtons: target.checked })}
                       />{' '}
                       Buttons
                     </label>
                     <label>
                       <input
                         type="checkbox"
-                        checked={urlParams.renderBeforeBadge}
+                        checked={renderBeforeBadge}
                         onChange={({ target }) => setUrlParams({ ...urlParams, renderBeforeBadge: target.checked })}
                       />{' '}
                       Badge
@@ -238,7 +255,7 @@ export default function () {
                     <label>
                       <input
                         type="checkbox"
-                        checked={urlParams.editableHeader}
+                        checked={editableHeader}
                         onChange={({ target }) => setUrlParams({ ...urlParams, editableHeader: target.checked })}
                       />{' '}
                       Editable header text
@@ -246,8 +263,8 @@ export default function () {
                     <label>
                       <input
                         type="checkbox"
-                        checked={urlParams.linkedHeader}
-                        disabled={urlParams.editableHeader}
+                        checked={linkedHeader}
+                        disabled={editableHeader}
                         onChange={({ target }) => setUrlParams({ ...urlParams, linkedHeader: target.checked })}
                       />{' '}
                       Header text as link
@@ -259,25 +276,17 @@ export default function () {
                     <label>
                       <input
                         type="checkbox"
-                        checked={urlParams.renderActionsButton}
-                        onChange={({ target }) => setUrlParams({ ...urlParams, renderActionsButton: target.checked })}
-                      />{' '}
-                      Button
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={urlParams.renderActionsButtonLink}
+                        checked={renderActionsButtonLink}
                         onChange={({ target }) =>
                           setUrlParams({ ...urlParams, renderActionsButtonLink: target.checked })
                         }
                       />{' '}
-                      Inline link buttons
+                      Inline link button
                     </label>
                     <label>
                       <input
                         type="checkbox"
-                        checked={urlParams.renderActionsButtonDropdown}
+                        checked={renderActionsButtonDropdown}
                         onChange={({ target }) =>
                           setUrlParams({ ...urlParams, renderActionsButtonDropdown: target.checked })
                         }
@@ -289,19 +298,19 @@ export default function () {
               </ColumnLayout>
               <FormField label="Header text">
                 <Input
-                  value={urlParams.headerText || ''}
+                  value={headerText || ''}
                   onChange={({ detail }) => setUrlParams({ ...urlParams, headerText: detail.value })}
                 />
               </FormField>
               <FormField label="Description">
                 <Input
-                  value={urlParams.description || ''}
+                  value={description || ''}
                   onChange={({ detail }) => setUrlParams({ ...urlParams, description: detail.value })}
                 />
               </FormField>
               <FormField label="ARIA label">
                 <Input
-                  value={urlParams.ariaLabel || ''}
+                  value={ariaLabel || ''}
                   onChange={({ detail }) => setUrlParams({ ...urlParams, ariaLabel: detail.value })}
                 />
               </FormField>
@@ -309,7 +318,7 @@ export default function () {
                 <label>
                   <input
                     type="checkbox"
-                    checked={urlParams.renderInfoLink}
+                    checked={renderInfoLink}
                     onChange={({ target }) => setUrlParams({ ...urlParams, renderInfoLink: target.checked })}
                   />{' '}
                   Info link

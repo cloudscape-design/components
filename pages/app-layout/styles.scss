@@ -110,3 +110,12 @@
   display: inline-block;
   margin-block-start: calc(#{awsui.$space-scaled-xxs} + 1px);
 }
+
+.split-panel-header-full-width {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  column-gap: awsui.$space-scaled-xs;
+  row-gap: awsui.$space-scaled-xxs;
+  align-items: flex-start;
+}

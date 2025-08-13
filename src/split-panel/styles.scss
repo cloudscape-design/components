@@ -259,31 +259,28 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     column-gap: awsui.$space-scaled-xs;
     row-gap: awsui.$space-scaled-xxs;
     justify-content: space-between;
+    // Keep the actions slot always at the block start,
+    // even if the heading and the info slot wrap into multiple lines.
+    align-items: flex-start;
   }
 
   // Header tag and info link
   &-tag-and-info {
+    flex-grow: 1;
     margin-block-start: $vertical-margin;
     // The line height of the header text might not be respected in non-high pixel density screens
     // unless it is set to a smaller value in its parent container.
     line-height: awsui.$line-height-body-s;
   }
 
-  &-tag,
-  &-text,
-  &-info-slot {
+  &-tag.with-info,
+  &-text {
     display: inline;
   }
 
   // The h2 tag, which contains the elements in the `headerBefore` slot, if defined, and the header text
   &-tag {
-    font-size: 0;
-    line-height: 0;
-  }
-
-  &-before-slot.with-header-text,
-  &-tag.with-info {
-    margin-inline-end: awsui.$space-scaled-xs;
+    margin-block: 0;
   }
 
   &-before-slot,
@@ -292,8 +289,16 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
 
   &-before-slot {
-    display: inline-block;
     margin-block-start: calc(-1 * #{$vertical-margin});
+    .header-tag.with-info > &,
+    &.with-header-text {
+      display: inline-block;
+    }
+  }
+
+  &-before-slot.with-header-text,
+  &-tag.with-info {
+    margin-inline-end: awsui.$space-scaled-xs;
   }
 
   &-actions-slot {
