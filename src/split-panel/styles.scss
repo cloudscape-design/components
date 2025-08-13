@@ -242,7 +242,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     display: flex;
   }
 
-  // Area containing the before-header slot, the header text, the actions slot
+  // Area containing the before-header slot, the header text, the info link, the actions slot
   // and the built-in panel buttons.
   &-main-row {
     // Make sure that the panel buttons are always anchored to the block start,
@@ -250,18 +250,17 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     align-items: flex-start;
   }
 
-  // Area containing the before-header slot, the header text and the actions slot
+  // Area containing the before-header slot, the header text, the info link and the actions slot
   // --not the description nor the built-in panel buttons.
   &-main-content {
     flex: auto;
     flex-direction: row;
-    flex-wrap: wrap;
     column-gap: awsui.$space-scaled-xs;
     row-gap: awsui.$space-scaled-xxs;
     justify-content: space-between;
-    // align-items: center;
   }
 
+  // Header tag and info link
   &-tag-and-info {
     margin-block-start: $vertical-margin;
     // The line height of the header text might not be respected in non-high pixel density screens
