@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
@@ -21,15 +22,25 @@ const defaultProps: DatePickerProps = {
 const outsideId = 'outside';
 function renderDatePicker(props: DatePickerProps = defaultProps) {
   const ref = React.createRef<HTMLInputElement>();
-  const { container, getByTestId } = render(
+  const {
+    container,
+    getByTestId,
+    rerender: tlRerender,
+  } = render(
     <div>
       <button data-testid={outsideId} />
       <DatePicker {...props} ref={ref} />
     </div>
   );
   const wrapper = createWrapper(container).findDatePicker()!;
-
-  return { wrapper, ref, getByTestId };
+  const rerender = (props: DatePickerProps) =>
+    tlRerender(
+      <div>
+        <button data-testid={outsideId} />
+        <DatePicker {...props} ref={ref} />
+      </div>
+    );
+  return { wrapper, ref, getByTestId, rerender };
 }
 
 describe('Date picker - direct date input', () => {
@@ -51,6 +62,46 @@ describe('Date picker - direct date input', () => {
     expect(nativeInput).toHaveAttribute('name', 'derpName');
     expect(nativeInput).toHaveAttribute('placeholder', 'YYYY/MM/DD');
     expect(nativeInput).toHaveAttribute('aria-label', 'My date picker label');
+  });
+
+  test('propagates display format to date input', () => {
+    const { wrapper, rerender } = renderDatePicker({ ...defaultProps, value: '2021-02-03', format: 'slashed' });
+
+    const nativeInput = wrapper.findNativeInput();
+    expect(nativeInput.getElement()).toHaveValue('2021/02/03');
+
+    rerender({ ...defaultProps, value: '2021-02-03', format: 'iso' });
+    expect(nativeInput.getElement()).toHaveValue('2021-02-03');
+
+    rerender({ ...defaultProps, value: '2021-02-03', format: 'long-localized', locale: 'en-GB' });
+    expect(nativeInput.getElement()).toHaveValue('3 February 2021');
+  });
+
+  test('propagates input format to date input', () => {
+    const onChange = jest.fn();
+    const props: DatePickerProps = { ...defaultProps, format: 'long-localized', locale: 'en-GB', onChange };
+    const { wrapper, rerender } = renderDatePicker({ ...props, inputFormat: 'slashed' });
+
+    wrapper.focus();
+    wrapper.setInputValue('2022');
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2022' } }));
+
+    wrapper.setInputValue('2022/03');
+    expect(onChange).toHaveBeenCalledTimes(2);
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2022-03' } }));
+
+    wrapper.setInputValue('2022-04');
+    expect(onChange).toHaveBeenCalledTimes(2);
+
+    rerender({ ...props, inputFormat: 'iso' });
+
+    wrapper.setInputValue('2022/03');
+    expect(onChange).toHaveBeenCalledTimes(2);
+
+    wrapper.setInputValue('2022-04');
+    expect(onChange).toHaveBeenCalledTimes(3);
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2022-04' } }));
   });
 
   test('disables autocomplete by default', () => {

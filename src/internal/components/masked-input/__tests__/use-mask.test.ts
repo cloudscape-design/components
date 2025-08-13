@@ -96,6 +96,11 @@ describe('useMask', () => {
       expect(warnOnce).toHaveBeenCalledWith('useMask', 'Invalid string "invalid" provided');
     });
 
+    it('should not warn if the initial value is invalid and showUnmaskedValue is true', () => {
+      setup({ value: 'invalid', showUnmaskedValue: true });
+      expect(warnOnce).not.toHaveBeenCalled();
+    });
+
     it('should return a valid value even if the initial value is invalid', () => {
       const { result } = setup({ value: 'invalid' });
       expect(result.current.value).toBe('');
