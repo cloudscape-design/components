@@ -12,6 +12,8 @@ import TokenList from '~components/internal/components/token-list';
 import SpaceBetween from '~components/space-between';
 import Token from '~components/token';
 
+import { getSiteIdentifier } from '../utils/site-identifier';
+
 import styles from './styles.scss';
 
 const i18nStrings = {
@@ -162,76 +164,80 @@ export default function GenericTokenPage() {
         <Token ariaLabel="Standalone disabled token" label="Standalone disabled token" disabled={true} />
       </SpaceBetween>
 
-      <h2>Custom</h2>
-      <SpaceBetween size="l" direction="vertical">
-        <Token
-          variant="inline"
-          label="Custom action with popover and inline"
-          ariaLabel="Custom action with popover and inline"
-          customActionProps={{
-            iconName: 'edit',
-            popoverProps: { content: <Input value="test" onChange={() => {}} /> },
-          }}
-        />
-
-        <Token
-          variant="inline"
-          iconName="bug"
-          label="Custom action without popover and inline"
-          ariaLabel="Custom action without popover and inline"
-          customActionProps={{
-            iconName: 'settings',
-            onClick: () => {},
-          }}
-        />
-
-        <Token
-          label="Custom action with popover"
-          ariaLabel="Custom action with popover"
-          customActionProps={{
-            iconName: 'edit',
-            popoverProps: { content: <Input value="test" onChange={() => {}} /> },
-          }}
-        />
-
-        <Token
-          iconName="bug"
-          label="Custom action with two popovers and an icon"
-          ariaLabel="Custom action with two popovers and an icon"
-          popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
-          customActionProps={{
-            iconName: 'edit',
-            popoverProps: { content: <Input value="test" onChange={() => {}} /> },
-          }}
-        />
-
-        <Token
-          label="Custom action without popover"
-          description="Some description text"
-          ariaLabel="Custom action without popover"
-          customActionProps={{
-            iconName: 'settings',
-            onClick: () => {},
-          }}
-        />
-
-        <TokenList
-          alignment="vertical"
-          items={files}
-          i18nStrings={i18nStrings}
-          limit={5}
-          renderItem={(file, fileIndex) => (
+      {getSiteIdentifier() === 'core' && (
+        <>
+          <h2>Core</h2>
+          <SpaceBetween size="l" direction="vertical">
             <Token
-              ariaLabel={`agreement-${file + 1}.pdf`}
-              disabled={file === 0}
-              dismissLabel={`Remove file ${fileIndex + 1}`}
-              onDismiss={() => onDismiss(fileIndex)}
-            >
-              <FileOption file={file} />
-            </Token>
-          )}
-        />
-      </SpaceBetween>
+              variant="inline"
+              label="Custom action with popover and inline"
+              ariaLabel="Custom action with popover and inline"
+              customActionProps={{
+                iconName: 'edit',
+                popoverProps: { content: <Input value="test" onChange={() => {}} /> },
+              }}
+            />
+
+            <Token
+              variant="inline"
+              iconName="bug"
+              label="Custom action without popover and inline"
+              ariaLabel="Custom action without popover and inline"
+              customActionProps={{
+                iconName: 'settings',
+                onClick: () => {},
+              }}
+            />
+
+            <Token
+              label="Custom action with popover"
+              ariaLabel="Custom action with popover"
+              customActionProps={{
+                iconName: 'edit',
+                popoverProps: { content: <Input value="test" onChange={() => {}} /> },
+              }}
+            />
+
+            <Token
+              iconName="bug"
+              label="Custom action with two popovers and an icon"
+              ariaLabel="Custom action with two popovers and an icon"
+              popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
+              customActionProps={{
+                iconName: 'edit',
+                popoverProps: { content: <Input value="test" onChange={() => {}} /> },
+              }}
+            />
+
+            <Token
+              label="Custom action without popover"
+              description="Some description text"
+              ariaLabel="Custom action without popover"
+              customActionProps={{
+                iconName: 'settings',
+                onClick: () => {},
+              }}
+            />
+
+            <TokenList
+              alignment="vertical"
+              items={files}
+              i18nStrings={i18nStrings}
+              limit={5}
+              renderItem={(file, fileIndex) => (
+                <Token
+                  ariaLabel={`agreement-${file + 1}.pdf`}
+                  disabled={file === 0}
+                  dismissLabel={`Remove file ${fileIndex + 1}`}
+                  onDismiss={() => onDismiss(fileIndex)}
+                >
+                  <FileOption file={file} />
+                </Token>
+              )}
+            />
+          </SpaceBetween>
+        </>
+      )}
     </Box>
   );
 }
