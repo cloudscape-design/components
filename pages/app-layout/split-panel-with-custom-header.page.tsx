@@ -282,21 +282,21 @@ export default function () {
                 </FormField>
               </ColumnLayout>
               <FormField label="Header text">
-                <input
+                <Input
                   value={urlParams.headerText || ''}
-                  onChange={({ target }) => setUrlParams({ ...urlParams, headerText: target.value })}
+                  onChange={({ detail }) => setUrlParams({ ...urlParams, headerText: detail.value })}
                 />
               </FormField>
               <FormField label="Description">
-                <input
+                <Input
                   value={urlParams.description || ''}
-                  onChange={({ target }) => setUrlParams({ ...urlParams, description: target.value })}
+                  onChange={({ detail }) => setUrlParams({ ...urlParams, description: detail.value })}
                 />
               </FormField>
               <FormField label="ARIA label">
-                <input
+                <Input
                   value={urlParams.ariaLabel || ''}
-                  onChange={({ target }) => setUrlParams({ ...urlParams, ariaLabel: target.value })}
+                  onChange={({ detail }) => setUrlParams({ ...urlParams, ariaLabel: detail.value })}
                 />
               </FormField>
               <FormField>
