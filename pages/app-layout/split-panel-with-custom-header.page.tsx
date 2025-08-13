@@ -92,6 +92,10 @@ export default function () {
   }, []);
 
   const renderHeaderTextAsLink = !urlParams.editableHeader && urlParams.linkedHeader && urlParams.headerText;
+  const renderActions =
+    urlParams.renderActionsButton || urlParams.renderActionsButtonDropdown || urlParams.renderActionsButtonLink;
+  const renderBefore =
+    urlParams.renderBeforeBadge || urlParams.editableHeader || urlParams.renderBeforeButton || urlParams.linkedHeader;
 
   return (
     <ScreenshotArea gutters={false}>
@@ -116,23 +120,22 @@ export default function () {
             header={(!urlParams.editableHeader && !urlParams.linkedHeader && urlParams.headerText) || ''}
             i18nStrings={splitPaneli18nStrings}
             headerActions={
-              <>
-                {urlParams.renderActionsButton && <Button>Button</Button>}
-                {urlParams.renderActionsButtonLink && <Link>Action</Link>}
-                {urlParams.renderActionsButtonDropdown && (
-                  <ButtonDropdown
-                    items={[{ id: 'settings', text: 'Settings' }]}
-                    ariaLabel="Control drawer"
-                    variant="icon"
-                  />
-                )}
-              </>
+              renderActions && (
+                <>
+                  {urlParams.renderActionsButton && <Button>Button</Button>}
+                  {urlParams.renderActionsButtonLink && <Link>Action</Link>}
+                  {urlParams.renderActionsButtonDropdown && (
+                    <ButtonDropdown
+                      items={[{ id: 'settings', text: 'Settings' }]}
+                      ariaLabel="Control drawer"
+                      variant="icon"
+                    />
+                  )}
+                </>
+              )
             }
             headerBefore={
-              (urlParams.renderBeforeBadge ||
-                urlParams.editableHeader ||
-                urlParams.renderBeforeButton ||
-                urlParams.linkedHeader) && (
+              renderBefore && (
                 <span
                   className={
                     renderHeaderTextAsLink && !urlParams.renderBeforeButton
