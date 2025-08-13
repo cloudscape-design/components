@@ -21,6 +21,8 @@ import labels from './utils/labels';
 import { splitPaneli18nStrings } from './utils/strings';
 import * as toolsContent from './utils/tools-content';
 
+import styles from './styles.scss';
+
 type SplitPanelDemoContext = React.Context<
   AppContextType<{
     ariaLabel?: string;
@@ -64,7 +66,7 @@ function EditableHeader({ onChange, value }: { onChange: (text: string) => void;
           <Button variant="icon" iconName="close" onClick={() => setEditing(false)} />
         </SpaceBetween>
       ) : (
-        <span style={{ display: 'inline-block', marginBlockStart: 5 }}>
+        <span className={styles['split-panel-header-margin']}>
           <Box variant="h3" tagOverride="span" display="inline" margin={{ vertical: 'n' }} padding={{ vertical: 'n' }}>
             {value}
           </Box>{' '}
@@ -132,9 +134,9 @@ export default function () {
                 urlParams.renderActionsBefore ||
                 urlParams.linkedHeader) && (
                 <span
-                  style={
+                  className={
                     renderHeaderTextAsLink && !urlParams.renderActionsBefore
-                      ? { display: 'inline-block', marginBlockStart: 5 }
+                      ? styles['split-panel-header-margin']
                       : undefined
                   }
                 >
