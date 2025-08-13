@@ -75,7 +75,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
   &.drawer-closed.drawer-clickable:hover {
     background: awsui.$color-background-layout-panel-hover;
-    cursor: pointer;
   }
   & > .drawer-content-bottom > [aria-hidden='true'] {
     display: none;
