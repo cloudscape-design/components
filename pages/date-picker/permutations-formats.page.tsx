@@ -64,14 +64,13 @@ export default function DatePickerScenario() {
             permutations={permutationsFormatsDay}
             render={permutation => <DatePicker {...permutation} onChange={() => {}} />}
           />
+
           <PermutationsView
             permutations={permutationsFormatsMonth}
             render={permutation => <DatePicker {...permutation} onChange={() => {}} />}
           />
 
-          <br />
           <hr />
-          <br />
 
           <PermutationsView
             permutations={permutationsLongLocalizedLocales}

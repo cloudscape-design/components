@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React from 'react';
 
+import { SpaceBetween } from '~components';
 import Box from '~components/box';
 import DateInput, { DateInputProps } from '~components/date-input';
 
@@ -42,23 +44,24 @@ export default function DateInputPermutations() {
     <Box padding="l">
       <h1>Date Input permutations - formats</h1>
       <ScreenshotArea>
-        <PermutationsView
-          permutations={permutationsFormatsDay}
-          render={permutation => <DateInput {...permutation} onChange={() => {}} />}
-        />
-        <PermutationsView
-          permutations={permutationsFormatsMonth}
-          render={permutation => <DateInput {...permutation} onChange={() => {}} />}
-        />
+        <SpaceBetween size="m">
+          <PermutationsView
+            permutations={permutationsFormatsDay}
+            render={permutation => <DateInput {...permutation} onChange={() => {}} />}
+          />
 
-        <br />
-        <hr />
-        <br />
+          <PermutationsView
+            permutations={permutationsFormatsMonth}
+            render={permutation => <DateInput {...permutation} onChange={() => {}} />}
+          />
 
-        <PermutationsView
-          permutations={permutationsLongLocalizedLocales}
-          render={permutation => <DateInput {...permutation} onChange={() => {}} />}
-        />
+          <hr />
+
+          <PermutationsView
+            permutations={permutationsLongLocalizedLocales}
+            render={permutation => <DateInput {...permutation} onChange={() => {}} />}
+          />
+        </SpaceBetween>
       </ScreenshotArea>
     </Box>
   );
