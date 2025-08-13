@@ -52,11 +52,13 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     // Make sure that fixed position elements like popovers don't leak out
     clip-path: border-box;
   }
+  .drawer-closed > & {
+    overflow: hidden;
+  }
 }
 
 .position-bottom {
   position: fixed;
-  overflow-y: auto;
 
   &:not(.hidden) {
     border-block-start: awsui.$border-panel-top-width solid awsui.$color-border-divider-panel-bottom;
@@ -68,9 +70,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
     border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
   }
-  &.drawer-closed {
-    overflow: hidden;
-  }
+
   &.drawer-closed.drawer-clickable:hover {
     background: awsui.$color-background-layout-panel-hover;
     cursor: pointer;
@@ -163,6 +163,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   padding-inline: awsui.$space-layout-content-horizontal;
   margin-block-start: awsui.$space-panel-split-top;
   position: relative;
+  overflow-y: auto;
   z-index: 0; // the content inside .content-bottom should not be above pane-header-wrapper-bottom
   .with-toolbar > .drawer-content-bottom > & {
     margin-block-start: 0px;
