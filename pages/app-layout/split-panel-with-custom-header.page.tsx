@@ -140,7 +140,7 @@ export default function () {
             i18nStrings={splitPaneli18nStrings}
             headerActions={
               renderActions && (
-                <>
+                <SpaceBetween direction="horizontal" size="xs" alignItems="center">
                   {urlParams.renderActionsButton && <Button>Button</Button>}
                   {urlParams.renderActionsButtonLink && <Link>Action</Link>}
                   {urlParams.renderActionsButtonDropdown && (
@@ -150,7 +150,7 @@ export default function () {
                       variant="icon"
                     />
                   )}
-                </>
+                </SpaceBetween>
               )
             }
             headerBefore={
@@ -256,7 +256,7 @@ export default function () {
                         checked={urlParams.renderActionsButton}
                         onChange={({ target }) => setUrlParams({ ...urlParams, renderActionsButton: target.checked })}
                       />{' '}
-                      Buttons
+                      Button
                     </label>
                     <label>
                       <input

@@ -295,6 +295,12 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     margin-block-start: calc(-1 * #{$vertical-margin});
   }
 
+  &-actions-slot {
+    display: flex;
+    min-block-size: calc(#{awsui.$font-panel-header-line-height} + 2 * #{$vertical-margin});
+    align-items: center;
+  }
+
   &-description {
     color: awsui.$color-text-heading-secondary;
     @include styles.font-body-m;
