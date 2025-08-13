@@ -8,6 +8,7 @@ import InternalCheckbox from '../../../lib/components/checkbox/internal';
 import FormField from '../../../lib/components/form-field';
 import createWrapper, { CheckboxWrapper } from '../../../lib/components/test-utils/dom';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
+import customCssProps from '../../internal/generated/custom-css-properties';
 import { createCommonTests } from './common-tests';
 
 import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
@@ -268,4 +269,52 @@ describe('table grid navigation support', () => {
     expect(getCheckboxInput('#checkbox1')).toHaveAttribute('tabIndex', '-1');
     expect(getCheckboxInput('#checkbox2')).toHaveAttribute('tabIndex', '-1');
   });
+});
+
+test('all style api properties', () => {
+  const { wrapper } = renderCheckbox(
+    <Checkbox
+      checked={true}
+      style={{
+        input: {
+          fill: {
+            checked: 'magenta',
+          },
+          stroke: {
+            checked: 'green',
+          },
+          check: {
+            stroke: {
+              checked: 'brown',
+            },
+          },
+          focusRing: {
+            borderColor: 'blue',
+            borderRadius: '1px',
+            borderWidth: '2px',
+          },
+        },
+        label: {
+          color: {
+            checked: 'orange',
+          },
+        },
+      }}
+    >
+      Hello
+    </Checkbox>
+  );
+
+  const control = wrapper.findByClassName(abstractSwitchStyles.control)!.getElement();
+  const label = wrapper.findByClassName(abstractSwitchStyles.label)!.getElement();
+  const styledBox = wrapper.findByClassName(styles['styled-box'])!.getElement();
+  const styledLine = wrapper.findByClassName(styles['styled-line'])!.getElement();
+
+  expect(getComputedStyle(styledBox).getPropertyValue('fill')).toBe('magenta');
+  expect(getComputedStyle(styledBox).getPropertyValue('stroke')).toBe('green');
+  expect(getComputedStyle(styledLine).getPropertyValue('stroke')).toBe('brown');
+  expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('blue');
+  expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('1px');
+  expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('2px');
+  expect(getComputedStyle(label).getPropertyValue('color')).toBe('orange');
 });

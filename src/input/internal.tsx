@@ -4,7 +4,10 @@ import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
-import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import {
+  copyAnalyticsMetadataAttribute,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
@@ -198,7 +201,7 @@ function InternalInput(
       dir={type === 'email' ? 'ltr' : undefined}
       {...(__injectAnalyticsComponentMetadata
         ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
-        : {})}
+        : copyAnalyticsMetadataAttribute(rest))}
     >
       {__leftIcon && (
         <span onClick={__onLeftIconClick} className={styles['input-icon-left']}>

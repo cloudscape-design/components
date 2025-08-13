@@ -9,6 +9,7 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import customCssProps from '../../../internal/generated/custom-css-properties';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component/index.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -31,6 +32,22 @@ export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, 
   ariaDescribedby?: string;
   ariaControls?: string;
   onClick: () => void;
+  style?: {
+    control?: {
+      background?: string;
+    };
+    description?: {
+      color?: string;
+    };
+    label?: {
+      color?: string;
+    };
+    focusRing?: {
+      borderColor?: string;
+      borderRadius?: string;
+      borderWidth?: string;
+    };
+  };
 }
 
 function joinString(values: (string | undefined)[]) {
@@ -54,6 +71,7 @@ export default function AbstractSwitch({
   ariaDescribedby,
   ariaControls,
   onClick,
+  style,
   __internalRootRef,
   ...rest
 }: AbstractSwitchProps) {
@@ -101,7 +119,17 @@ export default function AbstractSwitch({
               }
         )}
       >
-        <span className={clsx(styles.control, controlClassName)}>
+        <span
+          className={clsx(styles.control, controlClassName)}
+          style={{
+            background: style?.control?.background,
+            ...(style?.focusRing && {
+              [customCssProps.styleFocusRingBorderColor]: style.focusRing?.borderColor,
+              [customCssProps.styleFocusRingBorderRadius]: style.focusRing?.borderRadius,
+              [customCssProps.styleFocusRingBorderWidth]: style.focusRing?.borderWidth,
+            }),
+          }}
+        >
           {styledControl}
           {nativeControl({
             id,
@@ -119,6 +147,7 @@ export default function AbstractSwitch({
             <span
               id={labelId}
               className={clsx(styles.label, analyticsSelectors.label, { [styles['label-disabled']]: disabled })}
+              style={{ color: style?.label?.color }}
             >
               {label}
             </span>
@@ -130,6 +159,7 @@ export default function AbstractSwitch({
                 [styles['description-disabled']]: disabled,
                 [styles['description-bottom-padding']]: descriptionBottomPadding,
               })}
+              style={{ color: style?.description?.color }}
             >
               {description}
             </span>
