@@ -58,7 +58,7 @@ function EditableHeader({ onChange, value }: { onChange: (text: string) => void;
   return (
     <Box display="inline-block">
       {editing ? (
-        <span role="dialog" aria-label="Edit split panel header">
+        <span role="dialog" aria-label="Edit resource name">
           <FocusLock ref={focusLockRef}>
             <form
               onSubmit={() => {
@@ -91,7 +91,12 @@ function EditableHeader({ onChange, value }: { onChange: (text: string) => void;
           <Box variant="h3" tagOverride="span" display="inline" margin={{ vertical: 'n' }} padding={{ vertical: 'n' }}>
             {value}
           </Box>{' '}
-          <Button variant="inline-icon" iconName="edit" onClick={() => setEditing(true)}></Button>
+          <Button
+            variant="inline-icon"
+            iconName="edit"
+            ariaLabel="Edit resource name"
+            onClick={() => setEditing(true)}
+          ></Button>
         </span>
       )}
     </Box>
@@ -105,7 +110,7 @@ export default function () {
   // Initialize the header to a default value if not set.
   useEffect(() => {
     if (!urlParams.editableHeader) {
-      setUrlParams({ ...urlParams, headerText: urlParams.headerText || 'Header text' });
+      setUrlParams({ ...urlParams, headerText: urlParams.headerText || 'Resource name' });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
