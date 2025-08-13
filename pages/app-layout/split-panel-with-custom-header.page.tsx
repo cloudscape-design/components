@@ -148,6 +148,7 @@ export default function () {
                       items={[{ id: 'settings', text: 'Settings' }]}
                       ariaLabel="Control drawer"
                       variant="icon"
+                      expandToViewport={true}
                     />
                   )}
                 </SpaceBetween>
