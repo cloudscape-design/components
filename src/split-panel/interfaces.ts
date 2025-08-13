@@ -40,7 +40,7 @@ export interface SplitPanelProps extends BaseComponentProps {
   ariaLabel?: string;
 
   /**
-   * Actions for the header. Available only if you specify the `header` property.
+   * Actions for the header.
    */
   headerActions?: React.ReactNode;
 
