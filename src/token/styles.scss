@@ -9,9 +9,6 @@
 @use './constants' as constants;
 @use './mixins.scss' as mixins;
 
-$trigger-underline-offset: 0.25em;
-$trigger-underline-offset-inline: 0.1em;
-
 .action-button {
   margin-block-end: 0;
   margin-inline-start: awsui.$space-xxs;
@@ -69,6 +66,12 @@ $trigger-underline-offset-inline: 0.1em;
   block-size: 100%;
   display: inline-flex;
   max-inline-size: 100%;
+  border-block: awsui.$border-width-field solid transparent;
+  border-inline: awsui.$border-width-field solid transparent;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(0px);
+  }
 }
 
 .token-box {
@@ -127,7 +130,7 @@ $trigger-underline-offset-inline: 0.1em;
 
 .popover-trigger-inline-button {
   max-block-size: constants.$token-max-height-inline;
-  text-underline-offset: $trigger-underline-offset-inline;
+  text-underline-offset: constants.$trigger-underline-offset-inline;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(-1px);
