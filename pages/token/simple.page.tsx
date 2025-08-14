@@ -77,11 +77,9 @@ export default function GenericTokenPage() {
         <Token
           variant="inline"
           ariaLabel="Inline token"
-          label={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.`}
+          label={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
         />
         <Token variant="inline" ariaLabel="Inline readonly token" label="Inline readonly token" readOnly={true} />
         <Token variant="inline" ariaLabel="Inline disabled token" label="Inline disabled token" disabled={true} />
@@ -89,12 +87,14 @@ export default function GenericTokenPage() {
         <Token
           variant="inline"
           ariaLabel="Inline dismissable token"
+          dismissLabel="Dismiss token"
           label="Inline dismissable token"
           onDismiss={() => {}}
         />
         <Token
           variant="inline"
           ariaLabel="Inline readonly token"
+          dismissLabel="Dismiss token"
           label="Inline dismissable readonly token"
           readOnly={true}
           onDismiss={() => {}}
@@ -102,6 +102,7 @@ export default function GenericTokenPage() {
         <Token
           variant="inline"
           ariaLabel="Inline disabled token"
+          dismissLabel="Dismiss token"
           label="Inline dismissable disabled token"
           disabled={true}
           onDismiss={() => {}}
@@ -110,6 +111,7 @@ export default function GenericTokenPage() {
         <Token
           variant="inline"
           ariaLabel="Inline dismissable token"
+          dismissLabel="Dismiss token"
           label="Inline dismissable token"
           iconName="edit"
           onDismiss={() => {}}
@@ -118,6 +120,7 @@ export default function GenericTokenPage() {
         <Token
           variant="inline"
           ariaLabel="Inline readonly token"
+          dismissLabel="Dismiss token"
           label="Inline dismissable readonly token"
           iconName="edit"
           readOnly={true}
@@ -127,6 +130,7 @@ export default function GenericTokenPage() {
         <Token
           variant="inline"
           ariaLabel="Inline disabled token"
+          dismissLabel="Dismiss token"
           label="Inline dismissable disabled token"
           iconName="edit"
           disabled={true}
@@ -143,12 +147,19 @@ export default function GenericTokenPage() {
         />
         <Token
           ariaLabel="Standalone token with icon"
+          dismissLabel="Dismiss token"
           label="Standalone token with icon"
           iconName="bug"
           onDismiss={() => {}}
           popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
         />
-        <Token ariaLabel="dismissable token" label="Dismissable token" labelTag="test" onDismiss={() => {}} />
+        <Token
+          ariaLabel="dismissable token"
+          dismissLabel="Dismiss token"
+          label="Dismissable token"
+          labelTag="test"
+          onDismiss={() => {}}
+        />
 
         <Token
           ariaLabel="Standalone token"
@@ -173,6 +184,7 @@ export default function GenericTokenPage() {
               label="Custom action with popover and inline"
               ariaLabel="Custom action with popover and inline"
               customActionProps={{
+                ariaLabel: 'edit token',
                 iconName: 'edit',
                 popoverProps: { content: <Input value="test" onChange={() => {}} /> },
               }}
@@ -184,6 +196,7 @@ export default function GenericTokenPage() {
               label="Custom action without popover and inline"
               ariaLabel="Custom action without popover and inline"
               customActionProps={{
+                ariaLabel: 'settings token',
                 iconName: 'settings',
                 onClick: () => {},
               }}
@@ -193,6 +206,7 @@ export default function GenericTokenPage() {
               label="Custom action with popover"
               ariaLabel="Custom action with popover"
               customActionProps={{
+                ariaLabel: 'edit token',
                 iconName: 'edit',
                 popoverProps: { content: <Input value="test" onChange={() => {}} /> },
               }}
@@ -204,6 +218,7 @@ export default function GenericTokenPage() {
               ariaLabel="Custom action with two popovers and an icon"
               popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
               customActionProps={{
+                ariaLabel: 'edit token',
                 iconName: 'edit',
                 popoverProps: { content: <Input value="test" onChange={() => {}} /> },
               }}
@@ -214,6 +229,7 @@ export default function GenericTokenPage() {
               description="Some description text"
               ariaLabel="Custom action without popover"
               customActionProps={{
+                ariaLabel: 'settings token',
                 iconName: 'settings',
                 onClick: () => {},
               }}
