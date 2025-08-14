@@ -53,51 +53,49 @@ function EditableHeader({ onChange, value }: { onChange: (text: string) => void;
     }
   }, [editing]);
 
-  return (
-    <Box display="inline-block">
-      {editing ? (
-        <span role="dialog" aria-label="Edit resource name">
-          <FocusLock ref={focusLockRef}>
-            <form
-              onSubmit={() => {
-                onChange(internalValue);
-                setEditing(false);
-              }}
-            >
-              <FormField label="Header" __hideLabel={true}>
-                <SpaceBetween direction="horizontal" size="xxs">
-                  <Input
-                    value={internalValue}
-                    onChange={({ detail }) => setInternalValue(detail.value)}
-                    ref={inputRef}
-                  />
-                  <Button variant="icon" iconName="check" formAction="submit" ariaLabel="Submit" />
-                  <Button
-                    variant="icon"
-                    iconName="close"
-                    formAction="none"
-                    ariaLabel="Submit"
-                    onClick={() => setEditing(false)}
-                  />
-                </SpaceBetween>
-              </FormField>
-            </form>
-          </FocusLock>
-        </span>
-      ) : (
-        <span className={styles['split-panel-header-margin']}>
-          <Box variant="h3" tagOverride="span" display="inline" margin={{ vertical: 'n' }} padding={{ vertical: 'n' }}>
-            {value}
-          </Box>{' '}
-          <Button
-            variant="inline-icon"
-            iconName="edit"
-            ariaLabel="Edit resource name"
-            onClick={() => setEditing(true)}
-          ></Button>
-        </span>
-      )}
-    </Box>
+  return editing ? (
+    <span role="dialog" aria-label="Edit resource name" style={{ display: 'inline-block' }}>
+      <FocusLock ref={focusLockRef}>
+        <form
+          onSubmit={() => {
+            onChange(internalValue);
+            setEditing(false);
+          }}
+        >
+          <SpaceBetween direction="horizontal" size="xxs">
+            <SpaceBetween direction="horizontal" size="s" alignItems="center">
+              <Box>
+                <label id="edit-resource-name-label">Resource name</label>
+              </Box>
+              <Input
+                ariaLabelledby="edit-resource-name-label"
+                value={internalValue}
+                onChange={({ detail }) => setInternalValue(detail.value)}
+                ref={inputRef}
+              />
+            </SpaceBetween>
+            <Button variant="icon" iconName="check" formAction="submit" ariaLabel="Submit" />
+            <Button
+              variant="icon"
+              iconName="close"
+              formAction="none"
+              ariaLabel="Submit"
+              onClick={() => setEditing(false)}
+            />
+          </SpaceBetween>
+        </form>
+      </FocusLock>
+    </span>
+  ) : (
+    <span className={styles['split-panel-header-margin']}>
+      <span>{value}</span>{' '}
+      <Button
+        variant="inline-icon"
+        iconName="edit"
+        ariaLabel="Edit resource name"
+        onClick={() => setEditing(true)}
+      ></Button>
+    </span>
   );
 }
 
@@ -122,7 +120,7 @@ export default function () {
   // Initialize the header to a default value if not set.
   useEffect(() => {
     if (!editableHeader) {
-      setUrlParams({ ...urlParams, headerText: headerText || 'Resource name' });
+      setUrlParams({ ...urlParams, headerText: headerText || 'Resource 01' });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -196,9 +194,11 @@ export default function () {
                       />
                     )}
                     {renderHeaderTextAsLink && (
-                      <Link fontSize="inherit" href="#">
-                        {headerText}
-                      </Link>
+                      <span className={renderBeforeButtons ? styles['split-panel-header-margin'] : undefined}>
+                        <Link fontSize="inherit" href="#">
+                          {headerText}
+                        </Link>
+                      </span>
                     )}
                     {!renderHeaderText && !editableHeader && !renderHeaderTextAsLink && (
                       <span className={styles['split-panel-header-margin']}>{headerText}</span>
@@ -236,18 +236,18 @@ export default function () {
                     <label>
                       <input
                         type="checkbox"
-                        checked={renderBeforeButtons}
-                        onChange={({ target }) => setUrlParams({ ...urlParams, renderBeforeButtons: target.checked })}
-                      />{' '}
-                      Buttons
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
                         checked={renderBeforeBadge}
                         onChange={({ target }) => setUrlParams({ ...urlParams, renderBeforeBadge: target.checked })}
                       />{' '}
                       Badge
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={renderBeforeButtons}
+                        onChange={({ target }) => setUrlParams({ ...urlParams, renderBeforeButtons: target.checked })}
+                      />{' '}
+                      Buttons
                     </label>
                     <label>
                       <input
@@ -273,22 +273,22 @@ export default function () {
                     <label>
                       <input
                         type="checkbox"
-                        checked={renderActionsButtonLink}
-                        onChange={({ target }) =>
-                          setUrlParams({ ...urlParams, renderActionsButtonLink: target.checked })
-                        }
-                      />{' '}
-                      Inline link button
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
                         checked={renderActionsButtonDropdown}
                         onChange={({ target }) =>
                           setUrlParams({ ...urlParams, renderActionsButtonDropdown: target.checked })
                         }
                       />{' '}
                       Button dropdown
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={renderActionsButtonLink}
+                        onChange={({ target }) =>
+                          setUrlParams({ ...urlParams, renderActionsButtonLink: target.checked })
+                        }
+                      />{' '}
+                      Inline link button
                     </label>
                   </SpaceBetween>
                 </FormField>
