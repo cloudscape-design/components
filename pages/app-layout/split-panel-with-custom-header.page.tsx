@@ -27,7 +27,6 @@ import styles from './styles.scss';
 
 type SplitPanelDemoContext = React.Context<
   AppContextType<{
-    ariaLabel?: string;
     description?: string;
     editableHeader: boolean;
     headerText?: string;
@@ -107,7 +106,6 @@ export default function () {
   const [toolsOpen, setToolsOpen] = useState(false);
 
   const {
-    ariaLabel,
     description,
     editableHeader,
     linkedHeader,
@@ -222,7 +220,6 @@ export default function () {
                 </Link>
               )
             }
-            ariaLabel={ariaLabel}
           >
             <ScrollableDrawerContent />
           </SplitPanel>
@@ -306,12 +303,6 @@ export default function () {
                 <Input
                   value={description || ''}
                   onChange={({ detail }) => setUrlParams({ ...urlParams, description: detail.value })}
-                />
-              </FormField>
-              <FormField label="ARIA label">
-                <Input
-                  value={ariaLabel || ''}
-                  onChange={({ detail }) => setUrlParams({ ...urlParams, ariaLabel: detail.value })}
                 />
               </FormField>
               <FormField>
