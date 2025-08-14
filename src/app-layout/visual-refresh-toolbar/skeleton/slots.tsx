@@ -3,6 +3,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/implementation';
+import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
+import { BreadcrumbsSlotContext } from '../contexts';
+
 import styles from './styles.css.js';
 
 interface ToolbarSlotProps {
@@ -30,3 +34,25 @@ export const NotificationsSlot = React.forwardRef<HTMLElement, NotificationsSlot
     </div>
   )
 );
+
+interface BreadcrumbsSlotProps {
+  ownBreadcrumbs: React.ReactNode;
+  discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
+}
+
+export function BreadcrumbsSlot({ ownBreadcrumbs, discoveredBreadcrumbs }: BreadcrumbsSlotProps) {
+  return (
+    <BreadcrumbsSlotContext.Provider value={{ isInToolbar: true }}>
+      <div className={styles['breadcrumbs-own']}>{ownBreadcrumbs}</div>
+      {discoveredBreadcrumbs && (
+        <div className={styles['breadcrumbs-discovered']}>
+          <BreadcrumbGroupImplementation
+            {...discoveredBreadcrumbs}
+            data-awsui-discovered-breadcrumbs={true}
+            __injectAnalyticsComponentMetadata={true}
+          />
+        </div>
+      )}
+    </BreadcrumbsSlotContext.Provider>
+  );
+}
