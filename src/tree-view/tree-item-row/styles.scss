@@ -8,6 +8,7 @@
 @use '../../internal/styles' as styles;
 
 $item-toggle-column-width: 28px;
+$item-toggle-row-height: 20px;
 
 .treeitem-group {
   @include styles.styles-reset-ul;
@@ -16,12 +17,14 @@ $item-toggle-column-width: 28px;
 .treeitem {
   @include styles.styles-reset-ul;
 
+  position: relative;
   align-items: baseline;
 
   display: flex;
 
   > .expand-toggle-wrapper {
-    margin-inline-end: awsui.$space-scaled-xxs;
+    inline-size: $item-toggle-column-width;
+    min-inline-size: $item-toggle-column-width;
 
     > .toggle {
       justify-self: center;
@@ -40,9 +43,100 @@ $item-toggle-column-width: 28px;
   }
 }
 
-@for $i from 1 through 20 {
-  .treeitem-level-#{$i} {
-    inline-size: calc(100% - $item-toggle-column-width * $i);
-    margin-inline-start: calc($item-toggle-column-width * $i);
+.connector-line-box {
+  inline-size: $item-toggle-column-width;
+  min-inline-size: $item-toggle-column-width;
+}
+
+.connector-line {
+  position: absolute;
+  inset-block-start: 0;
+  inset-block-end: 0;
+  inline-size: $item-toggle-column-width;
+  min-inline-size: $item-toggle-column-width;
+  background-color: lightgoldenrodyellow;
+}
+
+.connector-line-pass-through {
+  &::before {
+    content: '';
+    inline-size: 1px;
+    position: absolute;
+    inset-inline-start: 13px;
+    inset-block-start: 0px;
+    inset-block-end: 0px;
+    background-color: darkgray;
+  }
+}
+
+.connector-line-connect-mid {
+  &::before {
+    content: '';
+    inline-size: 1px;
+    position: absolute;
+    inset-inline-start: 13px;
+    inset-block-start: 0px;
+    inset-block-end: 0px;
+    background-color: darkgray;
+  }
+
+  &::after {
+    content: '';
+    block-size: 1px;
+    position: absolute;
+    inset-inline-start: 13px;
+    inset-inline-end: 0px;
+    inset-block-start: 13px;
+    background-color: darkgray;
+  }
+}
+
+.connector-line-connect-end {
+  &::before {
+    content: '';
+    inline-size: 1px;
+    position: absolute;
+    inset-inline-start: 13px;
+    inset-block-start: 0px;
+    block-size: 14px;
+    background-color: darkgray;
+  }
+
+  &::after {
+    content: '';
+    block-size: 1px;
+    position: absolute;
+    inset-inline-start: 13px;
+    inset-inline-end: 0px;
+    inset-block-start: 13px;
+    background-color: darkgray;
+  }
+}
+
+.connector-line-toggle-close {
+  // ...
+}
+
+.connector-line-toggle-open {
+  &::before {
+    content: '';
+    inline-size: 1px;
+    position: absolute;
+    inset-inline-start: 13px;
+    inset-block-start: 28px;
+    inset-block-end: 0px;
+    background-color: darkgray;
+  }
+}
+
+.connector-line-toggle-ghost {
+  &::after {
+    content: '';
+    block-size: 1px;
+    position: absolute;
+    inset-inline-start: 0px;
+    inset-inline-end: 4px;
+    inset-block-start: 13px;
+    background-color: darkgray;
   }
 }

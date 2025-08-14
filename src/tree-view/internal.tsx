@@ -8,7 +8,7 @@ import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
-import { TreeItemRow, TreeViewProps } from './interfaces';
+import { ConnectorLineType, TreeItemRow, TreeViewProps } from './interfaces';
 import InternalTreeItemRow from './tree-item-row';
 
 import styles from './styles.css.js';
@@ -48,7 +48,8 @@ const InternalTreeView = <T,>({
     fireNonCancelableEvent(onItemToggle, { id, item, expanded });
   };
 
-  const rows = getTreeItemRows(items, getItemChildren);
+  const isExpanded = (item: T, index: number) => !!expandedItems?.includes(getItemId(item, index));
+  const rows = getTreeItemRows(items, getItemChildren, isExpanded);
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root, testUtilStyles.root)}>
@@ -59,13 +60,14 @@ const InternalTreeView = <T,>({
         aria-labelledby={ariaLabelledby}
         aria-describedby={ariaDescribedby}
       >
-        {rows.map(({ item, index, level }) => {
+        {rows.map(({ item, index, level, connectorLines }) => {
           return (
             <InternalTreeItemRow
               key={index}
               item={item}
               index={index}
               level={level}
+              connectorLines={connectorLines}
               expandedItems={expandedItems}
               i18nStrings={i18nStrings}
               onItemToggle={onToggle}
@@ -83,15 +85,47 @@ const InternalTreeView = <T,>({
 
 function getTreeItemRows<T>(
   treeItems: readonly T[],
-  getItemChildren: (item: T, index: number) => undefined | readonly T[]
+  getItemChildren: (item: T, index: number) => undefined | readonly T[],
+  isExpanded: (item: T, index: number) => boolean
 ): TreeItemRow<T>[] {
+  let throughIndex = 0;
   const rows: TreeItemRow<T>[] = [];
 
-  function traverse(item: T, index: number, level: number) {
-    rows.push({ item, index, level });
-    getItemChildren(item, index)?.forEach((child, index) => traverse(child, index, level + 1));
+  function traverse(
+    parent: null | TreeItemRow<T>,
+    item: T,
+    level: number,
+    isLast: boolean,
+    connectorLines: ConnectorLineType[]
+  ) {
+    const itemIndex = throughIndex;
+    const row = { parent, item, index: throughIndex++, level, isLast, connectorLines };
+    rows.push(row);
+    if (isExpanded(item, itemIndex)) {
+      const children = getItemChildren(item, itemIndex);
+      children?.forEach((child, index) => {
+        const isLast = index === children.length - 1;
+        const nextConnectorLines: ConnectorLineType[] = [];
+        if (!isLast) {
+          nextConnectorLines.push('connect-mid');
+        } else {
+          nextConnectorLines.push('connect-end');
+        }
+        let current: null | TreeItemRow<T> = row;
+        while (current && current.level !== 1) {
+          if (current.isLast) {
+            nextConnectorLines.push('empty');
+          } else {
+            nextConnectorLines.push('pass-through');
+          }
+          current = current.parent;
+        }
+        nextConnectorLines.reverse();
+        traverse(row, child, level + 1, isLast, nextConnectorLines);
+      });
+    }
   }
-  treeItems.forEach((item, index) => traverse(item, index, 1));
+  treeItems.forEach((item, index) => traverse(null, item, 1, index === treeItems.length - 1, []));
 
   return rows;
 }

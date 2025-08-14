@@ -7,7 +7,7 @@ import { useInternalI18n } from '../../i18n/context';
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 import InternalStructuredItem from '../../internal/components/structured-item';
 import { joinStrings } from '../../internal/utils/strings';
-import { TreeViewProps } from '../interfaces';
+import { ConnectorLineType, TreeViewProps } from '../interfaces';
 
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -20,6 +20,7 @@ interface InternalTreeItemRowProps<T>
   item: T;
   index: number;
   level: number;
+  connectorLines: ConnectorLineType[];
   onItemToggle: (detail: TreeViewProps.ItemToggleDetail<T>) => void;
 }
 
@@ -27,6 +28,7 @@ const InternalTreeItemRow = <T,>({
   item,
   index,
   level,
+  connectorLines,
   i18nStrings,
   expandedItems = [],
   renderItemToggleIcon,
@@ -70,7 +72,23 @@ const InternalTreeItemRow = <T,>({
       data-testid={`awsui-treeitem-${id}`}
       tabIndex={0}
     >
+      {connectorLines.map((line, index) => (
+        <div key={index} className={styles[`connector-line-box`]}>
+          <div className={clsx(styles['connector-line'], styles[`connector-line-${line}`])} />
+        </div>
+      ))}
+
       <div className={styles['expand-toggle-wrapper']}>
+        <div className={styles[`connector-line-box`]}>
+          <div
+            className={clsx(styles['connector-line'], {
+              [styles[`connector-line-toggle-open`]]: isExpandable && isExpanded,
+              [styles[`connector-line-toggle-close`]]: isExpandable && !isExpanded,
+              [styles[`connector-line-toggle-ghost`]]: !isExpandable && level !== 1,
+            })}
+          />
+        </div>
+
         {isExpandable && (
           <div className={styles.toggle}>
             <ExpandToggleButton
