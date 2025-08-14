@@ -95,3 +95,11 @@ export namespace TreeViewProps {
     expandButtonLabel?: (item: T) => string;
   }
 }
+
+// Internal interfaces
+
+export interface TreeItemRow<T> {
+  item: T;
+  index: number;
+  level: number;
+}
