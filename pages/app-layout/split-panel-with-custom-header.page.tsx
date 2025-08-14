@@ -177,7 +177,7 @@ export default function () {
                   <span>
                     {renderBeforeBadge && (
                       <Box display="inline-block" margin={{ right: renderHeaderTextInBeforeSlot ? 'xs' : 'n' }}>
-                        {renderBeforeBadge && <Badge>3</Badge>}
+                        <Badge>3</Badge>
                       </Box>
                     )}
                     {editableHeader && (
