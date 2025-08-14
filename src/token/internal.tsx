@@ -132,7 +132,7 @@ function InternalToken({
       className={clsx(!isInline ? styles.token : styles['token-inline'], analyticsSelectors.token, baseProps.className)}
       aria-label={ariaLabel}
       aria-disabled={disabled}
-      role={role ?? (popoverProps ? 'button' : 'none')}
+      role={role}
     >
       <div
         className={clsx(
