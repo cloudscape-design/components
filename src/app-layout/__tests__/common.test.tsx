@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { act, waitFor } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
@@ -238,15 +239,21 @@ describeEachAppLayout(({ theme, size }) => {
           expect(findOpenElement(wrapper)).toBeFalsy();
         });
 
-        test('Moves focus between open and close buttons', () => {
+        test('Moves focus between open and close buttons', async () => {
           // use content type with initial closed state for all drawers
           const { wrapper } = renderComponent(<AppLayout contentType="form" />);
 
+          await act(() => Promise.resolve());
+
           findToggle(wrapper).click();
-          expect(findClose(wrapper).getElement()).toBe(document.activeElement);
+          await waitFor(() => {
+            expect(findClose(wrapper).getElement()).toHaveFocus();
+          });
 
           findClose(wrapper).click();
-          expect(findToggle(wrapper).getElement()).toBe(document.activeElement);
+          await waitFor(() => {
+            expect(findToggle(wrapper).getElement()).toHaveFocus();
+          });
         });
 
         test(`Should not render the drawer if ${hideProp} is set to true`, () => {

@@ -2,13 +2,8 @@
 
 exports[`Theme=refresh-toolbar, Size=desktop contract for default use-case 1`] = `
 Map {
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": undefined,
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
+  "BeforeMainSlotImplementation" => {
+    "appLayoutProps": {
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -21,74 +16,12 @@ Map {
         "toolsClose": undefined,
         "toolsToggle": undefined,
       },
-      "breadcrumbs": undefined,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": undefined,
-            "drawerName": "",
-            "triggerButton": undefined,
-          },
-          "content": undefined,
-          "id": "awsui-internal-tools",
-          "resizable": false,
-          "trigger": {
-            "iconName": "status-info",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
       "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
       "placement": {
         "inlineSize": Infinity,
         "insetBlockEnd": 0,
@@ -96,594 +29,12 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel4",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
+      "toolsWidth": 290,
     },
-  },
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": undefined,
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": undefined,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": undefined,
-            "drawerName": "",
-            "triggerButton": undefined,
-          },
-          "content": undefined,
-          "id": "awsui-internal-tools",
-          "resizable": false,
-          "trigger": {
-            "iconName": "status-info",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel4",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
-    },
-    "children": undefined,
-    "splitPanelInternals": {
-      "bottomOffset": 0,
-      "getMaxHeight": [Function],
-      "headerHeight": 0,
-      "isForcedPosition": false,
-      "isOpen": false,
-      "leftOffset": 0,
-      "maxWidth": Infinity,
-      "onPreferencesChange": [Function],
-      "onResize": [Function],
-      "onToggle": [Function],
-      "position": "bottom",
-      "refs": {
-        "preferences": {
-          "current": null,
-        },
-        "slider": {
-          "current": null,
-        },
-        "toggle": {
-          "current": null,
-        },
-      },
-      "reportHeaderHeight": [Function],
-      "reportSize": [Function],
-      "rightOffset": 0,
-      "setSplitPanelToggle": [Function],
-      "size": 0,
-      "topOffset": 0,
-    },
-  },
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": undefined,
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": undefined,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": undefined,
-            "drawerName": "",
-            "triggerButton": undefined,
-          },
-          "content": undefined,
-          "id": "awsui-internal-tools",
-          "resizable": false,
-          "trigger": {
-            "iconName": "status-info",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel4",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
-    },
-  },
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": undefined,
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": undefined,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": undefined,
-            "drawerName": "",
-            "triggerButton": undefined,
-          },
-          "content": undefined,
-          "id": "awsui-internal-tools",
-          "resizable": false,
-          "trigger": {
-            "iconName": "status-info",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel4",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
-    },
-  },
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": undefined,
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": undefined,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": undefined,
-            "drawerName": "",
-            "triggerButton": undefined,
-          },
-          "content": undefined,
-          "id": "awsui-internal-tools",
-          "resizable": false,
-          "trigger": {
-            "iconName": "status-info",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel4",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
+    "appLayoutState": {
+      "isIntersecting": true,
     },
     "toolbarProps": {
-      "activeDrawerId": null,
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -696,31 +47,201 @@ Map {
         "toolsClose": undefined,
         "toolsToggle": undefined,
       },
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": undefined,
-            "drawerName": "",
-            "triggerButton": undefined,
-          },
-          "content": undefined,
-          "id": "awsui-internal-tools",
-          "resizable": false,
-          "trigger": {
-            "iconName": "status-info",
-          },
-        },
-      ],
-      "drawersFocusRef": {
-        "current": null,
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "TopContentSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
       },
       "hasNavigation": true,
-      "navigationFocusRef": {
-        "current": null,
-      },
+      "navigationFocusRef": undefined,
       "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onNavigationToggle": [Function],
+      "onNavigationToggle": undefined,
+    },
+  },
+  "BottomContentSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "AfterMainSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "AppLayoutStateProvider" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "toolsWidth": 290,
+    },
+    "forwardRef": null,
+    "stateManager": {
+      "current": {
+        "hasToolbar": true,
+        "setState": [Function],
+        "setToolbar": undefined,
+      },
     },
   },
 }
@@ -728,13 +249,8 @@ Map {
 
 exports[`Theme=refresh-toolbar, Size=desktop contract with all slots provided 1`] = `
 Map {
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": undefined,
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
+  "BeforeMainSlotImplementation" => {
+    "appLayoutProps": {
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -750,77 +266,21 @@ Map {
       "breadcrumbs": <div>
         breadcrumbs
       </div>,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": undefined,
-            "drawerName": "",
-            "triggerButton": undefined,
-          },
-          "content": <div>
-            tools
-          </div>,
-          "id": "awsui-internal-tools",
-          "resizable": false,
-          "trigger": {
-            "iconName": "status-info",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
+      "content": <div>
+        content
+      </div>,
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
       "navigation": <div>
         navigation
       </div>,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
       "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
+      "navigationWidth": 280,
+      "notifications": <div>
+        notifications
+      </div>,
+      "onNavigationChange": [Function],
       "placement": {
         "inlineSize": Infinity,
         "insetBlockEnd": 0,
@@ -828,759 +288,18 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
+      "splitPanel": <div>
+        split panel
+      </div>,
+      "tools": <div>
+        tools
+      </div>,
+      "toolsWidth": 290,
     },
-  },
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": undefined,
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": <div>
-        breadcrumbs
-      </div>,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": undefined,
-            "drawerName": "",
-            "triggerButton": undefined,
-          },
-          "content": <div>
-            tools
-          </div>,
-          "id": "awsui-internal-tools",
-          "resizable": false,
-          "trigger": {
-            "iconName": "status-info",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <div>
-        navigation
-      </div>,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
-    },
-    "children": <div>
-      notifications
-    </div>,
-  },
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": undefined,
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": <div>
-        breadcrumbs
-      </div>,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": undefined,
-            "drawerName": "",
-            "triggerButton": undefined,
-          },
-          "content": <div>
-            tools
-          </div>,
-          "id": "awsui-internal-tools",
-          "resizable": false,
-          "trigger": {
-            "iconName": "status-info",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <div>
-        navigation
-      </div>,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
-    },
-    "children": <div>
-      split panel
-    </div>,
-    "splitPanelInternals": {
-      "bottomOffset": 0,
-      "getMaxHeight": [Function],
-      "headerHeight": 0,
-      "isForcedPosition": false,
-      "isOpen": false,
-      "leftOffset": 0,
-      "maxWidth": Infinity,
-      "onPreferencesChange": [Function],
-      "onResize": [Function],
-      "onToggle": [Function],
-      "position": "bottom",
-      "refs": {
-        "preferences": {
-          "current": null,
-        },
-        "slider": {
-          "current": null,
-        },
-        "toggle": {
-          "current": null,
-        },
-      },
-      "reportHeaderHeight": [Function],
-      "reportSize": [Function],
-      "rightOffset": 0,
-      "setSplitPanelToggle": [Function],
-      "size": 0,
-      "topOffset": 0,
-    },
-  },
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": undefined,
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": <div>
-        breadcrumbs
-      </div>,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": undefined,
-            "drawerName": "",
-            "triggerButton": undefined,
-          },
-          "content": <div>
-            tools
-          </div>,
-          "id": "awsui-internal-tools",
-          "resizable": false,
-          "trigger": {
-            "iconName": "status-info",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <div>
-        navigation
-      </div>,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
-    },
-  },
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": undefined,
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": <div>
-        breadcrumbs
-      </div>,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": undefined,
-            "drawerName": "",
-            "triggerButton": undefined,
-          },
-          "content": <div>
-            tools
-          </div>,
-          "id": "awsui-internal-tools",
-          "resizable": false,
-          "trigger": {
-            "iconName": "status-info",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <div>
-        navigation
-      </div>,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
-    },
-  },
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": undefined,
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": <div>
-        breadcrumbs
-      </div>,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": undefined,
-            "drawerName": "",
-            "triggerButton": undefined,
-          },
-          "content": <div>
-            tools
-          </div>,
-          "id": "awsui-internal-tools",
-          "resizable": false,
-          "trigger": {
-            "iconName": "status-info",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <div>
-        navigation
-      </div>,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
+    "appLayoutState": {
+      "isIntersecting": true,
     },
     "toolbarProps": {
-      "activeDrawerId": null,
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -1592,35 +311,278 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
-      },
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": undefined,
-            "drawerName": "",
-            "triggerButton": undefined,
-          },
-          "content": <div>
-            tools
-          </div>,
-          "id": "awsui-internal-tools",
-          "resizable": false,
-          "trigger": {
-            "iconName": "status-info",
-          },
-        },
-      ],
-      "drawersFocusRef": {
-        "current": null,
       },
       "hasBreadcrumbsPortal": true,
       "hasNavigation": true,
-      "navigationFocusRef": {
-        "current": null,
-      },
+      "navigationFocusRef": undefined,
       "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onNavigationToggle": [Function],
+      "onNavigationToggle": undefined,
+    },
+  },
+  "TopContentSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "breadcrumbs": <div>
+        breadcrumbs
+      </div>,
+      "content": <div>
+        content
+      </div>,
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigation": <div>
+        navigation
+      </div>,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "notifications": <div>
+        notifications
+      </div>,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <div>
+        split panel
+      </div>,
+      "tools": <div>
+        tools
+      </div>,
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasBreadcrumbsPortal": true,
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "BottomContentSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "breadcrumbs": <div>
+        breadcrumbs
+      </div>,
+      "content": <div>
+        content
+      </div>,
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigation": <div>
+        navigation
+      </div>,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "notifications": <div>
+        notifications
+      </div>,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <div>
+        split panel
+      </div>,
+      "tools": <div>
+        tools
+      </div>,
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasBreadcrumbsPortal": true,
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "AfterMainSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "breadcrumbs": <div>
+        breadcrumbs
+      </div>,
+      "content": <div>
+        content
+      </div>,
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigation": <div>
+        navigation
+      </div>,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "notifications": <div>
+        notifications
+      </div>,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <div>
+        split panel
+      </div>,
+      "tools": <div>
+        tools
+      </div>,
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasBreadcrumbsPortal": true,
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "AppLayoutStateProvider" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "breadcrumbs": <div>
+        breadcrumbs
+      </div>,
+      "content": <div>
+        content
+      </div>,
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigation": <div>
+        navigation
+      </div>,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "notifications": <div>
+        notifications
+      </div>,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <div>
+        split panel
+      </div>,
+      "tools": <div>
+        tools
+      </div>,
+      "toolsWidth": 290,
+    },
+    "forwardRef": null,
+    "stateManager": {
+      "current": {
+        "hasToolbar": true,
+        "setState": [Function],
+        "setToolbar": undefined,
+      },
     },
   },
 }
@@ -1628,767 +590,8 @@ Map {
 
 exports[`Theme=refresh-toolbar, Size=desktop contract with drawers 1`] = `
 Map {
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": {
-        "ariaLabels": {
-          "closeButton": "Security close button",
-          "drawerName": "Security drawer content",
-          "resizeHandle": "Security resize handle",
-          "triggerButton": "Security trigger button",
-        },
-        "content": <span>
-          Security
-        </span>,
-        "id": "security",
-        "trigger": {
-          "iconName": "security",
-        },
-      },
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": undefined,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": "Security close button",
-            "drawerName": "Security drawer content",
-            "resizeHandle": "Security resize handle",
-            "triggerButton": "Security trigger button",
-          },
-          "content": <span>
-            Security
-          </span>,
-          "id": "security",
-          "trigger": {
-            "iconName": "security",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel8",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
-    },
-  },
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": {
-        "ariaLabels": {
-          "closeButton": "Security close button",
-          "drawerName": "Security drawer content",
-          "resizeHandle": "Security resize handle",
-          "triggerButton": "Security trigger button",
-        },
-        "content": <span>
-          Security
-        </span>,
-        "id": "security",
-        "trigger": {
-          "iconName": "security",
-        },
-      },
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": undefined,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": "Security close button",
-            "drawerName": "Security drawer content",
-            "resizeHandle": "Security resize handle",
-            "triggerButton": "Security trigger button",
-          },
-          "content": <span>
-            Security
-          </span>,
-          "id": "security",
-          "trigger": {
-            "iconName": "security",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel8",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
-    },
-    "children": undefined,
-    "splitPanelInternals": {
-      "bottomOffset": 0,
-      "getMaxHeight": [Function],
-      "headerHeight": 0,
-      "isForcedPosition": false,
-      "isOpen": false,
-      "leftOffset": 0,
-      "maxWidth": Infinity,
-      "onPreferencesChange": [Function],
-      "onResize": [Function],
-      "onToggle": [Function],
-      "position": "bottom",
-      "refs": {
-        "preferences": {
-          "current": null,
-        },
-        "slider": {
-          "current": null,
-        },
-        "toggle": {
-          "current": null,
-        },
-      },
-      "reportHeaderHeight": [Function],
-      "reportSize": [Function],
-      "rightOffset": 0,
-      "setSplitPanelToggle": [Function],
-      "size": 0,
-      "topOffset": 0,
-    },
-  },
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": {
-        "ariaLabels": {
-          "closeButton": "Security close button",
-          "drawerName": "Security drawer content",
-          "resizeHandle": "Security resize handle",
-          "triggerButton": "Security trigger button",
-        },
-        "content": <span>
-          Security
-        </span>,
-        "id": "security",
-        "trigger": {
-          "iconName": "security",
-        },
-      },
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": undefined,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": "Security close button",
-            "drawerName": "Security drawer content",
-            "resizeHandle": "Security resize handle",
-            "triggerButton": "Security trigger button",
-          },
-          "content": <span>
-            Security
-          </span>,
-          "id": "security",
-          "trigger": {
-            "iconName": "security",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel8",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
-    },
-  },
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": {
-        "ariaLabels": {
-          "closeButton": "Security close button",
-          "drawerName": "Security drawer content",
-          "resizeHandle": "Security resize handle",
-          "triggerButton": "Security trigger button",
-        },
-        "content": <span>
-          Security
-        </span>,
-        "id": "security",
-        "trigger": {
-          "iconName": "security",
-        },
-      },
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": undefined,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": "Security close button",
-            "drawerName": "Security drawer content",
-            "resizeHandle": "Security resize handle",
-            "triggerButton": "Security trigger button",
-          },
-          "content": <span>
-            Security
-          </span>,
-          "id": "security",
-          "trigger": {
-            "iconName": "security",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel8",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
-    },
-  },
-  [Function] => {
-    "appLayoutInternals": {
-      "activeDrawer": {
-        "ariaLabels": {
-          "closeButton": "Security close button",
-          "drawerName": "Security drawer content",
-          "resizeHandle": "Security resize handle",
-          "triggerButton": "Security trigger button",
-        },
-        "content": <span>
-          Security
-        </span>,
-        "id": "security",
-        "trigger": {
-          "iconName": "security",
-        },
-      },
-      "activeDrawerSize": 290,
-      "activeGlobalDrawers": [],
-      "activeGlobalDrawersIds": [],
-      "activeGlobalDrawersSizes": {},
-      "ariaLabels": {
-        "drawers": undefined,
-        "drawersOverflow": undefined,
-        "drawersOverflowWithBadge": undefined,
-        "navigation": undefined,
-        "navigationClose": undefined,
-        "navigationToggle": undefined,
-        "notifications": undefined,
-        "tools": undefined,
-        "toolsClose": undefined,
-        "toolsToggle": undefined,
-      },
-      "breadcrumbs": undefined,
-      "discoveredBreadcrumbs": null,
-      "drawers": [
-        {
-          "ariaLabels": {
-            "closeButton": "Security close button",
-            "drawerName": "Security drawer content",
-            "resizeHandle": "Security resize handle",
-            "triggerButton": "Security trigger button",
-          },
-          "content": <span>
-            Security
-          </span>,
-          "id": "security",
-          "trigger": {
-            "iconName": "security",
-          },
-        },
-      ],
-      "drawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "drawersOpenQueue": [],
-      "expandedDrawerId": null,
-      "globalDrawers": [],
-      "globalDrawersFocusControl": {
-        "loseFocus": [Function],
-        "refs": {},
-        "setFocus": [Function],
-      },
-      "headerVariant": undefined,
-      "isMobile": false,
-      "maxDrawerSize": Infinity,
-      "maxGlobalDrawersSizes": {},
-      "minDrawerSize": 290,
-      "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
-      "navigationFocusControl": {
-        "loseFocus": [Function],
-        "refs": {
-          "close": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setFocus": [Function],
-      },
-      "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onActiveDrawerResize": [Function],
-      "onActiveGlobalDrawersChange": [Function],
-      "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "placement": {
-        "inlineSize": Infinity,
-        "insetBlockEnd": 0,
-        "insetBlockStart": 0,
-        "insetInlineEnd": 0,
-        "insetInlineStart": 0,
-      },
-      "setExpandedDrawerId": [Function],
-      "setNotificationsHeight": [Function],
-      "setToolbarHeight": [Function],
-      "setToolbarState": [Function],
-      "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel8",
-      "splitPanelFocusControl": {
-        "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
-        },
-        "setLastInteraction": [Function],
-      },
-      "splitPanelOpen": false,
-      "splitPanelPosition": "bottom",
-      "splitPanelToggleConfig": {
-        "ariaLabel": undefined,
-        "displayed": false,
-      },
-      "stickyNotifications": false,
-      "toolbarState": "show",
-      "verticalOffsets": {
-        "drawers": 0,
-        "header": 0,
-        "notifications": 0,
-        "toolbar": 0,
-      },
-    },
-    "toolbarProps": {
+  "BeforeMainSlotImplementation" => {
+    "appLayoutProps": {
       "activeDrawerId": "security",
       "ariaLabels": {
         "drawers": undefined,
@@ -2402,6 +605,7 @@ Map {
         "toolsClose": undefined,
         "toolsToggle": undefined,
       },
+      "contentType": "default",
       "drawers": [
         {
           "ariaLabels": {
@@ -2419,16 +623,308 @@ Map {
           },
         },
       ],
-      "drawersFocusRef": {
-        "current": null,
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onDrawerChange": [Function],
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
       },
       "hasNavigation": true,
-      "navigationFocusRef": {
-        "current": null,
-      },
+      "navigationFocusRef": undefined,
       "navigationOpen": true,
-      "onActiveDrawerChange": [Function],
-      "onNavigationToggle": [Function],
+      "onNavigationToggle": undefined,
+    },
+  },
+  "TopContentSlotImplementation" => {
+    "appLayoutProps": {
+      "activeDrawerId": "security",
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "drawers": [
+        {
+          "ariaLabels": {
+            "closeButton": "Security close button",
+            "drawerName": "Security drawer content",
+            "resizeHandle": "Security resize handle",
+            "triggerButton": "Security trigger button",
+          },
+          "content": <span>
+            Security
+          </span>,
+          "id": "security",
+          "trigger": {
+            "iconName": "security",
+          },
+        },
+      ],
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onDrawerChange": [Function],
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "BottomContentSlotImplementation" => {
+    "appLayoutProps": {
+      "activeDrawerId": "security",
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "drawers": [
+        {
+          "ariaLabels": {
+            "closeButton": "Security close button",
+            "drawerName": "Security drawer content",
+            "resizeHandle": "Security resize handle",
+            "triggerButton": "Security trigger button",
+          },
+          "content": <span>
+            Security
+          </span>,
+          "id": "security",
+          "trigger": {
+            "iconName": "security",
+          },
+        },
+      ],
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onDrawerChange": [Function],
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "AfterMainSlotImplementation" => {
+    "appLayoutProps": {
+      "activeDrawerId": "security",
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "drawers": [
+        {
+          "ariaLabels": {
+            "closeButton": "Security close button",
+            "drawerName": "Security drawer content",
+            "resizeHandle": "Security resize handle",
+            "triggerButton": "Security trigger button",
+          },
+          "content": <span>
+            Security
+          </span>,
+          "id": "security",
+          "trigger": {
+            "iconName": "security",
+          },
+        },
+      ],
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onDrawerChange": [Function],
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "AppLayoutStateProvider" => {
+    "appLayoutProps": {
+      "activeDrawerId": "security",
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "drawers": [
+        {
+          "ariaLabels": {
+            "closeButton": "Security close button",
+            "drawerName": "Security drawer content",
+            "resizeHandle": "Security resize handle",
+            "triggerButton": "Security trigger button",
+          },
+          "content": <span>
+            Security
+          </span>,
+          "id": "security",
+          "trigger": {
+            "iconName": "security",
+          },
+        },
+      ],
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onDrawerChange": [Function],
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "toolsWidth": 290,
+    },
+    "forwardRef": null,
+    "stateManager": {
+      "current": {
+        "hasToolbar": true,
+        "setState": [Function],
+        "setToolbar": undefined,
+      },
     },
   },
 }

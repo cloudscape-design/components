@@ -18,10 +18,10 @@ import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 export interface SplitPanelToggleProps {
-  displayed: boolean;
+  displayed: boolean | undefined;
   ariaLabel: string | undefined;
   controlId: string | undefined;
-  active: boolean;
+  active: boolean | undefined;
   position: AppLayoutProps.SplitPanelPosition;
 }
 

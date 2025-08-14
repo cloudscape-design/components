@@ -7,8 +7,8 @@ import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
 import { useVisualRefresh } from '../hooks/use-visual-mode';
 
 // Built-in React.FunctionComponent has always present `children` property which is not desired
-export type FunctionComponent<Props> = (props: Props) => JSX.Element;
-type PropsType<Component extends FunctionComponent<any>> =
+export type FunctionComponent<Props extends object> = (props: Props) => JSX.Element | null;
+export type PropsType<Component extends FunctionComponent<any>> =
   Component extends FunctionComponent<infer Props> ? Props : never;
 
 export function createWidgetizedComponent<Component extends FunctionComponent<any>>(
