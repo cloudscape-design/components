@@ -45,6 +45,8 @@ export default function InternalWizard({
   onCancel,
   onSubmit,
   onNavigate,
+  customNavigationSide,
+  customNavigationTop,
   __internalRootRef,
   __injectAnalyticsComponentMetadata = false,
   ...rest
@@ -179,23 +181,30 @@ export default function InternalWizard({
       <div
         className={clsx(styles.wizard, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
       >
-        <WizardNavigation
-          activeStepIndex={actualActiveStepIndex}
-          farthestStepIndex={farthestStepIndex.current}
-          allowSkipTo={allowSkipTo}
-          hidden={smallContainer}
-          i18nStrings={i18nStrings}
-          isLoadingNextStep={isLoadingNextStep}
-          onStepClick={onStepClick}
-          onSkipToClick={onSkipToClick}
-          steps={steps}
-        />
+        {customNavigationSide ? (
+          smallContainer ? null : (
+            <div className={styles['navigation-custom']}>{customNavigationSide}</div>
+          )
+        ) : (
+          <WizardNavigation
+            activeStepIndex={actualActiveStepIndex}
+            farthestStepIndex={farthestStepIndex.current}
+            allowSkipTo={allowSkipTo}
+            hidden={smallContainer}
+            i18nStrings={i18nStrings}
+            isLoadingNextStep={isLoadingNextStep}
+            onStepClick={onStepClick}
+            onSkipToClick={onSkipToClick}
+            steps={steps}
+          />
+        )}
         <div
           className={clsx(styles.form, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
         >
           <WizardForm
             steps={steps}
             showCollapsedSteps={smallContainer}
+            customCollapsedSteps={customNavigationTop}
             i18nStrings={i18nStrings}
             submitButtonText={submitButtonText}
             activeStepIndex={actualActiveStepIndex}

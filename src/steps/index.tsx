@@ -16,7 +16,6 @@ const Steps = ({ steps, ...props }: StepsProps) => {
   const baseProps = getBaseProps(props);
   const baseComponentProps = useBaseComponent('Steps');
   const externalProps = getExternalProps(props);
-
   return <InternalSteps {...baseProps} {...baseComponentProps} {...externalProps} steps={steps} />;
 };
 

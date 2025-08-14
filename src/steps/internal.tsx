@@ -12,11 +12,11 @@ import styles from './styles.css.js';
 
 type InternalStepsProps = SomeRequired<StepsProps, 'steps'> & InternalBaseComponentProps<HTMLDivElement>;
 
-const InternalStep = ({ status, statusIconAriaLabel, header, details }: StepsProps.Step) => {
+const InternalStep = ({ status, statusIconAriaLabel, statusColorOverride, header, details }: StepsProps.Step) => {
   return (
     <li className={styles.container}>
       <div className={styles.header}>
-        <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
+        <StatusIndicator type={status} colorOverride={statusColorOverride} iconAriaLabel={statusIconAriaLabel}>
           {header}
         </StatusIndicator>
       </div>
@@ -47,6 +47,7 @@ const InternalSteps = ({
             key={index}
             status={step.status}
             statusIconAriaLabel={step.statusIconAriaLabel}
+            statusColorOverride={step.statusColorOverride}
             header={step.header}
             details={step.details}
           />
