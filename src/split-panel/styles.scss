@@ -21,11 +21,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   background-color: awsui.$color-background-layout-panel-content;
   // should be above tools and navigation panels to avoid their shadows
   z-index: 840;
-  &-closed {
-    cursor: pointer;
-    &:not(.refresh) {
-      min-inline-size: constants.$sidebar-size-closed;
-    }
+  &-closed:not(.refresh) {
+    min-inline-size: constants.$sidebar-size-closed;
   }
 }
 
@@ -74,6 +71,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     overflow: hidden;
   }
   &.drawer-closed.drawer-clickable:hover {
+    cursor: pointer;
     background: awsui.$color-background-layout-panel-hover;
   }
   & > .drawer-content-bottom > [aria-hidden='true'] {
