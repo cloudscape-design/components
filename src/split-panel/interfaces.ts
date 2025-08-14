@@ -6,7 +6,7 @@ import { BaseComponentProps } from '../internal/base-component';
 
 export interface SplitPanelProps extends BaseComponentProps {
   /**
-   * Header of the split panel.
+   * Header text of the split panel.
    */
   header: string;
   children: React.ReactNode;
