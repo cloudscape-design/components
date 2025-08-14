@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
 import { OptionDefinition } from '../internal/components/option/interfaces';
+import Tooltip from '../internal/components/tooltip';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import InternalPopover from '../popover/internal';
 import ActionButton from './action-button';
@@ -19,6 +20,7 @@ type InternalTokenProps = TokenProps &
   InternalBaseComponentProps & {
     role?: string;
     disableInnerPadding?: boolean;
+    disableTooltip?: boolean;
   };
 
 function InternalToken({
@@ -44,11 +46,14 @@ function InternalToken({
   customActionProps,
 
   // Internal
-  disableInnerPadding,
   role,
+  disableInnerPadding,
+  disableTooltip,
   ...restProps
 }: InternalTokenProps) {
   const baseProps = getBaseProps(restProps);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
   const isInline = variant === 'inline';
 
   const optionDefinition: OptionDefinition = {
@@ -129,10 +134,20 @@ function InternalToken({
   return (
     <div
       {...baseProps}
+      ref={containerRef}
       className={clsx(!isInline ? styles.token : styles['token-inline'], analyticsSelectors.token, baseProps.className)}
       aria-label={ariaLabel}
       aria-disabled={disabled}
       role={role}
+      onFocus={() => {
+        setShowTooltip(true);
+      }}
+      onBlur={() => setShowTooltip(false)}
+      onMouseEnter={() => {
+        setShowTooltip(true);
+      }}
+      onMouseLeave={() => setShowTooltip(false)}
+      tabIndex={!disableTooltip && !popoverProps && isInline ? 0 : undefined}
     >
       <div
         className={clsx(
@@ -145,6 +160,16 @@ function InternalToken({
         {getTokenContent()}
         {getActionButton()}
       </div>
+      {!disableTooltip && !popoverProps && isInline && showTooltip && (
+        <Tooltip
+          trackRef={containerRef}
+          value={label}
+          size="medium"
+          onDismiss={() => {
+            setShowTooltip(false);
+          }}
+        />
+      )}
     </div>
   );
 }
