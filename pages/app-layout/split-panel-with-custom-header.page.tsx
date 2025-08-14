@@ -122,7 +122,7 @@ export default function () {
   const renderHeaderTextAsLink = !editableHeader && linkedHeader && headerText;
   const renderActions = renderActionsButtonDropdown || renderActionsButtonLink;
   const renderBefore = editableHeader || linkedHeader || renderBeforeBadge || renderBeforeButtons;
-  const renderHeaderText = !editableHeader && !linkedHeader && !renderBeforeButtons;
+  const renderHeaderTextInBeforeSlot = editableHeader || linkedHeader || renderBeforeButtons;
 
   return (
     <ScreenshotArea gutters={false} disableAnimations={true}>
@@ -144,7 +144,7 @@ export default function () {
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         splitPanel={
           <SplitPanel
-            header={renderHeaderText ? headerText : ''}
+            header={renderHeaderTextInBeforeSlot ? '' : headerText}
             i18nStrings={splitPaneli18nStrings}
             headerActions={
               renderActions && (
@@ -174,10 +174,7 @@ export default function () {
                 >
                   <span>
                     {renderBeforeBadge && (
-                      <Box
-                        display="inline-block"
-                        margin={{ right: editableHeader || linkedHeader || renderBeforeButtons ? 'xs' : 'n' }}
-                      >
+                      <Box display="inline-block" margin={{ right: renderHeaderTextInBeforeSlot ? 'xs' : 'n' }}>
                         {renderBeforeBadge && <Badge>3</Badge>}
                       </Box>
                     )}
@@ -194,7 +191,7 @@ export default function () {
                         </Link>
                       </span>
                     )}
-                    {!renderHeaderText && !editableHeader && !renderHeaderTextAsLink && (
+                    {renderHeaderTextInBeforeSlot && !editableHeader && !renderHeaderTextAsLink && (
                       <span className={styles['split-panel-header-margin']}>{headerText}</span>
                     )}
                   </span>
