@@ -28,8 +28,8 @@
 
 @mixin token-box-inline-styles {
   position: relative;
-  block-size: 20px;
-  max-block-size: 20px;
+  block-size: constants.$token-max-height-inline;
+  max-block-size: constants.$token-max-height-inline;
   border-block: awsui.$border-width-field solid constants.$token-border-color;
   border-inline: awsui.$border-width-field solid constants.$token-border-color;
   padding-inline-start: awsui.$space-scaled-xxs;

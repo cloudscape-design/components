@@ -121,12 +121,12 @@ $trigger-underline-offset-inline: 0.1em;
   inline-size: 100%;
 
   &-inline {
-    max-block-size: 20px;
+    max-block-size: constants.$token-max-height-inline;
   }
 }
 
 .popover-trigger-inline-button {
-  max-block-size: 20px;
+  max-block-size: constants.$token-max-height-inline;
   text-underline-offset: $trigger-underline-offset-inline;
 
   @include focus-visible.when-visible {
