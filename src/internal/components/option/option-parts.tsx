@@ -17,10 +17,7 @@ interface LabelProps {
   triggerVariant: boolean;
 }
 export const Label = ({ label, prefix, highlightText, triggerVariant }: LabelProps) => (
-  <span
-    title={triggerVariant ? label : undefined}
-    className={clsx(styles.label, analyticsSelectors.label, triggerVariant && styles['trigger-variant'])}
-  >
+  <span className={clsx(styles.label, analyticsSelectors.label, triggerVariant && styles['trigger-variant'])}>
     {prefix && (
       <span className={clsx(styles['label-prefix'], triggerVariant && styles['trigger-variant'])}>{prefix} </span>
     )}
