@@ -107,7 +107,6 @@ export default function () {
     description,
     editableHeader,
     linkedHeader,
-    headerText,
     renderActionsButtonDropdown,
     renderActionsButtonLink,
     renderBeforeBadge,
@@ -117,21 +116,16 @@ export default function () {
     splitPanelPosition,
   } = urlParams;
 
-  // Initialize the header to a default value if not set.
-  useEffect(() => {
-    if (!editableHeader) {
-      setUrlParams({ ...urlParams, headerText: headerText || 'Resource 01' });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Initalize with a known header text for a11y compliance if not provided.
+  const headerText = urlParams.headerText === undefined ? 'Header text' : urlParams.headerText;
 
   const renderHeaderTextAsLink = !editableHeader && linkedHeader && headerText;
   const renderActions = renderActionsButtonDropdown || renderActionsButtonLink;
   const renderBefore = editableHeader || linkedHeader || renderBeforeBadge || renderBeforeButtons;
-  const renderHeaderText = !editableHeader && !linkedHeader && !renderBeforeButtons && headerText;
+  const renderHeaderText = !editableHeader && !linkedHeader && !renderBeforeButtons;
 
   return (
-    <ScreenshotArea gutters={false}>
+    <ScreenshotArea gutters={false} disableAnimations={true}>
       <AppLayout
         ariaLabels={labels}
         breadcrumbs={<Breadcrumbs />}
@@ -150,7 +144,7 @@ export default function () {
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         splitPanel={
           <SplitPanel
-            header={renderHeaderText || ''}
+            header={renderHeaderText ? headerText : ''}
             i18nStrings={splitPaneli18nStrings}
             headerActions={
               renderActions && (
@@ -205,9 +199,9 @@ export default function () {
                     )}
                   </span>
                   {renderBeforeButtons && (
-                    <span>
+                    <SpaceBetween direction="horizontal" size="xs">
                       <Button>Button</Button> <Button>Button</Button>
-                    </span>
+                    </SpaceBetween>
                   )}
                 </span>
               )
