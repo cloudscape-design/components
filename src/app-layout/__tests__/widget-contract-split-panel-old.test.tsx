@@ -4,12 +4,12 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 
-import './widget-new-mocks'; // should be imported before components to activate mocks
+import './widget-old-mocks'; // should be imported before components to activate mocks
 import { describeEachAppLayout } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import { renderedProps } from './widget-new-mocks';
+import { renderedProps } from './widget-old-mocks';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => {
   let counter = 0;

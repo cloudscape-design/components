@@ -18,6 +18,16 @@ export type SomeRequired<Type, Keys extends keyof Type> = Type & {
 };
 
 /**
+ * Makes specified properties optional.
+ *
+ * @example
+ * ```
+ * type PartialAlertProps = SomeOptional<AlertProps, 'type' | 'children'>
+ * ```
+ */
+export type SomeOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+/**
  * Utility type that makes a union of given type and undefined.
  * @example
  * ```
