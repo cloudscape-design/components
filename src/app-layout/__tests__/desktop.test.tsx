@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, fireEvent, screen, within } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
@@ -168,11 +168,14 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
-  test(`Moves focus to slider when opened`, () => {
+  test(`Moves focus to slider when opened`, async () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[{ ...testDrawer, resizable: true }]} />);
+    await act(() => Promise.resolve());
 
     wrapper.findDrawerTriggerById('security')!.click();
-    expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveFocus();
+    await waitFor(() => {
+      expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveFocus();
+    });
   });
 
   test('should change size via keyboard events on slider handle', () => {
