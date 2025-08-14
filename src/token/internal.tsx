@@ -17,13 +17,12 @@ import styles from './styles.css.js';
 
 type InternalTokenProps = TokenProps &
   InternalBaseComponentProps & {
-    disableInnerPadding?: boolean;
     role?: string;
+    disableInnerPadding?: boolean;
   };
 
 function InternalToken({
-  children,
-  onDismiss,
+  // Base
   label,
   ariaLabel,
   labelTag,
@@ -37,10 +36,16 @@ function InternalToken({
   iconSvg,
   tags,
   dismissLabel,
-  customActionProps,
   popoverProps,
+  onDismiss,
+
+  // Core
+  children,
+  customActionProps,
+
+  // Internal
   disableInnerPadding,
-  role = 'option',
+  role,
   ...restProps
 }: InternalTokenProps) {
   const baseProps = getBaseProps(restProps);
@@ -127,7 +132,7 @@ function InternalToken({
       className={clsx(!isInline ? styles.token : styles['token-inline'], analyticsSelectors.token, baseProps.className)}
       aria-label={ariaLabel}
       aria-disabled={disabled}
-      role={role}
+      role={role ?? (popoverProps ? 'button' : 'none')}
     >
       <div
         className={clsx(

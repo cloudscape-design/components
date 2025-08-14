@@ -7,9 +7,6 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { PopoverProps } from '../popover/interfaces';
 
 export interface TokenProps extends BaseComponentProps {
-  /** @awsuiSystem core */
-  children?: React.ReactNode;
-
   label?: string;
   ariaLabel?: string;
   labelTag?: string;
@@ -24,11 +21,13 @@ export interface TokenProps extends BaseComponentProps {
   tags?: ReadonlyArray<string>;
   dismissLabel?: string;
   popoverProps?: TokenProps.TokenPopoverProps;
+  onDismiss?: NonCancelableEventHandler;
+
+  /** @awsuiSystem core */
+  children?: React.ReactNode;
 
   /** @awsuiSystem core */
   customActionProps?: TokenProps.CustomActionProps;
-
-  onDismiss?: NonCancelableEventHandler;
 }
 
 export namespace TokenProps {
