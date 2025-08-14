@@ -35,6 +35,11 @@ export interface SplitPanelProps extends BaseComponentProps {
   i18nStrings?: SplitPanelProps.I18nStrings;
 
   /**
+   * ARIA label for the panel. Use this if the value passed in the `header` property is not descriptive as a label for the panel.
+   */
+  ariaLabel?: string;
+
+  /**
    * Actions for the header.
    */
   headerActions?: React.ReactNode;
@@ -78,7 +83,7 @@ export interface SplitPanelContentProps {
   isOpen?: boolean;
   splitPanelRef?: React.Ref<any>;
   cappedSize: number;
-  panelHeaderId: string;
+  panelHeaderId?: string;
   ariaLabel?: string;
   resizeHandle: React.ReactNode;
   header: React.ReactNode;

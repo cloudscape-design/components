@@ -236,6 +236,16 @@ describe('Split panel', () => {
 
           expect(sidePanelElem?.querySelector(`#${labelId}`)!.textContent).toBe('Split panel header');
         });
+
+        test('split panel uses ARIA label if provided instead of being labelled by panel header', () => {
+          const { wrapper } = renderSplitPanel({
+            contextProps: { position: 'side' },
+            props: { closeBehavior, ariaLabel: 'Custom ARIA label' },
+          });
+          const sidePanelElem = wrapper!.findByClassName(styles['drawer-content-side'])?.getElement();
+          expect(sidePanelElem?.getAttribute('aria-labelledby')).toBeFalsy();
+          expect(sidePanelElem?.getAttribute('aria-label')).toBe('Custom ARIA label');
+        });
       });
 
       describe('i18n', () => {

@@ -36,6 +36,7 @@ export function SplitPanelImplementation({
   hidePreferencesButton,
   closeBehavior,
   i18nStrings = {},
+  ariaLabel,
   headerActions,
   headerBefore,
   headerDescription,
@@ -92,7 +93,8 @@ export function SplitPanelImplementation({
     [globalVars.stickyVerticalBottomOffset]: bottomOffset,
   };
 
-  const panelHeaderId = useUniqueId('split-panel-header');
+  const panelHeaderUniqueId = useUniqueId('split-panel-header');
+  const panelHeaderId = ariaLabel ? undefined : panelHeaderUniqueId;
 
   const hasCustomElements = !!headerActions || !!headerBefore || !!headerInfo;
 
@@ -251,6 +253,7 @@ export function SplitPanelImplementation({
           toggleRef={refs.toggle}
           header={wrappedHeader}
           panelHeaderId={panelHeaderId}
+          ariaLabel={ariaLabel}
           closeBehavior={closeBehavior}
         >
           {children}
@@ -269,6 +272,7 @@ export function SplitPanelImplementation({
           header={wrappedHeader}
           panelHeaderId={panelHeaderId}
           appLayoutMaxWidth={appLayoutMaxWidth}
+          ariaLabel={ariaLabel}
           closeBehavior={closeBehavior}
           hasCustomElements={hasCustomElements}
         >
