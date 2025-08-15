@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { FunnelMetrics } from '../internal/analytics';
 import { AnalyticsFunnel, AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
@@ -11,7 +11,7 @@ import { useFunnel, useFunnelNameSelector, useFunnelStepRef } from '../internal/
 import { getSubStepAllSelector, getTextFromSelector } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
-import useBaseComponent from '../internal/hooks/use-base-component';
+import useBaseComponent, { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { FormProps } from './interfaces';
 import InternalForm from './internal';
@@ -27,7 +27,9 @@ const FormWithAnalytics = ({
   errorText,
   __internalRootRef,
   ...props
-}: FormProps & ReturnType<typeof useBaseComponent<HTMLElement>>) => {
+}: FormProps & InternalBaseComponentProps) => {
+  const rootRef = useRef<HTMLElement>(null);
+  const ref = useMergeRefs(rootRef, __internalRootRef);
   const {
     funnelIdentifier,
     funnelInteractionId,
@@ -62,7 +64,7 @@ const FormWithAnalytics = ({
         stepNameSelector: funnelStepInfo.current.stepNameSelector,
         stepName,
         stepIdentifier: funnelStepInfo.current.stepIdentifier,
-        currentDocument: __internalRootRef.current?.ownerDocument,
+        currentDocument: rootRef.current?.ownerDocument,
         totalSubSteps: funnelStepInfo.current.subStepCount.current,
         funnelIdentifier,
         subStepAllSelector: getSubStepAllSelector(),
@@ -86,7 +88,6 @@ const FormWithAnalytics = ({
     errorCount,
     funnelErrorContext,
     errorSlotId,
-    __internalRootRef,
     funnelStepInfo,
   ]);
 
@@ -100,7 +101,7 @@ const FormWithAnalytics = ({
         {...props}
         {...funnelProps}
         {...funnelStepInfo.current.funnelStepProps}
-        __internalRootRef={__internalRootRef}
+        __internalRootRef={ref}
         __injectAnalyticsComponentMetadata={true}
       />
     </ButtonContext.Provider>
@@ -109,7 +110,7 @@ const FormWithAnalytics = ({
 
 export default function Form({ variant = 'full-page', ...props }: FormProps) {
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
-  const baseComponentProps = useBaseComponent<HTMLElement>(
+  const baseComponentProps = useBaseComponent(
     'Form',
     {
       props: {

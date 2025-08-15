@@ -42,7 +42,7 @@ export default function InternalList<T = any>({
   i18nStrings,
   disablePaddings,
   disableItemPaddings,
-  __internalRootRef = null,
+  __internalRootRef,
   ...rest
 }: InternalListProps<T>) {
   const baseProps = getBaseProps(rest);

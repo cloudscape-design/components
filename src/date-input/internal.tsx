@@ -35,7 +35,7 @@ const InternalDateInput = React.forwardRef(
       locale,
       format = 'slashed',
       inputFormat = 'slashed',
-      __internalRootRef = null,
+      __internalRootRef,
       __injectAnalyticsComponentMetadata = false,
       ...props
     }: InternalDateInputProps,

@@ -26,7 +26,7 @@ export default function InternalCopyToClipboard({
   popoverRenderWithPortal,
   disabled,
   disabledReason,
-  __internalRootRef = null,
+  __internalRootRef,
   ...restProps
 }: InternalCopyToClipboardProps) {
   const [status, setStatus] = useState<'pending' | 'success' | 'error'>('pending');
