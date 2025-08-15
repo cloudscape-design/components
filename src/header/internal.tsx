@@ -36,7 +36,7 @@ export default function InternalHeader({
   counter,
   description,
   info,
-  __internalRootRef = null,
+  __internalRootRef,
   __disableActionsWrapping,
   __headingTagRef,
   __headingTagTabIndex,

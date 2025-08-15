@@ -64,7 +64,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   loadingText,
   recoveryText,
   onRecoveryClick,
-  __internalRootRef = null,
+  __internalRootRef,
   ...props
 }: InternalAreaChartProps<T>) {
   const baseProps = getBaseProps(props);

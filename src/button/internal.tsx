@@ -56,7 +56,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __title?: string;
   __emitPerformanceMarks?: boolean;
   __skipNativeAttributesWarnings?: boolean;
-} & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
+} & InternalBaseComponentProps;
 
 export const InternalButton = React.forwardRef(
   (
@@ -92,7 +92,7 @@ export const InternalButton = React.forwardRef(
       style,
       nativeButtonAttributes,
       nativeAnchorAttributes,
-      __internalRootRef = null,
+      __internalRootRef,
       __focusable = false,
       __injectAnalyticsComponentMetadata = false,
       __title,
