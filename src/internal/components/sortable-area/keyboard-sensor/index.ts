@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import type { Activators, SensorInstance } from '@dnd-kit/core';
-import { defaultCoordinates } from '@dnd-kit/core';
-import { KeyboardSensorOptions, KeyboardSensorProps } from '@dnd-kit/core';
+import type { Activators, SensorContext, SensorInstance, SensorProps, UniqueIdentifier } from '@dnd-kit/core';
+import { defaultCoordinates, KeyboardCode } from '@dnd-kit/core';
+import { KeyboardSensorOptions } from '@dnd-kit/core';
 import {
   Coordinates,
   getOwnerDocument,
@@ -18,23 +18,30 @@ import { EventName } from './utilities/events';
 import { Listeners } from './utilities/listeners';
 import { applyScroll } from './utilities/scroll';
 
-// Slightly modified version of @dnd-kit's KeyboardSensor:
+// Heavily modified version of @dnd-kit's KeyboardSensor, to add support for "UAP"-button pointer interactions.
 // https://github.com/clauderic/dnd-kit/blob/master/packages/core/src/sensors/keyboard/KeyboardSensor.ts
 
-// The only difference is that here, reordering is deactivated on blur, as in
-// this PR: https://github.com/clauderic/dnd-kit/pull/1087.
-// If it is merged, then @dnd-kit's KeyboardSensor can be used instead
-// and all files under this directory (`keyboard-sensor`) can be removed.
+export type KeyboardAndUAPCoordinateGetter = (
+  event: Event,
+  args: {
+    active: UniqueIdentifier;
+    currentCoordinates: Coordinates;
+    context: SensorContext;
+  }
+) => Coordinates | void;
 
-// Changes from mainstream are marked below as "Customization"
+type KeyboardAndUAPSensorOptions = KeyboardSensorOptions & {
+  coordinateGetter?: KeyboardAndUAPCoordinateGetter;
+  onActivation?({ event }: { event: KeyboardEvent | MouseEvent }): void;
+};
 
-export class KeyboardSensor implements SensorInstance {
+export class KeyboardAndUAPSensor implements SensorInstance {
   public autoScrollEnabled = false;
   private referenceCoordinates: Coordinates | undefined;
   private listeners: Listeners;
   private windowListeners: Listeners;
 
-  constructor(private props: KeyboardSensorProps) {
+  constructor(private props: SensorProps<KeyboardAndUAPSensorOptions>) {
     const {
       event: { target },
     } = props;
@@ -43,6 +50,8 @@ export class KeyboardSensor implements SensorInstance {
     this.listeners = new Listeners(getOwnerDocument(target));
     this.windowListeners = new Listeners(getWindow(target));
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleCustomDirectionEvent = this.handleCustomDirectionEvent.bind(this);
+    this.handleEnd = this.handleEnd.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
 
     this.attach();
@@ -54,10 +63,13 @@ export class KeyboardSensor implements SensorInstance {
     this.windowListeners.add(EventName.Resize, this.handleCancel);
     this.windowListeners.add(EventName.VisibilityChange, this.handleCancel);
 
-    // Customization: deactivate reordering on blur event
-    this.props.event.target?.addEventListener(EventName.Blur, this.handleCancel);
+    this.props.event.target?.addEventListener(EventName.Blur, this.handleEnd);
 
-    setTimeout(() => this.listeners.add(EventName.Keydown, this.handleKeyDown));
+    setTimeout(() => {
+      this.listeners.add(EventName.Keydown, this.handleKeyDown);
+      this.listeners.add(EventName.CustomDown, this.handleCustomDirectionEvent);
+      this.listeners.add(EventName.CustomUp, this.handleCustomDirectionEvent);
+    });
   }
 
   private handleStart() {
@@ -73,8 +85,8 @@ export class KeyboardSensor implements SensorInstance {
 
   private handleKeyDown(event: Event) {
     if (isKeyboardEvent(event)) {
-      const { active, context, options } = this.props;
-      const { keyboardCodes = defaultKeyboardCodes, coordinateGetter } = options;
+      const { options } = this.props;
+      const { keyboardCodes = defaultKeyboardCodes } = options;
       const { code } = event;
 
       if (keyboardCodes.end.indexOf(code) !== -1) {
@@ -87,32 +99,55 @@ export class KeyboardSensor implements SensorInstance {
         return;
       }
 
-      const { collisionRect } = context.current;
-      const currentCoordinates = collisionRect ? { x: collisionRect.left, y: collisionRect.top } : defaultCoordinates;
-
-      if (!this.referenceCoordinates) {
-        this.referenceCoordinates = currentCoordinates;
+      switch (code) {
+        case KeyboardCode.Up:
+          this.handleDirectionalMove(event, 'up');
+          break;
+        case KeyboardCode.Down:
+          this.handleDirectionalMove(event, 'down');
+          break;
       }
+    }
+  }
 
-      if (!coordinateGetter) {
-        return;
-      }
+  private handleCustomDirectionEvent(event: Event) {
+    switch (event.type) {
+      case EventName.CustomUp:
+        this.handleDirectionalMove(event, 'up');
+        break;
+      case EventName.CustomDown:
+        this.handleDirectionalMove(event, 'down');
+        break;
+    }
+  }
 
-      const newCoordinates = coordinateGetter(event, {
-        active,
-        context: context.current,
-        currentCoordinates,
-      });
+  private handleDirectionalMove(event: Event, direction: 'up' | 'down') {
+    const { active, context, options } = this.props;
+    const { coordinateGetter } = options;
+    const { collisionRect } = context.current;
+    const currentCoordinates = collisionRect ? { x: collisionRect.left, y: collisionRect.top } : defaultCoordinates;
 
-      if (newCoordinates) {
-        const { scrollableAncestors } = context.current;
-        const direction = event.code;
+    if (!this.referenceCoordinates) {
+      this.referenceCoordinates = currentCoordinates;
+    }
 
-        const scrolled = applyScroll({ currentCoordinates, direction, newCoordinates, scrollableAncestors });
+    if (!coordinateGetter) {
+      return;
+    }
 
-        if (!scrolled) {
-          this.handleMove(event, getCoordinatesDelta(newCoordinates, this.referenceCoordinates));
-        }
+    const newCoordinates = coordinateGetter(event, {
+      active,
+      context: context.current,
+      currentCoordinates,
+    });
+
+    if (newCoordinates) {
+      const { scrollableAncestors } = context.current;
+
+      const scrolled = applyScroll({ currentCoordinates, direction, newCoordinates, scrollableAncestors });
+
+      if (!scrolled) {
+        this.handleMove(event, getCoordinatesDelta(newCoordinates, this.referenceCoordinates));
       }
     }
   }
@@ -135,7 +170,6 @@ export class KeyboardSensor implements SensorInstance {
   private handleCancel(event: Event) {
     const { onCancel } = this.props;
 
-    // Customization: do not prevent browser from managing native focus
     if (event.type !== EventName.Blur) {
       event.preventDefault();
     }
@@ -144,16 +178,15 @@ export class KeyboardSensor implements SensorInstance {
   }
 
   private detach() {
-    // Customization: clean up listener for blur event
     this.props.event.target?.removeEventListener(EventName.Blur, this.handleCancel);
 
     this.listeners.removeAll();
     this.windowListeners.removeAll();
   }
 
-  static activators: Activators<KeyboardSensorOptions> = [
+  static activators: Activators<KeyboardAndUAPSensorOptions> = [
     {
-      eventName: 'onKeyDown' as const,
+      eventName: 'onKeyDown',
       handler: (event: React.KeyboardEvent, { keyboardCodes = defaultKeyboardCodes, onActivation }, { active }) => {
         const { code } = event.nativeEvent;
 
@@ -172,6 +205,18 @@ export class KeyboardSensor implements SensorInstance {
         }
 
         return false;
+      },
+    },
+    {
+      eventName: 'onClick',
+      handler: ({ nativeEvent: event }: React.MouseEvent, { onActivation }) => {
+        if (event.button !== 0) {
+          return false;
+        }
+
+        onActivation?.({ event });
+
+        return true;
       },
     },
   ];
