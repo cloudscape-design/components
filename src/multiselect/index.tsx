@@ -42,6 +42,7 @@ const Multiselect = React.forwardRef(
         enableSelectAll: restProps.enableSelectAll,
       },
       metadata: {
+        hasInlineLabel: Boolean(restProps.inlineLabelText),
         hasDisabledReasons: options.some(option => Boolean(option.disabledReason)),
       },
     });
