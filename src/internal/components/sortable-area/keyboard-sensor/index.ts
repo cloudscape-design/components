@@ -31,7 +31,7 @@ export type KeyboardAndUAPCoordinateGetter = (
 ) => Coordinates | void;
 
 type KeyboardAndUAPSensorOptions = KeyboardSensorOptions & {
-  coordinateGetter?: KeyboardAndUAPCoordinateGetter;
+  coordinateGetter: KeyboardAndUAPCoordinateGetter;
   onActivation?({ event }: { event: KeyboardEvent | MouseEvent }): void;
 };
 
@@ -129,10 +129,6 @@ export class KeyboardAndUAPSensor implements SensorInstance {
 
     if (!this.referenceCoordinates) {
       this.referenceCoordinates = currentCoordinates;
-    }
-
-    if (!coordinateGetter) {
-      return;
     }
 
     const newCoordinates = coordinateGetter(event, {
