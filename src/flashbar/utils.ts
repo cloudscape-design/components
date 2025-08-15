@@ -114,10 +114,6 @@ type LabelName =
   | 'infoIconAriaLabel'
   | 'inProgressIconAriaLabel';
 
-export function getStylePropertyKey(type: FlashbarProps.Type): string {
-  return type === 'in-progress' ? 'inProgress' : type;
-}
-
 export const counterTypes: {
   type: FlashbarProps.Type;
   labelName: LabelName;
