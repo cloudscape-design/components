@@ -868,6 +868,7 @@ describe('Style API', () => {
             borderColor: '#fff',
             borderRadius: '50px',
             borderWidth: '25px',
+            boxShadow: '0 0 10px #fff',
           },
         },
       },
@@ -899,6 +900,9 @@ describe('Style API', () => {
     );
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe(
       '25px'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleFocusRingBoxShadow)).toBe(
+      '0 0 10px #fff'
     );
   });
 });

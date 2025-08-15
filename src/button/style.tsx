@@ -36,6 +36,7 @@ export function getButtonStyles(style: ButtonProps['style']) {
       [customCssProps.styleFocusRingBorderColor]: style.root.focusRing?.borderColor,
       [customCssProps.styleFocusRingBorderRadius]: style.root.focusRing?.borderRadius,
       [customCssProps.styleFocusRingBorderWidth]: style.root.focusRing?.borderWidth,
+      [customCssProps.styleFocusRingBoxShadow]: style.root.focusRing?.boxShadow,
     }),
     ...(style?.root?.focusRing?.borderRadius && {
       [customCssProps.styleFocusRingBorderRadius]: style.root.focusRing.borderRadius,
