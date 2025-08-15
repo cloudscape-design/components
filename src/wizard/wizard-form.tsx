@@ -3,7 +3,7 @@
 import React, { MutableRefObject, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useComponentMetadata, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useComponentMetadata, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
 
 import InternalForm from '../form/internal';
@@ -86,6 +86,8 @@ function WizardForm({
   onPrimaryClick,
   onSkipToClick,
 }: WizardFormProps & { stepHeaderRef: MutableRefObject<HTMLDivElement | null> }) {
+  const rootRef = useRef<HTMLElement>();
+  const ref = useMergeRefs(rootRef, __internalRootRef);
   const { title, info, description, content, errorText, isOptional } = steps[activeStepIndex] || {};
   const isLastStep = activeStepIndex >= steps.length - 1;
   const skipToTargetIndex = findSkipToTargetIndex(steps, activeStepIndex);
@@ -112,7 +114,7 @@ function WizardForm({
         stepNameSelector: funnelStepInfo.current.stepNameSelector,
         stepName,
         stepIdentifier: funnelStepInfo.current.stepIdentifier,
-        currentDocument: __internalRootRef?.current?.ownerDocument,
+        currentDocument: rootRef.current?.ownerDocument,
         totalSubSteps: funnelStepInfo.current.subStepCount.current,
         funnelIdentifier,
         subStepAllSelector: getSubStepAllSelector(),
@@ -147,7 +149,7 @@ function WizardForm({
       </WizardFormHeader>
 
       <InternalForm
-        __internalRootRef={__internalRootRef}
+        __internalRootRef={ref}
         className={styles['form-component']}
         actions={
           <WizardActions
