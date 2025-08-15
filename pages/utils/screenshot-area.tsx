@@ -12,7 +12,7 @@ import styles from './screenshot-area.scss';
 // replicates the same constant from BrowserTestTools package
 const MAX_PAGE_HEIGHT = 16000;
 
-interface ScreenshotAreaProps {
+export interface ScreenshotAreaProps {
   className?: string;
   style?: React.CSSProperties;
   gutters?: boolean;
