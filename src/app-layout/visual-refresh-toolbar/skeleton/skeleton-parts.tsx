@@ -4,8 +4,33 @@ import React from 'react';
 
 import { AppLayoutNotificationsImplementationProps } from '../notifications';
 import { AppLayoutToolbarImplementationProps } from '../toolbar';
-import { BreadcrumbsSlot } from './breadcrumbs';
-import { NotificationsSlot, ToolbarSlot } from './slot-wrappers';
+import { SkeletonPartProps } from './interfaces';
+import { BreadcrumbsSlot, NotificationsSlot, ToolbarSlot } from './slots';
+
+import styles from './styles.css.js';
+
+/**
+ * New widgetized parts
+ */
+
+export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPartProps>(
+  ({ toolbarProps, appLayoutProps }, ref) => {
+    return (
+      <>
+        {!!toolbarProps && (
+          <ToolbarSlot ref={ref}>
+            <BreadcrumbsSlot ownBreadcrumbs={appLayoutProps.breadcrumbs} />
+          </ToolbarSlot>
+        )}
+        {toolbarProps?.navigationOpen && <div className={styles.navigation} />}
+      </>
+    );
+  }
+);
+
+/**
+ * Legacy parts
+ */
 
 export const ToolbarSkeleton = React.forwardRef<HTMLElement, AppLayoutToolbarImplementationProps>(
   ({ appLayoutInternals }: AppLayoutToolbarImplementationProps, ref) => (

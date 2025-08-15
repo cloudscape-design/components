@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React from 'react';
 import MockDate from 'mockdate';
 
@@ -36,7 +37,7 @@ const permutations = createPermutations<DatePickerProps>([
 export default function DatePickerScenario() {
   return (
     <Box padding="s">
-      <h1>Date picker permutations</h1>
+      <h1>Date picker permutations - states</h1>
       <ScreenshotArea>
         <SpaceBetween size="m">
           <div style={{ blockSize: '300px' }} data-testid="date-picker-expanded-example">
