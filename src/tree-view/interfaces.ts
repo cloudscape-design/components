@@ -95,3 +95,23 @@ export namespace TreeViewProps {
     expandButtonLabel?: (item: T) => string;
   }
 }
+
+// Internal interfaces
+
+export interface TreeItemRow<T> {
+  parent: null | TreeItemRow<T>;
+  item: T;
+  index: number;
+  level: number;
+  isLast: boolean;
+  connectorLines: ConnectorLineType[];
+}
+
+export type ConnectorLineType =
+  | 'empty'
+  | 'pass-through'
+  | 'connect-mid'
+  | 'connect-end'
+  | 'toggle-open'
+  | 'toggle-close'
+  | 'toggle-ghost';

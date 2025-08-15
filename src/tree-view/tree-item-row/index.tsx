@@ -7,12 +7,12 @@ import { useInternalI18n } from '../../i18n/context';
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 import InternalStructuredItem from '../../internal/components/structured-item';
 import { joinStrings } from '../../internal/utils/strings';
-import { TreeViewProps } from '../interfaces';
+import { ConnectorLineType, TreeViewProps } from '../interfaces';
 
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
-interface InternalTreeItemProps<T>
+interface InternalTreeItemRowProps<T>
   extends Pick<
     TreeViewProps,
     'expandedItems' | 'renderItem' | 'getItemId' | 'getItemChildren' | 'renderItemToggleIcon' | 'i18nStrings'
@@ -20,13 +20,15 @@ interface InternalTreeItemProps<T>
   item: T;
   index: number;
   level: number;
+  connectorLines: ConnectorLineType[];
   onItemToggle: (detail: TreeViewProps.ItemToggleDetail<T>) => void;
 }
 
-const InternalTreeItem = <T,>({
+const InternalTreeItemRow = <T,>({
   item,
   index,
   level,
+  connectorLines,
   i18nStrings,
   expandedItems = [],
   renderItemToggleIcon,
@@ -34,7 +36,9 @@ const InternalTreeItem = <T,>({
   getItemId,
   getItemChildren,
   onItemToggle,
-}: InternalTreeItemProps<T>) => {
+}: InternalTreeItemRowProps<T>) => {
+  const [selfConnectorLine, ...parentConnectorLines] = connectorLines;
+
   const i18n = useInternalI18n('tree-view');
 
   const { icon, content, secondaryContent, actions, announcementLabel } = renderItem(item, index);
@@ -42,7 +46,6 @@ const InternalTreeItem = <T,>({
   const children = getItemChildren(item, index) || [];
   const isExpandable = children.length > 0;
   const isExpanded = isExpandable && expandedItems.includes(id);
-  const nextLevel = level + 1;
 
   let customIcon: React.ReactNode | undefined = undefined;
   if (isExpandable && renderItemToggleIcon) {
@@ -63,13 +66,25 @@ const InternalTreeItem = <T,>({
         styles.treeitem,
         testUtilStyles.treeitem,
         isExpandable && [testUtilStyles.expandable],
-        isExpanded && [testUtilStyles.expanded]
+        isExpanded && [testUtilStyles.expanded],
+        styles[`treeitem-level-${level}`]
       )}
       aria-expanded={isExpandable ? isExpanded : undefined}
       aria-level={level}
       data-testid={`awsui-treeitem-${id}`}
+      tabIndex={0}
     >
+      {parentConnectorLines.map((line, index) => (
+        <div key={index} className={styles[`connector-line-box`]}>
+          <div className={clsx(styles['connector-line'], styles[`connector-line-${line}`])} />
+        </div>
+      ))}
+
       <div className={styles['expand-toggle-wrapper']}>
+        <div className={styles[`connector-line-box`]}>
+          <div className={clsx(styles['connector-line'], styles[`connector-line-${selfConnectorLine}`])} />
+        </div>
+
         {isExpandable && (
           <div className={styles.toggle}>
             <ExpandToggleButton
@@ -98,30 +113,8 @@ const InternalTreeItem = <T,>({
           wrapActions={false}
         />
       </div>
-
-      {isExpanded && children.length && (
-        <ul className={styles['treeitem-group']}>
-          {children.map((child, index) => {
-            return (
-              <InternalTreeItem
-                item={child}
-                index={index}
-                key={`${nextLevel}-${index}`}
-                level={nextLevel}
-                expandedItems={expandedItems}
-                i18nStrings={i18nStrings}
-                onItemToggle={onItemToggle}
-                renderItem={renderItem}
-                getItemId={getItemId}
-                getItemChildren={getItemChildren}
-                renderItemToggleIcon={renderItemToggleIcon}
-              />
-            );
-          })}
-        </ul>
-      )}
     </li>
   );
 };
 
-export default InternalTreeItem;
+export default InternalTreeItemRow;
