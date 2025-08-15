@@ -37,6 +37,8 @@ const InternalTreeItemRow = <T,>({
   getItemChildren,
   onItemToggle,
 }: InternalTreeItemRowProps<T>) => {
+  const [selfConnectorLine, ...parentConnectorLines] = connectorLines;
+
   const i18n = useInternalI18n('tree-view');
 
   const { icon, content, secondaryContent, actions, announcementLabel } = renderItem(item, index);
@@ -72,7 +74,7 @@ const InternalTreeItemRow = <T,>({
       data-testid={`awsui-treeitem-${id}`}
       tabIndex={0}
     >
-      {connectorLines.map((line, index) => (
+      {parentConnectorLines.map((line, index) => (
         <div key={index} className={styles[`connector-line-box`]}>
           <div className={clsx(styles['connector-line'], styles[`connector-line-${line}`])} />
         </div>
@@ -80,13 +82,7 @@ const InternalTreeItemRow = <T,>({
 
       <div className={styles['expand-toggle-wrapper']}>
         <div className={styles[`connector-line-box`]}>
-          <div
-            className={clsx(styles['connector-line'], {
-              [styles[`connector-line-toggle-open`]]: isExpandable && isExpanded,
-              [styles[`connector-line-toggle-close`]]: isExpandable && !isExpanded,
-              [styles[`connector-line-toggle-ghost`]]: !isExpandable && level !== 1,
-            })}
-          />
+          <div className={clsx(styles['connector-line'], styles[`connector-line-${selfConnectorLine}`])} />
         </div>
 
         {isExpandable && (

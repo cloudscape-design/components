@@ -107,4 +107,11 @@ export interface TreeItemRow<T> {
   connectorLines: ConnectorLineType[];
 }
 
-export type ConnectorLineType = 'empty' | 'pass-through' | 'connect-mid' | 'connect-end';
+export type ConnectorLineType =
+  | 'empty'
+  | 'pass-through'
+  | 'connect-mid'
+  | 'connect-end'
+  | 'toggle-open'
+  | 'toggle-close'
+  | 'toggle-ghost';

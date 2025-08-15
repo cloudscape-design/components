@@ -98,12 +98,26 @@ function getTreeItemRows<T>(
     isLast: boolean,
     connectorLines: ConnectorLineType[]
   ) {
-    const itemIndex = throughIndex;
+    // Insert connector line piece for item's own toggle (or ghost toggle).
+    connectorLines = [...connectorLines];
+    const expanded = isExpanded(item, throughIndex);
+    const children = getItemChildren(item, throughIndex) ?? [];
+    if (children.length > 0 && expanded) {
+      connectorLines.unshift('toggle-open');
+    } else if (children.length > 0 && !expanded) {
+      connectorLines.unshift('toggle-close');
+    } else {
+      // The top-level items have no parent, so using a different connector type.
+      connectorLines.unshift(level === 1 ? 'empty' : 'toggle-ghost');
+    }
+
     const row = { parent, item, index: throughIndex++, level, isLast, connectorLines };
     rows.push(row);
-    if (isExpanded(item, itemIndex)) {
-      const children = getItemChildren(item, itemIndex);
-      children?.forEach((child, index) => {
+
+    if (expanded) {
+      children.forEach((child, index) => {
+        // Insert the parent connector line. Depending on the item's position it can
+        // be the mid (also used for 1st item) or end connector.
         const isLast = index === children.length - 1;
         const nextConnectorLines: ConnectorLineType[] = [];
         if (!isLast) {
@@ -111,6 +125,8 @@ function getTreeItemRows<T>(
         } else {
           nextConnectorLines.push('connect-end');
         }
+
+        // Insert connector lines for ancestors (vertical lines that pass through, or empty for last items).
         let current: null | TreeItemRow<T> = row;
         while (current && current.level !== 1) {
           if (current.isLast) {
@@ -120,7 +136,10 @@ function getTreeItemRows<T>(
           }
           current = current.parent;
         }
+
+        // The connector lines are ordered from the current items to the farthest ancestor.
         nextConnectorLines.reverse();
+
         traverse(row, child, level + 1, isLast, nextConnectorLines);
       });
     }
