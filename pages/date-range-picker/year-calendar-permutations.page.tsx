@@ -1,15 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 
 import Box from '~components/box';
 import Calendar, { DateRangePickerCalendarProps } from '~components/date-range-picker/calendar';
 import Dropdown from '~components/internal/components/dropdown';
 
+import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
-import { i18nStrings } from './common';
 
 const intervals = [
   ['2021-08', '2023-08'], //multi year
@@ -30,14 +30,12 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     setValue: [() => {}],
     locale: ['en-GB'],
     onChange: [() => {}],
-    i18nStrings: [i18nStrings],
     customAbsoluteRangeControl: [undefined],
   })),
   // Disabled dates
   {
     value: [{ start: { date: '2022-04', time: '' }, end: { date: '2022-06', time: '' } }],
     setValue: [() => {}],
-    i18nStrings: [i18nStrings],
     isDateEnabled: [() => false],
     customAbsoluteRangeControl: [undefined],
   },
@@ -45,7 +43,6 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
   {
     value: [{ start: { date: '', time: '' }, end: { date: '', time: '' } }],
     setValue: [() => {}],
-    i18nStrings: [i18nStrings],
     customAbsoluteRangeControl: [() => 'Custom control'],
   },
 ]);
@@ -53,35 +50,32 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
 export default function DateRangePickerCalendarPage() {
   let i = -1;
   return (
-    <Box padding="s">
-      <h1>Date-range-picker year calendar page for screenshot tests</h1>
-      <ScreenshotArea>
-        <div style={{ blockSize: `${(1 + permutations.length) * 300}px` }}>
-          <PermutationsView
-            permutations={permutations}
-            render={permutation => {
-              i++;
-              return (
-                <div style={{ insetBlockStart: `${i * 300}px`, position: 'relative' }}>
-                  <Dropdown
-                    stretchWidth={true}
-                    stretchHeight={true}
-                    stretchToTriggerWidth={false}
-                    open={true}
-                    onDropdownClose={() => {}}
-                    onMouseDown={() => {}}
-                    trigger={null}
-                  >
-                    <Box padding="m">
-                      <Calendar {...permutation} granularity="month" />
-                    </Box>
-                  </Dropdown>
-                </div>
-              );
-            }}
-          />
-        </div>
-      </ScreenshotArea>
-    </Box>
+    <PermutationsPage title="Date range picker permutations: year calendar" i18n={{}}>
+      <div style={{ blockSize: `${(1 + permutations.length) * 300}px` }}>
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => {
+            i++;
+            return (
+              <div style={{ insetBlockStart: `${i * 300}px`, position: 'relative' }}>
+                <Dropdown
+                  stretchWidth={true}
+                  stretchHeight={true}
+                  stretchToTriggerWidth={false}
+                  open={true}
+                  onDropdownClose={() => {}}
+                  onMouseDown={() => {}}
+                  trigger={null}
+                >
+                  <Box padding="m">
+                    <Calendar {...permutation} granularity="month" />
+                  </Box>
+                </Dropdown>
+              </div>
+            );
+          }}
+        />
+      </div>
+    </PermutationsPage>
   );
 }
