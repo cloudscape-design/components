@@ -36,6 +36,11 @@ export function SplitPanelImplementation({
   hidePreferencesButton,
   closeBehavior,
   i18nStrings = {},
+  ariaLabel,
+  headerActions,
+  headerBefore,
+  headerDescription,
+  headerInfo,
   ...restProps
 }: SplitPanelImplementationProps) {
   const isRefresh = useVisualRefresh();
@@ -88,53 +93,90 @@ export function SplitPanelImplementation({
     [globalVars.stickyVerticalBottomOffset]: bottomOffset,
   };
 
-  const panelHeaderId = useUniqueId('split-panel-header');
+  const panelHeaderUniqueId = useUniqueId('split-panel-header');
+  const panelHeaderId = ariaLabel ? undefined : panelHeaderUniqueId;
+
+  const hasCustomElements = !!headerActions || !!headerBefore || !!headerInfo;
+
+  const showDescription = headerDescription && isOpen;
 
   const wrappedHeader = (
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
-      <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
-        {header}
-      </h2>
-      <div className={styles['header-actions']}>
-        {!hidePreferencesButton && isOpen && (
-          <>
-            <InternalButton
-              className={testUtilStyles['preferences-button']}
-              iconName="settings"
-              variant="icon"
-              onClick={() => setPreferencesOpen(true)}
-              formAction="none"
-              ariaLabel={i18nStrings.preferencesTitle}
-              ref={refs.preferences}
-            />
-            <span className={styles.divider} />
-          </>
-        )}
+      <div className={styles['header-main-row']}>
+        <div className={styles['header-main-content']}>
+          <div className={styles['header-tag-and-info']}>
+            <h2 className={clsx(styles['header-tag'], !!headerInfo && styles['with-info'])} id={panelHeaderId}>
+              {headerBefore && (
+                <div
+                  className={clsx(
+                    styles['header-before-slot'],
+                    testUtilStyles['header-before'],
+                    !!header && styles['with-header-text']
+                  )}
+                >
+                  {headerBefore}
+                </div>
+              )}
+              {!!header && <div className={clsx(styles['header-text'], testUtilStyles['header-text'])}>{header}</div>}
+            </h2>
+            {headerInfo && (
+              <span className={clsx(styles['header-info-slot'], testUtilStyles['header-info'])}>{headerInfo}</span>
+            )}
+          </div>
+          {headerActions && (
+            <div className={clsx(styles['header-actions-slot'], testUtilStyles['header-actions'])}>{headerActions}</div>
+          )}
+        </div>
+        <div className={styles['header-buttons']}>
+          {!hidePreferencesButton && isOpen && (
+            <>
+              <InternalButton
+                className={testUtilStyles['preferences-button']}
+                iconName="settings"
+                variant="icon"
+                onClick={() => setPreferencesOpen(true)}
+                formAction="none"
+                ariaLabel={i18nStrings.preferencesTitle}
+                ref={refs.preferences}
+              />
+              <span className={styles.divider} />
+            </>
+          )}
 
-        {isOpen ? (
-          <InternalButton
-            className={testUtilStyles['close-button']}
-            iconName={
-              isRefresh && closeBehavior === 'collapse' ? (position === 'side' ? 'angle-right' : 'angle-down') : 'close'
-            }
-            variant="icon"
-            onClick={onToggle}
-            formAction="none"
-            ariaLabel={i18nStrings.closeButtonAriaLabel}
-            ariaExpanded={isOpen}
-          />
-        ) : position === 'side' || closeBehavior === 'hide' ? null : (
-          <InternalButton
-            className={testUtilStyles['open-button']}
-            iconName="angle-up"
-            variant="icon"
-            formAction="none"
-            ariaLabel={i18nStrings.openButtonAriaLabel}
-            ref={refs.toggle}
-            ariaExpanded={isOpen}
-          />
-        )}
+          {isOpen ? (
+            <InternalButton
+              className={testUtilStyles['close-button']}
+              iconName={
+                isRefresh && closeBehavior === 'collapse'
+                  ? position === 'side'
+                    ? 'angle-right'
+                    : 'angle-down'
+                  : 'close'
+              }
+              variant="icon"
+              onClick={onToggle}
+              formAction="none"
+              ariaLabel={i18nStrings.closeButtonAriaLabel}
+              ariaExpanded={isOpen}
+            />
+          ) : position === 'side' || closeBehavior === 'hide' ? null : (
+            <InternalButton
+              className={testUtilStyles['open-button']}
+              iconName="angle-up"
+              variant="icon"
+              formAction="none"
+              ariaLabel={i18nStrings.openButtonAriaLabel}
+              ref={refs.toggle}
+              ariaExpanded={isOpen}
+              onClick={hasCustomElements ? onToggle : undefined}
+            />
+          )}
+        </div>
       </div>
+
+      {showDescription && (
+        <p className={clsx(styles['header-description'], testUtilStyles['header-description'])}>{headerDescription}</p>
+      )}
     </div>
   );
 
@@ -211,6 +253,7 @@ export function SplitPanelImplementation({
           toggleRef={refs.toggle}
           header={wrappedHeader}
           panelHeaderId={panelHeaderId}
+          ariaLabel={ariaLabel}
           closeBehavior={closeBehavior}
         >
           {children}
@@ -229,7 +272,9 @@ export function SplitPanelImplementation({
           header={wrappedHeader}
           panelHeaderId={panelHeaderId}
           appLayoutMaxWidth={appLayoutMaxWidth}
+          ariaLabel={ariaLabel}
           closeBehavior={closeBehavior}
+          hasCustomElements={hasCustomElements}
         >
           {children}
         </SplitPanelContentBottom>

@@ -6,7 +6,7 @@ import { BaseComponentProps } from '../internal/base-component';
 
 export interface SplitPanelProps extends BaseComponentProps {
   /**
-   * Header of the split panel.
+   * Header text of the split panel.
    */
   header: string;
   children: React.ReactNode;
@@ -33,6 +33,31 @@ export interface SplitPanelProps extends BaseComponentProps {
    * @i18n
    */
   i18nStrings?: SplitPanelProps.I18nStrings;
+
+  /**
+   * ARIA label for the panel. Use this if the value passed in the `header` property is not descriptive as a label for the panel.
+   */
+  ariaLabel?: string;
+
+  /**
+   * Actions for the header.
+   */
+  headerActions?: React.ReactNode;
+
+  /**
+   * Supplementary text below the heading.
+   */
+  headerDescription?: React.ReactNode;
+
+  /**
+   * The area next to the heading, used to display an Info link.
+   */
+  headerInfo?: React.ReactNode;
+
+  /**
+   * Content displayed before the header text.
+   */
+  headerBefore?: React.ReactNode;
 }
 
 export namespace SplitPanelProps {
@@ -58,7 +83,8 @@ export interface SplitPanelContentProps {
   isOpen?: boolean;
   splitPanelRef?: React.Ref<any>;
   cappedSize: number;
-  panelHeaderId: string;
+  panelHeaderId?: string;
+  ariaLabel?: string;
   resizeHandle: React.ReactNode;
   header: React.ReactNode;
   children: React.ReactNode;
