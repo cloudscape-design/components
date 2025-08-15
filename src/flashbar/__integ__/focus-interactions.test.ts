@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { FOCUS_THROTTLE_DELAY } from '../utils';
+import { FOCUS_DEBOUNCE_DELAY } from '../utils';
 import { setupTest } from './pages/interactive-page';
 
 test(
@@ -40,7 +40,7 @@ test(
     await page.addErrorFlash();
     await expect(page.isFlashFocused(1)).resolves.toBe(true);
     await page.addInfoFlash();
-    await page.pause(FOCUS_THROTTLE_DELAY);
+    await page.pause(FOCUS_DEBOUNCE_DELAY);
     await expect(page.isFlashFocused(1)).resolves.toBe(false);
   })
 );
@@ -78,10 +78,10 @@ test(
   'dismissing flash item moves focus to next item',
   setupTest(async page => {
     await page.addSequentialErrorFlashes();
-    await page.pause(FOCUS_THROTTLE_DELAY);
+    await page.pause(FOCUS_DEBOUNCE_DELAY);
 
     await page.dismissFirstItem();
-    await page.pause(FOCUS_THROTTLE_DELAY);
+    await page.pause(FOCUS_DEBOUNCE_DELAY);
 
     return expect(await page.isFlashFocused(1)).toBe(true);
   })
@@ -94,10 +94,10 @@ test(
     await page.toggleStackingFeature();
     await page.addSequentialErrorFlashes();
     await page.toggleCollapsedState();
-    await page.pause(FOCUS_THROTTLE_DELAY);
+    await page.pause(FOCUS_DEBOUNCE_DELAY);
 
     await page.dismissFirstItem();
-    await page.pause(FOCUS_THROTTLE_DELAY);
+    await page.pause(FOCUS_DEBOUNCE_DELAY);
 
     return expect(await page.isFlashFocused(1)).toBe(true);
   })
@@ -109,10 +109,10 @@ test(
     await page.removeAll();
     await page.toggleStackingFeature();
     await page.addSequentialErrorFlashes();
-    await page.pause(FOCUS_THROTTLE_DELAY);
+    await page.pause(FOCUS_DEBOUNCE_DELAY);
 
     await page.dismissFirstItem();
-    await page.pause(FOCUS_THROTTLE_DELAY);
+    await page.pause(FOCUS_DEBOUNCE_DELAY);
 
     const isDismissButtonFocused = await page.isDismissButtonFocused();
 
