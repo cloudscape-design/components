@@ -65,6 +65,9 @@
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
+  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
   @each $variant in map.keys(constants.$variants) {
     &.variant-#{$variant} {
@@ -81,10 +84,7 @@
     @include styles.focus-highlight(
       $gutter: awsui.$space-button-focus-outline-gutter,
       $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
-      $box-shadow: var(
-          #{custom-props.$styleFocusRingBoxShadow},
-          0 0 0 foundation.$box-shadow-focused-width awsui.$color-border-item-focused
-        )
+      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
     );
 
     &.variant-icon,
@@ -99,10 +99,7 @@
             #{custom-props.$styleFocusRingBorderRadius},
             awsui.$border-radius-control-default-focus-ring
           ),
-        $box-shadow: var(
-            #{custom-props.$styleFocusRingBoxShadow},
-            0 0 0 foundation.$box-shadow-focused-width awsui.$color-border-item-focused
-          )
+        $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
       );
     }
 
