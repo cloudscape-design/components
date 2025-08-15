@@ -3,6 +3,7 @@
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../../lib/components/test-utils/selectors';
+import InternalDragHandleWrapper from '../../../../lib/components/test-utils/selectors/internal/drag-handle';
 import ContentDisplayPageObject from './pages/content-display-page';
 
 const windowDimensions = {
@@ -113,9 +114,37 @@ describe('Collection preferences - Content Display preference', () => {
     });
   });
 
+  describe('reorders content with UAP buttons', () => {
+    const dragHandleWrapper = new InternalDragHandleWrapper('body');
+    test(
+      'can move item and commit by clicking away',
+      setupTest(async page => {
+        page.wrapper = createWrapper().findCollectionPreferences('.cp-1');
+        await page.openCollectionPreferencesModal();
+
+        await page.click(page.findDragHandle(0).toSelector());
+        await page.expectAnnouncement('Picked up item at position 1 of 6');
+
+        const downButton = dragHandleWrapper.findVisibleDirectionButtonBlockEnd().toSelector();
+        const upButton = dragHandleWrapper.findVisibleDirectionButtonBlockStart().toSelector();
+
+        await page.click(downButton);
+        await page.expectAnnouncement('Moving item to position 2 of 6');
+        await page.click(downButton);
+        await page.expectAnnouncement('Moving item to position 3 of 6');
+        await page.click(upButton);
+        await page.expectAnnouncement('Moving item to position 2 of 6');
+
+        await page.click(page.wrapper.findModal().findContentDisplayPreference().findTitle().toSelector());
+        await expect(page.containsOptionsInOrder(['Item 2', 'Item 1'])).resolves.toBe(true);
+        await page.expectAnnouncement('Item moved from position 1 to position 2 of 6');
+      })
+    );
+  });
+
   describe('reorders content with keyboard', () => {
     test(
-      'cancels reordering when pressing Tab',
+      'cancels reordering when pressing Escape',
       setupTest(async page => {
         page.wrapper = createWrapper().findCollectionPreferences('.cp-1');
         await page.openCollectionPreferencesModal();
@@ -127,7 +156,7 @@ describe('Collection preferences - Content Display preference', () => {
         await page.expectAnnouncement('Picked up item at position 1 of 6');
         await page.keys('ArrowDown');
         await page.expectAnnouncement('Moving item to position 2 of 6');
-        await page.keys('Tab');
+        await page.keys('Escape');
 
         await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
         await page.expectAnnouncement('Reordering canceled');
@@ -135,7 +164,7 @@ describe('Collection preferences - Content Display preference', () => {
     );
 
     test(
-      'cancels reordering when clicking somewhere else',
+      'submits reordering when clicking somewhere else',
       setupTest(async page => {
         page.wrapper = createWrapper().findCollectionPreferences('.cp-1');
         await page.openCollectionPreferencesModal();
@@ -149,8 +178,8 @@ describe('Collection preferences - Content Display preference', () => {
         await page.expectAnnouncement('Moving item to position 2 of 6');
         await page.click(page.wrapper.findModal().findContentDisplayPreference().findTitle().toSelector());
 
-        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
-        await page.expectAnnouncement('Reordering canceled');
+        await expect(await page.containsOptionsInOrder(['Item 2', 'Item 1'])).toBe(true);
+        await page.expectAnnouncement('Item moved from position 1 to position 2 of 6');
       })
     );
 
