@@ -26,6 +26,9 @@ const permutations = createPermutations<ButtonProps>([
           },
           borderRadius: '2px',
           borderWidth: '4px',
+          focusRing: {
+            boxShadow: '0 0 10px magenta',
+          },
         },
       },
     ],
