@@ -30,7 +30,7 @@ const InternalButtonGroup = forwardRef(
       onFilesChange,
       ariaLabel,
       dropdownExpandToViewport,
-      __internalRootRef = null,
+      __internalRootRef,
       ...props
     }: InternalButtonGroupProps,
     ref: React.Ref<ButtonGroupProps.Ref>

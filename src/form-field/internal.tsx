@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalGrid from '../grid/internal';
@@ -117,12 +117,14 @@ export default function InternalFormField({
   errorText,
   warningText,
   __hideLabel,
-  __internalRootRef = null,
+  __internalRootRef,
   __disableGutters = false,
   __analyticsMetadata = undefined,
   __style = {},
   ...rest
 }: InternalFormFieldProps) {
+  const rootRef = useRef<HTMLElement>();
+  const ref = useMergeRefs(rootRef, __internalRootRef);
   const baseProps = getBaseProps(rest);
   const isRefresh = useVisualRefresh();
 
@@ -180,7 +182,7 @@ export default function InternalFormField({
       errorCount.current++;
 
       // We don't want to report an error if it is hidden, e.g. inside an Expandable Section.
-      const errorIsVisible = (__internalRootRef?.current?.getBoundingClientRect()?.width ?? 0) > 0;
+      const errorIsVisible = (rootRef.current?.getBoundingClientRect()?.width ?? 0) > 0;
 
       if (errorIsVisible) {
         FunnelMetrics.funnelSubStepError({
@@ -216,7 +218,7 @@ export default function InternalFormField({
       {...baseProps}
       className={clsx(baseProps.className, styles.root)}
       style={__style}
-      ref={__internalRootRef}
+      ref={ref}
       {...analyticsAttributes}
       {...copyAnalyticsMetadataAttribute(rest)}
     >

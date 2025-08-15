@@ -94,7 +94,7 @@ function PortaledModal({
   disableContentPaddings,
   onButtonClick = () => {},
   onDismiss,
-  __internalRootRef = null,
+  __internalRootRef,
   __injectAnalyticsComponentMetadata,
   __funnelProps,
   __funnelStepProps,
