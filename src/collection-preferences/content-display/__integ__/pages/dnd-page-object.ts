@@ -27,7 +27,8 @@ export default class DndPageObject extends BasePageObject {
         id: 'event',
         parameters: { pointerType: 'mouse' },
         actions: [
-          { type: 'pointerMove', duration: 100, origin: 'pointer', x: xOffset, y: yOffset },
+          { type: 'pointerMove', duration: 100, origin: 'pointer', x: xOffset / 2, y: yOffset / 2 },
+          { type: 'pointerMove', duration: 100, origin: 'pointer', x: xOffset / 2, y: yOffset / 2 },
           { type: 'pause', duration: 150 },
         ],
       },
