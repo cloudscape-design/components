@@ -25,14 +25,12 @@ import { PACKAGE_VERSION } from '../internal/environment';
 import { isDevelopment } from '../internal/is-development';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
-import { throttle } from '../internal/utils/throttle';
 import useContainerWidth from '../internal/utils/use-container-width';
 import InternalLiveRegion from '../live-region/internal';
 import InternalSpinner from '../spinner/internal';
 import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
 import { FlashbarProps } from './interfaces';
 import { getDismissButtonStyles, getFlashStyles } from './style';
-import { FOCUS_THROTTLE_DELAY } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -96,24 +94,19 @@ export const focusFlashFocusableArea = (flash: HTMLElement | null) => {
   }
 };
 
-export const focusFlashById = throttle(
-  (element: HTMLElement | null, itemId: string) => {
-    if (!element) {
-      return;
-    }
+export function focusFlashById(element: HTMLElement | null, itemId: string) {
+  if (!element) {
+    return;
+  }
 
-    const flashElement = element.querySelector<HTMLElement>(`[data-itemid="${CSS.escape(itemId)}"]`);
-    if (!flashElement) {
-      return;
-    }
+  const flashElement = element.querySelector<HTMLElement>(`[data-itemid="${CSS.escape(itemId)}"]`);
+  if (!flashElement) {
+    return;
+  }
 
-    const focusContainer = flashElement.querySelector<HTMLElement>(`.${styles['flash-focus-container']}`);
-
-    focusContainer?.focus();
-  },
-  FOCUS_THROTTLE_DELAY,
-  { trailing: false }
-);
+  const focusContainer = flashElement.querySelector<HTMLElement>(`.${styles['flash-focus-container']}`);
+  focusContainer?.focus();
+}
 
 interface FlashProps extends FlashbarProps.MessageDefinition {
   className: string;

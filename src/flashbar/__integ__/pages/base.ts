@@ -12,6 +12,7 @@ export class FlashbarBasePage extends BasePageObject {
   async toggleCollapsedState() {
     const selector = this.getNotificationBar();
     await this.click(selector);
+    await this.pause(500);
   }
 
   countFlashes() {
