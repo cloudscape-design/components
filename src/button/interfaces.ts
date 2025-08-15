@@ -275,6 +275,7 @@ export namespace ButtonProps {
         borderColor?: string;
         borderRadius?: string;
         borderWidth?: string;
+        boxShadow?: string;
       };
       paddingBlock?: string;
       paddingInline?: string;
