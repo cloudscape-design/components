@@ -171,6 +171,7 @@
   grid-area: toolbar;
   block-size: 42px;
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+  box-sizing: border-box;
 }
 
 .notifications-container {
@@ -215,5 +216,10 @@
 }
 
 .hidden {
+  display: none;
+}
+
+// backward compatibility before this commit: f3bdaa292ae849b74404f32ef067c9fd6d2e8d7c
+.breadcrumbs-own:not(:empty) + .breadcrumbs-discovered {
   display: none;
 }

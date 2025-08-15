@@ -29,6 +29,7 @@ export interface UseMaskProps {
   inputRef: RefObject<HTMLInputElement>;
   disableAutocompleteOnBlur?: boolean;
   setPosition: (position: number | null) => void;
+  showUnmaskedValue?: boolean;
 }
 
 const onAutoComplete = (value: string, onChange: UseMaskProps['onChange'], maskFormat: MaskFormat) => {
@@ -55,8 +56,9 @@ const useMask = ({
   autofix = false,
   disableAutocompleteOnBlur = false,
   setPosition,
+  showUnmaskedValue = false,
 }: UseMaskProps): UseMaskHook => {
-  if (!format.isValid(value)) {
+  if (!format.isValid(value) && !showUnmaskedValue) {
     warnOnce('useMask', `Invalid string "${value}" provided`);
   }
 
