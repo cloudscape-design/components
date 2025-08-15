@@ -28,6 +28,12 @@ export interface CheckboxProps extends BaseCheckboxProps {
    * Specifies whether to add `aria-required` to the native control.
    */
   ariaRequired?: boolean;
+
+  /**
+   * Specifies an object of selectors and properties that are used to apply custom styles.
+   * @awsuiSystem core
+   */
+  style?: CheckboxProps.Style;
 }
 
 export namespace CheckboxProps {
@@ -41,5 +47,46 @@ export namespace CheckboxProps {
   export interface ChangeDetail {
     checked: boolean;
     indeterminate: false;
+  }
+
+  export interface Style {
+    input?: {
+      fill?: {
+        checked?: string;
+        default?: string;
+        disabled?: string;
+        indeterminate?: string;
+        readOnly?: string;
+      };
+      stroke?: {
+        checked?: string;
+        default?: string;
+        disabled?: string;
+        indeterminate?: string;
+        readOnly?: string;
+      };
+      check?: {
+        stroke?: {
+          checked?: string;
+          disabled?: string;
+          indeterminate?: string;
+          readOnly?: string;
+        };
+      };
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+    };
+    label?: {
+      color?: {
+        checked?: string;
+        default?: string;
+        disabled?: string;
+        indeterminate?: string;
+        readOnly?: string;
+      };
+    };
   }
 }

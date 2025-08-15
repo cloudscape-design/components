@@ -15,7 +15,7 @@ const DateInput = React.forwardRef((props: DateInputProps, ref: Ref<DateInputPro
   const baseComponentProps = useBaseComponent('DateInput', {
     props: { autoFocus: props.autoFocus, readOnly: props.readOnly },
   });
-  return <InternalDateInput {...props} {...baseComponentProps} ref={ref} />;
+  return <InternalDateInput {...props} {...baseComponentProps} __injectAnalyticsComponentMetadata={true} ref={ref} />;
 });
 
 applyDisplayName(DateInput, 'DateInput');

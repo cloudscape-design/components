@@ -17,6 +17,12 @@ export interface ToggleProps extends BaseCheckboxProps {
    * The event `detail` contains the current value for the `checked` property.
    */
   onChange?: NonCancelableEventHandler<ToggleProps.ChangeDetail>;
+
+  /**
+   * Specifies an object of selectors and properties that are used to apply custom styles.
+   * @awsuiSystem core
+   */
+  style?: ToggleProps.Style;
 }
 
 export namespace ToggleProps {
@@ -29,5 +35,37 @@ export namespace ToggleProps {
 
   export interface ChangeDetail {
     checked: boolean;
+  }
+
+  export interface Style {
+    input: {
+      background?: {
+        checked?: string;
+        default?: string;
+        disabled?: string;
+        readOnly?: string;
+      };
+      handle?: {
+        background?: {
+          checked?: string;
+          default?: string;
+          disabled?: string;
+          readOnly?: string;
+        };
+      };
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+    };
+    label?: {
+      color?: {
+        checked?: string;
+        default?: string;
+        disabled?: string;
+        readOnly?: string;
+      };
+    };
   }
 }

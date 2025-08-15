@@ -5,4 +5,6 @@ export enum EventName {
   Keydown = 'keydown',
   Resize = 'resize',
   VisibilityChange = 'visibilitychange',
+  CustomDown = 'custom-movedown',
+  CustomUp = 'custom-moveup',
 }
