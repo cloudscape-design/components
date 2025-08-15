@@ -69,6 +69,11 @@
 
 .icon-wrapper {
   white-space: nowrap;
+  /* Add non-breaking space for consistent spacing */
+  &::before {
+    content: '\a0';
+    display: inline-block;
+  }
 }
 
 .icon {
