@@ -3,7 +3,7 @@
 
 export type Direction = 'block-start' | 'block-end' | 'inline-start' | 'inline-end';
 export type DirectionState = 'active' | 'disabled';
-export type TriggerMode = 'focus' | 'keyboard-activate';
+export type TriggerMode = 'focus' | 'keyboard-activate' | 'controlled';
 
 export interface DragHandleWrapperProps {
   directions: Partial<Record<Direction, DirectionState>>;
@@ -12,6 +12,7 @@ export interface DragHandleWrapperProps {
   children: React.ReactNode;
   triggerMode?: TriggerMode;
   initialShowButtons?: boolean;
+  controlledShowButtons?: boolean;
   hideButtonsOnDrag: boolean;
   clickDragThreshold: number;
 }
