@@ -46,7 +46,7 @@ const AppLayout = React.forwardRef(
         );
       }
     }
-    const { __internalRootRef } = useBaseComponent<HTMLDivElement>(
+    const { __internalRootRef } = useBaseComponent(
       'AppLayout',
       {
         props: {

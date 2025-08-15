@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { MutableRefObject } from 'react';
+import React from 'react';
 
 import {
   ComponentConfiguration,
@@ -15,8 +15,12 @@ import { getVisualTheme } from '../../utils/get-visual-theme';
 import { useVisualRefresh } from '../use-visual-mode';
 import { useMissingStylesCheck } from './styles-check';
 
-export interface InternalBaseComponentProps<T = any> {
-  __internalRootRef?: MutableRefObject<T | null> | null;
+export interface InternalBaseComponentProps {
+  // Typescript requires Ref type to be exact DOM element type it is assigned to, e.g. HTMLDivElement
+  // Typical community practice is explicit type casting: https://stackoverflow.com/questions/61102101/cannot-assign-refobjecthtmldivelement-to-refobjecthtmlelement-instance
+  // To avoid doing this, we use any to skip type checks. Treat this type as pass through, never
+  // read `__internalRootRef.current`, use your own refs if you need
+  __internalRootRef?: React.Ref<any>;
 }
 
 /**
@@ -24,7 +28,7 @@ export interface InternalBaseComponentProps<T = any> {
  * attached to the (internal) component's root DOM node. The hook takes care of attaching the metadata to this
  * root DOM node and emits the telemetry for this component.
  */
-export default function useBaseComponent<T = any>(
+export default function useBaseComponent(
   componentName: string,
   config?: ComponentConfiguration,
   analyticsMetadata?: AnalyticsMetadata
@@ -32,12 +36,12 @@ export default function useBaseComponent<T = any>(
   const isVisualRefresh = useVisualRefresh();
   const theme = getVisualTheme(THEME, isVisualRefresh);
   useComponentMetrics(componentName, { packageSource: PACKAGE_SOURCE, packageVersion: PACKAGE_VERSION, theme }, config);
-  const elementRef = useComponentMetadata<T>(
+  const elementRef = useComponentMetadata(
     componentName,
     { packageName: PACKAGE_SOURCE, version: PACKAGE_VERSION, theme },
     analyticsMetadata as any
   );
-  useMissingStylesCheck(elementRef as React.RefObject<HTMLElement>);
-  useFocusVisible(elementRef as React.RefObject<HTMLElement>);
+  useMissingStylesCheck(elementRef);
+  useFocusVisible(elementRef);
   return { __internalRootRef: elementRef };
 }

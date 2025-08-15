@@ -46,7 +46,7 @@ const InternalIcon = ({
   ariaLabel,
   svg,
   badge,
-  __internalRootRef = null,
+  __internalRootRef,
   ...props
 }: InternalIconProps) => {
   const icons = useContext(InternalIconContext);

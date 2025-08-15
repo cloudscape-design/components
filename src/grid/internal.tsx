@@ -37,7 +37,7 @@ const InternalGrid = React.forwardRef(
       children,
       __tagOverride,
       __responsiveClassName,
-      __internalRootRef = null,
+      __internalRootRef,
       ...restProps
     }: InternalGridProps,
     ref: React.Ref<HTMLDivElement>
