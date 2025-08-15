@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { ButtonProps } from '../button/interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import {
@@ -30,6 +29,8 @@ const InternalButtonGroup = forwardRef(
       onFilesChange,
       ariaLabel,
       dropdownExpandToViewport,
+      variant,
+      children,
       __internalRootRef = null,
       ...props
     }: InternalButtonGroupProps,
@@ -40,22 +41,18 @@ const InternalButtonGroup = forwardRef(
     const navigationAPI = useRef<SingleTabStopNavigationAPI>(null);
     const containerObjectRef = useRef<HTMLDivElement>(null);
     const containerRef = useMergeRefs(containerObjectRef, __internalRootRef);
-    const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
     const [tooltip, setTooltip] = useState<null | { item: string; feedback: boolean }>(null);
 
     useImperativeHandle(ref, () => ({
       focus: id => {
-        itemsRef.current[id]?.focus();
+        getNextFocusTarget(id)?.focus();
       },
     }));
 
-    function getNextFocusTarget(): null | HTMLElement {
+    function getNextFocusTarget(id = focusedIdRef.current): null | HTMLElement {
       if (containerObjectRef.current) {
-        const buttons: HTMLButtonElement[] = Array.from(
-          containerObjectRef.current.querySelectorAll(`.${testUtilStyles.item}`)
-        );
-        const activeButtons = buttons.filter(button => !button.disabled);
-        return activeButtons.find(button => button.dataset.itemid === focusedIdRef.current) ?? activeButtons[0] ?? null;
+        const activeButtons = getFocusablesFrom(containerObjectRef.current);
+        return activeButtons.find(button => button.dataset.itemid === id) ?? activeButtons[0] ?? null;
       }
       return null;
     }
@@ -95,7 +92,10 @@ const InternalButtonGroup = forwardRef(
         return;
       }
       // Ignore navigation when the focused element is not an item.
-      if (document.activeElement && !document.activeElement.matches(`.${testUtilStyles.item}`)) {
+      if (
+        document.activeElement &&
+        !('dataset' in document.activeElement && (document.activeElement as HTMLElement).dataset.itemid)
+      ) {
         return;
       }
       event.preventDefault();
@@ -148,43 +148,44 @@ const InternalButtonGroup = forwardRef(
           getNextFocusTarget={getNextFocusTarget}
           onUnregisterActive={onUnregisterActive}
         >
-          {items.map((itemOrGroup, index) => {
-            const itemContent = (item: ButtonGroupProps.Item, position: string) => (
-              <ItemElement
-                key={item.id}
-                item={item}
-                dropdownExpandToViewport={dropdownExpandToViewport}
-                tooltip={tooltip}
-                setTooltip={setTooltip}
-                onItemClick={onItemClick}
-                onFilesChange={onFilesChange}
-                ref={element => (itemsRef.current[item.id] = element)}
-                position={position}
-              />
-            );
+          {variant === 'children'
+            ? children
+            : items.map((itemOrGroup, index) => {
+                const itemContent = (item: ButtonGroupProps.Item, position: string) => (
+                  <ItemElement
+                    key={item.id}
+                    item={item}
+                    dropdownExpandToViewport={dropdownExpandToViewport}
+                    tooltip={tooltip}
+                    setTooltip={setTooltip}
+                    onItemClick={onItemClick}
+                    onFilesChange={onFilesChange}
+                    position={position}
+                  />
+                );
 
-            const isGroupBefore = items[index - 1]?.type === 'group';
-            const currentItem = items[index];
-            const isGroupNow = currentItem?.type === 'group';
-            const shouldAddDivider = isGroupBefore || (!isGroupBefore && isGroupNow && index !== 0);
+                const isGroupBefore = items[index - 1]?.type === 'group';
+                const currentItem = items[index];
+                const isGroupNow = currentItem?.type === 'group';
+                const shouldAddDivider = isGroupBefore || (!isGroupBefore && isGroupNow && index !== 0);
 
-            if (isGroupNow && currentItem.items.length === 0) {
-              warnOnce('ButtonGroup', 'Empty group detected. Empty groups are not allowed.');
-            }
+                if (isGroupNow && currentItem.items.length === 0) {
+                  warnOnce('ButtonGroup', 'Empty group detected. Empty groups are not allowed.');
+                }
 
-            return (
-              <React.Fragment key={itemOrGroup.type === 'group' ? index : itemOrGroup.id}>
-                {shouldAddDivider && <div className={styles.divider} />}
-                {itemOrGroup.type === 'group' ? (
-                  <div key={index} role="group" aria-label={itemOrGroup.text} className={styles.group}>
-                    {itemOrGroup.items.map((item, subIndex) => itemContent(item, `${index + 1},${subIndex + 1}`))}
-                  </div>
-                ) : (
-                  itemContent(itemOrGroup, `${index + 1}`)
-                )}
-              </React.Fragment>
-            );
-          })}
+                return (
+                  <React.Fragment key={itemOrGroup.type === 'group' ? index : itemOrGroup.id}>
+                    {shouldAddDivider && <div className={styles.divider} />}
+                    {itemOrGroup.type === 'group' ? (
+                      <div key={index} role="group" aria-label={itemOrGroup.text} className={styles.group}>
+                        {itemOrGroup.items.map((item, subIndex) => itemContent(item, `${index + 1},${subIndex + 1}`))}
+                      </div>
+                    ) : (
+                      itemContent(itemOrGroup, `${index + 1}`)
+                    )}
+                  </React.Fragment>
+                );
+              })}
         </SingleTabStopNavigationProvider>
       </div>
     );
