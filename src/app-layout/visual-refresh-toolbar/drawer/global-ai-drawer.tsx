@@ -8,7 +8,6 @@ import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
-import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../../interfaces';
 import { OnChangeParams } from '../../utils/use-ai-drawer';
@@ -26,10 +25,10 @@ interface AIDrawerProps {
   aiDrawer: AppLayoutProps.Drawer | undefined;
   maxAiDrawerSize: number;
   ariaLabels: any;
-  aiDrawerFocusControl: FocusControlState;
+  aiDrawerFocusControl: FocusControlState | undefined;
   isMobile: boolean;
-  drawersOpenQueue: Array<string>;
-  onActiveAiDrawerChange: (newDrawerId: string | null, params?: OnChangeParams) => void;
+  drawersOpenQueue: ReadonlyArray<string> | undefined;
+  onActiveAiDrawerChange: undefined | ((newDrawerId: string | null, params?: OnChangeParams) => void);
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;
   expandedDrawerId?: string | null;
   setExpandedDrawerId: (value: string | null) => void;
@@ -75,7 +74,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
     minWidth: minAiDrawerSize,
     maxWidth: maxAiDrawerSize,
     panelRef: drawerRef,
-    handleRef: aiDrawerFocusControl.refs.slider,
+    handleRef: aiDrawerFocusControl!.refs.slider,
     onResize: size => {
       onActiveDrawerResize({ id: activeDrawerId!, size });
     },
@@ -86,7 +85,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
   const isExpanded = activeAiDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
   const wasExpanded = usePrevious(isExpanded);
   const animationDisabled =
-    (activeAiDrawer?.defaultActive && !drawersOpenQueue.includes(activeAiDrawer.id)) || (wasExpanded && !isExpanded);
+    (activeAiDrawer?.defaultActive && !drawersOpenQueue?.includes(activeAiDrawer.id)) || (wasExpanded && !isExpanded);
   const drawerHeight = `calc(100vh - ${verticalOffsets.toolbar}}px)`;
 
   return (
@@ -113,7 +112,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
           ref={drawerRef}
           onBlur={e => {
             if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-              aiDrawerFocusControl.loseFocus();
+              aiDrawerFocusControl?.loseFocus();
             }
           }}
           style={{
@@ -127,7 +126,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
           {!isMobile && activeAiDrawer?.resizable && !isExpanded && (
             <div className={styles['drawer-slider']}>
               <PanelResizeHandle
-                ref={aiDrawerFocusControl.refs.slider}
+                ref={aiDrawerFocusControl?.refs.slider}
                 position="side-start"
                 className={clsx(testutilStyles['drawers-slider'], styles['ai-drawer-slider-handle'])}
                 ariaLabel={activeAiDrawer?.ariaLabels?.resizeHandle}
@@ -167,8 +166,8 @@ export function AppLayoutGlobalAiDrawerImplementation({
                         })}
                         formAction="none"
                         iconName={isMobile ? 'close' : 'angle-left'}
-                        onClick={() => onActiveAiDrawerChange(null, { initiatedByUserAction: true })}
-                        ref={aiDrawerFocusControl.refs.close}
+                        onClick={() => onActiveAiDrawerChange?.(null, { initiatedByUserAction: true })}
+                        ref={aiDrawerFocusControl?.refs.close}
                         variant="icon"
                         analyticsAction="close"
                       />
@@ -196,5 +195,3 @@ export function AppLayoutGlobalAiDrawerImplementation({
     </Transition>
   );
 }
-
-export const createWidgetizedGlobalAppLayoutAiDrawer = createWidgetizedComponent(AppLayoutGlobalAiDrawerImplementation);

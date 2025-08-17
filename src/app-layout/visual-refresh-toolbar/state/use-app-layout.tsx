@@ -463,6 +463,7 @@ export const useAppLayout = (
     splitPanelInternals,
     widgetizedState: {
       ...appLayoutInternals,
+      aiDrawerExpandedMode: expandedDrawerId === activeAiDrawer?.id,
       isNested,
       navigationAnimationDisabled,
       verticalOffsets,

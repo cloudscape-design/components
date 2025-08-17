@@ -71,7 +71,7 @@ export interface AppLayoutInternals {
   expandedDrawerId: string | null;
   setExpandedDrawerId: (value: string | null) => void;
   aiDrawer?: InternalDrawer | null;
-  onActiveAiDrawerChange?: (newDrawerId: string | null, params: OnChangeParams) => void;
+  onActiveAiDrawerChange?: (newDrawerId: string | null, params?: OnChangeParams) => void;
   activeAiDrawer?: InternalDrawer | null;
   activeAiDrawerId: string | null;
   activeAiDrawerSize?: number;
@@ -85,6 +85,7 @@ interface AppLayoutWidgetizedState extends AppLayoutInternals {
   isNested: boolean;
   verticalOffsets: VerticalLayoutOutput;
   navigationAnimationDisabled: boolean;
+  aiDrawerExpandedMode: boolean;
   splitPanelOffsets: {
     stickyVerticalBottomOffset: number;
     mainContentPaddingBlockEnd: number | undefined;

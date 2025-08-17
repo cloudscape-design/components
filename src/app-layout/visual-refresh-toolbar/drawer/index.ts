@@ -3,4 +3,3 @@
 
 export { createWidgetizedAppLayoutDrawer, AppLayoutDrawerImplementation } from './local-drawer';
 export { createWidgetizedAppLayoutGlobalDrawers, AppLayoutGlobalDrawersImplementation } from './global-drawers';
-export { createWidgetizedGlobalAppLayoutAiDrawer, AppLayoutGlobalAiDrawerImplementation } from './global-ai-drawer';
