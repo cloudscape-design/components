@@ -26347,6 +26347,8 @@ exports[`Components definition for token matches the snapshot: token 1`] = `
   "events": [
     {
       "cancelable": false,
+      "description": "Called when the user clicks on the dismiss button.
+Make sure that you add a listener to this event to update your application state.",
       "name": "onDismiss",
     },
   ],
@@ -26354,6 +26356,7 @@ exports[`Components definition for token matches the snapshot: token 1`] = `
   "name": "Token",
   "properties": [
     {
+      "description": "Adds an \`aria-label\` to the token.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
@@ -26366,6 +26369,15 @@ exports[`Components definition for token matches the snapshot: token 1`] = `
       "type": "string",
     },
     {
+      "description": "When defined, the token will display a custom action instead of the default dismiss button.
+- ariaLabel (string) - optional - Adds an \`aria-label\` to the action button.
+- disabled (boolean) - optional - Determines whether the action button is disabled.
+- onClick (NonCancelableEventHandler) - optional - Called when the user clicks on the action button.
+- iconAlt (string) - optional - Specifies alternate text for a custom icon, for use with \`iconUrl\`.
+- iconName (IconProps.Name) - optional - Specifies the name of an [icon](/components/icon/) to display in the action button.
+- iconUrl (string) - optional - URL of a custom icon.
+- iconSvg (React.ReactNode) - optional - Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+- popoverProps (TokenPopoverProps) - optional - When defined, adds a popover trigger to the action button.",
       "inlineType": {
         "name": "TokenProps.CustomActionProps",
         "properties": [
@@ -26644,26 +26656,31 @@ exports[`Components definition for token matches the snapshot: token 1`] = `
       "type": "TokenProps.CustomActionProps",
     },
     {
+      "description": "Further information about the token that appears below the label.",
       "name": "description",
       "optional": true,
       "type": "string",
     },
     {
+      "description": "Determines whether the token is disabled.",
       "name": "disabled",
       "optional": true,
       "type": "boolean",
     },
     {
+      "description": "Adds an \`aria-label\` to the dismiss button.",
       "name": "dismissLabel",
       "optional": true,
       "type": "string",
     },
     {
+      "description": "Specifies alternate text for a custom icon, for use with \`iconUrl\`.",
       "name": "iconAlt",
       "optional": true,
       "type": "string",
     },
     {
+      "description": "Specifies the name of an [icon](/components/icon/) to display in the token.",
       "inlineType": {
         "name": "IconProps.Name",
         "type": "union",
@@ -26802,6 +26819,7 @@ exports[`Components definition for token matches the snapshot: token 1`] = `
       "type": "string",
     },
     {
+      "description": "URL of a custom icon.",
       "name": "iconUrl",
       "optional": true,
       "type": "string",
@@ -26816,16 +26834,20 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Title text of the token.",
       "name": "label",
       "optional": true,
       "type": "string",
     },
     {
+      "description": "A label tag that provides additional guidance, shown next to the label.",
       "name": "labelTag",
       "optional": true,
       "type": "string",
     },
     {
+      "description": "When defined, adds a popover trigger to the token label.
+\`description\`, \`labelTags\` and \`tags\` cannot be used in combination with a popover.",
       "inlineType": {
         "name": "TokenProps.TokenPopoverProps",
         "properties": [
@@ -26911,16 +26933,25 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "TokenProps.TokenPopoverProps",
     },
     {
+      "description": "Specifies if the control is read-only, which prevents the
+user from modifying the value. A read-only control is still focusable.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
     },
     {
+      "description": "A list of tags giving further guidance about the token.",
       "name": "tags",
       "optional": true,
       "type": "ReadonlyArray<string>",
     },
     {
+      "description": "Determines the general styling of the token as follows:
+- \`normal\` for a standard style token with various features to display information.
+- \`inline\` for a slimmer version of the token with limited features for text contexts.
+  - Displays the label, icon and dismiss button as specified.
+
+Defaults to \`normal\` if not specified.",
       "inlineType": {
         "name": "TokenProps.Variant",
         "type": "union",
@@ -26936,6 +26967,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
   ],
   "regions": [
     {
+      "description": "Used to render content inside the token.",
       "isDefault": true,
       "name": "children",
       "systemTags": [
@@ -26943,6 +26975,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       ],
     },
     {
+      "description": "Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).",
       "isDefault": false,
       "name": "iconSvg",
     },

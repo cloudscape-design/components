@@ -84,7 +84,7 @@ function InternalToken({
     if (children || labelTag || description || tags || !popoverProps?.content) {
       if (popoverProps) {
         throw new Error(
-          'Invariant violation: labelTag, description, and tags are not supported in combination with a popover.'
+          'Invariant violation: description, labelTag, and tags are not supported in combination with a popover.'
         );
       }
       return mainContent;
