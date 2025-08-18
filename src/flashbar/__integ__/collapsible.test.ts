@@ -119,6 +119,7 @@ describe('Collapsible Flashbar', () => {
           await page.toggleStackingFeature();
           await page.addErrorFlash();
           await page.toggleCollapsedState();
+          await page.pause(FOCUS_DEBOUNCE_DELAY);
           await expect(page.isFlashFocused(1)).resolves.toBe(true);
         })
       );
