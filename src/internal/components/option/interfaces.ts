@@ -50,4 +50,5 @@ export interface OptionProps extends BaseComponentProps {
   selectedOption?: boolean;
   isGroupOption?: boolean;
   isGenericGroup?: boolean;
+  labelClassName?: string;
 }
