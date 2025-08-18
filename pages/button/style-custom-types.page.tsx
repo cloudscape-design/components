@@ -73,6 +73,7 @@ function CustomButton({ children, colorTheme, id, isDisabled, isLoading, onClick
           focusRing,
           paddingBlock: '12px',
           paddingInline: '16px',
+          boxShadow: boxShadows[mode][colorTheme],
         },
       }}
     >
@@ -173,5 +174,72 @@ const focusRings = {
     borderColor: 'rgb(233, 249, 252)',
     borderWidth: '2px',
     boxShadow: '0 0 8px rgb(233, 249, 252)',
+  },
+};
+
+const boxShadows = {
+  light: {
+    default: {
+      active: '0 4px 8px rgba(0, 128, 128, 0.3)',
+      default: '0 2px 4px rgba(0, 128, 128, 0.2)',
+      disabled: 'none',
+      hover: '0 6px 12px rgba(0, 128, 128, 0.25)',
+    },
+    error: {
+      active: '0 4px 8px rgba(255, 0, 0, 0.3)',
+      default: '0 2px 4px rgba(255, 0, 0, 0.2)',
+      disabled: 'none',
+      hover: '0 6px 12px rgba(255, 0, 0, 0.25)',
+    },
+    info: {
+      active: '0 4px 8px rgba(0, 0, 255, 0.3)',
+      default: '0 2px 4px rgba(0, 0, 255, 0.2)',
+      disabled: 'none',
+      hover: '0 6px 12px rgba(0, 0, 255, 0.25)',
+    },
+    success: {
+      active: '0 4px 8px rgba(0, 255, 0, 0.3)',
+      default: '0 2px 4px rgba(0, 255, 0, 0.2)',
+      disabled: 'none',
+      hover: '0 6px 12px rgba(0, 255, 0, 0.25)',
+    },
+    warning: {
+      active: '0 4px 8px rgba(255, 165, 0, 0.3)',
+      default: '0 2px 4px rgba(255, 165, 0, 0.2)',
+      disabled: 'none',
+      hover: '0 6px 12px rgba(255, 165, 0, 0.25)',
+    },
+  },
+  dark: {
+    default: {
+      active: '0 4px 8px rgba(0, 255, 255, 0.4)',
+      default: '0 2px 4px rgba(0, 255, 255, 0.3)',
+      disabled: 'none',
+      hover: '0 6px 12px rgba(0, 255, 255, 0.35)',
+    },
+    error: {
+      active: '0 4px 8px rgba(255, 100, 100, 0.4)',
+      default: '0 2px 4px rgba(255, 100, 100, 0.3)',
+      disabled: 'none',
+      hover: '0 6px 12px rgba(255, 100, 100, 0.35)',
+    },
+    info: {
+      active: '0 4px 8px rgba(100, 100, 255, 0.4)',
+      default: '0 2px 4px rgba(100, 100, 255, 0.3)',
+      disabled: 'none',
+      hover: '0 6px 12px rgba(100, 100, 255, 0.35)',
+    },
+    success: {
+      active: '0 4px 8px rgba(100, 255, 100, 0.4)',
+      default: '0 2px 4px rgba(100, 255, 100, 0.3)',
+      disabled: 'none',
+      hover: '0 6px 12px rgba(100, 255, 100, 0.35)',
+    },
+    warning: {
+      active: '0 4px 8px rgba(255, 200, 100, 0.4)',
+      default: '0 2px 4px rgba(255, 200, 100, 0.3)',
+      disabled: 'none',
+      hover: '0 6px 12px rgba(255, 200, 100, 0.35)',
+    },
   },
 };
