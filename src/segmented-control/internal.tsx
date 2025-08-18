@@ -21,7 +21,7 @@ export default function InternalSegmentedControl({
   label,
   ariaLabelledby,
   onChange,
-  __internalRootRef = null,
+  __internalRootRef,
   ...props
 }: InternalSegmentedControlProps) {
   const baseProps = getBaseProps(props);

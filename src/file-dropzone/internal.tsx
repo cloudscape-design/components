@@ -14,7 +14,7 @@ import styles from './styles.css.js';
 export default function InternalFileDropzone({
   onChange,
   children,
-  __internalRootRef = null,
+  __internalRootRef,
   ...restProps
 }: FileDropzoneProps & InternalBaseComponentProps) {
   const [isDropzoneHovered, setDropzoneHovered] = useState(false);

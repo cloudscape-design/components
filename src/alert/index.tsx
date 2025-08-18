@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { FunnelMetrics } from '../internal/analytics';
@@ -23,13 +23,16 @@ export { AlertProps };
 const Alert = React.forwardRef(
   ({ type = 'info', visible = true, style, ...props }: AlertProps, ref: React.Ref<AlertProps.Ref>) => {
     const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
-    const baseComponentProps = useBaseComponent<HTMLDivElement>(
+
+    const baseComponentProps = useBaseComponent(
       'Alert',
       {
         props: { type, visible, dismissible: props.dismissible },
       },
       analyticsMetadata
     );
+    const rootRef = useRef<HTMLElement>(null);
+    const __internalRootRef = useMergeRefs(rootRef, baseComponentProps.__internalRootRef);
 
     const { funnelIdentifier, funnelInteractionId, funnelErrorContext, submissionAttempt, funnelState, errorCount } =
       useFunnel();
@@ -47,7 +50,7 @@ const Alert = React.forwardRef(
         errorCount.current++;
 
         // We don't want to report an error if it is hidden, e.g. inside an Expandable Section.
-        const errorIsVisible = (baseComponentProps.__internalRootRef.current?.getBoundingClientRect()?.width ?? 0) > 0;
+        const errorIsVisible = (rootRef.current?.getBoundingClientRect()?.width ?? 0) > 0;
 
         if (errorIsVisible) {
           if (subStepSelector) {
@@ -72,7 +75,7 @@ const Alert = React.forwardRef(
               stepNameSelector,
               stepName,
               stepIdentifier,
-              currentDocument: baseComponentProps.__internalRootRef.current?.ownerDocument,
+              currentDocument: rootRef.current?.ownerDocument,
               totalSubSteps: subStepCount.current,
               funnelIdentifier,
               subStepAllSelector: getSubStepAllSelector(),
@@ -112,6 +115,7 @@ const Alert = React.forwardRef(
         visible={visible}
         {...props}
         {...baseComponentProps}
+        __internalRootRef={__internalRootRef}
         ref={ref}
         messageSlotId={messageSlotId}
         style={style}

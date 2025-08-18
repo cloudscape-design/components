@@ -67,7 +67,7 @@ const InternalSelect = React.forwardRef(
       expandToViewport,
       autoFocus,
       __inFilteringToken,
-      __internalRootRef = null,
+      __internalRootRef,
       ...restProps
     }: InternalSelectProps,
     externalRef: React.Ref<SelectProps.Ref>

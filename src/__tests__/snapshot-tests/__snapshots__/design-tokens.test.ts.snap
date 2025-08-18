@@ -41,6 +41,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
           "$value": "0px",
         },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
+          "$value": "0px",
+        },
         "border-radius-flashbar": {
           "$description": "The border radius of flash messages in flashbars.",
           "$value": "0px",
@@ -1782,6 +1786,48 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#545b64",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#545b64",
           },
         },
         "color-foreground-control-default": {
@@ -2620,6 +2666,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
           "$value": "0px",
         },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
+          "$value": "0px",
+        },
         "border-radius-flashbar": {
           "$description": "The border radius of flash messages in flashbars.",
           "$value": "0px",
@@ -4361,6 +4411,48 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#545b64",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#545b64",
           },
         },
         "color-foreground-control-default": {
@@ -5199,6 +5291,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
           "$value": "0px",
         },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
+          "$value": "0px",
+        },
         "border-radius-flashbar": {
           "$description": "The border radius of flash messages in flashbars.",
           "$value": "0px",
@@ -6940,6 +7036,48 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#545b64",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#545b64",
           },
         },
         "color-foreground-control-default": {
@@ -7778,6 +7916,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
           "$value": "0px",
         },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
+          "$value": "0px",
+        },
         "border-radius-flashbar": {
           "$description": "The border radius of flash messages in flashbars.",
           "$value": "0px",
@@ -9519,6 +9661,48 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#545b64",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#545b64",
           },
         },
         "color-foreground-control-default": {
@@ -10357,6 +10541,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
           "$value": "0px",
         },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
+          "$value": "0px",
+        },
         "border-radius-flashbar": {
           "$description": "The border radius of flash messages in flashbars.",
           "$value": "0px",
@@ -12100,6 +12288,48 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#99cbe4",
           },
         },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#545b64",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#545b64",
+          },
+        },
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
@@ -12934,6 +13164,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-dropdown": {
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
+          "$value": "0px",
+        },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
           "$value": "0px",
         },
         "border-radius-flashbar": {
@@ -14679,6 +14913,48 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#1a2029",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#12293b",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
@@ -15513,6 +15789,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-radius-dropdown": {
       "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
+      "$value": "0px",
+    },
+    "border-radius-dropzone": {
+      "$description": "The border radius of file upload dropzone.",
       "$value": "0px",
     },
     "border-radius-flashbar": {
@@ -17258,6 +17538,48 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#99cbe4",
       },
     },
+    "color-dropzone-background-default": {
+      "$description": "The default color of file upload dropzone background.",
+      "$value": {
+        "dark": "#1a2029",
+        "light": "#ffffff",
+      },
+    },
+    "color-dropzone-background-hover": {
+      "$description": "The color of file upload dropzone background in hovered state.",
+      "$value": {
+        "dark": "#12293b",
+        "light": "#f1faff",
+      },
+    },
+    "color-dropzone-border-default": {
+      "$description": "The default color of file upload dropzone border.",
+      "$value": {
+        "dark": "#687078",
+        "light": "#879596",
+      },
+    },
+    "color-dropzone-border-hover": {
+      "$description": "The color of file upload dropzone border in hovered state.",
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#002b66",
+      },
+    },
+    "color-dropzone-text-default": {
+      "$description": "The default color of file upload dropzone text.",
+      "$value": {
+        "dark": "#c6c6cd",
+        "light": "#545b64",
+      },
+    },
+    "color-dropzone-text-hover": {
+      "$description": "The color of file upload dropzone text in hovered state.",
+      "$value": {
+        "dark": "#c6c6cd",
+        "light": "#545b64",
+      },
+    },
     "color-foreground-control-default": {
       "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
       "$value": {
@@ -18098,6 +18420,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-dropdown": {
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
           "$value": "8px",
+        },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
+          "$value": "12px",
         },
         "border-radius-flashbar": {
           "$description": "The border radius of flash messages in flashbars.",
@@ -19842,6 +20168,48 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#d1f1ff",
           },
         },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#424650",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#424650",
+          },
+        },
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
@@ -20677,6 +21045,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-dropdown": {
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
           "$value": "8px",
+        },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
+          "$value": "12px",
         },
         "border-radius-flashbar": {
           "$description": "The border radius of flash messages in flashbars.",
@@ -22421,6 +22793,48 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
@@ -23256,6 +23670,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-dropdown": {
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
           "$value": "8px",
+        },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
+          "$value": "12px",
         },
         "border-radius-flashbar": {
           "$description": "The border radius of flash messages in flashbars.",
@@ -25000,6 +25418,48 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#d1f1ff",
           },
         },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#424650",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#424650",
+          },
+        },
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
@@ -25835,6 +26295,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-dropdown": {
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
           "$value": "8px",
+        },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
+          "$value": "12px",
         },
         "border-radius-flashbar": {
           "$description": "The border radius of flash messages in flashbars.",
@@ -27579,6 +28043,48 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#d1f1ff",
           },
         },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#424650",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#424650",
+          },
+        },
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
@@ -28414,6 +28920,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-dropdown": {
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
           "$value": "8px",
+        },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
+          "$value": "12px",
         },
         "border-radius-flashbar": {
           "$description": "The border radius of flash messages in flashbars.",
@@ -30158,6 +30668,48 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#d1f1ff",
           },
         },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#424650",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#424650",
+          },
+        },
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
@@ -30993,6 +31545,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-dropdown": {
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
           "$value": "8px",
+        },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
+          "$value": "12px",
         },
         "border-radius-flashbar": {
           "$description": "The border radius of flash messages in flashbars.",
@@ -32737,6 +33293,48 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#d1f1ff",
           },
         },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#424650",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#424650",
+          },
+        },
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
@@ -33572,6 +34170,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-dropdown": {
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
           "$value": "8px",
+        },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
+          "$value": "12px",
         },
         "border-radius-flashbar": {
           "$description": "The border radius of flash messages in flashbars.",
@@ -35314,6 +35916,48 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#006ce0",
             "light": "#006ce0",
+          },
+        },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
           },
         },
         "color-foreground-control-default": {
@@ -36152,6 +36796,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
           "$value": "8px",
         },
+        "border-radius-dropzone": {
+          "$description": "The border radius of file upload dropzone.",
+          "$value": "12px",
+        },
         "border-radius-flashbar": {
           "$description": "The border radius of flash messages in flashbars.",
           "$value": "12px",
@@ -37895,6 +38543,48 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-dropzone-background-default": {
+          "$description": "The default color of file upload dropzone background.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-dropzone-background-hover": {
+          "$description": "The color of file upload dropzone background in hovered state.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
+        "color-dropzone-border-default": {
+          "$description": "The default color of file upload dropzone border.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-dropzone-border-hover": {
+          "$description": "The color of file upload dropzone border in hovered state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-dropzone-text-default": {
+          "$description": "The default color of file upload dropzone text.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-dropzone-text-hover": {
+          "$description": "The color of file upload dropzone text in hovered state.",
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
@@ -38730,6 +39420,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "border-radius-dropdown": {
       "$description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.",
       "$value": "8px",
+    },
+    "border-radius-dropzone": {
+      "$description": "The border radius of file upload dropzone.",
+      "$value": "12px",
     },
     "border-radius-flashbar": {
       "$description": "The border radius of flash messages in flashbars.",
@@ -40472,6 +41166,48 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#006ce0",
         "light": "#d1f1ff",
+      },
+    },
+    "color-dropzone-background-default": {
+      "$description": "The default color of file upload dropzone background.",
+      "$value": {
+        "dark": "#161d26",
+        "light": "#ffffff",
+      },
+    },
+    "color-dropzone-background-hover": {
+      "$description": "The color of file upload dropzone background in hovered state.",
+      "$value": {
+        "dark": "#001129",
+        "light": "#f0fbff",
+      },
+    },
+    "color-dropzone-border-default": {
+      "$description": "The default color of file upload dropzone border.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#8c8c94",
+      },
+    },
+    "color-dropzone-border-hover": {
+      "$description": "The color of file upload dropzone border in hovered state.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#002b66",
+      },
+    },
+    "color-dropzone-text-default": {
+      "$description": "The default color of file upload dropzone text.",
+      "$value": {
+        "dark": "#c6c6cd",
+        "light": "#424650",
+      },
+    },
+    "color-dropzone-text-hover": {
+      "$description": "The color of file upload dropzone text in hovered state.",
+      "$value": {
+        "dark": "#c6c6cd",
+        "light": "#424650",
       },
     },
     "color-foreground-control-default": {
