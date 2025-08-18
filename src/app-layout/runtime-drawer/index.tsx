@@ -100,7 +100,7 @@ export const mapRuntimeConfigToDrawer = (
           ...(trigger.customIcon && {
             customIcon: (
               // eslint-disable-next-line react/no-danger
-              <span dangerouslySetInnerHTML={{ __html: trigger.customIcon }} />
+              <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: trigger.customIcon }} />
             ),
           }),
         }
