@@ -31,6 +31,7 @@ const Option = ({
   isGenericGroup = true,
   highlightedOption = false,
   selectedOption = false,
+  labelClassName,
   ...restProps
 }: OptionProps) => {
   if (!option) {
@@ -83,7 +84,7 @@ const Option = ({
     <span data-value={option.value} className={className} lang={option.lang} {...genericGroupProps} {...baseProps}>
       {icon}
       <span className={styles.content}>
-        <span className={styles['label-content']}>
+        <span className={clsx(styles['label-content'], labelClassName)}>
           <Label
             label={option.label ?? option.value}
             prefix={option.__labelPrefix}
