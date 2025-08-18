@@ -221,7 +221,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * * `finished` - Indicates that pagination has finished and no more requests are expected.
    * * `error` - Indicates that an error occurred during fetch. You should use `recoveryText` to enable the user to recover.
    **/
-  filteringStatusType?: DropdownStatusProps.StatusType;
+  filteringStatusType?: PropertyFilterProps.StatusType;
 
   /**
    * Adds an aria-label to the "Show fewer" button for the token group control.
@@ -248,6 +248,7 @@ export namespace PropertyFilterProps {
   export type FilteringProperty = PropertyFilterProperty;
   export type FreeTextFiltering = PropertyFilterFreeTextFiltering;
   export type Query = PropertyFilterQuery;
+  export type StatusType = DropdownStatusProps.StatusType;
 
   export interface LoadItemsDetail {
     filteringProperty?: FilteringProperty;
