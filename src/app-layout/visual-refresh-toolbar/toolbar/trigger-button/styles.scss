@@ -16,6 +16,7 @@
   text-align: center;
 
   &.custom {
+    display: flex;
     block-size: 100%;
     inline-size: 100%;
     box-sizing: border-box;

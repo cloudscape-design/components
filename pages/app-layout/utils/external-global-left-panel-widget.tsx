@@ -4,8 +4,7 @@ import React from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import { Box } from '~components';
-import Button from '~components/button';
-import ButtonDropdown from '~components/button-dropdown';
+import ButtonGroup from '~components/button-group';
 import awsuiPlugins from '~components/internal/plugins';
 
 const AIDrawer = () => {
@@ -39,7 +38,7 @@ awsuiPlugins.appLayout.registerDrawer({
 
   trigger: {
     customIcon: `
-      <svg width="58" height="32" viewBox="0 0 58 32" fill="none">
+      <svg width="58" height="32" viewBox="0 0 58 32" focusable="false" aria-hidden="true">
         <rect width="58" height="32" rx="4" fill="url(#paint0_radial_102_125756)"/>
         <defs>
           <radialGradient id="paint0_radial_102_125756" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(63.1768 -2.85617) rotate(151.113) scale(78.0669 84.498)">
@@ -70,10 +69,35 @@ awsuiPlugins.appLayout.registerDrawer({
     ReactDOM.render(
       <div style={{ inlineSize: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>logo</div>
-        <div>
-          <Button iconName="add-plus" variant="icon" />
-          <ButtonDropdown items={[{ id: 'settings', text: 'Settings' }]} ariaLabel="Control drawer" variant="icon" />
-        </div>
+        <ButtonGroup
+          variant="icon"
+          ariaLabel="Chat actions"
+          items={[
+            {
+              type: 'icon-button',
+              id: 'add',
+              iconName: 'add-plus',
+              text: 'Add',
+            },
+            {
+              type: 'menu-dropdown',
+              id: 'more-actions',
+              text: 'More actions',
+              items: [
+                {
+                  id: 'add',
+                  iconName: 'add-plus',
+                  text: 'Add',
+                },
+                {
+                  id: 'remove',
+                  iconName: 'remove',
+                  text: 'Remove',
+                },
+              ],
+            },
+          ]}
+        />
       </div>,
       container
     );
