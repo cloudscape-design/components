@@ -30,7 +30,7 @@ import { getLinkStyles } from './style';
 
 import styles from './styles.css.js';
 
-type InternalLinkProps = InternalBaseComponentProps<HTMLAnchorElement> &
+type InternalLinkProps = InternalBaseComponentProps &
   Omit<LinkProps, 'variant'> & {
     variant?: LinkProps['variant'] | 'top-navigation' | 'link' | 'recovery';
   };
@@ -50,7 +50,7 @@ const InternalLink = React.forwardRef(
       onFollow,
       onClick,
       children,
-      __internalRootRef = null,
+      __internalRootRef,
       style,
       ...props
     }: InternalLinkProps,
@@ -163,7 +163,6 @@ const InternalLink = React.forwardRef(
     const sharedProps = {
       id: linkId,
       ...baseProps,
-      // https://github.com/microsoft/TypeScript/issues/36659
       ref: useMergeRefs(linkRef, __internalRootRef),
       className: clsx(
         styles.link,

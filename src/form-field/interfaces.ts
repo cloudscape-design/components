@@ -108,7 +108,7 @@ export namespace FormFieldProps {
   }
 }
 
-export interface InternalFormFieldProps extends FormFieldProps, InternalBaseComponentProps<HTMLDivElement> {
+export interface InternalFormFieldProps extends FormFieldProps, InternalBaseComponentProps {
   /**
    * Visually hide the label.
    */
