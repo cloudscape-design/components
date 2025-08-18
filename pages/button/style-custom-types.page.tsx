@@ -167,11 +167,11 @@ const focusRings = {
   light: {
     borderColor: 'rgb(0, 64, 77)',
     borderWidth: '2px',
-    boxShadow: '0 0 8px rgba(0, 64, 77, 0.5)',
+    boxShadow: '0 0 8px rgb(0, 64, 77)',
   },
   dark: {
     borderColor: 'rgb(233, 249, 252)',
     borderWidth: '2px',
-    boxShadow: '0 0 8px rgba(233, 249, 252, 0.5)',
+    boxShadow: '0 0 8px rgb(233, 249, 252)',
   },
 };
