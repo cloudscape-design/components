@@ -16,6 +16,8 @@ import { TokenProps } from './interfaces';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
+const INLINE_TOKEN_CHARACTER_LIMIT = 15;
+
 type InternalTokenProps = TokenProps &
   InternalBaseComponentProps & {
     role?: string;
@@ -70,7 +72,14 @@ function InternalToken({
 
   const getTokenContent = () => {
     const mainContent = children ?? (
-      <Option triggerVariant={isInline} option={optionDefinition} isGenericGroup={false} />
+      <Option
+        triggerVariant={isInline}
+        option={optionDefinition}
+        isGenericGroup={false}
+        labelClassName={clsx(
+          isInline && label && label?.length >= INLINE_TOKEN_CHARACTER_LIMIT && styles['token-option-label']
+        )}
+      />
     );
     if (children || labelTag || description || tags || !popoverProps?.content) {
       if (popoverProps) {
@@ -81,7 +90,13 @@ function InternalToken({
       return mainContent;
     }
     return (
-      <div className={clsx(styles['popover-trigger-wrapper'], isInline && styles['popover-trigger-wrapper-inline'])}>
+      <div
+        className={clsx(
+          styles['popover-trigger-wrapper'],
+          isInline && styles['popover-trigger-wrapper-inline'],
+          isInline && label && label?.length >= INLINE_TOKEN_CHARACTER_LIMIT && styles['token-option-label']
+        )}
+      >
         <InternalPopover
           triggerType="text-inline"
           triggerClassName={clsx(isInline && styles['popover-trigger-inline-button'])}
@@ -131,11 +146,40 @@ function InternalToken({
     );
   };
 
+  const getTokenMinWidthClassName = () => {
+    if (children || !isInline) {
+      return undefined;
+    }
+
+    const baseClassName = 'token-inline-min-width-';
+    const hasActionButton = onDismiss || dismissLabel || customActionProps;
+    const hasIcon = iconName || iconSvg || iconUrl;
+
+    if (hasIcon && hasActionButton) {
+      return styles[baseClassName + 'icon-and-action'];
+    }
+
+    if (hasIcon) {
+      return styles[baseClassName + 'icon'];
+    }
+
+    if (hasActionButton) {
+      return styles[baseClassName + 'action'];
+    }
+
+    return styles[baseClassName + 'label-only'];
+  };
+
   return (
     <div
       {...baseProps}
       ref={containerRef}
-      className={clsx(!isInline ? styles.token : styles['token-inline'], analyticsSelectors.token, baseProps.className)}
+      className={clsx(
+        !isInline ? styles.token : styles['token-inline'],
+        getTokenMinWidthClassName(),
+        analyticsSelectors.token,
+        baseProps.className
+      )}
       aria-label={ariaLabel}
       aria-disabled={disabled}
       role={role}

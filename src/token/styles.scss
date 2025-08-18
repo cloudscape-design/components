@@ -43,8 +43,8 @@
 .action-icon-inline {
   // !important is essential here to remove padding from the icon
   padding-block: 0 !important;
-  inline-size: 16px;
-  max-block-size: 16px;
+  inline-size: constants.$icon-width;
+  max-block-size: constants.$icon-width;
 }
 
 .action-button-popover {
@@ -63,7 +63,6 @@
 }
 
 .token-inline {
-  block-size: 100%;
   display: inline-flex;
   max-inline-size: 100%;
   border-block: awsui.$border-width-field solid transparent;
@@ -72,6 +71,35 @@
   @include focus-visible.when-visible {
     @include styles.focus-highlight(0px);
   }
+
+  &-min-width {
+    &-icon-and-action {
+      min-inline-size: calc(
+        constants.$token-character-limit + constants.$token-icon-width + constants.$token-action-button-width +
+          (awsui.$space-scaled-xxs * 2)
+      );
+    }
+
+    &-icon {
+      min-inline-size: calc(
+        constants.$token-character-limit + constants.$token-icon-width + (awsui.$space-scaled-xxs * 2)
+      );
+    }
+
+    &-action {
+      min-inline-size: calc(
+        constants.$token-character-limit + constants.$token-action-button-width + (awsui.$space-scaled-xxs * 2)
+      );
+    }
+
+    &-label-only {
+      min-inline-size: calc(constants.$token-character-limit + (awsui.$space-scaled-xxs * 2));
+    }
+  }
+}
+
+.token-option-label {
+  min-inline-size: constants.$token-character-limit;
 }
 
 .token-box {

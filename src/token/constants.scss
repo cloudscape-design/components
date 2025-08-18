@@ -10,3 +10,8 @@ $token-background: awsui.$color-background-item-selected;
 $token-border-color: awsui.$color-border-item-selected;
 $trigger-underline-offset-inline: 0.1em;
 $token-max-height-inline: 20px;
+
+$icon-width: 16px;
+$token-character-limit: 13ch;
+$token-icon-width: calc($icon-width + awsui.$space-xxs * 2);
+$token-action-button-width: calc($icon-width + awsui.$space-xxs);

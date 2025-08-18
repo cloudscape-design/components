@@ -42,6 +42,13 @@ export default function GenericTokenPage() {
           ariaLabel="Inline token"
           popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
         />
+        <Token
+          variant="inline"
+          label="Inline token with Icon"
+          ariaLabel="Inline token with Icon"
+          iconName="bug"
+          popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
+        />
         <div style={{ maxWidth: '100%', display: 'inline-block' }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
           magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo{' '}
