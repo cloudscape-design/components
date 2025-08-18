@@ -21,6 +21,7 @@ export default function DragHandleWrapper({
   onDirectionClick,
   triggerMode = 'focus',
   initialShowButtons = false,
+  controlledShowButtons = false,
   hideButtonsOnDrag,
   clickDragThreshold,
 }: DragHandleWrapperProps) {
@@ -161,7 +162,7 @@ export default function DragHandleWrapper({
       event.key !== 'Control' &&
       event.key !== 'Meta' &&
       event.key !== 'Shift' &&
-      triggerMode !== 'keyboard-activate'
+      triggerMode === 'focus'
     ) {
       // Pressing any other key will display the focus-visible ring around the
       // drag handle if it's in focus, so we should also show the buttons now.
@@ -179,9 +180,11 @@ export default function DragHandleWrapper({
     onDirectionClick?.(direction);
   };
 
+  const _showButtons = triggerMode === 'controlled' ? controlledShowButtons : showButtons;
+
   return (
     <div
-      className={clsx(styles['drag-handle-wrapper'], showButtons && styles['drag-handle-wrapper-open'])}
+      className={clsx(styles['drag-handle-wrapper'], _showButtons && styles['drag-handle-wrapper-open'])}
       ref={wrapperRef}
       onFocus={onWrapperFocusIn}
       onBlur={onWrapperFocusOut}
@@ -196,15 +199,15 @@ export default function DragHandleWrapper({
           {children}
         </div>
 
-        {!isDisabled && !showButtons && showTooltip && tooltipText && (
+        {!isDisabled && !_showButtons && showTooltip && tooltipText && (
           <Tooltip trackRef={dragHandleRef} value={tooltipText} onDismiss={() => setShowTooltip(false)} />
         )}
       </div>
 
-      <PortalOverlay track={dragHandleRef} isDisabled={!showButtons}>
+      <PortalOverlay track={dragHandleRef} isDisabled={!_showButtons}>
         {directions['block-start'] && (
           <DirectionButton
-            show={!isDisabled && showButtons}
+            show={!isDisabled && _showButtons}
             direction="block-start"
             state={directions['block-start']}
             onClick={() => onInternalDirectionClick('block-start')}
@@ -212,7 +215,7 @@ export default function DragHandleWrapper({
         )}
         {directions['block-end'] && (
           <DirectionButton
-            show={!isDisabled && showButtons}
+            show={!isDisabled && _showButtons}
             direction="block-end"
             state={directions['block-end']}
             onClick={() => onInternalDirectionClick('block-end')}
@@ -220,7 +223,7 @@ export default function DragHandleWrapper({
         )}
         {directions['inline-start'] && (
           <DirectionButton
-            show={!isDisabled && showButtons}
+            show={!isDisabled && _showButtons}
             direction="inline-start"
             state={directions['inline-start']}
             onClick={() => onInternalDirectionClick('inline-start')}
@@ -228,7 +231,7 @@ export default function DragHandleWrapper({
         )}
         {directions['inline-end'] && (
           <DirectionButton
-            show={!isDisabled && showButtons}
+            show={!isDisabled && _showButtons}
             direction="inline-end"
             state={directions['inline-end']}
             onClick={() => onInternalDirectionClick('inline-end')}

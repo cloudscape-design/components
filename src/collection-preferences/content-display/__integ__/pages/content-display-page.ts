@@ -6,7 +6,13 @@ import CollectionPreferencesPageObject from '../../../__integ__/pages/collection
 export default class ContentDisplayPageObject extends CollectionPreferencesPageObject {
   async containsOptionsInOrder(options: string[]) {
     const texts = await this.getElementsText(this.findOptions().toSelector());
-    return texts.join(`\n`).includes(options.join('\n'));
+    const result = texts.join(`\n`).includes(options.join('\n'));
+    if (!result) {
+      throw new Error(`Options are not in the expected order:
+        Expected: ${options.join(', ')}
+        Found: ${texts.join(', ')}`);
+    }
+    return true;
   }
 
   async expectAnnouncement(announcement: string) {
