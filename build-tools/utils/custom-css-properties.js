@@ -89,5 +89,9 @@ const customCssPropertiesList = [
   'styleFocusRingBorderRadius',
   'styleFocusRingBorderWidth',
   'styleFocusRingBoxShadow',
+  'styleBoxShadowActive',
+  'styleBoxShadowDefault',
+  'styleBoxShadowDisabled',
+  'styleBoxShadowHover',
 ];
 module.exports = customCssPropertiesList;

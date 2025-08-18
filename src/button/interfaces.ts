@@ -215,6 +215,7 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
    * - `root.borderColor` {active, default, disabled, hover} - (Optional) Border color for component states.
    * - `root.borderRadius` (string) - (Optional) Border radius style.
    * - `root.borderWidth` (string) - (Optional) Border width style.
+   * - `root.boxShadow` {active, default, disabled, hover} - (Optional) Box shadow for component states.
    * - `root.color` {active, default, disabled, hover} - (Optional) Color for component states.
    * - `root.focusRing.borderColor` (string) - (Optional) Focus ring border color.
    * - `root.focusRing.borderRadius` (string) - (Optional) Focus ring border radius.
@@ -265,6 +266,12 @@ export namespace ButtonProps {
       };
       borderRadius?: string;
       borderWidth?: string;
+      boxShadow?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
       color?: {
         active?: string;
         default?: string;
