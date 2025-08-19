@@ -269,6 +269,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     // The line height of the header text might not be respected in non-high pixel density screens
     // unless it is set to a smaller value in its parent container.
     line-height: awsui.$line-height-body-s;
+    &.with-description {
+      margin-block-end: awsui.$space-scaled-xxxs;
+    }
   }
 
   &-tag.with-info,
@@ -308,8 +311,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   &-description {
     color: awsui.$color-text-heading-secondary;
     @include styles.font-body-m;
-    margin-block-start: awsui.$space-scaled-xxxs;
-    margin-block-end: 0;
+    margin-block: 0;
   }
 }
 
