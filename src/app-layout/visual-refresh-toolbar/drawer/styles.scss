@@ -262,11 +262,9 @@ $drawer-resize-handle-size: awsui.$space-m;
       min-inline-size: auto;
       grid-column: 1 / span 1;
       border-start-end-radius: awsui.$space-xxs;
+      background-color: awsui.$color-background-layout-panel-content;
 
       > .drawer-content {
-        background-color: awsui.$color-background-layout-panel-content;
-        grid-row: 1 / span 3;
-
         > .drawer-content-header {
           block-size: 41px;
           position: sticky;
