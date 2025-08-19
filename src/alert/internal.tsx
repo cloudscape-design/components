@@ -38,7 +38,7 @@ const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
 };
 
 type InternalAlertProps = SomeRequired<AlertProps, 'type'> &
-  InternalBaseComponentProps<HTMLDivElement> & {
+  InternalBaseComponentProps & {
     messageSlotId?: string;
     style?: AlertProps['style'];
   };
@@ -59,7 +59,7 @@ const InternalAlert = React.forwardRef(
       action,
       onDismiss,
       onButtonClick,
-      __internalRootRef = null,
+      __internalRootRef,
       statusIconAriaLabel: deprecatedStatusIconAriaLabel,
       dismissAriaLabel: deprecatedDismissAriaLabel,
       messageSlotId,

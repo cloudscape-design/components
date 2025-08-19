@@ -28,13 +28,7 @@ type InternalTimeInputProps = TimeInputProps & InternalBaseComponentProps;
 
 const InternalTimeInput = React.forwardRef(
   (
-    {
-      format = 'hh:mm:ss',
-      use24Hour = true,
-      autoComplete = true,
-      __internalRootRef = null,
-      ...props
-    }: InternalTimeInputProps,
+    { format = 'hh:mm:ss', use24Hour = true, autoComplete = true, __internalRootRef, ...props }: InternalTimeInputProps,
     ref: Ref<HTMLInputElement>
   ) => {
     const inputRef = useRef<HTMLInputElement>(null);

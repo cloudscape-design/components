@@ -19,9 +19,7 @@
   border-end-start-radius: $border-radius;
   border-end-end-radius: $border-radius;
 
-  @include focus-visible.when-visible-unfocused {
-    @include styles.focus-highlight(0px, $border-radius);
-  }
+  @include styles.focus-highlight(0px, $border-radius);
 }
 
 .drag-overlay {
