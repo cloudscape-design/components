@@ -27,8 +27,8 @@ describe('ButtonGroup Style API', () => {
       ],
       style: {
         root: {
-          background: '#fff',
-          borderColor: '#000',
+          background: 'rgb(255, 255, 255)',
+          borderColor: 'rgb(0, 0, 0)',
           borderRadius: '8px',
           borderWidth: '2px',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
@@ -37,26 +37,26 @@ describe('ButtonGroup Style API', () => {
           paddingBlock: '12px',
           paddingInline: '16px',
           focusRing: {
-            borderColor: '#blue',
+            borderColor: 'rgb(0, 0, 255)',
             borderRadius: '4px',
             borderWidth: '3px',
           },
         },
         item: {
           color: {
-            active: '#red',
-            default: '#green',
-            disabled: '#gray',
-            hover: '#yellow',
+            active: 'rgb(255, 0, 0)',
+            default: 'rgb(0, 128, 0)',
+            disabled: 'rgb(128, 128, 128)',
+            hover: 'rgb(255, 255, 0)',
           },
           boxShadow: {
-            active: '0 0 0 2px #red',
+            active: '0 0 0 2px rgb(255, 0, 0)',
             default: '0 1px 2px rgba(0,0,0,0.1)',
             disabled: 'none',
             hover: '0 2px 4px rgba(0,0,0,0.2)',
           },
           focusRing: {
-            borderColor: '#orange',
+            borderColor: 'rgb(255, 165, 0)',
             borderRadius: '2px',
             borderWidth: '2px',
           },
@@ -64,8 +64,8 @@ describe('ButtonGroup Style API', () => {
       },
     });
 
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('background')).toBe('#fff');
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-color')).toBe('#000');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('background')).toBe('rgb(255, 255, 255)');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-color')).toBe('rgb(0, 0, 0)');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-radius')).toBe('8px');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-width')).toBe('2px');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('box-shadow')).toBe('0 2px 4px rgba(0,0,0,0.1)');
@@ -74,7 +74,7 @@ describe('ButtonGroup Style API', () => {
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('padding-block')).toBe('12px');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('padding-inline')).toBe('16px');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe(
-      '#blue'
+      'rgb(0, 0, 255)'
     );
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe(
       '4px'
@@ -84,12 +84,16 @@ describe('ButtonGroup Style API', () => {
     );
 
     const itemElement = wrapper.findButtonById('test-button')!.getElement().parentElement!;
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorActive)).toBe('#red');
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorDefault)).toBe('#green');
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorDisabled)).toBe('#gray');
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorHover)).toBe('#yellow');
+    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorActive)).toBe('rgb(255, 0, 0)');
+    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorDefault)).toBe('rgb(0, 128, 0)');
+    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorDisabled)).toBe(
+      'rgb(128, 128, 128)'
+    );
+    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorHover)).toBe('rgb(255, 255, 0)');
 
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBoxShadowActive)).toBe('0 0 0 2px #red');
+    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBoxShadowActive)).toBe(
+      '0 0 0 2px rgb(255, 0, 0)'
+    );
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBoxShadowDefault)).toBe(
       '0 1px 2px rgba(0,0,0,0.1)'
     );
@@ -98,7 +102,9 @@ describe('ButtonGroup Style API', () => {
       '0 2px 4px rgba(0,0,0,0.2)'
     );
 
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('#orange');
+    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe(
+      'rgb(255, 165, 0)'
+    );
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('2px');
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('2px');
   });
