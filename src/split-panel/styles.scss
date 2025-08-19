@@ -304,8 +304,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 
   &-actions-slot {
     display: flex;
-    min-block-size: calc(#{awsui.$font-panel-header-line-height} + 2 * #{$vertical-margin});
+    flex-shrink: 0;
     align-items: center;
+    min-block-size: calc(#{awsui.$font-panel-header-line-height} + 2 * #{$vertical-margin});
   }
 
   &-description {
