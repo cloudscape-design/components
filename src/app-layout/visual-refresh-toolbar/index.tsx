@@ -12,6 +12,7 @@ import { SkeletonLayout } from './skeleton';
 import { SkeletonSlotsAttributes } from './skeleton/interfaces';
 import { DeduplicationType, useMultiAppLayout } from './skeleton/multi-layout';
 import { StateManager } from './state';
+import { SharedProps } from './state/interfaces';
 import { getPropsToMerge, mergeProps } from './state/props-merger';
 import { ToolbarProps } from './toolbar';
 
@@ -30,12 +31,12 @@ const AppLayoutStateProvider: React.FC<{
   const [skeletonAttributes, setSkeletonAttributes] = useState<SkeletonSlotsAttributes>({});
   // use { fn: } object wrapper to avoid confusion with callback form of setState
   const [deduplicator, setDeduplicator] = useState({ fn: mergeProps });
-  const [deduplicationProps, setDeduplicationProps] = useState(() => getPropsToMerge(appLayoutProps, appLayoutState));
+  const [deduplicationProps, setDeduplicationProps] = useState<SharedProps | undefined>(undefined);
 
   const { registered, toolbarProps } = useMultiAppLayout(
     forceDeduplicationType,
     appLayoutState.isIntersecting,
-    deduplicationProps,
+    deduplicationProps ?? getPropsToMerge(appLayoutProps, appLayoutState),
     deduplicator.fn
   );
 
