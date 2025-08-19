@@ -3,20 +3,38 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import OptionWrapper from '../internal/option';
+import PopoverWrapper from '../popover';
 
 import selectors from '../../../token/styles.selectors.js';
 
+function findOption(wrapper: TokenWrapper): OptionWrapper {
+  return wrapper.findComponent(`.${OptionWrapper.rootSelector}`, OptionWrapper)!;
+}
+
 export default class TokenWrapper extends ComponentWrapper {
   static rootSelector: string = selectors.token;
-  findOption(): OptionWrapper {
-    return this.findComponent(`.${OptionWrapper.rootSelector}`, OptionWrapper)!;
+
+  findLabel(): ElementWrapper | null {
+    return findOption(this).findLabel();
   }
 
-  findLabel(): ElementWrapper {
-    return this.findOption().findLabel();
+  findLabelTag(): ElementWrapper | null {
+    return findOption(this).findLabelTag();
   }
 
-  findDismiss(): ElementWrapper {
+  findDescription(): ElementWrapper | null {
+    return findOption(this).findDescription();
+  }
+
+  findTags(): ElementWrapper[] | null {
+    return findOption(this).findTags();
+  }
+
+  findDismiss(): ElementWrapper | null {
     return this.findByClassName(selectors['action-button'])!;
+  }
+
+  findPopover(): PopoverWrapper | null {
+    return this.findComponent(`.${PopoverWrapper.rootSelector}`, PopoverWrapper);
   }
 }

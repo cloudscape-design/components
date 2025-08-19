@@ -97444,6 +97444,29 @@ Note: This function returns the specified component's wrapper even if the specif
           },
         },
         {
+          "name": "findPopover",
+          "parameters": [],
+          "returnType": {
+            "name": "PopoverWrapper",
+            "type": "reference",
+            "typeArguments": [],
+          },
+        },
+        {
+          "name": "findTags",
+          "parameters": [],
+          "returnType": {
+            "name": "MultiElementWrapper",
+            "type": "reference",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+                "type": "reference",
+              },
+            ],
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "AbstractWrapper.getElement",
           },
