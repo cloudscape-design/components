@@ -9,17 +9,13 @@ export function getCollapsibleFlashStyles(style: FlashbarProps['style'], type: s
   if (SYSTEM !== 'core' || !style) {
     return undefined;
   }
+  const styleKey = getStylePropertyKey(type as FlashbarProps.Type);
   const background =
-    style?.item?.root?.background &&
-    style?.item?.root?.background[
-      getStylePropertyKey(type as FlashbarProps.Type) as keyof typeof style.item.root.background
-    ];
+    style?.item?.root?.background && style?.item?.root?.background[styleKey as keyof typeof style.item.root.background];
 
   const borderColor =
     style?.item?.root?.borderColor &&
-    style?.item?.root?.borderColor[
-      getStylePropertyKey(type as FlashbarProps.Type) as keyof typeof style.item.root.borderColor
-    ];
+    style?.item?.root?.borderColor[styleKey as keyof typeof style.item.root.borderColor];
 
   const borderRadius = style?.item?.root?.borderRadius;
 
@@ -27,9 +23,7 @@ export function getCollapsibleFlashStyles(style: FlashbarProps['style'], type: s
 
   const borderStyle = style?.item?.root?.borderWidth && 'solid';
 
-  const color =
-    style?.item?.root?.color &&
-    style?.item?.root?.color[getStylePropertyKey(type as FlashbarProps.Type) as keyof typeof style.item.root.color];
+  const color = style?.item?.root?.color && style?.item?.root?.color[styleKey as keyof typeof style.item.root.color];
 
   return {
     background,
@@ -68,28 +62,23 @@ export function getDismissButtonStyles(style: FlashbarProps['style'], type: stri
   if (SYSTEM !== 'core' || !style) {
     return undefined;
   }
+  const styleKey = getStylePropertyKey(type as FlashbarProps.Type);
   const activeColor =
     style?.item?.dismissButton?.color?.active &&
-    style.item.dismissButton.color.active[
-      getStylePropertyKey(type as FlashbarProps.Type) as keyof typeof style.item.dismissButton.color.active
-    ];
+    style.item.dismissButton.color.active[styleKey as keyof typeof style.item.dismissButton.color.active];
 
   const defaultColor =
     style?.item?.dismissButton?.color?.default &&
-    style.item.dismissButton.color.default[
-      getStylePropertyKey(type as FlashbarProps.Type) as keyof typeof style.item.dismissButton.color.default
-    ];
+    style.item.dismissButton.color.default[styleKey as keyof typeof style.item.dismissButton.color.default];
 
   const hoverColor =
     style?.item?.dismissButton?.color?.hover &&
-    style.item.dismissButton.color.hover[
-      getStylePropertyKey(type as FlashbarProps.Type) as keyof typeof style.item.dismissButton.color.hover
-    ];
+    style.item.dismissButton.color.hover[styleKey as keyof typeof style.item.dismissButton.color.hover];
 
   const focusRingBorderColor =
     style?.item?.dismissButton?.focusRing?.borderColor &&
     style.item.dismissButton.focusRing.borderColor[
-      getStylePropertyKey(type as FlashbarProps.Type) as keyof typeof style.item.dismissButton.focusRing.borderColor
+      styleKey as keyof typeof style.item.dismissButton.focusRing.borderColor
     ];
 
   return {
