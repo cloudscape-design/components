@@ -4,7 +4,8 @@ import React from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import { Box } from '~components';
-import ButtonGroup from '~components/button-group';
+import Button from '~components/button';
+import ButtonDropdown from '~components/button-dropdown';
 import awsuiPlugins from '~components/internal/plugins';
 
 const AIDrawer = () => {
@@ -69,35 +70,10 @@ awsuiPlugins.appLayout.registerDrawer({
     ReactDOM.render(
       <div style={{ inlineSize: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>logo</div>
-        <ButtonGroup
-          variant="icon"
-          ariaLabel="Chat actions"
-          items={[
-            {
-              type: 'menu-dropdown',
-              id: 'more-actions',
-              text: 'More actions',
-              items: [
-                {
-                  id: 'add',
-                  iconName: 'add-plus',
-                  text: 'Add',
-                },
-                {
-                  id: 'remove',
-                  iconName: 'remove',
-                  text: 'Remove',
-                },
-              ],
-            },
-            {
-              type: 'icon-button',
-              id: 'add',
-              iconName: 'add-plus',
-              text: 'Add',
-            },
-          ]}
-        />
+        <div>
+          <ButtonDropdown items={[{ id: 'settings', text: 'Settings' }]} ariaLabel="Control drawer" variant="icon" />
+          <Button iconName="add-plus" variant="icon" />
+        </div>
       </div>,
       container
     );
