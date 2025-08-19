@@ -66,7 +66,7 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
           )}
           style={{
             insetBlockStart: `${placement.insetBlockStart}px`,
-            blockSize: `calc(100vh - ${placement.insetBlockStart}px)`,
+            blockSize: `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
           }}
         >
           <ActiveDrawersContext.Provider value={activeAiDrawer ? [activeAiDrawer.id] : []}>
