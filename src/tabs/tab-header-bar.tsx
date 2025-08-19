@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
@@ -23,6 +24,7 @@ import { usePrevious } from '../internal/hooks/use-previous';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
+import { isHTMLElement } from '../internal/utils/dom';
 import handleKey from '../internal/utils/handle-key';
 import {
   GeneratedAnalyticsMetadataTabsComponent,
@@ -104,8 +106,10 @@ export function TabHeaderBar({
   const isVisualRefresh = useVisualRefresh();
 
   const containerObjectRef = useRef<HTMLDivElement>(null);
+  const documentRef = useRef<null | Document>(typeof document !== 'undefined' ? document : null);
+  const documentRefCallback = (node: null | Element) => (documentRef.current = node?.ownerDocument ?? document);
   const [widthChange, containerMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
-  const containerRef = useMergeRefs(containerObjectRef, containerMeasureRef);
+  const containerRef = useMergeRefs(containerObjectRef, containerMeasureRef, documentRefCallback);
   const tabRefs = useRef<Map<string, HTMLElement>>(new Map());
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
   const [inlineStartOverflow, setInlineStartOverflow] = useState(false);
@@ -176,8 +180,8 @@ export function TabHeaderBar({
      When the selected tab changes and we are currently already focused on a tab,
      move the focus to the newly selected tab.
     */
-    if (headerBarRef.current?.contains(document.activeElement)) {
-      if (document.activeElement !== activeTabHeaderRef.current) {
+    if (documentRef.current && headerBarRef.current?.contains(documentRef.current.activeElement)) {
+      if (documentRef.current.activeElement !== activeTabHeaderRef.current) {
         activeTabHeaderRef.current?.focus({ preventScroll: true });
       }
     }
@@ -237,7 +241,7 @@ export function TabHeaderBar({
   }
 
   function onKeyDown(event: React.KeyboardEvent) {
-    const focusTarget = document.activeElement;
+    const focusTarget = documentRef.current?.activeElement;
     const specialKeys = [
       KeyCode.right,
       KeyCode.left,
@@ -247,7 +251,7 @@ export function TabHeaderBar({
       KeyCode.pageDown,
       KeyCode.space,
     ];
-    const isActionOpen = document.querySelector(`.${styles['tabs-tab-action']} [aria-expanded="true"]`);
+    const isActionOpen = documentRef.current?.querySelector(`.${styles['tabs-tab-action']} [aria-expanded="true"]`);
     const isDismissOrActionFocused = !focusTarget?.classList.contains(styles['tabs-tab-link']);
 
     if (isActionOpen) {
@@ -256,7 +260,7 @@ export function TabHeaderBar({
     if (event.key === 'Tab' && !event.shiftKey && isDismissOrActionFocused) {
       event.preventDefault();
       const panelId = `${idNamespace}-${activeTabId}-panel`;
-      const panel = document.getElementById(panelId);
+      const panel = documentRef.current?.getElementById(panelId);
       panel?.focus();
     }
     if (hasModifierKeys(event) || specialKeys.indexOf(event.keyCode) === -1) {
@@ -265,10 +269,12 @@ export function TabHeaderBar({
     if (!containerObjectRef.current || !focusTarget) {
       return;
     }
+
     event.preventDefault();
 
     const focusables = getFocusablesFrom(containerObjectRef.current);
-    const activeIndex = document.activeElement instanceof HTMLElement ? focusables.indexOf(document.activeElement) : -1;
+    const activeIndex = isHTMLElement(focusTarget) ? focusables.indexOf(focusTarget) : -1;
+
     handleKey(event as any, {
       onHome: () => focusElement(focusables[0]),
       onEnd: () => focusElement(focusables[focusables.length - 1]),
@@ -391,7 +397,7 @@ export function TabHeaderBar({
       if (!tab.href) {
         const clickedTabRef = tabRefs.current.get(tab.id) as undefined | HTMLButtonElement;
         if (clickedTabRef) {
-          if (clickedTabRef && clickedTabRef !== document.activeElement) {
+          if (clickedTabRef && clickedTabRef !== documentRef.current?.activeElement) {
             clickedTabRef.focus({ preventScroll: true });
           }
         }
