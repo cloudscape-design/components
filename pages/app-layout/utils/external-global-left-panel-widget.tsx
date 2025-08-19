@@ -74,12 +74,6 @@ awsuiPlugins.appLayout.registerDrawer({
           ariaLabel="Chat actions"
           items={[
             {
-              type: 'icon-button',
-              id: 'add',
-              iconName: 'add-plus',
-              text: 'Add',
-            },
-            {
               type: 'menu-dropdown',
               id: 'more-actions',
               text: 'More actions',
@@ -95,6 +89,12 @@ awsuiPlugins.appLayout.registerDrawer({
                   text: 'Remove',
                 },
               ],
+            },
+            {
+              type: 'icon-button',
+              id: 'add',
+              iconName: 'add-plus',
+              text: 'Add',
             },
           ]}
         />
