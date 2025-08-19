@@ -68,6 +68,7 @@ export const SkeletonLayout = ({
         className={wrapperElAttributes?.className ?? clsx(styles.root, testutilStyles.root)}
         style={
           wrapperElAttributes?.style ?? {
+            blockSize: `calc(100vh - ${appLayoutProps.placement.insetBlockStart + appLayoutProps.placement.insetBlockEnd}px)`,
             [customCssProps.navigationWidth]: `${navigationWidth}px`,
           }
         }
