@@ -30,7 +30,7 @@ awsuiPlugins.appLayout.registerDrawer({
 
   ariaLabels: {
     closeButton: 'Close button',
-    content: 'Content',
+    content: 'Amazon Q',
     triggerButton: 'Trigger button for ai drawer',
     resizeHandle: 'Resize handle',
     exitExpandedModeButton: 'Service Console',
