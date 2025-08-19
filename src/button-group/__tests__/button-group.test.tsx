@@ -83,7 +83,7 @@ describe('ButtonGroup Style API', () => {
       '3px'
     );
 
-    const itemElement = wrapper.findButtonById('test-button')!.getElement().parentElement!;
+    const itemElement = wrapper.findButtonById('test-button')!.getElement().parentElement!.parentElement!;
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorActive)).toBe('rgb(255, 0, 0)');
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorDefault)).toBe('rgb(0, 128, 0)');
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorDisabled)).toBe(
