@@ -160,6 +160,7 @@ export function AppLayoutToolbarImplementation({
               variant={aiDrawer.trigger?.customIcon ? 'custom' : 'circle'}
               hasTooltip={true}
               testId={`awsui-app-layout-trigger-${aiDrawer.id}`}
+              isForPreviousActiveDrawer={true}
             />
           </div>
         )}
