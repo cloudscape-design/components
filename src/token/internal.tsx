@@ -58,17 +58,26 @@ function InternalToken({
   const [showTooltip, setShowTooltip] = useState(false);
   const isInline = variant === 'inline';
 
-  const optionDefinition: OptionDefinition = {
-    label,
-    labelTag,
-    description,
-    disabled,
-    iconAlt,
-    iconName,
-    iconUrl,
-    iconSvg,
-    tags,
-  };
+  const optionDefinition: OptionDefinition = isInline
+    ? {
+        label,
+        disabled,
+        iconAlt,
+        iconName,
+        iconUrl,
+        iconSvg,
+      }
+    : {
+        label,
+        labelTag,
+        description,
+        disabled,
+        iconAlt,
+        iconName,
+        iconUrl,
+        iconSvg,
+        tags,
+      };
 
   const getTokenContent = () => {
     const mainContent = children ?? (
