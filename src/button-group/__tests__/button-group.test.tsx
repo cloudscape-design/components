@@ -31,6 +31,7 @@ describe('ButtonGroup Style API', () => {
           borderColor: '#000',
           borderRadius: '8px',
           borderWidth: '2px',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
           gap: '16px',
           flexDirection: 'column',
           paddingBlock: '12px',
@@ -42,50 +43,36 @@ describe('ButtonGroup Style API', () => {
           },
         },
         item: {
-          background: {
-            active: '#red',
-            default: '#green',
-            disabled: '#gray',
-            hover: '#yellow',
-            pressed: '#purple',
-          },
-          borderColor: {
-            active: '#red',
-            default: '#green',
-            disabled: '#gray',
-            hover: '#yellow',
-            pressed: '#purple',
-          },
           color: {
             active: '#red',
             default: '#green',
             disabled: '#gray',
             hover: '#yellow',
-            pressed: '#purple',
           },
-          borderRadius: '4px',
-          borderWidth: '1px',
+          boxShadow: {
+            active: '0 0 0 2px #red',
+            default: '0 1px 2px rgba(0,0,0,0.1)',
+            disabled: 'none',
+            hover: '0 2px 4px rgba(0,0,0,0.2)',
+          },
           focusRing: {
             borderColor: '#orange',
             borderRadius: '2px',
             borderWidth: '2px',
           },
-          paddingBlock: '8px',
-          paddingInline: '12px',
         },
       },
     });
 
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBackgroundDefault)).toBe('#fff');
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBorderColorDefault)).toBe(
-      '#000'
-    );
-    expect(getComputedStyle(wrapper.getElement()).borderRadius).toBe('8px');
-    expect(getComputedStyle(wrapper.getElement()).borderWidth).toBe('2px');
-    expect(getComputedStyle(wrapper.getElement()).gap).toBe('16px');
-    expect(getComputedStyle(wrapper.getElement()).flexDirection).toBe('column');
-    expect(getComputedStyle(wrapper.getElement()).paddingBlock).toBe('12px');
-    expect(getComputedStyle(wrapper.getElement()).paddingInline).toBe('16px');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('background')).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-color')).toBe('#000');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-radius')).toBe('8px');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-width')).toBe('2px');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('box-shadow')).toBe('0 2px 4px rgba(0,0,0,0.1)');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('gap')).toBe('16px');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('flex-direction')).toBe('column');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('padding-block')).toBe('12px');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('padding-inline')).toBe('16px');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe(
       '#blue'
     );
@@ -97,31 +84,22 @@ describe('ButtonGroup Style API', () => {
     );
 
     const itemElement = wrapper.findButtonById('test-button')!.getElement().parentElement!;
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBackgroundActive)).toBe('#red');
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBackgroundDefault)).toBe('#green');
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBackgroundDisabled)).toBe('#gray');
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBackgroundHover)).toBe('#yellow');
-    expect(getComputedStyle(itemElement).getPropertyValue('--awsui-button-group-item-background-pressed')).toBe(
-      '#purple'
-    );
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBorderColorActive)).toBe('#red');
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBorderColorDefault)).toBe('#green');
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBorderColorDisabled)).toBe('#gray');
-    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBorderColorHover)).toBe('#yellow');
-    expect(getComputedStyle(itemElement).getPropertyValue('--awsui-button-group-item-border-color-pressed')).toBe(
-      '#purple'
-    );
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorActive)).toBe('#red');
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorDefault)).toBe('#green');
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorDisabled)).toBe('#gray');
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleColorHover)).toBe('#yellow');
-    expect(getComputedStyle(itemElement).getPropertyValue('--awsui-button-group-item-color-pressed')).toBe('#purple');
-    expect(getComputedStyle(itemElement).borderRadius).toBe('4px');
-    expect(getComputedStyle(itemElement).borderWidth).toBe('1px');
+
+    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBoxShadowActive)).toBe('0 0 0 2px #red');
+    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBoxShadowDefault)).toBe(
+      '0 1px 2px rgba(0,0,0,0.1)'
+    );
+    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBoxShadowDisabled)).toBe('none');
+    expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleBoxShadowHover)).toBe(
+      '0 2px 4px rgba(0,0,0,0.2)'
+    );
+
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('#orange');
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('2px');
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('2px');
-    expect(getComputedStyle(itemElement).paddingBlock).toBe('8px');
-    expect(getComputedStyle(itemElement).paddingInline).toBe('12px');
   });
 });
