@@ -260,9 +260,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     // Keep the actions slot always at the block start,
     // even if the heading and the info slot wrap into multiple lines.
     align-items: flex-start;
-    &.with-description {
-      margin-block-end: awsui.$space-scaled-xxxs;
-    }
   }
 
   // Header tag and info link
@@ -272,6 +269,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     // The line height of the header text might not be respected in non-high pixel density screens
     // unless it is set to a smaller value in its parent container.
     line-height: awsui.$line-height-body-s;
+    &.with-description {
+      margin-block-end: awsui.$space-scaled-xxxs;
+    }
   }
 
   &-tag.with-info,
