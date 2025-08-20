@@ -19,36 +19,74 @@ describe('Split panel: Header slots', () => {
   });
 
   describeEachAppLayout({ sizes: ['desktop', 'mobile'] }, () => {
-    test('renders headerActions', () => {
-      const { wrapper } = renderSplitPanel({
-        props: { headerActions: <button>Action</button> },
+    describe('with the panel open', () => {
+      test('renders headerBefore', () => {
+        const { wrapper } = renderSplitPanel({
+          props: { headerBefore: <span>Before</span> },
+        });
+        expect(wrapper!.findHeaderBefore()).not.toBeNull();
+        expect(wrapper!.findHeaderBefore()!.getElement()).toHaveTextContent('Before');
       });
-      expect(wrapper!.findHeaderActions()).not.toBeNull();
-      expect(wrapper!.findHeaderActions()!.getElement()).toHaveTextContent('Action');
+
+      test('renders headerInfo', () => {
+        const { wrapper } = renderSplitPanel({
+          props: { headerInfo: <span>Info</span> },
+        });
+        expect(wrapper!.findHeaderInfo()).not.toBeNull();
+        expect(wrapper!.findHeaderInfo()!.getElement()).toHaveTextContent('Info');
+      });
+
+      test('renders headerActions', () => {
+        const { wrapper } = renderSplitPanel({
+          props: { headerActions: <button>Action</button> },
+        });
+        expect(wrapper!.findHeaderActions()).not.toBeNull();
+        expect(wrapper!.findHeaderActions()!.getElement()).toHaveTextContent('Action');
+      });
+
+      test('renders headerDescription', () => {
+        const { wrapper } = renderSplitPanel({
+          props: { headerDescription: 'Header description' },
+        });
+        expect(wrapper!.findHeaderDescription()).not.toBeNull();
+        expect(wrapper!.findHeaderDescription()!.getElement()).toHaveTextContent('Header description');
+      });
     });
 
-    test('renders headerBefore', () => {
-      const { wrapper } = renderSplitPanel({
-        props: { headerBefore: <span>Before</span> },
+    describe('with the panel closed', () => {
+      test('renders headerBefore', () => {
+        const { wrapper } = renderSplitPanel({
+          props: { headerBefore: <span>Before</span> },
+          contextProps: { isOpen: false },
+        });
+        expect(wrapper!.findHeaderBefore()).not.toBeNull();
+        expect(wrapper!.findHeaderBefore()!.getElement()).toHaveTextContent('Before');
       });
-      expect(wrapper!.findHeaderBefore()).not.toBeNull();
-      expect(wrapper!.findHeaderBefore()!.getElement()).toHaveTextContent('Before');
-    });
 
-    test('renders headerDescription', () => {
-      const { wrapper } = renderSplitPanel({
-        props: { headerDescription: 'Header description' },
+      test('renders headerInfo', () => {
+        const { wrapper } = renderSplitPanel({
+          props: { headerInfo: <span>Info</span> },
+          contextProps: { isOpen: false },
+        });
+        expect(wrapper!.findHeaderInfo()).not.toBeNull();
+        expect(wrapper!.findHeaderInfo()!.getElement()).toHaveTextContent('Info');
       });
-      expect(wrapper!.findHeaderDescription()).not.toBeNull();
-      expect(wrapper!.findHeaderDescription()!.getElement()).toHaveTextContent('Header description');
-    });
 
-    test('renders headerInfo', () => {
-      const { wrapper } = renderSplitPanel({
-        props: { headerInfo: <span>Info</span> },
+      test('does not render headerActions', () => {
+        const { wrapper } = renderSplitPanel({
+          props: { headerActions: <button>Action</button> },
+          contextProps: { isOpen: false },
+        });
+        expect(wrapper!.findHeaderActions()).toBeNull();
       });
-      expect(wrapper!.findHeaderInfo()).not.toBeNull();
-      expect(wrapper!.findHeaderInfo()!.getElement()).toHaveTextContent('Info');
+
+      test('does not render headerDescription', () => {
+        const { wrapper } = renderSplitPanel({
+          props: { headerDescription: 'Header description' },
+          contextProps: { isOpen: false },
+        });
+        expect(wrapper!.findHeaderDescription()).toBeNull();
+      });
     });
 
     test('does not render header properties when not provided', () => {

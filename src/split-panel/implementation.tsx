@@ -100,9 +100,9 @@ export function SplitPanelImplementation({
   const panelHeaderUniqueId = useUniqueId('split-panel-header');
   const panelHeaderId = ariaLabel ? undefined : panelHeaderUniqueId;
 
-  const hasCustomElements = !!headerActions || !!headerBefore || !!headerInfo;
-
+  const showActions = headerActions && isOpen;
   const showDescription = headerDescription && isOpen;
+  const hasCustomElements = !!headerActions || !!headerBefore || !!headerInfo;
 
   const wrappedHeader = (
     <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
@@ -127,7 +127,7 @@ export function SplitPanelImplementation({
               <span className={clsx(styles['header-info-slot'], testUtilStyles['header-info'])}>{headerInfo}</span>
             )}
           </div>
-          {headerActions && (
+          {showActions && (
             <div className={clsx(styles['header-actions-slot'], testUtilStyles['header-actions'])}>{headerActions}</div>
           )}
         </div>
