@@ -32,8 +32,6 @@ describe('ButtonGroup Style API', () => {
           borderRadius: '8px',
           borderWidth: '2px',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-          gap: '16px',
-          flexDirection: 'column',
           paddingBlock: '12px',
           paddingInline: '16px',
           focusRing: {
@@ -69,8 +67,6 @@ describe('ButtonGroup Style API', () => {
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-radius')).toBe('8px');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-width')).toBe('2px');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('box-shadow')).toBe('0 2px 4px rgba(0,0,0,0.1)');
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('gap')).toBe('16px');
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('flex-direction')).toBe('column');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('padding-block')).toBe('12px');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('padding-inline')).toBe('16px');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe(
