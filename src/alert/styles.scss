@@ -37,9 +37,9 @@
   padding-inline: awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;
 
-  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+  #{custom-props.$alertFocusRingBoxShadow}: 0 0 0
+    var(#{custom-props.$alertFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    var(#{custom-props.$alertFocusRingBorderColor}, awsui.$color-border-item-focused);
 }
 
 .alert-wrapper {
@@ -85,8 +85,8 @@
   @include focus-visible.when-visible {
     @include styles.focus-highlight(
       $gutter: awsui.$space-button-focus-outline-gutter,
-      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
-      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+      $border-radius: var(#{custom-props.$alertFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $box-shadow: var(#{custom-props.$alertFocusRingBoxShadow})
     );
   }
 }
