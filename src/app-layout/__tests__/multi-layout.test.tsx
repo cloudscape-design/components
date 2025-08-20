@@ -6,6 +6,7 @@ import { act, cleanup, render, waitFor } from '@testing-library/react';
 import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import { metrics } from '../../../lib/components/internal/metrics';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
@@ -52,6 +53,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(state).toEqual({
       registrations: [],
     });
+    jest.resetAllMocks();
   });
 
   test('merges navigation from two instances', async () => {
@@ -376,6 +378,102 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 
       firstLayout.findToolsToggle().click();
       expect(firstLayout.findOpenToolsPanel()).toBeTruthy();
+    });
+  });
+
+  describe('metrics', () => {
+    let sendPanoramaMetricSpy: jest.SpyInstance;
+    beforeEach(() => {
+      sendPanoramaMetricSpy = jest.spyOn(metrics, 'sendOpsMetricObject').mockImplementation(() => {});
+    });
+
+    test('reports no metrics when a single app layout used', async () => {
+      render(<AppLayout {...defaultAppLayoutProps} data-testid="first" content={<div>nothing</div>} />);
+      await delay();
+      expect(sendPanoramaMetricSpy).toHaveBeenCalledTimes(0);
+    });
+
+    test('reports the metric if multiple layouts used', async () => {
+      await renderAsync(
+        <AppLayout
+          {...defaultAppLayoutProps}
+          data-testid="first"
+          content={<AppLayout {...defaultAppLayoutProps} data-testid="second" drawers={[testDrawer]} />}
+        />
+      );
+      expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-multi-layout-usage-primary', { instancesCount: 1 });
+    });
+
+    test('reports the metric if the second layout added asynchronously', async () => {
+      function ConditionalLayout() {
+        const [rendered, setRendered] = useState(false);
+
+        return (
+          <>
+            <button data-testid="toggle-second" onClick={() => setRendered(!rendered)}>
+              Toggle second layout
+            </button>
+            {rendered && <AppLayout {...defaultAppLayoutProps} data-testid="second" />}
+          </>
+        );
+      }
+      render(<AppLayout {...defaultAppLayoutProps} data-testid="first" content={<ConditionalLayout />} />);
+      await delay();
+      expect(sendPanoramaMetricSpy).toHaveBeenCalledTimes(0);
+      createWrapper().find('[data-testid="toggle-second"]')!.click();
+      await waitFor(() => {
+        expect(sendPanoramaMetricSpy).toHaveBeenCalledTimes(1);
+        expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-multi-layout-usage-primary', { instancesCount: 1 });
+      });
+    });
+
+    test('supports multiple nested instances', async () => {
+      await renderAsync(
+        <AppLayout
+          {...defaultAppLayoutProps}
+          data-testid="first"
+          content={
+            <AppLayout
+              {...defaultAppLayoutProps}
+              data-testid="second"
+              content={<AppLayout {...defaultAppLayoutProps} data-testid="third" />}
+            />
+          }
+        />
+      );
+      expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-multi-layout-usage-primary', { instancesCount: 2 });
+    });
+
+    test('reports suspended state', async () => {
+      function SuspendedLayoutDemo() {
+        const [suspended, setSuspended] = useState(false);
+        return (
+          <AppLayout
+            {...defaultAppLayoutProps}
+            data-testid="first"
+            content={
+              <>
+                <button data-testid="toggle-suspended" onClick={() => setSuspended(!suspended)}>
+                  Toggle
+                </button>
+                <AppLayout
+                  {...defaultAppLayoutProps}
+                  {...{ __forceDeduplicationType: suspended ? 'suspended' : undefined }}
+                  data-testid="second"
+                />
+              </>
+            }
+          />
+        );
+      }
+      await renderAsync(<SuspendedLayoutDemo />);
+      expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-multi-layout-usage-primary', { instancesCount: 1 });
+      expect(sendPanoramaMetricSpy).not.toHaveBeenCalledWith('awsui-multi-layout-usage-suspended', {});
+
+      createWrapper().find('[data-testid="toggle-suspended"]')!.click();
+      await waitFor(() => {
+        expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-multi-layout-usage-suspended', {});
+      });
     });
   });
 });

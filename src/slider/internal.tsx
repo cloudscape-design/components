@@ -43,7 +43,7 @@ export default function InternalSlider({
   hideFillLine,
   valueFormatter,
   i18nStrings,
-  __internalRootRef = null,
+  __internalRootRef,
   ...rest
 }: InternalSliderProps) {
   const baseProps = getBaseProps(rest);

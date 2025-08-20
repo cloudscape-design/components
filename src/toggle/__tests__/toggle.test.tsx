@@ -8,6 +8,7 @@ import FormField from '../../../lib/components/form-field';
 import createWrapper, { ToggleWrapper } from '../../../lib/components/test-utils/dom';
 import Toggle, { ToggleProps } from '../../../lib/components/toggle';
 import { createCommonTests } from '../../checkbox/__tests__/common-tests';
+import customCssProps from '../../internal/generated/custom-css-properties';
 
 import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
 import styles from '../../../lib/components/toggle/styles.selectors.js';
@@ -193,4 +194,41 @@ test('Should set aria-describedby and aria-labelledby from ariaLabelledby and ar
 
   expect(toggleInputAriaDescribedby).toBe('description-id' + ' ' + toggleDescriptionId);
   expect(toggleInputAriaLabelledby).toBe(toggleLabelId + ' ' + 'label-id');
+});
+
+test('all style api properties', () => {
+  const { wrapper } = renderToggle(
+    <Toggle
+      checked={true}
+      style={{
+        input: {
+          background: { checked: 'green' },
+          handle: {
+            background: { checked: 'blue' },
+          },
+          focusRing: {
+            borderColor: 'magenta',
+            borderRadius: '10px',
+            borderWidth: '5px',
+          },
+        },
+        label: {
+          color: { checked: 'orange' },
+        },
+      }}
+    >
+      Toggle
+    </Toggle>
+  );
+
+  const toggleControl = wrapper.findByClassName(styles['toggle-control'])!.getElement();
+  const toggleHandle = wrapper.findByClassName(styles['toggle-handle'])!.getElement();
+  const toggleLabel = wrapper.findByClassName(abstractSwitchStyles.label)!.getElement();
+
+  expect(getComputedStyle(toggleControl).getPropertyValue('background-color')).toBe('green');
+  expect(getComputedStyle(toggleControl).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('magenta');
+  expect(getComputedStyle(toggleControl).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('10px');
+  expect(getComputedStyle(toggleControl).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('5px');
+  expect(getComputedStyle(toggleHandle).getPropertyValue('background-color')).toBe('blue');
+  expect(getComputedStyle(toggleLabel).getPropertyValue('color')).toBe('orange');
 });

@@ -98,7 +98,7 @@ const renderVisualRefreshToolbarTriggerButton = (
   return { wrapper, rerender, getByTestId, getByText, container };
 };
 
-describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () => {
+describe('Visual refresh trigger-button (not in appLayoutToolbar toolbar)', () => {
   beforeEach(() => jest.clearAllMocks());
 
   describe.each([true, false])('Toolbar trigger-button with isMobile=%s', isMobile => {

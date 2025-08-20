@@ -51,7 +51,7 @@ function InternalPopover(
     renderWithPortal = false,
 
     __onOpen,
-    __internalRootRef = null,
+    __internalRootRef,
     __closeAnalyticsAction,
 
     ...restProps

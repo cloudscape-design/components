@@ -30,6 +30,22 @@ export default class SplitPanelWrapper extends ComponentWrapper {
     return this.findByClassName(testUtilStyles.slider);
   }
 
+  findHeaderActions(): ElementWrapper | null {
+    return this.findByClassName(testUtilStyles['header-actions']);
+  }
+
+  findHeaderBefore(): ElementWrapper | null {
+    return this.findByClassName(testUtilStyles['header-before']);
+  }
+
+  findHeaderDescription(): ElementWrapper | null {
+    return this.findByClassName(testUtilStyles['header-description']);
+  }
+
+  findHeaderInfo(): ElementWrapper | null {
+    return this.findByClassName(testUtilStyles['header-info']);
+  }
+
   /**
    * Returns the same panel if it's currently open in bottom position. If not, it returns null.
    * Use this method to assert the panel position.

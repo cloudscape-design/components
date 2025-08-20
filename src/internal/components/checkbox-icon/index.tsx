@@ -13,6 +13,15 @@ interface CheckboxIconProps extends BaseComponentProps {
   indeterminate?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
+  style?: {
+    box?: {
+      fill?: string;
+      stroke?: string;
+    };
+    line?: {
+      stroke?: string;
+    };
+  };
 }
 interface Dimension {
   viewBox: string;
@@ -48,11 +57,13 @@ const CheckboxIcon = ({
   indeterminate,
   disabled = false,
   readOnly = false,
+  style,
   ...restProps
 }: CheckboxIconProps) => {
   const baseProps = getBaseProps(restProps);
   const theme = useVisualRefresh() ? 'refresh' : 'default';
   const dimensions = dimensionsByTheme[theme];
+
   return (
     <svg className={styles.root} viewBox={dimensions.viewBox} aria-hidden="true" focusable="false" {...baseProps}>
       <rect
@@ -68,6 +79,7 @@ const CheckboxIcon = ({
         ry={dimensions.r}
         width={dimensions.size}
         height={dimensions.size}
+        style={{ fill: style?.box?.fill, stroke: style?.box?.stroke }}
       />
       {checked || indeterminate ? (
         <polyline
@@ -76,6 +88,7 @@ const CheckboxIcon = ({
             [styles['styled-line-readonly']]: readOnly,
           })}
           points={indeterminate ? dimensions.indeterminate : dimensions.checked}
+          style={{ stroke: style?.line?.stroke }}
         />
       ) : null}
     </svg>

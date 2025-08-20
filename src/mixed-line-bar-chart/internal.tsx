@@ -77,7 +77,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
   loadingText,
   recoveryText,
   onRecoveryClick,
-  __internalRootRef = null,
+  __internalRootRef,
   ...props
 }: InternalMixedLineBarChartProps<T>) {
   const baseProps = getBaseProps(props);

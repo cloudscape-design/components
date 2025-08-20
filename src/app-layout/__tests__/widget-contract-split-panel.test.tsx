@@ -4,40 +4,13 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 
+import './widget-new-mocks'; // should be imported before components to activate mocks
 import { describeEachAppLayout } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import { renderedProps } from './widget-new-mocks';
 
-const isObject = (value: any) => Object.prototype.toString.call(value) === '[object Object]';
-
-function sanitizeProps(props: any): any {
-  if (!isObject(props)) {
-    return props;
-  }
-  if (React.isValidElement(props) || props?.current instanceof Element) {
-    return '__JSX__';
-  }
-  return Object.fromEntries(
-    Object.entries(props).map(([key, value]) => {
-      return [key, sanitizeProps(value)];
-    })
-  );
-}
-
-const renderedProps = new Map();
-function createWidgetizedComponentMock(Implementation: React.ComponentType) {
-  return () => {
-    return function Widgetized(props: any) {
-      renderedProps.set(Implementation, sanitizeProps(props));
-      return <Implementation {...(props as any)} />;
-    };
-  };
-}
-
-jest.mock('../../../lib/components/internal/widgets', () => ({
-  createWidgetizedComponent: createWidgetizedComponentMock,
-}));
 jest.mock('@cloudscape-design/component-toolkit/internal', () => {
   let counter = 0;
   return {

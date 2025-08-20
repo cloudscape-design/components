@@ -10,6 +10,7 @@ import AbstractSwitch from '../internal/components/abstract-switch';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { RadioGroupProps } from './interfaces';
+import { getAbstractSwitchStyles, getInnerCircleStyle, getOuterCircleStyle } from './style';
 
 import styles from './styles.css.js';
 
@@ -19,6 +20,7 @@ interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
   onChange?: NonCancelableEventHandler<RadioGroupProps.ChangeDetail>;
   readOnly?: boolean;
   className?: string;
+  style?: RadioGroupProps.Style;
 }
 
 export default React.forwardRef(function RadioButton(
@@ -33,6 +35,7 @@ export default React.forwardRef(function RadioButton(
     onChange,
     readOnly,
     className,
+    style,
     ...rest
   }: RadioButtonProps,
   ref: React.Ref<HTMLInputElement>
@@ -52,6 +55,7 @@ export default React.forwardRef(function RadioButton(
       disabled={disabled}
       readOnly={readOnly}
       controlId={controlId}
+      style={getAbstractSwitchStyles(style, checked, disabled, readOnly)}
       {...copyAnalyticsMetadataAttribute(rest)}
       nativeControl={nativeControlProps => (
         <input
@@ -85,6 +89,7 @@ export default React.forwardRef(function RadioButton(
             cx={50}
             cy={50}
             r={46}
+            style={getOuterCircleStyle(style, checked, disabled, readOnly)}
           />
           <circle
             className={clsx(styles['styled-circle-fill'], {
@@ -96,6 +101,7 @@ export default React.forwardRef(function RadioButton(
             cx={50}
             cy={50}
             r={35}
+            style={getInnerCircleStyle(style, checked, disabled, readOnly)}
           />
         </svg>
       }

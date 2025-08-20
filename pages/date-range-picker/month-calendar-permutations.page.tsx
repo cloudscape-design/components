@@ -1,15 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 
 import Box from '~components/box';
 import Calendar, { DateRangePickerCalendarProps } from '~components/date-range-picker/calendar';
 import Dropdown from '~components/internal/components/dropdown';
 
+import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
-import { i18nStrings } from './common';
 
 const intervals = [
   ['2021-08-01', '2021-08-31'],
@@ -34,14 +34,12 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     startOfWeek: [1],
     onChange: [() => {}],
     timeInputFormat: ['hh:mm:ss'] as const,
-    i18nStrings: [i18nStrings],
     customAbsoluteRangeControl: [undefined],
   })),
   // Disabled dates
   {
     value: [{ start: { date: '2021-08-30', time: '' }, end: { date: '2021-09-03', time: '' } }],
     setValue: [() => {}],
-    i18nStrings: [i18nStrings],
     isDateEnabled: [() => false, (date: Date) => date.getDate() % 2 !== 0],
     customAbsoluteRangeControl: [undefined],
   },
@@ -49,7 +47,6 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
   {
     value: [{ start: { date: '', time: '' }, end: { date: '', time: '' } }],
     setValue: [() => {}],
-    i18nStrings: [i18nStrings],
     dateOnly: [true],
     customAbsoluteRangeControl: [undefined],
   },
@@ -57,7 +54,6 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
   {
     value: [{ start: { date: '', time: '' }, end: { date: '', time: '' } }],
     setValue: [() => {}],
-    i18nStrings: [i18nStrings],
     customAbsoluteRangeControl: [() => 'Custom control'],
   },
 ]);
@@ -65,35 +61,32 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
 export default function DateRangePickerCalendarPage() {
   let i = -1;
   return (
-    <Box padding="s">
-      <h1>Date-range-picker month calendar page for screenshot tests</h1>
-      <ScreenshotArea>
-        <div style={{ blockSize: `${(1 + permutations.length) * 400}px` }}>
-          <PermutationsView
-            permutations={permutations}
-            render={permutation => {
-              i++;
-              return (
-                <div style={{ insetBlockStart: `${i * 400}px`, position: 'relative' }}>
-                  <Dropdown
-                    stretchWidth={true}
-                    stretchHeight={true}
-                    stretchToTriggerWidth={false}
-                    open={true}
-                    onDropdownClose={() => {}}
-                    onMouseDown={() => {}}
-                    trigger={null}
-                  >
-                    <Box padding="m">
-                      <Calendar {...permutation} />
-                    </Box>
-                  </Dropdown>
-                </div>
-              );
-            }}
-          />
-        </div>
-      </ScreenshotArea>
-    </Box>
+    <PermutationsPage title="Date range picker permutations: month calendar" i18n={{}}>
+      <div style={{ blockSize: `${(1 + permutations.length) * 400}px` }}>
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => {
+            i++;
+            return (
+              <div style={{ insetBlockStart: `${i * 400}px`, position: 'relative' }}>
+                <Dropdown
+                  stretchWidth={true}
+                  stretchHeight={true}
+                  stretchToTriggerWidth={false}
+                  open={true}
+                  onDropdownClose={() => {}}
+                  onMouseDown={() => {}}
+                  trigger={null}
+                >
+                  <Box padding="m">
+                    <Calendar {...permutation} />
+                  </Box>
+                </Dropdown>
+              </div>
+            );
+          }}
+        />
+      </div>
+    </PermutationsPage>
   );
 }
