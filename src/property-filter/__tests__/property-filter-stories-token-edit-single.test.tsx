@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+import { waitFor } from '@testing-library/react';
 
 import DateInput from '../../../lib/components/date-input';
 import { PropertyFilterProps } from '../interfaces';
@@ -200,7 +201,7 @@ describe('Property filter stories: tokens editing, single', () => {
     ]);
   });
 
-  test('changes async text option', () => {
+  test('changes async text option', async () => {
     const { wrapper } = renderAsync({});
 
     wrapper.editor.open(1);
@@ -211,8 +212,9 @@ describe('Property filter stories: tokens editing, single', () => {
     wrapper.editor.value().autosuggest().focus();
     expect(wrapper.editor.value().autosuggest().options()).toEqual([]);
 
-    window.loadingComplete();
-    expect(wrapper.editor.value().autosuggest().options()).toEqual(['x-1', 'x-2', 'x-3']);
+    await waitFor(() => {
+      expect(wrapper.editor.value().autosuggest().options()).toEqual(['x-1', 'x-2', 'x-3']);
+    });
 
     wrapper.editor.value().autosuggest().option('x-3');
     wrapper.editor.submit();
@@ -224,7 +226,7 @@ describe('Property filter stories: tokens editing, single', () => {
     ]);
   });
 
-  test('changes async enum option', () => {
+  test('changes async enum option', async () => {
     const { wrapper } = renderAsync({ asyncProperties: false });
 
     wrapper.editor.open(3);
@@ -234,9 +236,10 @@ describe('Property filter stories: tokens editing, single', () => {
     wrapper.editor.value().multiselect().open();
     expect(wrapper.editor.value().multiselect().options()).toEqual([]);
 
-    window.loadingComplete();
-    expect(wrapper.editor.form()).toEqual(['Property[Status] Operator[=Equals] Value[Ready, Go]']);
-    expect(wrapper.editor.value().multiselect().options()).toEqual(['Ready', 'Steady', 'Go']);
+    await waitFor(() => {
+      expect(wrapper.editor.form()).toEqual(['Property[Status] Operator[=Equals] Value[Ready, Go]']);
+      expect(wrapper.editor.value().multiselect().options()).toEqual(['Ready', 'Steady', 'Go']);
+    });
 
     wrapper.editor.value().multiselect().filter('Go');
     expect(wrapper.editor.form()).toEqual(['Property[Status] Operator[=Equals] Value[Ready, Go]']);

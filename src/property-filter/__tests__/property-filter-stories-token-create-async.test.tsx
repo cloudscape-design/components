@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { waitFor } from '@testing-library/react';
+
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import { PropertyFilterProps } from '../interfaces';
@@ -37,7 +39,7 @@ const defaultProps: Partial<PropertyFilterProps> = {
 const render = createRenderer(defaultProps, { async: true });
 
 describe('Property filter stories: tokens creation, async', () => {
-  test('waits and selects property, then waits and selects option', () => {
+  test('waits and selects property, then waits and selects option', async () => {
     const { wrapper } = render({ asyncProperties: true });
 
     wrapper.input.focus();
@@ -45,9 +47,10 @@ describe('Property filter stories: tokens creation, async', () => {
     expect(wrapper.input.options()).toEqual([]);
     expect(wrapper.input.status()).toBe('Loading status');
 
-    window.loadingComplete();
-    expect(wrapper.input.options()).toEqual(['ID', 'Status']);
-    expect(wrapper.input.status()).toBe('Finished status');
+    await waitFor(() => {
+      expect(wrapper.input.options()).toEqual(['ID', 'Status']);
+      expect(wrapper.input.status()).toBe('Finished status');
+    });
 
     wrapper.input.value('ID');
     expect(wrapper.input.options()).toEqual(['Use: "ID"', 'ID =Equals', 'ID !=Does not equal']);
@@ -56,16 +59,17 @@ describe('Property filter stories: tokens creation, async', () => {
     expect(wrapper.input.options()).toEqual(['Use: "ID = "', 'ID = x-1', 'ID = x-2', 'ID = x-3', 'ID = x-4']);
     expect(wrapper.input.status()).toBe('Loading status');
 
-    window.loadingComplete();
-    expect(wrapper.input.options()).toEqual(['Use: "ID = "', 'ID = x-1', 'ID = x-2', 'ID = x-3', 'ID = x-4']);
-    expect(wrapper.input.status()).toBe('Finished status');
+    await waitFor(() => {
+      expect(wrapper.input.options()).toEqual(['Use: "ID = "', 'ID = x-1', 'ID = x-2', 'ID = x-3', 'ID = x-4']);
+      expect(wrapper.input.status()).toBe('Finished status');
+    });
 
     wrapper.input.selectByValue('ID = x-2');
     expect(wrapper.input.dropdown()).toBe(false);
     expect(wrapper.tokens.list()).toEqual(['ID = x-2']);
   });
 
-  test('searches token by value, waits and selects the matched option', () => {
+  test('searches token by value, waits and selects the matched option', async () => {
     const { wrapper } = render({ asyncProperties: false });
 
     wrapper.input.focus();
@@ -77,15 +81,16 @@ describe('Property filter stories: tokens creation, async', () => {
     expect(wrapper.input.options()).toEqual(['Use: "x-3"']);
     expect(wrapper.input.status()).toBe('Loading status');
 
-    window.loadingComplete();
-    expect(wrapper.input.options()).toEqual(['Use: "x-3"', 'ID = x-3']);
-    expect(wrapper.input.status()).toBe('Finished status');
+    await waitFor(() => {
+      expect(wrapper.input.options()).toEqual(['Use: "x-3"', 'ID = x-3']);
+      expect(wrapper.input.status()).toBe('Finished status');
+    });
 
     wrapper.input.keys(KeyCode.down, KeyCode.down, KeyCode.enter);
     expect(wrapper.tokens.list()).toEqual(['ID = x-3']);
   });
 
-  test('searches enum token value, waits and selects all matched options', () => {
+  test('searches enum token value, waits and selects all matched options', async () => {
     const { wrapper } = render({ asyncProperties: false });
 
     wrapper.input.focus();
@@ -97,9 +102,10 @@ describe('Property filter stories: tokens creation, async', () => {
     expect(wrapper.input.options()).toEqual([]);
     expect(wrapper.input.status()).toBe('Loading status');
 
-    window.loadingComplete();
-    expect(wrapper.input.options()).toEqual(['Active', 'Activating']);
-    expect(wrapper.input.status()).toBe('Finished status');
+    await waitFor(() => {
+      expect(wrapper.input.options()).toEqual(['Active', 'Activating']);
+      expect(wrapper.input.status()).toBe('Finished status');
+    });
 
     wrapper.input.selectAll();
     wrapper.input.submit();
