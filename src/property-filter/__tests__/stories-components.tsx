@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { render as rtlRender } from '@testing-library/react';
 
 import PropertyFilter from '../../../lib/components/property-filter';
@@ -41,8 +41,21 @@ function StatefulPropertyFilter(props: PropertyFilterProps) {
   );
 }
 
+declare global {
+  interface Window {
+    loadingComplete(): void;
+  }
+}
+
 function StatefulAsyncPropertyFilter(props: PropertyFilterProps) {
-  const timeoutRef = useRef(setTimeout(() => {}, 0));
+  const loadingCb = useRef(() => {});
+  useEffect(() => {
+    window.loadingComplete = () => {
+      loadingCb.current();
+      loadingCb.current = () => {};
+    };
+  }, []);
+
   const [filteringStatusType, setFilteringStatusType] = useState<PropertyFilterProps.StatusType>('pending');
   const [filteringProperties, setFilteringProperties] = useState<readonly PropertyFilterProps.FilteringProperty[]>(
     props.asyncProperties ? [] : props.filteringProperties
@@ -66,13 +79,12 @@ function StatefulAsyncPropertyFilter(props: PropertyFilterProps) {
   }
 
   const onLoadItems: PropertyFilterProps['onLoadItems'] = ({ detail }) => {
-    clearTimeout(timeoutRef.current);
     setFilteringStatusType('loading');
-    timeoutRef.current = setTimeout(() => {
+    loadingCb.current = () => {
       setFilteringStatusType('finished');
       loadProperties(detail.filteringText);
       loadOptions(detail.filteringProperty, detail.filteringText);
-    }, 1);
+    };
   };
 
   return (

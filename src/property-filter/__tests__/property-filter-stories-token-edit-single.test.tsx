@@ -200,7 +200,7 @@ describe('Property filter stories: tokens editing, single', () => {
     ]);
   });
 
-  test('changes async text option', async () => {
+  test('changes async text option', () => {
     const { wrapper } = renderAsync({});
 
     wrapper.editor.open(1);
@@ -211,7 +211,7 @@ describe('Property filter stories: tokens editing, single', () => {
     wrapper.editor.value().autosuggest().focus();
     expect(wrapper.editor.value().autosuggest().options()).toEqual([]);
 
-    await new Promise(resolve => setTimeout(resolve, 1));
+    window.loadingComplete();
     expect(wrapper.editor.value().autosuggest().options()).toEqual(['x-1', 'x-2', 'x-3']);
 
     wrapper.editor.value().autosuggest().option('x-3');
@@ -224,7 +224,7 @@ describe('Property filter stories: tokens editing, single', () => {
     ]);
   });
 
-  test('changes async enum option', async () => {
+  test('changes async enum option', () => {
     const { wrapper } = renderAsync({ asyncProperties: false });
 
     wrapper.editor.open(3);
@@ -234,7 +234,7 @@ describe('Property filter stories: tokens editing, single', () => {
     wrapper.editor.value().multiselect().open();
     expect(wrapper.editor.value().multiselect().options()).toEqual([]);
 
-    await new Promise(resolve => setTimeout(resolve, 1));
+    window.loadingComplete();
     expect(wrapper.editor.form()).toEqual(['Property[Status] Operator[=Equals] Value[Ready, Go]']);
     expect(wrapper.editor.value().multiselect().options()).toEqual(['Ready', 'Steady', 'Go']);
 

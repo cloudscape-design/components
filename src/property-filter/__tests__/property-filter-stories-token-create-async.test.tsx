@@ -37,7 +37,7 @@ const defaultProps: Partial<PropertyFilterProps> = {
 const render = createRenderer(defaultProps, { async: true });
 
 describe('Property filter stories: tokens creation, async', () => {
-  test('waits and selects property, then waits and selects option', async () => {
+  test('waits and selects property, then waits and selects option', () => {
     const { wrapper } = render({ asyncProperties: true });
 
     wrapper.input.focus();
@@ -45,7 +45,7 @@ describe('Property filter stories: tokens creation, async', () => {
     expect(wrapper.input.options()).toEqual([]);
     expect(wrapper.input.status()).toBe('Loading status');
 
-    await new Promise(resolve => setTimeout(resolve, 1));
+    window.loadingComplete();
     expect(wrapper.input.options()).toEqual(['ID', 'Status']);
     expect(wrapper.input.status()).toBe('Finished status');
 
@@ -56,7 +56,7 @@ describe('Property filter stories: tokens creation, async', () => {
     expect(wrapper.input.options()).toEqual(['Use: "ID = "', 'ID = x-1', 'ID = x-2', 'ID = x-3', 'ID = x-4']);
     expect(wrapper.input.status()).toBe('Loading status');
 
-    await new Promise(resolve => setTimeout(resolve, 1));
+    window.loadingComplete();
     expect(wrapper.input.options()).toEqual(['Use: "ID = "', 'ID = x-1', 'ID = x-2', 'ID = x-3', 'ID = x-4']);
     expect(wrapper.input.status()).toBe('Finished status');
 
@@ -65,7 +65,7 @@ describe('Property filter stories: tokens creation, async', () => {
     expect(wrapper.tokens.list()).toEqual(['ID = x-2']);
   });
 
-  test('searches token by value, waits and selects the matched option', async () => {
+  test('searches token by value, waits and selects the matched option', () => {
     const { wrapper } = render({ asyncProperties: false });
 
     wrapper.input.focus();
@@ -77,7 +77,7 @@ describe('Property filter stories: tokens creation, async', () => {
     expect(wrapper.input.options()).toEqual(['Use: "x-3"']);
     expect(wrapper.input.status()).toBe('Loading status');
 
-    await new Promise(resolve => setTimeout(resolve, 1));
+    window.loadingComplete();
     expect(wrapper.input.options()).toEqual(['Use: "x-3"', 'ID = x-3']);
     expect(wrapper.input.status()).toBe('Finished status');
 
@@ -85,7 +85,7 @@ describe('Property filter stories: tokens creation, async', () => {
     expect(wrapper.tokens.list()).toEqual(['ID = x-3']);
   });
 
-  test('searches enum token value, waits and selects all matched options', async () => {
+  test('searches enum token value, waits and selects all matched options', () => {
     const { wrapper } = render({ asyncProperties: false });
 
     wrapper.input.focus();
@@ -97,7 +97,7 @@ describe('Property filter stories: tokens creation, async', () => {
     expect(wrapper.input.options()).toEqual([]);
     expect(wrapper.input.status()).toBe('Loading status');
 
-    await new Promise(resolve => setTimeout(resolve, 1));
+    window.loadingComplete();
     expect(wrapper.input.options()).toEqual(['Active', 'Activating']);
     expect(wrapper.input.status()).toBe('Finished status');
 
