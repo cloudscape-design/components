@@ -28,8 +28,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     expect(refSpy).toHaveBeenCalledWith(null);
   });
 
-  // does not work without this fix: https://github.com/cloudscape-design/component-toolkit/pull/151
-  test.skip('content dom reference is preserved when changing switching between desktop and mobile', () => {
+  test('content dom reference is preserved when changing switching between desktop and mobile', () => {
     const refSpy = jest.fn();
     renderComponent(<AppLayout content={<div ref={refSpy}>content</div>} />);
 

@@ -30,16 +30,6 @@ const htmlValidator = new HtmlValidate({
   },
 });
 
-// Polyfill for Array.prototype.flatMap
-function flatMap<Input, Output>(arr: ReadonlyArray<Input>, fn: (t: Input) => Output[]) {
-  return arr.reduce((acc: Output[], item: Input) => {
-    for (const flatItem of fn(item)) {
-      acc.push(flatItem);
-    }
-    return acc;
-  }, []);
-}
-
 function formatMessages(prefix: string, messages: Array<string>) {
   if (messages.length === 0) {
     return '';
@@ -73,8 +63,7 @@ async function toValidateA11y(this: jest.MatcherUtils, element: HTMLElement) {
     const htmlViolations = (htmlValidateResult.results[0]?.messages || []).map(
       message => `${message.message} [${message.ruleId}]`
     );
-    // TODO: remove polyfill with es2019 support
-    const flattenAxeViolations = flatMap(axeViolations, violation =>
+    const flattenAxeViolations = axeViolations.flatMap(violation =>
       violation.nodes.map(node => `[${violation.id}] ${node.failureSummary} Selector: ${node.target}`)
     );
 
