@@ -52,7 +52,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     ariaLabel,
     ariaRequired,
     enteredTextLabel,
-    showEnteredTextOption,
+    hideEnteredTextOption,
     filteringResultsText,
     onKeyDown,
     virtualScroll,
@@ -91,7 +91,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     filterText: value,
     filteringType,
     enteredTextLabel,
-    hideEnteredTextLabel: !showEnteredTextOption,
+    hideEnteredTextLabel: hideEnteredTextOption,
     onSelectItem: (option: AutosuggestItem) => {
       const value = option.value || '';
       fireNonCancelableEvent(onChange, { value });
@@ -195,7 +195,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   });
 
   const shouldRenderDropdownContent =
-    autosuggestItemsState.items.length !== 0 || !!dropdownStatus.content || (showEnteredTextOption && !!value);
+    autosuggestItemsState.items.length !== 0 || !!dropdownStatus.content || (!hideEnteredTextOption && !!value);
 
   return (
     <AutosuggestInput

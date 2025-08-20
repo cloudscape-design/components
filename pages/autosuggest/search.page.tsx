@@ -10,7 +10,7 @@ import AppContext, { AppContextType } from '../app/app-context';
 type PageContext = React.Context<
   AppContextType<{
     empty?: boolean;
-    showEnteredTextOption?: boolean;
+    hideEnteredTextOption?: boolean;
     showMatchesCount?: boolean;
   }>
 >;
@@ -25,7 +25,7 @@ const enteredTextLabel = (value: string) => `Use: ${value}`;
 
 export default function AutosuggestPage() {
   const {
-    urlParams: { empty = false, showEnteredTextOption = true, showMatchesCount = true },
+    urlParams: { empty = false, hideEnteredTextOption = false, showMatchesCount = true },
     setUrlParams,
   } = useContext(AppContext as PageContext);
   const [value, setValue] = useState('');
@@ -46,10 +46,10 @@ export default function AutosuggestPage() {
             Empty
           </Checkbox>
           <Checkbox
-            checked={showEnteredTextOption}
-            onChange={({ detail }) => setUrlParams({ showEnteredTextOption: detail.checked })}
+            checked={hideEnteredTextOption}
+            onChange={({ detail }) => setUrlParams({ hideEnteredTextOption: detail.checked })}
           >
-            Show entered text option
+            Hide entered text option
           </Checkbox>
           <Checkbox
             checked={showMatchesCount}
@@ -74,11 +74,11 @@ export default function AutosuggestPage() {
           ariaLabel={'simple autosuggest'}
           selectedAriaLabel="Selected"
           empty="No suggestions"
-          showEnteredTextOption={showEnteredTextOption}
+          hideEnteredTextOption={hideEnteredTextOption}
           filteringResultsText={
             showMatchesCount
               ? matchesCount => {
-                  matchesCount = showEnteredTextOption ? matchesCount - 1 : matchesCount;
+                  matchesCount = hideEnteredTextOption ? matchesCount : matchesCount - 1;
                   return matchesCount ? `${matchesCount} items` : `No matches`;
                 }
               : undefined
