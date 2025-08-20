@@ -100,25 +100,6 @@ export interface ButtonGroupProps extends BaseComponentProps {
    */
   onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
   /**
-   * Specifies an object of selectors and properties that are used to apply custom styles.
-   *
-   * - `root.background` (string) - (Optional) Background for root container.
-   * - `root.borderColor` (string) - (Optional) Border color for root container.
-   * - `root.borderRadius` (string) - (Optional) Border radius for root container.
-   * - `root.borderWidth` (string) - (Optional) Border width for root container.
-   * - `root.boxShadow` (string) - (Optional) Box shadow for root container.
-   * - `root.gap` (string) - (Optional) Gap between items.
-   * - `root.flexDirection` (string) - (Optional) Flex direction: 'row' or 'column'.
-   * - `root.paddingBlock` (string) - (Optional) Block dimension padding for root container.
-   * - `root.paddingInline` (string) - (Optional) Inline dimension padding for root container.
-   * - `root.focusRing.borderColor` (string) - (Optional) Focus ring border color for root container.
-   * - `root.focusRing.borderRadius` (string) - (Optional) Focus ring border radius for root container.
-   * - `root.focusRing.borderWidth` (string) - (Optional) Focus ring border width for root container.
-   * - `item.color` {active, default, disabled, hover} - (Optional) Color for item states.
-   * - `item.boxShadow` {active, default, disabled, hover} - (Optional) Box shadow for item states.
-   * - `item.focusRing.borderColor` (string) - (Optional) Focus ring border color for items.
-   * - `item.focusRing.borderRadius` (string) - (Optional) Focus ring border radius for items.
-   * - `item.focusRing.borderWidth` (string) - (Optional) Focus ring border width for items.
    * @awsuiSystem core
    */
   style?: ButtonGroupProps.Style;
