@@ -16,6 +16,7 @@ import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { GeneratedAnalyticsMetadataToggleComponent } from './analytics-metadata/interfaces';
 import { ToggleProps } from './interfaces';
+import { getAbstractSwitchStyles, getStyledControlStyle } from './style';
 
 import styles from './styles.css.js';
 
@@ -38,7 +39,8 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
       onFocus,
       onBlur,
       onChange,
-      __internalRootRef = null,
+      __internalRootRef,
+      style,
       __injectAnalyticsComponentMetadata,
       ...rest
     },
@@ -112,8 +114,10 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
               [styles['toggle-handle-disabled']]: disabled,
               [styles['toggle-handle-readonly']]: readOnly,
             })}
+            style={getStyledControlStyle(style, checked, disabled, readOnly)}
           />
         }
+        style={getAbstractSwitchStyles(style, checked, disabled, readOnly)}
         __internalRootRef={__internalRootRef}
         {...getAnalyticsMetadataAttribute(analyticsMetadata)}
       />

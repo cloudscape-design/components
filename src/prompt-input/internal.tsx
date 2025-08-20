@@ -55,7 +55,7 @@ const InternalPromptInput = React.forwardRef(
       secondaryContent,
       disableSecondaryActionsPaddings,
       disableSecondaryContentPaddings,
-      __internalRootRef = null,
+      __internalRootRef,
       ...rest
     }: InternalPromptInputProps,
     ref: Ref<PromptInputProps.Ref>

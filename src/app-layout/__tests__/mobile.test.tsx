@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { act, within } from '@testing-library/react';
+import { act, waitFor, within } from '@testing-library/react';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
@@ -362,15 +362,21 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
     expect(wrapper.find('[style*="min-width"')).toBeNull();
   });
 
-  test('closes navigation via ref', () => {
+  test('closes navigation via ref', async () => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} />);
+
+    await act(() => Promise.resolve());
     wrapper.findNavigationToggle().click();
-    expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
-    expect(wrapper.findNavigationClose().getElement()).toEqual(document.activeElement);
+    await waitFor(() => {
+      expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
+      expect(wrapper.findNavigationClose().getElement()).toHaveFocus();
+    });
     act(() => ref!.closeNavigationIfNecessary());
-    expect(wrapper.findOpenNavigationPanel()).toBeFalsy();
-    expect(wrapper.findNavigationToggle().getElement()).toEqual(document.activeElement);
+    await waitFor(() => {
+      expect(wrapper.findOpenNavigationPanel()).toBeFalsy();
+      expect(wrapper.findNavigationToggle().getElement()).toHaveFocus();
+    });
   });
 
   // not testable in refresh, because it is implemented with media query

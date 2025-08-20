@@ -4,8 +4,10 @@ import React from 'react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
-import { getFunnelKeySelector } from '../../internal/analytics/selectors';
+import { getFunnelKeySelector } from '../../../lib/components/internal/analytics/selectors';
 import { describeEachAppLayout, renderComponent } from './utils';
+
+import skeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.selectors.js';
 
 let widgetMockEnabled = false;
 function createWidgetizedComponentMock(Implementation: React.ComponentType, Skeleton: React.ComponentType) {
@@ -69,6 +71,30 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       expect(wrapper.findNotifications()).toBeFalsy();
       expect(wrapper.findTools()).toBeFalsy();
       expect(wrapper.findContentRegion()).toBeTruthy();
+      expect(wrapper.getElement()).toHaveStyle({ blockSize: `calc(100vh - 0px)` });
+    });
+
+    it('the navigationOpen state can be controlled', () => {
+      const noop = () => {};
+      const { wrapper, rerender } = renderComponent(
+        <AppLayout navigation="test nav" navigationOpen={true} onNavigationChange={noop} />
+      );
+      // cannot use wrapper.findNavigation() because our public test utils resolve to nothing in skeleton state
+      expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeTruthy();
+      rerender(<AppLayout navigation="test nav" navigationOpen={false} onNavigationChange={noop} />);
+      expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeFalsy();
+      rerender(<AppLayout navigation="test nav" navigationOpen={true} onNavigationChange={noop} />);
+      expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeTruthy();
+    });
+
+    it('toolbar can render conditionally', () => {
+      const { wrapper, rerender } = renderComponent(<AppLayout navigationHide={true} toolsHide={true} />);
+      // cannot use wrapper.findToolbar() because our public test utils resolve to nothing in skeleton state
+      expect(wrapper.findByClassName(skeletonStyles['toolbar-container'])).toBeFalsy();
+      rerender(<AppLayout navigationHide={false} toolsHide={false} breadcrumbs="dummy" />);
+      expect(wrapper.findByClassName(skeletonStyles['toolbar-container'])).toBeTruthy();
+      rerender(<AppLayout navigationHide={true} toolsHide={true} />);
+      expect(wrapper.findByClassName(skeletonStyles['toolbar-container'])).toBeFalsy();
     });
   });
 });

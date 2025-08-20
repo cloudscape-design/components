@@ -46,6 +46,7 @@ const InternalMultiselect = React.forwardRef(
       disabled,
       readOnly,
       ariaLabel,
+      inlineLabelText,
       selectedOptions,
       deselectAriaLabel,
       tokenLimit,
@@ -56,7 +57,7 @@ const InternalMultiselect = React.forwardRef(
       expandToViewport,
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
-      __internalRootRef = null,
+      __internalRootRef,
       autoFocus,
       enableSelectAll,
       ...restProps
@@ -112,6 +113,7 @@ const InternalMultiselect = React.forwardRef(
         selectedOptions={selectedOptions}
         triggerVariant={inlineTokens ? 'tokens' : 'placeholder'}
         isOpen={multiselectProps.isOpen}
+        inlineLabelText={inlineLabelText}
         {...formFieldContext}
         controlId={controlId}
         ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, ariaLabelId)}
@@ -207,7 +209,7 @@ const InternalMultiselect = React.forwardRef(
           />
         )}
 
-        <ScreenreaderOnly id={ariaLabelId}>{ariaLabel}</ScreenreaderOnly>
+        <ScreenreaderOnly id={ariaLabelId}>{ariaLabel || inlineLabelText}</ScreenreaderOnly>
       </div>
     );
   }

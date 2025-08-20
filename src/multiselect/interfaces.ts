@@ -11,6 +11,10 @@ export interface MultiselectProps extends BaseSelectProps {
    */
   selectedOptions: ReadonlyArray<MultiselectProps.Option>;
   /**
+   * Specifies an inline label that appears next to the multiselect trigger.
+   */
+  inlineLabelText?: string;
+  /**
    * Determines whether the dropdown list stays open after the user selects an item.
    */
   keepOpen?: boolean;

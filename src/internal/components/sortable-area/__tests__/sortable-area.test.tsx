@@ -45,6 +45,12 @@ test('renders all items with correct attributes', () => {
           disabled: false,
           onPointerDown: expect.anything(),
           onKeyDown: expect.anything(),
+          onDirectionClick: expect.anything(),
+          onClick: expect.anything(),
+          triggerMode: 'controlled',
+          controlledShowButtons: false,
+          ref: expect.anything(),
+          directions: undefined,
         },
       })
     );

@@ -25,14 +25,14 @@ describe('applyScroll', () => {
   const newCoordinates = { x: 0, y: 10 };
 
   it('returns true if scroll was applied', () => {
-    expect(
-      applyScroll({ currentCoordinates, direction: 'ArrowDown', newCoordinates, scrollableAncestors: [element] })
-    ).toBe(true);
+    expect(applyScroll({ currentCoordinates, direction: 'down', newCoordinates, scrollableAncestors: [element] })).toBe(
+      true
+    );
   });
 
   it('returns false if scroll was not applied', () => {
-    expect(
-      applyScroll({ currentCoordinates, direction: 'ArrowUp', newCoordinates, scrollableAncestors: [element] })
-    ).toBe(false);
+    expect(applyScroll({ currentCoordinates, direction: 'up', newCoordinates, scrollableAncestors: [element] })).toBe(
+      false
+    );
   });
 });

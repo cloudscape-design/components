@@ -70,7 +70,7 @@ export default function InternalContainer({
   __stickyOffset,
   __mobileStickyOffset,
   __stickyHeader = false,
-  __internalRootRef = null,
+  __internalRootRef,
   __disableFooterDivider = false,
   __hiddenContent = false,
   __headerRef,

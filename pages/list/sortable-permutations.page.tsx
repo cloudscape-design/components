@@ -25,6 +25,11 @@ const items: Item[] = [
   { content: 'Item 4', description: 'Description', timestamp: 'January 1 2025' },
 ];
 
+const ControlledList = (props: ListProps<Item>) => {
+  const [items, setItems] = React.useState(props.items);
+  return <List {...props} items={items} onSortingChange={e => setItems(e.detail.items)} />;
+};
+
 const permutations = createPermutations<ListProps<Item> & { viewportWidth: number; _sortable: boolean | 'disabled' }>([
   {
     viewportWidth: [200, 400],
@@ -57,7 +62,7 @@ export default function ListItemPermutations() {
           permutations={permutations}
           render={({ viewportWidth, _sortable, ...permutation }) => (
             <div style={{ width: viewportWidth, borderRight: '1px solid red', padding: '4px', overflow: 'hidden' }}>
-              <List {...permutation} sortable={!!_sortable} sortDisabled={_sortable === 'disabled'} />
+              <ControlledList {...permutation} sortable={!!_sortable} sortDisabled={_sortable === 'disabled'} />
             </div>
           )}
         />

@@ -300,7 +300,6 @@ describe('i18n', () => {
           enableTokenGroups={true}
           filteringOptions={[]}
           customGroupsText={[]}
-          disableFreeTextFiltering={false}
         />
       </TestI18nProvider>
     );

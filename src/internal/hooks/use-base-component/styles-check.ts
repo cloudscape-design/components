@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { GIT_SHA, PACKAGE_VERSION, THEME } from '../../environment';
 import { metrics } from '../../metrics';
 
-export function checkMissingStyles() {
-  const result = getComputedStyle(document.body).getPropertyValue(`--awsui-version-info-${GIT_SHA}`);
+export function checkMissingStyles(ownerDocument: Document) {
+  const result = getComputedStyle(ownerDocument.body).getPropertyValue(`--awsui-version-info-${GIT_SHA}`);
   if (!result) {
     console.error(`Missing AWS-UI CSS for theme "${THEME}", version "${PACKAGE_VERSION}", and git sha "${GIT_SHA}".`);
     metrics.sendOpsMetricObject('awsui-missing-css-asset', {});
@@ -37,16 +37,18 @@ export function idleWithDelay(cb: () => void) {
   };
 }
 
-let checked = false;
-const checkMissingStylesOnce = () => {
+const checkedDocs = new WeakMap<Document, boolean>();
+const checkMissingStylesOnce = (elementRef: React.RefObject<HTMLElement>) => {
+  const ownerDocument = elementRef.current?.ownerDocument ?? document;
+  const checked = checkedDocs.get(ownerDocument);
   if (!checked) {
-    checkMissingStyles();
-    checked = true;
+    checkMissingStyles(ownerDocument);
+    checkedDocs.set(ownerDocument, true);
   }
 };
 
-export function useMissingStylesCheck() {
+export function useMissingStylesCheck(elementRef: React.RefObject<HTMLElement>) {
   useEffect(() => {
-    return idleWithDelay(() => checkMissingStylesOnce());
-  }, []);
+    return idleWithDelay(() => checkMissingStylesOnce(elementRef));
+  }, [elementRef]);
 }

@@ -16,9 +16,9 @@ export function getAlertStyles(style: AlertProps['style']) {
     borderWidth: style.root?.borderWidth,
     color: style.root?.color,
     ...(style.root?.focusRing && {
-      [customCssProps.styleFocusRingBorderColor]: style.root.focusRing?.borderColor,
-      [customCssProps.styleFocusRingBorderRadius]: style.root.focusRing?.borderRadius,
-      [customCssProps.styleFocusRingBorderWidth]: style.root.focusRing?.borderWidth,
+      [customCssProps.alertFocusRingBorderColor]: style.root.focusRing?.borderColor,
+      [customCssProps.alertFocusRingBorderRadius]: style.root.focusRing?.borderRadius,
+      [customCssProps.alertFocusRingBorderWidth]: style.root.focusRing?.borderWidth,
     }),
   };
 }

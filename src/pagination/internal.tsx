@@ -109,7 +109,7 @@ export default function InternalPagination({
   onChange,
   onNextPageClick,
   onPreviousPageClick,
-  __internalRootRef = null,
+  __internalRootRef,
   ...rest
 }: InternalPaginationProps) {
   const baseProps = getBaseProps(rest);

@@ -4,6 +4,8 @@
 import React, { Ref, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import MaskedInput from '../internal/components/masked-input';
 import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -11,12 +13,16 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { displayToIso, isoToDisplay } from '../internal/utils/date-time';
 import formatDateIso from '../internal/utils/date-time/format-date-iso';
 import formatDateLocalized from '../internal/utils/date-time/format-date-localized';
+import { GeneratedAnalyticsMetadataDateInputComponent } from './analytics-metadata/interfaces';
 import { DateInputProps } from './interfaces';
 import { generateMaskArgs, normalizeIsoDateString } from './utils';
 
 import styles from './styles.css.js';
 
-type InternalDateInputProps = DateInputProps & InternalBaseComponentProps;
+type InternalDateInputProps = DateInputProps &
+  InternalBaseComponentProps & {
+    __injectAnalyticsComponentMetadata?: boolean;
+  };
 
 const InternalDateInput = React.forwardRef(
   (
@@ -29,7 +35,8 @@ const InternalDateInput = React.forwardRef(
       locale,
       format = 'slashed',
       inputFormat = 'slashed',
-      __internalRootRef = null,
+      __internalRootRef,
+      __injectAnalyticsComponentMetadata = false,
       ...props
     }: InternalDateInputProps,
     ref: Ref<DateInputProps.Ref>
@@ -72,6 +79,14 @@ const InternalDateInput = React.forwardRef(
           : isoToDisplay(isoValue);
     }, [value, isIso, granularity, locale, usesLongLocalizedValue]);
 
+    const componentAnalyticsMetadata: GeneratedAnalyticsMetadataDateInputComponent = {
+      name: 'awsui.DateInput',
+      label: 'input',
+      properties: {
+        value: value || '',
+      },
+    };
+
     return (
       <MaskedInput
         ref={inputRef}
@@ -88,6 +103,9 @@ const InternalDateInput = React.forwardRef(
         showUnmaskedValue={usesLongLocalizedValue}
         autoComplete={false}
         __internalRootRef={__internalRootRef}
+        {...(__injectAnalyticsComponentMetadata
+          ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
+          : {})}
       />
     );
   }

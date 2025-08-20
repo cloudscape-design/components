@@ -20,12 +20,12 @@ import globalDrawerStyles from '../../../lib/components/app-layout/visual-refres
 import visualRefreshToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 
 export function renderComponent(jsx: React.ReactElement) {
-  const { container, rerender } = render(jsx);
+  const { container, rerender, ...rest } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
 
   const isUsingGridLayout = wrapper.getElement().classList.contains(visualRefreshStyles.layout);
 
-  return { wrapper, rerender, isUsingGridLayout, container };
+  return { wrapper, rerender, isUsingGridLayout, container, ...rest };
 }
 
 type Theme = 'refresh' | 'refresh-toolbar' | 'classic';
@@ -59,12 +59,12 @@ export function describeEachAppLayout(
         beforeEach(() => {
           globalWithFlags[forceMobileModeSymbol] = size === 'mobile';
           globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => theme !== 'classic';
-          setGlobalFlag('appLayoutWidget', theme === 'refresh-toolbar');
+          setGlobalFlag('appLayoutToolbar', theme === 'refresh-toolbar');
         });
         afterEach(() => {
           delete globalWithFlags[forceMobileModeSymbol];
           delete globalWithFlags[Symbol.for('awsui-visual-refresh-flag')];
-          setGlobalFlag('appLayoutWidget', undefined);
+          setGlobalFlag('appLayoutToolbar', undefined);
           clearVisualRefreshState();
         });
         test('mocks applied correctly', () => {

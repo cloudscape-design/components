@@ -802,33 +802,33 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorDropzoneBackgroundDefault: {
     description: 'The default color of file upload dropzone background.',
-    themeable: false,
-    public: false,
+    themeable: true,
+    public: true,
   },
   colorDropzoneBackgroundHover: {
     description: 'The color of file upload dropzone background in hovered state.',
-    themeable: false,
-    public: false,
+    themeable: true,
+    public: true,
   },
   colorDropzoneTextDefault: {
     description: 'The default color of file upload dropzone text.',
-    themeable: false,
-    public: false,
+    themeable: true,
+    public: true,
   },
   colorDropzoneTextHover: {
     description: 'The color of file upload dropzone text in hovered state.',
-    themeable: false,
-    public: false,
+    themeable: true,
+    public: true,
   },
   colorDropzoneBorderDefault: {
     description: 'The default color of file upload dropzone border.',
-    themeable: false,
-    public: false,
+    themeable: true,
+    public: true,
   },
   colorDropzoneBorderHover: {
     description: 'The color of file upload dropzone border in hovered state.',
-    themeable: false,
-    public: false,
+    themeable: true,
+    public: true,
   },
 };
 
