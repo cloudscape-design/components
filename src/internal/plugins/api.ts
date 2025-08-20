@@ -10,10 +10,12 @@ import {
 import { AppLayoutWidgetApiInternal, AppLayoutWidgetController } from './controllers/app-layout-widget';
 import { BreadcrumbsApiInternal, BreadcrumbsController } from './controllers/breadcrumbs';
 import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './controllers/drawers';
+import { DrawersController as DrawersControllerWidgetized } from './controllers/drawers-widget';
 import { SharedReactContexts, SharedReactContextsApiInternal } from './controllers/shared-react-contexts';
 import { reportRuntimeApiLoadMetric } from './helpers/metrics';
 
 const storageKey = Symbol.for('awsui-plugin-api');
+const storageKeyWidgetized = Symbol.for('awsui-plugin-api-widgetized');
 
 interface AwsuiApi {
   awsuiPlugins: {
@@ -35,11 +37,17 @@ interface AwsuiApi {
   };
 }
 
-interface WindowWithApi extends Window {
-  [storageKey]: AwsuiApi;
+interface AwsuiApiWidgetized {
+  awsuiPluginsWidgetized: Partial<AwsuiApi['awsuiPlugins']>;
+  awsuiPluginsInternalWidgetized: Partial<AwsuiApi['awsuiPluginsInternal']>;
 }
 
-function findUpApi(currentWindow: WindowWithApi): AwsuiApi | undefined {
+interface WindowWithApi extends Window {
+  [storageKey]: AwsuiApi;
+  [storageKeyWidgetized]: Partial<AwsuiApiWidgetized>;
+}
+
+function findUpApi<T>(currentWindow: WindowWithApi, storageKey: keyof WindowWithApi): T | undefined {
   try {
     if (currentWindow?.[storageKey]) {
       return currentWindow[storageKey];
@@ -50,7 +58,7 @@ function findUpApi(currentWindow: WindowWithApi): AwsuiApi | undefined {
       return undefined;
     }
 
-    return findUpApi(currentWindow.parent as WindowWithApi);
+    return findUpApi(currentWindow.parent as WindowWithApi, storageKey);
 
     // Consumers in the past have not always been able to support not specifiying the value so we keep and ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -60,20 +68,22 @@ function findUpApi(currentWindow: WindowWithApi): AwsuiApi | undefined {
   }
 }
 
-export function loadApi() {
+export function loadApi(): AwsuiApi & Partial<AwsuiApiWidgetized> {
   if (typeof window === 'undefined') {
-    return installApi({});
+    return { ...installApi({}), ...installApiWidgetized({}) };
   }
   const win = window as unknown as WindowWithApi;
-  const existingApi = findUpApi(win);
-  if (!existingApi) {
+  const existingApi = findUpApi<AwsuiApi>(win, storageKey);
+  const existingApiWidgetized = findUpApi<AwsuiApiWidgetized>(win, storageKeyWidgetized);
+  if (!existingApi || !existingApiWidgetized) {
     reportRuntimeApiLoadMetric();
   }
   win[storageKey] = installApi(existingApi ?? {});
-  return win[storageKey];
+  win[storageKeyWidgetized] = installApiWidgetized(existingApiWidgetized ?? {});
+  return { ...win[storageKey], ...win[storageKeyWidgetized] };
 }
 
-export const { awsuiPlugins, awsuiPluginsInternal } = loadApi();
+export const { awsuiPlugins, awsuiPluginsInternal, awsuiPluginsWidgetized, awsuiPluginsInternalWidgetized } = loadApi();
 
 type DeepPartial<T> = T extends (...args: any) => any ? T : { [P in keyof T]?: DeepPartial<T[P]> };
 
@@ -115,4 +125,17 @@ function installApi(api: DeepPartial<AwsuiApi>): AwsuiApi {
   );
 
   return api as AwsuiApi;
+}
+
+function installApiWidgetized(api: DeepPartial<AwsuiApiWidgetized>): AwsuiApiWidgetized {
+  api.awsuiPluginsWidgetized ??= {};
+  api.awsuiPluginsInternalWidgetized ??= {};
+
+  const appLayoutDrawers = new DrawersControllerWidgetized();
+  api.awsuiPluginsWidgetized.appLayout = appLayoutDrawers.installPublic(api.awsuiPluginsWidgetized.appLayout);
+  api.awsuiPluginsInternalWidgetized.appLayout = appLayoutDrawers.installInternal(
+    api.awsuiPluginsInternalWidgetized.appLayout
+  );
+
+  return api as AwsuiApiWidgetized;
 }
