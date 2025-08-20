@@ -1,17 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React from 'react';
 
-import { Box, DateRangePicker, DateRangePickerProps, SpaceBetween } from '~components';
+import { DateRangePicker, DateRangePickerProps } from '~components';
 
+import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
-import { generatePlaceholder, i18nStrings, isValid } from './common';
+import { isValid, placeholders } from './common';
 
-const permutations = createPermutations<
-  Pick<DateRangePickerProps, 'absoluteFormat' | 'dateOnly' | 'hideTimeOffset' | 'value' | 'granularity'>
->([
+const permutations = createPermutations<DateRangePickerProps>([
   {
     absoluteFormat: ['iso', 'long-localized'],
     value: [
@@ -21,6 +20,8 @@ const permutations = createPermutations<
         endDate: '2025-01',
       },
     ],
+    isValidRange: [() => ({ valid: true })],
+    relativeOptions: [[]],
   },
   {
     absoluteFormat: ['iso', 'long-localized'],
@@ -32,37 +33,29 @@ const permutations = createPermutations<
         endDate: '2024-02',
       },
     ],
+    isValidRange: [() => ({ valid: true })],
+    relativeOptions: [[]],
   },
 ]);
 
 export default function DateRangePickerPermutations() {
   return (
-    <Box padding="s">
-      <SpaceBetween direction="vertical" size="m">
-        <h1>Absolute date range picker year calendar with custom absolute format</h1>
-        <hr />
-        <ScreenshotArea>
-          <PermutationsView
-            permutations={permutations}
-            render={permutation => (
-              <DateRangePicker
-                value={permutation.value}
-                absoluteFormat={permutation.absoluteFormat}
-                dateOnly={false}
-                granularity="month"
-                hideTimeOffset={permutation.hideTimeOffset}
-                locale="en-US"
-                i18nStrings={i18nStrings}
-                placeholder={generatePlaceholder(permutation.dateOnly, permutation.granularity === 'month')}
-                relativeOptions={[]}
-                isValidRange={value => isValid('month')(value)}
-                rangeSelectorMode={'absolute-only'}
-                getTimeOffset={() => 60}
-              />
-            )}
+    <PermutationsPage title="Date range picker permutations: absolute with month granularity" i18n={{}}>
+      <PermutationsView
+        permutations={permutations}
+        render={permutation => (
+          <DateRangePicker
+            {...permutation}
+            placeholder={placeholders['month-only']}
+            dateOnly={false}
+            granularity="month"
+            locale="en-US"
+            rangeSelectorMode="absolute-only"
+            isValidRange={value => isValid('month')(value)}
+            getTimeOffset={() => 60}
           />
-        </ScreenshotArea>
-      </SpaceBetween>
-    </Box>
+        )}
+      />
+    </PermutationsPage>
   );
 }
