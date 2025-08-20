@@ -14,8 +14,6 @@ export function getButtonGroupStyles(style: ButtonGroupProps['style']) {
     borderWidth: style?.root?.borderWidth,
     borderStyle: style?.root?.borderWidth ? 'solid' : undefined,
     boxShadow: style?.root?.boxShadow,
-    gap: style?.root?.gap,
-    flexDirection: style?.root?.flexDirection,
     paddingBlock: style?.root?.paddingBlock,
     paddingInline: style?.root?.paddingInline,
     background: style?.root?.background,

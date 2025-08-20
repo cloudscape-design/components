@@ -58,11 +58,9 @@ function BasicExample() {
           root: {
             background: backgrounds[mode].blue,
             borderRadius: '20px',
-            gap: '6px',
             paddingBlock: '14px',
             paddingInline: '18px',
             boxShadow: boxShadows[mode].blue,
-            flexDirection: 'column',
             focusRing: {
               borderColor: focusRingColors[mode].blue,
               borderWidth: '3px',
@@ -114,7 +112,6 @@ function ActionsExample() {
           root: {
             background: backgrounds[mode].green,
             borderRadius: '16px',
-            gap: '4px',
             paddingBlock: '8px',
             paddingInline: '12px',
             boxShadow: boxShadows[mode].green,
@@ -174,11 +171,9 @@ function FeedbackExample() {
           root: {
             background: backgrounds[mode].orange,
             borderRadius: '50px',
-            gap: '8px',
             paddingBlock: '14px',
             paddingInline: '12px',
             boxShadow: boxShadows[mode].orange,
-            flexDirection: 'column',
             focusRing: {
               borderColor: focusRingColors[mode].orange,
               borderWidth: '3px',
@@ -236,7 +231,6 @@ function MenuDropdownExample() {
           root: {
             background: backgrounds[mode].red,
             borderRadius: '18px',
-            gap: '4px',
             paddingBlock: '12px',
             paddingInline: '12px',
             boxShadow: boxShadows[mode].red,
@@ -337,7 +331,6 @@ function FileInputExample() {
           root: {
             background: backgrounds[mode].teal,
             borderRadius: '24px',
-            gap: '8px',
             paddingBlock: '12px',
             paddingInline: '16px',
             boxShadow: boxShadows[mode].teal,
@@ -397,7 +390,6 @@ function NavExample() {
           root: {
             background: backgrounds[mode].nav,
             borderRadius: '24px',
-            gap: '8px',
             paddingBlock: '12px',
             paddingInline: '16px',
             boxShadow: boxShadows[mode].nav,
@@ -437,7 +429,6 @@ function NavExample() {
           root: {
             background: backgrounds[mode].nav,
             borderRadius: '24px',
-            gap: '8px',
             paddingBlock: '12px',
             paddingInline: '16px',
             boxShadow: boxShadows[mode].nav,
