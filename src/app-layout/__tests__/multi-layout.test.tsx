@@ -404,7 +404,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-multi-layout-usage-primary', { instancesCount: 1 });
     });
 
-    test('reports the metric is the second layout added asynchronously', async () => {
+    test('reports the metric if the second layout added asynchronously', async () => {
       function ConditionalLayout() {
         const [rendered, setRendered] = useState(false);
 
