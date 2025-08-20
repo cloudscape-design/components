@@ -19,6 +19,11 @@ export default function SplitPanel({
 }: SplitPanelProps) {
   const { __internalRootRef } = useBaseComponent('SplitPanel', {
     props: { closeBehavior, hidePreferencesButton },
+    metadata: {
+      hasHeaderActions: Boolean(restProps.headerActions),
+      hasHeaderDescription: Boolean(restProps.headerDescription),
+      hasHeaderInfo: Boolean(restProps.headerInfo),
+    },
   });
   const i18n = useInternalI18n('split-panel');
   const i18nModal = useInternalI18n('modal');
