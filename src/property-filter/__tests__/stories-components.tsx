@@ -72,7 +72,7 @@ function StatefulAsyncPropertyFilter(props: PropertyFilterProps) {
       setFilteringStatusType('finished');
       loadProperties(detail.filteringText);
       loadOptions(detail.filteringProperty, detail.filteringText);
-    }, 1);
+    }, 0);
   };
 
   return (
