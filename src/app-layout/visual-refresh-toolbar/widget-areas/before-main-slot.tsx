@@ -65,8 +65,9 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
             (drawerExpandedMode || drawerExpandedModeInChildLayout) && !aiDrawerExpandedMode && styles.hidden
           )}
           style={{
-            insetBlockStart: `${placement.insetBlockStart}px`,
-            blockSize: `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
+            ...(!isMobile && {
+              blockSize: `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
+            }),
           }}
         >
           <ActiveDrawersContext.Provider value={activeAiDrawer ? [activeAiDrawer.id] : []}>
