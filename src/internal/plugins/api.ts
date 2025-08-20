@@ -68,22 +68,34 @@ function findUpApi<T>(currentWindow: WindowWithApi, storageKey: keyof WindowWith
   }
 }
 
-export function loadApi(): AwsuiApi & Partial<AwsuiApiWidgetized> {
+export function loadApi() {
   if (typeof window === 'undefined') {
-    return { ...installApi({}), ...installApiWidgetized({}) };
+    return installApi({});
   }
   const win = window as unknown as WindowWithApi;
   const existingApi = findUpApi<AwsuiApi>(win, storageKey);
-  const existingApiWidgetized = findUpApi<AwsuiApiWidgetized>(win, storageKeyWidgetized);
-  if (!existingApi || !existingApiWidgetized) {
+  if (!existingApi) {
     reportRuntimeApiLoadMetric();
   }
   win[storageKey] = installApi(existingApi ?? {});
-  win[storageKeyWidgetized] = installApiWidgetized(existingApiWidgetized ?? {});
-  return { ...win[storageKey], ...win[storageKeyWidgetized] };
+  return win[storageKey];
 }
 
-export const { awsuiPlugins, awsuiPluginsInternal, awsuiPluginsWidgetized, awsuiPluginsInternalWidgetized } = loadApi();
+export function loadWidgetizedApi() {
+  if (typeof window === 'undefined') {
+    return installApiWidgetized({});
+  }
+  const win = window as unknown as WindowWithApi;
+  const existingApi = findUpApi<AwsuiApiWidgetized>(win, storageKeyWidgetized);
+  if (!existingApi) {
+    reportRuntimeApiLoadMetric();
+  }
+  win[storageKeyWidgetized] = installApiWidgetized(existingApi ?? {});
+  return win[storageKeyWidgetized];
+}
+
+export const { awsuiPlugins, awsuiPluginsInternal } = loadApi();
+export const { awsuiPluginsWidgetized, awsuiPluginsInternalWidgetized } = loadWidgetizedApi();
 
 type DeepPartial<T> = T extends (...args: any) => any ? T : { [P in keyof T]?: DeepPartial<T[P]> };
 
