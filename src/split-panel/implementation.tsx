@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
@@ -9,7 +8,6 @@ import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-fl
 import { SizeControlProps } from '../app-layout/utils/interfaces';
 import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
 import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
-import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import PanelResizeHandle from '../internal/components/panel-resize-handle';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
@@ -19,11 +17,11 @@ import globalVars from '../internal/styles/global-vars';
 import { SomeRequired } from '../internal/types';
 import { createWidgetizedComponent } from '../internal/widgets';
 import { SplitPanelContentBottom } from './bottom';
+import SplitPanelHeader from './header';
 import { SplitPanelProps } from './interfaces';
 import PreferencesModal from './preferences-modal';
 import { SplitPanelContentSide } from './side';
 
-import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 export type SplitPanelImplementationProps = SomeRequired<SplitPanelProps, 'hidePreferencesButton' | 'closeBehavior'> &
@@ -91,51 +89,21 @@ export function SplitPanelImplementation({
   const panelHeaderId = useUniqueId('split-panel-header');
 
   const wrappedHeader = (
-    <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
-      <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
-        {header}
-      </h2>
-      <div className={styles['header-actions']}>
-        {!hidePreferencesButton && isOpen && (
-          <>
-            <InternalButton
-              className={testUtilStyles['preferences-button']}
-              iconName="settings"
-              variant="icon"
-              onClick={() => setPreferencesOpen(true)}
-              formAction="none"
-              ariaLabel={i18nStrings.preferencesTitle}
-              ref={refs.preferences}
-            />
-            <span className={styles.divider} />
-          </>
-        )}
-
-        {isOpen ? (
-          <InternalButton
-            className={testUtilStyles['close-button']}
-            iconName={
-              isRefresh && closeBehavior === 'collapse' ? (position === 'side' ? 'angle-right' : 'angle-down') : 'close'
-            }
-            variant="icon"
-            onClick={onToggle}
-            formAction="none"
-            ariaLabel={i18nStrings.closeButtonAriaLabel}
-            ariaExpanded={isOpen}
-          />
-        ) : position === 'side' || closeBehavior === 'hide' ? null : (
-          <InternalButton
-            className={testUtilStyles['open-button']}
-            iconName="angle-up"
-            variant="icon"
-            formAction="none"
-            ariaLabel={i18nStrings.openButtonAriaLabel}
-            ref={refs.toggle}
-            ariaExpanded={isOpen}
-          />
-        )}
-      </div>
-    </div>
+    <SplitPanelHeader
+      text={header}
+      position={position}
+      isOpen={isOpen}
+      onToggle={onToggle}
+      setPreferencesOpen={setPreferencesOpen}
+      closeBehavior={closeBehavior}
+      panelHeaderId={panelHeaderId}
+      hidePreferencesButton={hidePreferencesButton}
+      i18nStrings={i18nStrings}
+      isRefresh={isRefresh}
+      isToolbar={isToolbar}
+      appLayoutMaxWidth={appLayoutMaxWidth}
+      refs={refs}
+    />
   );
 
   const resizeHandle = (
