@@ -13,13 +13,13 @@
 
   cursor: pointer;
   color: awsui.$color-text-interactive-default;
-  border-start-start-radius: 50%;
-  border-start-end-radius: 50%;
-  border-end-start-radius: 50%;
-  border-end-end-radius: 50%;
-  block-size: 30px;
-  inline-size: 30px;
   text-align: center;
+
+  &.custom {
+    block-size: 100%;
+    inline-size: 100%;
+    box-sizing: border-box;
+  }
 
   &-with-badge {
     clip-path: path(
@@ -33,30 +33,39 @@
     }
   }
 
-  &:hover {
-    background: awsui.$color-background-input-disabled;
-    color: awsui.$color-text-interactive-hover;
-  }
-
-  &:active {
-    background: awsui.$color-background-control-disabled;
-    color: awsui.$color-text-interactive-hover;
-  }
-
   &:focus {
     // custom outline attached on the wrapping element
     outline: none;
   }
 
-  &.selected {
-    background: awsui.$color-background-layout-toggle-selected-default;
-    color: awsui.$color-text-layout-toggle-selected;
+  &.circle {
+    border-start-start-radius: 50%;
+    border-start-end-radius: 50%;
+    border-end-start-radius: 50%;
+    border-end-end-radius: 50%;
+    block-size: 30px;
+    inline-size: 30px;
 
     &:hover {
-      background: awsui.$color-background-layout-toggle-selected-hover;
+      background: awsui.$color-background-input-disabled;
+      color: awsui.$color-text-interactive-hover;
     }
+
     &:active {
-      background: awsui.$color-background-layout-toggle-selected-active;
+      background: awsui.$color-background-control-disabled;
+      color: awsui.$color-text-interactive-hover;
+    }
+
+    &.selected {
+      background: awsui.$color-background-layout-toggle-selected-default;
+      color: awsui.$color-text-layout-toggle-selected;
+
+      &:hover {
+        background: awsui.$color-background-layout-toggle-selected-hover;
+      }
+      &:active {
+        background: awsui.$color-background-layout-toggle-selected-active;
+      }
     }
   }
 }
