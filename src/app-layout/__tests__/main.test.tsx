@@ -49,8 +49,7 @@ describeEachAppLayout({ themes: ['classic', 'refresh-toolbar'], sizes: ['desktop
       },
     ],
   ] as const)('%s', (name, { propName, handlerName, findToggle, findOpenElement, findClose }) => {
-    // TODO: enable after fixing 'tools controlled property'
-    (theme === 'refresh-toolbar' && name === 'tools' ? test.skip : test)('property is controlled', () => {
+    test('property is controlled', () => {
       const onChange = jest.fn();
       const { wrapper, rerender } = renderComponent(<AppLayout {...{ [propName]: false, [handlerName]: onChange }} />);
       findToggle(wrapper).click();

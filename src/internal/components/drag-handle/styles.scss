@@ -85,3 +85,7 @@
     transform: rotate(90deg);
   }
 }
+
+.prevent-pointer {
+  pointer-events: none;
+}

@@ -57,7 +57,7 @@ const InternalMultiselect = React.forwardRef(
       expandToViewport,
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
-      __internalRootRef = null,
+      __internalRootRef,
       autoFocus,
       enableSelectAll,
       ...restProps

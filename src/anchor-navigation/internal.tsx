@@ -19,7 +19,7 @@ export default function InternalAnchorNavigation({
   onFollow,
   onActiveHrefChange,
   activeHref = '',
-  __internalRootRef = null,
+  __internalRootRef,
   scrollSpyOffset = 0,
   ...props
 }: AnchorNavigationProps & InternalBaseComponentProps) {

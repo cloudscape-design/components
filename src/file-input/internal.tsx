@@ -42,7 +42,7 @@ const InternalFileInput = React.forwardRef(
       onChange,
       variant = 'button',
       children,
-      __internalRootRef = null,
+      __internalRootRef,
       __inputClassName,
       __inputNativeAttributes,
       __injectAnalyticsComponentMetadata,

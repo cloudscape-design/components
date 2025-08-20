@@ -89,5 +89,10 @@ const customCssPropertiesList = [
   'styleFocusRingBorderRadius',
   'styleFocusRingBorderWidth',
   'styleFocusRingBoxShadow',
+  // Alert focus ring properties
+  'alertFocusRingBorderColor',
+  'alertFocusRingBorderRadius',
+  'alertFocusRingBorderWidth',
+  'alertFocusRingBoxShadow',
 ];
 module.exports = customCssPropertiesList;
