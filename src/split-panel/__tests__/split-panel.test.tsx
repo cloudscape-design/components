@@ -5,15 +5,11 @@ import { fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import {
-  SplitPanelContextProps,
-  SplitPanelContextProvider,
-} from '../../../lib/components/internal/context/split-panel-context';
-import SplitPanel, { SplitPanelProps } from '../../../lib/components/split-panel';
+import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { testIf } from '../../__tests__/utils';
 import { describeEachAppLayout } from '../../app-layout/__tests__/utils';
+import { defaultProps, renderSplitPanel } from './common';
 import { defaultSplitPanelContextProps } from './helpers';
 
 import styles from '../../../lib/components/split-panel/styles.css.js';
@@ -28,48 +24,6 @@ const onSliderPointerDown = jest.fn();
 jest.mock('../../../lib/components/app-layout/utils/use-pointer-events', () => ({
   usePointerEvents: () => onSliderPointerDown,
 }));
-
-const i18nStrings = {
-  closeButtonAriaLabel: 'closeButtonAriaLabel',
-  openButtonAriaLabel: 'openButtonAriaLabel',
-  preferencesTitle: 'preferencesTitle',
-  preferencesPositionLabel: 'preferencesPositionLabel',
-  preferencesPositionDescription: 'preferencesPositionDescription',
-  preferencesPositionSide: 'preferencesPositionSide',
-  preferencesPositionBottom: 'preferencesPositionBottom',
-  preferencesConfirm: 'preferencesConfirm',
-  preferencesCancel: 'preferencesCancel',
-  resizeHandleAriaLabel: 'resizeHandleAriaLabel',
-};
-
-const defaultProps: SplitPanelProps = {
-  header: 'Split panel header',
-  children: <p>Split panel content</p>,
-  hidePreferencesButton: undefined,
-  i18nStrings,
-};
-
-function renderSplitPanel({
-  props,
-  contextProps,
-  messages = {},
-  modalMessages = {},
-}: {
-  props?: Partial<SplitPanelProps>;
-  contextProps?: Partial<SplitPanelContextProps>;
-  messages?: Record<string, string>;
-  modalMessages?: Record<string, string>;
-} = {}) {
-  const { container } = render(
-    <TestI18nProvider messages={{ 'split-panel': messages, modal: modalMessages }}>
-      <SplitPanelContextProvider value={{ ...defaultSplitPanelContextProps, ...contextProps }}>
-        <SplitPanel {...defaultProps} {...props} />
-      </SplitPanelContextProvider>
-    </TestI18nProvider>
-  );
-  const wrapper = createWrapper(container).findSplitPanel();
-  return { wrapper };
-}
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -281,6 +235,16 @@ describe('Split panel', () => {
           const labelId = sidePanelElem?.getAttribute('aria-labelledby');
 
           expect(sidePanelElem?.querySelector(`#${labelId}`)!.textContent).toBe('Split panel header');
+        });
+
+        test('split panel uses ARIA label if provided instead of being labelled by panel header', () => {
+          const { wrapper } = renderSplitPanel({
+            contextProps: { position: 'side' },
+            props: { closeBehavior, ariaLabel: 'Custom ARIA label' },
+          });
+          const sidePanelElem = wrapper!.findByClassName(styles['drawer-content-side'])?.getElement();
+          expect(sidePanelElem?.getAttribute('aria-labelledby')).toBeFalsy();
+          expect(sidePanelElem?.getAttribute('aria-label')).toBe('Custom ARIA label');
         });
       });
 
