@@ -1,109 +1,43 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
 
-import { Box, Checkbox, DateRangePicker, DateRangePickerProps, FormField } from '~components';
+import React, { useState } from 'react';
 
-import AppContext from '../app/app-context';
-import ScreenshotArea from '../utils/screenshot-area';
-import {
-  applyDisabledReason,
-  checkIfDisabled,
-  DateRangePickerDemoContext,
-  dateRangePickerDemoDefaults,
-  DisabledDate,
-  generatePlaceholder,
-  generateRelativeOptions,
-  i18nStrings,
-  isValid,
-} from './common';
+import { Checkbox, DateRangePicker, FormField, Link, SpaceBetween } from '~components';
+
+import { SimplePage } from '../app/templates';
+import { Settings, useDateRangePickerSettings } from './common';
 
 export default function DatePickerScenario() {
-  const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
-  const [value, setValue] = useState<DateRangePickerProps['value']>(null);
+  const { props, settings, setSettings } = useDateRangePickerSettings({
+    hasValue: false,
+    timeInputFormat: 'hh:mm',
+  });
   const [sticky, setSticky] = useState(false);
-
-  const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
-  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
-  const expandToViewport = urlParams.expandToViewport ?? dateRangePickerDemoDefaults.expandToViewport;
-  const disabledDates =
-    (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
-  const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
-
   return (
-    <Box padding="s">
-      <ScreenshotArea>
-        <h1>Date range picker in small viewport</h1>
-        <button
-          id="toggle-expand-to-viewport"
-          type="button"
-          onClick={() => setUrlParams({ expandToViewport: !expandToViewport })}
-        >
-          {expandToViewport ? 'Disable' : 'Enable'} expandToViewport
-        </button>
-        <button id="toggle-sticky" type="button" onClick={() => setSticky(!sticky)}>
-          {sticky ? 'Disable' : 'Enable'} sticky
-        </button>
-        <label>
-          Disabled dates{' '}
-          <select
-            value={disabledDates}
-            onChange={event =>
-              setUrlParams({
-                disabledDates: event.currentTarget.value as DisabledDate,
-              })
-            }
-          >
-            <option value="none">None (Default)</option>
-            <option value="all">All</option>
-            <option value="only-even">Only even</option>
-            <option value="middle-of-page">Middle of {monthOnly ? 'year' : 'month'}</option>
-            <option value="end-of-page">End of {monthOnly ? 'year' : 'month'}</option>
-            <option value="start-of-page">Start of {monthOnly ? 'year' : 'month'}</option>
-            <option value="overlapping-pages">Overlapping {monthOnly ? 'years' : 'months'}</option>
-          </select>
-        </label>
-        <Checkbox
-          checked={withDisabledReason}
-          onChange={({ detail }) => setUrlParams({ withDisabledReason: detail.checked })}
-        >
-          Disabled reasons
-        </Checkbox>
-        <Checkbox
-          disabled={monthOnly}
-          checked={dateOnly}
-          onChange={({ detail }) => setUrlParams({ dateOnly: detail.checked })}
-        >
-          Date-only
-        </Checkbox>
-        <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
-          Month-only
-        </Checkbox>
-        <button id="focus-dismiss-helper" type="button">
-          Focusable element
-        </button>
+    <SimplePage
+      title="Date range picker: small viewport"
+      settings={
+        <SpaceBetween size="s">
+          <Settings settings={settings} setSettings={setSettings} />
+          <Checkbox checked={sticky} onChange={({ detail }) => setSticky(detail.checked)}>
+            Sticky
+          </Checkbox>
+        </SpaceBetween>
+      }
+      screenshotArea={{}}
+    >
+      <SpaceBetween size="m">
+        <Link id="focusable-before">Focusable element before</Link>
+
         <div style={sticky ? { minBlockSize: '200vh' } : {}}>
           <div style={sticky ? { position: 'sticky', insetBlockStart: 200 } : {}}>
             <FormField label="Date Range Picker field">
-              <DateRangePicker
-                value={value}
-                locale="en-GB"
-                i18nStrings={i18nStrings}
-                placeholder={generatePlaceholder(dateOnly, monthOnly)}
-                onChange={e => setValue(e.detail.value)}
-                relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
-                dateOnly={dateOnly}
-                granularity={monthOnly ? 'month' : 'day'}
-                isValidRange={value => isValid(monthOnly ? 'month' : 'day')(value)}
-                timeInputFormat="hh:mm"
-                expandToViewport={expandToViewport}
-                isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
-                dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
-              />
+              <DateRangePicker {...props} />
             </FormField>
           </div>
         </div>
-      </ScreenshotArea>
-    </Box>
+      </SpaceBetween>
+    </SimplePage>
   );
 }
