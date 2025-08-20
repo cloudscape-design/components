@@ -99,11 +99,17 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * Called when the user uploads files. The event detail object contains the id and files from the file input item.
    */
   onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
+  /**
+   * @awsuiSystem core
+   */
+  style?: ButtonGroupProps.Style;
 }
 
 export interface InternalButtonGroupProps
   extends SomeRequired<ButtonGroupProps, 'dropdownExpandToViewport'>,
-    InternalBaseComponentProps {}
+    InternalBaseComponentProps {
+  style?: ButtonGroupProps.Style;
+}
 
 export namespace ButtonGroupProps {
   export type Variant = 'icon';
@@ -186,5 +192,42 @@ export namespace ButtonGroupProps {
      * Focuses button group item by id.
      */
     focus(itemId: string): void;
+  }
+  export interface Style {
+    root?: {
+      background?: string;
+      borderColor?: string;
+      borderRadius?: string;
+      borderWidth?: string;
+      gap?: string;
+      flexDirection?: 'row' | 'column';
+      paddingBlock?: string;
+      paddingInline?: string;
+      boxShadow?: string;
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+    };
+    item?: {
+      color?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      boxShadow?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+    };
   }
 }
