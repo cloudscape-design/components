@@ -6,7 +6,7 @@ import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import { Box } from '~components';
 import Button from '~components/button';
 import ButtonDropdown from '~components/button-dropdown';
-import awsuiPlugins from '~components/internal/plugins';
+import { awsuiPluginsWidgetized } from '~components/internal/plugins';
 
 const AIDrawer = () => {
   return (
@@ -21,7 +21,7 @@ const AIDrawer = () => {
   );
 };
 
-awsuiPlugins.appLayout.registerDrawer({
+awsuiPluginsWidgetized!.appLayout!.registerDrawer({
   id: 'amazon-q',
   type: 'global-ai',
   resizable: true,

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import { fireNonCancelableEvent } from '../../internal/events';
-import { awsuiPluginsInternal } from '../../internal/plugins/api';
+import { awsuiPluginsInternalWidgetized } from '../../internal/plugins/api';
 import { DrawersToggledListener } from '../../internal/plugins/controllers/drawers';
 import { AppLayoutProps } from '../interfaces';
 import { mapRuntimeConfigToDrawer, RuntimeDrawer } from '../runtime-drawer';
@@ -31,7 +31,7 @@ function useRuntimeAiDrawer(
       return;
     }
 
-    const unsubscribe = awsuiPluginsInternal.appLayout.onAiDrawerRegistered(aiDrawer => {
+    const unsubscribe = awsuiPluginsInternalWidgetized!.appLayout!.onAiDrawerRegistered(aiDrawer => {
       if (!aiDrawer) {
         return;
       }
@@ -71,14 +71,14 @@ function useAiDrawerRuntimeOpenClose(
     if (!isEnabled) {
       return;
     }
-    return awsuiPluginsInternal.appLayout.onAiDrawerOpened(onDrawerOpened);
+    return awsuiPluginsInternalWidgetized!.appLayout!.onAiDrawerOpened(onDrawerOpened);
   }, [isEnabled, onDrawerOpened]);
 
   useEffect(() => {
     if (!isEnabled) {
       return;
     }
-    return awsuiPluginsInternal.appLayout.onAiDrawerClosed(onDrawerClosed);
+    return awsuiPluginsInternalWidgetized!.appLayout!.onAiDrawerClosed(onDrawerClosed);
   }, [isEnabled, onDrawerClosed]);
 }
 
@@ -92,7 +92,7 @@ function useAiDrawerRuntimeResize(isEnabled: boolean, onActiveDrawerResize: (siz
       return;
     }
 
-    return awsuiPluginsInternal.appLayout.onAiDrawerResize(onRuntimeDrawerResize);
+    return awsuiPluginsInternalWidgetized!.appLayout!.onAiDrawerResize(onRuntimeDrawerResize);
   }, [isEnabled, onRuntimeDrawerResize]);
 }
 
