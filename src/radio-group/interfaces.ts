@@ -65,7 +65,6 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
   readOnly?: boolean;
 
   /**
-   * Specifies an object of selectors and properties that are used to apply custom styles.
    * @awsuiSystem core
    */
   style?: RadioGroupProps.Style;
