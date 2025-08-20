@@ -32,6 +32,7 @@ export function SplitPanelContentSide({
   cappedSize,
   openButtonAriaLabel,
   panelHeaderId,
+  ariaLabel,
   onToggle,
   closeBehavior,
 }: SplitPanelContentSideProps) {
@@ -64,6 +65,7 @@ export function SplitPanelContentSide({
         }}
         onClick={() => !isOpen && onToggle()}
         aria-labelledby={panelHeaderId}
+        aria-label={ariaLabel}
         role="region"
       >
         {isOpen ? (
