@@ -6,7 +6,6 @@ import {
   closestCenter,
   CollisionDetection,
   DroppableContainer,
-  KeyboardCoordinateGetter,
   PointerSensor,
   UniqueIdentifier,
   useSensor,
@@ -15,17 +14,8 @@ import {
 import { hasSortableData } from '@dnd-kit/sortable';
 
 import { SortableAreaProps } from './interfaces';
-import { KeyboardSensor } from './keyboard-sensor';
-
-enum KeyboardCode {
-  Space = 'Space',
-  Down = 'ArrowDown',
-  Right = 'ArrowRight',
-  Left = 'ArrowLeft',
-  Up = 'ArrowUp',
-  Esc = 'Escape',
-  Enter = 'Enter',
-}
+import { KeyboardAndUAPCoordinateGetter, KeyboardAndUAPSensor } from './keyboard-sensor';
+import { EventName } from './keyboard-sensor/utilities/events';
 
 // A custom collision detection algorithm is used when using a keyboard to
 // work around an unexpected behavior when reordering items of variable height
@@ -67,9 +57,9 @@ export default function useDragAndDropReorder<Item>({
     if (isKeyboard.current && activeItemId) {
       const currentTargetIndex =
         items.findIndex(item => itemDefinition.id(item) === activeItemId) + positionDelta.current;
-      if (event.key === 'ArrowDown' && currentTargetIndex < items.length - 1) {
+      if ((event.key === 'ArrowDown' || event.type === EventName.CustomDown) && currentTargetIndex < items.length - 1) {
         positionDelta.current += 1;
-      } else if (event.key === 'ArrowUp' && currentTargetIndex > 0) {
+      } else if ((event.key === 'ArrowUp' || event.type === EventName.CustomUp) && currentTargetIndex > 0) {
         positionDelta.current -= 1;
       }
     }
@@ -110,48 +100,52 @@ export default function useDragAndDropReorder<Item>({
     }
   };
 
-  const coordinateGetter: KeyboardCoordinateGetter = (
+  const coordinateGetter: KeyboardAndUAPCoordinateGetter = (
     event,
     { context: { active, collisionRect, droppableRects, droppableContainers } }
   ) => {
-    if (event.code === KeyboardCode.Up || event.code === KeyboardCode.Down) {
-      event.preventDefault();
+    event.preventDefault();
 
-      if (!active || !collisionRect) {
-        return;
-      }
+    if (!active || !collisionRect) {
+      return;
+    }
 
-      const closestId = getClosestId(active);
+    const closestId = getClosestId(active);
 
-      if (closestId !== null) {
-        const activeDroppable = droppableContainers.get(active.id);
-        const newDroppable = droppableContainers.get(closestId);
-        const newRect = newDroppable ? droppableRects.get(newDroppable.id) : null;
-        const newNode = newDroppable?.node.current;
+    if (closestId !== null) {
+      const activeDroppable = droppableContainers.get(active.id);
+      const newDroppable = droppableContainers.get(closestId);
+      const newRect = newDroppable ? droppableRects.get(newDroppable.id) : null;
+      const newNode = newDroppable?.node.current;
 
-        if (newNode && newRect && activeDroppable && newDroppable) {
-          const isAfterActive = isAfter(activeDroppable, newDroppable);
-          const offset = {
-            x: isAfterActive ? collisionRect.width - newRect.width : 0,
-            y: isAfterActive ? collisionRect.height - newRect.height : 0,
-          };
-          const rectCoordinates = {
-            x: newRect.left,
-            y: newRect.top,
-          };
+      if (newNode && newRect && activeDroppable && newDroppable) {
+        const isAfterActive = isAfter(activeDroppable, newDroppable);
+        const offset = {
+          x: isAfterActive ? collisionRect.width - newRect.width : 0,
+          y: isAfterActive ? collisionRect.height - newRect.height : 0,
+        };
+        const rectCoordinates = {
+          x: newRect.left,
+          y: newRect.top,
+        };
 
-          return {
-            x: rectCoordinates.x - offset.x,
-            y: rectCoordinates.y - offset.y,
-          };
-        }
+        return {
+          x: rectCoordinates.x - offset.x,
+          y: rectCoordinates.y - offset.y,
+        };
       }
     }
   };
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        // allow KeyboardSensor (click to display UAP) to take priority
+        // if handle is clicked without movement
+        distance: 1,
+      },
+    }),
+    useSensor(KeyboardAndUAPSensor, {
       coordinateGetter,
       onActivation: () => {
         isKeyboard.current = true;
@@ -166,6 +160,7 @@ export default function useDragAndDropReorder<Item>({
     coordinateGetter,
     handleKeyDown,
     sensors,
+    isKeyboard,
   };
 }
 

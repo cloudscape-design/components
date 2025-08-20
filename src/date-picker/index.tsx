@@ -36,7 +36,7 @@ export { DatePickerProps };
 const DatePicker = React.forwardRef(
   (
     {
-      locale = '',
+      locale,
       startOfWeek,
       isDateEnabled,
       dateDisabledReason,
@@ -61,6 +61,8 @@ const DatePicker = React.forwardRef(
       openCalendarAriaLabel,
       expandToViewport,
       granularity = 'day',
+      format = 'slashed',
+      inputFormat = 'slashed',
       ...restProps
     }: DatePickerProps,
     ref: Ref<DatePickerProps.Ref>
@@ -151,6 +153,9 @@ const DatePicker = React.forwardRef(
             autoFocus={autoFocus}
             onFocus={onDropdownCloseHandler}
             granularity={granularity}
+            locale={locale}
+            format={format}
+            inputFormat={inputFormat}
           />
         </div>
         <div>

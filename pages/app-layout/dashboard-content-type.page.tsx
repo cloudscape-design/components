@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import AppLayout from '~components/app-layout';
+import AppLayout, { AppLayoutProps } from '~components/app-layout';
 import Button from '~components/button';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
@@ -16,9 +16,18 @@ import * as toolsContent from './utils/tools-content';
 
 export default function () {
   const [splitPanelOpen, setSplitPanelOpen] = useState(false);
+  const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
+
+  useEffect(() => {
+    if (splitPanelOpen) {
+      appLayoutRef.current!.focusSplitPanel();
+    }
+  }, [splitPanelOpen]);
+
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
+        ref={appLayoutRef}
         contentType="dashboard"
         ariaLabels={labels}
         breadcrumbs={<Breadcrumbs />}
@@ -33,6 +42,7 @@ export default function () {
           </SpaceBetween>
         }
         splitPanelPreferences={{ position: 'side' }}
+        onSplitPanelPreferencesChange={() => {}}
         splitPanelOpen={splitPanelOpen}
         splitPanel={
           <SplitPanel

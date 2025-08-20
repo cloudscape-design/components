@@ -3,6 +3,7 @@
 
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { DateGranularity } from '../internal/utils/date-time/interfaces';
 
 export interface CalendarProps extends BaseComponentProps {
   /**
@@ -109,7 +110,7 @@ export namespace CalendarProps {
     (date: Date): string;
   }
 
-  export type Granularity = 'day' | 'month';
+  export type Granularity = DateGranularity;
 
   export interface I18nStrings {
     /**

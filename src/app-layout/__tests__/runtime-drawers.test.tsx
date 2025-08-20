@@ -945,11 +945,13 @@ describe('toolbar mode only features', () => {
 
       wrapper.findDrawerTriggerById('test-resizable')!.click();
 
-      expect(globalDrawersWrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveFocus();
-      expect(globalDrawersWrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveAttribute(
-        'aria-label',
-        'drawer resize'
-      );
+      await waitFor(() => {
+        expect(globalDrawersWrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveFocus();
+        expect(globalDrawersWrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveAttribute(
+          'aria-label',
+          'drawer resize'
+        );
+      });
     });
 
     test('close active global drawer by clicking on close button', async () => {
@@ -1173,11 +1175,16 @@ describe('toolbar mode only features', () => {
 
       // globalDrawersWrapper.findDrawerById(drawerId)!.blur() does not trigger the blur event on the active drawer
       fireEvent.blur(globalDrawersWrapper.findDrawerById(drawerId)!.getElement());
-      expect(getByTestId('trigger-button')).not.toHaveFocus();
+
+      await waitFor(() => {
+        expect(getByTestId('trigger-button')).not.toHaveFocus();
+      });
 
       globalDrawersWrapper.findCloseButtonByActiveDrawerId(drawerId)!.click();
 
-      expect(getByTestId('trigger-button')).toHaveFocus();
+      await waitFor(() => {
+        expect(getByTestId('trigger-button')).toHaveFocus();
+      });
     });
 
     test('closes a drawer when closeDrawer is called (global drawer)', async () => {

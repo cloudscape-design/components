@@ -8,6 +8,7 @@ import {
   BreadcrumbsSlotContext,
 } from '../../../app-layout/visual-refresh-toolbar/contexts';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
+import { metrics } from '../../metrics';
 import { awsuiPluginsInternal } from '../api';
 import { BreadcrumbsGlobalRegistration } from '../controllers/breadcrumbs';
 
@@ -24,9 +25,13 @@ function useSetGlobalBreadcrumbsImplementation({
     if (isInToolbar || __disableGlobalization || !isLayoutVisible) {
       return;
     }
-    const registration = awsuiPluginsInternal.breadcrumbs.registerBreadcrumbs(props, isRegistered =>
-      setRegistered(isRegistered ?? true)
-    );
+    const registration = awsuiPluginsInternal.breadcrumbs.registerBreadcrumbs(props, isRegistered => {
+      setRegistered(isRegistered ?? true);
+      if (isRegistered) {
+        const breadcrumbs = props.items.map(item => item.text).join(' > ');
+        metrics.sendOpsMetricObject('awsui-global-breadcrumbs-used', { breadcrumbs });
+      }
+    });
     registrationRef.current = registration;
 
     return () => {

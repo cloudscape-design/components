@@ -3,22 +3,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import './widget-new-mocks'; // should be imported before components to activate mocks
 import AppLayout from '../../../lib/components/app-layout';
 import { describeEachAppLayout, testDrawer } from './utils';
+import { renderedProps } from './widget-new-mocks';
 
-const renderedProps = new Map();
-function createWidgetizedComponentMock(Implementation: React.ComponentType) {
-  return () => {
-    return function Widgetized(props: any) {
-      renderedProps.set(Implementation, props);
-      return null;
-    };
-  };
-}
-
-jest.mock('../../../lib/components/internal/widgets', () => ({
-  createWidgetizedComponent: createWidgetizedComponentMock,
-}));
 jest.mock('@cloudscape-design/component-toolkit/internal', () => {
   let counter = 0;
   return {

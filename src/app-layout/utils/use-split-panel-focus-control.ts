@@ -25,18 +25,20 @@ export function useSplitPanelFocusControl(dependencies: DependencyList): SplitPa
   const lastInteraction = useRef<SplitPanelLastInteraction | null>(null);
 
   useEffect(() => {
-    switch (lastInteraction.current?.type) {
-      case 'open':
-        refs.slider.current?.focus();
-        break;
-      case 'close':
-        refs.toggle.current?.focus();
-        break;
-      case 'position':
-        refs.preferences.current?.focus();
-        break;
-    }
-    lastInteraction.current = null;
+    Promise.resolve().then(() => {
+      switch (lastInteraction.current?.type) {
+        case 'open':
+          refs.slider.current?.focus();
+          break;
+        case 'close':
+          refs.toggle.current?.focus();
+          break;
+        case 'position':
+          refs.preferences.current?.focus();
+          break;
+      }
+      lastInteraction.current = null;
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies);
 

@@ -12,6 +12,7 @@ import buttonTriggerStyles from '../../../internal/components/button-trigger/sty
 import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import multiselectStyles from '../../../multiselect/styles.selectors.js';
+import selectPartsStyles from '../../../select/parts/styles.selectors.js';
 import tokenGroupStyles from '../../../token-group/styles.selectors.js';
 
 export default class MultiselectWrapper extends DropdownHostComponentWrapper {
@@ -36,6 +37,10 @@ export default class MultiselectWrapper extends DropdownHostComponentWrapper {
 
   findPlaceholder(): ElementWrapper | null {
     return this.findByClassName(buttonTriggerStyles.placeholder);
+  }
+
+  findInlineLabel(): ElementWrapper | null {
+    return this.findByClassName(selectPartsStyles['inline-label']);
   }
 
   /**

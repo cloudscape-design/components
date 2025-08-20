@@ -54,7 +54,7 @@ const AppLayoutToolbar = React.forwardRef(
         );
       }
     }
-    const { __internalRootRef } = useBaseComponent<HTMLDivElement>(
+    const { __internalRootRef } = useBaseComponent(
       'AppLayoutToolbar',
       {
         props: {

@@ -5,6 +5,8 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 
+import styles from '../../../lib/components/checkbox/styles.selectors.js';
+
 const wrapper = createWrapper();
 
 class CheckboxPage extends BasePageObject {}
@@ -24,5 +26,19 @@ test(
     await expect(
       page.isSelected(wrapper.find('#formfield-with-checkbox').findCheckbox().find('input').toSelector())
     ).resolves.toBe(false);
+  })
+);
+
+test(
+  'style api focus state',
+  useBrowser(async browser => {
+    await browser.url('#/light/checkbox/style-custom/');
+    const page = new CheckboxPage(browser);
+
+    await page.click('[data-testid="1"]');
+    await page.keys('Tab');
+    await expect((await browser.$(`.${styles.outline}`).getCSSProperty('box-shadow', '::before')).value).toBe(
+      'rgb(4,125,149)0px0px0px3px'
+    );
   })
 );

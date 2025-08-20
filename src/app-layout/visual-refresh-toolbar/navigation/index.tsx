@@ -9,7 +9,7 @@ import { InternalButton } from '../../../button/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
-import { NotificationsSlot } from '../skeleton/slot-wrappers';
+import { NotificationsSlot } from '../skeleton/slots';
 
 import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';

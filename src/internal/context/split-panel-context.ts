@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { createContext, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { SplitPanelFocusControlRefs } from '../../app-layout/utils/use-split-panel-focus-control';
+import { awsuiPluginsInternal } from '../plugins/api';
 
 export interface SplitPanelSideToggleProps {
   displayed: boolean;
@@ -38,12 +39,16 @@ export interface SplitPanelContextProps extends SplitPanelContextBaseProps {
   animationDisabled?: boolean;
 }
 
-const SplitPanelContext = createContext<SplitPanelContextProps | null>(null);
+const AppLayoutWidgetSplitPanelContext =
+  awsuiPluginsInternal.sharedReactContexts.createContext<SplitPanelContextProps | null>(
+    React,
+    'AppLayoutWidgetSplitPanelContext'
+  );
 
-export const SplitPanelContextProvider = SplitPanelContext.Provider;
+export const SplitPanelContextProvider = AppLayoutWidgetSplitPanelContext.Provider;
 
 export function useSplitPanelContext() {
-  const ctx = useContext(SplitPanelContext);
+  const ctx = useContext(AppLayoutWidgetSplitPanelContext);
   if (!ctx) {
     throw new Error('Split panel can only be used inside app layout');
   }

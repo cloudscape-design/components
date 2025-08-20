@@ -8,6 +8,10 @@ import RadioGroup, { RadioGroupProps } from '../../../lib/components/radio-group
 import createWrapper from '../../../lib/components/test-utils/dom';
 import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-group/radio-button';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
+import customCssProps from '../../internal/generated/custom-css-properties';
+
+import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
+import styles from '../../../lib/components/radio-group/styles.selectors.js';
 
 const defaultItems: RadioGroupProps.RadioButtonDefinition[] = [
   { value: 'val1', label: 'Option one' },
@@ -381,4 +385,61 @@ describe('table grid navigation support', () => {
     expect(getRadioInput('#radio1')).toHaveAttribute('tabIndex', '0');
     expect(getRadioInput('#radio2')).toHaveAttribute('tabIndex', '-1');
   });
+});
+
+test('all style api properties', function () {
+  const items = [
+    {
+      value: 'first',
+      label: 'First choice',
+      description: 'This is the first option.',
+    },
+  ];
+
+  const { wrapper } = renderRadioGroup(
+    <RadioGroup
+      value={null}
+      items={items}
+      style={{
+        input: {
+          stroke: {
+            default: 'green',
+          },
+          fill: {
+            default: 'blue',
+          },
+          focusRing: {
+            borderColor: 'orange',
+            borderRadius: '2px',
+            borderWidth: '1px',
+          },
+        },
+        label: {
+          color: {
+            default: 'brown',
+          },
+        },
+        description: {
+          color: {
+            default: 'yellow',
+          },
+        },
+      }}
+    />
+  );
+
+  const outerCircle = wrapper.findByClassName(styles['styled-circle-border'])!.getElement();
+  const innerCircle = wrapper.findByClassName(styles['styled-circle-fill'])!.getElement();
+  const label = wrapper.findByClassName(abstractSwitchStyles.label)!.getElement();
+  const description = wrapper.findByClassName(abstractSwitchStyles.description)!.getElement();
+  const control = wrapper.findByClassName(abstractSwitchStyles.control)!.getElement();
+
+  expect(getComputedStyle(outerCircle).getPropertyValue('fill')).toBe('blue');
+  expect(getComputedStyle(outerCircle).getPropertyValue('stroke')).toBe('green');
+  expect(getComputedStyle(innerCircle).getPropertyValue('stroke')).toBe('blue');
+  expect(getComputedStyle(label).getPropertyValue('color')).toBe('brown');
+  expect(getComputedStyle(description).getPropertyValue('color')).toBe('yellow');
+  expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('orange');
+  expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('2px');
+  expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('1px');
 });

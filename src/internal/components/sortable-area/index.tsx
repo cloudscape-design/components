@@ -12,6 +12,7 @@ import { Portal } from '@cloudscape-design/component-toolkit/internal';
 import { fireNonCancelableEvent } from '../../events';
 import { joinStrings } from '../../utils/strings';
 import { SortableAreaProps } from './interfaces';
+import { EventName } from './keyboard-sensor/utilities/events';
 import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
 
@@ -27,10 +28,11 @@ export default function SortableArea<Item>({
   disableReorder,
   i18nStrings,
 }: SortableAreaProps<Item>) {
-  const { activeItemId, setActiveItemId, collisionDetection, handleKeyDown, sensors } = useDragAndDropReorder({
-    items,
-    itemDefinition,
-  });
+  const { activeItemId, setActiveItemId, collisionDetection, handleKeyDown, sensors, isKeyboard } =
+    useDragAndDropReorder({
+      items,
+      itemDefinition,
+    });
   const activeItem = activeItemId ? items.find(item => itemDefinition.id(item) === activeItemId) : null;
   const isDragging = activeItemId !== null;
   const announcements = useLiveAnnouncements({ items, itemDefinition, isDragging, ...i18nStrings });
@@ -70,6 +72,7 @@ export default function SortableArea<Item>({
             key={itemDefinition.id(item)}
             item={item}
             itemDefinition={itemDefinition}
+            showDirectionButtons={item === activeItem && isKeyboard.current}
             renderItem={renderItem}
             onKeyDown={handleKeyDown}
             dragHandleAriaLabel={i18nStrings?.dragHandleAriaLabel}
@@ -84,6 +87,7 @@ export default function SortableArea<Item>({
           className={clsx(styles['drag-overlay'], styles[`drag-overlay-${getBorderRadiusVariant(itemDefinition)}`])}
           dropAnimation={null}
           style={{ zIndex: 5000 }}
+          transition={isKeyboard.current ? 'transform 250ms' : ''}
         >
           {activeItem &&
             renderItem({
@@ -126,12 +130,14 @@ function DraggableItem<Item>({
   item,
   itemDefinition,
   dragHandleAriaLabel,
+  showDirectionButtons,
   onKeyDown,
   renderItem,
 }: {
   item: Item;
   itemDefinition: SortableAreaProps.ItemDefinition<Item>;
   dragHandleAriaLabel?: string;
+  showDirectionButtons: boolean;
   onKeyDown: (event: React.KeyboardEvent) => void;
   renderItem: (props: SortableAreaProps.RenderItemProps<Item>) => React.ReactNode;
 }) {
@@ -157,6 +163,7 @@ function DraggableItem<Item>({
     isDragging && clsx(styles.placeholder, styles[`placeholder-${getBorderRadiusVariant(itemDefinition)}`]),
     isSorting && styles.sorting
   );
+  const dragHandleRef = useRef<HTMLElement>(null);
   return (
     <>
       {renderItem({
@@ -173,6 +180,23 @@ function DraggableItem<Item>({
           ariaLabel: joinStrings(dragHandleAriaLabel, itemDefinition.label(item)) ?? '',
           ariaDescribedby: attributes['aria-describedby'],
           disabled: attributes['aria-disabled'],
+          triggerMode: 'controlled',
+          controlledShowButtons: showDirectionButtons,
+          ref: dragHandleRef,
+          directions: showDirectionButtons
+            ? {
+                'block-start': 'active',
+                'block-end': 'active',
+              }
+            : undefined,
+          onDirectionClick: direction => {
+            const event = new Event(direction === 'block-start' ? EventName.CustomUp : EventName.CustomDown, {
+              bubbles: true,
+              cancelable: true,
+            });
+            onKeyDown(event as any);
+            dragHandleRef.current?.dispatchEvent(event);
+          },
         },
       })}
     </>
