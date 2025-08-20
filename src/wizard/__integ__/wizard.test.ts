@@ -32,17 +32,6 @@ class WizardPageObject extends BasePageObject {
   getFormFieldErrorSelector(selector?: string) {
     return wizardWrapper.findContent().findFormField(selector).findError().toSelector();
   }
-  async type(text: string) {
-    // `await this.keys(text);` doesn't work as it key presses too quickly and doesn't
-    // allow the separator to be appended so the cursor position gets messed up.
-    for (let k = 0; k < text.length; k++) {
-      await this.keys(text[k]);
-    }
-  }
-  // gh pr create
-  // takes u to interactive interface
-  // will ask u if u want to be in draft mode
-  // name as "feat: <name of feature>"
 }
 
 function setupTest(testFn: (page: WizardPageObject) => Promise<void>, url?: string) {
@@ -61,7 +50,7 @@ describe('Wizard keyboard navigation', () => {
       const firstNameInput = page.getInputSelector('[data-testid="first-name-input"]');
 
       await page.click(firstNameInput);
-      await page.keys('Enter');
+      await page.keys(['Enter']);
 
       const errorText = page.getFormFieldErrorSelector('[data-testid="first-name-form-field"]');
       await expect(page.getText(errorText)).resolves.toContain('This field cannot be left blank.');
@@ -74,8 +63,8 @@ describe('Wizard keyboard navigation', () => {
       const firstNameInput = page.getInputSelector('[data-testid="first-name-input"]');
 
       await page.click(firstNameInput);
-      await page.type('MyFirstName');
-      await page.keys('Enter');
+      await page.keys(['MyFirstName']);
+      await page.keys(['Enter']);
 
       await expect(page.getText(`[data-testid="result-text"]`)).resolves.toContain(
         'Navigate action was called. Starting index: 0. Ending index: 1'
@@ -89,12 +78,12 @@ describe('Wizard keyboard navigation', () => {
       const firstNameInput = page.getInputSelector('[data-testid="first-name-input"]');
 
       await page.click(firstNameInput);
-      await page.type('MyFirstName');
-      await page.keys('Enter');
+      await page.keys(['MyFirstName']);
+      await page.keys(['Enter']);
 
       const lastNameInput = page.getInputSelector('[data-testid="last-name-input"]');
       await page.click(lastNameInput);
-      await page.keys('Enter');
+      await page.keys(['Enter']);
 
       const errorText = page.getFormFieldErrorSelector('[data-testid="last-name-form-field"]');
       await expect(page.getText(errorText)).resolves.toContain('This field cannot be left blank.');
@@ -102,8 +91,8 @@ describe('Wizard keyboard navigation', () => {
       await expect(page.getText(`[data-testid="result-text"]`)).resolves.not.toContain('Submit action was called.');
 
       await page.click(lastNameInput);
-      await page.type('MyLastName');
-      await page.keys('Enter');
+      await page.keys(['MyLastName']);
+      await page.keys(['Enter']);
 
       await expect(page.getText(`[data-testid="result-text"]`)).resolves.toContain('Submit action was called.');
     }, '/#/light/wizard/native-form-submit')
