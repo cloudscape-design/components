@@ -62,29 +62,31 @@ export default function DateRangePickerCalendarPage() {
   let i = -1;
   return (
     <PermutationsPage title="Date range picker permutations: month calendar" i18n={{}}>
-      <PermutationsView
-        permutations={permutations}
-        render={permutation => {
-          i++;
-          return (
-            <div style={{ insetBlockStart: `${i * 400}px`, position: 'relative' }}>
-              <Dropdown
-                stretchWidth={true}
-                stretchHeight={true}
-                stretchToTriggerWidth={false}
-                open={true}
-                onDropdownClose={() => {}}
-                onMouseDown={() => {}}
-                trigger={null}
-              >
-                <Box padding="m">
-                  <Calendar {...permutation} />
-                </Box>
-              </Dropdown>
-            </div>
-          );
-        }}
-      />
+      <div style={{ blockSize: `${(1 + permutations.length) * 400}px` }}>
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => {
+            i++;
+            return (
+              <div style={{ insetBlockStart: `${i * 400}px`, position: 'relative' }}>
+                <Dropdown
+                  stretchWidth={true}
+                  stretchHeight={true}
+                  stretchToTriggerWidth={false}
+                  open={true}
+                  onDropdownClose={() => {}}
+                  onMouseDown={() => {}}
+                  trigger={null}
+                >
+                  <Box padding="m">
+                    <Calendar {...permutation} />
+                  </Box>
+                </Dropdown>
+              </div>
+            );
+          }}
+        />
+      </div>
     </PermutationsPage>
   );
 }
