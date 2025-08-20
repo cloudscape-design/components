@@ -28,7 +28,7 @@ export function getButtonGroupStyles(style: ButtonGroupProps['style']) {
   };
 }
 
-export function getButtonGroupItemStyles(style: ButtonGroupProps['style']) {
+export function getButtonGroupItemStyles(style: ButtonGroupProps['style']): React.CSSProperties | undefined {
   if (SYSTEM !== 'core' || !style?.item) {
     return undefined;
   }

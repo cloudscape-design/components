@@ -136,7 +136,7 @@ const ItemElement = forwardRef(
           onShowTooltipHard(true);
         }}
         onBlur={() => onShowTooltipHard(false)}
-        style={itemStylePropertiesAndVariables as React.CSSProperties}
+        style={itemStylePropertiesAndVariables}
         {...(item.type === 'menu-dropdown' || (item as ButtonGroupProps.IconButton).disabled
           ? {}
           : getAnalyticsMetadataAttribute({ detail: { position, id: item.id } }))}
