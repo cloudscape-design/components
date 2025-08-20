@@ -3364,6 +3364,13 @@ Note: Manual filtering doesn't disable match highlighting.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
+      "description": "Defines whether entered text option is shown as the first option in the dropdown when value is non-empty.",
+      "name": "hideEnteredTextOption",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -3512,13 +3519,6 @@ This is required to provide a good screen reader experience. For more informatio
       "name": "selectedAriaLabel",
       "optional": true,
       "type": "string",
-    },
-    {
-      "defaultValue": "true",
-      "description": "Defines whether entered text option is shown as the first option in the dropdown when value is non-empty.",
-      "name": "showEnteredTextOption",
-      "optional": true,
-      "type": "boolean",
     },
     {
       "defaultValue": "'finished'",

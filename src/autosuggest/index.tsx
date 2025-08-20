@@ -20,7 +20,7 @@ const Autosuggest = React.forwardRef(
       filteringType = 'auto',
       statusType = 'finished',
       disableBrowserAutocorrect = false,
-      showEnteredTextOption = true,
+      hideEnteredTextOption = false,
       ...props
     }: AutosuggestProps,
     ref: React.Ref<AutosuggestProps.Ref>
@@ -33,7 +33,7 @@ const Autosuggest = React.forwardRef(
         filteringType,
         readOnly: props.readOnly,
         virtualScroll: props.virtualScroll,
-        showEnteredTextOption,
+        hideEnteredTextOption,
       },
     });
 
@@ -52,7 +52,7 @@ const Autosuggest = React.forwardRef(
         filteringType={filteringType}
         statusType={statusType}
         disableBrowserAutocorrect={disableBrowserAutocorrect}
-        showEnteredTextOption={showEnteredTextOption}
+        hideEnteredTextOption={hideEnteredTextOption}
         {...externalProps}
         {...baseComponentProps}
         ref={ref}

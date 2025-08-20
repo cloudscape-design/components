@@ -84,7 +84,7 @@ export interface AutosuggestProps
   /**
    * Defines whether entered text option is shown as the first option in the dropdown when value is non-empty.
    */
-  showEnteredTextOption?: boolean;
+  hideEnteredTextOption?: boolean;
 
   /**
    * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
