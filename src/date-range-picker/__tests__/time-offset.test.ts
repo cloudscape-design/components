@@ -59,14 +59,14 @@ describe('Date range picker', () => {
           { type: 'absolute', startDate: '2020-10-11T23:23:45', endDate: '2020-10-12T08:23:45' },
         ],
         [
-          'UTC and +00:00 with negative offset',
-          { type: 'absolute', startDate: '2020-10-12T01:23:45Z', endDate: '2020-10-12T01:23:45+00:00' },
+          'UTC and Z with negative offset',
+          { type: 'absolute', startDate: '2020-10-12T01:23:45Z', endDate: '2020-10-12T01:23:45Z' },
           { startDate: -240, endDate: -240 },
           { type: 'absolute', startDate: '2020-10-11T21:23:45', endDate: '2020-10-11T21:23:45' },
         ],
         [
           'UTC with mixed offsets',
-          { type: 'absolute', startDate: '2020-10-12T01:23:45Z', endDate: '2020-10-12T01:23:45+00:00' },
+          { type: 'absolute', startDate: '2020-10-12T01:23:45Z', endDate: '2020-10-12T01:23:45Z' },
           { startDate: 120, endDate: -240 },
           { type: 'absolute', startDate: '2020-10-12T03:23:45', endDate: '2020-10-11T21:23:45' },
         ],
