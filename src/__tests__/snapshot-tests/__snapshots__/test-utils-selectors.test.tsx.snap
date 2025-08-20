@@ -564,6 +564,10 @@ exports[`test-utils selectors 1`] = `
   ],
   "split-panel": [
     "awsui_close-button_rjqu5",
+    "awsui_header-actions_rjqu5",
+    "awsui_header-before_rjqu5",
+    "awsui_header-description_rjqu5",
+    "awsui_header-info_rjqu5",
     "awsui_header-text_rjqu5",
     "awsui_open-button_rjqu5",
     "awsui_open-position-bottom_rjqu5",
