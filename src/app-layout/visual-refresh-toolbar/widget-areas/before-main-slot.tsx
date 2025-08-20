@@ -33,7 +33,6 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
     expandedDrawerId,
     setExpandedDrawerId,
     navigationAnimationDisabled,
-    placement,
     activeAiDrawerId,
     aiDrawerExpandedMode,
     aiDrawer,
@@ -64,11 +63,6 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
             styles['ai-drawer'],
             (drawerExpandedMode || drawerExpandedModeInChildLayout) && !aiDrawerExpandedMode && styles.hidden
           )}
-          style={{
-            ...(!isMobile && {
-              blockSize: `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
-            }),
-          }}
         >
           <ActiveDrawersContext.Provider value={activeAiDrawer ? [activeAiDrawer.id] : []}>
             {(!!activeAiDrawerId || (aiDrawer?.preserveInactiveContent && wasAiDrawerOpenRef.current)) && (
