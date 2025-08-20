@@ -60,7 +60,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
     expandedDrawerId,
     setExpandedDrawerId,
   } = aiDrawerProps;
-  const { verticalOffsets } = appLayoutInternals;
+  const { verticalOffsets, placement } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeAiDrawer?.id;
 
@@ -86,7 +86,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
   const wasExpanded = usePrevious(isExpanded);
   const animationDisabled =
     (activeAiDrawer?.defaultActive && !drawersOpenQueue?.includes(activeAiDrawer.id)) || (wasExpanded && !isExpanded);
-  const drawerHeight = `calc(100vh - ${verticalOffsets.toolbar}}px)`;
+  const drawerHeight = `calc(100vh - ${verticalOffsets.toolbar + placement.insetBlockEnd}px)`;
   // disable resizing when the drawer is at its minimum width in a "squeezed" state
   // (window is between mobile and desktop sizes). At this point, the drawer can't be
   // resized in either direction, so we disable the resize handler
@@ -121,6 +121,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
           }}
           style={{
             blockSize: drawerHeight,
+            insetBlockStart: `${placement.insetBlockStart}px`,
             ...(!isMobile && {
               [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
             }),
