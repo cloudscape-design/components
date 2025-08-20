@@ -58,11 +58,11 @@ export default class DateRangePickerPage extends BasePageObject {
   }
 
   async focusPrevElement() {
-    await this.click('#focus-dismiss-helper');
+    await this.click('#focusable-before');
   }
 
   isPrevElementFocused() {
-    return this.isFocused('#focus-dismiss-helper');
+    return this.isFocused('#focusable-before');
   }
 
   getHeaderContent() {
