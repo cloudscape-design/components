@@ -3,7 +3,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
 import { SizeControlProps } from '../app-layout/utils/interfaces';
@@ -45,6 +45,10 @@ export function SplitPanelImplementation({
 }: SplitPanelImplementationProps) {
   const isRefresh = useVisualRefresh();
   const isToolbar = useAppLayoutToolbarDesignEnabled();
+
+  if (!header && !headerBefore) {
+    warnOnce('SplitPanel', 'You must provide either `header` or `headerBefore`.');
+  }
 
   const {
     position,

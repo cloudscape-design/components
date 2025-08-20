@@ -6,6 +6,18 @@ import { describeEachAppLayout } from '../../app-layout/__tests__/utils';
 import { renderSplitPanel } from './common';
 
 describe('Split panel: Header slots', () => {
+  test('warns when neither header nor headerBefore are provided', () => {
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    try {
+      renderSplitPanel({ props: { header: undefined } });
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        '[AwsUi] [SplitPanel] You must provide either `header` or `headerBefore`.'
+      );
+    } finally {
+      consoleWarnSpy.mockRestore();
+    }
+  });
+
   describeEachAppLayout({ sizes: ['desktop', 'mobile'] }, () => {
     test('renders headerActions', () => {
       const { wrapper } = renderSplitPanel({
