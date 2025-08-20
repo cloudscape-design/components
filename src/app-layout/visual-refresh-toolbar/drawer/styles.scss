@@ -242,6 +242,10 @@ $drawer-resize-handle-size: awsui.$space-m;
     grid-template-columns: 1fr awsui.$space-xs;
     background: constants.$ai-drawer-background;
 
+    @include mobile-only {
+      grid-template-columns: 1fr;
+    }
+
     > .drawer-slider {
       grid-column: 2;
     }
@@ -261,8 +265,11 @@ $drawer-resize-handle-size: awsui.$space-m;
     > .drawer-content-container {
       min-inline-size: auto;
       grid-column: 1 / span 1;
-      border-start-end-radius: awsui.$space-xxs;
       background-color: awsui.$color-background-layout-panel-content;
+
+      @include desktop-only {
+        border-start-end-radius: awsui.$space-xxs;
+      }
 
       > .drawer-content {
         > .drawer-content-header {
