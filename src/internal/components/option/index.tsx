@@ -31,6 +31,8 @@ const Option = ({
   highlightedOption = false,
   selectedOption = false,
   labelClassName,
+  labelContainerRef,
+  labelRef,
   ...restProps
 }: OptionProps) => {
   if (!option) {
@@ -80,13 +82,19 @@ const Option = ({
       {icon}
       <span className={styles.content}>
         <span className={clsx(styles['label-content'], labelClassName)}>
-          <Label
-            label={option.label ?? option.value}
-            prefix={option.__labelPrefix}
-            highlightText={highlightText}
-            triggerVariant={triggerVariant}
-          />
-          <LabelTag labelTag={option.labelTag} highlightText={highlightText} triggerVariant={triggerVariant} />
+          {option.labelContent ?? (
+            <>
+              <Label
+                labelContainerRef={labelContainerRef}
+                labelRef={labelRef}
+                label={option.label ?? option.value}
+                prefix={option.__labelPrefix}
+                highlightText={highlightText}
+                triggerVariant={triggerVariant}
+              />
+              <LabelTag labelTag={option.labelTag} highlightText={highlightText} triggerVariant={triggerVariant} />
+            </>
+          )}
         </span>
         <Description
           description={option.description}

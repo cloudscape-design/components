@@ -9,7 +9,7 @@
 @use './constants' as constants;
 @use './mixins.scss' as mixins;
 
-.action-button {
+.dismiss-button {
   margin-block-end: 0;
   margin-inline-start: awsui.$space-xxs;
   border-block: awsui.$border-width-field solid transparent;
@@ -40,19 +40,26 @@
   }
 }
 
-.action-icon-inline {
+.dismiss-icon-inline {
   // !important is essential here to remove padding from the icon
   padding-block: 0 !important;
   inline-size: constants.$icon-width;
   max-block-size: constants.$icon-width;
 }
 
-.action-button-popover {
-  line-height: 18px;
-}
-.action-button-popover-trigger {
+.icon {
+  padding-inline-end: awsui.$space-xs;
+  align-self: center;
   display: flex;
-  align-items: start;
+  flex-shrink: 0;
+
+  &-inline {
+    padding-inline-end: awsui.$space-xxs;
+  }
+}
+
+.icon-size-big {
+  padding-block-start: awsui.$space-option-icon-big-top;
 }
 
 .token {
@@ -60,6 +67,10 @@
   display: flex;
   flex-direction: column;
   gap: awsui.$space-xxs;
+
+  &-min-width {
+    min-inline-size: min-content;
+  }
 }
 
 .token-inline {
@@ -67,13 +78,16 @@
   max-inline-size: 100%;
   border-block: awsui.$border-width-field solid transparent;
   border-inline: awsui.$border-width-field solid transparent;
+  vertical-align: middle;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(0px);
   }
 
   &-min-width {
-    &-icon-and-action {
+    min-inline-size: max-content;
+
+    &-icon-and-dismiss {
       min-inline-size: calc(
         constants.$token-character-limit + constants.$token-icon-width + constants.$token-action-button-width +
           (awsui.$space-scaled-xxs * 2)
@@ -86,7 +100,7 @@
       );
     }
 
-    &-action {
+    &-dismiss {
       min-inline-size: calc(
         constants.$token-character-limit + constants.$token-action-button-width + (awsui.$space-scaled-xxs * 2)
       );
@@ -117,50 +131,22 @@
   padding-inline-end: 0;
 }
 
-.token-box-readonly {
+.token-box-readonly,
+.token-box-disabled {
   border-color: awsui.$color-border-input-disabled;
   background-color: awsui.$color-background-container-content;
   pointer-events: none;
 
-  > .action-button {
+  > .dismiss-button {
     color: awsui.$color-text-button-inline-icon-disabled;
 
     &:hover {
-      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
       cursor: initial;
       color: awsui.$color-text-button-inline-icon-disabled;
     }
   }
 }
-.token-box-disabled.token-box-disabled {
-  border-color: awsui.$color-border-control-disabled;
-  background-color: awsui.$color-background-container-content;
+
+.token-box-disabled {
   color: awsui.$color-text-disabled;
-  pointer-events: none;
-
-  > .action-button {
-    color: awsui.$color-text-button-inline-icon-disabled;
-
-    &:hover {
-      cursor: initial;
-      color: awsui.$color-text-button-inline-icon-disabled;
-    }
-  }
-}
-
-.popover-trigger-wrapper {
-  inline-size: 100%;
-
-  &-inline {
-    max-block-size: constants.$token-max-height-inline;
-  }
-}
-
-.popover-trigger-inline-button {
-  max-block-size: constants.$token-max-height-inline;
-  text-underline-offset: constants.$trigger-underline-offset-inline;
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(-1px);
-  }
 }
