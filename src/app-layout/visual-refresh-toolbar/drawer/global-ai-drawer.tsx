@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
-import { Transition } from 'react-transition-group';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
@@ -60,6 +59,18 @@ export function AppLayoutGlobalAiDrawerImplementation({
     expandedDrawerId,
     setExpandedDrawerId,
   } = aiDrawerProps;
+  const [state, setState] = useState<'entered' | ''>('');
+
+  useEffect(() => {
+    if (show) {
+      requestAnimationFrame(() => {
+        setState('entered');
+      });
+    }
+    return () => {
+      setState('');
+    };
+  }, [show]);
   const { verticalOffsets, placement } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeAiDrawer?.id;
@@ -92,110 +103,106 @@ export function AppLayoutGlobalAiDrawerImplementation({
   const isResizingDisabled = maxAiDrawerSize < activeAiDrawerSize;
 
   return (
-    <Transition nodeRef={drawerRef} in={!!activeAiDrawer || isExpanded} appear={true} timeout={0}>
-      {state => (
-        <aside
-          id={activeAiDrawer?.id}
-          aria-hidden={!activeAiDrawer}
-          aria-label={computedAriaLabels.content}
-          className={clsx(
-            styles.drawer,
-            styles['ai-drawer'],
-            !animationDisabled && isExpanded && styles['with-expanded-motion'],
-            !show && styles['drawer-hidden'],
-            {
-              [sharedStyles['with-motion-horizontal']]: !animationDisabled,
-              [testutilStyles['active-drawer']]: show,
-              [styles['drawer-hidden']]: !show,
-              [testutilStyles['drawer-closed']]: !activeAiDrawer,
-              [styles['drawer-expanded']]: isExpanded,
-            }
-          )}
-          ref={drawerRef}
-          onBlur={e => {
-            if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-              aiDrawerFocusControl?.loseFocus();
-            }
-          }}
-          style={{
-            blockSize: drawerHeight,
-            insetBlockStart: `${placement.insetBlockStart}px`,
-            ...(!isMobile && {
-              [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
-            }),
-          }}
-          data-testid={activeDrawerId && `awsui-app-layout-drawer-${activeDrawerId}`}
-        >
-          {!isMobile && activeAiDrawer?.resizable && !isExpanded && (
-            <div className={styles['drawer-slider']}>
-              <PanelResizeHandle
-                ref={aiDrawerFocusControl?.refs.slider}
-                position="side-start"
-                className={clsx(testutilStyles['drawers-slider'], styles['ai-drawer-slider-handle'])}
-                ariaLabel={activeAiDrawer?.ariaLabels?.resizeHandle}
-                tooltipText={activeAiDrawer?.ariaLabels?.resizeHandleTooltipText}
-                ariaValuenow={resizeProps.relativeSize}
-                onKeyDown={resizeProps.onKeyDown}
-                onPointerDown={resizeProps.onPointerDown}
-                onDirectionClick={resizeProps.onDirectionClick}
-                disabled={isResizingDisabled}
-              />
-            </div>
-          )}
-          <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
-            <div className={styles['drawer-content']}>
-              <header className={styles['drawer-content-header']}>
-                <div className={styles['drawer-content-header-content']}>
-                  {activeAiDrawer?.header ?? <div />}
-                  <div className={styles['drawer-actions']}>
-                    {!isMobile && activeAiDrawer?.isExpandable && (
-                      <div className={styles['drawer-expanded-mode-button']}>
-                        <InternalButton
-                          ariaLabel={activeAiDrawer?.ariaLabels?.expandedModeButton}
-                          className={testutilStyles['active-drawer-expanded-mode-button']}
-                          formAction="none"
-                          ariaExpanded={isExpanded}
-                          iconName={isExpanded ? 'shrink' : 'expand'}
-                          onClick={() => setExpandedDrawerId(isExpanded ? null : activeDrawerId!)}
-                          variant="icon"
-                          analyticsAction={isExpanded ? 'expand' : 'collapse'}
-                        />
-                      </div>
-                    )}
-                    <div className={clsx(styles['drawer-close-button'])}>
-                      <InternalButton
-                        ariaLabel={computedAriaLabels.closeButton}
-                        className={clsx({
-                          [testutilStyles['active-drawer-close-button']]: activeDrawerId,
-                        })}
-                        formAction="none"
-                        iconName={isMobile ? 'close' : 'angle-left'}
-                        onClick={() => onActiveAiDrawerChange?.(null, { initiatedByUserAction: true })}
-                        ref={aiDrawerFocusControl?.refs.close}
-                        variant="icon"
-                        analyticsAction="close"
-                      />
-                    </div>
-                  </div>
-                </div>
-                {!isMobile && isExpanded && activeAiDrawer?.ariaLabels?.exitExpandedModeButton && (
-                  <div className={styles['drawer-back-to-console-button']}>
+    <aside
+      id={activeAiDrawer?.id}
+      aria-hidden={!activeAiDrawer}
+      aria-label={computedAriaLabels.content}
+      className={clsx(
+        styles.drawer,
+        styles['ai-drawer'],
+        !animationDisabled && isExpanded && styles['with-expanded-motion'],
+        !show && styles['drawer-hidden'],
+        {
+          [sharedStyles['with-motion-horizontal']]: !animationDisabled,
+          [testutilStyles['active-drawer']]: show,
+          [styles['drawer-hidden']]: !show,
+          [testutilStyles['drawer-closed']]: !activeAiDrawer,
+          [styles['drawer-expanded']]: isExpanded,
+        }
+      )}
+      ref={drawerRef}
+      onBlur={e => {
+        if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+          aiDrawerFocusControl?.loseFocus();
+        }
+      }}
+      style={{
+        blockSize: drawerHeight,
+        insetBlockStart: `${placement.insetBlockStart}px`,
+        ...(!isMobile && {
+          [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
+        }),
+      }}
+      data-testid={activeDrawerId && `awsui-app-layout-drawer-${activeDrawerId}`}
+    >
+      {!isMobile && activeAiDrawer?.resizable && !isExpanded && (
+        <div className={styles['drawer-slider']}>
+          <PanelResizeHandle
+            ref={aiDrawerFocusControl?.refs.slider}
+            position="side-start"
+            className={clsx(testutilStyles['drawers-slider'], styles['ai-drawer-slider-handle'])}
+            ariaLabel={activeAiDrawer?.ariaLabels?.resizeHandle}
+            tooltipText={activeAiDrawer?.ariaLabels?.resizeHandleTooltipText}
+            ariaValuenow={resizeProps.relativeSize}
+            onKeyDown={resizeProps.onKeyDown}
+            onPointerDown={resizeProps.onPointerDown}
+            onDirectionClick={resizeProps.onDirectionClick}
+            disabled={isResizingDisabled}
+          />
+        </div>
+      )}
+      <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
+        <div className={styles['drawer-content']}>
+          <header className={styles['drawer-content-header']}>
+            <div className={styles['drawer-content-header-content']}>
+              {activeAiDrawer?.header ?? <div />}
+              <div className={styles['drawer-actions']}>
+                {!isMobile && activeAiDrawer?.isExpandable && (
+                  <div className={styles['drawer-expanded-mode-button']}>
                     <InternalButton
-                      className={testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button']}
-                      ariaLabel={activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
+                      ariaLabel={activeAiDrawer?.ariaLabels?.expandedModeButton}
+                      className={testutilStyles['active-drawer-expanded-mode-button']}
                       formAction="none"
-                      onClick={() => setExpandedDrawerId(null)}
-                    >
-                      {activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
-                    </InternalButton>
+                      ariaExpanded={isExpanded}
+                      iconName={isExpanded ? 'shrink' : 'expand'}
+                      onClick={() => setExpandedDrawerId(isExpanded ? null : activeDrawerId!)}
+                      variant="icon"
+                      analyticsAction={isExpanded ? 'expand' : 'collapse'}
+                    />
                   </div>
                 )}
-              </header>
-              {activeAiDrawer?.content}
+                <div className={clsx(styles['drawer-close-button'])}>
+                  <InternalButton
+                    ariaLabel={computedAriaLabels.closeButton}
+                    className={clsx({
+                      [testutilStyles['active-drawer-close-button']]: activeDrawerId,
+                    })}
+                    formAction="none"
+                    iconName={isMobile ? 'close' : 'angle-left'}
+                    onClick={() => onActiveAiDrawerChange?.(null, { initiatedByUserAction: true })}
+                    ref={aiDrawerFocusControl?.refs.close}
+                    variant="icon"
+                    analyticsAction="close"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </aside>
-      )}
-    </Transition>
+            {!isMobile && isExpanded && activeAiDrawer?.ariaLabels?.exitExpandedModeButton && (
+              <div className={styles['drawer-back-to-console-button']}>
+                <InternalButton
+                  className={testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button']}
+                  ariaLabel={activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
+                  formAction="none"
+                  onClick={() => setExpandedDrawerId(null)}
+                >
+                  {activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
+                </InternalButton>
+              </div>
+            )}
+          </header>
+          {activeAiDrawer?.content}
+        </div>
+      </div>
+    </aside>
   );
 }
