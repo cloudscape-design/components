@@ -244,6 +244,7 @@ $drawer-resize-handle-size: awsui.$space-m;
 
     @include mobile-only {
       grid-template-columns: 1fr;
+      z-index: constants.$drawer-z-index-mobile;
     }
 
     > .drawer-slider {

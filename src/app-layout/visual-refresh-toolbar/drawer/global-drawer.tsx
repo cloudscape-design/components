@@ -43,6 +43,7 @@ function AppLayoutGlobalDrawerImplementation({
     drawersOpenQueue,
     expandedDrawerId,
     setExpandedDrawerId,
+    activeAiDrawer,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeGlobalDrawer?.id ?? '';
@@ -90,7 +91,7 @@ function AppLayoutGlobalDrawerImplementation({
               !animationDisabled && isExpanded && styles['with-expanded-motion'],
               {
                 [styles['drawer-hidden']]: !show,
-                [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
+                [styles['last-opened']]: (!activeAiDrawer && lastOpenedDrawerId === activeDrawerId) || isExpanded,
                 [testutilStyles['active-drawer']]: show,
                 [styles['drawer-expanded']]: isExpanded,
                 [styles['has-next-siblings']]:
