@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { range } from 'lodash';
 
-import { FormField } from '~components';
+import { FormField, Popover } from '~components';
 import Box from '~components/box';
 import Button from '~components/button';
 import Icon from '~components/icon';
@@ -11,8 +11,6 @@ import Input from '~components/input';
 import TokenList from '~components/internal/components/token-list';
 import SpaceBetween from '~components/space-between';
 import Token from '~components/token';
-
-import { getSiteIdentifier } from '../utils/site-identifier';
 
 import styles from './styles.scss';
 
@@ -36,46 +34,87 @@ export default function GenericTokenPage() {
       <h1>Standalone token</h1>
       <h2>Inline</h2>
       <SpaceBetween size="l" direction="vertical">
+        <Token variant="inline" label="Inline token" />
+        <Token variant="inline" label="Inline token with longer text" />
         <Token
           variant="inline"
-          label="Inline token"
-          ariaLabel="Inline token"
-          popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
+          label={
+            <Popover
+              triggerType="text-inline-compact"
+              position="top"
+              header="test"
+              content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
+            >
+              Inline token with icon and popover
+            </Popover>
+          }
+          icon={<Icon name="bug" size="small" />}
         />
         <Token
           variant="inline"
-          label="Inline token with Icon"
-          ariaLabel="Inline token with Icon"
-          iconName="bug"
-          popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
+          label={
+            <div style={{ minWidth: 'max-content' }}>
+              <SpaceBetween direction="horizontal" size="xxs" alignItems="center">
+                <Popover
+                  triggerType="text-inline-compact"
+                  position="top"
+                  header="test"
+                  content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
+                >
+                  Inline token with icon, popover and custom action
+                </Popover>
+                <Button iconName="edit" variant="inline-icon" ariaLabel="edit" />
+              </SpaceBetween>
+            </div>
+          }
+          icon={<Icon name="bug" size="small" />}
         />
-        <div style={{ maxWidth: '100%', display: 'inline-block' }}>
+        <Token
+          variant="inline"
+          dismissLabel="Dismiss token"
+          label={
+            <Popover
+              triggerType="text-inline-compact"
+              position="top"
+              header="test"
+              content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
+            >
+              Inline token dismissable with icon and popover
+            </Popover>
+          }
+          icon={<Icon name="edit" size="small" />}
+          onDismiss={() => {}}
+        />
+        <div style={{ maxWidth: '100%', display: 'inline' }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
           magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo{' '}
           <Token
             variant="inline"
-            label={variableValue.length > 0 ? variableValue : '<some-variable-name>'}
-            ariaLabel="Variable token"
-            popoverProps={{
-              dismissButton: false,
-              size: 'large',
-              content: (
-                <SpaceBetween size="m">
-                  <FormField label={'<some-variable-name>'}>
-                    <div style={{ width: '300px' }}>
-                      <Input
-                        placeholder="Enter value for variable"
-                        value={variableValue}
-                        onChange={({ detail }) => setVariableValue(detail.value)}
-                      />
-                    </div>
-                  </FormField>
-                  <Box float="right">
-                    <Button onClick={() => setVariableValue('')}>Clear</Button>
-                  </Box>
-                </SpaceBetween>
-              ),
-            }}
+            label={
+              <Popover
+                triggerType="text-inline-compact"
+                dismissButton={false}
+                size="large"
+                content={
+                  <SpaceBetween size="m">
+                    <FormField label={'<some-variable-name>'}>
+                      <div style={{ width: '300px' }}>
+                        <Input
+                          placeholder="Enter value for variable"
+                          value={variableValue}
+                          onChange={({ detail }) => setVariableValue(detail.value)}
+                        />
+                      </div>
+                    </FormField>
+                    <Box float="right">
+                      <Button onClick={() => setVariableValue('')}>Clear</Button>
+                    </Box>
+                  </SpaceBetween>
+                }
+              >
+                {variableValue.length > 0 ? variableValue : '<some-variable-name>'}
+              </Popover>
+            }
           />{' '}
           consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
@@ -83,24 +122,16 @@ export default function GenericTokenPage() {
         </div>
         <Token
           variant="inline"
-          ariaLabel="Inline token"
           label={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
             exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
             pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
         />
-        <Token variant="inline" ariaLabel="Inline readonly token" label="Inline readonly token" readOnly={true} />
-        <Token variant="inline" ariaLabel="Inline disabled token" label="Inline disabled token" disabled={true} />
+        <Token variant="inline" label="Inline readonly token" readOnly={true} />
+        <Token variant="inline" label="Inline disabled token" disabled={true} />
 
+        <Token variant="inline" dismissLabel="Dismiss token" label="Inline dismissable token" onDismiss={() => {}} />
         <Token
           variant="inline"
-          ariaLabel="Inline dismissable token"
-          dismissLabel="Dismiss token"
-          label="Inline dismissable token"
-          onDismiss={() => {}}
-        />
-        <Token
-          variant="inline"
-          ariaLabel="Inline readonly token"
           dismissLabel="Dismiss token"
           label="Inline dismissable readonly token"
           readOnly={true}
@@ -108,7 +139,6 @@ export default function GenericTokenPage() {
         />
         <Token
           variant="inline"
-          ariaLabel="Inline disabled token"
           dismissLabel="Dismiss token"
           label="Inline dismissable disabled token"
           disabled={true}
@@ -117,29 +147,18 @@ export default function GenericTokenPage() {
 
         <Token
           variant="inline"
-          ariaLabel="Inline dismissable token"
-          dismissLabel="Dismiss token"
-          label="Inline dismissable token"
-          iconName="edit"
-          onDismiss={() => {}}
-          popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
-        />
-        <Token
-          variant="inline"
-          ariaLabel="Inline readonly token"
           dismissLabel="Dismiss token"
           label="Inline dismissable readonly token"
-          iconName="edit"
+          icon={<Icon name="edit" size="small" />}
           readOnly={true}
           onDismiss={() => {}}
         />
 
         <Token
           variant="inline"
-          ariaLabel="Inline disabled token"
           dismissLabel="Dismiss token"
-          label="Inline dismissable disabled token"
-          iconName="edit"
+          label="Inline dismissable disabled token with icon"
+          icon={<Icon name="edit" size="small" />}
           disabled={true}
           onDismiss={() => {}}
         />
@@ -147,120 +166,73 @@ export default function GenericTokenPage() {
 
       <h2>Normal</h2>
       <SpaceBetween size="l" direction="vertical">
+        <Token label="Standalone token" />
         <Token
-          ariaLabel="Standalone token"
-          label="Standalone token"
-          popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
-        />
-        <Token
-          ariaLabel="Standalone token with icon"
-          dismissLabel="Dismiss token"
-          label="Standalone token with icon"
-          iconName="bug"
+          label={
+            <Popover
+              triggerType="text-inline"
+              position="top"
+              header="test"
+              content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
+            >
+              Standalone token with popover
+            </Popover>
+          }
           onDismiss={() => {}}
-          popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
+          dismissLabel="dismiss"
         />
         <Token
-          ariaLabel="dismissable token"
           dismissLabel="Dismiss token"
-          label="Dismissable token"
-          labelTag="test"
+          label={
+            <Popover
+              triggerType="text-inline"
+              position="top"
+              header="test"
+              content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
+            >
+              Standalone token with icon and popover
+            </Popover>
+          }
+          icon={<Icon name="bug" />}
           onDismiss={() => {}}
         />
+        <Token dismissLabel="Dismiss token" label="Dismissable token" labelTag="test" onDismiss={() => {}} />
 
         <Token
-          ariaLabel="Standalone token"
           label={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
           magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
           consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
           est laborum.`}
         />
+        <Token
+          dismissLabel="Dismiss token"
+          label="Dismissable token"
+          description="some description"
+          labelTag="test"
+          icon={<Icon name="bug" size="big" />}
+          onDismiss={() => {}}
+        />
 
-        <Token ariaLabel="Standalone readonly token" label="Standalone readonly token" readOnly={true} />
+        <Token label="Standalone readonly token" readOnly={true} />
 
-        <Token ariaLabel="Standalone disabled token" label="Standalone disabled token" disabled={true} />
+        <Token label="Standalone disabled token" disabled={true} />
+
+        <TokenList
+          alignment="vertical"
+          items={files}
+          i18nStrings={i18nStrings}
+          limit={5}
+          renderItem={(file, fileIndex) => (
+            <Token
+              label={<FileOption file={file} />}
+              disabled={file === 0}
+              dismissLabel={`Remove file ${fileIndex + 1}`}
+              onDismiss={() => onDismiss(fileIndex)}
+            />
+          )}
+        />
       </SpaceBetween>
-
-      {getSiteIdentifier() === 'core' && (
-        <>
-          <h2>Core</h2>
-          <SpaceBetween size="l" direction="vertical">
-            <Token
-              variant="inline"
-              label="Custom action with popover and inline"
-              ariaLabel="Custom action with popover and inline"
-              customActionProps={{
-                ariaLabel: 'edit token',
-                iconName: 'edit',
-                popoverProps: { content: <Input value="test" onChange={() => {}} /> },
-              }}
-            />
-
-            <Token
-              variant="inline"
-              iconName="bug"
-              label="Custom action without popover and inline"
-              ariaLabel="Custom action without popover and inline"
-              customActionProps={{
-                ariaLabel: 'settings token',
-                iconName: 'settings',
-                onClick: () => {},
-              }}
-            />
-
-            <Token
-              label="Custom action with popover"
-              ariaLabel="Custom action with popover"
-              customActionProps={{
-                ariaLabel: 'edit token',
-                iconName: 'edit',
-                popoverProps: { content: <Input value="test" onChange={() => {}} /> },
-              }}
-            />
-
-            <Token
-              iconName="bug"
-              label="Custom action with two popovers and an icon"
-              ariaLabel="Custom action with two popovers and an icon"
-              popoverProps={{ content: <Input value="test" onChange={() => {}} /> }}
-              customActionProps={{
-                ariaLabel: 'edit token',
-                iconName: 'edit',
-                popoverProps: { content: <Input value="test" onChange={() => {}} /> },
-              }}
-            />
-
-            <Token
-              label="Custom action without popover"
-              description="Some description text"
-              ariaLabel="Custom action without popover"
-              customActionProps={{
-                ariaLabel: 'settings token',
-                iconName: 'settings',
-                onClick: () => {},
-              }}
-            />
-
-            <TokenList
-              alignment="vertical"
-              items={files}
-              i18nStrings={i18nStrings}
-              limit={5}
-              renderItem={(file, fileIndex) => (
-                <Token
-                  ariaLabel={`agreement-${file + 1}.pdf`}
-                  disabled={file === 0}
-                  dismissLabel={`Remove file ${fileIndex + 1}`}
-                  onDismiss={() => onDismiss(fileIndex)}
-                >
-                  <FileOption file={file} />
-                </Token>
-              )}
-            />
-          </SpaceBetween>
-        </>
-      )}
     </Box>
   );
 }
