@@ -395,6 +395,9 @@ export const useAppLayout = (
     if (activeDrawer) {
       result += Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
     }
+    if (activeAiDrawer) {
+      result += Math.min(activeAiDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
+    }
 
     return result;
   };
