@@ -3,22 +3,19 @@
 import { SYSTEM } from '../internal/environment';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { FlashbarProps } from './interfaces';
+import { getStylePropertyKey } from './utils';
 
 export function getCollapsibleFlashStyles(style: FlashbarProps['style'], type: string = 'info') {
   if (SYSTEM !== 'core' || !style) {
     return undefined;
   }
+  const styleKey = getStylePropertyKey(type as FlashbarProps.Type);
   const background =
-    style?.item?.root?.background &&
-    (type === 'in-progress'
-      ? style?.item?.root?.background.inProgress
-      : style?.item?.root?.background[type as keyof typeof style.item.root.background]);
+    style?.item?.root?.background && style?.item?.root?.background[styleKey as keyof typeof style.item.root.background];
 
   const borderColor =
     style?.item?.root?.borderColor &&
-    (type === 'in-progress'
-      ? style?.item?.root?.borderColor.inProgress
-      : style?.item?.root?.borderColor[type as keyof typeof style.item.root.borderColor]);
+    style?.item?.root?.borderColor[styleKey as keyof typeof style.item.root.borderColor];
 
   const borderRadius = style?.item?.root?.borderRadius;
 
@@ -26,11 +23,7 @@ export function getCollapsibleFlashStyles(style: FlashbarProps['style'], type: s
 
   const borderStyle = style?.item?.root?.borderWidth && 'solid';
 
-  const color =
-    style?.item?.root?.color &&
-    (type === 'in-progress'
-      ? style?.item?.root?.color.inProgress
-      : style?.item?.root?.color[type as keyof typeof style.item.root.color]);
+  const color = style?.item?.root?.color && style?.item?.root?.color[styleKey as keyof typeof style.item.root.color];
 
   return {
     background,
@@ -48,9 +41,9 @@ export function getFlashStyles(style: FlashbarProps['style'] | undefined, type: 
   }
   const focusRingBorderColor =
     style?.item?.root?.focusRing?.borderColor &&
-    (type === 'in-progress'
-      ? style.item.root.focusRing.borderColor.inProgress
-      : style.item.root.focusRing.borderColor[type as keyof typeof style.item.root.focusRing.borderColor]);
+    style.item.root.focusRing.borderColor[
+      getStylePropertyKey(type as FlashbarProps.Type) as keyof typeof style.item.root.focusRing.borderColor
+    ];
 
   return {
     ...getCollapsibleFlashStyles(style, type),
@@ -69,31 +62,24 @@ export function getDismissButtonStyles(style: FlashbarProps['style'], type: stri
   if (SYSTEM !== 'core' || !style) {
     return undefined;
   }
+  const styleKey = getStylePropertyKey(type as FlashbarProps.Type);
   const activeColor =
     style?.item?.dismissButton?.color?.active &&
-    (type === 'in-progress'
-      ? style.item.dismissButton.color.active.inProgress
-      : style.item.dismissButton.color.active[type as keyof typeof style.item.dismissButton.color.active]);
+    style.item.dismissButton.color.active[styleKey as keyof typeof style.item.dismissButton.color.active];
 
   const defaultColor =
     style?.item?.dismissButton?.color?.default &&
-    (type === 'in-progress'
-      ? style.item.dismissButton.color.default.inProgress
-      : style.item.dismissButton.color.default[type as keyof typeof style.item.dismissButton.color.default]);
+    style.item.dismissButton.color.default[styleKey as keyof typeof style.item.dismissButton.color.default];
 
   const hoverColor =
     style?.item?.dismissButton?.color?.hover &&
-    (type === 'in-progress'
-      ? style.item.dismissButton.color.hover.inProgress
-      : style.item.dismissButton.color.hover[type as keyof typeof style.item.dismissButton.color.hover]);
+    style.item.dismissButton.color.hover[styleKey as keyof typeof style.item.dismissButton.color.hover];
 
   const focusRingBorderColor =
     style?.item?.dismissButton?.focusRing?.borderColor &&
-    (type === 'in-progress'
-      ? style.item.dismissButton.focusRing.borderColor.inProgress
-      : style.item.dismissButton.focusRing.borderColor[
-          type as keyof typeof style.item.dismissButton.focusRing.borderColor
-        ]);
+    style.item.dismissButton.focusRing.borderColor[
+      styleKey as keyof typeof style.item.dismissButton.focusRing.borderColor
+    ];
 
   return {
     root: {
