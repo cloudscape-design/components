@@ -299,13 +299,58 @@ $drawer-resize-handle-size: awsui.$space-m;
             }
           }
 
-          > .drawer-back-to-console-button {
+          > .drawer-back-to-console-slot {
             position: relative;
             display: flex;
+            align-items: center;
             box-sizing: border-box;
             block-size: 100%;
-            padding-inline: awsui.$space-xxs;
-            padding-block: awsui.$space-xxs;
+            padding-inline: awsui.$space-static-m;
+            background-color: constants.$ai-drawer-background;
+
+            &:before,
+            &:after {
+              content: '';
+              position: absolute;
+              inset-block-start: 0;
+              inset-inline-start: -5px;
+              inline-size: 5px;
+              block-size: 5px;
+              background: constants.$ai-drawer-background;
+            }
+
+            &:after {
+              background-color: awsui.$color-background-layout-panel-content;
+              border-start-end-radius: awsui.$space-xxs;
+            }
+
+            > .drawer-back-to-console-button-wrapper {
+              position: relative;
+              &:has(:focus-visible) {
+                @include styles.focus-highlight(3px);
+              }
+
+              > .drawer-back-to-console-button {
+                @include styles.styles-reset;
+                @include styles.text-wrapping;
+                @include styles.font-body-s;
+                border-start-start-radius: awsui.$space-static-xxs;
+                border-start-end-radius: awsui.$space-static-xxs;
+                border-end-start-radius: awsui.$space-static-xxs;
+                border-end-end-radius: awsui.$space-static-xxs;
+                border-width: 0;
+                padding-inline: awsui.$space-static-xs;
+                padding-block: awsui.$space-static-xxs;
+                background: radial-gradient(203.69% 159.19% at 95% -11.67%, #ffbb45 0%, #f90 30%, #fa6f00 60%);
+                color: #ffffff;
+                cursor: pointer;
+
+                &:focus {
+                  // custom outline attached on the wrapping element
+                  outline: none;
+                }
+              }
+            }
           }
         }
       }
