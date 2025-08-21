@@ -35,7 +35,7 @@ awsuiPlugins.appLayout.registerDrawer({
     triggerButton: 'Amazon Q',
     resizeHandle: 'Resize handle',
     expandedModeButton: 'Expanded mode button',
-    exitExpandedModeButton: 'Service Console',
+    exitExpandedModeButton: 'Console',
   },
 
   trigger: {
