@@ -30,10 +30,11 @@ awsuiPlugins.appLayout.registerDrawer({
   preserveInactiveContent: true,
 
   ariaLabels: {
-    closeButton: 'Close button',
+    closeButton: 'Close Amazon Q drawer',
     content: 'Amazon Q',
-    triggerButton: 'Trigger button for ai drawer',
+    triggerButton: 'Amazon Q',
     resizeHandle: 'Resize handle',
+    expandedModeButton: 'Expanded mode button',
     exitExpandedModeButton: 'Service Console',
   },
 
@@ -71,8 +72,12 @@ awsuiPlugins.appLayout.registerDrawer({
       <div style={{ inlineSize: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>logo</div>
         <div>
-          <ButtonDropdown items={[{ id: 'settings', text: 'Settings' }]} ariaLabel="Control drawer" variant="icon" />
-          <Button iconName="add-plus" variant="icon" />
+          <ButtonDropdown
+            items={[{ id: 'settings', text: 'Settings' }]}
+            ariaLabel="Amazon Q additional options"
+            variant="icon"
+          />
+          <Button iconName="add-plus" variant="icon" ariaLabel="Add a new chat" />
         </div>
       </div>,
       container
