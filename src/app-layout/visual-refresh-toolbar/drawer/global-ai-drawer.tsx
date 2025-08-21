@@ -188,15 +188,19 @@ export function AppLayoutGlobalAiDrawerImplementation({
               </div>
             </div>
             {!isMobile && isExpanded && activeAiDrawer?.ariaLabels?.exitExpandedModeButton && (
-              <div className={styles['drawer-back-to-console-button']}>
-                <InternalButton
-                  className={testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button']}
-                  ariaLabel={activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
-                  formAction="none"
-                  onClick={() => setExpandedDrawerId(null)}
-                >
-                  {activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
-                </InternalButton>
+              <div className={styles['drawer-back-to-console-slot']}>
+                <div className={styles['drawer-back-to-console-button-wrapper']}>
+                  <button
+                    className={clsx(
+                      testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button'],
+                      styles['drawer-back-to-console-button']
+                    )}
+                    formAction="none"
+                    onClick={() => setExpandedDrawerId(null)}
+                  >
+                    {activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
+                  </button>
+                </div>
               </div>
             )}
           </header>
