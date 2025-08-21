@@ -81,7 +81,6 @@ export function AppLayoutGlobalAiDrawerImplementation({
     position: 'side-start',
   });
   const size = getLimitedValue(minAiDrawerSize, activeAiDrawerSize, maxAiDrawerSize);
-  const lastOpenedDrawerId = drawersOpenQueue?.length ? drawersOpenQueue[0] : activeDrawerId;
   const isExpanded = activeAiDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
   const wasExpanded = usePrevious(isExpanded);
   const animationDisabled =
@@ -106,7 +105,6 @@ export function AppLayoutGlobalAiDrawerImplementation({
             !show && styles['drawer-hidden'],
             {
               [sharedStyles['with-motion-horizontal']]: !animationDisabled,
-              [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
               [testutilStyles['active-drawer']]: show,
               [styles['drawer-hidden']]: !show,
               [testutilStyles['drawer-closed']]: !activeAiDrawer,
