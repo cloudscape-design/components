@@ -60,9 +60,13 @@ $header-row-margin-block-end: awsui.$space-xs;
 
 .content {
   @include styles.text-flex-wrapping;
+  // This prevents word-break style of the parent components to have an effect on the popover content.
+  word-break: normal;
+
   color: awsui.$color-text-body-secondary;
   flex: 1 1 auto;
   min-inline-size: 0;
+
   &-overflow-visible {
     overflow: visible;
   }
