@@ -6,11 +6,9 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
-import { OptionDefinition } from '../internal/components/option/interfaces';
 import Tooltip from '../internal/components/tooltip';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import InternalPopover from '../popover/internal';
-import ActionButton from './action-button';
+import DismissButton from './dismiss-button';
 import { TokenProps } from './interfaces';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -28,24 +26,15 @@ type InternalTokenProps = TokenProps &
 function InternalToken({
   // Base
   label,
-  ariaLabel,
   labelTag,
   description,
   variant = 'normal',
   disabled,
   readOnly,
-  iconAlt,
-  iconName,
-  iconUrl,
-  iconSvg,
+  icon,
   tags,
   dismissLabel,
-  popoverProps,
   onDismiss,
-
-  // Core
-  children,
-  customActionProps,
 
   // Internal
   role,
@@ -54,142 +43,89 @@ function InternalToken({
   ...restProps
 }: InternalTokenProps) {
   const baseProps = getBaseProps(restProps);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const labelContainerRef = useRef<HTMLElement>(null);
+  const labelRef = useRef<HTMLElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const isInline = variant === 'inline';
 
-  const optionDefinition: OptionDefinition = isInline
-    ? {
-        label,
-        disabled,
-        iconAlt,
-        iconName,
-        iconUrl,
-        iconSvg,
-      }
-    : {
-        label,
-        labelTag,
-        description,
-        disabled,
-        iconAlt,
-        iconName,
-        iconUrl,
-        iconSvg,
-        tags,
-      };
-
-  const getTokenContent = () => {
-    const mainContent = children ?? (
-      <Option
-        triggerVariant={isInline}
-        option={optionDefinition}
-        isGenericGroup={false}
-        labelClassName={clsx(
-          isInline && label && label?.length >= INLINE_TOKEN_CHARACTER_LIMIT && styles['token-option-label']
-        )}
-      />
-    );
-    if (children || labelTag || description || tags || !popoverProps?.content) {
-      if (popoverProps) {
-        throw new Error(
-          'Invariant violation: description, labelTag, and tags are not supported in combination with a popover.'
-        );
-      }
-      return mainContent;
-    }
-    return (
-      <div
-        className={clsx(
-          styles['popover-trigger-wrapper'],
-          isInline && styles['popover-trigger-wrapper-inline'],
-          isInline && label && label?.length >= INLINE_TOKEN_CHARACTER_LIMIT && styles['token-option-label']
-        )}
-      >
-        <InternalPopover
-          triggerType="text-inline"
-          triggerClassName={clsx(isInline && styles['popover-trigger-inline-button'])}
-          size={popoverProps.size ?? 'medium'}
-          position={popoverProps?.position ?? 'top'}
-          {...popoverProps}
-        >
-          {mainContent}
-        </InternalPopover>
-      </div>
-    );
+  const isLabelAString = (label: React.ReactNode): label is string => {
+    return typeof label === 'string';
   };
 
-  const getActionButton = () => {
-    if (!onDismiss && !customActionProps) {
-      return null;
+  const isEllipsisActive = () => {
+    if (!isInline || !isLabelAString(label)) {
+      return false;
     }
 
-    const popoverProps = customActionProps?.popoverProps;
-    const button = (
-      <ActionButton
-        {...customActionProps}
-        isCustom={!!customActionProps}
-        disabled={customActionProps?.disabled ?? disabled}
-        ariaLabel={customActionProps?.ariaLabel ?? dismissLabel}
-        onClick={customActionProps?.onClick ?? onDismiss}
-        readOnly={readOnly}
-        inline={isInline}
-      />
-    );
+    const labelContent = labelRef.current;
+    const labelContainer = labelContainerRef.current;
 
-    if (!popoverProps) {
-      return button;
+    if (labelContent && labelContainer) {
+      return labelContent.offsetWidth > labelContainer.offsetWidth;
     }
+    return false;
+  };
 
-    return (
-      <InternalPopover
-        className={styles['action-button-popover']}
-        triggerClassName={styles['action-button-popover-trigger']}
-        triggerType="custom"
-        size={popoverProps.size ?? 'medium'}
-        position={popoverProps?.position ?? 'top'}
-        {...popoverProps}
-      >
-        {button}
-      </InternalPopover>
-    );
+  const buildOptionDefinition = () => {
+    const labelObject = isLabelAString(label) ? { label } : { labelContent: label };
+    if (isInline) {
+      return {
+        ...labelObject,
+        disabled,
+        __customIcon: icon && <span className={clsx(styles.icon, styles['icon-inline'])}>{icon}</span>,
+      };
+    } else {
+      return {
+        ...labelObject,
+        disabled,
+        labelTag,
+        description,
+        tags,
+        __customIcon: icon && (
+          <span className={clsx(styles.icon, (description || tags) && styles[`icon-size-big`])}>{icon}</span>
+        ),
+      };
+    }
   };
 
   const getTokenMinWidthClassName = () => {
-    if (children || !isInline) {
-      return undefined;
+    if (!isInline) {
+      return styles['token-min-width'];
     }
 
-    const baseClassName = 'token-inline-min-width-';
-    const hasActionButton = onDismiss || dismissLabel || customActionProps;
-    const hasIcon = iconName || iconSvg || iconUrl;
+    const baseClassName = 'token-inline-min-width';
 
-    if (hasIcon && hasActionButton) {
-      return styles[baseClassName + 'icon-and-action'];
+    if (!isLabelAString(label)) {
+      return styles[baseClassName];
+    } else if (label.length >= INLINE_TOKEN_CHARACTER_LIMIT) {
+      const hasDismissButton = onDismiss || dismissLabel;
+      const hasIcon = icon;
+
+      if (hasIcon && hasDismissButton) {
+        return styles[baseClassName + '-icon-and-dismiss'];
+      }
+
+      if (hasIcon) {
+        return styles[baseClassName + '-icon'];
+      }
+
+      if (hasDismissButton) {
+        return styles[baseClassName + '-dismiss'];
+      }
+
+      return styles[baseClassName + '-label-only'];
     }
-
-    if (hasIcon) {
-      return styles[baseClassName + 'icon'];
-    }
-
-    if (hasActionButton) {
-      return styles[baseClassName + 'action'];
-    }
-
-    return styles[baseClassName + 'label-only'];
   };
 
   return (
     <div
       {...baseProps}
-      ref={containerRef}
       className={clsx(
         !isInline ? styles.token : styles['token-inline'],
         getTokenMinWidthClassName(),
         analyticsSelectors.token,
         baseProps.className
       )}
-      aria-label={ariaLabel}
       aria-disabled={disabled}
       role={role}
       onFocus={() => {
@@ -200,7 +136,7 @@ function InternalToken({
         setShowTooltip(true);
       }}
       onMouseLeave={() => setShowTooltip(false)}
-      tabIndex={!disableTooltip && !popoverProps && isInline ? 0 : undefined}
+      tabIndex={!disableTooltip && isInline && isEllipsisActive() ? 0 : undefined}
     >
       <div
         className={clsx(
@@ -210,12 +146,32 @@ function InternalToken({
           disableInnerPadding && styles['disable-padding']
         )}
       >
-        {getTokenContent()}
-        {getActionButton()}
+        <Option
+          triggerVariant={isInline}
+          option={buildOptionDefinition()}
+          isGenericGroup={false}
+          labelContainerRef={labelContainerRef}
+          labelRef={labelRef}
+          labelClassName={clsx(
+            isInline &&
+              isLabelAString(label) &&
+              label?.length >= INLINE_TOKEN_CHARACTER_LIMIT &&
+              styles['token-option-label']
+          )}
+        />
+        {onDismiss && (
+          <DismissButton
+            disabled={disabled}
+            dismissLabel={dismissLabel}
+            onDismiss={onDismiss}
+            readOnly={readOnly}
+            inline={isInline}
+          />
+        )}
       </div>
-      {!disableTooltip && !popoverProps && isInline && showTooltip && (
+      {!disableTooltip && isInline && showTooltip && isEllipsisActive() && (
         <Tooltip
-          trackRef={containerRef}
+          trackRef={labelContainerRef}
           value={label}
           size="medium"
           onDismiss={() => {

@@ -3,7 +3,6 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import OptionWrapper from '../internal/option';
-import PopoverWrapper from '../popover';
 
 import selectors from '../../../token/styles.selectors.js';
 
@@ -31,10 +30,6 @@ export default class TokenWrapper extends ComponentWrapper {
   }
 
   findDismiss(): ElementWrapper | null {
-    return this.findByClassName(selectors['action-button'])!;
-  }
-
-  findPopover(): PopoverWrapper | null {
-    return this.findComponent(`.${PopoverWrapper.rootSelector}`, PopoverWrapper);
+    return this.findByClassName(selectors['dismiss-button'])!;
   }
 }

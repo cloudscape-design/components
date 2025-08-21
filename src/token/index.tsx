@@ -21,9 +21,6 @@ export default function Token(props: TokenProps) {
   const componentAnalyticsMetadata: GeneratedAnalyticsMetadataTokenComponent = {
     name: 'awsui.Token',
     label: `.${analyticsSelectors.token}`,
-    properties: {
-      hasPopover: String(!!props.popoverProps),
-    },
   };
 
   return (

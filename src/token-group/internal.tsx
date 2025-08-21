@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import TokenList from '../internal/components/token-list';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -79,6 +80,15 @@ export default function InternalTokenGroup({
             }}
             readOnly={readOnly || isItemReadOnly?.(item)}
             variant={'normal'}
+            icon={
+              <InternalIcon
+                name={item.iconName}
+                svg={item.iconSvg}
+                url={item.iconUrl}
+                ariaLabel={item.iconAlt}
+                size={item.description || item.tags ? 'big' : 'normal'}
+              />
+            }
             {...(item.disabled || readOnly
               ? {}
               : getAnalyticsMetadataAttribute({ detail: { position: `${itemIndex + 1}` } }))}

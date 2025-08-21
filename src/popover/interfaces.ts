@@ -115,7 +115,7 @@ export type Rect = BoundingBox & {
 export namespace PopoverProps {
   export type Position = 'top' | 'right' | 'bottom' | 'left';
   export type Size = 'small' | 'medium' | 'large';
-  export type TriggerType = 'text' | 'text-inline' | 'custom';
+  export type TriggerType = 'text' | 'text-inline' | 'text-inline-compact' | 'custom';
 
   export interface Ref {
     /**

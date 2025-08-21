@@ -194,7 +194,7 @@ function InternalPopover(
         });
       }}
     >
-      {['text', 'text-inline'].includes(triggerType) ? (
+      {['text', 'text-inline', 'text-inline-compact'].includes(triggerType) ? (
         <button
           {...triggerProps}
           className={clsx(

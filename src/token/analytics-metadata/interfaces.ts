@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { LabelIdentifier } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-export interface GeneratedAnalyticsMetadataTokenActionButton {
-  action: 'custom' | 'dismiss';
+export interface GeneratedAnalyticsMetadataTokenDismiss {
+  action: 'dismiss';
   detail: {
     label: LabelIdentifier;
     position?: string;
@@ -13,7 +13,4 @@ export interface GeneratedAnalyticsMetadataTokenActionButton {
 export interface GeneratedAnalyticsMetadataTokenComponent {
   name: 'awsui.Token';
   label: string;
-  properties: {
-    hasPopover?: string;
-  };
 }
