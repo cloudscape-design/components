@@ -7,7 +7,7 @@ describe('formatDateISO', () => {
   let formatTimeOffsetISOMock: jest.SpyInstance;
 
   beforeEach(() => {
-    formatTimeOffsetISOMock = jest.spyOn(formatTimeOffsetModule, 'formatTimeOffsetISO').mockReturnValue('+00:00');
+    formatTimeOffsetISOMock = jest.spyOn(formatTimeOffsetModule, 'formatTimeOffsetISO').mockReturnValue('Z');
   });
 
   afterEach(() => {
@@ -55,7 +55,7 @@ describe('formatDateISO', () => {
       isMonthOnly: false,
     });
 
-    expect(result).toBe('2023-06-15T12:00:00+00:00');
+    expect(result).toBe('2023-06-15T12:00:00Z');
     expect(formatTimeOffsetISOMock).toHaveBeenCalledWith('2023-06-15T12:00:00', undefined);
   });
 
