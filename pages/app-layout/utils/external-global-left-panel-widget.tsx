@@ -40,16 +40,16 @@ awsuiPlugins.appLayout.registerDrawer({
 
   trigger: {
     customIcon: `
-      <svg width="58" height="32" viewBox="0 0 58 32" focusable="false" aria-hidden="true">
-        <rect width="58" height="32" rx="4" fill="url(#paint0_radial_102_125756)"/>
+      <svg width="94" height="24" viewBox="0 0 94 24" fill="none" focusable="false" aria-hidden="true">
+        <rect width="94" height="24" rx="4" fill="url(#paint0_linear_145_32649)"/>
         <defs>
-          <radialGradient id="paint0_radial_102_125756" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(63.1768 -2.85617) rotate(151.113) scale(78.0669 84.498)">
+          <linearGradient id="paint0_linear_145_32649" x1="135.919" y1="21" x2="108.351" y2="74.1863" gradientUnits="userSpaceOnUse">
             <stop stop-color="#B8E7FF"/>
-            <stop offset="0.3" stop-color="#0099FF"/>
-            <stop offset="0.45" stop-color="#5C7FFF"/>
-            <stop offset="0.6" stop-color="#8575FF"/>
-            <stop offset="0.8" stop-color="#962EFF"/>
-          </radialGradient>
+            <stop offset="0.255" stop-color="#0099FF"/>
+            <stop offset="0.514134" stop-color="#5C7FFF"/>
+            <stop offset="0.732534" stop-color="#8575FF"/>
+            <stop offset="1" stop-color="#962EFF"/>
+          </linearGradient>
         </defs>
       </svg>
     `,

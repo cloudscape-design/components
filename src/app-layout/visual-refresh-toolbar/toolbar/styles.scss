@@ -54,12 +54,27 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding-inline: awsui.$space-static-xxs;
+      padding-inline: awsui.$space-static-s;
       box-sizing: border-box;
 
       block-size: 100%;
-      border-end-end-radius: 8px;
       background: constants.$ai-drawer-background;
+
+      &:before,
+      &:after {
+        content: '';
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-end: -5px;
+        inline-size: 5px;
+        block-size: 5px;
+        background: constants.$ai-drawer-background;
+      }
+
+      &:after {
+        background-color: awsui.$color-background-layout-panel-content;
+        border-start-start-radius: awsui.$space-xxs;
+      }
     }
 
     > .universal-toolbar-nav {
