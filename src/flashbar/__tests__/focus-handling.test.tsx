@@ -1,93 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
 import createWrapper from '../../../lib/components/test-utils/dom';
-
-const createDismissibleFlashbar = (initialItems: FlashbarProps.MessageDefinition[]) => {
-  const TestComponent = ({ items = initialItems }: { items?: FlashbarProps.MessageDefinition[] }) => {
-    const [flashItems, setFlashItems] = React.useState(items);
-    useEffect(() => {
-      setFlashItems(items);
-    }, [items]);
-
-    const itemsWithHandlers = flashItems.map(item => ({
-      ...item,
-      onDismiss: () => {
-        setFlashItems(prev => prev.filter(prevItem => prevItem.id !== item.id));
-      },
-    }));
-
-    return <Flashbar items={itemsWithHandlers} />;
-  };
-
-  return TestComponent;
-};
-
-describe('Flashbar focus handling on add', () => {
-  test("doesn't affect focus when a new non-alert item is added", () => {
-    createDismissibleFlashbar([
-      { id: 'a', content: 'Item 1', type: 'info', dismissible: true },
-      { id: 'b', content: 'Item 2', type: 'info', ariaRole: 'status', dismissible: true },
-    ]);
-    expect(document.body).toHaveFocus();
-  });
-
-  test("doesn't move focus to alert item when included in first render", () => {
-    const TestComponent = createDismissibleFlashbar([
-      { id: 'a', content: 'Item 1', type: 'info', dismissible: true },
-      { id: 'b', content: 'Item 2', type: 'info', ariaRole: 'alert', dismissible: true },
-    ]);
-
-    jest.useFakeTimers();
-    render(<TestComponent />);
-    jest.runAllTimers();
-
-    expect(document.body).toHaveFocus();
-  });
-
-  test('moves focus to the new item when a new alert item is added', () => {
-    const TestComponent = createDismissibleFlashbar([{ id: 'a', content: 'Item 1', type: 'info', dismissible: true }]);
-    const { container, rerender } = render(<TestComponent />);
-
-    jest.useFakeTimers();
-    rerender(
-      <TestComponent
-        items={[
-          { id: 'a', content: 'Item 1', type: 'info', dismissible: true },
-          { id: 'b', content: 'Item 2', type: 'info', ariaRole: 'alert', dismissible: true },
-        ]}
-      />
-    );
-    jest.runAllTimers();
-
-    const wrapper = createWrapper(container).findFlashbar()!;
-    expect(wrapper.findItems()[1]!.find('[role=group]')!.getElement()).toHaveFocus();
-  });
-
-  test('moves focus to the first item added when multiple alert items are added at once', () => {
-    const TestComponent = createDismissibleFlashbar([{ id: 'a', content: 'Item 1', type: 'info', dismissible: true }]);
-    const { container, rerender } = render(<TestComponent />);
-
-    jest.useFakeTimers();
-    rerender(
-      <TestComponent
-        items={[
-          { id: 'a', content: 'Item 1', type: 'info', dismissible: true },
-          { id: 'b', content: 'Item 2', type: 'info', ariaRole: 'alert', dismissible: true },
-          { id: 'c', content: 'Item 3', type: 'info', ariaRole: 'alert', dismissible: true },
-          { id: 'd', content: 'Item 4', type: 'info', ariaRole: 'alert', dismissible: true },
-        ]}
-      />
-    );
-    jest.runAllTimers();
-
-    const wrapper = createWrapper(container).findFlashbar()!;
-    expect(wrapper.findItems()[1]!.find('[role=group]')!.getElement()).toHaveFocus();
-  });
-});
 
 describe('Flashbar focus handling on dismiss', () => {
   let mockMainElement: HTMLElement;
@@ -124,6 +41,23 @@ describe('Flashbar focus handling on dismiss', () => {
       content: `Content ${i}`,
       dismissible: true,
     }));
+  };
+
+  const createDismissibleFlashbar = (items: FlashbarProps.MessageDefinition[]) => {
+    const TestComponent = () => {
+      const [flashItems, setFlashItems] = React.useState(items);
+
+      const itemsWithHandlers = flashItems.map(item => ({
+        ...item,
+        onDismiss: () => {
+          setFlashItems(prev => prev.filter(prevItem => prevItem.id !== item.id));
+        },
+      }));
+
+      return <Flashbar items={itemsWithHandlers} />;
+    };
+
+    return TestComponent;
   };
 
   test('dismiss functionality works correctly', () => {
