@@ -1819,9 +1819,11 @@ describe('toolbar mode only features', () => {
       expect(globalDrawersWrapper.findDrawerById('test')!.getElement()).toHaveTextContent('runtime drawer content');
       expect(globalDrawersWrapper.findDrawerById('test1')!.getElement()).toHaveTextContent('runtime drawer content');
       expect(globalDrawersWrapper.findDrawerById('test2')!.getElement()).toHaveTextContent('runtime drawer content');
-      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('290px');
-      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('290px');
-      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('290px');
+      await waitFor(() => {
+        expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('290px');
+        expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('290px');
+        expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('290px');
+      });
 
       awsuiPlugins.appLayout.resizeDrawer('test', 800);
 
