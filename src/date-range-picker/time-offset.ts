@@ -8,7 +8,7 @@ import { formatTimeOffsetISO, parseTimezoneOffset, shiftTimezoneOffset } from '.
 import { DateRangePickerProps } from './interfaces';
 
 /**
- * Appends a time zone offset to an offset-less date string.
+ * Appends a time zone offset to a date string, replacing any existing timezone information.
  */
 export function setTimeOffset(
   value: DateRangePickerProps.Value | null,
@@ -17,10 +17,16 @@ export function setTimeOffset(
   if (!(value?.type === 'absolute')) {
     return value;
   }
+
+  const stripTimezone = (dateString: string): string => {
+    // Remove existing timezone info: Z, +HH:MM, -HH:MM, +HHMM, -HHMM
+    return dateString.replace(/[Z]$|[+-]\d{2}:?\d{2}$/, '');
+  };
+
   return {
     type: 'absolute',
-    startDate: value.startDate + formatTimeOffsetISO(value.startDate, timeOffset.startDate),
-    endDate: value.endDate + formatTimeOffsetISO(value.endDate, timeOffset.endDate),
+    startDate: stripTimezone(value.startDate) + formatTimeOffsetISO(value.startDate, timeOffset.startDate),
+    endDate: stripTimezone(value.endDate) + formatTimeOffsetISO(value.endDate, timeOffset.endDate),
   };
 }
 
