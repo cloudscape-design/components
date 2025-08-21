@@ -111,7 +111,12 @@ export function AppLayoutToolbarImplementation({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const anyPanelOpenInMobile = !!isMobile && (!!activeDrawerId || (!!navigationOpen && !!hasNavigation));
+  const anyPanelOpenInMobile =
+    !!isMobile &&
+    (!!activeDrawerId ||
+      !!activeGlobalDrawersIds?.length ||
+      !!activeAiDrawerId ||
+      (!!navigationOpen && !!hasNavigation));
   useEffect(() => {
     if (anyPanelOpenInMobile) {
       document.body.classList.add(styles['block-body-scroll']);
