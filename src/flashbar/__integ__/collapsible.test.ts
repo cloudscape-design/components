@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { FOCUS_DEBOUNCE_DELAY } from '../utils';
+import { FOCUS_THROTTLE_DELAY } from '../utils';
 import { FlashbarBasePage } from './pages/base';
 import { setupTest } from './pages/interactive-page';
 import { setupTest as setupStickyFlashbarTest } from './pages/sticky-page';
@@ -21,7 +21,6 @@ describe('Collapsible Flashbar', () => {
         await expect(page.countFlashes()).resolves.toBe(1);
         await page.keys('Space');
 
-        await page.pause(FOCUS_DEBOUNCE_DELAY);
         await expect(page.countFlashes()).resolves.toBe(5);
         await expect(page.isFlashFocused(1)).resolves.toBe(true);
 
@@ -41,6 +40,7 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleStackingFeature();
           await page.addInfoFlash();
+          await page.pause(FOCUS_THROTTLE_DELAY);
           return expect(page.isFlashFocused(1)).resolves.toBe(false);
         })
       );
@@ -50,6 +50,7 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleStackingFeature();
           await page.addErrorFlash();
+          await page.pause(FOCUS_THROTTLE_DELAY);
           return expect(page.isFlashFocused(1)).resolves.toBe(true);
         })
       );
@@ -59,6 +60,7 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleStackingFeature();
           await page.addErrorFlash();
+          await page.pause(FOCUS_THROTTLE_DELAY);
           await expect(page.isFlashFocused(1)).resolves.toBe(true);
           await page.addInfoFlash();
           await expect(page.isFlashFocused(1)).resolves.toBe(false);
@@ -72,6 +74,7 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleStackingFeature();
           await page.toggleCollapsedState();
+          await page.pause(FOCUS_THROTTLE_DELAY);
           await page.addInfoFlash();
           return expect(page.isFlashFocused(1)).resolves.toBe(false);
         })
@@ -82,6 +85,7 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleStackingFeature();
           await page.toggleCollapsedState();
+          await page.pause(FOCUS_THROTTLE_DELAY);
           await page.addErrorFlash();
           return expect(page.isFlashFocused(1)).resolves.toBe(true);
         })
@@ -92,9 +96,11 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleStackingFeature();
           await page.toggleCollapsedState();
+          await page.pause(FOCUS_THROTTLE_DELAY);
           await page.addErrorFlash();
           await expect(page.isFlashFocused(1)).resolves.toBe(true);
           await page.addInfoFlash();
+          await page.pause(FOCUS_THROTTLE_DELAY);
           await expect(page.isFlashFocused(1)).resolves.toBe(false);
         })
       );
@@ -104,8 +110,10 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleStackingFeature();
           await page.toggleCollapsedState();
+          await page.pause(FOCUS_THROTTLE_DELAY);
           await page.addErrorFlash();
           await expect(page.isFlashFocused(1)).resolves.toBe(true);
+          await page.pause(FOCUS_THROTTLE_DELAY);
           await page.addInfoFlash();
           await expect(page.isFlashFocused(2)).resolves.toBe(false);
         })
@@ -118,8 +126,9 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleStackingFeature();
           await page.addErrorFlash();
+          await page.pause(FOCUS_THROTTLE_DELAY);
           await page.toggleCollapsedState();
-          await page.pause(FOCUS_DEBOUNCE_DELAY);
+          await page.pause(FOCUS_THROTTLE_DELAY);
           await expect(page.isFlashFocused(1)).resolves.toBe(true);
         })
       );
