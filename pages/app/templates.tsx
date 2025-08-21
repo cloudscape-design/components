@@ -22,9 +22,10 @@ export function SimplePage({ title, subtitle, settings, children, screenshotArea
   const content = (
     <Box margin="m">
       <SpaceBetween size="m">
-        <Box variant="h1">{title}</Box>
-
-        {subtitle ? <Box variant="p">{subtitle}</Box> : null}
+        <SpaceBetween size="xs">
+          <Box variant="h1">{title}</Box>
+          {subtitle ? <Box variant="p">{subtitle}</Box> : null}
+        </SpaceBetween>
 
         {settings ? (
           <SpaceBetween size="s">
@@ -35,7 +36,7 @@ export function SimplePage({ title, subtitle, settings, children, screenshotArea
 
         {screenshotArea ? (
           <ScreenshotArea gutters={false} {...screenshotArea}>
-            {children}
+            <SpaceBetween size="m">{children}</SpaceBetween>
           </ScreenshotArea>
         ) : (
           <Box>{children}</Box>
