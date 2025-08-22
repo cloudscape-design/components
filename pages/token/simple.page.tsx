@@ -40,7 +40,7 @@ export default function GenericTokenPage() {
           variant="inline"
           label={
             <Popover
-              triggerType="text-inline-compact"
+              triggerType="text-inline"
               position="top"
               header="test"
               content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
@@ -56,7 +56,7 @@ export default function GenericTokenPage() {
             <div style={{ minWidth: 'max-content' }}>
               <SpaceBetween direction="horizontal" size="xxs" alignItems="center">
                 <Popover
-                  triggerType="text-inline-compact"
+                  triggerType="text-inline"
                   position="top"
                   header="test"
                   content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
@@ -74,7 +74,7 @@ export default function GenericTokenPage() {
           dismissLabel="Dismiss token"
           label={
             <Popover
-              triggerType="text-inline-compact"
+              triggerType="text-inline"
               position="top"
               header="test"
               content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
@@ -92,7 +92,7 @@ export default function GenericTokenPage() {
             variant="inline"
             label={
               <Popover
-                triggerType="text-inline-compact"
+                triggerType="text-inline"
                 dismissButton={false}
                 size="large"
                 content={
