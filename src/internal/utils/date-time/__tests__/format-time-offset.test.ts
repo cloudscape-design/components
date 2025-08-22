@@ -6,11 +6,6 @@ import { formatTimeOffsetISO } from '../../../../../lib/components/internal/util
 test('formatTimeOffsetISO', () => {
   for (let offset = -120; offset <= 120; offset++) {
     const formatted = formatTimeOffsetISO('2020-01-01', offset);
-    if (offset === 0) {
-      expect(formatted).toBe('Z');
-      continue;
-    }
-
     const sign = Number(formatted[0] + '1');
     const hours = Number(formatted[1] + formatted[2]);
     const minutes = Number(formatted[4] + formatted[5]);

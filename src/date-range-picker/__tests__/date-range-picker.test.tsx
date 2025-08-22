@@ -266,7 +266,7 @@ describe('Date range picker', () => {
 
         wrapper.findDropdown()!.findApplyButton().click();
 
-        const dayObjectProperties = { endDate: 'T23:59:59Z', type: 'absolute' };
+        const dayObjectProperties = { endDate: 'T23:59:59+00:00', type: 'absolute' };
         const monthObjectProperties = { endDate: '', startDate: '2025-09', type: 'absolute' };
 
         expect(onChangeSpy).toHaveBeenCalledWith(

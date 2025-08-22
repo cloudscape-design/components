@@ -63,7 +63,7 @@ describe('formatDateTimeWithOffset', () => {
           date: '2020-01-01T00:00:00',
           timeOffset: regional,
           expected: {
-            iso: '2020-01-01T00:00:00Z',
+            iso: '2020-01-01T00:00:00+00:00',
             localized: { 'en-US': 'January 1, 2020, 00:00:00 (UTC)' },
           },
         },
