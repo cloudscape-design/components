@@ -59,6 +59,7 @@ import LiveRegionWrapper from './live-region';
 import MixedLineBarChartWrapper from './mixed-line-bar-chart';
 import ModalWrapper from './modal';
 import MultiselectWrapper from './multiselect';
+import NavigableGroupWrapper from './navigable-group';
 import PaginationWrapper from './pagination';
 import PieChartWrapper from './pie-chart';
 import PopoverWrapper from './popover';
@@ -143,6 +144,7 @@ export { LiveRegionWrapper };
 export { MixedLineBarChartWrapper };
 export { ModalWrapper };
 export { MultiselectWrapper };
+export { NavigableGroupWrapper };
 export { PaginationWrapper };
 export { PieChartWrapper };
 export { PopoverWrapper };
@@ -1129,6 +1131,25 @@ findMultiselect(selector?: string): MultiselectWrapper | null;
  * @returns {Array<MultiselectWrapper>}
  */
 findAllMultiselects(selector?: string): Array<MultiselectWrapper>;
+/**
+ * Returns the wrapper of the first NavigableGroup that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first NavigableGroup.
+ * If no matching NavigableGroup is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {NavigableGroupWrapper | null}
+ */
+findNavigableGroup(selector?: string): NavigableGroupWrapper | null;
+
+/**
+ * Returns an array of NavigableGroup wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the NavigableGroups inside the current wrapper.
+ * If no matching NavigableGroup is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<NavigableGroupWrapper>}
+ */
+findAllNavigableGroups(selector?: string): Array<NavigableGroupWrapper>;
 /**
  * Returns the wrapper of the first Pagination that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Pagination.
@@ -2241,6 +2262,16 @@ ElementWrapper.prototype.findMultiselect = function(selector) {
 ElementWrapper.prototype.findAllMultiselects = function(selector) {
   return this.findAllComponents(MultiselectWrapper, selector);
 };
+ElementWrapper.prototype.findNavigableGroup = function(selector) {
+  const rootSelector = \`.\${NavigableGroupWrapper.rootSelector}\`;
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, NavigableGroupWrapper);
+};
+
+ElementWrapper.prototype.findAllNavigableGroups = function(selector) {
+  return this.findAllComponents(NavigableGroupWrapper, selector);
+};
 ElementWrapper.prototype.findPagination = function(selector) {
   const rootSelector = \`.\${PaginationWrapper.rootSelector}\`;
   // casting to 'any' is needed to avoid this issue with generics
@@ -2631,6 +2662,7 @@ import LiveRegionWrapper from './live-region';
 import MixedLineBarChartWrapper from './mixed-line-bar-chart';
 import ModalWrapper from './modal';
 import MultiselectWrapper from './multiselect';
+import NavigableGroupWrapper from './navigable-group';
 import PaginationWrapper from './pagination';
 import PieChartWrapper from './pie-chart';
 import PopoverWrapper from './popover';
@@ -2715,6 +2747,7 @@ export { LiveRegionWrapper };
 export { MixedLineBarChartWrapper };
 export { ModalWrapper };
 export { MultiselectWrapper };
+export { NavigableGroupWrapper };
 export { PaginationWrapper };
 export { PieChartWrapper };
 export { PopoverWrapper };
@@ -3601,6 +3634,23 @@ findMultiselect(selector?: string): MultiselectWrapper;
  * @returns {MultiElementWrapper<MultiselectWrapper>}
  */
 findAllMultiselects(selector?: string): MultiElementWrapper<MultiselectWrapper>;
+/**
+ * Returns a wrapper that matches the NavigableGroups with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches NavigableGroups.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {NavigableGroupWrapper}
+ */
+findNavigableGroup(selector?: string): NavigableGroupWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches NavigableGroups with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches NavigableGroups.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<NavigableGroupWrapper>}
+ */
+findAllNavigableGroups(selector?: string): MultiElementWrapper<NavigableGroupWrapper>;
 /**
  * Returns a wrapper that matches the Paginations with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Paginations.
@@ -4648,6 +4698,16 @@ ElementWrapper.prototype.findMultiselect = function(selector) {
 
 ElementWrapper.prototype.findAllMultiselects = function(selector) {
   return this.findAllComponents(MultiselectWrapper, selector);
+};
+ElementWrapper.prototype.findNavigableGroup = function(selector) {
+  const rootSelector = \`.\${NavigableGroupWrapper.rootSelector}\`;
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, NavigableGroupWrapper);
+};
+
+ElementWrapper.prototype.findAllNavigableGroups = function(selector) {
+  return this.findAllComponents(NavigableGroupWrapper, selector);
 };
 ElementWrapper.prototype.findPagination = function(selector) {
   const rootSelector = \`.\${PaginationWrapper.rootSelector}\`;
