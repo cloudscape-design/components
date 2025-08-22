@@ -5,9 +5,6 @@ import { padLeftZeros } from '../strings';
 
 export function formatTimeOffsetISO(isoDate: string, offsetInMinutes?: number) {
   offsetInMinutes = defaultToLocal(isoDate, offsetInMinutes);
-  if (offsetInMinutes === 0) {
-    return 'Z';
-  }
   const { hours, minutes } = getMinutesAndHours(offsetInMinutes);
 
   const sign = offsetInMinutes < 0 ? '-' : '+';
