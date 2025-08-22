@@ -6,7 +6,7 @@ import * as formatTimeOffsetModule from '../format-time-offset';
 describe('formatDateLocalized', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.spyOn(formatTimeOffsetModule, 'formatTimeOffsetLocalized').mockReturnValue('UTCZ');
+    jest.spyOn(formatTimeOffsetModule, 'formatTimeOffsetLocalized').mockReturnValue('UTC+00:00');
   });
 
   afterEach(() => {
@@ -32,7 +32,7 @@ describe('formatDateLocalized', () => {
       locale: 'en-US',
     });
 
-    expect(result).toMatch(/^June 15, 2023, 12:00:00 UTCZ$/);
+    expect(result).toMatch(/^June 15, 2023, 12:00:00 UTC\+00:00$/);
   });
 
   test('formats date only when isDateOnly is true', () => {
@@ -66,7 +66,7 @@ describe('formatDateLocalized', () => {
       locale: 'ja',
     });
 
-    expect(result).toMatch(/^2023年6月15日 12:00:00 UTCZ$/);
+    expect(result).toMatch(/^2023年6月15日 12:00:00 UTC\+00:00$/);
   });
 
   test('handles non-ISO formatted date strings', () => {
@@ -77,7 +77,7 @@ describe('formatDateLocalized', () => {
       locale: 'en-US',
     });
 
-    expect(result).toMatch(/^June 15, 2023, 12:00:00 UTCZ$/);
+    expect(result).toMatch(/^June 15, 2023, 12:00:00 UTC\+00:00$/);
   });
 
   //todo  determine how to handle this failing
