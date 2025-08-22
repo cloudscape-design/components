@@ -11,6 +11,15 @@ export function getClosestTreeItem(element: Element) {
   return element.closest('li[data-keyboard-navigation-index]') as null | HTMLLIElement;
 }
 
+export function getClosestTreeItemContent(element: Element) {
+  const content = element.closest('div[data-awsui-structured-item=true]');
+  return content;
+}
+
+export function isElementToggle(element: Element) {
+  return element.getAttribute('data-tree-view-toggle-button') === 'true';
+}
+
 export function getToggleButtonOfTreeItem(treeItem: HTMLLIElement) {
   const toggleElement = treeItem.querySelector('[data-tree-view-toggle-button=true]');
   return toggleElement as null | HTMLElement;
@@ -50,4 +59,13 @@ export function findTreeItemByIndex(treeView: HTMLUListElement, targetTreeItemIn
     }
   }
   return targetTreeItem;
+}
+
+export function findTreeItemById(treeView: HTMLUListElement, treeItemId: string) {
+  const treeItem = treeView.querySelector(`li[data-keyboard-navigation-index][id="${treeItemId}"]`);
+  return treeItem as null | HTMLLIElement;
+}
+
+export function isTreeItem(element: Element) {
+  return element.tagName === 'LI' && element.hasAttribute('data-keyboard-navigation-index');
 }

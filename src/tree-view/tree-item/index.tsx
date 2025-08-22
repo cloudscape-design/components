@@ -8,7 +8,6 @@ import { ExpandToggleButton } from '../../internal/components/expand-toggle-butt
 import InternalStructuredItem from '../../internal/components/structured-item';
 import { joinStrings } from '../../internal/utils/strings';
 import { TreeViewProps } from '../interfaces';
-import VerticalConnector from '../vertical-connector';
 
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -20,7 +19,9 @@ interface InternalTreeItemProps<T>
   > {
   item: T;
   index: number;
+  rowIndex?: number;
   level: number;
+  owns?: string;
   onItemToggle: (detail: TreeViewProps.ItemToggleDetail<T>) => void;
   highlightConnector?: (highlight: boolean) => void;
   allVisibleItemsIndeces: {
@@ -31,9 +32,11 @@ interface InternalTreeItemProps<T>
 const InternalTreeItem = <T,>({
   item,
   index,
+  rowIndex,
   level,
   i18nStrings,
   expandedItems = [],
+  owns,
   renderItemToggleIcon,
   renderItem,
   getItemId,
@@ -87,61 +90,69 @@ const InternalTreeItem = <T,>({
       className={clsx(
         styles.treeitem,
         testUtilStyles.treeitem,
+        styles[`level-${level}`],
+        level > 1 && styles[`with-offset`],
         isExpandable && [testUtilStyles.expandable],
         isExpanded && [testUtilStyles.expanded],
+        isExpanded && [styles.expanded],
         isHovered && [styles.hovered]
       )}
       aria-expanded={isExpandable ? isExpanded : undefined}
       aria-level={level}
+      aria-owns={owns}
       data-testid={`awsui-treeitem-${id}`}
+      // data-keyboard-navigation-index={rowIndex}
       data-keyboard-navigation-index={allVisibleItemsIndeces[id]}
     >
-      <div className={styles['expand-toggle-wrapper']} {...highlightConnectorProps}>
-        {/* {isExpandable && ( */}
-        <div className={styles.toggle}>
-          <ExpandToggleButton
-            isExpanded={isExpanded}
-            customIcon={customIcon}
-            expandButtonLabel={joinStrings(
-              i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
-              itemLabelToAnnounce
-            )}
-            collapseButtonLabel={joinStrings(
-              i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item)),
-              itemLabelToAnnounce
-            )}
-            onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
-            invisible={!isExpandable}
-          />
+      {/* <div className={styles['treeitem-wrapper']}> */}
+      <div className={styles['treeitem-flat']}>
+        <div className={styles['expand-toggle-wrapper']} {...highlightConnectorProps}>
+          <div className={styles.toggle}>
+            <ExpandToggleButton
+              isExpanded={isExpanded}
+              customIcon={customIcon}
+              expandButtonLabel={joinStrings(
+                i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
+                itemLabelToAnnounce
+              )}
+              collapseButtonLabel={joinStrings(
+                i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item)),
+                itemLabelToAnnounce
+              )}
+              onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
+              invisible={!isExpandable}
+            />
+          </div>
         </div>
-        {/* )} */}
 
-        {/* <Connector level={level} position={position} isExpandable={isExpandable} isExpanded={isExpanded} /> */}
+        {/* <div className={clsx(styles['vertical-connector-wrapper'], isExpandable && styles.expandable)}>
+          <VerticalConnector level={level} isExpanded={isExpanded} isHighlighted={isHovered} />
+        </div> */}
+
+        <div className={styles['structured-item-wrapper']} {...highlightConnectorProps}>
+          <InternalStructuredItem
+            icon={icon}
+            content={content}
+            secondaryContent={secondaryContent}
+            actions={actions}
+            wrapActions={false}
+          />
+          {/* <div className={styles['treeitem-focus-outline']}>
+          <div className={styles['treeitem-focus-outline-inner']}></div>
+        </div> */}
+        </div>
+
+        {/* {isExpanded && <div className={clsx(styles['vertical-connector'], isHovered && styles.highlighted)} />} */}
       </div>
+      {/* </div> */}
 
-      {/* <div className={styles['connector-wrapper']}>
-        <Connector level={level} position={position} isExpandable={isExpandable} isExpanded={isExpanded} />
-      </div> */}
-
-      <div className={clsx(styles['vertical-connector-wrapper'], isExpandable && styles.expandable)}>
-        <VerticalConnector level={level} isExpanded={isExpanded} isHighlighted={isHovered} />
-      </div>
-
-      <div className={styles['structured-item-wrapper']} {...highlightConnectorProps}>
-        <InternalStructuredItem
-          icon={icon}
-          content={content}
-          secondaryContent={secondaryContent}
-          actions={actions}
-          wrapActions={false}
-        />
-      </div>
+      {isExpanded && <div className={clsx(styles['vertical-connector'], isHovered && styles.highlighted)} />}
 
       {isExpanded && children.length && (
         <ul className={styles['treeitem-group']}>
           {children.map((child, index) => {
             return (
-              <InternalTreeItem
+              <InternalTreeItem<T>
                 item={child}
                 index={index}
                 key={`${nextLevel}-${index}`}
@@ -158,6 +169,10 @@ const InternalTreeItem = <T,>({
               />
             );
           })}
+
+          {/* {isExpanded && (
+            <div className={clsx(styles['vertical-connector'], styles.group, isHovered && styles.highlighted)} />
+          )} */}
         </ul>
       )}
     </li>

@@ -4,80 +4,233 @@
 */
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $item-toggle-column-width: 28px;
+$max-nesting-levels: 21;
 
 .treeitem-group {
   @include styles.styles-reset-ul;
+
+  position: relative;
 }
 
 .treeitem {
   @include styles.styles-reset-ul;
 
-  // background-color: yellow;
-
   position: relative;
-  align-items: baseline;
 
-  display: grid;
-  grid-template-columns: $item-toggle-column-width 1fr;
-  grid-template-rows: auto auto auto;
+  > .treeitem-flat {
+    display: flex;
+    align-items: baseline;
 
-  > .expand-toggle-wrapper {
-    grid-column: 1;
-    grid-row: 1;
-    padding-inline-end: awsui.$space-scaled-xxs;
-    // margin-inline-end: awsui.$space-scaled-xxs;
+    position: relative;
 
-    // background-color: green;
+    > .expand-toggle-wrapper {
+      width: $item-toggle-column-width;
+      // padding-inline-end: awsui.$space-scaled-xxs;
 
-    // position: relative;
-    // align-self: stretch;
-    // height: 100%;
-
-    // align-self: center;
-
-    > .toggle {
-      justify-self: center;
       position: relative;
-      inset-block-start: 2px;
+
+      > .toggle {
+        justify-self: center;
+        position: relative;
+        inset-block-start: 2px;
+      }
+    }
+
+    > .structured-item-wrapper {
+      flex: 1;
+      padding-block: awsui.$space-scaled-xxs;
+      // padding-inline-start: awsui.$space-scaled-xxs;
     }
   }
 
-  > .connector-wrapper {
-    grid-column: 1;
-    grid-row: 2;
-  }
+  > .vertical-connector {
+    // background-color: red;
+    background-color: awsui.$color-border-divider-default;
+    position: absolute;
+    inset: 0;
+    inline-size: awsui.$border-divider-list-width;
+    inset-inline-start: calc($item-toggle-column-width / 2);
+    inset-block-start: $item-toggle-column-width;
+    // inset-block-start: $item-toggle-column-width;
+    inset-block-end: awsui.$space-scaled-xxs;
 
-  > .structured-item-wrapper {
-    grid-column: 2;
-    // grid-row: 1;
-    grid-row: 1 / span 2;
-    padding-block: awsui.$space-scaled-xxs;
-    // margin-block: awsui.$space-scaled-xxs;
-    padding-inline-start: awsui.$space-scaled-xxs;
-    // border-left: 1px solid awsui.$color-border-divider-default;
-  }
+    // block-size: 100%;
 
-  > .treeitem-group {
-    grid-column: 2;
-    grid-row: 3;
-  }
+    &.highlighted {
+      background-color: awsui.$color-border-divider-interactive-default;
+    }
 
-  > .vertical-connector-wrapper {
-    grid-row: 1 / span 3;
-    grid-column: 1;
-    block-size: 100%;
-    justify-self: center;
-    position: relative;
-    margin-inline-end: awsui.$space-scaled-xxs;
-
-    &.expandable {
-      grid-row: 2 / span 3;
+    &.group {
+      inset-block-end: 0;
+      inset-block-start: 0;
     }
   }
 }
 
-// .hovered {
-//   background-color: grey;
+.treeitem-flat {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &:has(button[data-tree-view-toggle-button='true']:focus) {
+    @include styles.focus-highlight(0px);
+  }
+}
+
+.with-offset {
+  margin-inline-start: $item-toggle-column-width;
+}
+
+@for $level from 1 through $max-nesting-levels {
+  .level-#{$level} {
+    // margin-inline-start: calc((#{$level - 1} * #{$item-toggle-column-width}));
+    // inset-inline-start: calc((#{$level} * -28px) - 16px);
+  }
+}
+
+// .vertical-connector {
+//   // background-color: red;
+//   background-color: awsui.$color-border-divider-default;
+//   position: absolute;
+//   inset: 0;
+//   inline-size: awsui.$border-divider-list-width;
+//   inset-inline-start: calc($item-toggle-column-width / 2);
+//   // inset-block-start: $item-toggle-column-width;
+//   // inset-block-end: awsui.$space-scaled-xxs;
+
+//   // block-size: 100%;
+
+//   &.highlighted {
+//     background-color: awsui.$color-border-divider-interactive-default;
+//   }
+
+//   &.group {
+//     inset-block-end: 0;
+//     inset-block-start: 0;
+//   }
+// }
+
+// .treeitem--grid {
+//   @include styles.styles-reset-ul;
+
+//   position: relative;
+//   align-items: baseline;
+
+//   display: grid;
+//   grid-template-columns: $item-toggle-column-width 1fr;
+
+//   > .expand-toggle-wrapper {
+//     grid-column: 1;
+//     grid-row: 1;
+//     padding-inline-end: awsui.$space-scaled-xxs;
+
+//     > .toggle {
+//       justify-self: center;
+//       position: relative;
+//       inset-block-start: 2px;
+//     }
+//   }
+
+//   > .connector-wrapper {
+//     grid-column: 1;
+//     grid-row: 2;
+//   }
+
+//   > .structured-item-wrapper {
+//     grid-column: 2;
+//     grid-row: 1 / span 2;
+//     padding-block: awsui.$space-scaled-xxs;
+//     padding-inline-start: awsui.$space-scaled-xxs;
+
+//     position: relative;
+
+//     > .treeitem-focus-outline {
+//       position: absolute;
+//       inset: 0;
+//       margin-left: -28px;
+
+//       > .treeitem-focus-outline-inner {
+//         position: relative;
+//         width: 100%;
+//         height: 100%;
+//         @include styles.focus-highlight(0px);
+//       }
+//     }
+//   }
+
+//   > .treeitem-group {
+//     grid-column: 2;
+//     grid-row: 3;
+//   }
+
+//   > .vertical-connector-wrapper {
+//     grid-row: 1 / span 3;
+//     grid-column: 1;
+//     block-size: 100%;
+//     justify-self: center;
+//     position: relative;
+//     margin-inline-end: awsui.$space-scaled-xxs;
+
+//     &.expandable {
+//       grid-row: 2 / span 3;
+//     }
+//   }
+// }
+
+// .treeitem-wrapper {
+//   grid-row: 1 / 2;
+//   grid-column: 1 / span 2;
+//   display: grid;
+//   grid-template-columns: 28px 1fr;
+//   align-items: baseline;
+
+//   > .expand-toggle-wrapper {
+//     grid-column: 1;
+//     grid-row: 1;
+//     padding-inline-end: awsui.$space-scaled-xxs;
+
+//     > .toggle {
+//       justify-self: center;
+//       position: relative;
+//       inset-block-start: 2px;
+//     }
+//   }
+
+//   > .structured-item-wrapper {
+//     grid-column: 2;
+//     grid-row: 1 / span 2;
+//     padding-block: awsui.$space-scaled-xxs;
+//     padding-inline-start: awsui.$space-scaled-xxs;
+
+//     position: relative;
+//   }
+
+//   > .vertical-connector-wrapper {
+//     grid-row: 1 / span 3;
+//     grid-column: 1;
+//     block-size: 100%;
+//     justify-self: center;
+//     position: relative;
+//     margin-inline-end: awsui.$space-scaled-xxs;
+
+//     &.expandable {
+//       grid-row: 2 / span 3;
+//     }
+//   }
+
+//   > .treeitem-group {
+//     grid-column: 2;
+//     grid-row: 3;
+//   }
+// }
+
+// .treeitem.expanded > .treeitem-flat > .expand-toggle-wrapper::after {
+//   content: '';
+//   background-color: awsui.$color-border-divider-default;
+//   inline-size: awsui.$border-divider-list-width;
+//   position: absolute;
+//   inset: 0;
+//   top: 100%;
+//   bottom: 0;
+//   left: 14px;
 // }

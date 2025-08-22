@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useEffect, useMemo } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
@@ -14,12 +14,31 @@ import {
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
 import {
+  findTreeItemById,
   findTreeItemByIndex,
   focusElement,
   getClosestTreeItem,
+  getClosestTreeItemContent,
   getToggleButtonOfTreeItem,
   isElementDisabled,
+  isElementToggle,
+  isTreeItem,
 } from './utils';
+
+// Focus highlight offset to be checked in compact mode
+
+// Keyboard navigation works weird when there a button group inside
+
+// When focused on an element inside the tree-item, the navigation is disabled
+// so when we click outside the tree-view and lose focus and re-focus on the tree-view,
+// the focus starts from the first tree-item, not where it was the last time
+
+// Create a bug ticket in customer issues for tree view tab stop and button group tab stop combination
+
+// re-activate the navigation when focus goes outside tree-view -> onblur? and check related target if it's outside tree-view then re-enable
+
+// event will only be on blur, if on blur event target on tree-item, we disable navigation
+// on blur tree-view re-activate
 
 export function KeyboardNavigationProvider({
   getTreeView,
@@ -28,8 +47,21 @@ export function KeyboardNavigationProvider({
   getTreeView: () => null | HTMLUListElement;
   children: React.ReactNode;
 }) {
+  const [navigationActive, _setNavigationActive] = useState(true);
   const navigationAPI = useRef<SingleTabStopNavigationAPI>(null);
-  const keyboardNavigation = useMemo(() => new KeyboardNavigationProcessor(navigationAPI), []);
+
+  const setNavigationActive = useCallback(
+    (active: boolean) => {
+      _setNavigationActive(active);
+
+      setTimeout(() => {
+        navigationAPI.current?.updateFocusTarget();
+      }, 1);
+    },
+    [navigationAPI]
+  );
+
+  const keyboardNavigation = useMemo(() => new KeyboardNavigationProcessor(navigationAPI, setNavigationActive), []);
 
   const getTreeViewStable = useStableCallback(getTreeView);
 
@@ -50,11 +82,8 @@ export function KeyboardNavigationProvider({
   return (
     <SingleTabStopNavigationProvider
       ref={navigationAPI}
-      navigationActive={true}
+      navigationActive={navigationActive}
       getNextFocusTarget={keyboardNavigation.getNextFocusTarget}
-      // isElementSuppressed={keyboardNavigation.isElementSuppressed}
-      // onRegisterFocusable={keyboardNavigation.onRegisterFocusable}
-      // onUnregisterActive={keyboardNavigation.onUnregisterActive}
     >
       {children}
     </SingleTabStopNavigationProvider>
@@ -64,7 +93,6 @@ export function KeyboardNavigationProvider({
 interface FocusedTreeItem {
   treeItemId: string;
   treeItemIndex: number;
-  elementIndex: number;
   element: HTMLElement;
 }
 
@@ -72,13 +100,17 @@ class KeyboardNavigationProcessor {
   // Props
   private _treeView: null | HTMLUListElement = null;
   private _navigationAPI: { current: null | SingleTabStopNavigationAPI };
+  private setNavigationActive: (active: boolean) => void;
 
   // State
   private focusedTreeItem: null | FocusedTreeItem = null;
-  private focusInside = false;
 
-  constructor(navigationAPI: { current: null | SingleTabStopNavigationAPI }) {
+  constructor(
+    navigationAPI: { current: null | SingleTabStopNavigationAPI },
+    setNavigationActive: (active: boolean) => void
+  ) {
     this._navigationAPI = navigationAPI;
+    this.setNavigationActive = setNavigationActive;
   }
 
   public init(treeView: HTMLUListElement) {
@@ -88,6 +120,7 @@ class KeyboardNavigationProcessor {
     this.treeView.addEventListener('focusin', this.onFocusin, { signal: controller.signal });
     this.treeView.addEventListener('focusout', this.onFocusout, { signal: controller.signal });
     this.treeView.addEventListener('keydown', this.onKeydown, { signal: controller.signal });
+    // this.treeView.addEventListener('blur', this.onBlur, { signal: controller.signal });
 
     this.cleanup = () => {
       controller.abort();
@@ -99,7 +132,6 @@ class KeyboardNavigationProcessor {
   }
 
   public refresh() {
-    console.log('refresh');
     // Timeout ensures the newly rendered content elements are registered.
     setTimeout(() => {
       if (this._treeView) {
@@ -111,18 +143,18 @@ class KeyboardNavigationProcessor {
   }
 
   public getNextFocusTarget = () => {
-    console.log('getNextFocusTarget');
     const treeItem = this.focusedTreeItem;
     const firstTreeItemToggle = this.treeView.querySelector(
       '[data-tree-view-toggle-button=true]'
     ) as null | HTMLButtonElement;
+    console.log('firstTreeItemToggle:', firstTreeItemToggle);
 
     let focusTarget: null | HTMLElement = firstTreeItemToggle;
+    console.log('tree item that was focused before: ', treeItem);
 
-    // When a navigation-focused element is present in the tree-view it is used for user-navigation instead.
+    // Focus on the element that was focused before.
     if (treeItem) {
       focusTarget = this.getNextFocusableTreeItem(treeItem, 0);
-      // focusTarget = this.getNextFocusable(cell, { x: 0, y: 0 });
     }
 
     return focusTarget;
@@ -140,6 +172,10 @@ class KeyboardNavigationProcessor {
     return getAllFocusables(target).filter(el => isElementRegistered(el) && !isElementDisabled(el));
   }
 
+  private isRegistered(element: null | Element): boolean {
+    return !element || (this._navigationAPI.current?.isRegistered(element) ?? false);
+  }
+
   private updateFocusedTreeItem(focusedElement?: HTMLElement): void {
     if (!focusedElement) {
       return;
@@ -151,27 +187,21 @@ class KeyboardNavigationProcessor {
     }
     const treeItemIndex = parseInt(treeItem.getAttribute('data-keyboard-navigation-index') ?? '');
 
-    const treeItemFocusables = this.getFocusablesFrom(treeItem);
-    const elementIndex = treeItemFocusables.indexOf(focusedElement);
-
     this.focusedTreeItem = {
       treeItemId: treeItem.id,
       treeItemIndex,
-      elementIndex,
       element: focusedElement,
     };
 
     console.log('focusedTreeItem: ', {
       treeItemId: treeItem.id,
       treeItemIndex,
-      elementIndex,
       element: focusedElement,
     });
   }
 
   private onFocusin = (event: FocusEvent) => {
-    console.log('onFocusin');
-    this.focusInside = true;
+    console.log('onFocusin', event.target);
 
     if (!(event.target instanceof HTMLElement)) {
       return;
@@ -185,9 +215,38 @@ class KeyboardNavigationProcessor {
     this._navigationAPI.current?.updateFocusTarget();
   };
 
-  private onFocusout = () => {
+  private onFocusout = (event: FocusEvent) => {
     console.log('onFocusout');
-    this.focusInside = false;
+
+    const target = event.relatedTarget as null | Element;
+
+    if (target === null) {
+      console.log('navigation enabled');
+      this.setNavigationActive(true);
+      return;
+    }
+
+    const closestTreeItemContent = getClosestTreeItemContent(target);
+    if (closestTreeItemContent) {
+      this.setNavigationActive(false);
+      console.log('navigation disabled');
+    } else {
+      this.setNavigationActive(true);
+      console.log('navigation enabled');
+    }
+  };
+
+  private onBlur = (event: FocusEvent) => {
+    const target = event.relatedTarget as HTMLElement;
+
+    const isTargetTreeItem = isTreeItem(target);
+    if (isTargetTreeItem) {
+      this.setNavigationActive(false);
+      console.log('navigation disabled');
+    } else {
+      this.setNavigationActive(true);
+      console.log('navigation enabled');
+    }
   };
 
   private onKeydown = (event: KeyboardEvent) => {
@@ -196,23 +255,9 @@ class KeyboardNavigationProcessor {
       return;
     }
 
-    const keys = [
-      KeyCode.up,
-      KeyCode.down,
-      // KeyCode.left,
-      // KeyCode.right,
-      // KeyCode.pageUp,
-      // KeyCode.pageDown,
-      // KeyCode.home,
-      // KeyCode.end,
-    ];
+    const keys = [KeyCode.up, KeyCode.down, KeyCode.right, KeyCode.home, KeyCode.end];
 
-    if (
-      // invalidModifierCombination ||
-      // this.isElementSuppressed(document.activeElement) ||
-      !this.isRegistered(document.activeElement) ||
-      keys.indexOf(event.keyCode) === -1
-    ) {
+    if (!this.isRegistered(document.activeElement) || keys.indexOf(event.keyCode) === -1) {
       console.log('returning in onKeydown');
       return;
     }
@@ -224,18 +269,22 @@ class KeyboardNavigationProcessor {
       handleKey(event, {
         onBlockStart: () => this.moveFocusBetweenTreeItems(from, -1),
         onBlockEnd: () => this.moveFocusBetweenTreeItems(from, 1),
+        onInlineEnd: () => this.moveFocusInsideTreeItem(from),
+        onHome: () => {
+          console.log('onHome');
+          this.moveFocusBetweenTreeItems(from, -Infinity);
+        },
+        onEnd: () => {
+          console.log('onEnd');
+          this.moveFocusBetweenTreeItems(from, Infinity);
+        },
       });
     }
   };
 
-  private moveFocusBetweenTreeItems(from: FocusedTreeItem, by: number) {
-    focusElement(this.getNextFocusableTreeItem(from, by));
-  }
-
   private getNextFocusableTreeItem(from: FocusedTreeItem, by: number) {
     const targetTreeItemIndex = from.treeItemIndex + by;
     const targetTreeItem = findTreeItemByIndex(this.treeView, targetTreeItemIndex, by);
-    console.log('targetTreeItem: ', targetTreeItem);
     if (!targetTreeItem) {
       return null;
     }
@@ -249,7 +298,34 @@ class KeyboardNavigationProcessor {
     return targetTreeItemToggle;
   }
 
-  private isRegistered(element: null | Element): boolean {
-    return !element || (this._navigationAPI.current?.isRegistered(element) ?? false);
+  private moveFocusInsideTreeItem(from: FocusedTreeItem) {
+    const nextFocusableElement = this.getNextFocusableTreeItemContent(from);
+
+    if (nextFocusableElement) {
+      focusElement(nextFocusableElement);
+    }
+  }
+
+  private moveFocusBetweenTreeItems(from: FocusedTreeItem, by: number) {
+    focusElement(this.getNextFocusableTreeItem(from, by));
+  }
+
+  private getNextFocusableTreeItemContent(from: FocusedTreeItem) {
+    const treeItem = findTreeItemById(this.treeView, from.treeItemId);
+    if (!treeItem) {
+      return null;
+    }
+
+    const treeItemFocusables = this.getFocusablesFrom(treeItem);
+
+    // Focus would always be on the toggle button which is at index 0 so next focusable is at index 1.
+    const targetElementIndex = 1;
+    const isValidIndex = targetElementIndex < treeItemFocusables.length;
+
+    if (isValidIndex) {
+      return treeItemFocusables[targetElementIndex];
+    }
+
+    return null;
   }
 }

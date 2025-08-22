@@ -26,6 +26,19 @@ export function ExpandToggleButton({
 }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(buttonRef);
+
+  if (invisible) {
+    return (
+      <button
+        type="button"
+        ref={buttonRef}
+        className={clsx(styles['expand-toggle'], styles.invisible)}
+        tabIndex={tabIndex}
+        data-tree-view-toggle-button={true}
+      ></button>
+    );
+  }
+
   return (
     <button
       type="button"

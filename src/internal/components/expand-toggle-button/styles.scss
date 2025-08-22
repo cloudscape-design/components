@@ -40,11 +40,12 @@
   outline: 0;
   color: awsui.$color-text-interactive-default;
 
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-  }
+  //  TO DO : still apply focus visible to the button that is not part of tree view
+  // @include focus-visible.when-visible {
+  //   @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  // }
 
-  &-invisible {
+  &.invisible {
     color: transparent;
     pointer-events: none;
   }

@@ -10,6 +10,7 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { TreeViewProps } from './interfaces';
 import { KeyboardNavigationProvider } from './keyboard-navigation';
 import InternalTreeItem from './tree-item';
+import { getAllVisibleItemsIndeces, getTreeItemRows } from './utils';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -62,9 +63,61 @@ const InternalTreeView = <T,>({
           aria-labelledby={ariaLabelledby}
           aria-describedby={ariaDescribedby}
         >
-          {items.map((item, index) => {
+          {/* {itemsRows.map(({ item, id, index, level, childrenIds }, rowIndex) => {
+            if (childrenIds && childrenIds.length > 0 && expandedItems?.includes(id)) {
+              return (
+                <>
+                  {
+                    <InternalTreeItem
+                      key={rowIndex}
+                      item={item}
+                      level={level}
+                      index={index}
+                      rowIndex={rowIndex}
+                      expandedItems={expandedItems}
+                      i18nStrings={i18nStrings}
+                      onItemToggle={onToggle}
+                      renderItem={renderItem}
+                      getItemId={getItemId}
+                      getItemChildren={getItemChildren}
+                      renderItemToggleIcon={renderItemToggleIcon}
+                      allVisibleItemsIndeces={allVisibleItemsIndeces}
+                      owns={`${id}-group`}
+                    />
+                  }
+
+                  <ul
+                    id={`${id}-group`}
+                    role="group"
+                    className={styles['treeitem-group']}
+                    aria-owns={childrenIds.join(' ')}
+                  ></ul>
+                </>
+              );
+            }
+
             return (
               <InternalTreeItem
+                key={rowIndex}
+                item={item}
+                level={level}
+                index={index}
+                rowIndex={rowIndex}
+                expandedItems={expandedItems}
+                i18nStrings={i18nStrings}
+                onItemToggle={onToggle}
+                renderItem={renderItem}
+                getItemId={getItemId}
+                getItemChildren={getItemChildren}
+                renderItemToggleIcon={renderItemToggleIcon}
+                allVisibleItemsIndeces={allVisibleItemsIndeces}
+              />
+            );
+          })} */}
+
+          {items.map((item, index) => {
+            return (
+              <InternalTreeItem<T>
                 key={index}
                 item={item}
                 level={1}
@@ -85,41 +138,5 @@ const InternalTreeView = <T,>({
     </div>
   );
 };
-
-interface IndecesByItemId {
-  [key: string]: number;
-}
-
-function getAllVisibleItemsIndeces<T>({
-  items,
-  expandedItems,
-  getItemId,
-  getItemChildren,
-}: {
-  items: ReadonlyArray<T>;
-  expandedItems?: ReadonlyArray<string>;
-  getItemId: (item: T, index: number) => string;
-  getItemChildren: (item: T, index: number) => ReadonlyArray<T> | undefined;
-}) {
-  const allIndecesByItemId: IndecesByItemId = {};
-  let currentIndex = 0;
-
-  const traverse = (item: T, index: number) => {
-    const itemId = getItemId(item, index);
-    const children = getItemChildren(item, index);
-
-    allIndecesByItemId[itemId] = currentIndex;
-    currentIndex += 1;
-
-    const isExpanded = children && children.length > 0 && expandedItems?.includes(itemId);
-    if (isExpanded) {
-      children.forEach((child, index) => traverse(child, index));
-    }
-  };
-
-  items.forEach((item, index) => traverse(item, index));
-
-  return allIndecesByItemId;
-}
 
 export default InternalTreeView;
