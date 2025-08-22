@@ -89,6 +89,10 @@ const customCssPropertiesList = [
   'styleFocusRingBorderRadius',
   'styleFocusRingBorderWidth',
   'styleFocusRingBoxShadow',
+  'styleBoxShadowActive',
+  'styleBoxShadowDefault',
+  'styleBoxShadowDisabled',
+  'styleBoxShadowHover',
   // Alert focus ring properties
   'alertFocusRingBorderColor',
   'alertFocusRingBorderRadius',
