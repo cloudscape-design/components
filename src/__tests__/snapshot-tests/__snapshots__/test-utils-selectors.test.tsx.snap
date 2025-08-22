@@ -446,6 +446,9 @@ exports[`test-utils selectors 1`] = `
   "multiselect": [
     "awsui_root_f8g6q",
   ],
+  "navigable-group": [
+    "awsui_root_efqlv",
+  ],
   "pagination": [
     "awsui_button-current_fvjdu",
     "awsui_button_fvjdu",
