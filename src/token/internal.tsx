@@ -137,6 +137,8 @@ function InternalToken({
       }}
       onMouseLeave={() => setShowTooltip(false)}
       tabIndex={!disableTooltip && isInline && isEllipsisActive() ? 0 : undefined}
+      // The below data attribute is to tell a potentially nested Popover to have less spacing between the text and the underline
+      data-token-inline={isInline || undefined}
     >
       <div
         className={clsx(
