@@ -17983,7 +17983,6 @@ that don't have visible text, and to distinguish between multiple triggers with 
           "custom",
           "text",
           "text-inline",
-          "text-inline-compact",
         ],
       },
       "name": "triggerType",

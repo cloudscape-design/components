@@ -39,8 +39,7 @@ $trigger-underline-offset-compact: 0.1em;
   @include styles.text-wrapping;
 }
 
-.trigger-type-text-inline,
-%trigger-type-text-inline {
+.trigger-type-text-inline {
   @include styles.default-text-style;
   border-block: 0;
   /*
@@ -59,19 +58,13 @@ $trigger-underline-offset-compact: 0.1em;
   }
 }
 
-.trigger-type-text-inline-compact {
-  @extend %trigger-type-text-inline;
-  text-underline-offset: $trigger-underline-offset-compact;
-}
-
 .trigger-type-text {
   border-block: 0;
   border-block-end: awsui.$border-divider-list-width dashed currentColor;
 }
 
 .trigger-type-text,
-.trigger-type-text-inline,
-.trigger-type-text-inline-compact {
+.trigger-type-text-inline {
   border-inline: 0;
   margin-block: 0;
   margin-inline: 0;
@@ -87,6 +80,11 @@ $trigger-underline-offset-compact: 0.1em;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(1px);
+  }
+
+  // Reduce the spacing between the text and the underline for popovers inside inline tokens
+  [data-token-inline] > & {
+    text-underline-offset: $trigger-underline-offset-compact;
   }
 }
 
