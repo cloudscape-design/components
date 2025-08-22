@@ -14,6 +14,7 @@ import IconButtonItem from './icon-button-item';
 import IconToggleButtonItem from './icon-toggle-button-item.js';
 import { ButtonGroupProps } from './interfaces';
 import MenuDropdownItem from './menu-dropdown-item';
+import { getButtonGroupItemStyles } from './style';
 
 import styles from './styles.css.js';
 
@@ -25,11 +26,21 @@ interface ItemElementProps {
   onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails> | undefined;
   onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails> | undefined;
   position: string;
+  style?: ButtonGroupProps.Style;
 }
 
 const ItemElement = forwardRef(
   (
-    { item, dropdownExpandToViewport, tooltip, setTooltip, onItemClick, onFilesChange, position }: ItemElementProps,
+    {
+      item,
+      dropdownExpandToViewport,
+      tooltip,
+      setTooltip,
+      onItemClick,
+      onFilesChange,
+      position,
+      style,
+    }: ItemElementProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -107,6 +118,8 @@ const ItemElement = forwardRef(
       setTooltip(null);
     };
 
+    const itemStylePropertiesAndVariables = getButtonGroupItemStyles(style);
+
     return (
       <div
         key={item.id}
@@ -123,6 +136,7 @@ const ItemElement = forwardRef(
           onShowTooltipHard(true);
         }}
         onBlur={() => onShowTooltipHard(false)}
+        style={itemStylePropertiesAndVariables}
         {...(item.type === 'menu-dropdown' || (item as ButtonGroupProps.IconButton).disabled
           ? {}
           : getAnalyticsMetadataAttribute({ detail: { position, id: item.id } }))}
