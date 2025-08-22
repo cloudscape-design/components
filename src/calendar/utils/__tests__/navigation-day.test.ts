@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { addYears, startOfMonth, subYears } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { getBaseDay, moveDay, moveNextDay, moveNextWeek, movePrevDay, movePrevWeek } from '../navigation-day';
 
-//mocked to avoid complications with timezones in the 'date-fns' package
-jest.mock('date-fns', () => ({ ...jest.requireActual('date-fns'), startOfMonth: () => new Date('2025-01-01') }));
+//mocked to avoid complications with timezones in the dayjs package
+jest.mock('dayjs', () => {
+  const originalDayjs = jest.requireActual('dayjs');
+  return originalDayjs;
+});
 
 const startDate = new Date(`2022-01-15`);
 
@@ -19,31 +22,31 @@ describe('getBaseDay', () => {
   test('returns first day of month when it is focusable', () => {
     const isDateFocusable = () => true; // All days are focusable
     const result = getBaseDay(baseDate, isDateFocusable);
-    expect(result).toEqual(startOfMonth(baseDate));
+    expect(result).toEqual(dayjs(baseDate).startOf('month').toDate());
   });
 
   test('returns first focusable day within the same month', () => {
     const isDateFocusable = (date: Date) => date.getDate() === 5; // Only the 5th of each month is focusable
     const result = getBaseDay(baseDate, isDateFocusable);
-    expect(result).toEqual(new Date('2025-01-05')); //5th of month after mock
+    expect(result).toEqual(new Date('2024-04-05')); //5th of actual month
   });
 
   test('returns first day of month when no days are focusable', () => {
     const isDateFocusable = () => false; // No days are focusable
     const result = getBaseDay(baseDate, isDateFocusable);
-    expect(result).toEqual(new Date(`2025-01-01`)); //start of year of mock
+    expect(result).toEqual(new Date(`2024-04-01`)); //start of actual month
   });
 
   test('returns first day of month when first focusable day is in next month', () => {
     const isDateFocusable = (date: Date) => date >= new Date('2024-05-01'); // Only days from May 1, 2024 are focusable
     const result = getBaseDay(baseDate, isDateFocusable);
-    expect(result).toEqual(startOfMonth(baseDate));
+    expect(result).toEqual(dayjs(baseDate).startOf('month').toDate());
   });
 
   test('handles custom isDateFocusable function', () => {
     const isDateFocusable = (date: Date) => date.getDay() === 1; // Only Mondays are focusable
     const result = getBaseDay(baseDate, isDateFocusable);
-    expect(result).toEqual(new Date('2025-01-06')); //first monday after mock
+    expect(result).toEqual(new Date('2024-04-01')); //first monday in actual month
     expect(result.getDay()).toEqual(1);
   });
 
@@ -51,14 +54,14 @@ describe('getBaseDay', () => {
     const startOfMonthDate = new Date('2024-04-01');
     const isDateFocusable = (date: Date) => date.getDate() === 3; // Only the 3rd of each month is focusable
     const result = getBaseDay(startOfMonthDate, isDateFocusable);
-    expect(result).toEqual(new Date('2025-01-03')); // first 3rd day after mock
+    expect(result).toEqual(new Date('2024-04-03')); // 3rd day of actual month
   });
 
   test('works with dates at the end of the month', () => {
     const endOfMonthDate = new Date('2024-04-30');
     const isDateFocusable = (date: Date) => date.getDate() === 28; // Only the 28th of each month is focusable
     const result = getBaseDay(endOfMonthDate, isDateFocusable);
-    expect(result).toEqual(new Date('2025-01-28')); // April 28, 2024
+    expect(result).toEqual(new Date('2024-04-28')); // 28th day of actual month
   });
 });
 
@@ -90,8 +93,8 @@ describe('moveDay', () => {
   });
 
   test('finds active day at the edge of 1 year limit', () => {
-    const oneYearLater = addYears(baseDate, 1);
-    const oneYearEarlier = subYears(baseDate, 1);
+    const oneYearLater = dayjs(baseDate).add(1, 'year').toDate();
+    const oneYearEarlier = dayjs(baseDate).subtract(1, 'year').toDate();
 
     const isDateFocusable = (date: Date) =>
       date.getTime() === oneYearLater.getTime() || date.getTime() === oneYearEarlier.getTime();
