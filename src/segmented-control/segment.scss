@@ -95,7 +95,6 @@ $segment-divider-width: 1px;
   @for $i from 1 through 6 {
     &:nth-child(#{$i}) {
       grid-column: $i;
-      -ms-grid-column: $i;
     }
   }
 

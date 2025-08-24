@@ -14,17 +14,9 @@
     user-select: none;
   }
 
-  &::-ms-input-placeholder {
-    @content;
-  }
-
   &::-moz-placeholder {
     @content;
     opacity: 1;
-  }
-
-  &:-ms-input-placeholder {
-    @content;
   }
 
   &:-moz-placeholder {
