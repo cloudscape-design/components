@@ -5,7 +5,6 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .content,
 .description,
@@ -24,12 +23,27 @@
   }
 }
 
-.native-input {
-  @include focus-visible.when-visible {
-    & + .outline {
-      display: block;
-    }
+.control {
+  position: relative;
+  /* stylelint-disable selector-max-type */
+  & > input,
+  & > svg,
+  & > .outline {
+    position: absolute;
+    inline-size: 100%;
+    block-size: 100%;
+    inset-block-start: 0;
+    inset-inline-start: 0;
   }
+  & > input {
+    opacity: 0;
+    z-index: 1;
+    user-select: none;
+    cursor: default;
+    margin-block: 0;
+    margin-inline: 0;
+  }
+  /* stylelint-enable selector-max-type */
 }
 
 .wrapper {
@@ -65,25 +79,10 @@
   }
 }
 
-.control {
-  position: relative;
-  /* stylelint-disable selector-max-type */
-  & > input,
-  & > svg,
-  & > .outline {
-    position: absolute;
-    inline-size: 100%;
-    block-size: 100%;
-    inset-block-start: 0;
-    inset-inline-start: 0;
+.native-input {
+  &:focus-visible {
+    & + .outline {
+      display: block;
+    }
   }
-  & > input {
-    opacity: 0;
-    z-index: 1;
-    user-select: none;
-    cursor: default;
-    margin-block: 0;
-    margin-inline: 0;
-  }
-  /* stylelint-enable selector-max-type */
 }

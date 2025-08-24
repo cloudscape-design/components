@@ -7,7 +7,6 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../button/constants' as constants;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $segment-properties: (
   'default-background': awsui.$color-background-segment-default,
@@ -74,7 +73,7 @@ $segment-divider-width: 1px;
     color: $disabled-color;
   }
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.focus-highlight(awsui.$space-segmented-control-focus-outline-gutter);
   }
 

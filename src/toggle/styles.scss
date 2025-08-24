@@ -7,7 +7,6 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $toggle-width: 2.4 * styles.$base-size;
 $toggle-height: 1.6 * styles.$base-size;

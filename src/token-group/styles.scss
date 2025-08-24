@@ -5,7 +5,6 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
 @use './mixins.scss' as mixins;
 
@@ -29,7 +28,7 @@
   color: awsui.$color-text-button-inline-icon-default;
   background-color: transparent;
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.focus-highlight(0px);
   }
 
