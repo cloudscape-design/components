@@ -26,7 +26,7 @@ awsuiPlugins.appLayout.registerDrawer({
   type: 'global-ai',
   resizable: true,
   isExpandable: true,
-  defaultSize: 500,
+  defaultSize: 420,
   preserveInactiveContent: true,
 
   ariaLabels: {
