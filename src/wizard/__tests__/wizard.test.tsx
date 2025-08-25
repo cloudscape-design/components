@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import Button from '../../../lib/components/button';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import Input from '../../../lib/components/input';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import WizardWrapper from '../../../lib/components/test-utils/dom/wizard';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
@@ -554,5 +555,56 @@ describe('i18n', () => {
     expect(wrapper.find('nav')!.getElement()).toHaveAccessibleName('Custom steps');
     wrapper.findPrimaryButton().click();
     expect(wrapper.findPreviousButton()!.getElement()).toHaveTextContent('Custom previous');
+  });
+});
+
+describe('Native form submit button', () => {
+  const onChange = jest.fn();
+
+  const steps = [
+    {
+      title: 'Step 1',
+      isOptional: false,
+      content: <Input value="step-1-input-value" onChange={onChange} />,
+    },
+    {
+      title: 'Step 2',
+      isOptional: false,
+      content: <Input value="step-2-input-value" onChange={onChange} />,
+    },
+    {
+      title: 'Step 3',
+      isOptional: false,
+      content: <Input value="step-3-input-value" onChange={onChange} />,
+    },
+  ];
+
+  test('invokes onNavigate function on non-last step', () => {
+    const onNavigate = jest.fn();
+    const onSubmit = jest.fn();
+
+    const [wrapper] = renderDefaultWizard({ activeStepIndex: 0, steps, allowSkipTo: false, onNavigate, onSubmit });
+    const inputStep1 = wrapper.findContent()?.findInput()?.getElement() as HTMLElement;
+
+    fireEvent.submit(inputStep1);
+
+    expect(onNavigate).toHaveBeenCalledTimes(1);
+    expect(onNavigate).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { requestedStepIndex: 1, reason: 'next' } })
+    );
+    expect(onSubmit).toHaveBeenCalledTimes(0);
+  });
+
+  test('invokes onSubmit function on last step', () => {
+    const onNavigate = jest.fn();
+    const onSubmit = jest.fn();
+
+    const [wrapper] = renderDefaultWizard({ activeStepIndex: 2, steps, allowSkipTo: false, onNavigate, onSubmit });
+    const inputStep3 = wrapper.findContent()?.findInput()?.getElement() as HTMLElement;
+
+    fireEvent.submit(inputStep3);
+
+    expect(onNavigate).toHaveBeenCalledTimes(0);
+    expect(onSubmit).toHaveBeenCalledTimes(1);
   });
 });
