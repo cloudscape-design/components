@@ -57,7 +57,7 @@
       padding-inline: awsui.$space-static-s;
       box-sizing: border-box;
 
-      block-size: 100%;
+      block-size: calc(100% + #{awsui.$border-divider-section-width});
       background: constants.$ai-drawer-background;
 
       &:before,
