@@ -145,10 +145,12 @@ function InternalToken({
           !isInline ? styles['token-box'] : styles['token-box-inline'],
           disabled && styles['token-box-disabled'],
           readOnly && styles['token-box-readonly'],
+          !isInline && !onDismiss && styles['token-box-without-dismiss'],
           disableInnerPadding && styles['disable-padding']
         )}
       >
         <Option
+          className={clsx(isInline && styles['token-option-inline'])}
           triggerVariant={isInline}
           option={buildOptionDefinition()}
           isGenericGroup={false}
