@@ -17,6 +17,15 @@ export default ['d3-scale', 'react-virtual'].map(entry => ({
     format: 'es',
   },
   external: ['react', 'react-dom'],
+  onwarn(warning, warn) {
+    // Suppress circular dependency warnings for d3-interpolate
+    // These are known harmless circular dependencies acknowledged by d3 maintainers
+    // See: https://github.com/d3/d3-interpolate/issues/58, https://github.com/d3/d3-interpolate/issues/71
+    if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.ids.some(id => id.includes('d3-interpolate'))) {
+      return;
+    }
+    warn(warning);
+  },
   plugins: [
     resolve({
       extensions: ['.js'],
