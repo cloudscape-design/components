@@ -36,3 +36,11 @@ export type SomeOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>
  * ```
  */
 export type Optional<Type> = Type | undefined;
+
+/**
+ * Use this function to mark conditions which should never be visited
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function assertNever(_value: never) {
+  return null;
+}

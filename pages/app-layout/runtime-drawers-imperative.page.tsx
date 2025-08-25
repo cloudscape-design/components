@@ -7,6 +7,7 @@ import { AppLayoutProps } from '~components/app-layout';
 
 import './utils/external-widget';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
+import { drawerLabels } from './utils/drawers';
 import appLayoutLabels from './utils/labels';
 
 export default function WithDrawers() {
@@ -15,7 +16,7 @@ export default function WithDrawers() {
   return (
     <AppLayout
       ref={appLayoutRef}
-      ariaLabels={appLayoutLabels}
+      ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
       breadcrumbs={<Breadcrumbs />}
       content={
         <ContentLayout

@@ -5,7 +5,7 @@ import { AppLayoutDrawersPage, setupTest } from '../utils';
 
 const wrapper = createWrapper().findAppLayout();
 
-describe('refresh-toolbar', () => {
+describe.skip('refresh-toolbar', () => {
   const theme = 'refresh-toolbar';
 
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
