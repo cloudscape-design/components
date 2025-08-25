@@ -869,6 +869,12 @@ describe('Style API', () => {
             borderRadius: '50px',
             borderWidth: '25px',
           },
+          boxShadow: {
+            active: '0 0 10px red',
+            default: '0 0 5px blue',
+            disabled: '0 0 2px gray',
+            hover: '0 0 8px green',
+          },
         },
       },
     });
@@ -899,6 +905,18 @@ describe('Style API', () => {
     );
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe(
       '25px'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBoxShadowActive)).toBe(
+      '0 0 10px red'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBoxShadowDefault)).toBe(
+      '0 0 5px blue'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBoxShadowDisabled)).toBe(
+      '0 0 2px gray'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBoxShadowHover)).toBe(
+      '0 0 8px green'
     );
   });
 });

@@ -15,6 +15,7 @@
   background: var(#{custom-props.$styleBackgroundDefault}, map.get($variant, 'default-background'));
   color: var(#{custom-props.$styleColorDefault}, map.get($variant, 'default-color'));
   border-color: var(#{custom-props.$styleBorderColorDefault}, #{map.get($variant, 'default-border-color')});
+  box-shadow: var(#{custom-props.$styleBoxShadowDefault});
   border-block-width: map.get($variant, 'border-width');
   border-inline-width: map.get($variant, 'border-width');
   position: relative;
@@ -27,6 +28,7 @@
     background: var(#{custom-props.$styleBackgroundHover}, map.get($variant, 'hover-background'));
     border-color: var(#{custom-props.$styleBorderColorHover}, map.get($variant, 'hover-border-color'));
     color: var(#{custom-props.$styleColorHover}, map.get($variant, 'hover-color'));
+    box-shadow: var(#{custom-props.$styleBoxShadowHover});
     text-decoration: none;
   }
 
@@ -34,12 +36,14 @@
     background: var(#{custom-props.$styleBackgroundActive}, map.get($variant, 'active-background'));
     border-color: var(#{custom-props.$styleBorderColorActive}, map.get($variant, 'active-border-color'));
     color: var(#{custom-props.$styleColorActive}, map.get($variant, 'active-color'));
+    box-shadow: var(#{custom-props.$styleBoxShadowActive});
   }
 
   &.disabled {
     background: var(#{custom-props.$styleBackgroundDisabled}, map.get($variant, 'disabled-background'));
     border-color: var(#{custom-props.$styleBorderColorDisabled}, map.get($variant, 'disabled-border-color'));
     color: var(#{custom-props.$styleColorDisabled}, map.get($variant, 'disabled-color'));
+    box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
     text-decoration: none;
     cursor: auto;
   }

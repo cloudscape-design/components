@@ -26,6 +26,12 @@ export function getButtonStyles(style: ButtonProps['style']) {
       [customCssProps.styleBorderColorDisabled]: style.root.borderColor?.disabled,
       [customCssProps.styleBorderColorHover]: style.root.borderColor?.hover,
     }),
+    ...(style?.root?.boxShadow && {
+      [customCssProps.styleBoxShadowActive]: style.root.boxShadow?.active,
+      [customCssProps.styleBoxShadowDefault]: style.root.boxShadow?.default,
+      [customCssProps.styleBoxShadowDisabled]: style.root.boxShadow?.disabled,
+      [customCssProps.styleBoxShadowHover]: style.root.boxShadow?.hover,
+    }),
     ...(style?.root?.color && {
       [customCssProps.styleColorActive]: style.root.color?.active,
       [customCssProps.styleColorDefault]: style.root.color?.default,
