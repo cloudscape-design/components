@@ -6,10 +6,12 @@ import { useMergeRefs, useReducedMotion, warnOnce } from '@cloudscape-design/com
 
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { focusFlashById, focusFlashFocusableArea } from './flash';
 import { FlashbarProps } from './interfaces';
+import { FOCUS_DEBOUNCE_DELAY } from './utils';
 
 import styles from './styles.css.js';
 
@@ -118,11 +120,13 @@ export function useFlashbar({
     }
   }
 
+  const debouncedFocus = useDebounceCallback(focusFlashById, FOCUS_DEBOUNCE_DELAY);
+
   useEffect(() => {
     if (nextFocusId) {
-      focusFlashById(ref.current, nextFocusId);
+      debouncedFocus(ref.current, nextFocusId);
     }
-  }, [nextFocusId, ref]);
+  }, [debouncedFocus, nextFocusId, ref]);
 
   const handleFlashDismissed = (dismissedId?: string) => {
     handleFlashDismissedInternal(dismissedId, items, ref.current, flashRefs.current);

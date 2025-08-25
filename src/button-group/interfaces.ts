@@ -199,8 +199,6 @@ export namespace ButtonGroupProps {
       borderColor?: string;
       borderRadius?: string;
       borderWidth?: string;
-      gap?: string;
-      flexDirection?: 'row' | 'column';
       paddingBlock?: string;
       paddingInline?: string;
       boxShadow?: string;
