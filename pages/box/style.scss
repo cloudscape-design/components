@@ -6,11 +6,8 @@
 @use '~design-tokens' as awsui;
 
 .permutation-box {
-  border-block: 1px solid;
-  border-inline: 1px solid;
-  // Border color separated as fallback styling is not generated and IE11 does not support
-  // css variables
-  border-color: awsui.$color-text-body-default;
+  border-block: 1px solid awsui.$color-text-body-default;
+  border-inline: 1px solid awsui.$color-text-body-default;
   background-color: awsui.$color-background-container-content;
 }
 .inverted {

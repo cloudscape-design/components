@@ -89,7 +89,6 @@ export default tsEslint.config(
           },
         ],
       ],
-      '@cloudscape-design/components/no-implicit-svg-focusable': 'error',
       '@cloudscape-design/components/prefer-live-region': 'warn',
       '@typescript-eslint/naming-convention': [
         'error',
