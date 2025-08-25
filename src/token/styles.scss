@@ -112,12 +112,20 @@
   }
 }
 
+.token-option-inline {
+  max-block-size: constants.$token-max-height-inline;
+}
+
 .token-option-label {
   min-inline-size: constants.$token-character-limit;
 }
 
 .token-box {
   @include mixins.token-box-styles();
+
+  &-without-dismiss {
+    padding-inline-end: styles.$control-padding-horizontal;
+  }
 }
 
 .token-box-inline {

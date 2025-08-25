@@ -81,13 +81,15 @@ export default function InternalTokenGroup({
             readOnly={readOnly || isItemReadOnly?.(item)}
             variant={'normal'}
             icon={
-              <InternalIcon
-                name={item.iconName}
-                svg={item.iconSvg}
-                url={item.iconUrl}
-                ariaLabel={item.iconAlt}
-                size={item.description || item.tags ? 'big' : 'normal'}
-              />
+              item.iconName || item.iconUrl || item.iconSvg ? (
+                <InternalIcon
+                  name={item.iconName}
+                  svg={item.iconSvg}
+                  url={item.iconUrl}
+                  ariaLabel={item.iconAlt}
+                  size={item.description || item.tags ? 'big' : 'normal'}
+                />
+              ) : undefined
             }
             {...(item.disabled || readOnly
               ? {}
