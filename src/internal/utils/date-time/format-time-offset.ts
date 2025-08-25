@@ -3,8 +3,31 @@
 
 import { padLeftZeros } from '../strings';
 
+/**
+ * Formats timezone offset values used in for APIs, maintaining backward compatibility. Always
+ * returns "+HH:MM" format, even for UTC ("+00:00"). Used by onChange events to preserve existing
+ * API behavior.
+ */
+export function formatTimeOffsetISOInternal(isoDate: string, offsetInMinutes?: number) {
+  offsetInMinutes = defaultToLocal(isoDate, offsetInMinutes);
+  const { hours, minutes } = getMinutesAndHours(offsetInMinutes);
+
+  const sign = offsetInMinutes < 0 ? '-' : '+';
+  const formattedOffset = `${sign}${formatISO2Digits(hours)}:${formatISO2Digits(minutes)}`;
+
+  return formattedOffset;
+}
+
+/**
+ * Formats timezone offset for display purposes using succinct UTC notation.
+ * Returns "Z" for UTC, "+HH:MM" for other offsets.
+ * Used for visual display in components like date-range-picker trigger text.
+ */
 export function formatTimeOffsetISO(isoDate: string, offsetInMinutes?: number) {
   offsetInMinutes = defaultToLocal(isoDate, offsetInMinutes);
+  if (offsetInMinutes === 0) {
+    return 'Z';
+  }
   const { hours, minutes } = getMinutesAndHours(offsetInMinutes);
 
   const sign = offsetInMinutes < 0 ? '-' : '+';
