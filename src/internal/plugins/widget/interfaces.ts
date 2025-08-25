@@ -1,0 +1,67 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { NonCancelableEventHandler } from '../../events';
+
+interface Message<Type, Payload> {
+  type: Type;
+  payload: Payload;
+}
+
+type DrawerVisibilityChange = (callback: (isVisible: boolean) => void) => void;
+
+interface MountContentContext {
+  onVisibilityChange: DrawerVisibilityChange;
+}
+
+interface DrawerStateChangeParams {
+  isOpen: boolean;
+  initiatedByUserAction?: boolean;
+}
+
+export interface DrawerPayload {
+  id: string;
+  type?: 'local' | 'global' | 'global-ai';
+  ariaLabels: {
+    content?: string;
+    closeButton?: string;
+    triggerButton?: string;
+    resizeHandle?: string;
+    resizeHandleTooltipText?: string;
+    expandedModeButton?: string;
+    exitExpandedModeButton?: string;
+  };
+  isExpandable?: boolean;
+  badge?: boolean;
+  resizable?: boolean;
+  defaultSize?: number;
+  onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
+  orderPriority?: number;
+  defaultActive?: boolean;
+  trigger?: {
+    iconSvg?: string;
+    customIcon?: string;
+  };
+  mountContent: (container: HTMLElement, mountContext: MountContentContext) => void;
+  unmountContent: (container: HTMLElement) => void;
+  preserveInactiveContent?: boolean;
+  onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
+  mountHeader?: (container: HTMLElement) => void;
+  unmountHeader?: (container: HTMLElement) => void;
+}
+
+export type RegisterDrawerMessage = Message<'registerDrawer', DrawerPayload>;
+export type UpdateDrawerConfigMessage = Message<
+  'updateDrawerConfig',
+  Omit<DrawerPayload, 'mountContent' | 'unmountContent' | 'mountHeader' | 'unmountHeader' | 'type'>
+>;
+export type OpenDrawerMessage = Message<'openDrawer', { id: string }>;
+export type CloseDrawerMessage = Message<'closeDrawer', { id: string }>;
+export type ResizeDrawerMessage = Message<'resizeDrawer', { id: string; size: number }>;
+
+export type AppLayoutUpdateMessage =
+  | UpdateDrawerConfigMessage
+  | OpenDrawerMessage
+  | CloseDrawerMessage
+  | ResizeDrawerMessage;
+
+export type AppLayoutMessage = RegisterDrawerMessage | AppLayoutUpdateMessage;
