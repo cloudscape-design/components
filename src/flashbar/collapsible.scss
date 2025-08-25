@@ -4,7 +4,6 @@
 */
 @use 'sass:map';
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/styles' as styles;
@@ -319,7 +318,7 @@ the grid layout will be:
       outline: none;
     }
 
-    @include focus-visible.when-visible {
+    &:focus-visible {
       @include styles.focus-highlight(
         $gutter: 0px,
         $border-radius: var(
