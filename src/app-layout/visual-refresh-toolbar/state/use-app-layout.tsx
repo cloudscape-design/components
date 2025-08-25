@@ -14,6 +14,7 @@ import globalVars from '../../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../../interfaces';
 import { SplitPanelProviderProps } from '../../split-panel';
+import { useAiDrawer } from '../../utils/use-ai-drawer';
 import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../../utils/use-drawers';
 import { useAsyncFocusControl, useMultipleFocusControl } from '../../utils/use-focus-control';
 import { useGlobalScrollPadding } from '../../utils/use-global-scroll-padding';
@@ -142,6 +143,21 @@ export const useAppLayout = (
     toolsWidth,
     onToolsToggle,
   });
+  const {
+    aiDrawer,
+    onActiveAiDrawerChange,
+    activeAiDrawer,
+    activeAiDrawerId,
+    activeAiDrawerSize,
+    minAiDrawerSize,
+    onActiveAiDrawerResize,
+  } = useAiDrawer({
+    isEnabled: hasToolbar,
+    onAiDrawerFocus: () => aiDrawerFocusControl.setFocus(),
+    expandedDrawerId,
+    setExpandedDrawerId,
+  });
+  const aiDrawerFocusControl = useAsyncFocusControl(!!activeAiDrawer?.id, true, activeAiDrawer?.id);
 
   const onActiveDrawerChangeHandler = (
     drawerId: string | null,
@@ -238,6 +254,7 @@ export const useAppLayout = (
     splitPanelPosition,
     maxGlobalDrawersSizes,
     resizableSpaceAvailable,
+    maxAiDrawerSize,
   } = computeHorizontalLayout({
     activeDrawerSize: activeDrawer ? activeDrawerSize : 0,
     splitPanelSize,
@@ -249,6 +266,7 @@ export const useAppLayout = (
     splitPanelPosition: splitPanelPreferences?.position,
     isMobile,
     activeGlobalDrawersSizes,
+    activeAiDrawerSize,
   });
 
   const verticalOffsets = computeVerticalLayout({
@@ -310,6 +328,15 @@ export const useAppLayout = (
     splitPanelAnimationDisabled,
     expandedDrawerId,
     setExpandedDrawerId,
+    aiDrawer,
+    onActiveAiDrawerChange,
+    activeAiDrawer,
+    activeAiDrawerId,
+    activeAiDrawerSize,
+    minAiDrawerSize,
+    maxAiDrawerSize,
+    aiDrawerFocusControl,
+    onActiveAiDrawerResize,
   };
 
   const splitPanelInternals: SplitPanelProviderProps = {
@@ -367,6 +394,9 @@ export const useAppLayout = (
       .reduce((acc, curr) => acc + curr, 0);
     if (activeDrawer) {
       result += Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
+    }
+    if (activeAiDrawer) {
+      result += Math.min(activeAiDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
     }
 
     return result;
@@ -436,6 +466,7 @@ export const useAppLayout = (
     splitPanelInternals,
     widgetizedState: {
       ...appLayoutInternals,
+      aiDrawerExpandedMode: expandedDrawerId === activeAiDrawer?.id,
       isNested,
       navigationAnimationDisabled,
       verticalOffsets,
