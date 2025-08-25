@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { addMinutes } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -113,5 +113,5 @@ export function normalizeTimeOffset(
 */
 function parseDateUTC(isoDateString: string): Date {
   const date = new Date(isoDateString);
-  return addMinutes(date, parseTimezoneOffset(isoDateString));
+  return dayjs(date).add(parseTimezoneOffset(isoDateString), 'minute').toDate();
 }
