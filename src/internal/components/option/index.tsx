@@ -57,7 +57,8 @@ const Option = ({
     styles.option,
     disabled && styles.disabled,
     isGroupOption && styles.parent,
-    highlightedOption && styles.highlighted
+    highlightedOption && styles.highlighted,
+    baseProps.className
   );
 
   const icon = option.__customIcon || (
@@ -73,11 +74,11 @@ const Option = ({
 
   return (
     <span
+      {...baseProps}
       data-value={option.value}
       className={className}
       lang={option.lang}
       title={option.label ?? option.value}
-      {...baseProps}
     >
       {icon}
       <span className={styles.content}>

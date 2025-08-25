@@ -83,7 +83,8 @@ $trigger-underline-offset-compact: 0.1em;
   }
 
   // Reduce the spacing between the text and the underline for popovers inside inline tokens
-  [data-token-inline] > & {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  [data-token-inline] & {
     text-underline-offset: $trigger-underline-offset-compact;
   }
 }
