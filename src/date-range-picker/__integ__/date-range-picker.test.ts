@@ -39,7 +39,7 @@ describe('Date Range Picker', () => {
         await page.keys('Enter');
 
         await expect(page.getTriggerText()).resolves.toBe(
-          granularity === 'day' ? '2018-01-16T00:00:00+00:00 — 2018-01-24T23:59:59+00:00' : '2018-01 — 2018-01'
+          granularity === 'day' ? '2018-01-16T00:00:00Z — 2018-01-24T23:59:59Z' : '2018-01 — 2018-01'
         );
       }, granularity)
     );
@@ -65,7 +65,7 @@ describe('Date Range Picker', () => {
         await page.keys('Enter');
 
         await expect(page.getTriggerText()).resolves.toBe(
-          granularity === 'day' ? '2018-01-17T00:00:00+00:00 — 2018-01-19T15:30:00+00:00' : '2018-01 — 2018-01'
+          granularity === 'day' ? '2018-01-17T00:00:00Z — 2018-01-19T15:30:00Z' : '2018-01 — 2018-01'
         );
       }, granularity)
     );

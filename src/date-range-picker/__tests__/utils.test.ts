@@ -215,8 +215,8 @@ describe('DateRangePicker utils', () => {
 
       const expected = {
         type: 'absolute',
-        startDate: '2023-06-15T00:00:00Z+60000:00',
-        endDate: '2023-07-20T23:59:59Z+120000:00',
+        startDate: '2023-06-15T00:00:00+60000:00',
+        endDate: '2023-07-20T23:59:59+120000:00',
       };
 
       const result = formatValue(input as DateRangePickerProps.Value, { ...defaultOptions, timeOffset });
@@ -235,8 +235,8 @@ describe('DateRangePicker utils', () => {
 
       const expected = {
         type: 'absolute',
-        startDate: '2023-06-15T00:00:00Z+00:00',
-        endDate: '2023-07-20T23:59:59Z+00:00',
+        startDate: '2023-06-15T00:00:00+00:00',
+        endDate: '2023-07-20T23:59:59+00:00',
       };
 
       const result = formatValue(input as DateRangePickerProps.Value, { ...defaultOptions, timeOffset });
