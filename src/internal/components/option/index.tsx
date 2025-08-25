@@ -58,7 +58,8 @@ const Option = ({
     styles.option,
     disabled && styles.disabled,
     isGroupOption && styles.parent,
-    highlightedOption && styles.highlighted
+    highlightedOption && styles.highlighted,
+    baseProps.className
   );
 
   const icon = option.__customIcon || (
@@ -83,7 +84,7 @@ const Option = ({
     : undefined;
 
   return (
-    <span data-value={option.value} className={className} lang={option.lang} {...genericGroupProps} {...baseProps}>
+    <span {...genericGroupProps} {...baseProps} data-value={option.value} className={className} lang={option.lang}>
       {icon}
       <span className={styles.content}>
         <span className={clsx(styles['label-content'], labelClassName)}>
