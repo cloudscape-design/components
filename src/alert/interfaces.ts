@@ -150,22 +150,6 @@ export interface AlertProps extends BaseComponentProps {
    */
   analyticsMetadata?: AlertProps.AnalyticsMetadata;
   /**
-   * Specifies an object of selectors and properties that are used to apply custom styles.
-   *
-   * - `root.background` (string) - (Optional) Background for alert.
-   * - `root.borderColor` (string) - (Optional) Border color for alert.
-   * - `root.borderRadius` (string) - (Optional) Alert border radius.
-   * - `root.borderWidth` (string) - (Optional) Alert border width.
-   * - `root.color` (string) - (Optional) Text color for alert.
-   * - `root.focusRing.borderColor` (string) - (Optional) Alert focus ring border color.
-   * - `root.focusRing.borderRadius` (string) - (Optional) Alert button focus ring border radius.
-   * - `root.focusRing.borderWidth` (string) - (Optional) Alert button focus ring border width.
-   * - `dismissButton.color.active` (string) - (Optional) Color for dismiss button active state.
-   * - `dismissButton.color.default` (string) - (Optional) Color for dismiss button default state.
-   * - `dismissButton.color.hover` (string) - (Optional) Color for dismiss button hover state.
-   * - `dismissButton.focusRing.borderColor` (string) - (Optional) Dismiss button focus ring border color.
-   * - `dismissButton.focusRing.borderRadius` (string) - (Optional) Dismiss button focus ring border radius.
-   * - `dismissButton.focusRing.borderWidth` (string) - (Optional) Dismiss button focus ring border width.
    * @awsuiSystem core
    */
   style?: AlertProps.Style;

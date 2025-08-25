@@ -108,12 +108,6 @@ export interface LinkProps extends BaseComponentProps {
   rel?: string;
 
   /**
-   * Specifies an object of selectors and properties that are used to apply custom styles.
-   *
-   * - `root.color` {active, default, hover} (string) - (Optional) Text color for link.
-   * - `root.focusRing.borderColor` (string) - (Optional) Focus ring border color.
-   * - `root.focusRing.borderRadius` (string) - (Optional) Focus ring border radius.
-   * - `root.focusRing.borderWidth` (string) - (Optional) Focus ring border width.
    * @awsuiSystem core
    */
   style?: LinkProps.Style;

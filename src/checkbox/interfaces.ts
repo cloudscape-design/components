@@ -30,7 +30,6 @@ export interface CheckboxProps extends BaseCheckboxProps {
   ariaRequired?: boolean;
 
   /**
-   * Specifies an object of selectors and properties that are used to apply custom styles.
    * @awsuiSystem core
    */
   style?: CheckboxProps.Style;
