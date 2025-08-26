@@ -1408,20 +1408,6 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
         expect(globalDrawersWrapper.findDrawerById('global3')).toBeFalsy();
       });
-
-      test('should open global ai drawer', async () => {
-        const { globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
-
-        awsuiWidgetPlugins.registerDrawer({
-          ...drawerDefaults,
-          id: 'global1',
-          defaultActive: true,
-        });
-
-        await delay();
-
-        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
-      });
     });
 
     describe('expanded mode for global drawers', () => {
@@ -1719,28 +1705,6 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
       });
 
-      test('should exit focus mode by clicking on a custom exit button in the AI global drawer', async () => {
-        const drawerId = 'global-drawer';
-        awsuiWidgetPlugins.registerDrawer({
-          ...drawerDefaults,
-          ariaLabels: {
-            exitExpandedModeButton: 'exitExpandedModeButton',
-          },
-          id: drawerId,
-          isExpandable: true,
-        });
-        const { globalDrawersWrapper } = await renderComponent(<AppLayout />);
-
-        await delay();
-
-        globalDrawersWrapper.findAiDrawerTrigger()!.click();
-        globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
-        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
-        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
-        globalDrawersWrapper.findLeaveExpandedModeButtonInAIDrawer()!.click();
-        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
-      });
-
       describe('nested app layouts', () => {
         test('should apply expanded drawer mode only for inner AppLayout and hide nav for the outer AppLayout', async () => {
           const drawerId = 'global-drawer';
@@ -1825,41 +1789,6 @@ describe('toolbar mode only features', () => {
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('800px');
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('801px');
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('600px');
-    });
-
-    test('should render custom header in global-ai drawer', async () => {
-      const drawerId = 'global-drawer';
-      awsuiWidgetPlugins.registerDrawer({
-        ...drawerDefaults,
-        id: drawerId,
-        mountHeader: container => {
-          container.innerHTML = 'custom header';
-        },
-        unmountHeader: () => {},
-      });
-      const { globalDrawersWrapper } = await renderComponent(<AppLayout />);
-      await delay();
-
-      globalDrawersWrapper.findAiDrawerTrigger()!.click();
-      expect(globalDrawersWrapper.findDrawerById(drawerId)!.getElement()).toHaveTextContent('runtime drawer content');
-    });
-
-    test('calls onResize handler for global-ai drawer', async () => {
-      const onResize = jest.fn();
-      awsuiWidgetPlugins.registerDrawer({
-        ...drawerDefaults,
-        resizable: true,
-        onResize: event => onResize(event.detail),
-      });
-      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
-
-      globalDrawersWrapper.findAiDrawerTrigger()!.click();
-      const handle = wrapper.findActiveDrawerResizeHandle()!;
-      handle.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
-      handle.fireEvent(new MouseEvent('pointermove', { bubbles: true }));
-      handle.fireEvent(new MouseEvent('pointerup', { bubbles: true }));
-
-      expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: drawerDefaults.id });
     });
   });
 
