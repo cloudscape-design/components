@@ -143,6 +143,7 @@ describe('CopyToClipboard', () => {
 
     describe('when the clipboard API is not available', () => {
       beforeEach(() => Object.assign(global.navigator, { clipboard: undefined }));
+
       afterEach(() => Object.assign(global.navigator, { clipboard: originalNavigatorClipboard }));
 
       test('fails to copy to clipboard and shows error message', async () => {
