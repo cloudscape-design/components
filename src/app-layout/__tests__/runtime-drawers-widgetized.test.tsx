@@ -111,6 +111,17 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
   });
 
+  test('should open global ai drawer by default if it is dynamically registered', () => {
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+
+    awsuiWidgetPlugins.registerDrawer({
+      ...drawerDefaults,
+      defaultActive: true,
+    });
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+  });
+
   test('should open global ai drawer via API', () => {
     awsuiWidgetPlugins.registerDrawer(drawerDefaults);
 

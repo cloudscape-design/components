@@ -49,8 +49,8 @@ function useRuntimeAiDrawer(
       case 'resizeDrawer':
         onActiveAiDrawerResizeStable(event.payload.size);
         break;
+      /* istanbul ignore next: this code is not intended to be visited */
       default:
-        /* istanbul ignore next: this code is not intended to be visited */
         assertNever(event);
     }
   });
