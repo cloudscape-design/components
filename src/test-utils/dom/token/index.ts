@@ -13,22 +13,37 @@ function findOption(wrapper: TokenWrapper): OptionWrapper {
 export default class TokenWrapper extends ComponentWrapper {
   static rootSelector: string = selectors.root;
 
+  /**
+   * Returns the token label.
+   */
   findLabel(): ElementWrapper | null {
     return findOption(this).findLabel();
   }
 
+  /**
+   * Returns the token label tag.
+   */
   findLabelTag(): ElementWrapper | null {
     return findOption(this).findLabelTag();
   }
 
+  /**
+   * Returns the token description.
+   */
   findDescription(): ElementWrapper | null {
     return findOption(this).findDescription();
   }
 
-  findTags(): ElementWrapper[] | null {
+  /**
+   * Returns the token tags.
+   */
+  findTags(): Array<ElementWrapper> | null {
     return findOption(this).findTags();
   }
 
+  /**
+   * Returns the token dismiss button.
+   */
   findDismiss(): ElementWrapper | null {
     return this.findByClassName(selectors['dismiss-button'])!;
   }
