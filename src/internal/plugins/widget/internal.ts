@@ -53,9 +53,9 @@ export function isAppLayoutReady() {
  * Registers a new runtime drawer to app layout
  * @param drawer
  */
-export function registerDrawer(drawer: DrawerPayload) {
+export function registerLeftDrawer(drawer: DrawerPayload) {
   const win = getWindow();
-  const message: RegisterDrawerMessage = { type: 'registerDrawer', payload: drawer };
+  const message: RegisterDrawerMessage = { type: 'registerLeftDrawer', payload: drawer };
   win[storageKeyInitialMessages] = win[storageKeyInitialMessages] ?? [];
   win[storageKeyInitialMessages].push(message);
   getAppLayoutMessageHandler()?.(message);

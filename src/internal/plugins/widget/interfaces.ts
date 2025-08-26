@@ -20,7 +20,6 @@ interface DrawerStateChangeParams {
 
 export interface DrawerPayload {
   id: string;
-  type?: 'local' | 'global' | 'global-ai';
   ariaLabels: {
     content?: string;
     closeButton?: string;
@@ -49,7 +48,7 @@ export interface DrawerPayload {
   unmountHeader?: (container: HTMLElement) => void;
 }
 
-export type RegisterDrawerMessage = Message<'registerDrawer', DrawerPayload>;
+export type RegisterDrawerMessage = Message<'registerLeftDrawer', DrawerPayload>;
 export type UpdateDrawerConfigMessage = Message<
   'updateDrawerConfig',
   Omit<DrawerPayload, 'mountContent' | 'unmountContent' | 'mountHeader' | 'unmountHeader' | 'type'>

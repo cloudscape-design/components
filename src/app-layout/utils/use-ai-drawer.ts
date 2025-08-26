@@ -25,7 +25,7 @@ function useRuntimeAiDrawer(
 ) {
   const [aiDrawer, setAiDrawer] = useState<RuntimeAiDrawerConfig | null>(null);
   const appLayoutMessageHandler = useStableCallback((event: AppLayoutMessage) => {
-    if (event.type === 'registerDrawer') {
+    if (event.type === 'registerLeftDrawer') {
       setAiDrawer(event.payload);
       if (!aiDrawerWasOpenRef.current && event.payload.defaultActive) {
         onAiDrawersChangeStable(event.payload.id, { initiatedByUserAction: false });
@@ -65,8 +65,8 @@ function useRuntimeAiDrawer(
       return;
     }
 
-    const initialDrawerMessage = getAppLayoutInitialState()?.find(message => message.type === 'registerDrawer');
-    if (initialDrawerMessage && initialDrawerMessage.type === 'registerDrawer') {
+    const initialDrawerMessage = getAppLayoutInitialState()?.find(message => message.type === 'registerLeftDrawer');
+    if (initialDrawerMessage && initialDrawerMessage.type === 'registerLeftDrawer') {
       setAiDrawer(initialDrawerMessage.payload);
       if (!aiDrawerWasOpenRef.current && initialDrawerMessage.payload.defaultActive) {
         onAiDrawersChangeStable(initialDrawerMessage.payload.id, { initiatedByUserAction: false });
