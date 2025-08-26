@@ -41,6 +41,7 @@ export default function GenericTokenPage() {
           label={
             <Popover
               triggerType="text-inline"
+              wrapTriggerText={false}
               position="top"
               header="test"
               content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
@@ -53,18 +54,16 @@ export default function GenericTokenPage() {
         <Token
           variant="inline"
           label={
-            <div style={{ minWidth: 'max-content' }}>
-              <SpaceBetween direction="horizontal" size="xxs" alignItems="center">
-                <Popover
-                  triggerType="text-inline"
-                  position="top"
-                  header="test"
-                  content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
-                >
-                  Inline token with icon, popover and custom action
-                </Popover>
-                <Button iconName="edit" variant="inline-icon" ariaLabel="edit" />
-              </SpaceBetween>
+            <div style={{ display: 'inline-flex', minInlineSize: 0 }}>
+              <Popover
+                triggerType="text-inline"
+                position="top"
+                header="test"
+                content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
+              >
+                Inline token with icon, popover and custom action
+              </Popover>
+              <Button iconName="edit" variant="inline-icon" ariaLabel="edit" />
             </div>
           }
           icon={<Icon name="bug" size="small" />}
@@ -76,6 +75,7 @@ export default function GenericTokenPage() {
           label={
             <Popover
               triggerType="text-inline"
+              wrapTriggerText={false}
               position="top"
               header="test"
               content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
@@ -94,6 +94,7 @@ export default function GenericTokenPage() {
             label={
               <Popover
                 triggerType="text-inline"
+                wrapTriggerText={false}
                 dismissButton={false}
                 size="large"
                 content={
@@ -225,6 +226,7 @@ export default function GenericTokenPage() {
           label="Dismissable token"
           description="some description"
           labelTag="test"
+          tags={['tag', 'tag']}
           icon={<Icon data-testid="bug-icon-big" name="bug" size="big" />}
           onDismiss={() => {}}
         />

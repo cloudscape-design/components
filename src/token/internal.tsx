@@ -95,26 +95,22 @@ function InternalToken({
 
     const baseClassName = 'token-inline-min-width';
 
-    if (!isLabelAString(label)) {
-      return styles[baseClassName];
-    } else if (label.length >= INLINE_TOKEN_CHARACTER_LIMIT) {
+    if (isLabelAString(label) && label.length >= INLINE_TOKEN_CHARACTER_LIMIT) {
       const hasDismissButton = onDismiss || dismissLabel;
       const hasIcon = icon;
 
       if (hasIcon && hasDismissButton) {
-        return styles[baseClassName + '-icon-and-dismiss'];
+        return styles[baseClassName];
+      } else if (hasIcon && !hasDismissButton) {
+        return styles[baseClassName + '-icon-only'];
+      } else if (!hasIcon && hasDismissButton) {
+        return styles[baseClassName + '-dismiss-only'];
+      } else {
+        return styles[baseClassName + '-label-only'];
       }
-
-      if (hasIcon) {
-        return styles[baseClassName + '-icon'];
-      }
-
-      if (hasDismissButton) {
-        return styles[baseClassName + '-dismiss'];
-      }
-
-      return styles[baseClassName + '-label-only'];
     }
+
+    return styles[baseClassName];
   };
 
   return (
