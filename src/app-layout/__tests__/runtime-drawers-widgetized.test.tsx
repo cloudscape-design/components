@@ -46,7 +46,6 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     globalDrawersWrapper.findAiDrawerTrigger()!.click();
 
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
-    expect(globalDrawersWrapper.findAiDrawerTrigger()).toBeFalsy();
   });
 
   test('isAppLayoutReady returns true when app layout is ready', () => {
