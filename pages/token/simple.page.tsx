@@ -41,7 +41,6 @@ export default function GenericTokenPage() {
           label={
             <Popover
               triggerType="text-inline"
-              wrapTriggerText={false}
               position="top"
               header="test"
               content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
@@ -75,7 +74,6 @@ export default function GenericTokenPage() {
           label={
             <Popover
               triggerType="text-inline"
-              wrapTriggerText={false}
               position="top"
               header="test"
               content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
@@ -94,7 +92,6 @@ export default function GenericTokenPage() {
             label={
               <Popover
                 triggerType="text-inline"
-                wrapTriggerText={false}
                 dismissButton={false}
                 size="large"
                 content={
