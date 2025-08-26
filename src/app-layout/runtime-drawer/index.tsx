@@ -8,6 +8,7 @@ import {
   DrawerStateChangeParams,
 } from '../../internal/plugins/controllers/drawers';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
+import { DrawerPayload as RuntimeAiDrawerConfig } from '../../internal/plugins/widget/interfaces';
 import { AppLayoutProps } from '../interfaces';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 
@@ -59,8 +60,8 @@ function RuntimeDrawerWrapper({ mountContent, unmountContent, id }: RuntimeConte
 }
 
 interface RuntimeContentHeaderProps {
-  mountHeader: RuntimeDrawerConfig['mountHeader'];
-  unmountHeader: RuntimeDrawerConfig['unmountHeader'];
+  mountHeader: (container: HTMLElement) => void;
+  unmountHeader?: (container: HTMLElement) => void;
 }
 
 function RuntimeDrawerHeader({ mountHeader, unmountHeader }: RuntimeContentHeaderProps) {
@@ -97,12 +98,43 @@ export const mapRuntimeConfigToDrawer = (
               <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
             ),
           }),
-          ...(trigger.customIcon && {
-            customIcon: (
-              // eslint-disable-next-line react/no-danger
-              <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: trigger.customIcon }} />
-            ),
-          }),
+        }
+      : undefined,
+    content: (
+      <RuntimeDrawerWrapper
+        key={runtimeDrawer.id}
+        mountContent={mountContent}
+        unmountContent={unmountContent}
+        id={runtimeDrawer.id}
+      />
+    ),
+    onResize: event => {
+      fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
+    },
+  };
+};
+
+export const mapRuntimeConfigToAiDrawer = (
+  runtimeConfig: RuntimeAiDrawerConfig
+): AppLayoutProps.Drawer & {
+  orderPriority?: number;
+  onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
+} => {
+  const { mountContent, unmountContent, trigger, ...runtimeDrawer } = runtimeConfig;
+
+  return {
+    ...runtimeDrawer,
+    ariaLabels: { drawerName: runtimeDrawer.ariaLabels.content ?? '', ...runtimeDrawer.ariaLabels },
+    trigger: trigger
+      ? {
+          customIcon: trigger?.customIcon ? (
+            // eslint-disable-next-line react/no-danger
+            <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: trigger.customIcon }} />
+          ) : undefined,
+          iconSvg: trigger.iconSvg ? (
+            // eslint-disable-next-line react/no-danger
+            <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
+          ) : undefined,
         }
       : undefined,
     content: (
