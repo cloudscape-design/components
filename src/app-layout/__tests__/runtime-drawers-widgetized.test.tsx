@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import { metrics } from '../../../lib/components/internal/metrics';
@@ -64,7 +64,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     const { globalDrawersWrapper } = renderComponent(<AppLayout />);
     expect(globalDrawersWrapper.findAiDrawerTrigger()).toBeFalsy();
 
-    awsuiWidgetPlugins.registerDrawer(drawerDefaults);
+    act(() => awsuiWidgetPlugins.registerDrawer(drawerDefaults));
     expect(globalDrawersWrapper.findAiDrawerTrigger()).toBeTruthy();
   });
 
@@ -87,10 +87,12 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     const { globalDrawersWrapper } = renderComponent(<AppLayout />);
 
     expect(globalDrawersWrapper.findAiDrawerTrigger()!.getElement()).not.toHaveAttribute('aria-label');
-    awsuiWidgetPlugins.updateDrawer({
-      type: 'updateDrawerConfig',
-      payload: { id: drawerDefaults.id, ariaLabels: { triggerButton: 'trigger button label' } },
-    });
+    act(() =>
+      awsuiWidgetPlugins.updateDrawer({
+        type: 'updateDrawerConfig',
+        payload: { id: drawerDefaults.id, ariaLabels: { triggerButton: 'trigger button label' } },
+      })
+    );
 
     expect(globalDrawersWrapper.findAiDrawerTrigger()!.getElement()).toHaveAttribute(
       'aria-label',
@@ -115,7 +117,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     const { globalDrawersWrapper } = renderComponent(<AppLayout />);
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)).toBeFalsy();
 
-    awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: drawerDefaults.id } });
+    act(() => awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: drawerDefaults.id } }));
 
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
   });
@@ -174,7 +176,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
       awsuiWidgetPlugins.registerDrawer(drawerDefaults);
       renderComponent(<AppLayout />);
 
-      awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'unknown' } });
+      act(() => awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'unknown' } }));
 
       expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-widget-drawer-incorrect-id', {
         oldId: 'test',
