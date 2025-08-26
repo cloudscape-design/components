@@ -11,7 +11,7 @@
   @include styles.styles-reset;
 
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   inline-size: 100%;
   // Hack to truncate flex boxes
   min-inline-size: 0;
@@ -97,10 +97,6 @@
   align-content: center;
   display: flex;
   flex-shrink: 0;
-}
-
-.icon-size-big {
-  padding-block-start: awsui.$space-option-icon-big-top;
 }
 
 .filtering-match-highlight {
