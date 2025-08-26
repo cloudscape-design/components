@@ -34,7 +34,7 @@ export default function GenericTokenPage() {
       <h1>Standalone token</h1>
       <h2>Inline</h2>
       <SpaceBetween size="l" direction="vertical">
-        <Token variant="inline" label="Inline token" />
+        <Token data-testid="basic-inline-token" variant="inline" label="Inline token" />
         <Token variant="inline" label="Inline token with longer text" />
         <Token
           variant="inline"
@@ -70,6 +70,7 @@ export default function GenericTokenPage() {
           icon={<Icon name="bug" size="small" />}
         />
         <Token
+          data-testid="inline-token-with-icon-dismissable"
           variant="inline"
           dismissLabel="Dismiss token"
           label={
@@ -82,7 +83,7 @@ export default function GenericTokenPage() {
               Inline token dismissable with icon and popover
             </Popover>
           }
-          icon={<Icon name="edit" size="small" />}
+          icon={<Icon data-testid="edit-icon-small" name="edit" size="small" />}
           onDismiss={() => {}}
         />
         <div style={{ maxWidth: '100%', display: 'inline' }}>
@@ -121,6 +122,7 @@ export default function GenericTokenPage() {
           est laborum.
         </div>
         <Token
+          data-testid="inline-token-long-text"
           variant="inline"
           label={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
             exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
@@ -129,7 +131,13 @@ export default function GenericTokenPage() {
         <Token variant="inline" label="Inline readonly token" readOnly={true} />
         <Token variant="inline" label="Inline disabled token" disabled={true} />
 
-        <Token variant="inline" dismissLabel="Dismiss token" label="Inline dismissable token" onDismiss={() => {}} />
+        <Token
+          data-testid="inline-token-dismissable"
+          variant="inline"
+          dismissLabel="Dismiss token"
+          label="Inline dismissable token"
+          onDismiss={() => {}}
+        />
         <Token
           variant="inline"
           dismissLabel="Dismiss token"
@@ -196,7 +204,13 @@ export default function GenericTokenPage() {
           icon={<Icon name="bug" />}
           onDismiss={() => {}}
         />
-        <Token dismissLabel="Dismiss token" label="Dismissable token" labelTag="test" onDismiss={() => {}} />
+        <Token
+          data-testid="normal-token-dismissable"
+          dismissLabel="Dismiss token"
+          label="Dismissable token"
+          labelTag="test"
+          onDismiss={() => {}}
+        />
 
         <Token
           label={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
@@ -206,11 +220,12 @@ export default function GenericTokenPage() {
           est laborum.`}
         />
         <Token
+          data-testid="normal-token-with-icon-dismissable"
           dismissLabel="Dismiss token"
           label="Dismissable token"
           description="some description"
           labelTag="test"
-          icon={<Icon name="bug" size="big" />}
+          icon={<Icon data-testid="bug-icon-big" name="bug" size="big" />}
           onDismiss={() => {}}
         />
 
