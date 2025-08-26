@@ -83,9 +83,7 @@ const Option = ({
       {icon}
       <span className={styles.content}>
         <span className={clsx(styles['label-content'], labelClassName)}>
-          {option.labelContent ? (
-            <div className={styles.label}>{option.labelContent}</div>
-          ) : (
+          {option.labelContent ?? (
             <>
               <Label
                 labelContainerRef={labelContainerRef}
