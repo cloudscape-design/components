@@ -358,6 +358,14 @@ $drawer-resize-handle-size: awsui.$space-m;
       }
     }
 
+    &:not(.drawer-expanded) {
+      > .drawer-content-container {
+        @include desktop-only {
+          clip-path: inset(0 0 0 -9999px round awsui.$space-xxs);
+        }
+      }
+    }
+
     &.drawer-expanded {
       grid-template-columns: 1fr;
 
