@@ -47,7 +47,7 @@ $drawer-resize-handle-size: awsui.$space-m;
   }
 
   @include desktop-only {
-    &:not(.legacy) {
+    &:not(.legacy):not(.ai-drawer) {
       border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
     }
   }
@@ -248,6 +248,8 @@ $drawer-resize-handle-size: awsui.$space-m;
     }
 
     > .drawer-slider {
+      inline-size: awsui.$space-xs;
+      overflow: hidden;
       grid-column: 2;
     }
 
