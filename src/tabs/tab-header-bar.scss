@@ -6,7 +6,6 @@
 /* stylelint-disable selector-max-type */
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $separator-color: awsui.$color-border-tabs-divider;
 $label-horizontal-spacing: awsui.$space-xs;
@@ -213,7 +212,7 @@ $label-horizontal-spacing: awsui.$space-xs;
     outline: none;
   }
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     z-index: 1;
     border-inline-end-color: transparent;
     @include styles.focus-highlight(awsui.$space-tabs-focus-outline-gutter);
