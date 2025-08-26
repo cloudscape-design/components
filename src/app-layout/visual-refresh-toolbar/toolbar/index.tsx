@@ -103,6 +103,7 @@ export function AppLayoutToolbarImplementation({
   } = toolbarProps;
   const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
+  const aiDrawerTransitionRef = useRef<HTMLDivElement>(null);
   const activeAiDrawerId = activeAiDrawer?.id;
   useResizeObserver(ref, entry => setToolbarHeight(entry.borderBoxHeight));
   useEffect(() => {
@@ -151,6 +152,7 @@ export function AppLayoutToolbarImplementation({
           timeout={{ enter: 0, exit: 165 }}
           mountOnEnter={true}
           unmountOnExit={true}
+          nodeRef={aiDrawerTransitionRef}
         >
           {state => (
             <div

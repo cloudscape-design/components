@@ -266,7 +266,7 @@ $drawer-resize-handle-size: awsui.$space-m;
     }
 
     > .drawer-content-container {
-      min-inline-size: auto;
+      min-inline-size: calc(var(#{custom-props.$drawerSize}) - #{awsui.$space-xs});
       grid-column: 1 / span 1;
       background-color: awsui.$color-background-layout-panel-content;
 
