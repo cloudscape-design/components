@@ -654,7 +654,7 @@ exports[`test-utils selectors 1`] = `
   ],
   "token": [
     "awsui_dismiss-button_1i2wg",
-    "awsui_token_1i2wg",
+    "awsui_root_1i2wg",
   ],
   "token-group": [
     "awsui_root_dm8gx",

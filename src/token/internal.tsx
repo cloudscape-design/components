@@ -121,7 +121,8 @@ function InternalToken({
     <div
       {...baseProps}
       className={clsx(
-        !isInline ? styles.token : styles['token-inline'],
+        styles.root,
+        !isInline ? styles['token-normal'] : styles['token-inline'],
         getTokenMinWidthClassName(),
         analyticsSelectors.token,
         baseProps.className
@@ -178,6 +179,8 @@ function InternalToken({
           trackRef={labelContainerRef}
           value={label}
           size="medium"
+          // This is a non-existant class for testing purposes
+          className="token-tooltip"
           onDismiss={() => {
             setShowTooltip(false);
           }}

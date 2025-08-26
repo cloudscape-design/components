@@ -11,7 +11,7 @@ function findOption(wrapper: TokenWrapper): OptionWrapper {
 }
 
 export default class TokenWrapper extends ComponentWrapper {
-  static rootSelector: string = selectors.token;
+  static rootSelector: string = selectors.root;
 
   findLabel(): ElementWrapper | null {
     return findOption(this).findLabel();
