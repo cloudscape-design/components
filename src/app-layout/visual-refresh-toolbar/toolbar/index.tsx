@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
+import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
@@ -15,6 +16,7 @@ import { BreadcrumbsSlot, ToolbarSlot } from '../skeleton/slots';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
 import TriggerButton from './trigger-button';
 
+import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
@@ -144,31 +146,45 @@ export function AppLayoutToolbarImplementation({
       }}
     >
       <div className={styles['toolbar-container']}>
-        {aiDrawer?.trigger && !activeAiDrawerId && (
-          <div className={clsx(!!aiDrawer.trigger?.customIcon && styles['universal-toolbar-ai-custom'])}>
-            <TriggerButton
-              ariaLabel={aiDrawer?.ariaLabels?.triggerButton}
-              ariaExpanded={!!activeAiDrawerId}
-              iconName={aiDrawer.trigger!.iconName}
-              iconSvg={aiDrawer.trigger!.iconSvg}
-              customSvg={aiDrawer.trigger!.customIcon}
-              className={testutilStyles['ai-drawer-toggle']}
-              onClick={() => {
-                if (setExpandedDrawerId) {
-                  setExpandedDrawerId(null);
-                }
-                onActiveAiDrawerChange?.(aiDrawer?.id, { initiatedByUserAction: true });
+        <Transition
+          in={!!(aiDrawer?.trigger && !activeAiDrawerId)}
+          timeout={{ enter: 0, exit: 165 }}
+          mountOnEnter={true}
+          unmountOnExit={true}
+        >
+          {state => (
+            <div
+              className={clsx(!!aiDrawer?.trigger?.customIcon && styles['universal-toolbar-ai-custom'], [
+                sharedStyles['with-motion-horizontal'],
+              ])}
+              style={{
+                opacity: state === 'exiting' ? 0 : 1,
               }}
-              ref={aiDrawerFocusRef}
-              selected={!drawerExpandedMode && !!activeAiDrawerId}
-              disabled={anyPanelOpenInMobile}
-              variant={aiDrawer.trigger?.customIcon ? 'custom' : 'circle'}
-              hasTooltip={true}
-              testId={`awsui-app-layout-trigger-${aiDrawer.id}`}
-              isForPreviousActiveDrawer={true}
-            />
-          </div>
-        )}
+            >
+              <TriggerButton
+                ariaLabel={aiDrawer?.ariaLabels?.triggerButton}
+                ariaExpanded={!!activeAiDrawerId}
+                iconName={aiDrawer?.trigger!.iconName}
+                iconSvg={aiDrawer?.trigger!.iconSvg}
+                customSvg={aiDrawer?.trigger!.customIcon}
+                className={testutilStyles['ai-drawer-toggle']}
+                onClick={() => {
+                  if (setExpandedDrawerId) {
+                    setExpandedDrawerId(null);
+                  }
+                  onActiveAiDrawerChange?.(aiDrawer?.id ?? null, { initiatedByUserAction: true });
+                }}
+                ref={aiDrawerFocusRef}
+                selected={!drawerExpandedMode && !!activeAiDrawerId}
+                disabled={anyPanelOpenInMobile}
+                variant={aiDrawer?.trigger?.customIcon ? 'custom' : 'circle'}
+                hasTooltip={true}
+                testId={`awsui-app-layout-trigger-${aiDrawer?.id}`}
+                isForPreviousActiveDrawer={true}
+              />
+            </div>
+          )}
+        </Transition>
         {hasNavigation && (
           <nav {...navLandmarkAttributes} className={clsx(styles['universal-toolbar-nav'])}>
             <TriggerButton
