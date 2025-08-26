@@ -61,7 +61,7 @@ function delay() {
 const drawerDefaults: DrawerConfig = {
   id: 'test',
   ariaLabels: {},
-  trigger: { iconSvg: '' },
+  trigger: { iconSvg: 'icon placeholder' },
   mountContent: container => (container.textContent = 'runtime drawer content'),
   unmountContent: () => {},
 };
