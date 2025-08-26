@@ -109,6 +109,7 @@ export default tsEslint.config(
       'dot-notation': 'error',
       eqeqeq: 'error',
       'no-return-await': 'error',
+      'prefer-object-spread': 'error',
       'require-await': 'error',
       'header/header': [
         'error',
