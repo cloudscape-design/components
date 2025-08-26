@@ -37,7 +37,7 @@ export default class TokenWrapper extends ComponentWrapper {
   /**
    * Returns the token tags.
    */
-  findTags(): Array<ElementWrapper> | null {
+  findTags(): Array<ElementWrapper> {
     return findOption(this).findTags();
   }
 
