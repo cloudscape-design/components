@@ -96910,6 +96910,7 @@ Note: This function returns the specified component's wrapper even if the specif
           },
         },
         {
+          "description": "Returns the token tags.",
           "name": "findTags",
           "parameters": [],
           "returnType": {
