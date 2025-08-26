@@ -85,8 +85,6 @@
   max-inline-size: 100%;
   border-block: awsui.$border-width-field solid transparent;
   border-inline: awsui.$border-width-field solid transparent;
-  vertical-align: middle;
-  // overflow: hidden; /* Ensure content doesn't overflow */
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(0px);
@@ -118,6 +116,7 @@
 
 .token-option-inline {
   max-block-size: constants.$token-max-height-inline;
+  align-items: center !important;
 }
 
 .token-option-label {
