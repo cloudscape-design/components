@@ -16,7 +16,7 @@
   padding-inline-start: styles.$control-padding-horizontal;
   padding-inline-end: awsui.$space-xxs;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   background: constants.$token-background;
   border-start-start-radius: awsui.$border-radius-token;
   border-start-end-radius: awsui.$border-radius-token;
