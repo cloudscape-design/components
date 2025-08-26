@@ -20,7 +20,7 @@ function checkAlreadyExists(value: boolean, propName: string) {
 export const mergeProps: MergeProps = (ownProps, additionalProps) => {
   const toolbar: ToolbarProps = {};
   for (const props of [ownProps, ...additionalProps]) {
-    toolbar.ariaLabels = Object.assign(toolbar.ariaLabels ?? {}, props.ariaLabels);
+    toolbar.ariaLabels = { ...toolbar.ariaLabels, ...props.ariaLabels };
     if (
       props.drawers &&
       props.drawers.some(drawer => drawer.trigger) &&
