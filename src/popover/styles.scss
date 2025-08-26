@@ -21,6 +21,13 @@ $trigger-underline-offset-compact: 0.1em;
   &.no-wrap {
     white-space: nowrap;
   }
+
+  // Ensure the root element respects the parent container's width when inside an inline token
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  [data-token-inline] & {
+    max-inline-size: 100%;
+    min-inline-size: 0;
+  }
 }
 
 .root-filtering-token {
@@ -85,6 +92,7 @@ $trigger-underline-offset-compact: 0.1em;
   // Reduce the spacing between the text and the underline for popovers inside inline tokens
   // stylelint-disable-next-line selector-combinator-disallowed-list
   [data-token-inline] & {
+    @include styles.text-overflow-ellipsis;
     text-underline-offset: $trigger-underline-offset-compact;
   }
 }
