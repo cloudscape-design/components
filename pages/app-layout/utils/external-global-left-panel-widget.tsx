@@ -6,7 +6,7 @@ import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import { Box } from '~components';
 import Button from '~components/button';
 import ButtonDropdown from '~components/button-dropdown';
-import { registerDrawer } from '~components/internal/plugins/widget';
+import { registerLeftDrawer } from '~components/internal/plugins/widget';
 
 const AIDrawer = () => {
   return (
@@ -21,9 +21,8 @@ const AIDrawer = () => {
   );
 };
 
-registerDrawer({
+registerLeftDrawer({
   id: 'amazon-q',
-  type: 'global-ai',
   resizable: true,
   isExpandable: true,
   defaultSize: 420,

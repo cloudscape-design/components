@@ -943,7 +943,7 @@ describe('toolbar mode only features', () => {
         if (type === 'global') {
           awsuiPlugins.appLayout.registerDrawer({ ...payload, type } as DrawerConfig);
         } else {
-          awsuiWidgetPlugins.registerDrawer(payload as WidgetDrawerPayload);
+          awsuiWidgetPlugins.registerLeftDrawer(payload as WidgetDrawerPayload);
         }
       };
 
@@ -1423,7 +1423,7 @@ describe('toolbar mode only features', () => {
           if (type === 'global') {
             awsuiPlugins.appLayout.registerDrawer({ ...payload, type } as DrawerConfig);
           } else {
-            awsuiWidgetPlugins.registerDrawer(payload as WidgetDrawerPayload);
+            awsuiWidgetPlugins.registerLeftDrawer(payload as WidgetDrawerPayload);
           }
         };
 
@@ -1572,7 +1572,7 @@ describe('toolbar mode only features', () => {
             type: 'global',
             isExpandable: true,
           });
-          awsuiWidgetPlugins.registerDrawer({
+          awsuiWidgetPlugins.registerLeftDrawer({
             ...drawerDefaults,
             id: drawerId3,
             isExpandable: true,
@@ -1753,7 +1753,7 @@ describe('toolbar mode only features', () => {
     test('resizes multiple global drawers when resizeDrawer is called', async () => {
       awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, type: 'global' });
       awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, type: 'global', id: 'test1' });
-      awsuiWidgetPlugins.registerDrawer({ ...drawerDefaults, id: 'test2' });
+      awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, id: 'test2' });
 
       const { globalDrawersWrapper } = await renderComponent(<AppLayout />);
 

@@ -30,11 +30,9 @@ export interface DrawerPayload {
     exitExpandedModeButton?: string;
   };
   isExpandable?: boolean;
-  badge?: boolean;
   resizable?: boolean;
   defaultSize?: number;
   onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
-  orderPriority?: number;
   defaultActive?: boolean;
   trigger?: {
     iconSvg?: string;
@@ -51,7 +49,7 @@ export interface DrawerPayload {
 export type RegisterDrawerMessage = Message<'registerLeftDrawer', DrawerPayload>;
 export type UpdateDrawerConfigMessage = Message<
   'updateDrawerConfig',
-  Omit<DrawerPayload, 'mountContent' | 'unmountContent' | 'mountHeader' | 'unmountHeader' | 'type'>
+  Omit<DrawerPayload, 'mountContent' | 'unmountContent' | 'mountHeader' | 'unmountHeader'>
 >;
 export type OpenDrawerMessage = Message<'openDrawer', { id: string }>;
 export type CloseDrawerMessage = Message<'closeDrawer', { id: string }>;

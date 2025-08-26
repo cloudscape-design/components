@@ -37,7 +37,7 @@ function renderComponent(jsx: React.ReactElement) {
 
 describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
   test('renders ai drawer when registered', () => {
-    awsuiWidgetPlugins.registerDrawer(drawerDefaults);
+    awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
     const { globalDrawersWrapper } = renderComponent(<AppLayout />);
 
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)).toBeFalsy();
@@ -63,12 +63,12 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     const { globalDrawersWrapper } = renderComponent(<AppLayout />);
     expect(globalDrawersWrapper.findAiDrawerTrigger()).toBeFalsy();
 
-    act(() => awsuiWidgetPlugins.registerDrawer(drawerDefaults));
+    act(() => awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults));
     expect(globalDrawersWrapper.findAiDrawerTrigger()).toBeTruthy();
   });
 
   test('should render custom header in global-ai drawer', () => {
-    awsuiWidgetPlugins.registerDrawer({
+    awsuiWidgetPlugins.registerLeftDrawer({
       ...drawerDefaults,
       mountHeader: container => {
         container.innerHTML = 'custom header';
@@ -82,7 +82,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
   });
 
   test('can update drawer config dynamically', () => {
-    awsuiWidgetPlugins.registerDrawer(drawerDefaults);
+    awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
     const { globalDrawersWrapper } = renderComponent(<AppLayout />);
 
     expect(globalDrawersWrapper.findAiDrawerTrigger()!.getElement()).not.toHaveAttribute('aria-label');
@@ -100,7 +100,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
   });
 
   test('should open global ai drawer by default when defaultActive is set', () => {
-    awsuiWidgetPlugins.registerDrawer({
+    awsuiWidgetPlugins.registerLeftDrawer({
       ...drawerDefaults,
       defaultActive: true,
     });
@@ -113,7 +113,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
   test('should open global ai drawer by default if it is dynamically registered', () => {
     const { globalDrawersWrapper } = renderComponent(<AppLayout />);
 
-    awsuiWidgetPlugins.registerDrawer({
+    awsuiWidgetPlugins.registerLeftDrawer({
       ...drawerDefaults,
       defaultActive: true,
     });
@@ -122,7 +122,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
   });
 
   test('should open global ai drawer via API', () => {
-    awsuiWidgetPlugins.registerDrawer(drawerDefaults);
+    awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
 
     const { globalDrawersWrapper } = renderComponent(<AppLayout />);
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)).toBeFalsy();
@@ -134,7 +134,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
 
   test('onResize functionality', () => {
     const onResize = jest.fn();
-    awsuiWidgetPlugins.registerDrawer({
+    awsuiWidgetPlugins.registerLeftDrawer({
       ...drawerDefaults,
       resizable: true,
       onResize: event => onResize(event.detail),
@@ -155,7 +155,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
   });
 
   test('should exit focus mode by clicking on a custom exit button in the AI global drawer', () => {
-    awsuiWidgetPlugins.registerDrawer({
+    awsuiWidgetPlugins.registerLeftDrawer({
       ...drawerDefaults,
       ariaLabels: {
         exitExpandedModeButton: 'exitExpandedModeButton',
@@ -183,7 +183,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     });
 
     test('should report ops metric when unknown id is provided', () => {
-      awsuiWidgetPlugins.registerDrawer(drawerDefaults);
+      awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
       renderComponent(<AppLayout />);
 
       act(() => awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'unknown' } }));
