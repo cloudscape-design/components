@@ -26,7 +26,7 @@ type InternalTokenProps = TokenProps &
   };
 
 function InternalToken({
-  // Base
+  // External
   label,
   labelTag,
   description,
@@ -42,6 +42,9 @@ function InternalToken({
   role,
   disableInnerPadding,
   disableTooltip,
+
+  // Base
+  __internalRootRef,
   ...restProps
 }: InternalTokenProps) {
   const baseProps = getBaseProps(restProps);
@@ -127,6 +130,7 @@ function InternalToken({
   return (
     <div
       {...baseProps}
+      ref={__internalRootRef}
       className={clsx(
         styles.root,
         !isInline ? styles['token-normal'] : styles['token-inline'],
