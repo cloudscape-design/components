@@ -39,7 +39,7 @@ class TreeViewItemWrapper extends ComponentWrapper {
    * Finds the expand toggle of the tree view item.
    */
   findItemToggle(): ElementWrapper | null {
-    return this.findByClassName(expandToggleStyles['expand-toggle']);
+    return this.find(`.${expandToggleStyles['expand-toggle']}:not(.${expandToggleStyles.invisible})`);
   }
 
   /**
