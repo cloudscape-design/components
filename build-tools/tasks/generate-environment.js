@@ -13,7 +13,7 @@ function writeEnvironmentFile(theme) {
     GIT_SHA: workspace.gitCommitVersion,
     THEME: theme.name,
     SYSTEM: 'core',
-    ALWAYS_VISUAL_REFRESH: true,
+    ALWAYS_VISUAL_REFRESH: !!theme.alwaysVisualRefresh,
   };
   const basePath = path.join(theme.outputPath, filepath);
 
