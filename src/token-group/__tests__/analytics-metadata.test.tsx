@@ -64,21 +64,21 @@ describe('Token Group renders correct analytics metadata', () => {
   test('when readonly', () => {
     const wrapper = renderTokenGroup({ readOnly: true });
 
-    const simpleToken = wrapper.findToken(1)!.findDismiss().getElement();
+    const simpleToken = wrapper.findToken(1)!.findDismiss()!.getElement();
     expect(getGeneratedAnalyticsMetadata(simpleToken)).toEqual(getMetadataContexts());
   });
 
   test('with different items count', () => {
     const wrapper = renderTokenGroup({ readOnly: true, items: [items[0]] });
 
-    const simpleToken = wrapper.findToken(1)!.findDismiss().getElement();
+    const simpleToken = wrapper.findToken(1)!.findDismiss()!.getElement();
     expect(getGeneratedAnalyticsMetadata(simpleToken)).toEqual(getMetadataContexts(1));
   });
 
   test('in dismiss button', () => {
     const wrapper = renderTokenGroup({});
 
-    const simpleToken = wrapper.findToken(1)!.findDismiss().getElement();
+    const simpleToken = wrapper.findToken(1)!.findDismiss()!.getElement();
     expect(getGeneratedAnalyticsMetadata(simpleToken)).toEqual({
       action: 'dismiss',
       detail: {
@@ -88,7 +88,7 @@ describe('Token Group renders correct analytics metadata', () => {
       ...getMetadataContexts(),
     });
 
-    const complexToken = wrapper.findToken(2)!.findDismiss().getElement();
+    const complexToken = wrapper.findToken(2)!.findDismiss()!.getElement();
     expect(getGeneratedAnalyticsMetadata(complexToken)).toEqual({
       action: 'dismiss',
       detail: {
@@ -98,7 +98,7 @@ describe('Token Group renders correct analytics metadata', () => {
       ...getMetadataContexts(),
     });
 
-    const disabledToken = wrapper.findToken(3)!.findDismiss().getElement();
+    const disabledToken = wrapper.findToken(3)!.findDismiss()!.getElement();
     expect(getGeneratedAnalyticsMetadata(disabledToken)).toEqual(getMetadataContexts());
   });
 
