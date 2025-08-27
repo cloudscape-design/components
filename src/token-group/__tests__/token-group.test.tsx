@@ -81,11 +81,6 @@ describe('TokenGroup', () => {
   describe('Token', () => {
     const findToken = (wrapper: TokenGroupWrapper) => wrapper.findToken(1);
 
-    test('displays option', () => {
-      const wrapper = renderTokenGroup({ items, onDismiss });
-      expect(wrapper.findToken(1)!.findOption()).not.toBeNull();
-    });
-
     test('displays dismiss area', () => {
       const wrapper = renderTokenGroup({ items, onDismiss });
 
@@ -117,7 +112,7 @@ describe('TokenGroup', () => {
 
     test('sets aria-disabled and no disabled attribute on the token dismiss button when disabled', () => {
       const wrapper = renderTokenGroup({ items: [{ ...items[0], disabled: true }], onDismiss });
-      const dismissButton = findToken(wrapper)!.findDismiss().getElement();
+      const dismissButton = findToken(wrapper)!.findDismiss()!.getElement();
       expect(dismissButton).toHaveAttribute('aria-disabled', 'true');
       expect(dismissButton).not.toHaveAttribute('disabled');
     });
@@ -131,7 +126,7 @@ describe('TokenGroup', () => {
 
     test('does not set aria-disabled on the token dismiss button when not disabled', () => {
       const wrapper = renderTokenGroup({ items: [{ ...items[0], disabled: false }], onDismiss });
-      expect(findToken(wrapper)!.findDismiss().getElement()).not.toHaveAttribute('aria-disabled');
+      expect(findToken(wrapper)!.findDismiss()!.getElement()).not.toHaveAttribute('aria-disabled');
     });
 
     test('does not trigger onDismiss when readOnly', () => {
@@ -262,9 +257,9 @@ describe('TokenGroup', () => {
           { label: '4', dismissLabel: 'Remove 4' },
         ],
       });
-      wrapper.findToken(2)!.findDismiss().click();
+      wrapper.findToken(2)!.findDismiss()!.click();
 
-      expect(wrapper.findToken(2)!.findDismiss().getElement()).toHaveFocus();
+      expect(wrapper.findToken(2)!.findDismiss()!.getElement()).toHaveFocus();
     });
 
     test('Focus is dispatched to the previous token when last active token is removed', () => {
@@ -276,9 +271,9 @@ describe('TokenGroup', () => {
           { label: '4', dismissLabel: 'Remove 4' },
         ],
       });
-      wrapper.findToken(4)!.findDismiss().click();
+      wrapper.findToken(4)!.findDismiss()!.click();
 
-      expect(wrapper.findToken(3)!.findDismiss().getElement()).toHaveFocus();
+      expect(wrapper.findToken(3)!.findDismiss()!.getElement()).toHaveFocus();
     });
 
     test('Focus returns to body when no token and no "show more" button after token removal', () => {
@@ -289,9 +284,9 @@ describe('TokenGroup', () => {
           { label: '3', dismissLabel: 'Remove 3' },
         ],
       });
-      wrapper.findToken(3)!.findDismiss().click();
-      wrapper.findToken(2)!.findDismiss().click();
-      wrapper.findToken(1)!.findDismiss().click();
+      wrapper.findToken(3)!.findDismiss()!.click();
+      wrapper.findToken(2)!.findDismiss()!.click();
+      wrapper.findToken(1)!.findDismiss()!.click();
 
       expect(document.body).toHaveFocus();
     });
@@ -309,7 +304,7 @@ describe('TokenGroup', () => {
       });
       wrapper.findTokenToggle()!.click();
 
-      expect(wrapper.findToken(4)!.findDismiss().getElement()).toHaveFocus();
+      expect(wrapper.findToken(4)!.findDismiss()!.getElement()).toHaveFocus();
     });
   });
 });
