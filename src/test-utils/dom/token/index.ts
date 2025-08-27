@@ -6,39 +6,39 @@ import OptionWrapper from '../internal/option';
 
 import selectors from '../../../token/styles.selectors.js';
 
-function findOption(wrapper: TokenWrapper): OptionWrapper {
-  return wrapper.findComponent(`.${OptionWrapper.rootSelector}`, OptionWrapper)!;
-}
-
 export default class TokenWrapper extends ComponentWrapper {
   static rootSelector: string = selectors.root;
+
+  private findOption(): OptionWrapper {
+    return this.findComponent(`.${OptionWrapper.rootSelector}`, OptionWrapper)!;
+  }
 
   /**
    * Returns the token label.
    */
   findLabel(): ElementWrapper | null {
-    return findOption(this).findLabel();
+    return this.findOption().findLabel();
   }
 
   /**
    * Returns the token label tag.
    */
   findLabelTag(): ElementWrapper | null {
-    return findOption(this).findLabelTag();
+    return this.findOption().findLabelTag();
   }
 
   /**
    * Returns the token description.
    */
   findDescription(): ElementWrapper | null {
-    return findOption(this).findDescription();
+    return this.findOption().findDescription();
   }
 
   /**
    * Returns the token tags.
    */
   findTags(): Array<ElementWrapper> {
-    return findOption(this).findTags();
+    return this.findOption().findTags();
   }
 
   /**
