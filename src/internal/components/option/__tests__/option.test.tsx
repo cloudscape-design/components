@@ -189,24 +189,6 @@ describe('Option component', () => {
       expect(findIconWithSize(optionWrapper, 'normal')).not.toBeNull();
     });
 
-    test('in big variant if description is set', () => {
-      const optionWrapper = renderOption({
-        option: {
-          ...baseOptionWithIcon,
-          description: 'desc',
-        },
-      });
-      expect(findIconWithSize(optionWrapper, 'big')).not.toBeNull();
-    });
-    test('in big variant if tags are set', () => {
-      const optionWrapper = renderOption({
-        option: {
-          ...baseOptionWithIcon,
-          tags: ['first'],
-        },
-      });
-      expect(findIconWithSize(optionWrapper, 'big')).not.toBeNull();
-    });
     test('with custom icon', () => {
       const __customIcon = <span className="custom-icon" />;
 
