@@ -4,12 +4,13 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
-import { createWidgetizedBreadcrumbGroup } from '../../../lib/components/breadcrumb-group/implementation';
-import { InternalBreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group/interfaces';
+import {
+  BreadcrumbGroupImplementation,
+  createWidgetizedBreadcrumbGroup,
+} from '../../../lib/components/breadcrumb-group/implementation';
 import { BreadcrumbGroupSkeleton } from '../../../lib/components/breadcrumb-group/skeleton';
 import { DATA_ATTR_RESOURCE_TYPE, getFunnelNameSelector } from '../../../lib/components/internal/analytics/selectors';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import { FunctionComponent } from '../../../lib/components/internal/widgets';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { describeWithAppLayoutFeatureFlagEnabled } from '../../internal/widgets/__tests__/utils';
 
@@ -29,7 +30,7 @@ const defaultProps: BreadcrumbGroupProps = {
 };
 
 const WidgetizedBreadcrumbs = createWidgetizedBreadcrumbGroup(
-  BreadcrumbGroupSkeleton as FunctionComponent<InternalBreadcrumbGroupProps<any>>
+  BreadcrumbGroupSkeleton as typeof BreadcrumbGroupImplementation
 );
 
 function getElementsText(elements: NodeListOf<Element>) {

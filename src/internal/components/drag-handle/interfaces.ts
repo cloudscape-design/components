@@ -19,12 +19,14 @@ export interface DragHandleProps {
   className?: string;
   onPointerDown?: React.PointerEventHandler;
   onKeyDown?: React.KeyboardEventHandler;
+  onClick?: React.MouseEventHandler;
 
   tooltipText?: string;
   directions?: Partial<Record<DragHandleProps.Direction, DragHandleProps.DirectionState>>;
   onDirectionClick?: (direction: DragHandleProps.Direction) => void;
   triggerMode?: TriggerMode;
   initialShowButtons?: boolean;
+  controlledShowButtons?: boolean;
   /**
    * Hide the UAP buttons when dragging is active.
    */
@@ -34,6 +36,7 @@ export interface DragHandleProps {
    * a drag. Small threshold needed for usability.
    */
   clickDragThreshold?: number;
+  ref?: React.RefObject<HTMLElement>;
 }
 
 export namespace DragHandleProps {

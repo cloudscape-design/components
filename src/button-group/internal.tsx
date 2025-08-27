@@ -18,6 +18,7 @@ import { circleIndex } from '../internal/utils/circle-index';
 import handleKey from '../internal/utils/handle-key';
 import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
 import ItemElement from './item-element.js';
+import { getButtonGroupStyles } from './style';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -30,7 +31,8 @@ const InternalButtonGroup = forwardRef(
       onFilesChange,
       ariaLabel,
       dropdownExpandToViewport,
-      __internalRootRef = null,
+      style,
+      __internalRootRef,
       ...props
     }: InternalButtonGroupProps,
     ref: React.Ref<ButtonGroupProps.Ref>
@@ -131,6 +133,8 @@ const InternalButtonGroup = forwardRef(
       return getAllFocusables(target).filter(el => isElementRegistered(el) && !isElementDisabled(el));
     }
 
+    const stylePropertiesAndVariables = getButtonGroupStyles(style);
+
     return (
       <div
         {...baseProps}
@@ -141,6 +145,7 @@ const InternalButtonGroup = forwardRef(
         onFocus={onFocus}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
+        style={stylePropertiesAndVariables}
       >
         <SingleTabStopNavigationProvider
           ref={navigationAPI}
@@ -160,6 +165,7 @@ const InternalButtonGroup = forwardRef(
                 onFilesChange={onFilesChange}
                 ref={element => (itemsRef.current[item.id] = element)}
                 position={position}
+                style={style}
               />
             );
 

@@ -313,17 +313,17 @@ describe('Style API', () => {
     expect(getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue('color')).toBe('rgb(0, 0, 0)');
     expect(
       getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue(
-        customCssProps.styleFocusRingBorderColor
+        customCssProps.alertFocusRingBorderColor
       )
     ).toBe('rgb(23, 31, 118)');
     expect(
       getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue(
-        customCssProps.styleFocusRingBorderRadius
+        customCssProps.alertFocusRingBorderRadius
       )
     ).toBe('6px');
     expect(
       getComputedStyle(wrapper.findRootElement().getElement()).getPropertyValue(
-        customCssProps.styleFocusRingBorderWidth
+        customCssProps.alertFocusRingBorderWidth
       )
     ).toBe('4px');
 

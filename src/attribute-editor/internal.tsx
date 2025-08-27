@@ -43,7 +43,7 @@ const InternalAttributeEditor = React.forwardRef(
       i18nStrings,
       onAddButtonClick,
       onRemoveButtonClick,
-      __internalRootRef = null,
+      __internalRootRef,
       ...props
     }: InternalAttributeEditorProps<T>,
     ref: React.Ref<AttributeEditorProps.Ref>

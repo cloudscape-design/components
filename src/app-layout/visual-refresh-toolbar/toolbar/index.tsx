@@ -10,9 +10,8 @@ import { AppLayoutProps } from '../../interfaces';
 import { OnChangeParams } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import { AppLayoutInternals } from '../interfaces';
-import { BreadcrumbsSlot } from '../skeleton/breadcrumbs';
-import { ToolbarSkeleton } from '../skeleton/slot-skeletons';
-import { ToolbarSlot } from '../skeleton/slot-wrappers';
+import { ToolbarSkeleton } from '../skeleton/skeleton-parts';
+import { BreadcrumbsSlot, ToolbarSlot } from '../skeleton/slots';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
 import TriggerButton from './trigger-button';
 

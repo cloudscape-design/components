@@ -63,6 +63,11 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
    * being included in a form submission. A read-only control is still focusable.
    */
   readOnly?: boolean;
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: RadioGroupProps.Style;
 }
 
 export namespace RadioGroupProps {
@@ -83,5 +88,49 @@ export namespace RadioGroupProps {
      * Sets input focus onto the UI control.
      */
     focus(): void;
+  }
+
+  export interface Style {
+    input?: {
+      fill?: {
+        checked?: string;
+        default?: string;
+        disabled?: string;
+        readOnly?: string;
+      };
+      stroke?: {
+        default?: string;
+        disabled?: string;
+        readOnly?: string;
+      };
+      circle?: {
+        fill?: {
+          checked?: string;
+          disabled?: string;
+          readOnly?: string;
+        };
+      };
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+    };
+    label?: {
+      color?: {
+        checked?: string;
+        default?: string;
+        disabled?: string;
+        readOnly?: string;
+      };
+    };
+    description?: {
+      color?: {
+        checked?: string;
+        default?: string;
+        disabled?: string;
+        readOnly?: string;
+      };
+    };
   }
 }

@@ -49,6 +49,7 @@ const MaskedInput = React.forwardRef(
         !rest.readOnly && onKeyDown && fireCancelableEvent(onKeyDown, event.detail, event),
       onBlur: () => fireNonCancelableEvent(onBlur),
       setPosition: setCursorPosition,
+      showUnmaskedValue,
     });
 
     const inputProps = {

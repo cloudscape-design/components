@@ -29,7 +29,8 @@ const InternalRadioGroup = React.forwardRef(
       ariaControls,
       onChange,
       readOnly,
-      __internalRootRef = null,
+      __internalRootRef,
+      style,
       ...props
     }: InternalRadioGroupProps,
     ref: React.Ref<RadioGroupProps.Ref>
@@ -67,6 +68,7 @@ const InternalRadioGroup = React.forwardRef(
               onChange={onChange}
               controlId={item.controlId}
               readOnly={readOnly}
+              style={style}
               {...getAnalyticsMetadataAttribute(
                 !item.disabled && !readOnly
                   ? {

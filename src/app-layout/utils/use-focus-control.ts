@@ -42,9 +42,6 @@ export function useMultipleFocusControl(
 
   const doFocus = useCallback(
     (drawerId: string, open = true) => {
-      if (!shouldFocus.current) {
-        return;
-      }
       const ref = refs.current[drawerId];
       if (open) {
         previousFocusedElement.current =
@@ -62,16 +59,16 @@ export function useMultipleFocusControl(
           ref?.toggle?.current?.focus();
         }
       }
-      shouldFocus.current = false;
     },
     [refs, restoreFocus]
   );
 
   const setFocus = (params?: { force?: boolean; drawerId?: string; open?: boolean }) => {
     const { force = false, drawerId = null, open = true } = params || {};
-    shouldFocus.current = true;
     if (force && (!drawerId || activeDrawersIds.includes(drawerId))) {
       doFocus(drawerId!, open);
+    } else {
+      shouldFocus.current = true;
     }
   };
 
@@ -83,7 +80,13 @@ export function useMultipleFocusControl(
   const shouldFocus = useRef(false);
 
   useEffect(() => {
-    doFocus(activeDrawersIds[0]);
+    const drawerId = activeDrawersIds[0];
+    if (shouldFocus.current) {
+      Promise.resolve().then(() => {
+        doFocus(drawerId);
+        shouldFocus.current = false;
+      });
+    }
   }, [activeDrawersIds, doFocus]);
 
   return {
@@ -138,6 +141,67 @@ export function useFocusControl(
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(doFocus, [isOpen, activeDrawerId]);
+
+  const loseFocus = useCallback(() => {
+    previousFocusedElement.current = undefined;
+  }, []);
+
+  return {
+    refs,
+    setFocus,
+    loseFocus,
+  };
+}
+
+export function useAsyncFocusControl(
+  isOpen: boolean,
+  restoreFocus = false,
+  activeDrawerId?: string | null
+): FocusControlState {
+  const refs = {
+    toggle: useRef<Focusable>(null),
+    close: useRef<Focusable>(null),
+    slider: useRef<HTMLDivElement>(null),
+  };
+  const previousFocusedElement = useRef<HTMLElement>();
+  const shouldFocus = useRef(false);
+
+  const doFocus = () => {
+    if (isOpen) {
+      previousFocusedElement.current =
+        document.activeElement !== document.body ? (document.activeElement as HTMLElement) : undefined;
+      if (refs.slider.current) {
+        refs.slider.current?.focus();
+      } else {
+        refs.close.current?.focus();
+      }
+    } else {
+      if (restoreFocus && previousFocusedElement.current && document.contains(previousFocusedElement.current)) {
+        previousFocusedElement.current.focus();
+        previousFocusedElement.current = undefined;
+      } else {
+        refs.toggle.current?.focus();
+      }
+    }
+  };
+
+  const setFocus = (force?: boolean) => {
+    if (force && isOpen) {
+      doFocus();
+    } else {
+      shouldFocus.current = true;
+    }
+  };
+
+  useEffect(() => {
+    if (shouldFocus.current) {
+      Promise.resolve().then(() => {
+        doFocus();
+        shouldFocus.current = false;
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, activeDrawerId]);
 
   const loseFocus = useCallback(() => {
     previousFocusedElement.current = undefined;
