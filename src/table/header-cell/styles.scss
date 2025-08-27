@@ -3,18 +3,17 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
 
 $cell-horizontal-padding: awsui.$space-scaled-l;
 
 @mixin when-focus-visible-or-fake {
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @content;
   }
   &.header-cell-fake-focus {
-    @include focus-visible.when-visible-unfocused {
+    &:focus-visible {
       @content;
     }
   }

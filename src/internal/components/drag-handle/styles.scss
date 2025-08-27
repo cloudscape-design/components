@@ -5,7 +5,6 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .handle {
   appearance: none;
@@ -62,7 +61,7 @@
     text-decoration: none;
   }
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     &:not(.hide-focus) {
       @include styles.focus-highlight(0px);
     }
