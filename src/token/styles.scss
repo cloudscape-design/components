@@ -116,6 +116,7 @@
 
 .token-option-inline {
   max-block-size: constants.$token-max-height-inline;
+  // !important is essential here to center nested content inside the option
   align-items: center !important;
 }
 
@@ -133,7 +134,6 @@
 
 .token-box-inline {
   @include mixins.token-box-inline-styles();
-  overflow: hidden; /* Ensure content doesn't overflow */
 }
 
 .disable-padding {
