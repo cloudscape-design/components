@@ -95,6 +95,10 @@ function InternalToken({
 
     const baseClassName = 'token-inline-min-width';
 
+    if (!isLabelAString(label)) {
+      return styles[baseClassName];
+    }
+
     if (isLabelAString(label) && label.length >= INLINE_TOKEN_CHARACTER_LIMIT) {
       const hasDismissButton = onDismiss || dismissLabel;
       const hasIcon = icon;
@@ -109,8 +113,6 @@ function InternalToken({
         return styles[baseClassName + '-label-only'];
       }
     }
-
-    return styles[baseClassName];
   };
 
   return (
