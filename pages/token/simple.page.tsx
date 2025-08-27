@@ -92,7 +92,6 @@ export default function GenericTokenPage() {
             label={
               <Popover
                 triggerType="text-inline"
-                dismissButton={false}
                 size="large"
                 content={
                   <SpaceBetween size="m">
