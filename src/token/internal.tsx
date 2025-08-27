@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import clsx from 'clsx';
+
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
@@ -46,13 +48,14 @@ function InternalToken({
   const labelContainerRef = useRef<HTMLElement>(null);
   const labelRef = useRef<HTMLElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [isEllipsisActive, setIsEllipsisActive] = useState(false);
   const isInline = variant === 'inline';
 
   const isLabelAString = (label: React.ReactNode): label is string => {
     return typeof label === 'string';
   };
 
-  const isEllipsisActive = () => {
+  const isLabelOverflowing = useCallback(() => {
     if (!isInline || !isLabelAString(label)) {
       return false;
     }
@@ -64,7 +67,13 @@ function InternalToken({
       return labelContent.offsetWidth > labelContainer.offsetWidth;
     }
     return false;
-  };
+  }, [isInline, label]);
+
+  useResizeObserver(labelContainerRef, () => {
+    if (isInline && isLabelAString(label)) {
+      setIsEllipsisActive(isLabelOverflowing());
+    }
+  });
 
   const buildOptionDefinition = () => {
     const labelObject = isLabelAString(label) ? { label } : { labelContent: label };
@@ -135,7 +144,7 @@ function InternalToken({
         setShowTooltip(true);
       }}
       onMouseLeave={() => setShowTooltip(false)}
-      tabIndex={!disableTooltip && isInline && isEllipsisActive() ? 0 : undefined}
+      tabIndex={!disableTooltip && isInline && isEllipsisActive ? 0 : undefined}
       // The below data attribute is to tell a potentially nested Popover to have less spacing between the text and the underline
       data-token-inline={isInline || undefined}
     >
@@ -172,7 +181,7 @@ function InternalToken({
           />
         )}
       </div>
-      {!disableTooltip && isInline && showTooltip && isEllipsisActive() && (
+      {!disableTooltip && isInline && showTooltip && isEllipsisActive && (
         <Tooltip
           trackRef={labelContainerRef}
           value={label}

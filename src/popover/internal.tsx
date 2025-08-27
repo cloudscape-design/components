@@ -29,7 +29,6 @@ export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType' |
   size: PopoverProps.Size | 'content';
   __closeAnalyticsAction?: string;
   isInline?: boolean;
-  triggerClassName?: string;
 }
 
 export default React.forwardRef(InternalPopover);
@@ -50,7 +49,6 @@ function InternalPopover(
     wrapTriggerText = true,
     isInline = false,
     renderWithPortal = false,
-    triggerClassName,
 
     __onOpen,
     __internalRootRef,
@@ -139,7 +137,7 @@ function InternalPopover(
     ref: triggerRef as any,
     onClick: onTriggerClick,
     onKeyDown: onTriggerKeyDown,
-    className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`], triggerClassName),
+    className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`]),
   };
   const { tabIndex: triggerTabIndex } = useSingleTabStopNavigation(triggerRef);
 
@@ -197,18 +195,14 @@ function InternalPopover(
       {['text', 'text-inline'].includes(triggerType) ? (
         <button
           {...triggerProps}
-          className={clsx(
-            triggerProps.className,
-            wrapTriggerText === false && styles['overflow-ellipsis'],
-            triggerClassName
-          )}
+          className={clsx(triggerProps.className, wrapTriggerText === false && styles['overflow-ellipsis'])}
           tabIndex={triggerTabIndex}
           type="button"
           aria-haspopup="dialog"
           id={referrerId}
           aria-label={triggerAriaLabel}
         >
-          {children}
+          <span className={styles.overflow}>{children}</span>
         </button>
       ) : (
         <span {...triggerProps} id={referrerId}>

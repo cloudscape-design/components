@@ -25,7 +25,6 @@ $trigger-underline-offset-compact: 0.1em;
   // Ensure the root element respects the parent container's width when inside an inline token
   // stylelint-disable-next-line selector-combinator-disallowed-list
   [data-token-inline] & {
-    max-inline-size: 100%;
     min-inline-size: 0;
   }
 }
@@ -39,6 +38,19 @@ $trigger-underline-offset-compact: 0.1em;
   max-inline-size: 100%;
   color: inherit;
   text-align: inherit;
+
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  [data-token-inline] & {
+    display: inline-flex;
+  }
+}
+
+.overflow {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  [data-token-inline] & {
+    @include styles.text-overflow-ellipsis;
+    @include styles.text-wrapping;
+  }
 }
 
 .overflow-ellipsis {
@@ -92,7 +104,6 @@ $trigger-underline-offset-compact: 0.1em;
   // Reduce the spacing between the text and the underline for popovers inside inline tokens
   // stylelint-disable-next-line selector-combinator-disallowed-list
   [data-token-inline] & {
-    @include styles.text-overflow-ellipsis;
     text-underline-offset: $trigger-underline-offset-compact;
   }
 }
