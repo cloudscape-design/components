@@ -16,6 +16,7 @@ export function ExpandToggleButton({
   collapseButtonLabel,
   customIcon,
   invisible = false,
+  dataAttribute,
 }: {
   isExpanded?: boolean;
   onExpandableItemToggle?: () => void;
@@ -23,6 +24,7 @@ export function ExpandToggleButton({
   collapseButtonLabel?: string;
   customIcon?: React.ReactNode;
   invisible?: boolean;
+  dataAttribute?: { [key: string]: boolean };
 }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(buttonRef);
@@ -32,9 +34,10 @@ export function ExpandToggleButton({
       <button
         type="button"
         ref={buttonRef}
-        className={clsx(styles['expand-toggle'], styles.invisible)}
         tabIndex={tabIndex}
-        data-tree-view-toggle-button={true}
+        aria-label={isExpanded ? collapseButtonLabel : expandButtonLabel}
+        className={clsx(styles['expand-toggle'], styles.invisible)}
+        {...dataAttribute}
       ></button>
     );
   }
@@ -46,9 +49,9 @@ export function ExpandToggleButton({
       tabIndex={tabIndex}
       aria-label={isExpanded ? collapseButtonLabel : expandButtonLabel}
       aria-expanded={isExpanded}
-      className={clsx(styles['expand-toggle'], invisible && styles['expand-toggle-invisible'])}
+      className={clsx(styles['expand-toggle'])}
       onClick={onExpandableItemToggle}
-      data-tree-view-toggle-button={true} // to do: make it an api
+      {...dataAttribute}
     >
       {customIcon ?? (
         <InternalIcon

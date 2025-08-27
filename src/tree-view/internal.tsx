@@ -10,7 +10,7 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { TreeViewProps } from './interfaces';
 import { KeyboardNavigationProvider } from './keyboard-navigation';
 import InternalTreeItem from './tree-item';
-import { getAllVisibleItemsIndeces, getTreeItemRows } from './utils';
+import { getAllVisibleItemsIndeces } from './utils';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -28,6 +28,7 @@ const InternalTreeView = <T,>({
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
+  connectorLines,
   i18nStrings,
   __internalRootRef,
   ...rest
@@ -55,66 +56,14 @@ const InternalTreeView = <T,>({
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root, testUtilStyles.root)}>
       <KeyboardNavigationProvider getTreeView={() => treeViewRefObject.current}>
-        {/* Role `tree` isn't used in the initial release per discussion with A11Y team. It requires focus management to be implemented so they will be added as a follow up together. */}
         <ul
+          role="tree"
           ref={treeViewRefObject}
           className={clsx(styles.tree, testUtilStyles.tree)}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
           aria-describedby={ariaDescribedby}
         >
-          {/* {itemsRows.map(({ item, id, index, level, childrenIds }, rowIndex) => {
-            if (childrenIds && childrenIds.length > 0 && expandedItems?.includes(id)) {
-              return (
-                <>
-                  {
-                    <InternalTreeItem
-                      key={rowIndex}
-                      item={item}
-                      level={level}
-                      index={index}
-                      rowIndex={rowIndex}
-                      expandedItems={expandedItems}
-                      i18nStrings={i18nStrings}
-                      onItemToggle={onToggle}
-                      renderItem={renderItem}
-                      getItemId={getItemId}
-                      getItemChildren={getItemChildren}
-                      renderItemToggleIcon={renderItemToggleIcon}
-                      allVisibleItemsIndeces={allVisibleItemsIndeces}
-                      owns={`${id}-group`}
-                    />
-                  }
-
-                  <ul
-                    id={`${id}-group`}
-                    role="group"
-                    className={styles['treeitem-group']}
-                    aria-owns={childrenIds.join(' ')}
-                  ></ul>
-                </>
-              );
-            }
-
-            return (
-              <InternalTreeItem
-                key={rowIndex}
-                item={item}
-                level={level}
-                index={index}
-                rowIndex={rowIndex}
-                expandedItems={expandedItems}
-                i18nStrings={i18nStrings}
-                onItemToggle={onToggle}
-                renderItem={renderItem}
-                getItemId={getItemId}
-                getItemChildren={getItemChildren}
-                renderItemToggleIcon={renderItemToggleIcon}
-                allVisibleItemsIndeces={allVisibleItemsIndeces}
-              />
-            );
-          })} */}
-
           {items.map((item, index) => {
             return (
               <InternalTreeItem<T>
@@ -130,6 +79,7 @@ const InternalTreeView = <T,>({
                 getItemChildren={getItemChildren}
                 renderItemToggleIcon={renderItemToggleIcon}
                 allVisibleItemsIndeces={allVisibleItemsIndeces}
+                connectorLines={connectorLines}
               />
             );
           })}

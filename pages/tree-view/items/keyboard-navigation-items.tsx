@@ -2,14 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { TreeViewProps } from '~components';
-import Box from '~components/box';
 import Button from '~components/button';
-import Icon from '~components/icon';
 import Link from '~components/link';
 import Popover from '~components/popover';
-import SpaceBetween from '~components/space-between';
-import StatusIndicator from '~components/status-indicator';
+import { TreeViewProps } from '~components/tree-view';
 
 import { Actions } from '../common';
 
@@ -30,7 +26,7 @@ export const cdsItems: Item[] = [
         </Popover>
       </>
     ),
-    // actions: <Actions actionType="button-dropdown" itemLabel="Item 1" />,
+    actions: <Actions actionType="button-dropdown" itemLabel="Item 1" />,
     announcementLabel: 'Item 1 popover',
   },
   {
@@ -38,7 +34,7 @@ export const cdsItems: Item[] = [
     content: (
       <>
         Item 2{' '}
-        {/* <Popover
+        <Popover
           size="medium"
           content={
             <>
@@ -47,7 +43,7 @@ export const cdsItems: Item[] = [
           }
         >
           popover with dismiss button
-        </Popover> */}
+        </Popover>
       </>
     ),
     actions: <Actions actionType="button-group" itemLabel="Item 2" />,
@@ -56,12 +52,12 @@ export const cdsItems: Item[] = [
       {
         id: '2.1',
         content: 'Item 2.1',
-        // actions: <Actions actionType="button-group" itemLabel="Item 2.1" />,
+        actions: <Actions actionType="button-group" itemLabel="Item 2.1" />,
       },
       {
         id: '2.2',
         content: 'Item 2.2',
-        // actions: <Actions actionType="button-group" itemLabel="Item 2.1" />,
+        actions: <Actions actionType="button-group" itemLabel="Item 2.1" />,
       },
     ],
   },
@@ -69,27 +65,37 @@ export const cdsItems: Item[] = [
     id: '3',
     content: 'Item 3',
     hasToggleButton: true,
-    // actions: <Actions actionType="inline-button-dropdown" itemLabel="Item 3" />,
+    actions: <Actions actionType="inline-button-dropdown" itemLabel="Item 3" />,
     announcementLabel: 'Item 3',
     children: [
       {
         id: '3.1',
         content: 'Item 3.1',
-        // actions: <Actions actionType="inline-button-dropdown" itemLabel="Item 3.1" />,
+        actions: <Actions actionType="inline-button-dropdown" itemLabel="Item 3.1" />,
         announcementLabel: 'Item 3.1',
         hasToggleButton: true,
       },
       {
         id: '3.2',
         content: 'Item 3.2',
-        // actions: <Actions actionType="inline-button-dropdown" itemLabel="Item 3.2" />,
+        actions: <Actions actionType="inline-button-dropdown" itemLabel="Item 3.2" />,
         announcementLabel: 'Item 3.2',
         hasToggleButton: true,
         children: [
           {
             id: '3.2.1',
             content: 'Item 3.2.1',
-            // actions: <Actions actionType="button-group" itemLabel="Item 2.1" />,
+            actions: <Actions actionType="button-group" itemLabel="Item 3.2.1" />,
+          },
+          {
+            id: '3.2.2',
+            content: 'Item 3.2.2',
+            actions: <Actions actionType="button-group" itemLabel="Item 3.2.2" />,
+          },
+          {
+            id: '3.2.3',
+            content: 'Item 3.2.3',
+            actions: <Actions actionType="button-group" itemLabel="Item 3.2.3" />,
           },
         ],
       },
@@ -107,6 +113,17 @@ export const cdsItems: Item[] = [
       {
         id: '4.1',
         content: 'Item 4.1',
+      },
+    ],
+  },
+  {
+    id: '5',
+    content: 'Item 5',
+    actions: <Actions actionType="button-group" itemLabel="Item 3.2.1" />,
+    children: [
+      {
+        id: '5.1',
+        content: 'Item 5.1',
       },
     ],
   },
