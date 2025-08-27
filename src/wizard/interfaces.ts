@@ -129,6 +129,16 @@ export interface WizardProps extends BaseComponentProps {
    * or `skip` (when navigated using navigation pane or the *skip-to* button to the previously unvisited step).
    */
   onNavigate?: NonCancelableEventHandler<WizardProps.NavigateDetail>;
+
+  /**
+   * Overrides wizard steps navigation with a custom one when it is rendered on the side.
+   */
+  customNavigationSide?: React.ReactNode;
+
+  /**
+   * Overrides wizard steps navigation with a custom one when it is rendered on the top.
+   */
+  customNavigationTop?: React.ReactNode;
 }
 
 export namespace WizardProps {
