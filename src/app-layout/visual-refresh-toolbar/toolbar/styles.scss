@@ -5,6 +5,7 @@
 
 @use '../../../internal/styles' as styles;
 @use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/styles/utils/theming' as theming;
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../constants.scss' as constants;
 
@@ -13,6 +14,7 @@
   box-sizing: border-box;
   position: sticky;
   z-index: constants.$toolbar-z-index;
+  display: flex;
   @include styles.with-motion {
     transition: ease awsui.$motion-duration-refresh-only-slow;
     transition-property: inset-block-start, opacity;
@@ -28,6 +30,10 @@
       inline-size: 5px;
       block-size: 5px;
       background: constants.$ai-drawer-background;
+
+      @include theming.dark-mode-only {
+        display: none;
+      }
     }
 
     &:after {
@@ -40,6 +46,44 @@
     inset-block-start: 0px;
   }
 
+  > .universal-toolbar-ai-custom {
+    grid-column: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-start;
+    padding-inline: awsui.$space-static-s;
+    box-sizing: border-box;
+
+    block-size: calc(100% + #{awsui.$border-divider-section-width});
+    background: constants.$ai-drawer-background;
+
+    @include theming.dark-mode-only {
+      block-size: 100%;
+    }
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-end: -5px;
+      inline-size: 5px;
+      block-size: 5px;
+      background: constants.$ai-drawer-background;
+
+      @include theming.dark-mode-only {
+        display: none;
+      }
+    }
+
+    &:after {
+      background-color: awsui.$color-background-layout-panel-content;
+      border-start-start-radius: awsui.$space-xxs;
+    }
+  }
+
   > .toolbar-container {
     block-size: 100%;
     align-items: center;
@@ -48,33 +92,10 @@
     grid-template-columns: min-content min-content minmax(0, 3fr) minmax(auto, 1fr);
     grid-template-rows: 1fr;
 
-    > .universal-toolbar-ai-custom {
-      grid-column: 1;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      align-self: flex-start;
-      padding-inline: awsui.$space-static-s;
-      box-sizing: border-box;
-
-      block-size: calc(100% + #{awsui.$border-divider-section-width});
-      background: constants.$ai-drawer-background;
-
-      &:before,
-      &:after {
-        content: '';
-        position: absolute;
-        inset-block-start: 0;
-        inset-inline-end: -5px;
-        inline-size: 5px;
-        block-size: 5px;
-        background: constants.$ai-drawer-background;
-      }
-
-      &:after {
-        background-color: awsui.$color-background-layout-panel-content;
+    &.with-ai-drawer {
+      @include theming.dark-mode-only {
         border-start-start-radius: awsui.$space-xxs;
+        border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
       }
     }
 

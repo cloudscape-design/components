@@ -4,6 +4,7 @@
 */
 @use '../../../internal/styles/tokens' as awsui;
 @use '../../../internal/styles' as styles;
+@use '../../../internal/styles/utils/theming' as theming;
 @use '../../constants.scss' as constants;
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
@@ -362,6 +363,9 @@ $drawer-resize-handle-size: awsui.$space-m;
       > .drawer-content-container {
         @include desktop-only {
           clip-path: inset(0 0 0 -9999px round awsui.$space-xxs);
+          @include theming.dark-mode-only {
+            border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+          }
         }
       }
     }
