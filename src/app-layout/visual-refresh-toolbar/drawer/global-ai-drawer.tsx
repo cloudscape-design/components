@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
@@ -60,18 +60,6 @@ export function AppLayoutGlobalAiDrawerImplementation({
     expandedDrawerId,
     setExpandedDrawerId,
   } = aiDrawerProps;
-  const [drawerTransitionState, setDrawerTransitionState] = useState<'entered' | ''>('');
-
-  useEffect(() => {
-    if (show) {
-      requestAnimationFrame(() => {
-        setDrawerTransitionState('entered');
-      });
-    }
-    return () => {
-      setDrawerTransitionState('');
-    };
-  }, [show]);
   const { verticalOffsets, placement } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeAiDrawer?.id;
@@ -104,8 +92,14 @@ export function AppLayoutGlobalAiDrawerImplementation({
   const isResizingDisabled = maxAiDrawerSize < activeAiDrawerSize;
 
   return (
-    <Transition nodeRef={drawerRef} in={isExpanded} appear={isExpanded} timeout={250}>
-      {expandedTransitionState => {
+    <Transition
+      nodeRef={drawerRef}
+      in={show || isExpanded}
+      appear={show || isExpanded}
+      mountOnEnter={true}
+      timeout={250}
+    >
+      {state => {
         return (
           <aside
             id={activeAiDrawer?.id}
@@ -115,11 +109,10 @@ export function AppLayoutGlobalAiDrawerImplementation({
               styles.drawer,
               styles['ai-drawer'],
               !animationDisabled && isExpanded && styles['with-expanded-motion'],
-              !show && styles['drawer-hidden'],
               {
                 [sharedStyles['with-motion-horizontal']]: !animationDisabled,
                 [testutilStyles['active-drawer']]: show,
-                [styles['drawer-hidden']]: !show,
+                [styles['drawer-hidden']]: !show && state === 'exited',
                 [testutilStyles['drawer-closed']]: !activeAiDrawer,
                 [styles['drawer-expanded']]: isExpanded,
               }
@@ -134,12 +127,12 @@ export function AppLayoutGlobalAiDrawerImplementation({
               blockSize: drawerHeight,
               insetBlockStart: `${placement.insetBlockStart}px`,
               ...(!isMobile && {
-                [customCssProps.drawerSize]: `${['entering', 'entered'].includes(drawerTransitionState) ? size : 0}px`,
+                [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
               }),
             }}
             data-testid={activeDrawerId && `awsui-app-layout-drawer-${activeDrawerId}`}
           >
-            {!isMobile && activeAiDrawer?.resizable && (!isExpanded || expandedTransitionState !== 'entered') && (
+            {!isMobile && activeAiDrawer?.resizable && (!isExpanded || state !== 'entered') && (
               <div className={styles['drawer-slider']}>
                 <PanelResizeHandle
                   ref={aiDrawerFocusControl?.refs.slider}

@@ -159,7 +159,7 @@ export function AppLayoutToolbarImplementation({
               sharedStyles['with-motion-horizontal'],
             ])}
             style={{
-              opacity: state === 'exiting' ? 0 : 1,
+              opacity: ['entering', 'exiting'].includes(state) ? 0 : 1,
             }}
           >
             <TriggerButton
