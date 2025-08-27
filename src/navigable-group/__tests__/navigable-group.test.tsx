@@ -26,7 +26,7 @@ function renderNavigableGroup(props: Partial<NavigableGroupProps> = {}) {
   const renderResult = render(
     <>
       <button ref={blurRef}>other focusable</button>
-      <NavigableGroup getItemId={element => element.id} ref={ref} {...props}>
+      <NavigableGroup getItemKey={element => element.id} ref={ref} {...props}>
         {children}
       </NavigableGroup>
     </>
@@ -47,7 +47,7 @@ function renderNavigableGroupWithDisabledElements(props: Partial<NavigableGroupP
   );
 
   const renderResult = render(
-    <NavigableGroup getItemId={element => element.id} {...props}>
+    <NavigableGroup getItemKey={element => element.id} {...props}>
       {children}
     </NavigableGroup>
   );
@@ -72,7 +72,7 @@ function renderNavigableGroupWithMixedElements(props: Partial<NavigableGroupProp
   );
 
   const renderResult = render(
-    <NavigableGroup getItemId={element => element.id} {...props}>
+    <NavigableGroup getItemKey={element => element.id} {...props}>
       {children}
     </NavigableGroup>
   );
@@ -86,19 +86,6 @@ describe('NavigableGroup', () => {
       const { wrapper } = renderNavigableGroup();
 
       expect(wrapper.findAllButtons().length).toBe(3);
-    });
-
-    test('renders with custom native attributes', () => {
-      const { container } = renderNavigableGroup({
-        nativeAttributes: {
-          'data-testid': 'custom-navigable-group',
-          'aria-label': 'Custom toolbar',
-        },
-      });
-      const navigableGroup = container.querySelector('[data-testid=custom-navigable-group]');
-
-      expect(navigableGroup).toBeTruthy();
-      expect(navigableGroup).toHaveAttribute('aria-label', 'Custom toolbar');
     });
   });
 
@@ -143,7 +130,7 @@ describe('NavigableGroup', () => {
 
     describe('Vertical direction', () => {
       test('navigates down with ArrowDown key', () => {
-        const { wrapper } = renderNavigableGroup({ direction: 'vertical' });
+        const { wrapper } = renderNavigableGroup({ navigationDirection: 'vertical' });
 
         const button1 = wrapper.findAllButtons()[0];
         const button2 = wrapper.findAllButtons()[1];
@@ -155,7 +142,7 @@ describe('NavigableGroup', () => {
       });
 
       test('navigates up with ArrowUp key', () => {
-        const { wrapper } = renderNavigableGroup({ direction: 'vertical' });
+        const { wrapper } = renderNavigableGroup({ navigationDirection: 'vertical' });
 
         const button1 = wrapper.findAllButtons()[0];
         const button2 = wrapper.findAllButtons()[1];
@@ -167,7 +154,7 @@ describe('NavigableGroup', () => {
       });
 
       test('does not navigate with ArrowLeft/ArrowRight keys in vertical mode', () => {
-        const { wrapper } = renderNavigableGroup({ direction: 'vertical' });
+        const { wrapper } = renderNavigableGroup({ navigationDirection: 'vertical' });
 
         const button2 = wrapper.findAllButtons()[1];
 
@@ -181,7 +168,7 @@ describe('NavigableGroup', () => {
 
     describe('Both directions', () => {
       test('navigates with all arrow keys when direction is "both"', () => {
-        const { wrapper } = renderNavigableGroup({ direction: 'both' });
+        const { wrapper } = renderNavigableGroup({ navigationDirection: 'both' });
 
         const button1 = wrapper.findAllButtons()[0];
         const button2 = wrapper.findAllButtons()[1];
@@ -223,55 +210,22 @@ describe('NavigableGroup', () => {
       });
     });
 
-    describe('PageUp and PageDown keys', () => {
-      test('navigates with PageUp and PageDown keys', () => {
-        const { wrapper } = renderNavigableGroup();
+    test('loops focus', () => {
+      const { wrapper } = renderNavigableGroup();
 
-        const button1 = wrapper.findAllButtons()[0];
-        const button3 = wrapper.findAllButtons()[2];
+      const button1 = wrapper.findAllButtons()[0];
+      const button3 = wrapper.findAllButtons()[2];
 
-        button1.focus();
-        button1.keydown(KeyCode.pageDown);
-        expect(button3.getElement()).toHaveFocus();
-
-        button3.keydown(KeyCode.pageUp);
-        expect(button1.getElement()).toHaveFocus();
-      });
+      button3.focus();
+      button3.keydown(KeyCode.right);
+      expect(button1.getElement()).toHaveFocus();
+      button1.keydown(KeyCode.left);
+      expect(button3.getElement()).toHaveFocus();
     });
 
-    describe('Loop focus behavior', () => {
-      test('does not loop focus by default', () => {
-        const { wrapper } = renderNavigableGroup();
-
-        const button1 = wrapper.findAllButtons()[0];
-        const button3 = wrapper.findAllButtons()[2];
-
-        button3.focus();
-        button3.keydown(KeyCode.right);
-        expect(button3.getElement()).toHaveFocus();
-
-        button1.focus();
-        button1.keydown(KeyCode.left);
-        expect(button1.getElement()).toHaveFocus();
-      });
-
-      test('loops focus when loopFocus is true', () => {
-        const { wrapper } = renderNavigableGroup({ loopFocus: true });
-
-        const button1 = wrapper.findAllButtons()[0];
-        const button3 = wrapper.findAllButtons()[2];
-
-        button3.focus();
-        button3.keydown(KeyCode.right);
-        expect(button1.getElement()).toHaveFocus();
-        button1.keydown(KeyCode.left);
-        expect(button3.getElement()).toHaveFocus();
-      });
-    });
-
-    test('works with custom getItemId function', () => {
+    test('works with custom getItemKey function', () => {
       const { container } = render(
-        <NavigableGroup getItemId={element => element.getAttribute('data-custom-id') || element.id}>
+        <NavigableGroup getItemKey={element => element.getAttribute('data-custom-id') || element.id}>
           <Button data-custom-id="custom1">Button 1</Button>
           <Button data-custom-id="custom2">Button 2</Button>
         </NavigableGroup>

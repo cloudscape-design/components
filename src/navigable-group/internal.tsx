@@ -15,7 +15,6 @@ import { hasModifierKeys } from '../internal/events';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import handleKey from '../internal/utils/handle-key';
-import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { InternalNavigableGroupProps, NavigableGroupProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -25,10 +24,8 @@ const InternalNavigableGroup = forwardRef(
   (
     {
       children,
-      getItemId,
-      loopFocus = false,
-      direction = 'horizontal',
-      nativeAttributes,
+      getItemKey,
+      navigationDirection = 'horizontal',
       __internalRootRef,
       ...props
     }: InternalNavigableGroupProps,
@@ -52,7 +49,7 @@ const InternalNavigableGroup = forwardRef(
     function getNextFocusTarget(): null | HTMLElement {
       if (containerObjectRef.current) {
         const focusables = getFocusablesFrom(containerObjectRef.current);
-        return focusables.find(button => getItemId(button) === focusedIdRef.current) ?? focusables[0] ?? null;
+        return focusables.find(button => getItemKey(button) === focusedIdRef.current) ?? focusables[0] ?? null;
       }
       return null;
     }
@@ -61,7 +58,7 @@ const InternalNavigableGroup = forwardRef(
       // Only refocus when the node is actually removed (no such element anymore).
       const target = navigationAPI.current?.getFocusTarget();
 
-      if (target && getItemId(target) !== getItemId(focusableElement)) {
+      if (target && getItemKey(target) !== getItemKey(focusableElement)) {
         target.focus();
       }
     }
@@ -72,7 +69,7 @@ const InternalNavigableGroup = forwardRef(
 
     function onFocus(event: React.FocusEvent) {
       if (event.target instanceof HTMLElement && navigationAPI.current?.isRegistered(event.target)) {
-        focusedIdRef.current = getItemId(event.target);
+        focusedIdRef.current = getItemKey(event.target);
       }
       navigationAPI.current?.updateFocusTarget();
     }
@@ -84,7 +81,7 @@ const InternalNavigableGroup = forwardRef(
     function onKeyDown(event: React.KeyboardEvent) {
       const focusTarget = navigationAPI.current?.getFocusTarget();
       let specialKeys = [];
-      switch (direction) {
+      switch (navigationDirection) {
         case 'horizontal':
           specialKeys = [KeyCode.right, KeyCode.left];
           break;
@@ -112,17 +109,12 @@ const InternalNavigableGroup = forwardRef(
       const activeIndex = focusables.indexOf(focusTarget);
       const getNextIndex = (delta: number) => {
         const newIndex = activeIndex + delta;
-        if (loopFocus) {
-          return circleIndex(newIndex, [0, focusables.length - 1]);
-        }
-        return Math.max(0, Math.min(focusables.length - 1, newIndex));
+        return circleIndex(newIndex, [0, focusables.length - 1]);
       };
 
       handleKey(event as any, {
         onHome: () => focusElement(focusables[0]),
-        onPageUp: () => focusElement(focusables[0]),
         onEnd: () => focusElement(focusables[focusables.length - 1]),
-        onPageDown: () => focusElement(focusables[focusables.length - 1]),
         onInlineStart: () => focusElement(focusables[getNextIndex(-1)]),
         onBlockStart: () => focusElement(focusables[getNextIndex(-1)]),
         onInlineEnd: () => focusElement(focusables[getNextIndex(1)]),
@@ -152,9 +144,7 @@ const InternalNavigableGroup = forwardRef(
     }
 
     return (
-      <WithNativeAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>
-        tag="div"
-        nativeAttributes={nativeAttributes}
+      <div
         {...baseProps}
         className={clsx(styles.root, testUtilStyles.root, baseProps.className)}
         ref={containerRef}
@@ -170,7 +160,7 @@ const InternalNavigableGroup = forwardRef(
         >
           {children}
         </SingleTabStopNavigationProvider>
-      </WithNativeAttributes>
+      </div>
     );
   }
 );
