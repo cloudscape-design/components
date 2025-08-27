@@ -36,7 +36,7 @@ describe('i18n provider', () => {
         <Multiselect selectedOptions={[{ label: 'First', value: '1' }]} options={defaultOptions} />
       </TestI18nProvider>
     );
-    expect(wrapper.findToken(1)!.findDismiss().getElement()).toHaveAttribute('aria-label', 'Custom deselect First');
+    expect(wrapper.findToken(1)!.findDismiss()!.getElement()).toHaveAttribute('aria-label', 'Custom deselect First');
   });
 
   test('utilises recoveryText from Select messages', () => {
