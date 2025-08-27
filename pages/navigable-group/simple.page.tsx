@@ -15,9 +15,9 @@ export default function NavigableGroupSimplePage() {
       <h1>NavigableGroup simple example</h1>
       <SpaceBetween direction="vertical" size="l">
         <div>
-          <h2>Basic NavigableGroup with buttons (loops focus)</h2>
+          <h2>Basic NavigableGroup with buttons</h2>
           <div role="toolbar" aria-label="Simple toolbar">
-            <NavigableGroup loopFocus={true} getItemId={element => element.id}>
+            <NavigableGroup getItemKey={element => element.id}>
               <Button id="1">First</Button>
               <Button id="2">Second</Button>
               <Button id="3">Third</Button>
@@ -28,7 +28,7 @@ export default function NavigableGroupSimplePage() {
         <div>
           <h2>NavigableGroup with mixed elements</h2>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }} role="toolbar" aria-label="Mixed toolbar">
-            <NavigableGroup getItemId={e => e.id}>
+            <NavigableGroup getItemKey={e => e.id}>
               <Button id="1" variant="primary">
                 Save
               </Button>
@@ -57,18 +57,18 @@ export default function NavigableGroupSimplePage() {
 
         <div>
           <h2>NavigableGroup with custom styling</h2>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              padding: '12px',
-              backgroundColor: '#f0f0f0',
-              borderRadius: '8px',
-            }}
-            role="toolbar"
-            aria-label="Compact toolbar"
-          >
-            <NavigableGroup direction="horizontal" getItemId={e => e.innerText}>
+          <NavigableGroup navigationDirection="horizontal" getItemKey={e => e.innerText}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                padding: '12px',
+                backgroundColor: '#f0f0f0',
+                borderRadius: '8px',
+              }}
+              role="toolbar"
+              aria-label="Compact toolbar"
+            >
               <Button
                 iconName="add-plus"
                 style={{ root: { borderRadius: '8px 0 0 8px' } }}
@@ -82,8 +82,8 @@ export default function NavigableGroupSimplePage() {
               <Button iconName="remove" style={{ root: { borderRadius: '0 8px 8px 0' } }}>
                 Delete
               </Button>
-            </NavigableGroup>
-          </div>
+            </div>
+          </NavigableGroup>
         </div>
       </SpaceBetween>
     </article>

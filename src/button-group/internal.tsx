@@ -49,7 +49,7 @@ const InternalButtonGroup = forwardRef(
         aria-label={ariaLabel}
         style={stylePropertiesAndVariables}
       >
-        <InternalNavigableGroup loopFocus={true} getItemId={item => item.dataset.itemid!}>
+        <InternalNavigableGroup getItemKey={item => item.dataset.itemid!}>
           {items.map((itemOrGroup, index) => {
             const itemContent = (item: ButtonGroupProps.Item, position: string) => (
               <ItemElement
