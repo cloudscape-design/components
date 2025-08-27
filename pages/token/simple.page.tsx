@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { range } from 'lodash';
 
-import { FormField, Popover } from '~components';
+import { Popover } from '~components';
 import Box from '~components/box';
 import Button from '~components/button';
 import Icon from '~components/icon';
@@ -93,17 +93,14 @@ export default function GenericTokenPage() {
               <Popover
                 triggerType="text-inline"
                 size="large"
+                header="<some-variable-name>"
                 content={
                   <SpaceBetween size="m">
-                    <FormField label={'<some-variable-name>'}>
-                      <div style={{ width: '300px' }}>
-                        <Input
-                          placeholder="Enter value for variable"
-                          value={variableValue}
-                          onChange={({ detail }) => setVariableValue(detail.value)}
-                        />
-                      </div>
-                    </FormField>
+                    <Input
+                      placeholder="Enter value for variable"
+                      value={variableValue}
+                      onChange={({ detail }) => setVariableValue(detail.value)}
+                    />
                     <Box float="right">
                       <Button onClick={() => setVariableValue('')}>Clear</Button>
                     </Box>
