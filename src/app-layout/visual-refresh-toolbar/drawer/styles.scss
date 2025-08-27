@@ -237,4 +237,80 @@ $drawer-resize-handle-size: awsui.$space-m;
       }
     }
   }
+
+  &.ai-drawer {
+    grid-template-columns: 1fr awsui.$space-xs;
+    background: constants.$ai-drawer-background;
+
+    > .drawer-slider {
+      grid-column: 2;
+    }
+
+    // to override styles in PanelResizeHandle component
+    // maybe we need to introduce an additional prop in the component to make it more flexible?
+    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+    .ai-drawer-slider-handle {
+      transform: translate(-4px);
+      color: awsui.$color-text-interactive-inverted-default;
+
+      &:hover {
+        stroke: awsui.$color-text-interactive-inverted-hover;
+      }
+    }
+
+    > .drawer-content-container {
+      min-inline-size: auto;
+      grid-column: 1 / span 1;
+      border-start-end-radius: awsui.$space-xxs;
+      clip-path: inset(0 0 0 -9999px round awsui.$space-xxs);
+
+      > .drawer-content {
+        background-color: awsui.$color-background-layout-panel-content;
+
+        > .drawer-content-header {
+          block-size: 41px;
+          position: sticky;
+          z-index: 1000;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          inset-block-start: 0;
+          background-color: awsui.$color-background-layout-panel-content;
+          border-block-end: awsui.$border-divider-section-width solid;
+          border-image: linear-gradient(90deg, #962eff 0%, #5c7fff 30%, #09f 50%, #b8e7ff 70%, #8575ff 100%) 1;
+
+          > .drawer-content-header-content {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: space-between;
+            block-size: 100%;
+            padding-inline-start: awsui.$space-l;
+            padding-inline-end: awsui.$space-m;
+
+            > .drawer-actions {
+              display: flex;
+            }
+          }
+
+          > .drawer-back-to-console-button {
+            position: relative;
+            display: flex;
+            box-sizing: border-box;
+            block-size: 100%;
+            padding-inline: awsui.$space-xxs;
+            padding-block: awsui.$space-xxs;
+          }
+        }
+      }
+    }
+
+    &.drawer-expanded {
+      grid-template-columns: 1fr;
+
+      > .drawer-content-container {
+        border-start-end-radius: 0;
+      }
+    }
+  }
 }

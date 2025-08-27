@@ -218,8 +218,18 @@ export const getGlobalDrawersTestUtils = (wrapper: AppLayoutWrapper) => {
       );
     },
 
+    findLeaveExpandedModeButtonInAIDrawer(): ElementWrapper | null {
+      return wrapper.find(
+        `.${testutilStyles['active-drawer']} .${testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button']}`
+      );
+    },
+
     isLayoutInDrawerExpandedMode(): boolean {
       return !!wrapper.matches(`.${visualRefreshToolbarStyles['drawer-expanded-mode']}`);
+    },
+
+    findAiDrawerTrigger(): ElementWrapper | null {
+      return wrapper.find(`.${testutilStyles['ai-drawer-toggle']}`);
     },
   };
 };
