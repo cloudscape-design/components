@@ -13,7 +13,10 @@ function writeEnvironmentFile(theme) {
     GIT_SHA: workspace.gitCommitVersion,
     THEME: theme.name,
     SYSTEM: 'core',
-    ALWAYS_VISUAL_REFRESH: !!theme.alwaysVisualRefresh,
+    ALWAYS_VISUAL_REFRESH:
+      process.env.ALWAYS_VISUAL_REFRESH !== undefined
+        ? process.env.ALWAYS_VISUAL_REFRESH === 'true'
+        : !!theme.alwaysVisualRefresh,
   };
   const basePath = path.join(theme.outputPath, filepath);
 
