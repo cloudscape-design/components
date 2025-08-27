@@ -297,6 +297,15 @@ $drawer-resize-handle-size: awsui.$space-m;
             padding-inline-start: awsui.$space-l;
             padding-inline-end: awsui.$space-m;
 
+            @include desktop-only {
+              @include theming.dark-mode-only {
+                &:has(+ .drawer-back-to-console-slot) {
+                  border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+                  border-start-end-radius: awsui.$space-xxs;
+                }
+              }
+            }
+
             > .drawer-actions {
               display: flex;
             }
@@ -320,6 +329,10 @@ $drawer-resize-handle-size: awsui.$space-m;
               inline-size: 5px;
               block-size: 5px;
               background: constants.$ai-drawer-background;
+
+              @include theming.dark-mode-only {
+                display: none;
+              }
             }
 
             &:after {
