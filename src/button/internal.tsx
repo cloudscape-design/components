@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import {
   getAnalyticsLabelAttribute,
   getAnalyticsMetadataAttribute,
@@ -21,7 +22,6 @@ import {
 } from '../internal/analytics/selectors';
 import Tooltip from '../internal/components/tooltip/index.js';
 import { useButtonContext } from '../internal/context/button-context';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';

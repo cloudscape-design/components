@@ -4,11 +4,11 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
-import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { KeyCode } from '../../internal/keycode';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
 import { ColumnWidthStyle } from '../column-widths-utils';
