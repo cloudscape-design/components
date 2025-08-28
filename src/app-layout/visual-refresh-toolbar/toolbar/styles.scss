@@ -75,6 +75,15 @@ $toolbar-height: 42px;
     padding-inline: awsui.$space-static-s;
     box-sizing: border-box;
 
+    /**
+     * Button sizing adjustments for theme-specific design requirements
+     *
+     * Light mode: Button width is set to 100% + border width to intentionally overlap
+     * with the bottom border, as specified in the UI design.
+     *
+     * Dark mode: Resets the overlap styling due to different design requirements
+     * where overlap should not occur.
+     */
     block-size: calc(100% + #{awsui.$border-divider-section-width});
     background: constants.$ai-drawer-background;
 
