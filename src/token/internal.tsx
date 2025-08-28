@@ -58,6 +58,8 @@ function InternalToken({
     return typeof label === 'string';
   };
 
+  // Tested in integration tests
+  /* istanbul ignore next */
   const isLabelOverflowing = useCallback(() => {
     if (!isInline || !isLabelAString(label)) {
       return false;
@@ -72,6 +74,8 @@ function InternalToken({
     return false;
   }, [isInline, label]);
 
+  // Tested in integration tests
+  /* istanbul ignore next */
   useResizeObserver(labelContainerRef, () => {
     if (isInline && isLabelAString(label)) {
       setIsEllipsisActive(isLabelOverflowing());
