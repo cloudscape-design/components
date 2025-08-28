@@ -14,6 +14,7 @@ const {
   styles,
   typescript,
   buildPages,
+  buildReact18Pages,
   testUtils,
   a11y,
   generateI18nMessages,
@@ -36,6 +37,7 @@ exports.clean = clean;
 exports['quick-build'] = quickBuild;
 exports.i18n = generateI18nMessages;
 exports.build = series(quickBuild, parallel(buildPages, themeableSource, docs, sizeLimit));
+exports['build:react18'] = series(quickBuild, parallel(buildReact18Pages, themeableSource, docs, sizeLimit));
 exports.test = series(unit, integ, a11y);
 exports['test:unit'] = unit;
 exports['test:integ'] = integ;
