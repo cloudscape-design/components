@@ -357,8 +357,7 @@ describe('Option component', () => {
       });
 
       // Check that no highlight elements are rendered
-      const highlighted = optionWrapper.findAllByClassName(styles['filtering-match-highlight']);
-      expect(highlighted).toHaveLength(0);
+      expect(optionWrapper.findByClassName(styles['filtering-match-highlight'])).toBeNull();
     });
   });
 });
