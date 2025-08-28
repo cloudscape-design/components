@@ -188,6 +188,7 @@ export const statusIndicatorItems: Item[] = [
     id: 'status-indicator-1',
     content: <StatusIndicator type="success">Evaluated</StatusIndicator>,
     secondaryContent: 'Successful',
+    announcementLabel: 'Evaluated',
   },
   {
     id: 'status-indicator-2',
@@ -208,11 +209,13 @@ export const statusIndicatorItems: Item[] = [
       {
         id: 'status-indicator-2.1',
         content: <StatusIndicator type="success">node-17 (eksclu-node-12345)</StatusIndicator>,
+        announcementLabel: 'node-17 (eksclu-node-12345)',
       },
       {
         id: 'status-indicator-2.2',
         content: <StatusIndicator type="in-progress">node-18 (eksclu-node-09876)</StatusIndicator>,
         secondaryContent: 'In progress',
+        announcementLabel: 'node-18 (eksclu-node-09876)',
       },
       {
         id: 'status-indicator-2.3',
@@ -223,22 +226,26 @@ export const statusIndicatorItems: Item[] = [
             id: 'status-indicator-2.3.1',
             content: <StatusIndicator type="warning">Checked resource utilization</StatusIndicator>,
             secondaryContent: 'CPU utilization threshold exceeded.',
+            announcementLabel: 'Checked resource utilization',
           },
           {
             id: 'status-indicator-2.3.2',
             content: <StatusIndicator type="success">Checked network connectivity</StatusIndicator>,
+            announcementLabel: 'Checked network connectivity',
           },
         ],
       },
       {
         id: 'status-indicator-2.4',
         content: <StatusIndicator type="error">node-19 (eksclu-node-ab123)</StatusIndicator>,
+        announcementLabel: 'node-19 (eksclu-node-ab123)',
       },
     ],
   },
   {
     id: 'status-indicator-3',
     content: <StatusIndicator type="success">Checked EKS clusters</StatusIndicator>,
+    announcementLabel: 'Checked EKS clusters',
   },
   {
     id: 'status-indicator-4',
@@ -258,14 +265,17 @@ export const statusIndicatorItems: Item[] = [
       {
         id: 'status-indicator-4.1',
         content: <StatusIndicator type="success">First action</StatusIndicator>,
+        announcementLabel: 'First action',
       },
       {
         id: 'status-indicator-4.2',
         content: <StatusIndicator type="error">Second action</StatusIndicator>,
+        announcementLabel: 'Second action',
       },
       {
         id: 'status-indicator-4.3',
         content: <StatusIndicator type="loading">Third action</StatusIndicator>,
+        announcementLabel: 'Third action',
       },
     ],
   },
