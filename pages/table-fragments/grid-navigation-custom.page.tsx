@@ -7,7 +7,6 @@ import {
   AppLayout,
   Button,
   ButtonDropdown,
-  ButtonGroup,
   Checkbox,
   CollectionPreferences,
   ColumnLayout,
@@ -61,14 +60,13 @@ type PageContext = React.Context<
   }>
 >;
 
-type ActionsMode = 'dropdown' | 'inline' | 'button-group';
+type ActionsMode = 'dropdown' | 'inline';
 
 const tableRoleOptions = [{ value: 'table' }, { value: 'grid' }, { value: 'grid-default' }];
 
 const actionsModeOptions = [
   { value: 'dropdown', label: 'Dropdown' },
-  { value: 'inline', label: 'Inline' },
-  { value: 'button-group', label: 'Button group' },
+  { value: 'inline', label: 'Inline (anti-pattern)' },
 ];
 
 export default function Page() {
@@ -460,47 +458,19 @@ function ItemActionsCell({
       </div>
     );
   }
-  if (mode === 'inline') {
-    return (
-      <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
-        <Button variant="inline-icon" iconName="remove" ariaLabel="Delete item" onClick={onDelete} />
-        <Button variant="inline-icon" iconName="copy" ariaLabel="Duplicate item" onClick={onDuplicate} />
-        <Button
-          variant="inline-icon"
-          iconName="refresh"
-          ariaLabel="Update item"
-          onClick={onUpdate}
-          disabled={!canUpdate}
-        />
-      </div>
-    );
-  }
-  if (mode === 'button-group') {
-    return (
-      <div style={{ inlineSize: 100 }}>
-        <ButtonGroup
-          ariaLabel="Item actions"
-          variant="icon"
-          items={[
-            { type: 'icon-button', id: 'delete', iconName: 'remove', text: 'Delete' },
-            { type: 'icon-button', id: 'duplicate', iconName: 'copy', text: 'Duplicate' },
-            { type: 'icon-button', id: 'update', iconName: 'refresh', text: 'Update', disabled: !canUpdate },
-          ]}
-          onItemClick={event => {
-            switch (event.detail.id) {
-              case 'delete':
-                return onDelete();
-              case 'duplicate':
-                return onDuplicate();
-              case 'update':
-                return onUpdate();
-            }
-          }}
-        />
-      </div>
-    );
-  }
-  return null;
+  return (
+    <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
+      <Button variant="inline-icon" iconName="remove" ariaLabel="Delete item" onClick={onDelete} />
+      <Button variant="inline-icon" iconName="copy" ariaLabel="Duplicate item" onClick={onDuplicate} />
+      <Button
+        variant="inline-icon"
+        iconName="refresh"
+        ariaLabel="Update item"
+        onClick={onUpdate}
+        disabled={!canUpdate}
+      />
+    </div>
+  );
 }
 
 function DnsEditCell({ item }: { item: Instance }) {
