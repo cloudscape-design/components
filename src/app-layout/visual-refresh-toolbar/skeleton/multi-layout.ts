@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
+import { metrics } from '../../../internal/metrics';
 import { awsuiPluginsInternal } from '../../../internal/plugins/api';
 import { RegistrationState } from '../../../internal/plugins/controllers/app-layout-widget';
 import { useAppLayoutFlagEnabled } from '../../utils/feature-flags';
@@ -42,6 +43,12 @@ export function useMultiAppLayout(
     }
   });
 
+  useEffect(() => {
+    if (registration) {
+      reportMultiLayoutMetric(registration);
+    }
+  }, [registration]);
+
   if (!isToolbar) {
     return {
       registered: true,
@@ -55,4 +62,16 @@ export function useMultiAppLayout(
     registered: !!registration?.type,
     toolbarProps: registration?.type === 'primary' ? mergeProps(props, registration.discoveredProps) : null,
   };
+}
+
+function reportMultiLayoutMetric(registration: RegistrationState<SharedProps>) {
+  if (registration.type === 'primary' && registration.discoveredProps.length > 0) {
+    metrics.sendOpsMetricObject('awsui-multi-layout-usage-primary', {
+      // temporary workaround for missing typings
+      // https://github.com/cloudscape-design/component-toolkit/pull/153
+      instancesCount: registration.discoveredProps.length as any,
+    });
+  } else if (registration.type === 'suspended') {
+    metrics.sendOpsMetricObject('awsui-multi-layout-usage-suspended', {});
+  }
 }

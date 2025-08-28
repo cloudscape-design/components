@@ -11,6 +11,7 @@ import React, {
   useState,
 } from 'react';
 
+import { useEffectOnUpdate } from '../hooks/use-effect-on-update';
 import { nodeBelongs } from '../utils/node-belongs';
 
 export type FocusableChangeHandler = (isFocusable: boolean) => void;
@@ -18,9 +19,11 @@ export type FocusableChangeHandler = (isFocusable: boolean) => void;
 export const defaultValue: {
   navigationActive: boolean;
   registerFocusable(focusable: HTMLElement, handler: FocusableChangeHandler): () => void;
+  resetFocusTarget(): void;
 } = {
   navigationActive: false,
   registerFocusable: () => () => {},
+  resetFocusTarget: () => {},
 };
 
 /**
@@ -99,7 +102,11 @@ export const SingleTabStopNavigationProvider = forwardRef(
 
     // Register a focusable element to allow navigating into it.
     // The focusable element tabIndex is only set to 0 if the element matches the focus target.
-    function registerFocusable(focusableElement: Element, changeHandler: FocusableChangeHandler) {
+    function registerFocusable(focusableElement: HTMLElement, changeHandler: FocusableChangeHandler) {
+      // In case the contexts are nested, we must that the components register to all of them,
+      // so that switching between contexts dynamically is possible.
+      const parentUnregister = parentContext.registerFocusable(focusableElement, changeHandler);
+
       focusables.current.add(focusableElement);
       focusHandlers.current.set(focusableElement, changeHandler);
       const isFocusable = !!focusablesState.current.get(focusableElement);
@@ -109,7 +116,11 @@ export const SingleTabStopNavigationProvider = forwardRef(
         changeHandler(newIsFocusable);
       }
       onRegisterFocusable?.(focusableElement);
-      return () => unregisterFocusable(focusableElement);
+
+      return () => {
+        parentUnregister();
+        unregisterFocusable(focusableElement);
+      };
     }
     function unregisterFocusable(focusableElement: Element) {
       focusables.current.delete(focusableElement);
@@ -118,32 +129,49 @@ export const SingleTabStopNavigationProvider = forwardRef(
     }
 
     // Update focus target with next single focusable element and notify all registered focusables of a change.
-    function updateFocusTarget() {
+    function updateFocusTarget(forceUpdate = false) {
       focusTarget.current = getNextFocusTarget();
       for (const focusableElement of focusables.current) {
         const isFocusable = focusablesState.current.get(focusableElement) ?? false;
         const newIsFocusable = focusTarget.current === focusableElement || !!isElementSuppressed?.(focusableElement);
-        if (newIsFocusable !== isFocusable) {
+        if (newIsFocusable !== isFocusable || forceUpdate) {
           focusablesState.current.set(focusableElement, newIsFocusable);
           focusHandlers.current.get(focusableElement)!(newIsFocusable);
         }
       }
     }
-
+    function resetFocusTarget() {
+      updateFocusTarget(true);
+    }
     function getFocusTarget() {
       return focusTarget.current;
     }
-
     function isRegistered(element: Element) {
       return focusables.current.has(element);
     }
-
     useImperativeHandle(ref, () => ({ updateFocusTarget, getFocusTarget, isRegistered }));
 
-    return (
-      <SingleTabStopNavigationContext.Provider value={{ navigationActive, registerFocusable }}>
-        {children}
-      </SingleTabStopNavigationContext.Provider>
-    );
+    // Only one STSN context should be active at a time.
+    // The outer context is preferred over the inners. The components using STSN
+    // must either work with either outer or inner context, or an explicit switch mechanism
+    // needs to be implemented (that turns the outer context on and off based on user interaction).
+    const parentContext = useContext(SingleTabStopNavigationContext);
+    const value = parentContext.navigationActive
+      ? parentContext
+      : { navigationActive, registerFocusable, updateFocusTarget, resetFocusTarget };
+
+    // When contexts switching occurs, it is essential that the now-active one updates the focus target
+    // to ensure the tab indices are correctly set.
+    useEffectOnUpdate(() => {
+      if (parentContext.navigationActive) {
+        parentContext.resetFocusTarget();
+      } else {
+        resetFocusTarget();
+      }
+      // The updateFocusTarget and its dependencies must be pure.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [parentContext.navigationActive]);
+
+    return <SingleTabStopNavigationContext.Provider value={value}>{children}</SingleTabStopNavigationContext.Provider>;
   }
 );
