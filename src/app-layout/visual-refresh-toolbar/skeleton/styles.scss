@@ -120,20 +120,6 @@
   @include desktop-only {
     grid-area: ai-drawer;
     position: sticky;
-
-    @include theming.dark-mode-only {
-      position: relative;
-
-      &:after {
-        content: '';
-        position: absolute;
-        inset-block-start: 41px;
-        inset-inline-end: -1px;
-        block-size: calc(100% - 41px);
-        border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
-        z-index: constants.$toolbar-z-index;
-      }
-    }
   }
 }
 

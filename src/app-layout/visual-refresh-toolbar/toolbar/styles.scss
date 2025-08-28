@@ -9,6 +9,8 @@
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../constants.scss' as constants;
 
+$toolbar-height: 42px;
+
 .universal-toolbar {
   background-color: awsui.$color-background-layout-panel-content;
   box-sizing: border-box;
@@ -31,14 +33,31 @@
       block-size: 5px;
       background: constants.$ai-drawer-background;
 
+      /**
+       * Adds a border to visually separate the main content area from the left global drawer.
+       *
+       * Note: Direct border application is not possible for either target element:
+       * - Main content area: Uses `display: contents`, preventing border application
+       * - Nav panel: May be hidden, causing the border to disappear when separation is still needed
+      */
       @include theming.dark-mode-only {
-        display: none;
+        content: '';
+        position: absolute;
+        inset-block-start: $toolbar-height;
+        inset-inline-start: 0;
+        inline-size: awsui.$border-divider-section-width;
+        block-size: calc(100vh - #{$toolbar-height});
+        background: awsui.$color-border-layout;
       }
     }
 
     &:after {
       background-color: awsui.$color-background-layout-panel-content;
       border-start-start-radius: awsui.$space-xxs;
+
+      @include theming.dark-mode-only {
+        display: none;
+      }
     }
   }
 
