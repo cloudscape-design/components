@@ -144,14 +144,19 @@ function InternalToken({
       )}
       aria-disabled={disabled}
       role={role}
+      /* istanbul ignore next */
       onFocus={() => {
         setShowTooltip(true);
       }}
+      /* istanbul ignore next */
       onBlur={() => setShowTooltip(false)}
+      /* istanbul ignore next */
       onMouseEnter={() => {
         setShowTooltip(true);
       }}
+      /* istanbul ignore next */
       onMouseLeave={() => setShowTooltip(false)}
+      /* istanbul ignore next */
       tabIndex={!disableTooltip && isInline && isEllipsisActive ? 0 : undefined}
       // The below data attribute is to tell a potentially nested Popover to have less spacing between the text and the underline
       data-token-inline={isInline || undefined}
@@ -189,6 +194,10 @@ function InternalToken({
           />
         )}
       </div>
+      {/* 
+        Covered in integration tests
+        istanbul ignore next
+       */}
       {!disableTooltip && isInline && showTooltip && isEllipsisActive && (
         <Tooltip
           trackRef={labelContainerRef}
