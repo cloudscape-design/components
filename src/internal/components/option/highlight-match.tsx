@@ -21,17 +21,17 @@ const splitOnFiltering = (str: string, highlightText: string) => {
 };
 
 interface HighlightMatchProps {
-  str?: string;
+  str: string;
   highlightText?: string;
   labelRef?: React.RefObject<HTMLElement>;
 }
 
 function Highlight({ str, labelRef }: HighlightMatchProps) {
-  return str ? (
+  return (
     <mark ref={labelRef} className={styles['filtering-match-highlight']}>
       {str}
     </mark>
-  ) : null;
+  );
 }
 
 export default function HighlightMatch({ str, highlightText, labelRef }: HighlightMatchProps) {
