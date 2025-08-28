@@ -4,9 +4,9 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 
 import Icon from '../../icon/internal';
-import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { usePortalModeClasses } from '../../internal/hooks/use-portal-mode-classes';
 import InternalLiveRegion from '../../live-region/internal';

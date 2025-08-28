@@ -3,7 +3,8 @@
 
 import React, { useRef, useState } from 'react';
 
-import { useSingleTabStopNavigation } from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
+
 import { GridNavigationProvider } from '../../../../lib/components/table/table-role';
 
 export interface Item {

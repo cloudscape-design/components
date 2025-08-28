@@ -3,11 +3,12 @@
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
+import { renderWithSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox';
 import InternalCheckbox from '../../../lib/components/checkbox/internal';
 import FormField from '../../../lib/components/form-field';
 import createWrapper, { CheckboxWrapper } from '../../../lib/components/test-utils/dom';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 import customCssProps from '../../internal/generated/custom-css-properties';
 import { createCommonTests } from './common-tests';
 
