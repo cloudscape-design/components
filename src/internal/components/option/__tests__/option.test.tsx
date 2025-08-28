@@ -345,6 +345,21 @@ describe('Option component', () => {
       });
       checkMatches(optionWrapper, 0, '');
     });
+
+    test('returns null from Highlight component when string is undefined', () => {
+      // Create an option with undefined label
+      const optionWrapper = renderOption({
+        option: {
+          label: undefined,
+          value: '1',
+        },
+        highlightText: 'test',
+      });
+
+      // Check that no highlight elements are rendered
+      const highlighted = optionWrapper.findAllByClassName(styles['filtering-match-highlight']);
+      expect(highlighted).toHaveLength(0);
+    });
   });
 });
 
