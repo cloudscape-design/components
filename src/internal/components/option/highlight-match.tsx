@@ -21,7 +21,7 @@ const splitOnFiltering = (str: string, highlightText: string) => {
 };
 
 interface HighlightMatchProps {
-  str: string;
+  str?: string;
   highlightText?: string;
   labelRef?: React.RefObject<HTMLElement>;
 }
