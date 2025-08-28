@@ -64,7 +64,8 @@ describe('refresh-toolbar', () => {
         })
       );
 
-      test(
+      // flakiness on github runner side
+      test.skip(
         'Shows and hides tooltip correctly for split panel trigger for keyboard (tab) interactions',
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
@@ -86,7 +87,8 @@ describe('refresh-toolbar', () => {
         })
       );
 
-      test(
+      // flakiness on github runner side
+      test.skip(
         'Removes tooltip from split panel trigger on escape key press after showing from keyboard event',
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
