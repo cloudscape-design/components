@@ -27,6 +27,14 @@ export const textItems: Item[] = [
         content: 'Item 1.1',
         secondaryContent: 'Description 1.1',
         actions: 'Actions slot',
+        children: [
+          {
+            id: '1.2',
+            content: 'Item 1.2',
+            secondaryContent: 'Description 1.2',
+            actions: 'Actions slot',
+          },
+        ],
       },
     ],
   },
@@ -53,7 +61,17 @@ export const textItems: Item[] = [
         content: 'Item 3.2',
         secondaryContent: 'Description 3.2',
         actions: 'Actions slot',
-        children: [{ id: '3.2.1', content: 'Item 3.2.1', secondaryContent: 'Description 3.2.1' }],
+        children: [
+          {
+            id: '3.2.1',
+            content: 'Item 3.2.1',
+            secondaryContent: 'Description 3.2.1',
+            children: [
+              { id: '3.2.1.1', content: 'Item 3.2.1.1', secondaryContent: 'Description 3.2.1.1' },
+              { id: '3.2.1.2', content: 'Item 3.2.1.2', secondaryContent: 'Description 3.2.1.2' },
+            ],
+          },
+        ],
       },
       { id: '3.3', content: 'Item 3.3', secondaryContent: 'Description 3.3' },
     ],
@@ -79,8 +97,7 @@ export const longTextItems: Item[] = [
       </Box>
     ),
     icon: <Icon name="file" />,
-    actions: <Actions actionType="button-group" itemLabel="Long text 2" />,
-    // actions: <Actions actionType="text" itemLabel="Long text 1" />,
+    actions: <Actions actionType="text" itemLabel="Long text 1" />,
   },
   {
     id: 'long-text-2',
@@ -144,8 +161,7 @@ export const longTextItems: Item[] = [
     secondaryContent:
       'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam',
     icon: <Icon name="file" />,
-    actions: <Actions actionType="button-group" itemLabel="Long text 2" />,
-    // actions: <Actions actionType="custom-inline-button-group" itemLabel="Long text 3" />,
+    actions: <Actions actionType="custom-inline-button-group" itemLabel="Long text 3" />,
     children: [
       {
         id: 'long-text-3.1',
@@ -163,8 +179,7 @@ export const longTextItems: Item[] = [
     secondaryContent:
       'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam',
     icon: <Icon name="file" />,
-    actions: <Actions actionType="button-group" itemLabel="Long text 2" />,
-    // actions: <Actions actionType="inline-button-dropdown" itemLabel="Long text 4" />,
+    actions: <Actions actionType="inline-button-dropdown" itemLabel="Long text 4" />,
   },
 ];
 

@@ -38,7 +38,9 @@ export function ExpandToggleButton({
         aria-label={isExpanded ? collapseButtonLabel : expandButtonLabel}
         className={clsx(styles['expand-toggle'], styles.invisible)}
         {...dataAttribute}
-      ></button>
+      >
+        {null}
+      </button>
     );
   }
 

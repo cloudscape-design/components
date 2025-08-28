@@ -17,7 +17,7 @@ export interface Item extends TreeViewProps.TreeItem {
 
 export const cdsItems: Item[] = [
   {
-    id: '1',
+    id: 'cds1',
     content: (
       <>
         Item 1{' '}
@@ -30,7 +30,7 @@ export const cdsItems: Item[] = [
     announcementLabel: 'Item 1 popover',
   },
   {
-    id: '2',
+    id: 'cds2',
     content: (
       <>
         Item 2{' '}
@@ -50,50 +50,50 @@ export const cdsItems: Item[] = [
     announcementLabel: 'Item 2 popover with dismiss button',
     children: [
       {
-        id: '2.1',
+        id: 'cds2.1',
         content: 'Item 2.1',
         actions: <Actions actionType="button-group" itemLabel="Item 2.1" />,
       },
       {
-        id: '2.2',
+        id: 'cds2.2',
         content: 'Item 2.2',
-        actions: <Actions actionType="button-group" itemLabel="Item 2.1" />,
+        actions: <Actions actionType="button-group" itemLabel="Item 2.2" />,
       },
     ],
   },
   {
-    id: '3',
+    id: 'cds3',
     content: 'Item 3',
     hasToggleButton: true,
     actions: <Actions actionType="inline-button-dropdown" itemLabel="Item 3" />,
     announcementLabel: 'Item 3',
     children: [
       {
-        id: '3.1',
+        id: 'cds3.1',
         content: 'Item 3.1',
         actions: <Actions actionType="inline-button-dropdown" itemLabel="Item 3.1" />,
         announcementLabel: 'Item 3.1',
         hasToggleButton: true,
       },
       {
-        id: '3.2',
+        id: 'cds3.2',
         content: 'Item 3.2',
         actions: <Actions actionType="inline-button-dropdown" itemLabel="Item 3.2" />,
         announcementLabel: 'Item 3.2',
         hasToggleButton: true,
         children: [
           {
-            id: '3.2.1',
+            id: 'cds3.2.1',
             content: 'Item 3.2.1',
             actions: <Actions actionType="button-group" itemLabel="Item 3.2.1" />,
           },
           {
-            id: '3.2.2',
+            id: 'cds3.2.2',
             content: 'Item 3.2.2',
             actions: <Actions actionType="button-group" itemLabel="Item 3.2.2" />,
           },
           {
-            id: '3.2.3',
+            id: 'cds3.2.3',
             content: 'Item 3.2.3',
             actions: <Actions actionType="button-group" itemLabel="Item 3.2.3" />,
           },
@@ -102,27 +102,30 @@ export const cdsItems: Item[] = [
     ],
   },
   {
-    id: '4',
+    id: 'cds4',
     content: 'Item 4',
     secondaryContent: (
       <>
-        Description with <Link href="#">link</Link>
+        Description with{' '}
+        <Link href="#" variant="primary">
+          link
+        </Link>
       </>
     ),
     children: [
       {
-        id: '4.1',
+        id: 'cds4.1',
         content: 'Item 4.1',
       },
     ],
   },
   {
-    id: '5',
+    id: 'cds5',
     content: 'Item 5',
     actions: <Actions actionType="button-group" itemLabel="Item 3.2.1" />,
     children: [
       {
-        id: '5.1',
+        id: 'cds5.1',
         content: 'Item 5.1',
       },
     ],
@@ -131,24 +134,24 @@ export const cdsItems: Item[] = [
 
 export const nonCdsItems: Item[] = [
   {
-    id: '1',
+    id: 'non-cds1',
     content: 'Item 1',
     actions: <button>Action</button>,
     children: [
       {
-        id: '1.1',
+        id: 'non-cds1.1',
         content: 'Item 1.1',
         actions: <button>Action</button>,
       },
       {
-        id: '1.2',
+        id: 'non-cds1.2',
         content: 'Item 1.2',
         actions: <button>Action</button>,
       },
     ],
   },
   {
-    id: '2',
+    id: 'non-cds2',
     content: (
       <>
         Item 2 with <a href="#">link</a>
@@ -158,7 +161,7 @@ export const nonCdsItems: Item[] = [
     announcementLabel: 'Item 2 with link',
     children: [
       {
-        id: '2.1',
+        id: 'non-cds2.1',
         content: (
           <>
             Item 2.1 with <a href="#">link</a>
@@ -169,7 +172,7 @@ export const nonCdsItems: Item[] = [
     ],
   },
   {
-    id: '3',
+    id: 'non-cds3',
     content: 'Item 3',
     actions: (
       <div style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>

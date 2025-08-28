@@ -5,6 +5,7 @@ interface IndecesByItemId {
   [key: string]: number;
 }
 
+// Flattens the items and assigns indeces in ascending order
 export function getAllVisibleItemsIndeces<T>({
   items,
   expandedItems,
