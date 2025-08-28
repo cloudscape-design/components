@@ -4,7 +4,8 @@
 import { NodePath, PluginObj, transformSync, types } from '@babel/core';
 import fs from 'fs';
 import * as glob from 'glob';
-import { flatten, zip } from 'lodash';
+import flatten from 'lodash/flatten';
+import zip from 'lodash/zip';
 import path from 'path';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
