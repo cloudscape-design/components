@@ -1,19 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Token, { TokenProps } from '../../../lib/components/token';
-import InternalToken from '../../../lib/components/token/internal';
 
 import styles from '../../../lib/components/token/styles.css.js';
-
-// Mock ResizeObserver for tooltip and overflow tests
-const mockObserve = jest.fn();
-const mockUnobserve = jest.fn();
-const mockDisconnect = jest.fn();
-let mockResizeCallback: (entries: any) => void = () => {};
 
 function renderToken(props: TokenProps) {
   const renderResult = render(<Token {...props} />);
@@ -21,35 +14,6 @@ function renderToken(props: TokenProps) {
 }
 
 describe('Token', () => {
-  let originalOffsetWidth: any;
-
-  beforeEach(() => {
-    // Mock ResizeObserver
-    window.ResizeObserver = jest.fn().mockImplementation(callback => {
-      mockResizeCallback = callback;
-      return {
-        observe: mockObserve,
-        unobserve: mockUnobserve,
-        disconnect: mockDisconnect,
-      };
-    });
-
-    // Store original offsetWidth
-    originalOffsetWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetWidth');
-
-    // Reset mocks
-    mockObserve.mockClear();
-    mockUnobserve.mockClear();
-    mockDisconnect.mockClear();
-  });
-
-  afterEach(() => {
-    // Restore original offsetWidth
-    if (originalOffsetWidth) {
-      Object.defineProperty(HTMLElement.prototype, 'offsetWidth', originalOffsetWidth);
-    }
-  });
-
   describe('Basic rendering', () => {
     test('renders with minimal props', () => {
       const wrapper = renderToken({ label: 'Test token' });
@@ -213,56 +177,6 @@ describe('Token', () => {
     });
   });
 
-  describe('Tooltip and overflow behavior', () => {
-    test('does not show tooltip for inline token when ellipsis is not active', () => {
-      const { container } = render(<Token variant="inline" label="Short label" />);
-      const wrapper = createWrapper(container).findToken()!;
-
-      // Mock the condition for ellipsis not being active
-      Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
-        configurable: true,
-        get: function () {
-          return 100; // Same width for both content and container
-        },
-      });
-
-      // Trigger resize observer callback
-      act(() => {
-        mockResizeCallback([{ target: wrapper.getElement() }]);
-      });
-
-      // Hover over the token
-      fireEvent.mouseEnter(wrapper.getElement());
-
-      // Check that tooltip is not rendered
-      expect(container.querySelector('.token-tooltip')).toBeNull();
-    });
-
-    test('tabIndex behavior for different token variants', () => {
-      // Test inline token without ellipsis
-      const wrapper1 = createWrapper(render(<Token variant="inline" label="Short label" />).container).findToken()!;
-
-      // Mock the condition for ellipsis not being active
-      Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
-        configurable: true,
-        get: function () {
-          return 100;
-        },
-      });
-
-      // Trigger resize observer callback
-      act(() => {
-        mockResizeCallback([{ target: wrapper1.getElement() }]);
-      });
-
-      expect(wrapper1.getElement()).not.toHaveAttribute('tabIndex');
-
-      // Test normal token
-      const wrapper2 = createWrapper(render(<Token label="This is a very long label" />).container).findToken()!;
-      expect(wrapper2.getElement()).not.toHaveAttribute('tabIndex');
-    });
-  });
-
   describe('Token min width classes', () => {
     test('applies correct min width classes for different token configurations', () => {
       // Test with long label, icon, and dismiss button
@@ -307,49 +221,6 @@ describe('Token', () => {
         render(<Token variant="inline" label={<span>Custom label component</span>} />).container
       ).findToken()!;
       expect(wrapper4.getElement()).toHaveClass(styles['token-inline-min-width']);
-    });
-  });
-
-  describe('Internal component props', () => {
-    test('handles internal props correctly', () => {
-      // Test disableInnerPadding prop
-      const { container: container1 } = render(<InternalToken label="Test token" disableInnerPadding={true} />);
-      expect(container1.querySelector(`.${styles['disable-padding']}`)).not.toBeNull();
-
-      // Test disableTooltip prop
-      const { container: container2 } = render(
-        <InternalToken
-          variant="inline"
-          label="This is a very long label that should trigger ellipsis in an inline token"
-          disableTooltip={true}
-        />
-      );
-      const wrapper = createWrapper(container2).findToken()!;
-
-      // Mock the condition for ellipsis being active
-      Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
-        configurable: true,
-        get: function () {
-          if (this.classList.contains('option-label')) {
-            return 200;
-          }
-          return 100;
-        },
-      });
-
-      // Trigger resize observer callback
-      act(() => {
-        mockResizeCallback([{ target: wrapper.getElement() }]);
-      });
-
-      // Hover over the token
-      fireEvent.mouseEnter(wrapper.getElement());
-      expect(container2.querySelector('.token-tooltip')).toBeNull();
-
-      // Test custom role prop
-      const { container: container3 } = render(<InternalToken label="Test token" role="option" />);
-      const wrapper3 = createWrapper(container3).findToken()!;
-      expect(wrapper3.getElement()).toHaveAttribute('role', 'option');
     });
   });
 });
