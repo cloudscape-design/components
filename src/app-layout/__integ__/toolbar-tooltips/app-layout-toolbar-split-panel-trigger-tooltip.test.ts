@@ -5,7 +5,7 @@ import { AppLayoutDrawersPage, setupTest } from '../utils';
 
 const wrapper = createWrapper().findAppLayout();
 
-describe.skip('refresh-toolbar', () => {
+describe('refresh-toolbar', () => {
   const theme = 'refresh-toolbar';
 
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
@@ -17,7 +17,9 @@ describe.skip('refresh-toolbar', () => {
     const expectedTooltipText = 'Open panel';
 
     const assertSplitPanelTriggerFocusedWithTooltip = async (page: AppLayoutDrawersPage) => {
-      await expect(page.isFocused(splitPanelTriggerSelector)).resolves.toBe(true);
+      await page.waitForAssertion(async () => {
+        await expect(page.isFocused(splitPanelTriggerSelector)).resolves.toBe(true);
+      });
       await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
       await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(1);
     };
