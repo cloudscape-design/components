@@ -178,49 +178,49 @@ describe('Token', () => {
   });
 
   describe('Token min width classes', () => {
-    test('applies correct min width classes for different token configurations', () => {
-      // Test with long label, icon, and dismiss button
-      const wrapper1 = createWrapper(
-        render(
-          <Token
-            variant="inline"
-            label="This is a very long label that exceeds the character limit"
-            icon={<span>Icon</span>}
-            onDismiss={() => {}}
-          />
-        ).container
-      ).findToken()!;
-      expect(wrapper1.getElement()).toHaveClass(styles['token-inline-min-width']);
+    const longLabel = 'This is a very long label that exceeds the character limit';
+    test('applies token-inline-min-width class with long label, icon, and dismiss button', () => {
+      const wrapper = renderToken({
+        variant: 'inline',
+        label: longLabel,
+        icon: <span>Icon</span>,
+        onDismiss: () => {},
+      });
+      expect(wrapper.getElement()).toHaveClass(styles['token-inline-min-width']);
+    });
 
-      // Test with long label and icon only
-      const wrapper2 = createWrapper(
-        render(
-          <Token
-            variant="inline"
-            label="This is a very long label that exceeds the character limit"
-            icon={<span>Icon</span>}
-          />
-        ).container
-      ).findToken()!;
-      expect(wrapper2.getElement()).toHaveClass(styles['token-inline-min-width-icon-only']);
+    test('applies token-inline-min-width-icon-only class with long label and icon', () => {
+      const wrapper = renderToken({
+        variant: 'inline',
+        label: longLabel,
+        icon: <span>Icon</span>,
+      });
+      expect(wrapper.getElement()).toHaveClass(styles['token-inline-min-width-icon-only']);
+    });
 
-      // Test with long label and dismiss only
-      const wrapper3 = createWrapper(
-        render(
-          <Token
-            variant="inline"
-            label="This is a very long label that exceeds the character limit"
-            onDismiss={() => {}}
-          />
-        ).container
-      ).findToken()!;
-      expect(wrapper3.getElement()).toHaveClass(styles['token-inline-min-width-dismiss-only']);
+    test('applies token-inline-min-width-dismiss-only class with long label and dismiss button', () => {
+      const wrapper = renderToken({
+        variant: 'inline',
+        label: longLabel,
+        onDismiss: () => {},
+      });
+      expect(wrapper.getElement()).toHaveClass(styles['token-inline-min-width-dismiss-only']);
+    });
 
-      // Test with non-string label
-      const wrapper4 = createWrapper(
-        render(<Token variant="inline" label={<span>Custom label component</span>} />).container
-      ).findToken()!;
-      expect(wrapper4.getElement()).toHaveClass(styles['token-inline-min-width']);
+    test('applies token-inline-min-width-label-only class with only long label', () => {
+      const wrapper = renderToken({
+        variant: 'inline',
+        label: longLabel,
+      });
+      expect(wrapper.getElement()).toHaveClass(styles['token-inline-min-width-label-only']);
+    });
+
+    test('applies token-inline-min-width class with non-string label', () => {
+      const wrapper = renderToken({
+        variant: 'inline',
+        label: <span>Custom label component</span>,
+      });
+      expect(wrapper.getElement()).toHaveClass(styles['token-inline-min-width']);
     });
   });
 });

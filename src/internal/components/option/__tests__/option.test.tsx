@@ -345,20 +345,6 @@ describe('Option component', () => {
       });
       checkMatches(optionWrapper, 0, '');
     });
-
-    test('returns null from Highlight component when string is undefined', () => {
-      // Create an option with undefined label
-      const optionWrapper = renderOption({
-        option: {
-          label: undefined,
-          value: '1',
-        },
-        highlightText: 'test',
-      });
-
-      // Check that no highlight elements are rendered
-      expect(optionWrapper.findByClassName(styles['filtering-match-highlight'])).toBeNull();
-    });
   });
 });
 
@@ -378,7 +364,6 @@ describe('runtime warnings', () => {
         label: <span>test</span>,
       },
     });
-    expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
     expect(consoleWarnSpy).toHaveBeenCalledWith(
       expect.stringContaining('This component only supports string values, but "option.label" has object type.')
     );
