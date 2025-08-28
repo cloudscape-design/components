@@ -27670,6 +27670,7 @@ exports[`Test-utils dom definitions match the snapshot 1`] = `
           "name": "blur",
           "parameters": [],
           "returnType": {
+            "isNullable": false,
             "name": "void",
           },
         },
@@ -27690,6 +27691,7 @@ Note that programmatic events ignore disabled attribute and will trigger listene
             },
           ],
           "returnType": {
+            "isNullable": false,
             "name": "void",
           },
         },
@@ -27708,7 +27710,13 @@ Note that programmatic events ignore disabled attribute and will trigger listene
             },
           ],
           "returnType": {
-            "name": "ElementWrapper<NewElementType> | null",
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "NewElementType",
+              },
+            ],
           },
         },
         {
@@ -84098,6 +84106,7 @@ exports[`Test-utils selectors definitions match the snapshot 1`] = `
             },
           ],
           "returnType": {
+            "isNullable": false,
             "name": "ElementWrapper",
           },
         },
