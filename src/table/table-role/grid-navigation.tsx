@@ -5,12 +5,12 @@ import React, { useRef } from 'react';
 import { useEffect, useMemo } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-
-import { getAllFocusables } from '../../internal/components/focus-lock/utils';
 import {
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
-} from '../../internal/context/single-tab-stop-navigation-context';
+} from '@cloudscape-design/component-toolkit/internal';
+
+import { getAllFocusables } from '../../internal/components/focus-lock/utils';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
 import { nodeBelongs } from '../../internal/utils/node-belongs';

@@ -4,14 +4,14 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } f
 import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import {
+  SingleTabStopNavigationAPI,
+  SingleTabStopNavigationProvider,
+} from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonProps } from '../button/interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
-import {
-  SingleTabStopNavigationAPI,
-  SingleTabStopNavigationProvider,
-} from '../internal/context/single-tab-stop-navigation-context';
 import { hasModifierKeys } from '../internal/events';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
