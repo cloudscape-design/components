@@ -3,7 +3,7 @@
 import React from 'react';
 
 export interface SizeControlProps {
-  position: 'side' | 'bottom';
+  position: 'side-start' | 'side' | 'bottom';
   panelRef?: React.RefObject<HTMLDivElement>;
   handleRef?: React.RefObject<HTMLDivElement>;
   onResize: (newSize: number) => void;

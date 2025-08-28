@@ -4,11 +4,30 @@ exports[`Theme=refresh-toolbar, Size=desktop contract for default use-case 1`] =
 Map {
   "AppLayoutToolbarImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -63,8 +82,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -84,6 +105,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -174,11 +197,30 @@ Map {
   },
   "AppLayoutNavigationImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -233,8 +275,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -254,6 +298,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -304,11 +350,30 @@ Map {
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -363,8 +428,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -384,6 +451,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -465,11 +534,30 @@ Map {
   },
   "AppLayoutDrawerImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -524,8 +612,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -545,6 +635,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -595,11 +687,30 @@ Map {
   },
   "AppLayoutGlobalDrawersImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -654,8 +765,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -675,6 +788,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -730,11 +845,30 @@ exports[`Theme=refresh-toolbar, Size=desktop contract with all slots provided 1`
 Map {
   "AppLayoutToolbarImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -793,8 +927,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -816,6 +952,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -909,11 +1047,30 @@ Map {
   },
   "AppLayoutNavigationImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -972,8 +1129,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -995,6 +1154,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -1045,11 +1206,30 @@ Map {
   },
   "AppLayoutNotificationsImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -1108,8 +1288,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1131,6 +1313,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -1184,11 +1368,30 @@ Map {
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -1247,8 +1450,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1270,6 +1475,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -1353,11 +1560,30 @@ Map {
   },
   "AppLayoutDrawerImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -1416,8 +1642,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1439,6 +1667,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -1489,11 +1719,30 @@ Map {
   },
   "AppLayoutGlobalDrawersImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -1552,8 +1801,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1575,6 +1826,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -1630,6 +1883,9 @@ exports[`Theme=refresh-toolbar, Size=desktop contract with drawers 1`] = `
 Map {
   "AppLayoutToolbarImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": {
         "ariaLabels": {
           "closeButton": "Security close button",
@@ -1649,6 +1905,22 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -1705,8 +1977,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -1726,6 +2000,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -1818,6 +2094,9 @@ Map {
   },
   "AppLayoutNavigationImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": {
         "ariaLabels": {
           "closeButton": "Security close button",
@@ -1837,6 +2116,22 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -1893,8 +2188,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -1914,6 +2211,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -1964,6 +2263,9 @@ Map {
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": {
         "ariaLabels": {
           "closeButton": "Security close button",
@@ -1983,6 +2285,22 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -2039,8 +2357,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -2060,6 +2380,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -2141,6 +2463,9 @@ Map {
   },
   "AppLayoutDrawerImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": {
         "ariaLabels": {
           "closeButton": "Security close button",
@@ -2160,6 +2485,22 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -2216,8 +2557,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -2237,6 +2580,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],
@@ -2287,6 +2632,9 @@ Map {
   },
   "AppLayoutGlobalDrawersImplementation" => {
     "appLayoutInternals": {
+      "activeAiDrawer": null,
+      "activeAiDrawerId": null,
+      "activeAiDrawerSize": 0,
       "activeDrawer": {
         "ariaLabels": {
           "closeButton": "Security close button",
@@ -2306,6 +2654,22 @@ Map {
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
+      "aiDrawer": null,
+      "aiDrawerFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
+      },
       "ariaLabels": {
         "drawers": undefined,
         "drawersOverflow": undefined,
@@ -2362,8 +2726,10 @@ Map {
       },
       "headerVariant": undefined,
       "isMobile": false,
+      "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
+      "minAiDrawerSize": 290,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -2383,6 +2749,8 @@ Map {
         "setFocus": [Function],
       },
       "navigationOpen": true,
+      "onActiveAiDrawerChange": [Function],
+      "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
       "onActiveGlobalDrawersChange": [Function],

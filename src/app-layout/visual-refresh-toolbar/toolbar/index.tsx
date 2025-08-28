@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
+import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
@@ -15,6 +16,7 @@ import { BreadcrumbsSlot, ToolbarSlot } from '../skeleton/slots';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
 import TriggerButton from './trigger-button';
 
+import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
@@ -49,6 +51,11 @@ export interface ToolbarProps {
 
   expandedDrawerId?: string | null;
   setExpandedDrawerId?: (value: string | null) => void;
+
+  aiDrawer?: AppLayoutProps.Drawer;
+  onActiveAiDrawerChange?: (value: string | null) => void;
+  activeAiDrawerId?: string | null;
+  aiDrawerFocusRef?: React.Ref<Focusable>;
 }
 
 export interface AppLayoutToolbarImplementationProps {
@@ -62,7 +69,16 @@ export function AppLayoutToolbarImplementation({
   // not testable in a single-version setup
   toolbarProps = {},
 }: AppLayoutToolbarImplementationProps) {
-  const { breadcrumbs, discoveredBreadcrumbs, verticalOffsets, isMobile, setToolbarHeight } = appLayoutInternals;
+  const {
+    breadcrumbs,
+    discoveredBreadcrumbs,
+    verticalOffsets,
+    isMobile,
+    setToolbarHeight,
+    aiDrawer,
+    activeAiDrawer,
+    onActiveAiDrawerChange,
+  } = appLayoutInternals;
   const {
     ariaLabels,
     activeDrawerId,
@@ -83,9 +99,12 @@ export function AppLayoutToolbarImplementation({
     onSplitPanelToggle,
     expandedDrawerId,
     setExpandedDrawerId,
+    aiDrawerFocusRef,
   } = toolbarProps;
   const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
+  const aiDrawerTransitionRef = useRef<HTMLDivElement>(null);
+  const activeAiDrawerId = activeAiDrawer?.id;
   useResizeObserver(ref, entry => setToolbarHeight(entry.borderBoxHeight));
   useEffect(() => {
     return () => {
@@ -95,7 +114,12 @@ export function AppLayoutToolbarImplementation({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const anyPanelOpenInMobile = !!isMobile && (!!activeDrawerId || (!!navigationOpen && !!hasNavigation));
+  const anyPanelOpenInMobile =
+    !!isMobile &&
+    (!!activeDrawerId ||
+      !!activeGlobalDrawersIds?.length ||
+      !!activeAiDrawerId ||
+      (!!navigationOpen && !!hasNavigation));
   useEffect(() => {
     if (anyPanelOpenInMobile) {
       document.body.classList.add(styles['block-body-scroll']);
@@ -116,12 +140,53 @@ export function AppLayoutToolbarImplementation({
       ref={ref}
       className={clsx(styles['universal-toolbar'], testutilStyles.toolbar, {
         [testutilStyles['mobile-bar']]: isMobile,
+        [styles['with-open-ai-drawer']]: !!activeAiDrawerId,
       })}
       style={{
         insetBlockStart: verticalOffsets.toolbar,
       }}
     >
-      <div className={styles['toolbar-container']}>
+      <Transition
+        in={!!(aiDrawer?.trigger && !activeAiDrawerId)}
+        timeout={{ enter: 0, exit: 165 }}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        nodeRef={aiDrawerTransitionRef}
+      >
+        {state => (
+          <div
+            className={clsx(!!aiDrawer?.trigger?.customIcon && styles['universal-toolbar-ai-custom'], [
+              sharedStyles['with-motion-horizontal'],
+            ])}
+            style={{
+              opacity: ['entering', 'exiting'].includes(state) ? 0 : 1,
+            }}
+          >
+            <TriggerButton
+              ariaLabel={aiDrawer?.ariaLabels?.triggerButton}
+              ariaExpanded={!!activeAiDrawerId}
+              iconName={aiDrawer?.trigger!.iconName}
+              iconSvg={aiDrawer?.trigger!.iconSvg}
+              customSvg={aiDrawer?.trigger!.customIcon}
+              className={testutilStyles['ai-drawer-toggle']}
+              onClick={() => {
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(null);
+                }
+                onActiveAiDrawerChange?.(aiDrawer?.id ?? null, { initiatedByUserAction: true });
+              }}
+              ref={aiDrawerFocusRef}
+              selected={!drawerExpandedMode && !!activeAiDrawerId}
+              disabled={anyPanelOpenInMobile}
+              variant={aiDrawer?.trigger?.customIcon ? 'custom' : 'circle'}
+              hasTooltip={true}
+              testId={`awsui-app-layout-trigger-${aiDrawer?.id}`}
+              isForPreviousActiveDrawer={true}
+            />
+          </div>
+        )}
+      </Transition>
+      <div className={clsx(styles['toolbar-container'], !!aiDrawer?.trigger && styles['with-ai-drawer'])}>
         {hasNavigation && (
           <nav {...navLandmarkAttributes} className={clsx(styles['universal-toolbar-nav'])}>
             <TriggerButton

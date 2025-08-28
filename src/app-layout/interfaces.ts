@@ -303,6 +303,7 @@ export namespace AppLayoutProps {
     trigger?: {
       iconName?: IconProps.Name;
       iconSvg?: React.ReactNode;
+      customIcon?: React.ReactNode;
     };
     ariaLabels: DrawerAriaLabels;
     badge?: boolean;

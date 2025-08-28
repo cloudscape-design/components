@@ -27,6 +27,7 @@ import {
   CustomDrawerContent,
   ScrollableDrawerContent,
 } from './utils/content-blocks';
+import { drawerLabels } from './utils/drawers';
 import appLayoutLabels from './utils/labels';
 import { splitPaneli18nStrings } from './utils/strings';
 
@@ -185,7 +186,7 @@ export default function WithDrawersScrollable() {
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
-        ariaLabels={appLayoutLabels}
+        ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
         breadcrumbs={<Breadcrumbs />}
         navigation={sideNavContents}
         ref={appLayoutRef}

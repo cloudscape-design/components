@@ -11,17 +11,19 @@ import SideNavigation, { SideNavigationProps } from '~components/side-navigation
 import SpaceBetween from '~components/space-between';
 
 import './utils/external-widget';
+import './utils/external-global-left-panel-widget';
 import { IframeWrapper } from '../utils/iframe-wrapper';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Tools } from './utils/content-blocks';
-import labels from './utils/labels';
+import { drawerLabels } from './utils/drawers';
+import appLayoutLabels from './utils/labels';
 
 function createView(name: string) {
   return function View() {
     return (
       <AppLayout
         data-testid="secondary-layout"
-        ariaLabels={labels}
+        ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
         breadcrumbs={
           name !== 'page2' && (
             <BreadcrumbGroup
@@ -68,7 +70,7 @@ export default function () {
       <AppLayout
         {...{ __disableRuntimeDrawers: true }}
         data-testid="main-layout"
-        ariaLabels={labels}
+        ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
         navigation={
           <SideNavigation
             activeHref={activeHref}
