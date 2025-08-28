@@ -12,6 +12,7 @@ module.exports = {
   unit: require('./unit'),
   typescript: require('./typescript'),
   buildPages: require('./build-pages'),
+  buildReact18Pages: require('./build-react18-pages'),
   testUtils: require('./test-utils'),
   a11y: require('./a11y'),
   generateI18nMessages: require('./generate-i18n-messages'),

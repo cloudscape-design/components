@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef, useState } from 'react';
-import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import {
   AppLayout,
@@ -17,6 +16,7 @@ import {
 } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 import awsuiPlugins from '~components/internal/plugins';
+import { mount, unmount } from '~mount';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -60,9 +60,9 @@ awsuiPlugins.appLayout.registerDrawer({
     </svg>`,
   },
   mountContent: container => {
-    ReactDOM.render(<CustomDrawerContent />, container);
+    mount(<CustomDrawerContent />, container);
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 awsuiPlugins.appLayout.registerDrawer({
   id: 'global-with-stored-state',
@@ -74,14 +74,14 @@ awsuiPlugins.appLayout.registerDrawer({
   ariaLabels: getAriaLabels('global drawer 2'),
 
   mountContent: container => {
-    ReactDOM.render(
+    mount(
       <Drawer header="Global drawer">
         <ScrollableDrawerContent contentType="text" />
       </Drawer>,
       container
     );
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 
 awsuiPlugins.appLayout.registerDrawer({
@@ -96,7 +96,7 @@ awsuiPlugins.appLayout.registerDrawer({
     </svg>`,
   },
   mountContent: container => {
-    ReactDOM.render(
+    mount(
       <Drawer>
         <>
           <p>This is a headerless drawer in a runtime local drawer.</p>
@@ -106,7 +106,7 @@ awsuiPlugins.appLayout.registerDrawer({
       container
     );
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 
 export default function WithDrawersScrollable() {

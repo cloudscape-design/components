@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
-import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import Box from '~components/box';
 import ButtonDropdown from '~components/button-dropdown';
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
+import { mount, unmount } from '~mount';
 
 import { IframeWrapper } from '../../utils/iframe-wrapper';
 import { Counter, CustomDrawerContent } from './content-blocks';
@@ -64,9 +64,9 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<Content ref={setSizeRef} />, container);
+    mount(<Content ref={setSizeRef} />, container);
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 
 awsuiPlugins.appLayout.registerDrawer({
@@ -87,9 +87,9 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<div>Nothing to see here</div>, container);
+    mount(<div>Nothing to see here</div>, container);
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 
 const AutoIncrementCounter: React.FC<{
@@ -157,7 +157,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: (container, mountContext) => {
-    ReactDOM.render(
+    mount(
       <Drawer
         header={<Box variant="h2">Global drawer</Box>}
         headerActions={
@@ -175,7 +175,7 @@ awsuiPlugins.appLayout.registerDrawer({
       container
     );
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 
 awsuiPlugins.appLayout.registerDrawer({
@@ -204,7 +204,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(
+    mount(
       <>
         <Counter id="global-with-stored-state" />
         global widget content circle 2
@@ -212,7 +212,7 @@ awsuiPlugins.appLayout.registerDrawer({
       container
     );
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 
 awsuiPlugins.appLayout.registerDrawer({
@@ -239,7 +239,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(
+    mount(
       <IframeWrapper
         id="circle3-global"
         AppComponent={() => (
@@ -252,7 +252,7 @@ awsuiPlugins.appLayout.registerDrawer({
       container
     );
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 
 awsuiPlugins.appLayout.registerDrawer({
@@ -273,7 +273,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<CustomDrawerContent />, container);
+    mount(<CustomDrawerContent />, container);
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });

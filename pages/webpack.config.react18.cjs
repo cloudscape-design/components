@@ -18,5 +18,6 @@ module.exports = () => {
     ),
     globalStylesPath: themeDefinition.globalStylesPath,
     outputPath: `pages/lib/static-${theme}`,
+    react18: true,
   });
 };
