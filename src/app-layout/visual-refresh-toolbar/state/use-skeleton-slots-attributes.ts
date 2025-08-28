@@ -51,9 +51,6 @@ export const useSkeletonSlotsAttributes = (
       [customCssProps.toolsWidth]: `${activeDrawerSize}px`,
     },
     'data-awsui-app-layout-widget-loaded': true,
-    // indicates if the app layout has its own border for backward and forward compatibility
-    // so that mezzanine could decide whether to show the border on their end or not
-    'data-awsui-app-layout-has-top-dark-border': true,
   };
 
   const mainElAttributes = {
