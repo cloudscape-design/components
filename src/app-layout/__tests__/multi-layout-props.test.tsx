@@ -45,6 +45,7 @@ describe('mergeMultiAppLayoutProps', () => {
     splitPanelFocusRef: React.createRef(),
     onSplitPanelToggle: mockParentSplitPanelToggle,
     setExpandedDrawerId: mockSetExpandedDrawerId,
+    aiDrawerFocusRef: React.createRef(),
   };
 
   const additionalPropsBase: Partial<SharedProps>[] = [

@@ -37,6 +37,13 @@ export const mergeProps: MergeProps = (ownProps, additionalProps) => {
       toolbar.activeGlobalDrawersIds = props.activeGlobalDrawersIds;
       toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
     }
+    if (
+      props.aiDrawer &&
+      props.aiDrawerFocusRef &&
+      !checkAlreadyExists(!!toolbar.aiDrawerFocusRef, 'aiDrawerFocusRef')
+    ) {
+      toolbar.aiDrawerFocusRef = props.aiDrawerFocusRef;
+    }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
       toolbar.hasNavigation = true;
       toolbar.navigationOpen = props.navigationOpen;
@@ -94,5 +101,7 @@ export const getPropsToMerge = (props: AppLayoutInternalProps, appLayoutState: A
     onSplitPanelToggle: state?.onSplitPanelToggle,
     expandedDrawerId: state?.expandedDrawerId,
     setExpandedDrawerId: state?.setExpandedDrawerId,
+    aiDrawer: state?.aiDrawer ?? undefined,
+    aiDrawerFocusRef: state?.aiDrawerFocusControl?.refs?.toggle,
   };
 };
