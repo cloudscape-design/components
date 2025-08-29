@@ -14,6 +14,9 @@ const dropdownItems = [
       {
         id: 'id0',
         text: 'a very long text that may overflow horizontally as in this example that is unnecessarily longer just to exemplify a long text',
+        secondaryText:
+          'A very long text that may overflow horizontally as in this example that is unnecessarily longer just to exemplify a long text',
+        labelTag: 'Label',
       },
       { id: 'id1', text: 'option1', disabled: true },
       { id: 'id2', text: 'option2' },
@@ -28,6 +31,7 @@ const dropdownItems = [
       {
         id: 'id5',
         text: 'AVeryLongWordThatMayOverflowHorizontallyAsInThisExampleThatIsUnnecessarilyLongerJustToExemplifyALongWord',
+        labelTag: 'Label',
       },
       { id: 'id6', text: 'option4' },
     ],
@@ -44,6 +48,7 @@ const dropdownItems = [
   {
     id: 'id9',
     text: 'option9',
+    secondaryText: 'This is a disabled option',
     disabled: true,
   },
   {
