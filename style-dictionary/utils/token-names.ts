@@ -951,7 +951,8 @@ export type ShadowsTokenName =
   | 'shadowSticky'
   | 'shadowStickyEmbedded'
   | 'shadowStickyColumnFirst'
-  | 'shadowStickyColumnLast';
+  | 'shadowStickyColumnLast'
+  | 'borderAiPanelWidth';
 
 export type GlobalScopeTokenName = ColorPaletteTokenName | TypographyTokenName | BordersTokenName;
 export type ColorScopeTokenName = ColorChartsTokenName | ColorsTokenName | ShadowsTokenName | ColorSeverityTokenName;
