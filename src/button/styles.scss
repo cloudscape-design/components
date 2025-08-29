@@ -49,10 +49,6 @@
   }
 }
 
-.content {
-  /* used in test-utils */
-}
-
 .button {
   @include styles.styles-reset;
   @include styles.text-wrapping;

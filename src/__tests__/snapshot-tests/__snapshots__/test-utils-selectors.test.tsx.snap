@@ -84,10 +84,11 @@ exports[`test-utils selectors 1`] = `
     "awsui_item_d19fg",
   ],
   "button": [
+    "awsui_button_1ueyk",
     "awsui_button_vjswe",
-    "awsui_content_vjswe",
+    "awsui_content_1ueyk",
     "awsui_disabled-reason-tooltip_1ueyk",
-    "awsui_icon-left_vjswe",
+    "awsui_icon-left_1ueyk",
   ],
   "button-dropdown": [
     "awsui_button-dropdown_sne0l",
@@ -648,6 +649,9 @@ exports[`test-utils selectors 1`] = `
   ],
   "toggle": [
     "awsui_root_4yi2u",
+  ],
+  "toggle-button": [
+    "awsui_root_1qd09",
   ],
   "token-group": [
     "awsui_dismiss-button_dm8gx",
