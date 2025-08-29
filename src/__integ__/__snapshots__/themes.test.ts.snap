@@ -4,6 +4,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "compact" 1`] = 
 {
   "awsui-version-info": "true",
   "border-active-width": "2px",
+  "border-ai-panel-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
   "border-container-top-width": "1px",
@@ -683,6 +684,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "dark" 1`] = `
 {
   "awsui-version-info": "true",
   "border-active-width": "2px",
+  "border-ai-panel-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
   "border-container-top-width": "1px",
@@ -1362,6 +1364,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "light" 1`] = `
 {
   "awsui-version-info": "true",
   "border-active-width": "2px",
+  "border-ai-panel-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
   "border-container-top-width": "1px",
@@ -2041,6 +2044,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "reduced-motion"
 {
   "awsui-version-info": "true",
   "border-active-width": "2px",
+  "border-ai-panel-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
   "border-container-top-width": "1px",
@@ -2720,6 +2724,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh"
 {
   "awsui-version-info": "true",
   "border-active-width": "4px",
+  "border-ai-panel-width": "2px",
   "border-code-editor-status-divider-width": "1px",
   "border-container-sticky-width": "0px",
   "border-container-top-width": "0px",
@@ -3399,6 +3404,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
 {
   "awsui-version-info": "true",
   "border-active-width": "4px",
+  "border-ai-panel-width": "2px",
   "border-code-editor-status-divider-width": "1px",
   "border-container-sticky-width": "0px",
   "border-container-top-width": "0px",
@@ -4078,6 +4084,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
 {
   "awsui-version-info": "true",
   "border-active-width": "4px",
+  "border-ai-panel-width": "2px",
   "border-code-editor-status-divider-width": "1px",
   "border-container-sticky-width": "0px",
   "border-container-top-width": "0px",
@@ -4757,6 +4764,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
 {
   "awsui-version-info": "true",
   "border-active-width": "4px",
+  "border-ai-panel-width": "2px",
   "border-code-editor-status-divider-width": "1px",
   "border-container-sticky-width": "0px",
   "border-container-top-width": "0px",
