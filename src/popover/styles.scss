@@ -13,12 +13,19 @@
 @use './motion';
 
 $trigger-underline-offset: 0.25em;
+$trigger-underline-offset-compact: 0.1em;
 
 .root {
   @include styles.styles-reset;
   color: inherit;
   &.no-wrap {
     white-space: nowrap;
+  }
+
+  // Ensure the root element respects the parent container's width when inside an inline token
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  [data-token-inline] & {
+    min-inline-size: 0;
   }
 }
 
@@ -31,6 +38,19 @@ $trigger-underline-offset: 0.25em;
   max-inline-size: 100%;
   color: inherit;
   text-align: inherit;
+
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  [data-token-inline] & {
+    display: inline-flex;
+  }
+}
+
+.overflow {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  [data-token-inline] & {
+    @include styles.text-overflow-ellipsis;
+    @include styles.text-wrapping;
+  }
 }
 
 .overflow-ellipsis {
@@ -62,8 +82,8 @@ $trigger-underline-offset: 0.25em;
   border-block-end: awsui.$border-divider-list-width dashed currentColor;
 }
 
-.trigger-type-text-inline,
-.trigger-type-text {
+.trigger-type-text,
+.trigger-type-text-inline {
   border-inline: 0;
   margin-block: 0;
   margin-inline: 0;
@@ -79,6 +99,12 @@ $trigger-underline-offset: 0.25em;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(1px);
+  }
+
+  // Reduce the spacing between the text and the underline for popovers inside inline tokens
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  [data-token-inline] & {
+    text-underline-offset: $trigger-underline-offset-compact;
   }
 }
 

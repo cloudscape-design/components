@@ -31,6 +31,9 @@ const Option = ({
   isGenericGroup = true,
   highlightedOption = false,
   selectedOption = false,
+  labelClassName,
+  labelContainerRef,
+  labelRef,
   ...restProps
 }: OptionProps) => {
   if (!option) {
@@ -55,7 +58,8 @@ const Option = ({
     styles.option,
     disabled && styles.disabled,
     isGroupOption && styles.parent,
-    highlightedOption && styles.highlighted
+    highlightedOption && styles.highlighted,
+    baseProps.className
   );
 
   const icon = option.__customIcon || (
@@ -80,17 +84,23 @@ const Option = ({
     : undefined;
 
   return (
-    <span data-value={option.value} className={className} lang={option.lang} {...genericGroupProps} {...baseProps}>
+    <span {...genericGroupProps} {...baseProps} data-value={option.value} className={className} lang={option.lang}>
       {icon}
       <span className={styles.content}>
-        <span className={styles['label-content']}>
-          <Label
-            label={option.label ?? option.value}
-            prefix={option.__labelPrefix}
-            highlightText={highlightText}
-            triggerVariant={triggerVariant}
-          />
-          <LabelTag labelTag={option.labelTag} highlightText={highlightText} triggerVariant={triggerVariant} />
+        <span className={clsx(styles['label-content'], labelClassName)}>
+          {option.labelContent ?? (
+            <>
+              <Label
+                labelContainerRef={labelContainerRef}
+                labelRef={labelRef}
+                label={option.label ?? option.value}
+                prefix={option.__labelPrefix}
+                highlightText={highlightText}
+                triggerVariant={triggerVariant}
+              />
+              <LabelTag labelTag={option.labelTag} highlightText={highlightText} triggerVariant={triggerVariant} />
+            </>
+          )}
         </span>
         <Description
           description={option.description}
