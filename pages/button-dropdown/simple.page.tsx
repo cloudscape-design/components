@@ -40,6 +40,22 @@ const items: ButtonDropdownProps['items'] = [
     text: 'Option 6',
     disabled: true,
   },
+  {
+    id: 'id7',
+    text: 'Option 7',
+    secondaryText: 'This is option 7',
+  },
+  {
+    id: 'id8',
+    text: 'Option 8',
+    labelTag: 'Ctrl + 8',
+  },
+  {
+    id: 'id9',
+    text: 'Option 9',
+    secondaryText: 'This is option 9',
+    labelTag: 'Ctrl + 9',
+  },
 ];
 
 const withNestedOptions: ButtonDropdownProps['items'] = [
@@ -49,10 +65,14 @@ const withNestedOptions: ButtonDropdownProps['items'] = [
       {
         id: '1',
         text: 'Destroy',
+        secondaryText: 'This is the Destroy option',
+        labelTag: 'Ctrl + D',
       },
       {
         id: '2',
         text: 'Restart',
+        secondaryText: 'This is the Restart option',
+        labelTag: 'Ctrl + R',
       },
     ],
   },
@@ -77,10 +97,13 @@ const withExpandedGroups: ButtonDropdownProps['items'] = [
   {
     id: 'connect',
     text: 'Connect',
+    secondaryText: 'This is the Connect option',
+    labelTag: 'Ctrl + C',
   },
   {
     id: 'password',
     text: 'Get password',
+    secondaryText: 'This is the Get password option',
   },
   {
     id: 'states',
@@ -89,29 +112,39 @@ const withExpandedGroups: ButtonDropdownProps['items'] = [
       {
         id: 'start',
         text: 'Start',
+        secondaryText: 'This is the Start option',
+        labelTag: 'Ctrl + S',
       },
       {
         id: 'stop',
         text: 'Stop',
+        secondaryText: 'This is the Stop Option',
         disabled: true,
       },
       {
         id: 'hibernate',
         text: 'Hibernate',
+        secondaryText: 'This is the Hibernate Option',
+        labelTag: 'Ctrl + H',
         disabled: true,
       },
       {
         id: 'reboot',
         text: 'Reboot',
+        secondaryText: 'This is the Reboot Option',
+        labelTag: 'Ctrl + B',
         disabled: true,
       },
       {
         id: 'terminate',
         text: 'Terminate',
+        secondaryText: 'This is the Terminate Option',
       },
       {
         id: 'external',
         text: 'Root Page',
+        secondaryText: '',
+        labelTag: 'Ctrl + P',
         external: true,
         href: '/#/light/',
       },

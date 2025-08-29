@@ -42,6 +42,35 @@ const getItems = (firstChecked: boolean, secondChecked: boolean, thirdChecked: b
       id: 'id5',
       text: 'Option without checkbox',
     },
+    {
+      id: 'id6',
+      text: 'Disabled option with secondaryText',
+      secondaryText: 'This is a secondary text',
+      disabled: true,
+    },
+    {
+      id: 'id7',
+      text: 'Option with icon and secondaryText',
+      iconName: 'gen-ai',
+      secondaryText: 'This is a secondary text',
+    },
+    {
+      id: 'id8',
+      text: 'Option with checkbox, icon, and secondaryText',
+      iconName: 'gen-ai',
+      secondaryText: 'This is a secondary text',
+      checked: thirdChecked,
+      itemType: 'checkbox',
+    },
+    {
+      id: 'id8',
+      text: 'Option with checkbox, icon, labelTag, and secondaryText',
+      iconName: 'gen-ai',
+      secondaryText: 'This is a secondary text',
+      checked: thirdChecked,
+      itemType: 'checkbox',
+      labelTag: 'Ctrl + L',
+    },
   ];
   return items;
 };

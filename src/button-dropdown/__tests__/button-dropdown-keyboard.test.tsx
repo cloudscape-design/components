@@ -45,6 +45,22 @@ const items: ButtonDropdownProps.Items = [
       expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item5');
     });
 
+    test('should show secondaryText in highlighted items', () => {
+      const itemsWithSecondary = [
+        { id: 'i1', text: 'item1', secondaryText: 'Description 1' },
+        { id: 'i2', text: 'item2' },
+      ];
+      const testWrapper = renderButtonDropdown({ ...props, items: itemsWithSecondary, onItemClick: onClickSpy });
+      testWrapper.openDropdown();
+
+      const highlighted = testWrapper.findHighlightedItem();
+      expect(highlighted).toBeTruthy();
+
+      const highlightedElement = highlighted!.getElement();
+      expect(highlightedElement).toHaveTextContent('item1');
+      expect(testWrapper.findSecondaryText()?.getElement()).toHaveTextContent('Description 1');
+    });
+
     describe('when dropdown is open', () => {
       beforeEach(() => {
         act(() => wrapper.findNativeButton().keydown(KeyCode.enter));
