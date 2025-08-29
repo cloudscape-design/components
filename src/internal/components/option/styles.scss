@@ -11,7 +11,7 @@
   @include styles.styles-reset;
 
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   inline-size: 100%;
   // Hack to truncate flex boxes
   min-inline-size: 0;
