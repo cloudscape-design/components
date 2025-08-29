@@ -16,6 +16,9 @@
 .drawer {
   @include styles.styles-reset;
   word-wrap: break-word;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
@@ -75,4 +78,5 @@
 
 .test-utils-drawer-content {
   /* used in test-utils */
+  flex: 1;
 }
