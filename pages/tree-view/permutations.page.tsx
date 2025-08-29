@@ -19,6 +19,7 @@ import {
 type PageContext = React.Context<
   AppContextType<{
     expandAll?: boolean;
+    showConnectorLines?: boolean;
   }>
 >;
 
@@ -59,14 +60,34 @@ export default function TreeViewPermuations() {
         Expand all
       </Checkbox>
 
+      <Checkbox
+        checked={urlParams.showConnectorLines ?? false}
+        onChange={event => {
+          setUrlParams({ showConnectorLines: event.detail.checked });
+          window.location.reload();
+        }}
+      >
+        Show connector lines
+      </Checkbox>
+
       {[textPermutation, longTextPermutation, statusIndicatorPermutation].map((permutation, index) => (
-        <Permutation key={index} {...permutation} expandAll={urlParams.expandAll} />
+        <Permutation
+          key={index}
+          {...permutation}
+          expandAll={urlParams.expandAll}
+          showConnectorLines={urlParams.showConnectorLines}
+        />
       ))}
     </ScreenshotArea>
   );
 }
 
-function Permutation({ title, items, expandAll }: Permutation & { expandAll?: boolean }) {
+function Permutation({
+  title,
+  items,
+  expandAll,
+  showConnectorLines,
+}: Permutation & { expandAll?: boolean; showConnectorLines?: boolean }) {
   const [expandedItems, setExpandedItems] = useState(expandAll ? getAllExpandableItemIds(items) : []);
 
   return (
@@ -95,6 +116,7 @@ function Permutation({ title, items, expandAll }: Permutation & { expandAll?: bo
             return setExpandedItems(prev => prev.filter(id => id !== detail.item.id));
           }
         }}
+        connectorLines={showConnectorLines ? 'vertical' : undefined}
       />
     </div>
   );

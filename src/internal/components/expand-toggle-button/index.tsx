@@ -15,15 +15,35 @@ export function ExpandToggleButton({
   expandButtonLabel,
   collapseButtonLabel,
   customIcon,
+  invisible = false,
+  dataAttribute,
 }: {
   isExpanded?: boolean;
   onExpandableItemToggle?: () => void;
   expandButtonLabel?: string;
   collapseButtonLabel?: string;
   customIcon?: React.ReactNode;
+  invisible?: boolean;
+  dataAttribute?: { [key: string]: boolean };
 }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(buttonRef);
+
+  if (invisible) {
+    return (
+      <button
+        type="button"
+        ref={buttonRef}
+        tabIndex={tabIndex}
+        aria-label={isExpanded ? collapseButtonLabel : expandButtonLabel}
+        className={clsx(styles['expand-toggle'], styles.invisible)}
+        {...dataAttribute}
+      >
+        {null}
+      </button>
+    );
+  }
+
   return (
     <button
       type="button"
@@ -31,8 +51,9 @@ export function ExpandToggleButton({
       tabIndex={tabIndex}
       aria-label={isExpanded ? collapseButtonLabel : expandButtonLabel}
       aria-expanded={isExpanded}
-      className={styles['expand-toggle']}
+      className={clsx(styles['expand-toggle'])}
       onClick={onExpandableItemToggle}
+      {...dataAttribute}
     >
       {customIcon ?? (
         <InternalIcon
