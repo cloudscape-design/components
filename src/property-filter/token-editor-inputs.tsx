@@ -159,7 +159,7 @@ function ValueInputAuto({
   const valueOptions = property
     ? filteringOptions
         .filter(option => option.property?.propertyKey === property.propertyKey)
-        .map(({ label, value }) => ({ label, value }))
+        .map(({ label, value, tags, filteringTags }) => ({ label, value, tags, filteringTags }))
     : [];
 
   const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property?.externalProperty, value, operator);
@@ -198,7 +198,7 @@ function ValueInputEnum({
 }: ValueInputPropsEnum) {
   const valueOptions = filteringOptions
     .filter(option => option.property?.propertyKey === property.propertyKey)
-    .map(({ label, value }) => ({ label, value }));
+    .map(({ label, value, tags, filteringTags }) => ({ label, value, tags, filteringTags }));
   const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property.externalProperty, undefined, operator);
   const asyncValueAutosuggestProps = { statusType: 'finished' as const, ...valueAutosuggestHandlers, ...asyncProps };
   const value = !unknownValue ? [] : Array.isArray(unknownValue) ? unknownValue : [unknownValue];
