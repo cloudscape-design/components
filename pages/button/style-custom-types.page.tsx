@@ -128,49 +128,37 @@ function getFocusRing() {
 }
 
 function getBoxShadow(colorTheme: string) {
-  const shadowColors = {
+  const boxShadows = {
     default: {
-      light: { base: 'rgba(0, 128, 128, 0.2)', active: 'rgba(0, 128, 128, 0.3)', hover: 'rgba(0, 128, 128, 0.25)' },
-      dark: { base: 'rgba(0, 255, 255, 0.3)', active: 'rgba(0, 255, 255, 0.4)', hover: 'rgba(0, 255, 255, 0.35)' },
+      active: `0 4px 8px light-dark(rgba(0, 128, 128, 0.3), rgba(0, 255, 255, 0.4))`,
+      default: `0 2px 4px light-dark(rgba(0, 128, 128, 0.2), rgba(0, 255, 255, 0.3))`,
+      disabled: 'none',
+      hover: `0 6px 12px light-dark(rgba(0, 128, 128, 0.25), rgba(0, 255, 255, 0.35))`,
     },
     error: {
-      light: { base: 'rgba(255, 0, 0, 0.2)', active: 'rgba(255, 0, 0, 0.3)', hover: 'rgba(255, 0, 0, 0.25)' },
-      dark: {
-        base: 'rgba(255, 100, 100, 0.3)',
-        active: 'rgba(255, 100, 100, 0.4)',
-        hover: 'rgba(255, 100, 100, 0.35)',
-      },
+      active: `0 4px 8px light-dark(rgba(255, 0, 0, 0.3), rgba(255, 100, 100, 0.4))`,
+      default: `0 2px 4px light-dark(rgba(255, 0, 0, 0.2), rgba(255, 100, 100, 0.3))`,
+      disabled: 'none',
+      hover: `0 6px 12px light-dark(rgba(255, 0, 0, 0.25), rgba(255, 100, 100, 0.35))`,
     },
     info: {
-      light: { base: 'rgba(0, 0, 255, 0.2)', active: 'rgba(0, 0, 255, 0.3)', hover: 'rgba(0, 0, 255, 0.25)' },
-      dark: {
-        base: 'rgba(100, 100, 255, 0.3)',
-        active: 'rgba(100, 100, 255, 0.4)',
-        hover: 'rgba(100, 100, 255, 0.35)',
-      },
+      active: `0 4px 8px light-dark(rgba(0, 0, 255, 0.3), rgba(100, 100, 255, 0.4))`,
+      default: `0 2px 4px light-dark(rgba(0, 0, 255, 0.2), rgba(100, 100, 255, 0.3))`,
+      disabled: 'none',
+      hover: `0 6px 12px light-dark(rgba(0, 0, 255, 0.25), rgba(100, 100, 255, 0.35))`,
     },
     success: {
-      light: { base: 'rgba(0, 255, 0, 0.2)', active: 'rgba(0, 255, 0, 0.3)', hover: 'rgba(0, 255, 0, 0.25)' },
-      dark: {
-        base: 'rgba(100, 255, 100, 0.3)',
-        active: 'rgba(100, 255, 100, 0.4)',
-        hover: 'rgba(100, 255, 100, 0.35)',
-      },
+      active: `0 4px 8px light-dark(rgba(0, 255, 0, 0.3), rgba(100, 255, 100, 0.4))`,
+      default: `0 2px 4px light-dark(rgba(0, 255, 0, 0.2), rgba(100, 255, 100, 0.3))`,
+      disabled: 'none',
+      hover: `0 6px 12px light-dark(rgba(0, 255, 0, 0.25), rgba(100, 255, 100, 0.35))`,
     },
     warning: {
-      light: { base: 'rgba(255, 165, 0, 0.2)', active: 'rgba(255, 165, 0, 0.3)', hover: 'rgba(255, 165, 0, 0.25)' },
-      dark: {
-        base: 'rgba(255, 200, 100, 0.3)',
-        active: 'rgba(255, 200, 100, 0.4)',
-        hover: 'rgba(255, 200, 100, 0.35)',
-      },
+      active: `0 4px 8px light-dark(rgba(255, 165, 0, 0.3), rgba(255, 200, 100, 0.4))`,
+      default: `0 2px 4px light-dark(rgba(255, 165, 0, 0.2), rgba(255, 200, 100, 0.3))`,
+      disabled: 'none',
+      hover: `0 6px 12px light-dark(rgba(255, 165, 0, 0.25), rgba(255, 200, 100, 0.35))`,
     },
   };
-  const color = shadowColors[colorTheme as keyof typeof shadowColors];
-  return {
-    active: `0 4px 8px light-dark(${color.light.active}, ${color.dark.active})`,
-    default: `0 2px 4px light-dark(${color.light.base}, ${color.dark.base})`,
-    disabled: 'none',
-    hover: `0 6px 12px light-dark(${color.light.hover}, ${color.dark.hover})`,
-  };
+  return boxShadows[colorTheme as keyof typeof boxShadows];
 }
