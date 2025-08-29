@@ -8,6 +8,8 @@ import Button from '~components/button';
 import ButtonDropdown from '~components/button-dropdown';
 import { registerLeftDrawer } from '~components/internal/plugins/widget';
 
+import styles from '../styles.scss';
+
 const AIDrawer = () => {
   return (
     <Box padding="m">
@@ -69,7 +71,7 @@ registerLeftDrawer({
   mountHeader: container => {
     ReactDOM.render(
       <div style={{ inlineSize: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div>AI Panel</div>
+        <div className={styles['ai-panel-logo']}>AI Panel</div>
         <div>
           <ButtonDropdown
             items={[{ id: 'settings', text: 'Settings' }]}
