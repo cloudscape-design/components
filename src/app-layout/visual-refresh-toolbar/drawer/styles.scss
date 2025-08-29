@@ -239,6 +239,14 @@ $drawer-resize-handle-size: awsui.$space-m;
     }
   }
 
+  &:not(.ai-drawer) {
+    @include mobile-only {
+      @include theming.dark-mode-only {
+        border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
+    }
+  }
+
   &.ai-drawer {
     grid-template-columns: 1fr awsui.$space-xs;
     background: constants.$ai-drawer-background;
@@ -297,8 +305,10 @@ $drawer-resize-handle-size: awsui.$space-m;
             padding-inline-start: awsui.$space-l;
             padding-inline-end: awsui.$space-m;
 
-            @include desktop-only {
-              @include theming.dark-mode-only {
+            @include theming.dark-mode-only {
+              border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+
+              @include desktop-only {
                 &:has(+ .drawer-back-to-console-slot) {
                   border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
                   border-start-end-radius: awsui.$space-xxs;
