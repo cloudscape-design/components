@@ -275,7 +275,8 @@ $drawer-resize-handle-size: awsui.$space-m;
     }
 
     > .drawer-content-container {
-      min-inline-size: calc(var(#{custom-props.$drawerSize}) - #{awsui.$space-xs});
+      // 200px as a min size ensures the content does not wrap on exiting animation
+      min-inline-size: max(calc(var(#{custom-props.$drawerSize}) - #{awsui.$space-xs}), 200px);
       grid-column: 1 / span 1;
       background-color: awsui.$color-background-layout-panel-content;
 
