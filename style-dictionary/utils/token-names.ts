@@ -780,7 +780,8 @@ export type BordersTokenName =
   | 'borderWidthDropdown'
   | 'borderWidthField'
   | 'borderWidthPopover'
-  | 'borderWidthToken';
+  | 'borderWidthToken'
+  | 'borderAiPanelWidth';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'
@@ -951,7 +952,8 @@ export type ShadowsTokenName =
   | 'shadowSticky'
   | 'shadowStickyEmbedded'
   | 'shadowStickyColumnFirst'
-  | 'shadowStickyColumnLast';
+  | 'shadowStickyColumnLast'
+  | 'borderAiPanelWidth';
 
 export type GlobalScopeTokenName = ColorPaletteTokenName | TypographyTokenName | BordersTokenName;
 export type ColorScopeTokenName = ColorChartsTokenName | ColorsTokenName | ShadowsTokenName | ColorSeverityTokenName;

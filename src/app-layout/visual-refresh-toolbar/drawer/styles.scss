@@ -293,8 +293,9 @@ $drawer-resize-handle-size: awsui.$space-m;
           align-items: center;
           inset-block-start: 0;
           background-color: awsui.$color-background-layout-panel-content;
-          border-block-end: awsui.$border-divider-section-width solid;
+          border-block-end: awsui.$border-ai-panel-width solid;
           border-image: linear-gradient(90deg, #962eff 0%, #5c7fff 30%, #09f 50%, #b8e7ff 70%, #8575ff 100%) 1;
+          box-sizing: border-box;
 
           > .drawer-content-header-content {
             display: flex;
