@@ -385,7 +385,7 @@ $drawer-resize-handle-size: awsui.$space-m;
     &:not(.drawer-expanded) {
       > .drawer-content-container {
         @include desktop-only {
-          clip-path: inset(0 0 0 -9999px round awsui.$space-xxs);
+          clip-path: inset(0 0 -9999px 0 round awsui.$space-xxs);
           @include theming.dark-mode-only {
             border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
           }
