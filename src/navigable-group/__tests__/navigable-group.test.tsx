@@ -11,6 +11,7 @@ import Checkbox from '../../../lib/components/checkbox';
 import Link from '../../../lib/components/link';
 import NavigableGroup, { NavigableGroupProps } from '../../../lib/components/navigable-group';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import ToggleButton from '../../../lib/components/toggle-button';
 
 function renderNavigableGroup(props: Partial<NavigableGroupProps> = {}) {
   const ref = React.createRef<NavigableGroupProps.Ref>();
@@ -65,6 +66,9 @@ function renderNavigableGroupWithMixedElements(props: Partial<NavigableGroupProp
       <Checkbox id="checkbox1" checked={false}>
         Check me
       </Checkbox>
+      <ToggleButton pressed={false} id="toggle">
+        Toggle
+      </ToggleButton>
       <Link id="link1" href="#">
         Link
       </Link>
@@ -285,6 +289,7 @@ describe('NavigableGroup', () => {
         const saveButton = wrapper.findButton()!;
         const actionsDropdown = wrapper.findButtonDropdown()!.findTriggerButton()!;
         const checkbox = wrapper.findCheckbox()!.findNativeInput();
+        const toggle = wrapper.findToggleButton('#toggle')!;
         const link = wrapper.findLink()!;
 
         saveButton.focus();
@@ -295,6 +300,9 @@ describe('NavigableGroup', () => {
         expect(checkbox.getElement()).toHaveFocus();
 
         checkbox.keydown(KeyCode.right);
+        expect(toggle.getElement()).toHaveFocus();
+
+        toggle.keydown(KeyCode.right);
         expect(link.getElement()).toHaveFocus();
       });
     });

@@ -12,6 +12,7 @@ export interface NavigableGroupProps extends BaseComponentProps {
    * need to be direct children of the group:
    * - Button
    * - Button dropdown
+   * - Toggle button
    * - Link
    */
   children: React.ReactNode;
