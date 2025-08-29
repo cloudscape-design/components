@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import {
   AppLayout,
@@ -51,13 +51,6 @@ export default function WithDrawers() {
   function openHelp() {
     setToolsOpen(true);
   }
-
-  useEffect(() => {
-    const headerEl = document.querySelector('#h');
-    if (headerEl && headerEl instanceof HTMLElement) {
-      headerEl.style.backgroundColor = '#161d26';
-    }
-  }, []);
 
   return (
     <AppLayout
