@@ -31,6 +31,23 @@ function getIcon(iconName, content) {
     plugins: [
       'preset-default',
       {
+        name: 'removeViewBox',
+        active: false,
+      },
+      {
+        name: 'convertPathData',
+        params: {
+          floatPrecision: 3,
+          transformPrecision: 3,
+          removeUseless: true,
+          straightCurves: true,
+          lineShorthands: true,
+          curveSmoothShorthands: true,
+        },
+      },
+      'removeUselessDefs',
+      'removeEmptyContainers',
+      {
         name: 'awsuiValidateAttributes',
         type: 'visitor',
         fn: () => ({
