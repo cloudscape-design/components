@@ -4,6 +4,7 @@
 */
 @use '../../../internal/styles/tokens' as awsui;
 @use '../../../internal/styles' as styles;
+@use '../../../internal/styles/utils/theming' as theming;
 @use '../../constants.scss' as constants;
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
@@ -47,7 +48,7 @@ $drawer-resize-handle-size: awsui.$space-m;
   }
 
   @include desktop-only {
-    &:not(.legacy) {
+    &:not(.legacy):not(.ai-drawer) {
       border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
     }
   }
@@ -234,6 +235,169 @@ $drawer-resize-handle-size: awsui.$space-m;
         &.drawer-content-hidden {
           display: none;
         }
+      }
+    }
+  }
+
+  &:not(.ai-drawer) {
+    @include mobile-only {
+      @include theming.dark-mode-only {
+        border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
+    }
+  }
+
+  &.ai-drawer {
+    grid-template-columns: 1fr awsui.$space-xs;
+    background: constants.$ai-drawer-background;
+
+    @include mobile-only {
+      grid-template-columns: 1fr;
+      z-index: constants.$drawer-z-index-mobile;
+    }
+
+    > .drawer-slider {
+      inline-size: awsui.$space-xs;
+      overflow: hidden;
+      grid-column: 2;
+    }
+
+    // to override styles in PanelResizeHandle component
+    // maybe we need to introduce an additional prop in the component to make it more flexible?
+    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+    .ai-drawer-slider-handle {
+      transform: translate(-4px);
+      color: awsui.$color-text-interactive-inverted-default;
+
+      &:hover {
+        stroke: awsui.$color-text-interactive-inverted-hover;
+      }
+    }
+
+    > .drawer-content-container {
+      min-inline-size: calc(var(#{custom-props.$drawerSize}) - #{awsui.$space-xs});
+      grid-column: 1 / span 1;
+      background-color: awsui.$color-background-layout-panel-content;
+
+      @include desktop-only {
+        border-start-end-radius: awsui.$space-xxs;
+      }
+
+      > .drawer-content {
+        > .drawer-content-header {
+          block-size: 41px;
+          position: sticky;
+          z-index: 1000;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          inset-block-start: 0;
+          background-color: awsui.$color-background-layout-panel-content;
+          border-block-end: awsui.$border-divider-section-width solid;
+          border-image: linear-gradient(90deg, #962eff 0%, #5c7fff 30%, #09f 50%, #b8e7ff 70%, #8575ff 100%) 1;
+
+          > .drawer-content-header-content {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: space-between;
+            block-size: 100%;
+            padding-inline-start: awsui.$space-l;
+            padding-inline-end: awsui.$space-m;
+
+            @include theming.dark-mode-only {
+              border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+
+              @include desktop-only {
+                &:has(+ .drawer-back-to-console-slot) {
+                  border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+                  border-start-end-radius: awsui.$space-xxs;
+                }
+              }
+            }
+
+            > .drawer-actions {
+              display: flex;
+            }
+          }
+
+          > .drawer-back-to-console-slot {
+            position: relative;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+            block-size: 100%;
+            padding-inline: awsui.$space-static-m;
+            background-color: constants.$ai-drawer-background;
+
+            &:before,
+            &:after {
+              content: '';
+              position: absolute;
+              inset-block-start: 0;
+              inset-inline-start: -5px;
+              inline-size: 5px;
+              block-size: 5px;
+              background: constants.$ai-drawer-background;
+
+              @include theming.dark-mode-only {
+                display: none;
+              }
+            }
+
+            &:after {
+              background-color: awsui.$color-background-layout-panel-content;
+              border-start-end-radius: awsui.$space-xxs;
+            }
+
+            > .drawer-back-to-console-button-wrapper {
+              position: relative;
+              &:has(:focus-visible) {
+                @include styles.focus-highlight(3px);
+              }
+
+              > .drawer-back-to-console-button {
+                @include styles.styles-reset;
+                @include styles.text-wrapping;
+                @include styles.font-body-s;
+                border-start-start-radius: awsui.$space-static-xxs;
+                border-start-end-radius: awsui.$space-static-xxs;
+                border-end-start-radius: awsui.$space-static-xxs;
+                border-end-end-radius: awsui.$space-static-xxs;
+                border-width: 0;
+                padding-inline: awsui.$space-static-xs;
+                padding-block: awsui.$space-static-xxs;
+                background: radial-gradient(203.69% 159.19% at 95% -11.67%, #ffbb45 0%, #f90 30%, #fa6f00 60%);
+                color: #ffffff;
+                cursor: pointer;
+
+                &:focus {
+                  // custom outline attached on the wrapping element
+                  outline: none;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &:not(.drawer-expanded) {
+      > .drawer-content-container {
+        @include desktop-only {
+          clip-path: inset(0 0 0 -9999px round awsui.$space-xxs);
+          @include theming.dark-mode-only {
+            border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+          }
+        }
+      }
+    }
+
+    &.drawer-expanded {
+      grid-template-columns: 1fr;
+
+      > .drawer-content-container {
+        border-start-end-radius: 0;
       }
     }
   }

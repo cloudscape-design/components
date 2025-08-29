@@ -5,6 +5,7 @@
 @use 'sass:map' as map;
 @use '../../../internal/styles' as styles;
 @use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/styles/utils/theming' as theming;
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../constants' as constants;
 
@@ -24,7 +25,7 @@
   grid-column: 1 / -1;
 
   @include desktop-only {
-    grid-column: 2 / 5;
+    grid-column: 3 / 6;
   }
 }
 
@@ -50,10 +51,11 @@
   // desktop grid
   @include desktop-only {
     grid-template-areas:
-      'toolbar    toolbar      toolbar       toolbar   toolbar         toolbar  toolbar'
-      'navigation .         notifications    .         sideSplitPanel  tools    global-tools'
-      'navigation .             main         .         sideSplitPanel  tools    global-tools';
+      'ai-drawer toolbar    toolbar      toolbar       toolbar   toolbar         toolbar  toolbar'
+      'ai-drawer navigation .         notifications    .         sideSplitPanel  tools    global-tools'
+      'ai-drawer navigation .             main         .         sideSplitPanel  tools    global-tools';
     grid-template-columns:
+      min-content
       min-content
       minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
       minmax(0, var(#{custom-props.$maxContentWidth}))
@@ -82,11 +84,25 @@
         0
         0
         0
+        0
         auto;
+
+      &.ai-drawer-expanded-mode {
+        grid-template-columns:
+          auto
+          0
+          0
+          0
+          0
+          0
+          0
+          0;
+      }
     }
   }
 }
 
+.ai-drawer,
 .navigation,
 .tools,
 .global-tools {
@@ -97,6 +113,13 @@
 
   @include mobile-only {
     inline-size: 100%;
+  }
+}
+
+.ai-drawer {
+  @include desktop-only {
+    grid-area: ai-drawer;
+    position: sticky;
   }
 }
 

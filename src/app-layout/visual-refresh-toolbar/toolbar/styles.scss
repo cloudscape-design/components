@@ -5,49 +5,147 @@
 
 @use '../../../internal/styles' as styles;
 @use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/styles/utils/theming' as theming;
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../constants.scss' as constants;
+
+$toolbar-height: 42px;
 
 .universal-toolbar {
   background-color: awsui.$color-background-layout-panel-content;
   box-sizing: border-box;
-  padding-block: 0;
-  padding-inline: awsui.$space-m;
-  //right padding set in child trigger-container below for focus indicator to show correctly
-  padding-inline-end: 0;
   position: sticky;
   z-index: constants.$toolbar-z-index;
+  display: flex;
   @include styles.with-motion {
     transition: ease awsui.$motion-duration-refresh-only-slow;
     transition-property: inset-block-start, opacity;
+  }
+
+  &.with-open-ai-drawer {
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      inline-size: 5px;
+      block-size: 5px;
+      background: constants.$ai-drawer-background;
+
+      /**
+       * Adds a border to visually separate the main content area from the left global drawer.
+       *
+       * Note: Direct border application is not possible for either target element:
+       * - Main content area: Uses `display: contents`, preventing border application
+       * - Nav panel: May be hidden, causing the border to disappear when separation is still needed
+      */
+      @include theming.dark-mode-only {
+        content: '';
+        position: absolute;
+        inset-block-start: $toolbar-height;
+        inset-inline-start: 0;
+        inline-size: awsui.$border-divider-section-width;
+        block-size: calc(100vh - #{$toolbar-height});
+        background: awsui.$color-border-layout;
+      }
+    }
+
+    &:after {
+      background-color: awsui.$color-background-layout-panel-content;
+      border-start-start-radius: awsui.$space-xxs;
+
+      @include theming.dark-mode-only {
+        display: none;
+      }
+    }
   }
 
   &.disable-body-scroll {
     inset-block-start: 0px;
   }
 
+  > .universal-toolbar-ai-custom {
+    grid-column: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-start;
+    padding-inline: awsui.$space-static-s;
+    box-sizing: border-box;
+
+    /**
+     * Button sizing adjustments for theme-specific design requirements
+     *
+     * Light mode: Button width is set to 100% + border width to intentionally overlap
+     * with the bottom border, as specified in the UI design.
+     *
+     * Dark mode: Resets the overlap styling due to different design requirements
+     * where overlap should not occur.
+     */
+    block-size: calc(100% + #{awsui.$border-divider-section-width});
+    background: constants.$ai-drawer-background;
+
+    @include theming.dark-mode-only {
+      block-size: 100%;
+    }
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-end: -5px;
+      inline-size: 5px;
+      block-size: 5px;
+      background: constants.$ai-drawer-background;
+
+      @include theming.dark-mode-only {
+        display: none;
+      }
+    }
+
+    &:after {
+      background-color: awsui.$color-background-layout-panel-content;
+      border-start-start-radius: awsui.$space-xxs;
+    }
+  }
+
   > .toolbar-container {
     block-size: 100%;
     align-items: center;
     display: grid;
-    column-gap: awsui.$space-static-xs;
     inline-size: 100%;
-    grid-template-columns: min-content minmax(0, 3fr) minmax(auto, 1fr);
+    grid-template-columns: min-content min-content minmax(0, 3fr) minmax(auto, 1fr);
     grid-template-rows: 1fr;
 
+    @include theming.dark-mode-only {
+      border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      &.with-ai-drawer {
+        border-start-start-radius: awsui.$space-xxs;
+        border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
+    }
+
     > .universal-toolbar-nav {
-      grid-column: 1;
+      grid-column: 2;
+      padding-inline-start: awsui.$space-m;
       padding-inline-end: awsui.$space-static-xxs;
     }
 
     > .universal-toolbar-breadcrumbs {
-      grid-column: 2;
+      grid-column: 3;
+      padding-inline: awsui.$space-static-xs;
       background-color: transparent;
       flex: 1 0;
+      &:first-child {
+        padding-inline: calc(#{awsui.$space-static-xs} + #{awsui.$space-static-m});
+      }
     }
 
     > .universal-toolbar-drawers {
-      grid-column: 3;
+      grid-column: 4;
       column-gap: awsui.$space-static-xs;
       display: flex;
       justify-content: flex-end;
@@ -60,9 +158,7 @@
 .drawers-mobile-triggers-container {
   @include styles.styles-reset;
   background-color: transparent;
-  padding-inline: 0;
-  //matches the left padding of .universal-toolbar but allows for focus indicator to show correctly
-  padding-inline-end: awsui.$space-m;
+  padding-inline: awsui.$space-m;
   box-sizing: border-box;
   overflow-y: hidden;
   overflow-x: hidden;

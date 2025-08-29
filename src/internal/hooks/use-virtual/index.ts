@@ -5,7 +5,11 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { useVirtual as useVirtualDefault, VirtualItem } from '../../vendor/react-virtual';
 import stickyRangeExtractor from './sticky-range-extractor';
 
-const MAX_ITEM_MOUNTS = 100;
+// Maximum allowed synchronous (nested) item mounts before forcing a bail-out.
+// Mirrors React’s internal safeguard for nested updates: React throws
+// "Maximum update depth exceeded" once >50 sync updates occur within a single commit.
+// See: https://github.com/facebook/react/commit/d8c90fa48d3addefe4b805ec56a3c65e4ee39127
+const MAX_ITEM_MOUNTS = 50 - 1;
 
 interface UseVirtualProps<Item> {
   items: readonly Item[];
