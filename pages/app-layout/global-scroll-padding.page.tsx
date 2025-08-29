@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { Select, SelectProps } from '~components';
 import AppLayout from '~components/app-layout';
 import Button from '~components/button';
 import Header from '~components/header';
@@ -11,6 +12,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 import ariaLabels from './utils/labels';
 
 export default function () {
+  const [selectedOption, setSelectedOption] = React.useState<SelectProps.Option>({ value: '1' });
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
@@ -30,6 +32,18 @@ export default function () {
               <Button data-testid="button-2" ariaLabel="Button 2">
                 Button 2
               </Button>
+              <Select
+                options={[
+                  { value: '1' },
+                  { value: '2' },
+                  { value: '3' },
+                  { value: '4' },
+                  { value: '5' },
+                  { value: '6' },
+                ]}
+                selectedOption={selectedOption}
+                onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
+              />
             </SpaceBetween>
           </div>
         }
