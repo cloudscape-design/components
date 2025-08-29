@@ -138,7 +138,7 @@ export const OptionIcon = (props: IconProps) => {
   }
 
   return (
-    <span className={clsx(styles.icon, props.size === 'big' && [styles[`icon-size-big`]])}>
+    <span className={styles.icon}>
       <InternalIcon {...props} />
     </span>
   );

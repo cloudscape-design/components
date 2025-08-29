@@ -65,7 +65,7 @@ const Option = ({
       svg={option.iconSvg}
       alt={option.iconAlt}
       ariaLabel={option.iconAriaLabel}
-      size={option.description || option.tags ? 'big' : 'normal'}
+      size="normal"
     />
   );
 
