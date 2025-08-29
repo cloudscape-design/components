@@ -16892,24 +16892,6 @@ exports[`Components definition for navigable-group matches the snapshot: navigab
       "type": "string",
     },
     {
-      "description": "Determines which arrow keys move focus within the group:
-- \`horizontal\` - left and right arrow keys
-- \`vertical\` - up and down arrow keys
-- \`both\` - all arrow keys",
-      "inlineType": {
-        "name": ""both" | "horizontal" | "vertical"",
-        "type": "union",
-        "values": [
-          "both",
-          "horizontal",
-          "vertical",
-        ],
-      },
-      "name": "direction",
-      "optional": true,
-      "type": "string",
-    },
-    {
       "description": "A method that should return a unique identifier for a given element.
 The element passed will be the first focusable descendent of a child component.",
       "inlineType": {
@@ -16923,7 +16905,7 @@ The element passed will be the first focusable descendent of a child component."
         "returnType": "string",
         "type": "function",
       },
-      "name": "getItemId",
+      "name": "getItemKey",
       "optional": false,
       "type": "(element: HTMLElement) => string",
     },
@@ -16937,35 +16919,34 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "If true, the focus will loop back to the first item when navigating past the last one, and vice versa.",
-      "name": "loopFocus",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
-      "description": "Attributes to add to the native \`div\` element.",
+      "description": "Determines which arrow keys move focus sequentially within the group:
+- \`horizontal\` - left and right arrow keys
+- \`vertical\` - up and down arrow keys
+- \`both\` - all arrow keys",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": ""both" | "horizontal" | "vertical"",
         "type": "union",
         "values": [
-          "Omit<React.HTMLAttributes<HTMLDivElement>, "children">",
-          "Record<\`data-\${string}\`, string>",
+          "both",
+          "horizontal",
+          "vertical",
         ],
       },
-      "name": "nativeAttributes",
+      "name": "navigationDirection",
       "optional": true,
-      "type": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "string",
     },
   ],
   "regions": [
     {
       "description": "The children that will be rendered inside the navigation group.
 
-The following child components are supported:
+The following Cloudscape components are supported, but do not
+need to be direct children of the group:
 - Button
 - Button dropdown
-- Link
-- Checkbox",
+- Toggle button
+- Link",
       "isDefault": true,
       "name": "children",
     },
