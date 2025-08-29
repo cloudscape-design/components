@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import {
   Alert,
@@ -17,6 +16,7 @@ import {
 } from '~components';
 import ButtonDropdown from '~components/button-dropdown';
 import awsuiPlugins from '~components/internal/plugins';
+import { mount, unmount } from '~mount';
 
 function Details() {
   const [value, setValue] = React.useState('item1');
@@ -179,7 +179,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(
+    mount(
       <Drawer
         header={<Box variant="h3">Investigate Cold Start Chaser</Box>}
         headerActions={
@@ -191,7 +191,7 @@ awsuiPlugins.appLayout.registerDrawer({
       container
     );
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 
 awsuiPlugins.appLayout.registerDrawer({
@@ -225,7 +225,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(
+    mount(
       <SpaceBetween size="l">
         <div style={{ paddingBlockStart: '15px', paddingInlineStart: '20px', margin: 0 }}>
           <Box variant="h3">Amazon Q</Box>
@@ -237,5 +237,5 @@ awsuiPlugins.appLayout.registerDrawer({
       container
     );
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });

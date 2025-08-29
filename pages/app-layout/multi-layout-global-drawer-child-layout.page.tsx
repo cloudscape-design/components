@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
-import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
@@ -9,6 +8,7 @@ import ScreenreaderOnly from '~components/internal/components/screenreader-only'
 import awsuiPlugins from '~components/internal/plugins';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
+import { mount, unmount } from '~mount';
 
 import { IframeWrapper } from '../utils/iframe-wrapper';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -40,9 +40,9 @@ function InnerApp() {
       },
 
       mountContent: container => {
-        ReactDOM.render(<div>global widget content circle 2</div>, container);
+        mount(<div>global widget content circle 2</div>, container);
       },
-      unmountContent: container => unmountComponentAtNode(container),
+      unmountContent: container => unmount(container),
     });
   }, []);
 
