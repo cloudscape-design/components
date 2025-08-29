@@ -3,7 +3,7 @@
 import { IconProps } from '../icon/interfaces';
 import { FlashbarProps } from './interfaces';
 
-export const FOCUS_DEBOUNCE_DELAY = 500;
+export const FOCUS_THROTTLE_DELAY = 2000;
 
 // Since the position of a notification changes when the Flashbar is collapsed,
 // it is useful on some situations (e.g, for animating) to know the original position of the item

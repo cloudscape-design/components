@@ -876,6 +876,12 @@ describe('Style API', () => {
             disabled: '0 0 2px gray',
             hover: '0 0 8px green',
           },
+          boxShadow: {
+            active: '0 0 10px red',
+            default: '0 0 5px blue',
+            disabled: '0 0 2px gray',
+            hover: '0 0 8px green',
+          },
         },
       },
     });
