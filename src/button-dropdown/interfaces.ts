@@ -184,6 +184,8 @@ export namespace ButtonDropdownProps {
     itemType?: ItemType;
     id: string;
     text: string;
+    secondaryText?: string;
+    labelTag?: string;
     ariaLabel?: string;
     lang?: string;
     disabled?: boolean;
@@ -204,7 +206,7 @@ export namespace ButtonDropdownProps {
     checked: boolean;
   }
 
-  export interface ItemGroup extends Omit<Item, 'id' | 'text' | 'itemType'> {
+  export interface ItemGroup extends Omit<Item, 'id' | 'text' | 'itemType' | 'secondaryText' | 'labelTag'> {
     itemType?: 'group';
     id?: string;
     text?: string;

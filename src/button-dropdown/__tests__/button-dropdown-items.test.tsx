@@ -498,4 +498,15 @@ describe('Internal ButtonDropdown badge property', () => {
     wrapper.openDropdown();
     expect(wrapper.findAllByClassName(iconStyles.badge)?.map(item => item.getElement())).toHaveLength(2);
   });
+
+  it('should render secondaryText and labelTag', () => {
+    const items = [{ id: 'i1', text: 'Option 1', secondaryText: 'Description', labelTag: 'Ctrl+D' }];
+    const wrapper = renderButtonDropdown({ items });
+    wrapper.openDropdown();
+
+    const item = wrapper.findItemById('i1')!;
+    expect(item.getElement()).toHaveTextContent('Option 1');
+    expect(item.getElement()).toHaveTextContent('Description');
+    expect(item.getElement()).toHaveTextContent('Ctrl+D');
+  });
 });

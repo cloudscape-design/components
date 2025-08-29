@@ -55,6 +55,22 @@ const items: ButtonDropdownProps.Items = [
       expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item3');
     });
 
+    test('should show secondaryText in highlighted items', () => {
+      const itemsWithSecondary = [
+        { id: 'i1', text: 'item1', secondaryText: 'Description 1' },
+        { id: 'i2', text: 'item2' },
+      ];
+      const testWrapper = renderButtonDropdown({ ...props, items: itemsWithSecondary, onItemClick: onClickSpy });
+      testWrapper.openDropdown();
+
+      const highlighted = testWrapper.findHighlightedItem();
+      expect(highlighted).toBeTruthy();
+
+      const highlightedElement = highlighted!.getElement();
+      expect(highlightedElement).toHaveTextContent('item1');
+      expect(highlightedElement).toHaveTextContent('Description 1');
+    });
+
     test('should call onClick on enter', () => {
       act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.enter));
       expect(onClickSpy).toHaveBeenCalledTimes(1);
