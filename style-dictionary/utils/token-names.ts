@@ -780,8 +780,7 @@ export type BordersTokenName =
   | 'borderWidthDropdown'
   | 'borderWidthField'
   | 'borderWidthPopover'
-  | 'borderWidthToken'
-  | 'borderAiPanelWidth';
+  | 'borderWidthToken';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'
