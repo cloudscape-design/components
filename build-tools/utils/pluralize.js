@@ -51,6 +51,7 @@ const pluralizationMap = {
   MixedLineBarChart: 'MixedLineBarCharts',
   Modal: 'Modals',
   Multiselect: 'Multiselects',
+  NavigableGroup: 'NavigableGroups',
   Pagination: 'Paginations',
   AppLayoutToolbar: 'AppLayoutToolbars',
   PieChart: 'PieCharts',
