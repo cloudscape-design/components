@@ -94,22 +94,27 @@ export function AppLayoutGlobalAiDrawerImplementation({
   let drawerActions: ReadonlyArray<ButtonGroupProps.ItemOrGroup> = [
     {
       type: 'icon-button',
-      id: 'expand',
-      iconName: isExpanded ? 'shrink' : 'expand',
-      text: activeAiDrawer?.ariaLabels?.expandedModeButton ?? '',
-    },
-    {
-      type: 'icon-button',
       id: 'close',
       iconName: isMobile ? 'close' : 'angle-left',
       text: computedAriaLabels.closeButton,
     },
   ];
+  if (!isMobile && activeAiDrawer?.isExpandable) {
+    drawerActions = [
+      {
+        type: 'icon-button',
+        id: 'expand',
+        iconName: isExpanded ? 'shrink' : 'expand',
+        text: activeAiDrawer?.ariaLabels?.expandedModeButton ?? '',
+      },
+      ...drawerActions,
+    ];
+  }
   if (activeAiDrawer?.headerActions) {
     drawerActions = [
       {
         type: 'group',
-        text: 'Vote',
+        text: 'Actions',
         items: activeAiDrawer.headerActions!,
       },
       ...drawerActions,
@@ -192,37 +197,9 @@ export function AppLayoutGlobalAiDrawerImplementation({
                                     activeAiDrawer?.onHeaderActionClick?.(event);
                                 }
                               }}
-                              ariaLabel="Chat actions"
+                              ariaLabel="Left panel actions"
                               items={drawerActions}
                             />
-                            {/*{!isMobile && activeAiDrawer?.isExpandable && (*/}
-                            {/*  <div className={styles['drawer-expanded-mode-button']}>*/}
-                            {/*    <InternalButton*/}
-                            {/*      ariaLabel={activeAiDrawer?.ariaLabels?.expandedModeButton}*/}
-                            {/*      className={testutilStyles['active-drawer-expanded-mode-button']}*/}
-                            {/*      formAction="none"*/}
-                            {/*      ariaExpanded={isExpanded}*/}
-                            {/*      iconName={isExpanded ? 'shrink' : 'expand'}*/}
-                            {/*      onClick={() => setExpandedDrawerId(isExpanded ? null : activeDrawerId!)}*/}
-                            {/*      variant="icon"*/}
-                            {/*      analyticsAction={isExpanded ? 'expand' : 'collapse'}*/}
-                            {/*    />*/}
-                            {/*  </div>*/}
-                            {/*)}*/}
-                            {/*<div className={clsx(styles['drawer-close-button'])}>*/}
-                            {/*  <InternalButton*/}
-                            {/*    ariaLabel={computedAriaLabels.closeButton}*/}
-                            {/*    className={clsx({*/}
-                            {/*      [testutilStyles['active-drawer-close-button']]: activeDrawerId,*/}
-                            {/*    })}*/}
-                            {/*    formAction="none"*/}
-                            {/*    iconName={isMobile ? 'close' : 'angle-left'}*/}
-                            {/*    onClick={() => onActiveAiDrawerChange?.(null, { initiatedByUserAction: true })}*/}
-                            {/*    ref={aiDrawerFocusControl?.refs.close}*/}
-                            {/*    variant="icon"*/}
-                            {/*    analyticsAction="close"*/}
-                            {/*  />*/}
-                            {/*</div>*/}
                           </div>
                         </div>
                         {!isMobile && isExpanded && activeAiDrawer?.ariaLabels?.exitExpandedModeButton && (
