@@ -3,18 +3,7 @@
 import React from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
-import {
-  Alert,
-  BarChart,
-  Box,
-  ColumnLayout,
-  Drawer,
-  FormField,
-  Input,
-  SpaceBetween,
-  Textarea,
-  Tiles,
-} from '~components';
+import { BarChart, Box, ColumnLayout, Drawer, FormField, Input, SpaceBetween, Textarea, Tiles } from '~components';
 import ButtonDropdown from '~components/button-dropdown';
 import awsuiPlugins from '~components/internal/plugins';
 
@@ -138,15 +127,6 @@ function Details() {
   );
 }
 
-function Chats() {
-  return (
-    <SpaceBetween size="m">
-      <Alert header="Known issues/limitations">
-        Review the documentation to learn about potential compatibility issues with specific database versions.
-      </Alert>
-    </SpaceBetween>
-  );
-}
 awsuiPlugins.appLayout.registerDrawer({
   id: 'bolt-global',
   type: 'global',
@@ -188,52 +168,6 @@ awsuiPlugins.appLayout.registerDrawer({
       >
         <Details />
       </Drawer>,
-      container
-    );
-  },
-  unmountContent: container => unmountComponentAtNode(container),
-});
-
-awsuiPlugins.appLayout.registerDrawer({
-  id: 'q-global',
-  type: 'global',
-  defaultActive: false,
-  resizable: true,
-  defaultSize: 350,
-  preserveInactiveContent: true,
-
-  isExpandable: true,
-
-  ariaLabels: {
-    closeButton: 'Close button',
-    content: 'Content',
-    triggerButton: 'Trigger button',
-    resizeHandle: 'Resize handle',
-    expandedModeButton: 'Expanded mode button',
-  },
-  onToggle: event => {
-    console.log('g-global drawer on toggle', event.detail);
-  },
-
-  trigger: {
-    iconSvg: `<svg viewBox="0 0 16 16" focusable="false" aria-hidden="true" role="presentation"><path d="m14.22,3.41L8.87.32c-.24-.14-.55-.21-.87-.21s-.63.07-.87.21L1.78,3.41c-.48.27-.87.95-.87,1.5v6.18c0,.55.39,1.22.87,1.5l5.36,3.09c.24.14.55.21.87.21s.63-.07.87-.21l5.36-3.09c.48-.28.87-.95.87-1.5v-6.18c0-.55-.39-1.23-.87-1.5Zm-6.22,10.47l-5.09-2.94v-5.88l5.09-2.94,5.09,2.94v4.72l-3.09-1.78v-.74c0-.26-.14-.49-.36-.62l-1.28-.74c-.11-.06-.24-.1-.36-.1s-.25.03-.36.1l-1.28.74c-.22.13-.36.37-.36.62v1.48c0,.26.14.49.36.62l1.28.74c.11.06.24.1.36.1s.25-.03.36-.1l.64-.37,3.09,1.78-4.09,2.36Z" fill="currentColor" stroke-width="0"></path></svg>
-`,
-  },
-
-  onResize: event => {
-    console.log('resize', event.detail);
-  },
-
-  mountContent: container => {
-    ReactDOM.render(
-      <SpaceBetween size="l">
-        <div style={{ paddingBlockStart: '15px', paddingInlineStart: '20px', margin: 0 }}>
-          <Box variant="h3">Amazon Q</Box>
-        </div>
-        <Box padding={{ left: 'l', right: 'l' }}>
-          <Chats />
-        </Box>
-      </SpaceBetween>,
       container
     );
   },
