@@ -102,3 +102,16 @@ test('closes menu with Escape', () => {
   wrapper.findMenuById('misc')!.findTriggerButton()!.keydown(KeyCode.escape);
   expect(wrapper.findMenuById('misc')!.findOpenDropdown()).toBe(null);
 });
+
+test('manages focus if item is removed', () => {
+  jest.useFakeTimers();
+  const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
+  const { wrapper, rerender } = renderButtonGroup({ items }, ref);
+
+  ref.current?.focus('copy');
+  expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
+
+  rerender({ items: items.slice(0, 1) });
+  jest.runAllTimers();
+  expect(wrapper.findButtonById('like')!.getElement()).toHaveFocus();
+});

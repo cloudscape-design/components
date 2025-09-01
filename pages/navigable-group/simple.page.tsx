@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { ToggleButton } from '~components';
 import Button from '~components/button';
 import ButtonDropdown from '~components/button-dropdown';
 import Checkbox from '~components/checkbox';
@@ -18,9 +19,9 @@ export default function NavigableGroupSimplePage() {
           <h2>Basic NavigableGroup with buttons</h2>
           <div role="toolbar" aria-label="Simple toolbar">
             <NavigableGroup getItemKey={element => element.id}>
-              <Button id="1">First</Button>
-              <Button id="2">Second</Button>
-              <Button id="3">Third</Button>
+              <Button id="first">First</Button>
+              <Button id="second">Second</Button>
+              <Button id="third">Third</Button>
             </NavigableGroup>
           </div>
         </div>
@@ -29,15 +30,15 @@ export default function NavigableGroupSimplePage() {
           <h2>NavigableGroup with mixed elements</h2>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }} role="toolbar" aria-label="Mixed toolbar">
             <NavigableGroup getItemKey={e => e.id}>
-              <Button id="1" variant="primary">
+              <Button id="save" variant="primary">
                 Save
               </Button>
-              <Button id="2">Cancel</Button>
-              <Button id="3" variant="link">
+              <Button id="cancel">Cancel</Button>
+              <Button id="help" variant="link">
                 Help
               </Button>
               <ButtonDropdown
-                id="4"
+                id="dropdown"
                 items={[
                   { id: '1', text: 'Item 1' },
                   { id: '2', text: 'Item 2' },
@@ -45,10 +46,13 @@ export default function NavigableGroupSimplePage() {
               >
                 Dropdown
               </ButtonDropdown>
-              <Checkbox id="5" checked={false}>
+              <ToggleButton pressed={false} id="toggle">
+                Toggle
+              </ToggleButton>
+              <Checkbox id="checkbox" checked={false}>
                 Checkbox
               </Checkbox>
-              <Link id="7" href="#">
+              <Link id="link" href="#">
                 Link
               </Link>
             </NavigableGroup>
