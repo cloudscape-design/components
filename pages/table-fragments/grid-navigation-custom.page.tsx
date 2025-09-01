@@ -3,6 +3,8 @@
 import React, { useContext, useMemo, useRef, useState } from 'react';
 import { orderBy, range } from 'lodash';
 
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
+
 import {
   AppLayout,
   Button,
@@ -24,7 +26,6 @@ import {
   SpaceBetween,
   StatusIndicator,
 } from '~components';
-import { useSingleTabStopNavigation } from '~components/internal/context/single-tab-stop-navigation-context';
 import { useEffectOnUpdate } from '~components/internal/hooks/use-effect-on-update';
 import {
   getTableCellRoleProps,

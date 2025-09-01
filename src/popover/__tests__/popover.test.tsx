@@ -3,13 +3,13 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
+import { renderWithSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal/testing';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import Popover, { PopoverProps } from '../../../lib/components/popover';
 import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../lib/components/test-utils/dom';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 import styles from '../../../lib/components/popover/styles.selectors.js';
 
