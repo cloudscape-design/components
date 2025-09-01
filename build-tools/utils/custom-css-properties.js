@@ -18,6 +18,7 @@ const customCssPropertiesList = [
   'defaultMaxContentWidth',
   'defaultMinContentWidth',
   'drawerSize',
+  'drawerMinSize',
   'footerHeight',
   'headerGap',
   'headerHeight',

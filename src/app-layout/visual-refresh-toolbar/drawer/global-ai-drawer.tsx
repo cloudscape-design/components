@@ -124,6 +124,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
                     blockSize: drawerHeight,
                     insetBlockStart: `${placement.insetBlockStart}px`,
                     ...(!isMobile && {
+                      [customCssProps.drawerMinSize]: `${size}px`,
                       [customCssProps.drawerSize]: `${['entering', 'entered'].includes(drawerTransitionState) ? size : 0}px`,
                     }),
                   }}
