@@ -229,7 +229,7 @@ describe('NavigableGroup', () => {
 
     test('works with custom getItemKey function', () => {
       const { container } = render(
-        <NavigableGroup getItemKey={element => element.getAttribute('data-custom-id') || element.id}>
+        <NavigableGroup getItemKey={element => element.getAttribute('data-custom-id')!}>
           <Button data-custom-id="custom1">Button 1</Button>
           <Button data-custom-id="custom2">Button 2</Button>
         </NavigableGroup>

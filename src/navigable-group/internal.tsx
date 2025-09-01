@@ -49,7 +49,7 @@ const InternalNavigableGroup = forwardRef(
     function getNextFocusTarget(): null | HTMLElement {
       if (containerObjectRef.current) {
         const focusables = getFocusablesFrom(containerObjectRef.current);
-        return focusables.find(button => getItemKey(button) === focusedIdRef.current) ?? focusables[0] ?? null;
+        return focusables.find(el => getItemKey(el) === focusedIdRef.current) ?? focusables[0] ?? null;
       }
       return null;
     }
@@ -106,6 +106,9 @@ const InternalNavigableGroup = forwardRef(
       event.preventDefault();
 
       const focusables = getFocusablesFrom(containerObjectRef.current);
+      if (!focusables.length) {
+        return;
+      }
       const activeIndex = focusables.indexOf(focusTarget);
       const getNextIndex = (delta: number) => {
         const newIndex = activeIndex + delta;
