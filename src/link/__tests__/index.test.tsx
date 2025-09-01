@@ -3,6 +3,7 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
+import { renderWithSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal/testing';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import FormField from '../../../lib/components/form-field';
@@ -14,7 +15,6 @@ import Link, { LinkProps } from '../../../lib/components/link';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
 import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 import customCssProps from '../../internal/generated/custom-css-properties';
 
 import styles from '../../../lib/components/link/styles.css.js';

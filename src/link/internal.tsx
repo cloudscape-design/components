@@ -4,6 +4,7 @@ import React, { useContext, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
@@ -18,7 +19,6 @@ import {
 import { getBaseProps } from '../internal/base-component';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
