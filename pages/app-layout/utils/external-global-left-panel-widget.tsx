@@ -3,9 +3,7 @@
 import React from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
-import { Box } from '~components';
-import Button from '~components/button';
-import ButtonDropdown from '~components/button-dropdown';
+import { Box, StatusIndicator } from '~components';
 import { registerLeftDrawer } from '~components/internal/plugins/widget';
 
 import styles from '../styles.scss';
@@ -69,20 +67,38 @@ registerLeftDrawer({
   unmountContent: container => unmountComponentAtNode(container),
 
   mountHeader: container => {
-    ReactDOM.render(
-      <div style={{ inlineSize: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div className={styles['ai-panel-logo']}>AI Panel</div>
-        <div>
-          <ButtonDropdown
-            items={[{ id: 'settings', text: 'Settings' }]}
-            ariaLabel="AI Panel additional options"
-            variant="icon"
-          />
-          <Button iconName="add-plus" variant="icon" ariaLabel="Add a new chat" />
-        </div>
-      </div>,
-      container
-    );
+    ReactDOM.render(<div className={styles['ai-panel-logo']}>AI Panel</div>, container);
   },
   unmountHeader: container => unmountComponentAtNode(container),
+
+  headerActions: [
+    {
+      type: 'menu-dropdown',
+      id: 'more-actions',
+      text: 'More actions',
+      items: [
+        {
+          id: 'add',
+          iconName: 'add-plus',
+          text: 'Add',
+        },
+        {
+          id: 'remove',
+          iconName: 'remove',
+          text: 'Remove',
+        },
+      ],
+    },
+    {
+      type: 'icon-button',
+      id: 'add',
+      iconName: 'add-plus',
+      text: 'Add',
+      popoverFeedback: <StatusIndicator type="success">Message copied</StatusIndicator>,
+    },
+  ],
+
+  onHeaderActionClick: ({ detail }) => {
+    console.log('onHeaderActionClick: ', detail);
+  },
 });
