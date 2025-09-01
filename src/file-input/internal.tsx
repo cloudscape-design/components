@@ -5,6 +5,7 @@ import React, { ChangeEvent, Ref, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import {
   GeneratedAnalyticsMetadataFragment,
   getAnalyticsMetadataAttribute,
@@ -14,7 +15,6 @@ import InternalButton from '../button/internal';
 import { useFormFieldContext } from '../contexts/form-field';
 import { getBaseProps } from '../internal/base-component/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';

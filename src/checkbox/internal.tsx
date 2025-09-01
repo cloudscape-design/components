@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import {
   GeneratedAnalyticsMetadataFragment,
   getAnalyticsMetadataAttribute,
@@ -12,7 +13,6 @@ import { getBaseProps } from '../internal/base-component';
 import AbstractSwitch from '../internal/components/abstract-switch';
 import CheckboxIcon from '../internal/components/checkbox-icon';
 import { useFormFieldContext } from '../internal/context/form-field-context';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';

@@ -4,8 +4,9 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalIcon from '../../../icon/internal';
-import { useSingleTabStopNavigation } from '../../../internal/context/single-tab-stop-navigation-context';
 
 import styles from './styles.css.js';
 

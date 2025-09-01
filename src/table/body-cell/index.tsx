@@ -3,9 +3,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../../i18n/context';
 import Icon from '../../icon/internal';
-import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
 import { usePrevious } from '../../internal/hooks/use-previous';
 import InternalLiveRegion from '../../live-region/internal';
 import { TableProps } from '../interfaces';
