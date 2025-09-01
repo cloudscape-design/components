@@ -37,9 +37,9 @@ export function defaultIsSuppressed(target: Element) {
 /**
  * Finds the closest row to the targetAriaRowIndex+delta in the direction of delta.
  */
-export function findTableRowByAriaRowIndex(table: HTMLTableElement, targetAriaRowIndex: number, delta: number) {
+export function findTableRowByAriaRowIndex(table: null | HTMLTableElement, targetAriaRowIndex: number, delta: number) {
   let targetRow: null | HTMLTableRowElement = null;
-  const rowElements = Array.from(table.querySelectorAll('tr[aria-rowindex]'));
+  const rowElements = Array.from(table?.querySelectorAll('tr[aria-rowindex]') ?? []);
   if (delta < 0) {
     rowElements.reverse();
   }

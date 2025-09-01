@@ -28,6 +28,8 @@ export interface SharedProps {
   onSplitPanelToggle?: () => void;
   expandedDrawerId?: string | null;
   setExpandedDrawerId?: (value: string | null) => void;
+  aiDrawer?: AppLayoutProps.Drawer | undefined;
+  aiDrawerFocusRef: React.Ref<Focusable> | undefined;
 }
 
 export type MergeProps = (

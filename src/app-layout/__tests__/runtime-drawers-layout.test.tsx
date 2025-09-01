@@ -48,6 +48,7 @@ jest.mock('../../../lib/components/app-layout/utils/use-app-layout-placement', (
         inlineSize: Infinity,
         insetBlockStart: 0,
         insetBlockEnd: 0,
+        maxAiDrawerSize: 0,
       },
     ]),
   };
@@ -89,6 +90,7 @@ describe('toolbar mode only features', () => {
         maxGlobalDrawersSizes: {},
         totalActiveGlobalDrawersSize: 0,
         resizableSpaceAvailable: 792,
+        maxAiDrawerSize: 0,
       });
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
@@ -141,6 +143,7 @@ describe('toolbar mode only features', () => {
         maxGlobalDrawersSizes: {},
         totalActiveGlobalDrawersSize: 0,
         resizableSpaceAvailable: 792,
+        maxAiDrawerSize: 0,
       });
       const onToggle = jest.fn();
       awsuiPlugins.appLayout.registerDrawer({
@@ -198,6 +201,7 @@ describe('toolbar mode only features', () => {
         },
         totalActiveGlobalDrawersSize: 0,
         resizableSpaceAvailable: 792,
+        maxAiDrawerSize: 0,
       });
       const onDrawerItemResize = jest.fn();
       awsuiPlugins.appLayout.registerDrawer({
