@@ -1,9 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import addMonths from 'date-fns/addMonths';
-import isSameDay from 'date-fns/isSameDay';
-import isSameMonth from 'date-fns/isSameMonth';
-import subMonths from 'date-fns/subMonths';
+import dayjs from 'dayjs';
 
 import { DayIndex } from '../../locale';
 import {
@@ -146,7 +143,7 @@ describe('getCurrentMonthRows', () => {
     const result = getCurrentMonthRows(date, firstDayOfWeek);
 
     // Should contain February 15, 2024
-    const hasTargetDate = result.some(row => row.some(day => isSameDay(day, date)));
+    const hasTargetDate = result.some(row => row.some(day => dayjs(day).isSame(date, 'day')));
     expect(hasTargetDate).toBeTruthy();
   });
 });
@@ -169,10 +166,10 @@ describe('getPrevMonthRows', () => {
     const firstDayOfWeek: DayIndex = 0;
 
     const result = getPrevMonthRows(date, firstDayOfWeek);
-    const prevMonth = subMonths(date, 1);
+    const prevMonth = dayjs(date).subtract(1, 'month').toDate();
 
     // First day should be from previous month
-    expect(isSameMonth(result[0][0], prevMonth)).toBeFalsy();
+    expect(dayjs(result[0][0]).isSame(prevMonth, 'month')).toBeFalsy();
   });
 
   test('slices last row when it contains current month dates', () => {
@@ -184,7 +181,7 @@ describe('getPrevMonthRows', () => {
     // Last date should not be from current month
     const lastRow = result[result.length - 1];
     const lastDate = lastRow[lastRow.length - 1];
-    expect(isSameMonth(lastDate, date)).toBeFalsy();
+    expect(dayjs(lastDate).isSame(date, 'month')).toBeFalsy();
   });
 });
 
@@ -206,10 +203,10 @@ describe('getNextMonthRows', () => {
     const firstDayOfWeek: DayIndex = 0;
 
     const result = getNextMonthRows(date, firstDayOfWeek);
-    const nextMonth = addMonths(date, 1);
+    const nextMonth = dayjs(date).add(1, 'month').toDate();
 
     // First day should be from next month
-    expect(isSameMonth(result[0][0], nextMonth)).toBeTruthy();
+    expect(dayjs(result[0][0]).isSame(nextMonth, 'month')).toBeTruthy();
   });
 
   test('slices first row when it contains current month dates', () => {
@@ -219,7 +216,7 @@ describe('getNextMonthRows', () => {
     const result = getNextMonthRows(date, firstDayOfWeek);
 
     // First date should not be from current month
-    expect(isSameMonth(result[0][0], date)).toBeFalsy();
+    expect(dayjs(result[0][0]).isSame(date, 'month')).toBeFalsy();
   });
 
   test('handles year boundary', () => {
@@ -305,9 +302,9 @@ describe('getCalendarMonthWithSixRows', () => {
     });
 
     // First date should be from previous month or current month
-    expect(isSameMonth(result[0][0], date)).toBeFalsy();
-    expect(isSameMonth(result[3][3], date)).toBeTruthy();
-    expect(isSameMonth(result[5][6], date)).toBeFalsy();
+    expect(dayjs(result[0][0]).isSame(date, 'month')).toBeFalsy();
+    expect(dayjs(result[3][3]).isSame(date, 'month')).toBeTruthy();
+    expect(dayjs(result[5][6]).isSame(date, 'month')).toBeFalsy();
   });
 
   test('handles padding after correctly', () => {
@@ -320,9 +317,9 @@ describe('getCalendarMonthWithSixRows', () => {
     });
 
     // First dates should be from current month
-    expect(isSameMonth(result[0][0], date)).toBeFalsy();
-    expect(isSameMonth(result[3][3], date)).toBeTruthy();
-    expect(isSameMonth(result[5][6], date)).toBeFalsy();
+    expect(dayjs(result[0][0]).isSame(date, 'month')).toBeFalsy();
+    expect(dayjs(result[3][3]).isSame(date, 'month')).toBeTruthy();
+    expect(dayjs(result[5][6]).isSame(date, 'month')).toBeFalsy();
   });
 
   test('handles different start of week', () => {

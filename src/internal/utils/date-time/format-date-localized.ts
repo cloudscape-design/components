@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { isValid, parseISO } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { formatTimeOffsetLocalized } from './format-time-offset';
 
@@ -19,17 +19,17 @@ export default function formatDateLocalized({
   timeOffset?: number;
   locale?: string;
 }) {
-  let date = parseISO(isoDate);
+  let date = dayjs(isoDate);
   // if the date is not ISO formatted, fallback to built-in date parsing
-  if (!isValid(date)) {
-    date = new Date(isoDate);
+  if (!date.isValid()) {
+    date = dayjs(new Date(isoDate));
   }
 
   if (isMonthOnly) {
     const formattedMonthDate = new Intl.DateTimeFormat(locale, {
       month: 'long',
       year: 'numeric',
-    }).format(date);
+    }).format(date.toDate());
 
     return formattedMonthDate;
   }
@@ -38,7 +38,7 @@ export default function formatDateLocalized({
     month: 'long',
     year: 'numeric',
     day: 'numeric',
-  }).format(date);
+  }).format(date.toDate());
 
   if (isDateOnly) {
     return formattedDate;
@@ -49,7 +49,7 @@ export default function formatDateLocalized({
     hourCycle: 'h23',
     minute: '2-digit',
     second: '2-digit',
-  }).format(date);
+  }).format(date.toDate());
 
   const formattedDateTime = formattedDate + getDateTimeSeparator(locale) + formattedTime;
 
