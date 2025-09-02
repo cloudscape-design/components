@@ -97,10 +97,10 @@ const InternalIcon = ({
     }
     return (
       <WithNativeAttributes
-        tag="span"
-        nativeAttributes={nativeAttributes}
         {...baseProps}
         {...labelAttributes}
+        tag="span"
+        nativeAttributes={nativeAttributes}
         ref={mergedRef}
         aria-hidden={!hasAriaLabel}
         style={inlineStyles}
@@ -113,9 +113,9 @@ const InternalIcon = ({
   if (url) {
     return (
       <WithNativeAttributes
+        {...baseProps}
         tag="span"
         nativeAttributes={nativeAttributes}
-        {...baseProps}
         ref={mergedRef}
         style={inlineStyles}
       >
@@ -151,10 +151,10 @@ const InternalIcon = ({
 
   return (
     <WithNativeAttributes
-      tag="span"
-      nativeAttributes={nativeAttributes}
       {...baseProps}
       {...labelAttributes}
+      tag="span"
+      nativeAttributes={nativeAttributes}
       ref={mergedRef}
       style={inlineStyles}
     >

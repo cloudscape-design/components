@@ -24,9 +24,9 @@ export default function InternalSpinner({
   useModalContextLoadingComponent();
   return (
     <WithNativeAttributes
+      {...baseProps}
       tag="span"
       nativeAttributes={nativeAttributes}
-      {...baseProps}
       className={clsx(baseProps.className, styles.root, styles[`size-${size}`], styles[`variant-${variant}`])}
       ref={__internalRootRef}
     >

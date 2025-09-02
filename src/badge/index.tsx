@@ -23,10 +23,10 @@ export default function Badge({ color = 'grey', children, style, nativeAttribute
 
   return (
     <WithNativeAttributes
+      {...baseProps}
       tag="span"
       nativeAttributes={nativeAttributes}
-      {...baseProps}
-      {...{ className }}
+      className={className}
       ref={__internalRootRef}
       style={getBadgeStyles(style)}
     >
