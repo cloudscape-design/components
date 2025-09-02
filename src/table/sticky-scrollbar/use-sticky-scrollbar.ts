@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { RefObject, useEffect, useState } from 'react';
-import { ResizeObserver } from '@juggle/resize-observer';
 
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
