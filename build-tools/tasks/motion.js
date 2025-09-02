@@ -4,11 +4,17 @@ const execa = require('execa');
 const glob = require('glob');
 const waitOn = require('wait-on');
 const { task } = require('../utils/gulp-utils.js');
+const { parseArgs } = require('node:util');
 
 module.exports = task('test:motion', async () => {
+  const options = {
+    reactVersion: { type: 'string' },
+  };
+  const { reactVersion = '16' } = parseArgs({ options, strict: false }).values;
   const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.cjs'], {
     env: {
       NODE_ENV: 'development',
+      REACT_VERSION: reactVersion,
     },
   });
   await waitOn({ resources: ['http://localhost:8080'] });
