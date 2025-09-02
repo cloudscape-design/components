@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
@@ -28,7 +28,7 @@ function renderNavigableGroup(props: Partial<NavigableGroupProps> = {}) {
     <>
       <button ref={blurRef}>other focusable</button>
       <NavigableGroup getItemKey={element => element.id} ref={ref} {...props}>
-        {children}
+        {props.children ?? children}
       </NavigableGroup>
     </>
   );
@@ -289,6 +289,22 @@ describe('NavigableGroup', () => {
         renderNavigableGroupWithDisabledElements(true, ref);
         ref.current!.focus();
         expect(document.body).toHaveFocus();
+      });
+    });
+
+    describe('non-supported children', () => {
+      it('handles plain buttons without errors', () => {
+        const { container } = renderNavigableGroup({
+          children: [
+            <button key="1" id="one">
+              Button 1
+            </button>,
+          ],
+        });
+        const button = container.querySelector('#one')! as HTMLButtonElement;
+        button.focus();
+        fireEvent.keyDown(button, { keyCode: KeyCode.right });
+        expect(button).toHaveFocus();
       });
     });
 

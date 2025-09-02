@@ -106,9 +106,6 @@ const InternalNavigableGroup = forwardRef(
       event.preventDefault();
 
       const focusables = getFocusablesFrom(containerObjectRef.current);
-      if (!focusables.length) {
-        return;
-      }
       const activeIndex = focusables.indexOf(focusTarget);
       const getNextIndex = (delta: number) => {
         const newIndex = activeIndex + delta;
