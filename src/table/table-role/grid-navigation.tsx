@@ -41,9 +41,9 @@ export function GridNavigationProvider({ keyboardNavigation, pageSize, getTable,
       const table = getTableStable();
       if (table) {
         gridNavigation.init(table);
-        return gridNavigation.cleanup;
       }
     }
+    return () => gridNavigation.cleanup();
   }, [keyboardNavigation, gridNavigation, getTableStable]);
 
   // Notify the processor of the props change.
@@ -78,7 +78,7 @@ export function GridNavigationProvider({ keyboardNavigation, pageSize, getTable,
  * 2. Muting table interactive elements for only one to be user-focusable at a time;
  * 3. Suppressing the above behaviors when focusing an element inside a dialog or when instructed explicitly.
  */
-export class GridNavigationProcessor {
+class GridNavigationProcessor {
   // Props
   private _pageSize = 0;
   private _table: null | HTMLTableElement = null;
@@ -97,18 +97,18 @@ export class GridNavigationProcessor {
     this._table = table;
     const controller = new AbortController();
 
-    table.addEventListener('focusin', this.onFocusin, { signal: controller.signal });
-    table.addEventListener('focusout', this.onFocusout, { signal: controller.signal });
-    table.addEventListener('keydown', this.onKeydown, { signal: controller.signal });
+    this.table.addEventListener('focusin', this.onFocusin, { signal: controller.signal });
+    this.table.addEventListener('focusout', this.onFocusout, { signal: controller.signal });
+    this.table.addEventListener('keydown', this.onKeydown, { signal: controller.signal });
 
     this.cleanup = () => {
       controller.abort();
     };
   }
 
-  public cleanup = () => {
+  public cleanup() {
     // Do nothing before initialized.
-  };
+  }
 
   public update({ pageSize }: { pageSize: number }) {
     this._pageSize = pageSize;
@@ -146,10 +146,6 @@ export class GridNavigationProcessor {
   };
 
   public getNextFocusTarget = () => {
-    if (!this.table) {
-      return null;
-    }
-
     const cell = this.focusedCell;
     const firstTableCell = this.table.querySelector('td,th') as null | HTMLTableCellElement;
 
@@ -178,7 +174,10 @@ export class GridNavigationProcessor {
     return this._pageSize;
   }
 
-  private get table(): null | HTMLTableElement {
+  private get table(): HTMLTableElement {
+    if (!this._table) {
+      throw new Error('Invariant violation: GridNavigationProcessor is used before initialization.');
+    }
     return this._table;
   }
 
