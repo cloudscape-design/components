@@ -18,7 +18,7 @@
     "lint": "npm-run-all --parallel lint:*",
     "lint:eslint": "eslint .",
     "lint:stylelint": "stylelint --ignore-path .gitignore '{src,pages}/**/*.{css,scss}'",
-    "build:react18": "cross-env NODE_ENV=production gulp build:react18",
+    "build:react18": "cross-env NODE_ENV=development gulp build:react18",
     "start": "npm-run-all --parallel start:watch start:dev",
     "start:watch": "gulp watch",
     "start:dev": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.cjs",
