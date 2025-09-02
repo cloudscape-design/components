@@ -9,6 +9,7 @@ import { InternalIconContext } from '../icon-provider/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { IconProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -46,6 +47,7 @@ const InternalIcon = ({
   ariaLabel,
   svg,
   badge,
+  nativeAttributes,
   __internalRootRef,
   ...props
 }: InternalIconProps) => {
@@ -94,17 +96,31 @@ const InternalIcon = ({
       );
     }
     return (
-      <span {...baseProps} {...labelAttributes} ref={mergedRef} aria-hidden={!hasAriaLabel} style={inlineStyles}>
+      <WithNativeAttributes
+        tag="span"
+        nativeAttributes={nativeAttributes}
+        {...baseProps}
+        {...labelAttributes}
+        ref={mergedRef}
+        aria-hidden={!hasAriaLabel}
+        style={inlineStyles}
+      >
         {svg}
-      </span>
+      </WithNativeAttributes>
     );
   }
 
   if (url) {
     return (
-      <span {...baseProps} ref={mergedRef} style={inlineStyles}>
+      <WithNativeAttributes
+        tag="span"
+        nativeAttributes={nativeAttributes}
+        {...baseProps}
+        ref={mergedRef}
+        style={inlineStyles}
+      >
         <img src={url} alt={ariaLabel ?? alt} />
-      </span>
+      </WithNativeAttributes>
     );
   }
 
@@ -134,9 +150,16 @@ const InternalIcon = ({
   }
 
   return (
-    <span {...baseProps} {...labelAttributes} ref={mergedRef} style={inlineStyles}>
+    <WithNativeAttributes
+      tag="span"
+      nativeAttributes={nativeAttributes}
+      {...baseProps}
+      {...labelAttributes}
+      ref={mergedRef}
+      style={inlineStyles}
+    >
       {validIcon ? iconMap(name) : undefined}
-    </span>
+    </WithNativeAttributes>
   );
 };
 
