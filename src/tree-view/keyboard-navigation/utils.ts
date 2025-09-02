@@ -28,7 +28,11 @@ export function isElementDisabled(element: HTMLElement) {
   return false;
 }
 
-export function findTreeItemByIndex(treeView: HTMLUListElement, targetTreeItemIndex: number, delta: number) {
+export function findTreeItemByIndex(treeView: null | HTMLUListElement, targetTreeItemIndex: number, delta: number) {
+  if (!treeView) {
+    return null;
+  }
+
   let targetTreeItem: null | HTMLLIElement = null;
   const treeItemElements = Array.from(treeView.querySelectorAll('li[data-awsui-tree-item-index]'));
 
@@ -53,7 +57,11 @@ export function findTreeItemByIndex(treeView: HTMLUListElement, targetTreeItemIn
   return targetTreeItem;
 }
 
-export function findTreeItemById(treeView: HTMLUListElement, treeItemId: string) {
+export function findTreeItemById(treeView: null | HTMLUListElement, treeItemId: string) {
+  if (!treeView) {
+    return null;
+  }
+
   const treeItem = treeView.querySelector(`li[data-awsui-tree-item-index][id="${treeItemId}"]`);
   return treeItem as null | HTMLLIElement;
 }
