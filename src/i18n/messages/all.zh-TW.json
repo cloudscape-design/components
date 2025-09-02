@@ -216,7 +216,7 @@
   "list": {
     "dragHandleAriaLabel": "拖曳控點",
     "dragHandleAriaDescription": "使用空白鍵或 ENTER 鍵啟用項目拖曳功能，然後使用方向鍵移動項目的位置。若要完成位置移動，請使用空白鍵或 ENTER 鍵，或者若要捨棄移動，請使用 ESC 鍵。",
-    "liveAnnouncementDndStarted": "在第 {position} 位置 (共 {total} 個位置) 拾取了項目",
+    "liveAnnouncementDndStarted": "在 {position} 位置 (共 {total} 個位置) 拾取了項目",
     "liveAnnouncementDndDiscarded": "重新排序已取消",
     "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {將項目移回 {currentPosition} 位置 (共 {total} 個位置)} false {將項目移到 {currentPosition} 位置 (共 {total} 個位置)} other {}}",
     "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目移回原來的 {initialPosition} 位置 (共 {total} 個位置)} false {項目已從 {initialPosition} 位置移到 {finalPosition} 位置 (共 {total} 個位置)} other {}}"
@@ -334,7 +334,7 @@
     "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
     "i18nStrings.labelFiltering": "尋找 {itemsType}",
     "i18nStrings.labelRefresh": "重新整理資料",
-    "i18nStrings.labelBreadcrumbs": "S3 導覽",
+    "i18nStrings.labelBreadcrumbs": "S3 頁面導覽路徑",
     "i18nStrings.labelIconFolder": "資料夾",
     "i18nStrings.labelIconObject": "物件",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 個符合} other {{count} 個符合}}"
