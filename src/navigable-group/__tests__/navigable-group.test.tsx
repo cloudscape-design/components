@@ -93,7 +93,7 @@ describe('NavigableGroup', () => {
     test('renders children', () => {
       const { wrapper } = renderNavigableGroup();
 
-      expect(wrapper.findAllButtons().length).toBe(3);
+      expect(wrapper.findContent().findAllButtons().length).toBe(3);
     });
   });
 
@@ -102,8 +102,8 @@ describe('NavigableGroup', () => {
       test('navigates right with ArrowRight key', () => {
         const { wrapper } = renderNavigableGroup();
 
-        const button1 = wrapper.findAllButtons()[0];
-        const button2 = wrapper.findAllButtons()[1];
+        const button1 = wrapper.findContent().findAllButtons()[0];
+        const button2 = wrapper.findContent().findAllButtons()[1];
 
         button1.focus();
         button1.keydown(KeyCode.right);
@@ -114,8 +114,8 @@ describe('NavigableGroup', () => {
       test('navigates left with ArrowLeft key', () => {
         const { wrapper } = renderNavigableGroup();
 
-        const button1 = wrapper.findAllButtons()[0];
-        const button2 = wrapper.findAllButtons()[1];
+        const button1 = wrapper.findContent().findAllButtons()[0];
+        const button2 = wrapper.findContent().findAllButtons()[1];
 
         button2.focus();
         button2.keydown(KeyCode.left);
@@ -126,7 +126,7 @@ describe('NavigableGroup', () => {
       test('does not navigate with ArrowUp/ArrowDown keys in horizontal mode', () => {
         const { wrapper } = renderNavigableGroup();
 
-        const button2 = wrapper.findAllButtons()[1];
+        const button2 = wrapper.findContent().findAllButtons()[1];
 
         button2.focus();
         button2.keydown(KeyCode.down);
@@ -140,8 +140,8 @@ describe('NavigableGroup', () => {
       test('navigates down with ArrowDown key', () => {
         const { wrapper } = renderNavigableGroup({ navigationDirection: 'vertical' });
 
-        const button1 = wrapper.findAllButtons()[0];
-        const button2 = wrapper.findAllButtons()[1];
+        const button1 = wrapper.findContent().findAllButtons()[0];
+        const button2 = wrapper.findContent().findAllButtons()[1];
 
         button1.focus();
         button1.keydown(KeyCode.down);
@@ -152,8 +152,8 @@ describe('NavigableGroup', () => {
       test('navigates up with ArrowUp key', () => {
         const { wrapper } = renderNavigableGroup({ navigationDirection: 'vertical' });
 
-        const button1 = wrapper.findAllButtons()[0];
-        const button2 = wrapper.findAllButtons()[1];
+        const button1 = wrapper.findContent().findAllButtons()[0];
+        const button2 = wrapper.findContent().findAllButtons()[1];
 
         button2.focus();
         button2.keydown(KeyCode.up);
@@ -164,7 +164,7 @@ describe('NavigableGroup', () => {
       test('does not navigate with ArrowLeft/ArrowRight keys in vertical mode', () => {
         const { wrapper } = renderNavigableGroup({ navigationDirection: 'vertical' });
 
-        const button2 = wrapper.findAllButtons()[1];
+        const button2 = wrapper.findContent().findAllButtons()[1];
 
         button2.focus();
         button2.keydown(KeyCode.left);
@@ -178,9 +178,9 @@ describe('NavigableGroup', () => {
       test('navigates with all arrow keys when direction is "both"', () => {
         const { wrapper } = renderNavigableGroup({ navigationDirection: 'both' });
 
-        const button1 = wrapper.findAllButtons()[0];
-        const button2 = wrapper.findAllButtons()[1];
-        const button3 = wrapper.findAllButtons()[2];
+        const button1 = wrapper.findContent().findAllButtons()[0];
+        const button2 = wrapper.findContent().findAllButtons()[1];
+        const button3 = wrapper.findContent().findAllButtons()[2];
 
         button2.focus();
         button2.keydown(KeyCode.up);
@@ -198,8 +198,8 @@ describe('NavigableGroup', () => {
       test('navigates to last item with end key', () => {
         const { wrapper } = renderNavigableGroup();
 
-        const button1 = wrapper.findAllButtons()[0];
-        const button3 = wrapper.findAllButtons()[2];
+        const button1 = wrapper.findContent().findAllButtons()[0];
+        const button3 = wrapper.findContent().findAllButtons()[2];
 
         button1.focus();
         button1.keydown(KeyCode.end);
@@ -209,8 +209,8 @@ describe('NavigableGroup', () => {
       test('navigates to first item with home key', () => {
         const { wrapper } = renderNavigableGroup();
 
-        const button1 = wrapper.findAllButtons()[0];
-        const button3 = wrapper.findAllButtons()[2];
+        const button1 = wrapper.findContent().findAllButtons()[0];
+        const button3 = wrapper.findContent().findAllButtons()[2];
 
         button3.focus();
         button3.keydown(KeyCode.home);
@@ -221,8 +221,8 @@ describe('NavigableGroup', () => {
     test('loops focus', () => {
       const { wrapper } = renderNavigableGroup();
 
-      const button1 = wrapper.findAllButtons()[0];
-      const button3 = wrapper.findAllButtons()[2];
+      const button1 = wrapper.findContent().findAllButtons()[0];
+      const button3 = wrapper.findContent().findAllButtons()[2];
 
       button3.focus();
       button3.keydown(KeyCode.right);
@@ -240,8 +240,8 @@ describe('NavigableGroup', () => {
       );
       const wrapper = createWrapper(container).findNavigableGroup()!;
 
-      const button1 = wrapper.findAllButtons()[0];
-      const button2 = wrapper.findAllButtons()[1];
+      const button1 = wrapper.findContent().findAllButtons()[0];
+      const button2 = wrapper.findContent().findAllButtons()[1];
 
       button1.focus();
       button1.keydown(KeyCode.right);
@@ -253,7 +253,7 @@ describe('NavigableGroup', () => {
       test('focuses first element when focus() is called on ref', () => {
         const { wrapper, ref } = renderNavigableGroup();
 
-        const button1 = wrapper.findAllButtons()[0];
+        const button1 = wrapper.findContent().findAllButtons()[0];
         ref.current!.focus();
 
         expect(button1.getElement()).toHaveFocus();
@@ -262,7 +262,7 @@ describe('NavigableGroup', () => {
       test('focuses previously focused element when focus() is called', () => {
         const { wrapper, ref, blurRef } = renderNavigableGroup();
 
-        const button3 = wrapper.findAllButtons()[2];
+        const button3 = wrapper.findContent().findAllButtons()[2];
 
         button3.focus();
         blurRef.current!.focus();
@@ -276,8 +276,8 @@ describe('NavigableGroup', () => {
       test('skips disabled buttons during navigation', () => {
         const { wrapper } = renderNavigableGroupWithDisabledElements();
 
-        const button1 = wrapper.findAllButtons()[0];
-        const button3 = wrapper.findAllButtons()[2];
+        const button1 = wrapper.findContent().findAllButtons()[0];
+        const button3 = wrapper.findContent().findAllButtons()[2];
 
         button1.focus();
         button1.keydown(KeyCode.right);
@@ -312,11 +312,11 @@ describe('NavigableGroup', () => {
       test('navigates between different types of focusable elements', () => {
         const { wrapper } = renderNavigableGroupWithMixedElements();
 
-        const saveButton = wrapper.findButton()!;
-        const actionsDropdown = wrapper.findButtonDropdown()!.findTriggerButton()!;
-        const checkbox = wrapper.findCheckbox()!.findNativeInput();
-        const toggle = wrapper.findToggleButton('#toggle')!;
-        const link = wrapper.findLink()!;
+        const saveButton = wrapper.findContent().findButton()!;
+        const actionsDropdown = wrapper.findContent().findButtonDropdown()!.findTriggerButton()!;
+        const checkbox = wrapper.findContent().findCheckbox()!.findNativeInput();
+        const toggle = wrapper.findContent().findToggleButton('#toggle')!;
+        const link = wrapper.findContent().findLink()!;
 
         saveButton.focus();
         saveButton.keydown(KeyCode.right);
