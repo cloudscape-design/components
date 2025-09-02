@@ -1506,37 +1506,29 @@ describe('toolbar mode only features', () => {
           findExpandedModeButtonByActiveDrawerId(drawerId, renderProps)!.click();
           expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
 
-          if (type === 'global') {
-            expect(
-              getGeneratedAnalyticsMetadata(findExpandedModeButtonByActiveDrawerId(drawerId, renderProps)!.getElement())
-            ).toEqual(
-              expect.objectContaining({
-                action: 'expand',
-                detail: {
-                  label: 'Expanded mode button',
-                },
-              })
-            );
-          } else {
-            // TODO
-          }
+          expect(
+            getGeneratedAnalyticsMetadata(findExpandedModeButtonByActiveDrawerId(drawerId, renderProps)!.getElement())
+          ).toEqual(
+            expect.objectContaining({
+              action: 'expand',
+              detail: expect.objectContaining({
+                label: 'Expanded mode button',
+              }),
+            })
+          );
 
           findExpandedModeButtonByActiveDrawerId(drawerId, renderProps)!.click();
           expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
-          if (type === 'global') {
-            expect(
-              getGeneratedAnalyticsMetadata(findExpandedModeButtonByActiveDrawerId(drawerId, renderProps)!.getElement())
-            ).toEqual(
-              expect.objectContaining({
-                action: 'collapse',
-                detail: {
-                  label: 'Expanded mode button',
-                },
-              })
-            );
-          } else {
-            // TODO
-          }
+          expect(
+            getGeneratedAnalyticsMetadata(findExpandedModeButtonByActiveDrawerId(drawerId, renderProps)!.getElement())
+          ).toEqual(
+            expect.objectContaining({
+              action: 'collapse',
+              detail: expect.objectContaining({
+                label: 'Expanded mode button',
+              }),
+            })
+          );
         });
 
         test('only one drawer could be in expanded mode. all other panels should be closed', async () => {

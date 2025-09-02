@@ -91,12 +91,13 @@ export function AppLayoutGlobalAiDrawerImplementation({
   // (window is between mobile and desktop sizes). At this point, the drawer can't be
   // resized in either direction, so we disable the resize handler
   const isResizingDisabled = maxAiDrawerSize < activeAiDrawerSize;
-  let drawerActions: ReadonlyArray<ButtonGroupProps.ItemOrGroup> = [
+  let drawerActions: ReadonlyArray<ButtonGroupProps.InternalItemOrGroup> = [
     {
       type: 'icon-button',
       id: 'close',
       iconName: isMobile ? 'close' : 'angle-left',
       text: computedAriaLabels.closeButton,
+      analyticsAction: 'close',
     },
   ];
   if (!isMobile && activeAiDrawer?.isExpandable) {
@@ -106,6 +107,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
         id: 'expand',
         iconName: isExpanded ? 'shrink' : 'expand',
         text: activeAiDrawer?.ariaLabels?.expandedModeButton ?? '',
+        analyticsAction: isExpanded ? 'expand' : 'collapse',
       },
       ...drawerActions,
     ];
