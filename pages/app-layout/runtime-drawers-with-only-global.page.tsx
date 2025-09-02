@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import { AppLayout } from '~components';
 import awsuiPlugins from '~components/internal/plugins';
+import { mount, unmount } from '~mount';
 
 import ScreenshotArea from '../utils/screenshot-area';
 import labels from './utils/labels';
@@ -37,9 +37,9 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<div data-testid="circle-global-bottom-content">circle-global bottom content</div>, container);
+    mount(<div data-testid="circle-global-bottom-content">circle-global bottom content</div>, container);
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 
 export default function WithDrawersGlobalOnly() {
