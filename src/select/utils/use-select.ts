@@ -22,7 +22,7 @@ import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { connectOptionsByValue } from './connect-options';
 
-export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLUListElement> };
+export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLDivElement> };
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
 
 interface UseSelectProps {
@@ -72,7 +72,7 @@ export function useSelect({
 
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const menuRef = useRef<HTMLUListElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const hasFilter = filteringType !== 'none' && !embedded;
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);

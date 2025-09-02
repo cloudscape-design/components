@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { DropdownOption } from '../../internal/components/option/interfaces';
+import { unflattenOptions } from '../../internal/components/option/utils/unflatten-options';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 import { VirtualItem } from '../../internal/vendor/react-virtual';
 import Item from '../parts/item';
@@ -40,7 +41,7 @@ export const renderOptions = ({
   firstOptionSticky,
   stickyOptionRef,
 }: RenderOptionProps) => {
-  return options.map((option, index) => {
+  const renderListItem = (option: DropdownOption, index: number) => {
     const virtualItem = virtualItems && virtualItems[index];
     const globalIndex = virtualItem ? virtualItem.index : index;
     const props = getItemProps({
@@ -71,5 +72,20 @@ export const renderOptions = ({
         sticky={isSticky}
       />
     );
+  };
+
+  const unflattenedOptions = unflattenOptions(options);
+  return unflattenedOptions.map((nestedDropdownOption, i) => {
+    if (nestedDropdownOption.type === 'parent') {
+      return (
+        <div role="group" key={i}>
+          {renderListItem(nestedDropdownOption.option, nestedDropdownOption.index)}
+          {nestedDropdownOption.children.map((child, j) => (
+            <React.Fragment key={j}>{renderListItem(child.option, child.index)}</React.Fragment>
+          ))}
+        </div>
+      );
+    }
+    return renderListItem(nestedDropdownOption.option, nestedDropdownOption.index);
   });
 };

@@ -49,7 +49,7 @@ const PlainList = ({
   listBottom,
   screenReaderContent,
 }: ListProps) => {
-  const listRef = useRef<HTMLUListElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const item = listRef.current?.querySelector<HTMLElement>(
       `[data-mouse-target="${autosuggestItemsState.highlightedIndex}"]`
