@@ -23,7 +23,6 @@
 }
 
 .segment-part {
-  display: -ms-inline-grid;
   display: inline-grid;
   border-inline: solid awsui.$border-width-field awsui.$color-border-input-default;
   border-block: solid awsui.$border-width-field awsui.$color-border-input-default;
