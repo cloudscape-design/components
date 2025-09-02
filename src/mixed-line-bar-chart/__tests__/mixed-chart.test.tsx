@@ -109,10 +109,6 @@ const thresholdSeries: MixedLineBarChartProps.ThresholdSeries = {
   y: 6,
 };
 
-// Mock support for CSS Custom Properties in Jest so that we assign the correct colors.
-// Transformation to fallback colors for browsers that don't support them are covered by the `parseCssVariable` utility.
-const originalCSS = window.CSS;
-
 let originalGetComputedStyle: Window['getComputedStyle'];
 const fakeGetComputedStyle: Window['getComputedStyle'] = (...args) => {
   const result = originalGetComputedStyle(...args);
@@ -123,14 +119,12 @@ const fakeGetComputedStyle: Window['getComputedStyle'] = (...args) => {
 };
 
 beforeEach(() => {
-  window.CSS.supports = () => true;
   originalGetComputedStyle = window.getComputedStyle;
   window.getComputedStyle = fakeGetComputedStyle;
 
   jest.resetAllMocks();
 });
 afterEach(() => {
-  window.CSS = originalCSS;
   window.getComputedStyle = originalGetComputedStyle;
 });
 
@@ -435,15 +429,6 @@ describe('Series', () => {
         expect(wrapper.findSeries()).toHaveLength(2);
       });
     });
-  });
-
-  test('CSS color variables are changed to fallback values in unsupported browsers', () => {
-    window.CSS.supports = () => false;
-
-    const { wrapper } = renderMixedChart(
-      <MixedLineBarChart series={[{ ...lineSeries, color: 'var(--mycolor, red)' }]} />
-    );
-    expect(wrapper.findSeries()[0].find('path')?.getElement()).toHaveAttribute('stroke', 'red');
   });
 
   test('should warn when `series` changes with uncontrolled `visibleSeries`', () => {

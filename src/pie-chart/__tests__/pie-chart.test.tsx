@@ -9,7 +9,6 @@ import TestI18nProvider from '../../../lib/components/i18n/testing';
 import PieChart, { PieChartProps } from '../../../lib/components/pie-chart';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { PieChartWrapper } from '../../../lib/components/test-utils/dom';
-import * as colors from '../../../lib/design-tokens';
 
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
 import styles from '../../../lib/components/pie-chart/styles.css.js';
@@ -57,16 +56,6 @@ const dataWithZero: Array<PieChartProps.Datum> = [
   { title: 'Segment 2', value: 10 },
   { title: 'Segment 3', value: 0 },
 ];
-
-// Mock support for CSS Custom Properties in Jest so that we assign the correct colors.
-// Transformation to fallback colors for browsers that don't support them are covered by the `parseCssVariable` utility.
-const originalCSS = window.CSS;
-beforeEach(() => {
-  window.CSS.supports = () => true;
-});
-afterEach(() => {
-  window.CSS = originalCSS;
-});
 
 describe('Chart container', () => {
   test('can receive ARIA labels', () => {
@@ -386,9 +375,16 @@ describe('Segments', () => {
     const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
     const segments = wrapper.findSegments();
 
-    expect(segments[0].find('path')?.getElement()).toHaveAttribute('fill', colors.colorChartsPaletteCategorical1);
-    expect(segments[1].find('path')?.getElement()).toHaveAttribute('fill', colors.colorChartsPaletteCategorical2);
-    expect(segments[2].find('path')?.getElement()).toHaveAttribute('fill', colors.colorChartsPaletteCategorical3);
+    // CSS variables are used as-is, browser resolves them to computed values
+    expect(segments[0].find('path')?.getElement()?.getAttribute('fill')).toMatch(
+      /^var\(--color-charts-palette-categorical-1-[a-z0-9]+, #688ae8\)$/
+    );
+    expect(segments[1].find('path')?.getElement()?.getAttribute('fill')).toMatch(
+      /^var\(--color-charts-palette-categorical-2-[a-z0-9]+, #c33d69\)$/
+    );
+    expect(segments[2].find('path')?.getElement()?.getAttribute('fill')).toMatch(
+      /^var\(--color-charts-palette-categorical-3-[a-z0-9]+, #2ea597\)$/
+    );
   });
 
   test('can use custom colors', () => {
@@ -416,15 +412,6 @@ describe('Segments', () => {
       .forEach((segment, i) =>
         expect(segment.find('path')?.getElement()).toHaveAttribute('fill', coloredData[i].color)
       );
-  });
-
-  test('CSS color variables are changed to fallback values in unsupported browsers', () => {
-    window.CSS.supports = () => false;
-
-    const { wrapper } = renderPieChart(
-      <PieChart data={[{ title: 'Segment', value: 1, color: 'var(--mycolor, red)' }]} />
-    );
-    expect(wrapper.findSegments()[0].find('path')?.getElement()).toHaveAttribute('fill', 'red');
   });
 
   test('nothing is highlighted by default', () => {
