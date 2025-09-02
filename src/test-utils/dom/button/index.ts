@@ -2,19 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../button/styles.selectors.js';
 import buttonTestUtilsStyles from '../../../button/test-classes/styles.selectors.js';
 import spinnerStyles from '../../../spinner/styles.selectors.js';
 
 export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
-  static rootSelector: string = styles.button;
+  static rootSelector: string = buttonTestUtilsStyles.button;
 
   findLoadingIndicator(): ElementWrapper | null {
-    return this.find(`.${styles['icon-left']}.${spinnerStyles.root}`);
+    return this.find(`.${buttonTestUtilsStyles['icon-left']}.${spinnerStyles.root}`);
   }
 
   findTextRegion(): ElementWrapper | null {
-    return this.find(`.${styles.content}`);
+    return this.find(`.${buttonTestUtilsStyles.content}`);
   }
 
   @usesDom

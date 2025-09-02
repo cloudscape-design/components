@@ -9,6 +9,7 @@ import InternalSpinner from '../spinner/internal';
 import { ButtonProps } from './interfaces';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 export interface ButtonIconProps {
   loading?: boolean;
@@ -49,7 +50,7 @@ function IconWrapper({ iconName, iconUrl, iconAlt, iconSvg, iconSize, badge, ...
 
 export function LeftIcon(props: ButtonIconProps) {
   if (props.loading) {
-    return <InternalSpinner className={clsx(styles.icon, styles['icon-left'])} />;
+    return <InternalSpinner className={clsx(styles.icon, styles['icon-left'], testUtilStyles['icon-left'])} />;
   } else if (getIconAlign(props) === 'left') {
     return <IconWrapper {...props} />;
   }
