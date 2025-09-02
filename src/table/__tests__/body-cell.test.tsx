@@ -3,12 +3,13 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
+import { renderWithSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import { LiveRegionController } from '../../../lib/components/live-region/controller.js';
 import { TableBodyCell, TableBodyCellProps } from '../../../lib/components/table/body-cell';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 import wrapper from '../../../lib/components/test-utils/dom';
 import { renderHook } from '../../__tests__/render-hook';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 import { TableProps } from '../interfaces';
 
 import styles from '../../../lib/components/table/body-cell/styles.selectors.js';

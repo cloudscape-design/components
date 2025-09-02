@@ -4,13 +4,13 @@ import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
 import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
+import { renderWithSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal/testing';
 
 import Button, { ButtonProps } from '../../../lib/components/button';
 import InternalButton from '../../../lib/components/button/internal';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
 import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 import customCssProps from '../../internal/generated/custom-css-properties';
 
 import styles from '../../../lib/components/button/styles.css.js';

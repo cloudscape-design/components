@@ -1,13 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { KeyboardEvent, KeyboardEventHandler, MouseEvent, useContext } from 'react';
+import React, { KeyboardEvent, KeyboardEventHandler, MouseEvent } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useSingleTabStopNavigation, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalCheckbox from '../../checkbox/internal';
-import { SingleTabStopNavigationContext } from '../../internal/context/single-tab-stop-navigation-context';
 import { KeyCode } from '../../internal/keycode';
 import RadioButton from '../../radio-group/radio-button';
 import { SelectionProps } from './interfaces';
@@ -42,7 +41,7 @@ export function SelectionControl({
 }: SelectionControlProps) {
   const controlId = useUniqueId();
   const isMultiSelection = selectionType === 'multi';
-  const { navigationActive } = useContext(SingleTabStopNavigationContext);
+  const { navigationActive } = useSingleTabStopNavigation(null);
 
   const setShiftState = (event: KeyboardEvent | MouseEvent) => {
     if (isMultiSelection) {

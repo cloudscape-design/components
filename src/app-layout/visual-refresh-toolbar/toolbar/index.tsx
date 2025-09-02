@@ -138,10 +138,14 @@ export function AppLayoutToolbarImplementation({
   return (
     <ToolbarSlot
       ref={ref}
-      className={clsx(styles['universal-toolbar'], testutilStyles.toolbar, {
-        [testutilStyles['mobile-bar']]: isMobile,
-        [styles['with-open-ai-drawer']]: !!activeAiDrawerId,
-      })}
+      className={clsx(
+        styles['universal-toolbar'],
+        aiDrawer?.trigger && styles['with-ai-drawer'],
+        testutilStyles.toolbar,
+        {
+          [testutilStyles['mobile-bar']]: isMobile,
+        }
+      )}
       style={{
         insetBlockStart: verticalOffsets.toolbar,
       }}

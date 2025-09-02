@@ -45,10 +45,6 @@
     opacity: 1;
   }
 
-  &:-ms-input-placeholder {
-    @include styles.form-placeholder;
-  }
-
   &:focus {
     @include styles.form-focus-element;
   }
@@ -65,10 +61,6 @@
     &::placeholder {
       @include styles.form-placeholder-disabled;
       opacity: 1;
-    }
-
-    &:-ms-input-placeholder {
-      @include styles.form-placeholder-disabled;
     }
   }
 
