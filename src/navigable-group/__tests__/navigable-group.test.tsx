@@ -36,19 +36,23 @@ function renderNavigableGroup(props: Partial<NavigableGroupProps> = {}) {
   return { ...renderResult, ref, blurRef, wrapper: createWrapper(renderResult.container).findNavigableGroup()! };
 }
 
-function renderNavigableGroupWithDisabledElements(props: Partial<NavigableGroupProps> = {}) {
+function renderNavigableGroupWithDisabledElements(allDisabled = false, ref?: React.Ref<NavigableGroupProps.Ref>) {
   const children = (
     <>
-      <Button id="button1">Button 1</Button>
+      <Button id="button1" disabled={allDisabled}>
+        Button 1
+      </Button>
       <Button id="button2" disabled={true}>
         Button 2
       </Button>
-      <Button id="button3">Button 3</Button>
+      <Button id="button3" disabled={allDisabled}>
+        Button 3
+      </Button>
     </>
   );
 
   const renderResult = render(
-    <NavigableGroup getItemKey={element => element.id} {...props}>
+    <NavigableGroup getItemKey={element => element.id} ref={ref}>
       {children}
     </NavigableGroup>
   );
@@ -279,6 +283,12 @@ describe('NavigableGroup', () => {
         button1.keydown(KeyCode.right);
 
         expect(button3.getElement()).toHaveFocus();
+      });
+      test('skips entirely if all elements disabled', () => {
+        const ref: { current: NavigableGroupProps.Ref | null } = { current: null };
+        renderNavigableGroupWithDisabledElements(true, ref);
+        ref.current!.focus();
+        expect(document.body).toHaveFocus();
       });
     });
 
