@@ -15,7 +15,7 @@ import { ButtonGroupProps } from './interfaces.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 interface IconButtonItemProps {
-  item: ButtonGroupProps.IconButton;
+  item: ButtonGroupProps.InternalIconButton;
   showTooltip: boolean;
   showFeedback: boolean;
   onTooltipDismiss: () => void;
@@ -55,6 +55,7 @@ const IconButtonItem = forwardRef(
           data-testid={item.id}
           data-itemid={item.id}
           className={clsx(testUtilStyles.item, testUtilStyles['button-group-item'])}
+          analyticsAction={item.analyticsAction}
           __title=""
         >
           {item.text}
