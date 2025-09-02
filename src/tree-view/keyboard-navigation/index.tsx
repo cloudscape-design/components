@@ -44,8 +44,8 @@ export function KeyboardNavigationProvider({
     const treeView = getTreeViewStable();
     if (treeView) {
       keyboardNavigation.init(treeView);
+      return keyboardNavigation.cleanup;
     }
-    return () => keyboardNavigation.cleanup();
   }, [keyboardNavigation, getTreeViewStable]);
 
   // Notify the processor of the props change.
@@ -79,7 +79,7 @@ interface KeyboardNavigationAsyncStore {
   navigationActive: boolean;
 }
 
-class KeyboardNavigationProcessor extends AsyncStore<KeyboardNavigationAsyncStore> {
+export class KeyboardNavigationProcessor extends AsyncStore<KeyboardNavigationAsyncStore> {
   // Props
   private _treeView: null | HTMLUListElement = null;
   private _navigationAPI: { current: null | SingleTabStopNavigationAPI };
@@ -97,18 +97,18 @@ class KeyboardNavigationProcessor extends AsyncStore<KeyboardNavigationAsyncStor
     this._treeView = treeView;
     const controller = new AbortController();
 
-    this.treeView.addEventListener('focusin', this.onFocusin, { signal: controller.signal });
-    this.treeView.addEventListener('focusout', this.onFocusout, { signal: controller.signal });
-    this.treeView.addEventListener('keydown', this.onKeydown, { signal: controller.signal });
+    treeView.addEventListener('focusin', this.onFocusin, { signal: controller.signal });
+    treeView.addEventListener('focusout', this.onFocusout, { signal: controller.signal });
+    treeView.addEventListener('keydown', this.onKeydown, { signal: controller.signal });
 
     this.cleanup = () => {
       controller.abort();
     };
   }
 
-  public cleanup() {
+  public cleanup = () => {
     // Do nothing before initialized.
-  }
+  };
 
   public refresh() {
     // Timeout ensures the newly rendered content elements are registered.
@@ -126,6 +126,10 @@ class KeyboardNavigationProcessor extends AsyncStore<KeyboardNavigationAsyncStor
   }
 
   public getNextFocusTarget = () => {
+    if (!this.treeView) {
+      return null;
+    }
+
     const treeItem = this.focusedTreeItem;
     const firstTreeItemToggle = this.treeView.querySelector(
       '[data-awsui-tree-view-toggle-button=true]'
@@ -145,10 +149,7 @@ class KeyboardNavigationProcessor extends AsyncStore<KeyboardNavigationAsyncStor
     return this._pageUpDownSize;
   }
 
-  private get treeView(): HTMLUListElement {
-    if (!this._treeView) {
-      throw new Error('Invariant violation: KeyboardNavigationProcessor is used before initialization.');
-    }
+  private get treeView(): null | HTMLUListElement {
     return this._treeView;
   }
 
@@ -221,7 +222,16 @@ class KeyboardNavigationProcessor extends AsyncStore<KeyboardNavigationAsyncStor
       return;
     }
 
-    const keys = [KeyCode.up, KeyCode.down, KeyCode.right, KeyCode.pageUp, KeyCode.pageDown, KeyCode.home, KeyCode.end];
+    const keys = [
+      KeyCode.up,
+      KeyCode.down,
+      KeyCode.left, // when RTL, left arrow moves focus inside
+      KeyCode.right, // when LTR, right arrow moves focus inside
+      KeyCode.pageUp,
+      KeyCode.pageDown,
+      KeyCode.home,
+      KeyCode.end,
+    ];
 
     if (!this.isRegistered(document.activeElement) || keys.indexOf(event.keyCode) === -1) {
       return;
