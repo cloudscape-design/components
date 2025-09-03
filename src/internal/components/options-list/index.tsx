@@ -36,6 +36,7 @@ export interface OptionsListProps extends BaseComponentProps {
   onMouseUp?: (itemIndex: number) => void;
   onMouseMove?: (itemIndex: number) => void;
   position?: React.CSSProperties['position'];
+  tagOverride?: 'div' | 'ul';
   role?: 'listbox' | 'list' | 'menu';
   ariaLabel?: string;
   ariaLabelledby?: string;
@@ -70,6 +71,7 @@ const OptionsList = (
     onMouseMove,
     position = 'relative',
     role = 'listbox',
+    tagOverride: Tag = 'div',
     decreaseBlockMargin = false,
     ariaLabel,
     ariaLabelledby,
@@ -81,7 +83,7 @@ const OptionsList = (
   ref: React.Ref<HTMLDivElement>
 ) => {
   const baseProps = getBaseProps(restProps);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLElement>(null);
 
   const handleScroll = useStableCallback(() => {
     const scrollContainer = menuRef?.current;
@@ -108,7 +110,7 @@ const OptionsList = (
   const mergedRef = useMergeRefs(ref, menuRef);
 
   return (
-    <div
+    <Tag
       {...baseProps}
       {...nativeAttributes}
       className={className}
@@ -127,7 +129,7 @@ const OptionsList = (
       aria-describedby={ariaDescribedby}
     >
       {open && children}
-    </div>
+    </Tag>
   );
 };
 
