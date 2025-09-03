@@ -3,6 +3,10 @@
 import React from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
+/**
+ * @awsuiSystem core
+ */
+import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface IconProps extends BaseComponentProps {
   /**
@@ -69,6 +73,18 @@ export interface IconProps extends BaseComponentProps {
    * In most cases, they aren't needed, as the `svg` element inherits styles from the icon component.
    */
   svg?: React.ReactNode;
+
+  /**
+   * Attributes to add to the native element.
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
 }
 
 export namespace IconProps {
