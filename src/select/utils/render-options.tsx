@@ -90,7 +90,7 @@ export const renderOptions = ({
       const { children } = nestedDropdownOption;
       const optionId = props.id ?? `${idPrefix}-option-${index}`;
       return (
-        <div key={index} role="group" aria-labelledby={optionId}>
+        <div key={index} role="group" aria-labelledby={optionId} aria-disabled={props['aria-disabled']}>
           {renderListItem(props, index)}
           {children.map(child => (
             <React.Fragment key={child.index}>{renderListItem(getNestedItemProps(child), child.index)}</React.Fragment>
