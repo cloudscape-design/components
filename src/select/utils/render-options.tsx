@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { DropdownOption } from '../../internal/components/option/interfaces';
+import { NestedDropdownOption, unflattenOptions } from '../../internal/components/option/utils/unflatten-options';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 import { VirtualItem } from '../../internal/vendor/react-virtual';
 import Item from '../parts/item';
@@ -14,6 +15,7 @@ interface RenderOptionProps {
   getOptionProps: any;
   filteringValue: string;
   highlightType: HighlightType;
+  idPrefix: string;
   checkboxes?: boolean;
   hasDropdownStatus?: boolean;
   virtualItems?: VirtualItem[];
@@ -30,26 +32,32 @@ export const renderOptions = ({
   getOptionProps,
   filteringValue,
   highlightType,
+  idPrefix,
   checkboxes = false,
   hasDropdownStatus,
   virtualItems,
   useInteractiveGroups,
-  screenReaderContent,
+  // screenReaderContent,
   ariaSetsize,
   withScrollbar,
   firstOptionSticky,
   stickyOptionRef,
 }: RenderOptionProps) => {
-  return options.map((option, index) => {
+  const getNestedItemProps = ({ index, option }: NestedDropdownOption) => {
     const virtualItem = virtualItems && virtualItems[index];
     const globalIndex = virtualItem ? virtualItem.index : index;
-    const props = getItemProps({
+    return getItemProps({
       option,
       index: globalIndex,
       getOptionProps,
       filteringValue: option.type === 'select-all' ? '' : filteringValue,
       checkboxes,
     });
+  };
+
+  const renderListItem = (props: any, index: number) => {
+    const virtualItem = virtualItems && virtualItems[index];
+    const globalIndex = virtualItem ? virtualItem.index : index;
 
     const isLastItem = index === options.length - 1;
     const padBottom = !hasDropdownStatus && isLastItem;
@@ -63,7 +71,7 @@ export const renderOptions = ({
         virtualPosition={virtualItem && virtualItem.start}
         ref={isSticky && stickyOptionRef ? stickyOptionRef : virtualItem && virtualItem.measureRef}
         padBottom={padBottom}
-        screenReaderContent={screenReaderContent}
+        // screenReaderContent={screenReaderContent}
         ariaPosinset={globalIndex + 1}
         ariaSetsize={ariaSetsize}
         highlightType={highlightType.type}
@@ -71,5 +79,26 @@ export const renderOptions = ({
         sticky={isSticky}
       />
     );
+  };
+
+  const unflattenedOptions = unflattenOptions(options);
+  return unflattenedOptions.map(nestedDropdownOption => {
+    const index = nestedDropdownOption.index;
+    const props = getNestedItemProps(nestedDropdownOption);
+
+    if (nestedDropdownOption.type === 'parent') {
+      const { children } = nestedDropdownOption;
+      const optionId = props.id ?? `${idPrefix}-option-${index}`;
+      return (
+        <div key={index} role="group" aria-labelledby={optionId}>
+          {renderListItem(props, index)}
+          {children.map(child => (
+            <React.Fragment key={child.index}>{renderListItem(getNestedItemProps(child), child.index)}</React.Fragment>
+          ))}
+        </div>
+      );
+    }
+
+    return renderListItem(props, index);
   });
 };

@@ -118,8 +118,8 @@ const SelectableItem = (
   }
 
   return (
-    <li
-      role="option"
+    <div
+      role={isParent && ariaChecked === undefined ? 'presentation' : 'option'}
       className={classNames}
       style={style}
       {...a11yProperties}
@@ -133,7 +133,7 @@ const SelectableItem = (
       </div>
       <div className={styles['measure-strut']} ref={ref} />
       <div className={styles['screenreader-content']} ref={screenReaderContentRef}></div>
-    </li>
+    </div>
   );
 };
 

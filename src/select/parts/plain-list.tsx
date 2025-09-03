@@ -3,7 +3,7 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { DropdownOption } from '../../internal/components/option/interfaces';
 import OptionsList from '../../internal/components/options-list';
@@ -49,6 +49,7 @@ const PlainList = (
   }: SelectListProps,
   ref: React.Ref<SelectListProps.SelectListRef>
 ) => {
+  const idPrefix = useUniqueId('select-list-');
   const stickyOptionRef = useRef<HTMLDivElement>(null);
   const [stickyOptionBlockSize, setStickyOptionBlockSize] = useState(firstOptionSticky ? fallbackItemHeight : 0);
 
@@ -87,6 +88,7 @@ const PlainList = (
         options: filteredOptions,
         getOptionProps,
         filteringValue,
+        idPrefix,
         highlightType,
         checkboxes,
         hasDropdownStatus,

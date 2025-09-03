@@ -78,10 +78,10 @@ const OptionsList = (
     stickyItemBlockSize,
     ...restProps
   }: OptionsListProps,
-  ref: React.Ref<HTMLUListElement>
+  ref: React.Ref<HTMLDivElement>
 ) => {
   const baseProps = getBaseProps(restProps);
-  const menuRef = useRef<HTMLUListElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = useStableCallback(() => {
     const scrollContainer = menuRef?.current;
@@ -108,7 +108,7 @@ const OptionsList = (
   const mergedRef = useMergeRefs(ref, menuRef);
 
   return (
-    <ul
+    <div
       {...baseProps}
       {...nativeAttributes}
       className={className}
@@ -127,7 +127,7 @@ const OptionsList = (
       aria-describedby={ariaDescribedby}
     >
       {open && children}
-    </ul>
+    </div>
   );
 };
 
