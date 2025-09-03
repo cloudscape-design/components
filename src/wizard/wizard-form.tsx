@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { MutableRefObject, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
@@ -20,7 +21,7 @@ import {
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { PACKAGE_VERSION } from '../internal/environment';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { usePrevious } from '../internal/hooks/use-previous';
 import { WizardProps } from './interfaces';
 import WizardActions from './wizard-actions';
 import WizardFormHeader from './wizard-form-header';
@@ -52,11 +53,12 @@ export default function WizardFormWithAnalytics(props: WizardFormProps) {
   const __internalRootRef = useComponentMetadata('WizardForm', PACKAGE_VERSION, analyticsMetadata as AnalyticsMetadata);
   const stepHeaderRef = useRef<HTMLDivElement | null>(null);
 
-  useEffectOnUpdate(() => {
-    if (stepHeaderRef && stepHeaderRef.current) {
+  const previousActiveStepIndex = usePrevious(props.activeStepIndex);
+  useEffect(() => {
+    if (previousActiveStepIndex !== undefined && previousActiveStepIndex !== props.activeStepIndex) {
       stepHeaderRef.current?.focus();
     }
-  }, [props.activeStepIndex]);
+  }, [previousActiveStepIndex, props.activeStepIndex]);
 
   return (
     <AnalyticsFunnelStep
