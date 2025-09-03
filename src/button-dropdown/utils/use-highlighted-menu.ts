@@ -14,7 +14,7 @@ interface UseHighlightedMenuOptions {
 }
 
 interface UseHighlightedMenuApi extends HighlightProps {
-  moveHighlight: (direction: -1 | 1) => void;
+  moveHighlight: (direction: -1 | 1, loop?: boolean) => void;
   expandGroup: (group?: ButtonDropdownProps.ItemGroup) => void;
   collapseGroup: () => void;
   reset: () => void;
@@ -61,9 +61,9 @@ export default function useHighlightedMenu({
   );
 
   const moveHighlight = useCallback(
-    (direction: -1 | 1) => {
+    (direction: -1 | 1, loop?: boolean) => {
       const getNext = (index: TreeIndex) => {
-        const nextIndex = getSequentialIndex(index, direction);
+        const nextIndex = getSequentialIndex(index, direction, loop);
         const item = getItem(nextIndex || [-1]);
 
         if (!nextIndex || !item) {
