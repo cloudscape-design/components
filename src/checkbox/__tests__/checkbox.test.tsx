@@ -319,3 +319,16 @@ test('all style api properties', () => {
   expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('2px');
   expect(getComputedStyle(label).getPropertyValue('color')).toBe('orange');
 });
+
+describe('native attributes', () => {
+  it('adds native attributes', () => {
+    const { container } = render(<Checkbox checked={true} nativeInputAttributes={{ 'data-testid': 'my-test-id' }} />);
+    expect(container.querySelector('[data-testid="my-test-id"]')).not.toBeNull();
+  });
+  it('concatenates class names', () => {
+    const { container } = render(<Checkbox checked={true} nativeInputAttributes={{ className: 'additional-class' }} />);
+    const input = container.querySelector('input');
+    expect(input).toHaveClass(abstractSwitchStyles['native-input']);
+    expect(input).toHaveClass('additional-class');
+  });
+});

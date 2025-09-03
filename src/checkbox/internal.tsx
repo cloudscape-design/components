@@ -16,6 +16,7 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { GeneratedAnalyticsMetadataCheckboxComponent } from './analytics-metadata/interfaces';
 import { CheckboxProps } from './interfaces';
 import { getAbstractSwitchStyles, getCheckboxIconStyles } from './style';
@@ -48,6 +49,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       showOutline,
       ariaControls,
       style,
+      nativeInputAttributes,
       __internalRootRef,
       __injectAnalyticsComponentMetadata = false,
       ...rest
@@ -99,8 +101,10 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         ariaControls={ariaControls}
         showOutline={showOutline}
         nativeControl={nativeControlProps => (
-          <input
+          <WithNativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>
             {...nativeControlProps}
+            tag="input"
+            nativeAttributes={nativeInputAttributes}
             ref={checkboxRef}
             type="checkbox"
             checked={checked}
