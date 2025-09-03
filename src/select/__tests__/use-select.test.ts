@@ -116,12 +116,12 @@ describe('useSelect', () => {
     });
 
     test('should return getFilterProps that configures the filter', () => {
-      const { ref, __nativeAttributes } = getFilterProps();
-      expect({ ref, __nativeAttributes }).toEqual({
-        __nativeAttributes: {
+      const { ref, nativeInputAttributes } = getFilterProps();
+      expect({ ref, nativeInputAttributes }).toEqual({
+        nativeInputAttributes: {
           'aria-activedescendant': undefined,
-          'aria-owns': __nativeAttributes!['aria-owns'],
-          'aria-controls': __nativeAttributes!['aria-controls'],
+          'aria-owns': nativeInputAttributes!['aria-owns'],
+          'aria-controls': nativeInputAttributes!['aria-controls'],
         },
         ref: { current: null },
       });

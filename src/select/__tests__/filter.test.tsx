@@ -19,7 +19,7 @@ const defaultProps: FilterProps = {
   filteringType: 'auto',
   placeholder: 'Find option',
   ariaLabel: 'Filtering aria label',
-  __nativeAttributes: { 'aria-controls': '1-1597474295719-5012' },
+  nativeInputAttributes: { 'aria-controls': '1-1597474295719-5012' },
   value: 'test filtering value',
   onChange: () => {},
 };
