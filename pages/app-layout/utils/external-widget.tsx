@@ -3,8 +3,8 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
+import { StatusIndicator } from '~components';
 import Box from '~components/box';
-import ButtonDropdown from '~components/button-dropdown';
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
 
@@ -67,6 +67,18 @@ awsuiPlugins.appLayout.registerDrawer({
     ReactDOM.render(<Content ref={setSizeRef} />, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
+  headerActions: [
+    {
+      type: 'icon-button',
+      id: 'add',
+      iconName: 'add-plus',
+      text: 'Add',
+      popoverFeedback: <StatusIndicator type="success">Message copied</StatusIndicator>,
+    },
+  ],
+  onHeaderActionClick: ({ detail }) => {
+    console.log('onHeaderActionClick: ', detail);
+  },
 });
 
 awsuiPlugins.appLayout.registerDrawer({
@@ -140,6 +152,7 @@ awsuiPlugins.appLayout.registerDrawer({
     content: 'Content',
     triggerButton: 'Trigger button',
     resizeHandle: 'Resize handle',
+    expandedModeButton: 'Expanded mode button',
   },
   onToggle: event => {
     console.log('circle-global drawer on toggle', event.detail);
@@ -158,12 +171,7 @@ awsuiPlugins.appLayout.registerDrawer({
 
   mountContent: (container, mountContext) => {
     ReactDOM.render(
-      <Drawer
-        header={<Box variant="h2">Global drawer</Box>}
-        headerActions={
-          <ButtonDropdown items={[{ id: 'settings', text: 'Settings' }]} ariaLabel="Control drawer" variant="icon" />
-        }
-      >
+      <Drawer header={<Box variant="h2">Global drawer</Box>}>
         <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
           global widget content circle 1
           {new Array(100).fill(null).map((_, index) => (
@@ -176,6 +184,18 @@ awsuiPlugins.appLayout.registerDrawer({
     );
   },
   unmountContent: container => unmountComponentAtNode(container),
+  headerActions: [
+    {
+      type: 'icon-button',
+      id: 'add',
+      iconName: 'add-plus',
+      text: 'Add',
+      popoverFeedback: <StatusIndicator type="success">Message copied</StatusIndicator>,
+    },
+  ],
+  onHeaderActionClick: ({ detail }) => {
+    console.log('onHeaderActionClick: ', detail);
+  },
 });
 
 awsuiPlugins.appLayout.registerDrawer({

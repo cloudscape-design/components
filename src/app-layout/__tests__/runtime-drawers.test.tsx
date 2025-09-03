@@ -947,16 +947,6 @@ describe('toolbar mode only features', () => {
           awsuiWidgetPlugins.registerLeftDrawer(payload as WidgetDrawerPayload);
         }
       };
-      const findCloseButtonByActiveDrawerId = (
-        id: string,
-        renderProps: Awaited<ReturnType<typeof renderComponent>>
-      ) => {
-        if (type === 'global') {
-          return renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId(id);
-        } else {
-          return createWrapper(renderProps.container).findButtonGroup()!.findButtonById('close');
-        }
-      };
       const findLeftDrawerHeaderActionById = (id: string, renderProps: Awaited<ReturnType<typeof renderComponent>>) => {
         return createWrapper(renderProps.container).findButtonGroup()!.findButtonById(id);
       };
@@ -1004,8 +994,7 @@ describe('toolbar mode only features', () => {
 
         findDrawerTriggerById('global-drawer', renderProps)!.click();
         expect(globalDrawersWrapper.findDrawerById('global-drawer')!.getElement()).toBeInTheDocument();
-        renderProps.debug(findCloseButtonByActiveDrawerId('global-drawer', renderProps)!.getElement());
-        findCloseButtonByActiveDrawerId('global-drawer', renderProps)!.click();
+        renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer')!.click();
         expect(globalDrawersWrapper.findDrawerById('global-drawer')).toBeNull();
       });
 
@@ -1089,7 +1078,7 @@ describe('toolbar mode only features', () => {
         findDrawerTriggerById('global-drawer-1', renderProps)!.focus();
         findDrawerTriggerById('global-drawer-1', renderProps)!.click();
         expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
-        findCloseButtonByActiveDrawerId('global-drawer-1', renderProps)!.click();
+        renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
         expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeNull();
         await waitFor(() => {
           expect(findDrawerTriggerById('global-drawer-1', renderProps)!.getElement()).toHaveFocus();
@@ -1114,7 +1103,7 @@ describe('toolbar mode only features', () => {
         await delay();
 
         expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
-        findCloseButtonByActiveDrawerId('global-drawer-1', renderProps)!.click();
+        renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
 
         expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
         expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(false);
@@ -1144,7 +1133,7 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
         expect(onVisibilityChangeMock).toHaveBeenCalledWith(true);
 
-        findCloseButtonByActiveDrawerId('global-drawer-1', renderProps)!.click();
+        renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
         expect(onVisibilityChangeMock).toHaveBeenCalledWith(false);
       });
 
@@ -1198,7 +1187,7 @@ describe('toolbar mode only features', () => {
 
         findDrawerTriggerById('global-drawer', renderProps)!.click();
         expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
-        findCloseButtonByActiveDrawerId('global-drawer', renderProps)!.click();
+        renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer')!.click();
         expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
       });
 
@@ -1466,26 +1455,6 @@ describe('toolbar mode only features', () => {
             awsuiWidgetPlugins.registerLeftDrawer(payload as WidgetDrawerPayload);
           }
         };
-        const findExpandedModeButtonByActiveDrawerId = (
-          id: string,
-          renderProps: Awaited<ReturnType<typeof renderComponent>>
-        ) => {
-          if (type === 'global') {
-            return renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(id);
-          }
-
-          return createWrapper(renderProps.container).findButtonGroup()!.findButtonById('expand');
-        };
-        const findCloseButtonByActiveDrawerId = (
-          id: string,
-          renderProps: Awaited<ReturnType<typeof renderComponent>>
-        ) => {
-          if (type === 'global') {
-            return renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId(id);
-          } else {
-            return createWrapper(renderProps.container).findButtonGroup()!.findButtonById('close');
-          }
-        };
 
         test('should set a drawer to expanded mode by clicking on "expanded mode" button', async () => {
           const drawerId = 'global-drawer';
@@ -1501,13 +1470,17 @@ describe('toolbar mode only features', () => {
           const { globalDrawersWrapper } = renderProps;
 
           findDrawerTriggerById(drawerId, renderProps)!.click();
-          expect(findExpandedModeButtonByActiveDrawerId(drawerId, renderProps)!.getElement()).toBeInTheDocument();
+          expect(
+            renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+          ).toBeInTheDocument();
           expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
-          findExpandedModeButtonByActiveDrawerId(drawerId, renderProps)!.click();
+          renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
           expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
 
           expect(
-            getGeneratedAnalyticsMetadata(findExpandedModeButtonByActiveDrawerId(drawerId, renderProps)!.getElement())
+            getGeneratedAnalyticsMetadata(
+              renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+            )
           ).toEqual(
             expect.objectContaining({
               action: 'expand',
@@ -1517,10 +1490,12 @@ describe('toolbar mode only features', () => {
             })
           );
 
-          findExpandedModeButtonByActiveDrawerId(drawerId, renderProps)!.click();
+          renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
           expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
           expect(
-            getGeneratedAnalyticsMetadata(findExpandedModeButtonByActiveDrawerId(drawerId, renderProps)!.getElement())
+            getGeneratedAnalyticsMetadata(
+              renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+            )
           ).toEqual(
             expect.objectContaining({
               action: 'collapse',
@@ -1600,10 +1575,10 @@ describe('toolbar mode only features', () => {
           await delay();
 
           findDrawerTriggerById(drawerId, renderProps)!.click();
-          findExpandedModeButtonByActiveDrawerId(drawerId, renderProps)!.click();
+          renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
           expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
           expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
-          findCloseButtonByActiveDrawerId(drawerId, renderProps)!.click();
+          renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId(drawerId)!.click();
           expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
         });
       });
