@@ -14,8 +14,8 @@ import { getAllFocusables } from '../../internal/components/focus-lock/utils';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
 import {
-  findTreeItemById,
   findTreeItemByIndex,
+  findTreeItemContentById,
   focusElement,
   getClosestTreeItem,
   getClosestTreeItemContent,
@@ -282,15 +282,15 @@ export class KeyboardNavigationProcessor extends AsyncStore<KeyboardNavigationAs
   }
 
   private getNextFocusableTreeItemContent(from: FocusedTreeItem) {
-    const treeItem = findTreeItemById(this.treeView, from.treeItemId);
+    const treeItem = findTreeItemContentById(this.treeView, from.treeItemId);
     if (!treeItem) {
       return null;
     }
 
     const treeItemFocusables = this.getFocusablesFrom(treeItem);
 
-    // Focus would always be on the toggle button which is at index 0 so next focusable is at index 1.
-    const targetElementIndex = 1;
+    // The focus should move to the first focusable element inside the tree-item content.
+    const targetElementIndex = 0;
     const isValidIndex = targetElementIndex < treeItemFocusables.length;
 
     if (isValidIndex) {

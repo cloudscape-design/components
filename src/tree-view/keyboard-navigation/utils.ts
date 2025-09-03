@@ -57,11 +57,13 @@ export function findTreeItemByIndex(treeView: null | HTMLUListElement, targetTre
   return targetTreeItem;
 }
 
-export function findTreeItemById(treeView: null | HTMLUListElement, treeItemId: string) {
+export function findTreeItemContentById(treeView: null | HTMLUListElement, treeItemId: string) {
   if (!treeView) {
     return null;
   }
 
-  const treeItem = treeView.querySelector(`li[data-awsui-tree-item-index][id="${treeItemId}"]`);
+  const treeItem = treeView.querySelector(
+    `li[data-awsui-tree-item-index][id="${treeItemId}"] div[data-awsui-structured-item=true]`
+  );
   return treeItem as null | HTMLLIElement;
 }
