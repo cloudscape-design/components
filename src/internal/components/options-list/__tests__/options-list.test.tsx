@@ -54,7 +54,7 @@ test('supports ariaLabelledby', () => {
       <div>Option</div>
     </OptionsList>
   );
-  expect(container.querySelector('ul')).toHaveAttribute('aria-labelledby', 'someid');
+  expect(container.querySelector('[role=listbox]')).toHaveAttribute('aria-labelledby', 'someid');
 });
 
 test('onLoadMore fires when dropdown opens and its bottom is on the screen', () => {

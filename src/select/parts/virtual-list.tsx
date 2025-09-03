@@ -110,9 +110,9 @@ const VirtualListOpen = forwardRef(
           style={{ height: totalSize - stickySize }}
         />
         {listBottom ? (
-          <li role="option" className={styles['list-bottom']}>
+          <div role="option" className={styles['list-bottom']}>
             {listBottom}
-          </li>
+          </div>
         ) : null}
       </OptionsList>
     );
@@ -125,9 +125,9 @@ const VirtualListClosed = forwardRef(
     return (
       <OptionsList {...menuProps} ref={menuProps.ref}>
         {listBottom ? (
-          <li role="option" className={styles['list-bottom']}>
+          <div role="option" className={styles['list-bottom']}>
             {listBottom}
-          </li>
+          </div>
         ) : null}
       </OptionsList>
     );

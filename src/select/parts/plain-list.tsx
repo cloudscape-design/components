@@ -99,9 +99,9 @@ const PlainList = (
         withScrollbar,
       })}
       {listBottom ? (
-        <li role="option" className={styles['list-bottom']}>
+        <div role="option" className={styles['list-bottom']}>
           {listBottom}
-        </li>
+        </div>
       ) : null}
     </OptionsList>
   );

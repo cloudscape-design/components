@@ -37,7 +37,7 @@ export const renderOptions = ({
   hasDropdownStatus,
   virtualItems,
   useInteractiveGroups,
-  // screenReaderContent,
+  screenReaderContent,
   ariaSetsize,
   withScrollbar,
   firstOptionSticky,
@@ -71,7 +71,7 @@ export const renderOptions = ({
         virtualPosition={virtualItem && virtualItem.start}
         ref={isSticky && stickyOptionRef ? stickyOptionRef : virtualItem && virtualItem.measureRef}
         padBottom={padBottom}
-        // screenReaderContent={screenReaderContent}
+        screenReaderContent={screenReaderContent}
         ariaPosinset={globalIndex + 1}
         ariaSetsize={ariaSetsize}
         highlightType={highlightType.type}
