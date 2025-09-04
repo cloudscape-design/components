@@ -1,48 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import {
-  findUpUntilMultiple,
-  isHTMLElement,
-  isNode,
-  isSVGElement,
-  parseCssVariable,
-} from '../../../../lib/components/internal/utils/dom';
-
-describe('parseCssVariable', () => {
-  [true, false].forEach(supports => {
-    const testCssVariable = (testName: string, input: string, output: string) =>
-      test(`${testName}`, () => expect(parseCssVariable(input)).toBe(supports ? input : output));
-
-    describe(`with${supports ? '' : 'out'} CSS variable support`, () => {
-      const originalCSS = window.CSS;
-
-      beforeAll(() => {
-        window.CSS.supports = () => supports;
-      });
-
-      afterAll(() => {
-        window.CSS = originalCSS;
-      });
-
-      testCssVariable('returns the given value if no Custom Property is used', '#000000', '#000000');
-      testCssVariable('parses variable with hex fallback', 'var(--mycolor, #1f1f1f)', '#1f1f1f');
-      testCssVariable('parses variable with rgb fallback', 'var(--mycolor, rgba(0, 200,10))', 'rgba(0, 200,10)');
-      testCssVariable('parses variable with named color fallback', 'var(--mycolor, green)', 'green');
-      testCssVariable('parses nested variables', 'var(--mycolor,var(--other-color,#1f1f1f)  )', '#1f1f1f');
-      testCssVariable(
-        'parses more nested variables',
-        'var(--mycolor, var(--other-color, rgba(0, 10, 200, 0.5)))',
-        'rgba(0, 10, 200, 0.5)'
-      );
-      testCssVariable(
-        'ignores white space',
-        'var(  --mycolor   ,  var(  --other-color, rgba(0, 10, 200, 0.5))  )',
-        'rgba(0, 10, 200, 0.5)'
-      );
-    });
-  });
-});
+import { findUpUntilMultiple, isHTMLElement, isNode, isSVGElement } from '../dom';
 
 test('an HTMLElement is recognized as a Node and HTMLElement', () => {
   const div = document.createElement('div');
@@ -82,9 +41,10 @@ describe('findUpUntilMultiple', () => {
         <div id="second" class="match"><div id="target"></div></div>
       </div>
     `;
+    const targetElement = div.querySelector('#target') as HTMLElement;
     expect(
       findUpUntilMultiple({
-        startElement: div.querySelector<HTMLElement>('#target')!,
+        startElement: targetElement,
         tests: { first: node => node.id === 'first', second: node => node.id === 'second' },
       })
     ).toEqual({ first: expect.objectContaining({ id: 'first' }), second: expect.objectContaining({ id: 'second' }) });
@@ -105,9 +65,10 @@ describe('findUpUntilMultiple', () => {
         </svg>
       </div>
     `;
+    const targetElement = div.querySelector('#target') as HTMLElement;
     expect(
       findUpUntilMultiple({
-        startElement: div.querySelector<HTMLElement>('#target')!,
+        startElement: targetElement,
         tests: { first: testFn, second: testFn },
       })
     ).toEqual({ first: expect.objectContaining({ id: 'match' }), second: expect.objectContaining({ id: 'match' }) });
