@@ -14,6 +14,7 @@ type NativeAttributesProps<AT extends React.HTMLAttributes<HTMLElement>> = {
   children?: ReactNode;
   skipWarnings?: boolean;
   nativeAttributes: NativeAttributes<AT>;
+  componentName: string;
 } & NativeAttributes<AT>;
 interface ForwardRefType {
   <ET extends HTMLElement, AT extends React.HTMLAttributes<ET>>(
@@ -23,7 +24,7 @@ interface ForwardRefType {
 
 export default React.forwardRef(
   <ET extends HTMLElement, AT extends React.HTMLAttributes<ET>>(
-    { tag, nativeAttributes, children, skipWarnings, ...rest }: NativeAttributesProps<AT>,
+    { tag, nativeAttributes, children, skipWarnings, componentName, ...rest }: NativeAttributesProps<AT>,
     ref: React.Ref<ET>
   ) => {
     const Tag = tag;
@@ -49,7 +50,7 @@ export default React.forwardRef(
         // override other attributes, warning if it already exists
       } else {
         if (key in rest && !skipWarnings) {
-          warnOnce('Button', `Overriding native attribute [${key}] which has a Cloudscape-provided value`);
+          warnOnce(componentName, `Overriding native attribute [${key}] which has a Cloudscape-provided value`);
         }
         acc[key] = value;
       }

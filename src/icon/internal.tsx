@@ -100,6 +100,7 @@ const InternalIcon = ({
         {...baseProps}
         {...labelAttributes}
         tag="span"
+        componentName="Icon"
         nativeAttributes={nativeAttributes}
         ref={mergedRef}
         aria-hidden={!hasAriaLabel}
@@ -115,6 +116,7 @@ const InternalIcon = ({
       <WithNativeAttributes
         {...baseProps}
         tag="span"
+        componentName="Icon"
         nativeAttributes={nativeAttributes}
         ref={mergedRef}
         style={inlineStyles}
@@ -154,6 +156,7 @@ const InternalIcon = ({
       {...baseProps}
       {...labelAttributes}
       tag="span"
+      componentName="Icon"
       nativeAttributes={nativeAttributes}
       ref={mergedRef}
       style={inlineStyles}

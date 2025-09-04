@@ -309,10 +309,12 @@ export const InternalButton = React.forwardRef(
       return (
         <>
           <WithNativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>
+            {...buttonProps}
+            {...disabledReasonProps}
             tag="a"
+            componentName="Button"
             nativeAttributes={nativeAnchorAttributes}
             skipWarnings={__skipNativeAttributesWarnings}
-            {...buttonProps}
             href={isNotInteractive ? undefined : href}
             role={isNotInteractive ? 'link' : undefined}
             tabIndex={getAnchorTabIndex()}
@@ -321,7 +323,6 @@ export const InternalButton = React.forwardRef(
             rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
             aria-disabled={isNotInteractive ? true : undefined}
             download={download}
-            {...disabledReasonProps}
             style={stylePropertiesAndVariables}
           >
             {buttonContent}
@@ -339,14 +340,15 @@ export const InternalButton = React.forwardRef(
     return (
       <>
         <WithNativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>
+          {...buttonProps}
+          {...disabledReasonProps}
           tag="button"
+          componentName="Button"
           nativeAttributes={nativeButtonAttributes}
           skipWarnings={__skipNativeAttributesWarnings}
-          {...buttonProps}
           type={formAction === 'none' ? 'button' : 'submit'}
           disabled={disabled && !__focusable && !isDisabledWithReason}
           aria-disabled={hasAriaDisabled ? true : undefined}
-          {...disabledReasonProps}
           style={stylePropertiesAndVariables}
         >
           {buttonContent}

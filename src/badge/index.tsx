@@ -25,6 +25,7 @@ export default function Badge({ color = 'grey', children, style, nativeAttribute
     <WithNativeAttributes
       {...baseProps}
       tag="span"
+      componentName="Badge"
       nativeAttributes={nativeAttributes}
       className={className}
       ref={__internalRootRef}
