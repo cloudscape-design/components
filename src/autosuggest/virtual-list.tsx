@@ -21,7 +21,7 @@ const VirtualList = ({
   listBottom,
   screenReaderContent,
 }: ListProps) => {
-  const scrollRef = useRef<HTMLUListElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   // update component, when it gets wider or narrower to reposition items
   const [width, strutRef] = useContainerQuery(rect => rect.contentBoxWidth, []);
   useImperativeHandle(strutRef, () => scrollRef.current);
@@ -82,9 +82,9 @@ const VirtualList = ({
         );
       })}
       {listBottom ? (
-        <li role="option" className={styles['list-bottom']}>
+        <div role="option" className={styles['list-bottom']}>
           {listBottom}
-        </li>
+        </div>
       ) : null}
     </OptionsList>
   );

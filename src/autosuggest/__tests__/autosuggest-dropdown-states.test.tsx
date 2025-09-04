@@ -59,7 +59,9 @@ function expectFooterContent(expectedText: string, expandToViewport = false) {
   const wrapper = createWrapper().findAutosuggest()!;
   expect(wrapper.findDropdown({ expandToViewport }).findFooterRegion()!).not.toBe(null);
   expect(wrapper.findDropdown({ expandToViewport }).findFooterRegion()!.getElement()).toHaveTextContent(expectedText);
-  expect(wrapper.findDropdown({ expandToViewport }).find('ul')!.getElement()).toHaveAccessibleDescription(expectedText);
+  expect(wrapper.findDropdown({ expandToViewport }).findOptionsContainer()!.getElement()).toHaveAccessibleDescription(
+    expectedText
+  );
 }
 
 function expectLiveRegionText(expectedText: string) {

@@ -3,7 +3,7 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import OptionsList from '../../internal/components/options-list';
 import { useVirtual } from '../../internal/hooks/use-virtual';
@@ -84,11 +84,13 @@ const VirtualListOpen = forwardRef(
     const stickySize = firstOptionSticky ? virtualItems[0].size : 0;
     const withScrollbar = !!width && width.inner < width.outer;
 
+    const idPrefix = useUniqueId('select-list-');
     const finalOptions = renderOptions({
       options: virtualItems.map(({ index }) => filteredOptions[index]),
       getOptionProps,
       filteringValue,
       highlightType,
+      idPrefix,
       checkboxes,
       hasDropdownStatus,
       virtualItems,
@@ -108,9 +110,9 @@ const VirtualListOpen = forwardRef(
           style={{ height: totalSize - stickySize }}
         />
         {listBottom ? (
-          <li role="option" className={styles['list-bottom']}>
+          <div role="option" className={styles['list-bottom']}>
             {listBottom}
-          </li>
+          </div>
         ) : null}
       </OptionsList>
     );
@@ -123,9 +125,9 @@ const VirtualListClosed = forwardRef(
     return (
       <OptionsList {...menuProps} ref={menuProps.ref}>
         {listBottom ? (
-          <li role="option" className={styles['list-bottom']}>
+          <div role="option" className={styles['list-bottom']}>
             {listBottom}
-          </li>
+          </div>
         ) : null}
       </OptionsList>
     );

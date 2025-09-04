@@ -26,6 +26,7 @@ export interface ItemProps {
   virtualPosition?: number;
   padBottom?: boolean;
   isNextSelected?: boolean;
+  isPreviousSelected?: boolean;
   screenReaderContent?: string;
   ariaPosinset?: number;
   ariaSetsize?: number;
@@ -44,6 +45,7 @@ const Item = (
     virtualPosition,
     padBottom,
     isNextSelected,
+    isPreviousSelected,
     screenReaderContent,
     ariaPosinset,
     ariaSetsize,
@@ -74,6 +76,7 @@ const Item = (
       ariaSelected={Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
+      isPreviousSelected={isPreviousSelected}
       highlighted={highlighted}
       disabled={option.disabled}
       isParent={isParent}

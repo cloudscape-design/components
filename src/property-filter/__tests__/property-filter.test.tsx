@@ -158,7 +158,9 @@ describe('property filter parts', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({ filteringStatusType: 'error' });
       wrapper.findNativeInput().focus();
       wrapper.setInputValue('string');
-      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Error status Retry`);
+      expect(wrapper.findDropdown().findOptionsContainer()!.getElement()).toHaveAccessibleDescription(
+        `Error status Retry`
+      );
     });
     test('displays finished status', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
@@ -174,7 +176,9 @@ describe('property filter parts', () => {
       });
       wrapper.findNativeInput().focus();
       wrapper.setInputValue('string');
-      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Finished status`);
+      expect(wrapper.findDropdown().findOptionsContainer()!.getElement()).toHaveAccessibleDescription(
+        `Finished status`
+      );
     });
   });
 
