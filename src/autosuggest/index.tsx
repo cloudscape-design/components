@@ -16,7 +16,13 @@ export { AutosuggestProps };
 
 const Autosuggest = React.forwardRef(
   (
-    { filteringType = 'auto', statusType = 'finished', disableBrowserAutocorrect = false, ...props }: AutosuggestProps,
+    {
+      filteringType = 'auto',
+      statusType = 'finished',
+      disableBrowserAutocorrect = false,
+      hideEnteredTextOption = false,
+      ...props
+    }: AutosuggestProps,
     ref: React.Ref<AutosuggestProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('Autosuggest', {
@@ -27,6 +33,7 @@ const Autosuggest = React.forwardRef(
         filteringType,
         readOnly: props.readOnly,
         virtualScroll: props.virtualScroll,
+        hideEnteredTextOption,
       },
     });
 
@@ -45,6 +52,7 @@ const Autosuggest = React.forwardRef(
         filteringType={filteringType}
         statusType={statusType}
         disableBrowserAutocorrect={disableBrowserAutocorrect}
+        hideEnteredTextOption={hideEnteredTextOption}
         {...externalProps}
         {...baseComponentProps}
         ref={ref}
