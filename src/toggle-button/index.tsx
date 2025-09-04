@@ -31,6 +31,7 @@ const ToggleButton = React.forwardRef(
       ariaDescribedby,
       ariaControls,
       pressed = false,
+      nativeButtonAttributes,
       onChange,
       ...props
     }: ToggleButtonProps,
@@ -65,6 +66,7 @@ const ToggleButton = React.forwardRef(
         pressedIconUrl={pressedIconUrl}
         pressedIconSvg={pressedIconSvg}
         pressed={pressed}
+        nativeButtonAttributes={nativeButtonAttributes}
         onChange={onChange}
       >
         {children}
