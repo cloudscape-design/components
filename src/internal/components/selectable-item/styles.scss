@@ -105,6 +105,7 @@
     }
   }
 
+  &.selected + &.selected,
   &.selected.previous-item-selected {
     border-start-start-radius: 0;
     border-start-end-radius: 0;
