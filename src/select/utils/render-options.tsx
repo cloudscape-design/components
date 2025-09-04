@@ -8,6 +8,7 @@ import { HighlightType } from '../../internal/components/options-list/utils/use-
 import { VirtualItem } from '../../internal/vendor/react-virtual';
 import Item from '../parts/item';
 import MultiselectItem from '../parts/multiselect-item';
+import OptionGroup from '../parts/option-group';
 import { getItemProps } from './get-item-props';
 
 interface RenderOptionProps {
@@ -90,12 +91,17 @@ export const renderOptions = ({
       const { children } = nestedDropdownOption;
       const optionId = props.id ?? `${idPrefix}-option-${index}`;
       return (
-        <div key={index} role="group" aria-labelledby={optionId} aria-disabled={props['aria-disabled']}>
+        <OptionGroup
+          key={index}
+          virtual={virtualItems?.[index] !== undefined}
+          ariaLabelledby={optionId}
+          ariaDisabled={props['aria-disabled']}
+        >
           {renderListItem(props, index)}
           {children.map(child => (
             <React.Fragment key={child.index}>{renderListItem(getNestedItemProps(child), child.index)}</React.Fragment>
           ))}
-        </div>
+        </OptionGroup>
       );
     }
 
