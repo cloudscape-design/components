@@ -11,11 +11,6 @@ export function getClosestTreeItem(element: Element) {
   return element.closest('li[data-awsui-tree-item-index]') as null | HTMLLIElement;
 }
 
-export function getClosestTreeItemContent(element: Element) {
-  const content = element.closest('div[data-awsui-structured-item=true]');
-  return content;
-}
-
 export function getToggleButtonOfTreeItem(treeItem: HTMLLIElement) {
   const toggleElement = treeItem.querySelector('[data-awsui-tree-view-toggle-button=true]');
   return toggleElement as null | HTMLElement;
@@ -66,4 +61,8 @@ export function findTreeItemContentById(treeView: null | HTMLUListElement, treeI
     `li[data-awsui-tree-item-index][id="${treeItemId}"] div[data-awsui-structured-item=true]`
   );
   return treeItem as null | HTMLLIElement;
+}
+
+export function isTreeItemToggle(element: Element) {
+  return element.tagName === 'BUTTON' && element.getAttribute('data-awsui-tree-view-toggle-button') === 'true';
 }
