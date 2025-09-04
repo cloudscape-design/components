@@ -36,10 +36,10 @@ export const handleFlashDismissedInternal = (
     nextItemIndex = dismissedIndex - 1;
   }
 
-  // If there's no next item, focus the first instance of the main element (or element with role=main)
+  // If there's no next item, focus the first instance of the h1 element
   if (nextItemIndex < 0 || nextItemIndex >= items.length) {
-    const mainElement = document.querySelector('main') ?? document.querySelector('[role="main"]');
-    mainElement?.focus();
+    const h1Element = document.querySelector('h1');
+    h1Element?.focus();
     return;
   }
 
@@ -58,8 +58,8 @@ export const handleFlashDismissedInternal = (
         return;
       }
 
-      const mainElement = document.querySelector('main') ?? document.querySelector('[role="main"]');
-      mainElement?.focus();
+      const h1Element = document.querySelector('h1');
+      h1Element?.focus();
       return;
     }
     focusFlashFocusableArea(nextFlashElement);
