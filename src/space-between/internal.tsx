@@ -38,9 +38,10 @@ const InternalSpaceBetween = forwardRef(
 
     return (
       <WithNativeAttributes
-        tag="div"
-        nativeAttributes={nativeAttributes}
         {...baseProps}
+        tag="div"
+        componentName="SpaceBetween"
+        nativeAttributes={nativeAttributes}
         className={clsx(
           baseProps.className,
           styles.root,

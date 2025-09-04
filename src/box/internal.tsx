@@ -49,9 +49,10 @@ export default function InternalBox({
 
   return (
     <WithNativeAttributes
-      tag={getTag(variant, tagOverride)}
-      nativeAttributes={nativeAttributes}
       {...baseProps}
+      tag={getTag(variant, tagOverride)}
+      componentName="Box"
+      nativeAttributes={nativeAttributes}
       className={className}
       ref={__internalRootRef}
     >
