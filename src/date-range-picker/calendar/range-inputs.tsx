@@ -4,44 +4,15 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { CalendarProps } from '../../calendar/interfaces';
 import InternalDateInput from '../../date-input/internal';
 import InternalFormField from '../../form-field/internal';
 import { useInternalI18n } from '../../i18n/context.js';
-import { BaseComponentProps } from '../../internal/base-component';
-import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
-import { RangeCalendarI18nStrings } from '../interfaces';
+import { RangeInputsProps } from './interfaces';
+import { generateI18NFallbackKey, generateI18NKey, provideI18N } from './utils';
 
 import styles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-
-type I18nStrings = Pick<
-  RangeCalendarI18nStrings,
-  | 'dateConstraintText'
-  | 'dateTimeConstraintText'
-  | 'monthConstraintText'
-  | 'startMonthLabel'
-  | 'startDateLabel'
-  | 'startTimeLabel'
-  | 'endMonthLabel'
-  | 'endDateLabel'
-  | 'endTimeLabel'
->;
-
-interface RangeInputsProps extends BaseComponentProps, Pick<CalendarProps, 'granularity'> {
-  startDate: string;
-  onChangeStartDate: (value: string) => void;
-  startTime: string;
-  onChangeStartTime: (value: string) => void;
-  endDate: string;
-  onChangeEndDate: (value: string) => void;
-  endTime: string;
-  onChangeEndTime: (value: string) => void;
-  i18nStrings?: I18nStrings;
-  dateOnly: boolean;
-  timeInputFormat: TimeInputProps.Format;
-}
 
 export default function RangeInputs({
   startDate,
@@ -55,28 +26,21 @@ export default function RangeInputs({
   i18nStrings,
   dateOnly,
   timeInputFormat,
-  granularity = 'day',
+  dateInputFormat,
+  granularity,
 }: RangeInputsProps) {
   const i18n = useInternalI18n('date-range-picker');
   const isMonthPicker = granularity === 'month';
-  const dateInputPlaceholder = isMonthPicker ? 'YYYY/MM' : 'YYYY/MM/DD';
   const showTimeInput = !dateOnly && !isMonthPicker;
-
+  const parsedDateInputFormat = dateInputFormat;
+  const isIso = parsedDateInputFormat === 'iso';
+  const separator = isIso ? '-' : '/';
+  const dateInputPlaceholder = `YYYY${separator}MM${isMonthPicker ? '' : `${separator}DD`}`;
+  const i18nProvided = provideI18N(i18nStrings!, isMonthPicker, dateOnly, isIso);
+  const i18nKey = generateI18NKey(isMonthPicker, dateOnly, isIso);
+  const i18nFallbackKey = generateI18NFallbackKey(isMonthPicker, dateOnly);
   return (
-    <InternalFormField
-      constraintText={i18n(
-        isMonthPicker
-          ? 'i18nStrings.monthConstraintText'
-          : dateOnly
-            ? 'i18nStrings.dateConstraintText'
-            : 'i18nStrings.dateTimeConstraintText',
-        isMonthPicker
-          ? i18nStrings?.monthConstraintText
-          : dateOnly
-            ? i18nStrings?.dateConstraintText
-            : i18nStrings?.dateTimeConstraintText
-      )}
-    >
+    <InternalFormField constraintText={i18n(i18nKey, i18nProvided) || i18n(i18nFallbackKey, i18nProvided)}>
       <div className={styles['date-and-time-container']}>
         <div className={styles['date-and-time-wrapper']}>
           <InternalFormField
@@ -90,6 +54,7 @@ export default function RangeInputs({
               value={startDate}
               className={clsx(testutilStyles['start-date-input'], isMonthPicker && testutilStyles['start-month-input'])}
               onChange={event => onChangeStartDate(event.detail.value)}
+              format={parsedDateInputFormat}
               placeholder={dateInputPlaceholder}
               granularity={granularity}
             />
@@ -119,6 +84,7 @@ export default function RangeInputs({
               value={endDate}
               className={clsx(testutilStyles['end-date-input'], isMonthPicker && testutilStyles['end-month-picker'])}
               onChange={event => onChangeEndDate(event.detail.value)}
+              format={parsedDateInputFormat}
               placeholder={dateInputPlaceholder}
               granularity={granularity}
             />
