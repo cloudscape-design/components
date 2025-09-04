@@ -283,12 +283,18 @@ export function useSelect({
       !!nextOption && isGroup(nextOption)
         ? getGroupState(nextOption).selected
         : __selectedOptions.indexOf(options[index + 1]) > -1;
+    const previousOption = options[index - 1]?.option;
+    const isPreviousSelected =
+      !!previousOption && isGroup(previousOption)
+        ? getGroupState(previousOption).selected
+        : __selectedOptions.indexOf(options[index - 1]) > -1;
     const optionProps: any = {
       key: index,
       option,
       highlighted,
       selected,
       isNextSelected,
+      isPreviousSelected,
       indeterminate: !!groupState?.indeterminate || (isSelectAll && !isAllSelected && isSomeSelected),
       ['data-mouse-target']: isHighlightable(option) ? index : -1,
       id: getOptionId(menuId, index),
