@@ -27,7 +27,7 @@ test(
 
     // Scroll the list until all pages are loaded.
     for (let count = 30; count <= 50; count += 10) {
-      await page.elementScrollTo('ul', { top: 1000, left: 0 });
+      await page.elementScrollTo('[role=listbox]', { top: 1000, left: 0 });
       await page.waitForJsTimers(1500);
       await expect(page.getElementsCount(`.${selectableItemsStyles['selectable-item']}`)).resolves.toBe(count);
     }

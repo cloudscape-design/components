@@ -12,16 +12,29 @@ export default function App() {
   return (
     <>
       <h1>Syncing horizontal scrolls</h1>
-      <div
-        onScroll={() => {
-          n++;
-          numberOfCallsRef.current?.setAttribute('data-call-number', n.toString());
-        }}
-      >
-        <div id="element1" ref={ref1} style={{ inlineSize: '400px', overflow: 'scroll' }} onScroll={handleScroll}>
+      <div>
+        <div
+          id="element1"
+          ref={ref1}
+          style={{ inlineSize: '400px', overflow: 'scroll' }}
+          onScroll={e => {
+            n++;
+            numberOfCallsRef.current?.setAttribute('data-call-number', n.toString());
+            handleScroll(e);
+          }}
+        >
           <div style={{ inlineSize: '800px', blockSize: '100px', backgroundColor: 'lightpink' }} />
         </div>
-        <div id="element2" ref={ref2} style={{ width: '400px', overflow: 'scroll' }} onScroll={handleScroll}>
+        <div
+          id="element2"
+          ref={ref2}
+          style={{ width: '400px', overflow: 'scroll' }}
+          onScroll={e => {
+            n++;
+            numberOfCallsRef.current?.setAttribute('data-call-number', n.toString());
+            handleScroll(e);
+          }}
+        >
           <div style={{ inlineSize: '800px', blockSize: '100px', backgroundColor: 'lightblue' }} />
         </div>
         <div ref={numberOfCallsRef} id="numberOfCalls">

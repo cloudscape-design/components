@@ -3576,6 +3576,28 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.HTMLAttributes<HTMLElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "inlineType": {
         "name": "BadgeProps.Style",
         "properties": [
@@ -4318,6 +4340,28 @@ Sizes are automatically scaled down in compact mode.
       "name": "margin",
       "optional": true,
       "type": "BoxProps.SpacingSize | BoxProps.Spacing",
+    },
+    {
+      "description": "Attributes to add to the native element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.HTMLAttributes<HTMLElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
       "defaultValue": "{}",
@@ -7045,6 +7089,28 @@ in the native control.",
       "name": "name",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native \`input\` element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeInputAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
       "description": "Specifies if the control is read-only, which prevents the
@@ -13288,6 +13354,28 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.HTMLAttributes<HTMLElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "defaultValue": "'normal'",
       "description": "Specifies the size of the icon.
 
@@ -16864,6 +16952,91 @@ This is only shown when \`statusType\` is set to \`finished\` or not set at all.
       "description": "Displayed for \`filteringType="auto"\` when there are no matches for the filtering.",
       "isDefault": false,
       "name": "noMatch",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for navigable-group matches the snapshot: navigable-group 1`] = `
+{
+  "dashCaseName": "navigable-group",
+  "events": [],
+  "functions": [
+    {
+      "description": "Focuses the first focusable element (or previously focused element) in the navigation group.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "NavigableGroup",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "A method that should return a unique identifier for a given element.
+The element passed will be the first focusable descendent of a child component.",
+      "inlineType": {
+        "name": "(element: HTMLElement) => string",
+        "parameters": [
+          {
+            "name": "element",
+            "type": "HTMLElement",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "getItemKey",
+      "optional": false,
+      "type": "(element: HTMLElement) => string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Determines which arrow keys move focus sequentially within the group:
+- \`horizontal\` - left and right arrow keys
+- \`vertical\` - up and down arrow keys
+- \`both\` - all arrow keys",
+      "inlineType": {
+        "name": ""both" | "horizontal" | "vertical"",
+        "type": "union",
+        "values": [
+          "both",
+          "horizontal",
+          "vertical",
+        ],
+      },
+      "name": "navigationDirection",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The children that will be rendered inside the navigation group.
+
+The following Cloudscape components are supported, but do not
+need to be direct children of the group:
+- Button
+- Button dropdown
+- Toggle button
+- Link",
+      "isDefault": true,
+      "name": "children",
     },
   ],
   "releaseStatus": "stable",
@@ -21968,6 +22141,28 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.HTMLAttributes<HTMLDivElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "description": "Defines the spacing between the individual items of the content.",
       "inlineType": {
         "name": "SpaceBetweenProps.Size",
@@ -22021,6 +22216,28 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "name": "id",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.HTMLAttributes<HTMLElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
       "defaultValue": "'normal'",
@@ -55807,6 +56024,380 @@ Options get highlighted when they match the value of the input field.",
         },
       ],
       "name": "DropdownContentWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.blur",
+          },
+          "name": "blur",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "description": "Performs a click by triggering a mouse event.
+Note that programmatic events ignore disabled attribute and will trigger listeners even if the element is disabled.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.click",
+          },
+          "name": "click",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "params",
+              "typeName": "MouseEventInit",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "NewElementType",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<NewElementType>",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<NewElementType>",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the wrappers of all components that match the specified component type and the specified CSS selector.
+If no CSS selector is specified, returns all of the components that match the specified component type.
+If no matching component is found, returns an empty array.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper, ElementType>",
+            },
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "NewElementType",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "NewElementType",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the component wrapper matching the specified selector.
+If the specified selector doesn't match any element, it returns \`null\`.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper, ElementType>",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.fireEvent",
+          },
+          "name": "fireEvent",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "event",
+              "typeName": "Event",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.focus",
+          },
+          "name": "focus",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementType",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.keydown",
+          },
+          "name": "keydown",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "keyCode",
+              "typeName": "KeyCode",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.keydown",
+          },
+          "name": "keydown",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "keyboardEventProps",
+              "typeName": "KeyboardEventInit",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.keypress",
+          },
+          "name": "keypress",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "keyCode",
+              "typeName": "KeyCode",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.keyup",
+          },
+          "name": "keyup",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "keyCode",
+              "typeName": "KeyCode",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "this",
+          },
+        },
+      ],
+      "name": "NavigableGroupWrapper",
     },
     {
       "methods": [
@@ -93287,6 +93878,230 @@ Options get highlighted when they match the value of the input field.",
         },
       ],
       "name": "DropdownContentWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "NavigableGroupWrapper",
     },
     {
       "methods": [

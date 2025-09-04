@@ -179,3 +179,17 @@ describe('Icon Component', () => {
     });
   });
 });
+
+describe.each(['plain', 'svg', 'url'])('native attributes: %s', type => {
+  const attributes: Partial<IconProps> =
+    type === 'plain' ? { name: 'add-plus' } : type === 'svg' ? { svg: <svg /> } : { url: 'https://example.com' };
+  it('adds native attributes', () => {
+    const { container } = render(<Icon nativeAttributes={{ 'data-testid': 'my-test-id' }} {...attributes} />);
+    expect(container.querySelector('[data-testid="my-test-id"]')).not.toBeNull();
+  });
+  it('concatenates class names', () => {
+    const { container } = render(<Icon nativeAttributes={{ className: 'additional-class' }} {...attributes} />);
+    expect(container.firstChild).toHaveClass(styles.icon);
+    expect(container.firstChild).toHaveClass('additional-class');
+  });
+});

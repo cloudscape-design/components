@@ -16,7 +16,7 @@ interface ItemsTreeApi {
   // in the tree (referential comparison), or an error will be thrown
   getItemIndex: (item: ButtonDropdownProps.ItemOrGroup) => TreeIndex;
   // Returns the index of next or previous sequential node or null if out of bounds
-  getSequentialIndex: (index: TreeIndex, direction: -1 | 1) => TreeIndex | null;
+  getSequentialIndex: (index: TreeIndex, direction: -1 | 1, loop?: boolean) => TreeIndex | null;
   // Returns parent tree index of a given item or null if no parent is present
   getParentIndex: (item: ButtonDropdownProps.ItemOrGroup) => TreeIndex | null;
 }
@@ -48,11 +48,19 @@ export default function createItemsTree(items: ButtonDropdownProps.Items): Items
 
       return parseIndex(indexKey);
     },
-    getSequentialIndex: (index: TreeIndex, direction: -1 | 1): TreeIndex | null => {
+    getSequentialIndex: (index: TreeIndex, direction: -1 | 1, loop = false): TreeIndex | null => {
       const indexKey = stringifyIndex(index);
       const position = flatIndices.indexOf(indexKey);
 
-      const nextIndexKey = flatIndices[position + direction];
+      let nextIndex = position + direction;
+      if (loop) {
+        if (nextIndex < 0) {
+          nextIndex = flatIndices.length - 1;
+        } else if (nextIndex >= flatIndices.length) {
+          nextIndex = 0;
+        }
+      }
+      const nextIndexKey = flatIndices[nextIndex];
 
       if (!nextIndexKey) {
         return null;

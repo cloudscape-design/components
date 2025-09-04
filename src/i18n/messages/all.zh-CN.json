@@ -55,7 +55,7 @@
     "expandAriaLabel": "显示路径"
   },
   "button": {
-    "i18nStrings.externalIconAriaLabel": "在新标签页中打开"
+    "i18nStrings.externalIconAriaLabel": "在新选项卡中打开"
   },
   "calendar": {
     "nextMonthAriaLabel": "下个月",
@@ -334,7 +334,7 @@
     "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
     "i18nStrings.labelFiltering": "查找 {itemsType}",
     "i18nStrings.labelRefresh": "刷新数据",
-    "i18nStrings.labelBreadcrumbs": "S3 导航",
+    "i18nStrings.labelBreadcrumbs": "S3 面包屑",
     "i18nStrings.labelIconFolder": "文件夹",
     "i18nStrings.labelIconObject": "对象",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 个匹配项} other {{count} 个匹配项}}"

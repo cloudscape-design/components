@@ -84,7 +84,16 @@ export default function InputPermutations() {
     <>
       <h1>Option permutations</h1>
       <ScreenshotArea>
-        <PermutationsView permutations={permutations} render={permutation => <Option {...permutation} />} />
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => (
+            // Mark as disabled so that accessibility violations aren't raised
+            // for color contrast on disabled options
+            <div role="group" aria-disabled={permutation.option?.disabled}>
+              <Option {...permutation} />
+            </div>
+          )}
+        />
       </ScreenshotArea>
     </>
   );

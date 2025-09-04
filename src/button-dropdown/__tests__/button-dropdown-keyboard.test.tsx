@@ -29,93 +29,114 @@ const items: ButtonDropdownProps.Items = [
       onClickSpy = jest.fn();
       onFollowSpy = jest.fn();
       wrapper = renderButtonDropdown({ ...props, items, onItemClick: onClickSpy, onItemFollow: onFollowSpy });
-      act(() => wrapper.findNativeButton().keydown(KeyCode.enter));
     });
 
-    test('should close the dropdown when escape is pressed', () => {
-      expect(wrapper.findOpenDropdown()).not.toBe(null);
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.escape));
+    test('should open the dropdown and focus first item when pressing down arrow key', () => {
       expect(wrapper.findOpenDropdown()).toBe(null);
-    });
-    test('should select the next item if "down" is pressed', () => {
-      expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item1');
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-      expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item2');
-    });
-
-    test('should select the previous item if "up" is pressed', () => {
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.up));
+      act(() => wrapper.findTriggerButton()!.keydown(KeyCode.down));
+      expect(wrapper.findOpenDropdown()).toBeTruthy();
       expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item1');
     });
 
-    test('should include disabled items', () => {
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-      expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item3');
+    test('should open the dropdown and focus last item when pressing up arrow key', () => {
+      expect(wrapper.findOpenDropdown()).toBe(null);
+      act(() => wrapper.findTriggerButton()!.keydown(KeyCode.up));
+      expect(wrapper.findOpenDropdown()).toBeTruthy();
+      expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item5');
     });
 
-    test('should call onClick on enter', () => {
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.enter));
-      expect(onClickSpy).toHaveBeenCalledTimes(1);
-    });
-
-    test('should not call onClick on enter a disabled item', () => {
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.enter));
-      expect(onClickSpy).not.toHaveBeenCalled();
-    });
-
-    test('should call onClick on space', () => {
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.space));
-      act(() => wrapper.findOpenDropdown()!.keyup(KeyCode.space));
-      expect(onClickSpy).toHaveBeenCalledTimes(1);
-    });
-
-    test('should not call onClick on space a disabled item', () => {
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.space));
-      expect(onClickSpy).not.toHaveBeenCalled();
-    });
-
-    test('should call onFollow on space if item has href', () => {
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.space));
-      act(() => wrapper.findOpenDropdown()!.keyup(KeyCode.space));
-      expect(onFollowSpy).toHaveBeenCalledTimes(1);
-    });
-
-    test.each([KeyCode.enter, KeyCode.space])(
-      'should fire event correctly when items with checkbox pressed using key=%s',
-      keyCode => {
-        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-
-        // Fire keydown on the 5th element, checkbox should be false after click
-        act(() => wrapper.findItems()[4]!.keydown(keyCode));
-        // Space handling is triggered on keyup
-        if (keyCode === KeyCode.space) {
-          act(() => wrapper.findItems()[4]!.keyup(keyCode));
-        }
-        expect(onClickSpy).toHaveBeenCalledTimes(1);
-        expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i5', checked: false } }));
-
-        // Open button dropdown again
+    describe('when dropdown is open', () => {
+      beforeEach(() => {
         act(() => wrapper.findNativeButton().keydown(KeyCode.enter));
+      });
 
-        // Fire keydown on the 1st element, checked should be undefined
-        act(() => wrapper.findItems()[0]!.keydown(keyCode));
-        // Space handling is triggered on keyup
-        if (keyCode === KeyCode.space) {
-          act(() => wrapper.findItems()[0]!.keyup(keyCode));
+      test('should close the dropdown when escape is pressed', () => {
+        expect(wrapper.findOpenDropdown()).not.toBe(null);
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.escape));
+        expect(wrapper.findOpenDropdown()).toBe(null);
+      });
+      test('should select the next item if "down" is pressed', () => {
+        expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item1');
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+        expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item2');
+      });
+
+      test('should select the previous item if "up" is pressed', () => {
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.up));
+        expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item1');
+      });
+
+      test('should include disabled items', () => {
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+        expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item3');
+      });
+
+      test('should call onClick on enter', () => {
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.enter));
+        expect(onClickSpy).toHaveBeenCalledTimes(1);
+      });
+
+      test('should not call onClick on enter a disabled item', () => {
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.enter));
+        expect(onClickSpy).not.toHaveBeenCalled();
+      });
+
+      test('should call onClick on space', () => {
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.space));
+        act(() => wrapper.findOpenDropdown()!.keyup(KeyCode.space));
+        expect(onClickSpy).toHaveBeenCalledTimes(1);
+      });
+
+      test('should not call onClick on space a disabled item', () => {
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.space));
+        expect(onClickSpy).not.toHaveBeenCalled();
+      });
+
+      test('should call onFollow on space if item has href', () => {
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.space));
+        act(() => wrapper.findOpenDropdown()!.keyup(KeyCode.space));
+        expect(onFollowSpy).toHaveBeenCalledTimes(1);
+      });
+
+      test.each([KeyCode.enter, KeyCode.space])(
+        'should fire event correctly when items with checkbox pressed using key=%s',
+        keyCode => {
+          act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+          act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+          act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+          act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+
+          // Fire keydown on the 5th element, checkbox should be false after click
+          act(() => wrapper.findItems()[4]!.keydown(keyCode));
+          // Space handling is triggered on keyup
+          if (keyCode === KeyCode.space) {
+            act(() => wrapper.findItems()[4]!.keyup(keyCode));
+          }
+          expect(onClickSpy).toHaveBeenCalledTimes(1);
+          expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i5', checked: false } }));
+
+          // Open button dropdown again
+          act(() => wrapper.findNativeButton().keydown(KeyCode.enter));
+
+          // Fire keydown on the 1st element, checked should be undefined
+          act(() => wrapper.findItems()[0]!.keydown(keyCode));
+          // Space handling is triggered on keyup
+          if (keyCode === KeyCode.space) {
+            act(() => wrapper.findItems()[0]!.keyup(keyCode));
+          }
+          expect(onClickSpy).toHaveBeenCalledTimes(2);
+          expect(onClickSpy).toHaveBeenCalledWith(
+            expect.objectContaining({ detail: { id: 'i1', checked: undefined } })
+          );
         }
-        expect(onClickSpy).toHaveBeenCalledTimes(2);
-        expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i1', checked: undefined } }));
-      }
-    );
+      );
+    });
   });
 });

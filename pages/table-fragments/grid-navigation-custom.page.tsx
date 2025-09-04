@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { useContext, useMemo, useRef, useState } from 'react';
 import { orderBy, range } from 'lodash';
 
@@ -9,7 +10,6 @@ import {
   AppLayout,
   Button,
   ButtonDropdown,
-  Checkbox,
   CollectionPreferences,
   ColumnLayout,
   Container,
@@ -26,7 +26,6 @@ import {
   SpaceBetween,
   StatusIndicator,
 } from '~components';
-import { useEffectOnUpdate } from '~components/internal/hooks/use-effect-on-update';
 import {
   getTableCellRoleProps,
   getTableColHeaderRoleProps,
@@ -41,7 +40,8 @@ import {
 import AppContext, { AppContextType } from '../app/app-context';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
-import { generateItems, id as generateId, Instance } from '../table/generate-data';
+import { id as generateId, Instance } from '../table/generate-data';
+import { allInstances50 } from '../table/instances-data';
 import { stateToStatusIndicator } from '../table/shared-configs';
 
 import styles from './styles.scss';
@@ -56,7 +56,6 @@ type PageContext = React.Context<
     pageSize: number;
     tableRole: TableRole;
     actionsMode: ActionsMode;
-    autoRefresh: boolean;
     visibleColumns: string;
   }>
 >;
@@ -70,6 +69,10 @@ const actionsModeOptions = [
   { value: 'inline', label: 'Inline (anti-pattern)' },
 ];
 
+const allItems = allInstances50.slice(0, 25);
+
+let refreshIndex = 26;
+
 export default function Page() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
@@ -77,23 +80,17 @@ export default function Page() {
     pageSize = 10,
     tableRole = 'grid',
     actionsMode = 'dropdown',
-    autoRefresh = false,
     visibleColumns:
       visibleColumnsString = 'id,actions,state,imageId,dnsName,type,inline-select,inline-radio,inline-input',
   } = urlParams;
   const visibleColumns = visibleColumnsString.split(',').filter(Boolean);
 
-  const [items, setItems] = useState(generateItems(25));
-  const [refreshCounter, setRefreshCounter] = useState(0);
-  window.refreshItems = () => setRefreshCounter(prev => prev + 1);
-
-  useEffectOnUpdate(() => {
-    setItems(prev => [...prev.slice(1), ...generateItems(1)]);
-    if (autoRefresh) {
-      const timeoutId = setTimeout(() => setRefreshCounter(prev => prev + 1), 10000);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [autoRefresh, refreshCounter]);
+  const [items, setItems] = useState(allItems);
+  const refreshItems = () =>
+    setItems(prev =>
+      refreshIndex < 50 ? [...prev.slice(1), { ...allInstances50[refreshIndex++], id: generateId() }] : prev
+    );
+  window.refreshItems = refreshItems;
 
   const columnDefinitions = [
     {
@@ -210,17 +207,6 @@ export default function Page() {
                     title="Preferences"
                     confirmLabel="Confirm"
                     cancelLabel="Cancel"
-                    customPreference={(
-                      customValue: undefined | { autoRefresh: boolean },
-                      setCustomValue: (value: { autoRefresh: boolean }) => void
-                    ) => (
-                      <Checkbox
-                        checked={!!customValue?.autoRefresh}
-                        onChange={event => setCustomValue({ autoRefresh: event.detail.checked })}
-                      >
-                        Auto-refresh every 10 seconds
-                      </Checkbox>
-                    )}
                     preferences={{
                       contentDisplay: columnDefinitions.map(column => ({
                         id: column.key,
@@ -233,7 +219,6 @@ export default function Page() {
                           .filter(column => column.visible)
                           .map(column => column.id)
                           .join(','),
-                        autoRefresh: detail.custom.autoRefresh,
                       })
                     }
                     contentDisplayPreference={{
@@ -248,7 +233,7 @@ export default function Page() {
                     }}
                   />
 
-                  <Button onClick={() => setRefreshCounter(prev => prev + 1)} iconName="refresh" ariaLabel="Refresh">
+                  <Button onClick={refreshItems} iconName="refresh" ariaLabel="Refresh">
                     Refresh
                   </Button>
                 </SpaceBetween>
