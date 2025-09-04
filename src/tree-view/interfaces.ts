@@ -95,7 +95,7 @@ export namespace TreeViewProps {
     expanded: boolean;
   }
 
-  export type ConnectorLinesVariant = 'vertical';
+  export type ConnectorLinesVariant = 'vertical' | 'none';
 
   export interface I18nStrings<T> {
     collapseButtonLabel?: (item: T) => string;

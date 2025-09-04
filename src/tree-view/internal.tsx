@@ -10,7 +10,7 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { TreeViewProps } from './interfaces';
 import { KeyboardNavigationProvider } from './keyboard-navigation';
 import InternalTreeItem from './tree-item';
-import { getAllVisibleItemsIndeces } from './utils';
+import { getAllVisibleItemsIndices } from './utils';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -42,7 +42,7 @@ const InternalTreeView = <T,>({
   });
   const treeViewRefObject = useRef(null);
 
-  const allVisibleItemsIndeces = getAllVisibleItemsIndeces({ items, expandedItems, getItemId, getItemChildren });
+  const allVisibleItemsIndices = getAllVisibleItemsIndices({ items, expandedItems, getItemId, getItemChildren });
 
   const onToggle = ({ id, item, expanded }: TreeViewProps.ItemToggleDetail<T>) => {
     if (expanded) {
@@ -78,7 +78,7 @@ const InternalTreeView = <T,>({
                 getItemId={getItemId}
                 getItemChildren={getItemChildren}
                 renderItemToggleIcon={renderItemToggleIcon}
-                allVisibleItemsIndeces={allVisibleItemsIndeces}
+                allVisibleItemsIndices={allVisibleItemsIndices}
                 connectorLines={connectorLines}
               />
             );

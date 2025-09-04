@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export function focusElement(element: null | HTMLElement) {
-  if (element) {
-    element.focus();
-  }
+  element?.focus();
 }
 
 export function getClosestTreeItem(element: Element) {

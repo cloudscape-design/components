@@ -113,9 +113,7 @@ const InternalButtonGroup = forwardRef(
     }
 
     function focusElement(element: HTMLElement) {
-      if (element) {
-        element.focus();
-      }
+      element?.focus();
     }
 
     // List all non-disabled and registered focusables: those are eligible for keyboard navigation.

@@ -25,11 +25,9 @@ import {
 export function KeyboardNavigationProvider({
   getTreeView,
   children,
-  pageUpDownSize = 10,
 }: {
   getTreeView: () => null | HTMLUListElement;
   children: React.ReactNode;
-  pageUpDownSize?: number;
 }) {
   const navigationAPI = useRef<SingleTabStopNavigationAPI>(null);
 
@@ -45,11 +43,6 @@ export function KeyboardNavigationProvider({
       return keyboardNavigation.cleanup;
     }
   }, [keyboardNavigation, getTreeViewStable]);
-
-  // Notify the processor of the props change.
-  useEffect(() => {
-    keyboardNavigation.update({ pageUpDownSize });
-  }, [keyboardNavigation, pageUpDownSize]);
 
   // Notify the processor of the new render.
   useEffect(() => {
@@ -78,7 +71,6 @@ export class KeyboardNavigationProcessor {
   // Props
   private _treeView: null | HTMLUListElement = null;
   private _navigationAPI: { current: null | SingleTabStopNavigationAPI };
-  private _pageUpDownSize: number = 0;
 
   // State
   private focusedTreeItem: null | FocusedTreeItem = null;
@@ -114,10 +106,6 @@ export class KeyboardNavigationProcessor {
     }, 0);
   }
 
-  public update({ pageUpDownSize }: { pageUpDownSize: number }) {
-    this._pageUpDownSize = pageUpDownSize;
-  }
-
   public getNextFocusTarget = () => {
     if (!this.treeView) {
       return null;
@@ -137,10 +125,6 @@ export class KeyboardNavigationProcessor {
 
     return focusTarget;
   };
-
-  private get pageUpDownSize() {
-    return this._pageUpDownSize;
-  }
 
   private get treeView(): null | HTMLUListElement {
     return this._treeView;
@@ -220,7 +204,6 @@ export class KeyboardNavigationProcessor {
           if (isTreeItemToggle(from.element)) {
             return this.moveFocusInsideTreeItem(from, 0);
           }
-
           return this.moveFocusInsideTreeItem(from, 1);
         },
         onInlineStart: () => {
@@ -228,11 +211,10 @@ export class KeyboardNavigationProcessor {
           if (isTreeItemToggle(from.element)) {
             return this.moveFocusToTheLastElementInsideTreeItem(from);
           }
-
           return this.moveFocusInsideTreeItem(from, -1);
         },
-        onPageUp: () => this.moveFocusBetweenTreeItems(from, -this.pageUpDownSize),
-        onPageDown: () => this.moveFocusBetweenTreeItems(from, this.pageUpDownSize),
+        onPageUp: () => this.moveFocusBetweenTreeItems(from, -10),
+        onPageDown: () => this.moveFocusBetweenTreeItems(from, 10),
         onHome: () => this.moveFocusBetweenTreeItems(from, -Infinity),
         onEnd: () => this.moveFocusBetweenTreeItems(from, Infinity),
       });

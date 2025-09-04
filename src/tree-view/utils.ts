@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-interface IndecesByItemId {
+interface IndicesByItemId {
   [key: string]: number;
 }
 
-// Flattens the items and assigns indeces in ascending order
-export function getAllVisibleItemsIndeces<T>({
+// Flattens the items and assigns indices in ascending order for keyboard navigation
+export function getAllVisibleItemsIndices<T>({
   items,
   expandedItems,
   getItemId,
@@ -17,14 +17,14 @@ export function getAllVisibleItemsIndeces<T>({
   getItemId: (item: T, index: number) => string;
   getItemChildren: (item: T, index: number) => ReadonlyArray<T> | undefined;
 }) {
-  const allIndecesByItemId: IndecesByItemId = {};
+  const allIndicesByItemId: IndicesByItemId = {};
   let currentIndex = 0;
 
   const traverse = (item: T, index: number) => {
     const itemId = getItemId(item, index);
     const children = getItemChildren(item, index);
 
-    allIndecesByItemId[itemId] = currentIndex;
+    allIndicesByItemId[itemId] = currentIndex;
     currentIndex += 1;
 
     const isExpanded = children && children.length > 0 && expandedItems?.includes(itemId);
@@ -35,5 +35,5 @@ export function getAllVisibleItemsIndeces<T>({
 
   items.forEach((item, index) => traverse(item, index));
 
-  return allIndecesByItemId;
+  return allIndicesByItemId;
 }

@@ -29,7 +29,7 @@ interface InternalTreeItemProps<T>
   level: number;
   onItemToggle: (detail: TreeViewProps.ItemToggleDetail<T>) => void;
   highlightConnector?: (highlight: boolean) => void;
-  allVisibleItemsIndeces: {
+  allVisibleItemsIndices: {
     [key: string]: number;
   };
 }
@@ -47,7 +47,7 @@ const InternalTreeItem = <T,>({
   getItemChildren,
   onItemToggle,
   highlightConnector,
-  allVisibleItemsIndeces,
+  allVisibleItemsIndices,
 }: InternalTreeItemProps<T>) => {
   const [isHovered, setIsHovered] = React.useState(false);
   const i18n = useInternalI18n('tree-view');
@@ -98,14 +98,12 @@ const InternalTreeItem = <T,>({
         testUtilStyles.treeitem,
         level > 1 && styles.offset,
         isExpandable && [testUtilStyles.expandable],
-        isExpanded && [testUtilStyles.expanded],
-        isExpanded && [styles.expanded],
-        isHovered && [styles.hovered]
+        isExpanded && [testUtilStyles.expanded]
       )}
       aria-expanded={isExpandable ? isExpanded : undefined}
       aria-level={level}
       data-testid={`awsui-treeitem-${id}`}
-      data-awsui-tree-item-index={allVisibleItemsIndeces[id]}
+      data-awsui-tree-item-index={allVisibleItemsIndices[id]}
     >
       <div className={styles['treeitem-content-wrapper']}>
         <div className={styles['expand-toggle-wrapper']} {...highlightConnectorProps}>
@@ -166,7 +164,7 @@ const InternalTreeItem = <T,>({
                 getItemChildren={getItemChildren}
                 renderItemToggleIcon={renderItemToggleIcon}
                 highlightConnector={highlight => setIsHovered(highlight)}
-                allVisibleItemsIndeces={allVisibleItemsIndeces}
+                allVisibleItemsIndices={allVisibleItemsIndices}
                 connectorLines={connectorLines}
               />
             );

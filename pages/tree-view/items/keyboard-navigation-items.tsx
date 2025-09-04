@@ -41,6 +41,7 @@ export const cdsItems: Item[] = [
               Popover content and a <Button>button</Button>
             </>
           }
+          header="Header"
         >
           popover with dismiss button
         </Popover>
@@ -71,7 +72,7 @@ export const cdsItems: Item[] = [
       {
         id: 'cds3.1',
         content: 'Item 3.1',
-        actions: <Actions actionType="inline-button-dropdown" itemLabel="Item 3.1" />,
+        actions: <Actions actionType="inline-button-dropdown" itemLabel="Item 3.1" disabled={true} />,
         announcementLabel: 'Item 3.1',
         hasToggleButton: true,
       },
@@ -104,6 +105,7 @@ export const cdsItems: Item[] = [
   {
     id: 'cds4',
     content: 'Item 4',
+    actions: <Actions disabled={true} actionType="inline-button-dropdown" itemLabel="Item 4" />,
     secondaryContent: (
       <>
         Description with{' '}
@@ -122,13 +124,42 @@ export const cdsItems: Item[] = [
   {
     id: 'cds5',
     content: 'Item 5',
-    actions: <Actions actionType="button-group" itemLabel="Item 3.2.1" />,
+    actions: <Actions actionType="button-group" itemLabel="Item 5" />,
     children: [
       {
         id: 'cds5.1',
         content: 'Item 5.1',
       },
     ],
+  },
+  {
+    id: 'cds6',
+    content: (
+      <>
+        Item 6{' '}
+        <Popover
+          size="medium"
+          content={
+            <>
+              Popover content and a <Button>button</Button>
+            </>
+          }
+          header="Header"
+        >
+          popover with dismiss button
+        </Popover>
+      </>
+    ),
+    secondaryContent: (
+      <>
+        Description with{' '}
+        <Link href="#" variant="primary">
+          link
+        </Link>
+      </>
+    ),
+    actions: <Actions actionType="button-group" itemLabel="Item 6" />,
+    announcementLabel: 'Item 6 popover with dismiss button',
   },
 ];
 
