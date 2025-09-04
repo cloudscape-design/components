@@ -89,8 +89,7 @@ test.each([
 test('ARIA labels', () => {
   renderComponent({ ariaLabel: 'My list', controlId: 'list-control', statusType: 'loading' });
 
-  const list = createWrapper().find('ul')!.getElement();
-  expect(list).toHaveAttribute('role', 'listbox');
+  const list = createWrapper().find('[role=listbox]')!.getElement();
   expect(list).toHaveAccessibleName('My list Input name');
   expect(list).toHaveAccessibleDescription('Loading...');
 });
@@ -98,7 +97,7 @@ test('ARIA labels', () => {
 test('highlights first option when list is focused and removes highlight when the focus is lost', () => {
   renderComponent({});
 
-  const list = createWrapper().find('ul')!.getElement();
+  const list = createWrapper().find('[role=listbox]')!.getElement();
   list.focus();
 
   const highlightedItemsAfterFocus = createWrapper().findAllByClassName(selectableItemsStyles.highlighted);
@@ -114,17 +113,18 @@ test('highlights first option when list is focused and removes highlight when th
 test('selects options with Enter and Space and keeps highlight after Esc is pressed', () => {
   renderComponent({});
 
-  createWrapper().find('ul')!.focus();
-  createWrapper().find('ul')!.keydown(KeyCode.enter);
-  createWrapper().find('ul')!.keydown(KeyCode.down);
-  createWrapper().find('ul')!.keydown(KeyCode.space);
+  const listbox = createWrapper().find('[role=listbox]')!;
+  listbox.focus();
+  listbox.keydown(KeyCode.enter);
+  listbox.keydown(KeyCode.down);
+  listbox.keydown(KeyCode.space);
 
   const highlightedItems = createWrapper().findAllByClassName(selectableItemsStyles.highlighted);
   const selectedItems = createWrapper().findAllByClassName(selectableItemsStyles.selected);
   expect(highlightedItems).toHaveLength(1);
   expect(selectedItems).toHaveLength(2);
 
-  createWrapper().find('ul')!.keydown(KeyCode.escape);
+  listbox.keydown(KeyCode.escape);
 
   const highlightedItemsAfterEscape = createWrapper().findAllByClassName(selectableItemsStyles.highlighted);
   const selectedItemsAfterEscape = createWrapper().findAllByClassName(selectableItemsStyles.selected);

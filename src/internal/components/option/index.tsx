@@ -28,7 +28,6 @@ const Option = ({
   highlightText,
   triggerVariant = false,
   isGroupOption = false,
-  isGenericGroup = true,
   highlightedOption = false,
   selectedOption = false,
   ...restProps
@@ -69,18 +68,14 @@ const Option = ({
     />
   );
 
-  // The option is conditionally assigned 'title' and 'aria-disabled' attributes to ensure it is viewed as a (generic) group  by assistive technology only when necessary.
-  // Omitting the props might be necessary if they are provided on the parent element to avoid nested groups.
-  // See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/generic_role
-  const genericGroupProps = isGenericGroup
-    ? {
-        title: option.label ?? option.value,
-        'aria-disabled': disabled,
-      }
-    : undefined;
-
   return (
-    <span data-value={option.value} className={className} lang={option.lang} {...genericGroupProps} {...baseProps}>
+    <span
+      data-value={option.value}
+      className={className}
+      lang={option.lang}
+      title={option.label ?? option.value}
+      {...baseProps}
+    >
       {icon}
       <span className={styles.content}>
         <span className={styles['label-content']}>

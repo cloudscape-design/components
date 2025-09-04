@@ -137,6 +137,7 @@ describe('useSelect', () => {
         option: { type: 'child', option: { label: 'Child 1', value: 'child1' } },
         selected: false,
         isNextSelected: false,
+        isPreviousSelected: false,
         indeterminate: false,
         id: getOptionId(menuId!, 1),
       });
@@ -156,6 +157,7 @@ describe('useSelect', () => {
       option: { type: 'parent', option: { label: 'Group 3', options: [{ value: 'child31', label: 'Child 3-1' }] } },
       selected: false,
       isNextSelected: true,
+      isPreviousSelected: false,
       indeterminate: false,
       id: getOptionId(menuId!, 7),
     });
@@ -168,6 +170,7 @@ describe('useSelect', () => {
       option: { type: 'child', option: { value: 'child31', label: 'Child 3-1' } },
       selected: true,
       isNextSelected: false,
+      isPreviousSelected: false,
       indeterminate: false,
       id: getOptionId(menuId!, 8),
     });

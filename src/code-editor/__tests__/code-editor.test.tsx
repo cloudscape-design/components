@@ -700,10 +700,10 @@ describe('Code editor component', () => {
     const filteringInput = modal.findContent()!.findSelect()!.findFilteringInput()!.findNativeInput().getElement();
     expect(filteringInput).toHaveAccessibleName('Custom theme filter');
     expect(filteringInput).toHaveAttribute('placeholder', 'Custom theme filter placeholder');
-    expect(modal.findContent()!.findSelect()!.findDropdown().find('li:nth-child(1)')!.getElement()).toHaveTextContent(
+    expect(modal.findContent()!.findSelect()!.findDropdown().findGroup(1)!.getElement()).toHaveTextContent(
       'Custom light themes'
     );
-    expect(modal.findContent()!.findSelect()!.findDropdown().find('li:nth-child(2)')!.getElement()).toHaveTextContent(
+    expect(modal.findContent()!.findSelect()!.findDropdown().findGroup(2)!.getElement()).toHaveTextContent(
       'Custom dark themes'
     );
   });

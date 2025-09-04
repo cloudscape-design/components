@@ -117,11 +117,7 @@ export const FilteringTags = ({
         const match = filteringTag.toLowerCase().indexOf(searchElement) !== -1;
         if (match) {
           return (
-            <span
-              className={clsx(styles.tag, triggerVariant && styles['trigger-variant'])}
-              key={key}
-              aria-disabled={true}
-            >
+            <span className={clsx(styles.tag, triggerVariant && styles['trigger-variant'])} key={key}>
               <HighlightMatch str={filteringTag} highlightText={highlightText} />
             </span>
           );
