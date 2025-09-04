@@ -22580,7 +22580,7 @@ the default browser context menu behavior.",
     {
       "cancelable": false,
       "description": "Fired when a user interaction triggers a change in the list of selected items.
-The event \`detail\` contains the current list of \`selectedItems\`.",
+The event \`detail\` contains the new state for \`selectedItems\` (and \`selectionInverted\`, when \`selectionType="group"\`).",
       "detailInlineType": {
         "name": "TableProps.SelectionChangeDetail<T>",
         "properties": [
@@ -22588,6 +22588,11 @@ The event \`detail\` contains the current list of \`selectedItems\`.",
             "name": "selectedItems",
             "optional": false,
             "type": "Array<T>",
+          },
+          {
+            "name": "selectionInverted",
+            "optional": true,
+            "type": "boolean",
           },
         ],
         "type": "object",
@@ -23258,17 +23263,28 @@ the table items array is empty.",
     },
     {
       "defaultValue": "[]",
-      "description": "List of selected items.",
+      "description": "List of selected items.
+
+When \`selectionType="group"\` the \`selectedItems\` represents selection tree and requires \`selectionInverted\` for completeness.
+For example, the combination \`selectionInverted=true\` and \`selectedItems=[{ id: "1" }]\` means select all but the one with \`id="1"\`.",
       "name": "selectedItems",
       "optional": true,
       "type": "ReadonlyArray<T>",
     },
     {
-      "description": "Specifies the selection type (\`'single' | 'multi'\`).",
+      "defaultValue": "false",
+      "description": "Specifies if select all was used when \`selectionType="group"\`.",
+      "name": "selectionInverted",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Specifies the selection type (\`'single' | 'multi' | 'group\`).",
       "inlineType": {
         "name": "TableProps.SelectionType",
         "type": "union",
         "values": [
+          "group",
           "single",
           "multi",
         ],
