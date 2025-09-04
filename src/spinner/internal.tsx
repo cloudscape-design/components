@@ -26,6 +26,7 @@ export default function InternalSpinner({
     <WithNativeAttributes
       {...baseProps}
       tag="span"
+      componentName="Spinner"
       nativeAttributes={nativeAttributes}
       className={clsx(baseProps.className, styles.root, styles[`size-${size}`], styles[`variant-${variant}`])}
       ref={__internalRootRef}
