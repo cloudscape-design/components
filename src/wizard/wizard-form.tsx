@@ -21,7 +21,7 @@ import {
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { PACKAGE_VERSION } from '../internal/environment';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { usePrevious } from '../internal/hooks/use-previous';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { WizardProps } from './interfaces';
 import WizardActions from './wizard-actions';
 import WizardFormHeader from './wizard-form-header';
@@ -53,12 +53,9 @@ export default function WizardFormWithAnalytics(props: WizardFormProps) {
   const __internalRootRef = useComponentMetadata('WizardForm', PACKAGE_VERSION, analyticsMetadata as AnalyticsMetadata);
   const stepHeaderRef = useRef<HTMLDivElement | null>(null);
 
-  const previousActiveStepIndex = usePrevious(props.activeStepIndex);
-  useEffect(() => {
-    if (previousActiveStepIndex !== undefined && previousActiveStepIndex !== props.activeStepIndex) {
-      stepHeaderRef.current?.focus();
-    }
-  }, [previousActiveStepIndex, props.activeStepIndex]);
+  useEffectOnUpdate(() => {
+    stepHeaderRef.current?.focus();
+  }, [props.activeStepIndex]);
 
   return (
     <AnalyticsFunnelStep
