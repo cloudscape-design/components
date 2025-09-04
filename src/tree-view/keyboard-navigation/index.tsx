@@ -193,30 +193,29 @@ export class KeyboardNavigationProcessor {
     }
 
     const from = this.focusedTreeItem;
-    event.preventDefault();
 
     if (isEventLike(event)) {
       handleKey(event, {
-        onBlockStart: () => this.moveFocusBetweenTreeItems(from, -1),
-        onBlockEnd: () => this.moveFocusBetweenTreeItems(from, 1),
+        onBlockStart: () => this.moveFocusBetweenTreeItems(event, from, -1),
+        onBlockEnd: () => this.moveFocusBetweenTreeItems(event, from, 1),
         onInlineEnd: () => {
           // If focus is on the toggle, move focus to the first element inside the tree-item
           if (isTreeItemToggle(from.element)) {
-            return this.moveFocusInsideTreeItem(from, 0);
+            return this.moveFocusInsideTreeItem(event, from, 0);
           }
-          return this.moveFocusInsideTreeItem(from, 1);
+          return this.moveFocusInsideTreeItem(event, from, 1);
         },
         onInlineStart: () => {
           // If focus is on the toggle, move focus to the last element inside the tree-item
           if (isTreeItemToggle(from.element)) {
-            return this.moveFocusToTheLastElementInsideTreeItem(from);
+            return this.moveFocusToTheLastElementInsideTreeItem(event, from);
           }
-          return this.moveFocusInsideTreeItem(from, -1);
+          return this.moveFocusInsideTreeItem(event, from, -1);
         },
-        onPageUp: () => this.moveFocusBetweenTreeItems(from, -10),
-        onPageDown: () => this.moveFocusBetweenTreeItems(from, 10),
-        onHome: () => this.moveFocusBetweenTreeItems(from, -Infinity),
-        onEnd: () => this.moveFocusBetweenTreeItems(from, Infinity),
+        onPageUp: () => this.moveFocusBetweenTreeItems(event, from, -10),
+        onPageDown: () => this.moveFocusBetweenTreeItems(event, from, 10),
+        onHome: () => this.moveFocusBetweenTreeItems(event, from, -Infinity),
+        onEnd: () => this.moveFocusBetweenTreeItems(event, from, Infinity),
       });
     }
   };
@@ -237,15 +236,18 @@ export class KeyboardNavigationProcessor {
     return targetTreeItemToggle;
   }
 
-  private moveFocusInsideTreeItem(from: FocusedTreeItem, by: number) {
+  private moveFocusInsideTreeItem(event: Event, from: FocusedTreeItem, by: number) {
     const nextFocusableElement = this.getNextFocusableTreeItemContent(from, by);
 
     if (nextFocusableElement) {
+      // Prevent default only if there are focusables inside
+      event.preventDefault();
       focusElement(nextFocusableElement);
     }
   }
 
-  private moveFocusBetweenTreeItems(from: FocusedTreeItem, by: number) {
+  private moveFocusBetweenTreeItems(event: Event, from: FocusedTreeItem, by: number) {
+    event.preventDefault();
     const isToggleFocused = isTreeItemToggle(from.element);
 
     // If toggle is not focused (focus is inside the tree-item),
@@ -253,7 +255,7 @@ export class KeyboardNavigationProcessor {
     focusElement(this.getNextFocusableTreeItem(from, isToggleFocused ? by : 0));
   }
 
-  private moveFocusToTheLastElementInsideTreeItem(from: FocusedTreeItem) {
+  private moveFocusToTheLastElementInsideTreeItem(event: Event, from: FocusedTreeItem) {
     const treeItem = findTreeItemContentById(this.treeView, from.treeItemId);
     if (!treeItem) {
       return null;
@@ -264,6 +266,8 @@ export class KeyboardNavigationProcessor {
     const focusableElement = treeItemFocusables[treeItemFocusables.length - 1];
 
     if (focusableElement) {
+      // Prevent default only if there are focusables inside
+      event.preventDefault();
       focusElement(focusableElement);
     }
   }
