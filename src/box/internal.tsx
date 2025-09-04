@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { BoxProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -23,15 +24,13 @@ export default function InternalBox({
   fontWeight,
   color,
   children,
+  nativeAttributes,
   __internalRootRef,
   ...props
 }: InternalBoxProps) {
   const baseProps = getBaseProps(props);
   const marginsClassNamesSuffices = getClassNamesSuffixes(margin);
   const paddingsClassNamesSuffices = getClassNamesSuffixes(padding);
-  // This can be any arbitrary string if passed into tagOverride.
-  // We appease the compiler with an incorrect type.
-  const Tag = getTag(variant, tagOverride) as 'div';
 
   const className = clsx(
     baseProps.className,
@@ -49,9 +48,16 @@ export default function InternalBox({
   );
 
   return (
-    <Tag {...baseProps} className={className} ref={__internalRootRef}>
+    <WithNativeAttributes
+      {...baseProps}
+      tag={getTag(variant, tagOverride)}
+      componentName="Box"
+      nativeAttributes={nativeAttributes}
+      className={className}
+      ref={__internalRootRef}
+    >
       {children}
-    </Tag>
+    </WithNativeAttributes>
   );
 }
 
