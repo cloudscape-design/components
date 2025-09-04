@@ -191,7 +191,7 @@ function AppLayoutGlobalDrawerImplementation({
                           setExpandedDrawerId(isExpanded ? null : activeDrawerId);
                           break;
                         default:
-                          activeAiDrawer?.onHeaderActionClick?.(event);
+                          activeGlobalDrawer?.onHeaderActionClick?.(event);
                       }
                     }}
                     ariaLabel="Global panel actions"

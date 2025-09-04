@@ -947,7 +947,7 @@ describe('toolbar mode only features', () => {
           awsuiWidgetPlugins.registerLeftDrawer(payload as WidgetDrawerPayload);
         }
       };
-      const findLeftDrawerHeaderActionById = (id: string, renderProps: Awaited<ReturnType<typeof renderComponent>>) => {
+      const findDrawerHeaderActionById = (id: string, renderProps: Awaited<ReturnType<typeof renderComponent>>) => {
         return createWrapper(renderProps.container).findButtonGroup()!.findButtonById(id);
       };
 
@@ -1191,30 +1191,27 @@ describe('toolbar mode only features', () => {
         expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
       });
 
-      (type === 'global-ai' ? test : test.skip)(
-        `calls onHeaderActionClick handler by clicking on drawers header action button in left runtime drawer)`,
-        async () => {
-          const onHeaderActionClick = jest.fn();
-          awsuiWidgetPlugins.registerLeftDrawer({
-            ...drawerDefaults,
-            id: 'global-drawer',
-            headerActions: [
-              {
-                type: 'icon-button',
-                id: 'add',
-                iconName: 'add-plus',
-                text: 'Add',
-              },
-            ],
-            onHeaderActionClick: event => onHeaderActionClick(event.detail),
-          });
-          const renderProps = await renderComponent(<AppLayout />);
-          findDrawerTriggerById('global-drawer', renderProps)!.click();
+      test(`calls onHeaderActionClick handler by clicking on drawers header action button in left runtime drawer)`, async () => {
+        const onHeaderActionClick = jest.fn();
+        registerDrawer({
+          ...drawerDefaults,
+          id: 'global-drawer',
+          headerActions: [
+            {
+              type: 'icon-button',
+              id: 'add',
+              iconName: 'add-plus',
+              text: 'Add',
+            },
+          ],
+          onHeaderActionClick: event => onHeaderActionClick(event.detail),
+        });
+        const renderProps = await renderComponent(<AppLayout />);
+        findDrawerTriggerById('global-drawer', renderProps)!.click();
 
-          findLeftDrawerHeaderActionById('add', renderProps)!.click();
-          expect(onHeaderActionClick).toHaveBeenCalledWith({ id: 'add' });
-        }
-      );
+        findDrawerHeaderActionById('add', renderProps)!.click();
+        expect(onHeaderActionClick).toHaveBeenCalledWith({ id: 'add' });
+      });
     });
 
     test('the order of the opened global drawers should match the positions of their corresponding toggle buttons on the toolbar', async () => {
