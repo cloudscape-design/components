@@ -8,6 +8,7 @@ import InternalInput from '../../../input/internal';
 import { getBaseProps } from '../../base-component';
 import { useFormFieldContext } from '../../context/form-field-context';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../../events';
+import { processAttributes } from '../../utils/with-native-attributes';
 import { MaskedInputProps } from './interfaces';
 import useMask from './use-mask';
 import MaskFormat from './utils/mask-format';
@@ -23,6 +24,7 @@ const MaskedInput = React.forwardRef(
       autofix = false,
       disableAutocompleteOnBlur = false,
       showUnmaskedValue = false,
+      nativeInputAttributes,
       ...rest
     }: MaskedInputProps,
     ref: Ref<MaskedInputProps.Ref>
@@ -65,9 +67,13 @@ const MaskedInput = React.forwardRef(
       <InternalInput
         {...inputProps}
         ref={mergedRef}
-        __nativeAttributes={{
-          onPaste,
-        }}
+        nativeInputAttributes={processAttributes(
+          {
+            onPaste,
+          },
+          nativeInputAttributes,
+          'MaskedInput'
+        )}
       />
     );
   }

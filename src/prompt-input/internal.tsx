@@ -14,6 +14,7 @@ import * as tokens from '../internal/generated/styles/tokens';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SomeRequired } from '../internal/types';
+import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { PromptInputProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -55,6 +56,7 @@ const InternalPromptInput = React.forwardRef(
       secondaryContent,
       disableSecondaryActionsPaddings,
       disableSecondaryContentPaddings,
+      nativeTextareaAttributes,
       __internalRootRef,
       ...rest
     }: InternalPromptInputProps,
@@ -217,7 +219,14 @@ const InternalPromptInput = React.forwardRef(
           </div>
         )}
         <div className={styles['textarea-wrapper']}>
-          <textarea ref={textareaRef} id={controlId} {...attributes} />
+          <WithNativeAttributes
+            {...attributes}
+            tag="textarea"
+            componentName="PromptInput"
+            nativeAttributes={nativeTextareaAttributes}
+            ref={textareaRef}
+            id={controlId}
+          />
           {hasActionButton && !secondaryActions && action}
         </div>
         {secondaryActions && (

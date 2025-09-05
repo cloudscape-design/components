@@ -18,6 +18,7 @@ import { FormFieldValidationControlProps, useFormFieldContext } from '../interna
 import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
+import WithNativeAttributes, { SkipWarnings } from '../internal/utils/with-native-attributes';
 import {
   GeneratedAnalyticsMetadataInputClearInput,
   GeneratedAnalyticsMetadataInputComponent,
@@ -42,7 +43,6 @@ export interface InternalInputProps
   __rightIcon?: IconProps['name'];
   __onRightIconClick?: () => void;
 
-  __nativeAttributes?: React.InputHTMLAttributes<HTMLInputElement>;
   __noBorderRadius?: boolean;
 
   __onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
@@ -50,6 +50,7 @@ export interface InternalInputProps
 
   __inheritFormFieldProps?: boolean;
   __injectAnalyticsComponentMetadata?: boolean;
+  __skipNativeAttributesWarnings?: SkipWarnings;
 }
 
 function InternalInput(
@@ -86,10 +87,11 @@ function InternalInput(
     __onBlurWithDetail,
     onBlur,
     onFocus,
-    __nativeAttributes,
+    nativeInputAttributes,
     __internalRootRef,
     __inheritFormFieldProps,
     __injectAnalyticsComponentMetadata,
+    __skipNativeAttributesWarnings,
     ...rest
   }: InternalInputProps,
   ref: Ref<HTMLInputElement>
@@ -154,7 +156,6 @@ function InternalInput(
       fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: e.relatedTarget });
     },
     onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
-    ...__nativeAttributes,
   };
 
   if (type === 'number') {
@@ -208,7 +209,14 @@ function InternalInput(
           <InternalIcon name={__leftIcon} variant={disabled || readOnly ? 'disabled' : __leftIconVariant} />
         </span>
       )}
-      <input ref={mergedRef} {...attributes} />
+      <WithNativeAttributes
+        {...attributes}
+        tag="input"
+        componentName="Input"
+        nativeAttributes={nativeInputAttributes}
+        skipWarnings={__skipNativeAttributesWarnings}
+        ref={mergedRef}
+      />
       {__rightIcon && (
         <span
           className={styles['input-icon-right']}
