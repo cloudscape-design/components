@@ -19,6 +19,7 @@ import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { joinStrings } from '../internal/utils/strings';
 import { GeneratedAnalyticsMetadataFileInputComponent } from './analytics-metadata/interfaces';
 import { FileInputProps } from './interfaces';
@@ -53,6 +54,7 @@ const InternalFileInput = React.forwardRef(
     const baseProps = getBaseProps(restProps);
     const uploadInputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLButtonElement>(null);
+    const buttonWrapperRef = useRef<HTMLDivElement>(null);
     const mergedRef = useMergeRefs(__internalRootRef, containerRef);
 
     const uploadButtonLabelId = useUniqueId('upload-button-label');
@@ -66,7 +68,9 @@ const InternalFileInput = React.forwardRef(
     const onUploadButtonClick = () => uploadInputRef.current?.click();
     const onUploadInputFocus = () => {
       setIsFocused(true);
-      containerRef.current?.scrollIntoView?.();
+      if (buttonWrapperRef.current) {
+        scrollElementIntoView(buttonWrapperRef.current);
+      }
     };
     const onUploadInputBlur = () => setIsFocused(false);
 
@@ -147,20 +151,22 @@ const InternalFileInput = React.forwardRef(
 
         {/* The button is decorative. It dispatches clicks to the file input and is ARIA-hidden. */}
         {/* When the input is focused the focus outline is forced on the button. */}
-        <InternalButton
-          iconName="upload"
-          variant={variant === 'icon' ? 'icon' : undefined}
-          formAction="none"
-          onClick={onUploadButtonClick}
-          className={clsx(styles['file-input-button'], {
-            [styles['force-focus-outline-button']]: isFocused && variant === 'button',
-            [styles['force-focus-outline-icon']]: isFocused && variant === 'icon',
-          })}
-          nativeButtonAttributes={{ tabIndex: -1, 'aria-hidden': true }}
-          __skipNativeAttributesWarnings={true}
-        >
-          {variant === 'button' && children}
-        </InternalButton>
+        <div className={styles['file-input-button-wrapper']} ref={buttonWrapperRef}>
+          <InternalButton
+            iconName="upload"
+            variant={variant === 'icon' ? 'icon' : undefined}
+            formAction="none"
+            onClick={onUploadButtonClick}
+            className={clsx(styles['file-input-button'], {
+              [styles['force-focus-outline-button']]: isFocused && variant === 'button',
+              [styles['force-focus-outline-icon']]: isFocused && variant === 'icon',
+            })}
+            nativeButtonAttributes={{ tabIndex: -1, 'aria-hidden': true }}
+            __skipNativeAttributesWarnings={true}
+          >
+            {variant === 'button' && children}
+          </InternalButton>
+        </div>
 
         {/* The file input needs to be labelled with provided content. Can't use the button because it is ARIA-hidden. */}
         <ScreenreaderOnly id={uploadButtonLabelId}>{ariaLabel || children}</ScreenreaderOnly>
