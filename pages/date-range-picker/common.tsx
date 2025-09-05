@@ -19,6 +19,7 @@ interface DateRangePickerPageSettings {
   warning?: boolean;
   rangeSelectorMode?: DateRangePickerProps.RangeSelectorMode;
   absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
+  dateInputFormat?: DateRangePickerProps['dateInputFormat'];
   timeInputFormat?: DateRangePickerProps['timeInputFormat'];
   timeOffset?: number;
   hideTimeOffset?: boolean;
@@ -36,6 +37,7 @@ const defaultSettings: Required<DateRangePickerPageSettings> = {
   warning: false,
   rangeSelectorMode: 'default',
   absoluteFormat: 'iso',
+  dateInputFormat: 'iso',
   timeInputFormat: 'hh:mm:ss',
   timeOffset: 0,
   hideTimeOffset: false,
@@ -80,6 +82,7 @@ export function useDateRangePickerSettings(
   const rangeSelectorMode = urlParams.rangeSelectorMode ?? def('rangeSelectorMode');
   const absoluteFormat = urlParams.absoluteFormat ?? def('absoluteFormat');
   const timeInputFormat = urlParams.timeInputFormat ?? def('timeInputFormat');
+  const dateInputFormat = urlParams.dateInputFormat ?? def('dateInputFormat');
   const timeOffset = parseNumber(def('timeOffset'), urlParams.timeOffset);
   const hideTimeOffset = parseBoolean(def('hideTimeOffset'), urlParams.hideTimeOffset);
   const expandToViewport = parseBoolean(def('expandToViewport'), urlParams.expandToViewport);
@@ -94,6 +97,7 @@ export function useDateRangePickerSettings(
     warning,
     rangeSelectorMode,
     absoluteFormat,
+    dateInputFormat,
     timeInputFormat,
     timeOffset,
     hideTimeOffset,
@@ -242,6 +246,8 @@ export function Settings({
     warning,
     rangeSelectorMode,
     absoluteFormat,
+    dateInputFormat,
+    timeInputFormat,
     timeOffset,
     hideTimeOffset,
     expandToViewport,
@@ -263,7 +269,8 @@ export function Settings({
     { value: 'end-of-page' },
     { value: 'overlapping-pages' },
   ];
-  const absoluteFormatOptions = [{ value: 'iso' }, { value: 'long-localized' }];
+  const dateFormatOptions = [{ value: 'iso' }, { value: 'slashed' }, { value: 'long-localized' }];
+  const timeFormatOptions = [{ value: 'hh:mm:ss' }, { value: 'hh:mm' }, { value: 'hh' }];
   return (
     <SpaceBetween size="m" direction="horizontal">
       <FormField label="Range selector mode">
@@ -286,10 +293,30 @@ export function Settings({
 
       <FormField label="Absolute format">
         <Select
-          options={absoluteFormatOptions}
-          selectedOption={absoluteFormatOptions.find(o => o.value === absoluteFormat) ?? null}
+          options={dateFormatOptions}
+          selectedOption={dateFormatOptions.find(o => o.value === absoluteFormat) ?? null}
           onChange={({ detail }) =>
             setSettings({ absoluteFormat: detail.selectedOption.value as DateRangePickerProps.AbsoluteFormat })
+          }
+        />
+      </FormField>
+
+      <FormField label="Date input format">
+        <Select
+          options={dateFormatOptions}
+          selectedOption={dateFormatOptions.find(o => o.value === dateInputFormat) ?? null}
+          onChange={({ detail }) =>
+            setSettings({ dateInputFormat: detail.selectedOption.value as DateRangePickerProps.DateInputFormat })
+          }
+        />
+      </FormField>
+
+      <FormField label="Time input format">
+        <Select
+          options={timeFormatOptions}
+          selectedOption={timeFormatOptions.find(o => o.value === timeInputFormat) ?? null}
+          onChange={({ detail }) =>
+            setSettings({ timeInputFormat: detail.selectedOption.value as DateRangePickerProps.TimeInputFormat })
           }
         />
       </FormField>

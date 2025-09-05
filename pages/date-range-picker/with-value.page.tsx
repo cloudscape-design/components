@@ -33,7 +33,8 @@ export default function DatePickerScenario() {
 
         <br />
         <br />
-        <div style={{ blockSize: 500 }}>
+        {/* We give more space at the bottom so that the dropdown opens down and stays within the screenshot area. */}
+        <div style={{ blockSize: 800 }}>
           <b>
             Raw value: <Box variant="pre">{JSON.stringify(props.value, undefined, 2)}</Box>
           </b>

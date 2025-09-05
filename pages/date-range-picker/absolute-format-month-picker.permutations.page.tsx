@@ -12,7 +12,7 @@ import { isValid, placeholders } from './common';
 
 const permutations = createPermutations<DateRangePickerProps>([
   {
-    absoluteFormat: ['iso', 'long-localized'],
+    absoluteFormat: ['iso', 'slashed', 'long-localized'],
     value: [
       {
         type: 'absolute',
@@ -24,7 +24,7 @@ const permutations = createPermutations<DateRangePickerProps>([
     relativeOptions: [[]],
   },
   {
-    absoluteFormat: ['iso', 'long-localized'],
+    absoluteFormat: ['iso', 'slashed', 'long-localized'],
     hideTimeOffset: [true, false],
     value: [
       {
