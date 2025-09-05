@@ -49,7 +49,7 @@ const PlainList = ({
   listBottom,
   screenReaderContent,
 }: ListProps) => {
-  const listRef = useRef<HTMLUListElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const item = listRef.current?.querySelector<HTMLElement>(
       `[data-mouse-target="${autosuggestItemsState.highlightedIndex}"]`
@@ -86,9 +86,9 @@ const PlainList = ({
         );
       })}
       {listBottom ? (
-        <li role="option" className={styles['list-bottom']}>
+        <div role="option" className={styles['list-bottom']}>
           {listBottom}
-        </li>
+        </div>
       ) : null}
     </OptionsList>
   );

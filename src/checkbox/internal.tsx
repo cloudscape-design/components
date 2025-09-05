@@ -104,6 +104,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
           <WithNativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>
             {...nativeControlProps}
             tag="input"
+            componentName="Checkbox"
             nativeAttributes={nativeInputAttributes}
             ref={checkboxRef}
             type="checkbox"
