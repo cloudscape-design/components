@@ -6,13 +6,25 @@
 @use '../internal/styles' as styles;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
-.root,
-.file-input {
-  /* used in test-utils */
+.root {
+  position: relative;
 }
 
-.hidden {
-  @include styles.awsui-util-hide;
+.file-input {
+  // Adapted from https://webaim.org/techniques/css/invisiblecontent/
+
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  block-size: 1px;
+  inline-size: 1px;
+  margin-block: -1px;
+  margin-inline: -1px;
+  padding-block: 0;
+  padding-inline: 0;
+  overflow: hidden;
 }
 
 .file-input-button {
