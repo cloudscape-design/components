@@ -12,6 +12,7 @@ import {
 import { getAllFocusables } from '../../internal/components/focus-lock/utils';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
+import { nodeBelongs } from '../../internal/utils/node-belongs';
 import {
   findTreeItemByIndex,
   findTreeItemContentById,
@@ -53,6 +54,7 @@ export function KeyboardNavigationProvider({
     <SingleTabStopNavigationProvider
       ref={navigationAPI}
       getNextFocusTarget={keyboardNavigation.getNextFocusTarget}
+      onUnregisterActive={keyboardNavigation.onUnregisterActive}
       navigationActive={true}
     >
       {children}
@@ -105,6 +107,14 @@ export class KeyboardNavigationProcessor {
       }
     }, 0);
   }
+
+  public onUnregisterActive = () => {
+    // If the focused tree-item appears to be no longer attached to the tree-view we need to re-apply
+    // focus to a tree-item with the same or closest position.
+    if (this.focusedTreeItem && !nodeBelongs(this.treeView, this.focusedTreeItem.element)) {
+      this.moveFocusBetweenTreeItems(this.focusedTreeItem, 0);
+    }
+  };
 
   public getNextFocusTarget = () => {
     if (!this.treeView) {
@@ -196,26 +206,26 @@ export class KeyboardNavigationProcessor {
 
     if (isEventLike(event)) {
       handleKey(event, {
-        onBlockStart: () => this.moveFocusBetweenTreeItems(event, from, -1),
-        onBlockEnd: () => this.moveFocusBetweenTreeItems(event, from, 1),
+        onBlockStart: () => this.moveFocusBetweenTreeItems(from, -1, event),
+        onBlockEnd: () => this.moveFocusBetweenTreeItems(from, 1, event),
         onInlineEnd: () => {
           // If focus is on the toggle, move focus to the first element inside the tree-item
           if (isTreeItemToggle(from.element)) {
-            return this.moveFocusInsideTreeItem(event, from, 0);
+            return this.moveFocusInsideTreeItem(from, 0, event);
           }
-          return this.moveFocusInsideTreeItem(event, from, 1);
+          return this.moveFocusInsideTreeItem(from, 1, event);
         },
         onInlineStart: () => {
           // If focus is on the toggle, move focus to the last element inside the tree-item
           if (isTreeItemToggle(from.element)) {
-            return this.moveFocusToTheLastElementInsideTreeItem(event, from);
+            return this.moveFocusToTheLastElementInsideTreeItem(from, event);
           }
-          return this.moveFocusInsideTreeItem(event, from, -1);
+          return this.moveFocusInsideTreeItem(from, -1, event);
         },
-        onPageUp: () => this.moveFocusBetweenTreeItems(event, from, -10),
-        onPageDown: () => this.moveFocusBetweenTreeItems(event, from, 10),
-        onHome: () => this.moveFocusBetweenTreeItems(event, from, -Infinity),
-        onEnd: () => this.moveFocusBetweenTreeItems(event, from, Infinity),
+        onPageUp: () => this.moveFocusBetweenTreeItems(from, -10, event),
+        onPageDown: () => this.moveFocusBetweenTreeItems(from, 10, event),
+        onHome: () => this.moveFocusBetweenTreeItems(from, -Infinity, event),
+        onEnd: () => this.moveFocusBetweenTreeItems(from, Infinity, event),
       });
     }
   };
@@ -236,18 +246,18 @@ export class KeyboardNavigationProcessor {
     return targetTreeItemToggle;
   }
 
-  private moveFocusInsideTreeItem(event: Event, from: FocusedTreeItem, by: number) {
+  private moveFocusInsideTreeItem(from: FocusedTreeItem, by: number, event?: Event) {
     const nextFocusableElement = this.getNextFocusableTreeItemContent(from, by);
 
     if (nextFocusableElement) {
       // Prevent default only if there are focusables inside
-      event.preventDefault();
+      event?.preventDefault();
       focusElement(nextFocusableElement);
     }
   }
 
-  private moveFocusBetweenTreeItems(event: Event, from: FocusedTreeItem, by: number) {
-    event.preventDefault();
+  private moveFocusBetweenTreeItems(from: FocusedTreeItem, by: number, event?: Event) {
+    event?.preventDefault();
     const isToggleFocused = isTreeItemToggle(from.element);
 
     // If toggle is not focused (focus is inside the tree-item),
@@ -255,7 +265,7 @@ export class KeyboardNavigationProcessor {
     focusElement(this.getNextFocusableTreeItem(from, isToggleFocused ? by : 0));
   }
 
-  private moveFocusToTheLastElementInsideTreeItem(event: Event, from: FocusedTreeItem) {
+  private moveFocusToTheLastElementInsideTreeItem(from: FocusedTreeItem, event?: Event) {
     const treeItem = findTreeItemContentById(this.treeView, from.treeItemId);
     if (!treeItem) {
       return null;
@@ -267,7 +277,7 @@ export class KeyboardNavigationProcessor {
 
     if (focusableElement) {
       // Prevent default only if there are focusables inside
-      event.preventDefault();
+      event?.preventDefault();
       focusElement(focusableElement);
     }
   }
