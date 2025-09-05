@@ -27,14 +27,15 @@ const Filter = React.forwardRef(({ filteringType, ...filterProps }: FilterProps,
       invalid={false}
       __noBorderRadius={true}
       {...filterProps}
-      __nativeAttributes={{
+      nativeInputAttributes={{
         'aria-expanded': true,
         'aria-haspopup': true,
         role: 'combobox',
         autoCorrect: 'off',
         autoCapitalize: 'off',
-        ...filterProps.__nativeAttributes,
+        ...filterProps.nativeInputAttributes,
       }}
+      __skipNativeAttributesWarnings={true}
     />
   );
 });

@@ -13,6 +13,7 @@ import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { GeneratedAnalyticsMetadataTextareaComponent } from './analytics-metadata/interfaces';
 import { TextareaProps } from './interfaces';
 
@@ -41,6 +42,7 @@ const Textarea = React.forwardRef(
       placeholder,
       autoFocus,
       ariaLabel,
+      nativeTextareaAttributes,
       ...rest
     }: TextareaProps,
     ref: Ref<TextareaProps.Ref>
@@ -107,7 +109,14 @@ const Textarea = React.forwardRef(
         ref={__internalRootRef}
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
       >
-        <textarea ref={textareaRef} id={controlId} {...attributes} />
+        <WithNativeAttributes
+          {...attributes}
+          tag="textarea"
+          componentName="Textarea"
+          nativeAttributes={nativeTextareaAttributes}
+          ref={textareaRef}
+          id={controlId}
+        />
       </span>
     );
   }

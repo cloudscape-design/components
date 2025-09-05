@@ -502,4 +502,17 @@ describe('Input', () => {
     fireEvent.wheel(input);
     expect(blurSpy).toHaveBeenCalledTimes(1);
   });
+
+  describe('native attributes', () => {
+    it('adds native attributes', () => {
+      const { container } = render(<Input value="" nativeInputAttributes={{ 'data-testid': 'my-test-id' }} />);
+      expect(container.querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+    });
+    it('concatenates class names', () => {
+      const { container } = render(<Input value="" nativeInputAttributes={{ className: 'additional-class' }} />);
+      const input = container.querySelector('input');
+      expect(input).toHaveClass(styles.input);
+      expect(input).toHaveClass('additional-class');
+    });
+  });
 });

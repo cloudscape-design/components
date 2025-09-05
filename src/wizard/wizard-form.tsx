@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { MutableRefObject, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
@@ -53,9 +54,7 @@ export default function WizardFormWithAnalytics(props: WizardFormProps) {
   const stepHeaderRef = useRef<HTMLDivElement | null>(null);
 
   useEffectOnUpdate(() => {
-    if (stepHeaderRef && stepHeaderRef.current) {
-      stepHeaderRef.current?.focus();
-    }
+    stepHeaderRef.current?.focus();
   }, [props.activeStepIndex]);
 
   return (
