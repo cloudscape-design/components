@@ -3,7 +3,6 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
-import { StatusIndicator } from '~components';
 import Box from '~components/box';
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
@@ -73,7 +72,6 @@ awsuiPlugins.appLayout.registerDrawer({
       id: 'add',
       iconName: 'add-plus',
       text: 'Add',
-      popoverFeedback: <StatusIndicator type="success">Message copied</StatusIndicator>,
     },
   ],
   onHeaderActionClick: ({ detail }) => {
@@ -190,7 +188,6 @@ awsuiPlugins.appLayout.registerDrawer({
       id: 'add',
       iconName: 'add-plus',
       text: 'Add',
-      popoverFeedback: <StatusIndicator type="success">Message copied</StatusIndicator>,
     },
   ],
   onHeaderActionClick: ({ detail }) => {

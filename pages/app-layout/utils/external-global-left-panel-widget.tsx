@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
-import { Box, StatusIndicator } from '~components';
+import { Box } from '~components';
 import { registerLeftDrawer } from '~components/internal/plugins/widget';
 
 import styles from '../styles.scss';
@@ -94,7 +94,6 @@ registerLeftDrawer({
       id: 'add',
       iconName: 'add-plus',
       text: 'Add',
-      popoverFeedback: <StatusIndicator type="success">Message copied</StatusIndicator>,
     },
   ],
 
