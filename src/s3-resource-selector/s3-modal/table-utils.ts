@@ -5,7 +5,7 @@ import { TableProps } from '../../table/interfaces';
 import { S3ResourceSelectorProps } from '../interfaces';
 
 export function includes<T>(array: ReadonlyArray<T> | undefined, item: T) {
-  return !!array && array.indexOf(item) > -1;
+  return !!array && array.includes(item);
 }
 
 export const compareDates = (itemA: string | undefined, itemB: string | undefined) => {
