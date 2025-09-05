@@ -3,10 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-.button,
-.content,
-.icon-left,
-.disabled-reason-tooltip,
+.disabled-reason-tooltip {
+  /* used in test-utils or tests */
+}
+
 .external-icon {
   /* used in test-utils or tests */
 }
