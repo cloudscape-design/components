@@ -457,4 +457,37 @@ describe('Masked Input component', () => {
       });
     });
   });
+
+  describe('native attributes', () => {
+    it('adds native attributes', () => {
+      const { wrapper } = renderMaskedInput({
+        ...defaultProps,
+        value: '12:34:56',
+        nativeInputAttributes: { 'data-testid': 'my-test-id' },
+      });
+      expect(wrapper.getElement().querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+      expect(wrapper.getElement().querySelectorAll('input[data-testid="my-test-id"]')).toHaveLength(1);
+    });
+    it('chains MaskedInput-specific handlers', () => {
+      const onPaste = jest.fn();
+      const { wrapper, onChangeSpy } = renderMaskedInput({
+        ...defaultProps,
+        value: '',
+        nativeInputAttributes: {
+          onPaste,
+        },
+      });
+      fireEvent.paste(wrapper.findNativeInput().getElement(), {
+        clipboardData: { getData: () => '111111' },
+      });
+
+      expect(onPaste).toHaveBeenCalledWith(expect.objectContaining({ clipboardData: expect.any(Function) }));
+
+      expect(onChangeSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { value: '11:11:11' },
+        })
+      );
+    });
+  });
 });
