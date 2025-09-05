@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
-import { ButtonGroupProps } from '../../../button-group/interfaces';
+import { InternalItemOrGroup } from '../../../button-group/interfaces';
 import ButtonGroup from '../../../button-group/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
@@ -91,7 +91,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
   // (window is between mobile and desktop sizes). At this point, the drawer can't be
   // resized in either direction, so we disable the resize handler
   const isResizingDisabled = maxAiDrawerSize < activeAiDrawerSize;
-  let drawerActions: ReadonlyArray<ButtonGroupProps.InternalItemOrGroup> = [
+  let drawerActions: ReadonlyArray<InternalItemOrGroup> = [
     {
       type: 'icon-button',
       id: 'close',

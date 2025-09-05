@@ -105,20 +105,29 @@ export interface ButtonGroupProps extends BaseComponentProps {
   style?: ButtonGroupProps.Style;
 }
 
+export interface InternalIconButton extends ButtonGroupProps.IconButton {
+  analyticsAction?: string;
+}
+
+export type InternalItemOrGroup = InternalItem | ButtonGroupProps.Group;
+export type InternalItem =
+  | InternalIconButton
+  | ButtonGroupProps.IconToggleButton
+  | ButtonGroupProps.IconFileInput
+  | ButtonGroupProps.MenuDropdown;
+
 export interface InternalButtonGroupProps
   extends SomeRequired<ButtonGroupProps, 'dropdownExpandToViewport'>,
     InternalBaseComponentProps {
   style?: ButtonGroupProps.Style;
-  items: ReadonlyArray<ButtonGroupProps.InternalItemOrGroup>;
+  items: ReadonlyArray<InternalItemOrGroup>;
 }
 
 export namespace ButtonGroupProps {
   export type Variant = 'icon';
 
   export type ItemOrGroup = Item | Group;
-  export type InternalItemOrGroup = InternalItem | Group;
   export type Item = IconButton | IconToggleButton | IconFileInput | MenuDropdown;
-  export type InternalItem = InternalIconButton | IconToggleButton | IconFileInput | MenuDropdown;
 
   export interface IconButton {
     type: 'icon-button';
@@ -133,10 +142,6 @@ export namespace ButtonGroupProps {
     iconUrl?: string;
     iconSvg?: React.ReactNode;
     popoverFeedback?: React.ReactNode;
-  }
-
-  export interface InternalIconButton extends IconButton {
-    analyticsAction?: string;
   }
 
   export interface IconToggleButton {
