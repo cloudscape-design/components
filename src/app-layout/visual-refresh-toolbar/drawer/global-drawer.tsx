@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
-import { ButtonGroupProps } from '../../../button-group/interfaces';
+import { InternalItemOrGroup } from '../../../button-group/interfaces';
 import ButtonGroup from '../../../button-group/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
@@ -76,7 +76,7 @@ function AppLayoutGlobalDrawerImplementation({
   const animationDisabled =
     (activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id)) ||
     (wasExpanded && !isExpanded);
-  let drawerActions: ReadonlyArray<ButtonGroupProps.InternalItemOrGroup> = [
+  let drawerActions: ReadonlyArray<InternalItemOrGroup> = [
     {
       type: 'icon-button',
       id: 'close',
