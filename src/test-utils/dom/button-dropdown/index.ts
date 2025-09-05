@@ -100,6 +100,20 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
     return createWrapper().find(`[data-testid="button-dropdown-disabled-reason"]`);
   }
 
+  /**
+   * Finds the secondary text element for a dropdown item. Returns null if the element has no secondary text.
+   */
+  findSecondaryText(): ElementWrapper | null {
+    return createWrapper().find(`[data-testid="button-dropdown-secondary-text"]`);
+  }
+
+  /**
+   * Finds the label tag element for a dropdown item. Returns null if the element has no label tag.
+   */
+  findLabelTags(): ElementWrapper | null {
+    return createWrapper().find(`[data-testid="button-dropdown-label-tag"]`);
+  }
+
   @usesDom
   openDropdown(): void {
     act(() => {
