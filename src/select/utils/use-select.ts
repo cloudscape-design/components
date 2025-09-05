@@ -220,7 +220,7 @@ export function useSelect({
       __onDelayedInput: event => {
         fireLoadItems(event.detail.value);
       },
-      __nativeAttributes: {
+      nativeInputAttributes: {
         'aria-activedescendant': highlightedOptionId,
         ['aria-owns']: menuId,
         ['aria-controls']: menuId,

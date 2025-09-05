@@ -3367,6 +3367,28 @@ single form field.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native \`input\` element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeInputAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "description": "Specifies an array of options that are displayed to the user as a dropdown list.
 The options can be grouped using \`OptionGroup\` objects.
 
@@ -9709,6 +9731,28 @@ Supported values and formats are listed in the [JavaScript Intl API specificatio
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native \`input\` element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeInputAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
       "name": "placeholder",
       "optional": true,
@@ -14461,6 +14505,28 @@ single form field.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native \`input\` element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeInputAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
       "name": "placeholder",
       "optional": true,
@@ -18473,6 +18539,28 @@ Defaults to 3. Use -1 for infinite rows.",
       "name": "name",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native \`textarea\` element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeTextareaAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -24727,6 +24815,28 @@ single form field.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native \`textarea\` element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeTextareaAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
       "name": "placeholder",
       "optional": true,
@@ -25117,6 +25227,28 @@ single form field.",
       "name": "name",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native \`input\` element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeInputAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",

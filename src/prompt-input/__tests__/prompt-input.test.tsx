@@ -452,3 +452,17 @@ describe('a11y', () => {
     });
   });
 });
+
+describe('native attributes', () => {
+  it('adds native attributes', () => {
+    const { container } = renderPromptInput({ value: '', nativeTextareaAttributes: { 'data-testid': 'my-test-id' } });
+    expect(container.querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+    expect(container.querySelectorAll('textarea[data-testid="my-test-id"]')).toHaveLength(1);
+  });
+  it('concatenates class names', () => {
+    const { container } = renderPromptInput({ value: '', nativeTextareaAttributes: { className: 'additional-class' } });
+    const textarea = container.querySelector('textarea')!;
+    expect(textarea).toHaveClass(styles.textarea);
+    expect(textarea).toHaveClass('additional-class');
+  });
+});

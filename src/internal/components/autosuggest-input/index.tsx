@@ -12,13 +12,14 @@ import {
   InputClearLabel,
   InputKeyEvents,
 } from '../../../input/interfaces';
-import InternalInput, { InternalInputProps } from '../../../input/internal';
+import InternalInput from '../../../input/internal';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
 import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { KeyCode } from '../../keycode';
 import { nodeBelongs } from '../../utils/node-belongs';
+import { processAttributes } from '../../utils/with-native-attributes';
 import Dropdown from '../dropdown';
 import { ExpandToViewport } from '../dropdown/interfaces';
 
@@ -87,6 +88,7 @@ const AutosuggestInput = React.forwardRef(
       dropdownFooter = null,
       dropdownWidth,
       loopFocus,
+      nativeInputAttributes,
       onCloseDropdown,
       onDelayedInput,
       onPressArrowDown,
@@ -212,7 +214,7 @@ const AutosuggestInput = React.forwardRef(
     };
 
     const expanded = open && dropdownExpanded;
-    const nativeAttributes: InternalInputProps['__nativeAttributes'] = {
+    const nativeAttributes: BaseInputProps['nativeInputAttributes'] = {
       name,
       placeholder,
       autoFocus,
@@ -277,7 +279,8 @@ const AutosuggestInput = React.forwardRef(
               clearAriaLabel={clearAriaLabel}
               ref={inputRef}
               autoComplete={false}
-              __nativeAttributes={nativeAttributes}
+              nativeInputAttributes={processAttributes(nativeAttributes, nativeInputAttributes, 'Autosuggest')}
+              __skipNativeAttributesWarnings={Object.keys(nativeAttributes)}
               {...formFieldContext}
             />
           }
