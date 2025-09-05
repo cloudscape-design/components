@@ -386,6 +386,8 @@ export interface InternalFilteringOption {
   property: null | InternalFilteringProperty;
   value: string;
   label: string;
+  tags?: ReadonlyArray<string>;
+  filteringTags?: ReadonlyArray<string>;
 }
 
 export interface InternalFreeTextFiltering {
