@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
 
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 import HelpPanel from '~components/help-panel';
 import awsuiPlugins from '~components/internal/plugins';
+import { mount, unmount } from '~mount';
 
 import { Breadcrumbs, Counter } from './utils/content-blocks';
 import appLayoutLabels from './utils/labels';
@@ -34,10 +34,10 @@ awsuiPlugins.appLayout.registerDrawer({
     onVisibilityChange(isVisible => {
       awsuiPlugins.appLayout.updateDrawer({ id: 'runtime-drawer-persist-open-state', defaultActive: isVisible });
     });
-    render(<Counter id="runtime-drawer-persist-open-state" />, container);
+    mount(<Counter id="runtime-drawer-persist-open-state" />, container);
   },
   unmountContent: container => {
-    unmountComponentAtNode(container);
+    unmount(container);
   },
 });
 
