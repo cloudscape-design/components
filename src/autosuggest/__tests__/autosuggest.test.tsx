@@ -485,3 +485,42 @@ test('findOptionInGroup', () => {
   wrapper.findNativeInput().focus();
   expect(wrapper.findDropdown().findOptionInGroup(1, 2)).toBeTruthy();
 });
+
+describe('native attributes', () => {
+  it('adds native attributes', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} nativeInputAttributes={{ 'data-testid': 'my-test-id' }} />
+    );
+    expect(wrapper.getElement().querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+    expect(wrapper.getElement().querySelectorAll('input[data-testid="my-test-id"]')).toHaveLength(1);
+  });
+
+  it('chains autosuggest-specific handlers', () => {
+    const onClick = jest.fn();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} nativeInputAttributes={{ onClick }} />);
+
+    wrapper.findNativeInput().click();
+
+    expect(onClick).toHaveBeenCalled();
+  });
+
+  it('warns about overriding autosuggest-specific attributes', () => {
+    renderAutosuggest(<Autosuggest {...defaultProps} nativeInputAttributes={{ 'aria-autocomplete': 'both' }} />);
+    expect(warnOnce).toHaveBeenCalledTimes(1);
+    expect(warnOnce).toHaveBeenCalledWith(
+      'Autosuggest',
+      'Overriding native attribute [aria-autocomplete] which has a Cloudscape-provided value'
+    );
+  });
+
+  it('warns about overriding input-specific attributes', () => {
+    renderAutosuggest(
+      <Autosuggest {...defaultProps} ariaRequired={true} nativeInputAttributes={{ 'aria-required': 'false' }} />
+    );
+    expect(warnOnce).toHaveBeenCalledTimes(1);
+    expect(warnOnce).toHaveBeenCalledWith(
+      'Input',
+      'Overriding native attribute [aria-required] which has a Cloudscape-provided value'
+    );
+  });
+});
