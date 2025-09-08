@@ -4,13 +4,14 @@ import { usesDom } from '@cloudscape-design/test-utils-core/dom';
 
 import ButtonWrapper from '../button';
 
-import testStyles from '../../../toggle-button/test-classes/styles.selectors.js';
+import buttonStyles from '../../../button/styles.selectors.js';
+import styles from '../../../toggle-button/styles.selectors.js';
 
 export default class ToggleButtonWrapper extends ButtonWrapper {
-  static rootSelector: string = testStyles.root;
+  static rootSelector: string = buttonStyles.button;
 
   @usesDom
   isPressed(): boolean {
-    return this.element.classList.contains(testStyles.pressed);
+    return this.element.classList.contains(styles.pressed);
   }
 }
