@@ -51,7 +51,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundDropdownItemHover: { light: '{colorGrey200}', dark: '{colorGrey900}' },
   colorBackgroundDropdownItemSelected: '{colorBackgroundItemSelected}',
   colorBackgroundHomeHeader: '{colorGrey950}',
-  colorBackgroundInlineCode: { light: 'rgba(27, 35, 45, 0.1)', dark: 'rgba(255, 255, 255, 0.15)' },
+  colorBackgroundInlineCode: { light: 'rgba(0, 0, 0, 0.1)', dark: 'rgba(255, 255, 255, 0.1)' },
   colorBackgroundInputDefault: { light: '{colorWhite}', dark: '{colorGrey850}' },
   colorBackgroundInputDisabled: { light: '{colorGrey250}', dark: '{colorGrey800}' },
   colorBackgroundItemSelected: { light: '{colorBlue50}', dark: '{colorBlue1000}' },
