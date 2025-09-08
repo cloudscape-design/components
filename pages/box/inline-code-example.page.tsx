@@ -2,7 +2,22 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Alert, Box, Flashbar, Header, Link, SpaceBetween, Table } from '~components';
+import Alert from '~components/alert';
+import Box from '~components/box';
+import Flashbar from '~components/flashbar';
+import Header from '~components/header';
+import Link from '~components/link';
+import SpaceBetween from '~components/space-between';
+import Table from '~components/table';
+import { TableProps } from '~components/table';
+
+interface TableItem {
+  name: string;
+  alt: string;
+  description: React.ReactNode;
+  type: string;
+  size: string;
+}
 
 export default function InlineCodeExample() {
   return (
@@ -21,28 +36,29 @@ export default function InlineCodeExample() {
           </div>
 
           <div>
-            <Table
-              renderAriaLive={({ firstIndex, lastIndex, totalItemsCount }) =>
+            <Table<TableItem>
+              totalItemsCount={4}
+              renderAriaLive={({ firstIndex, lastIndex, totalItemsCount }: TableProps.LiveAnnouncement) =>
                 `Displaying items ${firstIndex} to ${lastIndex} of ${totalItemsCount}`
               }
               columnDefinitions={[
                 {
                   id: 'variable',
                   header: 'Variable name',
-                  cell: item => <Link href="#">{item.name || '-'}</Link>,
+                  cell: (item: TableItem) => <Link href="#">{item.name || '-'}</Link>,
                   sortingField: 'name',
                   isRowHeader: true,
                 },
                 {
                   id: 'alt',
                   header: 'Text value',
-                  cell: item => item.alt || '-',
+                  cell: (item: TableItem) => item.alt || '-',
                   sortingField: 'alt',
                 },
                 {
                   id: 'description',
                   header: 'Description',
-                  cell: item => item.description || '-',
+                  cell: (item: TableItem) => item.description || '-',
                 },
               ]}
               enableKeyboardNavigation={true}
