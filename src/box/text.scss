@@ -53,6 +53,17 @@
       font-weight: awsui.$font-box-value-large-weight;
       color: inherit;
     }
+    &.inline-code-variant {
+      @include base-styles.code-extra-defaults;
+      @include styles.font-body-s;
+      border-start-start-radius: awsui.$space-static-xxs;
+      border-start-end-radius: awsui.$space-static-xxs;
+      border-end-start-radius: awsui.$space-static-xxs;
+      border-end-end-radius: awsui.$space-static-xxs;
+      background: awsui.$color-background-inline-code;
+      padding-block: awsui.$space-static-xxxs;
+      padding-inline: awsui.$space-static-xxs;
+    }
     &.h1-variant.font-weight-default,
     &.h2-variant.font-weight-default,
     &.h3-variant.font-weight-default,

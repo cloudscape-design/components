@@ -456,6 +456,7 @@ export type ColorsTokenName =
   | 'colorBackgroundDropdownItemHover'
   | 'colorBackgroundDropdownItemSelected'
   | 'colorBackgroundHomeHeader'
+  | 'colorBackgroundInlineCode'
   | 'colorBackgroundInputDefault'
   | 'colorBackgroundInputDisabled'
   | 'colorBackgroundItemSelected'
