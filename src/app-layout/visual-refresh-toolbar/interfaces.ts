@@ -4,7 +4,9 @@
 import React from 'react';
 
 import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
+import { ButtonGroupProps } from '../../button-group/interfaces';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { NonCancelableEventHandler } from '../../internal/events';
 import { SomeOptional } from '../../internal/types';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
@@ -22,6 +24,8 @@ export type InternalDrawer = AppLayoutProps.Drawer & {
   isExpandable?: boolean;
   ariaLabels: AppLayoutProps.Drawer['ariaLabels'] & { expandedModeButton?: string; exitExpandedModeButton?: string };
   header?: React.ReactNode;
+  headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
+  onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
 };
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.
