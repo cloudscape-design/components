@@ -3,12 +3,11 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/selectors';
+import createWrapper, { AppLayoutWrapper, ButtonGroupWrapper } from '../../../lib/components/test-utils/selectors';
 import { Theme } from '../../__integ__/utils.js';
 import { viewports } from './constants';
 import { getUrlParams } from './utils';
 
-import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.selectors.js';
 import vrDrawerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import vrToolbarDrawerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/drawer/styles.selectors.js';
 
@@ -21,9 +20,9 @@ const findDrawerContentById = (wrapper: AppLayoutWrapper, id: string) => {
 };
 
 const findExpandedModeButtonByActiveDrawerId = (wrapper: AppLayoutWrapper, id: string) => {
-  return wrapper.find(
-    `[data-testid="awsui-app-layout-drawer-${id}"] .${testUtilsStyles['active-drawer-expanded-mode-button']}`
-  );
+  return wrapper
+    .findComponent(`[data-testid="awsui-app-layout-drawer-${id}"]`, ButtonGroupWrapper)!
+    .findButtonById('expand');
 };
 
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {

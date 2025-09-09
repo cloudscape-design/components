@@ -4,11 +4,13 @@ import React, { useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
-import { InternalButton } from '../../../button/internal';
+import { InternalItemOrGroup } from '../../../button-group/interfaces';
+import ButtonGroup from '../../../button-group/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
+import { Focusable } from '../../utils/use-focus-control';
 import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals, InternalDrawer } from '../interfaces';
 import { useResize } from './use-resize';
@@ -74,6 +76,37 @@ function AppLayoutGlobalDrawerImplementation({
   const animationDisabled =
     (activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id)) ||
     (wasExpanded && !isExpanded);
+  let drawerActions: ReadonlyArray<InternalItemOrGroup> = [
+    {
+      type: 'icon-button',
+      id: 'close',
+      iconName: isMobile ? 'close' : 'angle-right',
+      text: computedAriaLabels.closeButton ?? '',
+      analyticsAction: 'close',
+    },
+  ];
+  if (!isMobile && activeGlobalDrawer?.isExpandable) {
+    drawerActions = [
+      {
+        type: 'icon-button',
+        id: 'expand',
+        iconName: isExpanded ? 'shrink' : 'expand',
+        text: activeGlobalDrawer?.ariaLabels?.expandedModeButton ?? '',
+        analyticsAction: isExpanded ? 'expand' : 'collapse',
+      },
+      ...drawerActions,
+    ];
+  }
+  if (activeGlobalDrawer?.headerActions) {
+    drawerActions = [
+      {
+        type: 'group',
+        text: 'Actions',
+        items: activeGlobalDrawer.headerActions!,
+      },
+      ...drawerActions,
+    ];
+  }
 
   return (
     <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={0}>
@@ -146,34 +179,30 @@ function AppLayoutGlobalDrawerImplementation({
                 data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
               >
                 <div className={styles['drawer-actions']}>
-                  {!isMobile && activeGlobalDrawer?.isExpandable && (
-                    <div className={styles['drawer-expanded-mode-button']}>
-                      <InternalButton
-                        ariaLabel={activeGlobalDrawer?.ariaLabels?.expandedModeButton}
-                        className={testutilStyles['active-drawer-expanded-mode-button']}
-                        formAction="none"
-                        ariaExpanded={isExpanded}
-                        iconName={isExpanded ? 'shrink' : 'expand'}
-                        onClick={() => setExpandedDrawerId(isExpanded ? null : activeDrawerId)}
-                        variant="icon"
-                        analyticsAction={isExpanded ? 'expand' : 'collapse'}
-                      />
-                    </div>
-                  )}
-                  <div className={clsx(styles['drawer-close-button'])}>
-                    <InternalButton
-                      ariaLabel={computedAriaLabels.closeButton}
-                      className={clsx({
-                        [testutilStyles['active-drawer-close-button']]: activeDrawerId,
-                      })}
-                      formAction="none"
-                      iconName={isMobile ? 'close' : 'angle-right'}
-                      onClick={() => onActiveGlobalDrawersChange(activeDrawerId, { initiatedByUserAction: true })}
-                      ref={refs?.close}
-                      variant="icon"
-                      analyticsAction="close"
-                    />
-                  </div>
+                  <ButtonGroup
+                    dropdownExpandToViewport={false}
+                    variant="icon"
+                    onItemClick={event => {
+                      switch (event.detail.id) {
+                        case 'close':
+                          onActiveGlobalDrawersChange(activeDrawerId, { initiatedByUserAction: true });
+                          break;
+                        case 'expand':
+                          setExpandedDrawerId(isExpanded ? null : activeDrawerId);
+                          break;
+                        default:
+                          activeGlobalDrawer?.onHeaderActionClick?.(event);
+                      }
+                    }}
+                    ariaLabel="Global panel actions"
+                    items={drawerActions}
+                    __internalRootRef={(root: HTMLElement) => {
+                      if (!root) {
+                        return;
+                      }
+                      refs.close = { current: root.querySelector('[data-itemid="close"]') as unknown as Focusable };
+                    }}
+                  />
                 </div>
                 <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
                   {activeGlobalDrawer?.content}

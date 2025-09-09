@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ButtonGroupProps } from '../../../button-group/interfaces';
 import debounce from '../../debounce';
 import { NonCancelableEventHandler } from '../../events';
 import { reportRuntimeApiWarning } from '../helpers/metrics';
@@ -40,6 +41,8 @@ export interface DrawerConfig {
   unmountContent: (container: HTMLElement) => void;
   preserveInactiveContent?: boolean;
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
+  headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
+  onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
 }
 
 const updatableProperties = [
