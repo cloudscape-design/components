@@ -4,6 +4,12 @@
 
 /** Auto-generated argument types based on "en" i18n strings. Do not edit manually. */
 export interface I18nFormatArgTypes {
+  "error-boundary": {
+    "i18nStrings.imageAltText"?: never;
+    "i18nStrings.messageHeader"?: never;
+    "i18nStrings.messageDescription"?: never;
+    "i18nStrings.messageFeedback"?: never;
+  },
   "[charts]": {
     "loadingText": never;
     "errorText": never;
