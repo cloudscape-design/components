@@ -168,7 +168,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     if (size === 'mobile') {
       expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerDefaults.id)).toBeFalsy();
     } else {
-      globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerDefaults.id)!.click();
+      createWrapper().findButtonGroup()!.findButtonById('expand')!.click();
       expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isDrawerInExpandedMode()).toBe(true);
       expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
       globalDrawersWrapper.findLeaveExpandedModeButtonInAIDrawer()!.click();

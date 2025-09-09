@@ -10,12 +10,12 @@ import { InternalButton } from '../button/internal.js';
 import Tooltip from '../internal/components/tooltip/index.js';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events/index.js';
 import InternalLiveRegion from '../live-region/internal.js';
-import { ButtonGroupProps } from './interfaces.js';
+import { ButtonGroupProps, InternalIconButton } from './interfaces.js';
 
 import testUtilStyles from './test-classes/styles.css.js';
 
 interface IconButtonItemProps {
-  item: ButtonGroupProps.IconButton;
+  item: InternalIconButton;
   showTooltip: boolean;
   showFeedback: boolean;
   onTooltipDismiss: () => void;
@@ -55,6 +55,7 @@ const IconButtonItem = forwardRef(
           data-testid={item.id}
           data-itemid={item.id}
           className={clsx(testUtilStyles.item, testUtilStyles['button-group-item'])}
+          analyticsAction={item.analyticsAction}
           __title=""
         >
           {item.text}

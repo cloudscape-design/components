@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useRef } from 'react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { ButtonGroupProps } from '../../button-group/interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
 import {
   DrawerConfig as RuntimeDrawerConfig,
@@ -79,11 +82,29 @@ function RuntimeDrawerHeader({ mountHeader, unmountHeader }: RuntimeContentHeade
   return <div className={styles['runtime-header-wrapper']} ref={ref} />;
 }
 
+function checkForUnsupportedProps(headerActions: ReadonlyArray<ButtonGroupProps.Item>) {
+  const unsupportedProps = new Set([
+    'iconSvg',
+    'popoverFeedback',
+    'pressedIconSvg',
+    'popoverFeedback',
+    'pressedPopoverFeedback',
+  ]);
+  for (const item of headerActions) {
+    const unsupported = Object.keys(item).filter(key => unsupportedProps.has(key));
+    if (unsupported.length > 0) {
+      warnOnce('AppLayout', `The headerActions properties are not supported for runtime api: ${unsupported.join(' ')}`);
+    }
+  }
+  return headerActions;
+}
+
 export const mapRuntimeConfigToDrawer = (
   runtimeConfig: RuntimeDrawerConfig
 ): AppLayoutProps.Drawer & {
   orderPriority?: number;
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
+  headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
 } => {
   const { mountContent, unmountContent, trigger, ...runtimeDrawer } = runtimeConfig;
 
@@ -111,6 +132,7 @@ export const mapRuntimeConfigToDrawer = (
     onResize: event => {
       fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
     },
+    headerActions: runtimeDrawer.headerActions ? checkForUnsupportedProps(runtimeDrawer.headerActions) : undefined,
   };
 };
 
@@ -119,6 +141,7 @@ export const mapRuntimeConfigToAiDrawer = (
 ): AppLayoutProps.Drawer & {
   orderPriority?: number;
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
+  headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
 } => {
   const { mountContent, unmountContent, trigger, ...runtimeDrawer } = runtimeConfig;
 
@@ -153,6 +176,7 @@ export const mapRuntimeConfigToAiDrawer = (
     onResize: event => {
       fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
     },
+    headerActions: runtimeDrawer.headerActions ? checkForUnsupportedProps(runtimeDrawer.headerActions) : undefined,
   };
 };
 
