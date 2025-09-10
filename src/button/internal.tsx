@@ -56,7 +56,6 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __title?: string;
   __emitPerformanceMarks?: boolean;
   __skipNativeAttributesWarnings?: boolean;
-  __hideFromTestUtils?: boolean;
 } & InternalBaseComponentProps;
 
 export const InternalButton = React.forwardRef(
@@ -99,7 +98,6 @@ export const InternalButton = React.forwardRef(
       __title,
       __emitPerformanceMarks = true,
       __skipNativeAttributesWarnings,
-      __hideFromTestUtils = false,
       analyticsAction = 'click',
       ...props
     }: InternalButtonProps,
@@ -181,7 +179,6 @@ export const InternalButton = React.forwardRef(
     };
 
     const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {
-      [testUtilStyles.button]: !__hideFromTestUtils,
       [styles.disabled]: isNotInteractive,
       [styles['disabled-with-reason']]: isDisabledWithReason,
       [styles['button-no-wrap']]: !wrapText,
@@ -245,7 +242,7 @@ export const InternalButton = React.forwardRef(
         <LeftIcon {...iconProps} />
         {shouldHaveContent && (
           <>
-            <span className={clsx(testUtilStyles.content, analyticsSelectors.label)}>{children}</span>
+            <span className={clsx(styles.content, analyticsSelectors.label)}>{children}</span>
             {external && (
               <>
                 &nbsp;
@@ -309,10 +306,12 @@ export const InternalButton = React.forwardRef(
       return (
         <>
           <WithNativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>
+            {...buttonProps}
+            {...disabledReasonProps}
             tag="a"
+            componentName="Button"
             nativeAttributes={nativeAnchorAttributes}
             skipWarnings={__skipNativeAttributesWarnings}
-            {...buttonProps}
             href={isNotInteractive ? undefined : href}
             role={isNotInteractive ? 'link' : undefined}
             tabIndex={getAnchorTabIndex()}
@@ -321,7 +320,6 @@ export const InternalButton = React.forwardRef(
             rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
             aria-disabled={isNotInteractive ? true : undefined}
             download={download}
-            {...disabledReasonProps}
             style={stylePropertiesAndVariables}
           >
             {buttonContent}
@@ -339,14 +337,15 @@ export const InternalButton = React.forwardRef(
     return (
       <>
         <WithNativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>
+          {...buttonProps}
+          {...disabledReasonProps}
           tag="button"
+          componentName="Button"
           nativeAttributes={nativeButtonAttributes}
           skipWarnings={__skipNativeAttributesWarnings}
-          {...buttonProps}
           type={formAction === 'none' ? 'button' : 'submit'}
           disabled={disabled && !__focusable && !isDisabledWithReason}
           aria-disabled={hasAriaDisabled ? true : undefined}
-          {...disabledReasonProps}
           style={stylePropertiesAndVariables}
         >
           {buttonContent}

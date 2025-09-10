@@ -3,6 +3,10 @@
 import React from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
+/**
+ * @awsuiSystem core
+ */
+import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface BadgeProps extends BaseComponentProps {
   /**
@@ -28,6 +32,18 @@ export interface BadgeProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   style?: BadgeProps.Style;
+
+  /**
+   * Attributes to add to the native element.
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
 }
 
 export namespace BadgeProps {

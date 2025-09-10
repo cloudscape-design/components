@@ -86,3 +86,23 @@ describe('SpaceBetween', () => {
     expect(content[1].getElement()).toHaveAttribute('id', 'button-two');
   });
 });
+
+describe('native attributes', () => {
+  it('adds native attributes', () => {
+    const { container } = render(
+      <SpaceBetween direction="vertical" size="s" nativeAttributes={{ 'data-testid': 'my-test-id' }}>
+        <button id="button-one" />
+      </SpaceBetween>
+    );
+    expect(container.querySelector('[data-testid="my-test-id"]')).not.toBeNull();
+  });
+  it('concatenates class names', () => {
+    const { container } = render(
+      <SpaceBetween direction="vertical" size="s" nativeAttributes={{ className: 'additional-class' }}>
+        <button id="button-one" />
+      </SpaceBetween>
+    );
+    expect(container.firstChild).toHaveClass(styles.vertical);
+    expect(container.firstChild).toHaveClass('additional-class');
+  });
+});

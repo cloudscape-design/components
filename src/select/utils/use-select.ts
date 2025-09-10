@@ -22,7 +22,7 @@ import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { connectOptionsByValue } from './connect-options';
 
-export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLUListElement> };
+export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLDivElement> };
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
 
 interface UseSelectProps {
@@ -72,7 +72,7 @@ export function useSelect({
 
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const menuRef = useRef<HTMLUListElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const hasFilter = filteringType !== 'none' && !embedded;
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);
@@ -220,7 +220,7 @@ export function useSelect({
       __onDelayedInput: event => {
         fireLoadItems(event.detail.value);
       },
-      __nativeAttributes: {
+      nativeInputAttributes: {
         'aria-activedescendant': highlightedOptionId,
         ['aria-owns']: menuId,
         ['aria-controls']: menuId,
@@ -283,12 +283,18 @@ export function useSelect({
       !!nextOption && isGroup(nextOption)
         ? getGroupState(nextOption).selected
         : __selectedOptions.indexOf(options[index + 1]) > -1;
+    const previousOption = options[index - 1]?.option;
+    const isPreviousSelected =
+      !!previousOption && isGroup(previousOption)
+        ? getGroupState(previousOption).selected
+        : __selectedOptions.indexOf(options[index - 1]) > -1;
     const optionProps: any = {
       key: index,
       option,
       highlighted,
       selected,
       isNextSelected,
+      isPreviousSelected,
       indeterminate: !!groupState?.indeterminate || (isSelectAll && !isAllSelected && isSomeSelected),
       ['data-mouse-target']: isHighlightable(option) ? index : -1,
       id: getOptionId(menuId, index),

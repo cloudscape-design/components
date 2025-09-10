@@ -105,10 +105,22 @@ export interface ButtonGroupProps extends BaseComponentProps {
   style?: ButtonGroupProps.Style;
 }
 
+export interface InternalIconButton extends ButtonGroupProps.IconButton {
+  analyticsAction?: string;
+}
+
+export type InternalItemOrGroup = InternalItem | ButtonGroupProps.Group;
+export type InternalItem =
+  | InternalIconButton
+  | ButtonGroupProps.IconToggleButton
+  | ButtonGroupProps.IconFileInput
+  | ButtonGroupProps.MenuDropdown;
+
 export interface InternalButtonGroupProps
   extends SomeRequired<ButtonGroupProps, 'dropdownExpandToViewport'>,
     InternalBaseComponentProps {
   style?: ButtonGroupProps.Style;
+  items: ReadonlyArray<InternalItemOrGroup>;
 }
 
 export namespace ButtonGroupProps {

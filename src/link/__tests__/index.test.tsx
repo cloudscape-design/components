@@ -3,7 +3,10 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import { renderWithSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal/testing';
+import {
+  setTestSingleTabStopNavigationTarget,
+  TestSingleTabStopNavigationProvider,
+} from '@cloudscape-design/component-toolkit/internal/testing';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import FormField from '../../../lib/components/form-field';
@@ -285,23 +288,31 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index for button link when keyboard navigation is not active', () => {
-    renderWithSingleTabStopNavigation(<Link id="link" />, { navigationActive: false });
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={false}>
+        <Link id="link" />
+      </TestSingleTabStopNavigationProvider>
+    );
     expect(getLink('#link')).toHaveAttribute('tabIndex', '0');
   });
 
   test('does not override tab index for anchor link when keyboard navigation is not active', () => {
-    renderWithSingleTabStopNavigation(<Link id="link" href="#" />, { navigationActive: false });
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={false}>
+        <Link id="link" href="#" />
+      </TestSingleTabStopNavigationProvider>
+    );
     expect(getLink('#link')).not.toHaveAttribute('tabIndex');
   });
 
   test.each([undefined, '#'])('overrides tab index when keyboard navigation is active href=%s', href => {
-    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
-      <div>
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
         <Link id="link1" href={href} />
         <Link id="link2" href={href} />
-      </div>
+      </TestSingleTabStopNavigationProvider>
     );
-    setCurrentTarget(getLink('#link1'));
+    setTestSingleTabStopNavigationTarget(getLink('#link1'));
     expect(getLink('#link1')).toHaveAttribute('tabIndex', '0');
     expect(getLink('#link2')).toHaveAttribute('tabIndex', '-1');
   });

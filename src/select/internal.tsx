@@ -11,7 +11,7 @@ import Dropdown from '../internal/components/dropdown';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { OptionGroup } from '../internal/components/option/interfaces.js';
-import { prepareOptions } from '../internal/components/option/utils/prepare-options';
+import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';

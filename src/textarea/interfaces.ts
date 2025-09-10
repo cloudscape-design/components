@@ -10,9 +10,13 @@ import {
 import { BaseComponentProps } from '../internal/base-component';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { BaseKeyDetail } from '../internal/events';
+/**
+ * @awsuiSystem core
+ */
+import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface TextareaProps
-  extends BaseInputProps,
+  extends Omit<BaseInputProps, 'nativeInputAttributes'>,
     InputKeyEvents,
     InputAutoCorrect,
     InputAutoComplete,
@@ -34,6 +38,18 @@ export interface TextareaProps
    * @deprecated Use the `spellcheck` property instead.
    */
   disableBrowserSpellcheck?: boolean;
+
+  /**
+   * Attributes to add to the native `textarea` element.
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeTextareaAttributes?: NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
 }
 
 export namespace TextareaProps {

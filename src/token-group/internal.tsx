@@ -84,7 +84,7 @@ export default function InternalTokenGroup({
               ? {}
               : getAnalyticsMetadataAttribute({ detail: { position: `${itemIndex + 1}` } }))}
           >
-            <Option option={item} isGenericGroup={false} />
+            <Option option={item} />
           </Token>
         )}
         i18nStrings={i18nStrings}

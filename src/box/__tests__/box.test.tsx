@@ -153,4 +153,16 @@ describe('Box', () => {
     expect(boxWrapper.getElement()).toHaveClass(styles['font-size-default']);
     expect(boxWrapper.getElement()).toHaveClass(styles['font-weight-default']);
   });
+
+  describe('native attributes', () => {
+    it('adds native attributes', () => {
+      const { container } = render(<Box nativeAttributes={{ 'data-testid': 'my-test-id' }} />);
+      expect(container.querySelector('[data-testid="my-test-id"]')).not.toBeNull();
+    });
+    it('concatenates class names', () => {
+      const { container } = render(<Box nativeAttributes={{ className: 'additional-class' }} />);
+      expect(container.firstChild).toHaveClass(styles.root);
+      expect(container.firstChild).toHaveClass('additional-class');
+    });
+  });
 });

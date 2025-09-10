@@ -17,4 +17,16 @@ describe('Spinner', () => {
     const { container } = render(<Spinner variant="inverted" />);
     expect(container.firstChild).toHaveClass(styles['variant-inverted']);
   });
+
+  describe('native attributes', () => {
+    it('adds native attributes', () => {
+      const { container } = render(<Spinner nativeAttributes={{ 'data-testid': 'my-test-id' }} />);
+      expect(container.querySelector('[data-testid="my-test-id"]')).not.toBeNull();
+    });
+    it('concatenates class names', () => {
+      const { container } = render(<Spinner nativeAttributes={{ className: 'additional-class' }} />);
+      expect(container.firstChild).toHaveClass(styles.root);
+      expect(container.firstChild).toHaveClass('additional-class');
+    });
+  });
 });

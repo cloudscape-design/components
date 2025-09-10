@@ -367,4 +367,12 @@ describe('Time Input component', () => {
       );
     });
   });
+
+  describe('native attributes', () => {
+    it('adds native attributes', () => {
+      const { wrapper } = renderTimeInput({ value: '', nativeInputAttributes: { 'data-testid': 'my-test-id' } });
+      expect(wrapper.getElement().querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+      expect(wrapper.getElement().querySelectorAll('input[data-testid="my-test-id"]')).toHaveLength(1);
+    });
+  });
 });

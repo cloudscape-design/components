@@ -28,6 +28,7 @@ const MultiSelectItem = (
     virtualPosition,
     padBottom,
     isNextSelected,
+    isPreviousSelected,
     indeterminate,
     screenReaderContent,
     ariaPosinset,
@@ -63,6 +64,7 @@ const MultiSelectItem = (
       ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
+      isPreviousSelected={isPreviousSelected}
       highlighted={highlighted}
       disabled={disabled}
       isParent={isParent}

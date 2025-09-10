@@ -85,12 +85,6 @@ export function useButtonDropdown({
     closeDropdown();
   };
 
-  const doVerticalNavigation = (direction: -1 | 1) => {
-    if (isOpen) {
-      moveHighlight(direction);
-    }
-  };
-
   const openAndSelectFirst = (event: React.KeyboardEvent) => {
     toggleDropdown();
     event.preventDefault();
@@ -129,12 +123,22 @@ export function useButtonDropdown({
     setIsUsingMouse(false);
     switch (event.keyCode) {
       case KeyCode.down: {
-        doVerticalNavigation(1);
+        if (!isOpen) {
+          toggleDropdown();
+          moveHighlight(1, true);
+        } else {
+          moveHighlight(1);
+        }
         event.preventDefault();
         break;
       }
       case KeyCode.up: {
-        doVerticalNavigation(-1);
+        if (!isOpen) {
+          toggleDropdown();
+          moveHighlight(-1, true);
+        } else {
+          moveHighlight(-1);
+        }
         event.preventDefault();
         break;
       }

@@ -53,32 +53,32 @@ test('navigates button dropdown with keyboard', () => {
 
   ref.current?.focus('like');
 
-  fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.right });
+  fireEvent.keyDown(document.activeElement!, { keyCode: KeyCode.right });
   expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
   expect(wrapper.findTooltip()!.getElement()).toHaveTextContent('Copy');
 
-  fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.left });
+  fireEvent.keyDown(document.activeElement!, { keyCode: KeyCode.left });
   expect(wrapper.findToggleButtonById('like')!.getElement()).toHaveFocus();
   expect(wrapper.findTooltip()!.getElement()).toHaveTextContent('Like');
 
-  fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.right });
-  fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.right });
+  fireEvent.keyDown(document.activeElement!, { keyCode: KeyCode.right });
+  fireEvent.keyDown(document.activeElement!, { keyCode: KeyCode.right });
   expect(wrapper.findFileInputById('file')!.findNativeInput().getElement()).toHaveFocus();
   expect(wrapper.findTooltip()!.getElement()).toHaveTextContent('Choose files');
 
-  fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.end });
+  fireEvent.keyDown(document.activeElement!, { keyCode: KeyCode.end });
   expect(wrapper.findMenuById('misc')!.findTriggerButton()!.getElement()).toHaveFocus();
   expect(wrapper.findTooltip()!.getElement()).toHaveTextContent('Misc');
 
-  fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.home });
+  fireEvent.keyDown(document.activeElement!, { keyCode: KeyCode.home });
   expect(wrapper.findToggleButtonById('like')!.getElement()).toHaveFocus();
   expect(wrapper.findTooltip()!.getElement()).toHaveTextContent('Like');
 
-  fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.right, ctrlKey: true });
+  fireEvent.keyDown(document.activeElement!, { keyCode: KeyCode.right, ctrlKey: true });
   expect(wrapper.findButtonById('like')!.getElement()).toHaveFocus();
   expect(wrapper.findTooltip()!.getElement()).toHaveTextContent('Like');
 
-  fireEvent.keyDown(window, { key: 'Escape' });
+  fireEvent.keyDown(document.activeElement!, { key: 'Escape' });
   expect(wrapper.findButtonById('like')!.getElement()).toHaveFocus();
   expect(wrapper.findTooltip()).toBe(null);
 });
@@ -101,4 +101,17 @@ test('closes menu with Escape', () => {
 
   wrapper.findMenuById('misc')!.findTriggerButton()!.keydown(KeyCode.escape);
   expect(wrapper.findMenuById('misc')!.findOpenDropdown()).toBe(null);
+});
+
+test('manages focus if item is removed', () => {
+  jest.useFakeTimers();
+  const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
+  const { wrapper, rerender } = renderButtonGroup({ items }, ref);
+
+  ref.current?.focus('copy');
+  expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
+
+  rerender({ items: items.slice(0, 1) });
+  jest.runAllTimers();
+  expect(wrapper.findButtonById('like')!.getElement()).toHaveFocus();
 });

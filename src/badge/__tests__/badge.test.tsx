@@ -85,3 +85,15 @@ describe('Style API', () => {
     expect(getComputedStyle(badge).getPropertyValue('padding-inline')).toBe('8px');
   });
 });
+
+describe('native attributes', () => {
+  it('adds native attributes', () => {
+    const { container } = render(<Badge nativeAttributes={{ 'data-testid': 'my-test-id' }} />);
+    expect(container.querySelector('[data-testid="my-test-id"]')).not.toBeNull();
+  });
+  it('concatenates class names', () => {
+    const { container } = render(<Badge nativeAttributes={{ className: 'additional-class' }} />);
+    expect(container.firstChild).toHaveClass(styles.badge);
+    expect(container.firstChild).toHaveClass('additional-class');
+  });
+});

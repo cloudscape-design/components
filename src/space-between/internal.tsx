@@ -8,6 +8,7 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { SpaceBetweenProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -16,7 +17,15 @@ type InternalSpaceBetweenProps = SpaceBetweenProps & InternalBaseComponentProps;
 
 const InternalSpaceBetween = forwardRef(
   (
-    { direction = 'vertical', size, children, alignItems, __internalRootRef, ...props }: InternalSpaceBetweenProps,
+    {
+      direction = 'vertical',
+      size,
+      children,
+      alignItems,
+      nativeAttributes,
+      __internalRootRef,
+      ...props
+    }: InternalSpaceBetweenProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
     const mergedRef = useMergeRefs(ref, __internalRootRef);
@@ -28,8 +37,11 @@ const InternalSpaceBetween = forwardRef(
     const flattenedChildren = flattenChildren(children);
 
     return (
-      <div
+      <WithNativeAttributes
         {...baseProps}
+        tag="div"
+        componentName="SpaceBetween"
+        nativeAttributes={nativeAttributes}
         className={clsx(
           baseProps.className,
           styles.root,
@@ -48,7 +60,7 @@ const InternalSpaceBetween = forwardRef(
             </div>
           );
         })}
-      </div>
+      </WithNativeAttributes>
     );
   }
 );

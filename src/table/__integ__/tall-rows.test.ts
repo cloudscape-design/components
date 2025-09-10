@@ -13,6 +13,7 @@ const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 900, height: 800 });
     await browser.url('#/light/table/tall-rows');
+    await page.waitForVisible(tableWrapper.findRows().toSelector());
     await testFn(page);
   });
 };

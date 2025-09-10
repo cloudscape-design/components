@@ -429,7 +429,9 @@ describe('Dropdown states', () => {
         <Multiselect selectedOptions={[]} options={defaultOptions} statusType={statusType as any} {...statusText} />
       );
       wrapper.openDropdown();
-      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Test ${statusType} text`);
+      expect(wrapper.findDropdown().findOptionsContainer()!.getElement()).toHaveAccessibleDescription(
+        `Test ${statusType} text`
+      );
     });
 
     test(`check a11y for ${statusType} and ${isSticky ? 'sticky' : 'non-sticky'} footer`, async () => {
@@ -902,8 +904,8 @@ test('group options can have description, label tag, tags, disabled reason', () 
 
   // Moving focus to the second group to make the disabled reason visible.
   wrapper.findTrigger()!.keydown(KeyCode.down);
-  wrapper.findDropdown().find('ul')!.keydown(KeyCode.down);
-  wrapper.findDropdown().find('ul')!.keydown(KeyCode.down);
+  wrapper.findDropdown().findOptionsContainer()!.keydown(KeyCode.down);
+  wrapper.findDropdown().findOptionsContainer()!.keydown(KeyCode.down);
 
   const groupOption = wrapper.findDropdown().findOptionByValue('group2')!;
 

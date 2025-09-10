@@ -63,4 +63,14 @@ describe('create-items-tree util', () => {
     expect(tree.getSequentialIndex([2, 0], -1)).toEqual([2]);
     expect(tree.getSequentialIndex([0, 0], -1)).toEqual(null);
   });
+
+  test('increment with looping', () => {
+    const tree = createItemsTree(items);
+    expect(tree.getSequentialIndex([4, 1], 1, true)).toEqual([0]);
+  });
+
+  test('decrement with looping', () => {
+    const tree = createItemsTree(items);
+    expect(tree.getSequentialIndex([0, 0], -1, true)).toEqual([4, 1]);
+  });
 });

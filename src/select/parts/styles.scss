@@ -28,6 +28,13 @@ $inlineLabel-border-radius: 2px;
   }
 }
 
+.option-group {
+  // Mirrors the negative margin styling of the selectable item.
+  &:not(:first-child) {
+    margin-block-start: calc(-1 * #{awsui.$border-item-width});
+  }
+}
+
 .filter {
   z-index: 4;
 

@@ -430,4 +430,12 @@ describe('Date Input component', () => {
     container.querySelector('button')!.click();
     expect(createWrapper().findDateInput()!.findNativeInput().getElement()).toHaveFocus();
   });
+
+  describe('native attributes', () => {
+    it('adds native attributes', () => {
+      const { wrapper } = renderDateInput({ value: '', nativeInputAttributes: { 'data-testid': 'my-test-id' } });
+      expect(wrapper.getElement().querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+      expect(wrapper.getElement().querySelectorAll('input[data-testid="my-test-id"]')).toHaveLength(1);
+    });
+  });
 });

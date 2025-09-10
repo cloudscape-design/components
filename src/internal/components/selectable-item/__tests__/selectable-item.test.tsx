@@ -7,30 +7,30 @@ import SelectableItem from '../../../../../lib/components/internal/components/se
 
 import styles from '../../../../../lib/components/internal/components/selectable-item/styles.selectors.js';
 
-function getAriaAttributeNames(element: null | Element): string[] {
-  return element!.getAttributeNames().filter(name => name.startsWith('aria'));
+function getAriaAttributeNames(element: Element): string[] {
+  return element.getAttributeNames().filter(name => name.startsWith('aria'));
 }
 
 it('does not assign aria attributes by default', () => {
   const { container } = render(<SelectableItem>Option</SelectableItem>);
-  expect(getAriaAttributeNames(container.querySelector('li'))).toHaveLength(0);
+  expect(getAriaAttributeNames(container.querySelector('[role=option]')!)).toHaveLength(0);
 });
 
 it('does not assign aria attributes when highlighted', () => {
   const { container } = render(<SelectableItem highlighted={true}>Option</SelectableItem>);
-  expect(getAriaAttributeNames(container.querySelector('li'))).toHaveLength(0);
+  expect(getAriaAttributeNames(container.querySelector('[role=option]')!)).toHaveLength(0);
 });
 
 it('assigns aria-selected when selected', () => {
   const { container } = render(<SelectableItem ariaSelected={true}>Option</SelectableItem>);
-  expect(getAriaAttributeNames(container.querySelector('li'))).toHaveLength(1);
-  expect(container.querySelector('li')).toHaveAttribute('aria-selected', 'true');
+  expect(getAriaAttributeNames(container.querySelector('[role=option]')!)).toHaveLength(1);
+  expect(container.querySelector('[role=option]')).toHaveAttribute('aria-selected', 'true');
 });
 
 it('assigns aria-checked when checked', () => {
   const { container } = render(<SelectableItem ariaChecked={true}>Option</SelectableItem>);
-  expect(getAriaAttributeNames(container.querySelector('li'))).toHaveLength(1);
-  expect(container.querySelector('li')).toHaveAttribute('aria-checked', 'true');
+  expect(getAriaAttributeNames(container.querySelector('[role=option]')!)).toHaveLength(1);
+  expect(container.querySelector('[role=option]')).toHaveAttribute('aria-checked', 'true');
 });
 
 it('highlighted option with screenReaderContent should have aria-hidden and screenReaderContent', () => {
@@ -69,19 +69,15 @@ it('assign aria-posinset and aria-setsize when set', () => {
       Option
     </SelectableItem>
   );
-  expect(getAriaAttributeNames(container.querySelector('li'))).toHaveLength(2);
-  expect(container.querySelector('li')).toHaveAttribute('aria-posinset', '10');
-  expect(container.querySelector('li')).toHaveAttribute('aria-setsize', '50');
+  const option = container.querySelector('[role=option]')!;
+  expect(getAriaAttributeNames(option)).toHaveLength(2);
+  expect(option).toHaveAttribute('aria-posinset', '10');
+  expect(option).toHaveAttribute('aria-setsize', '50');
 });
 
 it('assigns aria-disabled when disabled', () => {
   const { container } = render(<SelectableItem disabled={true}>Option</SelectableItem>);
-  expect(getAriaAttributeNames(container.querySelector('li'))).toHaveLength(1);
-  expect(container.querySelector('li')).toHaveAttribute('aria-disabled', 'true');
-});
-
-it('assigns aria-hidden when is parent', () => {
-  const { container } = render(<SelectableItem isParent={true}>Option</SelectableItem>);
-  expect(getAriaAttributeNames(container.querySelector('li'))).toHaveLength(1);
-  expect(container.querySelector('li')).toHaveAttribute('aria-hidden', 'true');
+  const option = container.querySelector('[role=option]')!;
+  expect(getAriaAttributeNames(option)).toHaveLength(1);
+  expect(option).toHaveAttribute('aria-disabled', 'true');
 });

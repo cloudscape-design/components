@@ -9,11 +9,14 @@ export type NativeAttributes<T extends React.HTMLAttributes<HTMLElement>> =
   | (Omit<T, 'children'> & Record<`data-${string}`, string>)
   | undefined;
 
+export type SkipWarnings = boolean | string[];
+
 type NativeAttributesProps<AT extends React.HTMLAttributes<HTMLElement>> = {
   tag: string;
   children?: ReactNode;
-  skipWarnings?: boolean;
+  skipWarnings?: SkipWarnings;
   nativeAttributes: NativeAttributes<AT>;
+  componentName: string;
 } & NativeAttributes<AT>;
 interface ForwardRefType {
   <ET extends HTMLElement, AT extends React.HTMLAttributes<ET>>(
@@ -21,14 +24,14 @@ interface ForwardRefType {
   ): JSX.Element;
 }
 
-export default React.forwardRef(
-  <ET extends HTMLElement, AT extends React.HTMLAttributes<ET>>(
-    { tag, nativeAttributes, children, skipWarnings, ...rest }: NativeAttributesProps<AT>,
-    ref: React.Ref<ET>
-  ) => {
-    const Tag = tag;
-
-    const processedAttributes = Object.entries(nativeAttributes || {}).reduce((acc, [key, value]) => {
+export function processAttributes<ET extends HTMLElement, AT extends React.HTMLAttributes<ET>>(
+  rest: Omit<NativeAttributesProps<AT>, 'children' | 'tag' | 'skipWarnings' | 'componentName' | 'nativeAttributes'>,
+  nativeAttributes: NativeAttributes<AT>,
+  componentName: string,
+  skipWarnings?: SkipWarnings
+) {
+  return Object.entries(nativeAttributes || {}).reduce(
+    (acc, [key, value]) => {
       // concatenate className
       if (key === 'className') {
         acc[key] = clsx(rest.className, value);
@@ -48,16 +51,28 @@ export default React.forwardRef(
 
         // override other attributes, warning if it already exists
       } else {
-        if (key in rest && !skipWarnings) {
-          warnOnce('Button', `Overriding native attribute [${key}] which has a Cloudscape-provided value`);
+        if (key in rest && (!skipWarnings || (skipWarnings !== true && !skipWarnings.includes(key)))) {
+          warnOnce(componentName, `Overriding native attribute [${key}] which has a Cloudscape-provided value`);
         }
         acc[key] = value;
       }
       return acc;
-    }, {} as any);
+    },
+    { ...rest } as any
+  );
+}
+
+export default React.forwardRef(
+  <ET extends HTMLElement, AT extends React.HTMLAttributes<ET>>(
+    { tag, nativeAttributes, children, skipWarnings, componentName, ...rest }: NativeAttributesProps<AT>,
+    ref: React.Ref<ET>
+  ) => {
+    const Tag = tag;
+
+    const processedAttributes = processAttributes<ET, AT>(rest, nativeAttributes, componentName, skipWarnings);
 
     return (
-      <Tag {...rest} {...processedAttributes} ref={ref}>
+      <Tag {...processedAttributes} ref={ref}>
         {children}
       </Tag>
     );

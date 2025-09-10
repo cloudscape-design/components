@@ -116,12 +116,12 @@ describe('useSelect', () => {
     });
 
     test('should return getFilterProps that configures the filter', () => {
-      const { ref, __nativeAttributes } = getFilterProps();
-      expect({ ref, __nativeAttributes }).toEqual({
-        __nativeAttributes: {
+      const { ref, nativeInputAttributes } = getFilterProps();
+      expect({ ref, nativeInputAttributes }).toEqual({
+        nativeInputAttributes: {
           'aria-activedescendant': undefined,
-          'aria-owns': __nativeAttributes!['aria-owns'],
-          'aria-controls': __nativeAttributes!['aria-controls'],
+          'aria-owns': nativeInputAttributes!['aria-owns'],
+          'aria-controls': nativeInputAttributes!['aria-controls'],
         },
         ref: { current: null },
       });
@@ -137,6 +137,7 @@ describe('useSelect', () => {
         option: { type: 'child', option: { label: 'Child 1', value: 'child1' } },
         selected: false,
         isNextSelected: false,
+        isPreviousSelected: false,
         indeterminate: false,
         id: getOptionId(menuId!, 1),
       });
@@ -156,6 +157,7 @@ describe('useSelect', () => {
       option: { type: 'parent', option: { label: 'Group 3', options: [{ value: 'child31', label: 'Child 3-1' }] } },
       selected: false,
       isNextSelected: true,
+      isPreviousSelected: false,
       indeterminate: false,
       id: getOptionId(menuId!, 7),
     });
@@ -168,6 +170,7 @@ describe('useSelect', () => {
       option: { type: 'child', option: { value: 'child31', label: 'Child 3-1' } },
       selected: true,
       isNextSelected: false,
+      isPreviousSelected: false,
       indeterminate: false,
       id: getOptionId(menuId!, 8),
     });
