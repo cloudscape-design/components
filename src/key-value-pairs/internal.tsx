@@ -19,9 +19,9 @@ const InternalKeyValuePair = ({ label, info, value, id }: KeyValuePairsProps.Pai
   return (
     <>
       <dt className={styles.term}>
-        <label className={styles['key-label']} id={id || kvPairId}>
+        <div className={styles['key-label']} id={id || kvPairId}>
           {label}
-        </label>
+        </div>
         <InfoLinkLabelContext.Provider value={id || kvPairId}>
           {info && <span className={styles.info}>{info}</span>}
         </InfoLinkLabelContext.Provider>
