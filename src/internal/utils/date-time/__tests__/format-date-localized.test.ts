@@ -80,20 +80,20 @@ describe('formatDateLocalized', () => {
     expect(result).toMatch(/^June 15, 2023, 12:00:00 \(UTC\)$/);
   });
 
-  test('handles invalid date strings by falling back to Date constructor', () => {
-    const result = formatDateLocalized({
-      date: '15/06/2023 12:00:00',
-      isMonthOnly: false,
-      isDateOnly: false,
-      locale: 'en-US',
-    });
-
-    expect(result).toMatch(/^June 15, 2023, 12:00:00 \(UTC\)$/);
+  test('handles invalid date strings by throwing RangeError', () => {
+    expect(() => {
+      formatDateLocalized({
+        date: '15/06/2023 12:00:00',
+        isMonthOnly: false,
+        isDateOnly: false,
+        locale: 'en-US',
+      });
+    }).toThrow('Invalid time value');
   });
 
   //todo  determine how to handle this failing
   test.skip('handles different time offsets', () => {
-    (formatTimeOffsetModule.formatTimeOffsetLocalized as jest.Mock).mockReturnValue('UTC-05:00');
+    jest.mocked(formatTimeOffsetModule.formatTimeOffsetLocalized).mockReturnValue('UTC-05:00');
 
     const result = formatDateLocalized({
       date: '2023-06-15T12:00:00-05:00',
