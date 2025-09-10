@@ -36,33 +36,4 @@ class MockResizeObserver implements ResizeObserver {
   }
 }
 
-class MockResizeObserverEntry implements ResizeObserverEntry {
-  readonly borderBoxSize: ReadonlyArray<ResizeObserverSize>;
-  readonly contentBoxSize: ReadonlyArray<ResizeObserverSize>;
-  readonly devicePixelContentBoxSize: ReadonlyArray<ResizeObserverSize>;
-  readonly contentRect: DOMRectReadOnly;
-  readonly target: Element;
-
-  constructor(target: Element) {
-    this.target = target;
-    const size = { inlineSize: 0, blockSize: 0 };
-    this.borderBoxSize = [size];
-    this.contentBoxSize = [size];
-    this.devicePixelContentBoxSize = [size];
-    // Create a simple DOMRectReadOnly mock for JSDOM compatibility
-    this.contentRect = {
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      toJSON: () => ({}),
-    } as DOMRectReadOnly;
-  }
-}
-
 export { MockResizeObserver as ResizeObserver };
-export { MockResizeObserverEntry as ResizeObserverEntry };
