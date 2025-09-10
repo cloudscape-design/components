@@ -84,7 +84,7 @@ export function useStickyScrollbar(
 
   // Update scrollbar position wrapper or table size change.
   useEffect(() => {
-    if (wrapperRef.current && tableRef.current) {
+    if (wrapperRef.current && tableRef.current && typeof ResizeObserver !== 'undefined') {
       const observer = new ResizeObserver(() => {
         if (scrollbarContentRef.current) {
           updatePosition(
