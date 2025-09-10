@@ -251,10 +251,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
       setHighlightedPoint(point);
       if (point) {
         highlightSeries(point.series);
-        setVerticalMarkerX({
-          scaledX: point.x,
-          label: point.datum?.x ?? null,
-        });
+        setVerticalMarkerX({ scaledX: point.x, label: point.datum?.x ?? null });
         showPopover();
       }
     },
