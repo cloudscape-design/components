@@ -67,7 +67,7 @@ export default function TreeViewWithRemovableItems() {
                 <Box color="text-status-inactive">{item.secondaryContent}</Box>
               ) : undefined,
             })}
-            getItemId={item => `removable-item-${item.id}`}
+            getItemId={item => item.id}
             getItemChildren={item => items.filter(i => i.parentId === item.id)}
             i18nStrings={{
               expandButtonLabel: () => 'Expand item',
