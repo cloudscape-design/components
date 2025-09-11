@@ -8,6 +8,10 @@ import InternalIcon from '../icon/internal';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
+/**
+ * @awsuiSystem core
+ */
+import WithNativeAttributes, { NativeAttributes } from '../internal/utils/with-native-attributes';
 import InternalSpinner from '../spinner/internal';
 
 import styles from './styles.css.js';
@@ -46,6 +50,17 @@ export interface StatusIndicatorProps extends BaseComponentProps {
    * and truncates it with an ellipsis.
    */
   wrapText?: boolean;
+  /**
+   * Attributes to add to the native element.
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
 }
 
 export interface InternalStatusIndicatorProps
@@ -80,6 +95,7 @@ export default function StatusIndicator({
   iconAriaLabel,
   colorOverride,
   wrapText = true,
+  nativeAttributes,
   __animate = false,
   __internalRootRef,
   __size = 'normal',
@@ -88,8 +104,11 @@ export default function StatusIndicator({
 }: InternalStatusIndicatorProps) {
   const baseProps = getBaseProps(rest);
   return (
-    <span
+    <WithNativeAttributes
       {...baseProps}
+      tag="span"
+      componentName="StatusIndicator"
+      nativeAttributes={nativeAttributes}
       className={clsx(
         styles.root,
         styles[`status-${type}`],
@@ -118,6 +137,6 @@ export default function StatusIndicator({
         </span>
         {children}
       </span>
-    </span>
+    </WithNativeAttributes>
   );
 }
