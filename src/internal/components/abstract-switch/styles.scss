@@ -5,7 +5,6 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .content,
 .description,
@@ -25,7 +24,7 @@
 }
 
 .native-input {
-  @include focus-visible.when-visible {
+  &:focus-visible {
     & + .outline {
       display: block;
     }
@@ -70,6 +69,7 @@
   /* stylelint-disable selector-max-type */
   & > input,
   & > svg,
+  /* stylelint-disable-next-line no-descending-specificity */
   & > .outline {
     position: absolute;
     inline-size: 100%;
