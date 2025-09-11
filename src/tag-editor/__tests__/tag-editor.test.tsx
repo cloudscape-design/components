@@ -713,5 +713,26 @@ describe('Tag Editor component', () => {
       rerender();
       expect(wrapper.findRow(1)!.findUndoButton()!.getElement()).toHaveFocus();
     });
+
+    test('should call focus method on ref with error tags', () => {
+      const TestComponent = () => {
+        const ref = React.useRef<TagEditorProps.Ref>(null);
+        return (
+          <>
+            <TagEditor
+              ref={ref}
+              i18nStrings={i18nStrings}
+              tags={[{ key: 'aws:invalid', value: '', existing: false }]}
+              onChange={() => {}}
+            />
+            <button onClick={() => ref.current?.focus()}>Focus</button>
+          </>
+        );
+      };
+
+      const { container } = render(<TestComponent />);
+      const button = container.querySelector('button')!;
+      button.click();
+    });
   });
 });
