@@ -26570,21 +26570,6 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     {
-      "defaultValue": "'none'",
-      "description": "Shows connector lines highlighting hierarchy between parent and child items.",
-      "inlineType": {
-        "name": "TreeViewProps.ConnectorLinesVariant",
-        "type": "union",
-        "values": [
-          "none",
-          "vertical",
-        ],
-      },
-      "name": "connectorLines",
-      "optional": true,
-      "type": "string",
-    },
-    {
       "description": "Provides the IDs of the expanded tree view items. It controls whether an item is expanded or collapsed.",
       "name": "expandedItems",
       "optional": true,

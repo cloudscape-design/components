@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import Box from '~components/box';
 import Button from '~components/button';
-import Checkbox from '~components/checkbox';
 import Container from '~components/container';
 import FormField from '~components/form-field';
 import Grid from '~components/grid';
@@ -25,7 +24,6 @@ export default function BasicTreeView() {
     label: 'Default',
     value: 'default',
   });
-  const [showConnectorLines, setShowConnectorLines] = useState(false);
 
   const renderItemToggleIcon = ({ expanded }: TreeViewProps.ItemToggleRenderIconData) => {
     if (toggleIconType.value === 'custom') {
@@ -49,12 +47,6 @@ export default function BasicTreeView() {
 
       <Grid gridDefinition={[{ colspan: { m: 7, xs: 12 } }]}>
         <div>
-          <Checkbox checked={showConnectorLines} onChange={({ detail }) => setShowConnectorLines(detail.checked)}>
-            Show connector lines
-          </Checkbox>
-
-          <br />
-
           <FormField label="Toggle icon" stretch={true}>
             <Select
               selectedOption={toggleIconType}
@@ -110,7 +102,6 @@ export default function BasicTreeView() {
                 collapseButtonLabel: () => 'Collapse item',
               }}
               renderItemToggleIcon={renderItemToggleIcon}
-              connectorLines={showConnectorLines ? 'vertical' : undefined}
             />
           </Container>
         </div>

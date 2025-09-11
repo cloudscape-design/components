@@ -12,22 +12,12 @@ import InternalTreeView from './internal';
 
 export { TreeViewProps };
 
-const TreeView = <T,>({ connectorLines = 'none', ...props }: TreeViewProps<T>) => {
-  const baseComponentProps = useBaseComponent('TreeView', {
-    props: { connectorLines },
-  });
+const TreeView = <T,>(props: TreeViewProps<T>) => {
+  const baseComponentProps = useBaseComponent('TreeView');
   const baseProps = getBaseProps(props);
   const externalProps = getExternalProps(props);
 
-  return (
-    <InternalTreeView
-      {...baseProps}
-      {...baseComponentProps}
-      {...externalProps}
-      connectorLines={connectorLines}
-      {...props}
-    />
-  );
+  return <InternalTreeView {...baseProps} {...baseComponentProps} {...externalProps} {...props} />;
 };
 
 applyDisplayName(TreeView, 'TreeView');

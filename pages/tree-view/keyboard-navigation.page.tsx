@@ -79,7 +79,6 @@ export default function TreeViewKeyboardNavigation() {
               expandButtonLabel: () => 'Expand item',
               collapseButtonLabel: () => 'Collapse item',
             }}
-            connectorLines="vertical"
           />
         </Container>
       </Grid>
@@ -98,7 +97,6 @@ export default function TreeViewKeyboardNavigation() {
               expandButtonLabel: () => 'Expand item',
               collapseButtonLabel: () => 'Collapse item',
             }}
-            connectorLines="vertical"
           />
         </Container>
       </Grid>
