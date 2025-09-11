@@ -63,6 +63,12 @@ const filteringProperties: readonly FilteringProperty[] = [
     operators: [{ operator: '=', format: getStateLabel }],
     groupValuesLabel: 'State values',
   },
+  {
+    key: 'stringWithTag',
+    propertyLabel: 'stringWithTag',
+    operators: ['=', '!='],
+    groupValuesLabel: 'String with tag values',
+  },
 ];
 
 const filteringOptions: readonly FilteringOption[] = [
@@ -77,6 +83,13 @@ const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'state', value: '0', label: getStateLabel('0') },
   { propertyKey: 'state', value: '1', label: getStateLabel('1') },
   { propertyKey: 'state', value: '2', label: getStateLabel('2') },
+  {
+    propertyKey: 'stringWithTag',
+    value: 'stringWithTagValue1',
+    label: 'String With Tag Value 1',
+    tags: ['tag1', 'tag2'],
+    filteringTags: ['filteringTag1', 'filteringTag2'],
+  },
 ];
 
 const defaultProps = createDefaultProps(filteringProperties, filteringOptions);
@@ -165,7 +178,7 @@ describe('filtering input', () => {
           .findDropdown()
           .findOptions()
           .map(optionWrapper => optionWrapper.getElement().textContent)
-      ).toEqual(['string', 'string-other', 'default', 'string!=', 'state', 'range']);
+      ).toEqual(['string', 'string-other', 'default', 'string!=', 'state', 'stringWithTag', 'range']);
       // property and value suggestions
       act(() => wrapper.setInputValue('a'));
       expect(
@@ -176,12 +189,14 @@ describe('filtering input', () => {
       ).toEqual([
         'default',
         'state',
+        'stringWithTag',
         'range',
         'string = value1',
         'string-other = value1',
         'string = value2',
         'string-other = value2',
         'default = value',
+        'stringWithTag = String With Tag Value 1tag1tag2filteringTag1filteringTag2',
       ]);
       // operator suggestions
       act(() => wrapper.setInputValue('string'));
@@ -199,6 +214,27 @@ describe('filtering input', () => {
           .findOptions()
           .map(optionWrapper => optionWrapper.getElement().textContent)
       ).toEqual(['string : value1', 'string : value2']);
+    });
+
+    test('filters suggestions by tags and filteringTags in dropdown', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent();
+      act(() => wrapper.findNativeInput().focus());
+      expect(wrapper.findDropdown()!.getElement()).not.toBeNull();
+      act(() => wrapper.setInputValue('tag1'));
+
+      const dropdown = wrapper.findDropdown()!;
+      const suggestions = dropdown.findOptions();
+
+      // Should find the stringWithTag option (has 'tag1' in tags)
+      expect(suggestions).toHaveLength(1);
+      expect(suggestions[0].getElement().textContent).toContain('stringWithTag');
+      expect(suggestions[0].getElement().textContent).toContain('String With Tag Value 1');
+
+      act(() => wrapper.setInputValue('filteringTag1'));
+      const filteringSuggestions = dropdown.findOptions();
+      expect(filteringSuggestions).toHaveLength(1);
+      expect(filteringSuggestions[0].getElement().textContent).toContain('stringWithTag');
+      expect(filteringSuggestions[0].getElement().textContent).toContain('String With Tag Value 1');
     });
 
     test('supports property names that are substrings of others', () => {
