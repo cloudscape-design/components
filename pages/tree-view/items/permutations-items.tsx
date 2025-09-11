@@ -29,9 +29,9 @@ export const textItems: Item[] = [
         actions: 'Actions slot',
         children: [
           {
-            id: '1.2',
-            content: 'Item 1.2',
-            secondaryContent: 'Description 1.2',
+            id: '1.1.1',
+            content: 'Item 1.1.1',
+            secondaryContent: 'Description 1.1.1',
             actions: 'Actions slot',
           },
         ],

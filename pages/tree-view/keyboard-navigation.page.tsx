@@ -10,7 +10,11 @@ import Grid from '~components/grid';
 import ToggleButton from '~components/toggle-button';
 import TreeView from '~components/tree-view';
 
-import { cdsItems, Item as KeyboardNavigationItem, nonCdsItems } from './items/keyboard-navigation-items';
+import {
+  Item as KeyboardNavigationItem,
+  nonStsnRegisteredItems,
+  stsnRegisteredItems,
+} from './items/keyboard-navigation-items';
 import { textItems } from './items/permutations-items';
 
 export default function TreeViewKeyboardNavigation() {
@@ -41,10 +45,10 @@ export default function TreeViewKeyboardNavigation() {
       <Button>Focus here</Button>
 
       <Grid gridDefinition={[{ colspan: { m: 7, xs: 12 } }]}>
-        <Container header={<h2>Focusable CDS elements inside tree-item</h2>}>
+        <Container header={<h2>Focusable registered elements inside tree-item</h2>}>
           <TreeView<KeyboardNavigationItem>
-            ariaLabel="Tree view with focusable CDS elements inside"
-            items={cdsItems}
+            ariaLabel="Tree view with focusable registered elements inside"
+            items={stsnRegisteredItems}
             renderItem={item => ({
               icon: item.hasToggleButton ? (
                 <ToggleButton
@@ -83,10 +87,10 @@ export default function TreeViewKeyboardNavigation() {
       <Button>Focus here</Button>
 
       <Grid gridDefinition={[{ colspan: { m: 7, xs: 12 } }]}>
-        <Container header={<h2>Focusable non-CDS elements inside tree-item</h2>}>
+        <Container header={<h2>Focusable non-registered elements inside tree-item</h2>}>
           <TreeView
-            ariaLabel="Tree view with focusable non-CDS elements inside"
-            items={nonCdsItems}
+            ariaLabel="Tree view with focusable non-registered elements inside"
+            items={nonStsnRegisteredItems}
             renderItem={item => item}
             getItemId={item => item.id}
             getItemChildren={item => item.children}

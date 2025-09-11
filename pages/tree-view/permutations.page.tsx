@@ -64,7 +64,6 @@ export default function TreeViewPermuations() {
         checked={urlParams.showConnectorLines ?? false}
         onChange={event => {
           setUrlParams({ showConnectorLines: event.detail.checked });
-          window.location.reload();
         }}
       >
         Show connector lines

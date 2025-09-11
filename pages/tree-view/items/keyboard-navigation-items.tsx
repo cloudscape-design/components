@@ -15,7 +15,7 @@ export interface Item extends TreeViewProps.TreeItem {
   hasToggleButton?: boolean;
 }
 
-export const cdsItems: Item[] = [
+export const stsnRegisteredItems: Item[] = [
   {
     id: 'cds1',
     content: (
@@ -163,7 +163,7 @@ export const cdsItems: Item[] = [
   },
 ];
 
-export const nonCdsItems: Item[] = [
+export const nonStsnRegisteredItems: Item[] = [
   {
     id: 'non-cds1',
     content: 'Item 1',

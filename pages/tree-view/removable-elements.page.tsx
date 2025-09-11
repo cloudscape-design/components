@@ -9,7 +9,7 @@ import Grid from '~components/grid';
 import SpaceBetween from '~components/space-between';
 import TreeView from '~components/tree-view';
 
-import { cdsItems, Item } from './items/keyboard-navigation-items';
+import { Item, stsnRegisteredItems } from './items/keyboard-navigation-items';
 
 interface FlattenedItem extends Item {
   parentId: string;
@@ -32,7 +32,7 @@ const flattenItems = (items: Item[]) => {
 };
 
 export default function TreeViewWithRemovableItems() {
-  const [items, setItems] = useState(flattenItems(cdsItems));
+  const [items, setItems] = useState(flattenItems(stsnRegisteredItems));
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   const removeButton = (itemId: string) => {
