@@ -69,6 +69,7 @@ class AsyncDropdownPage extends BasePageObject {
       items,
       hasNextPage
     );
+    await this.waitForJsTimers(10);
   }
 
   async reject() {
