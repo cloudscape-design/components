@@ -67,7 +67,7 @@ export default function TreeViewWithRemovableItems() {
                 <Box color="text-status-inactive">{item.secondaryContent}</Box>
               ) : undefined,
             })}
-            getItemId={item => item.id}
+            getItemId={item => `removable-item-${item.id}`}
             getItemChildren={item => items.filter(i => i.parentId === item.id)}
             i18nStrings={{
               expandButtonLabel: () => 'Expand item',
@@ -102,7 +102,7 @@ export default function TreeViewWithRemovableItems() {
                 <Box color="text-status-inactive">{item.secondaryContent}</Box>
               ) : undefined,
             })}
-            getItemId={item => item.id}
+            getItemId={item => `removable-actions-${item.id}`}
             getItemChildren={item => items.filter(i => i.parentId === item.id)}
             i18nStrings={{
               expandButtonLabel: () => 'Expand item',
@@ -139,7 +139,7 @@ export default function TreeViewWithRemovableItems() {
                 <Box color="text-status-inactive">{item.secondaryContent}</Box>
               ) : undefined,
             })}
-            getItemId={item => item.id}
+            getItemId={item => `regular-removable-actions-${item.id}`}
             getItemChildren={item => items.filter(i => i.parentId === item.id)}
             i18nStrings={{
               expandButtonLabel: () => 'Expand item',
