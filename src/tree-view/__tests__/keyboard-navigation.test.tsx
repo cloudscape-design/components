@@ -10,25 +10,23 @@ import { KeyCode } from '../../internal/keycode';
 import { KeyboardNavigationProcessor, KeyboardNavigationProvider } from '../keyboard-navigation';
 import { KeyboardNavigationItem as Item, keyboardNavigationItems as items } from './items';
 
-// Use cases to add tests for:
-// restores focus when the node gets removed
-// does not focus re-registered element if the focus is not within the tree-view anymore
+const TestTreeView = (props: Partial<TreeViewProps<Item>> = {}) => (
+  <TreeView
+    items={items}
+    getItemId={item => item.id}
+    getItemChildren={item => item.children}
+    renderItem={item => ({
+      content: item.content,
+      secondaryContent: item.secondaryContent,
+      actions: item.actions,
+      announcementLabel: item.announcementLabel,
+    })}
+    {...props}
+  />
+);
 
 function renderTreeView(props: Partial<TreeViewProps<Item>> = {}) {
-  const { container, rerender } = render(
-    <TreeView
-      items={items}
-      getItemId={item => item.id}
-      getItemChildren={item => item.children}
-      renderItem={item => ({
-        content: item.content,
-        secondaryContent: item.secondaryContent,
-        actions: item.actions,
-        announcementLabel: item.announcementLabel,
-      })}
-      {...props}
-    />
-  );
+  const { container, rerender } = render(<TestTreeView {...props} />);
   const wrapper = createWrapper(container).findTreeView()!;
   return { container, treeView: container.querySelector('[role="tree"]')!, wrapper, rerender };
 }
@@ -116,30 +114,46 @@ describe('KeyboardNavigationProvider', () => {
     expect(g).toHaveFocus();
   });
 
-  // test('restores focus when the node gets removed', async () => {
-  //   const { container, wrapper } = renderTreeView();
+  test('does not focus re-registered element if the focus is not within the tree-view anymore', () => {
+    const { container, rerender } = render(
+      <div>
+        <TestTreeView />
+        <button data-testid="outside-focus-target">outside</button>
+      </div>
+    );
+    const wrapper = createWrapper(container).findTreeView()!;
 
-  //   const actionsButton = container.querySelector('button[aria-label="Item 4 actions"]') as HTMLElement;
+    const firstToggle = wrapper.findItemById('1-button-actions')!.findItemToggle()!.getElement();
+    const outsideButton = container.querySelector('[data-testid="outside-focus-target"]') as HTMLButtonElement;
 
-  //   actionsButton.focus();
-  //   expect(actionsButton).toHaveFocus();
-  //   console.log('active element before', readActiveElement());
+    firstToggle.focus();
+    expect(firstToggle).toHaveFocus();
 
-  //   // actionsButton.blur();
-  //   console.log('active element', readActiveElement());
-  //   actionsButton.remove();
-  //   console.log('active element after', readActiveElement());
-  //   // await waitFor(() =>
-  //   //   // () => expect(readActiveElement()).toBe('BUTTON[Item 4]')
-  //   //   expect(wrapper.findItemById('4-multiple-focusables')!.findItemToggle()!.getElement()).toHaveFocus()
-  //   // );
-  // });
+    rerender(
+      <div>
+        <TestTreeView />
+        <button data-testid="outside-focus-target">outside</button>
+      </div>
+    );
+    expect(firstToggle).toHaveFocus();
+
+    outsideButton.focus();
+    expect(outsideButton).toHaveFocus();
+
+    rerender(
+      <div>
+        <TestTreeView />
+        <button data-testid="outside-focus-target">outside</button>
+      </div>
+    );
+    expect(outsideButton).toHaveFocus();
+  });
 });
 
 describe('Keyboard navigation', () => {
   test('up and down arrow keys - navigates between tree items', () => {
     const { treeView, wrapper } = renderTreeView();
-    const firstToggle = wrapper.findItems()[0].findItemToggle()!.getElement();
+    const firstToggle = wrapper.findItemById('1-button-actions')!.findItemToggle()!.getElement();
 
     // Focus on first toggle button
     firstToggle.focus();
@@ -162,7 +176,7 @@ describe('Keyboard navigation', () => {
 
   test('up and down arrow keys - navigates between children and parent', () => {
     const { treeView, wrapper } = renderTreeView();
-    const firstToggle = wrapper.findItems()[0].findItemToggle()!.getElement();
+    const firstToggle = wrapper.findItemById('1-button-actions')!.findItemToggle()!.getElement();
 
     firstToggle.focus();
     firstToggle.click();
@@ -244,7 +258,7 @@ describe('Keyboard navigation', () => {
 
   test('right and left arrow key - does not navigate if no focusable elements inside', () => {
     const { treeView, wrapper } = renderTreeView();
-    const firstToggle = wrapper.findItems()[0].findItemToggle()!.getElement();
+    const firstToggle = wrapper.findItemById('1-button-actions')!.findItemToggle()!.getElement();
 
     firstToggle.focus();
     firstToggle.click();
@@ -320,23 +334,31 @@ describe('Keyboard navigation', () => {
     fireEvent.keyDown(treeView, { keyCode: KeyCode.end });
     expect(readActiveElement()).toBe('BUTTON[Item 5.4]');
   });
+
+  test('prevents default behavior for handled keyboard events', () => {
+    const { treeView, wrapper } = renderTreeView();
+
+    const firstToggle = wrapper.findItemById('1-button-actions')!.findItemToggle()!.getElement();
+    firstToggle.focus();
+
+    const rightKeydownEvent = new KeyboardEvent('keydown', { keyCode: KeyCode.right, bubbles: true });
+    const preventDefaultSpy = jest.spyOn(rightKeydownEvent, 'preventDefault');
+
+    treeView.dispatchEvent(rightKeydownEvent);
+
+    expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
+
+    // Expand to reveal only text children
+    firstToggle.focus();
+    firstToggle.click();
+
+    // Focus to child by pressing down since the child item doesn't have children (so no toggle button) on its own,
+    // the toggle cannot be retrived via test util
+    fireEvent.keyDown(treeView, { keyCode: KeyCode.down });
+    expect(readActiveElement()).toBe('BUTTON[Item 1.1]');
+
+    treeView.dispatchEvent(rightKeydownEvent);
+    // toHaveBeenCalledTimes should stay as 1 since the second event shouldn't get prevented
+    expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
+  });
 });
-
-//   test('prevents default behavior for handled keyboard events', async () => {
-//     const { container } = render(<TestTreeView />);
-//     const treeView = container.querySelector('[data-testid="tree-view"]') as HTMLElement;
-
-//     await waitFor(() => {
-//       expect(container.querySelector('button[data-awsui-tree-view-toggle-button="true"]')).toBeInTheDocument();
-//     });
-
-//     const firstToggle = container.querySelector('button[data-awsui-tree-view-toggle-button="true"]') as HTMLElement;
-//     firstToggle.focus();
-
-//     const keydownEvent = new KeyboardEvent('keydown', { keyCode: KeyCode.down, bubbles: true });
-//     const preventDefaultSpy = jest.spyOn(keydownEvent, 'preventDefault');
-
-//     treeView.dispatchEvent(keydownEvent);
-
-//     expect(preventDefaultSpy).toHaveBeenCalled();
-//   });
