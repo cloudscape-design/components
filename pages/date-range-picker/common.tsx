@@ -201,6 +201,7 @@ export function useDateRangePickerSettings(
     warning,
     rangeSelectorMode,
     absoluteFormat,
+    dateInputFormat,
     timeInputFormat,
     timeOffset,
     hideTimeOffset,
@@ -270,6 +271,7 @@ export function Settings({
     { value: 'overlapping-pages' },
   ];
   const dateFormatOptions = [{ value: 'iso' }, { value: 'slashed' }, { value: 'long-localized' }];
+  const inputDateFormat = [{ value: 'iso' }, { value: 'slashed' }];
   const timeFormatOptions = [{ value: 'hh:mm:ss' }, { value: 'hh:mm' }, { value: 'hh' }];
   return (
     <SpaceBetween size="m" direction="horizontal">
@@ -303,8 +305,8 @@ export function Settings({
 
       <FormField label="Date input format">
         <Select
-          options={dateFormatOptions}
-          selectedOption={dateFormatOptions.find(o => o.value === dateInputFormat) ?? null}
+          options={inputDateFormat}
+          selectedOption={inputDateFormat.find(o => o.value === dateInputFormat) ?? null}
           onChange={({ detail }) =>
             setSettings({ dateInputFormat: detail.selectedOption.value as DateRangePickerProps.DateInputFormat })
           }
