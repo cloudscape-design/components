@@ -21,6 +21,9 @@ interface InternalTreeItemProps<T>
   index: number;
   level: number;
   onItemToggle: (detail: TreeViewProps.ItemToggleDetail<T>) => void;
+  allVisibleItemsIndices: {
+    [key: string]: number;
+  };
 }
 
 const InternalTreeItem = <T,>({
@@ -34,6 +37,7 @@ const InternalTreeItem = <T,>({
   getItemId,
   getItemChildren,
   onItemToggle,
+  allVisibleItemsIndices,
 }: InternalTreeItemProps<T>) => {
   const i18n = useInternalI18n('tree-view');
 
@@ -55,55 +59,67 @@ const InternalTreeItem = <T,>({
       ? (content as string)
       : '';
 
-  //  Role `treeitem` isn't used in the initial release per discussion with A11Y team. It requires focus management to be implemented so they will be added as a follow up together.
   return (
     <li
+      role="treeitem"
       id={id}
       className={clsx(
         styles.treeitem,
         testUtilStyles.treeitem,
+        level > 1 && styles.offset,
         isExpandable && [testUtilStyles.expandable],
         isExpanded && [testUtilStyles.expanded]
       )}
       aria-expanded={isExpandable ? isExpanded : undefined}
       aria-level={level}
       data-testid={`awsui-treeitem-${id}`}
+      data-awsui-tree-item-index={allVisibleItemsIndices[id]}
     >
-      <div className={styles['expand-toggle-wrapper']}>
-        {isExpandable && (
+      <div className={styles['treeitem-content-wrapper']}>
+        <div className={styles['expand-toggle-wrapper']}>
           <div className={styles.toggle}>
             <ExpandToggleButton
               isExpanded={isExpanded}
               customIcon={customIcon}
-              expandButtonLabel={joinStrings(
-                i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
-                itemLabelToAnnounce
-              )}
-              collapseButtonLabel={joinStrings(
-                i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item)),
-                itemLabelToAnnounce
-              )}
+              expandButtonLabel={
+                isExpandable
+                  ? joinStrings(
+                      i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
+                      itemLabelToAnnounce
+                    )
+                  : itemLabelToAnnounce
+              }
+              collapseButtonLabel={
+                isExpandable
+                  ? joinStrings(
+                      i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item)),
+                      itemLabelToAnnounce
+                    )
+                  : itemLabelToAnnounce
+              }
               onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
+              invisible={!isExpandable}
+              dataAttribute={{ 'data-awsui-tree-view-toggle-button': true }}
             />
           </div>
-        )}
-      </div>
+        </div>
 
-      <div className={styles['structured-item-wrapper']}>
-        <InternalStructuredItem
-          icon={icon}
-          content={content}
-          secondaryContent={secondaryContent}
-          actions={actions}
-          wrapActions={false}
-        />
+        <div className={styles['structured-item-wrapper']}>
+          <InternalStructuredItem
+            icon={icon}
+            content={content}
+            secondaryContent={secondaryContent}
+            actions={actions}
+            wrapActions={false}
+          />
+        </div>
       </div>
 
       {isExpanded && children.length && (
-        <ul className={styles['treeitem-group']}>
+        <ul role="group" className={styles['treeitem-group']}>
           {children.map((child, index) => {
             return (
-              <InternalTreeItem
+              <InternalTreeItem<T>
                 item={child}
                 index={index}
                 key={`${nextLevel}-${index}`}
@@ -115,6 +131,7 @@ const InternalTreeItem = <T,>({
                 getItemId={getItemId}
                 getItemChildren={getItemChildren}
                 renderItemToggleIcon={renderItemToggleIcon}
+                allVisibleItemsIndices={allVisibleItemsIndices}
               />
             );
           })}
