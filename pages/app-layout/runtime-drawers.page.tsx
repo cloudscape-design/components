@@ -17,6 +17,7 @@ import { AppLayoutProps } from '~components/app-layout';
 import awsuiPlugins from '~components/internal/plugins';
 
 import './utils/external-widget';
+import './utils/external-global-left-panel-widget';
 import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Containers, CustomDrawerContent } from './utils/content-blocks';
 import { drawerLabels } from './utils/drawers';
