@@ -8,27 +8,49 @@ import { createRoot, Root } from 'react-dom/client';
 
 console.log(`Using React ${React.version}`);
 
-const roots = new WeakMap<HTMLElement, Root>();
+interface ExtendedWindow extends Window {
+  reactVersion: string;
+}
+declare const window: ExtendedWindow;
+
+window.reactVersion = React.version.split('.')['0'];
+
+const mountedRoots = new WeakMap<HTMLElement, Root>();
+const unmountingTasks = new WeakMap<HTMLElement, number>();
 
 export function mount(element: React.ReactElement, container: HTMLElement) {
-  let root = roots.get(container);
+  // If we attempt to mount a root immediately after the unmount was called, we cancel
+  // the unmount instead, and reuse the available root but with new React content.
+  const taskId = unmountingTasks.get(container);
+  if (taskId !== null) {
+    clearTimeout(taskId);
+    unmountingTasks.delete(container);
+  }
+  let root = mountedRoots.get(container);
   if (!root) {
     root = createRoot(container);
-    roots.set(container, root);
+    mountedRoots.set(container, root);
   }
   root.render(element);
 }
 
 export function unmount(container: HTMLElement) {
-  const root = roots.get(container);
-  if (root) {
-    // Defer unmount to avoid unmounting during another root's commit.
-    queueMicrotask(() => {
-      try {
-        root.unmount();
-      } finally {
-        roots.delete(container);
-      }
-    });
+  const root = mountedRoots.get(container);
+  if (!root) {
+    return;
   }
+
+  // Force React content unmount.
+  root.render(null);
+
+  // Defer root unmount to avoid unmounting during another root's commit.
+  const taskId = window.setTimeout(() => {
+    try {
+      root.unmount();
+    } finally {
+      mountedRoots.delete(container);
+      unmountingTasks.delete(container);
+    }
+  }, 0);
+  unmountingTasks.set(container, taskId);
 }
