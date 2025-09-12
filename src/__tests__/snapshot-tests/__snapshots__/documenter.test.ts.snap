@@ -10246,13 +10246,13 @@ The event \`detail\` contains the current value of the field.",
 It can take the following values:
 * \`iso\`: ISO 8601 format, e.g.: 2024-01-30T13:32:32+01:00 (or 2024-01-30 when \`dateOnly\` is true)
 * \`long-localized\`: a more human-readable, localized format, e.g.: January 30, 2024, 13:32:32 (UTC+1) (or January 30, 2024 when \`dateOnly\` is true)
-
-Defaults to \`iso\`.",
+* \`slashed\`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01)",
       "inlineType": {
-        "name": "DateRangePickerProps.AbsoluteFormat",
+        "name": "DateFormat",
         "type": "union",
         "values": [
           "iso",
+          "slashed",
           "long-localized",
         ],
       },
@@ -10346,6 +10346,25 @@ If provided, the date becomes focusable.",
       "name": "dateDisabledReason",
       "optional": true,
       "type": "DateRangePickerProps.DateDisabledReasonFunction",
+    },
+    {
+      "defaultValue": "'slashed'",
+      "description": "Specifies the date format to use on the date inputs in the absolute dropdown.
+
+The format of the input as it is being interacted with. It can take the following values:
+* \`iso\`: ISO 8601 format without time, e.g.: 2024-01-30 (or 2024-01)
+* \`slashed\`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01)",
+      "inlineType": {
+        "name": "EditableDateFormat",
+        "type": "union",
+        "values": [
+          "iso",
+          "slashed",
+        ],
+      },
+      "name": "dateInputFormat",
+      "optional": true,
+      "type": "string",
     },
     {
       "defaultValue": "false",
@@ -10570,6 +10589,21 @@ Defaults to \`false\`.",
             "type": "((unit: DateRangePickerProps.TimeUnit, value: number) => string)",
           },
           {
+            "name": "isoDateConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "isoDateTimeConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "isoMonthConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "modeSelectionLabel",
             "optional": true,
             "type": "string",
@@ -10633,6 +10667,21 @@ Defaults to \`false\`.",
             "name": "renderSelectedAbsoluteRangeAriaLive",
             "optional": true,
             "type": "((startDate: string, endDate: string) => string)",
+          },
+          {
+            "name": "slashedDateConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "slashedDateTimeConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "slashedMonthConstraintText",
+            "optional": true,
+            "type": "string",
           },
           {
             "name": "startDateLabel",
