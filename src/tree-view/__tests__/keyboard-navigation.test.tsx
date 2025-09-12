@@ -77,11 +77,19 @@ describe('KeyboardNavigationProvider', () => {
       },
     });
     expect(() => navigation.getNextFocusTarget()).not.toThrow();
+    expect(() => navigation.onUnregisterActive()).not.toThrow();
     expect(() => navigation.refresh()).not.toThrow();
     expect(() => navigation.cleanup()).not.toThrow();
   });
 
-  test('throws no error when focusing on incorrect target', () => {
+  test('does not throw when tree-view is null', () => {
+    function TestTreeView() {
+      return <KeyboardNavigationProvider getTreeView={() => null}>{null}</KeyboardNavigationProvider>;
+    }
+    expect(() => render(<TestTreeView />)).not.toThrow();
+  });
+
+  test('does not throw when focusing on incorrect target', () => {
     function TestTreeView() {
       const treeViewRef = useRef<HTMLUListElement>(null);
       return (
@@ -360,5 +368,16 @@ describe('Keyboard navigation', () => {
     treeView.dispatchEvent(rightKeydownEvent);
     // toHaveBeenCalledTimes should stay as 1 since the second event shouldn't get prevented
     expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
+  });
+
+  test('ignores invalid key', () => {
+    const { treeView, wrapper } = renderTreeView();
+
+    const firstToggle = wrapper.findItemById('1-button-actions')!.findItemToggle()!.getElement();
+    firstToggle.focus();
+    expect(firstToggle).toHaveFocus();
+
+    fireEvent.keyDown(treeView, { keyCode: KeyCode.backspace });
+    expect(firstToggle).toHaveFocus();
   });
 });

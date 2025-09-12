@@ -111,6 +111,7 @@ export class KeyboardNavigationProcessor {
   public onUnregisterActive = () => {
     // If the focused tree-item appears to be no longer attached to the tree-view we need to re-apply
     // focus to a tree-item with the same or closest position.
+    // istanbul ignore next - to be tested via integration tests
     if (this.focusedTreeItem && !nodeBelongs(this.treeView, this.focusedTreeItem.element)) {
       this.moveFocusBetweenTreeItems(this.focusedTreeItem, 0);
     }
@@ -183,10 +184,6 @@ export class KeyboardNavigationProcessor {
   };
 
   private onKeydown = (event: KeyboardEvent) => {
-    if (!this.focusedTreeItem) {
-      return;
-    }
-
     const keys = [
       KeyCode.up,
       KeyCode.down,
@@ -198,7 +195,7 @@ export class KeyboardNavigationProcessor {
       KeyCode.end,
     ];
 
-    if (!this.isRegistered(document.activeElement) || keys.indexOf(event.keyCode) === -1) {
+    if (!this.focusedTreeItem || !this.isRegistered(document.activeElement) || keys.indexOf(event.keyCode) === -1) {
       return;
     }
 
@@ -238,12 +235,7 @@ export class KeyboardNavigationProcessor {
     }
 
     // Return the toggle of the tree-item
-    const targetTreeItemToggle = getToggleButtonOfTreeItem(targetTreeItem);
-    if (!targetTreeItemToggle) {
-      return null;
-    }
-
-    return targetTreeItemToggle;
+    return getToggleButtonOfTreeItem(targetTreeItem);
   }
 
   private moveFocusInsideTreeItem(from: FocusedTreeItem, by: number, event?: Event) {
