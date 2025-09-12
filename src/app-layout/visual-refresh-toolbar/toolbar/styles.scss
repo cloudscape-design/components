@@ -117,7 +117,7 @@ $toolbar-height: 42px;
     align-items: center;
     display: grid;
     inline-size: 100%;
-    grid-template-columns: min-content min-content minmax(0, 3fr) minmax(auto, 1fr);
+    grid-template-columns: min-content min-content 1fr min-content;
     grid-template-rows: 1fr;
 
     @include theming.dark-mode-only {
@@ -150,6 +150,9 @@ $toolbar-height: 42px;
       display: flex;
       justify-content: flex-end;
       block-size: 100%;
+      min-inline-size: 0;
+      flex-shrink: 0;
+      inline-size: clamp(200px, 25vw, 400px);
     }
   }
 }
