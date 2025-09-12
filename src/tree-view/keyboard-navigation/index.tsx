@@ -109,11 +109,16 @@ export class KeyboardNavigationProcessor {
   }
 
   public onUnregisterActive = () => {
-    // If the focused tree-item appears to be no longer attached to the tree-view we need to re-apply
-    // focus to a tree-item with the same or closest position.
+    // If the focused tree-item or tree-item focusable appears to be no longer attached to the tree-view we need to re-apply
+    // focus to a tree-item focusable with the same position or to the tree-item toggle.
     // istanbul ignore next - to be tested via integration tests
     if (this.focusedTreeItem && !nodeBelongs(this.treeView, this.focusedTreeItem.element)) {
-      this.moveFocusBetweenTreeItems(this.focusedTreeItem, 0);
+      const nextFocusableElement = this.getNextFocusableTreeItemContent(this.focusedTreeItem, 0);
+      if (nextFocusableElement) {
+        focusElement(nextFocusableElement);
+      } else {
+        this.moveFocusBetweenTreeItems(this.focusedTreeItem, 0);
+      }
     }
   };
 
