@@ -16,6 +16,7 @@ const defaultProps = {
 
 describe('CopyToClipboard', () => {
   const originalNavigatorClipboard = global.navigator.clipboard;
+  const originalNavigatorPermissions = global.navigator.permissions;
 
   beforeEach(() => {
     Object.assign(global.navigator, {
@@ -23,11 +24,17 @@ describe('CopyToClipboard', () => {
         writeText: (text: string) =>
           new Promise<void>((resolve, reject) => (text.includes('error') ? reject() : resolve())),
       },
+      permissions: {
+        query: jest.fn().mockResolvedValue({ state: 'granted' }),
+      },
     });
   });
 
   afterEach(() => {
-    Object.assign(global.navigator, { clipboard: originalNavigatorClipboard });
+    Object.assign(global.navigator, {
+      clipboard: originalNavigatorClipboard,
+      permissions: originalNavigatorPermissions,
+    });
   });
 
   test('renders a normal button with button text and aria-label and no text to copy', () => {
@@ -218,6 +225,62 @@ describe('CopyToClipboard', () => {
 
         expect(wrapper.findPopover()).toBeNull();
       });
+    });
+  });
+
+  describe('permissions API behavior', () => {
+    test('shows error state when clipboard-write permission is denied', async () => {
+      Object.assign(global.navigator, {
+        permissions: {
+          query: jest.fn().mockResolvedValue({ state: 'denied' }),
+        },
+      });
+
+      const { container } = render(<CopyToClipboard {...defaultProps} />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() =>
+        expect(wrapper.findStatusText()!.getElement().textContent).toBe('Failed to copy to clipboard')
+      );
+    });
+
+    test('shows success state when clipboard-write permission is granted', async () => {
+      Object.assign(global.navigator, {
+        permissions: {
+          query: jest.fn().mockResolvedValue({ state: 'granted' }),
+        },
+      });
+
+      const { container } = render(<CopyToClipboard {...defaultProps} />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() => expect(wrapper.findStatusText()!.getElement().textContent).toBe('Copied to clipboard'));
+    });
+
+    test('defaults to success state when permissions API is not available', async () => {
+      Object.assign(global.navigator, { permissions: undefined });
+
+      const { container } = render(<CopyToClipboard {...defaultProps} />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() => expect(wrapper.findStatusText()!.getElement().textContent).toBe('Copied to clipboard'));
+    });
+
+    test('defaults to success state when permissions query fails', async () => {
+      Object.assign(global.navigator, {
+        permissions: {
+          query: jest.fn().mockRejectedValue(new Error('Permission query failed')),
+        },
+      });
+
+      const { container } = render(<CopyToClipboard {...defaultProps} />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() => expect(wrapper.findStatusText()!.getElement().textContent).toBe('Copied to clipboard'));
     });
   });
 });
