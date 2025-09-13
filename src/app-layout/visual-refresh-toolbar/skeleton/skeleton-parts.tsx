@@ -5,7 +5,8 @@ import React from 'react';
 import { AppLayoutNotificationsImplementationProps } from '../notifications';
 import { AppLayoutToolbarImplementationProps } from '../toolbar';
 import { SkeletonPartProps } from './interfaces';
-import { BreadcrumbsSlot, NotificationsSlot, ToolbarSlot } from './slots';
+import { NotificationsSlot } from './slots';
+import { ToolbarSkeletonStructure } from './toolbar-container';
 
 import styles from './styles.css.js';
 
@@ -17,11 +18,7 @@ export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPart
   ({ toolbarProps, appLayoutProps }, ref) => {
     return (
       <>
-        {!!toolbarProps && (
-          <ToolbarSlot ref={ref}>
-            <BreadcrumbsSlot ownBreadcrumbs={appLayoutProps.breadcrumbs} />
-          </ToolbarSlot>
-        )}
+        {!!toolbarProps && <ToolbarSkeletonStructure ref={ref} ownBreadcrumbs={appLayoutProps.breadcrumbs} />}
         {toolbarProps?.navigationOpen && <div className={styles.navigation} />}
       </>
     );
@@ -34,15 +31,14 @@ export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPart
 
 export const ToolbarSkeleton = React.forwardRef<HTMLElement, AppLayoutToolbarImplementationProps>(
   ({ appLayoutInternals }: AppLayoutToolbarImplementationProps, ref) => (
-    <ToolbarSlot ref={ref}>
-      <BreadcrumbsSlot
-        ownBreadcrumbs={appLayoutInternals.breadcrumbs}
-        discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
-      />
-    </ToolbarSlot>
+    <ToolbarSkeletonStructure
+      ref={ref}
+      ownBreadcrumbs={appLayoutInternals.breadcrumbs}
+      discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
+    />
   )
 );
 
 export const NotificationsSkeleton = React.forwardRef<HTMLElement, AppLayoutNotificationsImplementationProps>(
-  (props: AppLayoutNotificationsImplementationProps, ref) => <NotificationsSlot ref={ref} />
+  (_props: AppLayoutNotificationsImplementationProps, ref) => <NotificationsSlot ref={ref} />
 );

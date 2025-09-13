@@ -7,6 +7,8 @@ import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/impleme
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
 import { BreadcrumbsSlotContext } from '../contexts';
 
+import testutilStyles from '../../test-classes/styles.css.js';
+import toolbarStyles from '../toolbar/styles.css.js';
 import styles from './styles.css.js';
 
 interface ToolbarSlotProps {
@@ -16,7 +18,14 @@ interface ToolbarSlotProps {
 }
 
 export const ToolbarSlot = React.forwardRef<HTMLElement, ToolbarSlotProps>(({ className, style, children }, ref) => (
-  <section ref={ref as React.Ref<any>} className={clsx(styles['toolbar-container'], className)} style={style}>
+  <section
+    ref={ref as React.Ref<any>}
+    className={clsx(styles['toolbar-container'], toolbarStyles['universal-toolbar'], testutilStyles.toolbar, className)}
+    style={{
+      insetBlockStart: style?.insetBlockStart ?? 0,
+      ...style,
+    }}
+  >
     {children}
   </section>
 ));
@@ -41,10 +50,13 @@ interface BreadcrumbsSlotProps {
 }
 
 export function BreadcrumbsSlot({ ownBreadcrumbs, discoveredBreadcrumbs }: BreadcrumbsSlotProps) {
+  const isSSR = typeof window === 'undefined';
+  const contextValue = React.useMemo(() => ({ isInToolbar: true }), []);
+
   return (
-    <BreadcrumbsSlotContext.Provider value={{ isInToolbar: true }}>
+    <BreadcrumbsSlotContext.Provider value={contextValue}>
       <div className={styles['breadcrumbs-own']}>{ownBreadcrumbs}</div>
-      {discoveredBreadcrumbs && (
+      {discoveredBreadcrumbs && !isSSR && (
         <div className={styles['breadcrumbs-discovered']}>
           <BreadcrumbGroupImplementation
             {...discoveredBreadcrumbs}

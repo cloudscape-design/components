@@ -58,12 +58,14 @@ export const SkeletonLayout = ({
     contentElAttributes,
   } = skeletonSlotsAttributes;
 
+  const isWidgetLoaded = !!appLayoutState.widgetizedState;
+
   return (
     <VisualContext contextName="app-layout-toolbar">
       <div
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
         ref={appLayoutState.rootRef as React.Ref<HTMLDivElement>}
-        data-awsui-app-layout-widget-loaded={false}
+        data-awsui-app-layout-widget-loaded={isWidgetLoaded}
         {...wrapperElAttributes}
         className={wrapperElAttributes?.className ?? clsx(styles.root, testutilStyles.root)}
         style={
