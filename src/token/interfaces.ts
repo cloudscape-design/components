@@ -6,8 +6,10 @@ import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface TokenProps extends BaseComponentProps {
-  /** Slot for the label of the token as text or an element. */
-  label?: React.ReactNode;
+  /** Slot for the label of the token as text or an element.
+   * For `variant="inline"`, only plain text is supported, for example, strings or numbers.
+   */
+  label: React.ReactNode;
 
   /** A label tag that provides additional guidance, shown next to the label. */
   labelTag?: string;
@@ -18,14 +20,16 @@ export interface TokenProps extends BaseComponentProps {
   /** A list of tags giving further guidance about the token. */
   tags?: ReadonlyArray<string>;
 
-  /** An icon at the start of the token, an [icon](/components/icon/) can be used here or a custom element. */
+  /** An icon at the start of the token.
+   * When `variant="normal"`, if a description or tags are set, icon size should be `big`.
+   * When `variant="inline"`, icon size should be `small`.
+   */
   icon?: React.ReactNode;
 
   /**
-   * Determines the general styling of the token as follows:
-   * - `normal` for a standard style token with various features to display information.
-   * - `inline` for a slimmer version of the token with limited features, displayed inline for text contexts.
-   *   - Displays the label, icon and dismiss button as specified.
+   * Specifies the token's visual style and functionality:
+   * - `normal` - Standard token with full feature set including description and tags
+   * - `inline` - Compact token for inline text contexts with limited features (label, icon, dismiss button only)
    *
    * Defaults to `normal` if not specified.
    */
@@ -37,6 +41,7 @@ export interface TokenProps extends BaseComponentProps {
   /**
    * Specifies if the control is read-only, which prevents the
    * user from modifying the value. A read-only control is still focusable.
+   * When `variant="inline"` setting readOnly will hide the dismiss button.
    */
   readOnly?: boolean;
 
@@ -48,6 +53,9 @@ export interface TokenProps extends BaseComponentProps {
    * Make sure that you add a listener to this event to update your application state.
    */
   onDismiss?: NonCancelableEventHandler;
+
+  /** Hides the tooltip for the inline variant when text is overflowing */
+  disableTooltip?: boolean;
 }
 
 export namespace TokenProps {
