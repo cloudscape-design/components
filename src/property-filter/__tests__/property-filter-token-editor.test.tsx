@@ -208,6 +208,22 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       ).toEqual(['=Equals', '!=Does not equal', ':Contains', '!:Does not contain']);
     });
 
+    test('enables client-side filtering on property options', () => {
+      renderComponent({
+        query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
+      });
+      const editor = openEditor(0, { expandToViewport });
+      act(() => editor.propertySelect().openDropdown());
+      act(() => editor.propertySelect().findFilteringInput()!.setInputValue('str'));
+      expect(
+        editor
+          .propertySelect()
+          .findDropdown()
+          .findOptions()
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['string', 'string-other', 'string!=']);
+    });
+
     test('preserves fields, when one is edited', () => {
       renderComponent({
         disableFreeTextFiltering: true,
