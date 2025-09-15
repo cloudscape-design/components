@@ -981,6 +981,32 @@ describe('Details popover', () => {
     expect(wrapper.findByClassName(styles.exiting)).not.toBeNull();
   });
 
+  test('can be hidden with Escape and then reopened', () => {
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
+    document.body.classList.add('awsui-motion-disabled');
+    const isPopoverVisible = () => !wrapper.findByClassName(styles.exiting);
+    const isPopoverPinned = () => !!wrapper.findDetailPopover()!.findDismissButton();
+
+    wrapper.findApplication()!.focus();
+    expect(isPopoverVisible()).toBe(true);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(isPopoverVisible()).toBe(false);
+
+    wrapper.findApplication()!.keydown(KeyCode.right);
+    expect(isPopoverVisible()).toBe(true);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(isPopoverVisible()).toBe(false);
+
+    wrapper.findApplication()!.keydown(KeyCode.enter);
+    expect(isPopoverVisible()).toBe(true);
+    expect(isPopoverPinned()).toBe(true);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(isPopoverVisible()).toBe(false);
+  });
+
   test('delegates focus back to chart when unpinned in a non-grouped chart', async () => {
     const { wrapper } = renderMixedChart(<MixedLineBarChart {...lineChartProps} />);
 
