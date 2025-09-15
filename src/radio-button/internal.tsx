@@ -7,26 +7,31 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { getBaseProps } from '../internal/base-component';
 import AbstractSwitch from '../internal/components/abstract-switch';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { RadioGroupProps } from './interfaces';
-import { getAbstractSwitchStyles, getInnerCircleStyle, getOuterCircleStyle } from './style';
+import { fireNonCancelableEvent } from '../internal/events';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+/**
+ * @awsuiSystem core
+ */
+import WithNativeAttributes from '../internal/utils/with-native-attributes';
+import { getAbstractSwitchStyles, getInnerCircleStyle, getOuterCircleStyle } from '../radio-group/style';
+import { RadioButtonProps } from './interfaces';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
-interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
-  name: string;
-  checked: boolean;
-  onChange?: NonCancelableEventHandler<RadioGroupProps.ChangeDetail>;
-  readOnly?: boolean;
-  className?: string;
-  style?: RadioGroupProps.Style;
+interface InternalComponentProps extends RadioButtonProps, InternalBaseComponentProps {
+  /**
+   * Sets the value attribute to the native control.
+   */
+  value?: string;
 }
 
 export default React.forwardRef(function RadioButton(
   {
     name,
-    label,
+    children,
     value,
     checked,
     description,
@@ -35,31 +40,38 @@ export default React.forwardRef(function RadioButton(
     onChange,
     readOnly,
     className,
+    nativeInputAttributes,
     style,
     ...rest
-  }: RadioButtonProps,
+  }: InternalComponentProps,
   ref: React.Ref<HTMLInputElement>
 ) {
   const radioButtonRef = useRef<HTMLInputElement>(null);
   const mergedRefs = useMergeRefs(radioButtonRef, ref);
 
   const { tabIndex } = useSingleTabStopNavigation(radioButtonRef);
+  const baseProps = getBaseProps(rest);
 
   return (
     <AbstractSwitch
-      className={clsx(styles.radio, description && styles['radio--has-description'], className)}
+      {...baseProps}
+      className={clsx(testUtilStyles.root, className)}
       controlClassName={styles['radio-control']}
       outlineClassName={styles.outline}
-      label={label}
+      label={children}
       description={description}
       disabled={disabled}
       readOnly={readOnly}
       controlId={controlId}
       style={getAbstractSwitchStyles(style, checked, disabled, readOnly)}
+      __internalRootRef={rest.__internalRootRef}
       {...copyAnalyticsMetadataAttribute(rest)}
       nativeControl={nativeControlProps => (
-        <input
+        <WithNativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>
           {...nativeControlProps}
+          tag="input"
+          componentName="RadioButton"
+          nativeAttributes={nativeInputAttributes}
           tabIndex={tabIndex}
           type="radio"
           ref={mergedRefs}
@@ -67,16 +79,11 @@ export default React.forwardRef(function RadioButton(
           value={value}
           checked={checked}
           aria-disabled={readOnly && !disabled ? 'true' : undefined}
-          // empty handler to suppress React controllability warning
-          onChange={() => {}}
         />
       )}
       onClick={() => {
         radioButtonRef.current?.focus();
-        if (checked) {
-          return;
-        }
-        fireNonCancelableEvent(onChange, { value });
+        fireNonCancelableEvent(onChange, { checked: !checked });
       }}
       styledControl={
         <svg viewBox="0 0 100 100" focusable="false" aria-hidden="true">
