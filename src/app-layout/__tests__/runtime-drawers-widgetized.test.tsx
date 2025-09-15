@@ -59,6 +59,24 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     expect(awsuiWidgetPlugins.isAppLayoutReady()).toBe(false);
   });
 
+  test('whenAppLayoutReady resolves when app layout is ready', async () => {
+    const readyPromise = awsuiWidgetPlugins.whenAppLayoutReady();
+
+    let isResolved = false;
+    readyPromise.then(() => {
+      isResolved = true;
+    });
+
+    expect(isResolved).toBe(false);
+
+    const { rerender } = renderComponent(<AppLayout />);
+
+    rerender(<></>);
+
+    await readyPromise;
+    expect(isResolved).toBe(true);
+  });
+
   test('adds ai drawer to an already rendered component', () => {
     const { globalDrawersWrapper } = renderComponent(<AppLayout />);
     expect(globalDrawersWrapper.findAiDrawerTrigger()).toBeFalsy();

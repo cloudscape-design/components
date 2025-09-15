@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { reportRuntimeApiWarning } from '../helpers/metrics';
+import { Defer } from '../helpers/utils';
 import { AppLayoutMessage, AppLayoutUpdateMessage, DrawerPayload, RegisterDrawerMessage } from './interfaces';
 
 const storageKeyMessageHandler = Symbol.for('awsui-widget-api-message-handler');
 const storageKeyInitialMessages = Symbol.for('awsui-widget-api-initial-messages');
+const appLayoutReadyDefer = new Defer();
 
 interface WindowWithApi extends Window {
   [storageKeyMessageHandler]: AppLayoutHandler | undefined;
@@ -33,6 +35,7 @@ export function registerAppLayoutHandler(handler: AppLayoutHandler) {
     reportRuntimeApiWarning('AppLayoutWidget', 'Double registration attempt, the old handler will be overridden');
   }
   win[storageKeyMessageHandler] = handler;
+  appLayoutReadyDefer?.resolve();
   return () => {
     win[storageKeyMessageHandler] = undefined;
   };
@@ -47,6 +50,13 @@ export function clearInitialMessages() {
  */
 export function isAppLayoutReady() {
   return !!getAppLayoutMessageHandler();
+}
+
+/**
+ * Returns a promise that resolves once the app layout has loaded
+ */
+export function whenAppLayoutReady() {
+  return appLayoutReadyDefer.promise;
 }
 
 /**
