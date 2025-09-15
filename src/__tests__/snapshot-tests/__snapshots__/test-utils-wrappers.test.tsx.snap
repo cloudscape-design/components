@@ -66,6 +66,7 @@ import PopoverWrapper from './popover';
 import ProgressBarWrapper from './progress-bar';
 import PromptInputWrapper from './prompt-input';
 import PropertyFilterWrapper from './property-filter';
+import RadioButtonWrapper from './radio-button';
 import RadioGroupWrapper from './radio-group';
 import S3ResourceSelectorWrapper from './s3-resource-selector';
 import SegmentedControlWrapper from './segmented-control';
@@ -152,6 +153,7 @@ export { PopoverWrapper };
 export { ProgressBarWrapper };
 export { PromptInputWrapper };
 export { PropertyFilterWrapper };
+export { RadioButtonWrapper };
 export { RadioGroupWrapper };
 export { S3ResourceSelectorWrapper };
 export { SegmentedControlWrapper };
@@ -1266,6 +1268,25 @@ findPropertyFilter(selector?: string): PropertyFilterWrapper | null;
  * @returns {Array<PropertyFilterWrapper>}
  */
 findAllPropertyFilters(selector?: string): Array<PropertyFilterWrapper>;
+/**
+ * Returns the wrapper of the first RadioButton that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first RadioButton.
+ * If no matching RadioButton is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {RadioButtonWrapper | null}
+ */
+findRadioButton(selector?: string): RadioButtonWrapper | null;
+
+/**
+ * Returns an array of RadioButton wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the RadioButtons inside the current wrapper.
+ * If no matching RadioButton is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<RadioButtonWrapper>}
+ */
+findAllRadioButtons(selector?: string): Array<RadioButtonWrapper>;
 /**
  * Returns the wrapper of the first RadioGroup that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first RadioGroup.
@@ -2524,6 +2545,19 @@ ElementWrapper.prototype.findPropertyFilter = function(selector) {
 ElementWrapper.prototype.findAllPropertyFilters = function(selector) {
   return this.findAllComponents(PropertyFilterWrapper, selector);
 };
+ElementWrapper.prototype.findRadioButton = function(selector) {
+  let rootSelector = \`.\${RadioButtonWrapper.rootSelector}\`;
+  if("legacyRootSelector" in RadioButtonWrapper && RadioButtonWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${RadioButtonWrapper.rootSelector}, .\${RadioButtonWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, RadioButtonWrapper);
+};
+
+ElementWrapper.prototype.findAllRadioButtons = function(selector) {
+  return this.findAllComponents(RadioButtonWrapper, selector);
+};
 ElementWrapper.prototype.findRadioGroup = function(selector) {
   let rootSelector = \`.\${RadioGroupWrapper.rootSelector}\`;
   if("legacyRootSelector" in RadioGroupWrapper && RadioGroupWrapper.legacyRootSelector){
@@ -2952,6 +2986,7 @@ import PopoverWrapper from './popover';
 import ProgressBarWrapper from './progress-bar';
 import PromptInputWrapper from './prompt-input';
 import PropertyFilterWrapper from './property-filter';
+import RadioButtonWrapper from './radio-button';
 import RadioGroupWrapper from './radio-group';
 import S3ResourceSelectorWrapper from './s3-resource-selector';
 import SegmentedControlWrapper from './segmented-control';
@@ -3038,6 +3073,7 @@ export { PopoverWrapper };
 export { ProgressBarWrapper };
 export { PromptInputWrapper };
 export { PropertyFilterWrapper };
+export { RadioButtonWrapper };
 export { RadioGroupWrapper };
 export { S3ResourceSelectorWrapper };
 export { SegmentedControlWrapper };
@@ -4038,6 +4074,23 @@ findPropertyFilter(selector?: string): PropertyFilterWrapper;
  * @returns {MultiElementWrapper<PropertyFilterWrapper>}
  */
 findAllPropertyFilters(selector?: string): MultiElementWrapper<PropertyFilterWrapper>;
+/**
+ * Returns a wrapper that matches the RadioButtons with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches RadioButtons.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {RadioButtonWrapper}
+ */
+findRadioButton(selector?: string): RadioButtonWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches RadioButtons with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches RadioButtons.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<RadioButtonWrapper>}
+ */
+findAllRadioButtons(selector?: string): MultiElementWrapper<RadioButtonWrapper>;
 /**
  * Returns a wrapper that matches the RadioGroups with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches RadioGroups.
@@ -5241,6 +5294,19 @@ ElementWrapper.prototype.findPropertyFilter = function(selector) {
 
 ElementWrapper.prototype.findAllPropertyFilters = function(selector) {
   return this.findAllComponents(PropertyFilterWrapper, selector);
+};
+ElementWrapper.prototype.findRadioButton = function(selector) {
+  let rootSelector = \`.\${RadioButtonWrapper.rootSelector}\`;
+  if("legacyRootSelector" in RadioButtonWrapper && RadioButtonWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${RadioButtonWrapper.rootSelector}, .\${RadioButtonWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, RadioButtonWrapper);
+};
+
+ElementWrapper.prototype.findAllRadioButtons = function(selector) {
+  return this.findAllComponents(RadioButtonWrapper, selector);
 };
 ElementWrapper.prototype.findRadioGroup = function(selector) {
   let rootSelector = \`.\${RadioGroupWrapper.rootSelector}\`;

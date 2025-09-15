@@ -8,7 +8,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import InternalCheckbox from '../../checkbox/internal';
 import { KeyCode } from '../../internal/keycode';
-import RadioButton from '../../radio-group/radio-button';
+import RadioButton from '../../radio-button/internal';
 import { SelectionProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -90,7 +90,7 @@ export function SelectionControl({
       indeterminate={indeterminate}
     />
   ) : (
-    <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} label={''} />
+    <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} />
   );
 
   return (

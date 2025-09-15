@@ -513,9 +513,11 @@ exports[`test-utils selectors 1`] = `
     "awsui_token-editor-token-add-actions_1heb1",
     "awsui_token-editor-token-remove-actions_1heb1",
   ],
+  "radio-button": [
+    "awsui_root_n4fh9",
+  ],
   "radio-group": [
-    "awsui_radio_1mabk",
-    "awsui_root_1mabk",
+    "awsui_root_1np5w",
   ],
   "s3-resource-selector": [
     "awsui_alert_1u0yw",
