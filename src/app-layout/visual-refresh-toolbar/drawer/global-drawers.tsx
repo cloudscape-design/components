@@ -24,7 +24,7 @@ export function AppLayoutGlobalDrawersImplementation({
       {globalDrawers
         .filter(
           drawer =>
-            activeGlobalDrawersIds.includes(drawer.id) ||
+            (drawer.position !== 'bottom' && activeGlobalDrawersIds.includes(drawer.id)) ||
             (drawer.preserveInactiveContent && openDrawersHistory.current.has(drawer.id))
         )
         .map(drawer => {

@@ -117,6 +117,10 @@ export const useAppLayout = (
     closeFirstDrawer();
   };
 
+  const onGlobalBottomDrawerFocus = () => {
+    bottomDrawersFocusControl.setFocus();
+  };
+
   const {
     drawers,
     activeDrawer,
@@ -135,7 +139,11 @@ export const useAppLayout = (
     onActiveGlobalDrawersChange,
     expandedDrawerId,
     setExpandedDrawerId,
-  } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer }, ariaLabels, {
+    activeGlobalBottomDrawerId,
+    onActiveGlobalBottomDrawerChange,
+    activeGlobalBottomDrawerSize,
+    minGlobalBottomDrawerSize,
+  } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer, onGlobalBottomDrawerFocus }, ariaLabels, {
     ariaLabels,
     toolsHide,
     toolsOpen,
@@ -224,6 +232,11 @@ export const useAppLayout = (
 
   const globalDrawersFocusControl = useMultipleFocusControl(true, activeGlobalDrawersIds);
   const drawersFocusControl = useAsyncFocusControl(!!activeDrawer?.id, true, activeDrawer?.id);
+  const bottomDrawersFocusControl = useAsyncFocusControl(
+    !!activeGlobalBottomDrawerId,
+    true,
+    activeGlobalBottomDrawerId
+  );
   const navigationFocusControl = useAsyncFocusControl(navigationOpen, navigationTriggerHide);
   const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
@@ -309,6 +322,7 @@ export const useAppLayout = (
     onActiveGlobalDrawersChange,
     drawersFocusControl,
     globalDrawersFocusControl,
+    bottomDrawersFocusControl,
     splitPanelPosition,
     splitPanelToggleConfig,
     splitPanelOpen,
@@ -337,6 +351,10 @@ export const useAppLayout = (
     maxAiDrawerSize,
     aiDrawerFocusControl,
     onActiveAiDrawerResize,
+    activeGlobalBottomDrawerId,
+    onActiveGlobalBottomDrawerChange,
+    activeGlobalBottomDrawerSize,
+    minGlobalBottomDrawerSize,
   };
 
   const splitPanelInternals: SplitPanelProviderProps = {

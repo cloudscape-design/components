@@ -53,7 +53,8 @@
     grid-template-areas:
       'ai-drawer toolbar    toolbar      toolbar       toolbar   toolbar         toolbar  toolbar'
       'ai-drawer navigation .         notifications    .         sideSplitPanel  tools    global-tools'
-      'ai-drawer navigation .             main         .         sideSplitPanel  tools    global-tools';
+      'ai-drawer navigation .             main         .         sideSplitPanel  tools    global-tools'
+      'ai-drawer bottom-tool bottom-tool bottom-tool  bottom-tool  bottom-tool bottom-tool global-tools';
     grid-template-columns:
       min-content
       min-content
@@ -62,7 +63,7 @@
       minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
       min-content
       min-content;
-    grid-template-rows: min-content min-content 1fr min-content;
+    grid-template-rows: min-content min-content 1fr min-content min-content;
 
     &.has-adaptive-widths-default {
       #{custom-props.$maxContentWidth}: map.get(constants.$adaptive-content-widths, styles.$breakpoint-xx-large);
@@ -113,6 +114,16 @@
 
   @include mobile-only {
     inline-size: 100%;
+  }
+}
+
+.bottom-tool {
+  @include desktop-only {
+    grid-area: bottom-tool;
+    position: sticky;
+    inset-block-end: 0;
+    overflow: hidden;
+    z-index: 840;
   }
 }
 
