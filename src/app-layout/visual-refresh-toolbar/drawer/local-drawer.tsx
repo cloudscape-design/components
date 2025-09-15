@@ -36,6 +36,8 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     drawersOpenQueue,
     onActiveDrawerChange,
     onActiveDrawerResize,
+    activeGlobalBottomDrawerId,
+    bottomDrawerReportedSize,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeDrawer?.id;
@@ -45,7 +47,12 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     content: activeDrawer ? activeDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(
+    verticalOffsets,
+    isMobile,
+    placement,
+    activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0
+  );
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const isToolsDrawer = activeDrawer?.id === TOOLS_DRAWER_ID || toolsOnlyMode;
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;

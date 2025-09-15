@@ -19,6 +19,7 @@ export interface DrawerStateChangeParams {
 export interface DrawerConfig {
   id: string;
   type?: 'local' | 'global';
+  position?: 'side' | 'bottom';
   ariaLabels: {
     content?: string;
     closeButton?: string;

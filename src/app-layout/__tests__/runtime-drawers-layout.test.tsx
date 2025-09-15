@@ -133,6 +133,69 @@ describe('toolbar mode only features', () => {
       expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
     });
 
+    test('(with a bottom drawer open) first opened drawer (global drawer) should be closed when active drawers take up all available space on the page and a third drawer is opened', async () => {
+      jest.mocked(computeHorizontalLayout).mockReturnValue({
+        splitPanelPosition: 'bottom',
+        splitPanelForcedPosition: false,
+        sideSplitPanelSize: 0,
+        maxSplitPanelSize: 792,
+        maxDrawerSize: 792,
+        maxGlobalDrawersSizes: {},
+        totalActiveGlobalDrawersSize: 0,
+        resizableSpaceAvailable: 792,
+        maxAiDrawerSize: 0,
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'local-drawer',
+        mountContent: container => (container.textContent = 'local-drawer content'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-3',
+        mountContent: container => (container.textContent = 'global drawer content 3'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-bottom-drawer',
+        type: 'global',
+        position: 'bottom',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global bottom drawer'),
+      });
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      await delay();
+
+      expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(3);
+      expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global bottom drawer');
+      expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 1');
+      expect(globalDrawersWrapper.findActiveDrawers()[2].getElement()).toHaveTextContent('global drawer content 2');
+
+      wrapper.findDrawerTriggerById('local-drawer')!.click();
+
+      await waitFor(() => {
+        expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(3);
+      });
+      expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global bottom drawer');
+      expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('local-drawer');
+      expect(globalDrawersWrapper.findActiveDrawers()[2].getElement()).toHaveTextContent('global drawer content 2');
+    });
+
     test('first opened drawer (local drawer) should be closed when active drawers take up all available space on the page and a third drawer is opened', async () => {
       jest.mocked(computeHorizontalLayout).mockReturnValue({
         splitPanelPosition: 'bottom',

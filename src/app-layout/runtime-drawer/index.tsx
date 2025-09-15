@@ -19,6 +19,7 @@ import styles from './styles.css.js';
 
 export interface RuntimeDrawer extends AppLayoutProps.Drawer {
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
+  position?: 'side' | 'bottom';
 }
 
 export interface DrawersLayout {
