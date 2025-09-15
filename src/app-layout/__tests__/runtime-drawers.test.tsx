@@ -934,284 +934,291 @@ describe('toolbar mode only features', () => {
     });
 
     describe.each(['global', 'global-ai'] as const)('drawer type = %s', type => {
-      const findDrawerTriggerById = (id: string, renderProps: Awaited<ReturnType<typeof renderComponent>>) => {
-        if (type === 'global') {
-          return renderProps.wrapper.findDrawerTriggerById(id);
-        } else {
-          return renderProps.globalDrawersWrapper.findAiDrawerTrigger();
+      describe.each(['side', 'bottom'] as const)('drawer position = %s', position => {
+        // this condition does not exist
+        if (type === 'global-ai' && position === 'bottom') {
+          return;
         }
-      };
-      const registerDrawer = (payload: DrawerConfig | WidgetDrawerPayload) => {
-        if (type === 'global') {
-          awsuiPlugins.appLayout.registerDrawer({ ...payload, type } as DrawerConfig);
-        } else {
-          awsuiWidgetPlugins.registerLeftDrawer(payload as WidgetDrawerPayload);
-        }
-      };
-      const findDrawerHeaderActionById = (id: string, renderProps: Awaited<ReturnType<typeof renderComponent>>) => {
-        return createWrapper(renderProps.container).findButtonGroup()!.findButtonById(id);
-      };
+        const findDrawerTriggerById = (id: string, renderProps: Awaited<ReturnType<typeof renderComponent>>) => {
+          if (type === 'global') {
+            return renderProps.wrapper.findDrawerTriggerById(id);
+          } else {
+            return renderProps.globalDrawersWrapper.findAiDrawerTrigger();
+          }
+        };
+        const registerDrawer = (payload: DrawerConfig | WidgetDrawerPayload) => {
+          if (type === 'global') {
+            awsuiPlugins.appLayout.registerDrawer({ ...payload, type } as DrawerConfig);
+          } else if (position === 'bottom') {
+            awsuiWidgetPlugins.registerBottomDrawer(payload as WidgetDrawerPayload);
+          } else {
+            awsuiWidgetPlugins.registerLeftDrawer(payload as WidgetDrawerPayload);
+          }
+        };
+        const findDrawerHeaderActionById = (id: string, renderProps: Awaited<ReturnType<typeof renderComponent>>) => {
+          return createWrapper(renderProps.container).findButtonGroup()!.findButtonById(id);
+        };
 
-      test('renders resize handle for a global drawer when config is enabled', async () => {
-        registerDrawer({
-          ...drawerDefaults,
-          id: 'test-resizable',
-          resizable: true,
-          ariaLabels: {
-            triggerButton: 'drawer trigger',
-            content: 'drawer content',
-            resizeHandle: 'drawer resize',
-            closeButton: 'drawer close',
-          },
-        });
-        const renderProps = await renderComponent(<AppLayout />);
-        const { globalDrawersWrapper } = renderProps;
-
-        findDrawerTriggerById('test-resizable', renderProps)!.click();
-
-        await waitFor(() => {
-          expect(globalDrawersWrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveFocus();
-          expect(globalDrawersWrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveAttribute(
-            'aria-label',
-            'drawer resize'
-          );
-        });
-      });
-
-      test('close active global drawer by clicking on close button', async () => {
-        registerDrawer({
-          ...drawerDefaults,
-          id: 'global-drawer',
-          ariaLabels: {
-            triggerButton: 'drawer trigger',
-            content: 'drawer content',
-            resizeHandle: 'drawer resize',
-            closeButton: 'drawer close',
-          },
-        });
-
-        const renderProps = await renderComponent(<AppLayout />);
-        const { globalDrawersWrapper } = renderProps;
-
-        findDrawerTriggerById('global-drawer', renderProps)!.click();
-        expect(globalDrawersWrapper.findDrawerById('global-drawer')!.getElement()).toBeInTheDocument();
-        renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer')!.click();
-        expect(globalDrawersWrapper.findDrawerById('global-drawer')).toBeNull();
-      });
-
-      test('opens a drawer when openDrawer is called', async () => {
-        awsuiPlugins.appLayout.registerDrawer({
-          ...drawerDefaults,
-          id: 'local-drawer',
-          mountContent: container => (container.textContent = 'local-drawer content'),
-        });
-        awsuiPlugins.appLayout.registerDrawer({
-          ...drawerDefaults,
-          id: 'global-drawer-1',
-          type: 'global',
-          mountContent: container => (container.textContent = 'global drawer content 1'),
-        });
-        registerDrawer({
-          ...drawerDefaults,
-          id: 'global-drawer-2',
-          mountContent: container => (container.textContent = 'global drawer content 2'),
-        });
-
-        const { globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
-
-        expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(0);
-
-        awsuiPlugins.appLayout.openDrawer('local-drawer');
-
-        await delay();
-
-        expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(1);
-
-        awsuiPlugins.appLayout.openDrawer('global-drawer-1');
-
-        await delay();
-
-        expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(2);
-      });
-
-      test('does not do anything when openDrawer is called with active drawer id', async () => {
-        registerDrawer({
-          ...drawerDefaults,
-          id: 'local-drawer',
-          mountContent: container => (container.textContent = 'local-drawer content'),
-        });
-
-        const { globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
-
-        expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(0);
-
-        if (type === 'global') {
-          awsuiPlugins.appLayout.openDrawer('local-drawer');
-        } else {
-          awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'local-drawer' } });
-        }
-
-        await delay();
-
-        expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(1);
-
-        if (type === 'global') {
-          awsuiPlugins.appLayout.openDrawer('local-drawer');
-        } else {
-          awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'local-drawer' } });
-        }
-
-        await delay();
-
-        expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(1);
-      });
-
-      test('should restore focus when a global drawer is closed', async () => {
-        registerDrawer({
-          ...drawerDefaults,
-          id: 'global-drawer-1',
-          mountContent: container => (container.textContent = 'global drawer content 1'),
-        });
-
-        const renderProps = await renderComponent(<AppLayout drawers={[testDrawer]} />);
-        const { globalDrawersWrapper } = renderProps;
-
-        findDrawerTriggerById('global-drawer-1', renderProps)!.focus();
-        findDrawerTriggerById('global-drawer-1', renderProps)!.click();
-        expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
-        renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
-        expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeNull();
-        await waitFor(() => {
-          expect(findDrawerTriggerById('global-drawer-1', renderProps)!.getElement()).toHaveFocus();
-        });
-      });
-
-      test('when preserveInactiveContent is set to true, initially closed drawer does not exist in dom (but mounted and persists when opened and closed)', async () => {
-        registerDrawer({
-          ...drawerDefaults,
-          id: 'global-drawer-1',
-          mountContent: container => (container.textContent = 'global drawer content 1'),
-          preserveInactiveContent: true,
-        });
-
-        const renderProps = await renderComponent(<AppLayout drawers={[testDrawer]} />);
-        const { globalDrawersWrapper } = renderProps;
-
-        expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeNull();
-
-        findDrawerTriggerById('global-drawer-1', renderProps)!.click();
-
-        await delay();
-
-        expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
-        renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
-
-        expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
-        expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(false);
-      });
-
-      test('should call visibilityChange callback when global drawer with preserveInactiveContent is opened and closed', async () => {
-        const onVisibilityChangeMock = jest.fn();
-        registerDrawer({
-          ...drawerDefaults,
-          id: 'global-drawer-1',
-          mountContent: (container, mountContext) => {
-            if (mountContext?.onVisibilityChange) {
-              mountContext.onVisibilityChange(onVisibilityChangeMock);
-            }
-            container.textContent = 'global drawer content 1';
-          },
-          preserveInactiveContent: true,
-        });
-
-        const renderProps = await renderComponent(<AppLayout drawers={[testDrawer]} />);
-        const { globalDrawersWrapper } = renderProps;
-
-        findDrawerTriggerById('global-drawer-1', renderProps)!.click();
-
-        await delay();
-
-        expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
-        expect(onVisibilityChangeMock).toHaveBeenCalledWith(true);
-
-        renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
-        expect(onVisibilityChangeMock).toHaveBeenCalledWith(false);
-      });
-
-      test(`closes a drawer when closeDrawer is called (${type} drawer)`, async () => {
-        registerDrawer({ ...drawerDefaults, resizable: true });
-
-        const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
-
-        if (type === 'global') {
-          awsuiPlugins.appLayout.openDrawer('test');
-        } else {
-          awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'test' } });
-        }
-
-        await delay();
-
-        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
-
-        if (type === 'global') {
-          awsuiPlugins.appLayout.closeDrawer('test');
-        } else {
-          awsuiWidgetPlugins.updateDrawer({ type: 'closeDrawer', payload: { id: 'test' } });
-        }
-
-        await delay();
-
-        expect(wrapper.findActiveDrawer()).toBeFalsy();
-      });
-
-      test('should render trigger buttons for global drawers even if local drawers are not present', async () => {
-        const renderProps = await renderComponent(<AppLayout toolsHide={true} />);
-
-        registerDrawer({
-          ...drawerDefaults,
-          id: 'global1',
-        });
-
-        await delay();
-
-        expect(findDrawerTriggerById('global1', renderProps)!.getElement()).toBeInTheDocument();
-      });
-
-      test(`calls onToggle handler by clicking on drawers trigger button (${type} runtime drawers)`, async () => {
-        const onToggle = jest.fn();
-        registerDrawer({
-          ...drawerDefaults,
-          id: 'global-drawer',
-          onToggle: event => onToggle(event.detail),
-        });
-        const renderProps = await renderComponent(<AppLayout />);
-
-        findDrawerTriggerById('global-drawer', renderProps)!.click();
-        expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
-        renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer')!.click();
-        expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
-      });
-
-      test(`calls onHeaderActionClick handler by clicking on drawers header action button in left runtime drawer)`, async () => {
-        const onHeaderActionClick = jest.fn();
-        registerDrawer({
-          ...drawerDefaults,
-          id: 'global-drawer',
-          headerActions: [
-            {
-              type: 'icon-button',
-              id: 'add',
-              iconName: 'add-plus',
-              text: 'Add',
+        test('renders resize handle for a global drawer when config is enabled', async () => {
+          registerDrawer({
+            ...drawerDefaults,
+            id: 'test-resizable',
+            resizable: true,
+            ariaLabels: {
+              triggerButton: 'drawer trigger',
+              content: 'drawer content',
+              resizeHandle: 'drawer resize',
+              closeButton: 'drawer close',
             },
-          ],
-          onHeaderActionClick: event => onHeaderActionClick(event.detail),
-        });
-        const renderProps = await renderComponent(<AppLayout />);
-        findDrawerTriggerById('global-drawer', renderProps)!.click();
+          });
+          const renderProps = await renderComponent(<AppLayout />);
+          const { globalDrawersWrapper } = renderProps;
 
-        findDrawerHeaderActionById('add', renderProps)!.click();
-        expect(onHeaderActionClick).toHaveBeenCalledWith({ id: 'add' });
+          findDrawerTriggerById('test-resizable', renderProps)!.click();
+
+          await waitFor(() => {
+            expect(globalDrawersWrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveFocus();
+            expect(
+              globalDrawersWrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()
+            ).toHaveAttribute('aria-label', 'drawer resize');
+          });
+        });
+
+        test('close active global drawer by clicking on close button', async () => {
+          registerDrawer({
+            ...drawerDefaults,
+            id: 'global-drawer',
+            ariaLabels: {
+              triggerButton: 'drawer trigger',
+              content: 'drawer content',
+              resizeHandle: 'drawer resize',
+              closeButton: 'drawer close',
+            },
+          });
+
+          const renderProps = await renderComponent(<AppLayout />);
+          const { globalDrawersWrapper } = renderProps;
+
+          findDrawerTriggerById('global-drawer', renderProps)!.click();
+          expect(globalDrawersWrapper.findDrawerById('global-drawer')!.getElement()).toBeInTheDocument();
+          renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer')!.click();
+          expect(globalDrawersWrapper.findDrawerById('global-drawer')).toBeNull();
+        });
+
+        test('opens a drawer when openDrawer is called', async () => {
+          awsuiPlugins.appLayout.registerDrawer({
+            ...drawerDefaults,
+            id: 'local-drawer',
+            mountContent: container => (container.textContent = 'local-drawer content'),
+          });
+          awsuiPlugins.appLayout.registerDrawer({
+            ...drawerDefaults,
+            id: 'global-drawer-1',
+            type: 'global',
+            mountContent: container => (container.textContent = 'global drawer content 1'),
+          });
+          registerDrawer({
+            ...drawerDefaults,
+            id: 'global-drawer-2',
+            mountContent: container => (container.textContent = 'global drawer content 2'),
+          });
+
+          const { globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+          expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(0);
+
+          awsuiPlugins.appLayout.openDrawer('local-drawer');
+
+          await delay();
+
+          expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(1);
+
+          awsuiPlugins.appLayout.openDrawer('global-drawer-1');
+
+          await delay();
+
+          expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(2);
+        });
+
+        test('does not do anything when openDrawer is called with active drawer id', async () => {
+          registerDrawer({
+            ...drawerDefaults,
+            id: 'local-drawer',
+            mountContent: container => (container.textContent = 'local-drawer content'),
+          });
+
+          const { globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+          expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(0);
+
+          if (type === 'global') {
+            awsuiPlugins.appLayout.openDrawer('local-drawer');
+          } else {
+            awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'local-drawer' } });
+          }
+
+          await delay();
+
+          expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(1);
+
+          if (type === 'global') {
+            awsuiPlugins.appLayout.openDrawer('local-drawer');
+          } else {
+            awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'local-drawer' } });
+          }
+
+          await delay();
+
+          expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(1);
+        });
+
+        test('should restore focus when a global drawer is closed', async () => {
+          registerDrawer({
+            ...drawerDefaults,
+            id: 'global-drawer-1',
+            mountContent: container => (container.textContent = 'global drawer content 1'),
+          });
+
+          const renderProps = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+          const { globalDrawersWrapper } = renderProps;
+
+          findDrawerTriggerById('global-drawer-1', renderProps)!.focus();
+          findDrawerTriggerById('global-drawer-1', renderProps)!.click();
+          expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+          renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
+          expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeNull();
+          await waitFor(() => {
+            expect(findDrawerTriggerById('global-drawer-1', renderProps)!.getElement()).toHaveFocus();
+          });
+        });
+
+        test('when preserveInactiveContent is set to true, initially closed drawer does not exist in dom (but mounted and persists when opened and closed)', async () => {
+          registerDrawer({
+            ...drawerDefaults,
+            id: 'global-drawer-1',
+            mountContent: container => (container.textContent = 'global drawer content 1'),
+            preserveInactiveContent: true,
+          });
+
+          const renderProps = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+          const { globalDrawersWrapper } = renderProps;
+
+          expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeNull();
+
+          findDrawerTriggerById('global-drawer-1', renderProps)!.click();
+
+          await delay();
+
+          expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
+          renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
+
+          expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+          expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(false);
+        });
+
+        test('should call visibilityChange callback when global drawer with preserveInactiveContent is opened and closed', async () => {
+          const onVisibilityChangeMock = jest.fn();
+          registerDrawer({
+            ...drawerDefaults,
+            id: 'global-drawer-1',
+            mountContent: (container, mountContext) => {
+              if (mountContext?.onVisibilityChange) {
+                mountContext.onVisibilityChange(onVisibilityChangeMock);
+              }
+              container.textContent = 'global drawer content 1';
+            },
+            preserveInactiveContent: true,
+          });
+
+          const renderProps = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+          const { globalDrawersWrapper } = renderProps;
+
+          findDrawerTriggerById('global-drawer-1', renderProps)!.click();
+
+          await delay();
+
+          expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
+          expect(onVisibilityChangeMock).toHaveBeenCalledWith(true);
+
+          renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
+          expect(onVisibilityChangeMock).toHaveBeenCalledWith(false);
+        });
+
+        test(`closes a drawer when closeDrawer is called (${type} drawer)`, async () => {
+          registerDrawer({ ...drawerDefaults, resizable: true });
+
+          const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+          if (type === 'global') {
+            awsuiPlugins.appLayout.openDrawer('test');
+          } else {
+            awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'test' } });
+          }
+
+          await delay();
+
+          expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+
+          if (type === 'global') {
+            awsuiPlugins.appLayout.closeDrawer('test');
+          } else {
+            awsuiWidgetPlugins.updateDrawer({ type: 'closeDrawer', payload: { id: 'test' } });
+          }
+
+          await delay();
+
+          expect(wrapper.findActiveDrawer()).toBeFalsy();
+        });
+
+        test('should render trigger buttons for global drawers even if local drawers are not present', async () => {
+          const renderProps = await renderComponent(<AppLayout toolsHide={true} />);
+
+          registerDrawer({
+            ...drawerDefaults,
+            id: 'global1',
+          });
+
+          await delay();
+
+          expect(findDrawerTriggerById('global1', renderProps)!.getElement()).toBeInTheDocument();
+        });
+
+        test(`calls onToggle handler by clicking on drawers trigger button (${type} runtime drawers)`, async () => {
+          const onToggle = jest.fn();
+          registerDrawer({
+            ...drawerDefaults,
+            id: 'global-drawer',
+            onToggle: event => onToggle(event.detail),
+          });
+          const renderProps = await renderComponent(<AppLayout />);
+
+          findDrawerTriggerById('global-drawer', renderProps)!.click();
+          expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
+          renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer')!.click();
+          expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
+        });
+
+        test(`calls onHeaderActionClick handler by clicking on drawers header action button in left runtime drawer)`, async () => {
+          const onHeaderActionClick = jest.fn();
+          registerDrawer({
+            ...drawerDefaults,
+            id: 'global-drawer',
+            headerActions: [
+              {
+                type: 'icon-button',
+                id: 'add',
+                iconName: 'add-plus',
+                text: 'Add',
+              },
+            ],
+            onHeaderActionClick: event => onHeaderActionClick(event.detail),
+          });
+          const renderProps = await renderComponent(<AppLayout />);
+          findDrawerTriggerById('global-drawer', renderProps)!.click();
+
+          findDrawerHeaderActionById('add', renderProps)!.click();
+          expect(onHeaderActionClick).toHaveBeenCalledWith({ id: 'add' });
+        });
       });
     });
 
@@ -1435,153 +1442,184 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
         expect(globalDrawersWrapper.findDrawerById('global3')).toBeFalsy();
       });
+
+      test('should open global bottom drawer by default when defaultActive is set', async () => {
+        const { globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+        awsuiWidgetPlugins.registerBottomDrawer({
+          ...drawerDefaults,
+          id: 'global1',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+      });
     });
 
     describe('expanded mode for global drawers', () => {
       describe.each(['global', 'global-ai'] as const)('drawer type = %s', type => {
-        const findDrawerTriggerById = (id: string, renderProps: Awaited<ReturnType<typeof renderComponent>>) => {
-          if (type === 'global') {
-            return renderProps.wrapper.findDrawerTriggerById(id);
-          } else {
-            return renderProps.globalDrawersWrapper.findAiDrawerTrigger();
+        describe.each(['side', 'bottom'] as const)('drawer position = %s', position => {
+          // this condition does not exist
+          if (type === 'global-ai' && position === 'bottom') {
+            return;
           }
-        };
-        const registerDrawer = (payload: DrawerConfig | WidgetDrawerPayload) => {
-          if (type === 'global') {
-            awsuiPlugins.appLayout.registerDrawer({ ...payload, type } as DrawerConfig);
-          } else {
-            awsuiWidgetPlugins.registerLeftDrawer(payload as WidgetDrawerPayload);
-          }
-        };
 
-        test('should set a drawer to expanded mode by clicking on "expanded mode" button', async () => {
-          const drawerId = 'global-drawer';
-          registerDrawer({
-            ...drawerDefaults,
-            ariaLabels: {
-              expandedModeButton: 'Expanded mode button',
-            },
-            id: drawerId,
-            isExpandable: true,
-          });
-          const renderProps = await renderComponent(<AppLayout />);
-          const { globalDrawersWrapper } = renderProps;
+          const findDrawerTriggerById = (id: string, renderProps: Awaited<ReturnType<typeof renderComponent>>) => {
+            if (type === 'global') {
+              return renderProps.wrapper.findDrawerTriggerById(id);
+            } else {
+              return renderProps.globalDrawersWrapper.findAiDrawerTrigger();
+            }
+          };
+          const registerDrawer = (payload: DrawerConfig | WidgetDrawerPayload) => {
+            if (type === 'global') {
+              awsuiPlugins.appLayout.registerDrawer({ ...payload, type } as DrawerConfig);
+            } else if (position === 'bottom') {
+              awsuiWidgetPlugins.registerBottomDrawer(payload as DrawerConfig);
+            } else {
+              awsuiWidgetPlugins.registerLeftDrawer(payload as WidgetDrawerPayload);
+            }
+          };
 
-          findDrawerTriggerById(drawerId, renderProps)!.click();
-          expect(
-            renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
-          ).toBeInTheDocument();
-          expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
-          renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
-          expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
+          test('should set a drawer to expanded mode by clicking on "expanded mode" button', async () => {
+            const drawerId = 'global-drawer';
+            registerDrawer({
+              ...drawerDefaults,
+              ariaLabels: {
+                expandedModeButton: 'Expanded mode button',
+              },
+              id: drawerId,
+              isExpandable: true,
+            });
+            const renderProps = await renderComponent(<AppLayout />);
+            const { globalDrawersWrapper } = renderProps;
 
-          expect(
-            getGeneratedAnalyticsMetadata(
+            findDrawerTriggerById(drawerId, renderProps)!.click();
+            expect(
               renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
-            )
-          ).toEqual(
-            expect.objectContaining({
-              action: 'expand',
-              detail: expect.objectContaining({
-                label: 'Expanded mode button',
-              }),
-            })
-          );
+            ).toBeInTheDocument();
+            expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
+            renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
+            expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
 
-          renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
-          expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
-          expect(
-            getGeneratedAnalyticsMetadata(
-              renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
-            )
-          ).toEqual(
-            expect.objectContaining({
-              action: 'collapse',
-              detail: expect.objectContaining({
-                label: 'Expanded mode button',
-              }),
-            })
-          );
-        });
+            expect(
+              getGeneratedAnalyticsMetadata(
+                renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+              )
+            ).toEqual(
+              expect.objectContaining({
+                action: 'expand',
+                detail: expect.objectContaining({
+                  label: 'Expanded mode button',
+                }),
+              })
+            );
 
-        test('only one drawer could be in expanded mode. all other panels should be closed', async () => {
-          const drawerId1 = 'global-drawer1';
-          const drawerId2 = 'global-drawer2';
-          const drawerId3Local = 'local-drawer';
-          awsuiPlugins.appLayout.registerDrawer({
-            ...drawerDefaults,
-            id: drawerId1,
-            type: 'global',
-            isExpandable: true,
+            renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
+            expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(false);
+            expect(
+              getGeneratedAnalyticsMetadata(
+                renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.getElement()
+              )
+            ).toEqual(
+              expect.objectContaining({
+                action: 'collapse',
+                detail: expect.objectContaining({
+                  label: 'Expanded mode button',
+                }),
+              })
+            );
           });
-          registerDrawer({
-            ...drawerDefaults,
-            id: drawerId2,
-            isExpandable: true,
-          });
-          awsuiPlugins.appLayout.registerDrawer({
-            ...drawerDefaults,
-            id: drawerId3Local,
-          });
-          const renderProps = await renderComponent(<AppLayout navigationOpen={true} navigation={<div>nav</div>} />);
-          const { wrapper, globalDrawersWrapper } = renderProps;
 
-          await delay();
+          test('only one drawer could be in expanded mode. all other panels should be closed', async () => {
+            const drawerId1 = 'global-drawer1';
+            const drawerId2 = 'global-drawer2';
+            const drawerId3Local = 'local-drawer';
+            awsuiPlugins.appLayout.registerDrawer({
+              ...drawerDefaults,
+              id: drawerId1,
+              type: 'global',
+              isExpandable: true,
+            });
+            registerDrawer({
+              ...drawerDefaults,
+              id: drawerId2,
+              isExpandable: true,
+            });
+            awsuiPlugins.appLayout.registerDrawer({
+              ...drawerDefaults,
+              id: drawerId3Local,
+            });
+            const renderProps = await renderComponent(<AppLayout navigationOpen={true} navigation={<div>nav</div>} />);
+            const { wrapper, globalDrawersWrapper } = renderProps;
 
-          wrapper.findDrawerTriggerById(drawerId1)!.click();
-          findDrawerTriggerById(drawerId2, renderProps)!.click();
-          wrapper.findDrawerTriggerById(drawerId3Local)!.click();
+            await delay();
 
-          expect(wrapper.findDrawerTriggerById(drawerId1)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
-          // because the trigger button for the AI drawer gets hidden when it's expanded
-          if (type === 'global') {
-            expect(wrapper.findDrawerTriggerById(drawerId2)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
-          }
-          expect(wrapper.findDrawerTriggerById(drawerId3Local)!.getElement()).toHaveClass(
-            toolbarTriggerStyles.selected
-          );
-          expect(wrapper.findNavigationToggle()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
-          expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
-          expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
+            wrapper.findDrawerTriggerById(drawerId1)!.click();
+            findDrawerTriggerById(drawerId2, renderProps)!.click();
+            wrapper.findDrawerTriggerById(drawerId3Local)!.click();
 
-          globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
-
-          expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(true);
-          expect(wrapper.findDrawerTriggerById(drawerId1)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
-          // because the trigger button for the AI drawer gets hidden when it's expanded
-          if (type === 'global') {
-            expect(wrapper.findDrawerTriggerById(drawerId2)!.getElement()).not.toHaveClass(
+            expect(wrapper.findDrawerTriggerById(drawerId1)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+            // because the trigger button for the AI drawer gets hidden when it's expanded
+            if (type === 'global') {
+              expect(wrapper.findDrawerTriggerById(drawerId2)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+            }
+            expect(wrapper.findDrawerTriggerById(drawerId3Local)!.getElement()).toHaveClass(
               toolbarTriggerStyles.selected
             );
-          }
-          expect(wrapper.findDrawerTriggerById(drawerId3Local)!.getElement()).not.toHaveClass(
-            toolbarTriggerStyles.selected
-          );
-          expect(wrapper.findNavigationToggle()!.getElement()).not.toHaveClass(toolbarTriggerStyles.selected);
-        });
+            expect(wrapper.findNavigationToggle()!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+            expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+            expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
 
-        test('should quit expanded mode when a drawer in expanded mode is closed', async () => {
-          const drawerId = 'global-drawer';
-          registerDrawer({
-            ...drawerDefaults,
-            id: drawerId,
-            isExpandable: true,
+            globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
+
+            expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(true);
+            expect(wrapper.findDrawerTriggerById(drawerId1)!.getElement()).toHaveClass(toolbarTriggerStyles.selected);
+            // because the trigger button for the AI drawer gets hidden when it's expanded
+            if (type === 'global') {
+              expect(wrapper.findDrawerTriggerById(drawerId2)!.getElement()).not.toHaveClass(
+                toolbarTriggerStyles.selected
+              );
+            }
+            expect(wrapper.findDrawerTriggerById(drawerId3Local)!.getElement()).not.toHaveClass(
+              toolbarTriggerStyles.selected
+            );
+            expect(wrapper.findNavigationToggle()!.getElement()).not.toHaveClass(toolbarTriggerStyles.selected);
           });
-          const renderProps = await renderComponent(<AppLayout />);
-          const { globalDrawersWrapper } = renderProps;
 
-          await delay();
+          test('should quit expanded mode when a drawer in expanded mode is closed', async () => {
+            const drawerId = 'global-drawer';
+            registerDrawer({
+              ...drawerDefaults,
+              id: drawerId,
+              isExpandable: true,
+            });
+            const renderProps = await renderComponent(<AppLayout />);
+            const { globalDrawersWrapper } = renderProps;
 
-          findDrawerTriggerById(drawerId, renderProps)!.click();
-          renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
-          expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
-          expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
-          renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId(drawerId)!.click();
-          expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+            await delay();
+
+            findDrawerTriggerById(drawerId, renderProps)!.click();
+            renderProps.globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
+            expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
+            expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
+            renderProps.globalDrawersWrapper.findCloseButtonByActiveDrawerId(drawerId)!.click();
+            expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+          });
         });
       });
 
-      test.each(['expanded', 'split-panel', 'global-drawer', 'local-drawer', 'nav', 'global-ai-drawer'] as const)(
+      test.each([
+        'expanded',
+        'split-panel',
+        'global-drawer',
+        'local-drawer',
+        'nav',
+        'global-ai-drawer',
+        'bottom-drawer',
+      ] as const)(
         'should return panels to their initial state after leaving expanded mode by clicking on %s button',
         async triggerName => {
           const drawerId1 = 'global-drawer1';
@@ -1594,12 +1632,20 @@ describe('toolbar mode only features', () => {
             type: 'global',
             isExpandable: true,
           });
-          awsuiPlugins.appLayout.registerDrawer({
-            ...drawerDefaults,
-            id: drawerId2,
-            type: 'global',
-            isExpandable: true,
-          });
+          if (triggerName === 'bottom-drawer') {
+            awsuiWidgetPlugins.registerBottomDrawer({
+              ...drawerDefaults,
+              id: drawerId2,
+              isExpandable: true,
+            });
+          } else {
+            awsuiPlugins.appLayout.registerDrawer({
+              ...drawerDefaults,
+              id: drawerId2,
+              type: 'global',
+              isExpandable: true,
+            });
+          }
           awsuiWidgetPlugins.registerLeftDrawer({
             ...drawerDefaults,
             id: drawerId3,
@@ -1649,6 +1695,8 @@ describe('toolbar mode only features', () => {
             globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
           } else if (triggerName === 'global-drawer') {
             wrapper.findDrawerTriggerById(drawerId2)!.click();
+          } else if (triggerName === 'bottom-drawer') {
+            wrapper.findDrawerTriggerById(drawerId2)!.click();
           } else if (triggerName === 'local-drawer') {
             wrapper.findDrawerTriggerById(drawerId3Local)!.click();
           } else if (triggerName === 'nav') {
@@ -1671,66 +1719,76 @@ describe('toolbar mode only features', () => {
         }
       );
 
-      test('should return panels to their initial state after leaving expanded mode by clicking on a button in the overflow menu', async () => {
-        const drawerId1 = 'global-drawer1';
-        const drawerId2 = 'global-drawer2';
-        awsuiPlugins.appLayout.registerDrawer({
-          ...drawerDefaults,
-          id: drawerId1,
-          type: 'global',
-          isExpandable: true,
+      describe.each(['side', 'bottom'] as const)('drawer position = %s', position => {
+        test('should return panels to their initial state after leaving expanded mode by clicking on a button in the overflow menu', async () => {
+          const drawerId1 = 'global-drawer1';
+          const drawerId2 = 'global-drawer2';
+          awsuiPlugins.appLayout.registerDrawer({
+            ...drawerDefaults,
+            id: drawerId1,
+            type: 'global',
+            isExpandable: true,
+          });
+          if (position === 'bottom') {
+            awsuiWidgetPlugins.registerBottomDrawer({
+              ...drawerDefaults,
+              id: drawerId2,
+              isExpandable: true,
+            });
+          } else {
+            awsuiPlugins.appLayout.registerDrawer({
+              ...drawerDefaults,
+              id: drawerId2,
+              type: 'global',
+              isExpandable: true,
+            });
+          }
+          const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={manyDrawers} />);
+
+          await delay();
+
+          const buttonDropdown = wrapper.findDrawersOverflowTrigger();
+
+          buttonDropdown!.openDropdown();
+          buttonDropdown!.findItemById(drawerId1)!.click();
+          buttonDropdown!.openDropdown();
+          buttonDropdown!.findItemById(drawerId2)!.click();
+
+          buttonDropdown!.openDropdown();
+          expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
+            'aria-checked',
+            'true'
+          );
+          expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
+            'aria-checked',
+            'true'
+          );
+
+          globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
+
+          expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(true);
+          buttonDropdown!.openDropdown();
+          expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
+            'aria-checked',
+            'true'
+          );
+          expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
+            'aria-checked',
+            'false'
+          );
+          // leave expanded mode
+          buttonDropdown!.findItemById(drawerId2)!.click();
+          buttonDropdown!.openDropdown();
+          expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
+            'aria-checked',
+            'true'
+          );
+          expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
+            'aria-checked',
+            'true'
+          );
+          expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
         });
-        awsuiPlugins.appLayout.registerDrawer({
-          ...drawerDefaults,
-          id: drawerId2,
-          type: 'global',
-          isExpandable: true,
-        });
-        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={manyDrawers} />);
-
-        await delay();
-
-        const buttonDropdown = wrapper.findDrawersOverflowTrigger();
-
-        buttonDropdown!.openDropdown();
-        buttonDropdown!.findItemById(drawerId1)!.click();
-        buttonDropdown!.openDropdown();
-        buttonDropdown!.findItemById(drawerId2)!.click();
-
-        buttonDropdown!.openDropdown();
-        expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
-          'aria-checked',
-          'true'
-        );
-        expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
-          'aria-checked',
-          'true'
-        );
-
-        globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
-
-        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(true);
-        buttonDropdown!.openDropdown();
-        expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
-          'aria-checked',
-          'true'
-        );
-        expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
-          'aria-checked',
-          'false'
-        );
-        // leave expanded mode
-        buttonDropdown!.findItemById(drawerId2)!.click();
-        buttonDropdown!.openDropdown();
-        expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
-          'aria-checked',
-          'true'
-        );
-        expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
-          'aria-checked',
-          'true'
-        );
-        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
       });
 
       describe('nested app layouts', () => {
@@ -1817,6 +1875,27 @@ describe('toolbar mode only features', () => {
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('800px');
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('801px');
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('600px');
+    });
+
+    test('calls onResize handler for bottom drawer', async () => {
+      const { wrapper, globalDrawersWrapper, debug } = await renderComponent(<AppLayout />);
+      const onResize = jest.fn();
+      awsuiWidgetPlugins.registerBottomDrawer({
+        ...drawerDefaults,
+        resizable: true,
+        onResize: event => onResize(event.detail),
+      });
+
+      await delay();
+
+      wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+      const handle = globalDrawersWrapper.findResizeHandleByActiveDrawerId(drawerDefaults.id)!;
+      debug(handle.getElement());
+      handle.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
+      handle.fireEvent(new MouseEvent('pointermove', { bubbles: true }));
+      handle.fireEvent(new MouseEvent('pointerup', { bubbles: true }));
+
+      expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: drawerDefaults.id });
     });
   });
 

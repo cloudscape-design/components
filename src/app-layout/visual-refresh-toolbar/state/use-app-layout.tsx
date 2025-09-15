@@ -27,6 +27,7 @@ import {
 import { AppLayoutState } from '../interfaces';
 import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
 import { useAiDrawer } from './use-ai-drawer';
+import { useBottomDrawers } from './use-bottom-drawers';
 import { useWidgetMessages } from './use-widget-messages';
 
 export const useAppLayout = (
@@ -91,10 +92,10 @@ export const useAppLayout = (
   };
 
   const onAddNewActiveDrawer = (drawerId: string) => {
-    // If a local drawer is already open, and we attempt to open a new one,
+    // If either a local drawer or a bottom drawer is already open, and we attempt to open a new one,
     // it will replace the existing one instead of opening an additional drawer,
     // since only one local drawer is supported. Therefore, layout calculations are not necessary.
-    if (activeDrawer && drawers?.find(drawer => drawer.id === drawerId)) {
+    if ((activeDrawer && drawers?.find(drawer => drawer.id === drawerId)) || activeGlobalBottomDrawerId === drawerId) {
       return;
     }
     // get the size of drawerId. it could be either local or global drawer
@@ -116,6 +117,10 @@ export const useAppLayout = (
 
     // now we made sure we cannot accommodate the new drawer with existing ones
     closeFirstDrawer();
+  };
+
+  const onGlobalBottomDrawerFocus = () => {
+    bottomDrawersFocusControl.setFocus();
   };
 
   const {
@@ -161,6 +166,28 @@ export const useAppLayout = (
   });
   useWidgetMessages(hasToolbar, message => aiDrawerMessageHandler(message));
   const aiDrawerFocusControl = useAsyncFocusControl(!!activeAiDrawer?.id, true, activeAiDrawer?.id);
+
+  const {
+    bottomDrawers,
+    activeBottomDrawer,
+    onActiveBottomDrawerChange: onActiveGlobalBottomDrawerChange,
+    activeBottomDrawerSize: activeGlobalBottomDrawerSize,
+    minBottomDrawerSize: minGlobalBottomDrawerSize,
+    onActiveBottomDrawerResize,
+    bottomDrawersMessageHandler,
+  } = useBottomDrawers({
+    onBottomDrawerFocus: onGlobalBottomDrawerFocus,
+    expandedDrawerId,
+    setExpandedDrawerId,
+    drawersOpenQueue,
+  });
+  const activeGlobalBottomDrawerId = activeBottomDrawer?.id ?? null;
+
+  useWidgetMessages(hasToolbar, message => {
+    // TODO deduplicate the same messages
+    aiDrawerMessageHandler(message);
+    bottomDrawersMessageHandler(message);
+  });
 
   const onActiveDrawerChangeHandler = (
     drawerId: string | null,
@@ -225,8 +252,15 @@ export const useAppLayout = (
     displayed: false,
   });
 
+  const [bottomDrawerReportedSize, setBottomDrawerReportedSize] = useState(0);
+
   const globalDrawersFocusControl = useMultipleFocusControl(true, activeGlobalDrawersIds);
   const drawersFocusControl = useAsyncFocusControl(!!activeDrawer?.id, true, activeDrawer?.id);
+  const bottomDrawersFocusControl = useAsyncFocusControl(
+    !!activeGlobalBottomDrawerId,
+    true,
+    activeGlobalBottomDrawerId
+  );
   const navigationFocusControl = useAsyncFocusControl(navigationOpen, navigationTriggerHide);
   const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
@@ -288,6 +322,20 @@ export const useAppLayout = (
 
   useGlobalScrollPadding(verticalOffsets.header ?? 0);
 
+  const getMaxGlobalBottomDrawerHeight = useCallback(() => {
+    const splitPanelSize = splitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : 0;
+    const availableHeight =
+      document.documentElement.clientHeight - placement.insetBlockStart - placement.insetBlockEnd - splitPanelSize;
+
+    // skip reading sizes in JSDOM
+    if (availableHeight === 0) {
+      return Infinity;
+    }
+
+    // If the page is likely zoomed in at 200%, allow the split panel to fill the content area.
+    return availableHeight < 400 ? availableHeight - 40 : availableHeight - 250;
+  }, [splitPanelOpen, splitPanelPosition, splitPanelReportedSize, placement.insetBlockStart, placement.insetBlockEnd]);
+
   const appLayoutInternals: AppLayoutInternals = {
     ariaLabels: ariaLabelsWithDrawers,
     headerVariant,
@@ -344,12 +392,16 @@ export const useAppLayout = (
 
   const splitPanelInternals: SplitPanelProviderProps = {
     bottomOffset: 0,
-    getMaxHeight: useStableCallback(() => {
+    getMaxHeight: useCallback(() => {
+      const bottomDrawerHeight = activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0;
       const availableHeight =
-        document.documentElement.clientHeight - placement.insetBlockStart - placement.insetBlockEnd;
+        document.documentElement.clientHeight -
+        placement.insetBlockStart -
+        placement.insetBlockEnd -
+        bottomDrawerHeight;
       // If the page is likely zoomed in at 200%, allow the split panel to fill the content area.
       return availableHeight < 400 ? availableHeight - 40 : availableHeight - 250;
-    }),
+    }, [activeGlobalBottomDrawerId, bottomDrawerReportedSize, placement.insetBlockEnd, placement.insetBlockStart]),
     maxWidth: maxSplitPanelSize,
     isForcedPosition: splitPanelForcedPosition,
     isOpen: splitPanelOpen,
@@ -474,6 +526,16 @@ export const useAppLayout = (
       navigationAnimationDisabled,
       verticalOffsets,
       splitPanelOffsets,
+      activeGlobalBottomDrawerId,
+      onActiveGlobalBottomDrawerChange,
+      activeGlobalBottomDrawerSize,
+      bottomDrawerReportedSize,
+      minGlobalBottomDrawerSize,
+      getMaxGlobalBottomDrawerHeight,
+      reportBottomDrawerSize: useStableCallback(size => setBottomDrawerReportedSize(size)),
+      onActiveBottomDrawerResize,
+      bottomDrawers,
+      bottomDrawersFocusControl,
     },
   };
 };

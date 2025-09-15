@@ -10,7 +10,7 @@ import customCssProps from '../../../internal/generated/custom-css-properties';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { getDrawerStyles } from '../compute-layout';
-import { AppLayoutInternals } from '../interfaces';
+import { AppLayoutInternals, AppLayoutWidgetizedState } from '../interfaces';
 import { useResize } from './use-resize';
 
 import sharedStyles from '../../resize/styles.css.js';
@@ -19,9 +19,13 @@ import styles from './styles.css.js';
 
 interface AppLayoutDrawerImplementationProps {
   appLayoutInternals: AppLayoutInternals;
+  widgetizedState: AppLayoutWidgetizedState;
 }
 
-export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutDrawerImplementationProps) {
+export function AppLayoutDrawerImplementation({
+  appLayoutInternals,
+  widgetizedState,
+}: AppLayoutDrawerImplementationProps) {
   const {
     activeDrawer,
     minDrawerSize,
@@ -37,6 +41,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     onActiveDrawerChange,
     onActiveDrawerResize,
   } = appLayoutInternals;
+  const { activeGlobalBottomDrawerId, bottomDrawerReportedSize } = widgetizedState ?? {};
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeDrawer?.id;
 
@@ -45,7 +50,12 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     content: activeDrawer ? activeDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(
+    verticalOffsets,
+    isMobile,
+    placement,
+    activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0
+  );
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const isToolsDrawer = activeDrawer?.id === TOOLS_DRAWER_ID || toolsOnlyMode;
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;

@@ -102,7 +102,10 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
             (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden
           )}
         >
-          <AppLayoutNavigation appLayoutInternals={appLayoutState.appLayoutInternals} />
+          <AppLayoutNavigation
+            widgetizedState={appLayoutState.widgetizedState}
+            appLayoutInternals={appLayoutState.appLayoutInternals}
+          />
         </div>
       )}
     </>
