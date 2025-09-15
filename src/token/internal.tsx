@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
@@ -10,19 +10,19 @@ import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
 import Tooltip from '../internal/components/tooltip';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import LiveRegion from '../live-region/internal';
 import DismissButton from './dismiss-button';
 import { TokenProps } from './interfaces';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-const INLINE_TOKEN_CHARACTER_LIMIT = 15;
+const TOKEN_INLINE_MIN_CHARACTER_LIMIT = 15;
 
 type InternalTokenProps = TokenProps &
   InternalBaseComponentProps & {
     role?: string;
     disableInnerPadding?: boolean;
-    disableTooltip?: boolean;
   };
 
 function InternalToken({
@@ -37,11 +37,11 @@ function InternalToken({
   tags,
   dismissLabel,
   onDismiss,
+  disableTooltip = false,
 
   // Internal
   role,
   disableInnerPadding,
-  disableTooltip,
 
   // Base
   __internalRootRef,
@@ -54,17 +54,31 @@ function InternalToken({
   const [isEllipsisActive, setIsEllipsisActive] = useState(false);
   const isInline = variant === 'inline';
 
-  const isLabelAString = (label: React.ReactNode): label is string => {
-    return typeof label === 'string';
+  const getTextContent = (node: React.ReactNode): string | undefined => {
+    // Handle string nodes: trim whitespace and return undefined if empty
+    if (typeof node === 'string') {
+      const trimmed = node.trim();
+      return trimmed || undefined;
+    }
+    // Handle number nodes: convert to string
+    if (typeof node === 'number') {
+      return String(node);
+    }
+    // Handle React elements: recursively extract text from children
+    if (React.isValidElement(node) && node.props.children) {
+      return getTextContent(node.props.children);
+    }
+    // Handle arrays: join all text content with spaces and trim
+    if (Array.isArray(node)) {
+      const texts = node.map(getTextContent).filter(Boolean);
+      const joined = texts.join(' ').trim();
+      return joined || undefined;
+    }
+    // Handle all other cases (null, undefined, boolean, etc.)
+    return undefined;
   };
 
-  // Tested in integration tests
-  /* istanbul ignore next */
-  const isLabelOverflowing = useCallback(() => {
-    if (!isInline || !isLabelAString(label)) {
-      return false;
-    }
-
+  const isLabelOverflowing = () => {
     const labelContent = labelRef.current;
     const labelContainer = labelContainerRef.current;
 
@@ -72,18 +86,18 @@ function InternalToken({
       return labelContent.offsetWidth > labelContainer.offsetWidth;
     }
     return false;
-  }, [isInline, label]);
+  };
 
-  // Tested in integration tests
-  /* istanbul ignore next */
   useResizeObserver(labelContainerRef, () => {
-    if (isInline && isLabelAString(label)) {
+    if (isInline) {
       setIsEllipsisActive(isLabelOverflowing());
     }
   });
 
   const buildOptionDefinition = () => {
-    const labelObject = isLabelAString(label) ? { label } : { labelContent: label };
+    const isLabelAString = typeof label === 'string';
+    const labelObject = isLabelAString ? { label } : { labelContent: label };
+
     if (isInline) {
       return {
         ...labelObject,
@@ -111,11 +125,10 @@ function InternalToken({
 
     const baseClassName = 'token-inline-min-width';
 
-    if (!isLabelAString(label)) {
+    const textContent = getTextContent(label);
+    if (!textContent) {
       return styles[baseClassName];
-    }
-
-    if (isLabelAString(label) && label.length >= INLINE_TOKEN_CHARACTER_LIMIT) {
+    } else if (textContent.length >= TOKEN_INLINE_MIN_CHARACTER_LIMIT) {
       const hasDismissButton = onDismiss || dismissLabel;
       const hasIcon = icon;
 
@@ -131,6 +144,32 @@ function InternalToken({
     }
   };
 
+  const getOptionLabelClassName = () => {
+    const textContent = getTextContent(label);
+    if (isInline && textContent && textContent.length >= TOKEN_INLINE_MIN_CHARACTER_LIMIT) {
+      return styles['token-option-label'];
+    }
+  };
+
+  const shouldHaveAriaDisabled = () => {
+    // Must have onDismiss handler
+    if (!onDismiss) {
+      return false;
+    }
+
+    // For inline variant, readOnly matters as it hides the dismiss button
+    if (isInline && readOnly) {
+      return false;
+    }
+
+    // Label must be a JSX element
+    if (!React.isValidElement(label)) {
+      return false;
+    }
+
+    return true;
+  };
+
   return (
     <div
       {...baseProps}
@@ -142,21 +181,16 @@ function InternalToken({
         analyticsSelectors.token,
         baseProps.className
       )}
-      aria-disabled={disabled}
-      role={role}
-      /* istanbul ignore next */
+      aria-disabled={shouldHaveAriaDisabled() ? !!disabled : undefined}
+      role={role ?? (shouldHaveAriaDisabled() ? 'group' : undefined)}
       onFocus={() => {
         setShowTooltip(true);
       }}
-      /* istanbul ignore next */
       onBlur={() => setShowTooltip(false)}
-      /* istanbul ignore next */
       onMouseEnter={() => {
         setShowTooltip(true);
       }}
-      /* istanbul ignore next */
       onMouseLeave={() => setShowTooltip(false)}
-      /* istanbul ignore next */
       tabIndex={!disableTooltip && isInline && isEllipsisActive ? 0 : undefined}
       // The below data attribute is to tell a potentially nested Popover to have less spacing between the text and the underline
       data-token-inline={isInline || undefined}
@@ -174,17 +208,11 @@ function InternalToken({
           className={clsx(isInline && styles['token-option-inline'])}
           triggerVariant={isInline}
           option={buildOptionDefinition()}
-          isGenericGroup={false}
           labelContainerRef={labelContainerRef}
           labelRef={labelRef}
-          labelClassName={clsx(
-            isInline &&
-              isLabelAString(label) &&
-              label?.length >= INLINE_TOKEN_CHARACTER_LIMIT &&
-              styles['token-option-label']
-          )}
+          labelClassName={getOptionLabelClassName()}
         />
-        {onDismiss && (
+        {onDismiss && (!isInline || !readOnly) && (
           <DismissButton
             disabled={disabled}
             dismissLabel={dismissLabel}
@@ -194,14 +222,14 @@ function InternalToken({
           />
         )}
       </div>
-      {/* 
-        Covered in integration tests
-        istanbul ignore next
-       */}
-      {!disableTooltip && isInline && showTooltip && isEllipsisActive && (
+      {!disableTooltip && isInline && isEllipsisActive && showTooltip && (
         <Tooltip
           trackRef={labelContainerRef}
-          value={label}
+          value={
+            <LiveRegion>
+              <span data-testid="tooltip-live-region-content">{getTextContent(label)}</span>
+            </LiveRegion>
+          }
           size="medium"
           // This is a non-existant class for testing purposes
           className="token-tooltip"

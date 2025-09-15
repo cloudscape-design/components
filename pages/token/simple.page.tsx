@@ -35,7 +35,37 @@ export default function GenericTokenPage() {
       <h2>Inline</h2>
       <SpaceBetween size="l" direction="vertical">
         <Token data-testid="basic-inline-token" variant="inline" label="Inline token" />
-        <Token variant="inline" label="Inline token with longer text" />
+        <Token variant="inline" label="The quick brown fox jumps over the lazy." />
+        <Token variant="inline" label="The quick brown fox jumps over the lazy dog" />
+        <Token
+          variant="inline"
+          label={
+            <SpaceBetween direction="horizontal" size="xxxs" alignItems="center">
+              <Popover
+                triggerType="text-inline"
+                position="top"
+                header="test"
+                content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
+              >
+                The quick brown fox jumps over the lazy dog
+              </Popover>
+              <Button iconName="edit" variant="inline-icon" ariaLabel="edit" />
+            </SpaceBetween>
+          }
+        />
+        <Token
+          variant="inline"
+          label={
+            <Popover
+              triggerType="text-inline"
+              position="top"
+              header="test"
+              content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
+            >
+              Inline token with a popover
+            </Popover>
+          }
+        />
         <Token
           variant="inline"
           label={
@@ -51,24 +81,7 @@ export default function GenericTokenPage() {
           icon={<Icon name="bug" size="small" />}
         />
         <Token
-          variant="inline"
-          label={
-            <div style={{ display: 'inline-flex', minInlineSize: 0 }}>
-              <Popover
-                triggerType="text-inline"
-                position="top"
-                header="test"
-                content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
-              >
-                Inline token with icon, popover and custom action
-              </Popover>
-              <Button iconName="edit" variant="inline-icon" ariaLabel="edit" />
-            </div>
-          }
-          icon={<Icon name="bug" size="small" />}
-        />
-        <Token
-          data-testid="inline-token-with-icon-dismissable"
+          data-testid="inline-token-with-icon-dismissable-with-popover"
           variant="inline"
           dismissLabel="Dismiss token"
           label={
@@ -84,7 +97,7 @@ export default function GenericTokenPage() {
           icon={<Icon data-testid="edit-icon-small" name="edit" size="small" />}
           onDismiss={() => {}}
         />
-        <div style={{ maxWidth: '100%', display: 'inline' }}>
+        <div style={{ maxWidth: '100%', display: 'inline', verticalAlign: 'middle' }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
           magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo{' '}
           <Token
@@ -164,12 +177,18 @@ export default function GenericTokenPage() {
           disabled={true}
           onDismiss={() => {}}
         />
+        <div style={{ display: 'inline' }}>
+          <Token label="Inline test 1" variant="inline" />
+          <Token label="Inline test 2" variant="inline" />
+          <Token label="Inline test 3" variant="inline" />
+        </div>
       </SpaceBetween>
 
       <h2>Normal</h2>
       <SpaceBetween size="l" direction="vertical">
         <Token label="Standalone token" />
         <Token
+          data-testid="normal-token-with-popover"
           label={
             <Popover
               triggerType="text-inline"
@@ -226,7 +245,11 @@ export default function GenericTokenPage() {
 
         <Token label="Standalone readonly token" readOnly={true} />
 
+        <Token label="Standalone readonly dismissable token" readOnly={true} onDismiss={() => {}} />
+
         <Token label="Standalone disabled token" disabled={true} />
+
+        <Token label="Standalone disabled dismissable token" disabled={true} onDismiss={() => {}} />
 
         <TokenList
           alignment="vertical"

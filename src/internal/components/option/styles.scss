@@ -120,3 +120,33 @@
 .trigger-variant {
   @include styles.text-overflow-ellipsis;
 }
+
+.label-custom-content {
+  display: flex;
+
+  &-trigger-variant {
+    // For nested custom content in the label that would overflow
+    // stylelint-disable-next-line selector-max-universal
+    > * {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex-wrap: nowrap;
+      min-inline-size: 0;
+
+      // For nested items like children in a SpaceBetween, helps with keeping them contained to a parent container
+      // stylelint-disable-next-line selector-max-universal
+      > * {
+        min-inline-size: 0;
+      }
+
+      // Preserve focus border visibility of interactive nested components
+      // stylelint-disable-next-line selector-max-universal
+      &:focus {
+        overflow: visible;
+        position: relative;
+        z-index: 1;
+      }
+    }
+  }
+}
