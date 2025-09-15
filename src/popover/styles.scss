@@ -21,12 +21,6 @@ $trigger-underline-offset-compact: 0.1em;
   &.no-wrap {
     white-space: nowrap;
   }
-
-  // Ensure the root element respects the parent container's width when inside an inline token
-  // stylelint-disable-next-line selector-combinator-disallowed-list
-  [data-token-inline] & {
-    min-inline-size: 0;
-  }
 }
 
 .root-filtering-token {

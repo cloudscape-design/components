@@ -83,8 +83,6 @@
 .token-inline {
   display: inline-flex;
   max-inline-size: 100%;
-  border-block: awsui.$border-width-field solid transparent;
-  border-inline: awsui.$border-width-field solid transparent;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(0px);
@@ -92,36 +90,38 @@
 
   &-min-width {
     min-inline-size: calc(
-      constants.$token-character-limit + constants.$token-icon-width + constants.$token-action-button-width +
+      constants.$token-inline-min-character-limit + constants.$token-icon-width + constants.$token-action-button-width +
         (awsui.$space-scaled-xxs * 2)
     );
 
     &-icon-only {
       min-inline-size: calc(
-        constants.$token-character-limit + constants.$token-icon-width + (awsui.$space-scaled-xxs * 2)
+        constants.$token-inline-min-character-limit + constants.$token-icon-width + (awsui.$space-scaled-xxs * 2)
       );
     }
 
     &-dismiss-only {
       min-inline-size: calc(
-        constants.$token-character-limit + constants.$token-action-button-width + (awsui.$space-scaled-xxs * 2)
+        constants.$token-inline-min-character-limit + constants.$token-action-button-width +
+          (awsui.$space-scaled-xxs * 2)
       );
     }
 
     &-label-only {
-      min-inline-size: calc(constants.$token-character-limit + (awsui.$space-scaled-xxs * 2));
+      min-inline-size: calc(constants.$token-inline-min-character-limit + (awsui.$space-scaled-xxs * 2));
     }
   }
 }
 
 .token-option-inline {
-  max-block-size: constants.$token-max-height-inline;
   // !important is essential here to center nested content inside the option
   align-items: center !important;
+  max-block-size: constants.$token-max-height-inline;
 }
 
 .token-option-label {
-  min-inline-size: constants.$token-character-limit;
+  min-inline-size: constants.$token-inline-min-character-limit;
+  max-inline-size: constants.$token-inline-max-character-limit;
 }
 
 .token-box {
