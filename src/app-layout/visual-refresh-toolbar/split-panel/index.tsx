@@ -4,13 +4,14 @@ import React from 'react';
 
 import { SplitPanelProvider, SplitPanelProviderProps } from '../../split-panel';
 import { getDrawerStyles } from '../compute-layout';
-import { AppLayoutInternals } from '../interfaces';
+import { AppLayoutInternals, AppLayoutWidgetizedState } from '../interfaces';
 
 import styles from './styles.css.js';
 
 interface AppLayoutSplitPanelDrawerSideImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   splitPanelInternals: SplitPanelProviderProps;
+  widgetizedState: AppLayoutWidgetizedState;
   children: React.ReactNode;
 }
 
@@ -18,9 +19,16 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
   children,
   appLayoutInternals,
   splitPanelInternals,
+  widgetizedState,
 }: AppLayoutSplitPanelDrawerSideImplementationProps) {
   const { splitPanelControlId, placement, verticalOffsets, isMobile, splitPanelAnimationDisabled } = appLayoutInternals;
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const { activeGlobalBottomDrawerId, bottomDrawerReportedSize } = widgetizedState ?? {};
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(
+    verticalOffsets,
+    isMobile,
+    placement,
+    activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0
+  );
 
   return (
     <SplitPanelProvider {...splitPanelInternals} animationDisabled={splitPanelAnimationDisabled}>

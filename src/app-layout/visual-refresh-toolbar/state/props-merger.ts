@@ -44,6 +44,16 @@ export const mergeProps: MergeProps = (ownProps, additionalProps) => {
     ) {
       toolbar.aiDrawerFocusRef = props.aiDrawerFocusRef;
     }
+    if (
+      props.bottomDrawers &&
+      props.bottomDrawers.some(drawer => drawer.trigger) &&
+      !checkAlreadyExists(!!toolbar.bottomDrawers, 'bottomDrawers')
+    ) {
+      toolbar.bottomDrawers = props.bottomDrawers;
+      toolbar.bottomDrawersFocusRef = props.bottomDrawersFocusRef;
+      toolbar.activeGlobalBottomDrawerId = props.activeGlobalBottomDrawerId;
+      toolbar.onActiveGlobalBottomDrawerChange = props.onActiveGlobalBottomDrawerChange;
+    }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
       toolbar.hasNavigation = true;
       toolbar.navigationOpen = props.navigationOpen;
@@ -89,7 +99,11 @@ export const getPropsToMerge = (props: AppLayoutInternalProps, appLayoutState: A
     activeGlobalDrawersIds: state?.activeGlobalDrawersIds,
     onActiveGlobalDrawersChange: state?.onActiveGlobalDrawersChange,
     onActiveDrawerChange: state?.onActiveDrawerChange,
+    bottomDrawers: state?.bottomDrawers,
+    activeGlobalBottomDrawerId: state?.activeGlobalBottomDrawerId,
+    onActiveGlobalBottomDrawerChange: state?.onActiveGlobalBottomDrawerChange,
     drawersFocusRef: state?.drawersFocusControl.refs.toggle,
+    bottomDrawersFocusRef: state?.bottomDrawersFocusControl.refs.toggle,
     splitPanel: props.splitPanel,
     splitPanelToggleProps: state?.splitPanelToggleConfig && {
       ...state.splitPanelToggleConfig,

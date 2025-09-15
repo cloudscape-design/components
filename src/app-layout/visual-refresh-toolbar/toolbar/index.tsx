@@ -41,11 +41,15 @@ export interface ToolbarProps {
   activeDrawerId?: string | null;
   drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusRef?: React.Ref<Focusable>;
+  bottomDrawersFocusRef?: React.Ref<Focusable>;
   globalDrawersFocusControl?: FocusControlMultipleStates;
   onActiveDrawerChange?: (drawerId: string | null, params: OnChangeParams) => void;
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   activeGlobalDrawersIds?: ReadonlyArray<string>;
   onActiveGlobalDrawersChange?: ((drawerId: string, params: OnChangeParams) => void) | undefined;
+  bottomDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
+  activeGlobalBottomDrawerId?: string | null;
+  onActiveGlobalBottomDrawerChange?: (value: string | null, params: OnChangeParams) => void;
 
   expandedDrawerId?: string | null;
   setExpandedDrawerId?: (value: string | null) => void;
@@ -98,6 +102,10 @@ export function AppLayoutToolbarImplementation({
     expandedDrawerId,
     setExpandedDrawerId,
     aiDrawerFocusRef,
+    onActiveGlobalBottomDrawerChange,
+    activeGlobalBottomDrawerId,
+    bottomDrawersFocusRef,
+    bottomDrawers,
   } = toolbarProps;
   const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
@@ -117,6 +125,7 @@ export function AppLayoutToolbarImplementation({
     (!!activeDrawerId ||
       !!activeGlobalDrawersIds?.length ||
       !!activeAiDrawerId ||
+      !!activeGlobalBottomDrawerId ||
       (!!navigationOpen && !!hasNavigation));
   useEffect(() => {
     if (anyPanelOpenInMobile) {
@@ -219,7 +228,10 @@ export function AppLayoutToolbarImplementation({
             />
           </div>
         )}
-        {(drawers?.length || globalDrawers?.length || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
+        {(drawers?.length ||
+          globalDrawers?.length ||
+          bottomDrawers?.length ||
+          (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
           <div className={clsx(styles['universal-toolbar-drawers'])}>
             <DrawerTriggers
               ariaLabels={ariaLabels}
@@ -232,11 +244,15 @@ export function AppLayoutToolbarImplementation({
               onSplitPanelToggle={onSplitPanelToggle}
               disabled={anyPanelOpenInMobile}
               globalDrawersFocusControl={globalDrawersFocusControl}
+              bottomDrawersFocusRef={bottomDrawersFocusRef}
               globalDrawers={globalDrawers?.filter(item => !!item.trigger) ?? []}
               activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
               onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
               expandedDrawerId={expandedDrawerId}
               setExpandedDrawerId={setExpandedDrawerId!}
+              bottomDrawers={bottomDrawers}
+              onActiveGlobalBottomDrawerChange={onActiveGlobalBottomDrawerChange}
+              activeGlobalBottomDrawerId={activeGlobalBottomDrawerId}
             />
           </div>
         )}
