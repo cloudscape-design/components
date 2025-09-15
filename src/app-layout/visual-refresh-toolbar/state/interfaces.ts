@@ -30,6 +30,8 @@ export interface SharedProps {
   setExpandedDrawerId?: (value: string | null) => void;
   aiDrawer?: AppLayoutProps.Drawer | undefined;
   aiDrawerFocusRef: React.Ref<Focusable> | undefined;
+  activeGlobalBottomDrawerId?: string | null;
+  onActiveGlobalBottomDrawerChange?: (value: string | null, params: OnChangeParams) => void;
 }
 
 export type MergeProps = (

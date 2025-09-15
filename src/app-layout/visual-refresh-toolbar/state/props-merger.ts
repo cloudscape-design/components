@@ -36,6 +36,8 @@ export const mergeProps: MergeProps = (ownProps, additionalProps) => {
       toolbar.globalDrawers = props.globalDrawers;
       toolbar.activeGlobalDrawersIds = props.activeGlobalDrawersIds;
       toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
+      toolbar.activeGlobalBottomDrawerId = props.activeGlobalBottomDrawerId;
+      toolbar.onActiveGlobalBottomDrawerChange = props.onActiveGlobalBottomDrawerChange;
     }
     if (
       props.aiDrawer &&
@@ -89,6 +91,8 @@ export const getPropsToMerge = (props: AppLayoutInternalProps, appLayoutState: A
     activeGlobalDrawersIds: state?.activeGlobalDrawersIds,
     onActiveGlobalDrawersChange: state?.onActiveGlobalDrawersChange,
     onActiveDrawerChange: state?.onActiveDrawerChange,
+    activeGlobalBottomDrawerId: state?.activeGlobalBottomDrawerId,
+    onActiveGlobalBottomDrawerChange: state?.onActiveGlobalBottomDrawerChange,
     drawersFocusRef: state?.drawersFocusControl.refs.toggle,
     splitPanel: props.splitPanel,
     splitPanelToggleProps: state?.splitPanelToggleConfig && {
