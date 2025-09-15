@@ -32,8 +32,7 @@ export default function RangeInputs({
   const i18n = useInternalI18n('date-range-picker');
   const isMonthPicker = granularity === 'month';
   const showTimeInput = !dateOnly && !isMonthPicker;
-  const parsedDateInputFormat = dateInputFormat;
-  const isIso = parsedDateInputFormat === 'iso';
+  const isIso = dateInputFormat === 'iso';
   const separator = isIso ? '-' : '/';
   const dateInputPlaceholder = `YYYY${separator}MM${isMonthPicker ? '' : `${separator}DD`}`;
   const i18nProvided = provideI18N(i18nStrings!, isMonthPicker, dateOnly, isIso);
@@ -54,7 +53,7 @@ export default function RangeInputs({
               value={startDate}
               className={clsx(testutilStyles['start-date-input'], isMonthPicker && testutilStyles['start-month-input'])}
               onChange={event => onChangeStartDate(event.detail.value)}
-              format={parsedDateInputFormat}
+              format={dateInputFormat}
               placeholder={dateInputPlaceholder}
               granularity={granularity}
             />
@@ -84,7 +83,7 @@ export default function RangeInputs({
               value={endDate}
               className={clsx(testutilStyles['end-date-input'], isMonthPicker && testutilStyles['end-month-picker'])}
               onChange={event => onChangeEndDate(event.detail.value)}
-              format={parsedDateInputFormat}
+              format={dateInputFormat}
               placeholder={dateInputPlaceholder}
               granularity={granularity}
             />
