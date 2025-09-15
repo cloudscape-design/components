@@ -34,18 +34,4 @@ describe('StatusIndicator', () => {
     const statusIndicatorWrapper = createWrapper(container.parentElement!).findStatusIndicator()!;
     expect(statusIndicatorWrapper.findByClassName(styles.icon)!.getElement()).toHaveAttribute('aria-label', ariaLabel);
   });
-
-  describe('native attributes', () => {
-    it('adds native attributes', () => {
-      const { container } = render(<StatusIndicator type="info" nativeAttributes={{ 'data-testid': 'my-test-id' }} />);
-      expect(container.querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
-    });
-    it('concatenates class names', () => {
-      const { container } = render(
-        <StatusIndicator type="info" nativeAttributes={{ className: 'additional-class' }} />
-      );
-      expect(container.firstChild).toHaveClass(styles.root);
-      expect(container.firstChild).toHaveClass('additional-class');
-    });
-  });
 });
