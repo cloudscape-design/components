@@ -182,12 +182,16 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
       setFunnelInteractionId(funnelInteractionId);
     }, 1);
 
-    /*
-      A funnel counts as "successful" if it is unmounted after being "complete".
-    */
+    // A funnel counts as "successful" if it is unmounted after being "complete".
     /* eslint-disable react-hooks/exhaustive-deps */
     return () => {
       clearTimeout(handle);
+
+      // There is no need in cleanup if the funnel was not started.
+      if (!funnelInteractionId) {
+        return;
+      }
+
       if (props.funnelType === 'single-page' && wizardCount.current > 0) {
         return;
       }

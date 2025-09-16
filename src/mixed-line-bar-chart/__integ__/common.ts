@@ -29,6 +29,8 @@ export class MixedChartPage extends BasePageObject {
       // If a popover was pinned, we need to unpin it before pinning another one.
       if (this.currentIndex) {
         await this.click(this.wrapper.findDetailPopover().findDismissButton().toSelector());
+        // Wait for popover dismiss reopen delay.
+        await this.pause(50);
       }
       this.currentIndex = index;
       await this.clickBarGroup(barGroup);
