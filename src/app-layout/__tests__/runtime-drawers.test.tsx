@@ -1796,20 +1796,20 @@ describe('toolbar mode only features', () => {
       await waitFor(() => {
         expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('290px');
         expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('290px');
-        expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('290px');
+        expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('400px');
       });
 
       awsuiPlugins.appLayout.resizeDrawer('test', 800);
 
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('800px');
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('290px');
-      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('290px');
+      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('400px');
 
       awsuiPlugins.appLayout.resizeDrawer('test1', 801);
 
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('800px');
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('801px');
-      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('290px');
+      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('400px');
 
       awsuiWidgetPlugins.updateDrawer({ type: 'resizeDrawer', payload: { id: 'test2', size: 600 } });
 
