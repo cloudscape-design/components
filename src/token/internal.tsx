@@ -85,12 +85,11 @@ function InternalToken({
     if (labelContent && labelContainer) {
       return labelContent.offsetWidth > labelContainer.offsetWidth;
     }
-    return false;
   };
 
   useResizeObserver(labelContainerRef, () => {
     if (isInline) {
-      setIsEllipsisActive(isLabelOverflowing());
+      setIsEllipsisActive(isLabelOverflowing() ?? false);
     }
   });
 
@@ -189,13 +188,21 @@ function InternalToken({
       aria-disabled={shouldHaveAriaDisabled() ? !!disabled : undefined}
       role={role ?? (shouldHaveAriaDisabled() ? 'group' : undefined)}
       onFocus={() => {
+        /* istanbul ignore next: Tested with integration tests */
         setShowTooltip(true);
       }}
-      onBlur={() => setShowTooltip(false)}
+      onBlur={() => {
+        /* istanbul ignore next: Tested with integration tests */
+        setShowTooltip(false);
+      }}
       onMouseEnter={() => {
+        /* istanbul ignore next: Tested with integration tests */
         setShowTooltip(true);
       }}
-      onMouseLeave={() => setShowTooltip(false)}
+      onMouseLeave={() => {
+        /* istanbul ignore next: Tested with integration tests */
+        setShowTooltip(false);
+      }}
       tabIndex={!disableTooltip && isInline && isEllipsisActive ? 0 : undefined}
       // The below data attribute is to tell a potentially nested Popover to have less spacing between the text and the underline
       data-token-inline={isInline || undefined}
@@ -228,6 +235,7 @@ function InternalToken({
         )}
       </div>
       {!disableTooltip && isInline && isEllipsisActive && showTooltip && (
+        /* istanbul ignore next: Tested with integration tests */
         <Tooltip
           trackRef={labelContainerRef}
           value={
