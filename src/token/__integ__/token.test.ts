@@ -274,14 +274,26 @@ describe('Token component', () => {
     );
 
     test(
-      'dismissable tokens with string labels have no role attribute',
+      'normal variant tokens with string labels have role attribute',
       setupTest(async page => {
-        // This token has a string label, so it should NOT get role attribute
-        const stringLabelSelector = '[data-testid="inline-token-dismissable"]';
-        const stringTokenElement = page.getTokenWrapper(stringLabelSelector).toSelector();
+        // This normal token has a string label, so it should get role attribute (normal variant gets role regardless of content type)
+        const normalStringSelector = '[data-testid="normal-token-dismissable"]';
+        const normalStringElement = page.getTokenWrapper(normalStringSelector).toSelector();
 
-        const stringRole = await page.getElementAttribute(stringTokenElement, 'role');
-        expect(stringRole).toBeNull();
+        const normalRole = await page.getElementAttribute(normalStringElement, 'role');
+        expect(normalRole).toBe('group');
+      })
+    );
+
+    test(
+      'inline variant tokens with string labels have no role attribute',
+      setupTest(async page => {
+        // This inline token has a string label, so it should NOT get role attribute (inline variant requires JSX element)
+        const inlineStringSelector = '[data-testid="inline-token-dismissable"]';
+        const inlineStringElement = page.getTokenWrapper(inlineStringSelector).toSelector();
+
+        const inlineRole = await page.getElementAttribute(inlineStringElement, 'role');
+        expect(inlineRole).toBeNull();
       })
     );
 
@@ -298,13 +310,25 @@ describe('Token component', () => {
     );
 
     test(
-      'dismissable tokens with string labels have no aria-disabled attribute',
+      'normal variant tokens with string labels have aria-disabled attribute',
       setupTest(async page => {
-        // This token has a string label, so it should NOT get aria-disabled
-        const stringLabelSelector = '[data-testid="inline-token-dismissable"]';
-        const stringTokenElement = page.getTokenWrapper(stringLabelSelector).toSelector();
+        // This normal token has a string label, so it should get aria-disabled (normal variant gets aria-disabled regardless of content type)
+        const normalStringSelector = '[data-testid="normal-token-dismissable"]';
+        const normalStringElement = page.getTokenWrapper(normalStringSelector).toSelector();
 
-        const ariaDisabled = await page.getElementAttribute(stringTokenElement, 'aria-disabled');
+        const ariaDisabled = await page.getElementAttribute(normalStringElement, 'aria-disabled');
+        expect(ariaDisabled).toBe('false'); // Should be 'false' since token is not disabled
+      })
+    );
+
+    test(
+      'inline variant tokens with string labels have no aria-disabled attribute',
+      setupTest(async page => {
+        // This inline token has a string label, so it should NOT get aria-disabled (inline variant requires JSX element)
+        const inlineStringSelector = '[data-testid="inline-token-dismissable"]';
+        const inlineStringElement = page.getTokenWrapper(inlineStringSelector).toSelector();
+
+        const ariaDisabled = await page.getElementAttribute(inlineStringElement, 'aria-disabled');
         expect(ariaDisabled).toBeNull();
       })
     );

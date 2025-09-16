@@ -162,7 +162,12 @@ function InternalToken({
       return false;
     }
 
-    // Label must be a JSX element
+    // Normal variant: aria-disabled regardless of content type
+    if (!isInline) {
+      return true;
+    }
+
+    // Inline variant: label must be a JSX element
     if (!React.isValidElement(label)) {
       return false;
     }
