@@ -48,11 +48,12 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
   });
 
-  test('isAppLayoutReady returns true when app layout is ready', () => {
+  test('isAppLayoutReady returns true when app layout is ready', async () => {
     expect(awsuiWidgetPlugins.isAppLayoutReady()).toBe(false);
     const { rerender } = renderComponent(<AppLayout />);
 
     expect(awsuiWidgetPlugins.isAppLayoutReady()).toBe(true);
+    await expect(awsuiWidgetPlugins.whenAppLayoutReady()).resolves.toBe(undefined);
 
     rerender(<></>);
 

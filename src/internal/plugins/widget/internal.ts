@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { reportRuntimeApiWarning } from '../helpers/metrics';
-import { Defer } from '../helpers/utils';
 import { AppLayoutMessage, AppLayoutUpdateMessage, DrawerPayload, RegisterDrawerMessage } from './interfaces';
 
 const storageKeyMessageHandler = Symbol.for('awsui-widget-api-message-handler');
@@ -12,7 +11,7 @@ const storageKeyReadyDeferCallbacks = Symbol.for('awsui-widget-api-ready-defer')
 interface WindowWithApi extends Window {
   [storageKeyMessageHandler]: AppLayoutHandler | undefined;
   [storageKeyInitialMessages]: Array<RegisterDrawerMessage> | undefined;
-  [storageKeyReadyDeferCallbacks]: Array<Defer> | undefined;
+  [storageKeyReadyDeferCallbacks]: Array<(value?: unknown) => void> | undefined;
 }
 
 type AppLayoutHandler = (event: AppLayoutMessage) => void;
@@ -36,7 +35,7 @@ export function registerAppLayoutHandler(handler: AppLayoutHandler) {
     reportRuntimeApiWarning('AppLayoutWidget', 'Double registration attempt, the old handler will be overridden');
   }
   win[storageKeyMessageHandler] = handler;
-  win[storageKeyReadyDeferCallbacks]?.forEach(defer => defer.resolve());
+  win[storageKeyReadyDeferCallbacks]?.forEach(fn => fn());
   win[storageKeyReadyDeferCallbacks] = [];
   return () => {
     win[storageKeyMessageHandler] = undefined;
@@ -63,9 +62,7 @@ export function whenAppLayoutReady() {
   }
   const win = getWindow();
   win[storageKeyReadyDeferCallbacks] = win[storageKeyReadyDeferCallbacks] ?? [];
-  const defer = new Defer();
-  win[storageKeyReadyDeferCallbacks]?.push(defer);
-  return defer.promise;
+  return new Promise(resolve => win[storageKeyReadyDeferCallbacks]?.push(resolve));
 }
 
 /**
