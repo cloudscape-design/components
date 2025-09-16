@@ -23,6 +23,7 @@
 $global-drawer-gap-size: 8px;
 $global-drawer-expanded-mode-motion: #{awsui.$motion-duration-refresh-only-slow} #{awsui.$motion-easing-refresh-only-a};
 $drawer-resize-handle-size: awsui.$space-m;
+$ai-drawer-heider-height: 41px;
 
 .drawer {
   position: sticky;
@@ -284,8 +285,10 @@ $drawer-resize-handle-size: awsui.$space-m;
       }
 
       > .drawer-content {
+        grid-row: 1 / span 4;
+
         > .drawer-content-header {
-          block-size: 41px;
+          block-size: $ai-drawer-heider-height;
           position: sticky;
           z-index: 1000;
           display: flex;
@@ -379,6 +382,12 @@ $drawer-resize-handle-size: awsui.$space-m;
               }
             }
           }
+        }
+
+        > .drawer-content-content {
+          display: flex;
+          flex-direction: column;
+          block-size: calc(100% - #{$ai-drawer-heider-height});
         }
       }
     }
