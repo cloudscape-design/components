@@ -179,11 +179,11 @@ const InternalTable = React.forwardRef(
       getExpandableItemProps,
     });
 
-    const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
+    const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.borderBoxWidth);
     const wrapperMeasureRefObject = useRef(null);
     const wrapperMeasureMergedRef = useMergeRefs(wrapperMeasureRef, wrapperMeasureRefObject);
 
-    const [tableWidth, tableMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
+    const [tableWidth, tableMeasureRef] = useContainerQuery<number>(rect => rect.borderBoxWidth);
     const tableRefObject = useRef(null);
 
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
