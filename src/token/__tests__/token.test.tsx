@@ -305,29 +305,29 @@ describe('Token', () => {
       const stringWrapper = renderToken({ label: 'Test token', disabled: true });
       expect(stringWrapper.getElement()).not.toHaveAttribute('aria-disabled');
 
-      // String label with dismiss button - NO aria-disabled (not a JSX element)
+      // String label with dismiss button (normal variant) - gets aria-disabled (normal variant gets aria-disabled regardless of content type)
       const stringDismissWrapper = renderToken({
         label: 'Test token',
         disabled: true,
         onDismiss: () => {},
       });
-      expect(stringDismissWrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(stringDismissWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
 
-      // Empty string label with dismiss button - NO aria-disabled (not a JSX element)
+      // Empty string label with dismiss button (normal variant) - gets aria-disabled (normal variant gets aria-disabled regardless of content type)
       const emptyStringWrapper = renderToken({
         label: '',
         disabled: true,
         onDismiss: () => {},
       });
-      expect(emptyStringWrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(emptyStringWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
 
-      // Number label with dismiss button - NO aria-disabled (not a JSX element)
+      // Number label with dismiss button (normal variant) - gets aria-disabled (normal variant gets aria-disabled regardless of content type)
       const numberWrapper = renderToken({
         label: 42,
         disabled: true,
         onDismiss: () => {},
       });
-      expect(numberWrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(numberWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
 
       // ReactNode label without dismiss button - NO aria-disabled (missing onDismiss)
       const reactWrapper = renderToken({
@@ -378,6 +378,24 @@ describe('Token', () => {
         onDismiss: () => {},
       });
       expect(iconWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
+
+      // Inline variant with string label and dismiss button - NO aria-disabled (inline variant requires JSX element)
+      const inlineStringWrapper = renderToken({
+        variant: 'inline',
+        label: 'Inline token',
+        disabled: true,
+        onDismiss: () => {},
+      });
+      expect(inlineStringWrapper.getElement()).not.toHaveAttribute('aria-disabled');
+
+      // Inline variant with JSX element label and dismiss button - gets aria-disabled (inline variant with JSX element)
+      const inlineJsxWrapper = renderToken({
+        variant: 'inline',
+        label: <div>Inline JSX token</div>,
+        disabled: true,
+        onDismiss: () => {},
+      });
+      expect(inlineJsxWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
     });
 
     test('applies role attribute correctly', () => {
@@ -386,10 +404,10 @@ describe('Token', () => {
       const publicWrapper = createWrapper(publicContainer).findToken()!;
       expect(publicWrapper.getElement()).not.toHaveAttribute('role');
 
-      // String label with dismiss button - NO role (not a JSX element)
+      // String label with dismiss button (normal variant) - gets role (normal variant gets role regardless of content type)
       const { container: dismissContainer } = render(<Token label="Test token" onDismiss={() => {}} />);
       const dismissWrapper = createWrapper(dismissContainer).findToken()!;
-      expect(dismissWrapper.getElement()).not.toHaveAttribute('role');
+      expect(dismissWrapper.getElement()).toHaveAttribute('role', 'group');
 
       // ReactNode label with dismiss button - gets default "group" role (JSX element)
       const { container: reactContainer } = render(<Token label={<div>Custom label</div>} onDismiss={() => {}} />);
@@ -410,10 +428,24 @@ describe('Token', () => {
       const inlineReadOnlyWrapper = createWrapper(inlineReadOnlyContainer).findToken()!;
       expect(inlineReadOnlyWrapper.getElement()).not.toHaveAttribute('role');
 
-      // Empty string with dismiss button - NO role (not a JSX element)
+      // Empty string with dismiss button (normal variant) - gets role (normal variant gets role regardless of content type)
       const { container: noTextContainer } = render(<Token label="" onDismiss={() => {}} />);
       const noTextWrapper = createWrapper(noTextContainer).findToken()!;
-      expect(noTextWrapper.getElement()).not.toHaveAttribute('role');
+      expect(noTextWrapper.getElement()).toHaveAttribute('role', 'group');
+
+      // Inline variant with string label and dismiss button - NO role (inline variant requires JSX element)
+      const { container: inlineStringContainer } = render(
+        <Token variant="inline" label="Inline token" onDismiss={() => {}} />
+      );
+      const inlineStringWrapper = createWrapper(inlineStringContainer).findToken()!;
+      expect(inlineStringWrapper.getElement()).not.toHaveAttribute('role');
+
+      // Inline variant with JSX element label and dismiss button - gets role (inline variant with JSX element)
+      const { container: inlineJsxContainer } = render(
+        <Token variant="inline" label={<div>Inline JSX token</div>} onDismiss={() => {}} />
+      );
+      const inlineJsxWrapper = createWrapper(inlineJsxContainer).findToken()!;
+      expect(inlineJsxWrapper.getElement()).toHaveAttribute('role', 'group');
 
       // InternalToken with custom role - should override default logic
       const { container: customRoleContainer } = render(<InternalToken label="Test token" role="menuitem" />);
@@ -482,14 +514,14 @@ describe('Token', () => {
       });
       expect(inlineStringWrapper.getElement()).not.toHaveAttribute('aria-disabled');
 
-      // Normal variant with string label and dismiss - NO aria-disabled (not a JSX element)
+      // Normal variant with string label and dismiss - gets aria-disabled (normal variant gets aria-disabled regardless of content type)
       const normalStringWrapper = renderToken({
         variant: 'normal',
         label: 'Test token',
         disabled: true,
         onDismiss: () => {},
       });
-      expect(normalStringWrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(normalStringWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
 
       // ReactNode label without dismiss - NO aria-disabled (missing onDismiss)
       const nodeWrapper = renderToken({
@@ -528,23 +560,23 @@ describe('Token', () => {
     });
 
     test('label type affects aria-disabled and role attributes with new logic', () => {
-      // String with meaningful text - NO aria-disabled (not a JSX element)
+      // String with meaningful text (normal variant) - gets aria-disabled (normal variant gets aria-disabled regardless of content type)
       const stringWrapper = renderToken({
         label: 'Meaningful text',
         disabled: true,
         onDismiss: () => {},
       });
-      expect(stringWrapper.getElement()).not.toHaveAttribute('aria-disabled');
-      expect(stringWrapper.getElement()).not.toHaveAttribute('role');
+      expect(stringWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
+      expect(stringWrapper.getElement()).toHaveAttribute('role', 'group');
 
-      // Number label - NO aria-disabled (not a JSX element)
+      // Number label (normal variant) - gets aria-disabled (normal variant gets aria-disabled regardless of content type)
       const numberWrapper = renderToken({
         label: 42,
         disabled: true,
         onDismiss: () => {},
       });
-      expect(numberWrapper.getElement()).not.toHaveAttribute('aria-disabled');
-      expect(numberWrapper.getElement()).not.toHaveAttribute('role');
+      expect(numberWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
+      expect(numberWrapper.getElement()).toHaveAttribute('role', 'group');
 
       // ReactNode with nested text content - gets aria-disabled (JSX element)
       const nestedTextWrapper = renderToken({
@@ -559,14 +591,14 @@ describe('Token', () => {
       expect(nestedTextWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
       expect(nestedTextWrapper.getElement()).toHaveAttribute('role', 'group');
 
-      // Array of mixed content - NO aria-disabled (not a JSX element)
+      // Array of mixed content (normal variant) - gets aria-disabled (normal variant gets aria-disabled regardless of content type)
       const arrayWrapper = renderToken({
         label: ['Text', <span key="1">More text</span>, 123],
         disabled: true,
         onDismiss: () => {},
       });
-      expect(arrayWrapper.getElement()).not.toHaveAttribute('aria-disabled');
-      expect(arrayWrapper.getElement()).not.toHaveAttribute('role');
+      expect(arrayWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
+      expect(arrayWrapper.getElement()).toHaveAttribute('role', 'group');
 
       // ReactNode with only whitespace - gets aria-disabled (JSX element)
       const whitespaceNodeWrapper = renderToken({
@@ -586,23 +618,43 @@ describe('Token', () => {
       expect(iconOnlyWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
       expect(iconOnlyWrapper.getElement()).toHaveAttribute('role', 'group');
 
-      // Empty array - NO aria-disabled (not a JSX element)
+      // Empty array (normal variant) - gets aria-disabled (normal variant gets aria-disabled regardless of content type)
       const emptyArrayWrapper = renderToken({
         label: [],
         disabled: true,
         onDismiss: () => {},
       });
-      expect(emptyArrayWrapper.getElement()).not.toHaveAttribute('aria-disabled');
-      expect(emptyArrayWrapper.getElement()).not.toHaveAttribute('role');
+      expect(emptyArrayWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
+      expect(emptyArrayWrapper.getElement()).toHaveAttribute('role', 'group');
 
-      // Null/undefined label - NO aria-disabled (not a JSX element)
+      // Null/undefined label (normal variant) - gets aria-disabled (normal variant gets aria-disabled regardless of content type)
       const nullWrapper = renderToken({
         label: null as any,
         disabled: true,
         onDismiss: () => {},
       });
-      expect(nullWrapper.getElement()).not.toHaveAttribute('aria-disabled');
-      expect(nullWrapper.getElement()).not.toHaveAttribute('role');
+      expect(nullWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
+      expect(nullWrapper.getElement()).toHaveAttribute('role', 'group');
+
+      // Inline variant with string label - NO aria-disabled (inline variant requires JSX element)
+      const inlineStringWrapper = renderToken({
+        variant: 'inline',
+        label: 'Inline string',
+        disabled: true,
+        onDismiss: () => {},
+      });
+      expect(inlineStringWrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(inlineStringWrapper.getElement()).not.toHaveAttribute('role');
+
+      // Inline variant with JSX element label - gets aria-disabled (inline variant with JSX element)
+      const inlineJsxWrapper = renderToken({
+        variant: 'inline',
+        label: <div>Inline JSX</div>,
+        disabled: true,
+        onDismiss: () => {},
+      });
+      expect(inlineJsxWrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
+      expect(inlineJsxWrapper.getElement()).toHaveAttribute('role', 'group');
     });
   });
 });
