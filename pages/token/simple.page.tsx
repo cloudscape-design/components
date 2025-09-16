@@ -83,7 +83,7 @@ export default function GenericTokenPage() {
         <Token
           data-testid="inline-token-with-icon-dismissable-with-popover"
           variant="inline"
-          dismissLabel="Dismiss token"
+          dismissLabel="Dismiss token with popover"
           label={
             <Popover
               triggerType="text-inline"
@@ -147,14 +147,14 @@ export default function GenericTokenPage() {
         />
         <Token
           variant="inline"
-          dismissLabel="Dismiss token"
+          dismissLabel="Dismiss readonly token"
           label="Inline dismissable readonly token"
           readOnly={true}
           onDismiss={() => {}}
         />
         <Token
           variant="inline"
-          dismissLabel="Dismiss token"
+          dismissLabel="Dismiss disabled token"
           label="Inline dismissable disabled token"
           disabled={true}
           onDismiss={() => {}}
@@ -162,7 +162,7 @@ export default function GenericTokenPage() {
 
         <Token
           variant="inline"
-          dismissLabel="Dismiss token"
+          dismissLabel="Dismiss readonly token with icon"
           label="Inline dismissable readonly token"
           icon={<Icon name="edit" size="small" />}
           readOnly={true}
@@ -171,7 +171,7 @@ export default function GenericTokenPage() {
 
         <Token
           variant="inline"
-          dismissLabel="Dismiss token"
+          dismissLabel="Dismiss disabled token with icon"
           label="Inline dismissable disabled token with icon"
           icon={<Icon name="edit" size="small" />}
           disabled={true}
@@ -200,10 +200,10 @@ export default function GenericTokenPage() {
             </Popover>
           }
           onDismiss={() => {}}
-          dismissLabel="dismiss"
+          dismissLabel="Dismiss normal token with popover"
         />
         <Token
-          dismissLabel="Dismiss token"
+          dismissLabel="Dismiss normal token with popover and icon"
           label={
             <Popover
               triggerType="text-inline"
@@ -219,7 +219,7 @@ export default function GenericTokenPage() {
         />
         <Token
           data-testid="normal-token-dismissable"
-          dismissLabel="Dismiss token"
+          dismissLabel="Dismiss normal token"
           label="Dismissable token"
           labelTag="test"
           onDismiss={() => {}}
@@ -234,7 +234,7 @@ export default function GenericTokenPage() {
         />
         <Token
           data-testid="normal-token-with-icon-dismissable"
-          dismissLabel="Dismiss token"
+          dismissLabel="Dismiss features token"
           label="Dismissable token"
           description="some description"
           labelTag="test"
@@ -245,11 +245,21 @@ export default function GenericTokenPage() {
 
         <Token label="Standalone readonly token" readOnly={true} />
 
-        <Token label="Standalone readonly dismissable token" readOnly={true} onDismiss={() => {}} />
+        <Token
+          label="Standalone readonly dismissable token"
+          readOnly={true}
+          onDismiss={() => {}}
+          dismissLabel="Dismiss normal readonly token"
+        />
 
         <Token label="Standalone disabled token" disabled={true} />
 
-        <Token label="Standalone disabled dismissable token" disabled={true} onDismiss={() => {}} />
+        <Token
+          label="Standalone disabled dismissable token"
+          disabled={true}
+          onDismiss={() => {}}
+          dismissLabel="Dismiss normal disabled token"
+        />
 
         <TokenList
           alignment="vertical"

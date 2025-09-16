@@ -13,7 +13,6 @@ const permutations = createPermutations<TokenProps>([
   {
     label: ['token'],
     icon: [undefined, <Icon key="icon" name="settings" size="small" />],
-    dismissLabel: ['dismiss'],
     onDismiss: [undefined, () => {}],
     readOnly: [false, true],
     variant: ['inline'],
@@ -21,7 +20,6 @@ const permutations = createPermutations<TokenProps>([
   {
     label: ['token'],
     icon: [undefined, <Icon key="icon" name="settings" size="small" />],
-    dismissLabel: ['dismiss'],
     onDismiss: [undefined, () => {}],
     disabled: [true],
     variant: ['inline'],
@@ -29,7 +27,6 @@ const permutations = createPermutations<TokenProps>([
   {
     label: ['token'],
     icon: [undefined, <Icon key="icon" name="settings" />],
-    dismissLabel: ['dismiss'],
     onDismiss: [undefined, () => {}],
     readOnly: [false, true],
     variant: ['normal'],
@@ -37,7 +34,6 @@ const permutations = createPermutations<TokenProps>([
   {
     label: ['token'],
     icon: [undefined, <Icon key="icon" name="settings" />],
-    dismissLabel: ['dismiss'],
     onDismiss: [undefined, () => {}],
     disabled: [true],
     variant: ['normal'],
@@ -47,7 +43,6 @@ const permutations = createPermutations<TokenProps>([
     description: [undefined, 'description'],
     labelTag: ['label-tag', undefined],
     tags: [['tag-1', 'tag-2'], undefined],
-    dismissLabel: ['dismiss'],
     onDismiss: [undefined, () => {}],
     variant: ['normal'],
   },
@@ -68,7 +63,10 @@ export default function TokenPermutations() {
     <>
       <h1>Token permutations</h1>
       <ScreenshotArea disableAnimations={true}>
-        <PermutationsView permutations={permutations} render={permutation => <Token {...permutation} />} />
+        <PermutationsView
+          permutations={permutations}
+          render={(permutation, index) => <Token {...permutation} dismissLabel={`Dismiss ${index}`} />}
+        />
       </ScreenshotArea>
     </>
   );
