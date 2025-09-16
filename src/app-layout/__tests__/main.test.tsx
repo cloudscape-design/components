@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
+import { useLayoutEffect } from 'react';
 import { waitFor } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
@@ -10,6 +11,22 @@ import { describeEachAppLayout, renderComponent, testDrawer } from './utils';
 
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import sharedStyles from '../../../lib/components/app-layout/styles.css.js';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  useResizeObserver: (getElement: any, onObserve: any) => {
+    useLayoutEffect(() => {
+      if (typeof getElement === 'function') {
+        const element = getElement();
+        if (element) {
+          // Extract height from inline styles for JSDOM compatibility
+          const height = parseInt(element.style.height) || 0;
+          onObserve({ borderBoxHeight: height });
+        }
+      }
+    }, [getElement, onObserve]);
+  },
+}));
 
 test('does not render mobile mode by default', () => {
   const { wrapper } = renderComponent(<AppLayout />);
