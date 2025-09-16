@@ -424,3 +424,21 @@ describe('Style API', () => {
     expect(getComputedStyle(link).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('4px');
   });
 });
+
+describe('native attributes', () => {
+  it('adds native attributes', () => {
+    const { container } = render(<Link href="#" nativeAttributes={{ 'data-testid': 'my-test-id' }} />);
+    expect(container.querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+    expect(container.querySelectorAll('a[data-testid="my-test-id"]')).toHaveLength(1);
+  });
+  it('adds native attributes (button link)', () => {
+    const { container } = render(<Link nativeAttributes={{ 'data-testid': 'my-test-id' }} />);
+    expect(container.querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+    expect(container.querySelectorAll('a[data-testid="my-test-id"]')).toHaveLength(1);
+  });
+  it('concatenates class names', () => {
+    const { container } = render(<Link href="#" nativeAttributes={{ className: 'additional-class' }} />);
+    expect(container.firstChild).toHaveClass(styles.link);
+    expect(container.firstChild).toHaveClass('additional-class');
+  });
+});

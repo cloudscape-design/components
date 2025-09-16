@@ -24,6 +24,7 @@ export const InternalToggleButton = React.forwardRef(
       iconUrl: defaultIconUrl,
       pressedIconUrl,
       variant,
+      nativeButtonAttributes,
       onChange,
       className,
       ...rest
@@ -60,6 +61,7 @@ export const InternalToggleButton = React.forwardRef(
         }}
         {...rest}
         ref={ref}
+        nativeButtonAttributes={nativeButtonAttributes}
       />
     );
   }
