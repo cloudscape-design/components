@@ -31,6 +31,8 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     locale: ['en-GB'],
     onChange: [() => {}],
     customAbsoluteRangeControl: [undefined],
+    timeInputFormat: ['hh:mm:ss'] as const,
+    absoluteFormat: ['long-localized'] as const,
   })),
   // Disabled dates
   {
@@ -38,12 +40,25 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     setValue: [() => {}],
     isDateEnabled: [() => false],
     customAbsoluteRangeControl: [undefined],
+    timeInputFormat: ['hh:mm:ss'] as const,
+    absoluteFormat: ['long-localized'] as const,
   },
   // Custom control
   {
     value: [{ start: { date: '', time: '' }, end: { date: '', time: '' } }],
     setValue: [() => {}],
     customAbsoluteRangeControl: [() => 'Custom control'],
+    timeInputFormat: ['hh:mm:ss'] as const,
+    absoluteFormat: ['long-localized'] as const,
+  },
+  // Input date formats
+  {
+    value: [{ start: { date: '', time: '' }, end: { date: '', time: '' } }],
+    setValue: [() => {}],
+    customAbsoluteRangeControl: [undefined],
+    timeInputFormat: ['hh:mm:ss'] as const,
+    dateInputFormat: ['iso', 'slashed'] as const,
+    absoluteFormat: ['long-localized'] as const,
   },
 ]);
 

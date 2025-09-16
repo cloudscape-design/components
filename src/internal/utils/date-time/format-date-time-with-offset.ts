@@ -25,6 +25,10 @@ export function formatDateTimeWithOffset({
     case 'long-localized': {
       return formatDateLocalized({ date, hideTimeOffset, isDateOnly, isMonthOnly, locale, timeOffset });
     }
+    case 'slashed': {
+      const formatted = formatDateIso({ date, hideTimeOffset, isDateOnly, isMonthOnly, timeOffset }).split('T');
+      return `${formatted[0].split('-').join('/')}${formatted[1] ? `T${formatted[1]}` : ''}`;
+    }
     default: {
       return formatDateIso({ date, hideTimeOffset, isDateOnly, isMonthOnly, timeOffset });
     }
