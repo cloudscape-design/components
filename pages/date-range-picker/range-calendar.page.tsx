@@ -23,7 +23,14 @@ export default function RangeCalendarScenario() {
       <SpaceBetween direction="vertical" size="m">
         <Link id="focusable-before">Focusable element before</Link>
 
-        <RangeCalendar {...props} value={value} setValue={setValue} customAbsoluteRangeControl={undefined} />
+        <RangeCalendar
+          {...props}
+          value={value}
+          setValue={setValue}
+          customAbsoluteRangeControl={undefined}
+          timeInputFormat="hh:mm:ss"
+          absoluteFormat="slashed"
+        />
 
         <Link id="focusable-after">Focusable element after</Link>
       </SpaceBetween>

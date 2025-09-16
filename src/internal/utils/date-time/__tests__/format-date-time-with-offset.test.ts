@@ -14,15 +14,12 @@ describe('formatDateTimeWithOffset', () => {
       {
         date: '2020-01-01',
         timeOffset: browser,
-        expected: {
-          iso: '2020-01-01',
-          localized: { 'en-US': 'January 1, 2020' },
-        },
+        expected: { iso: '2020-01-01', slashed: '2020/01/01', localized: { 'en-US': 'January 1, 2020' } },
       },
       {
         date: '2020-01-01',
         timeOffset: berlin,
-        expected: { iso: '2020-01-01', localized: { 'en-US': 'January 1, 2020' } },
+        expected: { iso: '2020-01-01', slashed: '2020/01/01', localized: { 'en-US': 'January 1, 2020' } },
       },
     ];
     describe.each(cases)(
@@ -30,6 +27,9 @@ describe('formatDateTimeWithOffset', () => {
       ({ date, timeOffset, expected }) => {
         test('ISO', () => {
           expect(formatDateTimeWithOffset({ date, timeOffset, format: 'iso' })).toBe(expected.iso);
+        });
+        test('slashed', () => {
+          expect(formatDateTimeWithOffset({ date, timeOffset, format: 'slashed' })).toBe(expected.slashed);
         });
         test('Human-readable', () => {
           expect(formatDateTimeWithOffset({ date, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
@@ -48,6 +48,7 @@ describe('formatDateTimeWithOffset', () => {
           timeOffset: berlin,
           expected: {
             iso: '2020-01-01T00:00:00+02:00',
+            slashed: '2020/01/01T00:00:00+02:00',
             localized: { 'en-US': 'January 1, 2020, 00:00:00 (UTC+2)' },
           },
         },
@@ -56,6 +57,7 @@ describe('formatDateTimeWithOffset', () => {
           timeOffset: newYork,
           expected: {
             iso: '2020-01-01T00:00:00-04:00',
+            slashed: '2020/01/01T00:00:00-04:00',
             localized: { 'en-US': 'January 1, 2020, 00:00:00 (UTC-4)' },
           },
         },
@@ -64,6 +66,7 @@ describe('formatDateTimeWithOffset', () => {
           timeOffset: regional,
           expected: {
             iso: '2020-01-01T00:00:00Z',
+            slashed: '2020/01/01T00:00:00Z',
             localized: { 'en-US': 'January 1, 2020, 00:00:00 (UTC)' },
           },
         },
@@ -73,6 +76,9 @@ describe('formatDateTimeWithOffset', () => {
         ({ date, timeOffset, expected }) => {
           test('ISO', () => {
             expect(formatDateTimeWithOffset({ date, timeOffset, format: 'iso' })).toBe(expected.iso);
+          });
+          test('slashed', () => {
+            expect(formatDateTimeWithOffset({ date, timeOffset, format: 'slashed' })).toBe(expected.slashed);
           });
           test('Human-readable', () => {
             expect(formatDateTimeWithOffset({ date, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
@@ -90,6 +96,7 @@ describe('formatDateTimeWithOffset', () => {
           timeOffset: berlin,
           expected: {
             iso: '2020-01-01T00:00:00',
+            slashed: '2020/01/01T00:00:00',
             localized: { 'en-US': 'January 1, 2020, 00:00:00' },
           },
         },
@@ -98,6 +105,7 @@ describe('formatDateTimeWithOffset', () => {
           timeOffset: newYork,
           expected: {
             iso: '2020-01-01T00:00:00',
+            slashed: '2020/01/01T00:00:00',
             localized: { 'en-US': 'January 1, 2020, 00:00:00' },
           },
         },
@@ -106,6 +114,7 @@ describe('formatDateTimeWithOffset', () => {
           timeOffset: regional,
           expected: {
             iso: '2020-01-01T00:00:00',
+            slashed: '2020/01/01T00:00:00',
             localized: { 'en-US': 'January 1, 2020, 00:00:00' },
           },
         },
@@ -117,6 +126,11 @@ describe('formatDateTimeWithOffset', () => {
           test('ISO', () => {
             expect(formatDateTimeWithOffset({ date, timeOffset, hideTimeOffset: true, format: 'iso' })).toBe(
               expected.iso
+            );
+          });
+          test('slashed', () => {
+            expect(formatDateTimeWithOffset({ date, timeOffset, hideTimeOffset: true, format: 'slashed' })).toBe(
+              expected.slashed
             );
           });
           test('Human-readable', () => {
