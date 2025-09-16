@@ -15356,6 +15356,28 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "description": "Adds a \`rel\` attribute to the link. If the \`rel\` property is provided, it overrides the default behaviour.
 By default, the component sets the \`rel\` attribute to "noopener noreferrer" when \`external\` is \`true\` or \`target\` is \`"_blank"\`.",
       "name": "rel",
@@ -25424,6 +25446,28 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native \`input\` element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeInputAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value. Should be used only inside forms.
 A read-only control is still focusable.
@@ -25892,28 +25936,6 @@ It prevents users from clicking the button, but it can still be focused.",
       "name": "loadingText",
       "optional": true,
       "type": "string",
-    },
-    {
-      "description": "Attributes to add to the native \`a\` element (when \`href\` is provided).
-Some attributes will be automatically combined with internal attribute values:
-- \`className\` will be appended.
-- Event handlers will be chained, unless the default is prevented.
-
-We do not support using this attribute to apply custom styling.",
-      "inlineType": {
-        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
-        "type": "union",
-        "values": [
-          "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
-          "Record<\`data-\${string}\`, string>",
-        ],
-      },
-      "name": "nativeAnchorAttributes",
-      "optional": true,
-      "systemTags": [
-        "core",
-      ],
-      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
       "description": "Attributes to add to the native \`button\` element.
