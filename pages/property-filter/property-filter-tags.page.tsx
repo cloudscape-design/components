@@ -151,12 +151,6 @@ const filteringOptions: PropertyFilterProps.FilteringOption[] = [
     label: 'Log-group-10',
     tags: ['Standard', 'AccountID', 'Tag'],
   },
-  {
-    propertyKey: 'logGroup',
-    value: 'LOAD_MORE',
-    label: '... Load more (showing 10 of 10,000+)',
-    tags: ['Pagination', 'API-Call-Required'],
-  },
 ];
 
 export default function PropertyFilterTagsPage() {
