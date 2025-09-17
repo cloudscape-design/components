@@ -27,9 +27,8 @@ export interface TokenProps extends BaseComponentProps {
   icon?: React.ReactNode;
 
   /**
-   * Specifies the token's visual style and functionality:
-   * - `normal` - Standard token with full feature set including description and tags
-   * - `inline` - Compact token for inline text contexts with limited features (label, icon, dismiss button only)
+   * Specifies the token's visual style and functionality.
+   * For `inline` only label, icon, dismiss button are displayed.
    *
    * Defaults to `normal` if not specified.
    */
@@ -39,9 +38,8 @@ export interface TokenProps extends BaseComponentProps {
   disabled?: boolean;
 
   /**
-   * Specifies if the control is read-only, which prevents the
-   * user from modifying the value. A read-only control is still focusable.
-   * When `variant="inline"` setting readOnly will hide the dismiss button.
+   * Specifies if the control is read-only. A read-only control is still focusable.
+   * When `variant="inline"`, setting readOnly will hide the dismiss button.
    */
   readOnly?: boolean;
 
