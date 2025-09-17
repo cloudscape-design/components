@@ -26417,9 +26417,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "Specifies if the control is read-only, which prevents the
-user from modifying the value. A read-only control is still focusable.
-When \`variant="inline"\` setting readOnly will hide the dismiss button.",
+      "description": "Specifies if the control is read-only. A read-only control is still focusable.
+When \`variant="inline"\`, setting readOnly will hide the dismiss button.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
@@ -26431,9 +26430,8 @@ When \`variant="inline"\` setting readOnly will hide the dismiss button.",
       "type": "ReadonlyArray<string>",
     },
     {
-      "description": "Specifies the token's visual style and functionality:
-- \`normal\` - Standard token with full feature set including description and tags
-- \`inline\` - Compact token for inline text contexts with limited features (label, icon, dismiss button only)
+      "description": "Specifies the token's visual style and functionality.
+For \`inline\` only label, icon, dismiss button are displayed.
 
 Defaults to \`normal\` if not specified.",
       "inlineType": {
