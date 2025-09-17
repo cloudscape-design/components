@@ -22656,6 +22656,28 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.HTMLAttributes<HTMLElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "defaultValue": "'success'",
       "description": "Specifies the status type.",
       "inlineType": {
