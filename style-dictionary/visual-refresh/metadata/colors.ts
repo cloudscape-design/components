@@ -343,6 +343,12 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorItemSelected: {
+    description:
+      'The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.',
+    public: true,
+    themeable: true,
+  },
   colorBorderContainerTop: {
     description:
       'The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.',
