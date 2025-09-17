@@ -13,17 +13,27 @@ import styles from './styles.css.js';
 interface LabelProps {
   labelContainerRef?: React.RefObject<any>;
   labelRef?: React.RefObject<any>;
+  labelId?: string;
   label?: React.ReactNode;
   prefix?: string;
   highlightText?: string;
   triggerVariant: boolean;
 }
-export const Label = ({ labelContainerRef, labelRef, label, prefix, highlightText, triggerVariant }: LabelProps) => {
+export const Label = ({
+  labelContainerRef,
+  labelRef,
+  labelId,
+  label,
+  prefix,
+  highlightText,
+  triggerVariant,
+}: LabelProps) => {
   // If label is not JSX, use the normal label structure with Highlight matching, else render the JSX
   if (!React.isValidElement(label)) {
     const stringLabel = label ? String(label) : undefined;
     return (
       <span
+        id={labelId}
         ref={labelContainerRef}
         className={clsx(styles.label, analyticsSelectors.label, triggerVariant && styles['trigger-variant'])}
       >
@@ -35,8 +45,8 @@ export const Label = ({ labelContainerRef, labelRef, label, prefix, highlightTex
     );
   } else {
     return (
-      <div ref={labelContainerRef} className={clsx(styles.label, analyticsSelectors.label)}>
-        <div
+      <span id={labelId} ref={labelContainerRef} className={clsx(styles.label, analyticsSelectors.label)}>
+        <span
           ref={labelRef}
           className={clsx(
             styles['label-custom-content'],
@@ -44,8 +54,8 @@ export const Label = ({ labelContainerRef, labelRef, label, prefix, highlightTex
           )}
         >
           {label}
-        </div>
-      </div>
+        </span>
+      </span>
     );
   }
 };
