@@ -221,7 +221,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
                           </div>
                         )}
                       </header>
-                      {activeAiDrawer?.content}
+                      <div className={styles['drawer-content-content']}>{activeAiDrawer?.content}</div>
                     </div>
                   </div>
                 </aside>
