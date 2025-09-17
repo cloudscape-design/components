@@ -8,14 +8,14 @@ const { parseArgs } = require('node:util');
 
 module.exports = task('test:integ', async () => {
   const options = {
-    shard: {
-      type: 'string',
-    },
+    shard: { type: 'string' },
+    reactVersion: { type: 'string' },
   };
-  const shard = parseArgs({ options, strict: false }).values.shard;
+  const { shard, reactVersion = '16' } = parseArgs({ options, strict: false }).values;
   const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.cjs'], {
     env: {
       NODE_ENV: 'development',
+      REACT_VERSION: reactVersion,
     },
   });
   await waitOn({ resources: ['http://localhost:8080'] });

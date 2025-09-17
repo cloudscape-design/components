@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { Suspense, useContext, useEffect } from 'react';
-import { render } from 'react-dom';
 import { HashRouter, Redirect } from 'react-router-dom';
 import { createHashHistory } from 'history';
 
 import { applyDensity, applyMode, disableMotion } from '@cloudscape-design/global-styles';
+
+import { mount } from '~mount';
 
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
 import Header from './components/header';
@@ -120,11 +122,11 @@ if (isSafari) {
   document.body.classList.remove(styles.safari);
 }
 
-render(
+mount(
   <HashRouter>
     <AppContextProvider>
       <App />
     </AppContextProvider>
   </HashRouter>,
-  document.getElementById('app')
+  document.getElementById('app')!
 );
