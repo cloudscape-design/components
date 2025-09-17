@@ -16,7 +16,7 @@ export default class TokenWrapper extends ComponentWrapper {
   /**
    * Returns the token label.
    */
-  findLabel(): ElementWrapper | null {
+  findLabel(): ElementWrapper {
     return this.findOption().findLabel();
   }
 
