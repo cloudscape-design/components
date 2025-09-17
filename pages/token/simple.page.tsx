@@ -125,8 +125,33 @@ export default function GenericTokenPage() {
             }
           />{' '}
           consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
+          pariatur. Excepteur sint occaecat cupidatat non proident,{' '}
+          <Token
+            variant="inline"
+            disabled={true}
+            label={
+              <Popover
+                triggerType="text-inline"
+                size="large"
+                header="<some-disabled-variable-name>"
+                content={
+                  <SpaceBetween size="m">
+                    <Input
+                      placeholder="Enter value for variable"
+                      value={variableValue}
+                      onChange={({ detail }) => setVariableValue(detail.value)}
+                    />
+                    <Box float="right">
+                      <Button onClick={() => setVariableValue('')}>Clear</Button>
+                    </Box>
+                  </SpaceBetween>
+                }
+              >
+                {variableValue.length > 0 ? variableValue : '<some-disabled-variable-name>'}
+              </Popover>
+            }
+          />{' '}
+          sunt in culpa qui officia deserunt mollit anim id est laborum.
         </div>
         <Token
           data-testid="inline-token-long-text"
