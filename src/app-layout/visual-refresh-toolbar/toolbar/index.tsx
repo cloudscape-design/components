@@ -6,10 +6,12 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
+import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { OnChangeParams } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import { AppLayoutInternals } from '../interfaces';
+import { ToolbarSkeleton } from '../skeleton/skeleton-parts';
 import { BreadcrumbsSlot, ToolbarSlot } from '../skeleton/slots';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
 import TriggerButton from './trigger-button';
@@ -244,3 +246,8 @@ export function AppLayoutToolbarImplementation({
     </ToolbarSlot>
   );
 }
+
+export const createWidgetizedAppLayoutToolbar = createWidgetizedComponent(
+  AppLayoutToolbarImplementation,
+  ToolbarSkeleton
+);

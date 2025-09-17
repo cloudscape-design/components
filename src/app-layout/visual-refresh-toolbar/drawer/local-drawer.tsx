@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
+import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { getDrawerStyles } from '../compute-layout';
@@ -146,3 +147,5 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     </Transition>
   );
 }
+
+export const createWidgetizedAppLayoutDrawer = createWidgetizedComponent(AppLayoutDrawerImplementation);
