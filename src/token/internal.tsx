@@ -18,6 +18,7 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 const TOKEN_INLINE_MIN_CHARACTER_LIMIT = 15;
+const ARIA_LABELLEDBY_ID = 'token-label';
 
 type InternalTokenProps = TokenProps &
   InternalBaseComponentProps & {
@@ -150,30 +151,6 @@ function InternalToken({
     }
   };
 
-  const shouldHaveAriaDisabled = () => {
-    // Must have onDismiss handler
-    if (!onDismiss) {
-      return false;
-    }
-
-    // For inline variant, readOnly matters as it hides the dismiss button
-    if (isInline && readOnly) {
-      return false;
-    }
-
-    // Normal variant: aria-disabled regardless of content type
-    if (!isInline) {
-      return true;
-    }
-
-    // Inline variant: label must be a JSX element
-    if (!React.isValidElement(label)) {
-      return false;
-    }
-
-    return true;
-  };
-
   return (
     <div
       {...baseProps}
@@ -185,8 +162,9 @@ function InternalToken({
         analyticsSelectors.token,
         baseProps.className
       )}
-      aria-disabled={shouldHaveAriaDisabled() ? !!disabled : undefined}
-      role={role ?? (shouldHaveAriaDisabled() ? 'group' : undefined)}
+      aria-labelledby={ARIA_LABELLEDBY_ID}
+      aria-disabled={!!disabled}
+      role={role ?? 'group'}
       onFocus={() => {
         /* istanbul ignore next: Tested with integration tests */
         setShowTooltip(true);
@@ -222,6 +200,7 @@ function InternalToken({
           option={buildOptionDefinition()}
           labelContainerRef={labelContainerRef}
           labelRef={labelRef}
+          labelId={ARIA_LABELLEDBY_ID}
           labelClassName={getOptionLabelClassName()}
         />
         {onDismiss && (!isInline || !readOnly) && (

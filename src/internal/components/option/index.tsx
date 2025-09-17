@@ -33,6 +33,7 @@ const Option = ({
   labelClassName,
   labelContainerRef,
   labelRef,
+  labelId,
   ...restProps
 }: OptionProps) => {
   if (!option) {
@@ -86,6 +87,7 @@ const Option = ({
           <Label
             labelContainerRef={labelContainerRef}
             labelRef={labelRef}
+            labelId={labelId}
             label={option.label ?? option.value ?? option.labelContent}
             prefix={option.__labelPrefix}
             highlightText={highlightText}

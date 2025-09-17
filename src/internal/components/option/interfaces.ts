@@ -53,4 +53,5 @@ export interface OptionProps extends BaseComponentProps {
   labelClassName?: string;
   labelContainerRef?: React.RefObject<HTMLElement>;
   labelRef?: React.RefObject<HTMLElement>;
+  labelId?: string;
 }

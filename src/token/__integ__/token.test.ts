@@ -261,91 +261,20 @@ describe('Token component', () => {
       })
     );
 
-    test(
-      'dismissable tokens with JSX element labels have proper role attribute',
+    test.each([
+      ['basic inline token', '[data-testid="basic-inline-token"]'],
+      ['inline dismissable token', '[data-testid="inline-token-dismissable"]'],
+      ['normal dismissable token', '[data-testid="normal-token-dismissable"]'],
+      ['inline token with icon and popover', '[data-testid="inline-token-with-icon-dismissable-with-popover"]'],
+    ])('%s has consistent accessibility attributes', (tokenType, selector) =>
       setupTest(async page => {
-        // This token has a JSX element label (Popover component), so it should get role="group"
-        const jsxLabelSelector = '[data-testid="inline-token-with-icon-dismissable-with-popover"]';
-        const jsxTokenElement = page.getTokenWrapper(jsxLabelSelector).toSelector();
-
-        const jsxRole = await page.getElementAttribute(jsxTokenElement, 'role');
-        expect(jsxRole).toBe('group');
-      })
-    );
-
-    test(
-      'normal variant tokens with string labels have role attribute',
-      setupTest(async page => {
-        // This normal token has a string label, so it should get role attribute (normal variant gets role regardless of content type)
-        const normalStringSelector = '[data-testid="normal-token-dismissable"]';
-        const normalStringElement = page.getTokenWrapper(normalStringSelector).toSelector();
-
-        const normalRole = await page.getElementAttribute(normalStringElement, 'role');
-        expect(normalRole).toBe('group');
-      })
-    );
-
-    test(
-      'inline variant tokens with string labels have no role attribute',
-      setupTest(async page => {
-        // This inline token has a string label, so it should NOT get role attribute (inline variant requires JSX element)
-        const inlineStringSelector = '[data-testid="inline-token-dismissable"]';
-        const inlineStringElement = page.getTokenWrapper(inlineStringSelector).toSelector();
-
-        const inlineRole = await page.getElementAttribute(inlineStringElement, 'role');
-        expect(inlineRole).toBeNull();
-      })
-    );
-
-    test(
-      'dismissable tokens with JSX element labels have aria-disabled attribute',
-      setupTest(async page => {
-        // This token has a JSX element label (Popover component), so it should get aria-disabled
-        const jsxLabelSelector = '[data-testid="inline-token-with-icon-dismissable-with-popover"]';
-        const jsxTokenElement = page.getTokenWrapper(jsxLabelSelector).toSelector();
-
-        const ariaDisabled = await page.getElementAttribute(jsxTokenElement, 'aria-disabled');
-        expect(ariaDisabled).toBe('false'); // Should be 'false' since token is not disabled
-      })
-    );
-
-    test(
-      'normal variant tokens with string labels have aria-disabled attribute',
-      setupTest(async page => {
-        // This normal token has a string label, so it should get aria-disabled (normal variant gets aria-disabled regardless of content type)
-        const normalStringSelector = '[data-testid="normal-token-dismissable"]';
-        const normalStringElement = page.getTokenWrapper(normalStringSelector).toSelector();
-
-        const ariaDisabled = await page.getElementAttribute(normalStringElement, 'aria-disabled');
-        expect(ariaDisabled).toBe('false'); // Should be 'false' since token is not disabled
-      })
-    );
-
-    test(
-      'inline variant tokens with string labels have no aria-disabled attribute',
-      setupTest(async page => {
-        // This inline token has a string label, so it should NOT get aria-disabled (inline variant requires JSX element)
-        const inlineStringSelector = '[data-testid="inline-token-dismissable"]';
-        const inlineStringElement = page.getTokenWrapper(inlineStringSelector).toSelector();
-
-        const ariaDisabled = await page.getElementAttribute(inlineStringElement, 'aria-disabled');
-        expect(ariaDisabled).toBeNull();
-      })
-    );
-
-    test(
-      'non-dismissable tokens have no accessibility attributes',
-      setupTest(async page => {
-        const basicSelector = '[data-testid="basic-inline-token"]';
-        const tokenElement = page.getTokenWrapper(basicSelector).toSelector();
-
+        const tokenElement = page.getTokenWrapper(selector).toSelector();
         const role = await page.getElementAttribute(tokenElement, 'role');
         const ariaDisabled = await page.getElementAttribute(tokenElement, 'aria-disabled');
 
-        // Non-dismissable tokens should not have role or aria-disabled regardless of label type
-        expect(role).toBeNull();
-        expect(ariaDisabled).toBeNull();
-      })
+        expect(role).toBe('group');
+        expect(ariaDisabled).toBe('false'); // All test tokens are not disabled
+      })()
     );
   });
 });
