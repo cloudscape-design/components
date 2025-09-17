@@ -66095,7 +66095,7 @@ Note: This function returns the specified component's wrapper even if the specif
           "name": "findLabel",
           "parameters": [],
           "returnType": {
-            "isNullable": true,
+            "isNullable": false,
             "name": "ElementWrapper",
             "typeArguments": [
               {

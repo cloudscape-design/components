@@ -364,6 +364,7 @@ describe('runtime warnings', () => {
         label: <span>test</span>,
       },
     });
+    expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
     expect(consoleWarnSpy).toHaveBeenCalledWith(
       expect.stringContaining('This component only supports string values, but "option.label" has object type.')
     );

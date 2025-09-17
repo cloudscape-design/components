@@ -13,7 +13,7 @@ function getSelectedTokens() {
   return wrapper
     .findTokenGroup()!
     .findTokens()
-    .map(token => token.findLabel()!.getElement().textContent!.trim());
+    .map(token => token.findLabel().getElement().textContent!.trim());
 }
 
 function Demo() {
