@@ -89,7 +89,9 @@ export default class A11yPageObject extends BasePageObject {
   public async assertNoAxeViolations() {
     const currentUrl = await this.browser.getUrl();
     const result = await this.getAxeResults();
-    const violations = result.violations.filter(violation => landmarkViolationFilter(violation, currentUrl));
+    const violations = result.violations
+      .filter(violation => landmarkViolationFilter(violation, currentUrl))
+      .filter(violation => inlineCodeInFlashbarFilter(violation));
     const incomplete = result.incomplete.filter(ariaLevelViolationsFilter);
 
     expect(violations).toHaveLength(0);
@@ -119,4 +121,30 @@ function landmarkViolationFilter(violation: Axe.Result, currentUrl: string) {
       violation.id !== 'landmark-unique' &&
       violation.id !== 'landmark-no-duplicate-main')
   );
+}
+
+// Filter out color contrast violations for Box awsui-inline-code variant within Flashbar components.
+// It improves contrast by adding a darker background overlay, which makes the color contrast greater.
+// However because of its semi-transparent style `colorBackgroundInlineCode: 'rgba(0, 0, 0, 0.2)'`,
+// it causes insufficient color contrast based on how axe-core caluculates color contrast.
+function inlineCodeInFlashbarFilter(violation: Axe.Result) {
+  // Only filter color-contrast violations
+  if (violation.id !== 'color-contrast') {
+    return true;
+  }
+
+  // Check if any of the violation nodes are awsui-inline-code boxes within flashbar components
+  const hasInlineCodeInFlashbar = violation.nodes.some(node => {
+    // Check if the node HTML contains the inline-code variant class
+    const hasInlineCodeClass = node.html.includes('inline-code-variant');
+
+    // Check if the node is within a flashbar component (contains flash class in ancestors)
+    const isInFlashbar =
+      node.html.includes('flash') || (node.ancestry && node.ancestry.some(ancestor => ancestor.includes('flash')));
+
+    return hasInlineCodeClass && isInFlashbar;
+  });
+
+  // Return false to filter out (exclude) violations that match our criteria
+  return !hasInlineCodeInFlashbar;
 }
