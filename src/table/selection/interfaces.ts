@@ -4,6 +4,7 @@
 export interface SelectionProps {
   name: string;
   disabled: boolean;
+  readOnly?: boolean;
   selectionType: 'single' | 'multi';
   indeterminate?: boolean;
   checked: boolean;
