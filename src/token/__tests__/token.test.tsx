@@ -189,6 +189,53 @@ describe('Token', () => {
       expect(wrapper.getElement()).not.toHaveClass(styles['token-inline-min-width-label-only']);
     });
 
+    test('handles number labels correctly', () => {
+      // Short number - should not get min-width class
+      const shortNumberWrapper = renderToken({
+        variant: 'inline',
+        label: 42,
+      });
+      expect(shortNumberWrapper.getElement()).not.toHaveClass(styles['token-inline-min-width-label-only']);
+
+      // Long number - should get min-width class
+      const longNumber = 123456789012345; // 15 digits, meets character limit
+      const longNumberWrapper = renderToken({
+        variant: 'inline',
+        label: longNumber,
+      });
+      expect(longNumberWrapper.getElement()).toHaveClass(styles['token-inline-min-width-label-only']);
+    });
+
+    test('handles array labels correctly', () => {
+      // Short array content - should not get min-width class
+      const shortArrayWrapper = renderToken({
+        variant: 'inline',
+        label: ['Short', ' text'],
+      });
+      expect(shortArrayWrapper.getElement()).not.toHaveClass(styles['token-inline-min-width-label-only']);
+
+      // Long array content - should get min-width class
+      const longArrayWrapper = renderToken({
+        variant: 'inline',
+        label: ['This is a very', ' long array', ' that exceeds limit'],
+      });
+      expect(longArrayWrapper.getElement()).toHaveClass(styles['token-inline-min-width-label-only']);
+
+      // Mixed array with React elements and strings
+      const mixedArrayWrapper = renderToken({
+        variant: 'inline',
+        label: ['Mixed content with', <span key="1">React elements</span>, ' and strings'],
+      });
+      expect(mixedArrayWrapper.getElement()).toHaveClass(styles['token-inline-min-width-label-only']);
+
+      // Array with empty/null elements
+      const sparseArrayWrapper = renderToken({
+        variant: 'inline',
+        label: ['Valid text', null, undefined, '', 'more valid text that makes it long enough'],
+      });
+      expect(sparseArrayWrapper.getElement()).toHaveClass(styles['token-inline-min-width-label-only']);
+    });
+
     test('applies base min-width class for labels with no text content', () => {
       // Empty string
       const emptyWrapper = renderToken({
@@ -217,6 +264,20 @@ describe('Token', () => {
         label: <Icon name="bug" />,
       });
       expect(iconWrapper.getElement()).toHaveClass(styles['token-inline-min-width']);
+
+      // Empty array
+      const emptyArrayWrapper = renderToken({
+        variant: 'inline',
+        label: [],
+      });
+      expect(emptyArrayWrapper.getElement()).toHaveClass(styles['token-inline-min-width']);
+
+      // Array with only empty/null elements
+      const nullArrayWrapper = renderToken({
+        variant: 'inline',
+        label: [null, undefined, '', '   '],
+      });
+      expect(nullArrayWrapper.getElement()).toHaveClass(styles['token-inline-min-width']);
     });
 
     test('handles ReactNode text content correctly', () => {
@@ -311,12 +372,50 @@ describe('Token', () => {
     test('applies default group role', () => {
       const wrapper = renderToken({ label: 'Test token' });
       expect(wrapper.getElement()).toHaveAttribute('role', 'group');
+
+      // Test with different states - should all have group role
+      const disabledWrapper = renderToken({ label: 'Test token', disabled: true });
+      expect(disabledWrapper.getElement()).toHaveAttribute('role', 'group');
+
+      const inlineWrapper = renderToken({ label: 'Test token', variant: 'inline' });
+      expect(inlineWrapper.getElement()).toHaveAttribute('role', 'group');
     });
 
     test('allows custom role override', () => {
       const { container } = render(<InternalToken label="Test token" role="menuitem" />);
       const wrapper = createWrapper(container).findToken()!;
       expect(wrapper.getElement()).toHaveAttribute('role', 'menuitem');
+    });
+
+    test('applies aria-labelledby with unique ID', () => {
+      const wrapper1 = renderToken({ label: 'First token' });
+      const wrapper2 = renderToken({ label: 'Second token' });
+
+      const element1 = wrapper1.getElement();
+      const element2 = wrapper2.getElement();
+
+      // Both tokens should have aria-labelledby
+      expect(element1).toHaveAttribute('aria-labelledby');
+      expect(element2).toHaveAttribute('aria-labelledby');
+
+      // IDs should be unique
+      const labelledby1 = element1.getAttribute('aria-labelledby');
+      const labelledby2 = element2.getAttribute('aria-labelledby');
+      expect(labelledby1).not.toBe(labelledby2);
+      expect(labelledby1).toBeTruthy();
+      expect(labelledby2).toBeTruthy();
+    });
+
+    test('aria-labelledby ID matches label element ID', () => {
+      const wrapper = renderToken({ label: 'Test token' });
+      const tokenElement = wrapper.getElement();
+      const labelElement = wrapper.findLabel().getElement();
+
+      const ariaLabelledby = tokenElement.getAttribute('aria-labelledby');
+      const labelId = labelElement.getAttribute('id');
+
+      expect(ariaLabelledby).toBe(labelId);
+      expect(ariaLabelledby).toBeTruthy();
     });
 
     test('dismiss button accessibility attributes', () => {

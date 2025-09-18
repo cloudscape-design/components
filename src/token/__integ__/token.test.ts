@@ -271,9 +271,12 @@ describe('Token component', () => {
         const tokenElement = page.getTokenWrapper(selector).toSelector();
         const role = await page.getElementAttribute(tokenElement, 'role');
         const ariaDisabled = await page.getElementAttribute(tokenElement, 'aria-disabled');
+        const ariaLabelledby = await page.getElementAttribute(tokenElement, 'aria-labelledby');
 
+        // All tokens should have group role
         expect(role).toBe('group');
         expect(ariaDisabled).toBe('false'); // All test tokens are not disabled
+        expect(ariaLabelledby).toBeTruthy(); // Should have aria-labelledby
       })()
     );
   });
