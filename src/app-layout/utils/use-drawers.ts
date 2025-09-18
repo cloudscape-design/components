@@ -341,6 +341,7 @@ export function useDrawers(
   // ensure that id is only defined when the drawer exists
   activeDrawerIdResolved = activeDrawer?.id ?? null;
   const activeGlobalDrawers = runtimeGlobalDrawers.filter(drawer => activeGlobalDrawersIds.includes(drawer.id));
+  const activeGlobalBottomDrawer = runtimeGlobalDrawers?.find(drawer => drawer.id === activeGlobalBottomDrawerId);
 
   useDrawerRuntimeOpenClose(
     disableRuntimeDrawers,
@@ -380,6 +381,10 @@ export function useDrawers(
     toolsProps?.toolsOpen ? toolsProps.toolsWidth : (activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE),
     MIN_DRAWER_SIZE
   );
+  const activeGlobalBottomDrawerSize = activeGlobalBottomDrawerId
+    ? (drawerSizes[activeGlobalBottomDrawerId] ?? activeGlobalBottomDrawer?.defaultSize ?? MIN_DRAWER_SIZE)
+    : MIN_DRAWER_SIZE;
+  const minGlobalBottomDrawerSize = Math.min(activeGlobalBottomDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
 
   return {
     ariaLabelsWithDrawers: ariaLabels,
@@ -402,5 +407,7 @@ export function useDrawers(
     setExpandedDrawerId,
     activeGlobalBottomDrawerId,
     onActiveGlobalBottomDrawerChange,
+    activeGlobalBottomDrawerSize,
+    minGlobalBottomDrawerSize,
   };
 }

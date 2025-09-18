@@ -9,6 +9,7 @@ import {
   AppLayoutDrawerImplementation as AppLayoutDrawer,
   AppLayoutGlobalDrawersImplementation as AppLayoutGlobalDrawers,
 } from '../drawer';
+import AppLayoutGlobalBottomDrawerImplementation from '../drawer/global-bottom-drawer';
 import { SkeletonPartProps } from '../skeleton/interfaces';
 import { AppLayoutSplitPanelDrawerSideImplementation as AppLayoutSplitPanelSide } from '../split-panel';
 import { isWidgetReady } from '../state/invariants';
@@ -35,7 +36,11 @@ export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: 
   const globalToolsOpen = !!activeGlobalDrawersIds?.length;
   return (
     <>
-      {!!activeGlobalBottomDrawerId && <div className={styles['bottom-tool']}>{activeGlobalBottomDrawerId}</div>}
+      {!!activeGlobalBottomDrawerId && (
+        <div className={styles['bottom-tool']}>
+          <AppLayoutGlobalBottomDrawerImplementation appLayoutInternals={appLayoutState.appLayoutInternals} />
+        </div>
+      )}
       {splitPanelPosition === 'side' && (
         <div
           className={clsx(

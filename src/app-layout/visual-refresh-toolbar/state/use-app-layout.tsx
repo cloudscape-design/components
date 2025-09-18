@@ -137,6 +137,8 @@ export const useAppLayout = (
     setExpandedDrawerId,
     activeGlobalBottomDrawerId,
     onActiveGlobalBottomDrawerChange,
+    activeGlobalBottomDrawerSize,
+    minGlobalBottomDrawerSize,
   } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer }, ariaLabels, {
     ariaLabels,
     toolsHide,
@@ -341,6 +343,8 @@ export const useAppLayout = (
     onActiveAiDrawerResize,
     activeGlobalBottomDrawerId,
     onActiveGlobalBottomDrawerChange,
+    activeGlobalBottomDrawerSize,
+    minGlobalBottomDrawerSize,
   };
 
   const splitPanelInternals: SplitPanelProviderProps = {

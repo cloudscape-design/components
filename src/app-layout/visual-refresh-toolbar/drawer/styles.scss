@@ -40,6 +40,11 @@ $ai-drawer-heider-height: 41px;
   pointer-events: auto;
   word-wrap: break-word;
 
+  &.bottom-drawer {
+    inline-size: 100%;
+    block-size: var(#{custom-props.$bottomDrawerSize});
+  }
+
   &.with-expanded-motion {
     @include styles.with-motion {
       transition:
