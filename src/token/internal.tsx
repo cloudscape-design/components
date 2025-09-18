@@ -4,7 +4,7 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
@@ -18,7 +18,6 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 const TOKEN_INLINE_MIN_CHARACTER_LIMIT = 15;
-const ARIA_LABELLEDBY_ID = 'token-label';
 
 type InternalTokenProps = TokenProps &
   InternalBaseComponentProps & {
@@ -54,6 +53,7 @@ function InternalToken({
   const [showTooltip, setShowTooltip] = useState(false);
   const [isEllipsisActive, setIsEllipsisActive] = useState(false);
   const isInline = variant === 'inline';
+  const ariaLabelledbyId = useUniqueId();
 
   const getTextContent = (node: React.ReactNode): string | undefined => {
     // Handle string nodes: trim whitespace and return undefined if empty
@@ -162,7 +162,7 @@ function InternalToken({
         analyticsSelectors.token,
         baseProps.className
       )}
-      aria-labelledby={ARIA_LABELLEDBY_ID}
+      aria-labelledby={ariaLabelledbyId}
       aria-disabled={!!disabled}
       role={role ?? 'group'}
       onFocus={() => {
@@ -200,7 +200,7 @@ function InternalToken({
           option={buildOptionDefinition()}
           labelContainerRef={labelContainerRef}
           labelRef={labelRef}
-          labelId={ARIA_LABELLEDBY_ID}
+          labelId={ariaLabelledbyId}
           labelClassName={getOptionLabelClassName()}
         />
         {onDismiss && (!isInline || !readOnly) && (
@@ -226,6 +226,7 @@ function InternalToken({
           // This is a non-existant class for testing purposes
           className="token-tooltip"
           onDismiss={() => {
+            /* istanbul ignore next: Tested with integration tests */
             setShowTooltip(false);
           }}
         />
