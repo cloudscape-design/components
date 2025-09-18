@@ -3,13 +3,16 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
+import {
+  setTestSingleTabStopNavigationTarget,
+  TestSingleTabStopNavigationProvider,
+} from '@cloudscape-design/component-toolkit/internal/testing';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import Popover, { PopoverProps } from '../../../lib/components/popover';
 import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../lib/components/test-utils/dom';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 import styles from '../../../lib/components/popover/styles.selectors.js';
 
@@ -366,29 +369,33 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index when keyboard navigation is not active', () => {
-    renderWithSingleTabStopNavigation(<Popover>Trigger</Popover>, { navigationActive: false });
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={false}>
+        <Popover>Trigger</Popover>
+      </TestSingleTabStopNavigationProvider>
+    );
     expect(getTrigger()).not.toHaveAttribute('tabIndex');
   });
 
   test('overrides tab index when keyboard navigation is active', () => {
-    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
-      <div>
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
         <Popover id="popover1">Trigger</Popover>
         <Popover id="popover2">Trigger</Popover>
-      </div>
+      </TestSingleTabStopNavigationProvider>
     );
-    setCurrentTarget(getTrigger('#popover1'));
+    setTestSingleTabStopNavigationTarget(getTrigger('#popover1'));
     expect(getTrigger('#popover1')).toHaveAttribute('tabIndex', '0');
     expect(getTrigger('#popover2')).toHaveAttribute('tabIndex', '-1');
   });
 
   test('does not override tab index for custom trigger', () => {
-    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
-      <div>
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
         <Popover triggerType="custom">Trigger</Popover>
-      </div>
+      </TestSingleTabStopNavigationProvider>
     );
-    setCurrentTarget(getTrigger());
+    setTestSingleTabStopNavigationTarget(getTrigger());
     expect(getTrigger()).not.toHaveAttribute('tabIndex');
   });
 });

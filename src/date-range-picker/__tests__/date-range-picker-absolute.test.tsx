@@ -107,7 +107,7 @@ describe('Date range picker', () => {
         });
       });
 
-      describe('data formats', () => {
+      describe('date formats', () => {
         test(`granularity of month overrides dateOnly and parses out milliseconds`, () => {
           const { wrapper } = renderDateRangePicker({
             ...defaultProps,
@@ -516,7 +516,7 @@ describe('Date range picker', () => {
           );
         });
 
-        testIf(granularity === 'day')('hh:mm:ss gets hidded when dateOnly', () => {
+        testIf(granularity === 'day')('hh:mm:ss gets hidden when dateOnly', () => {
           const onChangeSpy = jest.fn();
           const { wrapper } = renderDateRangePicker({
             ...defaultProps,

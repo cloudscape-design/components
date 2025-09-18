@@ -232,3 +232,17 @@ test('all style api properties', () => {
   expect(getComputedStyle(toggleHandle).getPropertyValue('background-color')).toBe('blue');
   expect(getComputedStyle(toggleLabel).getPropertyValue('color')).toBe('orange');
 });
+
+describe('native attributes', () => {
+  it('adds native attributes', () => {
+    const { container } = render(<Toggle checked={true} nativeInputAttributes={{ 'data-testid': 'my-test-id' }} />);
+    expect(container.querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+    expect(container.querySelectorAll('input[data-testid="my-test-id"]')).toHaveLength(1);
+  });
+  it('concatenates class names', () => {
+    const { container } = render(<Toggle checked={true} nativeInputAttributes={{ className: 'additional-class' }} />);
+    const input = container.querySelector('input');
+    expect(input).toHaveClass(abstractSwitchStyles['native-input']);
+    expect(input).toHaveClass('additional-class');
+  });
+});

@@ -214,7 +214,7 @@
     "externalIconAriaLabel": "Abre em uma nova guia"
   },
   "list": {
-    "dragHandleAriaLabel": "Ícone de arrastar",
+    "dragHandleAriaLabel": "Alça de arraste",
     "dragHandleAriaDescription": "Use Space ou Enter para ativar a função de arrastar para um item e, em seguida, use as teclas de setas para movimentar o posicionamento do item. Para completar o movimento de posicionamento, use Space ou Enter, ou para descartar o movimento, use Escape.",
     "liveAnnouncementDndStarted": "Item selecionado na posição {position} de {total}",
     "liveAnnouncementDndDiscarded": "Reordenação cancelada",
@@ -334,7 +334,7 @@
     "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
     "i18nStrings.labelFiltering": "Encontrar {itemsType}",
     "i18nStrings.labelRefresh": "Atualizar os dados",
-    "i18nStrings.labelBreadcrumbs": "Navegação no S3",
+    "i18nStrings.labelBreadcrumbs": "Navegação estrutural do S3",
     "i18nStrings.labelIconFolder": "Pasta",
     "i18nStrings.labelIconObject": "Objeto",
     "i18nStrings.filteringCounterText": "{count, plural, one {Uma correspondência} other {{count} correspondências}}"

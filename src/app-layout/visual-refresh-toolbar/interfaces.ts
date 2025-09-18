@@ -4,7 +4,9 @@
 import React from 'react';
 
 import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
+import { ButtonGroupProps } from '../../button-group/interfaces';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { NonCancelableEventHandler } from '../../internal/events';
 import { SomeOptional } from '../../internal/types';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
@@ -20,7 +22,10 @@ export interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
 export type InternalDrawer = AppLayoutProps.Drawer & {
   defaultActive?: boolean;
   isExpandable?: boolean;
-  ariaLabels: AppLayoutProps.Drawer['ariaLabels'] & { expandedModeButton?: string };
+  ariaLabels: AppLayoutProps.Drawer['ariaLabels'] & { expandedModeButton?: string; exitExpandedModeButton?: string };
+  header?: React.ReactNode;
+  headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
+  onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
 };
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.
@@ -69,12 +74,22 @@ export interface AppLayoutInternals {
   splitPanelAnimationDisabled?: boolean;
   expandedDrawerId: string | null;
   setExpandedDrawerId: (value: string | null) => void;
+  aiDrawer?: InternalDrawer | null;
+  onActiveAiDrawerChange?: (newDrawerId: string | null, params?: OnChangeParams) => void;
+  activeAiDrawer?: InternalDrawer | null;
+  activeAiDrawerId: string | null;
+  activeAiDrawerSize?: number;
+  minAiDrawerSize?: number;
+  maxAiDrawerSize?: number;
+  aiDrawerFocusControl?: FocusControlState;
+  onActiveAiDrawerResize: (size: number) => void;
 }
 
 interface AppLayoutWidgetizedState extends AppLayoutInternals {
   isNested: boolean;
   verticalOffsets: VerticalLayoutOutput;
   navigationAnimationDisabled: boolean;
+  aiDrawerExpandedMode: boolean;
   splitPanelOffsets: {
     stickyVerticalBottomOffset: number;
     mainContentPaddingBlockEnd: number | undefined;

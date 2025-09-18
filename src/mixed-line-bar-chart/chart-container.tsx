@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { getIsRtl, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
@@ -223,7 +223,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const scaledSeries = makeScaledSeries(visibleSeries, xAxisProps.scale, yAxisProps.scale);
   const barGroups: ScaledBarGroup<T>[] = makeScaledBarGroups(visibleSeries, xAxisProps.scale, plotWidth, plotHeight, y);
 
-  const { isPopoverOpen, isPopoverPinned, showPopover, pinPopover, dismissPopover } = usePopover();
+  const { isPopoverOpen, isPopoverPinned, showPopover, pinPopover, hidePopover, dismissPopover } = usePopover();
 
   // Allows to add a delay between popover is dismissed and handlers are enabled to prevent immediate popover reopening.
   const [isHandlersDisabled, setHandlersDisabled] = useState(false);
@@ -251,13 +251,11 @@ export default function ChartContainer<T extends ChartDataTypes>({
       setHighlightedPoint(point);
       if (point) {
         highlightSeries(point.series);
-        setVerticalMarkerX({
-          scaledX: point.x,
-          label: point.datum?.x ?? null,
-        });
+        setVerticalMarkerX({ scaledX: point.x, label: point.datum?.x ?? null });
+        showPopover();
       }
     },
-    [setHighlightedGroupIndex, setHighlightedPoint, highlightSeries]
+    [setHighlightedGroupIndex, setHighlightedPoint, highlightSeries, showPopover]
   );
 
   const clearAllHighlights = useCallback(() => {
@@ -273,8 +271,9 @@ export default function ChartContainer<T extends ChartDataTypes>({
         clearAllHighlights();
       }
       setVerticalMarkerX(marker);
+      showPopover();
     },
-    [clearAllHighlights]
+    [clearAllHighlights, showPopover]
   );
 
   // Highlight all points and bars at a given X index in a mixed line and bar chart
@@ -283,14 +282,15 @@ export default function ChartContainer<T extends ChartDataTypes>({
       highlightSeries(null);
       setHighlightedPoint(null);
       setHighlightedGroupIndex(groupIndex);
+      showPopover();
     },
-    [highlightSeries, setHighlightedPoint, setHighlightedGroupIndex]
+    [highlightSeries, setHighlightedPoint, setHighlightedGroupIndex, showPopover]
   );
 
   const clearHighlightedSeries = useCallback(() => {
     clearAllHighlights();
-    dismissPopover();
-  }, [dismissPopover, clearAllHighlights]);
+    hidePopover();
+  }, [hidePopover, clearAllHighlights]);
 
   const { isGroupNavigation, ...handlers } = useNavigation({
     series,
@@ -348,12 +348,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [dismissPopover]);
-
-  useLayoutEffect(() => {
-    if (highlightedX !== null || highlightedPoint !== null) {
-      showPopover();
-    }
-  }, [highlightedX, highlightedPoint, showPopover]);
 
   const onPopoverDismiss = (outsideClick?: boolean) => {
     dismissPopover();

@@ -8,6 +8,7 @@ import { useInternalI18n } from '../../i18n/context';
 import { ForwardFocusRef } from '../../internal/hooks/forward-focus';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { assertNever } from '../../internal/types';
 import InternalModal from '../../modal/internal';
 import InternalSpaceBetween from '../../space-between/internal';
 import { S3ResourceSelectorProps } from '../interfaces';
@@ -36,11 +37,6 @@ export interface S3ModalProps {
   removeModalRoot: S3ResourceSelectorProps['removeModalRoot'];
   onDismiss: () => void;
   onSubmit: (resource: S3ResourceSelectorProps.Resource) => void;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function assertNever(_value: never) {
-  return null;
 }
 
 interface S3BrowseState {

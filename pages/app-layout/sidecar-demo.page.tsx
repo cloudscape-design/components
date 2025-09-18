@@ -21,6 +21,7 @@ import {
 import { AppLayoutProps } from '~components/app-layout';
 
 import './utils/external-sidecar-widget-demo';
+import './utils/external-global-left-panel-widget';
 import AppContext, { AppContextType } from '../app/app-context';
 import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';

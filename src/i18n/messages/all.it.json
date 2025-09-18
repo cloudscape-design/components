@@ -215,11 +215,11 @@
   },
   "list": {
     "dragHandleAriaLabel": "Punto di trascinamento",
-    "dragHandleAriaDescription": "Utilizza Spazio o Invio per attivare il trascinamento di un elemento, quindi usa i tasti freccia per spostare la posizione dell'elemento. Per completare lo spostamento della posizione, utilizza Spazio o Invio oppure per annullare lo spostamento, usa Esc.",
+    "dragHandleAriaDescription": "Utilizza Spazio o Invio per attivare il trascinamento di un elemento, quindi usa i tasti freccia per spostare la posizione dell'elemento. Per completare lo spostamento della posizione, utilizza Spazio o Invio oppure per annullare lo spostamento, premi Esc.",
     "liveAnnouncementDndStarted": "Elemento raccolto nella posizione {position} di {total}",
     "liveAnnouncementDndDiscarded": "Riordinamento annullato",
-    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Spostamento dell'elemento di nuovo nella posizione {currentPosition} di {total}} false {Spostamento dell'elemento nella posizione {currentPosition} di {total}} other {}}",
-    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {L'elemento è stato spostato di nuovo nella posizione originale {initialPosition} di {total}} false {Elemento spostato da una posizione {initialPosition} alla posizione {finalPosition} di {total}} other {}}"
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Spostamento dell'elemento nella posizione {currentPosition} di {total} in corso} false {Spostamento dell'elemento nella posizione {currentPosition} di {total} in corso} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {L'elemento è stato spostato nella posizione originale {initialPosition} di {total}} false {Elemento spostato da una posizione {initialPosition} alla posizione {finalPosition} di {total}} other {}}"
   },
   "modal": {
     "closeAriaLabel": "Chiudi modale"
@@ -334,7 +334,7 @@
     "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
     "i18nStrings.labelFiltering": "Trova {itemsType}",
     "i18nStrings.labelRefresh": "Aggiorna i dati",
-    "i18nStrings.labelBreadcrumbs": "Navigazione S3",
+    "i18nStrings.labelBreadcrumbs": "Percorsi di navigazione S3",
     "i18nStrings.labelIconFolder": "Cartella",
     "i18nStrings.labelIconObject": "Oggetto",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 corrispondenza} other {{count} corrispondenze}}"

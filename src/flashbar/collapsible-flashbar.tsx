@@ -15,6 +15,7 @@ import { animate, getDOMRects } from '../internal/animate';
 import { Transition } from '../internal/components/transition';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import customCssProps from '../internal/generated/custom-css-properties';
+import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { throttle } from '../internal/utils/throttle';
@@ -25,9 +26,16 @@ import {
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
 import { useFlashbar } from './common';
 import { Flash, focusFlashById } from './flash';
-import { FlashbarProps } from './interfaces';
+import { FlashbarProps, InternalFlashbarProps } from './interfaces';
 import { getCollapsibleFlashStyles, getNotificationBarStyles } from './style';
-import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils';
+import {
+  counterTypes,
+  FOCUS_DEBOUNCE_DELAY,
+  getFlashTypeCount,
+  getItemColor,
+  getVisibleCollapsedItems,
+  StackableItem,
+} from './utils';
 
 import styles from './styles.css.js';
 
@@ -37,7 +45,7 @@ const maxNonCollapsibleItems = 1;
 
 const resizeListenerThrottleDelay = 100;
 
-export default function CollapsibleFlashbar({ items, style, ...restProps }: FlashbarProps) {
+export default function CollapsibleFlashbar({ items, style, ...restProps }: InternalFlashbarProps) {
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
@@ -93,16 +101,17 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Flas
     setIsFlashbarStackExpanded(prev => !prev);
   }
 
+  const debouncedFocus = useDebounceCallback(focusFlashById, FOCUS_DEBOUNCE_DELAY);
   useLayoutEffect(() => {
     if (isFlashbarStackExpanded && items?.length) {
       const mostRecentItem = items[0];
       if (mostRecentItem.id !== undefined) {
-        focusFlashById(ref.current, mostRecentItem.id);
+        debouncedFocus(ref.current, mostRecentItem.id);
       }
     }
     // Run this after expanding, but not every time the items change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFlashbarStackExpanded]);
+  }, [debouncedFocus, isFlashbarStackExpanded]);
 
   // When collapsing, scroll up if necessary to avoid losing track of the focused button
   useEffectOnUpdate(() => {

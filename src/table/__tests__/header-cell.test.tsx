@@ -3,13 +3,16 @@
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit/internal/container-queries/interfaces.js';
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
+import {
+  setTestSingleTabStopNavigationTarget,
+  TestSingleTabStopNavigationProvider,
+} from '@cloudscape-design/component-toolkit/internal/testing';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { TableHeaderCell, TableHeaderCellProps } from '../../../lib/components/table/header-cell';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 import { renderHook } from '../../__tests__/render-hook';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 import { TableProps } from '../interfaces';
 
 import styles from '../../../lib/components/table/header-cell/styles.css.js';
@@ -124,15 +127,17 @@ describe('i18n', () => {
   });
 
   test('does not set tab index when negative', () => {
-    const { setCurrentTarget } = renderWithSingleTabStopNavigation(<TestComponent />, {
-      navigationActive: true,
-    });
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
+        <TestComponent />
+      </TestSingleTabStopNavigationProvider>
+    );
     const headerCell = document.querySelector('th')!;
 
     expect(headerCell).not.toHaveAttribute('tabIndex');
-    setCurrentTarget(headerCell);
+    setTestSingleTabStopNavigationTarget(headerCell);
     expect(headerCell).toHaveAttribute('tabIndex', '0');
-    setCurrentTarget(null);
+    setTestSingleTabStopNavigationTarget(null);
     expect(headerCell).not.toHaveAttribute('tabIndex');
   });
 });
