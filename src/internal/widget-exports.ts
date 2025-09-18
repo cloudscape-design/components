@@ -25,5 +25,6 @@ export { AppLayoutStateProvider as AppLayoutWidgetizedState } from '../app-layou
 export { SplitPanelImplementation as SplitPanel } from '../split-panel/implementation';
 export { BreadcrumbGroupImplementation as BreadcrumbGroup } from '../breadcrumb-group/implementation';
 export { DrawerImplementation as Drawer } from '../drawer/implementation';
+export { FlashbarImplementation as Flashbar } from '../flashbar/implementation';
 export { SideNavigationImplementation as SideNavigation } from '../side-navigation/implementation';
 export { HelpPanelImplementation as HelpPanel } from '../help-panel/implementation';

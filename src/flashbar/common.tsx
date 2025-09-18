@@ -5,12 +5,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useMergeRefs, useReducedMotion, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { focusFlashById, focusFlashFocusableArea } from './flash';
-import { FlashbarProps } from './interfaces';
+import { FlashbarProps, InternalFlashbarProps } from './interfaces';
 import { FOCUS_DEBOUNCE_DELAY } from './utils';
 
 import styles from './styles.css.js';
@@ -74,15 +73,13 @@ export function useFlashbar({
   onItemsAdded,
   onItemsChanged,
   onItemsRemoved,
+  __internalRootRef,
   ...restProps
-}: FlashbarProps & {
+}: InternalFlashbarProps & {
   onItemsAdded?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsRemoved?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsChanged?: (options?: { allItemsHaveId?: boolean; isReducedMotion?: boolean }) => void;
 }) {
-  const { __internalRootRef } = useBaseComponent('Flashbar', {
-    props: { stackItems: restProps.stackItems },
-  });
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
   const baseProps = getBaseProps(restProps);
   const ref = useRef<HTMLDivElement | null>(null);
