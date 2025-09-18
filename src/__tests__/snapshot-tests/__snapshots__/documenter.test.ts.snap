@@ -19540,6 +19540,321 @@ This is only shown when \`statusType\` is set to \`finished\` or not set at all.
 }
 `;
 
+exports[`Components definition for radio-button matches the snapshot: radio-button 1`] = `
+{
+  "dashCaseName": "radio-button",
+  "events": [
+    {
+      "cancelable": false,
+      "detailInlineType": {
+        "name": "RadioButtonProps.ChangeDetail",
+        "properties": [
+          {
+            "name": "checked",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "RadioButtonProps.ChangeDetail",
+      "name": "onChange",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Sets input focus onto the UI control.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "RadioButton",
+  "properties": [
+    {
+      "name": "checked",
+      "optional": false,
+      "type": "boolean",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "name": "name",
+      "optional": false,
+      "type": "string",
+    },
+    {
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "inlineType": {
+        "name": "RadioButtonProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "checked",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "description",
+            "optional": true,
+            "type": "{ color?: { checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "inlineType": {
+                          "name": "{ checked?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                          "properties": [
+                            {
+                              "name": "checked",
+                              "optional": true,
+                              "type": "string",
+                            },
+                            {
+                              "name": "disabled",
+                              "optional": true,
+                              "type": "string",
+                            },
+                            {
+                              "name": "readOnly",
+                              "optional": true,
+                              "type": "string",
+                            },
+                          ],
+                          "type": "object",
+                        },
+                        "name": "fill",
+                        "optional": true,
+                        "type": "{ checked?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "circle",
+                  "optional": true,
+                  "type": "{ fill?: { checked?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "checked",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "fill",
+                  "optional": true,
+                  "type": "{ checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "borderColor",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderRadius",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderWidth",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "focusRing",
+                  "optional": true,
+                  "type": "{ borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "stroke",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "input",
+            "optional": true,
+            "type": "{ fill?: { checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; stroke?: { default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; circle?: { ...; } | undefined; focusRing?: { ...; }...",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "checked",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "label",
+            "optional": true,
+            "type": "{ color?: { checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "type": "RadioButtonProps.Style",
+    },
+    {
+      "name": "value",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The control's label that's displayed next to the radio button. A state change occurs when a user clicks on it.",
+      "displayName": "label",
+      "isDefault": true,
+      "name": "children",
+    },
+    {
+      "isDefault": false,
+      "name": "description",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for radio-group matches the snapshot: radio-group 1`] = `
 {
   "dashCaseName": "radio-group",
@@ -19673,7 +19988,7 @@ being included in a form submission. A read-only control is still focusable.",
     },
     {
       "inlineType": {
-        "name": "RadioGroupProps.Style",
+        "name": "RadioButtonProps.Style",
         "properties": [
           {
             "inlineType": {
@@ -19898,7 +20213,7 @@ being included in a form submission. A read-only control is still focusable.",
       "systemTags": [
         "core",
       ],
-      "type": "RadioGroupProps.Style",
+      "type": "RadioButtonProps.Style",
     },
     {
       "description": "Sets the value of the selected radio button.
