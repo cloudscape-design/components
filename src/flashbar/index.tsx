@@ -3,19 +3,18 @@
 'use client';
 import React from 'react';
 
+import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import CollapsibleFlashbar from './collapsible-flashbar';
 import { FlashbarProps } from './interfaces';
-import NonCollapsibleFlashbar from './non-collapsible-flashbar';
+import { InternalFlashbar } from './internal';
 
 export { FlashbarProps };
 
 export default function Flashbar(props: FlashbarProps) {
-  if (props.stackItems) {
-    return <CollapsibleFlashbar {...props} />;
-  } else {
-    return <NonCollapsibleFlashbar {...props} />;
-  }
+  const { __internalRootRef } = useBaseComponent('Flashbar', {
+    props: { stackItems: props.stackItems },
+  });
+  return <InternalFlashbar __internalRootRef={__internalRootRef} {...props} />;
 }
 
 applyDisplayName(Flashbar, 'Flashbar');
