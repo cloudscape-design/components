@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { range } from 'lodash';
+import range from 'lodash/range';
 
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
