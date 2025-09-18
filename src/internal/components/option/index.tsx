@@ -30,6 +30,10 @@ const Option = ({
   isGroupOption = false,
   highlightedOption = false,
   selectedOption = false,
+  labelClassName,
+  labelContainerRef,
+  labelRef,
+  labelId,
   ...restProps
 }: OptionProps) => {
   if (!option) {
@@ -54,7 +58,8 @@ const Option = ({
     styles.option,
     disabled && styles.disabled,
     isGroupOption && styles.parent,
-    highlightedOption && styles.highlighted
+    highlightedOption && styles.highlighted,
+    baseProps.className
   );
 
   const icon = option.__customIcon || (
@@ -70,17 +75,20 @@ const Option = ({
 
   return (
     <span
+      {...baseProps}
       data-value={option.value}
       className={className}
       lang={option.lang}
       title={option.label ?? option.value}
-      {...baseProps}
     >
       {icon}
       <span className={styles.content}>
-        <span className={styles['label-content']}>
+        <span className={clsx(styles['label-content'], labelClassName)}>
           <Label
-            label={option.label ?? option.value}
+            labelContainerRef={labelContainerRef}
+            labelRef={labelRef}
+            labelId={labelId}
+            label={option.label ?? option.value ?? option.labelContent}
             prefix={option.__labelPrefix}
             highlightText={highlightText}
             triggerVariant={triggerVariant}

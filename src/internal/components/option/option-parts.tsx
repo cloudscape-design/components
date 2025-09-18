@@ -11,19 +11,54 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 interface LabelProps {
-  label?: string;
+  labelContainerRef?: React.RefObject<any>;
+  labelRef?: React.RefObject<any>;
+  labelId?: string;
+  label?: React.ReactNode;
   prefix?: string;
   highlightText?: string;
   triggerVariant: boolean;
 }
-export const Label = ({ label, prefix, highlightText, triggerVariant }: LabelProps) => (
-  <span className={clsx(styles.label, analyticsSelectors.label, triggerVariant && styles['trigger-variant'])}>
-    {prefix && (
-      <span className={clsx(styles['label-prefix'], triggerVariant && styles['trigger-variant'])}>{prefix} </span>
-    )}
-    <HighlightMatch str={label} highlightText={highlightText} />
-  </span>
-);
+export const Label = ({
+  labelContainerRef,
+  labelRef,
+  labelId,
+  label,
+  prefix,
+  highlightText,
+  triggerVariant,
+}: LabelProps) => {
+  // If label is not JSX, use the normal label structure with Highlight matching, else render the JSX
+  if (!React.isValidElement(label)) {
+    const stringLabel = label ? String(label) : undefined;
+    return (
+      <span
+        id={labelId}
+        ref={labelContainerRef}
+        className={clsx(styles.label, analyticsSelectors.label, triggerVariant && styles['trigger-variant'])}
+      >
+        {prefix && (
+          <span className={clsx(styles['label-prefix'], triggerVariant && styles['trigger-variant'])}>{prefix} </span>
+        )}
+        <HighlightMatch labelRef={labelRef} str={stringLabel} highlightText={highlightText} />
+      </span>
+    );
+  } else {
+    return (
+      <span id={labelId} ref={labelContainerRef} className={clsx(styles.label, analyticsSelectors.label)}>
+        <span
+          ref={labelRef}
+          className={clsx(
+            styles['label-custom-content'],
+            triggerVariant && styles['label-custom-content-trigger-variant']
+          )}
+        >
+          {label}
+        </span>
+      </span>
+    );
+  }
+};
 
 interface LabelTagProps {
   labelTag?: string;

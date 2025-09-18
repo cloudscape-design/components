@@ -6,7 +6,7 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
-@use '../../../token-group/constants' as tokenGroup;
+@use '../../../token/constants' as token;
 
 @use './motion';
 
@@ -40,7 +40,7 @@ $padding-block-inner-filtering-token: 0px;
     border-block-width: awsui.$border-width-token;
     border-inline-width: awsui.$border-width-token;
 
-    border-color: tokenGroup.$token-border-color;
+    border-color: token.$token-border-color;
     border-start-end-radius: 0;
     border-end-end-radius: 0;
     block-size: 100%;
