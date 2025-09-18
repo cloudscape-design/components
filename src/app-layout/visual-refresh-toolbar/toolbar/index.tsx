@@ -46,6 +46,8 @@ export interface ToolbarProps {
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   activeGlobalDrawersIds?: ReadonlyArray<string>;
   onActiveGlobalDrawersChange?: ((drawerId: string, params: OnChangeParams) => void) | undefined;
+  activeGlobalBottomDrawerId?: string | null;
+  onActiveGlobalBottomDrawerChange?: (value: string | null, params: OnChangeParams) => void;
 
   expandedDrawerId?: string | null;
   setExpandedDrawerId?: (value: string | null) => void;
@@ -98,6 +100,8 @@ export function AppLayoutToolbarImplementation({
     expandedDrawerId,
     setExpandedDrawerId,
     aiDrawerFocusRef,
+    onActiveGlobalBottomDrawerChange,
+    activeGlobalBottomDrawerId,
   } = toolbarProps;
   const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
@@ -237,6 +241,8 @@ export function AppLayoutToolbarImplementation({
               onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
               expandedDrawerId={expandedDrawerId}
               setExpandedDrawerId={setExpandedDrawerId!}
+              onActiveGlobalBottomDrawerChange={onActiveGlobalBottomDrawerChange}
+              activeGlobalBottomDrawerId={activeGlobalBottomDrawerId}
             />
           </div>
         )}
