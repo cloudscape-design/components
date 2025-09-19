@@ -61,6 +61,9 @@ export namespace AlertProps {
         borderWidth?: string;
       };
     };
+    icon?: {
+      color?: string;
+    };
     dismissButton?: {
       color?: {
         active?: string;
