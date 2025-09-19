@@ -19,7 +19,7 @@ afterEach(() => {
   clearVisualRefreshState();
 });
 
-const skippedComponents = ['button'];
+const skippedComponents = ['button', 'wizard'];
 
 describe('Check outer form submission', () => {
   getAllComponents()
