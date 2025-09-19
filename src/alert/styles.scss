@@ -160,7 +160,7 @@ $_text-colors: (
     border-color: #{map.get($_border-colors, $type)};
     background-color: #{map.get($_background-colors, $type)};
     > .alert-wrapper > .alert-focus-wrapper > .icon {
-      color: #{map.get($_text-colors, $type)};
+      color: var(#{custom-props.$alertIconColor}, #{map.get($_text-colors, $type)});
     }
   }
 }
