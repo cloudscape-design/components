@@ -200,6 +200,8 @@ const getAllValueSuggestions = (
       value: property.propertyLabel + ' ' + (operator || '=') + ' ' + filteringOption.value,
       label: filteringOption.label,
       __labelPrefix: property.propertyLabel + ' ' + (operator || '='),
+      tags: filteringOption.tags,
+      filteringTags: filteringOption.filteringTags,
     });
   });
   return [defaultGroup, ...Object.keys(customGroups).map(group => customGroups[group])];
@@ -258,10 +260,12 @@ export const getAutosuggestOptions = (
         filterText: parsedText.value,
         options: [
           {
-            options: options.map(({ label, value }) => ({
+            options: options.map(({ label, value, tags, filteringTags }) => ({
               value: propertyLabel + ' ' + parsedText.operator + ' ' + value,
               label: label,
               __labelPrefix: propertyLabel + ' ' + parsedText.operator,
+              tags: tags,
+              filteringTags: filteringTags,
             })),
             label: groupValuesLabel,
           },

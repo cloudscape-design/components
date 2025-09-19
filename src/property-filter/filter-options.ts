@@ -36,5 +36,9 @@ function matchSingleOption(option: OptionDefinition, searchText: string): boolea
   const label = (option.label ?? '').toLowerCase();
   const labelPrefix = option.__labelPrefix ?? '';
   const value = (option.value ? option.value.slice(labelPrefix.length) : '').toLowerCase();
-  return label.indexOf(searchText) !== -1 || value.indexOf(searchText) !== -1;
+
+  const matchesLabelOrValue = label.indexOf(searchText) !== -1 || value.indexOf(searchText) !== -1;
+  const matchesTags = option.tags?.some(tag => tag.toLowerCase().indexOf(searchText) !== -1) ?? false;
+  const matchesFilteringTags = option.filteringTags?.some(tag => tag.toLowerCase().indexOf(searchText) !== -1) ?? false;
+  return matchesLabelOrValue || matchesTags || matchesFilteringTags;
 }
