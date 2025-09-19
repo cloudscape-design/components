@@ -108,3 +108,17 @@ test(
     return expect(isDismissButtonFocused).toBe(true);
   })
 );
+
+test(
+  'dismissing the last flash item moves focus to h1 element',
+  setupTest(async page => {
+    await page.removeAll();
+    await page.addInfoFlash();
+
+    await page.dismissFirstItem();
+
+    const isH1Focused = await page.isFocused('h1');
+
+    return expect(isH1Focused).toBe(true);
+  })
+);

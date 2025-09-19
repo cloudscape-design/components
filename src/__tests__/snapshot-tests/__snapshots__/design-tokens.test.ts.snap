@@ -1851,6 +1851,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -4474,6 +4481,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#95a5a6",
             "light": "#687078",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
           },
         },
         "color-text-accent": {
@@ -7101,6 +7115,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -9724,6 +9745,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#95a5a6",
             "light": "#687078",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
           },
         },
         "color-text-accent": {
@@ -12351,6 +12379,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -14976,6 +15011,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#95a5a6",
           },
         },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -17599,6 +17641,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#95a5a6",
         "light": "#687078",
+      },
+    },
+    "color-item-selected": {
+      "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#0073bb",
       },
     },
     "color-text-accent": {
@@ -20231,6 +20280,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -22854,6 +22910,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#a4a4ad",
             "light": "#a4a4ad",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-text-accent": {
@@ -25481,6 +25544,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -28104,6 +28174,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#a4a4ad",
             "light": "#656871",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-accent": {
@@ -30731,6 +30808,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -33354,6 +33438,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#a4a4ad",
             "light": "#656871",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-accent": {
@@ -35981,6 +36072,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#a4a4ad",
           },
         },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -38606,6 +38704,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#a4a4ad",
           },
         },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -41229,6 +41334,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#a4a4ad",
         "light": "#656871",
+      },
+    },
+    "color-item-selected": {
+      "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
       },
     },
     "color-text-accent": {
