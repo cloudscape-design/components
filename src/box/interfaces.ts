@@ -151,7 +151,8 @@ export namespace BoxProps {
     | 'samp'
     | 'awsui-key-label'
     | 'awsui-gen-ai-label'
-    | 'awsui-value-large';
+    | 'awsui-value-large'
+    | 'awsui-inline-code';
 
   export type Display = 'block' | 'inline' | 'inline-block' | 'none';
   export type TextAlign = 'left' | 'center' | 'right';
