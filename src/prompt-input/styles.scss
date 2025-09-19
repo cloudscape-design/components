@@ -98,9 +98,6 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     opacity: 1;
   }
 
-  &:-ms-input-placeholder {
-    @include styles.form-placeholder;
-  }
 
   &:focus {
     outline: none;
@@ -126,9 +123,6 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
       opacity: 1;
     }
 
-    &:-ms-input-placeholder {
-      @include styles.form-placeholder-disabled;
-    }
   }
 
   &-wrapper {

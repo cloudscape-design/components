@@ -392,6 +392,7 @@ const InternalButtonDropdown = React.forwardRef(
             open={canBeOpened && isOpen}
             position="static"
             role="menu"
+            tagOverride="ul"
             decreaseBlockMargin={true}
             ariaLabel={ariaLabel}
             ariaLabelledby={hasHeader ? headerId : shouldLabelWithTrigger ? triggerId : undefined}

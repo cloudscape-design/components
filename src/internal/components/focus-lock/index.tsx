@@ -26,7 +26,7 @@ function FocusLock(
   { className, disabled, autoFocus, restoreFocus, children }: FocusLockProps,
   ref: React.Ref<FocusLockRef>
 ) {
-  const returnFocusToRef = useRef<HTMLOrSVGElement | null>(null);
+  const restoreFocusTargetRef = useRef<HTMLOrSVGElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const focusFirst = () => {
@@ -44,21 +44,25 @@ function FocusLock(
   // Captures focus when `autoFocus` is set, and the component is mounted or
   // `disabled` changes from true to false.
   useEffect(() => {
+    const assignRestoreFocusTarget = () => {
+      if (document.activeElement && !containerRef.current?.contains(document.activeElement as Node)) {
+        restoreFocusTargetRef.current = document.activeElement as unknown as HTMLOrSVGElement;
+      }
+    };
     if (autoFocus && !disabled) {
-      returnFocusToRef.current = document.activeElement as HTMLOrSVGElement | null;
+      assignRestoreFocusTarget();
       focusFirst();
     }
   }, [autoFocus, disabled]);
 
-  // Restore focus if `restoreFocus` is set, and `disabled` changes from false
-  // to true.
+  // Restore focus if `restoreFocus` is set, and `disabled` changes from false to true.
   const [previouslyDisabled, setPreviouslyDisabled] = useState(!!disabled);
   useEffect(() => {
     if (previouslyDisabled !== !!disabled) {
       setPreviouslyDisabled(!!disabled);
       if (restoreFocus && disabled) {
-        returnFocusToRef.current?.focus();
-        returnFocusToRef.current = null;
+        restoreFocusTargetRef.current?.focus();
+        restoreFocusTargetRef.current = null;
       }
     }
   }, [previouslyDisabled, disabled, restoreFocus]);
@@ -68,8 +72,8 @@ function FocusLock(
   const restoreFocusHandler = useCallback(
     (elem: HTMLDivElement | null) => {
       if (elem === null && restoreFocus) {
-        returnFocusToRef.current?.focus();
-        returnFocusToRef.current = null;
+        restoreFocusTargetRef.current?.focus();
+        restoreFocusTargetRef.current = null;
       }
     },
     [restoreFocus]

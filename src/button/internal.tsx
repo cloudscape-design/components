@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import {
   getAnalyticsLabelAttribute,
   getAnalyticsMetadataAttribute,
@@ -21,7 +22,6 @@ import {
 } from '../internal/analytics/selectors';
 import Tooltip from '../internal/components/tooltip/index.js';
 import { useButtonContext } from '../internal/context/button-context';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -306,10 +306,12 @@ export const InternalButton = React.forwardRef(
       return (
         <>
           <WithNativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>
+            {...buttonProps}
+            {...disabledReasonProps}
             tag="a"
+            componentName="Button"
             nativeAttributes={nativeAnchorAttributes}
             skipWarnings={__skipNativeAttributesWarnings}
-            {...buttonProps}
             href={isNotInteractive ? undefined : href}
             role={isNotInteractive ? 'link' : undefined}
             tabIndex={getAnchorTabIndex()}
@@ -318,7 +320,6 @@ export const InternalButton = React.forwardRef(
             rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
             aria-disabled={isNotInteractive ? true : undefined}
             download={download}
-            {...disabledReasonProps}
             style={stylePropertiesAndVariables}
           >
             {buttonContent}
@@ -336,14 +337,15 @@ export const InternalButton = React.forwardRef(
     return (
       <>
         <WithNativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>
+          {...buttonProps}
+          {...disabledReasonProps}
           tag="button"
+          componentName="Button"
           nativeAttributes={nativeButtonAttributes}
           skipWarnings={__skipNativeAttributesWarnings}
-          {...buttonProps}
           type={formAction === 'none' ? 'button' : 'submit'}
           disabled={disabled && !__focusable && !isDisabledWithReason}
           aria-disabled={hasAriaDisabled ? true : undefined}
-          {...disabledReasonProps}
           style={stylePropertiesAndVariables}
         >
           {buttonContent}

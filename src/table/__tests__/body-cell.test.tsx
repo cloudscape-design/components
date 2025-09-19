@@ -3,12 +3,16 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
+import {
+  setTestSingleTabStopNavigationTarget,
+  TestSingleTabStopNavigationProvider,
+} from '@cloudscape-design/component-toolkit/internal/testing';
+
 import { LiveRegionController } from '../../../lib/components/live-region/controller.js';
 import { TableBodyCell, TableBodyCellProps } from '../../../lib/components/table/body-cell';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 import wrapper from '../../../lib/components/test-utils/dom';
 import { renderHook } from '../../__tests__/render-hook';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 import { TableProps } from '../interfaces';
 
 import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
@@ -335,13 +339,17 @@ describe('TableBodyCell', () => {
   });
 
   test('does not set tab index when negative', () => {
-    const { setCurrentTarget } = renderWithSingleTabStopNavigation(<TestComponent />, { navigationActive: true });
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
+        <TestComponent />
+      </TestSingleTabStopNavigationProvider>
+    );
     const tableCell = wrapper().find('td')!.getElement();
 
     expect(tableCell).not.toHaveAttribute('tabIndex');
-    setCurrentTarget(tableCell);
+    setTestSingleTabStopNavigationTarget(tableCell);
     expect(tableCell).toHaveAttribute('tabIndex', '0');
-    setCurrentTarget(null);
+    setTestSingleTabStopNavigationTarget(null);
     expect(tableCell).not.toHaveAttribute('tabIndex');
   });
 

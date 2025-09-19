@@ -12,7 +12,12 @@ import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { forceMobileModeSymbol } from '../../../lib/components/internal/hooks/use-mobile';
 import { SplitPanelProps } from '../../../lib/components/split-panel';
-import createWrapper, { AppLayoutWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper, {
+  AppLayoutWrapper,
+  ButtonGroupWrapper,
+  ButtonWrapper,
+  ElementWrapper,
+} from '../../../lib/components/test-utils/dom';
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
@@ -206,20 +211,36 @@ export const getGlobalDrawersTestUtils = (wrapper: AppLayoutWrapper) => {
       );
     },
 
-    findCloseButtonByActiveDrawerId(id: string): ElementWrapper | null {
-      return wrapper.find(
-        `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['active-drawer-close-button']}`
-      );
+    findCloseButtonByActiveDrawerId(id: string): ButtonWrapper | null {
+      return wrapper
+        .findComponent(
+          `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"]`,
+          ButtonGroupWrapper
+        )!
+        .findButtonById('close');
     },
 
-    findExpandedModeButtonByActiveDrawerId(id: string): ElementWrapper | null {
+    findExpandedModeButtonByActiveDrawerId(id: string): ButtonWrapper | null {
+      return wrapper
+        .findComponent(
+          `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"]`,
+          ButtonGroupWrapper
+        )!
+        .findButtonById('expand');
+    },
+
+    findLeaveExpandedModeButtonInAIDrawer(): ElementWrapper | null {
       return wrapper.find(
-        `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['active-drawer-expanded-mode-button']}`
+        `.${testutilStyles['active-drawer']} .${testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button']}`
       );
     },
 
     isLayoutInDrawerExpandedMode(): boolean {
       return !!wrapper.matches(`.${visualRefreshToolbarStyles['drawer-expanded-mode']}`);
+    },
+
+    findAiDrawerTrigger(): ElementWrapper | null {
+      return wrapper.find(`.${testutilStyles['ai-drawer-toggle']}`);
     },
   };
 };

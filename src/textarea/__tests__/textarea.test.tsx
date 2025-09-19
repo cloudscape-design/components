@@ -407,4 +407,17 @@ describe('Textarea', () => {
       expect(keyUpSpy).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('native attributes', () => {
+    it('adds native attributes', () => {
+      const { textareaWrapper } = renderTextarea({ nativeTextareaAttributes: { 'data-testid': 'my-test-id' } });
+      expect(textareaWrapper.getElement().querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+      expect(textareaWrapper.getElement().querySelectorAll('textarea[data-testid="my-test-id"]')).toHaveLength(1);
+    });
+    it('concatenates class names', () => {
+      const { textarea } = renderTextarea({ nativeTextareaAttributes: { className: 'additional-class' } });
+      expect(textarea).toHaveClass(styles.textarea);
+      expect(textarea).toHaveClass('additional-class');
+    });
+  });
 });

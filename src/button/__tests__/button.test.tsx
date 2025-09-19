@@ -4,13 +4,16 @@ import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
 import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
+import {
+  setTestSingleTabStopNavigationTarget,
+  TestSingleTabStopNavigationProvider,
+} from '@cloudscape-design/component-toolkit/internal/testing';
 
 import Button, { ButtonProps } from '../../../lib/components/button';
 import InternalButton from '../../../lib/components/button/internal';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
 import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 import customCssProps from '../../internal/generated/custom-css-properties';
 
 import styles from '../../../lib/components/button/styles.css.js';
@@ -811,30 +814,34 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index when keyboard navigation is not active', () => {
-    renderWithSingleTabStopNavigation(<Button id="button" />, { navigationActive: false });
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={false}>
+        <Button id="button" />
+      </TestSingleTabStopNavigationProvider>
+    );
     expect(getButton('#button')).not.toHaveAttribute('tabIndex');
   });
 
   test('overrides tab index when keyboard navigation is active', () => {
-    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
-      <div>
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
         <Button id="button1" />
         <Button id="button2" />
-      </div>
+      </TestSingleTabStopNavigationProvider>
     );
-    setCurrentTarget(getButton('#button1'));
+    setTestSingleTabStopNavigationTarget(getButton('#button1'));
     expect(getButton('#button1')).toHaveAttribute('tabIndex', '0');
     expect(getButton('#button2')).toHaveAttribute('tabIndex', '-1');
   });
 
   test('does not override explicit tab index with 0', () => {
-    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
-      <div>
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
         <InternalButton id="button1" nativeButtonAttributes={{ tabIndex: -2 }} />
         <InternalButton id="button2" nativeButtonAttributes={{ tabIndex: -2 }} />
-      </div>
+      </TestSingleTabStopNavigationProvider>
     );
-    setCurrentTarget(getButton('#button1'));
+    setTestSingleTabStopNavigationTarget(getButton('#button1'));
     expect(getButton('#button1')).toHaveAttribute('tabIndex', '-2');
     expect(getButton('#button2')).toHaveAttribute('tabIndex', '-2');
   });

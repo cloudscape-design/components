@@ -5,7 +5,12 @@ import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import {
+  SingleTabStopNavigationAPI,
+  SingleTabStopNavigationProvider,
+  useMergeRefs,
+  useSingleTabStopNavigation,
+} from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { ButtonProps } from '../button/interfaces';
@@ -13,11 +18,6 @@ import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import Tooltip from '../internal/components/tooltip';
-import {
-  SingleTabStopNavigationAPI,
-  SingleTabStopNavigationProvider,
-  useSingleTabStopNavigation,
-} from '../internal/context/single-tab-stop-navigation-context';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { usePrevious } from '../internal/hooks/use-previous';

@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '@cloudscape-design/component-toolkit/internal';
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 
-import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';

@@ -3,6 +3,10 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
+import {
+  setTestSingleTabStopNavigationTarget,
+  TestSingleTabStopNavigationProvider,
+} from '@cloudscape-design/component-toolkit/internal/testing';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import FormField from '../../../lib/components/form-field';
@@ -14,7 +18,6 @@ import Link, { LinkProps } from '../../../lib/components/link';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
 import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 import customCssProps from '../../internal/generated/custom-css-properties';
 
 import styles from '../../../lib/components/link/styles.css.js';
@@ -285,23 +288,31 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index for button link when keyboard navigation is not active', () => {
-    renderWithSingleTabStopNavigation(<Link id="link" />, { navigationActive: false });
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={false}>
+        <Link id="link" />
+      </TestSingleTabStopNavigationProvider>
+    );
     expect(getLink('#link')).toHaveAttribute('tabIndex', '0');
   });
 
   test('does not override tab index for anchor link when keyboard navigation is not active', () => {
-    renderWithSingleTabStopNavigation(<Link id="link" href="#" />, { navigationActive: false });
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={false}>
+        <Link id="link" href="#" />
+      </TestSingleTabStopNavigationProvider>
+    );
     expect(getLink('#link')).not.toHaveAttribute('tabIndex');
   });
 
   test.each([undefined, '#'])('overrides tab index when keyboard navigation is active href=%s', href => {
-    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
-      <div>
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
         <Link id="link1" href={href} />
         <Link id="link2" href={href} />
-      </div>
+      </TestSingleTabStopNavigationProvider>
     );
-    setCurrentTarget(getLink('#link1'));
+    setTestSingleTabStopNavigationTarget(getLink('#link1'));
     expect(getLink('#link1')).toHaveAttribute('tabIndex', '0');
     expect(getLink('#link2')).toHaveAttribute('tabIndex', '-1');
   });
@@ -411,5 +422,23 @@ describe('Style API', () => {
     expect(getComputedStyle(link).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('rgb(157, 18, 10)');
     expect(getComputedStyle(link).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('6px');
     expect(getComputedStyle(link).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('4px');
+  });
+});
+
+describe('native attributes', () => {
+  it('adds native attributes', () => {
+    const { container } = render(<Link href="#" nativeAttributes={{ 'data-testid': 'my-test-id' }} />);
+    expect(container.querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+    expect(container.querySelectorAll('a[data-testid="my-test-id"]')).toHaveLength(1);
+  });
+  it('adds native attributes (button link)', () => {
+    const { container } = render(<Link nativeAttributes={{ 'data-testid': 'my-test-id' }} />);
+    expect(container.querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+    expect(container.querySelectorAll('a[data-testid="my-test-id"]')).toHaveLength(1);
+  });
+  it('concatenates class names', () => {
+    const { container } = render(<Link href="#" nativeAttributes={{ className: 'additional-class' }} />);
+    expect(container.firstChild).toHaveClass(styles.link);
+    expect(container.firstChild).toHaveClass('additional-class');
   });
 });

@@ -3,6 +3,10 @@
 import { BaseComponentProps } from '../internal/base-component';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
+/**
+ * @awsuiSystem core
+ */
+import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface BaseInputProps {
   /**
@@ -73,6 +77,18 @@ export interface BaseInputProps {
    * The event `detail` contains the current value of the field.
    */
   onChange?: NonCancelableEventHandler<InputProps.ChangeDetail>;
+
+  /**
+   * Attributes to add to the native `input` element.
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeInputAttributes?: NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>;
 }
 
 export interface InputAutoCorrect {

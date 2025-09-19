@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { RefObject, useEffect, useState } from 'react';
-import { ResizeObserver } from '@juggle/resize-observer';
 
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
@@ -85,7 +84,7 @@ export function useStickyScrollbar(
 
   // Update scrollbar position wrapper or table size change.
   useEffect(() => {
-    if (wrapperRef.current && tableRef.current) {
+    if (wrapperRef.current && tableRef.current && typeof ResizeObserver !== 'undefined') {
       const observer = new ResizeObserver(() => {
         if (scrollbarContentRef.current) {
           updatePosition(

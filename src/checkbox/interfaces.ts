@@ -3,6 +3,10 @@
 import React from 'react';
 
 import { NonCancelableEventHandler } from '../internal/events';
+/**
+ * @awsuiSystem core
+ */
+import { NativeAttributes } from '../internal/utils/with-native-attributes';
 import { BaseCheckboxProps } from './base-checkbox';
 
 export interface CheckboxProps extends BaseCheckboxProps {
@@ -33,6 +37,18 @@ export interface CheckboxProps extends BaseCheckboxProps {
    * @awsuiSystem core
    */
   style?: CheckboxProps.Style;
+
+  /**
+   * Attributes to add to the native `input` element.
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeInputAttributes?: NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>;
 }
 
 export namespace CheckboxProps {
