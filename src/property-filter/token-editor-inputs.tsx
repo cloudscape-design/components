@@ -66,6 +66,7 @@ export function PropertyInput({
   }
   return (
     <InternalSelect
+      filteringType="auto"
       options={propertyOptions}
       selectedOption={
         property
