@@ -112,10 +112,10 @@ describe('i18n', () => {
 
     wrapper.focus();
     const dropdown = wrapper.findDropdown()!;
-    expect(dropdown.find('li')!.getElement()).toHaveTextContent('Custom Properties');
+    expect(dropdown.find('[role=presentation]')!.getElement()).toHaveTextContent('Custom Properties');
 
     wrapper.selectSuggestion(1);
-    expect(dropdown.find('li:nth-child(2)')!.getElement()).toHaveTextContent('Custom Operators');
+    expect(dropdown.find('[role=presentation]')!.getElement()).toHaveTextContent('Custom Operators');
     expect(
       dropdown.findOptions().map(optionWrapper => optionWrapper.findDescription()?.getElement().textContent)
     ).toEqual([
@@ -144,10 +144,10 @@ describe('i18n', () => {
 
     wrapper.focus();
     const dropdown = wrapper.findDropdown()!;
-    expect(dropdown.find('li')!.getElement()).toHaveTextContent('Custom Properties');
+    expect(dropdown.find('[role=presentation]')!.getElement()).toHaveTextContent('Custom Properties');
 
     wrapper.selectSuggestion(2);
-    expect(dropdown.find('li:nth-child(2)')!.getElement()).toHaveTextContent('Custom Operators');
+    expect(dropdown.find('[role=presentation]')!.getElement()).toHaveTextContent('Custom Operators');
     expect(
       dropdown.findOptions().map(optionWrapper => optionWrapper.findDescription()?.getElement().textContent)
     ).toEqual([

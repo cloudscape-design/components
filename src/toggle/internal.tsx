@@ -14,6 +14,7 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { GeneratedAnalyticsMetadataToggleComponent } from './analytics-metadata/interfaces';
 import { ToggleProps } from './interfaces';
 import { getAbstractSwitchStyles, getStyledControlStyle } from './style';
@@ -39,6 +40,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
       onFocus,
       onBlur,
       onChange,
+      nativeInputAttributes,
       __internalRootRef,
       style,
       __injectAnalyticsComponentMetadata,
@@ -89,8 +91,11 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
         ariaDescribedby={ariaDescribedby}
         ariaControls={ariaControls}
         nativeControl={nativeControlProps => (
-          <input
+          <WithNativeAttributes
             {...nativeControlProps}
+            tag="input"
+            componentName="Toggle"
+            nativeAttributes={nativeInputAttributes}
             ref={checkboxRef}
             type="checkbox"
             checked={checked}

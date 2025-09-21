@@ -3,11 +3,15 @@
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
+import {
+  setTestSingleTabStopNavigationTarget,
+  TestSingleTabStopNavigationProvider,
+} from '@cloudscape-design/component-toolkit/internal/testing';
+
 import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox';
 import InternalCheckbox from '../../../lib/components/checkbox/internal';
 import FormField from '../../../lib/components/form-field';
 import createWrapper, { CheckboxWrapper } from '../../../lib/components/test-utils/dom';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 import customCssProps from '../../internal/generated/custom-css-properties';
 import { createCommonTests } from './common-tests';
 
@@ -242,30 +246,34 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index when keyboard navigation is not active', () => {
-    renderWithSingleTabStopNavigation(<Checkbox id="checkbox" checked={false} />, { navigationActive: false });
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={false}>
+        <Checkbox id="checkbox" checked={false} />
+      </TestSingleTabStopNavigationProvider>
+    );
     expect(getCheckboxInput('#checkbox')).not.toHaveAttribute('tabIndex');
   });
 
   test('overrides tab index when keyboard navigation is active', () => {
-    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
-      <div>
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
         <Checkbox id="checkbox1" checked={false} />
         <Checkbox id="checkbox2" checked={false} />
-      </div>
+      </TestSingleTabStopNavigationProvider>
     );
-    setCurrentTarget(getCheckboxInput('#checkbox1'));
+    setTestSingleTabStopNavigationTarget(getCheckboxInput('#checkbox1'));
     expect(getCheckboxInput('#checkbox1')).toHaveAttribute('tabIndex', '0');
     expect(getCheckboxInput('#checkbox2')).toHaveAttribute('tabIndex', '-1');
   });
 
   test('does not override explicit tab index with 0', () => {
-    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
-      <div>
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
         <InternalCheckbox id="checkbox1" checked={false} tabIndex={-1} />
         <InternalCheckbox id="checkbox2" checked={false} tabIndex={-1} />
-      </div>
+      </TestSingleTabStopNavigationProvider>
     );
-    setCurrentTarget(getCheckboxInput('#checkbox1'));
+    setTestSingleTabStopNavigationTarget(getCheckboxInput('#checkbox1'));
     expect(getCheckboxInput('#checkbox1')).toHaveAttribute('tabIndex', '-1');
     expect(getCheckboxInput('#checkbox2')).toHaveAttribute('tabIndex', '-1');
   });
@@ -317,4 +325,17 @@ test('all style api properties', () => {
   expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('1px');
   expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('2px');
   expect(getComputedStyle(label).getPropertyValue('color')).toBe('orange');
+});
+
+describe('native attributes', () => {
+  it('adds native attributes', () => {
+    const { container } = render(<Checkbox checked={true} nativeInputAttributes={{ 'data-testid': 'my-test-id' }} />);
+    expect(container.querySelector('[data-testid="my-test-id"]')).not.toBeNull();
+  });
+  it('concatenates class names', () => {
+    const { container } = render(<Checkbox checked={true} nativeInputAttributes={{ className: 'additional-class' }} />);
+    const input = container.querySelector('input');
+    expect(input).toHaveClass(abstractSwitchStyles['native-input']);
+    expect(input).toHaveClass('additional-class');
+  });
 });

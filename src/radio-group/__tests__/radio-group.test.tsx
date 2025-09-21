@@ -3,11 +3,15 @@
 import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 
+import {
+  setTestSingleTabStopNavigationTarget,
+  TestSingleTabStopNavigationProvider,
+} from '@cloudscape-design/component-toolkit/internal/testing';
+
 import '../../__a11y__/to-validate-a11y';
 import RadioGroup, { RadioGroupProps } from '../../../lib/components/radio-group';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-group/radio-button';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 import customCssProps from '../../internal/generated/custom-css-properties';
 
 import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
@@ -368,20 +372,22 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index when keyboard navigation is not active', () => {
-    renderWithSingleTabStopNavigation(<RadioGroup id="radio" value={null} items={[{ value: '1', label: 'One' }]} />, {
-      navigationActive: false,
-    });
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={false}>
+        <RadioGroup id="radio" value={null} items={[{ value: '1', label: 'One' }]} />
+      </TestSingleTabStopNavigationProvider>
+    );
     expect(getRadioInput('#radio')).not.toHaveAttribute('tabIndex');
   });
 
   test('overrides tab index when keyboard navigation is active', () => {
-    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
-      <div>
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
         <RadioGroup id="radio1" value={null} items={[{ value: '1', label: 'One' }]} />
         <RadioGroup id="radio2" value={null} items={[{ value: '2', label: 'Two' }]} />
-      </div>
+      </TestSingleTabStopNavigationProvider>
     );
-    setCurrentTarget(getRadioInput('#radio1'));
+    setTestSingleTabStopNavigationTarget(getRadioInput('#radio1'));
     expect(getRadioInput('#radio1')).toHaveAttribute('tabIndex', '0');
     expect(getRadioInput('#radio2')).toHaveAttribute('tabIndex', '-1');
   });

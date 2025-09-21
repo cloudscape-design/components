@@ -30,6 +30,7 @@ const SelectableItem = (
     virtualPosition,
     padBottom,
     isNextSelected,
+    isPreviousSelected,
     useInteractiveGroups,
     screenReaderContent,
     ariaPosinset,
@@ -58,6 +59,7 @@ const SelectableItem = (
     [styles.virtual]: virtualPosition !== undefined && !sticky,
     [styles['pad-bottom']]: padBottom,
     [styles['next-item-selected']]: isNextSelected,
+    [styles['previous-item-selected']]: isPreviousSelected,
     [styles.interactiveGroups]: useInteractiveGroups,
     [styles.sticky]: sticky,
     [styles['after-header']]: !!afterHeader,
@@ -91,35 +93,35 @@ const SelectableItem = (
         }
       : undefined;
 
-  const a11yProperties: Record<string, string | number | boolean | undefined> = {
-    'aria-disabled': disabled,
-  };
+  const a11yProperties: Record<string, string | number | boolean | undefined> = {};
 
-  if (isParent && !useInteractiveGroups) {
-    a11yProperties['aria-hidden'] = true;
-  }
+  if (isParent && ariaChecked === undefined) {
+    a11yProperties.role = 'presentation';
+  } else {
+    a11yProperties.role = 'option';
+    a11yProperties['aria-disabled'] = disabled;
 
-  if (ariaSelected !== undefined) {
-    a11yProperties['aria-selected'] = ariaSelected;
-  }
+    if (ariaSelected !== undefined) {
+      a11yProperties['aria-selected'] = ariaSelected;
+    }
 
-  // Safari+VO needs aria-checked for multi-selection. Otherwise it only announces selected option even though another option is highlighted.
-  if (ariaChecked !== undefined) {
-    a11yProperties['aria-checked'] = ariaChecked;
-  }
+    // Safari+VO needs aria-checked for multi-selection. Otherwise it only announces selected option even though another option is highlighted.
+    if (ariaChecked !== undefined) {
+      a11yProperties['aria-checked'] = ariaChecked;
+    }
 
-  if (ariaPosinset && ariaSetsize) {
-    a11yProperties['aria-posinset'] = ariaPosinset;
-    a11yProperties['aria-setsize'] = ariaSetsize;
-  }
+    if (ariaPosinset && ariaSetsize) {
+      a11yProperties['aria-posinset'] = ariaPosinset;
+      a11yProperties['aria-setsize'] = ariaSetsize;
+    }
 
-  if (restProps.ariaDescribedby) {
-    a11yProperties['aria-describedby'] = restProps.ariaDescribedby;
+    if (restProps.ariaDescribedby) {
+      a11yProperties['aria-describedby'] = restProps.ariaDescribedby;
+    }
   }
 
   return (
-    <li
-      role="option"
+    <div
       className={classNames}
       style={style}
       {...a11yProperties}
@@ -133,7 +135,7 @@ const SelectableItem = (
       </div>
       <div className={styles['measure-strut']} ref={ref} />
       <div className={styles['screenreader-content']} ref={screenReaderContentRef}></div>
-    </li>
+    </div>
   );
 };
 

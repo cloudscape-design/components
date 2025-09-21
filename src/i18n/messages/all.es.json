@@ -55,7 +55,7 @@
     "expandAriaLabel": "Mostrar ruta"
   },
   "button": {
-    "i18nStrings.externalIconAriaLabel": "Se abre en una pestaña nueva."
+    "i18nStrings.externalIconAriaLabel": "Se abre en una pestaña nueva"
   },
   "calendar": {
     "nextMonthAriaLabel": "Próximo mes",
@@ -211,7 +211,7 @@
     "clearAriaLabel": "Borrar"
   },
   "link": {
-    "externalIconAriaLabel": "Se abre en una pestaña nueva."
+    "externalIconAriaLabel": "Se abre en una pestaña nueva"
   },
   "list": {
     "dragHandleAriaLabel": "Arrastrar controlador",
@@ -334,7 +334,7 @@
     "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
     "i18nStrings.labelFiltering": "Encuentre {itemsType}",
     "i18nStrings.labelRefresh": "Actualizar los datos",
-    "i18nStrings.labelBreadcrumbs": "Navegación S3",
+    "i18nStrings.labelBreadcrumbs": "Rutas de navegación de S3",
     "i18nStrings.labelIconFolder": "Carpeta",
     "i18nStrings.labelIconObject": "Objeto",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 coincidencia} other {{count} coincidencias}}"
@@ -440,7 +440,7 @@
     "i18nStrings.labelTotalSteps": "Total de pasos: {totalStepCount}",
     "i18nStrings.labelsTaskStatus.pending": "Pendiente",
     "i18nStrings.labelsTaskStatus.in-progress": "En curso",
-    "i18nStrings.labelsTaskStatus.success": "Acción realizada correctamente"
+    "i18nStrings.labelsTaskStatus.success": "Correcto"
   },
   "wizard": {
     "i18nStrings.stepNumberLabel": "Paso {stepNumber}",

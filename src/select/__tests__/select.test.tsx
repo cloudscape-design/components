@@ -275,9 +275,9 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         const statusText = { [`${statusType}Text`]: `Test ${statusType} text` };
         const { wrapper } = renderSelect({ statusType: statusType as any, ...statusText });
         wrapper.openDropdown();
-        expect(wrapper.findDropdown({ expandToViewport }).find('ul')!.getElement()).toHaveAccessibleDescription(
-          `Test ${statusType} text`
-        );
+        expect(
+          wrapper.findDropdown({ expandToViewport }).findOptionsContainer()!.getElement()
+        ).toHaveAccessibleDescription(`Test ${statusType} text`);
       });
 
       test(`check a11y for ${statusType} and ${isSticky ? 'sticky' : 'non-sticky'} footer`, async () => {

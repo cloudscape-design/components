@@ -6,12 +6,10 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { OnChangeParams } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import { AppLayoutInternals } from '../interfaces';
-import { ToolbarSkeleton } from '../skeleton/skeleton-parts';
 import { BreadcrumbsSlot, ToolbarSlot } from '../skeleton/slots';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
 import TriggerButton from './trigger-button';
@@ -138,10 +136,14 @@ export function AppLayoutToolbarImplementation({
   return (
     <ToolbarSlot
       ref={ref}
-      className={clsx(styles['universal-toolbar'], testutilStyles.toolbar, {
-        [testutilStyles['mobile-bar']]: isMobile,
-        [styles['with-open-ai-drawer']]: !!activeAiDrawerId,
-      })}
+      className={clsx(
+        styles['universal-toolbar'],
+        aiDrawer?.trigger && styles['with-ai-drawer'],
+        testutilStyles.toolbar,
+        {
+          [testutilStyles['mobile-bar']]: isMobile,
+        }
+      )}
       style={{
         insetBlockStart: verticalOffsets.toolbar,
       }}
@@ -242,8 +244,3 @@ export function AppLayoutToolbarImplementation({
     </ToolbarSlot>
   );
 }
-
-export const createWidgetizedAppLayoutToolbar = createWidgetizedComponent(
-  AppLayoutToolbarImplementation,
-  ToolbarSkeleton
-);

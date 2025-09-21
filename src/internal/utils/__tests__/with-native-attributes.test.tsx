@@ -20,7 +20,7 @@ describe('WithNativeAttributes', () => {
 
   test('renders with basic props', () => {
     const { container } = render(
-      <WithNativeAttributes tag="div" nativeAttributes={{}}>
+      <WithNativeAttributes tag="div" componentName="" nativeAttributes={{}}>
         Test content
       </WithNativeAttributes>
     );
@@ -31,13 +31,13 @@ describe('WithNativeAttributes', () => {
   });
   test('works with different HTML tags', () => {
     const { container: spanContainer } = render(
-      <WithNativeAttributes tag="span" nativeAttributes={{}}>
+      <WithNativeAttributes tag="span" componentName="" nativeAttributes={{}}>
         Span content
       </WithNativeAttributes>
     );
 
     const { container: buttonContainer } = render(
-      <WithNativeAttributes tag="button" nativeAttributes={{}}>
+      <WithNativeAttributes tag="button" componentName="" nativeAttributes={{}}>
         Button content
       </WithNativeAttributes>
     );
@@ -50,6 +50,7 @@ describe('WithNativeAttributes', () => {
     const { container } = render(
       <WithNativeAttributes<HTMLDivElement, HTMLAttributes<HTMLDivElement>>
         tag="div"
+        componentName=""
         className="test-class"
         nativeAttributes={undefined}
       >
@@ -64,7 +65,12 @@ describe('WithNativeAttributes', () => {
 
   test('concatenates className from rest props and nativeAttributes', () => {
     const { container } = render(
-      <WithNativeAttributes tag="div" className="base-class" nativeAttributes={{ className: 'native-class' }}>
+      <WithNativeAttributes
+        tag="div"
+        componentName=""
+        className="base-class"
+        nativeAttributes={{ className: 'native-class' }}
+      >
         Test content
       </WithNativeAttributes>
     );
@@ -78,6 +84,7 @@ describe('WithNativeAttributes', () => {
     const { container } = render(
       <WithNativeAttributes
         tag="div"
+        componentName=""
         style={{ color: 'red', fontSize: '16px' }}
         nativeAttributes={{ style: { backgroundColor: 'blue', fontSize: '18px' } }}
       >
@@ -96,7 +103,12 @@ describe('WithNativeAttributes', () => {
     const restHandler = jest.fn();
 
     const { container } = render(
-      <WithNativeAttributes tag="button" onClick={restHandler} nativeAttributes={{ onClick: nativeHandler }}>
+      <WithNativeAttributes
+        tag="button"
+        componentName=""
+        onClick={restHandler}
+        nativeAttributes={{ onClick: nativeHandler }}
+      >
         Click me
       </WithNativeAttributes>
     );
@@ -113,7 +125,12 @@ describe('WithNativeAttributes', () => {
     const restHandler = jest.fn();
 
     const { container } = render(
-      <WithNativeAttributes tag="button" onClick={restHandler} nativeAttributes={{ onClick: nativeHandler }}>
+      <WithNativeAttributes
+        tag="button"
+        componentName=""
+        onClick={restHandler}
+        nativeAttributes={{ onClick: nativeHandler }}
+      >
         Click me
       </WithNativeAttributes>
     );
@@ -127,7 +144,12 @@ describe('WithNativeAttributes', () => {
 
   test('overrides other attributes and shows warning', () => {
     const { container } = render(
-      <WithNativeAttributes tag="div" id="original-id" nativeAttributes={{ id: 'override-id' }}>
+      <WithNativeAttributes
+        tag="div"
+        componentName="my-component"
+        id="original-id"
+        nativeAttributes={{ id: 'override-id' }}
+      >
         Test content
       </WithNativeAttributes>
     );
@@ -135,14 +157,14 @@ describe('WithNativeAttributes', () => {
     const element = container.firstElementChild!;
     expect(element.id).toBe('override-id');
     expect(mockedWarnOnce).toHaveBeenCalledWith(
-      'Button',
+      'my-component',
       'Overriding native attribute [id] which has a Cloudscape-provided value'
     );
   });
 
   test('passes through data attributes without warning', () => {
     const { container } = render(
-      <WithNativeAttributes tag="div" nativeAttributes={{ 'data-testid': 'test-element' }}>
+      <WithNativeAttributes tag="div" componentName="" nativeAttributes={{ 'data-testid': 'test-element' }}>
         Test content
       </WithNativeAttributes>
     );
@@ -154,7 +176,7 @@ describe('WithNativeAttributes', () => {
 
   test('does not allow children to be overrwitten', () => {
     const { container } = render(
-      <WithNativeAttributes tag="div" nativeAttributes={{ children: 'Something custom' } as any}>
+      <WithNativeAttributes tag="div" componentName="" nativeAttributes={{ children: 'Something custom' } as any}>
         Test content
       </WithNativeAttributes>
     );

@@ -23,6 +23,7 @@
 $global-drawer-gap-size: 8px;
 $global-drawer-expanded-mode-motion: #{awsui.$motion-duration-refresh-only-slow} #{awsui.$motion-easing-refresh-only-a};
 $drawer-resize-handle-size: awsui.$space-m;
+$ai-drawer-heider-height: 41px;
 
 .drawer {
   position: sticky;
@@ -239,6 +240,14 @@ $drawer-resize-handle-size: awsui.$space-m;
     }
   }
 
+  &:not(.ai-drawer) {
+    @include mobile-only {
+      @include theming.dark-mode-only {
+        border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
+    }
+  }
+
   &.ai-drawer {
     grid-template-columns: 1fr awsui.$space-xs;
     background: constants.$ai-drawer-background;
@@ -267,7 +276,7 @@ $drawer-resize-handle-size: awsui.$space-m;
     }
 
     > .drawer-content-container {
-      min-inline-size: calc(var(#{custom-props.$drawerSize}) - #{awsui.$space-xs});
+      min-inline-size: calc(var(#{custom-props.$drawerMinSize}) - #{awsui.$space-xs});
       grid-column: 1 / span 1;
       background-color: awsui.$color-background-layout-panel-content;
 
@@ -276,8 +285,10 @@ $drawer-resize-handle-size: awsui.$space-m;
       }
 
       > .drawer-content {
+        grid-row: 1 / span 4;
+
         > .drawer-content-header {
-          block-size: 41px;
+          block-size: $ai-drawer-heider-height;
           position: sticky;
           z-index: 1000;
           display: flex;
@@ -285,8 +296,9 @@ $drawer-resize-handle-size: awsui.$space-m;
           align-items: center;
           inset-block-start: 0;
           background-color: awsui.$color-background-layout-panel-content;
-          border-block-end: awsui.$border-divider-section-width solid;
+          border-block-end: 2px solid;
           border-image: linear-gradient(90deg, #962eff 0%, #5c7fff 30%, #09f 50%, #b8e7ff 70%, #8575ff 100%) 1;
+          box-sizing: border-box;
 
           > .drawer-content-header-content {
             display: flex;
@@ -297,8 +309,10 @@ $drawer-resize-handle-size: awsui.$space-m;
             padding-inline-start: awsui.$space-l;
             padding-inline-end: awsui.$space-m;
 
-            @include desktop-only {
-              @include theming.dark-mode-only {
+            @include theming.dark-mode-only {
+              border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+
+              @include desktop-only {
                 &:has(+ .drawer-back-to-console-slot) {
                   border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
                   border-start-end-radius: awsui.$space-xxs;
@@ -369,13 +383,19 @@ $drawer-resize-handle-size: awsui.$space-m;
             }
           }
         }
+
+        > .drawer-content-content {
+          display: flex;
+          flex-direction: column;
+          block-size: calc(100% - #{$ai-drawer-heider-height});
+        }
       }
     }
 
     &:not(.drawer-expanded) {
       > .drawer-content-container {
         @include desktop-only {
-          clip-path: inset(0 0 0 -9999px round awsui.$space-xxs);
+          clip-path: inset(0 0 -9999px 0 round awsui.$space-xxs);
           @include theming.dark-mode-only {
             border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
           }

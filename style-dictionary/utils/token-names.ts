@@ -686,7 +686,8 @@ export type ColorsTokenName =
   | 'colorDropzoneTextHover'
   | 'colorDropzoneBorderDefault'
   | 'colorDropzoneBorderHover'
-  | 'colorGapGlobalDrawer';
+  | 'colorGapGlobalDrawer'
+  | 'colorItemSelected';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'

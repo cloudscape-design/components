@@ -5,11 +5,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useMergeRefs, useReducedMotion, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
+import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { focusFlashById, focusFlashFocusableArea } from './flash';
-import { FlashbarProps } from './interfaces';
+import { FlashbarProps, InternalFlashbarProps } from './interfaces';
+import { FOCUS_DEBOUNCE_DELAY } from './utils';
 
 import styles from './styles.css.js';
 
@@ -34,10 +35,10 @@ export const handleFlashDismissedInternal = (
     nextItemIndex = dismissedIndex - 1;
   }
 
-  // If there's no next item, focus the first instance of the main element (or element with role=main)
+  // If there's no next item, focus the first instance of the h1 element
   if (nextItemIndex < 0 || nextItemIndex >= items.length) {
-    const mainElement = document.querySelector('main') ?? document.querySelector('[role="main"]');
-    mainElement?.focus();
+    const h1Element = document.querySelector('h1');
+    h1Element?.focus();
     return;
   }
 
@@ -56,8 +57,8 @@ export const handleFlashDismissedInternal = (
         return;
       }
 
-      const mainElement = document.querySelector('main') ?? document.querySelector('[role="main"]');
-      mainElement?.focus();
+      const h1Element = document.querySelector('h1');
+      h1Element?.focus();
       return;
     }
     focusFlashFocusableArea(nextFlashElement);
@@ -72,15 +73,13 @@ export function useFlashbar({
   onItemsAdded,
   onItemsChanged,
   onItemsRemoved,
+  __internalRootRef,
   ...restProps
-}: FlashbarProps & {
+}: InternalFlashbarProps & {
   onItemsAdded?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsRemoved?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsChanged?: (options?: { allItemsHaveId?: boolean; isReducedMotion?: boolean }) => void;
 }) {
-  const { __internalRootRef } = useBaseComponent('Flashbar', {
-    props: { stackItems: restProps.stackItems },
-  });
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
   const baseProps = getBaseProps(restProps);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -118,11 +117,13 @@ export function useFlashbar({
     }
   }
 
+  const debouncedFocus = useDebounceCallback(focusFlashById, FOCUS_DEBOUNCE_DELAY);
+
   useEffect(() => {
     if (nextFocusId) {
-      focusFlashById(ref.current, nextFocusId);
+      debouncedFocus(ref.current, nextFocusId);
     }
-  }, [nextFocusId, ref]);
+  }, [debouncedFocus, nextFocusId, ref]);
 
   const handleFlashDismissed = (dismissedId?: string) => {
     handleFlashDismissedInternal(dismissedId, items, ref.current, flashRefs.current);

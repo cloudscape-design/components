@@ -215,11 +215,11 @@
   },
   "list": {
     "dragHandleAriaLabel": "Sürükleme tutamacı",
-    "dragHandleAriaDescription": "Bir öğe için sürüklemeyi etkinleştirmek üzere Boşluk veya Enter tuşunu ve öğenin konumunu taşımak için ok tuşlarını kullanın. Konum taşıma işlemini tamamlamak için Boşluk veya Enter tuşunu ya da taşıma işlemini iptal etmek için ESC tuşunu kullanın.",
-    "liveAnnouncementDndStarted": "Öğe {position}/{total} konumundan alındı",
+    "dragHandleAriaDescription": "Bir öğe için sürüklemeyi etkinleştirmek üzere Boşluk veya Enter tuşunu ve ögenin konumunu taşımak için ok tuşlarını kullanın. Konum taşıma işlemini tamamlamak için \"Boşluk\" veya \"Enter\" tuşunu ya da taşıma işlemini iptal etmek için \"ESC\" tuşunu kullanın.",
+    "liveAnnouncementDndStarted": "Öge {position}/{total} konumundan alındı",
     "liveAnnouncementDndDiscarded": "Yeniden sıralama iptal edildi",
-    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Öğe {currentPosition}/{total} konumuna geri taşınıyor} false {Öğe {currentPosition}/{total} konumuna taşınıyor} other {}}",
-    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Öğe ilk {initialPosition}/{total} konumuna geri taşındı} false {Öğe {initialPosition} konumundan {finalPosition}/{total} konumuna taşındı} other {}}"
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Öge {currentPosition}/{total} konumuna geri taşınıyor} false {Öge {currentPosition}/{total} konumuna taşınıyor} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Öge ilk {initialPosition}/{total} konumuna geri taşındı} false {Öğe {initialPosition} konumundan {finalPosition}/{total} konumuna taşındı} other {}}"
   },
   "modal": {
     "closeAriaLabel": "Kalıcı iletişim kutusunu kapat"
@@ -334,7 +334,7 @@
     "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
     "i18nStrings.labelFiltering": "{itemsType} bul",
     "i18nStrings.labelRefresh": "Verileri yenile",
-    "i18nStrings.labelBreadcrumbs": "S3 gezintisi",
+    "i18nStrings.labelBreadcrumbs": "S3 İçerik Haritaları",
     "i18nStrings.labelIconFolder": "Klasör",
     "i18nStrings.labelIconObject": "Nesne",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 eşleşme} other {{count} eşleşme}}"

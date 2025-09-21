@@ -4,6 +4,7 @@ import { addMonths, addYears, isSameMonth, isSameYear, startOfMonth, startOfYear
 
 import { parseDate } from '../../internal/utils/date-time';
 import { DateRangePickerProps } from '../interfaces';
+import { RangeCalendarI18nStrings } from './interfaces';
 
 export function findDateToFocus(
   selected: Date | null,
@@ -69,3 +70,50 @@ export function findYearToDisplay(value: DateRangePickerProps.PendingAbsoluteVal
   }
   return startOfYear(Date.now());
 }
+
+export const generateI18NFallbackKey = (isMonthPicker: boolean, isDateOnly: boolean) => {
+  if (isMonthPicker) {
+    return 'i18nStrings.monthConstraintText';
+  }
+  if (isDateOnly) {
+    return 'i18nStrings.dateConstraintText';
+  }
+  return 'i18nStrings.dateTimeConstraintText';
+};
+
+export const generateI18NKey = (isMonthPicker: boolean, isDateOnly: boolean, isIso: boolean) => {
+  if (isMonthPicker) {
+    return isIso ? 'i18nStrings.isoMonthConstraintText' : 'i18nStrings.slashedMonthConstraintText';
+  }
+  if (isDateOnly) {
+    return isIso ? 'i18nStrings.isoDateConstraintText' : 'i18nStrings.slashedDateConstraintText';
+  }
+  return isIso ? 'i18nStrings.isoDateTimeConstraintText' : 'i18nStrings.slashedDateTimeConstraintText';
+};
+
+export const provideI18N = (
+  i18nStrings: RangeCalendarI18nStrings,
+  isMonthPicker: boolean,
+  isDateOnly: boolean,
+  isIso: boolean
+): undefined | string => {
+  let result;
+  if (isMonthPicker) {
+    result = isIso ? i18nStrings?.isoMonthConstraintText : i18nStrings?.slashedMonthConstraintText;
+    if (!result) {
+      result = i18nStrings?.monthConstraintText;
+    }
+  } else if (isDateOnly) {
+    result = isIso ? i18nStrings?.isoDateConstraintText : i18nStrings?.slashedDateConstraintText;
+    if (!result) {
+      result = i18nStrings?.dateConstraintText;
+    }
+  }
+  if (!result) {
+    result = isIso ? i18nStrings?.isoDateTimeConstraintText : i18nStrings?.slashedDateTimeConstraintText;
+    if (!result) {
+      result = i18nStrings?.dateTimeConstraintText;
+    }
+  }
+  return result;
+};

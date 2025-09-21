@@ -55,7 +55,7 @@
     "expandAriaLabel": "Pfad anzeigen"
   },
   "button": {
-    "i18nStrings.externalIconAriaLabel": "Wird in einem neuen Fenster geöffnet"
+    "i18nStrings.externalIconAriaLabel": "Wird in einer neuen Registerkarte geöffnet"
   },
   "calendar": {
     "nextMonthAriaLabel": "Nächster Monat",
@@ -211,14 +211,14 @@
     "clearAriaLabel": "Löschen"
   },
   "link": {
-    "externalIconAriaLabel": "Wird in einem neuen Fenster geöffnet"
+    "externalIconAriaLabel": "Wird in einer neuen Registerkarte geöffnet"
   },
   "list": {
     "dragHandleAriaLabel": "Ziehpunkt",
-    "dragHandleAriaDescription": "Verwenden Sie Space (Leertaste) oder Enter (Eingabetaste), um das Ziehen für ein Element zu aktivieren. Verwenden Sie dann die Pfeiltasten, um die Position abzuschließen. Verwenden Sie Space (Leertaste) oder Enter (Eingabetaste) oder, um den Zug zu verwerfen, verwenden Sie Escape (Escape).",
-    "liveAnnouncementDndStarted": "Aufgeholtes Element an Position {position} von {total}",
-    "liveAnnouncementDndDiscarded": "Neuanordnung storniert",
-    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Objekt zurück an die Position {currentPosition} von {total} verschieben} false {Objekt an Position {currentPosition} von {total} verschieben} other {}}",
+    "dragHandleAriaDescription": "Verwenden Sie Space (Leertaste) oder Enter (Eingabetaste), um das Ziehen für ein Element zu aktivieren. Verwenden Sie dann die Pfeiltasten, um es in die gewünschte Position zu bringen. Verwenden Sie zum Bestätigen Space (Leertaste) oder Enter (Eingabetaste) oder, um den Zug zu verwerfen, verwenden Sie Escape (Escape).",
+    "liveAnnouncementDndStarted": "Element an Position {position} von {total} aufgenommen",
+    "liveAnnouncementDndDiscarded": "Neuanordnung abgebrochen",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Objekt wird zurück an die Position {currentPosition} von {total} verschoben} false {Objekt an Position {currentPosition} von {total} verschieben} other {}}",
     "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Das Objekt wurde zurück an seine ursprüngliche Position {initialPosition} von {total} verschoben} false {Das Objekt wurde von Position {initialPosition} zu Position {finalPosition} von {total} verschoben} other {}}"
   },
   "modal": {
@@ -334,7 +334,7 @@
     "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
     "i18nStrings.labelFiltering": "{itemsType} finden",
     "i18nStrings.labelRefresh": "Die Daten aktualisieren",
-    "i18nStrings.labelBreadcrumbs": "S3-Navigation",
+    "i18nStrings.labelBreadcrumbs": "S3-Breadcrumbs",
     "i18nStrings.labelIconFolder": "Ordner",
     "i18nStrings.labelIconObject": "Objekt",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 Übereinstimmung} other {{count} Übereinstimmungen}}"
@@ -440,7 +440,7 @@
     "i18nStrings.labelTotalSteps": "Gesamte Schritte: {totalStepCount}",
     "i18nStrings.labelsTaskStatus.pending": "Ausstehend",
     "i18nStrings.labelsTaskStatus.in-progress": "In Bearbeitung",
-    "i18nStrings.labelsTaskStatus.success": "Erfolg"
+    "i18nStrings.labelsTaskStatus.success": "Erfolgreich"
   },
   "wizard": {
     "i18nStrings.stepNumberLabel": "Schritt {stepNumber}",

@@ -6,10 +6,12 @@ import { AppLayoutMessage, AppLayoutUpdateMessage, DrawerPayload, RegisterDrawer
 
 const storageKeyMessageHandler = Symbol.for('awsui-widget-api-message-handler');
 const storageKeyInitialMessages = Symbol.for('awsui-widget-api-initial-messages');
+const storageKeyReadyDeferCallbacks = Symbol.for('awsui-widget-api-ready-defer');
 
 interface WindowWithApi extends Window {
   [storageKeyMessageHandler]: AppLayoutHandler | undefined;
   [storageKeyInitialMessages]: Array<RegisterDrawerMessage> | undefined;
+  [storageKeyReadyDeferCallbacks]: Array<(value?: unknown) => void> | undefined;
 }
 
 type AppLayoutHandler = (event: AppLayoutMessage) => void;
@@ -33,6 +35,8 @@ export function registerAppLayoutHandler(handler: AppLayoutHandler) {
     reportRuntimeApiWarning('AppLayoutWidget', 'Double registration attempt, the old handler will be overridden');
   }
   win[storageKeyMessageHandler] = handler;
+  win[storageKeyReadyDeferCallbacks]?.forEach(fn => fn());
+  win[storageKeyReadyDeferCallbacks] = [];
   return () => {
     win[storageKeyMessageHandler] = undefined;
   };
@@ -47,6 +51,18 @@ export function clearInitialMessages() {
  */
 export function isAppLayoutReady() {
   return !!getAppLayoutMessageHandler();
+}
+
+/**
+ * Returns a promise that resolves once the app layout has loaded
+ */
+export function whenAppLayoutReady() {
+  if (isAppLayoutReady()) {
+    return Promise.resolve();
+  }
+  const win = getWindow();
+  win[storageKeyReadyDeferCallbacks] = win[storageKeyReadyDeferCallbacks] ?? [];
+  return new Promise(resolve => win[storageKeyReadyDeferCallbacks]?.push(resolve));
 }
 
 /**

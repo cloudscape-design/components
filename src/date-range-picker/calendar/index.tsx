@@ -18,39 +18,26 @@ import {
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { CalendarProps } from '../../calendar/interfaces';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import { getBaseDay } from '../../calendar/utils/navigation-day';
 import { getBaseMonth } from '../../calendar/utils/navigation-month';
 import { useInternalI18n } from '../../i18n/context.js';
-import { BaseComponentProps } from '../../internal/base-component';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import { formatDate, formatDateTime, parseDate, splitDateTime } from '../../internal/utils/date-time';
 import { normalizeLocale, normalizeStartOfWeek } from '../../internal/utils/locale';
 import InternalLiveRegion from '../../live-region/internal';
 import SpaceBetween from '../../space-between/internal';
-import { TimeInputProps } from '../../time-input/interfaces';
-import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces';
+import { DateRangePickerProps } from '../interfaces';
 import { Grids } from './grids';
 import CalendarHeader from './header';
+import { DateRangePickerCalendarProps } from './interfaces';
 import RangeInputs from './range-inputs.js';
 import { findDateToFocus, findMonthToDisplay, findMonthToFocus, findYearToDisplay } from './utils';
 
 import styles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
-export interface DateRangePickerCalendarProps extends BaseComponentProps, Pick<CalendarProps, 'granularity'> {
-  value: DateRangePickerProps.PendingAbsoluteValue;
-  setValue: React.Dispatch<React.SetStateAction<DateRangePickerProps.PendingAbsoluteValue>>;
-  locale?: string;
-  startOfWeek?: number;
-  isDateEnabled?: (date: Date) => boolean;
-  dateDisabledReason?: (date: Date) => string;
-  i18nStrings?: RangeCalendarI18nStrings;
-  dateOnly?: boolean;
-  timeInputFormat?: TimeInputProps.Format;
-  customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
-}
+export { DateRangePickerCalendarProps };
 
 export default function DateRangePickerCalendar({
   value,
@@ -61,7 +48,8 @@ export default function DateRangePickerCalendar({
   dateDisabledReason = () => '',
   i18nStrings,
   dateOnly = false,
-  timeInputFormat = 'hh:mm:ss',
+  timeInputFormat,
+  dateInputFormat,
   customAbsoluteRangeControl,
   granularity = 'day',
 }: DateRangePickerCalendarProps) {
@@ -302,6 +290,7 @@ export default function DateRangePickerCalendar({
             i18nStrings={i18nStrings}
             dateOnly={dateOnly}
             timeInputFormat={timeInputFormat}
+            dateInputFormat={dateInputFormat}
             granularity={granularity}
           />
           {customAbsoluteRangeControl && <div>{customAbsoluteRangeControl(value, interceptedSetValue)}</div>}
