@@ -20,13 +20,10 @@ permissions:
 
 jobs:
   build:
+    name: build${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
     strategy:
       matrix:
-        include:
-          - react: 16
-            label: build
-          - react: 18
-            label: build (React 18)
+        react: [16, 18]
     uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@main
     secrets: inherit
     with:
@@ -35,13 +32,10 @@ jobs:
       react-version: ${{ matrix.react }}   
   deploy:
     needs: build
+    name: deploy${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
     strategy:
       matrix:
-        include:
-          - react: 16
-            label: deploy
-          - react: 18
-            label: deploy (React 18)
+        react: [16, 18]
     uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
