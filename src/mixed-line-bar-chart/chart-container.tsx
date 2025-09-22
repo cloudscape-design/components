@@ -206,7 +206,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const xAxisProps = bottomAxisProps.axis === 'x' ? bottomAxisProps : leftAxisProps.axis === 'x' ? leftAxisProps : null;
   const yAxisProps = bottomAxisProps.axis === 'y' ? bottomAxisProps : leftAxisProps.axis === 'y' ? leftAxisProps : null;
   if (!xAxisProps || !yAxisProps) {
-    throw new Error('Invariant violation: invalid axis props.');
+    throw new Error('Invariant violation: invalid chart axes.');
   }
 
   /**
