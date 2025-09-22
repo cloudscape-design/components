@@ -20,15 +20,30 @@ permissions:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        include:
+          - react: 16
+            label: build
+          - react: 18
+            label: build (React 18)
     uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@main
     secrets: inherit
     with:
       artifact-path: pages/lib/static-default
-      artifact-name: dev-pages
+      artifact-name: dev-pages-react${{ matrix.react }}
+      react-version: ${{ matrix.react }}   
   deploy:
     needs: build
+    strategy:
+      matrix:
+        include:
+          - react: 16
+            label: deploy
+          - react: 18
+            label: deploy (React 18)
     uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
-      artifact-name: dev-pages
+      artifact-name: dev-pages-react${{ matrix.react }}
       deployment-path: pages/lib/static-default
