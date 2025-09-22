@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         react: [16, 18]
-    uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@react-var
+    uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@main
     secrets: inherit
     with:
       artifact-path: pages/lib/static-default
