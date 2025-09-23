@@ -15,9 +15,6 @@ const noop = () => ({ apply: () => {} });
 const replaceModule = (from, to) =>
   new NormalModuleReplacementPlugin(from, resource => (resource.request = resource.request.replace(from, to)));
 
-const react18Root = path.dirname(require.resolve('react18/package.json'));
-const reactDom18Root = path.dirname(require.resolve('react-dom18/package.json'));
-
 module.exports = ({
   outputPath = 'pages/lib/static/',
   componentsPath,
@@ -47,9 +44,9 @@ module.exports = ({
         ...(react18
           ? {
               '~mount': path.resolve(__dirname, './app/mount/react18.ts'),
-              react: react18Root,
-              'react-dom': reactDom18Root,
-              'react-dom/client': path.join(reactDom18Root, 'client'),
+              react: 'react18',
+              'react-dom': 'react-dom18',
+              'react-dom/client': 'react-dom18/client',
             }
           : {
               '~mount': path.resolve(__dirname, './app/mount/react16.ts'),
