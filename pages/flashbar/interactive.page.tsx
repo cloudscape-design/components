@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 import { range } from 'lodash';
 
-import { Box, Button, Flashbar, FlashbarProps, SpaceBetween, Toggle } from '~components';
+import { Box, Button, Flashbar, FlashbarProps, Header, SpaceBetween, Toggle } from '~components';
 
 import ScreenshotArea from '../utils/screenshot-area';
 import { generateItem, i18nStrings } from './common';
@@ -65,7 +65,7 @@ export default function InteractiveFlashbar() {
 
   return (
     <>
-      <h1>Flashbar interactions test</h1>
+      <Header variant="h1">Flashbar interactions test </Header>
       <SpaceBetween size="xs">
         <Toggle checked={collapsible} onChange={({ detail }) => setCollapsible(detail.checked)}>
           <span data-id="stack-items">Stack items</span>

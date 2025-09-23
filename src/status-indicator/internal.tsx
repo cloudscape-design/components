@@ -5,48 +5,17 @@ import clsx from 'clsx';
 
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
-import { BaseComponentProps, getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
+/**
+ * @awsuiSystem core
+ */
+import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import InternalSpinner from '../spinner/internal';
+import { StatusIndicatorProps } from './interfaces';
 
 import styles from './styles.css.js';
-
-const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JSX.Element> = size => ({
-  error: <InternalIcon name="status-negative" size={size} />,
-  warning: <InternalIcon name="status-warning" size={size} />,
-  success: <InternalIcon name="status-positive" size={size} />,
-  info: <InternalIcon name="status-info" size={size} />,
-  stopped: <InternalIcon name="status-stopped" size={size} />,
-  pending: <InternalIcon name="status-pending" size={size} />,
-  'in-progress': <InternalIcon name="status-in-progress" size={size} />,
-  loading: <InternalSpinner />,
-});
-
-export interface StatusIndicatorProps extends BaseComponentProps {
-  /**
-   * Specifies the status type.
-   */
-  type?: StatusIndicatorProps.Type;
-  /**
-   * A text fragment that communicates the status.
-   */
-  children?: React.ReactNode;
-  /**
-   * Specifies an `aria-label` for the icon. If the status text alone does not fully describe the status,
-   * use this to communicate additional context.
-   */
-  iconAriaLabel?: string;
-  /**
-   * Specifies an override for the status indicator color.
-   */
-  colorOverride?: StatusIndicatorProps.Color;
-  /**
-   * Specifies if the text content should wrap. If you set it to false, it prevents the text from wrapping
-   * and truncates it with an ellipsis.
-   */
-  wrapText?: boolean;
-}
 
 export interface InternalStatusIndicatorProps
   extends SomeRequired<StatusIndicatorProps, 'type'>,
@@ -67,12 +36,16 @@ export interface InternalStatusIndicatorProps
   __display?: 'inline' | 'inline-block';
 }
 
-export namespace StatusIndicatorProps {
-  // Why not enums? Explained there
-  // https://stackoverflow.com/questions/52393730/typescript-string-literal-union-type-from-enum
-  export type Type = 'error' | 'warning' | 'success' | 'info' | 'stopped' | 'pending' | 'in-progress' | 'loading';
-  export type Color = 'blue' | 'grey' | 'green' | 'red' | 'yellow';
-}
+const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JSX.Element> = size => ({
+  error: <InternalIcon name="status-negative" size={size} />,
+  warning: <InternalIcon name="status-warning" size={size} />,
+  success: <InternalIcon name="status-positive" size={size} />,
+  info: <InternalIcon name="status-info" size={size} />,
+  stopped: <InternalIcon name="status-stopped" size={size} />,
+  pending: <InternalIcon name="status-pending" size={size} />,
+  'in-progress': <InternalIcon name="status-in-progress" size={size} />,
+  loading: <InternalSpinner />,
+});
 
 export default function StatusIndicator({
   type,
@@ -80,6 +53,7 @@ export default function StatusIndicator({
   iconAriaLabel,
   colorOverride,
   wrapText = true,
+  nativeAttributes,
   __animate = false,
   __internalRootRef,
   __size = 'normal',
@@ -88,8 +62,11 @@ export default function StatusIndicator({
 }: InternalStatusIndicatorProps) {
   const baseProps = getBaseProps(rest);
   return (
-    <span
+    <WithNativeAttributes
       {...baseProps}
+      tag="span"
+      componentName="StatusIndicator"
+      nativeAttributes={nativeAttributes}
       className={clsx(
         styles.root,
         styles[`status-${type}`],
@@ -118,6 +95,6 @@ export default function StatusIndicator({
         </span>
         {children}
       </span>
-    </span>
+    </WithNativeAttributes>
   );
 }

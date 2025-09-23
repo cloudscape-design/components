@@ -96,7 +96,7 @@
   flex-shrink: 0;
 
   &.checkmark {
-    color: awsui.$color-text-status-info;
+    color: awsui.$color-item-selected;
   }
   &.disabled {
     color: awsui.$color-text-interactive-disabled;

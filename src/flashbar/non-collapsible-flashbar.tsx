@@ -12,11 +12,11 @@ import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './anal
 import { useFlashbar } from './common';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { Flash } from './flash';
-import { FlashbarProps } from './interfaces';
+import { FlashbarProps, InternalFlashbarProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...restProps }: FlashbarProps) {
+export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...restProps }: InternalFlashbarProps) {
   const { allItemsHaveId, baseProps, isReducedMotion, isVisualRefresh, mergedRef, flashRefs, handleFlashDismissed } =
     useFlashbar({
       items,

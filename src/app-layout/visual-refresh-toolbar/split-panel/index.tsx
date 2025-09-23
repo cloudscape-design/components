@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { createWidgetizedComponent } from '../../../internal/widgets';
 import { SplitPanelProvider, SplitPanelProviderProps } from '../../split-panel';
 import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
@@ -57,11 +56,3 @@ export function AppLayoutSplitPanelDrawerBottomImplementation({
     </SplitPanelProvider>
   );
 }
-
-export const createWidgetizedAppLayoutSplitPanelDrawerSide = createWidgetizedComponent(
-  AppLayoutSplitPanelDrawerSideImplementation
-);
-
-export const createWidgetizedAppLayoutSplitPanelDrawerBottom = createWidgetizedComponent(
-  AppLayoutSplitPanelDrawerBottomImplementation
-);

@@ -66,7 +66,6 @@ const InternalFileInput = React.forwardRef(
     const onUploadButtonClick = () => uploadInputRef.current?.click();
     const onUploadInputFocus = () => {
       setIsFocused(true);
-      containerRef.current?.scrollIntoView?.();
     };
     const onUploadInputBlur = () => setIsFocused(false);
 
