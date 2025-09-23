@@ -90,20 +90,20 @@ describe('Flashbar focus handling on add', () => {
 });
 
 describe('Flashbar focus handling on dismiss', () => {
-  let mockMainElement: HTMLElement;
+  let mockH1Element: HTMLElement;
   let originalQuerySelector: typeof document.querySelector;
 
   beforeEach(() => {
-    // Mock main element
-    mockMainElement = document.createElement('main');
-    mockMainElement.focus = jest.fn();
-    document.body.appendChild(mockMainElement);
+    // Mock h1 element
+    mockH1Element = document.createElement('h1');
+    mockH1Element.focus = jest.fn();
+    document.body.appendChild(mockH1Element);
 
-    // Mock document.querySelector for main element fallback
+    // Mock document.querySelector for h1 element fallback
     originalQuerySelector = document.querySelector;
     document.querySelector = jest.fn(selector => {
-      if (selector === 'main' || selector === '[role="main"]') {
-        return mockMainElement;
+      if (selector === 'h1') {
+        return mockH1Element;
       }
       return originalQuerySelector.call(document, selector);
     });
@@ -111,8 +111,8 @@ describe('Flashbar focus handling on dismiss', () => {
 
   afterEach(() => {
     document.querySelector = originalQuerySelector;
-    if (document.body.contains(mockMainElement)) {
-      document.body.removeChild(mockMainElement);
+    if (document.body.contains(mockH1Element)) {
+      document.body.removeChild(mockH1Element);
     }
   });
 
@@ -331,8 +331,8 @@ describe('Flashbar focus handling on dismiss', () => {
     });
   });
 
-  test('focus behavior does not cause errors when main element is not present', () => {
-    // Remove the mocked main element
+  test('focus behavior does not cause errors when h1 element is not present', () => {
+    // Remove the mocked h1 element
     document.querySelector = jest.fn(() => null);
 
     const items = createTestItems(1);
@@ -341,7 +341,7 @@ describe('Flashbar focus handling on dismiss', () => {
 
     const wrapper = createWrapper(container).findFlashbar()!;
 
-    // Should not throw when dismissing the only item (even with no main element)
+    // Should not throw when dismissing the only item (even with no h1 element)
     expect(() => {
       wrapper.findItems()[0].findDismissButton()!.click();
     }).not.toThrow();
