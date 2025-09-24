@@ -17,8 +17,6 @@ import { TokenProps } from './interfaces';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-const TOKEN_INLINE_MIN_CHARACTER_LIMIT = 15;
-
 type InternalTokenProps = TokenProps &
   InternalBaseComponentProps & {
     role?: string;
@@ -28,6 +26,7 @@ type InternalTokenProps = TokenProps &
 function InternalToken({
   // External
   label,
+  ariaLabel,
   labelTag,
   description,
   variant = 'normal',
@@ -37,7 +36,7 @@ function InternalToken({
   tags,
   dismissLabel,
   onDismiss,
-  disableTooltip = false,
+  tooltipContent,
 
   // Internal
   role,
@@ -48,36 +47,12 @@ function InternalToken({
   ...restProps
 }: InternalTokenProps) {
   const baseProps = getBaseProps(restProps);
-  const labelContainerRef = useRef<HTMLElement>(null);
-  const labelRef = useRef<HTMLElement>(null);
+  const labelContainerRef = useRef<HTMLSpanElement>(null);
+  const labelRef = useRef<HTMLSpanElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [isEllipsisActive, setIsEllipsisActive] = useState(false);
   const isInline = variant === 'inline';
   const ariaLabelledbyId = useUniqueId();
-
-  const getTextContent = (node: React.ReactNode): string | undefined => {
-    // Handle string nodes: trim whitespace and return undefined if empty
-    if (typeof node === 'string') {
-      const trimmed = node.trim();
-      return trimmed || undefined;
-    }
-    // Handle number nodes: convert to string
-    if (typeof node === 'number') {
-      return String(node);
-    }
-    // Handle React elements: recursively extract text from children
-    if (React.isValidElement(node) && node.props.children) {
-      return getTextContent(node.props.children);
-    }
-    // Handle arrays: join all text content with spaces and trim
-    if (Array.isArray(node)) {
-      const texts = node.map(getTextContent).filter(Boolean);
-      const joined = texts.join(' ').trim();
-      return joined || undefined;
-    }
-    // Handle all other cases (null, undefined, boolean, etc.)
-    return undefined;
-  };
 
   const isLabelOverflowing = () => {
     const labelContent = labelRef.current;
@@ -95,8 +70,8 @@ function InternalToken({
   });
 
   const buildOptionDefinition = () => {
-    const isLabelAString = typeof label === 'string';
-    const labelObject = isLabelAString ? { label } : { labelContent: label };
+    const isLabelAnElement = React.isValidElement(label);
+    const labelObject = !isLabelAnElement ? { label: String(label) } : { labelContent: label };
 
     if (isInline) {
       return {
@@ -111,43 +86,8 @@ function InternalToken({
         labelTag,
         description,
         tags,
-        __customIcon: icon && (
-          <span className={clsx(styles.icon, (description || tags) && styles[`icon-size-big`])}>{icon}</span>
-        ),
+        __customIcon: icon && <span className={styles.icon}>{icon}</span>,
       };
-    }
-  };
-
-  const getTokenMinWidthClassName = () => {
-    if (!isInline) {
-      return styles['token-min-width'];
-    }
-
-    const baseClassName = 'token-inline-min-width';
-
-    const textContent = getTextContent(label);
-    if (!textContent) {
-      return styles[baseClassName];
-    } else if (textContent.length >= TOKEN_INLINE_MIN_CHARACTER_LIMIT) {
-      const hasDismissButton = onDismiss || dismissLabel;
-      const hasIcon = icon;
-
-      if (hasIcon && hasDismissButton) {
-        return styles[baseClassName];
-      } else if (hasIcon && !hasDismissButton) {
-        return styles[baseClassName + '-icon-only'];
-      } else if (!hasIcon && hasDismissButton) {
-        return styles[baseClassName + '-dismiss-only'];
-      } else {
-        return styles[baseClassName + '-label-only'];
-      }
-    }
-  };
-
-  const getOptionLabelClassName = () => {
-    const textContent = getTextContent(label);
-    if (isInline && textContent && textContent.length >= TOKEN_INLINE_MIN_CHARACTER_LIMIT) {
-      return styles['token-option-label'];
     }
   };
 
@@ -158,11 +98,11 @@ function InternalToken({
       className={clsx(
         styles.root,
         !isInline ? styles['token-normal'] : styles['token-inline'],
-        getTokenMinWidthClassName(),
         analyticsSelectors.token,
         baseProps.className
       )}
-      aria-labelledby={ariaLabelledbyId}
+      aria-label={ariaLabel}
+      aria-labelledby={!ariaLabel ? ariaLabelledbyId : undefined}
       aria-disabled={!!disabled}
       role={role ?? 'group'}
       onFocus={() => {
@@ -181,7 +121,7 @@ function InternalToken({
         /* istanbul ignore next: Tested with integration tests */
         setShowTooltip(false);
       }}
-      tabIndex={!disableTooltip && isInline && isEllipsisActive ? 0 : undefined}
+      tabIndex={!!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
       // The below data attribute is to tell a potentially nested Popover to have less spacing between the text and the underline
       data-token-inline={isInline || undefined}
     >
@@ -198,12 +138,12 @@ function InternalToken({
           className={clsx(isInline && styles['token-option-inline'])}
           triggerVariant={isInline}
           option={buildOptionDefinition()}
+          disableTitleTooltip={!!tooltipContent}
           labelContainerRef={labelContainerRef}
           labelRef={labelRef}
           labelId={ariaLabelledbyId}
-          labelClassName={getOptionLabelClassName()}
         />
-        {onDismiss && (!isInline || !readOnly) && (
+        {onDismiss && (
           <DismissButton
             disabled={disabled}
             dismissLabel={dismissLabel}
@@ -213,13 +153,13 @@ function InternalToken({
           />
         )}
       </div>
-      {!disableTooltip && isInline && isEllipsisActive && showTooltip && (
+      {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
         /* istanbul ignore next: Tested with integration tests */
         <Tooltip
           trackRef={labelContainerRef}
           value={
             <LiveRegion>
-              <span data-testid="tooltip-live-region-content">{getTextContent(label)}</span>
+              <span data-testid="tooltip-live-region-content">{tooltipContent}</span>
             </LiveRegion>
           }
           size="medium"

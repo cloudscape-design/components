@@ -26363,6 +26363,7 @@ exports[`Components definition for token matches the snapshot: token 1`] = `
     {
       "cancelable": false,
       "description": "Called when the user clicks on the dismiss button.
+
 Make sure that you add a listener to this event to update your application state.",
       "name": "onDismiss",
     },
@@ -26370,6 +26371,14 @@ Make sure that you add a listener to this event to update your application state
   "functions": [],
   "name": "Token",
   "properties": [
+    {
+      "description": "Adds an \`aria-label\` to the token.
+
+Use this if the label is not plain text.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
     {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
@@ -26386,12 +26395,6 @@ Make sure that you add a listener to this event to update your application state
     {
       "description": "Determines whether the token is disabled.",
       "name": "disabled",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
-      "description": "Hides the tooltip for the inline variant when text is overflowing",
-      "name": "disableTooltip",
       "optional": true,
       "type": "boolean",
     },
@@ -26417,8 +26420,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "Specifies if the control is read-only. A read-only control is still focusable.
-When \`variant="inline"\`, setting readOnly will hide the dismiss button.",
+      "description": "Specifies if the control is read-only. A read-only control is still focusable.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
@@ -26430,8 +26432,17 @@ When \`variant="inline"\`, setting readOnly will hide the dismiss button.",
       "type": "ReadonlyArray<string>",
     },
     {
+      "description": "Content to display in the tooltip when \`variant="inline"\`. The tooltip appears when the token label is truncated due to insufficient space.
+
+Only applies to plain text labels.",
+      "name": "tooltipContent",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Specifies the token's visual style and functionality.
-For \`inline\` only label, icon, dismiss button are displayed.
+
+For \`inline\` only label, icon and dismiss button are displayed.
 
 Defaults to \`normal\` if not specified.",
       "inlineType": {
@@ -26450,13 +26461,16 @@ Defaults to \`normal\` if not specified.",
   "regions": [
     {
       "description": "An icon at the start of the token.
-When \`variant="normal"\`, if a description or tags are set, icon size should be \`big\`.
+
+When \`variant="normal"\`, if a description or tags are set, icon size should be \`normal\`.
+
 When \`variant="inline"\`, icon size should be \`small\`.",
       "isDefault": false,
       "name": "icon",
     },
     {
       "description": "Slot for the label of the token as text or an element.
+
 For \`variant="inline"\`, only plain text is supported, for example, strings or numbers.",
       "isDefault": false,
       "name": "label",
