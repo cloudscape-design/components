@@ -6,7 +6,10 @@ import { render } from '@testing-library/react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
-import { KeyboardNavigationProcessor, KeyboardNavigationProvider } from '../keyboard-navigation';
+import {
+  KeyboardNavigationProcessor,
+  KeyboardNavigationProvider,
+} from '../../../lib/components/tree-view/keyboard-navigation';
 import { itemsWithFocusables as items, ItemWithFocusables as Item } from './items';
 
 const TestTreeView = (props: Partial<TreeViewProps<Item>> = {}) => (

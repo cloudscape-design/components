@@ -62,6 +62,7 @@ const InternalTreeItem = <T,>({
 
   return (
     <li
+      role="treeitem"
       id={id}
       className={clsx(
         styles.treeitem,
@@ -113,7 +114,7 @@ const InternalTreeItem = <T,>({
       </div>
 
       {isExpanded && children.length && (
-        <ul className={styles['treeitem-group']}>
+        <ul role="group" className={styles['treeitem-group']}>
           {children.map((child, index) => {
             const itemId = getItemId(child, index);
             return (
