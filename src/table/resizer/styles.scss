@@ -16,6 +16,18 @@
 $handle-width: awsui.$space-xl;
 $active-separator-width: 2px;
 
+.resizer-wrapper {
+  inset-block: 0;
+  position: absolute;
+  inset-inline-end: calc(-1 * #{$handle-width} / 2);
+  inline-size: $handle-width;
+  z-index: 10;
+}
+
+.resizer-button-wrapper {
+  block-size: 100%;
+}
+
 th:not(:last-child) > .divider,
 .divider-interactive {
   $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
@@ -32,6 +44,11 @@ th:not(:last-child) > .divider,
   margin-inline: auto;
   border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-interactive-default;
   box-sizing: border-box;
+}
+
+.divider-interactive {
+  $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
+  inset-inline-end: calc(#{$handle-width} / 2);
 
   &-disabled {
     border-inline-start-color: awsui.$color-border-divider-default;
@@ -41,10 +58,6 @@ th:not(:last-child) > .divider,
   }
 }
 
-th:last-child > .divider-interactive:not(.is-visual-refresh) {
-  inset-inline-end: calc(#{$handle-width} / 2);
-}
-
 .resizer {
   @include styles.styles-reset;
   border-block: none;
@@ -52,10 +65,8 @@ th:last-child > .divider-interactive:not(.is-visual-refresh) {
   background: none;
   inset-block: 0;
   cursor: col-resize;
-  position: absolute;
-  inset-inline-end: calc(-1 * #{$handle-width} / 2);
+  block-size: 100%;
   inline-size: $handle-width;
-  z-index: 10;
   &:focus {
     outline: none;
     text-decoration: none;
@@ -70,9 +81,6 @@ th:last-child > .divider-interactive:not(.is-visual-refresh) {
   &.has-focus {
     @include focus-visible.when-visible-unfocused {
       @include styles.focus-highlight(calc(#{awsui.$space-table-header-focus-outline-gutter} - 2px));
-      & {
-        position: absolute;
-      }
     }
   }
 }
