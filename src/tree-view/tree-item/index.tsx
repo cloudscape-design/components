@@ -82,22 +82,14 @@ const InternalTreeItem = <T,>({
               <ExpandToggleButton
                 isExpanded={isExpanded}
                 customIcon={customIcon}
-                expandButtonLabel={
-                  isExpandable
-                    ? joinStrings(
-                        i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
-                        itemLabelToAnnounce
-                      )
-                    : itemLabelToAnnounce
-                }
-                collapseButtonLabel={
-                  isExpandable
-                    ? joinStrings(
-                        i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item)),
-                        itemLabelToAnnounce
-                      )
-                    : itemLabelToAnnounce
-                }
+                expandButtonLabel={joinStrings(
+                  i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
+                  itemLabelToAnnounce
+                )}
+                collapseButtonLabel={joinStrings(
+                  i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item)),
+                  itemLabelToAnnounce
+                )}
                 onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
                 dataAttribute={{ 'data-awsui-tree-view-toggle-button': true }}
               />

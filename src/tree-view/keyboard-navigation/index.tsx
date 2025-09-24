@@ -103,6 +103,7 @@ export class KeyboardNavigationProcessor {
         // Update focused tree-item in case tree-items change.
         // istanbul ignore next - tested via integration tests
         this.updateFocusedTreeItem(this.focusedTreeItem?.element);
+        // istanbul ignore next - tested via integration tests
         this._navigationAPI.current?.updateFocusTarget();
       }
     }, 0);
@@ -235,9 +236,6 @@ export class KeyboardNavigationProcessor {
   private getNextFocusableTreeItem(from: FocusedTreeItem, by: number) {
     const targetTreeItemIndex = from.treeItemIndex + by;
     const targetTreeItem = findTreeItemByIndex(this.treeView, targetTreeItemIndex, by);
-    if (!targetTreeItem) {
-      return null;
-    }
 
     // Return the toggle of the tree-item
     return getToggleButtonOfTreeItem(targetTreeItem);

@@ -5,8 +5,8 @@ export function getClosestTreeItem(element: Element) {
   return element.closest('li[data-awsui-tree-item-index]') as null | HTMLLIElement;
 }
 
-export function getToggleButtonOfTreeItem(treeItem: HTMLLIElement) {
-  const toggleElement = treeItem.querySelector('[data-awsui-tree-view-toggle-button=true]');
+export function getToggleButtonOfTreeItem(treeItem: null | HTMLLIElement) {
+  const toggleElement = treeItem?.querySelector('[data-awsui-tree-view-toggle-button=true]');
   return toggleElement as null | HTMLElement;
 }
 
