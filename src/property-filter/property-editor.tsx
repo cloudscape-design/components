@@ -75,9 +75,14 @@ export function PropertyEditorContentEnum({
   filteringOptions: readonly InternalFilteringOption[];
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
 }) {
-  const valueOptions: readonly { value: string; label: string }[] = filteringOptions
+  const valueOptions: readonly {
+    value: string;
+    label: string;
+    tags?: readonly string[];
+    filteringTags?: readonly string[];
+  }[] = filteringOptions
     .filter(option => option.property?.propertyKey === property.propertyKey)
-    .map(({ label, value }) => ({ label, value }));
+    .map(({ label, value, tags, filteringTags }) => ({ label, value, tags, filteringTags }));
   const valueHandlers = useLoadItems(onLoadItems, '', property.externalProperty);
   const value = !unknownValue ? [] : Array.isArray(unknownValue) ? unknownValue : [unknownValue];
   const selectedOptions = valueOptions.filter(option => value.includes(option.value));

@@ -7,6 +7,7 @@ import { BaseComponentProps } from '../internal/base-component';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
+import { DateFormat, EditableDateFormat } from '../internal/utils/date-time/interfaces';
 import { TimeInputProps } from '../time-input/interfaces';
 
 export interface DateRangePickerBaseProps {
@@ -82,13 +83,22 @@ export interface DateRangePickerBaseProps {
   rangeSelectorMode?: DateRangePickerProps.RangeSelectorMode;
 
   /**
+   * Specifies the date format to use on the date inputs in the absolute dropdown.
+   *
+   * The format of the input as it is being interacted with. It can take the following values:
+   * * `iso`: ISO 8601 format without time, e.g.: 2024-01-30 (or 2024-01)
+   * * `slashed`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01)
+   */
+  dateInputFormat?: DateRangePickerProps.DateInputFormat;
+
+  /**
    * Specifies the format of the time input for absolute ranges.
    *
    * Use to restrict the granularity of time that the user can enter.
    *
    * Has no effect when `dateOnly` is true or `granularity` is set to 'month'.
    */
-  timeInputFormat?: TimeInputProps.Format;
+  timeInputFormat?: DateRangePickerProps.TimeInputFormat;
 
   /**
    * Fired whenever a user changes the component's value.
@@ -183,8 +193,7 @@ export interface DateRangePickerProps
    * It can take the following values:
    * * `iso`: ISO 8601 format, e.g.: 2024-01-30T13:32:32+01:00 (or 2024-01-30 when `dateOnly` is true)
    * * `long-localized`: a more human-readable, localized format, e.g.: January 30, 2024, 13:32:32 (UTC+1) (or January 30, 2024 when `dateOnly` is true)
-   *
-   * Defaults to `iso`.
+   * * `slashed`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01)
    */
   absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
 
@@ -438,8 +447,9 @@ export namespace DateRangePickerProps {
     endDateLabel?: string;
 
     /**
-     * Visible label for the End Time input for the
-     * absolute range.
+     * Visible label for the End Time input for the absolute range.
+     * This serves as a fallback if no format specific date constraint test is provided
+     *
      * @i18n
      */
     endTimeLabel?: string;
@@ -452,18 +462,56 @@ export namespace DateRangePickerProps {
     dateConstraintText?: string;
 
     /**
-     * Constraint text for the input fields for the
-     * absolute range.
+     * Constraint text for the input fields for the absolute range in 'slashed' format with no time option.
+     * @i18n
+     */
+    slashedDateConstraintText?: string;
+
+    /**
+     * Constraint text for the input fields for the absolute range in 'iso' format with no time option.
+     * @i18n
+     */
+    isoDateConstraintText?: string;
+
+    /**
+     * Constraint text for the input fields for the absolute range.
+     * This serves as a fallback if no format specific datetime constraint test is provided
+     *
      * @i18n
      */
     dateTimeConstraintText?: string;
 
     /**
-     * Constraint text for the month input fields for the
-     * absolute range.
+     * Constraint text for the date input fields for the absolute range in 'slashed' format.
+     * @i18n
+     */
+    slashedDateTimeConstraintText?: string;
+
+    /**
+     * Constraint text for the date input fields for the absolute range in 'iso' format with.
+     * @i18n
+     */
+    isoDateTimeConstraintText?: string;
+
+    /**
+     * Constraint text for the month input fields for the absolute range.
+     * This serves as a fallback if no format specific month constraint test is provided.
+     *
      * @i18n
      */
     monthConstraintText?: string;
+
+    /**
+     * Constraint text for the month input fields for the absolute range in 'slashed' format.
+     * @i18n
+     */
+    slashedMonthConstraintText?: string;
+
+    /**
+     * Constraint text for the month input fields for the absolute range in 'iso' format.
+     * @i18n
+     */
+    isoMonthConstraintText?: string;
 
     /**
      * Provides a text alternative for the error icon in the error alert.
@@ -513,29 +561,13 @@ export namespace DateRangePickerProps {
     previousYearAriaLabel?: string;
   }
 
-  export type AbsoluteFormat = 'iso' | 'long-localized';
+  export type AbsoluteFormat = DateFormat;
+
+  export type DateInputFormat = EditableDateFormat | undefined;
+
+  export type TimeInputFormat = TimeInputProps.Format;
 }
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export type QuarterIndex = 0 | 1 | 2;
-
-export type RangeCalendarI18nStrings = Pick<
-  DateRangePickerProps.I18nStrings,
-  | 'todayAriaLabel'
-  | 'nextMonthAriaLabel'
-  | 'previousMonthAriaLabel'
-  | 'currentMonthAriaLabel'
-  | 'nextYearAriaLabel'
-  | 'previousYearAriaLabel'
-  | 'startMonthLabel'
-  | 'startDateLabel'
-  | 'startTimeLabel'
-  | 'endMonthLabel'
-  | 'endDateLabel'
-  | 'endTimeLabel'
-  | 'dateConstraintText'
-  | 'dateTimeConstraintText'
-  | 'monthConstraintText'
-  | 'renderSelectedAbsoluteRangeAriaLive'
->;

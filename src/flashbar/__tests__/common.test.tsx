@@ -15,20 +15,20 @@ const mockFocusFlashFocusableArea = focusFlashFocusableArea as jest.MockedFuncti
 import styles from '../../../lib/components/flashbar/styles.css.js';
 
 describe('handleFlashDismissedInternal', () => {
-  let mockMainElement: HTMLElement;
+  let mockH1Element: HTMLElement;
   let originalQuerySelector: typeof document.querySelector;
   let originalSetTimeout: typeof setTimeout;
 
   beforeEach(() => {
     jest.clearAllMocks();
 
-    mockMainElement = document.createElement('main');
-    mockMainElement.focus = jest.fn();
+    mockH1Element = document.createElement('h1');
+    mockH1Element.focus = jest.fn();
 
     originalQuerySelector = document.querySelector;
     document.querySelector = jest.fn(selector => {
-      if (selector === 'main' || selector === '[role="main"]') {
-        return mockMainElement;
+      if (selector === 'h1') {
+        return mockH1Element;
       }
       return null;
     });
@@ -62,7 +62,7 @@ describe('handleFlashDismissedInternal', () => {
     handleFlashDismissedInternal('item-1', undefined, mockRef, flashRefs);
 
     expect(mockFocusFlashFocusableArea).not.toHaveBeenCalled();
-    expect(mockMainElement.focus).not.toHaveBeenCalled();
+    expect(mockH1Element.focus).not.toHaveBeenCalled();
   });
 
   test('does nothing when dismissedId is undefined', () => {
@@ -73,7 +73,7 @@ describe('handleFlashDismissedInternal', () => {
     handleFlashDismissedInternal(undefined, items, mockRef, flashRefs);
 
     expect(mockFocusFlashFocusableArea).not.toHaveBeenCalled();
-    expect(mockMainElement.focus).not.toHaveBeenCalled();
+    expect(mockH1Element.focus).not.toHaveBeenCalled();
   });
 
   test('does nothing when refCurrent is null', () => {
@@ -83,7 +83,7 @@ describe('handleFlashDismissedInternal', () => {
     handleFlashDismissedInternal('item-1', items, null, flashRefs);
 
     expect(mockFocusFlashFocusableArea).not.toHaveBeenCalled();
-    expect(mockMainElement.focus).not.toHaveBeenCalled();
+    expect(mockH1Element.focus).not.toHaveBeenCalled();
   });
 
   test('does nothing when dismissed item is not found', () => {
@@ -94,7 +94,7 @@ describe('handleFlashDismissedInternal', () => {
     handleFlashDismissedInternal('non-existent-item', items, mockRef, flashRefs);
 
     expect(mockFocusFlashFocusableArea).not.toHaveBeenCalled();
-    expect(mockMainElement.focus).not.toHaveBeenCalled();
+    expect(mockH1Element.focus).not.toHaveBeenCalled();
   });
 
   test('focuses on next item when dismissing first item', () => {
@@ -108,7 +108,7 @@ describe('handleFlashDismissedInternal', () => {
     handleFlashDismissedInternal('item-0', items, mockRef, flashRefs);
 
     expect(mockFocusFlashFocusableArea).toHaveBeenCalledWith(mockNextElement);
-    expect(mockMainElement.focus).not.toHaveBeenCalled();
+    expect(mockH1Element.focus).not.toHaveBeenCalled();
   });
 
   test('focuses on previous item when dismissing last item', () => {
@@ -122,10 +122,10 @@ describe('handleFlashDismissedInternal', () => {
     handleFlashDismissedInternal('item-2', items, mockRef, flashRefs);
 
     expect(mockFocusFlashFocusableArea).toHaveBeenCalledWith(mockPrevElement);
-    expect(mockMainElement.focus).not.toHaveBeenCalled();
+    expect(mockH1Element.focus).not.toHaveBeenCalled();
   });
 
-  test('focuses on main element when dismissing only item', () => {
+  test('focuses on h1 element when dismissing only item', () => {
     const items = createTestItems(1);
     const mockRef = document.createElement('div');
     const flashRefs = {};
@@ -133,7 +133,7 @@ describe('handleFlashDismissedInternal', () => {
     handleFlashDismissedInternal('item-0', items, mockRef, flashRefs);
 
     expect(mockFocusFlashFocusableArea).not.toHaveBeenCalled();
-    expect(mockMainElement.focus).toHaveBeenCalled();
+    expect(mockH1Element.focus).toHaveBeenCalled();
   });
 
   test('focuses on notification bar button when next flash element is not available', () => {
@@ -156,10 +156,10 @@ describe('handleFlashDismissedInternal', () => {
 
     expect(mockFocusFlashFocusableArea).not.toHaveBeenCalled();
     expect(mockNotificationButton.focus).toHaveBeenCalled();
-    expect(mockMainElement.focus).not.toHaveBeenCalled();
+    expect(mockH1Element.focus).not.toHaveBeenCalled();
   });
 
-  test('falls back to main element when neither next flash element nor notification button is available', () => {
+  test('falls back to h1 element when neither next flash element nor notification button is available', () => {
     const items = createTestItems(2);
     const mockRef = document.createElement('div');
 
@@ -170,7 +170,7 @@ describe('handleFlashDismissedInternal', () => {
     handleFlashDismissedInternal('item-0', items, mockRef, flashRefs);
 
     expect(mockFocusFlashFocusableArea).not.toHaveBeenCalled();
-    expect(mockMainElement.focus).toHaveBeenCalled();
+    expect(mockH1Element.focus).toHaveBeenCalled();
   });
 
   test('focuses on middle item correctly', () => {
@@ -208,7 +208,7 @@ describe('handleFlashDismissedInternal', () => {
     handleFlashDismissedInternal('item-0', items, mockRef, flashRefs);
 
     expect(mockFocusFlashFocusableArea).not.toHaveBeenCalled();
-    expect(mockMainElement.focus).not.toHaveBeenCalled();
+    expect(mockH1Element.focus).not.toHaveBeenCalled();
   });
 
   test('handles dismissing item at various positions', () => {
@@ -223,27 +223,21 @@ describe('handleFlashDismissedInternal', () => {
     expect(mockFocusFlashFocusableArea).toHaveBeenCalledWith(mockNextElement);
   });
 
-  test('handles notification button fallback with role="main"', () => {
+  test('handles case when h1 element is not available', () => {
     const items = createTestItems(1);
     const mockRef = document.createElement('div');
     const flashRefs = {};
 
-    const mockRoleMainElement = document.createElement('div');
-    mockRoleMainElement.setAttribute('role', 'main');
-    mockRoleMainElement.focus = jest.fn();
-
     document.querySelector = jest.fn(selector => {
-      if (selector === 'main') {
+      if (selector === 'h1') {
         return null;
-      }
-      if (selector === '[role="main"]') {
-        return mockRoleMainElement;
       }
       return null;
     });
 
     handleFlashDismissedInternal('item-0', items, mockRef, flashRefs);
 
-    expect(mockRoleMainElement.focus).toHaveBeenCalled();
+    expect(mockFocusFlashFocusableArea).not.toHaveBeenCalled();
+    // No focus should be called when h1 is not available
   });
 });

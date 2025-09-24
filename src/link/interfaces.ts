@@ -9,6 +9,10 @@ import {
   ClickDetail as _ClickDetail,
   NonCancelableEventHandler,
 } from '../internal/events';
+/**
+ * @awsuiSystem core
+ */
+import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface LinkProps extends BaseComponentProps {
   /**
@@ -111,6 +115,18 @@ export interface LinkProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   style?: LinkProps.Style;
+
+  /**
+   * Attributes to add to the native element.
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeAttributes?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
 }
 
 export namespace LinkProps {

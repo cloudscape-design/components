@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
 
 import {
   Alert,
@@ -16,6 +15,7 @@ import {
   SpaceBetween,
 } from '~components';
 import awsuiPlugins from '~components/internal/plugins';
+import { mount, unmount } from '~mount';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -37,7 +37,7 @@ awsuiPlugins.alertContent.registerContentReplacer({
         replacer.hideHeader();
         replacer.replaceContent(container => {
           console.log('render replacement content');
-          render(
+          mount(
             <SpaceBetween size="s">
               <Box>---REPLACEMENT--- Access denied message! ---REPLACEMENT---</Box>
               <ExpandableSection headerText="Original message">
@@ -59,7 +59,7 @@ awsuiPlugins.alertContent.registerContentReplacer({
       },
       unmount({ replacementContentContainer }) {
         console.log('unmount');
-        unmountComponentAtNode(replacementContentContainer);
+        unmount(replacementContentContainer);
       },
     };
   },

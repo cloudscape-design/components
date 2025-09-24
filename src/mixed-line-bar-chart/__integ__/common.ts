@@ -1,15 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import BasePageExtendedObject from '../../__integ__/page-objects/base-page-ext';
 
-export class MixedChartPage extends BasePageObject {
+export class MixedChartPage extends BasePageExtendedObject {
   currentIndex: number | undefined;
   wrapper = createWrapper().findMixedLineBarChart();
 
-  constructor(browser: ConstructorParameters<typeof BasePageObject>[0]) {
+  constructor(browser: ConstructorParameters<typeof BasePageExtendedObject>[0]) {
     super(browser);
   }
 
@@ -29,6 +30,8 @@ export class MixedChartPage extends BasePageObject {
       // If a popover was pinned, we need to unpin it before pinning another one.
       if (this.currentIndex) {
         await this.click(this.wrapper.findDetailPopover().findDismissButton().toSelector());
+        // Wait for popover dismiss reopen delay.
+        await this.pause(50);
       }
       this.currentIndex = index;
       await this.clickBarGroup(barGroup);
