@@ -11,9 +11,8 @@ $direction-button-wrapper-size: calc(#{awsui.$space-static-xl} + 2 * #{awsui.$sp
 $direction-button-size: awsui.$space-static-xl;
 $direction-button-offset: awsui.$space-static-xxs;
 
-.drag-handle-wrapper {
-  position: relative;
-  display: inline-block;
+.contents {
+  display: contents;
 }
 
 .portal-overlay {
@@ -34,8 +33,7 @@ $direction-button-offset: awsui.$space-static-xxs;
 }
 
 .drag-handle {
-  position: relative;
-  display: flex;
+  display: inline-flex;
 }
 
 .direction-button-wrapper {

@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '@cloudscape-design/component-toolkit/internal';
 import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 
+import DragHandleWrapper from '../../internal/components/drag-handle-wrapper';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
@@ -53,7 +54,9 @@ export function Resizer({
   const resizerToggleRef = useRef<HTMLButtonElement>(null);
   const resizerSeparatorRef = useRef<HTMLSpanElement>(null);
 
+  const [isPointerDown, setIsPointerDown] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [showUapButtons, setShowUapButtons] = useState(false);
   const [isKeyboardDragging, setIsKeyboardDragging] = useState(false);
   const autoGrowTimeout = useRef<ReturnType<typeof setTimeout> | undefined>();
   const [resizerHasFocus, setResizerHasFocus] = useState(false);
@@ -64,44 +67,63 @@ export function Resizer({
     setHeaderCellWidth(getHeaderWidth(resizerToggleRef.current));
   }, []);
 
-  useEffect(() => {
+  const updateTrackerPosition = useCallback((newOffset: number) => {
     const elements = getResizerElements(resizerToggleRef.current);
-    const document = resizerToggleRef.current?.ownerDocument ?? window.document;
-
-    if ((!isDragging && !resizerHasFocus) || !elements) {
+    if (!elements) {
       return;
     }
 
-    const { insetInlineStart: inlineStartEdge, insetInlineEnd: inlineEndEdge } = getLogicalBoundingClientRect(
-      elements.scrollParent
-    );
+    const { insetInlineStart: scrollParentInsetInlineStart } = getLogicalBoundingClientRect(elements.table);
+    elements.tracker.style.insetBlockStart = getLogicalBoundingClientRect(elements.header).blockSize + 'px';
+    // minus one pixel to offset the cell border
+    elements.tracker.style.insetInlineStart = newOffset - scrollParentInsetInlineStart - 1 + 'px';
+  }, []);
 
-    const updateTrackerPosition = (newOffset: number) => {
-      const { insetInlineStart: scrollParentInsetInlineStart } = getLogicalBoundingClientRect(elements.table);
-      elements.tracker.style.insetBlockStart = getLogicalBoundingClientRect(elements.header).blockSize + 'px';
-      // minus one pixel to offset the cell border
-      elements.tracker.style.insetInlineStart = newOffset - scrollParentInsetInlineStart - 1 + 'px';
-    };
+  const updateColumnWidth = useCallback(
+    (newWidth: number) => {
+      const elements = getResizerElements(resizerToggleRef.current);
+      if (!elements) {
+        return;
+      }
 
-    const updateColumnWidth = (newWidth: number) => {
       const { insetInlineEnd, inlineSize } = getLogicalBoundingClientRect(elements.header);
       const updatedWidth = newWidth < minWidth ? minWidth : newWidth;
       updateTrackerPosition(insetInlineEnd + updatedWidth - inlineSize);
-      if (newWidth >= minWidth) {
-        setHeaderCellWidth(newWidth);
-      }
+      setHeaderCellWidth(updatedWidth);
+
       // callbacks must be the last calls in the handler, because they may cause an extra update
       onWidthUpdate(newWidth);
-    };
+    },
+    [minWidth, onWidthUpdate, updateTrackerPosition]
+  );
 
-    const resizeColumn = (offset: number) => {
+  const resizeColumn = useCallback(
+    (offset: number) => {
+      const elements = getResizerElements(resizerToggleRef.current);
+      if (!elements) {
+        return;
+      }
+
+      const { insetInlineStart: inlineStartEdge } = getLogicalBoundingClientRect(elements.scrollParent);
       if (offset > inlineStartEdge) {
         const cellLeft = getLogicalBoundingClientRect(elements.header).insetInlineStart;
         const newWidth = offset - cellLeft;
         // callbacks must be the last calls in the handler, because they may cause an extra update
         updateColumnWidth(newWidth);
       }
-    };
+    },
+    [updateColumnWidth]
+  );
+
+  useEffect(() => {
+    const elements = getResizerElements(resizerToggleRef.current);
+    const document = resizerToggleRef.current?.ownerDocument ?? window.document;
+
+    if ((!isPointerDown && !resizerHasFocus) || !elements) {
+      return;
+    }
+
+    const { insetInlineEnd: inlineEndEdge } = getLogicalBoundingClientRect(elements.scrollParent);
 
     const onAutoGrow = () => {
       const inlineSize = getLogicalBoundingClientRect(elements.header).inlineSize;
@@ -111,7 +133,8 @@ export function Resizer({
       elements.scrollParent.scrollLeft += AUTO_GROW_INCREMENT * (getIsRtl(elements.scrollParent) ? -1 : 1);
     };
 
-    const onMouseMove = (event: MouseEvent) => {
+    const onPointerMove = (event: MouseEvent) => {
+      setIsDragging(true);
       clearTimeout(autoGrowTimeout.current);
       const offset = getLogicalPageX(event);
       if (offset > inlineEndEdge) {
@@ -121,8 +144,13 @@ export function Resizer({
       }
     };
 
-    const onMouseUp = (event: MouseEvent) => {
-      resizeColumn(getLogicalPageX(event));
+    const onPointerUp = (event: MouseEvent) => {
+      setIsPointerDown(false);
+      if (isDragging) {
+        resizeColumn(getLogicalPageX(event));
+      } else {
+        setShowUapButtons(true);
+      }
       setIsDragging(false);
       onWidthUpdateCommit();
       clearTimeout(autoGrowTimeout.current);
@@ -139,29 +167,42 @@ export function Resizer({
             handleKey(event, {
               onActivate: () => {
                 setIsKeyboardDragging(false);
+                setShowUapButtons(false);
                 resizerToggleRef.current?.focus();
               },
               onEscape: () => {
                 setIsKeyboardDragging(false);
+                setShowUapButtons(false);
                 resizerToggleRef.current?.focus();
               },
-              onInlineStart: () => updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize - 10),
-              onInlineEnd: () => updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize + 10),
+              onInlineStart: () => {
+                updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize - 10);
+              },
+              onInlineEnd: () => {
+                updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize + 10);
+              },
             });
           }
         }
       }
       // Enter keyboard dragging mode
-      else if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
-        event.preventDefault();
+      else {
+        if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
+          event.preventDefault();
 
-        if (isEventLike(event)) {
-          handleKey(event, {
-            onActivate: () => {
-              setIsKeyboardDragging(true);
-              resizerSeparatorRef.current?.focus();
-            },
-          });
+          if (isEventLike(event)) {
+            handleKey(event, {
+              onActivate: () => {
+                setShowUapButtons(true);
+                setIsKeyboardDragging(true);
+                resizerSeparatorRef.current?.focus();
+              },
+            });
+          }
+        } else {
+          // Showing the UAP buttons when the button is only focused and not activated
+          // gives a false impression that you can resize with the arrow keys.
+          setShowUapButtons(false);
         }
       }
     };
@@ -169,12 +210,11 @@ export function Resizer({
     updateTrackerPosition(getLogicalBoundingClientRect(elements.header).insetInlineEnd);
     const controller = new AbortController();
 
-    if (isDragging) {
+    if (isPointerDown) {
       document.body.classList.add(styles['resize-active']);
-      document.addEventListener('mousemove', onMouseMove, { signal: controller.signal });
-      document.addEventListener('mouseup', onMouseUp, { signal: controller.signal });
-    }
-    if (resizerHasFocus) {
+      document.addEventListener('pointermove', onPointerMove, { signal: controller.signal });
+      document.addEventListener('pointerup', onPointerUp, { signal: controller.signal });
+    } else if (resizerHasFocus) {
       document.body.classList.add(styles['resize-active-with-focus']);
       elements.header.addEventListener('keydown', onKeyDown, { signal: controller.signal });
     }
@@ -188,79 +228,118 @@ export function Resizer({
       document.body.classList.remove(styles['resize-active-with-focus']);
       controller.abort();
     };
-  }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit]);
+  }, [
+    minWidth,
+    isDragging,
+    isKeyboardDragging,
+    resizerHasFocus,
+    onWidthUpdate,
+    onWidthUpdateCommit,
+    updateTrackerPosition,
+    updateColumnWidth,
+    resizeColumn,
+    isPointerDown,
+  ]);
 
   const { tabIndex: resizerTabIndex } = useSingleTabStopNavigation(resizerToggleRef, { tabIndex });
 
   return (
-    <>
-      <button
-        ref={resizerToggleRef}
-        className={clsx(
-          styles.resizer,
-          (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus'],
-          isVisualRefresh && styles['is-visual-refresh']
-        )}
-        onMouseDown={event => {
-          if (event.button !== 0) {
+    <div className={styles['resizer-wrapper']}>
+      <DragHandleWrapper
+        clickDragThreshold={3}
+        hideButtonsOnDrag={false}
+        directions={{
+          'inline-start': headerCellWidth > minWidth ? 'active' : 'disabled',
+          'inline-end': 'active',
+        }}
+        triggerMode="controlled"
+        controlledShowButtons={showUapButtons}
+        wrapperClassName={styles['resizer-button-wrapper']}
+        onDirectionClick={direction => {
+          const elements = getResizerElements(resizerToggleRef.current);
+          if (!elements) {
             return;
           }
-          event.preventDefault();
-          setIsDragging(true);
+
+          if (direction === 'inline-start') {
+            updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize - 10);
+          } else if (direction === 'inline-end') {
+            updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize + 10);
+          }
         }}
-        onClick={() => {
-          // Prevent mouse drag activation and activate keyboard dragging for VO+Space click.
-          setIsDragging(false);
-          setResizerHasFocus(true);
-          setIsKeyboardDragging(true);
-          resizerSeparatorRef.current?.focus();
-        }}
-        onFocus={() => {
-          setHeaderCellWidth(getHeaderWidth(resizerToggleRef.current));
-          setResizerHasFocus(true);
-        }}
-        onBlur={event => {
-          // Ignoring blur event when focus moves to the resizer separator element.
-          // (This focus transition is done programmatically when the resizer button is clicked).
-          if (event.relatedTarget !== resizerSeparatorRef.current) {
+      >
+        <button
+          ref={resizerToggleRef}
+          className={clsx(
+            styles.resizer,
+            (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus'],
+            isVisualRefresh && styles['is-visual-refresh']
+          )}
+          onPointerDown={event => {
+            if (event.button === 0) {
+              setIsPointerDown(true);
+            }
+          }}
+          onClick={() => {
+            // Prevent mouse drag activation and activate keyboard dragging for VO+Space click.
+            setIsPointerDown(false);
+            setIsDragging(false);
+            setResizerHasFocus(true);
+            setIsKeyboardDragging(true);
+            resizerSeparatorRef.current?.focus();
+          }}
+          onFocus={() => {
+            setHeaderCellWidth(getHeaderWidth(resizerToggleRef.current));
+            setResizerHasFocus(true);
+          }}
+          onBlur={event => {
+            // Ignoring blur event when focus moves to the resizer separator element.
+            // (This focus transition is done programmatically when the resizer button is clicked).
+            if (event.relatedTarget !== resizerSeparatorRef.current) {
+              setResizerHasFocus(false);
+              setShowUapButtons(false);
+              return;
+            }
+          }}
+          // Using a custom role-description to make the element's purpose better clear.
+          // The role-description must include the word "button" to imply the interaction model.
+          // See https://www.w3.org/TR/wai-aria-1.1/#aria-roledescription
+          aria-roledescription={roleDescription}
+          aria-labelledby={ariaLabelledby}
+          tabIndex={resizerTabIndex}
+          data-focus-id={focusId}
+        />
+        <span
+          className={clsx(
+            styles['divider-interactive'],
+            isDragging && styles['divider-active'],
+            isVisualRefresh && styles['is-visual-refresh']
+          )}
+          data-awsui-table-suppress-navigation={true}
+          ref={resizerSeparatorRef}
+          id={separatorId}
+          role="slider"
+          tabIndex={-1}
+          aria-labelledby={ariaLabelledby}
+          aria-hidden={!isKeyboardDragging}
+          aria-valuemin={minWidth}
+          // aria-valuemax is needed because the slider is inoperable in VoiceOver without it
+          aria-valuemax={Number.MAX_SAFE_INTEGER}
+          aria-valuenow={headerCellWidth}
+          data-focus-id={focusId}
+          onBlur={event => {
             setResizerHasFocus(false);
-          }
-        }}
-        // Using a custom role-description to make the element's purpose better clear.
-        // The role-description must include the word "button" to imply the interaction model.
-        // See https://www.w3.org/TR/wai-aria-1.1/#aria-roledescription
-        aria-roledescription={roleDescription}
-        aria-labelledby={ariaLabelledby}
-        tabIndex={resizerTabIndex}
-        data-focus-id={focusId}
-      />
-      <span
-        className={clsx(
-          styles['divider-interactive'],
-          isDragging && styles['divider-active'],
-          isVisualRefresh && styles['is-visual-refresh']
-        )}
-        data-awsui-table-suppress-navigation={true}
-        ref={resizerSeparatorRef}
-        id={separatorId}
-        role="slider"
-        tabIndex={-1}
-        aria-labelledby={ariaLabelledby}
-        aria-hidden={!isKeyboardDragging}
-        aria-valuemin={minWidth}
-        // aria-valuemax is needed because the slider is inoperable in VoiceOver without it
-        aria-valuemax={Number.MAX_SAFE_INTEGER}
-        aria-valuenow={headerCellWidth}
-        data-focus-id={focusId}
-        onBlur={() => {
-          setResizerHasFocus(false);
-          if (isKeyboardDragging) {
-            setIsKeyboardDragging(false);
-          }
-          onWidthUpdateCommit();
-        }}
-      />
-    </>
+            if (isKeyboardDragging) {
+              setIsKeyboardDragging(false);
+            }
+            if (event.relatedTarget !== resizerToggleRef.current) {
+              setShowUapButtons(false);
+            }
+            onWidthUpdateCommit();
+          }}
+        />
+      </DragHandleWrapper>
+    </div>
   );
 }
 

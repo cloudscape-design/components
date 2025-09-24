@@ -6,10 +6,9 @@ import clsx from 'clsx';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
-import { getFirstFocusable } from '../focus-lock/utils';
 import Tooltip from '../tooltip';
 import DirectionButton from './direction-button';
-import { Direction, DragHandleWrapperProps } from './interfaces';
+import { DragHandleWrapperProps } from './interfaces';
 import PortalOverlay from './portal-overlay';
 
 import styles from './styles.css.js';
@@ -22,13 +21,14 @@ export default function DragHandleWrapper({
   triggerMode = 'focus',
   initialShowButtons = false,
   controlledShowButtons = false,
+  wrapperClassName,
   hideButtonsOnDrag,
   clickDragThreshold,
 }: DragHandleWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const dragHandleRef = useRef<HTMLDivElement | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [showButtons, setShowButtons] = useState(initialShowButtons);
+  const [uncontrolledShowButtons, setUncontrolledShowButtons] = useState(initialShowButtons);
 
   const isPointerDown = useRef(false);
   const initialPointerPosition = useRef<{ x: number; y: number } | undefined>();
@@ -44,23 +44,23 @@ export default function DragHandleWrapper({
     // is pressed on it. We exclude handling the pointer press in this handler,
     // since it could be the start of a drag event - the pointer stuff is
     // handled in the "pointerup" listener instead. In cases where focus is moved
-    // to the button (by manually calling `.focus()`, the buttons should only appear)
+    // to the button (by manually calling `.focus()`), the buttons should only appear
     // if the action that triggered the focus move was the result of a keypress.
     if (document.body.dataset.awsuiFocusVisible && !nodeContains(wrapperRef.current, event.relatedTarget)) {
       setShowTooltip(false);
       if (triggerMode === 'focus') {
-        setShowButtons(true);
+        setUncontrolledShowButtons(true);
       }
     }
   };
 
   const onWrapperFocusOut: React.FocusEventHandler = event => {
     // Close the directional buttons when the focus leaves the drag handle.
-    // "focusout" is also triggered when the user leaves the current tab, but
+    // "focusout" is also triggered when the user switches to another tab, but
     // since it'll be returned when they switch back anyway, we exclude that
     // case by checking for `document.hasFocus()`.
     if (document.hasFocus() && !nodeContains(wrapperRef.current, event.relatedTarget)) {
-      setShowButtons(false);
+      setUncontrolledShowButtons(false);
     }
   };
 
@@ -87,7 +87,7 @@ export default function DragHandleWrapper({
         ) {
           didPointerDrag.current = true;
           if (hideButtonsOnDrag) {
-            setShowButtons(false);
+            setUncontrolledShowButtons(false);
           }
         }
       },
@@ -115,7 +115,7 @@ export default function DragHandleWrapper({
         if (isPointerDown.current && !didPointerDrag.current) {
           // The cursor didn't move much between "pointerdown" and "pointerup".
           // Handle this as a "click" instead of a "drag".
-          setShowButtons(true);
+          setUncontrolledShowButtons(true);
         }
         resetPointerDownState();
       },
@@ -153,10 +153,10 @@ export default function DragHandleWrapper({
   const onDragHandleKeyDown: React.KeyboardEventHandler = event => {
     // For accessibility reasons, pressing escape should always close the floating controls.
     if (event.key === 'Escape') {
-      setShowButtons(false);
+      setUncontrolledShowButtons(false);
     } else if (triggerMode === 'keyboard-activate' && (event.key === 'Enter' || event.key === ' ')) {
       // toggle buttons when Enter or space is pressed in 'keyboard-activate' triggerMode
-      setShowButtons(prevshowButtons => !prevshowButtons);
+      setUncontrolledShowButtons(prevshowButtons => !prevshowButtons);
     } else if (
       event.key !== 'Alt' &&
       event.key !== 'Control' &&
@@ -166,42 +166,40 @@ export default function DragHandleWrapper({
     ) {
       // Pressing any other key will display the focus-visible ring around the
       // drag handle if it's in focus, so we should also show the buttons now.
-      setShowButtons(true);
+      setUncontrolledShowButtons(true);
     }
   };
 
-  const onInternalDirectionClick = (direction: Direction) => {
-    // Move focus back to the wrapper on click. This prevents focus from staying
-    // on an aria-hidden control, and allows future keyboard events to be handled
-    // cleanly using the drag handle's own handlers.
-    if (dragHandleRef.current) {
-      getFirstFocusable(dragHandleRef.current)?.focus();
-    }
-    onDirectionClick?.(direction);
-  };
-
-  const _showButtons = triggerMode === 'controlled' ? controlledShowButtons : showButtons;
+  const _showButtons = triggerMode === 'controlled' ? controlledShowButtons : uncontrolledShowButtons;
 
   return (
-    <div
-      className={clsx(styles['drag-handle-wrapper'], _showButtons && styles['drag-handle-wrapper-open'])}
-      ref={wrapperRef}
-      onFocus={onWrapperFocusIn}
-      onBlur={onWrapperFocusOut}
-    >
-      <div onPointerEnter={onTooltipGroupPointerEnter} onPointerLeave={onTooltipGroupPointerLeave}>
+    <>
+      {/* Wrapper for focus detection. The buttons are shown when any element inside this wrapper is
+          focused, either via the keyboard or a pointer press. The UAP buttons will never receive focus. */}
+      <div className={styles.contents} ref={wrapperRef} onFocus={onWrapperFocusIn} onBlur={onWrapperFocusOut}>
+        {/* Wrapper for pointer detection. Determines whether or not the tooltip should be shown. */}
         <div
-          className={styles['drag-handle']}
-          ref={dragHandleRef}
-          onPointerDown={onHandlePointerDown}
-          onKeyDown={onDragHandleKeyDown}
+          className={styles.contents}
+          onPointerEnter={onTooltipGroupPointerEnter}
+          onPointerLeave={onTooltipGroupPointerLeave}
         >
-          {children}
-        </div>
+          {/* Position tracking wrapper used to position the tooltip and drag buttons accurately.
+            Its dimensions must match the inner button's dimensions. */}
+          <div
+            className={clsx(styles['drag-handle'], wrapperClassName)}
+            ref={dragHandleRef}
+            onPointerDown={onHandlePointerDown}
+            onKeyDown={onDragHandleKeyDown}
+          >
+            {children}
+          </div>
 
-        {!isDisabled && !_showButtons && showTooltip && tooltipText && (
-          <Tooltip trackRef={dragHandleRef} value={tooltipText} onDismiss={() => setShowTooltip(false)} />
-        )}
+          {!isDisabled && !_showButtons && showTooltip && tooltipText && (
+            // Rendered in a portal but pointerenter/pointerleave events still propagate
+            // up the React DOM tree, which is why it's placed in this nested context.
+            <Tooltip trackRef={dragHandleRef} value={tooltipText} onDismiss={() => setShowTooltip(false)} />
+          )}
+        </div>
       </div>
 
       <PortalOverlay track={dragHandleRef} isDisabled={!_showButtons}>
@@ -210,7 +208,7 @@ export default function DragHandleWrapper({
             show={!isDisabled && _showButtons}
             direction="block-start"
             state={directions['block-start']}
-            onClick={() => onInternalDirectionClick('block-start')}
+            onClick={() => onDirectionClick?.('block-start')}
           />
         )}
         {directions['block-end'] && (
@@ -218,7 +216,7 @@ export default function DragHandleWrapper({
             show={!isDisabled && _showButtons}
             direction="block-end"
             state={directions['block-end']}
-            onClick={() => onInternalDirectionClick('block-end')}
+            onClick={() => onDirectionClick?.('block-end')}
           />
         )}
         {directions['inline-start'] && (
@@ -226,7 +224,7 @@ export default function DragHandleWrapper({
             show={!isDisabled && _showButtons}
             direction="inline-start"
             state={directions['inline-start']}
-            onClick={() => onInternalDirectionClick('inline-start')}
+            onClick={() => onDirectionClick?.('inline-start')}
           />
         )}
         {directions['inline-end'] && (
@@ -234,10 +232,10 @@ export default function DragHandleWrapper({
             show={!isDisabled && _showButtons}
             direction="inline-end"
             state={directions['inline-end']}
-            onClick={() => onInternalDirectionClick('inline-end')}
+            onClick={() => onDirectionClick?.('inline-end')}
           />
         )}
       </PortalOverlay>
-    </div>
+    </>
   );
 }
