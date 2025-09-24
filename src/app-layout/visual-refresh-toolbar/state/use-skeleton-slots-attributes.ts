@@ -50,7 +50,6 @@ export const useSkeletonSlotsAttributes = (
       [customCssProps.navigationWidth]: `${navigationWidth}px`,
       [customCssProps.toolsWidth]: `${activeDrawerSize}px`,
     },
-    'data-awsui-app-layout-widget-loaded': true,
   };
 
   const mainElAttributes = {
