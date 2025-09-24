@@ -9,7 +9,7 @@ import Grid from '~components/grid';
 import SpaceBetween from '~components/space-between';
 import TreeView from '~components/tree-view';
 
-import { Item, stsnRegisteredItems } from './items/keyboard-navigation-items';
+import { Item, stsnRegisteredItems } from './items/keyboard-navigation-page-items';
 
 interface FlattenedItem extends Item {
   parentId: string;

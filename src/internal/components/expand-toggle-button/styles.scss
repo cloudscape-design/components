@@ -47,10 +47,6 @@
     }
   }
 
-  &.invisible {
-    pointer-events: none;
-  }
-
   &:hover {
     color: awsui.$color-text-interactive-hover;
   }

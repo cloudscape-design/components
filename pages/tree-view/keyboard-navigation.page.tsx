@@ -14,7 +14,7 @@ import {
   Item as KeyboardNavigationItem,
   nonStsnRegisteredItems,
   stsnRegisteredItems,
-} from './items/keyboard-navigation-items';
+} from './items/keyboard-navigation-page-items';
 import { textItems } from './items/permutations-items';
 
 export default function TreeViewKeyboardNavigation() {

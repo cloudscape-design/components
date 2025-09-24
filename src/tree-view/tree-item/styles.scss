@@ -30,7 +30,7 @@ $item-toggle-column-width: 28px;
 
     // When toggle is focused, show focus outline around the entire tree item
     // stylelint-disable-next-line selector-combinator-disallowed-list
-    body[data-awsui-focus-visible='true'] &:has(button[data-awsui-tree-view-toggle-button='true']:focus) {
+    body[data-awsui-focus-visible='true'] &:has([data-awsui-tree-view-toggle-button='true']:focus) {
       @include styles.focus-highlight(0px);
     }
 

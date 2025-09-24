@@ -1,10 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export function focusElement(element: null | HTMLElement) {
-  element?.focus();
-}
-
 export function getClosestTreeItem(element: Element) {
   return element.closest('li[data-awsui-tree-item-index]') as null | HTMLLIElement;
 }
@@ -62,5 +58,8 @@ export function findTreeItemContentById(treeView: null | HTMLUListElement, treeI
 }
 
 export function isTreeItemToggle(element: Element) {
-  return element.tagName === 'BUTTON' && element.getAttribute('data-awsui-tree-view-toggle-button') === 'true';
+  return (
+    (element.tagName === 'BUTTON' || element.tagName === 'DIV') &&
+    element.getAttribute('data-awsui-tree-view-toggle-button') === 'true'
+  );
 }

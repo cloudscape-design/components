@@ -16,7 +16,6 @@ import { nodeBelongs } from '../../internal/utils/node-belongs';
 import {
   findTreeItemByIndex,
   findTreeItemContentById,
-  focusElement,
   getClosestTreeItem,
   getToggleButtonOfTreeItem,
   isElementDisabled,
@@ -111,11 +110,11 @@ export class KeyboardNavigationProcessor {
   public onUnregisterActive = () => {
     // If the focused tree-item or tree-item focusable appears to be no longer attached to the tree-view we need to re-apply
     // focus to a tree-item focusable with the same position or to the tree-item toggle.
-    // istanbul ignore next - to be tested via integration tests
+    // istanbul ignore next - tested via integration tests
     if (this.focusedTreeItem && !nodeBelongs(this.treeView, this.focusedTreeItem.element)) {
       const nextFocusableElement = this.getNextFocusableTreeItemContent(this.focusedTreeItem, 0);
       if (nextFocusableElement) {
-        focusElement(nextFocusableElement);
+        nextFocusableElement?.focus();
       } else {
         this.moveFocusBetweenTreeItems(this.focusedTreeItem, 0);
       }
@@ -249,7 +248,7 @@ export class KeyboardNavigationProcessor {
     if (nextFocusableElement) {
       // Prevent default only if there are focusables inside
       event?.preventDefault();
-      focusElement(nextFocusableElement);
+      nextFocusableElement?.focus();
     }
   }
 
@@ -259,7 +258,8 @@ export class KeyboardNavigationProcessor {
 
     // If toggle is not focused (focus is inside the tree-item),
     // pressing up or down arrow keys should move focus to the toggle
-    focusElement(this.getNextFocusableTreeItem(from, isToggleFocused ? by : 0));
+    const nextFocusableTreeItem = this.getNextFocusableTreeItem(from, isToggleFocused ? by : 0);
+    nextFocusableTreeItem?.focus();
   }
 
   private moveFocusToTheLastElementInsideTreeItem(from: FocusedTreeItem, event?: Event) {
@@ -275,7 +275,7 @@ export class KeyboardNavigationProcessor {
     if (focusableElement) {
       // Prevent default only if there are focusables inside
       event?.preventDefault();
-      focusElement(focusableElement);
+      focusableElement?.focus();
     }
   }
 

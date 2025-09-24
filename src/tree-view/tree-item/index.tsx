@@ -8,6 +8,7 @@ import { ExpandToggleButton } from '../../internal/components/expand-toggle-butt
 import InternalStructuredItem from '../../internal/components/structured-item';
 import { joinStrings } from '../../internal/utils/strings';
 import { TreeViewProps } from '../interfaces';
+import FocusTarget from './focus-target';
 
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -61,7 +62,6 @@ const InternalTreeItem = <T,>({
 
   return (
     <li
-      role="treeitem"
       id={id}
       className={clsx(
         styles.treeitem,
@@ -78,29 +78,32 @@ const InternalTreeItem = <T,>({
       <div className={styles['treeitem-content-wrapper']}>
         <div className={styles['expand-toggle-wrapper']}>
           <div className={styles.toggle}>
-            <ExpandToggleButton
-              isExpanded={isExpanded}
-              customIcon={customIcon}
-              expandButtonLabel={
-                isExpandable
-                  ? joinStrings(
-                      i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
-                      itemLabelToAnnounce
-                    )
-                  : itemLabelToAnnounce
-              }
-              collapseButtonLabel={
-                isExpandable
-                  ? joinStrings(
-                      i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item)),
-                      itemLabelToAnnounce
-                    )
-                  : itemLabelToAnnounce
-              }
-              onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
-              invisible={!isExpandable}
-              dataAttribute={{ 'data-awsui-tree-view-toggle-button': true }}
-            />
+            {isExpandable ? (
+              <ExpandToggleButton
+                isExpanded={isExpanded}
+                customIcon={customIcon}
+                expandButtonLabel={
+                  isExpandable
+                    ? joinStrings(
+                        i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
+                        itemLabelToAnnounce
+                      )
+                    : itemLabelToAnnounce
+                }
+                collapseButtonLabel={
+                  isExpandable
+                    ? joinStrings(
+                        i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item)),
+                        itemLabelToAnnounce
+                      )
+                    : itemLabelToAnnounce
+                }
+                onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
+                dataAttribute={{ 'data-awsui-tree-view-toggle-button': true }}
+              />
+            ) : (
+              <FocusTarget ariaLabel={itemLabelToAnnounce} />
+            )}
           </div>
         </div>
 
@@ -116,7 +119,7 @@ const InternalTreeItem = <T,>({
       </div>
 
       {isExpanded && children.length && (
-        <ul role="group" className={styles['treeitem-group']}>
+        <ul className={styles['treeitem-group']}>
           {children.map((child, index) => {
             return (
               <InternalTreeItem<T>

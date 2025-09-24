@@ -56,7 +56,6 @@ const InternalTreeView = <T,>({
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root, testUtilStyles.root)}>
       <KeyboardNavigationProvider getTreeView={() => treeViewRefObject.current}>
         <ul
-          role="tree"
           ref={treeViewRefObject}
           className={clsx(styles.tree, testUtilStyles.tree)}
           aria-label={ariaLabel}

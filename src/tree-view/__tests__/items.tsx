@@ -50,12 +50,12 @@ export const defaultProps: TreeViewProps<Item> = {
   }),
 };
 
-export interface KeyboardNavigationItem extends TreeViewProps.TreeItem {
+export interface ItemWithFocusables extends TreeViewProps.TreeItem {
   id: string;
-  children?: KeyboardNavigationItem[];
+  children?: ItemWithFocusables[];
 }
 
-export const keyboardNavigationItems: KeyboardNavigationItem[] = [
+export const itemsWithFocusables: ItemWithFocusables[] = [
   {
     id: '1-button-actions',
     content: 'Item 1',
