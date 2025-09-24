@@ -101,6 +101,7 @@ export class KeyboardNavigationProcessor {
     setTimeout(() => {
       if (this._treeView) {
         // Update focused tree-item in case tree-items change.
+        // istanbul ignore next - tested via integration tests
         this.updateFocusedTreeItem(this.focusedTreeItem?.element);
         this._navigationAPI.current?.updateFocusTarget();
       }

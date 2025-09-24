@@ -9,7 +9,7 @@ export default function FocusTarget({ ariaLabel }: { ariaLabel?: string }) {
   const { tabIndex } = useSingleTabStopNavigation(divRef);
 
   return (
-    <div ref={divRef} tabIndex={tabIndex} aria-label={ariaLabel} data-awsui-tree-view-toggle-button={true}>
+    <div role="group" ref={divRef} tabIndex={tabIndex} aria-label={ariaLabel} data-awsui-tree-view-toggle-button={true}>
       {null}
     </div>
   );
