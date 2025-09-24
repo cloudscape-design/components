@@ -63,9 +63,10 @@ const InternalTreeView = <T,>({
           aria-describedby={ariaDescribedby}
         >
           {items.map((item, index) => {
+            const itemId = getItemId(item, index);
             return (
               <InternalTreeItem<T>
-                key={index}
+                key={itemId}
                 item={item}
                 level={1}
                 index={index}

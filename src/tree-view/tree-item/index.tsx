@@ -91,7 +91,8 @@ const InternalTreeItem = <T,>({
                   itemLabelToAnnounce
                 )}
                 onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
-                dataAttribute={{ 'data-awsui-tree-view-toggle-button': true }}
+                className={styles['tree-item-focus-target']}
+                disableFocusHighlight={true}
               />
             ) : (
               <FocusTarget ariaLabel={itemLabelToAnnounce} />
@@ -106,6 +107,7 @@ const InternalTreeItem = <T,>({
             secondaryContent={secondaryContent}
             actions={actions}
             wrapActions={false}
+            className={styles['tree-item-structured-item']}
           />
         </div>
       </div>
@@ -113,11 +115,12 @@ const InternalTreeItem = <T,>({
       {isExpanded && children.length && (
         <ul className={styles['treeitem-group']}>
           {children.map((child, index) => {
+            const itemId = getItemId(child, index);
             return (
               <InternalTreeItem<T>
                 item={child}
                 index={index}
-                key={`${nextLevel}-${index}`}
+                key={itemId}
                 level={nextLevel}
                 expandedItems={expandedItems}
                 i18nStrings={i18nStrings}
