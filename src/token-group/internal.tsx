@@ -88,7 +88,7 @@ export default function InternalTokenGroup({
                   svg={item.iconSvg}
                   url={item.iconUrl}
                   ariaLabel={item.iconAlt}
-                  size={item.description || item.tags ? 'big' : 'normal'}
+                  size={'normal'}
                 />
               ) : undefined
             }

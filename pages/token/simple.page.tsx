@@ -19,6 +19,10 @@ const i18nStrings = {
   limitShowFewer: 'Show fewer chosen options',
 };
 
+const LONG_LABEL = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
+
 export default function GenericTokenPage() {
   const [files, setFiles] = useState(range(0, 4));
   const [variableValue, setVariableValue] = useState('');
@@ -35,26 +39,14 @@ export default function GenericTokenPage() {
       <h2>Inline</h2>
       <SpaceBetween size="l" direction="vertical">
         <Token data-testid="basic-inline-token" variant="inline" label="Inline token" />
-        <Token variant="inline" label="The quick brown fox jumps over the lazy." />
-        <Token variant="inline" label="The quick brown fox jumps over the lazy dog" />
         <Token
           variant="inline"
-          label={
-            <SpaceBetween direction="horizontal" size="xxxs" alignItems="center">
-              <Popover
-                triggerType="text-inline"
-                position="top"
-                header="test"
-                content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
-              >
-                The quick brown fox jumps over the lazy dog
-              </Popover>
-              <Button iconName="edit" variant="inline-icon" ariaLabel="edit" />
-            </SpaceBetween>
-          }
+          label="The quick brown fox jumps over the lazy dog"
+          tooltipContent="The quick brown fox jumps over the lazy dog"
         />
         <Token
           variant="inline"
+          ariaLabel="Inline token with a popover"
           label={
             <Popover
               triggerType="text-inline"
@@ -68,6 +60,7 @@ export default function GenericTokenPage() {
         />
         <Token
           variant="inline"
+          ariaLabel="Inline token with icon and popover"
           label={
             <Popover
               triggerType="text-inline"
@@ -83,6 +76,7 @@ export default function GenericTokenPage() {
         <Token
           data-testid="inline-token-with-icon-dismissable-with-popover"
           variant="inline"
+          ariaLabel="Inline token dismissable with icon and popover"
           dismissLabel="Dismiss token with popover"
           label={
             <Popover
@@ -102,6 +96,7 @@ export default function GenericTokenPage() {
           magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo{' '}
           <Token
             variant="inline"
+            ariaLabel="<some-variable-name>"
             label={
               <Popover
                 triggerType="text-inline"
@@ -128,6 +123,7 @@ export default function GenericTokenPage() {
           pariatur. Excepteur sint occaecat cupidatat non proident,{' '}
           <Token
             variant="inline"
+            ariaLabel="<some-disabled-variable-name>"
             disabled={true}
             label={
               <Popover
@@ -153,13 +149,7 @@ export default function GenericTokenPage() {
           />{' '}
           sunt in culpa qui officia deserunt mollit anim id est laborum.
         </div>
-        <Token
-          data-testid="inline-token-long-text"
-          variant="inline"
-          label={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
-        />
+        <Token data-testid="inline-token-long-text" variant="inline" label={LONG_LABEL} tooltipContent={LONG_LABEL} />
         <Token variant="inline" label="Inline readonly token" readOnly={true} />
         <Token variant="inline" label="Inline disabled token" disabled={true} />
 
@@ -212,7 +202,9 @@ export default function GenericTokenPage() {
       <h2>Normal</h2>
       <SpaceBetween size="l" direction="vertical">
         <Token label="Standalone token" />
+        <Token label="Standalone token with icon" icon={<Icon name="bug" />} />
         <Token
+          ariaLabel="Standalone token with popover"
           data-testid="normal-token-with-popover"
           label={
             <Popover
@@ -228,6 +220,7 @@ export default function GenericTokenPage() {
           dismissLabel="Dismiss normal token with popover"
         />
         <Token
+          ariaLabel="Standalone token with icon and popover"
           dismissLabel="Dismiss normal token with popover and icon"
           label={
             <Popover
@@ -250,13 +243,7 @@ export default function GenericTokenPage() {
           onDismiss={() => {}}
         />
 
-        <Token
-          label={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.`}
-        />
+        <Token label={LONG_LABEL} />
         <Token
           data-testid="normal-token-with-icon-dismissable"
           dismissLabel="Dismiss features token"
@@ -264,7 +251,7 @@ export default function GenericTokenPage() {
           description="some description"
           labelTag="test"
           tags={['tag', 'tag']}
-          icon={<Icon data-testid="bug-icon-big" name="bug" size="big" />}
+          icon={<Icon name="bug" />}
           onDismiss={() => {}}
         />
 
@@ -293,6 +280,7 @@ export default function GenericTokenPage() {
           limit={5}
           renderItem={(file, fileIndex) => (
             <Token
+              ariaLabel={`File token ${fileIndex}`}
               label={<FileOption file={file} />}
               disabled={file === 0}
               dismissLabel={`Remove file ${fileIndex + 1}`}

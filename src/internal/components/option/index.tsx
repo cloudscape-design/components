@@ -30,7 +30,7 @@ const Option = ({
   isGroupOption = false,
   highlightedOption = false,
   selectedOption = false,
-  labelClassName,
+  disableTitleTooltip = false,
   labelContainerRef,
   labelRef,
   labelId,
@@ -73,22 +73,66 @@ const Option = ({
     />
   );
 
+  // If labelContent is defined it is expected to be JSX, this is not safe to nest in a span so this condition nests it in a div instead.
+  if (option.labelContent) {
+    return (
+      <div {...baseProps} data-value={option.value} className={className} lang={option.lang}>
+        {icon}
+        <div className={styles.content}>
+          <div className={styles['label-content']}>
+            <Label
+              labelContainerRef={labelContainerRef}
+              labelRef={labelRef}
+              labelId={labelId}
+              label={option.labelContent}
+              prefix={option.__labelPrefix}
+              highlightText={highlightText}
+              triggerVariant={triggerVariant}
+            />
+            <LabelTag labelTag={option.labelTag} highlightText={highlightText} triggerVariant={triggerVariant} />
+          </div>
+          <Description
+            description={option.description}
+            highlightedOption={highlightedOption}
+            selectedOption={selectedOption}
+            highlightText={highlightText}
+            triggerVariant={triggerVariant}
+          />
+          <Tags
+            tags={option.tags}
+            highlightedOption={highlightedOption}
+            selectedOption={selectedOption}
+            highlightText={highlightText}
+            triggerVariant={triggerVariant}
+          />
+          <FilteringTags
+            filteringTags={option.filteringTags}
+            highlightedOption={highlightedOption}
+            selectedOption={selectedOption}
+            highlightText={highlightText}
+            triggerVariant={triggerVariant}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <span
       {...baseProps}
       data-value={option.value}
       className={className}
       lang={option.lang}
-      title={option.label ?? option.value}
+      title={!disableTitleTooltip ? (option.label ?? option.value) : undefined}
     >
       {icon}
       <span className={styles.content}>
-        <span className={clsx(styles['label-content'], labelClassName)}>
+        <span className={styles['label-content']}>
           <Label
             labelContainerRef={labelContainerRef}
             labelRef={labelRef}
             labelId={labelId}
-            label={option.label ?? option.value ?? option.labelContent}
+            label={option.label ?? option.value}
             prefix={option.__labelPrefix}
             highlightText={highlightText}
             triggerVariant={triggerVariant}

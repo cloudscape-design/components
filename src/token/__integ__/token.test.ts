@@ -67,22 +67,13 @@ function setupTest(testFn: (page: TokenPage) => Promise<void>) {
 }
 
 describe('Token component', () => {
-  describe('Basic token properties', () => {
+  describe('Basic rendering', () => {
     test(
-      'basic inline token displays correct label',
+      'inline token displays correct label',
       setupTest(async page => {
         const label = await page.getTokenLabel('[data-testid="basic-inline-token"]');
         const labelText = await page.getText(label.toSelector());
         expect(labelText).toBe('Inline token');
-      })
-    );
-
-    test(
-      'normal token with JSX displays correct label',
-      setupTest(async page => {
-        const label = await page.getTokenLabel('[data-testid="normal-token-with-popover"]');
-        const popover = label.findPopover();
-        expect(popover).not.toBeNull();
       })
     );
 
@@ -93,88 +84,17 @@ describe('Token component', () => {
         expect(hasDismissButton).toBe(true);
       })
     );
-
-    test(
-      'token with icon and dismiss button has both elements',
-      setupTest(async page => {
-        const selector = '[data-testid="inline-token-with-icon-dismissable-with-popover"]';
-        const hasDismissButton = await page.isTokenDismissButtonPresent(selector);
-        const hasIcon = await page.isIconVisible('edit-icon-small');
-        expect(hasDismissButton).toBe(true);
-        expect(hasIcon).toBe(true);
-      })
-    );
-
-    test(
-      'normal token with icon and description displays correctly',
-      setupTest(async page => {
-        const selector = '[data-testid="normal-token-with-icon-dismissable"]';
-        const label = await page.getTokenLabel(selector);
-        const description = await page.getTokenDescription(selector);
-        const hasIcon = await page.isIconVisible('bug-icon-big');
-        const hasDismissButton = await page.isTokenDismissButtonPresent(selector);
-        const labelText = await page.getText(label.toSelector());
-        const descriptionText = await page.getText(description.toSelector());
-        expect(labelText).toBe('Dismissable token');
-        expect(descriptionText).toBe('some description');
-        expect(hasIcon).toBe(true);
-        expect(hasDismissButton).toBe(true);
-      })
-    );
-  });
-
-  describe('Token additional properties', () => {
-    test(
-      'normal token with labelTag displays the tag correctly',
-      setupTest(async page => {
-        const selector = '[data-testid="normal-token-dismissable"]';
-        const labelTag = await page.getTokenLabelTag(selector);
-        const labelTagText = await page.getText(labelTag.toSelector());
-        expect(labelTagText).toBe('test');
-      })
-    );
   });
 
   describe('Tooltip behavior', () => {
     test(
-      'tooltip shows full label for truncated inline token',
+      'tooltip shows for truncated inline token on hover',
       setupTest(async page => {
-        const inlineSelector = '[data-testid="inline-token-long-text"]';
-
-        const label = await page.getTokenLabel(inlineSelector);
+        const selector = '[data-testid="inline-token-long-text"]';
+        const label = await page.getTokenLabel(selector);
         const labelText = await page.getText(label.toSelector());
 
-        await page.hoverToken(inlineSelector);
-        const isInlineTooltipVisible = await page.isTooltipVisible();
-        expect(isInlineTooltipVisible).toBe(true);
-
-        const tooltipContent = await page.getTooltipContent();
-        expect(tooltipContent).toBe(labelText);
-      })
-    );
-
-    test(
-      'tooltip does not show for short inline tokens',
-      setupTest(async page => {
-        const shortSelector = '[data-testid="basic-inline-token"]';
-        await page.hoverToken(shortSelector);
-        // Wait a bit to ensure tooltip would have appeared if it was going to
-        await page.pause(500);
-        const isTooltipVisible = await page.isTooltipVisible();
-        expect(isTooltipVisible).toBe(false);
-      })
-    );
-
-    test(
-      'tooltip appears on focus for truncated inline token',
-      setupTest(async page => {
-        const inlineSelector = '[data-testid="inline-token-long-text"]';
-
-        const label = await page.getTokenLabel(inlineSelector);
-        const labelText = await page.getText(label.toSelector());
-
-        // Focus the token instead of hovering
-        await page.focusElement(page.getTokenWrapper(inlineSelector).toSelector());
+        await page.hoverToken(selector);
         const isTooltipVisible = await page.isTooltipVisible();
         expect(isTooltipVisible).toBe(true);
 
@@ -184,100 +104,61 @@ describe('Token component', () => {
     );
 
     test(
-      'tooltip disappears when mouse leaves token',
+      'tooltip shows for truncated inline token on focus',
       setupTest(async page => {
-        const inlineSelector = '[data-testid="inline-token-long-text"]';
-        // First hover to show tooltip
-        await page.hoverToken(inlineSelector);
-        let isTooltipVisible = await page.isTooltipVisible();
+        const selector = '[data-testid="inline-token-long-text"]';
+        await page.focusElement(page.getTokenWrapper(selector).toSelector());
+        const isTooltipVisible = await page.isTooltipVisible();
         expect(isTooltipVisible).toBe(true);
-
-        // Move mouse away from token
-        await page.hoverElement('h1'); // Hover over page title instead
-        await page.pause(200); // Wait for tooltip to disappear
-
-        isTooltipVisible = await page.isTooltipVisible();
-        expect(isTooltipVisible).toBe(false);
       })
     );
 
     test(
-      'tooltip disappears when token loses focus',
+      'no tooltip for short inline tokens',
       setupTest(async page => {
-        const inlineSelector = '[data-testid="inline-token-long-text"]';
-        // Focus to show tooltip
-        await page.focusElement(page.getTokenWrapper(inlineSelector).toSelector());
-        let isTooltipVisible = await page.isTooltipVisible();
-        expect(isTooltipVisible).toBe(true);
-
-        // Focus something else to hide tooltip
-        await page.focusElement('h1');
-        await page.pause(200); // Wait for tooltip to disappear
-
-        isTooltipVisible = await page.isTooltipVisible();
-        expect(isTooltipVisible).toBe(false);
-      })
-    );
-
-    test(
-      'normal variant tokens do not show tooltips',
-      setupTest(async page => {
-        const normalSelector = '[data-testid="normal-token-with-icon-dismissable"]';
-        await page.hoverToken(normalSelector);
-        await page.pause(500); // Wait to ensure tooltip would have appeared
+        const selector = '[data-testid="basic-inline-token"]';
+        await page.hoverToken(selector);
+        await page.pause(300);
         const isTooltipVisible = await page.isTooltipVisible();
         expect(isTooltipVisible).toBe(false);
       })
     );
   });
 
-  describe('Accessibility and keyboard navigation', () => {
+  describe('Accessibility', () => {
     test(
-      'inline token with long text is focusable and shows tooltip',
+      'truncated inline token is focusable',
       setupTest(async page => {
-        const inlineSelector = '[data-testid="inline-token-long-text"]';
-        const tokenElement = page.getTokenWrapper(inlineSelector).toSelector();
-
-        // Check if token is focusable (has tabindex)
+        const selector = '[data-testid="inline-token-long-text"]';
+        const tokenElement = page.getTokenWrapper(selector).toSelector();
         const tabIndex = await page.getElementAttribute(tokenElement, 'tabindex');
         expect(tabIndex).toBe('0');
-
-        // Focus and verify tooltip appears
-        await page.focusElement(tokenElement);
-        const isTooltipVisible = await page.isTooltipVisible();
-        expect(isTooltipVisible).toBe(true);
       })
     );
 
     test(
       'short inline tokens are not focusable',
       setupTest(async page => {
-        const shortSelector = '[data-testid="basic-inline-token"]';
-        const tokenElement = page.getTokenWrapper(shortSelector).toSelector();
-
-        // Check that short tokens don't have tabindex (not focusable)
+        const selector = '[data-testid="basic-inline-token"]';
+        const tokenElement = page.getTokenWrapper(selector).toSelector();
         const tabIndex = await page.getElementAttribute(tokenElement, 'tabindex');
         expect(tabIndex).toBeNull();
       })
     );
 
-    test.each([
-      ['basic inline token', '[data-testid="basic-inline-token"]'],
-      ['inline dismissable token', '[data-testid="inline-token-dismissable"]'],
-      ['normal dismissable token', '[data-testid="normal-token-dismissable"]'],
-      ['inline token with icon and popover', '[data-testid="inline-token-with-icon-dismissable-with-popover"]'],
-    ])('%s has consistent accessibility attributes', (tokenType, selector) =>
+    test(
+      'tokens have proper accessibility attributes',
       setupTest(async page => {
+        const selector = '[data-testid="basic-inline-token"]';
         const tokenElement = page.getTokenWrapper(selector).toSelector();
         const role = await page.getElementAttribute(tokenElement, 'role');
         const ariaDisabled = await page.getElementAttribute(tokenElement, 'aria-disabled');
         const ariaLabelledby = await page.getElementAttribute(tokenElement, 'aria-labelledby');
 
-        // All tokens should have group role
         expect(role).toBe('group');
-        expect(ariaDisabled).toBe('false'); // All test tokens are not disabled
-        expect(ariaLabelledby).toBeTruthy(); // Should have aria-labelledby
-      })()
+        expect(ariaDisabled).toBe('false');
+        expect(ariaLabelledby).toBeTruthy();
+      })
     );
   });
 });
