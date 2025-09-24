@@ -9,9 +9,4 @@
 $token-background: awsui.$color-background-item-selected;
 $token-border-color: awsui.$color-border-item-selected;
 $token-max-height-inline: 20px;
-
 $icon-width: 16px;
-$token-inline-max-character-limit: 34ch; // Works out to 40 characters in a string
-$token-inline-min-character-limit: 13ch; // Works out to 15 characters in a string
-$token-icon-width: calc($icon-width + awsui.$space-xxs * 2);
-$token-action-button-width: calc($icon-width + awsui.$space-xxs);

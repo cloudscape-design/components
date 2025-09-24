@@ -2798,7 +2798,10 @@ ElementWrapper.prototype.findAllToggleButtons = function(selector) {
   return this.findAllComponents(ToggleButtonWrapper, selector);
 };
 ElementWrapper.prototype.findToken = function(selector) {
-  const rootSelector = \`.\${TokenWrapper.rootSelector}\`;
+  let rootSelector = \`.\${TokenWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TokenWrapper && TokenWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TokenWrapper.rootSelector}, .\${TokenWrapper.legacyRootSelector})\`;
+  }
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TokenWrapper);
@@ -5513,7 +5516,10 @@ ElementWrapper.prototype.findAllToggleButtons = function(selector) {
   return this.findAllComponents(ToggleButtonWrapper, selector);
 };
 ElementWrapper.prototype.findToken = function(selector) {
-  const rootSelector = \`.\${TokenWrapper.rootSelector}\`;
+  let rootSelector = \`.\${TokenWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TokenWrapper && TokenWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TokenWrapper.rootSelector}, .\${TokenWrapper.legacyRootSelector})\`;
+  }
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TokenWrapper);

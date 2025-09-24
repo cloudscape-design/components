@@ -11,8 +11,8 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 interface LabelProps {
-  labelContainerRef?: React.RefObject<any>;
-  labelRef?: React.RefObject<any>;
+  labelContainerRef?: React.RefObject<HTMLSpanElement>;
+  labelRef?: React.RefObject<HTMLSpanElement>;
   labelId?: string;
   label?: React.ReactNode;
   prefix?: string;
@@ -44,19 +44,7 @@ export const Label = ({
       </span>
     );
   } else {
-    return (
-      <span id={labelId} ref={labelContainerRef} className={clsx(styles.label, analyticsSelectors.label)}>
-        <span
-          ref={labelRef}
-          className={clsx(
-            styles['label-custom-content'],
-            triggerVariant && styles['label-custom-content-trigger-variant']
-          )}
-        >
-          {label}
-        </span>
-      </span>
-    );
+    return <div className={clsx(styles.label, analyticsSelectors.label)}>{label}</div>;
   }
 };
 
