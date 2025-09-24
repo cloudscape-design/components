@@ -10,6 +10,7 @@ export interface DragHandleWrapperProps {
   onDirectionClick?: (direction: Direction) => void;
   tooltipText?: string;
   children: React.ReactNode;
+  wrapperClassName?: string;
   triggerMode?: TriggerMode;
   initialShowButtons?: boolean;
   controlledShowButtons?: boolean;
