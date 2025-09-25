@@ -185,10 +185,9 @@ export function Resizer({
             });
           }
         }
-      }
-      // Enter keyboard dragging mode
-      else {
+      } else {
         if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
+          // Enter keyboard dragging mode
           event.preventDefault();
 
           if (isEventLike(event)) {
@@ -266,9 +265,11 @@ export function Resizer({
           }
 
           if (direction === 'inline-start') {
-            updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize - 10);
+            updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize - 20);
+            requestAnimationFrame(onWidthUpdateCommit);
           } else if (direction === 'inline-end') {
-            updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize + 10);
+            updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize + 20);
+            requestAnimationFrame(onWidthUpdateCommit);
           }
         }}
       >
@@ -289,6 +290,7 @@ export function Resizer({
             // Prevent mouse drag activation and activate keyboard dragging for VO+Space click.
             setIsPointerDown(false);
             setIsDragging(false);
+            setShowUapButtons(true);
             setResizerHasFocus(true);
             setIsKeyboardDragging(true);
             resizerSeparatorRef.current?.focus();
@@ -333,11 +335,9 @@ export function Resizer({
           aria-valuenow={headerCellWidth}
           data-focus-id={focusId}
           onBlur={event => {
-            setResizerHasFocus(false);
-            if (isKeyboardDragging) {
-              setIsKeyboardDragging(false);
-            }
+            setIsKeyboardDragging(false);
             if (event.relatedTarget !== resizerToggleRef.current) {
+              setResizerHasFocus(false);
               setShowUapButtons(false);
             }
             onWidthUpdateCommit();
