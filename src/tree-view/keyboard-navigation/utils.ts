@@ -45,8 +45,5 @@ export function findTreeItemContentById(treeView: HTMLUListElement, treeItemId: 
 }
 
 export function isTreeItemToggle(element: Element) {
-  return (
-    (element.tagName === 'BUTTON' || element.tagName === 'DIV') &&
-    element.classList.contains(treeItemStyles['tree-item-focus-target'])
-  );
+  return element.classList.contains(treeItemStyles['tree-item-focus-target']);
 }

@@ -61,9 +61,10 @@ test('tree-items have flat indices', () => {
   // second root level item's index should be updated
   expect(secondRootLevelItem.getElement().getAttribute(treeItemIndexAttribute)).toBe('3');
 
-  const allItems = wrapper.findItems();
-  const lastRootLevelItem = allItems[allItems.length - 1];
-  expect(lastRootLevelItem.getElement().getAttribute(treeItemIndexAttribute)).toBe(`${allItems.length - 1}`);
+  // compare all indices
+  const indices = wrapper.findItems().map(i => i.getElement().getAttribute(treeItemIndexAttribute));
+  const expectedIndices = Array.from(Array(7).keys()).map(i => `${i}`);
+  expect(indices).toEqual(expectedIndices);
 });
 
 describe('Keyboard navigation', () => {

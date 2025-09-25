@@ -17,6 +17,10 @@ import {
 } from './items/keyboard-navigation-page-items';
 import { textItems } from './items/permutations-items';
 
+function TreeViewGrid({ children }: { children: React.ReactNode }) {
+  return <Grid gridDefinition={[{ colspan: { m: 7, xs: 12 } }]}>{children}</Grid>;
+}
+
 export default function TreeViewKeyboardNavigation() {
   const [pressedItems, setPressedItems] = useState<ReadonlyArray<string>>([]);
 
@@ -26,7 +30,7 @@ export default function TreeViewKeyboardNavigation() {
 
       <Button>Focus here</Button>
 
-      <Grid gridDefinition={[{ colspan: { m: 7, xs: 12 } }]}>
+      <TreeViewGrid>
         <Container header={<h2>No focusable elements inside tree-item</h2>}>
           <TreeView
             ariaLabel="Tree view without focusable elements inside"
@@ -40,11 +44,11 @@ export default function TreeViewKeyboardNavigation() {
             }}
           />
         </Container>
-      </Grid>
+      </TreeViewGrid>
 
       <Button>Focus here</Button>
 
-      <Grid gridDefinition={[{ colspan: { m: 7, xs: 12 } }]}>
+      <TreeViewGrid>
         <Container header={<h2>Focusable registered elements inside tree-item</h2>}>
           <TreeView<KeyboardNavigationItem>
             ariaLabel="Tree view with focusable registered elements inside"
@@ -81,11 +85,11 @@ export default function TreeViewKeyboardNavigation() {
             }}
           />
         </Container>
-      </Grid>
+      </TreeViewGrid>
 
       <Button>Focus here</Button>
 
-      <Grid gridDefinition={[{ colspan: { m: 7, xs: 12 } }]}>
+      <TreeViewGrid>
         <Container header={<h2>Focusable non-registered elements inside tree-item</h2>}>
           <TreeView
             ariaLabel="Tree view with focusable non-registered elements inside"
@@ -99,7 +103,7 @@ export default function TreeViewKeyboardNavigation() {
             }}
           />
         </Container>
-      </Grid>
+      </TreeViewGrid>
     </SpaceBetween>
   );
 }
