@@ -262,7 +262,7 @@ test('fires a change event when user dismisses an option from the token list', (
     <Multiselect selectedOptions={defaultOptions.slice(0, 2)} options={defaultOptions} onChange={onChange} />
   );
   wrapper.openDropdown();
-  wrapper.findToken(1)!.findDismiss()!.click();
+  wrapper.findToken(1)!.findDismiss().click();
   expect(onChange).toHaveBeenCalledWith(
     expect.objectContaining({
       detail: {
