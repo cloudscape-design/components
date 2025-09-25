@@ -37,6 +37,7 @@ $item-toggle-column-width: 28px;
     > .expand-toggle-wrapper {
       grid-column: 1;
       grid-row: 1;
+      padding-inline-end: awsui.$space-scaled-xxs;
 
       > .toggle {
         justify-self: center;
