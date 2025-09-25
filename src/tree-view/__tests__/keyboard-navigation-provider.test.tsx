@@ -13,6 +13,8 @@ import {
 import { KeyCode } from '../../internal/keycode';
 import { itemsWithFocusables as items, ItemWithFocusables as Item } from './items';
 
+import treeItemStyles from '../../../lib/components/tree-view/tree-item/styles.css.js';
+
 const TestTreeView = (props: Partial<TreeViewProps<Item>> = {}) => (
   <TreeView
     items={items}
@@ -29,7 +31,7 @@ const TestTreeView = (props: Partial<TreeViewProps<Item>> = {}) => (
 );
 
 describe('KeyboardNavigationProvider', () => {
-  test('does not throw when not initialized', () => {
+  test('does not throw when not initialized', async () => {
     const navigation = new KeyboardNavigationProcessor({
       current: {
         updateFocusTarget: () => {},
@@ -39,8 +41,10 @@ describe('KeyboardNavigationProvider', () => {
     });
     expect(() => navigation.getNextFocusTarget()).not.toThrow();
     expect(() => navigation.onUnregisterActive()).not.toThrow();
-    expect(() => navigation.refresh()).not.toThrow();
     expect(() => navigation.cleanup()).not.toThrow();
+    await waitFor(() => {
+      expect(() => navigation.refresh()).not.toThrow();
+    });
   });
 
   test('does not throw when tree-view is null', () => {
@@ -50,25 +54,36 @@ describe('KeyboardNavigationProvider', () => {
     expect(() => render(<TestTreeView />)).not.toThrow();
   });
 
-  test('does not throw when key is pressed while there is no focused tree-item', async () => {
+  test('does not throw when key is pressed while there is no focused tree-item', () => {
     const { container } = render(<TestTreeView />);
     const treeView = container.querySelector('ul')!;
-    await waitFor(() => {
-      expect(() => fireEvent.keyDown(treeView, { keyCode: KeyCode.down })).not.toThrow();
-    });
+    expect(() => fireEvent.keyDown(treeView, { keyCode: KeyCode.down })).not.toThrow();
   });
 
-  test('does not throw when tree-item is removed', () => {
+  test('does not throw when tree-item content is removed', () => {
     const { container } = render(<TestTreeView />);
     const treeView = container.querySelector('ul')!;
 
     const firstToggle = container.querySelector('button');
-    firstToggle?.focus();
+    firstToggle!.focus();
 
-    const treeItems = container.querySelectorAll('li');
-    treeItems[0].remove();
+    const treeItemContent = container.querySelector(`.${treeItemStyles['tree-item-structured-item']}`);
+    treeItemContent!.remove();
 
-    fireEvent.keyDown(treeView, { keyCode: KeyCode.end });
+    fireEvent.keyDown(treeView, { keyCode: KeyCode.left });
+    expect(firstToggle).toHaveFocus(); // if there is no content found, the focus shouldn't move
+
+    fireEvent.keyDown(treeView, { keyCode: KeyCode.right });
+    expect(firstToggle).toHaveFocus(); // if there is no content found, the focus shouldn't move
+  });
+
+  test('does not throw when focused action button is removed', () => {
+    const { container } = render(<TestTreeView />);
+
+    const actionButton = container.querySelector('button[aria-label="Item 1 actions"]') as HTMLElement;
+    actionButton!.focus();
+    actionButton!.remove();
+
     expect(document.body).toHaveFocus();
   });
 
