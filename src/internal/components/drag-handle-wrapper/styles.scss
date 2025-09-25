@@ -33,6 +33,7 @@ $direction-button-offset: awsui.$space-static-xxs;
 }
 
 .drag-handle {
+  position: relative;
   display: inline-flex;
 }
 
