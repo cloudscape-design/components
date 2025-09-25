@@ -116,7 +116,6 @@ export class KeyboardNavigationProcessor {
     // focus to a tree-item focusable with the same position or to the tree-item toggle.
     // istanbul ignore next - tested via integration tests
     if (this.treeView && this.focusedTreeItem && !nodeBelongs(this.treeView, this.focusedTreeItem.element)) {
-      console.log('onUnregisterActive: ');
       const nextFocusableElement = this.getNextFocusableTreeItemContent(this.treeView, this.focusedTreeItem, 0);
       if (nextFocusableElement) {
         nextFocusableElement?.focus();

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useRef } from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
@@ -10,6 +10,7 @@ import {
   KeyboardNavigationProcessor,
   KeyboardNavigationProvider,
 } from '../../../lib/components/tree-view/keyboard-navigation';
+import { KeyCode } from '../../internal/keycode';
 import { itemsWithFocusables as items, ItemWithFocusables as Item } from './items';
 
 const TestTreeView = (props: Partial<TreeViewProps<Item>> = {}) => (
@@ -47,6 +48,28 @@ describe('KeyboardNavigationProvider', () => {
       return <KeyboardNavigationProvider getTreeView={() => null}>{null}</KeyboardNavigationProvider>;
     }
     expect(() => render(<TestTreeView />)).not.toThrow();
+  });
+
+  test('does not throw when key is pressed while there is no focused tree-item', async () => {
+    const { container } = render(<TestTreeView />);
+    const treeView = container.querySelector('ul')!;
+    await waitFor(() => {
+      expect(() => fireEvent.keyDown(treeView, { keyCode: KeyCode.down })).not.toThrow();
+    });
+  });
+
+  test('does not throw when tree-item is removed', () => {
+    const { container } = render(<TestTreeView />);
+    const treeView = container.querySelector('ul')!;
+
+    const firstToggle = container.querySelector('button');
+    firstToggle?.focus();
+
+    const treeItems = container.querySelectorAll('li');
+    treeItems[0].remove();
+
+    fireEvent.keyDown(treeView, { keyCode: KeyCode.end });
+    expect(document.body).toHaveFocus();
   });
 
   test('does not throw when focusing on incorrect target', () => {
