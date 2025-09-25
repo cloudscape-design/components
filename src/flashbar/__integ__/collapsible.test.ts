@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { range } from 'lodash';
+
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import { FOCUS_DEBOUNCE_DELAY } from '../utils';
@@ -127,7 +129,7 @@ describe('Collapsible Flashbar', () => {
   });
 
   describe('Sticky Flashbar', () => {
-    test(
+    test.each(range(0, 100))(
       'keeps a space to the screen bottom to prevent the notification bar from getting cropped',
       setupStickyFlashbarTest(async page => {
         const windowDimensions = { width: 1000, height: 500 };
