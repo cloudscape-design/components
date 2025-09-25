@@ -280,6 +280,7 @@ test(
     await browser.url('/#/light/select/select.test.scroll-padding');
     const page = new SelectPageObject(browser, createWrapper().findSelect());
     await page.setWindowSize({ width: 800, height: 250 });
+    await page.waitForVisible(createWrapper().findSelect().findTrigger().toSelector());
     await page.windowScrollTo({ top: 15 });
     await page.clickSelect();
     await expect(page.getWindowScroll()).resolves.toEqual({ top: 15, left: 0 });
