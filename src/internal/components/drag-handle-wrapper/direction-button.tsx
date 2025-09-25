@@ -50,7 +50,7 @@ export default function DirectionButton({ direction, state, show, onClick }: Dir
               styles['direction-button'],
               state === 'disabled' && styles['direction-button-disabled'],
               testUtilsStyles[`direction-button-${direction}`],
-              transitionState !== 'exited' && testUtilsStyles['direction-button-visible']
+              !['exiting', 'exited'].includes(transitionState) && testUtilsStyles['direction-button-visible']
             )}
             onClick={state !== 'disabled' ? onClick : undefined}
             // This prevents focus from being lost to `document.body` on
