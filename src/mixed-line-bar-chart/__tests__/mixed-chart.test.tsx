@@ -113,7 +113,8 @@ const thresholdSeries: MixedLineBarChartProps.ThresholdSeries = {
 // Transformation to fallback colors for browsers that don't support them are covered by the `parseCssVariable` utility.
 const originalCSS = window.CSS;
 
-let originalGetComputedStyle: Window['getComputedStyle'];
+const originalGetComputedStyle = window.getComputedStyle;
+const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
 const fakeGetComputedStyle: Window['getComputedStyle'] = (...args) => {
   const result = originalGetComputedStyle(...args);
   result.borderWidth = '2px'; // Approximate mock value for the popover body' border width
@@ -124,14 +125,20 @@ const fakeGetComputedStyle: Window['getComputedStyle'] = (...args) => {
 
 beforeEach(() => {
   window.CSS.supports = () => true;
-  originalGetComputedStyle = window.getComputedStyle;
   window.getComputedStyle = fakeGetComputedStyle;
+  HTMLElement.prototype.getBoundingClientRect = function () {
+    const rect = originalBoundingClientRect.apply(this);
+    rect.width = 900;
+    rect.height = 300;
+    return rect;
+  };
 
   jest.resetAllMocks();
 });
 afterEach(() => {
   window.CSS = originalCSS;
   window.getComputedStyle = originalGetComputedStyle;
+  HTMLElement.prototype.getBoundingClientRect = originalBoundingClientRect;
 });
 
 describe('Series', () => {
