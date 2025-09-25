@@ -20,15 +20,24 @@ permissions:
 
 jobs:
   build:
+    name: build${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
+    strategy:
+      matrix:
+        react: [16, 18]
     uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@main
     secrets: inherit
     with:
       artifact-path: pages/lib/static-default
-      artifact-name: dev-pages
+      artifact-name: dev-pages-react${{ matrix.react }}
+      react-version: ${{ matrix.react }}   
   deploy:
     needs: build
+    name: deploy${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
+    strategy:
+      matrix:
+        react: [16, 18]
     uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
-      artifact-name: dev-pages
+      artifact-name: dev-pages-react${{ matrix.react }}
       deployment-path: pages/lib/static-default
