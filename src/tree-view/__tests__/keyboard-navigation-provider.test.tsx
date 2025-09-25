@@ -54,9 +54,11 @@ describe('KeyboardNavigationProvider', () => {
     expect(() => render(<TestTreeView />)).not.toThrow();
   });
 
-  test('does not throw when key is pressed while there is no focused tree-item', () => {
+  test('does not throw when key is pressed while there is no focused tree-item', async () => {
     const { container } = render(<TestTreeView />);
     const treeView = container.querySelector('ul')!;
+
+    await new Promise(resolve => setTimeout(resolve, 0)); // wait for refresh to run
     expect(() => fireEvent.keyDown(treeView, { keyCode: KeyCode.down })).not.toThrow();
   });
 
