@@ -15,6 +15,7 @@
 
 $handle-width: awsui.$space-xl;
 $active-separator-width: 2px;
+$block-gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
 
 .resizer-wrapper {
   inset-block: 0;
@@ -30,8 +31,6 @@ $active-separator-width: 2px;
 
 th:not(:last-child) > .divider,
 .divider-interactive {
-  $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
-
   position: absolute;
   outline: none;
   pointer-events: none;
@@ -39,24 +38,24 @@ th:not(:last-child) > .divider,
   inset-block-end: 0;
   inset-block-start: 0;
   min-block-size: awsui.$line-height-heading-xs;
-  max-block-size: calc(100% - #{$gap});
+  max-block-size: calc(100% - #{$block-gap});
   margin-block: auto;
   margin-inline: auto;
   border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-interactive-default;
   box-sizing: border-box;
 }
 
+th:not(:last-child) > .divider {
+  &-disabled {
+    border-inline-start-color: awsui.$color-border-divider-default;
+  }
+  &-active {
+    border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
+  }
+}
+
 .divider-interactive {
-  $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
   inset-inline-end: calc(#{$handle-width} / 2);
-}
-
-.divider-disabled {
-  border-inline-start-color: awsui.$color-border-divider-default;
-}
-
-.divider-active {
-  border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
 }
 
 .resizer {
