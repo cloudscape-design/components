@@ -596,6 +596,19 @@ describe('UAP buttons', () => {
     expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeNull();
   });
 
+  test('hides UAP buttons when the button is blurred before the resizer button is activated', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+
+    wrapper.findColumnResizer(1)!.click();
+    wrapper.findColumnResizer(1)!.focus();
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeTruthy();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeTruthy();
+
+    wrapper.findColumnResizer(1)!.blur();
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeNull();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeNull();
+  });
+
   test('does not show UAP buttons when the pointer is moved between pointerdown and pointerup', () => {
     const { wrapper } = renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
 
