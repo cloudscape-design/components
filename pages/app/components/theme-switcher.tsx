@@ -4,7 +4,6 @@ import React, { useContext } from 'react';
 
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
-import { ALWAYS_VISUAL_REFRESH } from '~components/internal/environment';
 import SpaceBetween from '~components/space-between';
 
 import AppContext from '../app-context';
@@ -12,28 +11,8 @@ import AppContext from '../app-context';
 export default function ThemeSwitcher() {
   const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
 
-  const vrSwitchProps: React.InputHTMLAttributes<HTMLInputElement> = {
-    id: 'visual-refresh-toggle',
-    type: 'checkbox',
-  };
-
-  if (ALWAYS_VISUAL_REFRESH) {
-    vrSwitchProps.checked = true;
-    vrSwitchProps.readOnly = true;
-  } else {
-    vrSwitchProps.checked = urlParams.visualRefresh;
-    vrSwitchProps.onChange = event => {
-      setUrlParams({ visualRefresh: event.target.checked });
-      window.location.reload();
-    };
-  }
-
   return (
     <SpaceBetween direction="horizontal" size="xs">
-      <label>
-        <input {...vrSwitchProps} />
-        Visual refresh
-      </label>
       <label>
         <input
           id="mode-toggle"
