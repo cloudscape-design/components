@@ -4,8 +4,8 @@ import { ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom'
 
 import InputWrapper from '../input';
 import DropdownHostComponentWrapper from '../internal/dropdown-host';
-import TokenWrapper from '../token';
 import TokenGroupWrapper from '../token-group';
+import TokenWrapper from '../token-group/token';
 
 import inputStyles from '../../../input/styles.selectors.js';
 import buttonTriggerStyles from '../../../internal/components/button-trigger/styles.selectors.js';
