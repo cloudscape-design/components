@@ -70,6 +70,6 @@ test('Removing tokens', () => {
   wrapper.findAutosuggest()!.focus();
   wrapper.findAutosuggest()!.selectSuggestion(1);
   expect(getSelectedTokens()).toEqual(['apple']);
-  wrapper.findTokenGroup()!.findToken(1)!.findDismiss()!.click();
+  wrapper.findTokenGroup()!.findToken(1)!.findDismiss().click();
   expect(getSelectedTokens()).toEqual([]);
 });

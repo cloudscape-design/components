@@ -275,7 +275,7 @@ describe('Multiselect renders correct analytics metadata', () => {
 
     test('when readonly', () => {
       const wrapper = renderMultiselectWithSelectedOptions({ readOnly: true });
-      const simpleToken = wrapper.findToken(1)!.findDismiss()!.getElement();
+      const simpleToken = wrapper.findToken(1)!.findDismiss().getElement();
       expect(getGeneratedAnalyticsMetadata(simpleToken)).toEqual(
         getMetadataContexts(5, undefined, false, selectedOptions)
       );
@@ -284,7 +284,7 @@ describe('Multiselect renders correct analytics metadata', () => {
     test('in dismiss button', () => {
       const wrapper = renderMultiselectWithSelectedOptions({});
 
-      const simpleToken = wrapper.findToken(1)!.findDismiss()!.getElement();
+      const simpleToken = wrapper.findToken(1)!.findDismiss().getElement();
       expect(getGeneratedAnalyticsMetadata(simpleToken)).toEqual({
         action: 'dismiss',
         detail: {
@@ -294,7 +294,7 @@ describe('Multiselect renders correct analytics metadata', () => {
         ...getMetadataContexts(5, undefined, false, selectedOptions),
       });
 
-      const disabledToken = wrapper.findToken(3)!.findDismiss()!.getElement();
+      const disabledToken = wrapper.findToken(3)!.findDismiss().getElement();
       expect(getGeneratedAnalyticsMetadata(disabledToken)).toEqual({
         detail: { position: '3' },
         ...getMetadataContexts(5, undefined, false, selectedOptions),

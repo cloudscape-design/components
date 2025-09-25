@@ -9,7 +9,7 @@ import selectors from '../../../token/styles.selectors.js';
 export default class TokenWrapper extends ComponentWrapper {
   static rootSelector: string = selectors.root;
 
-  private findOption(): OptionWrapper {
+  protected findOption(): OptionWrapper {
     return this.findComponent(`.${OptionWrapper.rootSelector}`, OptionWrapper)!;
   }
 
@@ -45,6 +45,6 @@ export default class TokenWrapper extends ComponentWrapper {
    * Returns the token dismiss button.
    */
   findDismiss(): ElementWrapper | null {
-    return this.findByClassName(selectors['dismiss-button'])!;
+    return this.findByClassName(selectors['dismiss-button']);
   }
 }
