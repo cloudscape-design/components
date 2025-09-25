@@ -170,7 +170,7 @@ export default function DragHandleWrapper({
     }
   };
 
-  const _showButtons = triggerMode === 'controlled' ? controlledShowButtons : uncontrolledShowButtons;
+  const showButtons = triggerMode === 'controlled' ? controlledShowButtons : uncontrolledShowButtons;
 
   return (
     <>
@@ -194,7 +194,7 @@ export default function DragHandleWrapper({
             {children}
           </div>
 
-          {!isDisabled && !_showButtons && showTooltip && tooltipText && (
+          {!isDisabled && !showButtons && showTooltip && tooltipText && (
             // Rendered in a portal but pointerenter/pointerleave events still propagate
             // up the React DOM tree, which is why it's placed in this nested context.
             <Tooltip trackRef={dragHandleRef} value={tooltipText} onDismiss={() => setShowTooltip(false)} />
@@ -202,10 +202,10 @@ export default function DragHandleWrapper({
         </div>
       </div>
 
-      <PortalOverlay track={dragHandleRef} isDisabled={!_showButtons}>
+      <PortalOverlay track={dragHandleRef} isDisabled={!showButtons}>
         {directions['block-start'] && (
           <DirectionButton
-            show={!isDisabled && _showButtons}
+            show={!isDisabled && showButtons}
             direction="block-start"
             state={directions['block-start']}
             onClick={() => onDirectionClick?.('block-start')}
@@ -213,7 +213,7 @@ export default function DragHandleWrapper({
         )}
         {directions['block-end'] && (
           <DirectionButton
-            show={!isDisabled && _showButtons}
+            show={!isDisabled && showButtons}
             direction="block-end"
             state={directions['block-end']}
             onClick={() => onDirectionClick?.('block-end')}
@@ -221,7 +221,7 @@ export default function DragHandleWrapper({
         )}
         {directions['inline-start'] && (
           <DirectionButton
-            show={!isDisabled && _showButtons}
+            show={!isDisabled && showButtons}
             direction="inline-start"
             state={directions['inline-start']}
             onClick={() => onDirectionClick?.('inline-start')}
@@ -229,7 +229,7 @@ export default function DragHandleWrapper({
         )}
         {directions['inline-end'] && (
           <DirectionButton
-            show={!isDisabled && _showButtons}
+            show={!isDisabled && showButtons}
             direction="inline-end"
             state={directions['inline-end']}
             onClick={() => onDirectionClick?.('inline-end')}
