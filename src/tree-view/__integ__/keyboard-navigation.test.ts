@@ -20,7 +20,7 @@ test(
     await page.keys(['ArrowRight', 'ArrowRight']);
     await expect(page.isFocused(secondItemRemoveButton.toSelector())).resolves.toBe(true);
 
-    await page.keys(['Enter']);
+    await page.keys('Enter');
 
     const thirdItemToggle = wrapper.findItemById('cds3')!.findItemToggle();
     await expect(page.isFocused(thirdItemToggle.toSelector())).resolves.toBe(true);
@@ -43,7 +43,7 @@ test(
     await page.keys(['ArrowRight', 'ArrowRight']);
     await expect(page.isFocused(secondItemRemoveButton.toSelector())).resolves.toBe(true);
 
-    await page.keys(['Enter']);
+    await page.keys('Enter');
 
     await expect(page.isFocused(secondItemToggle.toSelector())).resolves.toBe(true);
   })
@@ -66,8 +66,49 @@ test(
     await page.keys(['ArrowRight', 'ArrowRight']);
     await expect(page.isFocused(secondItemRemoveButton.toSelector())).resolves.toBe(true);
 
-    await page.keys(['Enter']);
+    await page.keys('Enter');
 
     await expect(page.isFocused(secondItemRegularButton.toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'Re-focuses on the previously focused tree-item when focus moves outside and back inside',
+  useBrowser(async browser => {
+    await browser.url('#/light/tree-view/removable-elements');
+    const page = new BasePageObject(browser);
+    const wrapper = createWrapper();
+    const treeView = wrapper.findTreeView('[data-testid="removable-items-tree"]')!;
+
+    const secondItemToggle = treeView.findItemById('cds2')!.findItemToggle();
+    await page.click(secondItemToggle.toSelector());
+
+    await page.keys('Tab');
+    await expect(page.isFocused(wrapper.findButton('[data-testid="focus-button2"]').toSelector())).resolves.toBe(true);
+
+    await page.keys(['Shift', 'Tab']);
+    await expect(page.isFocused(secondItemToggle.toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'Re-focuses on the tree-item that previously focused element belongs when focus moves outside and back inside',
+  useBrowser(async browser => {
+    await browser.url('#/light/tree-view/removable-elements');
+    const page = new BasePageObject(browser);
+    const wrapper = createWrapper();
+    const treeView = wrapper.findTreeView('[data-testid="removable-items-tree"]')!;
+
+    const secondItem = treeView.findItemById('cds2')!;
+    const secondItemToggle = secondItem.findItemToggle();
+    await page.click(secondItemToggle.toSelector());
+    await page.keys(['ArrowRight', 'ArrowRight']);
+    await expect(page.isFocused(secondItem.findActions()!.findButton().toSelector())).resolves.toBe(true);
+
+    await page.keys('Tab');
+    await expect(page.isFocused(wrapper.findButton('[data-testid="focus-button2"]').toSelector())).resolves.toBe(true);
+
+    await page.keys(['Shift', 'Tab']);
+    await expect(page.isFocused(secondItemToggle.toSelector())).resolves.toBe(true);
   })
 );

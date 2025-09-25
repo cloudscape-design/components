@@ -66,11 +66,11 @@ describe('KeyboardNavigationProvider', () => {
     const { container } = render(<TestTreeView />);
     const treeView = container.querySelector('ul')!;
 
-    const firstToggle = container.querySelector('button');
-    firstToggle!.focus();
+    const firstToggle = container.querySelector('button')!;
+    firstToggle.focus();
 
-    const treeItemContent = container.querySelector(`.${treeItemStyles['tree-item-structured-item']}`);
-    treeItemContent!.remove();
+    const treeItemContent = container.querySelector(`.${treeItemStyles['tree-item-structured-item']}`)!;
+    treeItemContent.remove();
 
     fireEvent.keyDown(treeView, { keyCode: KeyCode.left });
     expect(firstToggle).toHaveFocus(); // if there is no content found, the focus shouldn't move

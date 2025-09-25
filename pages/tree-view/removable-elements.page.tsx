@@ -167,15 +167,15 @@ export default function TreeViewWithRemovableElements() {
     <SpaceBetween size="m">
       <h1>Tree view with removable elements</h1>
 
-      <Button>Focus here</Button>
+      <Button data-testid="focus-button">Focus here</Button>
 
       <TreeViewWithRemovableItems />
 
-      <Button>Focus here</Button>
+      <Button data-testid="focus-button2">Focus here</Button>
 
       <TreeViewWithRemovableActionButtons />
 
-      <Button>Focus here</Button>
+      <Button data-testid="focus-button3">Focus here</Button>
 
       <TreeViewWithRegularAndRemovableActionButtons />
     </SpaceBetween>
