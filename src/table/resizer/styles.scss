@@ -45,17 +45,16 @@ th:not(:last-child) > .divider,
   box-sizing: border-box;
 }
 
-th:not(:last-child) > .divider {
-  &-disabled {
-    border-inline-start-color: awsui.$color-border-divider-default;
-  }
-  &-active {
-    border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
-  }
+th:not(:last-child) > .divider-disabled {
+  border-inline-start-color: awsui.$color-border-divider-default;
 }
 
 .divider-interactive {
   inset-inline-end: calc(#{$handle-width} / 2);
+}
+
+.divider-active {
+  border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
 }
 
 .resizer {
