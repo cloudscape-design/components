@@ -6,7 +6,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 
 test(
-  'Focus moves to the next tree-item action button when tree-item gets removed',
+  'Focus moves to the next tree-item toggle when tree-item gets removed',
   useBrowser(async browser => {
     await browser.url('#/light/tree-view/removable-elements');
     const page = new BasePageObject(browser);
@@ -22,9 +22,8 @@ test(
 
     await page.keys(['Enter']);
 
-    const thirdItem = wrapper.findItemById('cds3')!;
-    const thirdItemRemoveButton = thirdItem.findActions()!.findButton();
-    await expect(page.isFocused(thirdItemRemoveButton.toSelector())).resolves.toBe(true);
+    const thirdItemToggle = wrapper.findItemById('cds3')!.findItemToggle();
+    await expect(page.isFocused(thirdItemToggle.toSelector())).resolves.toBe(true);
   })
 );
 
