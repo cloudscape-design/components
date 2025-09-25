@@ -1,8 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
-
-import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
+import React from 'react';
 
 import { Link as CloudscapeLink, SpaceBetween } from '~components';
 
@@ -30,9 +28,6 @@ interface CustomLinkProps {
 }
 
 function CustomLink({ children, colorTheme }: CustomLinkProps) {
-  const mode = useCurrentMode(useRef(document.body));
-  const color = colors[mode][colorTheme];
-  const focusRing = focusRings[mode];
   const linkProps = getLinkProps(colorTheme);
 
   return (
@@ -40,8 +35,8 @@ function CustomLink({ children, colorTheme }: CustomLinkProps) {
       {...linkProps}
       style={{
         root: {
-          color,
-          focusRing,
+          color: getColor(colorTheme),
+          focusRing: getFocusRing(),
         },
       }}
     >
@@ -50,75 +45,44 @@ function CustomLink({ children, colorTheme }: CustomLinkProps) {
   );
 }
 
-const colors = {
-  light: {
+function getColor(colorTheme: string) {
+  const colors = {
     secondary: {
-      active: palette.blue100,
-      default: palette.blue80,
-      hover: palette.green90,
+      active: `light-dark(${palette.blue100}, ${palette.blue20})`,
+      default: `light-dark(${palette.blue80}, ${palette.blue40})`,
+      hover: `light-dark(${palette.green90}, ${palette.blue60})`,
     },
     primary: {
-      active: palette.blue100,
-      default: palette.blue80,
-      hover: palette.blue90,
+      active: `light-dark(${palette.blue100}, ${palette.blue20})`,
+      default: `light-dark(${palette.blue80}, ${palette.blue40})`,
+      hover: `light-dark(${palette.blue90}, ${palette.blue40})`,
     },
     external: {
-      active: palette.red80,
-      default: palette.red60,
-      hover: palette.red60,
+      active: `light-dark(${palette.red80}, ${palette.red20})`,
+      default: `light-dark(${palette.red60}, ${palette.red30})`,
+      hover: `light-dark(${palette.red60}, ${palette.red30})`,
     },
     button: {
-      active: palette.green100,
-      default: palette.green80,
-      hover: palette.green90,
+      active: `light-dark(${palette.green100}, ${palette.green10})`,
+      default: `light-dark(${palette.green80}, ${palette.green20})`,
+      hover: `light-dark(${palette.green90}, ${palette.green60})`,
     },
     info: {
-      active: palette.teal100,
-      default: palette.teal90,
-      hover: palette.teal90,
+      active: `light-dark(${palette.teal100}, ${palette.teal10})`,
+      default: `light-dark(${palette.teal90}, ${palette.teal20})`,
+      hover: `light-dark(${palette.teal90}, ${palette.teal20})`,
     },
-  },
-  dark: {
-    secondary: {
-      active: palette.blue20,
-      default: palette.blue40,
-      hover: palette.blue60,
-    },
-    primary: {
-      active: palette.blue20,
-      default: palette.blue40,
-      hover: palette.blue40,
-    },
-    external: {
-      active: palette.red20,
-      default: palette.red30,
-      hover: palette.red30,
-    },
-    button: {
-      active: palette.green10,
-      default: palette.green20,
-      hover: palette.green60,
-    },
-    info: {
-      active: palette.teal10,
-      default: palette.teal20,
-      hover: palette.teal20,
-    },
-  },
-};
+  };
+  return colors[colorTheme as keyof typeof colors];
+}
 
-const focusRings = {
-  light: {
-    borderColor: palette.blue80,
+function getFocusRing() {
+  return {
+    borderColor: `light-dark(${palette.blue80}, ${palette.red60})`,
     borderRadius: '4px',
     borderWidth: '2px',
-  },
-  dark: {
-    borderColor: palette.red60,
-    borderRadius: '4px',
-    borderWidth: '2px',
-  },
-};
+  };
+}
 
 function getLinkProps(colorTheme: string) {
   const baseProps = {
