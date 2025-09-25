@@ -1,8 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
-
-import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
+import React from 'react';
 
 import { Button as CloudscapeButton, SpaceBetween } from '~components';
 
@@ -52,11 +50,6 @@ interface CustomButtonProps {
 }
 
 function CustomButton({ children, colorTheme, id, isDisabled, isLoading, onClick, variation }: CustomButtonProps) {
-  const mode = useCurrentMode(useRef(document.body));
-  const background = backgrounds[mode][colorTheme];
-  const color = isDisabled || isLoading ? colors[mode] : colors[mode];
-  const focusRing = focusRings[mode];
-
   return (
     <CloudscapeButton
       data-testid={id}
@@ -66,14 +59,14 @@ function CustomButton({ children, colorTheme, id, isDisabled, isLoading, onClick
       variant={variation}
       style={{
         root: {
-          background,
+          background: getBackground(colorTheme),
           borderRadius: '4px',
           borderWidth: '0px',
-          color,
-          focusRing,
+          color: getColor(),
+          focusRing: getFocusRing(),
           paddingBlock: '12px',
           paddingInline: '16px',
-          boxShadow: boxShadows[mode][colorTheme],
+          boxShadow: getBoxShadow(colorTheme),
         },
       }}
     >
@@ -82,162 +75,90 @@ function CustomButton({ children, colorTheme, id, isDisabled, isLoading, onClick
   );
 }
 
-const backgrounds = {
-  light: {
+function getBackground(colorTheme: string) {
+  const backgrounds = {
     default: {
-      active: palette.teal100,
-      default: palette.teal80,
-      disabled: palette.neutral40,
-      hover: palette.teal90,
+      active: `light-dark(${palette.teal100}, ${palette.teal10})`,
+      default: `light-dark(${palette.teal80}, ${palette.teal30})`,
+      disabled: `light-dark(${palette.neutral40}, ${palette.neutral80})`,
+      hover: `light-dark(${palette.teal90}, ${palette.teal20})`,
     },
     error: {
-      active: palette.red100,
-      default: palette.red80,
-      disabled: palette.neutral40,
-      hover: palette.red90,
+      active: `light-dark(${palette.red100}, ${palette.red10})`,
+      default: `light-dark(${palette.red80}, ${palette.red30})`,
+      disabled: `light-dark(${palette.neutral40}, ${palette.neutral80})`,
+      hover: `light-dark(${palette.red90}, ${palette.red20})`,
     },
     info: {
-      active: palette.blue100,
-      default: palette.blue80,
-      disabled: palette.neutral40,
-      hover: palette.blue90,
+      active: `light-dark(${palette.blue100}, ${palette.blue10})`,
+      default: `light-dark(${palette.blue80}, ${palette.blue40})`,
+      disabled: `light-dark(${palette.neutral40}, ${palette.neutral80})`,
+      hover: `light-dark(${palette.blue90}, ${palette.blue20})`,
     },
     success: {
-      active: palette.green100,
-      default: palette.green80,
-      disabled: palette.neutral40,
-      hover: palette.green90,
+      active: `light-dark(${palette.green100}, ${palette.green10})`,
+      default: `light-dark(${palette.green80}, ${palette.green30})`,
+      disabled: `light-dark(${palette.neutral40}, ${palette.neutral80})`,
+      hover: `light-dark(${palette.green90}, ${palette.green20})`,
     },
     warning: {
-      active: palette.orange100,
-      default: palette.orange80,
-      disabled: palette.neutral40,
-      hover: palette.orange90,
+      active: `light-dark(${palette.orange100}, ${palette.orange10})`,
+      default: `light-dark(${palette.orange80}, ${palette.orange40})`,
+      disabled: `light-dark(${palette.neutral40}, ${palette.neutral80})`,
+      hover: `light-dark(${palette.orange90}, ${palette.orange20})`,
     },
-  },
-  dark: {
-    default: {
-      active: palette.teal10,
-      default: palette.teal30,
-      disabled: palette.neutral80,
-      hover: palette.teal20,
-    },
-    error: {
-      active: palette.red10,
-      default: palette.red30,
-      disabled: palette.neutral80,
-      hover: palette.red20,
-    },
-    info: {
-      active: palette.blue10,
-      default: palette.blue40,
-      disabled: palette.neutral80,
-      hover: palette.blue20,
-    },
-    success: {
-      active: palette.green10,
-      default: palette.green30,
-      disabled: palette.neutral80,
-      hover: palette.green20,
-    },
-    warning: {
-      active: palette.orange10,
-      default: palette.orange40,
-      disabled: palette.neutral80,
-      hover: palette.orange20,
-    },
-  },
-};
+  };
+  return backgrounds[colorTheme as keyof typeof backgrounds];
+}
 
-const colors = {
-  light: {
-    active: palette.neutral10,
-    default: palette.neutral10,
-    hover: palette.neutral10,
-    disabled: palette.neutral60,
-  },
-  dark: {
-    active: palette.neutral100,
-    default: palette.neutral100,
-    hover: palette.neutral100,
-    disabled: palette.neutral60,
-  },
-};
+function getColor() {
+  return {
+    active: `light-dark(${palette.neutral10}, ${palette.neutral100})`,
+    default: `light-dark(${palette.neutral10}, ${palette.neutral100})`,
+    hover: `light-dark(${palette.neutral10}, ${palette.neutral100})`,
+    disabled: `light-dark(${palette.neutral60}, ${palette.neutral60})`,
+  };
+}
 
-const focusRings = {
-  light: {
-    borderColor: 'rgb(0, 64, 77)',
+function getFocusRing() {
+  return {
+    borderColor: 'light-dark(rgb(0, 64, 77), rgb(233, 249, 252))',
     borderWidth: '2px',
-  },
-  dark: {
-    borderColor: 'rgb(233, 249, 252)',
-    borderWidth: '2px',
-  },
-};
+  };
+}
 
-const boxShadows = {
-  light: {
+function getBoxShadow(colorTheme: string) {
+  const boxShadows = {
     default: {
-      active: '0 4px 8px rgba(0, 128, 128, 0.3)',
-      default: '0 2px 4px rgba(0, 128, 128, 0.2)',
+      active: `0 4px 8px light-dark(rgba(0, 128, 128, 0.3), rgba(0, 255, 255, 0.4))`,
+      default: `0 2px 4px light-dark(rgba(0, 128, 128, 0.2), rgba(0, 255, 255, 0.3))`,
       disabled: 'none',
-      hover: '0 6px 12px rgba(0, 128, 128, 0.25)',
+      hover: `0 6px 12px light-dark(rgba(0, 128, 128, 0.25), rgba(0, 255, 255, 0.35))`,
     },
     error: {
-      active: '0 4px 8px rgba(255, 0, 0, 0.3)',
-      default: '0 2px 4px rgba(255, 0, 0, 0.2)',
+      active: `0 4px 8px light-dark(rgba(255, 0, 0, 0.3), rgba(255, 100, 100, 0.4))`,
+      default: `0 2px 4px light-dark(rgba(255, 0, 0, 0.2), rgba(255, 100, 100, 0.3))`,
       disabled: 'none',
-      hover: '0 6px 12px rgba(255, 0, 0, 0.25)',
+      hover: `0 6px 12px light-dark(rgba(255, 0, 0, 0.25), rgba(255, 100, 100, 0.35))`,
     },
     info: {
-      active: '0 4px 8px rgba(0, 0, 255, 0.3)',
-      default: '0 2px 4px rgba(0, 0, 255, 0.2)',
+      active: `0 4px 8px light-dark(rgba(0, 0, 255, 0.3), rgba(100, 100, 255, 0.4))`,
+      default: `0 2px 4px light-dark(rgba(0, 0, 255, 0.2), rgba(100, 100, 255, 0.3))`,
       disabled: 'none',
-      hover: '0 6px 12px rgba(0, 0, 255, 0.25)',
+      hover: `0 6px 12px light-dark(rgba(0, 0, 255, 0.25), rgba(100, 100, 255, 0.35))`,
     },
     success: {
-      active: '0 4px 8px rgba(0, 255, 0, 0.3)',
-      default: '0 2px 4px rgba(0, 255, 0, 0.2)',
+      active: `0 4px 8px light-dark(rgba(0, 255, 0, 0.3), rgba(100, 255, 100, 0.4))`,
+      default: `0 2px 4px light-dark(rgba(0, 255, 0, 0.2), rgba(100, 255, 100, 0.3))`,
       disabled: 'none',
-      hover: '0 6px 12px rgba(0, 255, 0, 0.25)',
+      hover: `0 6px 12px light-dark(rgba(0, 255, 0, 0.25), rgba(100, 255, 100, 0.35))`,
     },
     warning: {
-      active: '0 4px 8px rgba(255, 165, 0, 0.3)',
-      default: '0 2px 4px rgba(255, 165, 0, 0.2)',
+      active: `0 4px 8px light-dark(rgba(255, 165, 0, 0.3), rgba(255, 200, 100, 0.4))`,
+      default: `0 2px 4px light-dark(rgba(255, 165, 0, 0.2), rgba(255, 200, 100, 0.3))`,
       disabled: 'none',
-      hover: '0 6px 12px rgba(255, 165, 0, 0.25)',
+      hover: `0 6px 12px light-dark(rgba(255, 165, 0, 0.25), rgba(255, 200, 100, 0.35))`,
     },
-  },
-  dark: {
-    default: {
-      active: '0 4px 8px rgba(0, 255, 255, 0.4)',
-      default: '0 2px 4px rgba(0, 255, 255, 0.3)',
-      disabled: 'none',
-      hover: '0 6px 12px rgba(0, 255, 255, 0.35)',
-    },
-    error: {
-      active: '0 4px 8px rgba(255, 100, 100, 0.4)',
-      default: '0 2px 4px rgba(255, 100, 100, 0.3)',
-      disabled: 'none',
-      hover: '0 6px 12px rgba(255, 100, 100, 0.35)',
-    },
-    info: {
-      active: '0 4px 8px rgba(100, 100, 255, 0.4)',
-      default: '0 2px 4px rgba(100, 100, 255, 0.3)',
-      disabled: 'none',
-      hover: '0 6px 12px rgba(100, 100, 255, 0.35)',
-    },
-    success: {
-      active: '0 4px 8px rgba(100, 255, 100, 0.4)',
-      default: '0 2px 4px rgba(100, 255, 100, 0.3)',
-      disabled: 'none',
-      hover: '0 6px 12px rgba(100, 255, 100, 0.35)',
-    },
-    warning: {
-      active: '0 4px 8px rgba(255, 200, 100, 0.4)',
-      default: '0 2px 4px rgba(255, 200, 100, 0.3)',
-      disabled: 'none',
-      hover: '0 6px 12px rgba(255, 200, 100, 0.35)',
-    },
-  },
-};
+  };
+  return boxShadows[colorTheme as keyof typeof boxShadows];
+}
