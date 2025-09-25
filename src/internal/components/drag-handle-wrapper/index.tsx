@@ -12,6 +12,7 @@ import { DragHandleWrapperProps } from './interfaces';
 import PortalOverlay from './portal-overlay';
 
 import styles from './styles.css.js';
+import testUtilsStyles from './test-classes/styles.css.js';
 
 export default function DragHandleWrapper({
   directions,
@@ -176,7 +177,12 @@ export default function DragHandleWrapper({
     <>
       {/* Wrapper for focus detection. The buttons are shown when any element inside this wrapper is
           focused, either via the keyboard or a pointer press. The UAP buttons will never receive focus. */}
-      <div className={styles.contents} ref={wrapperRef} onFocus={onWrapperFocusIn} onBlur={onWrapperFocusOut}>
+      <div
+        className={clsx(testUtilsStyles.root, styles.contents)}
+        ref={wrapperRef}
+        onFocus={onWrapperFocusIn}
+        onBlur={onWrapperFocusOut}
+      >
         {/* Wrapper for pointer detection. Determines whether or not the tooltip should be shown. */}
         <div
           className={styles.contents}

@@ -10,6 +10,7 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
+import InternalDragHandleWrapper from '../../../lib/components/test-utils/dom/internal/drag-handle';
 import { fakeBoundingClientRect, firePointerdown, firePointermove, firePointerup } from './utils/resize-actions';
 
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
@@ -59,6 +60,10 @@ function hasGlobalResizeClass() {
 
 function findActiveDivider(wrapper: TableWrapper) {
   return wrapper.findByClassName(resizerStyles['divider-active']);
+}
+
+function findDragHandle() {
+  return new InternalDragHandleWrapper(document.body);
 }
 
 afterEach(() => {
@@ -515,5 +520,120 @@ describe('resize in rtl', () => {
     firePointermove(-10);
     firePointerup(-10);
     expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '80px' });
+  });
+});
+
+describe('UAP buttons', () => {
+  // Makes the drag buttons (which are positioned in a portal) easier to find if there's only one set.
+  const singleColumnDefinition = [{ id: 'id', header: 'Id', cell: (item: any) => item.id, width: 150, minWidth: 80 }];
+
+  let mockWidth = 150;
+
+  const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+  beforeEach(() => {
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      const rect = originalBoundingClientRect.apply(this);
+      if (this.tagName === 'TH') {
+        rect.width = mockWidth;
+      }
+      return rect;
+    };
+  });
+
+  afterEach(() => {
+    mockWidth = 150;
+    HTMLElement.prototype.getBoundingClientRect = originalBoundingClientRect;
+  });
+
+  test('hides UAP buttons by default', () => {
+    renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeNull();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeNull();
+  });
+
+  test('shows UAP buttons when clicked', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+    firePointerdown(wrapper.findColumnResizer(1)!);
+    firePointerup(0);
+
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeTruthy();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeTruthy();
+  });
+
+  test('shows UAP buttons when activated with keyboard', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+
+    wrapper.findColumnResizer(1)!.focus();
+    wrapper.findColumnResizer(1)!.keydown(KeyCode.enter);
+
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeTruthy();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeTruthy();
+  });
+
+  test('hides UAP buttons when Escape is pressed after a pointer interaction', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+
+    wrapper.findColumnResizer(1)!.click();
+    wrapper.findColumnResizer(1)!.focus();
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeTruthy();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeTruthy();
+
+    wrapper.findColumnResizer(1)!.keydown(KeyCode.escape);
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeNull();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeNull();
+  });
+
+  test('hides UAP buttons when arrow keys are pressed before the resizer button is activated', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+
+    wrapper.findColumnResizer(1)!.click();
+    wrapper.findColumnResizer(1)!.focus();
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeTruthy();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeTruthy();
+
+    wrapper.findColumnResizer(1)!.keydown(KeyCode.left);
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeNull();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeNull();
+  });
+
+  test('does not show UAP buttons when the pointer is moved between pointerdown and pointerup', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+
+    firePointerdown(wrapper.findColumnResizer(1)!);
+    firePointermove(200);
+    firePointerup(200);
+
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeNull();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeNull();
+  });
+
+  test('resizes the column when inline-start button is pressed', async () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(
+      <Table
+        {...defaultProps}
+        columnDefinitions={singleColumnDefinition}
+        onColumnWidthsChange={event => onChange(event.detail)}
+      />
+    );
+
+    wrapper.findColumnResizer(1)!.click();
+    findDragHandle().findVisibleDirectionButtonInlineStart()!.click();
+    await waitFor(() => expect(onChange).toHaveBeenCalledWith({ widths: [130] }));
+  });
+
+  test('resizes the column when inline-end button is pressed', async () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(
+      <Table
+        {...defaultProps}
+        columnDefinitions={singleColumnDefinition}
+        onColumnWidthsChange={event => onChange(event.detail)}
+      />
+    );
+
+    wrapper.findColumnResizer(1)!.click();
+    findDragHandle().findVisibleDirectionButtonInlineEnd()!.click();
+    await waitFor(() => expect(onChange).toHaveBeenCalledWith({ widths: [170] }));
   });
 });
