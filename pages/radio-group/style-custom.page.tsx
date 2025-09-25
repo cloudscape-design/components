@@ -1,8 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
-
-import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
+import React from 'react';
 
 import { RadioGroup, SpaceBetween } from '~components';
 
@@ -10,8 +8,6 @@ import { palette } from '../app/themes/style-api';
 import ScreenshotArea from '../utils/screenshot-area';
 
 export default function CustomRadio() {
-  const mode = useCurrentMode(useRef(document.body));
-
   const items = [
     {
       value: 'first',
@@ -30,21 +26,6 @@ export default function CustomRadio() {
       description: 'This is the third option.',
     },
   ];
-
-  const colors = {
-    light: {
-      checked: palette.neutral100,
-      default: palette.neutral100,
-      disabled: palette.neutral80,
-      readOnly: palette.neutral80,
-    },
-    dark: {
-      checked: palette.neutral10,
-      default: palette.neutral10,
-      disabled: palette.neutral40,
-      readOnly: palette.neutral40,
-    },
-  };
 
   const style = {
     input: {
@@ -73,10 +54,20 @@ export default function CustomRadio() {
       },
     },
     label: {
-      color: { ...colors[mode] },
+      color: {
+        checked: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
+        default: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
+        disabled: `light-dark(${palette.neutral80}, ${palette.neutral40})`,
+        readOnly: `light-dark(${palette.neutral80}, ${palette.neutral40})`,
+      },
     },
     description: {
-      color: { ...colors[mode] },
+      color: {
+        checked: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
+        default: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
+        disabled: `light-dark(${palette.neutral80}, ${palette.neutral40})`,
+        readOnly: `light-dark(${palette.neutral80}, ${palette.neutral40})`,
+      },
     },
   };
 
