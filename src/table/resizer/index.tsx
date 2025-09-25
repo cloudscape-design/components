@@ -133,7 +133,7 @@ export function Resizer({
       elements.scrollParent.scrollLeft += AUTO_GROW_INCREMENT * (getIsRtl(elements.scrollParent) ? -1 : 1);
     };
 
-    const onPointerMove = (event: MouseEvent) => {
+    const onPointerMove = (event: PointerEvent) => {
       setIsDragging(true);
       clearTimeout(autoGrowTimeout.current);
       const offset = getLogicalPageX(event);
@@ -144,14 +144,14 @@ export function Resizer({
       }
     };
 
-    const onPointerUp = (event: MouseEvent) => {
+    const onPointerUp = (event: PointerEvent) => {
       setIsPointerDown(false);
       if (isDragging) {
         resizeColumn(getLogicalPageX(event));
       } else {
+        setIsDragging(false);
         setShowUapButtons(true);
       }
-      setIsDragging(false);
       onWidthUpdateCommit();
       clearTimeout(autoGrowTimeout.current);
     };
@@ -223,23 +223,26 @@ export function Resizer({
     }
 
     return () => {
-      clearTimeout(autoGrowTimeout.current);
       document.body.classList.remove(styles['resize-active']);
       document.body.classList.remove(styles['resize-active-with-focus']);
       controller.abort();
     };
   }, [
-    minWidth,
     isDragging,
     isKeyboardDragging,
-    resizerHasFocus,
-    onWidthUpdate,
-    onWidthUpdateCommit,
-    updateTrackerPosition,
-    updateColumnWidth,
-    resizeColumn,
     isPointerDown,
+    resizerHasFocus,
+    onWidthUpdateCommit,
+    resizeColumn,
+    updateColumnWidth,
+    updateTrackerPosition,
   ]);
+
+  useEffect(() => {
+    if (isDragging) {
+      return () => clearTimeout(autoGrowTimeout.current);
+    }
+  }, [isDragging]);
 
   const { tabIndex: resizerTabIndex } = useSingleTabStopNavigation(resizerToggleRef, { tabIndex });
 
@@ -276,9 +279,10 @@ export function Resizer({
             isVisualRefresh && styles['is-visual-refresh']
           )}
           onPointerDown={event => {
-            if (event.button === 0) {
-              setIsPointerDown(true);
+            if (event.pointerType === 'mouse' && event.button !== 0) {
+              return;
             }
+            setIsPointerDown(true);
           }}
           onClick={() => {
             // Prevent mouse drag activation and activate keyboard dragging for VO+Space click.
@@ -312,7 +316,7 @@ export function Resizer({
         <span
           className={clsx(
             styles['divider-interactive'],
-            isDragging && styles['divider-active'],
+            (isPointerDown || isDragging) && styles['divider-active'],
             isVisualRefresh && styles['is-visual-refresh']
           )}
           data-awsui-table-suppress-navigation={true}
