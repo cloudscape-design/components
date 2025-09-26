@@ -20,7 +20,7 @@ export default class OptionWrapper extends ComponentWrapper {
     return this.findByClassName(styles['label-tag']);
   }
 
-  findTags(): Array<ElementWrapper> {
+  findTags(): Array<ElementWrapper> | null {
     return this.findAllByClassName(styles.tag);
   }
 
