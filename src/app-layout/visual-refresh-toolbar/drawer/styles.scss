@@ -417,6 +417,10 @@ $ai-drawer-heider-height: 41px;
     inline-size: 100%;
     block-size: var(#{custom-props.$bottomDrawerSize});
 
+    &.drawer-hidden {
+      display: none;
+    }
+
     > .global-drawer-wrapper {
       display: block;
 
