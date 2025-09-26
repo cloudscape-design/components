@@ -17,9 +17,10 @@ export default function InternalStructuredItem({
   secondaryContent,
   disablePaddings,
   wrapActions = true,
-}: StructuredItemProps) {
+  className,
+}: StructuredItemProps & { className?: string }) {
   return (
-    <div className={clsx(styles.root, testClasses.root, disablePaddings && styles['disable-paddings'])}>
+    <div className={clsx(styles.root, testClasses.root, disablePaddings && styles['disable-paddings'], className)}>
       {icon && <div className={clsx(styles.icon, testClasses.icon)}>{icon}</div>}
       <div className={clsx(styles.main)}>
         <div className={clsx(styles['content-wrap'], wrapActions && styles['wrap-actions'])}>
