@@ -10,6 +10,7 @@ Map {
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -40,6 +41,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -88,6 +104,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -205,6 +222,7 @@ Map {
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -235,6 +253,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -283,6 +316,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -360,6 +394,7 @@ Map {
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -390,6 +425,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -438,6 +488,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -546,6 +597,7 @@ Map {
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -576,6 +628,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -624,6 +691,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -701,6 +769,7 @@ Map {
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -731,6 +800,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -779,6 +863,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -861,6 +946,7 @@ Map {
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -891,6 +977,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": <div>
         breadcrumbs
@@ -943,6 +1044,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
         navigation
@@ -1065,6 +1167,7 @@ Map {
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -1095,6 +1198,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": <div>
         breadcrumbs
@@ -1147,6 +1265,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
         navigation
@@ -1226,6 +1345,7 @@ Map {
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -1256,6 +1376,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": <div>
         breadcrumbs
@@ -1308,6 +1443,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
         navigation
@@ -1390,6 +1526,7 @@ Map {
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -1420,6 +1557,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": <div>
         breadcrumbs
@@ -1472,6 +1624,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
         navigation
@@ -1584,6 +1737,7 @@ Map {
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -1614,6 +1768,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": <div>
         breadcrumbs
@@ -1666,6 +1835,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
         navigation
@@ -1745,6 +1915,7 @@ Map {
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -1775,6 +1946,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": <div>
         breadcrumbs
@@ -1827,6 +2013,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
         navigation
@@ -1925,6 +2112,7 @@ Map {
       },
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -1955,6 +2143,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -2005,6 +2208,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -2138,6 +2342,7 @@ Map {
       },
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -2168,6 +2373,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -2218,6 +2438,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -2309,6 +2530,7 @@ Map {
       },
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -2339,6 +2561,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -2389,6 +2626,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -2511,6 +2749,7 @@ Map {
       },
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -2541,6 +2780,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -2591,6 +2845,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -2682,6 +2937,7 @@ Map {
       },
       "activeDrawerSize": 290,
       "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -2712,6 +2968,21 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -2762,6 +3033,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
