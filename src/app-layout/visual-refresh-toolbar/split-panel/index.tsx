@@ -19,8 +19,21 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
   appLayoutInternals,
   splitPanelInternals,
 }: AppLayoutSplitPanelDrawerSideImplementationProps) {
-  const { splitPanelControlId, placement, verticalOffsets, isMobile, splitPanelAnimationDisabled } = appLayoutInternals;
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const {
+    splitPanelControlId,
+    placement,
+    verticalOffsets,
+    isMobile,
+    splitPanelAnimationDisabled,
+    activeGlobalBottomDrawerId,
+    activeGlobalBottomDrawerSize,
+  } = appLayoutInternals;
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(
+    verticalOffsets,
+    isMobile,
+    placement,
+    activeGlobalBottomDrawerId ? activeGlobalBottomDrawerSize : 0
+  );
 
   return (
     <SplitPanelProvider {...splitPanelInternals} animationDisabled={splitPanelAnimationDisabled}>
