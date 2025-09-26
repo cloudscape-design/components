@@ -106,3 +106,21 @@
 .external-icon {
   margin-inline-start: awsui.$space-xxs;
 }
+
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: awsui.$space-xxs;
+}
+
+.text-with-icon {
+  display: flex;
+  align-items: center;
+}

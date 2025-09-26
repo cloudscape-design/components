@@ -17,6 +17,7 @@ const launchInstanceItem = {
 const launchInstanceFromTemplateItem = {
   text: 'Launch instance from template',
   iconName: 'file',
+  secondaryText: 'Use an existing template',
 } as const;
 
 const viewInstancesItem = {
@@ -24,6 +25,7 @@ const viewInstancesItem = {
   href: 'https://instances.com',
   external: true,
   externalIconAriaLabel: '(opens in new tab)',
+  labelTag: 'Ctrl + Click',
 } as const;
 
 const permutations = createPermutations<ButtonDropdownProps>([
