@@ -220,6 +220,7 @@ export default function App() {
           columnDisplay={withColumnIds ? columnDisplay : undefined}
           selectionType={withSelection ? 'single' : undefined}
           items={items}
+          ariaLabels={{ resizerTooltipText: 'Drag or select to resize', resizerRoleDescription: 'resize button' }}
           wrapLines={wrapLines}
           sortingColumn={sorting?.sortingColumn}
           sortingDescending={sorting?.isDescending}

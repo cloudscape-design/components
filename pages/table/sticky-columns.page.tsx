@@ -157,6 +157,8 @@ const ariaLabels: TableProps<ExtendedInstance>['ariaLabels'] = {
     return `${item.name} is ${isItemSelected ? '' : 'not'} selected`;
   },
   tableLabel: 'Demo table',
+  resizerTooltipText: 'Drag or select to resize',
+  resizerRoleDescription: 'resize button',
 };
 
 const selectionTypeOptions = [{ value: 'none' }, { value: 'single' }, { value: 'multi' }];
