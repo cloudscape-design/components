@@ -1,7 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
+import createWrapper from '../../../lib/components/test-utils/selectors';
+
+const wrapper = createWrapper();
 
 function setupTest(
   pageName: string,
@@ -14,6 +19,7 @@ function setupTest(
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await browser.url(`#/light/button/${pageName}`);
+    await page.waitForVisible(wrapper.toSelector());
     const getMarks = async () => {
       await new Promise(r => setTimeout(r, 200));
       const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);
