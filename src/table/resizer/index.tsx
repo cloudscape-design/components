@@ -25,6 +25,7 @@ interface ResizerProps {
   focusId?: string;
   showFocusRing?: boolean;
   roleDescription?: string;
+  tooltipText?: string;
 }
 
 const AUTO_GROW_START_TIME = 10;
@@ -44,6 +45,7 @@ export function Resizer({
   showFocusRing,
   focusId,
   roleDescription,
+  tooltipText,
 }: ResizerProps) {
   onWidthUpdate = useStableCallback(onWidthUpdate);
   onWidthUpdateCommit = useStableCallback(onWidthUpdateCommit);
@@ -258,6 +260,7 @@ export function Resizer({
         triggerMode="controlled"
         controlledShowButtons={showUapButtons}
         wrapperClassName={styles['resizer-button-wrapper']}
+        tooltipText={tooltipText}
         onDirectionClick={direction => {
           const elements = getResizerElements(resizerToggleRef.current);
           if (!elements) {

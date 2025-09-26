@@ -497,6 +497,7 @@ export namespace TableProps {
     selectionGroupLabel?: string;
     tableLabel?: string;
     resizerRoleDescription?: string;
+    resizerTooltipText?: string;
     // do not use <T> to prevent overly strict validation on consumer end
     // it works, practically, we are only interested in `id` and `header` properties only
     activateEditLabel?: (column: ColumnDefinition<any>, item: T) => string;
