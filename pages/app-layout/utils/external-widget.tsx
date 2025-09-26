@@ -138,7 +138,7 @@ const AutoIncrementCounter: React.FC<{
 awsuiPlugins.appLayout.registerDrawer({
   id: 'circle-global',
   type: 'global',
-  position: 'bottom',
+  position: 'side',
   defaultActive: false,
   resizable: true,
   defaultSize: 350,
