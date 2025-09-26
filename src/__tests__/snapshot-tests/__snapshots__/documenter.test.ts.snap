@@ -23201,6 +23201,11 @@ You can use the first argument of type \`SelectionState\` to access the current 
             "type": "string",
           },
           {
+            "name": "resizerTooltipText",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "selectionGroupLabel",
             "optional": true,
             "type": "string",
