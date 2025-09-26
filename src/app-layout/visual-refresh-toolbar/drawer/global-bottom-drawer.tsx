@@ -76,10 +76,10 @@ function AppLayoutGlobalBottomDrawerImplementation({
     activeAiDrawer,
     bottomDrawersFocusControl,
     getMaxGlobalBottomDrawerHeight,
+    reportBottomDrawerSize,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeDrawer?.id ?? '';
-  // const show = !!activeGlobalBottomDrawerId;
 
   const computedAriaLabels = {
     closeButton: activeDrawer ? activeDrawer.ariaLabels?.closeButton : ariaLabels?.toolsClose,
@@ -137,6 +137,10 @@ function AppLayoutGlobalBottomDrawerImplementation({
       ...drawerActions,
     ];
   }
+
+  useEffect(() => {
+    reportBottomDrawerSize(size);
+  }, [reportBottomDrawerSize, size]);
 
   return (
     <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={0}>

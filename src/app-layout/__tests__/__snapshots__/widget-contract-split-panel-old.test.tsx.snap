@@ -42,6 +42,7 @@ Map {
         "toolsClose": undefined,
         "toolsToggle": undefined,
       },
+      "bottomDrawerReportedSize": 0,
       "bottomDrawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -139,6 +140,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -255,6 +257,7 @@ Map {
         "toolsClose": undefined,
         "toolsToggle": undefined,
       },
+      "bottomDrawerReportedSize": 0,
       "bottomDrawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -352,6 +355,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -428,6 +432,7 @@ Map {
         "toolsClose": undefined,
         "toolsToggle": undefined,
       },
+      "bottomDrawerReportedSize": 0,
       "bottomDrawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -525,6 +530,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -639,6 +645,7 @@ Map {
         "toolsClose": undefined,
         "toolsToggle": undefined,
       },
+      "bottomDrawerReportedSize": 0,
       "bottomDrawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -736,6 +743,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -812,6 +820,7 @@ Map {
         "toolsClose": undefined,
         "toolsToggle": undefined,
       },
+      "bottomDrawerReportedSize": 0,
       "bottomDrawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -909,6 +918,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -990,6 +1000,7 @@ Map {
         "toolsClose": undefined,
         "toolsToggle": undefined,
       },
+      "bottomDrawerReportedSize": 0,
       "bottomDrawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1087,6 +1098,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -1203,6 +1215,7 @@ Map {
         "toolsClose": undefined,
         "toolsToggle": undefined,
       },
+      "bottomDrawerReportedSize": 0,
       "bottomDrawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1300,6 +1313,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -1376,6 +1390,7 @@ Map {
         "toolsClose": undefined,
         "toolsToggle": undefined,
       },
+      "bottomDrawerReportedSize": 0,
       "bottomDrawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1473,6 +1488,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -1586,6 +1602,7 @@ Map {
         "toolsClose": undefined,
         "toolsToggle": undefined,
       },
+      "bottomDrawerReportedSize": 0,
       "bottomDrawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1683,6 +1700,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -1759,6 +1777,7 @@ Map {
         "toolsClose": undefined,
         "toolsToggle": undefined,
       },
+      "bottomDrawerReportedSize": 0,
       "bottomDrawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1856,6 +1875,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
