@@ -230,6 +230,8 @@ export const useAppLayout = (
     displayed: false,
   });
 
+  const [bottomDrawerReportedSize, setBottomDrawerReportedSize] = useState(0);
+
   const globalDrawersFocusControl = useMultipleFocusControl(true, activeGlobalDrawersIds);
   const drawersFocusControl = useAsyncFocusControl(!!activeDrawer?.id, true, activeDrawer?.id);
   const bottomDrawersFocusControl = useAsyncFocusControl(
@@ -299,12 +301,12 @@ export const useAppLayout = (
   useGlobalScrollPadding(verticalOffsets.header ?? 0);
 
   const getMaxGlobalBottomDrawerHeight = useCallback(() => {
-    const splitPanelSize = splitPanelOpen ? splitPanelReportedSize : 0;
+    const splitPanelSize = splitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : 0;
     const availableHeight =
       document.documentElement.clientHeight - placement.insetBlockStart - placement.insetBlockEnd - splitPanelSize;
     // If the page is likely zoomed in at 200%, allow the split panel to fill the content area.
     return availableHeight < 400 ? availableHeight - 40 : availableHeight - 250;
-  }, [placement.insetBlockEnd, placement.insetBlockStart, splitPanelReportedSize, splitPanelOpen]);
+  }, [splitPanelOpen, splitPanelPosition, splitPanelReportedSize, placement.insetBlockStart, placement.insetBlockEnd]);
 
   const appLayoutInternals: AppLayoutInternals = {
     ariaLabels: ariaLabelsWithDrawers,
@@ -362,14 +364,16 @@ export const useAppLayout = (
     activeGlobalBottomDrawerId,
     onActiveGlobalBottomDrawerChange,
     activeGlobalBottomDrawerSize,
+    bottomDrawerReportedSize,
     minGlobalBottomDrawerSize,
     getMaxGlobalBottomDrawerHeight,
+    reportBottomDrawerSize: useStableCallback(size => setBottomDrawerReportedSize(size)),
   };
 
   const splitPanelInternals: SplitPanelProviderProps = {
     bottomOffset: 0,
     getMaxHeight: useCallback(() => {
-      const bottomDrawerHeight = activeGlobalBottomDrawerId ? activeGlobalBottomDrawerSize : 0;
+      const bottomDrawerHeight = activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0;
       const availableHeight =
         document.documentElement.clientHeight -
         placement.insetBlockStart -
@@ -377,7 +381,7 @@ export const useAppLayout = (
         bottomDrawerHeight;
       // If the page is likely zoomed in at 200%, allow the split panel to fill the content area.
       return availableHeight < 400 ? availableHeight - 40 : availableHeight - 250;
-    }, [activeGlobalBottomDrawerId, activeGlobalBottomDrawerSize, placement.insetBlockEnd, placement.insetBlockStart]),
+    }, [activeGlobalBottomDrawerId, bottomDrawerReportedSize, placement.insetBlockEnd, placement.insetBlockStart]),
     maxWidth: maxSplitPanelSize,
     isForcedPosition: splitPanelForcedPosition,
     isOpen: splitPanelOpen,
