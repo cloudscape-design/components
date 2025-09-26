@@ -30,6 +30,7 @@ export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: 
     drawers,
     globalDrawers,
     splitPanelPosition,
+    activeGlobalBottomDrawerId,
   } = appLayoutState.widgetizedState;
   const drawerExpandedMode = !!expandedDrawerId;
   const toolsOpen = !!activeDrawer;
@@ -40,7 +41,9 @@ export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: 
     <>
       {!!bottomDrawers.length && (
         <div className={styles['bottom-tool']}>
-          <AppLayoutBottomDrawerWrapper appLayoutInternals={appLayoutState.appLayoutInternals} />
+          <ActiveDrawersContext.Provider value={activeGlobalBottomDrawerId ? [activeGlobalBottomDrawerId] : []}>
+            <AppLayoutBottomDrawerWrapper appLayoutInternals={appLayoutState.appLayoutInternals} />
+          </ActiveDrawersContext.Provider>
         </div>
       )}
       {splitPanelPosition === 'side' && (

@@ -315,7 +315,7 @@ export function useDrawers(
     drawerId: string | null,
     { initiatedByUserAction }: Partial<OnChangeParams> = DEFAULT_ON_CHANGE_PARAMS
   ) {
-    const drawer = runtimeGlobalDrawers.find(drawer => drawer.id === drawerId);
+    const drawer = runtimeGlobalDrawers.find(drawer => drawer.id === (drawerId || activeGlobalBottomDrawerId));
     setActiveGlobalBottomDrawerId(drawerId);
     fireNonCancelableEvent(drawer?.onToggle, { isOpen: !!drawerId, initiatedByUserAction });
     onGlobalBottomDrawerFocus?.();
