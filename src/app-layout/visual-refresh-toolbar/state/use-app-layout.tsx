@@ -298,6 +298,14 @@ export const useAppLayout = (
 
   useGlobalScrollPadding(verticalOffsets.header ?? 0);
 
+  const getMaxGlobalBottomDrawerHeight = useCallback(() => {
+    const splitPanelSize = splitPanelOpen ? splitPanelReportedSize : 0;
+    const availableHeight =
+      document.documentElement.clientHeight - placement.insetBlockStart - placement.insetBlockEnd - splitPanelSize;
+    // If the page is likely zoomed in at 200%, allow the split panel to fill the content area.
+    return availableHeight < 400 ? availableHeight - 40 : availableHeight - 250;
+  }, [placement.insetBlockEnd, placement.insetBlockStart, splitPanelReportedSize, splitPanelOpen]);
+
   const appLayoutInternals: AppLayoutInternals = {
     ariaLabels: ariaLabelsWithDrawers,
     headerVariant,
@@ -355,16 +363,21 @@ export const useAppLayout = (
     onActiveGlobalBottomDrawerChange,
     activeGlobalBottomDrawerSize,
     minGlobalBottomDrawerSize,
+    getMaxGlobalBottomDrawerHeight,
   };
 
   const splitPanelInternals: SplitPanelProviderProps = {
     bottomOffset: 0,
-    getMaxHeight: useStableCallback(() => {
+    getMaxHeight: useCallback(() => {
+      const bottomDrawerHeight = activeGlobalBottomDrawerId ? activeGlobalBottomDrawerSize : 0;
       const availableHeight =
-        document.documentElement.clientHeight - placement.insetBlockStart - placement.insetBlockEnd;
+        document.documentElement.clientHeight -
+        placement.insetBlockStart -
+        placement.insetBlockEnd -
+        bottomDrawerHeight;
       // If the page is likely zoomed in at 200%, allow the split panel to fill the content area.
       return availableHeight < 400 ? availableHeight - 40 : availableHeight - 250;
-    }),
+    }, [activeGlobalBottomDrawerId, activeGlobalBottomDrawerSize, placement.insetBlockEnd, placement.insetBlockStart]),
     maxWidth: maxSplitPanelSize,
     isForcedPosition: splitPanelForcedPosition,
     isOpen: splitPanelOpen,

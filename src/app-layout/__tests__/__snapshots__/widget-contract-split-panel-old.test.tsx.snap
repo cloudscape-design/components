@@ -91,6 +91,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -303,6 +304,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -475,6 +477,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -685,6 +688,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -857,6 +861,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1034,6 +1039,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1246,6 +1252,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1418,6 +1425,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1627,6 +1635,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1799,6 +1808,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
