@@ -193,6 +193,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `tableLabel` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
    *                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
    * * `resizerRoleDescription` (string) - Provides role description for table column resizer buttons.
+   * * `resizerTooltipText` (string) - Provides text for the table column resizer tooltip.
    * * `activateEditLabel` (EditableColumnDefinition, Item) => string -
    *                      Specifies an alternative text for the edit button in editable cells.
    * * `cancelEditLabel` (EditableColumnDefinition) => string -
