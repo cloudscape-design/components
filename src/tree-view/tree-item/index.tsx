@@ -8,6 +8,7 @@ import { ExpandToggleButton } from '../../internal/components/expand-toggle-butt
 import InternalStructuredItem from '../../internal/components/structured-item';
 import { joinStrings } from '../../internal/utils/strings';
 import { TreeViewProps } from '../interfaces';
+import FocusTarget from './focus-target';
 
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -21,6 +22,9 @@ interface InternalTreeItemProps<T>
   index: number;
   level: number;
   onItemToggle: (detail: TreeViewProps.ItemToggleDetail<T>) => void;
+  allVisibleItemsIndices: {
+    [key: string]: number;
+  };
 }
 
 const InternalTreeItem = <T,>({
@@ -34,6 +38,7 @@ const InternalTreeItem = <T,>({
   getItemId,
   getItemChildren,
   onItemToggle,
+  allVisibleItemsIndices,
 }: InternalTreeItemProps<T>) => {
   const i18n = useInternalI18n('tree-view');
 
@@ -55,58 +60,68 @@ const InternalTreeItem = <T,>({
       ? (content as string)
       : '';
 
-  //  Role `treeitem` isn't used in the initial release per discussion with A11Y team. It requires focus management to be implemented so they will be added as a follow up together.
   return (
     <li
+      role="treeitem"
       id={id}
       className={clsx(
         styles.treeitem,
         testUtilStyles.treeitem,
+        level > 1 && styles.offset,
         isExpandable && [testUtilStyles.expandable],
         isExpanded && [testUtilStyles.expanded]
       )}
       aria-expanded={isExpandable ? isExpanded : undefined}
       aria-level={level}
       data-testid={`awsui-treeitem-${id}`}
+      data-awsui-tree-item-index={allVisibleItemsIndices[id]}
     >
-      <div className={styles['expand-toggle-wrapper']}>
-        {isExpandable && (
+      <div className={styles['treeitem-content-wrapper']}>
+        <div className={styles['expand-toggle-wrapper']}>
           <div className={styles.toggle}>
-            <ExpandToggleButton
-              isExpanded={isExpanded}
-              customIcon={customIcon}
-              expandButtonLabel={joinStrings(
-                i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
-                itemLabelToAnnounce
-              )}
-              collapseButtonLabel={joinStrings(
-                i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item)),
-                itemLabelToAnnounce
-              )}
-              onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
-            />
+            {isExpandable ? (
+              <ExpandToggleButton
+                isExpanded={isExpanded}
+                customIcon={customIcon}
+                expandButtonLabel={joinStrings(
+                  i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
+                  itemLabelToAnnounce
+                )}
+                collapseButtonLabel={joinStrings(
+                  i18n('i18nStrings.collapseButtonLabel', i18nStrings?.collapseButtonLabel?.(item)),
+                  itemLabelToAnnounce
+                )}
+                onExpandableItemToggle={() => onItemToggle({ id, item, expanded: !isExpanded })}
+                className={styles['tree-item-focus-target']}
+                disableFocusHighlight={true}
+              />
+            ) : (
+              <FocusTarget ariaLabel={itemLabelToAnnounce} />
+            )}
           </div>
-        )}
-      </div>
+        </div>
 
-      <div className={styles['structured-item-wrapper']}>
-        <InternalStructuredItem
-          icon={icon}
-          content={content}
-          secondaryContent={secondaryContent}
-          actions={actions}
-          wrapActions={false}
-        />
+        <div className={styles['structured-item-wrapper']}>
+          <InternalStructuredItem
+            icon={icon}
+            content={content}
+            secondaryContent={secondaryContent}
+            actions={actions}
+            wrapActions={false}
+            className={styles['tree-item-structured-item']}
+          />
+        </div>
       </div>
 
       {isExpanded && children.length && (
-        <ul className={styles['treeitem-group']}>
+        <ul role="group" className={styles['treeitem-group']}>
           {children.map((child, index) => {
+            const itemId = getItemId(child, index);
             return (
-              <InternalTreeItem
+              <InternalTreeItem<T>
                 item={child}
                 index={index}
-                key={`${nextLevel}-${index}`}
+                key={itemId}
                 level={nextLevel}
                 expandedItems={expandedItems}
                 i18nStrings={i18nStrings}
@@ -115,6 +130,7 @@ const InternalTreeItem = <T,>({
                 getItemId={getItemId}
                 getItemChildren={getItemChildren}
                 renderItemToggleIcon={renderItemToggleIcon}
+                allVisibleItemsIndices={allVisibleItemsIndices}
               />
             );
           })}

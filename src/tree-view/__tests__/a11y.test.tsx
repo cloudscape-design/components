@@ -6,7 +6,7 @@ import { render } from '@testing-library/react';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
-import { defaultProps, Item } from './common';
+import { defaultProps, Item } from './items';
 
 import styles from '../../../lib/components/tree-view/styles.css.js';
 
