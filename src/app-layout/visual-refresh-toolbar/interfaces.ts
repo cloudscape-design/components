@@ -89,6 +89,7 @@ export interface AppLayoutInternals {
   onActiveGlobalBottomDrawerChange: (value: string | null, params: OnChangeParams) => void;
   activeGlobalBottomDrawerSize: number;
   minGlobalBottomDrawerSize: number;
+  getMaxGlobalBottomDrawerHeight: () => number;
 }
 
 interface AppLayoutWidgetizedState extends AppLayoutInternals {

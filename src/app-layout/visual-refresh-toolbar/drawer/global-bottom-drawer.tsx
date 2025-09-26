@@ -55,8 +55,6 @@ interface AppLayoutGlobalDrawerImplementationProps {
   activeDrawer: InternalDrawer | undefined;
 }
 
-// TODO calculate
-const MAX_GLOBAL_BOTTOM_DRAWER_SIZE = 600;
 const GAP_HEIGHT = 10;
 const RESIZE_HANDLER_HEIGHT = 18;
 
@@ -77,6 +75,7 @@ function AppLayoutGlobalBottomDrawerImplementation({
     setExpandedDrawerId,
     activeAiDrawer,
     bottomDrawersFocusControl,
+    getMaxGlobalBottomDrawerHeight,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeDrawer?.id ?? '';
@@ -89,7 +88,7 @@ function AppLayoutGlobalBottomDrawerImplementation({
 
   const activeDrawerSize = activeGlobalBottomDrawerSize ?? 0;
   const minDrawerSize = minGlobalBottomDrawerSize ?? 0;
-  const maxDrawerSize = MAX_GLOBAL_BOTTOM_DRAWER_SIZE;
+  const maxDrawerSize = getMaxGlobalBottomDrawerHeight();
   const refs = bottomDrawersFocusControl.refs;
   const resizeProps = useResize({
     currentWidth: activeDrawerSize,
