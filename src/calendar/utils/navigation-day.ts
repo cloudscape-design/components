@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { addDays, differenceInYears, isSameMonth, startOfMonth } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { CalendarProps } from '../interfaces';
 
@@ -23,13 +23,13 @@ export function movePrevWeek(startDate: Date, isDateFocusable: CalendarProps.IsD
 // Returns first enabled date of the month corresponding to the given date.
 // If all month's days are disabled, the first day of the month is returned.
 export function getBaseDay(date: Date, isDateFocusable: CalendarProps.IsDateEnabledFunction) {
-  const startDate = startOfMonth(date);
+  const startDate = dayjs(date).startOf('month').toDate();
 
   if (isDateFocusable(startDate)) {
     return startDate;
   }
   const firstEnabledDate = moveDay(startDate, isDateFocusable, 1);
-  return isSameMonth(startDate, firstEnabledDate) ? firstEnabledDate : startDate;
+  return dayjs(startDate).isSame(firstEnabledDate, 'month') ? firstEnabledDate : startDate;
 }
 
 // Iterates days forwards or backwards until the next active day is found.
@@ -37,13 +37,13 @@ export function getBaseDay(date: Date, isDateFocusable: CalendarProps.IsDateEnab
 export function moveDay(startDate: Date, isDateFocusable: CalendarProps.IsDateEnabledFunction, step: number): Date {
   const limitYears = 1;
 
-  let current = addDays(startDate, step);
+  let current = dayjs(startDate).add(step, 'day').toDate();
 
   while (!isDateFocusable(current)) {
-    if (Math.abs(differenceInYears(startDate, current)) > limitYears) {
+    if (Math.abs(dayjs(startDate).diff(current, 'year')) > limitYears) {
       return startDate;
     }
-    current = addDays(current, step);
+    current = dayjs(current).add(step, 'day').toDate();
   }
 
   return current;

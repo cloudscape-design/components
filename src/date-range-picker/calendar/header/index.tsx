@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { add } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { CalendarProps } from '../../../calendar/interfaces';
 import { renderMonthAndYear, renderYear } from '../../../calendar/utils/intl';
@@ -38,7 +38,9 @@ export default function CalendarHeader({
   const renderLabel = isMonthPicker ? renderYear : renderMonthAndYear;
   const prevPageHeaderLabel = renderLabel(
     locale,
-    add(baseDate, granularity === 'month' ? { years: -1 } : { months: -1 })
+    granularity === 'month'
+      ? dayjs(baseDate).subtract(1, 'year').toDate()
+      : dayjs(baseDate).subtract(1, 'month').toDate()
   );
   const currentPageHeaderLabel = renderLabel(locale, baseDate);
   const pageUnit = isMonthPicker ? 'year' : 'month';
