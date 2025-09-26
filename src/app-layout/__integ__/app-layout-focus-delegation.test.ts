@@ -48,10 +48,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         'should not focus panels on page load',
         setupTest(
           async page => {
-            // TODO: fix test for React 18
-            if ((await page.getReactVersion()) === '18') {
-              return;
-            }
             await expect(page.isFocused('body')).resolves.toBe(true);
           },
           { pageName: 'with-split-panel', theme, mobile }

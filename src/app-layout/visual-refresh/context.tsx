@@ -139,15 +139,17 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
 
-    const handleNavigationClick = useStableCallback(function handleNavigationChange(isOpen: boolean) {
-      focusNavButtons();
-      fireNonCancelableEvent(props.onNavigationChange, { open: isOpen });
-    });
+    const handleNavigationClick = useStableCallback(
+      ({ isOpen, autoFocus }: { isOpen: boolean; autoFocus: boolean }) => {
+        focusNavButtons({ force: false, autoFocus });
+        fireNonCancelableEvent(props.onNavigationChange, { open: isOpen });
+      }
+    );
 
     useEffect(() => {
       // Close navigation drawer on mobile so that the main content is visible
       if (isMobile) {
-        handleNavigationClick(false);
+        handleNavigationClick({ isOpen: false, autoFocus: false });
       }
     }, [isMobile, handleNavigationClick]);
 
@@ -168,7 +170,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       function handleToolsChange(isOpen: boolean, skipFocusControl?: boolean) {
         setIsToolsOpen(isOpen);
         if (!skipFocusControl) {
-          focusToolsButtons();
+          focusToolsButtons({ force: false });
         }
         fireNonCancelableEvent(props.onToolsChange, { open: isOpen });
       },
@@ -476,23 +478,23 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         return {
           closeNavigationIfNecessary: function () {
             if (isMobile) {
-              handleNavigationClick(false);
+              handleNavigationClick({ isOpen: false, autoFocus: true });
             }
           },
           openTools: function () {
             handleToolsClick(true, hasDrawers);
             if (hasDrawers) {
-              focusDrawersButtons(true);
+              focusDrawersButtons({ force: true });
             }
           },
           focusToolsClose: () => {
             if (hasDrawers) {
-              focusDrawersButtons(true);
+              focusDrawersButtons({ force: true });
             } else {
-              focusToolsButtons(true);
+              focusToolsButtons({ force: true });
             }
           },
-          focusActiveDrawer: () => focusDrawersButtons(true),
+          focusActiveDrawer: () => focusDrawersButtons({ force: true }),
           focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
         };
       },
@@ -528,7 +530,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           footerHeight: placement.insetBlockEnd,
           hasDrawerViewportOverlay,
           handleDrawersClick,
-          handleNavigationClick,
+          handleNavigationClick: isOpen => handleNavigationClick({ isOpen, autoFocus: true }),
           handleSplitPanelClick,
           handleSplitPanelPreferencesChange,
           handleSplitPanelResize,
