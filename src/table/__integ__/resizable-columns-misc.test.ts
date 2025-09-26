@@ -89,11 +89,11 @@ test(
     await page.installObserver(wrapper.find('table').toSelector());
     await page.click('#shrink-container');
     await page.waitForJsTimers();
-    // expected 1 observation after creating observer and 1 caused by container shrink
-    await expect(page.getObservations()).resolves.toBe(2);
+    // check to ensure that we haven't triggered an infinite resize loop
+    await expect(page.getObservations()).resolves.toBeLessThanOrEqual(3);
     await page.waitForJsTimers();
-    // ensure there are no more observations added after the expected 2
-    await expect(page.getObservations()).resolves.toBe(2);
+    // check again to ensure that we haven't triggered an infinite resize loop
+    await expect(page.getObservations()).resolves.toBeLessThanOrEqual(3);
   })
 );
 

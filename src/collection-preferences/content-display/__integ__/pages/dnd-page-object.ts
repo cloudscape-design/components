@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-export default class DndPageObject extends BasePageObject {
+import BasePageExtendedObject from '../../../../__integ__/page-objects/base-page-ext';
+
+export default class DndPageObject extends BasePageExtendedObject {
   async mouseDown(selector: string) {
     const center = await this.getElementCenter(selector);
     await (await this.browser.$(selector)).moveTo();

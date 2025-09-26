@@ -12,14 +12,14 @@ import { isValid, placeholders } from './common';
 
 const permutations = createPermutations<DateRangePickerProps>([
   {
-    absoluteFormat: ['iso', 'long-localized'],
+    absoluteFormat: ['iso', 'slashed', 'long-localized'],
     dateOnly: [true, false],
     value: [{ type: 'absolute', startDate: '2024-12-30', endDate: '2024-12-31' }],
     isValidRange: [() => ({ valid: true })],
     relativeOptions: [[]],
   },
   {
-    absoluteFormat: ['iso', 'long-localized'],
+    absoluteFormat: ['iso', 'slashed', 'long-localized'],
     dateOnly: [true, false],
     hideTimeOffset: [true, false],
     value: [{ type: 'absolute', startDate: '2024-12-30T00:00:00+01:00', endDate: '2024-12-31T23:59:59+01:00' }],

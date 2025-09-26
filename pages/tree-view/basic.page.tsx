@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import Box from '~components/box';
+import Button from '~components/button';
 import Container from '~components/container';
 import FormField from '~components/form-field';
 import Grid from '~components/grid';
@@ -107,6 +108,8 @@ export default function BasicTreeView() {
       </Grid>
 
       <div style={{ marginTop: '10px' }}>Expanded items: {expandedItems.map(id => `Item ${id}`).join(', ')}</div>
+
+      <Button>Element to focus for testing single tab stop</Button>
     </ScreenshotArea>
   );
 }

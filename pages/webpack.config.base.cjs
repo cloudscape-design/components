@@ -22,12 +22,14 @@ module.exports = ({
   globalStylesPath,
   globalStylesIndex = 'index',
   moduleReplacements,
+  react18,
 } = {}) => {
+  const mode = process.env.NODE_ENV;
   return {
     stats: isProd ? 'none' : 'minimal',
     context: path.resolve(__dirname),
     entry: './app/index.tsx',
-    mode: process.env.NODE_ENV,
+    mode,
     output: {
       path: path.resolve(outputPath),
       publicPath: './',
@@ -40,10 +42,20 @@ module.exports = ({
         // The NormalModuleReplacementPlugin does not work there
         // https://github.com/webpack-contrib/sass-loader/issues/489
         '~design-tokens': designTokensPath,
+        ...(react18
+          ? {
+              '~mount': path.resolve(__dirname, './app/mount/react18.ts'),
+              react: 'react18',
+              'react-dom': 'react-dom18',
+              'react-dom/client': 'react-dom18/client',
+            }
+          : {
+              '~mount': path.resolve(__dirname, './app/mount/react16.ts'),
+            }),
       },
     },
     devtool: 'source-map',
-    cache: isLocal ? { type: 'filesystem' } : false,
+    cache: isLocal ? { type: 'filesystem', name: react18 ? `${mode}:react18` : `${mode}:react16` } : false,
     module: {
       rules: [
         {
@@ -53,11 +65,23 @@ module.exports = ({
           exclude: /__tests__/,
           options: {
             compilerOptions: {
+              baseUrl: '.',
               paths: {
                 '~components': [componentsPath],
                 '~components/*': [`${componentsPath}/*`],
                 '~design-tokens': [designTokensPath],
                 ...(globalStylesPath ? { '@cloudscape-design/global-styles': [globalStylesPath] } : {}),
+                ...(react18
+                  ? {
+                      '~mount': ['./app/mount/react18.ts'],
+                      react: ['node_modules/types-react18'],
+                      'react-dom': ['node_modules/types-react-dom18'],
+                      'react/jsx-runtime': ['node_modules/types-react18/jsx-runtime'],
+                      'react/jsx-dev-runtime': ['node_modules/types-react18/jsx-dev-runtime'],
+                    }
+                  : {
+                      '~mount': ['./app/mount/react16.ts'],
+                    }),
               },
             },
           },

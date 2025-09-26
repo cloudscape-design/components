@@ -83,7 +83,7 @@ function useRuntimeAiDrawer(
   return aiDrawer && mapRuntimeConfigToAiDrawer(aiDrawer);
 }
 
-export const MIN_DRAWER_SIZE = 290;
+const MIN_DRAWER_SIZE = 400;
 
 interface UseDrawersProps {
   isEnabled: boolean;

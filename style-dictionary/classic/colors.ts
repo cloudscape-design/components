@@ -56,6 +56,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderButtonNormalHover: { light: '{colorGrey950}', dark: '{colorGrey400}' },
   colorBorderButtonPrimaryDisabled: { light: '{colorGrey300}', dark: '{colorGrey700}' },
   colorTextButtonPrimaryDisabled: { light: '{colorGrey500}', dark: '{colorGrey500}' },
+  colorItemSelected: { dark: '{colorBlue300}' },
+  colorBorderItemSelected: { dark: '{colorBlue400}' },
   colorBorderCalendarGrid: { light: '{colorBorderDropdownItemDefault}', dark: '{colorBorderDividerDefault}' },
   colorBorderCalendarGridSelectedFocusRing: '{colorBorderItemFocused}',
   colorBorderCodeEditorPaneItemHover: { light: '{colorGrey600}', dark: '{colorGrey500}' },

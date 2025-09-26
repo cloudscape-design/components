@@ -6,10 +6,8 @@ import clsx from 'clsx';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import { InternalButton } from '../../../button/internal';
-import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
-import { NotificationsSlot } from '../skeleton/slots';
 
 import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
@@ -83,8 +81,3 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
     </div>
   );
 }
-
-export const createWidgetizedAppLayoutNavigation = createWidgetizedComponent(
-  AppLayoutNavigationImplementation,
-  NotificationsSlot
-);
