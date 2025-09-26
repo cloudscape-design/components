@@ -26,13 +26,13 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
     isMobile,
     splitPanelAnimationDisabled,
     activeGlobalBottomDrawerId,
-    activeGlobalBottomDrawerSize,
+    bottomDrawerReportedSize,
   } = appLayoutInternals;
   const { drawerTopOffset, drawerHeight } = getDrawerStyles(
     verticalOffsets,
     isMobile,
     placement,
-    activeGlobalBottomDrawerId ? activeGlobalBottomDrawerSize : 0
+    activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0
   );
 
   return (

@@ -28,14 +28,14 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
     placement,
     verticalOffsets,
     activeGlobalBottomDrawerId,
-    activeGlobalBottomDrawerSize,
+    bottomDrawerReportedSize,
   } = appLayoutInternals;
 
   const { drawerTopOffset, drawerHeight } = getDrawerStyles(
     verticalOffsets,
     isMobile,
     placement,
-    activeGlobalBottomDrawerId ? activeGlobalBottomDrawerSize : 0
+    activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0
   );
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.
