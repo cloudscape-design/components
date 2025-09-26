@@ -287,6 +287,9 @@ describe('Style API', () => {
             borderWidth: '4px',
           },
         },
+        icon: {
+          color: 'rgb(255, 0, 0)',
+        },
         dismissButton: {
           color: {
             active: 'rgb(12, 136, 22)',
@@ -336,5 +339,8 @@ describe('Style API', () => {
     );
     expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('6px');
     expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('4px');
+
+    const iconElement = wrapper.findByClassName(styles.icon)!.getElement();
+    expect(getComputedStyle(iconElement).getPropertyValue(customCssProps.alertIconColor)).toBe('rgb(255, 0, 0)');
   });
 });
