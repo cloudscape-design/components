@@ -6,7 +6,7 @@ import OptionWrapper from '../internal/option';
 
 import selectors from '../../../token/styles.selectors.js';
 
-export default class TokenWrapper extends ComponentWrapper {
+export default class StandaloneTokenWrapper extends ComponentWrapper {
   static rootSelector: string = selectors.root;
 
   protected findOption(): OptionWrapper {
@@ -37,7 +37,7 @@ export default class TokenWrapper extends ComponentWrapper {
   /**
    * Returns the token tags.
    */
-  findTags(): Array<ElementWrapper> {
+  findTags(): Array<ElementWrapper> | null {
     return this.findOption().findTags();
   }
 
