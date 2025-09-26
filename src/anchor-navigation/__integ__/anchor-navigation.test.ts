@@ -20,6 +20,7 @@ describe('AnchorNavigation', () => {
     return useBrowser(async browser => {
       const page = new AnchorNavigationPage(browser);
       await browser.url('#/light/anchor-navigation/basic');
+      await page.waitForVisible(wrapper.toSelector());
       await testFn(page);
     });
   }
@@ -65,11 +66,6 @@ describe('AnchorNavigation', () => {
   test(
     'scrolling to the end of the page makes the last anchor item active',
     setupTest(async page => {
-      // TODO: fix test for React 18
-      if ((await page.getReactVersion()) === '18') {
-        return;
-      }
-
       const lastAnchorLink = wrapper.findAnchorLinkByHref('#section-1-2-1-1');
       await page.windowScrollTo({ top: 99999 }); // Very high value to ensure we are scrolled to the end
       return expect(await page.getElementAttribute(lastAnchorLink.toSelector(), 'aria-current')).toBe('true');

@@ -128,7 +128,7 @@ const testCases: TestCase[] = [
     ],
   ],
   [
-    'request for property specific suggestions from the search input',
+    'request for property specific suggestions from the search input React=16',
     false,
     'property',
     [
@@ -142,6 +142,22 @@ const testCases: TestCase[] = [
           // The second page of options is queried immediately because onscroll condition applies:
           // the list bottom is reached and the filtering status is yet "pending" (that happens before React state updates).
           { filteringProperty, filteringOperator: '=', filteringText: '', firstPage: false, samePage: false },
+        ],
+      },
+    ],
+  ],
+  [
+    'request for property specific suggestions from the search input React=18',
+    false,
+    'property',
+    [
+      { command: 'open-filtering-input', result: [] },
+      {
+        command: 'type-in-filtering-input',
+        param: 'label=',
+        result: [
+          { filteringText: 'l', firstPage: false, samePage: false },
+          { filteringProperty, filteringOperator: '=', filteringText: '', firstPage: true, samePage: false },
         ],
       },
     ],
@@ -187,8 +203,14 @@ const testCases: TestCase[] = [
   ],
 ];
 
-test.each<TestCase>(testCases)('%p', (_, asyncProperties, token, scenario) =>
+test.each<TestCase>(testCases)('%p', (scenarioName, asyncProperties, token, scenario) =>
   setupTest(asyncProperties, token, async page => {
+    if (scenarioName.includes('React=16') && (await page.getReactVersion()) !== '16') {
+      return;
+    }
+    if (scenarioName.includes('React=18') && (await page.getReactVersion()) !== '18') {
+      return;
+    }
     for (let i = 0; i < scenario.length; i++) {
       const { command, result, param = '' } = scenario[i];
       switch (command) {
