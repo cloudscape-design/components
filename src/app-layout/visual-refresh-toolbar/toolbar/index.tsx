@@ -218,6 +218,7 @@ export function AppLayoutToolbarImplementation({
           <ToolbarBreadcrumbsSection
             ownBreadcrumbs={appLayoutInternals.breadcrumbs}
             discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
+            includeTestUtils={true}
           />
         )}
         {(drawers?.length || globalDrawers?.length || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
