@@ -7,7 +7,7 @@ import OptionWrapper from '../internal/option';
 import selectors from '../../../token/styles.selectors.js';
 
 export default class TokenWrapper extends ComponentWrapper {
-  static rootSelector: string = selectors.token;
+  static rootSelector: string = selectors.root;
   findOption(): OptionWrapper {
     return this.findComponent(`.${OptionWrapper.rootSelector}`, OptionWrapper)!;
   }
