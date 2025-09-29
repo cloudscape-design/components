@@ -96,6 +96,9 @@ function CustomAlert({ children, type, dismissible, action }: CustomAlertProps) 
         icon: {
           color: iconColor,
         },
+        icon: {
+          color: getIconColor(type),
+        },
         dismissButton: {
           color: {
             default: dismissButtonColors[mode][type].default,
@@ -174,6 +177,52 @@ const iconColors = {
 
 const dismissButtonColors = {
   light: {
+function getBackground(type: string) {
+  const backgrounds = {
+    info: `light-dark(${palette.blue80}, ${palette.blue40})`,
+    success: `light-dark(${palette.green80}, ${palette.green20})`,
+    error: `light-dark(${palette.red80}, ${palette.red30})`,
+    warning: `light-dark(${palette.teal90}, ${palette.teal20})`,
+  };
+  return backgrounds[type as keyof typeof backgrounds];
+}
+
+function getColor() {
+  return `light-dark(${palette.neutral10}, ${palette.neutral100})`;
+}
+
+function getBorderColor(type: string) {
+  const borderColors = {
+    info: `light-dark(${palette.neutral80}, ${palette.neutral20})`,
+    success: `light-dark(${palette.green80}, ${palette.green30})`,
+    error: `light-dark(${palette.blue90}, ${palette.red60})`,
+    warning: `light-dark(${palette.orange80}, ${palette.orange40})`,
+  };
+  return borderColors[type as keyof typeof borderColors];
+}
+
+function getBorderWidth(type: string) {
+  const borderWidths = {
+    info: '4px',
+    success: '0px',
+    error: '6px',
+    warning: '0px',
+  };
+  return borderWidths[type as keyof typeof borderWidths];
+}
+
+function getIconColor(type: string) {
+  const iconColors = {
+    info: `light-dark(${palette.orange80}, ${palette.red30})`,
+    success: `light-dark(${palette.red60}, ${palette.red60})`,
+    error: `light-dark(${palette.blue80}, ${palette.blue40})`,
+    warning: `light-dark(${palette.neutral10}, ${palette.neutral90})`,
+  };
+  return iconColors[type as keyof typeof iconColors];
+}
+
+function getDismissButtonColor(type: string) {
+  const dismissButtonColors = {
     info: {
       default: palette.green60,
       hover: palette.neutral80,
