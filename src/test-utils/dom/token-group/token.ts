@@ -1,19 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import OptionWrapper from '../internal/option';
+import TokenWrapper from '../token';
 
 import selectors from '../../../token/styles.selectors.js';
 
-export default class TokenWrapper extends ComponentWrapper {
-  static rootSelector: string = selectors.root;
+export default class TokenGroupItemWrapper extends TokenWrapper {
   findOption(): OptionWrapper {
-    return this.findComponent(`.${OptionWrapper.rootSelector}`, OptionWrapper)!;
-  }
-
-  findLabel(): ElementWrapper {
-    return this.findOption().findLabel();
+    return super.findOption();
   }
 
   findDismiss(): ElementWrapper {
