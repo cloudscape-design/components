@@ -7,7 +7,7 @@ import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface ToggleButtonProps extends BaseComponentProps, BaseButtonProps {
+export interface ToggleButtonProps extends BaseComponentProps, Omit<BaseButtonProps, 'nativeAnchorAttributes'> {
   /** Determines the general styling of the toggle button as follows:
    * * `normal` for secondary buttons.
    * * `icon` to display an icon only (no text).

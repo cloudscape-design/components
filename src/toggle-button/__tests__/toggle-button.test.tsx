@@ -9,6 +9,8 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import ToggleButton, { ToggleButtonProps } from '../../../lib/components/toggle-button';
 import { getToggleIcon } from '../../../lib/components/toggle-button/util';
 
+import styles from '../../../lib/components/button/styles.css.js';
+
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
@@ -131,6 +133,23 @@ describe('ToggleButton Component', () => {
 
     test('should keep default iconName if pressedIconName is not provided and pressed is set true', () => {
       expect(getToggleIcon(true, 'star')).toBe('star');
+    });
+  });
+
+  describe('native attributes', () => {
+    it('adds native attributes', () => {
+      const { container } = render(
+        <ToggleButton pressed={true} nativeButtonAttributes={{ 'data-testid': 'my-test-id' }} />
+      );
+      expect(container.querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+      expect(container.querySelectorAll('button[data-testid="my-test-id"]')).toHaveLength(1);
+    });
+    it('concatenates class names', () => {
+      const { container } = render(
+        <ToggleButton pressed={true} nativeButtonAttributes={{ className: 'additional-class' }} />
+      );
+      expect(container.firstChild).toHaveClass(styles.button);
+      expect(container.firstChild).toHaveClass('additional-class');
     });
   });
 });

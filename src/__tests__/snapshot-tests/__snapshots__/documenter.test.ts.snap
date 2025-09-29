@@ -249,6 +249,22 @@ If the label is assigned via the \`i18nStrings\` property, this label will be ig
           },
           {
             "inlineType": {
+              "name": "{ color?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "color",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "icon",
+            "optional": true,
+            "type": "{ color?: string | undefined; }",
+          },
+          {
+            "inlineType": {
               "name": "object",
               "properties": [
                 {
@@ -10248,13 +10264,13 @@ The event \`detail\` contains the current value of the field.",
 It can take the following values:
 * \`iso\`: ISO 8601 format, e.g.: 2024-01-30T13:32:32+01:00 (or 2024-01-30 when \`dateOnly\` is true)
 * \`long-localized\`: a more human-readable, localized format, e.g.: January 30, 2024, 13:32:32 (UTC+1) (or January 30, 2024 when \`dateOnly\` is true)
-
-Defaults to \`iso\`.",
+* \`slashed\`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01)",
       "inlineType": {
-        "name": "DateRangePickerProps.AbsoluteFormat",
+        "name": "DateFormat",
         "type": "union",
         "values": [
           "iso",
+          "slashed",
           "long-localized",
         ],
       },
@@ -10348,6 +10364,25 @@ If provided, the date becomes focusable.",
       "name": "dateDisabledReason",
       "optional": true,
       "type": "DateRangePickerProps.DateDisabledReasonFunction",
+    },
+    {
+      "defaultValue": "'slashed'",
+      "description": "Specifies the date format to use on the date inputs in the absolute dropdown.
+
+The format of the input as it is being interacted with. It can take the following values:
+* \`iso\`: ISO 8601 format without time, e.g.: 2024-01-30 (or 2024-01)
+* \`slashed\`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01)",
+      "inlineType": {
+        "name": "EditableDateFormat",
+        "type": "union",
+        "values": [
+          "iso",
+          "slashed",
+        ],
+      },
+      "name": "dateInputFormat",
+      "optional": true,
+      "type": "string",
     },
     {
       "defaultValue": "false",
@@ -10572,6 +10607,21 @@ Defaults to \`false\`.",
             "type": "((unit: DateRangePickerProps.TimeUnit, value: number) => string)",
           },
           {
+            "name": "isoDateConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "isoDateTimeConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "isoMonthConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "modeSelectionLabel",
             "optional": true,
             "type": "string",
@@ -10635,6 +10685,21 @@ Defaults to \`false\`.",
             "name": "renderSelectedAbsoluteRangeAriaLive",
             "optional": true,
             "type": "((startDate: string, endDate: string) => string)",
+          },
+          {
+            "name": "slashedDateConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "slashedDateTimeConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "slashedMonthConstraintText",
+            "optional": true,
+            "type": "string",
           },
           {
             "name": "startDateLabel",
@@ -15356,6 +15421,28 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "name": "id",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
       "description": "Adds a \`rel\` attribute to the link. If the \`rel\` property is provided, it overrides the default behaviour.
@@ -22587,6 +22674,28 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.HTMLAttributes<HTMLElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "defaultValue": "'success'",
       "description": "Specifies the status type.",
       "inlineType": {
@@ -25426,6 +25535,28 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native \`input\` element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeInputAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value. Should be used only inside forms.
 A read-only control is still focusable.
@@ -25894,28 +26025,6 @@ It prevents users from clicking the button, but it can still be focused.",
       "name": "loadingText",
       "optional": true,
       "type": "string",
-    },
-    {
-      "description": "Attributes to add to the native \`a\` element (when \`href\` is provided).
-Some attributes will be automatically combined with internal attribute values:
-- \`className\` will be appended.
-- Event handlers will be chained, unless the default is prevented.
-
-We do not support using this attribute to apply custom styling.",
-      "inlineType": {
-        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
-        "type": "union",
-        "values": [
-          "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
-          "Record<\`data-\${string}\`, string>",
-        ],
-      },
-      "name": "nativeAnchorAttributes",
-      "optional": true,
-      "systemTags": [
-        "core",
-      ],
-      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
       "description": "Attributes to add to the native \`button\` element.
@@ -88581,6 +88690,489 @@ Note: This function returns the specified component's wrapper even if the specif
           },
         },
         {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ChartPopoverSeriesItemWrapper.findKey",
+          },
+          "name": "findKey",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findSubItems",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ChartPopoverSeriesItemWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ChartPopoverSeriesItemWrapper.findValue",
+          },
+          "name": "findValue",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "ChartPopoverSeriesWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "name": "findKey",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findValue",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "ChartPopoverSeriesItemWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "name": "findAddButton",
           "parameters": [],
           "returnType": {
@@ -92895,6 +93487,486 @@ If no CSS selector is specified, returns a multi-element wrapper that matches th
           },
         },
         {
+          "name": "findCardHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "description": "Note: for integration/selector-based tests you should add \`1\` to the expected section index,
+for example, \`.findSections().get(sectionIndex+1)\`. The \`get\` call in this context
+is '2-indexed', that is, the first section in a card has an index of \`2\`.",
+          "name": "findSections",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "CardSectionWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findSelectionArea",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "CardWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findSectionHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "CardSectionWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
 
 Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
@@ -94556,6 +95628,246 @@ Note: This function returns the specified component's wrapper even if the specif
         },
       ],
       "name": "PageSizePreferenceWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findNativeInput",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "RadioButtonWrapper",
     },
     {
       "methods": [
@@ -101453,6 +102765,269 @@ If an item is loading its type is considered as "info".",
           },
         },
         {
+          "description": "Returns the action slot.",
+          "name": "findAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the action button.
+
+The action button is only rendered when the \`buttonText\` property is set.",
+          "name": "findActionButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the dismiss button.
+
+The dismiss button is only rendered when the \`dismissible\` property is set to \`true\`.",
+          "name": "findDismissButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "FlashWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "name": "findActions",
           "parameters": [],
           "returnType": {
@@ -103093,6 +104668,516 @@ Note: This function returns the specified component's wrapper even if the specif
         },
       ],
       "name": "KeyValuePairsWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "name": "findGroupPairs",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "KeyValuePairsPairWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findGroupTitle",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "KeyValuePairsPairWrapper.findInfo",
+          },
+          "name": "findInfo",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "KeyValuePairsPairWrapper.findLabel",
+          },
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "KeyValuePairsPairWrapper.findValue",
+          },
+          "name": "findValue",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "KeyValuePairsItemWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "name": "findInfo",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findValue",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "KeyValuePairsPairWrapper",
     },
     {
       "methods": [
@@ -107497,6 +109582,859 @@ Note: This function returns the specified component's wrapper even if the specif
           },
         },
         {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "name": "findEditButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns dropdown content of editing token if opened or \`null\` otherwise.",
+          "name": "findEditorDropdown",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "PropertyFilterEditorDropdownWrapper",
+          },
+        },
+        {
+          "name": "findGroupTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "FilteringGroupedTokenWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findRemoveButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findTokenOperation",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "SelectWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "FilteringTokenWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findCancelButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "name": "findDismissButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "name": "findForm",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findOperatorField",
+          "parameters": [
+            {
+              "defaultValue": "1",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "FormFieldWrapper",
+          },
+        },
+        {
+          "name": "findPropertyField",
+          "parameters": [
+            {
+              "defaultValue": "1",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "FormFieldWrapper",
+          },
+        },
+        {
+          "name": "findSubmitButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "name": "findTokenAddActions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonDropdownWrapper",
+          },
+        },
+        {
+          "name": "findTokenRemoveActions",
+          "parameters": [
+            {
+              "defaultValue": "1",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonDropdownWrapper",
+          },
+        },
+        {
+          "name": "findValueField",
+          "parameters": [
+            {
+              "defaultValue": "1",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "FormFieldWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "PropertyFilterEditorDropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findRemoveButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findTokenOperation",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "SelectWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "FilteringGroupedTokenWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "name": "findAlertSlot",
           "parameters": [],
           "returnType": {
@@ -110475,6 +113413,240 @@ Note: This function returns the specified component's wrapper even if the specif
         },
       ],
       "name": "StepsWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "description": "Finds the details of a step",
+          "name": "findDetails",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the header of a step",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "StepWrapper",
     },
     {
       "methods": [
@@ -114903,6 +118075,531 @@ Note: This function returns the specified component's wrapper even if the specif
         },
       ],
       "name": "TutorialPanelWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findCollapseButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "name": "findCompleted",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findExpandButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "name": "findLearnMoreLink",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "LinkWrapper",
+          },
+        },
+        {
+          "name": "findPrerequisitesAlert",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "AlertWrapper",
+          },
+        },
+        {
+          "name": "findStartButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "name": "findTitle",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "TutorialItemWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
+          "name": "findSteps",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findStepsTitle",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findTitle",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "TutorialTaskWrapper",
     },
     {
       "methods": [
