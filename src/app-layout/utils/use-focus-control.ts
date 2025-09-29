@@ -14,7 +14,7 @@ export interface FocusControlRefs {
 
 export interface FocusControlState {
   refs: FocusControlRefs;
-  setFocus: (force?: boolean) => void;
+  setFocus: (options?: { force: boolean; autoFocus?: boolean }) => void;
   loseFocus: () => void;
 }
 
@@ -132,10 +132,12 @@ export function useFocusControl(
     shouldFocus.current = false;
   };
 
-  const setFocus = (force?: boolean) => {
-    shouldFocus.current = true;
+  const setFocus = ({ force, autoFocus = true }: { force: boolean; autoFocus?: boolean } = { force: false }) => {
     if (force && isOpen) {
+      shouldFocus.current = true;
       doFocus();
+    } else if (autoFocus) {
+      shouldFocus.current = true;
     }
   };
 
@@ -185,10 +187,10 @@ export function useAsyncFocusControl(
     }
   };
 
-  const setFocus = (force?: boolean) => {
+  const setFocus = ({ force, autoFocus = true }: { force: boolean; autoFocus?: boolean } = { force: false }) => {
     if (force && isOpen) {
       doFocus();
-    } else {
+    } else if (autoFocus) {
       shouldFocus.current = true;
     }
   };

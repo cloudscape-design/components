@@ -249,6 +249,22 @@ If the label is assigned via the \`i18nStrings\` property, this label will be ig
           },
           {
             "inlineType": {
+              "name": "{ color?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "color",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "icon",
+            "optional": true,
+            "type": "{ color?: string | undefined; }",
+          },
+          {
+            "inlineType": {
               "name": "object",
               "properties": [
                 {
