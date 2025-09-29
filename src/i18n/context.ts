@@ -19,6 +19,8 @@ interface InternalI18nContextProps {
   format: FormatFunction;
 }
 
+export const namespace = 'cloudscape-design-components';
+
 const defaultContextValue: InternalI18nContextProps = {
   locale: null,
   format: <T>(_namespace: string, _component: string, _key: string, provided: T) => provided,
@@ -68,6 +70,6 @@ export function useInternalI18n<ComponentName extends StringKeyOf<I18nFormatArgT
     provided: ValueType,
     customHandler?: CustomHandler<ValueType, I18nFormatArgTypes[ComponentName][MessageKey]>
   ) => {
-    return format('@cloudscape-design/components', componentName, key, provided, customHandler);
+    return format(namespace, componentName, key, provided, customHandler);
   };
 }

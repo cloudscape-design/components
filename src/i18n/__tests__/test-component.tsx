@@ -4,7 +4,7 @@
 import React from 'react';
 
 import { I18nProviderProps } from '../../../lib/components/i18n';
-import { useInternalI18n } from '../../../lib/components/i18n/context';
+import { namespace, useInternalI18n } from '../../../lib/components/i18n/context';
 
 interface TestComponentProps {
   topLevelString?: string;
@@ -16,7 +16,7 @@ interface TestComponentProps {
 }
 
 export const MESSAGES: I18nProviderProps.Messages = {
-  '@cloudscape-design/components': {
+  [namespace]: {
     en: {
       'test-component': {
         topLevelString: 'top level string',
