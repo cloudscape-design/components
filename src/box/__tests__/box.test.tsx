@@ -59,6 +59,10 @@ describe('Box', () => {
       const boxWrapper = renderBox({ variant: 'awsui-value-large' });
       expect(boxWrapper.getElement().tagName).toBe('SPAN');
     });
+    test('uses code as tag name when set to awsui-inline-code', () => {
+      const boxWrapper = renderBox({ variant: 'awsui-inline-code' });
+      expect(boxWrapper.getElement().tagName).toBe('CODE');
+    });
   });
   describe('tagOverride property', () => {
     const tagOverrides = [
