@@ -85,6 +85,9 @@ function CustomAlert({ children, type, dismissible, action }: CustomAlertProps) 
             borderWidth: '2px',
           },
         },
+        icon: {
+          color: getIconColor(type),
+        },
         dismissButton: {
           color: getDismissButtonColor(type),
           focusRing: {
@@ -132,6 +135,16 @@ function getBorderWidth(type: string) {
     warning: '0px',
   };
   return borderWidths[type as keyof typeof borderWidths];
+}
+
+function getIconColor(type: string) {
+  const iconColors = {
+    info: `light-dark(${palette.orange80}, ${palette.red30})`,
+    success: `light-dark(${palette.red60}, ${palette.red60})`,
+    error: `light-dark(${palette.blue80}, ${palette.blue40})`,
+    warning: `light-dark(${palette.neutral10}, ${palette.neutral90})`,
+  };
+  return iconColors[type as keyof typeof iconColors];
 }
 
 function getDismissButtonColor(type: string) {
