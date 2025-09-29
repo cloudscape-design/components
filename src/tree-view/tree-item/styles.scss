@@ -4,42 +4,59 @@
 */
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $item-toggle-column-width: 28px;
 
 .treeitem-group {
   @include styles.styles-reset-ul;
+
+  position: relative;
 }
 
 .treeitem {
   @include styles.styles-reset-ul;
 
-  align-items: baseline;
+  position: relative;
 
-  display: grid;
-  grid-template-columns: $item-toggle-column-width 1fr;
-  grid-template-rows: auto auto auto;
+  &.offset {
+    margin-inline-start: $item-toggle-column-width;
+  }
 
-  > .expand-toggle-wrapper {
-    grid-column: 1;
-    grid-row: 1;
-    margin-inline-end: awsui.$space-scaled-xxs;
+  > .treeitem-content-wrapper {
+    display: grid;
+    grid-template-columns: $item-toggle-column-width 1fr;
+    align-items: baseline;
 
-    > .toggle {
-      justify-self: center;
+    // When toggle is focused, show focus outline around the entire tree item
+    // stylelint-disable-next-line selector-combinator-disallowed-list
+    body[data-awsui-focus-visible='true'] &:has(.tree-item-focus-target:focus) {
+      @include styles.focus-highlight(0px);
+    }
+
+    > .expand-toggle-wrapper {
+      grid-column: 1;
+      grid-row: 1;
+      padding-inline-end: awsui.$space-scaled-xxs;
+
+      > .toggle {
+        justify-self: center;
+        position: relative;
+        inset-block-start: 2px;
+      }
+    }
+
+    > .structured-item-wrapper {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      padding-block: awsui.$space-scaled-xxs;
+
       position: relative;
-      inset-block-start: 2px;
     }
   }
+}
 
-  > .structured-item-wrapper {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    padding-block: awsui.$space-scaled-xxs;
-  }
-
-  > .treeitem-group {
-    grid-column: 2;
-    grid-row: 3;
-  }
+.tree-item-structured-item,
+.tree-item-focus-target {
+  /* used in keyboard navigation */
 }

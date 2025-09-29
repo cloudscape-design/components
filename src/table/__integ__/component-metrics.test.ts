@@ -1,5 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+import { isEqual } from 'lodash';
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
@@ -10,12 +13,25 @@ interface ExtendedWindow extends Window {
 }
 declare const window: ExtendedWindow;
 
+// Duplicate mount entries are added when testing with React 18 (in strict-mode).
+function removeDuplicateMountEntries<M = any>(metrics: M[]): M[] {
+  const prev: M[] = [];
+  return metrics.filter((m: any) => {
+    const isDuplicate = m.name === 'componentMounted' && prev.some(p => isEqual(m, p));
+    if (isDuplicate) {
+      return false;
+    }
+    prev.push(m);
+    return true;
+  });
+}
+
 class TableWithAnalyticsPageObject extends BasePageObject {
   async getComponentMetricsLog() {
     const componentsLog: ExtendedWindow['__awsuiComponentlMetrics__'] = await this.browser.execute(
       () => window.__awsuiComponentlMetrics__
     );
-    return componentsLog;
+    return removeDuplicateMountEntries(componentsLog);
   }
 
   async getEventsByName(name: string) {
