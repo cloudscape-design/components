@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import TokenWrapper from './token';
+import TokenGroupItemWrapper from '../token-group/token';
 
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
 import selectors from '../../../token-group/styles.selectors.js';
@@ -10,9 +10,9 @@ import selectors from '../../../token-group/styles.selectors.js';
 export default class TokenGroupWrapper extends ComponentWrapper {
   static rootSelector: string = selectors.root;
 
-  findTokens(): Array<TokenWrapper> {
-    return this.findAllByClassName(TokenWrapper.rootSelector).map(
-      tokenElement => new TokenWrapper(tokenElement.getElement())
+  findTokens(): Array<TokenGroupItemWrapper> {
+    return this.findAllByClassName(TokenGroupItemWrapper.rootSelector).map(
+      tokenElement => new TokenGroupItemWrapper(tokenElement.getElement())
     );
   }
 
@@ -21,10 +21,10 @@ export default class TokenGroupWrapper extends ComponentWrapper {
    *
    * @param tokenIndex 1-based index of the token to return.
    */
-  findToken(tokenIndex: number): TokenWrapper | null {
+  findToken(tokenIndex: number): TokenGroupItemWrapper | null {
     return this.findComponent(
-      `.${tokenListSelectors['list-item']}:nth-child(${tokenIndex}) > .${TokenWrapper.rootSelector}`,
-      TokenWrapper
+      `.${tokenListSelectors['list-item']}:nth-child(${tokenIndex}) > .${TokenGroupItemWrapper.rootSelector}`,
+      TokenGroupItemWrapper
     );
   }
 
