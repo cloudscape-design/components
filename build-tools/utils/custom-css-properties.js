@@ -99,5 +99,6 @@ const customCssPropertiesList = [
   'alertFocusRingBorderRadius',
   'alertFocusRingBorderWidth',
   'alertFocusRingBoxShadow',
+  'alertIconColor',
 ];
 module.exports = customCssPropertiesList;
