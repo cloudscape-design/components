@@ -24,13 +24,11 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `type` (string) - The type of the item. Can be `action`, `group`, `checkbox`. Defaults to `action` if `items` undefined and `group` otherwise.
    * - `id` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories.
    * - `text` (string) - description shown in the menu for this item. Mandatory for individual items, optional for categories.
-   * - `secondaryText` (string) - (Optional) Secondary text displayed in the menu for this item.
    * - `lang` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
    * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
    * - `disabledReason` (string) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context.
    * - `description` (string) - additional data that will be passed to a `data-description` attribute. **Deprecated**, has no effect.
    * - `ariaLabel` (string) - (Optional) - ARIA label of the item element.
-   * - `labelTag` (string) - (Optional) - Label for the item. Displayed near the item text for visually impaired users.
    *
    * ### action
    *
@@ -41,6 +39,8 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `iconAlt` (string) - (Optional) Specifies alternate text for the icon when using `iconUrl`.
    * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * - `secondaryText` (string) - (Optional) Secondary text displayed in the menu for this item.
+   * - `labelTag` (string) - (Optional) - Label for the item. Displayed near the item text for visually impaired users.
    *
    * ### checkbox
    *
@@ -51,6 +51,8 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `iconAlt` (string) - (Optional) Specifies alternate text for the icon when using `iconUrl`.
    * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * - `secondaryText` (string) - (Optional) Secondary text displayed in the menu for this item.
+   * - `labelTag` (string) - (Optional) - Label for the item. Displayed near the item text for visually impaired users.
    *
    * ### group
    *
