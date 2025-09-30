@@ -1709,66 +1709,69 @@ describe('toolbar mode only features', () => {
         }
       );
 
-      test('should return panels to their initial state after leaving expanded mode by clicking on a button in the overflow menu', async () => {
-        const drawerId1 = 'global-drawer1';
-        const drawerId2 = 'global-drawer2';
-        awsuiPlugins.appLayout.registerDrawer({
-          ...drawerDefaults,
-          id: drawerId1,
-          type: 'global',
-          isExpandable: true,
+      describe.each(['side', 'bottom'] as const)('drawer position = %s', position => {
+        test('should return panels to their initial state after leaving expanded mode by clicking on a button in the overflow menu', async () => {
+          const drawerId1 = 'global-drawer1';
+          const drawerId2 = 'global-drawer2';
+          awsuiPlugins.appLayout.registerDrawer({
+            ...drawerDefaults,
+            id: drawerId1,
+            type: 'global',
+            isExpandable: true,
+          });
+          awsuiPlugins.appLayout.registerDrawer({
+            ...drawerDefaults,
+            id: drawerId2,
+            position,
+            type: 'global',
+            isExpandable: true,
+          });
+          const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={manyDrawers} />);
+
+          await delay();
+
+          const buttonDropdown = wrapper.findDrawersOverflowTrigger();
+
+          buttonDropdown!.openDropdown();
+          buttonDropdown!.findItemById(drawerId1)!.click();
+          buttonDropdown!.openDropdown();
+          buttonDropdown!.findItemById(drawerId2)!.click();
+
+          buttonDropdown!.openDropdown();
+          expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
+            'aria-checked',
+            'true'
+          );
+          expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
+            'aria-checked',
+            'true'
+          );
+
+          globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
+
+          expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(true);
+          buttonDropdown!.openDropdown();
+          expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
+            'aria-checked',
+            'true'
+          );
+          expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
+            'aria-checked',
+            'false'
+          );
+          // leave expanded mode
+          buttonDropdown!.findItemById(drawerId2)!.click();
+          buttonDropdown!.openDropdown();
+          expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
+            'aria-checked',
+            'true'
+          );
+          expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
+            'aria-checked',
+            'true'
+          );
+          expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
         });
-        awsuiPlugins.appLayout.registerDrawer({
-          ...drawerDefaults,
-          id: drawerId2,
-          type: 'global',
-          isExpandable: true,
-        });
-        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={manyDrawers} />);
-
-        await delay();
-
-        const buttonDropdown = wrapper.findDrawersOverflowTrigger();
-
-        buttonDropdown!.openDropdown();
-        buttonDropdown!.findItemById(drawerId1)!.click();
-        buttonDropdown!.openDropdown();
-        buttonDropdown!.findItemById(drawerId2)!.click();
-
-        buttonDropdown!.openDropdown();
-        expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
-          'aria-checked',
-          'true'
-        );
-        expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
-          'aria-checked',
-          'true'
-        );
-
-        globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
-
-        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(true);
-        buttonDropdown!.openDropdown();
-        expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
-          'aria-checked',
-          'true'
-        );
-        expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
-          'aria-checked',
-          'false'
-        );
-        // leave expanded mode
-        buttonDropdown!.findItemById(drawerId2)!.click();
-        buttonDropdown!.openDropdown();
-        expect(buttonDropdown!.findItemById(drawerId1)!.getElement().firstElementChild).toHaveAttribute(
-          'aria-checked',
-          'true'
-        );
-        expect(buttonDropdown!.findItemById(drawerId2)!.getElement().firstElementChild).toHaveAttribute(
-          'aria-checked',
-          'true'
-        );
-        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInExpandedMode()).toBe(false);
       });
 
       describe('nested app layouts', () => {
