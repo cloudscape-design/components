@@ -198,7 +198,7 @@ function AppLayoutGlobalBottomDrawerImplementation({
             data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
           >
             <div className={clsx(styles['global-drawer-wrapper'])}>
-              {!isMobile && <div className={styles['drawer-gap']} />}
+              {!isMobile && !isExpanded && <div className={styles['drawer-gap']} />}
               {!isMobile && activeDrawer?.resizable && !isExpanded && (
                 <div className={styles['drawer-slider']}>
                   <PanelResizeHandle
