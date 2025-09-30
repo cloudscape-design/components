@@ -318,6 +318,11 @@ export function useDrawers(
     const drawer = runtimeGlobalDrawers.find(drawer => drawer.id === (drawerId || activeGlobalBottomDrawerId));
     setActiveGlobalBottomDrawerId(drawerId);
     fireNonCancelableEvent(drawer?.onToggle, { isOpen: !!drawerId, initiatedByUserAction });
+    if (drawerId) {
+      drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
+    } else {
+      drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== activeGlobalBottomDrawerId);
+    }
     onGlobalBottomDrawerFocus?.();
   }
 

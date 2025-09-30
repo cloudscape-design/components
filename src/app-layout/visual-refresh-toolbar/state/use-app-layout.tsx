@@ -90,10 +90,13 @@ export const useAppLayout = (
   };
 
   const onAddNewActiveDrawer = (drawerId: string) => {
-    // If a local drawer is already open, and we attempt to open a new one,
+    // If either a local drawer or a bottom drawer is already open, and we attempt to open a new one,
     // it will replace the existing one instead of opening an additional drawer,
     // since only one local drawer is supported. Therefore, layout calculations are not necessary.
-    if (activeDrawer && drawers?.find(drawer => drawer.id === drawerId)) {
+    if (
+      (activeDrawer && drawers?.find(drawer => drawer.id === drawerId)) ||
+      (activeGlobalBottomDrawerId && globalDrawers.find(drawer => drawer.id === activeGlobalBottomDrawerId))
+    ) {
       return;
     }
     // get the size of drawerId. it could be either local or global drawer
@@ -401,7 +404,10 @@ export const useAppLayout = (
   };
 
   const closeFirstDrawer = useStableCallback(() => {
-    const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
+    let drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
+    if (drawerToClose === activeGlobalBottomDrawerId) {
+      drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 2];
+    }
     if (activeDrawer && activeDrawer?.id === drawerToClose) {
       onActiveDrawerChange(null, { initiatedByUserAction: true });
     } else if (activeGlobalDrawersIds.includes(drawerToClose)) {

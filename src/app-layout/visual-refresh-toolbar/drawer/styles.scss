@@ -419,8 +419,6 @@ $ai-drawer-heider-height: 41px;
 
     @include mobile-only {
       block-size: 100%;
-      // remove after onboarding the bottom drawer to the open queue
-      z-index: constants.$drawer-z-index-mobile;
       &.last-opened {
         z-index: constants.$drawer-z-index-mobile;
       }
