@@ -66075,24 +66075,6 @@ Note: This function returns the specified component's wrapper even if the specif
           },
         },
         {
-          "description": "Returns the token description.",
-          "inheritedFrom": {
-            "name": "TokenWrapper.findDescription",
-          },
-          "name": "findDescription",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token dismiss button.",
           "name": "findDismiss",
           "parameters": [],
           "returnType": {
@@ -66106,31 +66088,10 @@ Note: This function returns the specified component's wrapper even if the specif
           },
         },
         {
-          "description": "Returns the token label.",
-          "inheritedFrom": {
-            "name": "TokenWrapper.findLabel",
-          },
           "name": "findLabel",
           "parameters": [],
           "returnType": {
             "isNullable": false,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token label tag.",
-          "inheritedFrom": {
-            "name": "TokenWrapper.findLabelTag",
-          },
-          "name": "findLabelTag",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
             "name": "ElementWrapper",
             "typeArguments": [
               {
@@ -66145,23 +66106,6 @@ Note: This function returns the specified component's wrapper even if the specif
           "returnType": {
             "isNullable": false,
             "name": "OptionWrapper",
-          },
-        },
-        {
-          "description": "Returns the token tags.",
-          "inheritedFrom": {
-            "name": "TokenWrapper.findTags",
-          },
-          "name": "findTags",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "Array",
-            "typeArguments": [
-              {
-                "name": "ElementWrapper<HTMLElement>",
-              },
-            ],
           },
         },
         {
@@ -108295,19 +108239,6 @@ Note: This function returns the specified component's wrapper even if the specif
           },
         },
         {
-          "description": "Returns the token description.",
-          "inheritedFrom": {
-            "name": "TokenWrapper.findDescription",
-          },
-          "name": "findDescription",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token dismiss button.",
           "name": "findDismiss",
           "parameters": [],
           "returnType": {
@@ -108316,23 +108247,7 @@ Note: This function returns the specified component's wrapper even if the specif
           },
         },
         {
-          "description": "Returns the token label.",
-          "inheritedFrom": {
-            "name": "TokenWrapper.findLabel",
-          },
           "name": "findLabel",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token label tag.",
-          "inheritedFrom": {
-            "name": "TokenWrapper.findLabelTag",
-          },
-          "name": "findLabelTag",
           "parameters": [],
           "returnType": {
             "isNullable": false,
@@ -108345,23 +108260,6 @@ Note: This function returns the specified component's wrapper even if the specif
           "returnType": {
             "isNullable": false,
             "name": "OptionWrapper",
-          },
-        },
-        {
-          "description": "Returns the token tags.",
-          "inheritedFrom": {
-            "name": "TokenWrapper.findTags",
-          },
-          "name": "findTags",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "MultiElementWrapper",
-            "typeArguments": [
-              {
-                "name": "ElementWrapper",
-              },
-            ],
           },
         },
         {
