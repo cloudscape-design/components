@@ -13,18 +13,28 @@ $radio-size: awsui.$size-control;
 
 .root {
   @include styles.styles-reset;
-  display: block;
+
+  &:not(.horizontal-group) {
+    display: block;
+  }
+
+  &.horizontal-group {
+    display: flex;
+    align-items: start;
+    flex-wrap: wrap;
+    gap: awsui.$space-scaled-l;
+  }
 }
 
 .radio {
   /*used in test-utils*/
 }
 
-.radio + .radio {
+.radio + .radio:not(.horizontal) {
   margin-block-start: awsui.$space-scaled-xxs;
 }
 
-.radio--has-description + .radio {
+.radio--has-description + .radio:not(.horizontal) {
   margin-block-start: awsui.$space-scaled-xs;
 }
 
