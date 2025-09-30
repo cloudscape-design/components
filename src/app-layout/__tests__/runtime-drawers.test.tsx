@@ -1439,6 +1439,22 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
         expect(globalDrawersWrapper.findDrawerById('global3')).toBeFalsy();
       });
+
+      test('should open global bottom drawer by default when defaultActive is set', async () => {
+        const { globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global1',
+          type: 'global',
+          position: 'bottom',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+      });
     });
 
     describe('expanded mode for global drawers', () => {
