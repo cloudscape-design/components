@@ -106,7 +106,8 @@
 .ai-drawer,
 .navigation,
 .tools,
-.global-tools {
+.global-tools,
+.bottom-tool {
   grid-row: 1 / -1;
   grid-column: 1 / -1;
   background: awsui.$color-background-container-content;

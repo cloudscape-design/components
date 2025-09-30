@@ -123,6 +123,7 @@ export function AppLayoutToolbarImplementation({
     (!!activeDrawerId ||
       !!activeGlobalDrawersIds?.length ||
       !!activeAiDrawerId ||
+      !!activeGlobalBottomDrawerId ||
       (!!navigationOpen && !!hasNavigation));
   useEffect(() => {
     if (anyPanelOpenInMobile) {

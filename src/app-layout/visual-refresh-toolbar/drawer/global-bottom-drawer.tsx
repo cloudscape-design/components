@@ -11,6 +11,7 @@ import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { Focusable } from '../../utils/use-focus-control';
+import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals, InternalDrawer } from '../interfaces';
 import { useResize } from './use-resize';
 
@@ -77,6 +78,8 @@ function AppLayoutGlobalBottomDrawerImplementation({
     bottomDrawersFocusControl,
     getMaxGlobalBottomDrawerHeight,
     reportBottomDrawerSize,
+    verticalOffsets,
+    placement,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeDrawer?.id ?? '';
@@ -86,6 +89,11 @@ function AppLayoutGlobalBottomDrawerImplementation({
     content: activeDrawer ? activeDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
+  const { drawerTopOffset: mobileDrawerTopOffset, drawerHeight: mobileDrawerHeight } = getDrawerStyles(
+    verticalOffsets,
+    isMobile,
+    placement
+  );
   const activeDrawerSize = activeGlobalBottomDrawerSize ?? 0;
   const minDrawerSize = minGlobalBottomDrawerSize ?? 0;
   const maxDrawerSize = getMaxGlobalBottomDrawerHeight();
@@ -179,6 +187,10 @@ function AppLayoutGlobalBottomDrawerImplementation({
               }
             }}
             style={{
+              ...(isMobile && {
+                blockSize: mobileDrawerHeight,
+                insetBlockStart: mobileDrawerTopOffset,
+              }),
               ...(!isMobile && {
                 [customCssProps.bottomDrawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
               }),
@@ -234,7 +246,9 @@ function AppLayoutGlobalBottomDrawerImplementation({
                 </div>
                 <div
                   className={styles['drawer-content']}
-                  style={{ blockSize: `${size - GAP_HEIGHT - RESIZE_HANDLER_HEIGHT}px` }}
+                  style={{
+                    blockSize: isMobile ? mobileDrawerHeight : `${size - GAP_HEIGHT - RESIZE_HANDLER_HEIGHT}px`,
+                  }}
                 >
                   {activeDrawer?.content}
                 </div>

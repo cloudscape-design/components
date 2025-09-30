@@ -13,7 +13,7 @@ export const BottomContentSlotImplementation = ({ appLayoutState, appLayoutProps
   if (!isWidgetReady(appLayoutState)) {
     return null;
   }
-  const { splitPanelPosition, placement, activeGlobalBottomDrawerId, bottomDrawerReportedSize } =
+  const { splitPanelPosition, placement, activeGlobalBottomDrawerId, bottomDrawerReportedSize, isMobile } =
     appLayoutState.widgetizedState;
   return (
     <>
@@ -21,7 +21,8 @@ export const BottomContentSlotImplementation = ({ appLayoutState, appLayoutProps
         <div
           className={styles['split-panel-bottom']}
           style={{
-            insetBlockEnd: placement.insetBlockEnd + (activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0),
+            insetBlockEnd:
+              placement.insetBlockEnd + (activeGlobalBottomDrawerId && !isMobile ? bottomDrawerReportedSize : 0),
           }}
         >
           <AppLayoutSplitPanelBottom
