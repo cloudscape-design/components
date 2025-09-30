@@ -19,6 +19,8 @@ export class SharedReactContexts {
     let cachedContext = contexts.get(contextName);
 
     if (!cachedContext) {
+      // We cannot put a default value here, because it will be shared between versions.
+      // Consumers of this API must apply default value on their end.
       cachedContext = ReactInstance.createContext<T>(undefined as T);
       contexts.set(contextName, cachedContext);
     }

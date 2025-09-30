@@ -13,7 +13,7 @@ const sourceMessagesDir = path.resolve(sourceI18nDir, 'messages');
 const targetI18nDir = path.resolve(targetPath, 'components/i18n');
 const targetMessagesDir = path.resolve(targetI18nDir, 'messages');
 
-const namespace = '@cloudscape-design/components';
+const namespace = 'cloudscape-design-components';
 const messagesDeclarationFile = `import { I18nProviderProps } from "../provider";
 declare const messages: I18nProviderProps.Messages;
 export default messages;
