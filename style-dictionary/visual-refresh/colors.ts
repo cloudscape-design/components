@@ -153,7 +153,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderLayout: { light: '{colorGrey350}', dark: '{colorGrey650}' },
   colorBorderNotificationStackBar: '{colorGrey750}',
   colorBorderPanelHeader: '{colorBorderDividerDefault}',
-  colorBorderPopover: { light: '{colorGrey400}', dark: '{colorGrey600}' },
+  colorBorderPopover: { light: '{colorBorderDropdownContainer}', dark: '{colorBorderDropdownContainer}' },
   colorBorderSegmentActive: '{colorBorderSegmentDefault}',
   colorBorderSegmentDefault: { light: '{colorGrey650}', dark: '{colorGrey300}' },
   colorBorderSegmentDisabled: '{colorBorderSegmentDefault}',
