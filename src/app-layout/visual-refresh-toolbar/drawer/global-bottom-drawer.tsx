@@ -192,7 +192,7 @@ function AppLayoutGlobalBottomDrawerImplementation({
                 insetBlockStart: mobileDrawerTopOffset,
               }),
               ...(!isMobile && {
-                [customCssProps.bottomDrawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
+                [customCssProps.bottomDrawerSize]: `${['entering', 'entered'].includes(state) ? (isExpanded ? '100%' : size + 'px') : 0}px`,
               }),
             }}
             data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
@@ -247,7 +247,8 @@ function AppLayoutGlobalBottomDrawerImplementation({
                 <div
                   className={styles['drawer-content']}
                   style={{
-                    blockSize: isMobile ? mobileDrawerHeight : `${size - GAP_HEIGHT - RESIZE_HANDLER_HEIGHT}px`,
+                    blockSize:
+                      isMobile || isExpanded ? mobileDrawerHeight : `${size - GAP_HEIGHT - RESIZE_HANDLER_HEIGHT}px`,
                   }}
                 >
                   {activeDrawer?.content}

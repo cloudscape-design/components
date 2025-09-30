@@ -318,6 +318,9 @@ export function useDrawers(
     const drawer = runtimeGlobalDrawers.find(drawer => drawer.id === (drawerId || activeGlobalBottomDrawerId));
     setActiveGlobalBottomDrawerId(drawerId);
     fireNonCancelableEvent(drawer?.onToggle, { isOpen: !!drawerId, initiatedByUserAction });
+    if (activeGlobalBottomDrawerId === expandedDrawerId) {
+      setExpandedDrawerId(null);
+    }
     if (drawerId) {
       drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
     } else {
