@@ -20,7 +20,7 @@ const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
 test(
   'dynamic messages are loaded correctly',
   setupTest(async page => {
-    const text = jaStaticMessages['@cloudscape-design/components'].ja['tag-editor']['i18nStrings.addButton'][0].value;
+    const text = jaStaticMessages['cloudscape-design-components'].ja['tag-editor']['i18nStrings.addButton'][0].value;
     await page.waitForVisible(wrapper.findAddButton().toSelector());
     await expect(page.getText(wrapper.findAddButton().toSelector())).resolves.toBe(text);
   })
