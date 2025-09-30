@@ -45,14 +45,9 @@ describe('Expandable rows', () => {
     })
   );
 
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'uses items loader on the first expandable item',
     setupTest({ useProgressiveLoading: true, useServerMock: true }, async page => {
-      // TODO: fix test for React 18
-      if ((await page.getReactVersion()) === '18') {
-        return;
-      }
-
       const targetCluster = 'cluster-33387b6c';
       const targetClusterLoadMore = tableWrapper.findItemsLoaderByItemId(targetCluster).findButton();
       const page2Toggle = tableWrapper.findExpandToggle(4);

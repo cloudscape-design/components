@@ -4,7 +4,6 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper, { AppLayoutWrapper, ButtonGroupWrapper } from '../../../lib/components/test-utils/selectors';
-import BasePageExtendedObject from '../../__integ__/page-objects/base-page-ext';
 import { Theme } from '../../__integ__/utils.js';
 import { viewports } from './constants';
 import { getUrlParams } from './utils';
@@ -29,10 +28,10 @@ const findExpandedModeButtonByActiveDrawerId = (wrapper: AppLayoutWrapper, id: s
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   function setupTest(
     { hasDrawers = 'false', url = 'runtime-drawers', size = viewports.desktop },
-    testFn: (page: BasePageExtendedObject) => Promise<void>
+    testFn: (page: BasePageObject) => Promise<void>
   ) {
     return useBrowser({ width: size.width, height: size.height }, async browser => {
-      const page = new BasePageExtendedObject(browser);
+      const page = new BasePageObject(browser);
 
       await browser.url(
         `#/light/app-layout/${url}?${getUrlParams(theme, {
@@ -87,18 +86,13 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
       })
     );
 
-    test(
+    (process.env.REACT_VERSION !== '18' ? test : test.skip)(
       'should persist runtime drawer preferences when switching between multiple app layouts',
       setupTest(
         {
           url: 'multi-layout-with-hidden-instances-iframe',
         },
         async page => {
-          // TODO: fix test for React 18
-          if ((await page.getReactVersion()) === '18') {
-            return;
-          }
-
           await page.runInsideIframe('#page1', theme !== 'refresh-toolbar', async () => {
             await page.click(wrapper.findDrawerTriggerById('security').toSelector());
           });
