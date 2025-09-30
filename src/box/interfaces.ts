@@ -17,6 +17,8 @@ export interface BoxProps extends BaseComponentProps {
    *   styled for use as a label indicating that content is produced by generative AI.
    * - If you set it to `awsui-value-large`, the component will render a `span`,
    *   styled using "Display large light" typography.
+   * - If you set it to `awsui-inline-code`, the component will render a `code` element,
+   *   styled with a background and padding for inline code snippets.
    *
    * Override the HTML tag by using property `tagOverride`.
    */
