@@ -21,7 +21,11 @@ function MeasureReporter(props: { id?: string; style?: React.CSSProperties; type
     [props.type]
   );
   if (value === null) {
-    return <div ref={ref}>Loading...</div>;
+    return (
+      <div ref={ref} style={{ ...boxStyles, ...props.style }}>
+        Loading...
+      </div>
+    );
   }
   return (
     <div id={props.id} ref={ref} style={{ ...boxStyles, ...props.style }}>
@@ -72,8 +76,15 @@ export default function ColumnLayoutPage() {
         type={measureType}
       />
 
+      <h2>Reports content-box dimensions when border is present</h2>
+      <MeasureReporter
+        id="test-border"
+        style={{ inlineSize: 300, blockSize: 50, border: '2px solid blue' }}
+        type={measureType}
+      />
+
       <h2>Adjusts as the element changes size (resize browser)</h2>
-      <MeasureReporter id="test-updates" style={{ blockSize: 50 }} type={measureType} />
+      <MeasureReporter id="test-updates" style={{ blockSize: 50, border: '2px solid blue' }} type={measureType} />
 
       <h2>Returns correct breakpoints</h2>
       <BreakpointReporter id="test-breakpoints" style={{ blockSize: 50 }} />

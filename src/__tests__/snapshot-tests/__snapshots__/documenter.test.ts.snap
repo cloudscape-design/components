@@ -249,6 +249,22 @@ If the label is assigned via the \`i18nStrings\` property, this label will be ig
           },
           {
             "inlineType": {
+              "name": "{ color?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "color",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "icon",
+            "optional": true,
+            "type": "{ color?: string | undefined; }",
+          },
+          {
+            "inlineType": {
               "name": "object",
               "properties": [
                 {
@@ -19001,6 +19017,8 @@ See the [Autosuggest API](/components/autosuggest/?tabId=api) page for more deta
 * \`propertyKey\` [string]: The key of the corresponding filtering property in the \`filteringProperties\` array.
 * \`value\` [string]: The value that will be used as a suggestion when creating or modifying a filtering token.
 * \`label\` [string]: Optional suggestion label to be matched instead of the value.
+* \`tags\` [string[]]: Optional list of tags giving further guidance about the option.
+* \`filteringTags\` [string[]]: Optional list of additional tags used for automatic filtering.
 
 Filtering options that require labels can only use \`=\` and \`!=\` operators. The token value must be labelled separately, for example:
 \`\`\`

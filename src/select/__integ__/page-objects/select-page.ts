@@ -2,15 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { strict as assert } from 'assert';
 
-import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-
 import { MultiselectWrapper, SelectWrapper } from '../../../../lib/components/test-utils/selectors';
+import BasePageExtendedObject from '../../../__integ__/page-objects/base-page-ext';
 
 export default class SelectPageObject<
   Wrapper extends SelectWrapper | MultiselectWrapper = SelectWrapper,
-> extends BasePageObject {
+> extends BasePageExtendedObject {
   constructor(
-    browser: ConstructorParameters<typeof BasePageObject>[0],
+    browser: ConstructorParameters<typeof BasePageExtendedObject>[0],
     protected wrapper: Wrapper
   ) {
     super(browser);

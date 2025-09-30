@@ -25,7 +25,7 @@ import useContainerWidth from '../internal/utils/use-container-width';
 import { ActionsWrapper } from './actions-wrapper';
 import { GeneratedAnalyticsMetadataAlertDismiss } from './analytics-metadata/interfaces';
 import { AlertProps } from './interfaces';
-import { getAlertStyles, getDismissButtonStyles } from './style';
+import { getAlertStyles, getDismissButtonStyles, getIconStyles } from './style';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -139,7 +139,7 @@ const InternalAlert = React.forwardRef(
             >
               <div className={styles['alert-wrapper']}>
                 <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef} role="group">
-                  <div className={clsx(styles.icon, styles.text)}>
+                  <div className={clsx(styles.icon, styles.text)} style={getIconStyles(style)}>
                     <InternalIcon name={typeToIcon[type]} size={size} ariaLabel={statusIconAriaLabel} />
                   </div>
                   <div className={clsx(styles.message, styles.text)} id={messageSlotId}>

@@ -39,6 +39,7 @@
 }
 
 @mixin styles-reset-ul {
+  list-style: none;
   margin-block: 0;
   margin-inline: 0;
 
