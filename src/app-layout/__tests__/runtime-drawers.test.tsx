@@ -1592,7 +1592,15 @@ describe('toolbar mode only features', () => {
         });
       });
 
-      test.each(['expanded', 'split-panel', 'global-drawer', 'local-drawer', 'nav', 'global-ai-drawer'] as const)(
+      test.each([
+        'expanded',
+        'split-panel',
+        'global-drawer',
+        'local-drawer',
+        'nav',
+        'global-ai-drawer',
+        'bottom-drawer',
+      ] as const)(
         'should return panels to their initial state after leaving expanded mode by clicking on %s button',
         async triggerName => {
           const drawerId1 = 'global-drawer1';
@@ -1607,6 +1615,7 @@ describe('toolbar mode only features', () => {
           });
           awsuiPlugins.appLayout.registerDrawer({
             ...drawerDefaults,
+            position: triggerName === 'bottom-drawer' ? 'bottom' : 'side',
             id: drawerId2,
             type: 'global',
             isExpandable: true,
@@ -1659,6 +1668,8 @@ describe('toolbar mode only features', () => {
           if (triggerName === 'expanded') {
             globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId1)!.click();
           } else if (triggerName === 'global-drawer') {
+            wrapper.findDrawerTriggerById(drawerId2)!.click();
+          } else if (triggerName === 'bottom-drawer') {
             wrapper.findDrawerTriggerById(drawerId2)!.click();
           } else if (triggerName === 'local-drawer') {
             wrapper.findDrawerTriggerById(drawerId3Local)!.click();
