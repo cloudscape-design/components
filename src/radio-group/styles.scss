@@ -8,13 +8,28 @@
 
 .radio-group {
   @include styles.styles-reset;
-  display: block;
+
+  &:not(.horizontal-group) {
+    display: block;
+  }
+
+  &.horizontal-group {
+    display: flex;
+    align-items: start;
+    flex-wrap: wrap;
+    gap: awsui.$space-scaled-l;
+  }
 }
 
-.radio + .radio {
+.radio + .radio:not(.horizontal) {
   margin-block-start: awsui.$space-scaled-xxs;
 }
 
-.radio--has-description + .radio {
+.radio--has-description + .radio:not(.horizontal) {
   margin-block-start: awsui.$space-scaled-xs;
+}
+
+.radio.horizontal {
+  // Approximately 80 characters, which is the usually recommended maximum to keep columns readable.
+  max-inline-size: 40em;
 }
