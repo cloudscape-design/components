@@ -3,8 +3,8 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import FormFieldWrapper from '../form-field';
+import RadioButtonWrapper from '../radio-button';
 import RadioGroupWrapper from '../radio-group';
-import RadioButtonWrapper from '../radio-group/radio-button';
 
 import styles from '../../../collection-preferences/styles.selectors.js';
 

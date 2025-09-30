@@ -19558,25 +19558,25 @@ This is only shown when \`statusType\` is set to \`finished\` or not set at all.
 }
 `;
 
-exports[`Components definition for radio-group matches the snapshot: radio-group 1`] = `
+exports[`Components definition for radio-button matches the snapshot: radio-button 1`] = `
 {
-  "dashCaseName": "radio-group",
+  "dashCaseName": "radio-button",
   "events": [
     {
       "cancelable": false,
-      "description": "Called when the user selects a different radio button. The event \`detail\` contains the current \`value\`.",
+      "description": "Called when the user changes the component state. The event \`detail\` contains the current value for the \`checked\` property.",
       "detailInlineType": {
-        "name": "RadioGroupProps.ChangeDetail",
+        "name": "RadioButtonProps.ChangeDetail",
         "properties": [
           {
-            "name": "value",
+            "name": "checked",
             "optional": false,
-            "type": "string",
+            "type": "boolean",
           },
         ],
         "type": "object",
       },
-      "detailType": "RadioGroupProps.ChangeDetail",
+      "detailType": "RadioButtonProps.ChangeDetail",
       "name": "onChange",
     },
   ],
@@ -19588,51 +19588,12 @@ exports[`Components definition for radio-group matches the snapshot: radio-group
       "returnType": "void",
     },
   ],
-  "name": "RadioGroup",
+  "name": "RadioButton",
   "properties": [
     {
-      "description": "Adds \`aria-controls\` attribute to the radio group.
-If the radio group controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
-      "name": "ariaControls",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
-don't set this property because the form field component automatically sets it.
-
-Use this property if the component isn't surrounded by a form field, or you want to override the value
-automatically set by the form field (for example, if you have two components within a single form field).
-
-To use it correctly, define an ID for each element that you want to use as a description
-and set the property to a string of each ID separated by spaces (for example, \`"id1 id2 id3"\`).",
-      "name": "ariaDescribedby",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "Adds \`aria-label\` to the group. If you are using this form element within a form field,
-don't set this property because the form field component automatically sets the correct labels to make the component accessible.",
-      "name": "ariaLabel",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
-don't set this property because the form field component automatically sets it.
-
-Use this property if the component isn't surrounded by a form field, or you want to override the value
-automatically set by the form field (for example, if you have two components within a single form field).
-
-To use it correctly, define an ID for the element you want to use as label and set the property to that ID.",
-      "name": "ariaLabelledby",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "Adds \`aria-required\` to the group.",
-      "name": "ariaRequired",
-      "optional": true,
+      "description": "Specifies if the component is selected.",
+      "name": "checked",
+      "optional": false,
       "type": "boolean",
     },
     {
@@ -19643,15 +19604,20 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     {
-      "deprecatedTag": "Has no effect.",
       "description": "Specifies the ID of the native form element. You can use it to relate
-a label element's \`for\` attribute to this control.
-
-It defaults to an automatically generated ID that
-is provided by its parent form field component.",
+a label element's \`for\` attribute to this control.",
       "name": "controlId",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Specifies if the control is disabled, which prevents the
+user from modifying the value and prevents the value from
+being included in a form submission. A disabled control can't
+receive focus.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -19663,35 +19629,46 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "Specifies an array of radio buttons to display. Each of these objects have the following properties:
-
-- \`value\` (string) - Sets the value of the radio button. Assigned to the radio group when a user selects the radio button.
-- \`label\` (ReactNode) - Specifies a label for the radio button.
-- \`description\` (ReactNode) - (Optional) Specifies descriptive text that appears below the label.
-- \`disabled\` (boolean) - (Optional) Determines whether the radio button is disabled, which prevents the user from selecting it.
-- \`controlId\` (string) - (Optional) Sets the ID of the internal input. You can use it to relate a label element's \`for\` attribute to this control.
-       In general it's not recommended to set this because the ID is automatically set by the radio group component.",
-      "name": "items",
-      "optional": true,
-      "type": "ReadonlyArray<RadioGroupProps.RadioButtonDefinition>",
-    },
-    {
-      "description": "Specify a custom name for the radio buttons. If not provided, the radio group generates a random name.",
+      "description": "Name of the group that the radio button belongs to.",
       "name": "name",
-      "optional": true,
+      "optional": false,
       "type": "string",
     },
     {
-      "description": "Specifies if the whole group is read-only, which prevents the
+      "description": "Attributes to add to the native \`input\` element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeInputAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "description": "Specifies if the radio button is read-only, which prevents the
 user from modifying the value, but does not prevent the value from
-being included in a form submission. A read-only control is still focusable.",
+being included in a form submission. A read-only control is still focusable.
+
+This property should be set for either all or none of the radio buttons in a group.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
     },
     {
       "inlineType": {
-        "name": "RadioGroupProps.Style",
+        "name": "RadioButtonProps.Style",
         "properties": [
           {
             "inlineType": {
@@ -19916,7 +19893,394 @@ being included in a form submission. A read-only control is still focusable.",
       "systemTags": [
         "core",
       ],
-      "type": "RadioGroupProps.Style",
+      "type": "RadioButtonProps.Style",
+    },
+    {
+      "description": "Sets the value attribute to the native control.
+If using native form submission, this value is sent to the server if the radio button is checked.
+It is never shown to the user by their user agent.
+For more details, see the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/radio#value).",
+      "name": "value",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The control's label that's displayed next to the radio button. A state change occurs when a user clicks on it.",
+      "displayName": "label",
+      "isDefault": true,
+      "name": "children",
+    },
+    {
+      "description": "Description that appears below the label.",
+      "isDefault": false,
+      "name": "description",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for radio-group matches the snapshot: radio-group 1`] = `
+{
+  "dashCaseName": "radio-group",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user selects a different radio button. The event \`detail\` contains the current \`value\`.",
+      "detailInlineType": {
+        "name": "RadioGroupProps.ChangeDetail",
+        "properties": [
+          {
+            "name": "value",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "RadioGroupProps.ChangeDetail",
+      "name": "onChange",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Sets input focus onto the UI control.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "RadioGroup",
+  "properties": [
+    {
+      "description": "Adds \`aria-controls\` attribute to the radio group.
+If the radio group controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
+      "name": "ariaControls",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`"id1 id2 id3"\`).",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-label\` to the group. If you are using this form element within a form field,
+don't set this property because the form field component automatically sets the correct labels to make the component accessible.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-required\` to the group.",
+      "name": "ariaRequired",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Has no effect.",
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+
+It defaults to an automatically generated ID that
+is provided by its parent form field component.",
+      "name": "controlId",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies an array of radio buttons to display. Each of these objects have the following properties:
+
+- \`value\` (string) - Sets the value of the radio button. Assigned to the radio group when a user selects the radio button.
+- \`label\` (ReactNode) - Specifies a label for the radio button.
+- \`description\` (ReactNode) - (Optional) Specifies descriptive text that appears below the label.
+- \`disabled\` (boolean) - (Optional) Determines whether the radio button is disabled, which prevents the user from selecting it.
+- \`controlId\` (string) - (Optional) Sets the ID of the internal input. You can use it to relate a label element's \`for\` attribute to this control.
+       In general it's not recommended to set this because the ID is automatically set by the radio group component.",
+      "name": "items",
+      "optional": true,
+      "type": "ReadonlyArray<RadioGroupProps.RadioButtonDefinition>",
+    },
+    {
+      "description": "Specify a custom name for the radio buttons. If not provided, the radio group generates a random name.",
+      "name": "name",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies if the whole group is read-only, which prevents the
+user from modifying the value, but does not prevent the value from
+being included in a form submission. A read-only control is still focusable.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "inlineType": {
+        "name": "RadioButtonProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "checked",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "description",
+            "optional": true,
+            "type": "{ color?: { checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "inlineType": {
+                          "name": "{ checked?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                          "properties": [
+                            {
+                              "name": "checked",
+                              "optional": true,
+                              "type": "string",
+                            },
+                            {
+                              "name": "disabled",
+                              "optional": true,
+                              "type": "string",
+                            },
+                            {
+                              "name": "readOnly",
+                              "optional": true,
+                              "type": "string",
+                            },
+                          ],
+                          "type": "object",
+                        },
+                        "name": "fill",
+                        "optional": true,
+                        "type": "{ checked?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "circle",
+                  "optional": true,
+                  "type": "{ fill?: { checked?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "checked",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "fill",
+                  "optional": true,
+                  "type": "{ checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "borderColor",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderRadius",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderWidth",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "focusRing",
+                  "optional": true,
+                  "type": "{ borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "stroke",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "input",
+            "optional": true,
+            "type": "{ fill?: { checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; stroke?: { default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; circle?: { ...; } | undefined; focusRing?: { ...; }...",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "checked",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "label",
+            "optional": true,
+            "type": "{ color?: { checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "RadioButtonProps.Style",
     },
     {
       "description": "Sets the value of the selected radio button.
