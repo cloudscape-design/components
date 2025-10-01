@@ -249,7 +249,7 @@ export function Resizer({
   const { tabIndex: resizerTabIndex } = useSingleTabStopNavigation(resizerToggleRef, { tabIndex });
 
   return (
-    <div className={styles['resizer-wrapper']}>
+    <div className={clsx(styles['resizer-wrapper'], isVisualRefresh && styles['is-visual-refresh'])}>
       <DragHandleWrapper
         clickDragThreshold={3}
         hideButtonsOnDrag={false}
