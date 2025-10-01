@@ -74,6 +74,12 @@ function InternalToken({
     const labelObject = !isLabelAnElement ? { label: String(label) } : { labelContent: label };
 
     if (isInline) {
+      if (isLabelAnElement) {
+        throw new Error(
+          'Invariant violation: only plain text (strings or numbers) are supported when variant="inline".'
+        );
+      }
+
       return {
         ...labelObject,
         disabled,
