@@ -291,7 +291,7 @@ describe('Drag Handle Hooks', () => {
         const nextState = () => {
           calculateNextState(state, action);
         };
-        expect(nextState).toThrow('The given action type [UNKNOWN] is not supported.');
+        expect(nextState).toThrow('Invariant violation: unexpected action type: "UNKNOWN".');
       });
 
       test.each(KEY_CODES_TO_TOGGLE_UAP_ACTION)(

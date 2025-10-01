@@ -3,6 +3,7 @@
 
 import React, { useContext } from 'react';
 
+import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { I18nFormatArgTypes } from './messages-types';
 
 export type CustomHandler<ReturnValue, FormatFnArgs> = (formatFn: (args: FormatFnArgs) => string) => ReturnValue;
@@ -18,13 +19,20 @@ interface InternalI18nContextProps {
   format: FormatFunction;
 }
 
-export const InternalI18nContext = React.createContext<InternalI18nContextProps>({
+export const namespace = 'cloudscape-design-components';
+
+const defaultContextValue: InternalI18nContextProps = {
   locale: null,
   format: <T>(_namespace: string, _component: string, _key: string, provided: T) => provided,
-});
+};
+
+export const InternalI18nContext = awsuiPluginsInternal.sharedReactContexts.createContext<InternalI18nContextProps>(
+  React,
+  'InternalI18nContext'
+);
 
 export function useLocale(): string | null {
-  return useContext(InternalI18nContext).locale;
+  return (useContext(InternalI18nContext) ?? defaultContextValue).locale;
 }
 
 /**
@@ -56,12 +64,12 @@ export interface ComponentFormatFunction<ComponentName extends StringKeyOf<I18nF
 export function useInternalI18n<ComponentName extends StringKeyOf<I18nFormatArgTypes>>(
   componentName: ComponentName
 ): ComponentFormatFunction<ComponentName> {
-  const { format } = useContext(InternalI18nContext);
+  const { format } = useContext(InternalI18nContext) ?? defaultContextValue;
   return <MessageKey extends StringKeyOf<I18nFormatArgTypes[ComponentName]>, ValueType>(
     key: MessageKey,
     provided: ValueType,
     customHandler?: CustomHandler<ValueType, I18nFormatArgTypes[ComponentName][MessageKey]>
   ) => {
-    return format('@cloudscape-design/components', componentName, key, provided, customHandler);
+    return format(namespace, componentName, key, provided, customHandler);
   };
 }

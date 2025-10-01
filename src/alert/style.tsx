@@ -23,6 +23,16 @@ export function getAlertStyles(style: AlertProps['style']) {
   };
 }
 
+export function getIconStyles(style: AlertProps['style']) {
+  if (SYSTEM !== 'core' || !style?.icon?.color) {
+    return undefined;
+  }
+
+  return {
+    [customCssProps.alertIconColor]: style.icon.color,
+  };
+}
+
 export function getDismissButtonStyles(style: AlertProps['style']) {
   if (SYSTEM !== 'core' || !style?.dismissButton) {
     return undefined;

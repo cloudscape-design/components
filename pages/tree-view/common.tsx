@@ -35,9 +35,11 @@ export function Actions(
   {
     actionType,
     itemLabel,
+    disabled,
   }: {
     actionType?: 'button-group' | 'button-dropdown' | 'inline-button-dropdown' | 'text' | 'custom-inline-button-group';
     itemLabel?: string;
+    disabled?: boolean;
   } = {
     actionType: 'inline-button-dropdown',
   }
@@ -58,6 +60,7 @@ export function Actions(
             iconName: 'settings',
             type: 'icon-button',
             text: 'Settings',
+            disabled,
           },
           {
             type: 'icon-toggle-button',
@@ -66,6 +69,7 @@ export function Actions(
             pressed: markedAsFavorite,
             iconName: 'star',
             pressedIconName: 'star-filled',
+            disabled,
           },
           {
             id: 'menu',
@@ -109,12 +113,13 @@ export function Actions(
   if (actionType === 'custom-inline-button-group') {
     return (
       <SpaceBetween direction="horizontal" size="s">
-        <Button variant="inline-icon" iconName="settings" ariaLabel={`Settings for ${itemLabel}`} />
-        <Button variant="inline-icon" iconName="star" ariaLabel={`Favorite ${itemLabel}`} />
+        <Button variant="inline-icon" iconName="settings" disabled={disabled} ariaLabel={`Settings for ${itemLabel}`} />
+        <Button variant="inline-icon" iconName="star" disabled={disabled} ariaLabel={`Favorite ${itemLabel}`} />
         <ButtonDropdown
           items={buttonDropdownItems}
           ariaLabel={`Control instance for ${itemLabel}`}
           variant="inline-icon"
+          disabled={disabled}
         />
       </SpaceBetween>
     );
@@ -126,6 +131,7 @@ export function Actions(
         items={buttonDropdownItems}
         ariaLabel={`Control instance for ${itemLabel}`}
         variant="inline-icon"
+        disabled={disabled}
       />
     );
   }
