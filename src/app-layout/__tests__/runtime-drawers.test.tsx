@@ -1859,6 +1859,29 @@ describe('toolbar mode only features', () => {
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('801px');
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('600px');
     });
+
+    test('calls onResize handler for bottom drawer', async () => {
+      const { wrapper, globalDrawersWrapper, debug } = await renderComponent(<AppLayout />);
+      const onResize = jest.fn();
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        type: 'global',
+        position: 'bottom',
+        resizable: true,
+        onResize: event => onResize(event.detail),
+      });
+
+      await delay();
+
+      wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+      const handle = globalDrawersWrapper.findResizeHandleByActiveDrawerId(drawerDefaults.id)!;
+      debug(handle.getElement());
+      handle.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
+      handle.fireEvent(new MouseEvent('pointermove', { bubbles: true }));
+      handle.fireEvent(new MouseEvent('pointerup', { bubbles: true }));
+
+      expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: drawerDefaults.id });
+    });
   });
 
   describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['mobile'] }, () => {

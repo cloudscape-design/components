@@ -307,6 +307,12 @@ export const useAppLayout = (
     const splitPanelSize = splitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : 0;
     const availableHeight =
       document.documentElement.clientHeight - placement.insetBlockStart - placement.insetBlockEnd - splitPanelSize;
+
+    // skip reading sizes in JSDOM
+    if (availableHeight === 0) {
+      return Infinity;
+    }
+
     // If the page is likely zoomed in at 200%, allow the split panel to fill the content area.
     return availableHeight < 400 ? availableHeight - 40 : availableHeight - 250;
   }, [splitPanelOpen, splitPanelPosition, splitPanelReportedSize, placement.insetBlockStart, placement.insetBlockEnd]);
