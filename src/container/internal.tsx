@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import InternalBox from '../box/internal';
+import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getBaseProps } from '../internal/base-component';
 import { ContainerHeaderContextProvider } from '../internal/context/container-header';
@@ -145,60 +148,68 @@ export default function InternalContainer({
         ref={__subStepRef}
         className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}
       >
-        {header && (
-          <ContainerHeaderContextProvider>
-            <StickyHeaderContext.Provider value={{ isStuck, isStuckAtBottom }}>
-              <div
-                className={clsx(
-                  isRefresh && styles.refresh,
-                  styles.header,
-                  analyticsSelectors.header,
-                  styles[`header-variant-${variant}`],
-                  {
-                    [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
-                    [styles['header-sticky-enabled']]: isSticky,
-                    [styles['header-dynamic-height']]: hasDynamicHeight,
-                    [styles['header-stuck']]: isStuck,
-                    [styles['with-paddings']]: !disableHeaderPaddings,
-                    [styles['with-hidden-content']]: !children || __hiddenContent,
-                    [styles['header-with-media']]: hasMedia,
-                    [styles['header-full-page']]: __fullPage && isRefresh,
-                  }
+        <BuiltInErrorBoundary renderFallback={content => <InternalBox padding="m">{content}</InternalBox>}>
+          {header && (
+            <ContainerHeaderContextProvider>
+              <StickyHeaderContext.Provider value={{ isStuck, isStuckAtBottom }}>
+                <div
+                  className={clsx(
+                    isRefresh && styles.refresh,
+                    styles.header,
+                    analyticsSelectors.header,
+                    styles[`header-variant-${variant}`],
+                    {
+                      [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
+                      [styles['header-sticky-enabled']]: isSticky,
+                      [styles['header-dynamic-height']]: hasDynamicHeight,
+                      [styles['header-stuck']]: isStuck,
+                      [styles['with-paddings']]: !disableHeaderPaddings,
+                      [styles['with-hidden-content']]: !children || __hiddenContent,
+                      [styles['header-with-media']]: hasMedia,
+                      [styles['header-full-page']]: __fullPage && isRefresh,
+                    }
+                  )}
+                  ref={headerMergedRef}
+                  style={{
+                    ...stickyStyles.style,
+                    ...getHeaderStyles(style),
+                  }}
+                >
+                  {isStuck && !isMobile && isRefresh && __fullPage && <div className={styles['header-cover']}></div>}
+                  {header}
+                </div>
+              </StickyHeaderContext.Provider>
+            </ContainerHeaderContextProvider>
+          )}
+          <div className={clsx(styles.content, fitHeight && styles['content-fit-height'])}>
+            <div
+              className={clsx(styles['content-inner'], testStyles['content-inner'], {
+                [styles['with-paddings']]: !disableContentPaddings,
+                [styles['with-header']]: !!header,
+              })}
+              style={getContentStyles(style)}
+            >
+              <BuiltInErrorBoundary
+                renderFallback={content => (
+                  <InternalBox padding={disableContentPaddings ? 'm' : undefined}>{content}</InternalBox>
                 )}
-                ref={headerMergedRef}
-                style={{
-                  ...stickyStyles.style,
-                  ...getHeaderStyles(style),
-                }}
               >
-                {isStuck && !isMobile && isRefresh && __fullPage && <div className={styles['header-cover']}></div>}
-                {header}
-              </div>
-            </StickyHeaderContext.Provider>
-          </ContainerHeaderContextProvider>
-        )}
-        <div className={clsx(styles.content, fitHeight && styles['content-fit-height'])}>
-          <div
-            className={clsx(styles['content-inner'], testStyles['content-inner'], {
-              [styles['with-paddings']]: !disableContentPaddings,
-              [styles['with-header']]: !!header,
-            })}
-            style={getContentStyles(style)}
-          >
-            {children}
+                {children}
+              </BuiltInErrorBoundary>
+            </div>
           </div>
-        </div>
-        {footer && (
-          <div
-            className={clsx(styles.footer, {
-              [styles['with-divider']]: !__disableFooterDivider,
-              [styles['with-paddings']]: !disableFooterPaddings,
-            })}
-            style={getFooterStyles(style)}
-          >
-            {footer}
-          </div>
-        )}
+          {footer && (
+            <div
+              className={clsx(styles.footer, {
+                [styles['with-divider']]: !__disableFooterDivider,
+                [styles['with-paddings']]: !disableFooterPaddings,
+              })}
+              style={getFooterStyles(style)}
+            >
+              {footer}
+            </div>
+          )}
+        </BuiltInErrorBoundary>
       </div>
     </div>
   );

@@ -160,6 +160,7 @@ export default function Tabs({
   if (variant === 'container' || variant === 'stacked') {
     return (
       <InternalContainer
+        key={activeTabId}
         header={header}
         disableHeaderPaddings={true}
         {...baseProps}
