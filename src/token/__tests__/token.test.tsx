@@ -154,6 +154,64 @@ describe('Token', () => {
     });
   });
 
+  describe('Error handling', () => {
+    test('throws error when using JSX content with inline variant', () => {
+      // Mock console.error to avoid noise in test output
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      expect(() => {
+        renderToken({
+          variant: 'inline',
+          label: <div>JSX content not allowed</div>,
+        });
+      }).toThrow('Invariant violation: only plain text (strings or numbers) are supported when variant="inline".');
+
+      consoleSpy.mockRestore();
+    });
+
+    test('throws error when using React element with inline variant', () => {
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      expect(() => {
+        renderToken({
+          variant: 'inline',
+          label: <span>React element not allowed</span>,
+        });
+      }).toThrow('Invariant violation: only plain text (strings or numbers) are supported when variant="inline".');
+
+      consoleSpy.mockRestore();
+    });
+
+    test('does not throw error when using JSX content with normal variant', () => {
+      expect(() => {
+        renderToken({
+          variant: 'normal',
+          label: <div data-testid="jsx-content">JSX content allowed</div>,
+        });
+      }).not.toThrow();
+
+      expect(screen.getByTestId('jsx-content')).toBeInTheDocument();
+    });
+
+    test('does not throw error when using plain text with inline variant', () => {
+      expect(() => {
+        renderToken({
+          variant: 'inline',
+          label: 'Plain text is allowed',
+        });
+      }).not.toThrow();
+    });
+
+    test('does not throw error when using numbers with inline variant', () => {
+      expect(() => {
+        renderToken({
+          variant: 'inline',
+          label: 42,
+        });
+      }).not.toThrow();
+    });
+  });
+
   describe('Accessibility', () => {
     test('applies default group role and aria attributes', () => {
       const wrapper = renderToken({ label: 'Test token' });
