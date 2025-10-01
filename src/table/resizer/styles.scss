@@ -22,7 +22,12 @@ $block-gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
   position: absolute;
   inset-inline-end: calc(-1 * #{$handle-width} / 2);
   inline-size: $handle-width;
+  overflow: hidden;
   z-index: 10;
+
+  th:last-child > &:has(.divider-interactive):not(.is-visual-refresh) {
+    inset-inline-end: 0;
+  }
 }
 
 .resizer-button-wrapper {
