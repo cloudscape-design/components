@@ -152,7 +152,7 @@ export function TableBodyCell<ItemType>(props: TableBodyCellProps<ItemType>) {
 
   const { column, item } = props;
   return (
-    <TableTdElement {...props} isEditable={false}>
+    <TableTdElement {...props} counter={column.counter?.(item)} isEditable={false}>
       {column.cell(item)}
     </TableTdElement>
   );
