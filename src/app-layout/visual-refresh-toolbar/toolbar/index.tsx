@@ -41,11 +41,14 @@ export interface ToolbarProps {
   activeDrawerId?: string | null;
   drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusRef?: React.Ref<Focusable>;
+  bottomDrawersFocusRef?: React.Ref<Focusable>;
   globalDrawersFocusControl?: FocusControlMultipleStates;
   onActiveDrawerChange?: (drawerId: string | null, params: OnChangeParams) => void;
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   activeGlobalDrawersIds?: ReadonlyArray<string>;
   onActiveGlobalDrawersChange?: ((drawerId: string, params: OnChangeParams) => void) | undefined;
+  activeGlobalBottomDrawerId?: string | null;
+  onActiveGlobalBottomDrawerChange?: (value: string | null, params: OnChangeParams) => void;
 
   expandedDrawerId?: string | null;
   setExpandedDrawerId?: (value: string | null) => void;
@@ -98,6 +101,9 @@ export function AppLayoutToolbarImplementation({
     expandedDrawerId,
     setExpandedDrawerId,
     aiDrawerFocusRef,
+    onActiveGlobalBottomDrawerChange,
+    activeGlobalBottomDrawerId,
+    bottomDrawersFocusRef,
   } = toolbarProps;
   const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
@@ -117,6 +123,7 @@ export function AppLayoutToolbarImplementation({
     (!!activeDrawerId ||
       !!activeGlobalDrawersIds?.length ||
       !!activeAiDrawerId ||
+      !!activeGlobalBottomDrawerId ||
       (!!navigationOpen && !!hasNavigation));
   useEffect(() => {
     if (anyPanelOpenInMobile) {
@@ -232,11 +239,14 @@ export function AppLayoutToolbarImplementation({
               onSplitPanelToggle={onSplitPanelToggle}
               disabled={anyPanelOpenInMobile}
               globalDrawersFocusControl={globalDrawersFocusControl}
+              bottomDrawersFocusRef={bottomDrawersFocusRef}
               globalDrawers={globalDrawers?.filter(item => !!item.trigger) ?? []}
               activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
               onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
               expandedDrawerId={expandedDrawerId}
               setExpandedDrawerId={setExpandedDrawerId!}
+              onActiveGlobalBottomDrawerChange={onActiveGlobalBottomDrawerChange}
+              activeGlobalBottomDrawerId={activeGlobalBottomDrawerId}
             />
           </div>
         )}

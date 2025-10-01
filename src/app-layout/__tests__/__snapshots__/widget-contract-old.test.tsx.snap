@@ -9,6 +9,8 @@ Map {
       "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -39,6 +41,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -74,6 +92,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -87,6 +106,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -109,6 +129,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -119,6 +140,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -202,6 +224,8 @@ Map {
       "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -232,6 +256,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -267,6 +307,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -280,6 +321,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -302,6 +344,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -312,6 +355,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -355,6 +399,8 @@ Map {
       "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -385,6 +431,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -420,6 +482,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -433,6 +496,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -455,6 +519,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -465,6 +530,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -539,6 +605,8 @@ Map {
       "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -569,6 +637,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -604,6 +688,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -617,6 +702,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -639,6 +725,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -649,6 +736,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -692,6 +780,8 @@ Map {
       "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -722,6 +812,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -757,6 +863,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -770,6 +877,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -792,6 +900,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -802,6 +911,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -850,6 +960,8 @@ Map {
       "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -880,6 +992,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": <div>
         breadcrumbs
@@ -919,6 +1047,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -932,6 +1061,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
         navigation
@@ -956,6 +1086,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -966,6 +1097,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -1052,6 +1184,8 @@ Map {
       "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -1082,6 +1216,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": <div>
         breadcrumbs
@@ -1121,6 +1271,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1134,6 +1285,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
         navigation
@@ -1158,6 +1310,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -1168,6 +1321,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -1211,6 +1365,8 @@ Map {
       "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -1241,6 +1397,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": <div>
         breadcrumbs
@@ -1280,6 +1452,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1293,6 +1466,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
         navigation
@@ -1317,6 +1491,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -1327,6 +1502,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -1373,6 +1549,8 @@ Map {
       "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -1403,6 +1581,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": <div>
         breadcrumbs
@@ -1442,6 +1636,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1455,6 +1650,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
         navigation
@@ -1479,6 +1675,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -1489,6 +1686,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -1565,6 +1763,8 @@ Map {
       "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -1595,6 +1795,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": <div>
         breadcrumbs
@@ -1634,6 +1850,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1647,6 +1864,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
         navigation
@@ -1671,6 +1889,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -1681,6 +1900,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -1724,6 +1944,8 @@ Map {
       "activeAiDrawerSize": 0,
       "activeDrawer": undefined,
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -1754,6 +1976,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": <div>
         breadcrumbs
@@ -1793,6 +2031,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1806,6 +2045,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
         navigation
@@ -1830,6 +2070,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -1840,6 +2081,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -1902,6 +2144,8 @@ Map {
         },
       },
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -1932,6 +2176,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -1969,6 +2229,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -1982,6 +2243,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -2004,6 +2266,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -2014,6 +2277,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -2113,6 +2377,8 @@ Map {
         },
       },
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -2143,6 +2409,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -2180,6 +2462,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -2193,6 +2476,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -2215,6 +2499,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -2225,6 +2510,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -2282,6 +2568,8 @@ Map {
         },
       },
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -2312,6 +2600,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -2349,6 +2653,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -2362,6 +2667,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -2384,6 +2690,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -2394,6 +2701,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -2482,6 +2790,8 @@ Map {
         },
       },
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -2512,6 +2822,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -2549,6 +2875,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -2562,6 +2889,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -2584,6 +2912,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -2594,6 +2923,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],
@@ -2651,6 +2981,8 @@ Map {
         },
       },
       "activeDrawerSize": 290,
+      "activeGlobalBottomDrawerId": null,
+      "activeGlobalBottomDrawerSize": 290,
       "activeGlobalDrawers": [],
       "activeGlobalDrawersIds": [],
       "activeGlobalDrawersSizes": {},
@@ -2681,6 +3013,22 @@ Map {
         "tools": undefined,
         "toolsClose": undefined,
         "toolsToggle": undefined,
+      },
+      "bottomDrawerReportedSize": 0,
+      "bottomDrawersFocusControl": {
+        "loseFocus": [Function],
+        "refs": {
+          "close": {
+            "current": null,
+          },
+          "slider": {
+            "current": null,
+          },
+          "toggle": {
+            "current": null,
+          },
+        },
+        "setFocus": [Function],
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
@@ -2718,6 +3066,7 @@ Map {
       },
       "drawersOpenQueue": [],
       "expandedDrawerId": null,
+      "getMaxGlobalBottomDrawerHeight": [Function],
       "globalDrawers": [],
       "globalDrawersFocusControl": {
         "loseFocus": [Function],
@@ -2731,6 +3080,7 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minAiDrawerSize": 400,
       "minDrawerSize": 290,
+      "minGlobalBottomDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
       "navigationFocusControl": {
@@ -2753,6 +3103,7 @@ Map {
       "onActiveAiDrawerResize": [Function],
       "onActiveDrawerChange": [Function],
       "onActiveDrawerResize": [Function],
+      "onActiveGlobalBottomDrawerChange": [Function],
       "onActiveGlobalDrawersChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
@@ -2763,6 +3114,7 @@ Map {
         "insetInlineEnd": 0,
         "insetInlineStart": 0,
       },
+      "reportBottomDrawerSize": [Function],
       "setExpandedDrawerId": [Function],
       "setNotificationsHeight": [Function],
       "setToolbarHeight": [Function],

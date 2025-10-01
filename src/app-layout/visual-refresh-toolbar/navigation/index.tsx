@@ -27,9 +27,16 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
     navigationFocusControl,
     placement,
     verticalOffsets,
+    activeGlobalBottomDrawerId,
+    bottomDrawerReportedSize,
   } = appLayoutInternals;
 
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(
+    verticalOffsets,
+    isMobile,
+    placement,
+    activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0
+  );
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.
   const onNavigationClick = (event: React.MouseEvent) => {
