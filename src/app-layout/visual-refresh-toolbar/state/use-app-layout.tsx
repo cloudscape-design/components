@@ -93,10 +93,7 @@ export const useAppLayout = (
     // If either a local drawer or a bottom drawer is already open, and we attempt to open a new one,
     // it will replace the existing one instead of opening an additional drawer,
     // since only one local drawer is supported. Therefore, layout calculations are not necessary.
-    if (
-      (activeDrawer && drawers?.find(drawer => drawer.id === drawerId)) ||
-      (activeGlobalBottomDrawerId && globalDrawers.find(drawer => drawer.id === activeGlobalBottomDrawerId))
-    ) {
+    if ((activeDrawer && drawers?.find(drawer => drawer.id === drawerId)) || activeGlobalBottomDrawerId === drawerId) {
       return;
     }
     // get the size of drawerId. it could be either local or global drawer
