@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { namespace } from './context';
 // It's okay for import for tests, because it's internal non-user code.
 // eslint-disable-next-line @cloudscape-design/components/ban-files
 import { I18nProvider } from './provider';
@@ -14,7 +15,7 @@ interface TestI18nProviderProps {
 
 export default function TestI18nProvider({ messages = {}, locale = 'en', children }: TestI18nProviderProps) {
   return (
-    <I18nProvider locale={locale} messages={[{ '@cloudscape-design/components': { [locale]: messages } }]}>
+    <I18nProvider locale={locale} messages={[{ [namespace]: { [locale]: messages } }]}>
       {children}
     </I18nProvider>
   );

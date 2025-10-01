@@ -24,11 +24,12 @@ module.exports = ({
   moduleReplacements,
   react18,
 } = {}) => {
+  const mode = process.env.NODE_ENV;
   return {
     stats: isProd ? 'none' : 'minimal',
     context: path.resolve(__dirname),
     entry: './app/index.tsx',
-    mode: process.env.NODE_ENV,
+    mode,
     output: {
       path: path.resolve(outputPath),
       publicPath: './',
@@ -54,7 +55,7 @@ module.exports = ({
       },
     },
     devtool: 'source-map',
-    cache: isLocal ? { type: 'filesystem', name: react18 ? 'react18' : 'react16' } : false,
+    cache: isLocal ? { type: 'filesystem', name: react18 ? `${mode}:react18` : `${mode}:react16` } : false,
     module: {
       rules: [
         {

@@ -21,27 +21,57 @@ export const textItems: Item[] = [
     content: 'Item 1',
     secondaryContent: 'Description 1',
     actions: 'Actions slot',
-    children: [{ id: '1.1', content: 'Item 1.1', secondaryContent: 'Description 1.1', actions: 'Actions slot' }],
+    children: [
+      {
+        id: '1.1',
+        content: 'Item 1.1',
+        secondaryContent: 'Description 1.1',
+        actions: 'Actions slot',
+        children: [
+          {
+            id: '1.1.1',
+            content: 'Item 1.1.1',
+            secondaryContent: 'Description 1.1.1',
+            actions: 'Actions slot',
+          },
+        ],
+      },
+    ],
   },
   {
     id: '2',
     content: 'Item 2',
     secondaryContent: 'Description 2',
-    actions: <Actions actionType="button-group" itemLabel="Item 2" />,
+    actions: 'Actions slot',
   },
   {
     id: '3',
     content: 'Item 3',
     secondaryContent: 'Description 3',
-    actions: <Actions actionType="button-dropdown" itemLabel="Item 3" />,
+    actions: 'Actions slot',
     children: [
-      { id: '3.1', content: 'Item 3.1', secondaryContent: 'Description 3.1', actions: 'Actions slot' },
+      {
+        id: '3.1',
+        content: 'Item 3.1',
+        secondaryContent: 'Description 3.1',
+        actions: 'Actions slot',
+      },
       {
         id: '3.2',
         content: 'Item 3.2',
         secondaryContent: 'Description 3.2',
-        actions: <Actions actionType="inline-button-dropdown" itemLabel="Item 3.2" />,
-        children: [{ id: '3.2.1', content: 'Item 3.2.1', secondaryContent: 'Description 3.2.1' }],
+        actions: 'Actions slot',
+        children: [
+          {
+            id: '3.2.1',
+            content: 'Item 3.2.1',
+            secondaryContent: 'Description 3.2.1',
+            children: [
+              { id: '3.2.1.1', content: 'Item 3.2.1.1', secondaryContent: 'Description 3.2.1.1' },
+              { id: '3.2.1.2', content: 'Item 3.2.1.2', secondaryContent: 'Description 3.2.1.2' },
+            ],
+          },
+        ],
       },
       { id: '3.3', content: 'Item 3.3', secondaryContent: 'Description 3.3' },
     ],
@@ -50,7 +80,7 @@ export const textItems: Item[] = [
     id: '4',
     content: 'Item 4',
     secondaryContent: 'Description 4',
-    actions: <Actions actionType="custom-inline-button-group" itemLabel="Item 4" />,
+    actions: 'Actions slot',
   },
 ];
 
@@ -158,6 +188,7 @@ export const statusIndicatorItems: Item[] = [
     id: 'status-indicator-1',
     content: <StatusIndicator type="success">Evaluated</StatusIndicator>,
     secondaryContent: 'Successful',
+    announcementLabel: 'Evaluated',
   },
   {
     id: 'status-indicator-2',
@@ -178,11 +209,13 @@ export const statusIndicatorItems: Item[] = [
       {
         id: 'status-indicator-2.1',
         content: <StatusIndicator type="success">node-17 (eksclu-node-12345)</StatusIndicator>,
+        announcementLabel: 'node-17 (eksclu-node-12345)',
       },
       {
         id: 'status-indicator-2.2',
         content: <StatusIndicator type="in-progress">node-18 (eksclu-node-09876)</StatusIndicator>,
         secondaryContent: 'In progress',
+        announcementLabel: 'node-18 (eksclu-node-09876)',
       },
       {
         id: 'status-indicator-2.3',
@@ -193,22 +226,26 @@ export const statusIndicatorItems: Item[] = [
             id: 'status-indicator-2.3.1',
             content: <StatusIndicator type="warning">Checked resource utilization</StatusIndicator>,
             secondaryContent: 'CPU utilization threshold exceeded.',
+            announcementLabel: 'Checked resource utilization',
           },
           {
             id: 'status-indicator-2.3.2',
             content: <StatusIndicator type="success">Checked network connectivity</StatusIndicator>,
+            announcementLabel: 'Checked network connectivity',
           },
         ],
       },
       {
         id: 'status-indicator-2.4',
         content: <StatusIndicator type="error">node-19 (eksclu-node-ab123)</StatusIndicator>,
+        announcementLabel: 'node-19 (eksclu-node-ab123)',
       },
     ],
   },
   {
     id: 'status-indicator-3',
     content: <StatusIndicator type="success">Checked EKS clusters</StatusIndicator>,
+    announcementLabel: 'Checked EKS clusters',
   },
   {
     id: 'status-indicator-4',
@@ -228,14 +265,17 @@ export const statusIndicatorItems: Item[] = [
       {
         id: 'status-indicator-4.1',
         content: <StatusIndicator type="success">First action</StatusIndicator>,
+        announcementLabel: 'First action',
       },
       {
         id: 'status-indicator-4.2',
         content: <StatusIndicator type="error">Second action</StatusIndicator>,
+        announcementLabel: 'Second action',
       },
       {
         id: 'status-indicator-4.3',
         content: <StatusIndicator type="loading">Third action</StatusIndicator>,
+        announcementLabel: 'Third action',
       },
     ],
   },

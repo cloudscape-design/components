@@ -227,19 +227,19 @@ export const useAppLayout = (
   const navigationFocusControl = useAsyncFocusControl(navigationOpen, navigationTriggerHide);
   const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
-  const onNavigationToggle = useStableCallback((open: boolean) => {
+  const onNavigationToggle = useStableCallback(({ isOpen, autoFocus }: { isOpen: boolean; autoFocus: boolean }) => {
     setNavigationAnimationDisabled(false);
-    navigationFocusControl.setFocus();
-    fireNonCancelableEvent(onNavigationChange, { open });
+    navigationFocusControl.setFocus({ force: false, autoFocus });
+    fireNonCancelableEvent(onNavigationChange, { open: isOpen });
   });
 
   useImperativeHandle(forwardRef, () => ({
-    closeNavigationIfNecessary: () => isMobile && onNavigationToggle(false),
+    closeNavigationIfNecessary: () => isMobile && onNavigationToggle({ isOpen: false, autoFocus: true }),
     openTools: () => onToolsToggle(true),
-    focusToolsClose: () => drawersFocusControl.setFocus(true),
-    focusActiveDrawer: () => drawersFocusControl.setFocus(true),
+    focusToolsClose: () => drawersFocusControl.setFocus({ force: true }),
+    focusActiveDrawer: () => drawersFocusControl.setFocus({ force: true }),
     focusSplitPanel: () => splitPanelFocusControl.setLastInteraction({ type: 'open' }),
-    focusNavigation: () => navigationFocusControl.setFocus(true),
+    focusNavigation: () => navigationFocusControl.setFocus({ force: true }),
   }));
 
   const resolvedStickyNotifications = !!stickyNotifications && !isMobile;
@@ -322,7 +322,7 @@ export const useAppLayout = (
     setToolbarHeight,
     setNotificationsHeight,
     onSplitPanelToggle: onSplitPanelToggleHandler,
-    onNavigationToggle,
+    onNavigationToggle: isOpen => onNavigationToggle({ isOpen, autoFocus: true }),
     onActiveDrawerChange: onActiveDrawerChangeHandler,
     onActiveDrawerResize,
     splitPanelAnimationDisabled,
@@ -377,7 +377,7 @@ export const useAppLayout = (
   useEffect(() => {
     // Close navigation drawer on mobile so that the main content is visible
     if (isMobile) {
-      onNavigationToggle(false);
+      onNavigationToggle({ isOpen: false, autoFocus: false });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMobile]);
@@ -414,7 +414,7 @@ export const useAppLayout = (
     const hasHorizontalScroll = scrollWidth > placement.inlineSize;
     if (hasHorizontalScroll) {
       if (!navigationHide && navigationOpen) {
-        onNavigationToggle(false);
+        onNavigationToggle({ isOpen: false, autoFocus: false });
         return;
       }
 

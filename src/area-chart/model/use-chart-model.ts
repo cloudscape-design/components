@@ -126,7 +126,14 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       const offsetY = clientY - svgRect.top;
 
       const closestX = findClosest(interactions.plot.xy, offsetX, xPoints => xPoints[0].scaled.x);
+      if (closestX === null) {
+        return;
+      }
+
       const closestPoint = findClosest(closestX, offsetY, point => point.scaled.y1);
+      if (closestPoint === null) {
+        return;
+      }
 
       // If close enough to the point - highlight the point and its column.
       // If not - only highlight the closest column.

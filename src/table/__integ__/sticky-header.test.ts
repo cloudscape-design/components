@@ -53,6 +53,7 @@ const setupTest = (testFn: (page: StickyHeaderPage) => Promise<void>) => {
     const page = new StickyHeaderPage(browser);
     await page.setWindowSize(desktopSize);
     await browser.url('#/light/table/sticky-header-scrollable-container');
+    await page.waitForVisible(tableWrapper.toSelector());
     await testFn(page);
   });
 };

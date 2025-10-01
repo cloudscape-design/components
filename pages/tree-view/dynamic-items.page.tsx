@@ -58,6 +58,7 @@ export default function DynamicItemsPage() {
                   </SpaceBetween>
                 </Box>
               ) : undefined,
+              announcementLabel: item.name,
             };
           }}
           getItemId={item => item.id}

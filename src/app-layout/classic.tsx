@@ -137,9 +137,9 @@ const ClassicAppLayout = React.forwardRef(
       loseFocus: loseDrawersFocus,
     } = useFocusControl(!!activeDrawerId, true, activeDrawerId);
 
-    const onNavigationToggle = useStableCallback((open: boolean) => {
-      focusNavButtons();
-      fireNonCancelableEvent(onNavigationChange, { open });
+    const onNavigationToggle = useStableCallback(({ isOpen, autoFocus }: { isOpen: boolean; autoFocus: boolean }) => {
+      focusNavButtons({ force: false, autoFocus });
+      fireNonCancelableEvent(onNavigationChange, { open: isOpen });
     });
 
     const onNavigationClick = (event: React.MouseEvent) => {
@@ -148,14 +148,14 @@ const ClassicAppLayout = React.forwardRef(
         node => node.tagName === 'A' && !!(node as HTMLAnchorElement).href
       );
       if (hasLink) {
-        onNavigationToggle(false);
+        onNavigationToggle({ isOpen: false, autoFocus: true });
       }
     };
 
     useEffect(() => {
       // Close navigation drawer on mobile so that the main content is visible
       if (isMobile) {
-        onNavigationToggle(false);
+        onNavigationToggle({ isOpen: false, autoFocus: false });
       }
     }, [isMobile, onNavigationToggle]);
 
@@ -367,17 +367,17 @@ const ClassicAppLayout = React.forwardRef(
       openTools: () => onToolsToggle(true),
       closeNavigationIfNecessary: () => {
         if (isMobile) {
-          onNavigationToggle(false);
+          onNavigationToggle({ isOpen: false, autoFocus: true });
         }
       },
       focusToolsClose: () => {
         if (hasDrawers) {
-          focusDrawersButtons(true);
+          focusDrawersButtons({ force: true });
         } else {
-          focusToolsButtons(true);
+          focusToolsButtons({ force: true });
         }
       },
-      focusActiveDrawer: () => focusDrawersButtons(true),
+      focusActiveDrawer: () => focusDrawersButtons({ force: true }),
       focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
     }));
 
@@ -404,7 +404,7 @@ const ClassicAppLayout = React.forwardRef(
             ariaLabels={ariaLabels}
             navigationHide={navigationHide}
             toolsHide={toolsHide}
-            onNavigationOpen={() => onNavigationToggle(true)}
+            onNavigationOpen={() => onNavigationToggle({ isOpen: true, autoFocus: true })}
             onToolsOpen={() => onToolsToggle(true)}
             unfocusable={anyPanelOpen}
             mobileBarRef={mobileBarRef}
@@ -433,7 +433,7 @@ const ClassicAppLayout = React.forwardRef(
               isMobile={isMobile}
               isOpen={navigationOpen}
               onClick={isMobile ? onNavigationClick : undefined}
-              onToggle={onNavigationToggle}
+              onToggle={isOpen => onNavigationToggle({ isOpen, autoFocus: true })}
               toggleRefs={navigationRefs}
               type="navigation"
               width={navigationWidth}

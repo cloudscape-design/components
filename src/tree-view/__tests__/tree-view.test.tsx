@@ -107,7 +107,6 @@ const defaultProps: TreeViewProps<Item> = {
     content: item.title,
     secondaryContent: item.description,
     actions: item.hasActions ? defaultActions : undefined,
-    children: item.items,
   }),
 };
 
