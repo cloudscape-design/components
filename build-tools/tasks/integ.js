@@ -27,7 +27,7 @@ module.exports = task('test:integ', async () => {
   }
   await execa('jest', commands, {
     stdio: 'inherit',
-    env: { ...process.env, NODE_OPTIONS: '--experimental-vm-modules' },
+    env: { ...process.env, NODE_OPTIONS: '--experimental-vm-modules', REACT_VERSION: reactVersion },
   });
 
   devServer.cancel();

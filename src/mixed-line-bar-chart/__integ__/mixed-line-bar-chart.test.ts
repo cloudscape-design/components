@@ -497,14 +497,9 @@ describe('Details popover', () => {
     })
   );
 
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'scrolls if necessary on click',
     setupTest('#/light/bar-chart/drilldown', async page => {
-      // TODO: fix test for React 18
-      if ((await page.getReactVersion()) === '18') {
-        return;
-      }
-
       await page.setWindowSize({ width: 360, height: 650 });
       await page.windowScrollTo({ top: 150 });
       const barChart = createWrapper().findBarChart();
@@ -517,14 +512,9 @@ describe('Details popover', () => {
     })
   );
 
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'does not scroll on hover',
     setupTest('#/light/bar-chart/drilldown', async page => {
-      // TODO: fix test for React 18
-      if ((await page.getReactVersion()) === '18') {
-        return;
-      }
-
       await page.setWindowSize({ width: 360, height: 650 });
       await page.windowScrollTo({ top: 150 });
       const barChart = createWrapper().findBarChart();
@@ -542,14 +532,9 @@ describe('Details popover', () => {
     })
   );
 
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'scrolls if necessary on click inside a scrollable container',
     setupTest('#/light/bar-chart/in-modal', async page => {
-      // TODO: fix test for React 18
-      if ((await page.getReactVersion()) === '18') {
-        return;
-      }
-
       await page.setWindowSize({ width: 360, height: 650 });
       const wrapper = createWrapper();
       await page.click(wrapper.findButton().toSelector());

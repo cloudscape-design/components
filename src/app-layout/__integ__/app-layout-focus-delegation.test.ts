@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import BasePageExtendedObject from '../../__integ__/page-objects/base-page-ext';
 import { Theme } from '../../__integ__/utils.js';
 import { viewports } from './constants';
 import { getUrlParams, testIf } from './utils';
@@ -21,11 +21,11 @@ interface SetupTestObj {
 }
 
 function setupTest(
-  testFn: (page: BasePageExtendedObject) => Promise<void>,
+  testFn: (page: BasePageObject) => Promise<void>,
   { theme, pageName = 'with-split-panel', splitPanelPosition = '', mobile = false }: SetupTestObj
 ) {
   return useBrowser(async browser => {
-    const page = new BasePageExtendedObject(browser);
+    const page = new BasePageObject(browser);
     const params = getUrlParams(
       theme,
       splitPanelPosition

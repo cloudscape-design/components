@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import createWrapper, { InputWrapper } from '../../../../lib/components/test-utils/selectors';
-import BasePageExtendedObject from '../../../__integ__/page-objects/base-page-ext';
+import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-export default class InputPage extends BasePageExtendedObject {
+import createWrapper, { InputWrapper } from '../../../../lib/components/test-utils/selectors';
+
+export default class InputPage extends BasePageObject {
   protected wrapper: InputWrapper = createWrapper('#test').findInput();
 
   async visit(url: string) {

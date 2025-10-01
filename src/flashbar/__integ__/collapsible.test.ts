@@ -128,14 +128,9 @@ describe('Collapsible Flashbar', () => {
   });
 
   describe('Sticky Flashbar', () => {
-    test(
+    (process.env.REACT_VERSION !== '18' ? test : test.skip)(
       'keeps a space to the screen bottom to prevent the notification bar from getting cropped',
       setupStickyFlashbarTest(async page => {
-        // TODO: fix test for React 18
-        if ((await page.getReactVersion()) === '18') {
-          return;
-        }
-
         const windowDimensions = { width: 1000, height: 500 };
         await page.setWindowSize(windowDimensions);
         await page.toggleCollapsedState();

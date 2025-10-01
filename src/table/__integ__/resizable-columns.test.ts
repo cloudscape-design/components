@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import BasePageExtendedObject from '../../__integ__/page-objects/base-page-ext';
 
 import scrollbarStyles from '../../../lib/components/table/sticky-scrollbar/styles.selectors.js';
 import styles from '../../../lib/components/table/styles.selectors.js';
@@ -21,7 +21,7 @@ const tableWrapper = wrapper.findTable();
 // All the columns fit in the viewport, which make it easier to test the columns' widths
 const defaultScreen = { width: 1680, height: 800 };
 
-class TablePage extends BasePageExtendedObject {
+class TablePage extends BasePageObject {
   async resizeColumn(columnIndex: number, xOffset: number) {
     const resizerSelector = tableWrapper.findColumnResizer(columnIndex).toSelector();
     await this.dragAndDrop(resizerSelector, xOffset);
@@ -331,14 +331,9 @@ test(
   })
 );
 
-test(
+(process.env.REACT_VERSION !== '18' ? test : test.skip)(
   'should recover column widths when the inner state is reset',
   setupTest(async page => {
-    // TODO: fix test for React 18
-    if ((await page.getReactVersion()) === '18') {
-      return;
-    }
-
     await page.resizeColumn(2, 100);
     const oldWidth = await page.getColumnWidth(2);
     await page.click('#reset-state');
