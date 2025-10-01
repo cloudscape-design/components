@@ -16,7 +16,14 @@ interface ToolbarSlotProps {
 }
 
 export const ToolbarSlot = React.forwardRef<HTMLElement, ToolbarSlotProps>(({ className, style, children }, ref) => (
-  <section ref={ref as React.Ref<any>} className={clsx(styles['toolbar-container'], className)} style={style}>
+  <section
+    ref={ref as React.Ref<any>}
+    className={clsx(styles['toolbar-container'], className)}
+    style={{
+      insetBlockStart: style?.insetBlockStart ?? 0,
+      ...style,
+    }}
+  >
     {children}
   </section>
 ));
@@ -41,10 +48,13 @@ interface BreadcrumbsSlotProps {
 }
 
 export function BreadcrumbsSlot({ ownBreadcrumbs, discoveredBreadcrumbs }: BreadcrumbsSlotProps) {
+  const isSSR = typeof window === 'undefined';
+  const contextValue = React.useMemo(() => ({ isInToolbar: true }), []);
+
   return (
-    <BreadcrumbsSlotContext.Provider value={{ isInToolbar: true }}>
+    <BreadcrumbsSlotContext.Provider value={contextValue}>
       <div className={styles['breadcrumbs-own']}>{ownBreadcrumbs}</div>
-      {discoveredBreadcrumbs && (
+      {discoveredBreadcrumbs && !isSSR && (
         <div className={styles['breadcrumbs-discovered']}>
           <BreadcrumbGroupImplementation
             {...discoveredBreadcrumbs}
