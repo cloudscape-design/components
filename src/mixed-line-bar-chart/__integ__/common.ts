@@ -1,16 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import BasePageExtendedObject from '../../__integ__/page-objects/base-page-ext';
 
-export class MixedChartPage extends BasePageExtendedObject {
+export class MixedChartPage extends BasePageObject {
   currentIndex: number | undefined;
   wrapper = createWrapper().findMixedLineBarChart();
 
-  constructor(browser: ConstructorParameters<typeof BasePageExtendedObject>[0]) {
+  constructor(browser: ConstructorParameters<typeof BasePageObject>[0]) {
     super(browser);
   }
 
