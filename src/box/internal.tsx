@@ -82,5 +82,9 @@ const getTag = (variant: BoxProps.Variant, tagOverride: BoxProps['tagOverride'])
     return 'div';
   }
 
+  if (variant === 'awsui-inline-code') {
+    return 'code';
+  }
+
   return variant;
 };
