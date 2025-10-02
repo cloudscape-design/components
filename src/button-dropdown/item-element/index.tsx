@@ -8,6 +8,7 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import InternalBox from '../../box/internal';
 import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import { useDropdownContext } from '../../internal/components/dropdown/context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
@@ -175,8 +176,24 @@ const MenuItemContent = ({ item, disabled }: { item: InternalItem | InternalChec
           badge={item.badge}
         />
       )}
-      {item.text}
-      {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
+      <div className={styles['content-wrapper']}>
+        <div className={styles['main-row']}>
+          <div>
+            {item.text}
+            {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
+          </div>
+          {item.labelTag && (
+            <InternalBox fontWeight="light" data-testid={'button-dropdown-label-tag'}>
+              {item.labelTag}
+            </InternalBox>
+          )}
+        </div>
+        {item.secondaryText && (
+          <InternalBox fontSize="body-s" fontWeight="light" data-testid={'button-dropdown-secondary-text'}>
+            {item.secondaryText}
+          </InternalBox>
+        )}
+      </div>
     </>
   );
 };
