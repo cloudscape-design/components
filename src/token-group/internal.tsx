@@ -6,16 +6,16 @@ import clsx from 'clsx';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
-import Option from '../internal/components/option';
 import TokenList from '../internal/components/token-list';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
 import { SomeRequired } from '../internal/types';
+import InternalToken from '../token/internal';
 import { TokenGroupProps } from './interfaces';
-import { Token } from './token';
 
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import styles from './styles.css.js';
@@ -71,21 +71,31 @@ export default function InternalTokenGroup({
         items={items}
         limit={limit}
         renderItem={(item, itemIndex) => (
-          <Token
-            ariaLabel={item.label}
-            dismissLabel={item.dismissLabel}
+          <InternalToken
+            {...item}
+            label={item.label}
+            key={itemIndex}
             onDismiss={() => {
               fireNonCancelableEvent(onDismiss, { itemIndex });
               setNextFocusIndex(itemIndex);
             }}
-            disabled={item.disabled}
             readOnly={readOnly || isItemReadOnly?.(item)}
+            variant={'normal'}
+            icon={
+              item.iconName || item.iconUrl || item.iconSvg ? (
+                <InternalIcon
+                  name={item.iconName}
+                  svg={item.iconSvg}
+                  url={item.iconUrl}
+                  ariaLabel={item.iconAlt}
+                  size={'normal'}
+                />
+              ) : undefined
+            }
             {...(item.disabled || readOnly
               ? {}
               : getAnalyticsMetadataAttribute({ detail: { position: `${itemIndex + 1}` } }))}
-          >
-            <Option option={item} />
-          </Token>
+          />
         )}
         i18nStrings={i18nStrings}
         limitShowFewerAriaLabel={limitShowFewerAriaLabel}

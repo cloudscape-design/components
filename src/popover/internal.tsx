@@ -202,7 +202,7 @@ function InternalPopover(
           id={referrerId}
           aria-label={triggerAriaLabel}
         >
-          {children}
+          <span className={styles.overflow}>{children}</span>
         </button>
       ) : (
         <span {...triggerProps} id={referrerId}>

@@ -5,7 +5,7 @@ import { ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom'
 import InputWrapper from '../input';
 import DropdownHostComponentWrapper from '../internal/dropdown-host';
 import TokenGroupWrapper from '../token-group';
-import TokenWrapper from '../token-group/token';
+import { TokenGroupItemWrapper } from '../token-group/token';
 
 import inputStyles from '../../../input/styles.selectors.js';
 import buttonTriggerStyles from '../../../internal/components/button-trigger/styles.selectors.js';
@@ -56,7 +56,7 @@ export default class MultiselectWrapper extends DropdownHostComponentWrapper {
    *
    * @param tokenIndex 1-based index of the token to return
    */
-  findToken(tokenIndex: number): TokenWrapper | null {
+  findToken(tokenIndex: number): TokenGroupItemWrapper | null {
     const tokenGroup = this.findComponent(`.${tokenGroupStyles.root}`, TokenGroupWrapper);
     return tokenGroup!.findToken(tokenIndex);
   }
@@ -69,7 +69,7 @@ export default class MultiselectWrapper extends DropdownHostComponentWrapper {
     return tokenGroup!.findTokenToggle();
   }
 
-  findTokens(): Array<TokenWrapper> {
+  findTokens(): Array<TokenGroupItemWrapper> {
     const tokenGroup = this.findComponent(`.${tokenGroupStyles.root}`, TokenGroupWrapper);
     return tokenGroup?.findTokens() || [];
   }
