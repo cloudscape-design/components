@@ -5,7 +5,6 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import BasePageExtendedObject from '../../__integ__/page-objects/base-page-ext';
 
 import styles from '../../../lib/components/table/styles.selectors.js';
 
@@ -62,17 +61,13 @@ test(
   })
 );
 
-test(
+(process.env.REACT_VERSION !== '18' ? test : test.skip)(
   'sets role=region and aria-label on scrollable wrapper when overflowing',
   useBrowser(async browser => {
     const tableWrapper = createWrapper().findTable();
     const tableHeading = 'Full-page table';
     await browser.url('#/light/table/full-page-variant?visualRefresh=true');
-    const page = new BasePageExtendedObject(browser);
-    // TODO: fix test for React 18
-    if ((await page.getReactVersion()) === '18') {
-      return;
-    }
+    const page = new BasePageObject(browser);
 
     // Find the scrollable wrapper element
     const scrollableWrapperSelector = tableWrapper.findByClassName(styles.wrapper).toSelector();

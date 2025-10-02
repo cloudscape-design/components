@@ -8,13 +8,6 @@ import { createRoot, Root } from 'react-dom/client';
 
 console.log(`Using React ${React.version}`);
 
-interface ExtendedWindow extends Window {
-  reactVersion: string;
-}
-declare const window: ExtendedWindow;
-
-window.reactVersion = React.version.split('.')['0'];
-
 const mountedRoots = new WeakMap<HTMLElement, Root>();
 const unmountingTasks = new WeakMap<HTMLElement, number>();
 

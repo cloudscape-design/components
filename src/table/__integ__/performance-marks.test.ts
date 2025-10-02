@@ -1,20 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-
-import BasePageExtendedObject from '../../__integ__/page-objects/base-page-ext';
 
 function setupTest(
   inViewport: boolean,
   testFn: (parameters: {
-    page: BasePageExtendedObject;
+    page: BasePageObject;
     getMarks: () => Promise<PerformanceMark[]>;
     isElementPerformanceMarkExisting: (id: string) => Promise<boolean>;
   }) => Promise<void>
 ) {
   return useBrowser(async browser => {
-    const page = new BasePageExtendedObject(browser);
+    if (process.env.REACT_VERSION === '18') {
+      return;
+    }
+    const page = new BasePageObject(browser);
     await browser.url(`#/light/table/performance-marks${!inViewport ? '?outsideOfViewport=true' : ''}`);
     const getMarks = async () => {
       await new Promise(r => setTimeout(r, 200));
@@ -23,12 +25,6 @@ function setupTest(
     };
     const isElementPerformanceMarkExisting = (id: string) =>
       page.isExisting(`[data-analytics-performance-mark="${id}"]`);
-
-    // TODO: fix test for React 18
-    if ((await page.getReactVersion()) === '18') {
-      return;
-    }
-
     await testFn({ page, getMarks, isElementPerformanceMarkExisting });
   });
 }

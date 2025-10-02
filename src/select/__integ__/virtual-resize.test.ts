@@ -31,14 +31,9 @@ function setupTest(testFn: (page: ResizeSelectPage) => Promise<void>) {
 }
 
 describe(`Resizing virtual select`, () => {
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'Should place second option lower, when the select becomes narrower',
     setupTest(async page => {
-      // TODO: fix test for React 18
-      if ((await page.getReactVersion()) === '18') {
-        return;
-      }
-
       await page.clickSelect();
       const { top: topBefore } = await page.getOptionBox(2);
       await page.shrinkSelect(true);
@@ -47,14 +42,9 @@ describe(`Resizing virtual select`, () => {
       expect(topBefore).toBeLessThan(topAfter);
     })
   );
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'Should place second option higher, when the select becomes wider',
     setupTest(async page => {
-      // TODO: fix test for React 18
-      if ((await page.getReactVersion()) === '18') {
-        return;
-      }
-
       await page.shrinkSelect(true);
       await page.clickSelect();
       const { top: topBefore } = await page.getOptionBox(2);

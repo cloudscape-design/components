@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import { PropertyFilterProps } from '../../../lib/components/property-filter/interfaces';
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import BasePageExtendedObject from '../../__integ__/page-objects/base-page-ext';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
 
@@ -26,14 +26,12 @@ const valueEditWrapper = popoverWrapper
   .findByClassName(styles['token-editor-field-value'])
   .findAutosuggest();
 
-class AsyncPropertyFilterPage extends BasePageExtendedObject {
+class AsyncPropertyFilterPage extends BasePageObject {
   expectLoadItemsEvents = async (expected: PropertyFilterProps.LoadItemsDetail[]) => {
     await this.waitForAssertion(async () => {
-      // TODO: fix test for React 18
-      if ((await this.getReactVersion()) === '18') {
+      if (process.env.REACT_VERSION === '18') {
         return;
       }
-
       const loadItemsCalls = await this.browser.execute(() => {
         const loadItemsCalls = window.loadItemsCalls;
         return loadItemsCalls;
@@ -205,10 +203,10 @@ const testCases: TestCase[] = [
 
 test.each<TestCase>(testCases)('%p', (scenarioName, asyncProperties, token, scenario) =>
   setupTest(asyncProperties, token, async page => {
-    if (scenarioName.includes('React=16') && (await page.getReactVersion()) !== '16') {
+    if (scenarioName.includes('React=16') && process.env.REACT_VERSION !== '16') {
       return;
     }
-    if (scenarioName.includes('React=18') && (await page.getReactVersion()) !== '18') {
+    if (scenarioName.includes('React=18') && process.env.REACT_VERSION !== '18') {
       return;
     }
     for (let i = 0; i < scenario.length; i++) {
