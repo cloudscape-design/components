@@ -399,6 +399,7 @@ const InternalTable = React.forwardRef(
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
       resizerRoleDescription: ariaLabels?.resizerRoleDescription,
+      resizerTooltipText: ariaLabels?.resizerTooltipText,
       stripedRows,
       stickyState,
       selectionColumnId,
