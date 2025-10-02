@@ -1,27 +1,26 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import BasePageExtendedObject from '../../__integ__/page-objects/base-page-ext';
 
 const wrapper = createWrapper();
 
 function setupTest(
   pageName: string,
   testFn: (parameters: {
-    page: BasePageExtendedObject;
+    page: BasePageObject;
     getMarks: () => Promise<PerformanceMark[]>;
     getElementPerformanceMarkText: (id: string) => Promise<string>;
   }) => Promise<void>
 ) {
   return useBrowser(async browser => {
-    const page = new BasePageExtendedObject(browser);
+    const page = new BasePageObject(browser);
     await browser.url(`#/light/button/${pageName}`);
     await page.waitForVisible(wrapper.toSelector());
-    // TODO: fix test for React 18
-    if ((await page.getReactVersion()) === '18') {
+    if (process.env.REACT_VERSION === '18') {
       return;
     }
 
