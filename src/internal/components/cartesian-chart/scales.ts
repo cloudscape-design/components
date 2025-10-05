@@ -144,7 +144,7 @@ export class NumericChartScale {
     this.d3Scale = this.scale.scale;
   }
 
-  isCategorical() {
+  isCategorical(): this is never {
     return false;
   }
 }

@@ -80,74 +80,76 @@ export default function TabsDemoPage() {
     },
   ];
 
-  const [tabsDismissibles, setTabDismissibles] = useState([
-    {
-      label: 'First tab',
-      id: 'first',
-      dismissible: true,
-      dismissLabel: 'Dismiss first tab',
-      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(1)),
-      content: (
-        <>
-          Diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-          accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-          dolor sit amet.,
-        </>
-      ),
-    },
-    {
-      label: 'Second tab',
-      id: 'second',
-      disabled: true,
-      dismissible: true,
-      dismissLabel: 'Dismiss second tab (disabled)',
-      dismissDisabled: true,
-      action: (
-        <ButtonDropdown
-          variant="icon"
-          ariaLabel="Query actions for second tab"
-          items={[
-            { id: 'save', text: 'Save', disabled: true },
-            { id: 'saveAs', text: 'Save as' },
-            { id: 'rename', text: 'Rename', disabled: true },
-            { id: 'delete', text: 'Delete', disabled: true },
-          ]}
-          expandToViewport={true}
-          disabled={true}
-        />
-      ),
-      content:
-        'Diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
-    },
-    {
-      label: 'Third tab',
-      id: 'third',
-      dismissible: true,
-      dismissLabel: 'Dismiss third tab',
-      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.filter(tab => tab.id !== 'third')),
-      content: (
-        <>
-          Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Diam nonumy eirmod tempor
-          invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo
-          dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Stet
-          clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.,
-        </>
-      ),
-    },
-    {
-      label: 'Forth tab',
-      id: 'forth',
-      dismissible: true,
-      dismissLabel: 'Dismiss forth tab',
-      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.filter(tab => tab.id !== 'forth')),
-      content: (
-        <>
-          Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Stet clita kasd gubergren,
-          no sea takimata sanctus est Lorem ipsum dolor sit amet.,
-        </>
-      ),
-    },
-  ]);
+  const [tabsDismissibles, setTabDismissibles] = useState(
+    (): Array<TabsProps.Tab> => [
+      {
+        label: 'First tab',
+        id: 'first',
+        dismissible: true,
+        dismissLabel: 'Dismiss first tab',
+        onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(1)),
+        content: (
+          <>
+            Diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
+            et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
+            ipsum dolor sit amet.,
+          </>
+        ),
+      },
+      {
+        label: 'Second tab',
+        id: 'second',
+        disabled: true,
+        dismissible: true,
+        dismissLabel: 'Dismiss second tab (disabled)',
+        dismissDisabled: true,
+        action: (
+          <ButtonDropdown
+            variant="icon"
+            ariaLabel="Query actions for second tab"
+            items={[
+              { id: 'save', text: 'Save', disabled: true },
+              { id: 'saveAs', text: 'Save as' },
+              { id: 'rename', text: 'Rename', disabled: true },
+              { id: 'delete', text: 'Delete', disabled: true },
+            ]}
+            expandToViewport={true}
+            disabled={true}
+          />
+        ),
+        content:
+          'Diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+      },
+      {
+        label: 'Third tab',
+        id: 'third',
+        dismissible: true,
+        dismissLabel: 'Dismiss third tab',
+        onDismiss: () => setTabDismissibles(prevTabs => prevTabs.filter(tab => tab.id !== 'third')),
+        content: (
+          <>
+            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Diam nonumy eirmod tempor
+            invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo
+            dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Stet
+            clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.,
+          </>
+        ),
+      },
+      {
+        label: 'Forth tab',
+        id: 'forth',
+        dismissible: true,
+        dismissLabel: 'Dismiss forth tab',
+        onDismiss: () => setTabDismissibles(prevTabs => prevTabs.filter(tab => tab.id !== 'forth')),
+        content: (
+          <>
+            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Stet clita kasd
+            gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.,
+          </>
+        ),
+      },
+    ]
+  );
 
   const extraTab: TabsProps.Tab = {
     label: 'Seventh tab',
