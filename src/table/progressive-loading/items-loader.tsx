@@ -23,6 +23,7 @@ export interface ItemsLoaderContentProps<T> {
   renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   renderLoaderEmpty?: (detail: TableProps.RenderLoaderEmptyDetail<T>) => React.ReactNode;
+  renderLoaderCounter?: (detail: TableProps.RenderLoaderCounterDetail<T>) => string;
 }
 
 export function ItemsLoader<T>({ item, trackBy, children }: ItemsLoaderProps<T>) {
@@ -42,6 +43,7 @@ export function getLoaderContent<T>({
   renderLoaderLoading,
   renderLoaderError,
   renderLoaderEmpty,
+  renderLoaderCounter,
 }: ItemsLoaderContentProps<T>) {
   let content: React.ReactNode = null;
   if (loadingStatus === 'pending' && renderLoaderPending) {
@@ -58,5 +60,14 @@ export function getLoaderContent<T>({
       'Must define `renderLoaderPending`, `renderLoaderLoading`, `renderLoaderError`, or `renderLoaderEmpty` when using corresponding loading status.'
     );
   }
-  return content;
+
+  const counter = renderLoaderCounter?.({ item, loadingStatus });
+
+  return counter ? (
+    <div className={styles['items-loader-content']}>
+      {content} <div className={styles['items-loader-counter']}> {counter}</div>
+    </div>
+  ) : (
+    content
+  );
 }
