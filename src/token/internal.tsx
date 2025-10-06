@@ -4,7 +4,7 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
@@ -16,6 +16,20 @@ import { TokenProps } from './interfaces';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
+
+/**
+ * Checks if a value is a React element without using the legacy React.isValidElement API.
+ * This approach checks for the internal structure of React elements.
+ */
+function isReactElement(value: unknown): value is React.ReactElement {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    typeof (value as any).type !== 'undefined' &&
+    typeof (value as any).props !== 'undefined'
+  );
+}
 
 type InternalTokenProps = TokenProps &
   InternalBaseComponentProps & {
@@ -70,14 +84,12 @@ function InternalToken({
   });
 
   const buildOptionDefinition = () => {
-    const isLabelAnElement = React.isValidElement(label);
+    const isLabelAnElement = isReactElement(label);
     const labelObject = !isLabelAnElement ? { label: String(label) } : { labelContent: label };
 
     if (isInline) {
       if (isLabelAnElement) {
-        throw new Error(
-          'Invariant violation: only plain text (strings or numbers) are supported when variant="inline".'
-        );
+        warnOnce('Label', `Only plain text (strings or numbers) are supported when variant="inline".`);
       }
 
       return {
@@ -103,6 +115,7 @@ function InternalToken({
       ref={__internalRootRef}
       className={clsx(
         styles.root,
+        testUtilStyles.root,
         !isInline ? styles['token-normal'] : styles['token-inline'],
         analyticsSelectors.token,
         baseProps.className
@@ -112,24 +125,18 @@ function InternalToken({
       aria-disabled={!!disabled}
       role={role ?? 'group'}
       onFocus={() => {
-        /* istanbul ignore next: Tested with integration tests */
         setShowTooltip(true);
       }}
       onBlur={() => {
-        /* istanbul ignore next: Tested with integration tests */
         setShowTooltip(false);
       }}
       onMouseEnter={() => {
-        /* istanbul ignore next: Tested with integration tests */
         setShowTooltip(true);
       }}
       onMouseLeave={() => {
-        /* istanbul ignore next: Tested with integration tests */
         setShowTooltip(false);
       }}
       tabIndex={!!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
-      // The below data attribute is to tell a potentially nested Popover to have less spacing between the text and the underline
-      data-token-inline={isInline || undefined}
     >
       <div
         className={clsx(
@@ -160,8 +167,8 @@ function InternalToken({
         )}
       </div>
       {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
-        /* istanbul ignore next: Tested with integration tests */
         <Tooltip
+          data-testid="token-tooltip"
           trackRef={labelContainerRef}
           value={
             <LiveRegion>
@@ -169,10 +176,7 @@ function InternalToken({
             </LiveRegion>
           }
           size="medium"
-          // This is a non-existant class for testing purposes
-          className="token-tooltip"
           onDismiss={() => {
-            /* istanbul ignore next: Tested with integration tests */
             setShowTooltip(false);
           }}
         />

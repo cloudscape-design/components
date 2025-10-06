@@ -4,7 +4,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import OptionWrapper from '../internal/option';
 
-import selectors from '../../../token/styles.selectors.js';
+import selectors from '../../../token/test-classes/styles.selectors.js';
 
 export default class TokenWrapper extends ComponentWrapper {
   static rootSelector: string = selectors.root;

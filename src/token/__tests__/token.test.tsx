@@ -66,12 +66,12 @@ describe('Token', () => {
       expect(wrapper.getElement()).not.toHaveClass(styles['token-normal']);
     });
 
-    test('sets data-token-inline attribute for inline variant only', () => {
+    test('applies correct CSS classes for inline variant', () => {
       const inlineWrapper = renderToken({ label: 'Test token', variant: 'inline' });
-      expect(inlineWrapper.getElement()).toHaveAttribute('data-token-inline', 'true');
+      expect(inlineWrapper.getElement()).toHaveClass(styles['token-inline']);
 
       const normalWrapper = renderToken({ label: 'Test token' });
-      expect(normalWrapper.getElement()).not.toHaveAttribute('data-token-inline');
+      expect(normalWrapper.getElement()).toHaveClass(styles['token-normal']);
     });
   });
 
@@ -154,61 +154,39 @@ describe('Token', () => {
     });
   });
 
-  describe('Error handling', () => {
-    test('throws error when using JSX content with inline variant', () => {
-      // Mock console.error to avoid noise in test output
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  describe('Error handling for inline variants', () => {
+    test('React elements trigger a dev warning', () => {
+      // Mock console.warn to capture the warning
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
-      expect(() => {
-        renderToken({
-          variant: 'inline',
-          label: <div>JSX content not allowed</div>,
-        });
-      }).toThrow('Invariant violation: only plain text (strings or numbers) are supported when variant="inline".');
+      // Positive case: React element with inline variant should trigger warning
+      renderToken({
+        variant: 'inline',
+        label: <span data-testid="react-element">React element</span>,
+      });
 
-      consoleSpy.mockRestore();
-    });
-
-    test('throws error when using React element with inline variant', () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-      expect(() => {
-        renderToken({
-          variant: 'inline',
-          label: <span>React element not allowed</span>,
-        });
-      }).toThrow('Invariant violation: only plain text (strings or numbers) are supported when variant="inline".');
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining(
+          '[AwsUi] [Label] Only plain text (strings or numbers) are supported when variant="inline"'
+        )
+      );
 
       consoleSpy.mockRestore();
     });
 
-    test('does not throw error when using JSX content with normal variant', () => {
-      expect(() => {
-        renderToken({
-          variant: 'normal',
-          label: <div data-testid="jsx-content">JSX content allowed</div>,
-        });
-      }).not.toThrow();
+    test('strings do not throw a dev warning', () => {
+      // Mock console.warn to capture any warnings
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
-      expect(screen.getByTestId('jsx-content')).toBeInTheDocument();
-    });
+      // Negative case: string with inline variant should not trigger warning
+      renderToken({
+        variant: 'inline',
+        label: 'String label',
+      });
 
-    test('does not throw error when using plain text with inline variant', () => {
-      expect(() => {
-        renderToken({
-          variant: 'inline',
-          label: 'Plain text is allowed',
-        });
-      }).not.toThrow();
-    });
+      expect(consoleSpy).not.toHaveBeenCalled();
 
-    test('does not throw error when using numbers with inline variant', () => {
-      expect(() => {
-        renderToken({
-          variant: 'inline',
-          label: 42,
-        });
-      }).not.toThrow();
+      consoleSpy.mockRestore();
     });
   });
 
@@ -236,6 +214,17 @@ describe('Token', () => {
 
       expect(ariaLabelledby).toBe(labelId);
       expect(ariaLabelledby).toBeTruthy();
+    });
+
+    test('uses ariaLabel when provided instead of aria-labelledby', () => {
+      const wrapper = renderToken({
+        label: 'Test token',
+        ariaLabel: 'Custom aria label',
+      });
+      const tokenElement = wrapper.getElement();
+
+      expect(tokenElement).toHaveAttribute('aria-label', 'Custom aria label');
+      expect(tokenElement).not.toHaveAttribute('aria-labelledby');
     });
   });
 });
