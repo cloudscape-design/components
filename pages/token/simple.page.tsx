@@ -5,7 +5,6 @@ import { range } from 'lodash';
 
 import { Popover } from '~components';
 import Box from '~components/box';
-import Button from '~components/button';
 import Icon from '~components/icon';
 import Input from '~components/input';
 import TokenList from '~components/internal/components/token-list';
@@ -25,7 +24,6 @@ const LONG_LABEL = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
 
 export default function GenericTokenPage() {
   const [files, setFiles] = useState(range(0, 4));
-  const [variableValue, setVariableValue] = useState('');
 
   const onDismiss = (itemIndex: number) => {
     const newItems = [...files];
@@ -44,111 +42,6 @@ export default function GenericTokenPage() {
           label="The quick brown fox jumps over the lazy dog"
           tooltipContent="The quick brown fox jumps over the lazy dog"
         />
-        <Token
-          variant="inline"
-          ariaLabel="Inline token with a popover"
-          label={
-            <Popover
-              triggerType="text-inline"
-              position="top"
-              header="test"
-              content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
-            >
-              Inline token with a popover
-            </Popover>
-          }
-        />
-        <Token
-          variant="inline"
-          ariaLabel="Inline token with icon and popover"
-          label={
-            <Popover
-              triggerType="text-inline"
-              position="top"
-              header="test"
-              content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
-            >
-              Inline token with icon and popover
-            </Popover>
-          }
-          icon={<Icon name="bug" size="small" />}
-        />
-        <Token
-          data-testid="inline-token-with-icon-dismissable-with-popover"
-          variant="inline"
-          ariaLabel="Inline token dismissable with icon and popover"
-          dismissLabel="Dismiss token with popover"
-          label={
-            <Popover
-              triggerType="text-inline"
-              position="top"
-              header="test"
-              content={<Input placeholder="Enter value" value="" onChange={() => {}} />}
-            >
-              Inline token dismissable with icon and popover
-            </Popover>
-          }
-          icon={<Icon data-testid="edit-icon-small" name="edit" size="small" />}
-          onDismiss={() => {}}
-        />
-        <div style={{ maxWidth: '100%', display: 'inline', verticalAlign: 'middle' }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo{' '}
-          <Token
-            variant="inline"
-            ariaLabel="<some-variable-name>"
-            label={
-              <Popover
-                triggerType="text-inline"
-                size="large"
-                header="<some-variable-name>"
-                content={
-                  <SpaceBetween size="m">
-                    <Input
-                      placeholder="Enter value for variable"
-                      value={variableValue}
-                      onChange={({ detail }) => setVariableValue(detail.value)}
-                    />
-                    <Box float="right">
-                      <Button onClick={() => setVariableValue('')}>Clear</Button>
-                    </Box>
-                  </SpaceBetween>
-                }
-              >
-                {variableValue.length > 0 ? variableValue : '<some-variable-name>'}
-              </Popover>
-            }
-          />{' '}
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident,{' '}
-          <Token
-            variant="inline"
-            ariaLabel="<some-disabled-variable-name>"
-            disabled={true}
-            label={
-              <Popover
-                triggerType="text-inline"
-                size="large"
-                header="<some-disabled-variable-name>"
-                content={
-                  <SpaceBetween size="m">
-                    <Input
-                      placeholder="Enter value for variable"
-                      value={variableValue}
-                      onChange={({ detail }) => setVariableValue(detail.value)}
-                    />
-                    <Box float="right">
-                      <Button onClick={() => setVariableValue('')}>Clear</Button>
-                    </Box>
-                  </SpaceBetween>
-                }
-              >
-                {variableValue.length > 0 ? variableValue : '<some-disabled-variable-name>'}
-              </Popover>
-            }
-          />{' '}
-          sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </div>
         <Token data-testid="inline-token-long-text" variant="inline" label={LONG_LABEL} tooltipContent={LONG_LABEL} />
         <Token variant="inline" label="Inline readonly token" readOnly={true} />
         <Token variant="inline" label="Inline disabled token" disabled={true} />
@@ -216,6 +109,7 @@ export default function GenericTokenPage() {
               Standalone token with popover
             </Popover>
           }
+          labelTag="Test"
           onDismiss={() => {}}
           dismissLabel="Dismiss normal token with popover"
         />
@@ -251,7 +145,7 @@ export default function GenericTokenPage() {
           description="some description"
           labelTag="test"
           tags={['tag', 'tag']}
-          icon={<Icon name="bug" />}
+          icon={<Icon name="bug" data-testid="token-bug-icon" />}
           onDismiss={() => {}}
         />
 

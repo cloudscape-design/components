@@ -11,7 +11,7 @@ import createWrapper, {
 import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
 import selectableStyles from '../../../lib/components/internal/components/selectable-item/styles.selectors.js';
 import propertyFilterStyles from '../../../lib/components/property-filter/styles.selectors.js';
-import tokenStyles from '../../../lib/components/token/styles.selectors.js';
+import tokenStyles from '../../../lib/components/token/test-classes/styles.selectors.js';
 
 export function createExtendedWrapper() {
   const wrapper = createWrapper().findPropertyFilter()!;

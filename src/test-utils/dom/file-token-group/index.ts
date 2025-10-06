@@ -5,7 +5,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import selectors from '../../../file-token-group/styles.selectors.js';
 import testSelectors from '../../../file-token-group/test-classes/styles.selectors.js';
 import formFieldStyles from '../../../form-field/styles.selectors.js';
-import tokenSelectors from '../../../token/styles.selectors.js';
+import tokenSelectors from '../../../token/test-classes/styles.selectors.js';
 
 export default class FileTokenGroupWrapper extends ComponentWrapper {
   static rootSelector: string = testSelectors.root;

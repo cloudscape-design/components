@@ -14,7 +14,7 @@ interface LabelProps {
   labelContainerRef?: React.RefObject<HTMLSpanElement>;
   labelRef?: React.RefObject<HTMLSpanElement>;
   labelId?: string;
-  label?: React.ReactNode;
+  label?: string;
   prefix?: string;
   highlightText?: string;
   triggerVariant: boolean;
@@ -28,24 +28,18 @@ export const Label = ({
   highlightText,
   triggerVariant,
 }: LabelProps) => {
-  // If label is not JSX, use the normal label structure with Highlight matching, else render the JSX
-  if (!React.isValidElement(label)) {
-    const stringLabel = label ? String(label) : undefined;
-    return (
-      <span
-        id={labelId}
-        ref={labelContainerRef}
-        className={clsx(styles.label, analyticsSelectors.label, triggerVariant && styles['trigger-variant'])}
-      >
-        {prefix && (
-          <span className={clsx(styles['label-prefix'], triggerVariant && styles['trigger-variant'])}>{prefix} </span>
-        )}
-        <HighlightMatch labelRef={labelRef} str={stringLabel} highlightText={highlightText} />
-      </span>
-    );
-  } else {
-    return <div className={clsx(styles.label, analyticsSelectors.label)}>{label}</div>;
-  }
+  return (
+    <span
+      id={labelId}
+      ref={labelContainerRef}
+      className={clsx(styles.label, analyticsSelectors.label, triggerVariant && styles['trigger-variant'])}
+    >
+      {prefix && (
+        <span className={clsx(styles['label-prefix'], triggerVariant && styles['trigger-variant'])}>{prefix} </span>
+      )}
+      <HighlightMatch labelRef={labelRef} str={label} highlightText={highlightText} />
+    </span>
+  );
 };
 
 interface LabelTagProps {

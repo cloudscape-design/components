@@ -81,6 +81,11 @@ describe('TokenGroup', () => {
   describe('Token', () => {
     const findToken = (wrapper: TokenGroupWrapper) => wrapper.findToken(1);
 
+    test('displays option', () => {
+      const wrapper = renderTokenGroup({ items, onDismiss });
+      expect(wrapper.findToken(1)!.findOption()).not.toBeNull();
+    });
+
     test('displays dismiss area', () => {
       const wrapper = renderTokenGroup({ items, onDismiss });
 

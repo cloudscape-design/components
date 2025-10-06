@@ -10,19 +10,6 @@ class TokenPage extends BasePageObject {
     return createWrapper().findToken(selector);
   }
 
-  async hoverToken(selector: string) {
-    await this.hoverElement(this.getTokenWrapper(selector).toSelector());
-  }
-
-  isTooltipVisible() {
-    return this.isExisting(createWrapper().findByClassName('token-tooltip').toSelector());
-  }
-
-  async getTooltipContent() {
-    await this.waitForVisible(createWrapper().findByClassName('token-tooltip').toSelector());
-    return this.getText(createWrapper().find('[data-testid="tooltip-live-region-content"]').toSelector());
-  }
-
   isTokenDismissButtonPresent(selector: string) {
     const tokenWrapper = this.getTokenWrapper(selector);
     const dismissButton = tokenWrapper.findDismiss();
@@ -30,15 +17,7 @@ class TokenPage extends BasePageObject {
   }
 
   isIconVisible(iconTestId: string) {
-    return this.isExisting(`[data-testid="${iconTestId}"]`);
-  }
-
-  async focusElement(selector: string) {
-    await this.click(selector);
-  }
-
-  async pause(ms: number) {
-    await this.browser.pause(ms);
+    return this.isExisting(iconTestId);
   }
 
   getTokenLabelTag(selector: string) {
@@ -54,6 +33,11 @@ class TokenPage extends BasePageObject {
   getTokenDescription(selector: string) {
     const tokenWrapper = this.getTokenWrapper(selector);
     return tokenWrapper.findDescription();
+  }
+
+  getTokenTags(selector: string) {
+    const tokenWrapper = this.getTokenWrapper(selector);
+    return tokenWrapper.findTags();
   }
 }
 
@@ -71,7 +55,7 @@ describe('Token component', () => {
     test(
       'inline token displays correct label',
       setupTest(async page => {
-        const label = await page.getTokenLabel('[data-testid="basic-inline-token"]');
+        const label = page.getTokenLabel('[data-testid="basic-inline-token"]');
         const labelText = await page.getText(label.toSelector());
         expect(labelText).toBe('Inline token');
       })
@@ -81,46 +65,54 @@ describe('Token component', () => {
       'dismissable token has dismiss button',
       setupTest(async page => {
         const hasDismissButton = await page.isTokenDismissButtonPresent('[data-testid="inline-token-dismissable"]');
-        expect(hasDismissButton).toBe(true);
-      })
-    );
-  });
-
-  describe('Tooltip behavior', () => {
-    test(
-      'tooltip shows for truncated inline token on hover',
-      setupTest(async page => {
-        const selector = '[data-testid="inline-token-long-text"]';
-        const label = await page.getTokenLabel(selector);
-        const labelText = await page.getText(label.toSelector());
-
-        await page.hoverToken(selector);
-        const isTooltipVisible = await page.isTooltipVisible();
-        expect(isTooltipVisible).toBe(true);
-
-        const tooltipContent = await page.getTooltipContent();
-        expect(tooltipContent).toBe(labelText);
+        expect(hasDismissButton).toBeTruthy();
       })
     );
 
     test(
-      'tooltip shows for truncated inline token on focus',
+      'token with icon displays icon correctly',
       setupTest(async page => {
-        const selector = '[data-testid="inline-token-long-text"]';
-        await page.focusElement(page.getTokenWrapper(selector).toSelector());
-        const isTooltipVisible = await page.isTooltipVisible();
-        expect(isTooltipVisible).toBe(true);
+        // Check if the token with icon exists
+        const tokenSelector = '[data-testid="normal-token-with-icon-dismissable"]';
+        const tokenWrapper = page.getTokenWrapper(tokenSelector);
+        const tokenExists = await page.isExisting(tokenWrapper.toSelector());
+        expect(tokenExists).toBeTruthy();
+
+        // Use the isIconVisible method to check for the specific icon
+        const iconExists = await page.isIconVisible('[data-testid="token-bug-icon"]');
+        expect(iconExists).toBeTruthy();
       })
     );
 
     test(
-      'no tooltip for short inline tokens',
+      'token displays label tag',
       setupTest(async page => {
-        const selector = '[data-testid="basic-inline-token"]';
-        await page.hoverToken(selector);
-        await page.pause(300);
-        const isTooltipVisible = await page.isTooltipVisible();
-        expect(isTooltipVisible).toBe(false);
+        const labelTag = page.getTokenLabelTag('[data-testid="normal-token-dismissable"]');
+        const labelTagText = await page.getText(labelTag.toSelector());
+        expect(labelTagText).toBe('test');
+      })
+    );
+
+    test(
+      'token displays description',
+      setupTest(async page => {
+        const description = page.getTokenDescription('[data-testid="normal-token-with-icon-dismissable"]');
+        const descriptionText = await page.getText(description.toSelector());
+        expect(descriptionText).toBe('some description');
+      })
+    );
+
+    test(
+      'token displays tags correctly',
+      setupTest(async page => {
+        const tokenSelector = '[data-testid="normal-token-with-icon-dismissable"]';
+        const tags = page.getTokenTags(tokenSelector);
+        const tagsExist = await page.isExisting(tags.toSelector());
+        expect(tagsExist).toBeTruthy();
+
+        // Check the text content of the tags
+        const tagsText = await page.getText(tags.toSelector());
+        expect(tagsText).toContain('tag');
       })
     );
   });

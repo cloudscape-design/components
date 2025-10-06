@@ -10,6 +10,7 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/e
 import { GeneratedAnalyticsMetadataTokenDismiss } from './analytics-metadata/interfaces';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 interface DismissButtonProps {
   disabled?: boolean;
@@ -35,7 +36,11 @@ function DismissButton(
     <button
       ref={ref}
       type="button"
-      className={clsx(styles[`dismiss-button`], inline && styles['dismiss-button-inline'])}
+      className={clsx(
+        styles['dismiss-button'],
+        testUtilStyles['dismiss-button'],
+        inline && styles['dismiss-button-inline']
+      )}
       aria-disabled={disabled || readOnly ? true : undefined}
       onClick={() => {
         if (disabled || readOnly || !onDismiss) {
@@ -47,7 +52,7 @@ function DismissButton(
       aria-label={dismissLabel}
       {...(disabled || readOnly ? {} : getAnalyticsMetadataAttribute(analyticsMetadata))}
     >
-      <InternalIcon className={clsx(inline && styles['dismiss-icon-inline'])} name="close" />
+      <InternalIcon name="close" />
     </button>
   );
 }

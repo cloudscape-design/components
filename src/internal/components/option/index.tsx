@@ -10,6 +10,7 @@ import { isDevelopment } from '../../is-development';
 import { OptionProps } from './interfaces';
 import { Description, FilteringTags, Label, LabelTag, OptionIcon, Tags } from './option-parts';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export { OptionProps };
@@ -73,52 +74,8 @@ const Option = ({
     />
   );
 
-  // If labelContent is defined it is expected to be JSX, this is not safe to nest in a span so this condition nests it in a div instead.
-  if (option.labelContent) {
-    return (
-      <div {...baseProps} data-value={option.value} className={className} lang={option.lang}>
-        {icon}
-        <div className={styles.content}>
-          <div className={styles['label-content']}>
-            <Label
-              labelContainerRef={labelContainerRef}
-              labelRef={labelRef}
-              labelId={labelId}
-              label={option.labelContent}
-              prefix={option.__labelPrefix}
-              highlightText={highlightText}
-              triggerVariant={triggerVariant}
-            />
-            <LabelTag labelTag={option.labelTag} highlightText={highlightText} triggerVariant={triggerVariant} />
-          </div>
-          <Description
-            description={option.description}
-            highlightedOption={highlightedOption}
-            selectedOption={selectedOption}
-            highlightText={highlightText}
-            triggerVariant={triggerVariant}
-          />
-          <Tags
-            tags={option.tags}
-            highlightedOption={highlightedOption}
-            selectedOption={selectedOption}
-            highlightText={highlightText}
-            triggerVariant={triggerVariant}
-          />
-          <FilteringTags
-            filteringTags={option.filteringTags}
-            highlightedOption={highlightedOption}
-            selectedOption={selectedOption}
-            highlightText={highlightText}
-            triggerVariant={triggerVariant}
-          />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <span
+    <div
       {...baseProps}
       data-value={option.value}
       className={className}
@@ -126,19 +83,23 @@ const Option = ({
       title={!disableTitleTooltip ? (option.label ?? option.value) : undefined}
     >
       {icon}
-      <span className={styles.content}>
-        <span className={styles['label-content']}>
-          <Label
-            labelContainerRef={labelContainerRef}
-            labelRef={labelRef}
-            labelId={labelId}
-            label={option.label ?? option.value}
-            prefix={option.__labelPrefix}
-            highlightText={highlightText}
-            triggerVariant={triggerVariant}
-          />
+      <div className={styles.content}>
+        <div className={styles['label-content']}>
+          {option.labelContent ? (
+            <div className={clsx(styles.label, analyticsSelectors.label)}>{option.labelContent}</div>
+          ) : (
+            <Label
+              labelContainerRef={labelContainerRef}
+              labelRef={labelRef}
+              labelId={labelId}
+              label={option.label ?? option.value}
+              prefix={option.__labelPrefix}
+              highlightText={highlightText}
+              triggerVariant={triggerVariant}
+            />
+          )}
           <LabelTag labelTag={option.labelTag} highlightText={highlightText} triggerVariant={triggerVariant} />
-        </span>
+        </div>
         <Description
           description={option.description}
           highlightedOption={highlightedOption}
@@ -160,8 +121,8 @@ const Option = ({
           highlightText={highlightText}
           triggerVariant={triggerVariant}
         />
-      </span>
-    </span>
+      </div>
+    </div>
   );
 };
 

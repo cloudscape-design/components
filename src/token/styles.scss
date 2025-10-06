@@ -23,6 +23,7 @@
   padding-inline: awsui.$space-xxs;
   color: awsui.$color-text-button-inline-icon-default;
   background-color: transparent;
+  cursor: pointer;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(0px);
@@ -34,7 +35,6 @@
   }
 
   &:hover {
-    cursor: pointer;
     color: awsui.$color-text-button-inline-icon-hover;
   }
 
@@ -44,13 +44,6 @@
     align-items: center;
     align-self: center;
   }
-}
-
-.dismiss-icon-inline {
-  // !important is essential here to remove padding from the icon
-  padding-block: 0 !important;
-  inline-size: constants.$icon-width;
-  max-block-size: constants.$icon-width;
 }
 
 .icon {
@@ -82,8 +75,6 @@
 }
 
 .token-option-inline {
-  // !important is essential here to center nested content inside the option
-  align-items: center !important;
   max-block-size: constants.$token-max-height-inline;
 }
 
@@ -114,9 +105,9 @@
 
   > .dismiss-button {
     color: awsui.$color-text-button-inline-icon-disabled;
+    cursor: initial;
 
     &:hover {
-      cursor: initial;
       color: awsui.$color-text-button-inline-icon-disabled;
     }
   }
