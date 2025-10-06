@@ -143,14 +143,9 @@ describe('Collection preferences - Content Display preference', () => {
   });
 
   describe('reorders content with keyboard', () => {
-    test(
+    (process.env.REACT_VERSION !== '18' ? test : test.skip)(
       'cancels reordering when pressing Escape',
       setupTest(async page => {
-        // TODO: fix test for React 18
-        if ((await page.getReactVersion()) === '18') {
-          return;
-        }
-
         page.wrapper = createWrapper().findCollectionPreferences('.cp-1');
         await page.openCollectionPreferencesModal();
 
