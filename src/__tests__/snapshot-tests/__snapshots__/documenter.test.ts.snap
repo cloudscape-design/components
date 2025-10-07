@@ -3295,7 +3295,10 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     {
-      "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
+
+Note that the \`matchesCount\` includes the \`enteredTextLabel\` ("Use \${value}") item, so in most cases you
+should subtract 1 from \`matchesCount\`. If using manual filtering, you should provide your own value for \`totalCount\`.",
       "inlineType": {
         "name": "(matchesCount: number, totalCount: number) => string",
         "parameters": [
