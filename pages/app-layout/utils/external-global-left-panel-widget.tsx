@@ -21,6 +21,13 @@ const AIDrawer = () => {
       >
         expand programmatically
       </Button>
+      <Button
+        onClick={() => {
+          updateDrawer({ type: 'exitExpandedMode' });
+        }}
+      >
+        exit expanded mode
+      </Button>
       {new Array(100).fill(null).map((_, index) => (
         <div key={index}>Tela content</div>
       ))}

@@ -33,7 +33,7 @@ function useRuntimeAiDrawer(
       }
       return;
     }
-    if (aiDrawer && aiDrawer.id !== event.payload.id) {
+    if (aiDrawer && 'payload' in event && aiDrawer.id !== event.payload.id) {
       metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-id', { oldId: aiDrawer?.id, newId: event.payload.id });
       return;
     }
@@ -52,6 +52,9 @@ function useRuntimeAiDrawer(
         break;
       case 'expandDrawer':
         setExpandedDrawerIdStable(event.payload.id);
+        break;
+      case 'exitExpandedMode':
+        setExpandedDrawerIdStable(null);
         break;
       /* istanbul ignore next: this code is not intended to be visited */
       default:

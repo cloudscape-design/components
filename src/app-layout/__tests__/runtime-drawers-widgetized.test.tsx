@@ -151,7 +151,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
   });
 
-  test('should enter focus mode in global ai drawer via API', () => {
+  test('should enter and exit focus mode in global ai drawer via API', () => {
     awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, isExpandable: true, defaultActive: true });
 
     const { globalDrawersWrapper } = renderComponent(<AppLayout />);
@@ -161,6 +161,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
 
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isDrawerInExpandedMode()).toBe(true);
     expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
+
+    act(() => awsuiWidgetPlugins.updateDrawer({ type: 'exitExpandedMode' }));
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isDrawerInExpandedMode()).toBe(false);
+    expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
   });
 
   test('onResize functionality', () => {
