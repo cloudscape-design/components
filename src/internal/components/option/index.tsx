@@ -42,6 +42,7 @@ const Option = ({
   }
   const { disabled } = option;
   const baseProps = getBaseProps(restProps);
+  const SpanOrDivTag = option.labelContent ? 'div' : 'span';
 
   if (isDevelopment) {
     validateStringValue(option.label, 'label');
@@ -75,7 +76,7 @@ const Option = ({
   );
 
   return (
-    <div
+    <SpanOrDivTag
       {...baseProps}
       data-value={option.value}
       className={className}
@@ -83,10 +84,10 @@ const Option = ({
       title={!disableTitleTooltip ? (option.label ?? option.value) : undefined}
     >
       {icon}
-      <div className={styles.content}>
-        <div className={styles['label-content']}>
+      <SpanOrDivTag className={styles.content}>
+        <SpanOrDivTag className={styles['label-content']}>
           {option.labelContent ? (
-            <div className={clsx(styles.label, analyticsSelectors.label)}>{option.labelContent}</div>
+            <SpanOrDivTag className={clsx(styles.label, analyticsSelectors.label)}>{option.labelContent}</SpanOrDivTag>
           ) : (
             <Label
               labelContainerRef={labelContainerRef}
@@ -99,7 +100,7 @@ const Option = ({
             />
           )}
           <LabelTag labelTag={option.labelTag} highlightText={highlightText} triggerVariant={triggerVariant} />
-        </div>
+        </SpanOrDivTag>
         <Description
           description={option.description}
           highlightedOption={highlightedOption}
@@ -121,8 +122,8 @@ const Option = ({
           highlightText={highlightText}
           triggerVariant={triggerVariant}
         />
-      </div>
-    </div>
+      </SpanOrDivTag>
+    </SpanOrDivTag>
   );
 };
 
