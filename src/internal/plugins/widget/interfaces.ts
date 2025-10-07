@@ -57,11 +57,13 @@ export type UpdateDrawerConfigMessage = Message<
 export type OpenDrawerMessage = Message<'openDrawer', { id: string }>;
 export type CloseDrawerMessage = Message<'closeDrawer', { id: string }>;
 export type ResizeDrawerMessage = Message<'resizeDrawer', { id: string; size: number }>;
+export type ExpandDrawerMessage = Message<'expandDrawer', { id: string }>;
 
 export type AppLayoutUpdateMessage =
   | UpdateDrawerConfigMessage
   | OpenDrawerMessage
   | CloseDrawerMessage
-  | ResizeDrawerMessage;
+  | ResizeDrawerMessage
+  | ExpandDrawerMessage;
 
 export type AppLayoutMessage = RegisterDrawerMessage | AppLayoutUpdateMessage;

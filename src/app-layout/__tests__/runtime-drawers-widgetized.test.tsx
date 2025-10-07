@@ -151,6 +151,18 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
   });
 
+  test('should enter focus mode in global ai drawer via API', () => {
+    awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, isExpandable: true, defaultActive: true });
+
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)).toBeTruthy();
+
+    act(() => awsuiWidgetPlugins.updateDrawer({ type: 'expandDrawer', payload: { id: drawerDefaults.id } }));
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isDrawerInExpandedMode()).toBe(true);
+    expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
+  });
+
   test('onResize functionality', () => {
     const onResize = jest.fn();
     awsuiWidgetPlugins.registerLeftDrawer({

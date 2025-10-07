@@ -3,8 +3,8 @@
 import React from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
-import { Box } from '~components';
-import { registerLeftDrawer } from '~components/internal/plugins/widget';
+import { Box, Button } from '~components';
+import { registerLeftDrawer, updateDrawer } from '~components/internal/plugins/widget';
 
 import styles from '../styles.scss';
 
@@ -14,6 +14,13 @@ const AIDrawer = () => {
       <Box variant="h2" padding={{ bottom: 'm' }}>
         Chat demo
       </Box>
+      <Button
+        onClick={() => {
+          updateDrawer({ type: 'expandDrawer', payload: { id: 'amazon-q' } });
+        }}
+      >
+        expand programmatically
+      </Button>
       {new Array(100).fill(null).map((_, index) => (
         <div key={index}>Tela content</div>
       ))}
