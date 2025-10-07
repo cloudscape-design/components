@@ -21,7 +21,8 @@ function useRuntimeAiDrawer(
   isEnabled: boolean,
   activeAiDrawerId: string | null,
   onActiveAiDrawerChange: (newDrawerId: string | null, { initiatedByUserAction }: OnChangeParams) => void,
-  onActiveAiDrawerResize: (size: number) => void
+  onActiveAiDrawerResize: (size: number) => void,
+  setExpandedDrawerId: (value: string | null) => void
 ) {
   const [aiDrawer, setAiDrawer] = useState<RuntimeAiDrawerConfig | null>(null);
   const appLayoutMessageHandler = useStableCallback((event: AppLayoutMessage) => {
@@ -32,7 +33,7 @@ function useRuntimeAiDrawer(
       }
       return;
     }
-    if (aiDrawer && aiDrawer.id !== event.payload.id) {
+    if (aiDrawer && 'payload' in event && aiDrawer.id !== event.payload.id) {
       metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-id', { oldId: aiDrawer?.id, newId: event.payload.id });
       return;
     }
@@ -49,6 +50,12 @@ function useRuntimeAiDrawer(
       case 'resizeDrawer':
         onActiveAiDrawerResizeStable(event.payload.size);
         break;
+      case 'expandDrawer':
+        setExpandedDrawerIdStable(event.payload.id);
+        break;
+      case 'exitExpandedMode':
+        setExpandedDrawerIdStable(null);
+        break;
       /* istanbul ignore next: this code is not intended to be visited */
       default:
         assertNever(event);
@@ -57,6 +64,7 @@ function useRuntimeAiDrawer(
   const onAiDrawersChangeStable = useStableCallback(onActiveAiDrawerChange);
   const onActiveAiDrawerResizeStable = useStableCallback(onActiveAiDrawerResize);
   const onActiveAiDrawerChangeStable = useStableCallback(onActiveAiDrawerChange);
+  const setExpandedDrawerIdStable = useStableCallback(setExpandedDrawerId);
   const aiDrawerWasOpenRef = useRef(false);
   aiDrawerWasOpenRef.current = aiDrawerWasOpenRef.current || !!activeAiDrawerId;
 
@@ -122,7 +130,13 @@ export function useAiDrawer({ isEnabled, onAiDrawerFocus, expandedDrawerId, setE
     onAiDrawerFocus?.();
   }
 
-  const aiDrawer = useRuntimeAiDrawer(isEnabled, activeAiDrawerId, onActiveAiDrawerChange, onActiveAiDrawerResize);
+  const aiDrawer = useRuntimeAiDrawer(
+    isEnabled,
+    activeAiDrawerId,
+    onActiveAiDrawerChange,
+    onActiveAiDrawerResize,
+    setExpandedDrawerId
+  );
   const activeAiDrawer = activeAiDrawerId && activeAiDrawerId === aiDrawer?.id ? aiDrawer : null;
   const activeAiDrawerSize = activeAiDrawerId ? (size ?? activeAiDrawer?.defaultSize ?? MIN_DRAWER_SIZE) : 0;
   const minAiDrawerSize = Math.min(activeAiDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
