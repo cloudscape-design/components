@@ -71,12 +71,20 @@
   #{custom-props.$dragHandleAnimationBlockOffset}: -20px;
 }
 
-.direction-button-wrapper-inline-start,
-.direction-button-wrapper-inline-end.direction-button-wrapper-rtl {
-  #{custom-props.$dragHandleAnimationInlineOffset}: 20px;
+.direction-button-wrapper-inline-start {
+  @include styles.with-direction('ltr') {
+    #{custom-props.$dragHandleAnimationInlineOffset}: 20px;
+  }
+  @include styles.with-direction('rtl') {
+    #{custom-props.$dragHandleAnimationInlineOffset}: -20px;
+  }
 }
 
-.direction-button-wrapper-inline-end,
-.direction-button-wrapper-inline-start.direction-button-wrapper-rtl {
-  #{custom-props.$dragHandleAnimationInlineOffset}: -20px;
+.direction-button-wrapper-inline-end {
+  @include styles.with-direction('ltr') {
+    #{custom-props.$dragHandleAnimationInlineOffset}: -20px;
+  }
+  @include styles.with-direction('rtl') {
+    #{custom-props.$dragHandleAnimationInlineOffset}: 20px;
+  }
 }
