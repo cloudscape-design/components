@@ -19,6 +19,7 @@ interface HorizontalLayoutInput {
 }
 
 export const CONTENT_PADDING = 2 * 24; // space-xl
+const MOBILE_BREAKPOINT = 688;
 
 export function computeHorizontalLayout({
   navigationOpen,
@@ -51,7 +52,8 @@ export function computeHorizontalLayout({
   const maxSplitPanelSize = Math.max(resizableSpaceAvailable - totalActiveGlobalDrawersSize - activeDrawerSize, 0);
   resizableSpaceAvailable -= sideSplitPanelSize;
   const maxDrawerSize = resizableSpaceAvailable - totalActiveGlobalDrawersSize;
-  const maxAiDrawerSize = resizableSpaceAvailable - totalActiveGlobalDrawersSize + activeAiDrawerSize;
+  // let the ai drawer be resized until the "main screen" hits the mobile breakpoint to have consistent UX
+  const maxAiDrawerSize = placement.inlineSize - MOBILE_BREAKPOINT;
   const maxGlobalDrawersSizes: Record<string, number> = Object.keys(activeGlobalDrawersSizes).reduce(
     (acc, drawerId) => {
       return {
