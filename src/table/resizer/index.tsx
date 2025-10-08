@@ -11,6 +11,7 @@ import DragHandleWrapper from '../../internal/components/drag-handle-wrapper';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
+import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { getHeaderWidth, getResizerElements } from './resizer-lookup';
 
@@ -53,12 +54,14 @@ export function Resizer({
   const isVisualRefresh = useVisualRefresh();
 
   const separatorId = useUniqueId();
-  const resizerToggleRef = useRef<HTMLButtonElement>(null);
-  const resizerSeparatorRef = useRef<HTMLSpanElement>(null);
+  const positioningWrapperRef = useRef<HTMLDivElement | null>(null);
+  const resizerToggleRef = useRef<HTMLButtonElement | null>(null);
+  const resizerSeparatorRef = useRef<HTMLSpanElement | null>(null);
 
   const [isPointerDown, setIsPointerDown] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [showUapButtons, setShowUapButtons] = useState(false);
+  const [resizerObscured, setResizerObscured] = useState(false);
   const [isKeyboardDragging, setIsKeyboardDragging] = useState(false);
   const autoGrowTimeout = useRef<ReturnType<typeof setTimeout> | undefined>();
   const [resizerHasFocus, setResizerHasFocus] = useState(false);
@@ -68,6 +71,70 @@ export function Resizer({
   useEffect(() => {
     setHeaderCellWidth(getHeaderWidth(resizerToggleRef.current));
   }, []);
+
+  const isObscured = useCallback(() => {
+    const elements = getResizerElements(resizerToggleRef.current);
+    if (!elements || !positioningWrapperRef.current) {
+      return false;
+    }
+
+    let scrollPaddingInlineStart = 0;
+    let scrollPaddingInlineEnd = 0;
+
+    // Calculate size of the headers at the exact moment of the call to deal
+    // with auto-width columns and cached sticky column state.
+    elements.allHeaders.forEach(header => {
+      const { inlineSize } = getLogicalBoundingClientRect(header);
+      if (header.style.insetInlineStart) {
+        scrollPaddingInlineStart += inlineSize;
+      }
+      if (header.style.insetInlineEnd) {
+        scrollPaddingInlineEnd += inlineSize;
+      }
+    });
+
+    const { insetInlineStart: scrollParentInsetInlineStart, insetInlineEnd: scrollParentInsetInlineEnd } =
+      getLogicalBoundingClientRect(elements.scrollParent);
+    const { insetInlineStart, insetInlineEnd, inlineSize } = getLogicalBoundingClientRect(elements.header);
+    const relativeInsetInlineStart = insetInlineStart - scrollParentInsetInlineStart;
+    const relativeInsetInlineEnd = scrollParentInsetInlineEnd - insetInlineEnd;
+    const isSticky = !!elements.header.style.insetInlineStart || !!elements.header.style.insetInlineEnd;
+
+    return (
+      // Is positioningWrapper obscured behind the left edge of scrollParent?
+      Math.ceil(relativeInsetInlineStart + inlineSize) < (isSticky ? 0 : scrollPaddingInlineStart) ||
+      // Is positioningWrapper obscured behind the right edge of scrollParent?
+      Math.ceil(relativeInsetInlineEnd) < (isSticky ? 0 : scrollPaddingInlineEnd)
+    );
+  }, []);
+
+  const scrollIntoViewIfNeeded = useCallback(() => {
+    if (resizerSeparatorRef.current && isObscured()) {
+      scrollElementIntoView(resizerSeparatorRef.current);
+    }
+  }, [isObscured]);
+
+  useEffect(() => {
+    if (!showUapButtons) {
+      setResizerObscured(false);
+      return;
+    }
+
+    const elements = getResizerElements(resizerToggleRef.current);
+    if (!elements) {
+      return;
+    }
+
+    const onScroll = () => setResizerObscured(isObscured());
+    elements.scrollParent.addEventListener('scroll', onScroll);
+    return () => elements.scrollParent.removeEventListener('scroll', onScroll);
+  }, [isObscured, showUapButtons]);
+
+  useEffect(() => {
+    if (showUapButtons) {
+      setResizerObscured(isObscured());
+    }
+  }, [headerCellWidth, isObscured, showUapButtons]);
 
   const updateTrackerPosition = useCallback((newOffset: number) => {
     const elements = getResizerElements(resizerToggleRef.current);
@@ -180,9 +247,11 @@ export function Resizer({
               },
               onInlineStart: () => {
                 updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize - 10);
+                scrollIntoViewIfNeeded();
               },
               onInlineEnd: () => {
                 updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize + 10);
+                scrollIntoViewIfNeeded();
               },
             });
           }
@@ -234,6 +303,7 @@ export function Resizer({
     isKeyboardDragging,
     isPointerDown,
     resizerHasFocus,
+    scrollIntoViewIfNeeded,
     onWidthUpdateCommit,
     resizeColumn,
     updateColumnWidth,
@@ -249,18 +319,22 @@ export function Resizer({
   const { tabIndex: resizerTabIndex } = useSingleTabStopNavigation(resizerToggleRef, { tabIndex });
 
   return (
-    <div className={clsx(styles['resizer-wrapper'], isVisualRefresh && styles['is-visual-refresh'])}>
+    <div
+      className={clsx(styles['resizer-wrapper'], isVisualRefresh && styles['is-visual-refresh'])}
+      ref={positioningWrapperRef}
+    >
       <DragHandleWrapper
         clickDragThreshold={3}
         hideButtonsOnDrag={false}
         directions={{
-          'inline-start': headerCellWidth > minWidth ? 'active' : 'disabled',
-          'inline-end': 'active',
+          'inline-start': resizerObscured ? undefined : headerCellWidth > minWidth ? 'active' : 'disabled',
+          'inline-end': resizerObscured ? undefined : 'active',
         }}
         triggerMode="controlled"
-        controlledShowButtons={showUapButtons}
+        controlledShowButtons={showUapButtons && !resizerObscured}
         wrapperClassName={styles['resizer-button-wrapper']}
         tooltipText={tooltipText}
+        data-obscured={resizerObscured}
         onDirectionClick={direction => {
           const elements = getResizerElements(resizerToggleRef.current);
           if (!elements) {
@@ -269,10 +343,16 @@ export function Resizer({
 
           if (direction === 'inline-start') {
             updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize - 20);
-            requestAnimationFrame(onWidthUpdateCommit);
+            requestAnimationFrame(() => {
+              onWidthUpdateCommit();
+              scrollIntoViewIfNeeded();
+            });
           } else if (direction === 'inline-end') {
             updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize + 20);
-            requestAnimationFrame(onWidthUpdateCommit);
+            requestAnimationFrame(() => {
+              onWidthUpdateCommit();
+              scrollIntoViewIfNeeded();
+            });
           }
         }}
       >
