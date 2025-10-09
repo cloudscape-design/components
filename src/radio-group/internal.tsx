@@ -31,6 +31,7 @@ const InternalRadioGroup = React.forwardRef(
       readOnly,
       __internalRootRef,
       style,
+      direction,
       ...props
     }: InternalRadioGroupProps,
     ref: React.Ref<RadioGroupProps.Ref>
@@ -51,7 +52,7 @@ const InternalRadioGroup = React.forwardRef(
         aria-controls={ariaControls}
         aria-readonly={readOnly ? 'true' : undefined}
         {...baseProps}
-        className={clsx(baseProps.className, styles.root)}
+        className={clsx(baseProps.className, styles.root, direction === 'horizontal' && styles['horizontal-group'])}
         ref={__internalRootRef}
       >
         {items &&
@@ -69,6 +70,7 @@ const InternalRadioGroup = React.forwardRef(
               controlId={item.controlId}
               readOnly={readOnly}
               style={style}
+              className={direction === 'horizontal' ? styles.horizontal : undefined}
               {...getAnalyticsMetadataAttribute(
                 !item.disabled && !readOnly
                   ? {
