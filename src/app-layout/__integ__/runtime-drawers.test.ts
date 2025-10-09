@@ -158,6 +158,10 @@ describe('Visual refresh toolbar only', () => {
       return this.browser.execute(() => document.body.scrollWidth - document.body.clientWidth > 0);
     }
 
+    getVerticalScroll() {
+      return this.browser.execute(() => window.scrollY);
+    }
+
     async getDrawerWidth(drawerId: string) {
       const { width } = await this.getBoundingBox(findDrawerById(wrapper, drawerId)!.toSelector());
 
@@ -428,6 +432,23 @@ describe('Visual refresh toolbar only', () => {
 
       expect(drawerTopAfterOpeningSplitPanel).toBeGreaterThan(toolbarBottom);
       expect(splitPanelTop).toBeGreaterThan(toolbarBottom);
+    })
+  );
+
+  test(
+    'bottom drawer opening does not cause the page to scroll',
+    setupTest({}, async page => {
+      await page.setWindowSize(viewports.desktopWide);
+
+      await page.click(createWrapper().findButton('[data-testid="button-register-bottom-drawer"]').toSelector());
+
+      await expect(page.getVerticalScroll()).resolves.toBe(0);
+
+      const drawerId = 'circle5-global-bottom';
+      await page.click(wrapper.findDrawerTriggerById(drawerId).toSelector());
+
+      await expect(page.isClickable(findDrawerById(wrapper, drawerId)!.toSelector())).resolves.toBe(true);
+      await expect(page.getVerticalScroll()).resolves.toBe(0);
     })
   );
 });
