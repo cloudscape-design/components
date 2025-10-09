@@ -523,6 +523,39 @@ describe('resize in rtl', () => {
   });
 });
 
+describe('Auto-grow behavior when dragging beyond scroll parent edge', () => {
+  test('triggers auto-grow timeout when pointer moves beyond right edge', () => {
+    const setTimeoutSpy = jest.spyOn(global, 'setTimeout');
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+
+    firePointerdown(wrapper.findColumnResizer(1)!);
+
+    // Move pointer beyond the right edge (inlineEndEdge is 400 from fakeBoundingClientRect)
+    // This triggers the onPointerMove timeout in resizer/index.tsx
+    firePointermove(450);
+
+    expect(setTimeoutSpy).toHaveBeenCalledTimes(1);
+
+    firePointerup(450);
+  });
+
+  test('clears auto-grow timeout when pointer moves back within bounds', () => {
+    const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout');
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+
+    firePointerdown(wrapper.findColumnResizer(1)!);
+
+    // Move pointer beyond the right edge to trigger auto-grow (inlineEndEdge is 400 from fakeBoundingClientRect)
+    firePointermove(450);
+
+    // Move back within bounds - should clear the timeout
+    firePointermove(200);
+    expect(clearTimeoutSpy).toHaveBeenCalled();
+
+    firePointerup(200);
+  });
+});
+
 describe('UAP buttons', () => {
   // Makes the drag buttons (which are positioned in a portal) easier to find if there's only one set.
   const singleColumnDefinition = [{ id: 'id', header: 'Id', cell: (item: any) => item.id, width: 150, minWidth: 80 }];
