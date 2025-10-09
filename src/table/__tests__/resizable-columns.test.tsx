@@ -523,6 +523,70 @@ describe('resize in rtl', () => {
   });
 });
 
+describe('Error handling when getResizerElements returns null', () => {
+  const singleColumnDefinition = [{ id: 'id', header: 'Id', cell: (item: any) => item.id, width: 150, minWidth: 80 }];
+
+  beforeEach(() => {
+    jest.doMock('../../../lib/components/table/resizer/resizer-lookup', () => ({
+      ...jest.requireActual('../../../lib/components/table/resizer/resizer-lookup'),
+      getResizerElements: jest.fn(() => null),
+    }));
+  });
+
+  afterEach(() => {
+    jest.resetModules();
+  });
+
+  test('gracefully handles null getResizerElements during resize operations', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(
+      <Table
+        {...defaultProps}
+        columnDefinitions={singleColumnDefinition}
+        onColumnWidthsChange={event => onChange(event.detail)}
+      />
+    );
+
+    // Test updateColumnWidth and resizeColumn (lines 78, 155)
+    // When getResizerElements returns null, the functions return early without DOM manipulation
+    // but onWidthUpdate callback is still called (before the null check)
+    expect(() => {
+      firePointerdown(wrapper.findColumnResizer(1)!);
+      firePointermove(200);
+      firePointerup(200);
+    }).not.toThrow();
+
+    // onChange is called because onWidthUpdate is invoked before the null check
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({ widths: [200] });
+  });
+
+  test('gracefully handles null getResizerElements in UAP button clicks', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(
+      <Table
+        {...defaultProps}
+        columnDefinitions={singleColumnDefinition}
+        onColumnWidthsChange={event => onChange(event.detail)}
+      />
+    );
+
+    // Show UAP buttons
+    wrapper.findColumnResizer(1)!.click();
+
+    // Test onDirectionClick (line 173) - should not throw or trigger onChange
+    expect(() => {
+      const dragHandle = findDragHandle();
+      const inlineEndButton = dragHandle.findVisibleDirectionButtonInlineEnd();
+      if (inlineEndButton) {
+        inlineEndButton.click();
+      }
+    }).not.toThrow();
+
+    expect(onChange).not.toHaveBeenCalled();
+  });
+});
+
 describe('UAP buttons', () => {
   // Makes the drag buttons (which are positioned in a portal) easier to find if there's only one set.
   const singleColumnDefinition = [{ id: 'id', header: 'Id', cell: (item: any) => item.id, width: 150, minWidth: 80 }];

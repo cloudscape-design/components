@@ -203,7 +203,6 @@ export function Resizer({
     };
 
     const onPointerMove = (event: PointerEvent) => {
-      // TODO: Only set it to true after a certain number of pixels travelled?
       setIsDragging(true);
       clearTimeout(autoGrowTimeout.current);
       const offset = getLogicalPageX(event);
