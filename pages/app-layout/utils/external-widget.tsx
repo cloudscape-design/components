@@ -295,3 +295,67 @@ awsuiPlugins.appLayout.registerDrawer({
   },
   unmountContent: container => unmount(container),
 });
+
+export const registerBottomDrawer = () => {
+  awsuiPlugins.appLayout.registerDrawer({
+    id: 'circle5-global-bottom',
+    type: 'global',
+    position: 'bottom',
+    defaultActive: false,
+    resizable: true,
+    defaultSize: 350,
+    preserveInactiveContent: true,
+    orderPriority: 100,
+
+    isExpandable: true,
+
+    ariaLabels: {
+      closeButton: 'Close button',
+      content: 'Content bottom',
+      triggerButton: 'Trigger button',
+      resizeHandle: 'Resize handle',
+      expandedModeButton: 'Expanded mode button',
+    },
+    onToggle: event => {
+      console.log('circle-global drawer on toggle', event.detail);
+    },
+
+    trigger: {
+      iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+    </svg>`,
+    },
+
+    onResize: event => {
+      console.log('resize', event.detail);
+    },
+
+    mountContent: (container, mountContext) => {
+      mount(
+        <Drawer header={<Box variant="h2">Global drawer</Box>}>
+          <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
+            global bottom panel
+            {new Array(100).fill(null).map((_, index) => (
+              <div key={index}>{index}</div>
+            ))}
+            <div data-testid="circle-global-bottom-content">circle-global bottom content</div>
+          </AutoIncrementCounter>
+        </Drawer>,
+        container
+      );
+    },
+    unmountContent: container => unmount(container),
+    headerActions: [
+      {
+        type: 'icon-button',
+        id: 'add',
+        iconName: 'add-plus',
+        text: 'Add',
+      },
+    ],
+    onHeaderActionClick: ({ detail }) => {
+      console.log('onHeaderActionClick: ', detail);
+    },
+  });
+};
