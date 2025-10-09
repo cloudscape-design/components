@@ -117,9 +117,9 @@ function AppLayoutGlobalBottomDrawerImplementation({
 
   // Prevent main content scroll when bottom drawer opens with animations
   useEffect(() => {
-    if (!animationDisabled && show) {
-      // Store current scroll position
+    if (!animationDisabled && show && drawerRef.current) {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const abortController = new AbortController();
 
       // Temporarily prevent scrolling during animation
       const preventScroll = () => {
@@ -127,17 +127,26 @@ function AppLayoutGlobalBottomDrawerImplementation({
         document.body.scrollTop = scrollTop;
       };
 
-      // Add scroll prevention during animation
-      document.addEventListener('scroll', preventScroll, { passive: false });
+      // Handle transition end to remove scroll prevention
+      const handleTransitionEnd = (event: TransitionEvent) => {
+        // Only handle transitions on the drawer element itself
+        if (event.target === drawerRef.current) {
+          abortController.abort();
+        }
+      };
 
-      // Remove scroll prevention after animation completes
-      const timer = setTimeout(() => {
-        document.removeEventListener('scroll', preventScroll);
-      }, 250); // Match the transition timeout
+      // Add scroll prevention during animation
+      document.addEventListener('scroll', preventScroll, {
+        passive: false,
+        signal: abortController.signal,
+      });
+
+      drawerRef.current.addEventListener('transitionend', handleTransitionEnd, {
+        signal: abortController.signal,
+      });
 
       return () => {
-        clearTimeout(timer);
-        document.removeEventListener('scroll', preventScroll);
+        abortController.abort();
       };
     }
   }, [show, animationDisabled]);
