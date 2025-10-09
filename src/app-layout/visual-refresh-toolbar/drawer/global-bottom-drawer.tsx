@@ -114,6 +114,34 @@ function AppLayoutGlobalBottomDrawerImplementation({
   const wasExpanded = usePrevious(isExpanded);
   const animationDisabled =
     (activeDrawer?.defaultActive && !drawersOpenQueue.includes(activeDrawer.id)) || (wasExpanded && !isExpanded);
+
+  // Prevent main content scroll when bottom drawer opens with animations
+  useEffect(() => {
+    if (!animationDisabled && show) {
+      // Store current scroll position
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+
+      // Temporarily prevent scrolling during animation
+      const preventScroll = () => {
+        document.documentElement.scrollTop = scrollTop;
+        document.body.scrollTop = scrollTop;
+      };
+
+      // Add scroll prevention during animation
+      document.addEventListener('scroll', preventScroll, { passive: false });
+
+      // Remove scroll prevention after animation completes
+      const timer = setTimeout(() => {
+        document.removeEventListener('scroll', preventScroll);
+      }, 250); // Match the transition timeout
+
+      return () => {
+        clearTimeout(timer);
+        document.removeEventListener('scroll', preventScroll);
+      };
+    }
+  }, [show, animationDisabled]);
+
   let drawerActions: ReadonlyArray<InternalItemOrGroup> = [
     {
       type: 'icon-button',
