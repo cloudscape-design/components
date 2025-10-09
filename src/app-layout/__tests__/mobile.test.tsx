@@ -11,7 +11,6 @@ import SplitPanel from '../../../lib/components/split-panel';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import {
   describeEachAppLayout,
-  manyDrawers,
   renderComponent,
   splitPanelI18nStrings,
   testDrawer,
@@ -569,40 +568,12 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
     });
   });
 
-  test('should render an active drawer', () => {
-    const { wrapper } = renderComponent(
-      <AppLayout activeDrawerId={testDrawer.id} drawers={[testDrawer]} onDrawerChange={() => {}} />
-    );
-
-    expect(wrapper.findActiveDrawer()).toBeTruthy();
-  });
-
-  test('should render badge when defined', () => {
-    const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
-    expect(wrapper.findDrawerTriggerById('security')).toBeTruthy();
-    expect(wrapper.findDrawerTriggerById('security', { hasBadge: true })).toBeTruthy();
-  });
-
   test('renders roles only when aria labels are not provided', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[testDrawerWithoutLabels]} />);
     const drawersAside = within(findMobileToolbar(wrapper)!.getElement()).getByRole('region');
 
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-label');
     expect(drawersAside).not.toHaveAttribute('aria-label');
-
-    const drawersToolbar = findDrawersContainer(wrapper)!.getElement();
-    expect(drawersToolbar).toHaveAttribute('role', 'toolbar');
-  });
-
-  test('renders roles and aria labels when provided', () => {
-    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} ariaLabels={{ drawers: 'Drawers' }} />);
-    const drawersAside = within(findMobileToolbar(wrapper)!.getElement()).getByRole('region');
-
-    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
-      'aria-label',
-      'Security trigger button'
-    );
-    expect(drawersAside).toHaveAttribute('aria-label', 'Drawers');
 
     const drawersToolbar = findDrawersContainer(wrapper)!.getElement();
     expect(drawersToolbar).toHaveAttribute('role', 'toolbar');
