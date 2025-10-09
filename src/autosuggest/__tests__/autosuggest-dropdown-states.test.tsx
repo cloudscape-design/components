@@ -30,8 +30,13 @@ const defaultProps: AutosuggestProps = {
   clearAriaLabel: 'clear input',
 };
 
+const ControlledAutosuggest = (props: AutosuggestProps) => {
+  const [value, setValue] = React.useState(props.value);
+  return <Autosuggest {...props} value={value} onChange={event => setValue(event.detail.value)} />;
+};
+
 function renderAutosuggest(props: Partial<AutosuggestProps>) {
-  const { container } = render(<Autosuggest {...defaultProps} {...props} />);
+  const { container } = render(<ControlledAutosuggest {...defaultProps} {...props} />);
   const wrapper = createWrapper(container).findAutosuggest()!;
   return { container, wrapper };
 }
@@ -127,8 +132,9 @@ describe('footer types', () => {
   });
 
   test('results', async () => {
-    renderAutosuggest({ value: 'x', filteringResultsText: () => '3 items' });
+    const { wrapper } = renderAutosuggest({ filteringResultsText: () => '3 items' });
     focusInput();
+    wrapper.setInputValue('x');
     expectDropdown();
     expectFooterSticky(true);
     expectFooterContent('3 items');
@@ -171,9 +177,10 @@ describe('filtering results', () => {
       expectFooterContent('No options');
     });
 
-    test('displays results footer when value is not empty', () => {
-      renderAutosuggest({ value: ' ', options: [], filteringResultsText: () => '0 items' });
+    test('displays results footer when value is entered but not filtering', () => {
+      const { wrapper } = renderAutosuggest({ options: [], filteringResultsText: () => '0 items' });
       focusInput();
+      wrapper.setInputValue(' ');
       expectFooterContent('0 items');
     });
   });
@@ -185,9 +192,16 @@ describe('filtering results', () => {
       expectNoFooter();
     });
 
-    test('displays results footer when value is not empty', () => {
+    test('displays no footer when value is not empty', () => {
       renderAutosuggest({ value: ' ', statusType: 'pending', filteringResultsText: () => '3 items' });
       focusInput();
+      expectNoFooter();
+    });
+
+    test('displays results footer when value is entered', () => {
+      const { wrapper } = renderAutosuggest({ statusType: 'pending', filteringResultsText: () => '3 items' });
+      focusInput();
+      wrapper.setInputValue(' ');
       expectFooterContent('3 items');
     });
   });
@@ -233,15 +247,23 @@ describe('filtering results', () => {
       expectFooterContent('finished!');
     });
 
-    test('displays results footer when finished w/o finished text and value is not empty', () => {
-      renderAutosuggest({ value: ' ', finishedText: undefined, filteringResultsText: () => '3 items' });
+    test('displays finished footer when finished w/ finished text and value is present but not filtering', () => {
+      renderAutosuggest({ value: ' ', filteringResultsText: () => '3 items' });
       focusInput();
+      expectFooterContent('finished!');
+    });
+
+    test('displays results footer when finished w/o finished text and value is entered', () => {
+      const { wrapper } = renderAutosuggest({ finishedText: undefined, filteringResultsText: () => '3 items' });
+      focusInput();
+      wrapper.setInputValue(' ');
       expectFooterContent('3 items');
     });
 
-    test('displays results footer when finished w/ finished text and value is not empty', () => {
-      renderAutosuggest({ value: ' ', filteringResultsText: () => '3 items' });
+    test('displays results footer when finished w/ finished text and value is entered', () => {
+      const { wrapper } = renderAutosuggest({ filteringResultsText: () => '3 items' });
       focusInput();
+      wrapper.setInputValue(' ');
       expectFooterContent('3 items');
     });
   });

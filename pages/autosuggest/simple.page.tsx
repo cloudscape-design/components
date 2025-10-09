@@ -31,6 +31,7 @@ export default function AutosuggestPage() {
           ariaLabel={'simple autosuggest'}
           selectedAriaLabel="Selected"
           empty={empty}
+          finishedText="Finished"
           filteringResultsText={matchesCount => `${matchesCount} items`}
         />
 
