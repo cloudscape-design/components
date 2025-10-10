@@ -5,6 +5,7 @@ import React from 'react';
 
 import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
 import { ButtonGroupProps } from '../../button-group/interfaces';
+import { FlashbarProps } from '../../flashbar/interfaces';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { NonCancelableEventHandler } from '../../internal/events';
 import { SomeOptional } from '../../internal/types';
@@ -90,6 +91,8 @@ interface AppLayoutWidgetizedState extends AppLayoutInternals {
   verticalOffsets: VerticalLayoutOutput;
   navigationAnimationDisabled: boolean;
   aiDrawerExpandedMode: boolean;
+  flashbarProps: FlashbarProps | null;
+  setFlashbarProps: (props: FlashbarProps | null) => void;
   splitPanelOffsets: {
     stickyVerticalBottomOffset: number;
     mainContentPaddingBlockEnd: number | undefined;
