@@ -26,7 +26,11 @@ export const TopContentSlotImplementation = ({ appLayoutProps, appLayoutState }:
         ></div>
       )}
       {appLayoutProps.notifications && (
-        <AppLayoutNotifications appLayoutInternals={appLayoutState.appLayoutInternals}>
+        <AppLayoutNotifications
+          flashbarProps={appLayoutState.widgetizedState.flashbarProps}
+          setFlashbarProps={appLayoutState.widgetizedState.setFlashbarProps}
+          appLayoutInternals={appLayoutState.appLayoutInternals}
+        >
           {appLayoutProps.notifications}
         </AppLayoutNotifications>
       )}
