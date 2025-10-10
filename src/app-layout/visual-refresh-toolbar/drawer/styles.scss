@@ -258,6 +258,8 @@ $ai-drawer-heider-height: 41px;
     }
 
     > .drawer-slider {
+      display: flex;
+      justify-content: center;
       inline-size: awsui.$space-xs;
       overflow: hidden;
       grid-column: 2;
@@ -267,7 +269,6 @@ $ai-drawer-heider-height: 41px;
     // maybe we need to introduce an additional prop in the component to make it more flexible?
     // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
     .ai-drawer-slider-handle {
-      transform: translate(-4px);
       color: awsui.$color-text-interactive-inverted-default;
 
       &:hover {
@@ -395,7 +396,11 @@ $ai-drawer-heider-height: 41px;
     &:not(.drawer-expanded) {
       > .drawer-content-container {
         @include desktop-only {
-          clip-path: inset(0 0 -9999px 0 round awsui.$space-xxs);
+          clip-path: inset(0 0 -9999px 0 round 0 awsui.$space-xxs 0 0);
+
+          @include styles.with-direction('rtl') {
+            clip-path: inset(0 0 -9999px 0 round awsui.$space-xxs 0 0 0);
+          }
           @include theming.dark-mode-only {
             border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
           }
