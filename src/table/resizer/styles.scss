@@ -15,11 +15,27 @@
 
 $handle-width: awsui.$space-xl;
 $active-separator-width: 2px;
+$block-gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
+
+.resizer-wrapper {
+  inset-block: 0;
+  position: absolute;
+  inset-inline-end: calc(-1 * #{$handle-width} / 2);
+  inline-size: $handle-width;
+  overflow: hidden;
+  z-index: 10;
+
+  th:last-child > &:has(.divider-interactive):not(.is-visual-refresh) {
+    inset-inline-end: 0;
+  }
+}
+
+.resizer-button-wrapper {
+  block-size: 100%;
+}
 
 th:not(:last-child) > .divider,
 .divider-interactive {
-  $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
-
   position: absolute;
   outline: none;
   pointer-events: none;
@@ -27,22 +43,23 @@ th:not(:last-child) > .divider,
   inset-block-end: 0;
   inset-block-start: 0;
   min-block-size: awsui.$line-height-heading-xs;
-  max-block-size: calc(100% - #{$gap});
+  max-block-size: calc(100% - #{$block-gap});
   margin-block: auto;
   margin-inline: auto;
   border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-interactive-default;
   box-sizing: border-box;
-
-  &-disabled {
-    border-inline-start-color: awsui.$color-border-divider-default;
-  }
-  &-active {
-    border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
-  }
 }
 
-th:last-child > .divider-interactive:not(.is-visual-refresh) {
+th:not(:last-child) > .divider-disabled {
+  border-inline-start-color: awsui.$color-border-divider-default;
+}
+
+.divider-interactive {
   inset-inline-end: calc(#{$handle-width} / 2);
+}
+
+.divider-active {
+  border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
 }
 
 .resizer {
@@ -52,10 +69,8 @@ th:last-child > .divider-interactive:not(.is-visual-refresh) {
   background: none;
   inset-block: 0;
   cursor: col-resize;
-  position: absolute;
-  inset-inline-end: calc(-1 * #{$handle-width} / 2);
+  block-size: 100%;
   inline-size: $handle-width;
-  z-index: 10;
   &:focus {
     outline: none;
     text-decoration: none;
@@ -70,9 +85,6 @@ th:last-child > .divider-interactive:not(.is-visual-refresh) {
   &.has-focus {
     @include focus-visible.when-visible-unfocused {
       @include styles.focus-highlight(calc(#{awsui.$space-table-header-focus-outline-gutter} - 2px));
-      & {
-        position: absolute;
-      }
     }
   }
 }
