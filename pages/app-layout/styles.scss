@@ -131,6 +131,16 @@
 .panel {
   display: flex;
   justify-content: space-between;
-  block-size: 100%;
-  background: grey;
+  block-size: calc(100vh - 40px);
+  border-inline-end: 1px solid black;
+  overflow: hidden;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  overscroll-behavior-y: contain;
+  pointer-events: auto;
+  word-wrap: break-word;
+}
+
+.panels-slider {
+  display: flex;
+  align-items: center;
 }
