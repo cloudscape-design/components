@@ -123,3 +123,14 @@
 .ai-panel-logo {
   font-weight: 600;
 }
+
+.panels-container {
+  display: flex;
+}
+
+.panel {
+  display: flex;
+  justify-content: space-between;
+  block-size: 100%;
+  background: grey;
+}
