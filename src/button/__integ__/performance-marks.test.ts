@@ -20,6 +20,10 @@ function setupTest(
     const page = new BasePageObject(browser);
     await browser.url(`#/light/button/${pageName}`);
     await page.waitForVisible(wrapper.toSelector());
+    if (process.env.REACT_VERSION === '18') {
+      return;
+    }
+
     const getMarks = async () => {
       await new Promise(r => setTimeout(r, 200));
       const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);

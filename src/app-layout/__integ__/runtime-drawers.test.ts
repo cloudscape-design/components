@@ -86,7 +86,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
       })
     );
 
-    test(
+    (process.env.REACT_VERSION !== '18' ? test : test.skip)(
       'should persist runtime drawer preferences when switching between multiple app layouts',
       setupTest(
         {

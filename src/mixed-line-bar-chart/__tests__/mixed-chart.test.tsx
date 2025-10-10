@@ -24,6 +24,12 @@ jest.mock('../../../lib/components/popover/utils/positions', () => {
   };
 });
 
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  // Mock the chart width with enough space to fit all expected elements (labels, x ticks, etc)
+  useContainerQuery: () => [900, null],
+}));
+
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   getIsRtl: jest.fn().mockReturnValue(false),
@@ -113,7 +119,7 @@ const thresholdSeries: MixedLineBarChartProps.ThresholdSeries = {
 // Transformation to fallback colors for browsers that don't support them are covered by the `parseCssVariable` utility.
 const originalCSS = window.CSS;
 
-let originalGetComputedStyle: Window['getComputedStyle'];
+const originalGetComputedStyle = window.getComputedStyle;
 const fakeGetComputedStyle: Window['getComputedStyle'] = (...args) => {
   const result = originalGetComputedStyle(...args);
   result.borderWidth = '2px'; // Approximate mock value for the popover body' border width
@@ -124,9 +130,7 @@ const fakeGetComputedStyle: Window['getComputedStyle'] = (...args) => {
 
 beforeEach(() => {
   window.CSS.supports = () => true;
-  originalGetComputedStyle = window.getComputedStyle;
   window.getComputedStyle = fakeGetComputedStyle;
-
   jest.resetAllMocks();
 });
 afterEach(() => {

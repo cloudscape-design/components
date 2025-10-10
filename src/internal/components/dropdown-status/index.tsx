@@ -15,7 +15,6 @@ export { DropdownStatusProps };
 export interface DropdownStatusPropsExtended extends DropdownStatusProps {
   isEmpty?: boolean;
   isNoMatch?: boolean;
-  isFiltered?: boolean;
   noMatch?: React.ReactNode;
   filteringResultsText?: string;
   /**
@@ -46,7 +45,6 @@ type UseDropdownStatus = ({
   recoveryText,
   isEmpty,
   isNoMatch,
-  isFiltered,
   noMatch,
   hasRecoveryCallback,
   onRecoveryClick,
@@ -68,7 +66,6 @@ export const useDropdownStatus: UseDropdownStatus = ({
   recoveryText,
   isEmpty,
   isNoMatch,
-  isFiltered,
   noMatch,
   onRecoveryClick,
   hasRecoveryCallback = false,
@@ -106,7 +103,7 @@ export const useDropdownStatus: UseDropdownStatus = ({
     statusResult.content = empty;
   } else if (isNoMatch && noMatch) {
     statusResult.content = noMatch;
-  } else if (isFiltered && filteringResultsText) {
+  } else if (filteringResultsText) {
     statusResult.content = filteringResultsText;
   } else if (statusType === 'finished' && finishedText) {
     statusResult.content = finishedText;

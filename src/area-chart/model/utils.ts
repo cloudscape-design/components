@@ -145,12 +145,11 @@ export function computePlotPoints<T>(
 }
 
 // Finds the closest point in the sorted array.
-export function findClosest<T>(sortedArray: readonly T[], target: number, getter: (item: T) => number): T {
+export function findClosest<T>(sortedArray: readonly T[], target: number, getter: (item: T) => number): null | T {
   // The method guarantees to return a point hence empty arrays are not allowed.
   if (sortedArray.length === 0) {
-    throw new Error('Invariant violation: array is empty.');
+    return null;
   }
-
   const isAscending = getter(sortedArray[0]) < getter(sortedArray[sortedArray.length - 1]);
   const compare = (x: T) => (isAscending ? getter(x) < target : getter(x) > target);
   const delta = (x: T) => Math.abs(getter(x) - target);

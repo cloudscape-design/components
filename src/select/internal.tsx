@@ -195,7 +195,6 @@ const InternalSelect = React.forwardRef(
       isEmpty,
       isNoMatch,
       noMatch,
-      isFiltered,
       filteringResultsText: filteredText,
       errorIconAriaLabel,
       onRecoveryClick: handleRecoveryClick,

@@ -166,7 +166,7 @@ export function useSelect({
         closeDropdown();
       }
     },
-    preventNativeSpace: !hasFilter || !!highlightedOption,
+    preventNativeSpace: !hasFilter || (highlightedOption && highlightType.type === 'keyboard'),
   });
 
   const triggerKeyDownHandler = useTriggerKeyboard({
