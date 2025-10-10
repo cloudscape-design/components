@@ -14,7 +14,6 @@ import globalVars from '../../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../../interfaces';
 import { SplitPanelProviderProps } from '../../split-panel';
-import { useAiDrawer } from '../../utils/use-ai-drawer';
 import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../../utils/use-drawers';
 import { useAsyncFocusControl, useMultipleFocusControl } from '../../utils/use-focus-control';
 import { useGlobalScrollPadding } from '../../utils/use-global-scroll-padding';
@@ -27,6 +26,9 @@ import {
 } from '../compute-layout';
 import { AppLayoutState } from '../interfaces';
 import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
+import { useRuntimeNotifications } from './runtime-notifications';
+import { useAiDrawer } from './use-ai-drawer';
+import { useWidgetMessages } from './use-widget-messages';
 
 export const useAppLayout = (
   hasToolbar: boolean,
@@ -145,6 +147,7 @@ export const useAppLayout = (
   });
   const {
     aiDrawer,
+    aiDrawerMessageHandler,
     onActiveAiDrawerChange,
     activeAiDrawer,
     activeAiDrawerId,
@@ -152,10 +155,14 @@ export const useAppLayout = (
     minAiDrawerSize,
     onActiveAiDrawerResize,
   } = useAiDrawer({
-    isEnabled: hasToolbar,
     onAiDrawerFocus: () => aiDrawerFocusControl.setFocus(),
     expandedDrawerId,
     setExpandedDrawerId,
+  });
+  const { flashbarProps, setFlashbarProps, notificationsMessageHandler } = useRuntimeNotifications();
+  useWidgetMessages(hasToolbar, message => {
+    aiDrawerMessageHandler(message);
+    notificationsMessageHandler(message);
   });
   const aiDrawerFocusControl = useAsyncFocusControl(!!activeAiDrawer?.id, true, activeAiDrawer?.id);
 
@@ -467,6 +474,8 @@ export const useAppLayout = (
     widgetizedState: {
       ...appLayoutInternals,
       aiDrawerExpandedMode: expandedDrawerId === activeAiDrawer?.id,
+      flashbarProps,
+      setFlashbarProps,
       isNested,
       navigationAnimationDisabled,
       verticalOffsets,

@@ -11,9 +11,9 @@ import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../../interfaces';
-import { OnChangeParams } from '../../utils/use-ai-drawer';
 import { FocusControlState } from '../../utils/use-focus-control';
 import { AppLayoutInternals, InternalDrawer } from '../interfaces';
+import { OnChangeParams } from '../state/use-ai-drawer';
 import { useResize } from './use-resize';
 
 import sharedStyles from '../../resize/styles.css.js';

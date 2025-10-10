@@ -2,34 +2,46 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { reportRuntimeApiWarning } from '../helpers/metrics';
-import { AppLayoutMessage, AppLayoutUpdateMessage, DrawerPayload, RegisterDrawerMessage } from './interfaces';
+import { InitialMessage, WidgetMessage } from './interfaces';
 
 const storageKeyMessageHandler = Symbol.for('awsui-widget-api-message-handler');
 const storageKeyInitialMessages = Symbol.for('awsui-widget-api-initial-messages');
 const storageKeyReadyDeferCallbacks = Symbol.for('awsui-widget-api-ready-defer');
 
 interface WindowWithApi extends Window {
-  [storageKeyMessageHandler]: AppLayoutHandler | undefined;
-  [storageKeyInitialMessages]: Array<RegisterDrawerMessage> | undefined;
+  [storageKeyMessageHandler]: MessageHandler | undefined;
+  [storageKeyInitialMessages]: Array<InitialMessage> | undefined;
   [storageKeyReadyDeferCallbacks]: Array<(value?: unknown) => void> | undefined;
 }
 
-type AppLayoutHandler = (event: AppLayoutMessage) => void;
+const oneTimeMessageTypes = ['emit-notification'];
+
+type MessageHandler = (event: WidgetMessage) => void;
 
 function getWindow() {
   return window as Window as WindowWithApi;
 }
 
-function getAppLayoutMessageHandler() {
+export function getAppLayoutMessageHandler() {
   const win = getWindow();
   return win[storageKeyMessageHandler];
 }
 
-export function getAppLayoutInitialState() {
-  return getWindow()[storageKeyInitialMessages];
+export function getAppLayoutInitialMessages(): Array<InitialMessage> {
+  const initialMessages = getWindow()[storageKeyInitialMessages] ?? [];
+  getWindow()[storageKeyInitialMessages] = initialMessages.filter(
+    message => !oneTimeMessageTypes.includes(message.type)
+  );
+  return initialMessages;
 }
 
-export function registerAppLayoutHandler(handler: AppLayoutHandler) {
+export function pushInitialMessage(message: InitialMessage) {
+  const win = getWindow();
+  win[storageKeyInitialMessages] = win[storageKeyInitialMessages] ?? [];
+  win[storageKeyInitialMessages].push(message);
+}
+
+export function registerAppLayoutHandler(handler: MessageHandler) {
   const win = getWindow();
   if (win[storageKeyMessageHandler]) {
     reportRuntimeApiWarning('AppLayoutWidget', 'Double registration attempt, the old handler will be overridden');
@@ -63,24 +75,4 @@ export function whenAppLayoutReady() {
   const win = getWindow();
   win[storageKeyReadyDeferCallbacks] = win[storageKeyReadyDeferCallbacks] ?? [];
   return new Promise(resolve => win[storageKeyReadyDeferCallbacks]?.push(resolve));
-}
-
-/**
- * Registers a new runtime drawer to app layout
- * @param drawer
- */
-export function registerLeftDrawer(drawer: DrawerPayload) {
-  const win = getWindow();
-  const message: RegisterDrawerMessage = { type: 'registerLeftDrawer', payload: drawer };
-  win[storageKeyInitialMessages] = win[storageKeyInitialMessages] ?? [];
-  win[storageKeyInitialMessages].push(message);
-  getAppLayoutMessageHandler()?.(message);
-}
-
-/**
- * Interact with already registered app layout drawers
- * @param message
- */
-export function updateDrawer(message: AppLayoutUpdateMessage) {
-  getAppLayoutMessageHandler()?.(message);
 }
