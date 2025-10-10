@@ -119,3 +119,14 @@
   align-items: center;
   gap: awsui.$space-xxs;
 }
+
+.label-tag {
+  font-weight: styles.$font-weight-lighter;
+  color: awsui.$color-text-dropdown-item-secondary;
+}
+
+.secondary-text {
+  @include styles.font(body-s);
+  font-weight: styles.$font-weight-lighter;
+  color: awsui.$color-text-dropdown-item-secondary;
+}

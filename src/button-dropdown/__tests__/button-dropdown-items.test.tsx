@@ -507,7 +507,7 @@ describe('Internal ButtonDropdown badge property', () => {
     const item = wrapper.findItemById('i1')!;
     expect(item.getElement()).toHaveTextContent('Option 1');
     expect(wrapper.findSecondaryText()?.getElement()).toHaveTextContent('Description');
-    expect(wrapper.findLabelTags()?.getElement()).toHaveTextContent('Ctrl+D');
+    expect(wrapper.findLabelTag()?.getElement()).toHaveTextContent('Ctrl+D');
   });
 
   it('should return null when secondaryText and labelTag are not present', () => {
@@ -516,6 +516,6 @@ describe('Internal ButtonDropdown badge property', () => {
     wrapper.openDropdown();
 
     expect(wrapper.findSecondaryText()).toBeNull();
-    expect(wrapper.findLabelTags()).toBeNull();
+    expect(wrapper.findLabelTag()).toBeNull();
   });
 });
