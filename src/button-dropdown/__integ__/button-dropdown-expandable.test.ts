@@ -251,7 +251,7 @@ describe.each([true, false])(
           expect(await page.getItemCount('category2Subitem1')).toEqual(1);
           await page.keys(['ArrowDown']);
           expect(await page.getItemCount('category2Subitem2')).toEqual(1);
-          expect(await page.getFocusedElementText()).toBe('Cat 2 Sub item 1');
+          expect(await page.getFocusedElementText()).toBe('Option 1');
         })
       );
       test(
