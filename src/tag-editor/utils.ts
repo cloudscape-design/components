@@ -7,18 +7,6 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { isDevelopment } from '../internal/is-development';
 import { TagEditorProps } from './interfaces';
 
-/**
- * Ponyfill for Array.prototype.findIndex.
- */
-export function findIndex<T>(array: ReadonlyArray<T>, condition: (t: T) => unknown): number {
-  for (let i = 0; i < array.length; i++) {
-    if (condition(array[i])) {
-      return i;
-    }
-  }
-  return -1;
-}
-
 function makeMemoizedArray<T>(
   prev: ReadonlyArray<T>,
   next: ReadonlyArray<T>,
