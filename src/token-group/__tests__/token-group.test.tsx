@@ -90,19 +90,19 @@ describe('TokenGroup', () => {
       const wrapper = renderTokenGroup({ items, onDismiss });
 
       expect(findToken(wrapper)!.findDismiss()).not.toBeNull();
-      expect(findToken(wrapper)!.findDismiss()!.findByClassName(IconWrapper.rootSelector)).not.toBeNull();
+      expect(findToken(wrapper)!.findDismiss().findByClassName(IconWrapper.rootSelector)).not.toBeNull();
     });
 
     test('sets no alternative text on the dismiss area by default', () => {
       const wrapper = renderTokenGroup({ items, onDismiss });
 
-      expect(findToken(wrapper)!.findDismiss()!.getElement()).not.toHaveAttribute('aria-label');
+      expect(findToken(wrapper)!.findDismiss().getElement()).not.toHaveAttribute('aria-label');
     });
 
     test('sets the alternative text on the dismiss area', () => {
       const wrapper = renderTokenGroup({ items: [{ ...items[0], dismissLabel: 'dismiss' }], onDismiss });
 
-      expect(findToken(wrapper)!.findDismiss()!.getElement()).toHaveAttribute('aria-label', 'dismiss');
+      expect(findToken(wrapper)!.findDismiss().getElement()).toHaveAttribute('aria-label', 'dismiss');
     });
 
     test('correctly disables the option when disabled', () => {
@@ -138,7 +138,7 @@ describe('TokenGroup', () => {
       const onDismissSpy = jest.fn();
       const wrapper = renderTokenGroup({ items, readOnly: true, onDismiss: onDismissSpy });
 
-      findToken(wrapper)!.findDismiss()!.click();
+      findToken(wrapper)!.findDismiss().click();
 
       expect(onDismissSpy).not.toHaveBeenCalled();
     });
@@ -147,7 +147,7 @@ describe('TokenGroup', () => {
       const onDismissSpy = jest.fn();
       const wrapper = renderTokenGroup({ items, onDismiss: onDismissSpy });
 
-      findToken(wrapper)!.findDismiss()!.click();
+      findToken(wrapper)!.findDismiss().click();
 
       expect(onDismissSpy).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -160,7 +160,7 @@ describe('TokenGroup', () => {
       const onDismissSpy = jest.fn();
       const wrapper = renderTokenGroup({ items: [{ ...items[0], disabled: true }], onDismiss });
 
-      findToken(wrapper)!.findDismiss()!.click();
+      findToken(wrapper)!.findDismiss().click();
 
       expect(onDismissSpy).not.toHaveBeenCalled();
     });
@@ -168,7 +168,7 @@ describe('TokenGroup', () => {
     test('does not automatically remove the token after firing dismiss event', () => {
       const wrapper = renderTokenGroup({ items, onDismiss: onDismiss });
 
-      findToken(wrapper)!.findDismiss()!.click();
+      findToken(wrapper)!.findDismiss().click();
 
       expect(findToken(wrapper)).not.toBeNull();
     });
