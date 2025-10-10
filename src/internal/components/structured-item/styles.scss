@@ -22,6 +22,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  min-inline-size: 0;
 }
 
 .content-wrap {
@@ -41,6 +42,7 @@
 
 .content {
   flex-grow: 1;
+  min-inline-size: 0;
 }
 
 .actions {
