@@ -4,7 +4,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import * as IntlMessageFormat from 'intl-messageformat';
-import { range } from 'lodash';
+import range from 'lodash/range';
 
 import { I18nProvider, I18nProviderProps } from '../../../lib/components/i18n';
 import { namespace } from '../../../lib/components/i18n/context';
