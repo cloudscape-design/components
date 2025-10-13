@@ -18,19 +18,6 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-/**
- * Checks if a value is a React element without using the legacy React.isValidElement API.
- * This approach checks for the internal structure of React elements.
- */
-function isReactElement(value: unknown): value is React.ReactElement {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    typeof (value as any).type !== 'undefined' &&
-    typeof (value as any).props !== 'undefined'
-  );
-}
-
 type InternalTokenProps = TokenProps &
   InternalBaseComponentProps & {
     role?: string;
@@ -84,11 +71,11 @@ function InternalToken({
   });
 
   const buildOptionDefinition = () => {
-    const isLabelAnElement = isReactElement(label);
-    const labelObject = !isLabelAnElement ? { label: String(label) } : { labelContent: label };
+    const isLabelStringOrNumber = typeof label === 'string' || typeof label === 'number';
+    const labelObject = isLabelStringOrNumber ? { label: String(label) } : { labelContent: label };
 
     if (isInline) {
-      if (isLabelAnElement) {
+      if (!isLabelStringOrNumber) {
         warnOnce('Label', `Only plain text (strings or numbers) are supported when variant="inline".`);
       }
 

@@ -4,10 +4,12 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import OptionWrapper from '../internal/option';
 
-import selectors from '../../../token/test-classes/styles.selectors.js';
+import newSelectors from '../../../token/test-classes/styles.selectors.js';
+import legacySelectors from '../../../token-group/styles.selectors.js';
 
 export class TokenGroupItemWrapper extends ComponentWrapper {
-  static rootSelector: string = selectors.root;
+  static newRootSelector: string = newSelectors.root;
+  static legacyRootSelector: string = legacySelectors.token;
 
   findOption(): OptionWrapper {
     return this.findComponent(`.${OptionWrapper.rootSelector}`, OptionWrapper)!;
@@ -18,6 +20,9 @@ export class TokenGroupItemWrapper extends ComponentWrapper {
   }
 
   findDismiss(): ElementWrapper {
-    return this.findByClassName(selectors['dismiss-button'])!;
+    const newSelector = newSelectors['dismiss-button'];
+    const oldSelector = legacySelectors['dismiss-button'];
+
+    return this.findAny(oldSelector, newSelector)!;
   }
 }

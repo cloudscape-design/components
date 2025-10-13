@@ -6,6 +6,11 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+.dismiss-button,
+.token {
+  /* used in test-utils */
+}
+
 .root {
   @include styles.styles-reset;
 
