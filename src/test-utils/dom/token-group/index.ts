@@ -5,17 +5,16 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import { TokenGroupItemWrapper } from './token';
 
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
+import newTokenSelectors from '../../../token/test-classes/styles.selectors.js';
 import selectors from '../../../token-group/styles.selectors.js';
 
 export default class TokenGroupWrapper extends ComponentWrapper {
   static rootSelector: string = selectors.root;
 
   findTokens(): Array<TokenGroupItemWrapper> {
-    const legacyTokens = this.findAllByClassName(TokenGroupItemWrapper.legacyRootSelector);
-    const newTokens = this.findAllByClassName(TokenGroupItemWrapper.newRootSelector);
-    return (Array(legacyTokens).length > 0 ? legacyTokens : newTokens).map(
-      tokenElement => new TokenGroupItemWrapper(tokenElement.getElement())
-    );
+    const tokens = this.findAll(`:is(.${selectors.token}, .${newTokenSelectors.root})`);
+
+    return tokens.map(tokenElement => new TokenGroupItemWrapper(tokenElement.getElement()));
   }
 
   /**
@@ -24,15 +23,9 @@ export default class TokenGroupWrapper extends ComponentWrapper {
    * @param tokenIndex 1-based index of the token to return.
    */
   findToken(tokenIndex: number): TokenGroupItemWrapper | null {
-    return (
-      this.findComponent(
-        `.${tokenListSelectors['list-item']}:nth-child(${tokenIndex}) > .${TokenGroupItemWrapper.legacyRootSelector}`,
-        TokenGroupItemWrapper
-      ) ??
-      this.findComponent(
-        `.${tokenListSelectors['list-item']}:nth-child(${tokenIndex}) > .${TokenGroupItemWrapper.newRootSelector}`,
-        TokenGroupItemWrapper
-      )
+    return this.findComponent(
+      `.${tokenListSelectors['list-item']}:nth-child(${tokenIndex}) > :is(.${selectors.token}, .${newTokenSelectors.root})`,
+      TokenGroupItemWrapper
     );
   }
 
