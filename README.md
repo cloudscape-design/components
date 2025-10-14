@@ -9,7 +9,7 @@ Cloudscape was built for and is used by [Amazon Web Services (AWS)](https://aws.
 Components APIs and guidelines can be found in the [Components section of the Cloudscape website](https://cloudscape.design/components/).
 
 ## Getting started
-For an in-depth guide on getting started with Cloudscape development, check out the [Cloudscape website](https://cloudscape.design/get-started/for-developers/start-developing/).
+For an in-depth guide on getting started with Cloudscape development, check out the [Cloudscape website](https://cloudscape.design/get-started/integration/using-cloudscape-components/).
 
 ### Installation
 All Cloudscape packages are available on npm.
