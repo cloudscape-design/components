@@ -20,6 +20,6 @@ export class TokenGroupItemWrapper extends ComponentWrapper {
     const selector = selectors['dismiss-button'];
     const legacySelector = legacySelectors['dismiss-button'];
 
-    return this.findAny(`:is(.${legacySelector}, .${selector})`)!;
+    return this.find(`:is(.${legacySelector}, .${selector})`)!;
   }
 }
