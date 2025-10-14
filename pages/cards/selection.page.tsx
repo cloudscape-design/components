@@ -88,6 +88,7 @@ export default function () {
         items={items}
         cardDefinition={cardDefinition}
         header={<Header counter={getHeaderCounterText(allItems, collectionProps.selectedItems)}>Resources</Header>}
+        selectionType={selectionType}
         ariaLabels={ariaLabels}
         renderAriaLive={renderAriaLive}
         entireCardClickable={entireCard}
