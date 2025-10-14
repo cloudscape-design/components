@@ -8,7 +8,6 @@ import Header from '~components/header';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import Table from '~components/table';
-import { TableProps } from '~components/table';
 
 interface TableItem {
   name: string;
@@ -37,14 +36,14 @@ export default function InlineCodeExample() {
           <div>
             <Table<TableItem>
               totalItemsCount={4}
-              renderAriaLive={({ firstIndex, lastIndex, totalItemsCount }: TableProps.LiveAnnouncement) =>
+              renderAriaLive={({ firstIndex, lastIndex, totalItemsCount }) =>
                 `Displaying items ${firstIndex} to ${lastIndex} of ${totalItemsCount}`
               }
               columnDefinitions={[
                 {
                   id: 'variable',
                   header: 'Variable name',
-                  cell: (item: TableItem) => <Link href="#">{item.name || '-'}</Link>,
+                  cell: item => <Link href="#">{item.name || '-'}</Link>,
                   sortingField: 'name',
                   isRowHeader: true,
                 },
@@ -101,7 +100,7 @@ export default function InlineCodeExample() {
               ]}
               loadingText="Loading resources"
               sortingDisabled={true}
-              header={<Header> In table </Header>}
+              header={<Header>In table</Header>}
             />
           </div>
 
