@@ -50,7 +50,7 @@ export async function buildClassicOpenSource(builder: ThemeBuilder) {
   return builder.build();
 }
 
-const builder = new ThemeBuilder('classic', ':root', modes);
+const builder = new ThemeBuilder('classic', 'body', modes);
 const theme = await buildClassicOpenSource(builder);
 
 export default theme;
