@@ -11,8 +11,9 @@ import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
+import * as awsuiWidgetInternal from '../../../lib/components/internal/plugins/widget/core';
+import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget/index';
 import { DrawerPayload as WidgetDrawerPayload } from '../../../lib/components/internal/plugins/widget/interfaces';
-import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget/internal';
 import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import {
@@ -31,7 +32,7 @@ import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refr
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
-  awsuiWidgetPlugins.clearInitialMessages();
+  awsuiWidgetInternal.clearInitialMessages();
   activateAnalyticsMetadata(true);
 });
 
