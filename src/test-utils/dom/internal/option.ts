@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 
 import styles from '../../../internal/components/option/styles.selectors.js';
 import selectPartsStyles from '../../../select/parts/styles.selectors.js';
@@ -26,5 +26,10 @@ export default class OptionWrapper extends ComponentWrapper {
 
   findDisabledReason(): ElementWrapper | null {
     return createWrapper().find(`.${selectPartsStyles['disabled-reason-tooltip']}`);
+  }
+
+  @usesDom
+  isDisabled(): boolean {
+    return this.element.classList.contains(styles.disabled);
   }
 }
