@@ -1,9 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useRef } from 'react';
-
-import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
+import React from 'react';
 
 import { ButtonGroup as CloudscapeButtonGroup, SpaceBetween } from '~components';
 
@@ -27,7 +25,6 @@ export default function CustomButtonGroupTypes() {
 }
 
 function BasicExample() {
-  const mode = useCurrentMode(useRef(document.body));
   return (
     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
       <CloudscapeButtonGroup
@@ -56,26 +53,26 @@ function BasicExample() {
         ]}
         style={{
           root: {
-            background: backgrounds[mode].blue,
+            background: `light-dark(rgba(166, 222, 255, 0.91), rgba(64, 123, 178, 0.8))`,
             borderRadius: '20px',
             paddingBlock: '14px',
             paddingInline: '18px',
-            boxShadow: boxShadows[mode].blue,
+            boxShadow: getBoxShadow('blue'),
             focusRing: {
-              borderColor: focusRingColors[mode].blue,
+              borderColor: `light-dark(${palette.blue80}, ${palette.blue40})`,
               borderWidth: '3px',
               borderRadius: '20px',
             },
           },
           item: {
             color: {
-              active: itemColors[mode].blue.active,
-              default: itemColors[mode].blue.default,
-              hover: itemColors[mode].blue.hover,
-              disabled: itemColors[mode].disabled,
+              active: `light-dark(${palette.blue100}, ${palette.blue10})`,
+              default: `light-dark(${palette.blue90}, ${palette.blue20})`,
+              hover: `light-dark(${palette.blue100}, ${palette.blue10})`,
+              disabled: `light-dark(${palette.neutral60}, ${palette.neutral40})`,
             },
             focusRing: {
-              borderColor: focusRingColors[mode].blue,
+              borderColor: `light-dark(${palette.blue80}, ${palette.blue40})`,
               borderWidth: '2px',
               borderRadius: '8px',
             },
@@ -87,7 +84,6 @@ function BasicExample() {
 }
 
 function ActionsExample() {
-  const mode = useCurrentMode(useRef(document.body));
   return (
     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
       <CloudscapeButtonGroup
@@ -110,28 +106,28 @@ function ActionsExample() {
         ]}
         style={{
           root: {
-            background: backgrounds[mode].green,
+            background: `light-dark(rgba(152, 234, 182, 0.87), rgba(34, 197, 94, 0.3))`,
             borderRadius: '16px',
             paddingBlock: '8px',
             paddingInline: '12px',
-            boxShadow: boxShadows[mode].green,
+            boxShadow: getBoxShadow('green'),
             borderWidth: '4px',
-            borderColor: borderColors[mode].green,
+            borderColor: `light-dark(rgba(24, 146, 69, 0.4), rgba(34, 197, 94, 0.6))`,
             focusRing: {
-              borderColor: focusRingColors[mode].green,
+              borderColor: `light-dark(${palette.green60}, ${palette.green30})`,
               borderWidth: '3px',
               borderRadius: '16px',
             },
           },
           item: {
             color: {
-              active: itemColors[mode].green.active,
-              default: itemColors[mode].green.default,
-              hover: itemColors[mode].green.hover,
-              disabled: itemColors[mode].disabled,
+              active: `light-dark(${palette.green100}, ${palette.green10})`,
+              default: `light-dark(${palette.green90}, ${palette.green20})`,
+              hover: `light-dark(${palette.green100}, ${palette.green10})`,
+              disabled: `light-dark(${palette.neutral60}, ${palette.neutral40})`,
             },
             focusRing: {
-              borderColor: focusRingColors[mode].green,
+              borderColor: `light-dark(${palette.green60}, ${palette.green30})`,
               borderWidth: '2px',
               borderRadius: '8px',
             },
@@ -143,7 +139,6 @@ function ActionsExample() {
 }
 
 function FeedbackExample() {
-  const mode = useCurrentMode(useRef(document.body));
   return (
     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
       <CloudscapeButtonGroup
@@ -169,26 +164,26 @@ function FeedbackExample() {
         ]}
         style={{
           root: {
-            background: backgrounds[mode].orange,
+            background: `light-dark(rgba(223, 146, 91, 1), rgba(204, 90, 9, 0.81))`,
             borderRadius: '50px',
             paddingBlock: '14px',
             paddingInline: '12px',
-            boxShadow: boxShadows[mode].orange,
+            boxShadow: getBoxShadow('orange'),
             focusRing: {
-              borderColor: focusRingColors[mode].orange,
+              borderColor: `light-dark(${palette.orange60}, ${palette.orange40})`,
               borderWidth: '3px',
               borderRadius: '50px',
             },
           },
           item: {
             color: {
-              active: itemColors[mode].orange.active,
-              default: itemColors[mode].orange.default,
-              hover: itemColors[mode].orange.hover,
-              disabled: itemColors[mode].disabled,
+              active: `light-dark(${palette.orange100}, ${palette.orange10})`,
+              default: `light-dark(${palette.orange90}, ${palette.orange20})`,
+              hover: `light-dark(${palette.orange100}, ${palette.orange10})`,
+              disabled: `light-dark(${palette.neutral60}, ${palette.neutral40})`,
             },
             focusRing: {
-              borderColor: focusRingColors[mode].orange,
+              borderColor: `light-dark(${palette.orange60}, ${palette.orange40})`,
               borderWidth: '2px',
               borderRadius: '8px',
             },
@@ -200,7 +195,6 @@ function FeedbackExample() {
 }
 
 function MenuDropdownExample() {
-  const mode = useCurrentMode(useRef(document.body));
   return (
     <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
       <CloudscapeButtonGroup
@@ -229,28 +223,28 @@ function MenuDropdownExample() {
         ]}
         style={{
           root: {
-            background: backgrounds[mode].red,
+            background: `light-dark(rgba(234, 91, 86, 0.52), rgba(210, 60, 60, 0.63))`,
             borderRadius: '18px',
             paddingBlock: '12px',
             paddingInline: '12px',
-            boxShadow: boxShadows[mode].red,
+            boxShadow: getBoxShadow('red'),
             borderWidth: '2px',
-            borderColor: borderColors[mode].red,
+            borderColor: `light-dark(rgba(239, 68, 68, 0.4), rgba(239, 68, 68, 0.6))`,
             focusRing: {
-              borderColor: focusRingColors[mode].red,
+              borderColor: `light-dark(${palette.red80}, ${palette.red30})`,
               borderWidth: '2px',
               borderRadius: '8px',
             },
           },
           item: {
             color: {
-              active: itemColors[mode].red.active,
-              default: itemColors[mode].red.default,
-              hover: itemColors[mode].red.hover,
-              disabled: itemColors[mode].disabled,
+              active: `light-dark(${palette.red100}, ${palette.red10})`,
+              default: `light-dark(${palette.red80}, ${palette.red20})`,
+              hover: `light-dark(${palette.red100}, ${palette.red10})`,
+              disabled: `light-dark(${palette.neutral60}, ${palette.neutral40})`,
             },
             focusRing: {
-              borderColor: focusRingColors[mode].red,
+              borderColor: `light-dark(${palette.red80}, ${palette.red30})`,
               borderWidth: '2px',
               borderRadius: '8px',
             },
@@ -273,28 +267,28 @@ function MenuDropdownExample() {
         ]}
         style={{
           root: {
-            background: backgrounds[mode].red,
+            background: `light-dark(rgba(234, 91, 86, 0.52), rgba(210, 60, 60, 0.63))`,
             borderRadius: '50%',
             paddingBlock: '12px',
             paddingInline: '12px',
-            boxShadow: boxShadows[mode].red,
+            boxShadow: getBoxShadow('red'),
             borderWidth: '2px',
-            borderColor: borderColors[mode].red,
+            borderColor: `light-dark(rgba(239, 68, 68, 0.4), rgba(239, 68, 68, 0.6))`,
             focusRing: {
-              borderColor: focusRingColors[mode].red,
+              borderColor: `light-dark(${palette.red80}, ${palette.red30})`,
               borderWidth: '2px',
               borderRadius: '8px',
             },
           },
           item: {
             color: {
-              active: itemColors[mode].red.active,
-              default: itemColors[mode].red.default,
-              hover: itemColors[mode].red.hover,
-              disabled: itemColors[mode].disabled,
+              active: `light-dark(${palette.red100}, ${palette.red10})`,
+              default: `light-dark(${palette.red80}, ${palette.red20})`,
+              hover: `light-dark(${palette.red100}, ${palette.red10})`,
+              disabled: `light-dark(${palette.neutral60}, ${palette.neutral40})`,
             },
             focusRing: {
-              borderColor: focusRingColors[mode].red,
+              borderColor: `light-dark(${palette.red80}, ${palette.red30})`,
               borderWidth: '2px',
               borderRadius: '8px',
             },
@@ -306,7 +300,6 @@ function MenuDropdownExample() {
 }
 
 function FileInputExample() {
-  const mode = useCurrentMode(useRef(document.body));
   return (
     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
       <CloudscapeButtonGroup
@@ -329,26 +322,26 @@ function FileInputExample() {
         ]}
         style={{
           root: {
-            background: backgrounds[mode].teal,
+            background: `light-dark(rgba(138, 237, 225, 0.76), rgba(9, 188, 155, 0.71))`,
             borderRadius: '24px',
             paddingBlock: '12px',
             paddingInline: '16px',
-            boxShadow: boxShadows[mode].teal,
+            boxShadow: getBoxShadow('teal'),
             focusRing: {
-              borderColor: focusRingColors[mode].teal,
+              borderColor: `light-dark(${palette.teal80}, ${palette.teal40})`,
               borderWidth: '2px',
               borderRadius: '8px',
             },
           },
           item: {
             color: {
-              active: itemColors[mode].teal.active,
-              default: itemColors[mode].teal.default,
-              hover: itemColors[mode].teal.hover,
-              disabled: itemColors[mode].disabled,
+              active: `light-dark(${palette.teal100}, ${palette.teal10})`,
+              default: `light-dark(${palette.teal80}, ${palette.teal20})`,
+              hover: `light-dark(${palette.teal100}, ${palette.teal10})`,
+              disabled: `light-dark(${palette.neutral60}, ${palette.neutral40})`,
             },
             focusRing: {
-              borderColor: focusRingColors[mode].teal,
+              borderColor: `light-dark(${palette.teal80}, ${palette.teal40})`,
               borderWidth: '2px',
               borderRadius: '8px',
             },
@@ -360,7 +353,6 @@ function FileInputExample() {
 }
 
 function NavExample() {
-  const mode = useCurrentMode(useRef(document.body));
   return (
     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
       <CloudscapeButtonGroup
@@ -388,26 +380,26 @@ function NavExample() {
         ]}
         style={{
           root: {
-            background: backgrounds[mode].nav,
+            background: `light-dark(rgba(205, 202, 202, 0.85), rgba(124, 122, 122, 1))`,
             borderRadius: '24px',
             paddingBlock: '12px',
             paddingInline: '16px',
-            boxShadow: boxShadows[mode].nav,
+            boxShadow: getBoxShadow('nav'),
             focusRing: {
-              borderColor: focusRingColors[mode].nav,
+              borderColor: `light-dark(${palette.neutral80}, ${palette.neutral40})`,
               borderWidth: '2px',
               borderRadius: '8px',
             },
           },
           item: {
             color: {
-              active: itemColors[mode].nav.active,
-              default: itemColors[mode].nav.default,
-              hover: itemColors[mode].nav.hover,
-              disabled: itemColors[mode].disabled,
+              active: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
+              default: `light-dark(${palette.neutral80}, ${palette.neutral20})`,
+              hover: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
+              disabled: `light-dark(${palette.neutral60}, ${palette.neutral40})`,
             },
             focusRing: {
-              borderColor: focusRingColors[mode].nav,
+              borderColor: `light-dark(${palette.neutral80}, ${palette.neutral40})`,
               borderWidth: '2px',
               borderRadius: '8px',
             },
@@ -427,26 +419,26 @@ function NavExample() {
         ]}
         style={{
           root: {
-            background: backgrounds[mode].nav,
+            background: `light-dark(rgba(205, 202, 202, 0.85), rgba(124, 122, 122, 1))`,
             borderRadius: '24px',
             paddingBlock: '12px',
             paddingInline: '16px',
-            boxShadow: boxShadows[mode].nav,
+            boxShadow: getBoxShadow('nav'),
             focusRing: {
-              borderColor: focusRingColors[mode].nav,
+              borderColor: `light-dark(${palette.neutral80}, ${palette.neutral40})`,
               borderWidth: '2px',
               borderRadius: '8px',
             },
           },
           item: {
             color: {
-              active: itemColors[mode].nav.active,
-              default: itemColors[mode].nav.default,
-              hover: itemColors[mode].nav.hover,
-              disabled: itemColors[mode].disabled,
+              active: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
+              default: `light-dark(${palette.neutral80}, ${palette.neutral20})`,
+              hover: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
+              disabled: `light-dark(${palette.neutral60}, ${palette.neutral40})`,
             },
             focusRing: {
-              borderColor: focusRingColors[mode].nav,
+              borderColor: `light-dark(${palette.neutral80}, ${palette.neutral40})`,
               borderWidth: '2px',
               borderRadius: '8px',
             },
@@ -456,140 +448,14 @@ function NavExample() {
     </div>
   );
 }
-
-const backgrounds = {
-  light: {
-    blue: 'rgba(166, 222, 255, 0.91)',
-    green: 'rgba(152, 234, 182, 0.87)',
-    orange: 'rgba(223, 146, 91, 1)',
-    red: 'rgba(234, 91, 86, 0.52)',
-    teal: 'rgba(138, 237, 225, 0.76)',
-    nav: 'rgba(205, 202, 202, 0.85)',
-  },
-  dark: {
-    blue: 'rgba(64, 123, 178, 0.8)',
-    green: 'rgba(34, 197, 94, 0.3)',
-    orange: 'rgba(204, 90, 9, 0.81)',
-    red: 'rgba(210, 60, 60, 0.63)',
-    teal: 'rgba(9, 188, 155, 0.71)',
-    nav: 'rgba(124, 122, 122, 1)',
-  },
-};
-
-const borderColors = {
-  light: {
-    green: 'rgba(24, 146, 69, 0.4)',
-    red: 'rgba(239, 68, 68, 0.4)',
-  },
-  dark: {
-    green: 'rgba(34, 197, 94, 0.6)',
-    red: 'rgba(239, 68, 68, 0.6)',
-  },
-};
-
-const boxShadows = {
-  light: {
-    blue: '0 2px 12px rgba(59, 130, 246, 0.15)',
-    green: '0 2px 12px rgba(34, 197, 94, 0.15)',
-    orange: '0 2px 12px rgba(249, 115, 22, 0.15)',
-    red: '0 2px 12px rgba(239, 68, 68, 0.15)',
-    teal: '0 2px 12px rgba(20, 184, 166, 0.15)',
-    nav: '0 4px 20px rgba(0, 0, 0, 0.1)',
-  },
-  dark: {
-    blue: '0 2px 12px rgba(59, 130, 246, 0.25)',
-    green: '0 2px 12px rgba(34, 197, 94, 0.25)',
-    orange: '0 2px 12px rgba(249, 115, 22, 0.25)',
-    red: '0 2px 12px rgba(239, 68, 68, 0.25)',
-    teal: '0 2px 12px rgba(20, 184, 166, 0.25)',
-    nav: '0 4px 20px rgba(255, 255, 255, 0.1)',
-  },
-};
-
-const focusRingColors = {
-  light: {
-    blue: palette.blue80,
-    green: palette.green60,
-    orange: palette.orange60,
-    red: palette.red80,
-    teal: palette.teal80,
-    nav: palette.neutral80,
-  },
-  dark: {
-    blue: palette.blue40,
-    green: palette.green30,
-    orange: palette.orange40,
-    red: palette.red30,
-    teal: palette.teal40,
-    nav: palette.neutral40,
-  },
-};
-
-const itemColors = {
-  light: {
-    blue: {
-      active: palette.blue100,
-      default: palette.blue90,
-      hover: palette.blue100,
-    },
-    green: {
-      active: palette.green100,
-      default: palette.green90,
-      hover: palette.green100,
-    },
-    orange: {
-      active: palette.orange100,
-      default: palette.orange90,
-      hover: palette.orange100,
-    },
-    red: {
-      active: palette.red100,
-      default: palette.red80,
-      hover: palette.red100,
-    },
-    teal: {
-      active: palette.teal100,
-      default: palette.teal80,
-      hover: palette.teal100,
-    },
-    nav: {
-      active: palette.neutral100,
-      default: palette.neutral80,
-      hover: palette.neutral100,
-    },
-    disabled: palette.neutral60,
-  },
-  dark: {
-    blue: {
-      active: palette.blue10,
-      default: palette.blue20,
-      hover: palette.blue10,
-    },
-    green: {
-      active: palette.green10,
-      default: palette.green20,
-      hover: palette.green10,
-    },
-    orange: {
-      active: palette.orange10,
-      default: palette.orange20,
-      hover: palette.orange10,
-    },
-    red: {
-      active: palette.red10,
-      default: palette.red20,
-      hover: palette.red10,
-    },
-    teal: {
-      active: palette.teal10,
-      default: palette.teal20,
-      hover: palette.teal10,
-    },
-    nav: {
-      active: palette.neutral10,
-      default: palette.neutral20,
-      hover: palette.neutral10,
-    },
-    disabled: palette.neutral40,
-  },
-};
+function getBoxShadow(colorTheme: string) {
+  const boxShadows = {
+    blue: `0 2px 12px light-dark(rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.25))`,
+    green: `0 2px 12px light-dark(rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.25))`,
+    orange: `0 2px 12px light-dark(rgba(249, 115, 22, 0.15), rgba(249, 115, 22, 0.25))`,
+    red: `0 2px 12px light-dark(rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.25))`,
+    teal: `0 2px 12px light-dark(rgba(20, 184, 166, 0.15),rgba(20, 184, 166, 0.25))`,
+    nav: `0 4px 20px light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.1))`,
+  };
+  return boxShadows[colorTheme as keyof typeof boxShadows];
+}
