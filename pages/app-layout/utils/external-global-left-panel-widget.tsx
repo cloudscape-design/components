@@ -16,7 +16,7 @@ const AIDrawer = () => {
       </Box>
       <Button
         onClick={() => {
-          updateDrawer({ type: 'expandDrawer', payload: { id: 'amazon-q' } });
+          updateDrawer({ type: 'expandDrawer', payload: { id: 'ai-panel' } });
         }}
       >
         expand programmatically
@@ -28,6 +28,14 @@ const AIDrawer = () => {
       >
         exit expanded mode
       </Button>
+      <Button
+        className="resize-to-max-width"
+        onClick={() => {
+          updateDrawer({ type: 'resizeDrawer', payload: { id: 'ai-panel', size: 10000 } });
+        }}
+      >
+        resize to 10_000 px
+      </Button>
       {new Array(100).fill(null).map((_, index) => (
         <div key={index}>Tela content</div>
       ))}
@@ -36,7 +44,7 @@ const AIDrawer = () => {
 };
 
 registerLeftDrawer({
-  id: 'amazon-q',
+  id: 'ai-panel',
   resizable: true,
   isExpandable: true,
   defaultSize: 420,

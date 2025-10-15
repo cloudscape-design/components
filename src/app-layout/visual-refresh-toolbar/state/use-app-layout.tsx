@@ -74,6 +74,7 @@ export const useAppLayout = (
   const onMountRootRef = useCallback(node => {
     setIsNested(getIsNestedInAppLayout(node));
   }, []);
+  const maxAiDrawerSizeRef = useRef(0);
 
   const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
     componentName: 'AppLayout',
@@ -157,6 +158,7 @@ export const useAppLayout = (
     onAiDrawerFocus: () => aiDrawerFocusControl.setFocus(),
     expandedDrawerId,
     setExpandedDrawerId,
+    maxAiDrawerSize: maxAiDrawerSizeRef.current,
   });
   useWidgetMessages(hasToolbar, message => aiDrawerMessageHandler(message));
   const aiDrawerFocusControl = useAsyncFocusControl(!!activeAiDrawer?.id, true, activeAiDrawer?.id);
@@ -270,6 +272,8 @@ export const useAppLayout = (
     activeGlobalDrawersSizes,
     activeAiDrawerSize,
   });
+
+  maxAiDrawerSizeRef.current = maxAiDrawerSize;
 
   const verticalOffsets = computeVerticalLayout({
     topOffset: placement.insetBlockStart,
