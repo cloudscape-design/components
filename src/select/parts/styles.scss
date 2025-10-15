@@ -61,6 +61,7 @@ $inlineLabel-border-radius: 2px;
 
 .selected-icon {
   color: awsui.$color-item-selected;
+  padding-inline-start: awsui.$space-xs;
 }
 
 .show-label-tag > .selected-icon {
@@ -88,31 +89,6 @@ $inlineLabel-border-radius: 2px;
   @include styles.with-direction('rtl') {
     mask-image: linear-gradient(-270deg, transparent, white 20px, white);
   }
-
-  > .inline-token {
-    display: flex;
-    align-items: center;
-    min-inline-size: max-content;
-    block-size: 18px;
-
-    border-block: awsui.$border-width-token solid awsui.$color-border-item-selected;
-    border-inline: awsui.$border-width-token solid awsui.$color-border-item-selected;
-    padding-block: 0;
-    padding-inline: awsui.$space-xxs;
-    background: awsui.$color-background-item-selected;
-    border-start-start-radius: awsui.$border-radius-token;
-    border-start-end-radius: awsui.$border-radius-token;
-    border-end-start-radius: awsui.$border-radius-token;
-    border-end-end-radius: awsui.$border-radius-token;
-    color: awsui.$color-text-body-default;
-  }
-}
-
-.visual-refresh > .inline-token-list > .inline-token {
-  border-start-start-radius: awsui.$border-radius-badge;
-  border-start-end-radius: awsui.$border-radius-badge;
-  border-end-start-radius: awsui.$border-radius-badge;
-  border-end-end-radius: awsui.$border-radius-badge;
 }
 
 .inline-token-hidden-placeholder {
@@ -121,13 +97,6 @@ $inlineLabel-border-radius: 2px;
 
 .inline-token-counter {
   white-space: nowrap;
-}
-.inline-token-trigger--disabled {
-  > .inline-token-list > .inline-token {
-    border-color: awsui.$color-border-control-disabled;
-    background-color: awsui.$color-background-container-content;
-    color: awsui.$color-text-disabled;
-  }
 }
 
 .inline-label-trigger-wrapper {

@@ -8,6 +8,7 @@ import { BaseComponentProps } from '../../base-component';
 interface BaseOption {
   value?: string;
   label?: string;
+  labelContent?: React.ReactNode;
   lang?: string;
   description?: string;
   disabled?: boolean;
@@ -49,4 +50,8 @@ export interface OptionProps extends BaseComponentProps {
   highlightedOption?: boolean;
   selectedOption?: boolean;
   isGroupOption?: boolean;
+  disableTitleTooltip?: boolean;
+  labelContainerRef?: React.RefObject<HTMLSpanElement>;
+  labelRef?: React.RefObject<HTMLSpanElement>;
+  labelId?: string;
 }
