@@ -201,7 +201,7 @@ const InternalTable = React.forwardRef(
         ?.innerText ?? toolsHeaderPerformanceMarkRef.current?.innerText;
     const getPatternIdentifier = () => {
       const hasActions = !!toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(
-        `.${headerStyles.actions} .${buttonStyles.root}`
+        `.${headerStyles.actions} .${buttonStyles.button}`
       );
 
       if (hasActions) {

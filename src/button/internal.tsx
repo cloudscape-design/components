@@ -56,7 +56,6 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __title?: string;
   __emitPerformanceMarks?: boolean;
   __skipNativeAttributesWarnings?: boolean;
-  __hideFromTestUtils?: boolean;
 } & InternalBaseComponentProps;
 
 export const InternalButton = React.forwardRef(
@@ -99,7 +98,6 @@ export const InternalButton = React.forwardRef(
       __title,
       __emitPerformanceMarks = true,
       __skipNativeAttributesWarnings,
-      __hideFromTestUtils = false,
       analyticsAction = 'click',
       ...props
     }: InternalButtonProps,
@@ -180,8 +178,7 @@ export const InternalButton = React.forwardRef(
       buttonContext.onClick({ variant });
     };
 
-    const buttonClass = clsx(props.className, styles.root, styles[`variant-${variant}`], {
-      [testUtilStyles.root]: !__hideFromTestUtils,
+    const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {
       [styles.disabled]: isNotInteractive,
       [styles['disabled-with-reason']]: isDisabledWithReason,
       [styles['button-no-wrap']]: !wrapText,

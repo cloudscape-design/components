@@ -7,8 +7,7 @@ import buttonTestUtilsStyles from '../../../button/test-classes/styles.selectors
 import spinnerStyles from '../../../spinner/styles.selectors.js';
 
 export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
-  static rootSelector: string = buttonTestUtilsStyles.root;
-  static legacyRootSelector: string = 'awsui_button_vjswe_t8nlg_157';
+  static rootSelector: string = styles.button;
 
   findLoadingIndicator(): ElementWrapper | null {
     return this.find(`.${styles['icon-left']}.${spinnerStyles.root}`);

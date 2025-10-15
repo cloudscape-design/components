@@ -53,7 +53,7 @@
   /* used in test-utils */
 }
 
-.root {
+.button {
   @include styles.styles-reset;
   @include styles.text-wrapping;
   @include styles.font-button;
