@@ -8,7 +8,7 @@ import spinnerStyles from '../../../spinner/styles.selectors.js';
 
 export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
   static rootSelector: string = buttonTestUtilsStyles.root;
-  static legacyRootSelector: string = 'awsui_button_vjswe';
+  static legacyRootSelector: string = 'awsui_button_vjswe_t8nlg_157';
 
   findLoadingIndicator(): ElementWrapper | null {
     return this.find(`.${styles['icon-left']}.${spinnerStyles.root}`);

@@ -170,6 +170,7 @@ describe('button and toggle button', () => {
     const { container } = render(
       <>
         <Button>Button</Button>
+        <button className="awsui_button_vjswe_t8nlg_157">Legacy button</button>
         <ToggleButton pressed={true} />
       </>
     );
