@@ -75,7 +75,7 @@ describe('Button native attributes', () => {
     const wrapper = createWrapper(container).findButton()!;
 
     expect(wrapper.getElement()).toHaveClass('my-additional-class');
-    expect(wrapper.getElement()).toHaveClass(styles.button);
+    expect(wrapper.getElement()).toHaveClass(styles.root);
   });
 
   test('events get chained', () => {

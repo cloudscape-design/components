@@ -5,11 +5,12 @@ import { render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import Button from '../../../lib/components/button';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import ToggleButton, { ToggleButtonProps } from '../../../lib/components/toggle-button';
 import { getToggleIcon } from '../../../lib/components/toggle-button/util';
 
-import styles from '../../../lib/components/button/styles.css.js';
+import testStyles from '../../../lib/components/toggle-button/test-classes/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -148,8 +149,32 @@ describe('ToggleButton Component', () => {
       const { container } = render(
         <ToggleButton pressed={true} nativeButtonAttributes={{ className: 'additional-class' }} />
       );
-      expect(container.firstChild).toHaveClass(styles.button);
+      expect(container.firstChild).toHaveClass(testStyles.root);
       expect(container.firstChild).toHaveClass('additional-class');
     });
+  });
+});
+
+describe('button and toggle button', () => {
+  it('findAllButtons should only find buttons', () => {
+    const { container } = render(
+      <>
+        <Button>Button</Button>
+        <ToggleButton pressed={true} />
+      </>
+    );
+    const wrapper = createWrapper(container);
+    expect(wrapper.findAllButtons()).toHaveLength(1);
+  });
+  it('findAllToggleButtons should only find toggle buttons', () => {
+    const { container } = render(
+      <>
+        <Button>Button</Button>
+        <button className="awsui_button_vjswe_t8nlg_157">Legacy button</button>
+        <ToggleButton pressed={true} />
+      </>
+    );
+    const wrapper = createWrapper(container);
+    expect(wrapper.findAllToggleButtons()).toHaveLength(1);
   });
 });

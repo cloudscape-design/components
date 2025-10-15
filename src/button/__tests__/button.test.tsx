@@ -926,4 +926,15 @@ describe('Style API', () => {
       '0 0 8px green'
     );
   });
+
+  test('finds legacy buttons', () => {
+    const renderResult = render(
+      <div>
+        <Button>Button</Button>
+        <button className="awsui_button_vjswe_t8nlg_157">Legacy button</button>
+      </div>
+    );
+    const wrapper = createWrapper(renderResult.container);
+    expect(wrapper.findAllButtons()).toHaveLength(2);
+  });
 });
