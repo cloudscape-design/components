@@ -87,6 +87,7 @@ import TilesWrapper from './tiles';
 import TimeInputWrapper from './time-input';
 import ToggleWrapper from './toggle';
 import ToggleButtonWrapper from './toggle-button';
+import TokenWrapper from './token';
 import TokenGroupWrapper from './token-group';
 import TopNavigationWrapper from './top-navigation';
 import TreeViewWrapper from './tree-view';
@@ -172,6 +173,7 @@ export { TilesWrapper };
 export { TimeInputWrapper };
 export { ToggleWrapper };
 export { ToggleButtonWrapper };
+export { TokenWrapper };
 export { TokenGroupWrapper };
 export { TopNavigationWrapper };
 export { TreeViewWrapper };
@@ -1664,6 +1666,25 @@ findToggleButton(selector?: string): ToggleButtonWrapper | null;
  */
 findAllToggleButtons(selector?: string): Array<ToggleButtonWrapper>;
 /**
+ * Returns the wrapper of the first Token that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Token.
+ * If no matching Token is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TokenWrapper | null}
+ */
+findToken(selector?: string): TokenWrapper | null;
+
+/**
+ * Returns an array of Token wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Tokens inside the current wrapper.
+ * If no matching Token is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TokenWrapper>}
+ */
+findAllTokens(selector?: string): Array<TokenWrapper>;
+/**
  * Returns the wrapper of the first TokenGroup that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first TokenGroup.
  * If no matching TokenGroup is found, returns \`null\`.
@@ -2776,6 +2797,19 @@ ElementWrapper.prototype.findToggleButton = function(selector) {
 ElementWrapper.prototype.findAllToggleButtons = function(selector) {
   return this.findAllComponents(ToggleButtonWrapper, selector);
 };
+ElementWrapper.prototype.findToken = function(selector) {
+  let rootSelector = \`.\${TokenWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TokenWrapper && TokenWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TokenWrapper.rootSelector}, .\${TokenWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TokenWrapper);
+};
+
+ElementWrapper.prototype.findAllTokens = function(selector) {
+  return this.findAllComponents(TokenWrapper, selector);
+};
 ElementWrapper.prototype.findTokenGroup = function(selector) {
   let rootSelector = \`.\${TokenGroupWrapper.rootSelector}\`;
   if("legacyRootSelector" in TokenGroupWrapper && TokenGroupWrapper.legacyRootSelector){
@@ -2939,6 +2973,7 @@ import TilesWrapper from './tiles';
 import TimeInputWrapper from './time-input';
 import ToggleWrapper from './toggle';
 import ToggleButtonWrapper from './toggle-button';
+import TokenWrapper from './token';
 import TokenGroupWrapper from './token-group';
 import TopNavigationWrapper from './top-navigation';
 import TreeViewWrapper from './tree-view';
@@ -3024,6 +3059,7 @@ export { TilesWrapper };
 export { TimeInputWrapper };
 export { ToggleWrapper };
 export { ToggleButtonWrapper };
+export { TokenWrapper };
 export { TokenGroupWrapper };
 export { TopNavigationWrapper };
 export { TreeViewWrapper };
@@ -4360,6 +4396,23 @@ findToggleButton(selector?: string): ToggleButtonWrapper;
  */
 findAllToggleButtons(selector?: string): MultiElementWrapper<ToggleButtonWrapper>;
 /**
+ * Returns a wrapper that matches the Tokens with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches Tokens.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TokenWrapper}
+ */
+findToken(selector?: string): TokenWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches Tokens with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches Tokens.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<TokenWrapper>}
+ */
+findAllTokens(selector?: string): MultiElementWrapper<TokenWrapper>;
+/**
  * Returns a wrapper that matches the TokenGroups with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches TokenGroups.
  *
@@ -5461,6 +5514,19 @@ ElementWrapper.prototype.findToggleButton = function(selector) {
 
 ElementWrapper.prototype.findAllToggleButtons = function(selector) {
   return this.findAllComponents(ToggleButtonWrapper, selector);
+};
+ElementWrapper.prototype.findToken = function(selector) {
+  let rootSelector = \`.\${TokenWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TokenWrapper && TokenWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TokenWrapper.rootSelector}, .\${TokenWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TokenWrapper);
+};
+
+ElementWrapper.prototype.findAllTokens = function(selector) {
+  return this.findAllComponents(TokenWrapper, selector);
 };
 ElementWrapper.prototype.findTokenGroup = function(selector) {
   let rootSelector = \`.\${TokenGroupWrapper.rootSelector}\`;

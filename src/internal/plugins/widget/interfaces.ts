@@ -70,4 +70,6 @@ export type AppLayoutUpdateMessage =
   | ExpandDrawerMessage
   | ExitExpandedModeMessage;
 
-export type AppLayoutMessage = RegisterDrawerMessage | AppLayoutUpdateMessage;
+export type InitialMessage = RegisterDrawerMessage;
+
+export type WidgetMessage = InitialMessage | AppLayoutUpdateMessage;
