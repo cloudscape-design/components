@@ -149,6 +149,23 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('Fifth');
   });
 
+  test('correctly identifies disabled options', () => {
+    const { wrapper } = renderSelect({
+      options: [
+        ...defaultOptions,
+        { label: 'Enabled Option', value: 'enabled' },
+        { label: 'Disabled Option', value: 'disabled', disabled: true },
+      ],
+    });
+    wrapper.openDropdown();
+
+    const enabledOption = wrapper.findDropdown({ expandToViewport })!.findOptionByValue('enabled')!;
+    const disabledOption = wrapper.findDropdown({ expandToViewport })!.findOptionByValue('disabled')!;
+
+    expect(enabledOption.isDisabled()).toBe(false);
+    expect(disabledOption.isDisabled()).toBe(true);
+  });
+
   describe('Filtering feature', () => {
     test('fires onLoadItems event after a delay', async () => {
       const onLoadItems = jest.fn();
