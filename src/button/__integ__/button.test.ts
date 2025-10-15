@@ -69,15 +69,3 @@ describe('Button Style API', () => {
     })
   );
 });
-
-describe('legacy selectors', () => {
-  test(
-    'finds legacy and new buttons',
-    useBrowser(async browser => {
-      await browser.url('#/light/button/legacy-button');
-      const page = new ButtonPageObject(browser);
-      await expect(page.getText(wrapper.findButton().toSelector())).resolves.toBe('Legacy button');
-      await expect(browser.$$(wrapper.findAllButtons().toSelector())).resolves.toHaveLength(3);
-    })
-  );
-});

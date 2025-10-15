@@ -12,7 +12,6 @@ import { ToggleButtonProps } from './interfaces';
 import { getToggleIcon } from './util';
 
 import styles from './styles.css.js';
-import testStyles from './test-classes/styles.css.js';
 
 export const InternalToggleButton = React.forwardRef(
   (
@@ -48,12 +47,7 @@ export const InternalToggleButton = React.forwardRef(
 
     return (
       <InternalButton
-        className={clsx(
-          className,
-          testStyles.root,
-          styles[`variant-${variant}`],
-          pressed && [styles.pressed, testStyles.pressed]
-        )}
+        className={clsx(className, styles[`variant-${variant}`], { [styles.pressed]: pressed })}
         variant={variant}
         formAction="none"
         iconName={getToggleIcon(pressed, defaultIconName, pressedIconName)}
@@ -68,7 +62,6 @@ export const InternalToggleButton = React.forwardRef(
         {...rest}
         ref={ref}
         nativeButtonAttributes={nativeButtonAttributes}
-        __hideFromTestUtils={true}
       />
     );
   }
