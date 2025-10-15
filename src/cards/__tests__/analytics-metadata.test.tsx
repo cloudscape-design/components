@@ -32,6 +32,7 @@ const items: Array<CardsItem> = [
   { value: 'first', description: 'First choice.' },
   { value: 'second', description: 'Second choice' },
   { value: 'third', description: 'Third choice' },
+  { value: 'fourth', description: 'Fourth choice' },
 ];
 
 const cardDefinition: CardsProps['cardDefinition'] = {
@@ -48,13 +49,12 @@ const cardDefinition: CardsProps['cardDefinition'] = {
 const componentLabel = 'Header for cards';
 const isItemDisabled = (item: CardsItem) => item.value === 'second';
 
-function renderCards(props: Partial<CardsProps>, removeTrackBy?: boolean) {
+function renderCards(props: Partial<CardsProps>) {
   const renderResult = render(
     <Cards
       {...props}
       items={items}
       cardDefinition={cardDefinition}
-      trackBy={removeTrackBy ? undefined : 'value'}
       header={
         typeof props.header !== 'undefined' ? (
           props.header
@@ -71,7 +71,7 @@ function renderCards(props: Partial<CardsProps>, removeTrackBy?: boolean) {
 }
 
 const getMetadata = (
-  additionalProperties: Record<string, string>,
+  additionalProperties: Record<string, string | Array<string> | undefined>,
   event?: GeneratedAnalyticsMetadataCardsSelect | GeneratedAnalyticsMetadataCardsDeselect,
   innerContext?: Record<string, string>
 ) => {
@@ -83,7 +83,7 @@ const getMetadata = (
           name: 'awsui.Cards',
           label: componentLabel,
           properties: {
-            itemsCount: '3',
+            itemsCount: '4',
             ...additionalProperties,
           },
         },
@@ -105,114 +105,150 @@ const getMetadata = (
 const findSelectionInput = (wrapper: CardsWrapper, index: number) =>
   wrapper.findItems()![index].findSelectionArea()!.find('input')!.getElement();
 
+const getItem = (index: number, trackBy: string | undefined) => (trackBy ? items[index].value : `${index}`);
+
 beforeAll(() => {
   activateAnalyticsMetadata(true);
 });
+
 describe('Cards renders correct analytics metadata', () => {
   describe('selection', () => {
-    describe.each([false, true])('with entireCardClickable=%s', entireCardClickable => {
-      test('multiple', () => {
+    describe.each(['value', undefined])('with trackBy=%s', trackBy => {
+      describe.each([false, true])('with entireCardClickable=%s', entireCardClickable => {
+        test('multiple', () => {
+          const wrapper = renderCards({
+            selectionType: 'multi',
+            selectedItems: [items[2], items[3]],
+            variant: 'full-page',
+            entireCardClickable,
+            trackBy,
+          });
+
+          const selectedItems = trackBy ? ['third', 'fourth'] : undefined;
+
+          const firstSelectionArea = findSelectionInput(wrapper, 0);
+          validateComponentNameAndLabels(firstSelectionArea, labels);
+          const selectEvent: GeneratedAnalyticsMetadataCardsSelect = {
+            action: 'select',
+            detail: { label: 'first', position: '1', item: getItem(0, trackBy) },
+          };
+          const firstMetadata = getMetadata(
+            { selectedItemsCount: '2', selectedItems, selectionType: 'multi', variant: 'full-page' },
+            selectEvent
+          );
+          expect(getGeneratedAnalyticsMetadata(firstSelectionArea)).toEqual(firstMetadata);
+          if (entireCardClickable) {
+            expect(getGeneratedAnalyticsMetadata(wrapper.findItems()[0]!.findCardHeader()!.getElement())).toEqual(
+              firstMetadata
+            );
+          }
+
+          const disabledSelectionArea = findSelectionInput(wrapper, 1);
+          validateComponentNameAndLabels(disabledSelectionArea, labels);
+          const secondMetadata = getMetadata(
+            { selectedItemsCount: '2', selectedItems, selectionType: 'multi', variant: 'full-page' },
+            undefined,
+            {
+              position: '2',
+              item: getItem(1, trackBy),
+            }
+          );
+          expect(getGeneratedAnalyticsMetadata(disabledSelectionArea)).toEqual(secondMetadata);
+          if (entireCardClickable) {
+            expect(getGeneratedAnalyticsMetadata(wrapper.findItems()[1]!.findCardHeader()!.getElement())).toEqual(
+              secondMetadata
+            );
+          }
+
+          const thirdSelectionArea = findSelectionInput(wrapper, 2);
+          validateComponentNameAndLabels(thirdSelectionArea, labels);
+          const deselectEvent: GeneratedAnalyticsMetadataCardsDeselect = {
+            action: 'deselect',
+            detail: { label: 'third', position: '3', item: getItem(2, trackBy) },
+          };
+          const thirdMetadata = getMetadata(
+            { selectedItemsCount: '2', selectedItems, selectionType: 'multi', variant: 'full-page' },
+            deselectEvent
+          );
+          expect(getGeneratedAnalyticsMetadata(thirdSelectionArea)).toEqual(thirdMetadata);
+          if (entireCardClickable) {
+            expect(getGeneratedAnalyticsMetadata(wrapper.findItems()[2]!.findCardHeader()!.getElement())).toEqual(
+              thirdMetadata
+            );
+          }
+        });
+        test('single', () => {
+          const wrapper = renderCards({
+            selectionType: 'single',
+            selectedItems: [items[2]],
+            trackBy,
+            entireCardClickable,
+          });
+
+          const selectedItems = trackBy ? ['third'] : undefined;
+
+          const firstSelectionArea = findSelectionInput(wrapper, 0);
+          validateComponentNameAndLabels(firstSelectionArea, labels);
+          const firstMetadata = getMetadata(
+            { selectedItemsCount: '1', selectedItems, selectionType: 'single', variant: 'container' },
+            {
+              action: 'select',
+              detail: { label: 'first', position: '1', item: getItem(0, trackBy) },
+            }
+          );
+          expect(getGeneratedAnalyticsMetadata(firstSelectionArea)).toEqual(firstMetadata);
+          if (entireCardClickable) {
+            expect(getGeneratedAnalyticsMetadata(wrapper.findItems()[0]!.findCardHeader()!.getElement())).toEqual(
+              firstMetadata
+            );
+          }
+
+          const disabledSelectionArea = findSelectionInput(wrapper, 1);
+          validateComponentNameAndLabels(disabledSelectionArea, labels);
+          const secondMetadata = getMetadata(
+            { selectedItemsCount: '1', selectedItems, selectionType: 'single', variant: 'container' },
+            undefined,
+            {
+              position: '2',
+              item: getItem(1, trackBy),
+            }
+          );
+          expect(getGeneratedAnalyticsMetadata(disabledSelectionArea)).toEqual(secondMetadata);
+          if (entireCardClickable) {
+            expect(getGeneratedAnalyticsMetadata(wrapper.findItems()[1]!.findCardHeader()!.getElement())).toEqual(
+              secondMetadata
+            );
+          }
+        });
+      });
+      test('without selected values', () => {
         const wrapper = renderCards({
           selectionType: 'multi',
-          selectedItems: [items[2]],
-          variant: 'full-page',
-          entireCardClickable,
+          trackBy,
         });
+
+        const selectedItems = trackBy ? [] : undefined;
 
         const firstSelectionArea = findSelectionInput(wrapper, 0);
         validateComponentNameAndLabels(firstSelectionArea, labels);
         const selectEvent: GeneratedAnalyticsMetadataCardsSelect = {
           action: 'select',
-          detail: { label: 'first', position: '1', item: 'first' },
+          detail: { label: 'first', position: '1', item: getItem(0, trackBy) },
         };
         const firstMetadata = getMetadata(
-          { selectedItemsCount: '1', selectionType: 'multi', variant: 'full-page' },
+          { selectedItemsCount: '0', selectedItems, selectionType: 'multi', variant: 'container' },
           selectEvent
         );
         expect(getGeneratedAnalyticsMetadata(firstSelectionArea)).toEqual(firstMetadata);
-        if (entireCardClickable) {
-          expect(getGeneratedAnalyticsMetadata(wrapper.findItems()[0]!.findCardHeader()!.getElement())).toEqual(
-            firstMetadata
-          );
-        }
-
-        const disabledSelectionArea = findSelectionInput(wrapper, 1);
-        validateComponentNameAndLabels(disabledSelectionArea, labels);
-        const secondMetadata = getMetadata(
-          { selectedItemsCount: '1', selectionType: 'multi', variant: 'full-page' },
-          undefined,
-          {
-            position: '2',
-            item: 'second',
-          }
-        );
-        expect(getGeneratedAnalyticsMetadata(disabledSelectionArea)).toEqual(secondMetadata);
-        if (entireCardClickable) {
-          expect(getGeneratedAnalyticsMetadata(wrapper.findItems()[1]!.findCardHeader()!.getElement())).toEqual(
-            secondMetadata
-          );
-        }
-
-        const thirdSelectionArea = findSelectionInput(wrapper, 2);
-        validateComponentNameAndLabels(thirdSelectionArea, labels);
-        const deselectEvent: GeneratedAnalyticsMetadataCardsDeselect = {
-          action: 'deselect',
-          detail: { label: 'third', position: '3', item: 'third' },
-        };
-        const thirdMetadata = getMetadata(
-          { selectedItemsCount: '1', selectionType: 'multi', variant: 'full-page' },
-          deselectEvent
-        );
-        expect(getGeneratedAnalyticsMetadata(thirdSelectionArea)).toEqual(thirdMetadata);
-        if (entireCardClickable) {
-          expect(getGeneratedAnalyticsMetadata(wrapper.findItems()[2]!.findCardHeader()!.getElement())).toEqual(
-            thirdMetadata
-          );
-        }
-      });
-      test('single', () => {
-        const wrapper = renderCards({ selectionType: 'single', selectedItems: [items[2]], entireCardClickable });
-
-        const firstSelectionArea = findSelectionInput(wrapper, 0);
-        validateComponentNameAndLabels(firstSelectionArea, labels);
-        const firstMetadata = getMetadata(
-          { selectedItemsCount: '1', selectionType: 'single', variant: 'container' },
-          {
-            action: 'select',
-            detail: { label: 'first', position: '1', item: 'first' },
-          }
-        );
-        expect(getGeneratedAnalyticsMetadata(firstSelectionArea)).toEqual(firstMetadata);
-        if (entireCardClickable) {
-          expect(getGeneratedAnalyticsMetadata(wrapper.findItems()[0]!.findCardHeader()!.getElement())).toEqual(
-            firstMetadata
-          );
-        }
-
-        const disabledSelectionArea = findSelectionInput(wrapper, 1);
-        validateComponentNameAndLabels(disabledSelectionArea, labels);
-        const secondMetadata = getMetadata(
-          { selectedItemsCount: '1', selectionType: 'single', variant: 'container' },
-          undefined,
-          {
-            position: '2',
-            item: 'second',
-          }
-        );
-        expect(getGeneratedAnalyticsMetadata(disabledSelectionArea)).toEqual(secondMetadata);
-        if (entireCardClickable) {
-          expect(getGeneratedAnalyticsMetadata(wrapper.findItems()[1]!.findCardHeader()!.getElement())).toEqual(
-            secondMetadata
-          );
-        }
       });
     });
   });
   describe('without selection', () => {
     test.each([false, true])('with entireCardClickable=%s', entireCardClickable => {
-      const wrapper = renderCards({ entireCardClickable });
+      const wrapper = renderCards({ entireCardClickable, trackBy: 'value' });
       const componentDetails = {
         selectedItemsCount: '0',
+        selectedItems: [],
         selectionType: 'none',
         variant: 'container',
       };
