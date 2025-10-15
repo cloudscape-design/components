@@ -129,7 +129,7 @@ npm start
 npm run test:integ
 ```
 
-#### Run motion tests:sdfsdfsf
+#### Run motion tests:
 
 As in integration tests, make sure you have ChromeDriver installed and start the dev server:
 
