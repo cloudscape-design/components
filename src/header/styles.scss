@@ -148,6 +148,11 @@
       padding-block-start: space-heading-button-diff(awsui.$line-height-heading-l);
     }
   }
+  // Vertically center h2 when there is no description
+  .root-no-actions:not(.root-has-description) > .main > &-variant-h2.refresh,
+  .root:not(.root-no-actions):not(.root-has-description) > .main > &-variant-h2.refresh {
+    padding-block: space-heading-button-diff(awsui.$line-height-heading-l);
+  }
   &-variant-h3 {
     font-size: awsui.$font-size-heading-m;
     &.refresh {
