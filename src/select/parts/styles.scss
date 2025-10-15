@@ -126,6 +126,9 @@ $inlineLabel-border-radius: 2px;
   padding-inline: awsui.$space-scaled-xxs;
   max-inline-size: calc(100% - (2 * awsui.$space-field-horizontal));
   z-index: 1;
+  &-disabled {
+    background: linear-gradient(to bottom, awsui.$color-background-layout-main, awsui.$color-background-input-disabled);
+  }
 }
 
 // Specific Styling for Inline Label Text to not overlap with Inline Tokens
