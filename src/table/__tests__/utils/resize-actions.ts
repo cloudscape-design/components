@@ -2,31 +2,28 @@
 // SPDX-License-Identifier: Apache-2.0
 import { act } from '@testing-library/react';
 
+import { PointerEventMock } from '../../../../lib/components/internal/utils/pointer-events-mock';
 import { ElementWrapper } from '../../../../lib/components/test-utils/dom';
 
-export function fireMousedown(wrapper: ElementWrapper, button = 0) {
+beforeAll(() => {
+  (window as any).PointerEvent ??= PointerEventMock;
+});
+
+export function firePointerdown(wrapper: ElementWrapper, button = 0) {
   act(() => {
-    wrapper.fireEvent(new MouseEvent('mousedown', { button, bubbles: true }));
+    wrapper.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button, bubbles: true }));
   });
 }
 
-function createMouseEvent(name: string, pageX: number) {
-  const event = new MouseEvent(name, { bubbles: true });
-  // pageX is not supported in JSDOM
-  // https://github.com/jsdom/jsdom/issues/1911
-  Object.defineProperty(event, 'pageX', { value: pageX });
-  return event;
-}
-
-export function fireMouseMove(pageX: number) {
+export function firePointermove(pageX: number) {
   act(() => {
-    document.body.dispatchEvent(createMouseEvent('mousemove', pageX));
+    document.body.dispatchEvent(createPointerEvent('pointermove', pageX));
   });
 }
 
-export function fireMouseup(pageX: number) {
+export function firePointerup(pageX: number) {
   act(() => {
-    document.body.dispatchEvent(createMouseEvent('mouseup', pageX));
+    document.body.dispatchEvent(createPointerEvent('pointerup', pageX));
   });
 }
 
@@ -39,4 +36,12 @@ export function fakeBoundingClientRect(this: HTMLElement): DOMRect {
     width: width,
     right: rect.left + width,
   };
+}
+
+function createPointerEvent(name: string, pageX: number) {
+  const event = new PointerEvent(name, { pointerType: 'mouse', bubbles: true });
+  // pageX is not supported in JSDOM
+  // https://github.com/jsdom/jsdom/issues/1911
+  Object.defineProperty(event, 'pageX', { value: pageX });
+  return event;
 }

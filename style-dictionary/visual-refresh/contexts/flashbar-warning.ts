@@ -39,6 +39,9 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   // Tutorial hotspot
   colorTextTutorialHotspotDefault: '{colorGrey600}',
   colorTextTutorialHotspotHover: '{colorGrey900}',
+
+  // Inline-code variant background in Box
+  colorBackgroundInlineCode: 'rgba(0, 0, 0, 0.1)',
 };
 
 const tokens: StyleDictionary.ColorsDictionary = {

@@ -245,7 +245,7 @@ describe('Property filter stories: tokens editing, single', () => {
     expect(wrapper.editor.form()).toEqual(['Property[Status] Operator[=Equals] Value[Ready, Go]']);
     expect(wrapper.editor.value().multiselect().options()).toEqual(['Go']);
 
-    wrapper.editor.value().multiselect().value([null]);
+    wrapper.editor.value().multiselect().value(['Go']);
     expect(wrapper.editor.form()).toEqual(['Property[Status] Operator[=Equals] Value[Ready]']);
 
     wrapper.editor.submit();

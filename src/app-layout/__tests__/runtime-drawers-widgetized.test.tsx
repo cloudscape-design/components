@@ -5,8 +5,9 @@ import { act, render } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import { metrics } from '../../../lib/components/internal/metrics';
+import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget';
+import * as awsuiWidgetInternal from '../../../lib/components/internal/plugins/widget/core';
 import { DrawerPayload } from '../../../lib/components/internal/plugins/widget/interfaces';
-import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { describeEachAppLayout, getGlobalDrawersTestUtils } from './utils';
 
@@ -19,7 +20,7 @@ const drawerDefaults: DrawerPayload = {
 };
 
 beforeEach(() => {
-  awsuiWidgetPlugins.clearInitialMessages();
+  awsuiWidgetInternal.clearInitialMessages();
   jest.resetAllMocks();
 });
 

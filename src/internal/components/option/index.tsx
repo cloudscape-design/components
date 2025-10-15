@@ -10,6 +10,7 @@ import { isDevelopment } from '../../is-development';
 import { OptionProps } from './interfaces';
 import { Description, FilteringTags, Label, LabelTag, OptionIcon, Tags } from './option-parts';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export { OptionProps };
@@ -30,6 +31,10 @@ const Option = ({
   isGroupOption = false,
   highlightedOption = false,
   selectedOption = false,
+  disableTitleTooltip = false,
+  labelContainerRef,
+  labelRef,
+  labelId,
   ...restProps
 }: OptionProps) => {
   if (!option) {
@@ -37,6 +42,7 @@ const Option = ({
   }
   const { disabled } = option;
   const baseProps = getBaseProps(restProps);
+  const SpanOrDivTag = option.labelContent ? 'div' : 'span';
 
   if (isDevelopment) {
     validateStringValue(option.label, 'label');
@@ -54,7 +60,8 @@ const Option = ({
     styles.option,
     disabled && styles.disabled,
     isGroupOption && styles.parent,
-    highlightedOption && styles.highlighted
+    highlightedOption && styles.highlighted,
+    baseProps.className
   );
 
   const icon = option.__customIcon || (
@@ -69,24 +76,31 @@ const Option = ({
   );
 
   return (
-    <span
+    <SpanOrDivTag
+      {...baseProps}
       data-value={option.value}
       className={className}
       lang={option.lang}
-      title={option.label ?? option.value}
-      {...baseProps}
+      title={!disableTitleTooltip ? (option.label ?? option.value) : undefined}
     >
       {icon}
-      <span className={styles.content}>
-        <span className={styles['label-content']}>
-          <Label
-            label={option.label ?? option.value}
-            prefix={option.__labelPrefix}
-            highlightText={highlightText}
-            triggerVariant={triggerVariant}
-          />
+      <SpanOrDivTag className={styles.content}>
+        <SpanOrDivTag className={styles['label-content']}>
+          {option.labelContent ? (
+            <SpanOrDivTag className={clsx(styles.label, analyticsSelectors.label)}>{option.labelContent}</SpanOrDivTag>
+          ) : (
+            <Label
+              labelContainerRef={labelContainerRef}
+              labelRef={labelRef}
+              labelId={labelId}
+              label={option.label ?? option.value}
+              prefix={option.__labelPrefix}
+              highlightText={highlightText}
+              triggerVariant={triggerVariant}
+            />
+          )}
           <LabelTag labelTag={option.labelTag} highlightText={highlightText} triggerVariant={triggerVariant} />
-        </span>
+        </SpanOrDivTag>
         <Description
           description={option.description}
           highlightedOption={highlightedOption}
@@ -108,8 +122,8 @@ const Option = ({
           highlightText={highlightText}
           triggerVariant={triggerVariant}
         />
-      </span>
-    </span>
+      </SpanOrDivTag>
+    </SpanOrDivTag>
   );
 };
 
