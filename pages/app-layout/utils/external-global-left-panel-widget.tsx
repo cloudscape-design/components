@@ -76,6 +76,23 @@ registerLeftDrawer({
     `,
   },
 
+  exitExpandedModeTrigger: {
+    customIcon: `
+      <svg width="94" height="24" viewBox="0 0 94 24" fill="none" focusable="false" aria-hidden="true">
+        <rect width="94" height="24" rx="4" fill="url(#paint0_linear_145_32649)"/>
+        <defs>
+          <linearGradient id="paint0_linear_145_32649" x1="135.919" y1="21" x2="108.351" y2="74.1863" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#B8E7FF"/>
+            <stop offset="0.255" stop-color="#0099FF"/>
+            <stop offset="0.514134" stop-color="#5C7FFF"/>
+            <stop offset="0.732534" stop-color="#8575FF"/>
+            <stop offset="1" stop-color="#962EFF"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    `,
+  },
+
   onResize: event => {
     console.log('resize', event.detail);
   },

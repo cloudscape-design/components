@@ -39,6 +39,9 @@ export interface DrawerPayload {
     iconSvg?: string;
     customIcon?: string;
   };
+  exitExpandedModeTrigger?: {
+    customIcon?: string;
+  };
   mountContent: (container: HTMLElement, mountContext: MountContentContext) => void;
   unmountContent: (container: HTMLElement) => void;
   preserveInactiveContent?: boolean;

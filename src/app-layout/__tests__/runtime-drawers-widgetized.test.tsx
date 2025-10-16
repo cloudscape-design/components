@@ -191,27 +191,37 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     }
   });
 
-  test('should exit focus mode by clicking on a custom exit button in the AI global drawer', () => {
-    awsuiWidgetPlugins.registerLeftDrawer({
-      ...drawerDefaults,
-      ariaLabels: {
-        exitExpandedModeButton: 'exitExpandedModeButton',
-      },
-      isExpandable: true,
-    });
-    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+  test.each(['standard', 'custom'] as const)(
+    'should exit focus mode by clicking on a %s exit button in the AI global drawer',
+    type => {
+      awsuiWidgetPlugins.registerLeftDrawer({
+        ...drawerDefaults,
+        ariaLabels: {
+          exitExpandedModeButton: 'exitExpandedModeButton',
+        },
+        isExpandable: true,
+        ...(type === 'custom' && {
+          exitExpandedModeTrigger: {
+            customIcon: `
+              <svg width="94" height="24" viewBox="0 0 94 24" fill="none" focusable="false" aria-hidden="true"></svg>
+            `,
+          },
+        }),
+      });
+      const { globalDrawersWrapper } = renderComponent(<AppLayout />);
 
-    globalDrawersWrapper.findAiDrawerTrigger()!.click();
-    if (size === 'mobile') {
-      expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerDefaults.id)).toBeFalsy();
-    } else {
-      createWrapper().findButtonGroup()!.findButtonById('expand')!.click();
-      expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isDrawerInExpandedMode()).toBe(true);
-      expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
-      globalDrawersWrapper.findLeaveExpandedModeButtonInAIDrawer()!.click();
-      expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+      globalDrawersWrapper.findAiDrawerTrigger()!.click();
+      if (size === 'mobile') {
+        expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerDefaults.id)).toBeFalsy();
+      } else {
+        createWrapper().findButtonGroup()!.findButtonById('expand')!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isDrawerInExpandedMode()).toBe(true);
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
+        globalDrawersWrapper.findLeaveExpandedModeButtonInAIDrawer()!.click();
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+      }
     }
-  });
+  );
 
   describe('metrics', () => {
     let sendPanoramaMetricSpy: jest.SpyInstance;

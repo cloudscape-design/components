@@ -38,7 +38,13 @@ interface AIDrawerProps {
 interface AppLayoutGlobalAiDrawerImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   show: boolean;
-  activeAiDrawer: InternalDrawer | null;
+  activeAiDrawer:
+    | (InternalDrawer & {
+        exitExpandedModeTrigger?: {
+          customIcon?: React.ReactNode;
+        };
+      })
+    | null;
   aiDrawerProps: AIDrawerProps;
 }
 
@@ -207,16 +213,31 @@ export function AppLayoutGlobalAiDrawerImplementation({
                         {!isMobile && isExpanded && activeAiDrawer?.ariaLabels?.exitExpandedModeButton && (
                           <div className={styles['drawer-back-to-console-slot']}>
                             <div className={styles['drawer-back-to-console-button-wrapper']}>
-                              <button
-                                className={clsx(
-                                  testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button'],
-                                  styles['drawer-back-to-console-button']
-                                )}
-                                formAction="none"
-                                onClick={() => setExpandedDrawerId(null)}
-                              >
-                                {activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
-                              </button>
+                              {activeAiDrawer?.exitExpandedModeTrigger?.customIcon ? (
+                                <button
+                                  className={clsx(
+                                    testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button'],
+                                    styles['drawer-back-to-console-custom-button']
+                                  )}
+                                  formAction="none"
+                                  onClick={() => setExpandedDrawerId(null)}
+                                  aria-label={activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
+                                >
+                                  {activeAiDrawer?.exitExpandedModeTrigger?.customIcon}
+                                </button>
+                              ) : (
+                                <button
+                                  className={clsx(
+                                    testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button'],
+                                    styles['drawer-back-to-console-button']
+                                  )}
+                                  formAction="none"
+                                  onClick={() => setExpandedDrawerId(null)}
+                                  aria-label={activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
+                                >
+                                  {activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
+                                </button>
+                              )}
                             </div>
                           </div>
                         )}

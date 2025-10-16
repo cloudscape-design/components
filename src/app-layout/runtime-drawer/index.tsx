@@ -142,8 +142,9 @@ export const mapRuntimeConfigToAiDrawer = (
   orderPriority?: number;
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
+  exitExpandedModeTrigger?: React.ReactNode;
 } => {
-  const { mountContent, unmountContent, trigger, ...runtimeDrawer } = runtimeConfig;
+  const { mountContent, unmountContent, trigger, exitExpandedModeTrigger, ...runtimeDrawer } = runtimeConfig;
 
   return {
     ...runtimeDrawer,
@@ -157,6 +158,14 @@ export const mapRuntimeConfigToAiDrawer = (
           iconSvg: trigger.iconSvg ? (
             // eslint-disable-next-line react/no-danger
             <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
+          ) : undefined,
+        }
+      : undefined,
+    exitExpandedModeTrigger: exitExpandedModeTrigger
+      ? {
+          customIcon: exitExpandedModeTrigger.customIcon ? (
+            // eslint-disable-next-line react/no-danger
+            <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: exitExpandedModeTrigger.customIcon }} />
           ) : undefined,
         }
       : undefined,

@@ -381,6 +381,13 @@ $ai-drawer-heider-height: 41px;
                   outline: none;
                 }
               }
+
+              > .drawer-back-to-console-custom-button {
+                all: initial;
+                display: flex;
+                cursor: pointer;
+                text-align: center;
+              }
             }
           }
         }
