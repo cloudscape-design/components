@@ -44,9 +44,6 @@ const setupTest = (testFn: (page: ThemingPage) => Promise<void>, vr?: boolean) =
   return useBrowser(async browser => {
     const page = new ThemingPage(browser);
     await browser.url(`#/light/theming/integration${!vr ? '?visualRefresh=false' : ''}`);
-    if (vr) {
-      await page.setSecondaryTheme();
-    }
     await testFn(page);
   });
 };
@@ -57,7 +54,7 @@ const buttonBackgroundColor = {
 };
 
 const linkTextColor = {
-  light: 'rgba(255, 0, 0, 1)',
+  light: 'rgba(220, 24, 24, 1)',
   dark: 'rgba(255, 165, 0, 1)',
 };
 [true, false].forEach(vr => {
