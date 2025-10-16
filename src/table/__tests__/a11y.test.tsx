@@ -120,14 +120,14 @@ describe('labels', () => {
       expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-rowcount')).toEqual('301');
     });
 
-    test('aria-rowcount should be set even if totalItemsCount is 0', () => {
+    test('aria-rowcount should not be set if totalItemsCount is 0', () => {
       const wrapper = renderTableWrapper({ totalItemsCount: 0 });
-      expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-rowcount')).toEqual('1');
+      expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-rowcount')).toBeNull();
     });
 
-    test('aria-rowcount should be -1 if totalItemsCount is undefined', () => {
+    test('aria-rowcount should not be set if totalItemsCount is undefined', () => {
       const wrapper = renderTableWrapper({});
-      expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-rowcount')).toEqual('-1');
+      expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-rowcount')).toBeNull();
     });
 
     test.each([undefined, 21])('sets aria-rowindex on table rows', firstIndex => {
