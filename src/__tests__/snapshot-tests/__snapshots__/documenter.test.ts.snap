@@ -34231,6 +34231,14 @@ Note: This function returns the specified component's wrapper even if the specif
           },
         },
         {
+          "name": "isDisabled",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "AbstractWrapper.keydown",
           },
