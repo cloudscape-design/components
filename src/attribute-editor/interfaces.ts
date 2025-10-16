@@ -29,6 +29,7 @@ export namespace AttributeEditorProps {
   export type FieldRenderable<T> = (item: T, itemIndex: number) => React.ReactNode;
   export interface FieldDefinition<T> {
     label?: React.ReactNode;
+    description?: React.ReactNode;
     info?: React.ReactNode;
     control?: FieldRenderable<T> | React.ReactNode;
     errorText?: FieldRenderable<T> | React.ReactNode;
