@@ -153,8 +153,8 @@ export const useAppLayout = (
     activeAiDrawerSize,
     minAiDrawerSize,
     onActiveAiDrawerResize,
-    setMaxAiDrawerSize,
   } = useAiDrawer({
+    getMaxAiDrawerSize: () => maxAiDrawerSize,
     onAiDrawerFocus: () => aiDrawerFocusControl.setFocus(),
     expandedDrawerId,
     setExpandedDrawerId,
@@ -271,10 +271,6 @@ export const useAppLayout = (
     activeGlobalDrawersSizes,
     activeAiDrawerSize,
   });
-
-  useEffect(() => {
-    setMaxAiDrawerSize(maxAiDrawerSize);
-  }, [setMaxAiDrawerSize, maxAiDrawerSize]);
 
   const verticalOffsets = computeVerticalLayout({
     topOffset: placement.insetBlockStart,
