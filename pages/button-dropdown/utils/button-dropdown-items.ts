@@ -11,10 +11,13 @@ const dropdownItems = [
     id: 'id7',
     text: 'option5',
     disabled: true,
+    secondaryText: 'This is a disabled option',
+    labelTag: 'Disabled',
   },
   {
     id: 'id8',
     text: 'VeryLongOptionTextValueHereToTestTheCaseWithThisDropdown',
+    secondaryText: 'This is the option with a long description, This is the option with a long description',
   },
   { id: 'id9', text: 'option6' },
 ];
