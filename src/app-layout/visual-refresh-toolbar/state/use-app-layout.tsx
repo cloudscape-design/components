@@ -26,6 +26,7 @@ import {
 } from '../compute-layout';
 import { AppLayoutState } from '../interfaces';
 import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
+import { useRuntimeNotifications } from './runtime-notifications';
 import { useAiDrawer } from './use-ai-drawer';
 import { useWidgetMessages } from './use-widget-messages';
 
@@ -158,7 +159,11 @@ export const useAppLayout = (
     expandedDrawerId,
     setExpandedDrawerId,
   });
-  useWidgetMessages(hasToolbar, message => aiDrawerMessageHandler(message));
+  const { flashbarProps, setFlashbarProps, notificationsMessageHandler } = useRuntimeNotifications();
+  useWidgetMessages(hasToolbar, message => {
+    aiDrawerMessageHandler(message);
+    notificationsMessageHandler(message);
+  });
   const aiDrawerFocusControl = useAsyncFocusControl(!!activeAiDrawer?.id, true, activeAiDrawer?.id);
 
   const onActiveDrawerChangeHandler = (
@@ -469,6 +474,8 @@ export const useAppLayout = (
     widgetizedState: {
       ...appLayoutInternals,
       aiDrawerExpandedMode: expandedDrawerId === activeAiDrawer?.id,
+      flashbarProps,
+      setFlashbarProps,
       isNested,
       navigationAnimationDisabled,
       verticalOffsets,

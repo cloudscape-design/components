@@ -1365,6 +1365,8 @@ Map {
     "children": <div>
       notifications
     </div>,
+    "flashbarProps": null,
+    "setFlashbarProps": [Function],
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {

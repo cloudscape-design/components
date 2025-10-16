@@ -5,20 +5,26 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
+import { FlashbarImplementation } from '../../../flashbar/implementation';
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
-import { AppLayoutInternals } from '../interfaces';
+import { AppLayoutInternals, AppLayoutState } from '../interfaces';
 import { NotificationsSlot } from '../skeleton/slots';
+import { FlashbarPropsSetter } from '../state/runtime-notifications';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 export interface AppLayoutNotificationsImplementationProps {
   appLayoutInternals: AppLayoutInternals;
+  flashbarProps?: AppLayoutState['widgetizedState']['flashbarProps'];
+  setFlashbarProps?: AppLayoutState['widgetizedState']['setFlashbarProps'];
   children: React.ReactNode;
 }
 
 export function AppLayoutNotificationsImplementation({
   appLayoutInternals,
+  flashbarProps,
+  setFlashbarProps,
   children,
 }: AppLayoutNotificationsImplementationProps) {
   const { ariaLabels, stickyNotifications, setNotificationsHeight, verticalOffsets } = appLayoutInternals;
@@ -51,7 +57,8 @@ export function AppLayoutNotificationsImplementation({
       }}
     >
       <div className={testutilStyles.notifications} role="region" aria-label={ariaLabels?.notifications}>
-        {children}
+        <FlashbarPropsSetter.Provider value={setFlashbarProps ?? null}>{children}</FlashbarPropsSetter.Provider>
+        {flashbarProps && <FlashbarImplementation {...flashbarProps} />}
       </div>
     </NotificationsSlot>
   );
