@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import { Box, Button } from '~components';
 import { registerLeftDrawer, updateDrawer } from '~components/internal/plugins/widget';
+import { mount, unmount } from '~mount';
 
 import styles from '../styles.scss';
 
@@ -84,14 +84,14 @@ registerLeftDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<AIDrawer />, container);
+    mount(<AIDrawer />, container);
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 
   mountHeader: container => {
-    ReactDOM.render(<div className={styles['ai-panel-logo']}>AI Panel</div>, container);
+    mount(<div className={styles['ai-panel-logo']}>AI Panel</div>, container);
   },
-  unmountHeader: container => unmountComponentAtNode(container),
+  unmountHeader: container => unmount(container),
 
   headerActions: [
     {
