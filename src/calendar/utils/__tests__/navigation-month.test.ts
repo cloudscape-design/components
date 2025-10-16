@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { addYears, subYears } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { getBaseMonth, moveMonth } from '../navigation-month';
 
-//mocked to avoid complications with timezones in the 'date-fns' package
-jest.mock('date-fns', () => ({ ...jest.requireActual('date-fns'), startOfYear: () => new Date('2025-01-01') }));
+//mocked to avoid complications with timezones in the dayjs package
+jest.mock('dayjs', () => {
+  const originalDayjs = jest.requireActual('dayjs');
+  return originalDayjs;
+});
 
 const startYear = '2022',
   startMonth = '01',
@@ -45,8 +48,8 @@ describe('moveMonth', () => {
 
   test('finds active month at the edge of 10 year limit', () => {
     //set to match mock above
-    const tenYearsLater = addYears(new Date('2025-01-01'), 10);
-    const tenYearsEarlier = subYears(new Date('2025-01-01'), 10);
+    const tenYearsLater = dayjs(new Date('2025-01-01')).add(10, 'year').toDate();
+    const tenYearsEarlier = dayjs(new Date('2025-01-01')).subtract(10, 'year').toDate();
 
     const isDateFocusable = (date: Date) =>
       date.getTime() === tenYearsLater.getTime() || date.getTime() === tenYearsEarlier.getTime();
@@ -60,7 +63,7 @@ describe('moveMonth', () => {
 });
 
 test('getBaseMonth', () => {
-  expect(getBaseMonth(startDate, () => true)).toEqual(new Date('2025-01-01')); //match mocked date
-  expect(getBaseMonth(startDate, disableMonths('2022-01', '2022-02'))).toEqual(new Date('2025-03')); //match first after mocked date
-  expect(getBaseMonth(startDate, () => false)).toEqual(new Date('2025-01-01'));
+  expect(getBaseMonth(startDate, () => true)).toEqual(dayjs(startDate).startOf('year').toDate()); //match actual start of year
+  expect(getBaseMonth(startDate, disableMonths('2022-01', '2022-02'))).toEqual(new Date('2022-03-01')); //match first available month
+  expect(getBaseMonth(startDate, () => false)).toEqual(dayjs(startDate).startOf('year').toDate());
 });
