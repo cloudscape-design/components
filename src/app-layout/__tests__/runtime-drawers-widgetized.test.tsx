@@ -24,6 +24,11 @@ beforeEach(() => {
   jest.resetAllMocks();
 });
 
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: () => [1300, () => {}],
+}));
+
 function renderComponent(jsx: React.ReactElement) {
   const { container, rerender, ...rest } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
@@ -101,7 +106,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.getElement()).toHaveTextContent('custom header');
   });
 
-  test('can update drawer config dynamically', () => {
+  test('can update drawer config dynamically for left drawer', () => {
     awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
     const { globalDrawersWrapper } = renderComponent(<AppLayout />);
 
@@ -114,6 +119,24 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     );
 
     expect(globalDrawersWrapper.findAiDrawerTrigger()!.getElement()).toHaveAttribute(
+      'aria-label',
+      'trigger button label'
+    );
+  });
+
+  test('can update drawer config dynamically for bottom drawer', () => {
+    awsuiWidgetPlugins.registerBottomDrawer(drawerDefaults);
+    const { wrapper } = renderComponent(<AppLayout />);
+
+    expect(wrapper.findDrawerTriggerById(drawerDefaults.id)!.getElement()).not.toHaveAttribute('aria-label');
+    act(() =>
+      awsuiWidgetPlugins.updateDrawer({
+        type: 'updateDrawerConfig',
+        payload: { id: drawerDefaults.id, ariaLabels: { triggerButton: 'trigger button label' } },
+      })
+    );
+
+    expect(wrapper.findDrawerTriggerById(drawerDefaults.id)!.getElement()).toHaveAttribute(
       'aria-label',
       'trigger button label'
     );
