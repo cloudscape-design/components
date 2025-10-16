@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import { Box, Button } from '~components';
 import { registerLeftDrawer, updateDrawer } from '~components/internal/plugins/widget';
+import { mount, unmount } from '~mount';
 
 import styles from '../styles.scss';
 
@@ -16,7 +16,7 @@ const AIDrawer = () => {
       </Box>
       <Button
         onClick={() => {
-          updateDrawer({ type: 'expandDrawer', payload: { id: 'amazon-q' } });
+          updateDrawer({ type: 'expandDrawer', payload: { id: 'ai-panel' } });
         }}
       >
         expand programmatically
@@ -28,6 +28,14 @@ const AIDrawer = () => {
       >
         exit expanded mode
       </Button>
+      <Button
+        className="resize-to-max-width"
+        onClick={() => {
+          updateDrawer({ type: 'resizeDrawer', payload: { id: 'ai-panel', size: window.innerWidth + 1000 } });
+        }}
+      >
+        resize to window.innerWidth + 1000
+      </Button>
       {new Array(100).fill(null).map((_, index) => (
         <div key={index}>Tela content</div>
       ))}
@@ -36,7 +44,7 @@ const AIDrawer = () => {
 };
 
 registerLeftDrawer({
-  id: 'amazon-q',
+  id: 'ai-panel',
   resizable: true,
   isExpandable: true,
   defaultSize: 420,
@@ -76,14 +84,14 @@ registerLeftDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<AIDrawer />, container);
+    mount(<AIDrawer />, container);
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 
   mountHeader: container => {
-    ReactDOM.render(<div className={styles['ai-panel-logo']}>AI Panel</div>, container);
+    mount(<div className={styles['ai-panel-logo']}>AI Panel</div>, container);
   },
-  unmountHeader: container => unmountComponentAtNode(container),
+  unmountHeader: container => unmount(container),
 
   headerActions: [
     {
