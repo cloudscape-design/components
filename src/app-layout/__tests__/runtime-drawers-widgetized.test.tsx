@@ -207,6 +207,9 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
             `,
           },
         }),
+        ...(type === 'custom-invalid' && {
+          exitExpandedModeTrigger: {},
+        }),
       });
       const { globalDrawersWrapper } = renderComponent(<AppLayout />);
 
