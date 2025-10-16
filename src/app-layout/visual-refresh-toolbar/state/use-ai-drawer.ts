@@ -20,15 +20,10 @@ interface UseDrawersProps {
   onAiDrawerFocus: () => void;
   expandedDrawerId: string | null;
   setExpandedDrawerId: (value: string | null) => void;
-  maxAiDrawerSize: number;
 }
 
-export function useAiDrawer({
-  onAiDrawerFocus,
-  expandedDrawerId,
-  setExpandedDrawerId,
-  maxAiDrawerSize,
-}: UseDrawersProps) {
+export function useAiDrawer({ onAiDrawerFocus, expandedDrawerId, setExpandedDrawerId }: UseDrawersProps) {
+  const [maxAiDrawerSize, setMaxAiDrawerSize] = useState<number | null>(null);
   const [runtimeDrawer, setRuntimeDrawer] = useState<RuntimeAiDrawerConfig | null>(null);
   const [activeAiDrawerId, setActiveAiDrawerId] = useState<string | null>(null);
   const [size, setSize] = useState<number | null>(null);
@@ -36,7 +31,10 @@ export function useAiDrawer({
   aiDrawerWasOpenRef.current = aiDrawerWasOpenRef.current || !!activeAiDrawerId;
 
   function onActiveAiDrawerResize(size: number) {
-    const limitedSize = getLimitedValue(minAiDrawerSize, size, maxAiDrawerSize);
+    let limitedSize = size;
+    if (maxAiDrawerSize) {
+      limitedSize = getLimitedValue(minAiDrawerSize, size, maxAiDrawerSize);
+    }
     setSize(limitedSize);
     fireNonCancelableEvent(activeAiDrawer?.onResize, { id: activeAiDrawerId, size: limitedSize });
   }
@@ -118,5 +116,6 @@ export function useAiDrawer({
     activeAiDrawerSize,
     minAiDrawerSize,
     onActiveAiDrawerResize,
+    setMaxAiDrawerSize,
   };
 }

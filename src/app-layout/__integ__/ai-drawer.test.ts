@@ -16,10 +16,6 @@ const findDrawerTriggerById = (wrapper: AppLayoutWrapper, id: string) => {
 
 describe('Visual refresh toolbar only', () => {
   class PageObject extends BasePageObject {
-    getClientWidth() {
-      return this.browser.execute(() => document.body.clientWidth);
-    }
-
     async getDrawerWidth(drawerId: string) {
       const { width } = await this.getBoundingBox(findDrawerById(wrapper, drawerId)!.toSelector());
 
@@ -52,9 +48,9 @@ describe('Visual refresh toolbar only', () => {
 
       await page.click(findDrawerById(wrapper, aiDrawerId).findButton('.resize-to-max-width').toSelector());
 
-      const clientWidth = await page.getClientWidth();
+      const { width: viewportWidth } = await page.getViewportSize();
       const drawerWidth = await page.getDrawerWidth(aiDrawerId);
-      expect(drawerWidth).toBeLessThan(clientWidth);
+      expect(drawerWidth).toBeLessThan(viewportWidth);
     })
   );
 });

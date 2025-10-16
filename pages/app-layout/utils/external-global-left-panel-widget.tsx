@@ -31,10 +31,10 @@ const AIDrawer = () => {
       <Button
         className="resize-to-max-width"
         onClick={() => {
-          updateDrawer({ type: 'resizeDrawer', payload: { id: 'ai-panel', size: 10000 } });
+          updateDrawer({ type: 'resizeDrawer', payload: { id: 'ai-panel', size: window.innerWidth + 1000 } });
         }}
       >
-        resize to 10_000 px
+        resize to window.innerWidth + 1000
       </Button>
       {new Array(100).fill(null).map((_, index) => (
         <div key={index}>Tela content</div>
