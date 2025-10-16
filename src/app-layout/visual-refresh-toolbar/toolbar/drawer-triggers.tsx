@@ -81,7 +81,7 @@ export function DrawerTriggers({
   const previousActiveGlobalBottomDrawerId = useRef(activeGlobalBottomDrawerId);
   const previousActiveGlobalDrawersIds = useRef(activeGlobalDrawersIds);
   const [containerWidth, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxWidth);
-  if (!drawers.length && !globalDrawers.length && !splitPanelToggleProps) {
+  if (!drawers.length && !globalDrawers.length && !bottomDrawers?.length && !splitPanelToggleProps) {
     return null;
   }
 

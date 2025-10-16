@@ -947,7 +947,7 @@ describe('toolbar mode only features', () => {
           }
         };
         const registerDrawer = (payload: DrawerConfig | WidgetDrawerPayload) => {
-          if (type === 'global') {
+          if (type === 'global' && position !== 'bottom') {
             awsuiPlugins.appLayout.registerDrawer({ ...payload, type } as DrawerConfig);
           } else if (position === 'bottom') {
             awsuiWidgetPlugins.registerBottomDrawer(payload as WidgetDrawerPayload);
@@ -1051,7 +1051,7 @@ describe('toolbar mode only features', () => {
 
           expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(0);
 
-          if (type === 'global') {
+          if (type === 'global' && position !== 'bottom') {
             awsuiPlugins.appLayout.openDrawer('local-drawer');
           } else {
             awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'local-drawer' } });
@@ -1149,7 +1149,7 @@ describe('toolbar mode only features', () => {
 
           const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
-          if (type === 'global') {
+          if (type === 'global' && position !== 'bottom') {
             awsuiPlugins.appLayout.openDrawer('test');
           } else {
             awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'test' } });
@@ -1159,7 +1159,7 @@ describe('toolbar mode only features', () => {
 
           expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
 
-          if (type === 'global') {
+          if (type === 'global' && position !== 'bottom') {
             awsuiPlugins.appLayout.closeDrawer('test');
           } else {
             awsuiWidgetPlugins.updateDrawer({ type: 'closeDrawer', payload: { id: 'test' } });
@@ -1474,7 +1474,7 @@ describe('toolbar mode only features', () => {
             }
           };
           const registerDrawer = (payload: DrawerConfig | WidgetDrawerPayload) => {
-            if (type === 'global') {
+            if (type === 'global' && position !== 'bottom') {
               awsuiPlugins.appLayout.registerDrawer({ ...payload, type } as DrawerConfig);
             } else if (position === 'bottom') {
               awsuiWidgetPlugins.registerBottomDrawer(payload as DrawerConfig);
