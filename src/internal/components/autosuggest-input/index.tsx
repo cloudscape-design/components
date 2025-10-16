@@ -213,6 +213,17 @@ const AutosuggestInput = React.forwardRef(
       }
     };
 
+    const handleDropdownKeyDown: React.KeyboardEventHandler = event => {
+      // Handle ESC key from any focusable element inside the dropdown (e.g., recovery button)
+      if (event.key === 'Escape' && open) {
+        event.stopPropagation();
+        event.preventDefault();
+        closeDropdown();
+        // Return focus to the input after closing
+        inputRef.current?.focus();
+      }
+    };
+
     const expanded = open && dropdownExpanded;
     const nativeAttributes: BaseInputProps['nativeInputAttributes'] = {
       name,
@@ -288,7 +299,7 @@ const AutosuggestInput = React.forwardRef(
           open={open && (!!dropdownContent || !!dropdownFooter)}
           footer={
             dropdownFooterRef && (
-              <div ref={dropdownFooterRef} className={styles['dropdown-footer']}>
+              <div ref={dropdownFooterRef} className={styles['dropdown-footer']} onKeyDown={handleDropdownKeyDown}>
                 {open && dropdownFooter ? dropdownFooter : null}
               </div>
             )
@@ -297,7 +308,7 @@ const AutosuggestInput = React.forwardRef(
           loopFocus={loopFocus}
         >
           {open && dropdownContent ? (
-            <div ref={dropdownContentRef} className={styles['dropdown-content']}>
+            <div ref={dropdownContentRef} className={styles['dropdown-content']} onKeyDown={handleDropdownKeyDown}>
               {dropdownContent}
             </div>
           ) : null}
