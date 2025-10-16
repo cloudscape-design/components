@@ -164,7 +164,6 @@ export const useAppLayout = (
     expandedDrawerId,
     setExpandedDrawerId,
   });
-  useWidgetMessages(hasToolbar, message => aiDrawerMessageHandler(message));
   const aiDrawerFocusControl = useAsyncFocusControl(!!activeAiDrawer?.id, true, activeAiDrawer?.id);
 
   const {
