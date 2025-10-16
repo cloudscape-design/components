@@ -91,7 +91,7 @@ export const Row = React.memo(
         role="group"
         aria-labelledby={`${firstControlId}-label ${firstControlId}`}
       >
-        {definition.map(({ info, label, constraintText, errorText, warningText, control }, defIndex) => {
+        {definition.map(({ info, label, description, constraintText, errorText, warningText, control }, defIndex) => {
           ({ gridColumnStart, gridColumnEnd } = getItemGridColumns(layout, defIndex));
           return (
             <InternalFormField
@@ -99,6 +99,7 @@ export const Row = React.memo(
               className={styles.field}
               __style={{ gridColumnStart, gridColumnEnd }}
               label={label}
+              description={description}
               info={info}
               constraintText={render(item, index, constraintText)}
               errorText={render(item, index, errorText)}
