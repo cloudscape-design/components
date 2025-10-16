@@ -191,7 +191,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     }
   });
 
-  test.each(['standard', 'custom'] as const)(
+  test.each(['standard', 'custom', 'custom-invalid'] as const)(
     'should exit focus mode by clicking on a %s exit button in the AI global drawer',
     type => {
       awsuiWidgetPlugins.registerLeftDrawer({
