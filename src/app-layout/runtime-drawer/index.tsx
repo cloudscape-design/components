@@ -99,6 +99,14 @@ function checkForUnsupportedProps(headerActions: ReadonlyArray<ButtonGroupProps.
   return headerActions;
 }
 
+const convertRuntimeTriggerToReactNode = (runtimeTrigger?: string) => {
+  if (!runtimeTrigger) {
+    return undefined;
+  }
+  // eslint-disable-next-line react/no-danger
+  return <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: runtimeTrigger }} />;
+};
+
 export const mapRuntimeConfigToDrawer = (
   runtimeConfig: RuntimeDrawerConfig
 ): AppLayoutProps.Drawer & {
@@ -114,10 +122,7 @@ export const mapRuntimeConfigToDrawer = (
     trigger: trigger
       ? {
           ...(trigger.iconSvg && {
-            iconSvg: (
-              // eslint-disable-next-line react/no-danger
-              <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
-            ),
+            iconSvg: convertRuntimeTriggerToReactNode(trigger.iconSvg),
           }),
         }
       : undefined,
@@ -134,14 +139,6 @@ export const mapRuntimeConfigToDrawer = (
     },
     headerActions: runtimeDrawer.headerActions ? checkForUnsupportedProps(runtimeDrawer.headerActions) : undefined,
   };
-};
-
-const convertRuntimeTriggerToReactNode = (runtimeTrigger?: string) => {
-  if (!runtimeTrigger) {
-    return undefined;
-  }
-  // eslint-disable-next-line react/no-danger
-  return <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: runtimeTrigger }} />;
 };
 
 export const mapRuntimeConfigToAiDrawer = (
