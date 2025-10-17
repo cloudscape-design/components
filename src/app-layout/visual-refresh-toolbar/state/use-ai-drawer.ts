@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import { fireNonCancelableEvent } from '../../../internal/events';
 import { metrics } from '../../../internal/metrics';
 import { DrawerPayload as RuntimeAiDrawerConfig, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
+import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { mapRuntimeConfigToAiDrawer } from '../../runtime-drawer';
 
 export interface OnChangeParams {
@@ -19,9 +20,15 @@ interface UseDrawersProps {
   onAiDrawerFocus: () => void;
   expandedDrawerId: string | null;
   setExpandedDrawerId: (value: string | null) => void;
+  getMaxAiDrawerSize: () => number;
 }
 
-export function useAiDrawer({ onAiDrawerFocus, expandedDrawerId, setExpandedDrawerId }: UseDrawersProps) {
+export function useAiDrawer({
+  onAiDrawerFocus,
+  expandedDrawerId,
+  setExpandedDrawerId,
+  getMaxAiDrawerSize,
+}: UseDrawersProps) {
   const [runtimeDrawer, setRuntimeDrawer] = useState<RuntimeAiDrawerConfig | null>(null);
   const [activeAiDrawerId, setActiveAiDrawerId] = useState<string | null>(null);
   const [size, setSize] = useState<number | null>(null);
@@ -29,8 +36,9 @@ export function useAiDrawer({ onAiDrawerFocus, expandedDrawerId, setExpandedDraw
   aiDrawerWasOpenRef.current = aiDrawerWasOpenRef.current || !!activeAiDrawerId;
 
   function onActiveAiDrawerResize(size: number) {
-    setSize(size);
-    fireNonCancelableEvent(activeAiDrawer?.onResize, { id: activeAiDrawerId, size });
+    const limitedSize = getLimitedValue(minAiDrawerSize, size, getMaxAiDrawerSize());
+    setSize(limitedSize);
+    fireNonCancelableEvent(activeAiDrawer?.onResize, { id: activeAiDrawerId, size: limitedSize });
   }
 
   function onActiveAiDrawerChange(

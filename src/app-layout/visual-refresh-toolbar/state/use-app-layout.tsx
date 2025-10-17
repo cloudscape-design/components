@@ -154,6 +154,7 @@ export const useAppLayout = (
     minAiDrawerSize,
     onActiveAiDrawerResize,
   } = useAiDrawer({
+    getMaxAiDrawerSize: () => maxAiDrawerSize,
     onAiDrawerFocus: () => aiDrawerFocusControl.setFocus(),
     expandedDrawerId,
     setExpandedDrawerId,
