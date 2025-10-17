@@ -149,6 +149,11 @@
     }
   }
   // Vertically center h2 when there is no description
+  // General rule first (lower specificity)
+  &-variant-h2.refresh:not(:has(~ .description-variant-h2)) {
+    padding-block: space-heading-button-diff(awsui.$line-height-heading-l);
+  }
+  // Specific rule second (higher specificity)
   .root-no-actions:not(.root-has-description) > .main > &-variant-h2.refresh,
   .root:not(.root-no-actions):not(.root-has-description) > .main > &-variant-h2.refresh {
     padding-block: space-heading-button-diff(awsui.$line-height-heading-l);
