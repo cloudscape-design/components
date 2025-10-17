@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
@@ -15,7 +15,6 @@ import { getBaseProps } from '../internal/base-component';
 import VisualContext from '../internal/components/visual-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { fireNonCancelableEvent } from '../internal/events';
-import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
@@ -72,7 +71,19 @@ const InternalAlert = React.forwardRef(
     const i18n = useInternalI18n('alert');
 
     const focusRef = useRef<HTMLDivElement>(null);
-    useForwardFocus(ref, focusRef);
+    useImperativeHandle(ref, () => ({
+      focus: () => {
+        if (focusRef.current) {
+          focusRef.current.tabIndex = -1;
+          focusRef.current.focus();
+        }
+      },
+    }));
+    const handleBlur = () => {
+      if (focusRef.current) {
+        focusRef.current.removeAttribute('tabindex');
+      }
+    };
 
     const { discoveredActions, headerRef: headerRefAction, contentRef: contentRefAction } = useDiscoveredAction(type);
     const {
@@ -138,7 +149,7 @@ const InternalAlert = React.forwardRef(
               style={getAlertStyles(style)}
             >
               <div className={styles['alert-wrapper']}>
-                <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef} role="group">
+                <div className={styles['alert-focus-wrapper']} ref={focusRef} role="group" onBlur={handleBlur}>
                   <div className={clsx(styles.icon, styles.text)} style={getIconStyles(style)}>
                     <InternalIcon name={typeToIcon[type]} size={size} ariaLabel={statusIconAriaLabel} />
                   </div>
