@@ -406,7 +406,7 @@ export const useAppLayout = (
     toolbarState,
     setToolbarState,
     verticalOffsets,
-    drawersOpenQueue,
+    drawersOpenQueue: drawersOpenQueue.current,
     setToolbarHeight,
     setNotificationsHeight,
     onSplitPanelToggle: onSplitPanelToggleHandler,
@@ -458,7 +458,10 @@ export const useAppLayout = (
   };
 
   const closeFirstDrawer = useStableCallback(() => {
-    const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
+    let drawerToClose = drawersOpenQueue.current[drawersOpenQueue.current.length - 1];
+    if (drawerToClose === activeBottomDrawer?.id) {
+      drawerToClose = drawersOpenQueue.current[drawersOpenQueue.current.length - 2];
+    }
     if (activeDrawer && activeDrawer?.id === drawerToClose) {
       onActiveDrawerChange(null, { initiatedByUserAction: true });
     } else if (activeGlobalDrawersIds.includes(drawerToClose)) {

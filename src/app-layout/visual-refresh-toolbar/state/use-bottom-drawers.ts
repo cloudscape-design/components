@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useRef, useState } from 'react';
+import { MutableRefObject, useRef, useState } from 'react';
 
 import { fireNonCancelableEvent } from '../../../internal/events';
 import { DrawerPayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
@@ -18,7 +18,7 @@ interface UseDrawersProps {
   onBottomDrawerFocus: () => void;
   expandedDrawerId: string | null;
   setExpandedDrawerId: (value: string | null) => void;
-  drawersOpenQueue: Array<string>;
+  drawersOpenQueue: MutableRefObject<Array<string>>;
 }
 
 export function useBottomDrawers({
@@ -50,9 +50,9 @@ export function useBottomDrawers({
       setExpandedDrawerId(null);
     }
     if (drawerId) {
-      drawersOpenQueue = [drawerId, ...drawersOpenQueue];
+      drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
     } else {
-      drawersOpenQueue = drawersOpenQueue.filter(id => id !== activeBottomDrawerId);
+      drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== activeBottomDrawerId);
     }
     onBottomDrawerFocus?.();
   }
