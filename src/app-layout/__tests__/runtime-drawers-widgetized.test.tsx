@@ -262,8 +262,19 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
       act(() => awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'unknown' } }));
 
       expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-widget-drawer-incorrect-id', {
-        oldId: 'test',
-        newId: 'unknown',
+        id: 'unknown',
+        type: 'openDrawer',
+      });
+    });
+
+    test('should report ops metric when no id is provided', () => {
+      awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
+      renderComponent(<AppLayout />);
+
+      act(() => awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer' } as any));
+
+      expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-widget-drawer-incorrect-id', {
+        type: 'openDrawer',
       });
     });
   });

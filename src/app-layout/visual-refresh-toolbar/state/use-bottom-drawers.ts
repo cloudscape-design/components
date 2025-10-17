@@ -57,13 +57,6 @@ export function useBottomDrawers({
     onBottomDrawerFocus?.();
   }
 
-  // TODO !!!
-  // function checkId(newId: string) {
-  //   if (runtimeDrawer && runtimeDrawer.id !== newId) {
-  //     metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-id', { oldId: runtimeDrawer.id, newId });
-  //   }
-  // }
-
   function bottomDrawersMessageHandler(event: WidgetMessage) {
     if (event.type === 'registerBottomDrawer') {
       if (bottomDrawers.find(drawer => drawer.id === event.payload.id)) {
@@ -99,12 +92,6 @@ export function useBottomDrawers({
         break;
       case 'resizeDrawer':
         onActiveBottomDrawerResize({ id: event.payload.id, size: event.payload.size });
-        break;
-      case 'expandDrawer':
-        setExpandedDrawerId(event.payload.id);
-        break;
-      case 'exitExpandedMode':
-        setExpandedDrawerId(null);
         break;
     }
   }
