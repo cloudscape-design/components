@@ -136,6 +136,14 @@ export const mapRuntimeConfigToDrawer = (
   };
 };
 
+const convertRuntimeTriggerToReactNode = (runtimeTrigger?: string) => {
+  if (!runtimeTrigger) {
+    return undefined;
+  }
+  // eslint-disable-next-line react/no-danger
+  return <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: runtimeTrigger }} />;
+};
+
 export const mapRuntimeConfigToAiDrawer = (
   runtimeConfig: RuntimeAiDrawerConfig
 ): AppLayoutProps.Drawer & {
@@ -151,22 +159,13 @@ export const mapRuntimeConfigToAiDrawer = (
     ariaLabels: { drawerName: runtimeDrawer.ariaLabels.content ?? '', ...runtimeDrawer.ariaLabels },
     trigger: trigger
       ? {
-          customIcon: trigger?.customIcon ? (
-            // eslint-disable-next-line react/no-danger
-            <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: trigger.customIcon }} />
-          ) : undefined,
-          iconSvg: trigger.iconSvg ? (
-            // eslint-disable-next-line react/no-danger
-            <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
-          ) : undefined,
+          customIcon: convertRuntimeTriggerToReactNode(trigger?.customIcon),
+          iconSvg: convertRuntimeTriggerToReactNode(trigger?.iconSvg),
         }
       : undefined,
     exitExpandedModeTrigger: exitExpandedModeTrigger
       ? {
-          customIcon: exitExpandedModeTrigger.customIcon ? (
-            // eslint-disable-next-line react/no-danger
-            <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: exitExpandedModeTrigger.customIcon }} />
-          ) : undefined,
+          customIcon: convertRuntimeTriggerToReactNode(exitExpandedModeTrigger?.customIcon),
         }
       : undefined,
     content: (
