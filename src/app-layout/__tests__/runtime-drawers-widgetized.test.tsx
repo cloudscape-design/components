@@ -255,7 +255,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
       sendPanoramaMetricSpy = jest.spyOn(metrics, 'sendOpsMetricObject').mockImplementation(() => {});
     });
 
-    test('should report ops metric when unknown id is provided', () => {
+    test('should report ops metric when unknown id is provided (openDrawer)', () => {
       awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
       renderComponent(<AppLayout />);
 
@@ -264,6 +264,22 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
       expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-widget-drawer-incorrect-id', {
         id: 'unknown',
         type: 'openDrawer',
+        aiDrawer: 'test',
+        bottomDrawers: '',
+      });
+    });
+
+    test('should report ops metric when unknown id is provided (expandDrawer)', () => {
+      awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
+      renderComponent(<AppLayout />);
+
+      act(() => awsuiWidgetPlugins.updateDrawer({ type: 'expandDrawer', payload: { id: 'unknown' } }));
+
+      expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-widget-drawer-incorrect-id', {
+        id: 'unknown',
+        type: 'expandDrawer',
+        aiDrawer: 'test',
+        bottomDrawers: '',
       });
     });
 
@@ -273,8 +289,10 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
 
       act(() => awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer' } as any));
 
-      expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-widget-drawer-incorrect-id', {
+      expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-widget-drawer-incorrect-payload', {
         type: 'openDrawer',
+        aiDrawer: 'test',
+        bottomDrawers: '',
       });
     });
   });
