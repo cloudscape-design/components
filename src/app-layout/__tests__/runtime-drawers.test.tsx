@@ -20,6 +20,7 @@ import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
   getActiveDrawerWidth,
+  getBottomDrawerHeight,
   getGlobalDrawersTestUtils,
   getGlobalDrawerWidth,
   manyDrawers,
@@ -1840,22 +1841,26 @@ describe('toolbar mode only features', () => {
       awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, type: 'global' });
       awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, type: 'global', id: 'test1' });
       awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, id: 'test2' });
+      awsuiWidgetPlugins.registerBottomDrawer({ ...drawerDefaults, id: 'bottom' });
 
       const { globalDrawersWrapper } = await renderComponent(<AppLayout />);
 
       awsuiPlugins.appLayout.openDrawer('test');
       awsuiPlugins.appLayout.openDrawer('test1');
       awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'test2' } });
+      awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'bottom' } });
 
       await delay();
 
       expect(globalDrawersWrapper.findDrawerById('test')!.getElement()).toHaveTextContent('runtime drawer content');
       expect(globalDrawersWrapper.findDrawerById('test1')!.getElement()).toHaveTextContent('runtime drawer content');
       expect(globalDrawersWrapper.findDrawerById('test2')!.getElement()).toHaveTextContent('runtime drawer content');
+      expect(globalDrawersWrapper.findDrawerById('bottom')!.getElement()).toHaveTextContent('runtime drawer content');
       await waitFor(() => {
         expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('290px');
         expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('290px');
         expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('400px');
+        expect(getBottomDrawerHeight(globalDrawersWrapper, 'bottom')).toEqual('400px');
       });
 
       awsuiPlugins.appLayout.resizeDrawer('test', 800);
@@ -1863,18 +1868,28 @@ describe('toolbar mode only features', () => {
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('800px');
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('290px');
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('400px');
+      expect(getBottomDrawerHeight(globalDrawersWrapper, 'bottom')).toEqual('400px');
 
       awsuiPlugins.appLayout.resizeDrawer('test1', 801);
 
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('800px');
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('801px');
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('400px');
+      expect(getBottomDrawerHeight(globalDrawersWrapper, 'bottom')).toEqual('400px');
 
       awsuiWidgetPlugins.updateDrawer({ type: 'resizeDrawer', payload: { id: 'test2', size: 600 } });
 
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('800px');
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('801px');
       expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('600px');
+      expect(getBottomDrawerHeight(globalDrawersWrapper, 'bottom')).toEqual('400px');
+
+      awsuiWidgetPlugins.updateDrawer({ type: 'resizeDrawer', payload: { id: 'bottom', size: 600 } });
+
+      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test')).toEqual('800px');
+      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test1')).toEqual('801px');
+      expect(getGlobalDrawerWidth(globalDrawersWrapper, 'test2')).toEqual('600px');
+      expect(getBottomDrawerHeight(globalDrawersWrapper, 'bottom')).toEqual('600px');
     });
 
     test('calls onResize handler for bottom drawer', async () => {
