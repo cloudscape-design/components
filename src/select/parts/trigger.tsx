@@ -132,6 +132,7 @@ const Trigger = React.forwardRef(
               htmlFor={controlId}
               className={clsx(
                 styles['inline-label'],
+                disabled && styles['inline-label-disabled'],
                 triggerVariant === 'tokens' && styles['inline-label-inline-tokens']
               )}
             >
