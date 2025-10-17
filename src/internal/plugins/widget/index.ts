@@ -5,11 +5,21 @@ import { getAppLayoutMessageHandler, pushInitialMessage } from './core';
 import { AppLayoutUpdateMessage, DrawerPayload, RegisterDrawerMessage } from './interfaces';
 
 /**
- * Registers a new runtime drawer to app layout
+ * Registers a new ai runtime drawer to app layout
  * @param drawer
  */
 export function registerLeftDrawer(drawer: DrawerPayload) {
   const message: RegisterDrawerMessage = { type: 'registerLeftDrawer', payload: drawer };
+  pushInitialMessage(message);
+  getAppLayoutMessageHandler()?.(message);
+}
+
+/**
+ * Registers a new bottom runtime drawer to app layout
+ * @param drawer
+ */
+export function registerBottomDrawer(drawer: DrawerPayload) {
+  const message: RegisterDrawerMessage = { type: 'registerBottomDrawer', payload: { ...drawer, position: 'bottom' } };
   pushInitialMessage(message);
   getAppLayoutMessageHandler()?.(message);
 }
