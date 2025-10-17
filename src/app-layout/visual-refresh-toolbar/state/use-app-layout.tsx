@@ -184,9 +184,29 @@ export const useAppLayout = (
   });
   const activeGlobalBottomDrawerId = activeBottomDrawer?.id ?? null;
 
+  const checkAIDrawerIdExists = (id: string) => {
+    return aiDrawer?.id === id;
+  };
+
+  const checkBottomDrawerIdExists = (id: string) => {
+    return !!bottomDrawers.find(drawer => drawer.id === id);
+  };
+
+  const checkDrawerIdExists = (id: string) => {
+    return checkAIDrawerIdExists(id) || checkBottomDrawerIdExists(id);
+  };
+
   const drawerGenericMessageHandler = (message: WidgetMessage) => {
     switch (message.type) {
       case 'expandDrawer':
+        if (!checkDrawerIdExists(message.payload.id)) {
+          metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-id', {
+            id: message.payload.id,
+            type: message.type,
+            bottomDrawers: bottomDrawers.map(drawer => drawer.id).join(','),
+            aiDrawer: aiDrawer?.id ?? '',
+          });
+        }
         setExpandedDrawerId(message.payload.id);
         break;
       case 'exitExpandedMode':
@@ -202,20 +222,22 @@ export const useAppLayout = (
     }
 
     if (!('payload' in message && 'id' in message.payload)) {
-      metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-id', {
+      metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-payload', {
         type: message.type,
+        bottomDrawers: bottomDrawers.map(drawer => drawer.id).join(','),
+        aiDrawer: aiDrawer?.id ?? '',
       });
       return;
     }
 
     const { id } = message.payload;
 
-    if (id === aiDrawer?.id || message.type === 'registerLeftDrawer') {
+    if (checkAIDrawerIdExists(id) || message.type === 'registerLeftDrawer') {
       aiDrawerMessageHandler(message);
       return;
     }
 
-    if (bottomDrawers.find(drawer => drawer.id === id) || message.type === 'registerBottomDrawer') {
+    if (checkBottomDrawerIdExists(id) || message.type === 'registerBottomDrawer') {
       bottomDrawersMessageHandler(message);
       return;
     }
@@ -223,6 +245,8 @@ export const useAppLayout = (
     metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-id', {
       id,
       type: message.type,
+      bottomDrawers: bottomDrawers.map(drawer => drawer.id).join(','),
+      aiDrawer: aiDrawer?.id ?? '',
     });
   });
 
