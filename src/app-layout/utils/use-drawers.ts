@@ -356,7 +356,7 @@ export function useDrawers(
     minDrawerSize,
     minGlobalDrawersSizes,
     drawerSizes,
-    drawersOpenQueue: drawersOpenQueue.current,
+    drawersOpenQueue,
     onActiveDrawerChange,
     onActiveDrawerResize,
     onActiveGlobalDrawersChange,
