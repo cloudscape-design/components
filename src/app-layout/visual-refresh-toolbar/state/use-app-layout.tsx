@@ -9,7 +9,9 @@ import { fireNonCancelableEvent } from '../../../internal/events';
 import { useControllable } from '../../../internal/hooks/use-controllable';
 import { useIntersectionObserver } from '../../../internal/hooks/use-intersection-observer';
 import { useMobile } from '../../../internal/hooks/use-mobile';
+import { metrics } from '../../../internal/metrics';
 import { useGetGlobalBreadcrumbs } from '../../../internal/plugins/helpers/use-global-breadcrumbs';
+import { WidgetMessage } from '../../../internal/plugins/widget/interfaces';
 import globalVars from '../../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../../interfaces';
@@ -182,10 +184,46 @@ export const useAppLayout = (
   });
   const activeGlobalBottomDrawerId = activeBottomDrawer?.id ?? null;
 
+  const drawerGenericMessageHandler = (message: WidgetMessage) => {
+    switch (message.type) {
+      case 'expandDrawer':
+        setExpandedDrawerId(message.payload.id);
+        break;
+      case 'exitExpandedMode':
+        setExpandedDrawerId(null);
+        break;
+    }
+  };
+
   useWidgetMessages(hasToolbar, message => {
-    // TODO deduplicate the same messages
-    aiDrawerMessageHandler(message);
-    bottomDrawersMessageHandler(message);
+    if (message.type === 'expandDrawer' || message.type === 'exitExpandedMode') {
+      drawerGenericMessageHandler(message);
+      return;
+    }
+
+    if (!('payload' in message && 'id' in message.payload)) {
+      metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-id', {
+        type: message.type,
+      });
+      return;
+    }
+
+    const { id } = message.payload;
+
+    if (id === aiDrawer?.id || message.type === 'registerLeftDrawer') {
+      aiDrawerMessageHandler(message);
+      return;
+    }
+
+    if (bottomDrawers.find(drawer => drawer.id === id) || message.type === 'registerBottomDrawer') {
+      bottomDrawersMessageHandler(message);
+      return;
+    }
+
+    metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-id', {
+      id,
+      type: message.type,
+    });
   });
 
   const onActiveDrawerChangeHandler = (
