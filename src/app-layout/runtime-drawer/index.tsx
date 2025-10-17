@@ -154,12 +154,12 @@ export const mapRuntimeConfigToAiDrawer = (
   return {
     ...runtimeDrawer,
     ariaLabels: { drawerName: runtimeDrawer.ariaLabels.content ?? '', ...runtimeDrawer.ariaLabels },
-    trigger: trigger
-      ? {
-          customIcon: convertRuntimeTriggerToReactNode(trigger?.customIcon),
-          iconSvg: convertRuntimeTriggerToReactNode(trigger?.iconSvg),
-        }
-      : undefined,
+    ...(trigger && {
+      trigger: {
+        customIcon: convertRuntimeTriggerToReactNode(trigger?.customIcon),
+        iconSvg: convertRuntimeTriggerToReactNode(trigger?.iconSvg),
+      },
+    }),
     exitExpandedModeTrigger: exitExpandedModeTrigger
       ? {
           customIcon: convertRuntimeTriggerToReactNode(exitExpandedModeTrigger?.customIcon),
