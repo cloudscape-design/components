@@ -5,8 +5,9 @@ import { act, render } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import { metrics } from '../../../lib/components/internal/metrics';
+import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget';
+import * as awsuiWidgetInternal from '../../../lib/components/internal/plugins/widget/core';
 import { DrawerPayload } from '../../../lib/components/internal/plugins/widget/interfaces';
-import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { describeEachAppLayout, getGlobalDrawersTestUtils } from './utils';
 
@@ -19,7 +20,7 @@ const drawerDefaults: DrawerPayload = {
 };
 
 beforeEach(() => {
-  awsuiWidgetPlugins.clearInitialMessages();
+  awsuiWidgetInternal.clearInitialMessages();
   jest.resetAllMocks();
 });
 
@@ -151,6 +152,23 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
   });
 
+  test('should enter and exit focus mode in global ai drawer via API', () => {
+    awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, isExpandable: true, defaultActive: true });
+
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)).toBeTruthy();
+
+    act(() => awsuiWidgetPlugins.updateDrawer({ type: 'expandDrawer', payload: { id: drawerDefaults.id } }));
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isDrawerInExpandedMode()).toBe(true);
+    expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
+
+    act(() => awsuiWidgetPlugins.updateDrawer({ type: 'exitExpandedMode' }));
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isDrawerInExpandedMode()).toBe(false);
+    expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+  });
+
   test('onResize functionality', () => {
     const onResize = jest.fn();
     awsuiWidgetPlugins.registerLeftDrawer({
@@ -173,27 +191,40 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     }
   });
 
-  test('should exit focus mode by clicking on a custom exit button in the AI global drawer', () => {
-    awsuiWidgetPlugins.registerLeftDrawer({
-      ...drawerDefaults,
-      ariaLabels: {
-        exitExpandedModeButton: 'exitExpandedModeButton',
-      },
-      isExpandable: true,
-    });
-    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+  test.each(['standard', 'custom', 'custom-invalid'] as const)(
+    'should exit focus mode by clicking on a %s exit button in the AI global drawer',
+    type => {
+      awsuiWidgetPlugins.registerLeftDrawer({
+        ...drawerDefaults,
+        ariaLabels: {
+          exitExpandedModeButton: 'exitExpandedModeButton',
+        },
+        isExpandable: true,
+        ...(type === 'custom' && {
+          exitExpandedModeTrigger: {
+            customIcon: `
+              <svg width="94" height="24" viewBox="0 0 94 24" fill="none" focusable="false" aria-hidden="true"></svg>
+            `,
+          },
+        }),
+        ...(type === 'custom-invalid' && {
+          exitExpandedModeTrigger: {},
+        }),
+      });
+      const { globalDrawersWrapper } = renderComponent(<AppLayout />);
 
-    globalDrawersWrapper.findAiDrawerTrigger()!.click();
-    if (size === 'mobile') {
-      expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerDefaults.id)).toBeFalsy();
-    } else {
-      createWrapper().findButtonGroup()!.findButtonById('expand')!.click();
-      expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isDrawerInExpandedMode()).toBe(true);
-      expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
-      globalDrawersWrapper.findLeaveExpandedModeButtonInAIDrawer()!.click();
-      expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+      globalDrawersWrapper.findAiDrawerTrigger()!.click();
+      if (size === 'mobile') {
+        expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerDefaults.id)).toBeFalsy();
+      } else {
+        createWrapper().findButtonGroup()!.findButtonById('expand')!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isDrawerInExpandedMode()).toBe(true);
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
+        globalDrawersWrapper.findLeaveExpandedModeButtonInAIDrawer()!.click();
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+      }
     }
-  });
+  );
 
   describe('metrics', () => {
     let sendPanoramaMetricSpy: jest.SpyInstance;

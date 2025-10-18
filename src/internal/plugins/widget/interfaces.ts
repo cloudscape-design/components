@@ -39,6 +39,9 @@ export interface DrawerPayload {
     iconSvg?: string;
     customIcon?: string;
   };
+  exitExpandedModeTrigger?: {
+    customIcon?: string;
+  };
   mountContent: (container: HTMLElement, mountContext: MountContentContext) => void;
   unmountContent: (container: HTMLElement) => void;
   preserveInactiveContent?: boolean;
@@ -57,11 +60,19 @@ export type UpdateDrawerConfigMessage = Message<
 export type OpenDrawerMessage = Message<'openDrawer', { id: string }>;
 export type CloseDrawerMessage = Message<'closeDrawer', { id: string }>;
 export type ResizeDrawerMessage = Message<'resizeDrawer', { id: string; size: number }>;
+export type ExpandDrawerMessage = Message<'expandDrawer', { id: string }>;
+export interface ExitExpandedModeMessage {
+  type: 'exitExpandedMode';
+}
 
 export type AppLayoutUpdateMessage =
   | UpdateDrawerConfigMessage
   | OpenDrawerMessage
   | CloseDrawerMessage
-  | ResizeDrawerMessage;
+  | ResizeDrawerMessage
+  | ExpandDrawerMessage
+  | ExitExpandedModeMessage;
 
-export type AppLayoutMessage = RegisterDrawerMessage | AppLayoutUpdateMessage;
+export type InitialMessage = RegisterDrawerMessage;
+
+export type WidgetMessage = InitialMessage | AppLayoutUpdateMessage;

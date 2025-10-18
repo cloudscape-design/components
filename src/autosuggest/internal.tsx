@@ -179,14 +179,13 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
   const isEmpty = !value && !autosuggestItemsState.items.length;
-  const isFiltered = !!value && value.length !== 0;
+  const isFiltered = !!value && value.length !== 0 && !(filteringType === 'auto' && autosuggestItemsState.showAll);
   const filteredText = isFiltered
     ? filteringResultsText?.(autosuggestItemsState.items.length, options?.length ?? 0)
     : undefined;
   const dropdownStatus = useDropdownStatus({
     ...props,
     isEmpty,
-    isFiltered,
     recoveryText,
     errorIconAriaLabel,
     onRecoveryClick: handleRecoveryClick,

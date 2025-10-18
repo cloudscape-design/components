@@ -11,19 +11,36 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 interface LabelProps {
+  labelContainerRef?: React.RefObject<HTMLSpanElement>;
+  labelRef?: React.RefObject<HTMLSpanElement>;
+  labelId?: string;
   label?: string;
   prefix?: string;
   highlightText?: string;
   triggerVariant: boolean;
 }
-export const Label = ({ label, prefix, highlightText, triggerVariant }: LabelProps) => (
-  <span className={clsx(styles.label, analyticsSelectors.label, triggerVariant && styles['trigger-variant'])}>
-    {prefix && (
-      <span className={clsx(styles['label-prefix'], triggerVariant && styles['trigger-variant'])}>{prefix} </span>
-    )}
-    <HighlightMatch str={label} highlightText={highlightText} />
-  </span>
-);
+export const Label = ({
+  labelContainerRef,
+  labelRef,
+  labelId,
+  label,
+  prefix,
+  highlightText,
+  triggerVariant,
+}: LabelProps) => {
+  return (
+    <span
+      id={labelId}
+      ref={labelContainerRef}
+      className={clsx(styles.label, analyticsSelectors.label, triggerVariant && styles['trigger-variant'])}
+    >
+      {prefix && (
+        <span className={clsx(styles['label-prefix'], triggerVariant && styles['trigger-variant'])}>{prefix} </span>
+      )}
+      <HighlightMatch labelRef={labelRef} str={label} highlightText={highlightText} />
+    </span>
+  );
+};
 
 interface LabelTagProps {
   labelTag?: string;

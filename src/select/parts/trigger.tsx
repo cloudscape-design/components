@@ -12,6 +12,7 @@ import { FormFieldValidationControlProps } from '../../internal/context/form-fie
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { joinStrings } from '../../internal/utils/strings';
 import { MultiselectProps } from '../../multiselect/interfaces';
+import InternalToken from '../../token/internal';
 import { SelectProps } from '../interfaces';
 import { SelectTriggerProps } from '../utils/use-select';
 
@@ -71,9 +72,7 @@ const Trigger = React.forwardRef(
           >
             <span className={styles['inline-token-list']}>
               {selectedOptions.map(({ label }, i) => (
-                <span key={i} className={styles['inline-token']}>
-                  {label}
-                </span>
+                <InternalToken key={i} label={label} variant="inline" disabled={disabled} />
               ))}
             </span>
             <span className={styles['inline-token-counter']} id={triggerContentId}>
@@ -133,6 +132,7 @@ const Trigger = React.forwardRef(
               htmlFor={controlId}
               className={clsx(
                 styles['inline-label'],
+                disabled && styles['inline-label-disabled'],
                 triggerVariant === 'tokens' && styles['inline-label-inline-tokens']
               )}
             >

@@ -2968,6 +2968,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "status-pending",
                       "refresh",
                       "external",
+                      "history",
                       "group",
                       "calendar",
                       "ellipsis",
@@ -2988,6 +2989,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "arrow-right",
                       "arrow-up",
                       "arrow-down",
+                      "at-symbol",
                       "audio-full",
                       "audio-half",
                       "audio-off",
@@ -3044,6 +3046,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "send",
                       "share",
                       "shrink",
+                      "slash",
                       "star-filled",
                       "star-half",
                       "star",
@@ -3100,6 +3103,11 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                   "name": "label",
                   "optional": true,
                   "type": "string",
+                },
+                {
+                  "name": "labelContent",
+                  "optional": true,
+                  "type": "React.ReactNode",
                 },
                 {
                   "name": "labelTag",
@@ -3295,7 +3303,10 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     {
-      "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
+
+Note that the \`matchesCount\` includes the \`enteredTextLabel\` ("Use \${value}") item, so in most cases you
+should subtract 1 from \`matchesCount\`. If using manual filtering, you should provide your own value for \`totalCount\`.",
       "inlineType": {
         "name": "(matchesCount: number, totalCount: number) => string",
         "parameters": [
@@ -4476,6 +4487,8 @@ Sizes are automatically scaled down in compact mode.
   styled for use as a label indicating that content is produced by generative AI.
 - If you set it to \`awsui-value-large\`, the component will render a \`span\`,
   styled using "Display large light" typography.
+- If you set it to \`awsui-inline-code\`, the component will render a \`code\` element,
+  styled with a background and padding for inline code snippets.
 
 Override the HTML tag by using property \`tagOverride\`.",
       "inlineType": {
@@ -4498,6 +4511,7 @@ Override the HTML tag by using property \`tagOverride\`.",
           "awsui-value-large",
           "awsui-key-label",
           "awsui-gen-ai-label",
+          "awsui-inline-code",
         ],
       },
       "name": "variant",
@@ -4939,6 +4953,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "status-pending",
           "refresh",
           "external",
+          "history",
           "group",
           "calendar",
           "ellipsis",
@@ -4959,6 +4974,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "arrow-right",
           "arrow-up",
           "arrow-down",
+          "at-symbol",
           "audio-full",
           "audio-half",
           "audio-off",
@@ -5015,6 +5031,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "send",
           "share",
           "shrink",
+          "slash",
           "star-filled",
           "star-half",
           "star",
@@ -5719,6 +5736,7 @@ The main action also supports the following properties of the [button](/componen
                 "status-pending",
                 "refresh",
                 "external",
+                "history",
                 "group",
                 "calendar",
                 "ellipsis",
@@ -5739,6 +5757,7 @@ The main action also supports the following properties of the [button](/componen
                 "arrow-right",
                 "arrow-up",
                 "arrow-down",
+                "at-symbol",
                 "audio-full",
                 "audio-half",
                 "audio-off",
@@ -5795,6 +5814,7 @@ The main action also supports the following properties of the [button](/componen
                 "send",
                 "share",
                 "shrink",
+                "slash",
                 "star-filled",
                 "star-half",
                 "star",
@@ -13344,6 +13364,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "status-pending",
           "refresh",
           "external",
+          "history",
           "group",
           "calendar",
           "ellipsis",
@@ -13364,6 +13385,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "arrow-right",
           "arrow-up",
           "arrow-down",
+          "at-symbol",
           "audio-full",
           "audio-half",
           "audio-off",
@@ -13420,6 +13442,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "send",
           "share",
           "shrink",
+          "slash",
           "star-filled",
           "star-half",
           "star",
@@ -13654,6 +13677,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
           },
           {
             "name": "arrow-up",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "at-symbol",
             "optional": true,
             "type": "React.ReactNode",
           },
@@ -13908,6 +13936,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
             "type": "React.ReactNode",
           },
           {
+            "name": "history",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
             "name": "insert-row",
             "optional": true,
             "type": "React.ReactNode",
@@ -14034,6 +14067,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
           },
           {
             "name": "shrink",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "slash",
             "optional": true,
             "type": "React.ReactNode",
           },
@@ -18338,6 +18376,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "status-pending",
           "refresh",
           "external",
+          "history",
           "group",
           "calendar",
           "ellipsis",
@@ -18358,6 +18397,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "arrow-right",
           "arrow-up",
           "arrow-down",
+          "at-symbol",
           "audio-full",
           "audio-half",
           "audio-off",
@@ -18414,6 +18454,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "send",
           "share",
           "shrink",
+          "slash",
           "star-filled",
           "star-half",
           "star",
@@ -20941,6 +20982,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "status-pending",
                       "refresh",
                       "external",
+                      "history",
                       "group",
                       "calendar",
                       "ellipsis",
@@ -20961,6 +21003,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "arrow-right",
                       "arrow-up",
                       "arrow-down",
+                      "at-symbol",
                       "audio-full",
                       "audio-half",
                       "audio-off",
@@ -21017,6 +21060,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "send",
                       "share",
                       "shrink",
+                      "slash",
                       "star-filled",
                       "star-half",
                       "star",
@@ -21073,6 +21117,11 @@ The event \`detail\` contains the current \`selectedOption\`.",
                   "name": "label",
                   "optional": true,
                   "type": "string",
+                },
+                {
+                  "name": "labelContent",
+                  "optional": true,
+                  "type": "React.ReactNode",
                 },
                 {
                   "name": "labelTag",
@@ -21523,6 +21572,7 @@ If you want to clear the selection, use \`null\`.",
                 "status-pending",
                 "refresh",
                 "external",
+                "history",
                 "group",
                 "calendar",
                 "ellipsis",
@@ -21543,6 +21593,7 @@ If you want to clear the selection, use \`null\`.",
                 "arrow-right",
                 "arrow-up",
                 "arrow-down",
+                "at-symbol",
                 "audio-full",
                 "audio-half",
                 "audio-off",
@@ -21599,6 +21650,7 @@ If you want to clear the selection, use \`null\`.",
                 "send",
                 "share",
                 "shrink",
+                "slash",
                 "star-filled",
                 "star-half",
                 "star",
@@ -21655,6 +21707,11 @@ If you want to clear the selection, use \`null\`.",
             "name": "label",
             "optional": true,
             "type": "string",
+          },
+          {
+            "name": "labelContent",
+            "optional": true,
+            "type": "React.ReactNode",
           },
           {
             "name": "labelTag",
@@ -23036,6 +23093,7 @@ You can use the first argument of type \`SelectionState\` to access the current 
 * \`tableLabel\` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
 * \`resizerRoleDescription\` (string) - Provides role description for table column resizer buttons.
+* \`resizerTooltipText\` (string) - Provides text for the table column resizer tooltip.
 * \`activateEditLabel\` (EditableColumnDefinition, Item) => string -
                      Specifies an alternative text for the edit button in editable cells.
 * \`cancelEditLabel\` (EditableColumnDefinition) => string -
@@ -23158,6 +23216,11 @@ You can use the first argument of type \`SelectionState\` to access the current 
           },
           {
             "name": "resizerRoleDescription",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "resizerTooltipText",
             "optional": true,
             "type": "string",
           },
@@ -25877,6 +25940,7 @@ If an href is provided, it opens the link in a new tab.",
           "status-pending",
           "refresh",
           "external",
+          "history",
           "group",
           "calendar",
           "ellipsis",
@@ -25897,6 +25961,7 @@ If an href is provided, it opens the link in a new tab.",
           "arrow-right",
           "arrow-up",
           "arrow-down",
+          "at-symbol",
           "audio-full",
           "audio-half",
           "audio-off",
@@ -25953,6 +26018,7 @@ If an href is provided, it opens the link in a new tab.",
           "send",
           "share",
           "shrink",
+          "slash",
           "star-filled",
           "star-half",
           "star",
@@ -26076,6 +26142,7 @@ We do not support using this attribute to apply custom styling.",
           "status-pending",
           "refresh",
           "external",
+          "history",
           "group",
           "calendar",
           "ellipsis",
@@ -26096,6 +26163,7 @@ We do not support using this attribute to apply custom styling.",
           "arrow-right",
           "arrow-up",
           "arrow-down",
+          "at-symbol",
           "audio-full",
           "audio-half",
           "audio-off",
@@ -26152,6 +26220,7 @@ We do not support using this attribute to apply custom styling.",
           "send",
           "share",
           "shrink",
+          "slash",
           "star-filled",
           "star-half",
           "star",
@@ -26281,6 +26350,130 @@ If you set both \`pressedIconUrl\` and \`pressedIconSvg\`, \`pressedIconSvg\` wi
 In most cases, they aren't needed, as the \`svg\` element inherits styles from the icon component.",
       "isDefault": false,
       "name": "pressedIconSvg",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for token matches the snapshot: token 1`] = `
+{
+  "dashCaseName": "token",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user clicks on the dismiss button.
+
+Make sure that you add a listener to this event to update your application state.",
+      "name": "onDismiss",
+    },
+  ],
+  "functions": [],
+  "name": "Token",
+  "properties": [
+    {
+      "description": "Adds an \`aria-label\` to the token.
+
+Use this if the label is not plain text.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Further information about the token that appears below the label.",
+      "name": "description",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Determines whether the token is disabled.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Adds an \`aria-label\` to the dismiss button.",
+      "name": "dismissLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "A label tag that provides additional guidance, shown next to the label.",
+      "name": "labelTag",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies if the control is read-only. A read-only control is still focusable.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "A list of tags giving further guidance about the token.",
+      "name": "tags",
+      "optional": true,
+      "type": "ReadonlyArray<string>",
+    },
+    {
+      "description": "Content to display in the tooltip when \`variant="inline"\`. The tooltip appears when the token label is truncated due to insufficient space.
+
+Only applies to plain text labels.",
+      "name": "tooltipContent",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the token's visual style and functionality.
+
+For \`inline\` only label, icon and dismiss button are displayed.
+
+Defaults to \`normal\` if not specified.",
+      "inlineType": {
+        "name": "TokenProps.Variant",
+        "type": "union",
+        "values": [
+          "inline",
+          "normal",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "An icon at the start of the token.
+
+When \`variant="normal"\`, if a description or tags are set, icon size should be \`normal\`.
+
+When \`variant="inline"\`, icon size should be \`small\`.",
+      "isDefault": false,
+      "name": "icon",
+    },
+    {
+      "description": "Slot for the label of the token as text or an element.
+
+For \`variant="inline"\`, only plain text is supported, for example, strings or numbers.",
+      "isDefault": false,
+      "name": "label",
     },
   ],
   "releaseStatus": "stable",
@@ -34035,6 +34228,14 @@ Note: This function returns the specified component's wrapper even if the specif
           "returnType": {
             "isNullable": false,
             "name": "ElementType",
+          },
+        },
+        {
+          "name": "isDisabled",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
           },
         },
         {
@@ -65380,7 +65581,7 @@ Note: This function returns the specified component's wrapper even if the specif
           ],
           "returnType": {
             "isNullable": true,
-            "name": "TokenWrapper",
+            "name": "TokenGroupItemWrapper",
           },
         },
         {
@@ -65391,7 +65592,7 @@ Note: This function returns the specified component's wrapper even if the specif
             "name": "Array",
             "typeArguments": [
               {
-                "name": "TokenWrapper",
+                "name": "TokenGroupItemWrapper",
               },
             ],
           },
@@ -66052,7 +66253,7 @@ Note: This function returns the specified component's wrapper even if the specif
           },
         },
       ],
-      "name": "TokenWrapper",
+      "name": "TokenGroupItemWrapper",
     },
     {
       "methods": [
@@ -79647,6 +79848,437 @@ Note: This function returns the specified component's wrapper even if the specif
           },
         },
         {
+          "description": "Returns the token description.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token dismiss button.",
+          "name": "findDismiss",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token tags.",
+          "name": "findTags",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.fireEvent",
+          },
+          "name": "fireEvent",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "event",
+              "typeName": "Event",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.focus",
+          },
+          "name": "focus",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementType",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.keydown",
+          },
+          "name": "keydown",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "keyCode",
+              "typeName": "KeyCode",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.keydown",
+          },
+          "name": "keydown",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "keyboardEventProps",
+              "typeName": "KeyboardEventInit",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.keypress",
+          },
+          "name": "keypress",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "keyCode",
+              "typeName": "KeyCode",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.keyup",
+          },
+          "name": "keyup",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "keyCode",
+              "typeName": "KeyCode",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "this",
+          },
+        },
+      ],
+      "name": "TokenWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.blur",
+          },
+          "name": "blur",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "description": "Performs a click by triggering a mouse event.
+Note that programmatic events ignore disabled attribute and will trigger listeners even if the element is disabled.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.click",
+          },
+          "name": "click",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "params",
+              "typeName": "MouseEventInit",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "NewElementType",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<NewElementType>",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<NewElementType>",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the wrappers of all components that match the specified component type and the specified CSS selector.
+If no CSS selector is specified, returns all of the components that match the specified component type.
+If no matching component is found, returns an empty array.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper, ElementType>",
+            },
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "NewElementType",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "NewElementType",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the component wrapper matching the specified selector.
+If the specified selector doesn't match any element, it returns \`null\`.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper, ElementType>",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "Wrapper",
+          },
+        },
+        {
           "description": "Returns a token from the group for a given index.",
           "name": "findToken",
           "parameters": [
@@ -79661,7 +80293,7 @@ Note: This function returns the specified component's wrapper even if the specif
           ],
           "returnType": {
             "isNullable": true,
-            "name": "TokenWrapper",
+            "name": "TokenGroupItemWrapper",
           },
         },
         {
@@ -79672,7 +80304,7 @@ Note: This function returns the specified component's wrapper even if the specif
             "name": "Array",
             "typeArguments": [
               {
-                "name": "TokenWrapper",
+                "name": "TokenGroupItemWrapper",
               },
             ],
           },
@@ -107365,7 +107997,7 @@ Note: This function returns the specified component's wrapper even if the specif
           ],
           "returnType": {
             "isNullable": false,
-            "name": "TokenWrapper",
+            "name": "TokenGroupItemWrapper",
           },
         },
         {
@@ -107376,7 +108008,7 @@ Note: This function returns the specified component's wrapper even if the specif
             "name": "MultiElementWrapper",
             "typeArguments": [
               {
-                "name": "TokenWrapper",
+                "name": "TokenGroupItemWrapper",
               },
             ],
           },
@@ -107680,7 +108312,7 @@ Note: This function returns the specified component's wrapper even if the specif
           },
         },
       ],
-      "name": "TokenWrapper",
+      "name": "TokenGroupItemWrapper",
     },
     {
       "methods": [
@@ -116125,6 +116757,272 @@ Note: This function returns the specified component's wrapper even if the specif
           },
         },
         {
+          "description": "Returns the token description.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token dismiss button.",
+          "name": "findDismiss",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token tags.",
+          "name": "findTags",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.getElement",
+          },
+          "name": "getElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.matches",
+          },
+          "name": "matches",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.toSelector",
+          },
+          "name": "toSelector",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "TokenWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.find",
+          },
+          "name": "find",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAll",
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllByClassName",
+          },
+          "name": "findAllByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a multi-element wrapper that matches the specified component type with the specified CSS selector.
+If no CSS selector is specified, returns a multi-element wrapper that matches the specified component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAllComponents",
+          },
+          "name": "findAllComponents",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "ComponentWrapperClass<Wrapper>",
+            },
+            {
+              "description": "CSS Selector",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "Wrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findAny",
+          },
+          "name": "findAny",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selectors",
+              "typeName": "Array<string>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findByClassName",
+          },
+          "name": "findByClassName",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "className",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a wrapper that matches the specified component type with the specified CSS selector.
+
+Note: This function returns the specified component's wrapper even if the specified selector points to a different component type.",
+          "inheritedFrom": {
+            "name": "AbstractWrapper.findComponent",
+          },
+          "name": "findComponent",
+          "parameters": [
+            {
+              "description": "CSS selector",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "selector",
+              "typeName": "string",
+            },
+            {
+              "description": "Component's wrapper class",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "ComponentClass",
+              "typeName": "WrapperClass<Wrapper>",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Wrapper",
+          },
+        },
+        {
           "description": "Returns a token from the group for a given index.",
           "name": "findToken",
           "parameters": [
@@ -116139,7 +117037,7 @@ Note: This function returns the specified component's wrapper even if the specif
           ],
           "returnType": {
             "isNullable": false,
-            "name": "TokenWrapper",
+            "name": "TokenGroupItemWrapper",
           },
         },
         {
@@ -116150,7 +117048,7 @@ Note: This function returns the specified component's wrapper even if the specif
             "name": "MultiElementWrapper",
             "typeArguments": [
               {
-                "name": "TokenWrapper",
+                "name": "TokenGroupItemWrapper",
               },
             ],
           },

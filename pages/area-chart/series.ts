@@ -116,6 +116,53 @@ export function createLogXYProps({ xLog, yLog }: { xLog?: boolean; yLog?: boolea
   };
 }
 
+export function createLinearPartialLatencyProps() {
+  const seconds = 2 * 60;
+  const valueFormatter = numberFormatter;
+
+  const rawData = range(0, seconds).map(index => {
+    const slice = (value: number, from: number, until: number) => (from <= index && index < until ? value : 0);
+    const p50 = 28 + 2 * (pseudoRandom() + 1);
+    const p60 = p50 * 1.2 * (pseudoRandom() + 1);
+    const p70 = p50 * 1.4 * (pseudoRandom() + 1);
+    const p80 = p50 * 1.6 * (pseudoRandom() + 1);
+    const p90 = p50 * 2 * (pseudoRandom() + 1);
+    return {
+      index,
+      p50: slice(p50, 10, 50),
+      p60: slice(p60, 25, 75),
+      p70: slice(p70, 80, 99),
+      p80: slice(p80, 90, 120),
+      p90: slice(p90, 0, 100),
+    };
+  });
+
+  const data = rawData.map(it => it.index);
+  const series: AreaChartProps.Series<number>[] = [
+    { title: 'p50', type: 'area', data: rawData.map(it => ({ x: it.index, y: it.p50 })), valueFormatter },
+    { title: 'p60', type: 'area', data: rawData.map(it => ({ x: it.index, y: it.p60 })), valueFormatter },
+    { title: 'p70', type: 'area', data: rawData.map(it => ({ x: it.index, y: it.p70 })), valueFormatter },
+    { title: 'Limit', type: 'threshold', y: 150, valueFormatter },
+    { title: 'p80', type: 'area', data: rawData.map(it => ({ x: it.index, y: it.p80 })), valueFormatter },
+    { title: 'p90', type: 'area', data: rawData.map(it => ({ x: it.index, y: it.p90 })), valueFormatter },
+  ];
+
+  const xScaleType: XScaleType = 'linear';
+  const yScaleType: YScaleType = 'linear';
+
+  return {
+    data,
+    xDomain: [5, 115],
+    series,
+    xTitle: 'Time',
+    xScaleType,
+    yTitle: 'Latency (ms)',
+    yScaleType,
+    xTickFormatter: numberFormatter,
+    yTickFormatter: valueFormatter,
+  };
+}
+
 export function createCategoricalProps() {
   const valueFormatter = numberFormatter;
 
