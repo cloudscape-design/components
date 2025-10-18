@@ -40,5 +40,5 @@ export const ToolbarSkeleton = React.forwardRef<HTMLElement, AppLayoutToolbarImp
 );
 
 export const NotificationsSkeleton = React.forwardRef<HTMLElement, AppLayoutNotificationsImplementationProps>(
-  (_props: AppLayoutNotificationsImplementationProps, ref) => <NotificationsSlot ref={ref} />
+  (props: AppLayoutNotificationsImplementationProps, ref) => <NotificationsSlot ref={ref} />
 );

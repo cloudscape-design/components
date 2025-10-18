@@ -15,6 +15,7 @@ import {
   AppLayoutBottomContentSlot,
   AppLayoutTopContentSlot,
 } from '../internal';
+import { isWidgetReady } from '../state/invariants';
 import { ToolbarProps } from '../toolbar';
 import { SkeletonPartProps, SkeletonSlotsAttributes } from './interfaces';
 
@@ -58,7 +59,7 @@ export const SkeletonLayout = ({
     contentElAttributes,
   } = skeletonSlotsAttributes;
 
-  const isWidgetLoaded = !!appLayoutState.widgetizedState;
+  const isWidgetLoaded = isWidgetReady(appLayoutState);
 
   return (
     <VisualContext contextName="app-layout-toolbar">

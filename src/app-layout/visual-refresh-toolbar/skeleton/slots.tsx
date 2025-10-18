@@ -47,12 +47,13 @@ interface BreadcrumbsSlotProps {
   discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
 }
 
+const breadcrumbsSlotContextValue = { isInToolbar: true };
+
 export function BreadcrumbsSlot({ ownBreadcrumbs, discoveredBreadcrumbs }: BreadcrumbsSlotProps) {
   const isSSR = typeof window === 'undefined';
-  const contextValue = React.useMemo(() => ({ isInToolbar: true }), []);
 
   return (
-    <BreadcrumbsSlotContext.Provider value={contextValue}>
+    <BreadcrumbsSlotContext.Provider value={breadcrumbsSlotContextValue}>
       <div className={styles['breadcrumbs-own']}>{ownBreadcrumbs}</div>
       {discoveredBreadcrumbs && !isSSR && (
         <div className={styles['breadcrumbs-discovered']}>

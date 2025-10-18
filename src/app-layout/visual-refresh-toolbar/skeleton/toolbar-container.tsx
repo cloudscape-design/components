@@ -22,25 +22,6 @@ export function ToolbarContainer({ children, hasAiDrawer }: ToolbarContainerProp
   );
 }
 
-interface ToolbarBreadcrumbsWrapperProps {
-  children: React.ReactNode;
-  includeTestUtils?: boolean;
-}
-
-export function ToolbarBreadcrumbsWrapper({ children, includeTestUtils = false }: ToolbarBreadcrumbsWrapperProps) {
-  return (
-    <div
-      className={clsx(toolbarStyles['universal-toolbar-breadcrumbs'], includeTestUtils && testutilStyles.breadcrumbs)}
-    >
-      {children}
-    </div>
-  );
-}
-
-export function ToolbarDrawersWrapper() {
-  return <div className={toolbarStyles['universal-toolbar-drawers']} />;
-}
-
 interface ToolbarBreadcrumbsSectionProps {
   ownBreadcrumbs: React.ReactNode;
   discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
@@ -53,9 +34,11 @@ export function ToolbarBreadcrumbsSection({
   includeTestUtils = false,
 }: ToolbarBreadcrumbsSectionProps) {
   return (
-    <ToolbarBreadcrumbsWrapper includeTestUtils={includeTestUtils}>
+    <div
+      className={clsx(toolbarStyles['universal-toolbar-breadcrumbs'], includeTestUtils && testutilStyles.breadcrumbs)}
+    >
       <BreadcrumbsSlot ownBreadcrumbs={ownBreadcrumbs} discoveredBreadcrumbs={discoveredBreadcrumbs} />
-    </ToolbarBreadcrumbsWrapper>
+    </div>
   );
 }
 
@@ -69,7 +52,7 @@ export const ToolbarSkeletonStructure = React.forwardRef<HTMLElement, ToolbarSke
     <ToolbarSlot ref={ref}>
       <ToolbarContainer>
         <ToolbarBreadcrumbsSection ownBreadcrumbs={ownBreadcrumbs} discoveredBreadcrumbs={discoveredBreadcrumbs} />
-        <ToolbarDrawersWrapper />
+        <div className={toolbarStyles['universal-toolbar-drawers']} />
       </ToolbarContainer>
     </ToolbarSlot>
   )
