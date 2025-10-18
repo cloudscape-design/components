@@ -15,6 +15,7 @@ import {
   AppLayoutBottomContentSlot,
   AppLayoutTopContentSlot,
 } from '../internal';
+import { isWidgetReady } from '../state/invariants';
 import { ToolbarProps } from '../toolbar';
 import { SkeletonPartProps, SkeletonSlotsAttributes } from './interfaces';
 
@@ -58,12 +59,14 @@ export const SkeletonLayout = ({
     contentElAttributes,
   } = skeletonSlotsAttributes;
 
+  const isWidgetLoaded = isWidgetReady(appLayoutState);
+
   return (
     <VisualContext contextName="app-layout-toolbar">
       <div
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
         ref={appLayoutState.rootRef as React.Ref<HTMLDivElement>}
-        data-awsui-app-layout-widget-loaded={false}
+        data-awsui-app-layout-widget-loaded={isWidgetLoaded}
         {...wrapperElAttributes}
         className={wrapperElAttributes?.className ?? clsx(styles.root, testutilStyles.root)}
         style={
