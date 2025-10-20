@@ -5,7 +5,6 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import OptionWrapper from '../internal/option';
 
 import selectors from '../../../token/test-classes/styles.selectors.js';
-import legacySelectors from '../../../token-group/styles.selectors.js';
 
 export class TokenGroupItemWrapper extends ComponentWrapper {
   findOption(): OptionWrapper {
@@ -17,9 +16,6 @@ export class TokenGroupItemWrapper extends ComponentWrapper {
   }
 
   findDismiss(): ElementWrapper {
-    const legacyButton = this.findByClassName(legacySelectors['dismiss-button']);
-    const newButton = this.findByClassName(selectors['dismiss-button']);
-
-    return (legacyButton ?? newButton)!;
+    return this.findByClassName(selectors['dismiss-button'])!;
   }
 }
