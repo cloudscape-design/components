@@ -12,7 +12,7 @@ export default class TokenGroupWrapper extends ComponentWrapper {
   static rootSelector: string = selectors.root;
 
   findTokens(): Array<TokenGroupItemWrapper> {
-    const legacyTokens = this.findAllByClassName(selectors.root).map(
+    const legacyTokens = this.findAllByClassName(selectors.token).map(
       tokenElement => new TokenGroupItemWrapper(tokenElement.getElement())
     );
     const newTokens = this.findAllByClassName(newTokenSelectors.root).map(
@@ -39,7 +39,7 @@ export default class TokenGroupWrapper extends ComponentWrapper {
    */
   findToken(tokenIndex: number): TokenGroupItemWrapper | null {
     const legacyToken = this.findComponent(
-      `.${tokenListSelectors['list-item']}:nth-child(${tokenIndex}) > .${selectors.root}`,
+      `.${tokenListSelectors['list-item']}:nth-child(${tokenIndex}) > .${selectors.token}`,
       TokenGroupItemWrapper
     );
     const newToken = this.findComponent(
