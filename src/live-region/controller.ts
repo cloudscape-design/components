@@ -48,22 +48,40 @@ export class LiveRegionController {
     }
   }
 
-  announce({ message, forceReannounce = false }: { message?: string; delay?: number; forceReannounce?: boolean }) {
+  announce({
+    message,
+    delay,
+    forceReannounce = false,
+  }: {
+    message?: string;
+    delay?: number;
+    forceReannounce?: boolean;
+  }) {
     if (!message) {
       return;
     }
 
     this._nextAnnouncement = message.trim();
 
-    if (this.delay === 0 || forceReannounce) {
+    // Use the provided delay or fall back to the instance delay
+    const effectiveDelay = delay !== undefined ? delay : this.delay;
+
+    if (effectiveDelay === 0 || forceReannounce) {
       // If the delay is 0, just skip the timeout shenanigans and update the
       // element synchronously. Great for tests.
       return this._updateElement(forceReannounce);
     }
 
-    if (this._timeoutId === undefined) {
-      this._timeoutId = setTimeout(() => this._updateElement(false), this.delay * 1000);
+    // Clear any existing timeout to ensure the latest announcement is used.
+    // This prevents the issue where rapid successive announcements would
+    // cause earlier messages to be announced instead of the latest one.
+    // See: https://sim.amazon.com/issues/AWSUI-61345
+    if (this._timeoutId !== undefined) {
+      clearTimeout(this._timeoutId);
     }
+
+    // Always create a new timeout for the latest announcement
+    this._timeoutId = setTimeout(() => this._updateElement(false), effectiveDelay * 1000);
   }
 
   private _updateElement(forceReannounce: boolean) {
