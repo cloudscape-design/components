@@ -331,7 +331,7 @@ test(
   })
 );
 
-(process.env.REACT_VERSION !== '18' ? test : test.skip)(
+test(
   'should recover column widths when the inner state is reset',
   setupTest(async page => {
     await page.resizeColumn(2, 100);

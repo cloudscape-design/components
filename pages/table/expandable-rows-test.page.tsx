@@ -269,17 +269,20 @@ function useTableData() {
 
   // Imitate server-side delay when items update.
   const memoItems = useEqualsMemo(collectionResult.items);
-  const [readyItems, setReadyItems] = useState(memoItems);
+  const [delayedItems, setDelayedItems] = useState(memoItems);
+  const readyItems = settings.manualServerMock ? memoItems : delayedItems;
   useEffect(() => {
-    setLoading(true);
-    setError(false);
-    return getServerResponse(() => {
-      setLoading(false);
-      setReadyItems(memoItems);
-      setError(settings.emulateServerError);
-    });
+    if (!settings.manualServerMock) {
+      setLoading(true);
+      setError(false);
+      return getServerResponse(() => {
+        setLoading(false);
+        setDelayedItems(memoItems);
+        setError(settings.emulateServerError);
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getServerResponse, memoItems, setLoading, setError, setReadyItems]);
+  }, [getServerResponse, memoItems, setLoading, setError, setDelayedItems]);
 
   // Decorate path options to only show the last node and not the full path.
   collectionResult.propertyFilterProps.filteringOptions = collectionResult.propertyFilterProps.filteringOptions.map(
