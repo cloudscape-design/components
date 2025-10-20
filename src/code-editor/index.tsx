@@ -79,7 +79,6 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
 
   const paneId = useUniqueId('code-editor-pane');
-  const descriptionId = useUniqueId('code-editor-description');
 
   const [paneStatus, setPaneStatus] = useState<PaneStatus>('hidden');
   const [annotations, setAnnotations] = useState<Ace.Annotation[]>([]);
@@ -135,13 +134,6 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const errorCount = annotations.filter(a => a.type === 'error').length;
   const warningCount = annotations.filter(a => a.type === 'warning').length;
   const currentAnnotations = useMemo(() => annotations.filter(a => a.type === paneStatus), [annotations, paneStatus]);
-
-  const computedAriaDescription = useMemo(() => {
-    const errorText = `${errorCount} ${i18n('i18nStrings.errorsTab', i18nStrings?.errorsTab)}`;
-    const warningText = `${warningCount} ${i18n('i18nStrings.warningsTab', i18nStrings?.warningsTab)}`;
-
-    return `${errorText}, ${warningText}`;
-  }, [errorCount, warningCount, i18n, i18nStrings]);
 
   /*
    * Callbacks
@@ -232,7 +224,6 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
             handleAriaLabel={i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel)}
             handleTooltipText={i18n('i18nStrings.resizeHandleTooltipText', i18nStrings?.resizeHandleTooltipText)}
           >
-            <div id={descriptionId}>{computedAriaDescription}</div>
             <div
               ref={editorRef}
               className={clsx(styles.editor, styles.ace, isRefresh && styles['editor-refresh'])}
@@ -240,7 +231,6 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
               tabIndex={0}
               role="group"
               aria-label={i18n('i18nStrings.editorGroupAriaLabel', i18nStrings?.editorGroupAriaLabel)}
-              aria-describedby={descriptionId}
             />
           </ResizableBox>
           <div
