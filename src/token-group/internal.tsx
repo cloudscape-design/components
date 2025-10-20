@@ -23,6 +23,8 @@ import styles from './styles.css.js';
 type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignment'> &
   InternalBaseComponentProps & {
     isItemReadOnly?: (item: TokenGroupProps.Item) => boolean;
+    // Used for testing legacy test-utils
+    renderToken?: (item: TokenGroupProps.Item) => React.ReactElement;
   };
 
 export default function InternalTokenGroup({
@@ -36,6 +38,7 @@ export default function InternalTokenGroup({
   limitShowMoreAriaLabel,
   readOnly,
   isItemReadOnly,
+  renderToken,
   __internalRootRef,
   ...props
 }: InternalTokenGroupProps) {
@@ -70,33 +73,37 @@ export default function InternalTokenGroup({
         alignment={alignment}
         items={items}
         limit={limit}
-        renderItem={(item, itemIndex) => (
-          <InternalToken
-            {...item}
-            label={item.label}
-            key={itemIndex}
-            onDismiss={() => {
-              fireNonCancelableEvent(onDismiss, { itemIndex });
-              setNextFocusIndex(itemIndex);
-            }}
-            readOnly={readOnly || isItemReadOnly?.(item)}
-            variant={'normal'}
-            icon={
-              item.iconName || item.iconUrl || item.iconSvg ? (
-                <InternalIcon
-                  name={item.iconName}
-                  svg={item.iconSvg}
-                  url={item.iconUrl}
-                  ariaLabel={item.iconAlt}
-                  size={'normal'}
+        renderItem={
+          renderToken
+            ? renderToken
+            : (item, itemIndex) => (
+                <InternalToken
+                  {...item}
+                  label={item.label}
+                  key={itemIndex}
+                  onDismiss={() => {
+                    fireNonCancelableEvent(onDismiss, { itemIndex });
+                    setNextFocusIndex(itemIndex);
+                  }}
+                  readOnly={readOnly || isItemReadOnly?.(item)}
+                  variant={'normal'}
+                  icon={
+                    item.iconName || item.iconUrl || item.iconSvg ? (
+                      <InternalIcon
+                        name={item.iconName}
+                        svg={item.iconSvg}
+                        url={item.iconUrl}
+                        ariaLabel={item.iconAlt}
+                        size={'normal'}
+                      />
+                    ) : undefined
+                  }
+                  {...(item.disabled || readOnly
+                    ? {}
+                    : getAnalyticsMetadataAttribute({ detail: { position: `${itemIndex + 1}` } }))}
                 />
-              ) : undefined
-            }
-            {...(item.disabled || readOnly
-              ? {}
-              : getAnalyticsMetadataAttribute({ detail: { position: `${itemIndex + 1}` } }))}
-          />
-        )}
+              )
+        }
         i18nStrings={i18nStrings}
         limitShowFewerAriaLabel={limitShowFewerAriaLabel}
         limitShowMoreAriaLabel={limitShowMoreAriaLabel}
