@@ -17,9 +17,9 @@ export class TokenGroupItemWrapper extends ComponentWrapper {
   }
 
   findDismiss(): ElementWrapper {
-    const selector = selectors['dismiss-button'];
-    const legacySelector = legacySelectors['dismiss-button'];
+    const legacyButton = this.findByClassName(legacySelectors['dismiss-button']);
+    const newButton = this.findByClassName(selectors['dismiss-button']);
 
-    return this.find(`:is(.${legacySelector}, .${selector})`)!;
+    return (legacyButton ?? newButton)!;
   }
 }
