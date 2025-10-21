@@ -46,3 +46,27 @@ describe('Input', () => {
     })
   );
 });
+
+describe('Input Style API', () => {
+  test(
+    'hover and focus states',
+    useBrowser(async browser => {
+      await browser.url('#/light/input/style-permutations');
+      const page = new InputPage(browser);
+      const inputSelector = '[data-testid="permutation-0-0"] input';
+
+      await page.waitForVisible(inputSelector);
+
+      // Test hover state
+      await page.hoverElement(inputSelector);
+      await expect((await browser.$(inputSelector).getCSSProperty('border-color')).value).toBe('rgba(15,118,110,1)');
+      await expect((await browser.$(inputSelector).getCSSProperty('background-color')).value).toBe(
+        'rgba(204,251,241,1)'
+      );
+
+      // Test focus state
+      await page.click(inputSelector);
+      await expect((await browser.$(inputSelector).getCSSProperty('border-color')).value).toBe('rgba(20,184,166,1)');
+    })
+  );
+});
