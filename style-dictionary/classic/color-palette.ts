@@ -77,6 +77,7 @@ const referenceTokens: StyleDictionary.ReferenceDictionary = {
   colorError600: tokens.colorRed600,
   colorError1000: tokens.colorRed1000,
   colorInfo50: tokens.colorBlue50,
+  colorInfo300: tokens.colorBlue300,
   colorInfo400: tokens.colorBlue400,
   colorInfo600: tokens.colorBlue600,
   colorInfo1000: tokens.colorBlue1000,
