@@ -133,7 +133,7 @@ export default tsEslint.config(
           ],
         },
       ],
-      '@cloudscape-design/components/no-legacy-tokens': 'warn',
+      '@cloudscape-design/components/no-legacy-tokens': 'error',
     },
   },
   {
