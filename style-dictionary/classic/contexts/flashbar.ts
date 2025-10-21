@@ -7,14 +7,14 @@ import { StyleDictionary } from '../../utils/interfaces.js';
 import { tokens as parentTokens } from '../colors.js';
 
 const tokens = {
-  colorBorderItemFocused: '{colorGrey100}',
-  colorTextExpandableSectionDefault: '{colorGrey100}',
-  colorTextExpandableSectionHover: '{colorGrey100}',
-  colorTextBodyDefault: '{colorGrey100}',
-  colorTextHeadingSecondary: '{colorGrey100}',
-  colorBorderDividerDefault: '{colorGrey100}',
-  colorTextTutorialHotspotDefault: '{colorGrey300}',
-  colorTextTutorialHotspotHover: '{colorGrey100}',
+  colorBorderItemFocused: '{colorNeutral100}',
+  colorTextExpandableSectionDefault: '{colorNeutral100}',
+  colorTextExpandableSectionHover: '{colorNeutral100}',
+  colorTextBodyDefault: '{colorNeutral100}',
+  colorTextHeadingSecondary: '{colorNeutral100}',
+  colorBorderDividerDefault: '{colorNeutral100}',
+  colorTextTutorialHotspotDefault: '{colorNeutral300}',
+  colorTextTutorialHotspotHover: '{colorNeutral100}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(

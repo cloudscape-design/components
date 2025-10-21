@@ -18,12 +18,12 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorBorderItemFocused: '{colorTextNotificationYellow}',
 
   // Dismiss button
-  colorTextInteractiveInvertedDefault: '{colorGrey650}',
-  colorTextInteractiveInvertedHover: '{colorGrey950}',
+  colorTextInteractiveInvertedDefault: '{colorNeutral650}',
+  colorTextInteractiveInvertedHover: '{colorNeutral950}',
 
   // Progress bars in flashbars should be using variant="flash" (which uses a white background by default).
   // For the warning state, it should use colorGrey950.
-  colorBackgroundProgressBarContentInFlash: '{colorGrey950}',
+  colorBackgroundProgressBarContentInFlash: '{colorNeutral950}',
   colorBackgroundProgressBarLayoutInFlash: '{colorGreyOpaque10}',
 
   // Expandable sections
@@ -37,8 +37,8 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorTextBodyDefault: '{colorTextNotificationYellow}',
 
   // Tutorial hotspot
-  colorTextTutorialHotspotDefault: '{colorGrey600}',
-  colorTextTutorialHotspotHover: '{colorGrey900}',
+  colorTextTutorialHotspotDefault: '{colorNeutral600}',
+  colorTextTutorialHotspotHover: '{colorNeutral900}',
 
   // Inline-code variant background in Box
   colorBackgroundInlineCode: 'rgba(0, 0, 0, 0.1)',
