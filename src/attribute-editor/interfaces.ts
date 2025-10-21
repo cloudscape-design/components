@@ -143,6 +143,7 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
    * If more than 6 attributes are specified, a `gridLayout` must be provided.
    *
    * * `label` (ReactNode) - Text label for the form field.
+   * * `description` (ReactNode) - Additional description for the form field.
    * * `info` (ReactNode) - Info link for the form field.
    * * `errorText` ((item, itemIndex) => ReactNode) - Error message text to display as a control validation message.
    *    It renders the form field as invalid if the returned value is not `null` or `undefined`.
