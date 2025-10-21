@@ -5,6 +5,7 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 @mixin placeholder {
   &::-webkit-input-placeholder {
@@ -33,17 +34,23 @@
   @include styles.styles-reset;
   padding-block: styles.$control-padding-vertical;
   padding-inline: styles.$control-padding-horizontal;
-  color: awsui.$color-text-body-default;
+  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default);
   inline-size: 100%;
   cursor: text;
   box-sizing: border-box;
-  background-color: awsui.$color-background-input-default;
+  background-color: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default);
   border-start-start-radius: styles.$control-border-radius;
   border-start-end-radius: styles.$control-border-radius;
   border-end-start-radius: styles.$control-border-radius;
   border-end-end-radius: styles.$control-border-radius;
-  border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
-  border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+
+  border-block: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+  border-inline: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+
+  box-shadow: var(#{custom-props.$styleBoxShadowDefault});
+
   @include styles.font-body-m;
   block-size: awsui.$size-vertical-input;
 
@@ -53,14 +60,26 @@
 
   @include placeholder {
     @include styles.form-placeholder;
+    color: var(#{custom-props.$stylePlaceholderColor});
+    font-size: var(#{custom-props.$stylePlaceholderFontSize});
+    font-weight: var(#{custom-props.$stylePlaceholderFontWeight});
+    font-style: var(#{custom-props.$stylePlaceholderFontStyle});
   }
 
   &:focus {
     @include styles.form-focus-element;
+    border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused);
+    color: var(#{custom-props.$styleColorFocus}, awsui.$color-text-body-default);
+    background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
+    box-shadow: var(#{custom-props.$styleBoxShadowFocus});
   }
 
   &:disabled {
     @include styles.form-disabled-element;
+    border-color: var(#{custom-props.$styleBorderColorDisabled}, awsui.$color-border-input-disabled);
+    color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled);
+    background-color: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled);
+    box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
     cursor: default;
     @include placeholder {
       @include styles.form-placeholder-disabled;
@@ -70,6 +89,13 @@
   &:invalid {
     // discard built-in invalid styles, customers should use `invalid` property only (AWSUI-3947)
     box-shadow: none;
+  }
+
+  &:hover:not(:focus):not(:disabled) {
+    border-color: var(#{custom-props.$styleBorderColorHover}, awsui.$color-border-input-default);
+    color: var(#{custom-props.$styleColorHover}, awsui.$color-text-body-default);
+    background-color: var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-input-default);
+    box-shadow: var(#{custom-props.$styleBoxShadowHover});
   }
 
   &.input-invalid {

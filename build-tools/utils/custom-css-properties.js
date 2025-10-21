@@ -95,6 +95,16 @@ const customCssPropertiesList = [
   'styleBoxShadowDefault',
   'styleBoxShadowDisabled',
   'styleBoxShadowHover',
+  // Focus state
+  'styleBackgroundFocus',
+  'styleBorderColorFocus',
+  'styleBoxShadowFocus',
+  'styleColorFocus',
+  // Placeholder style properties
+  'stylePlaceholderColor',
+  'stylePlaceholderFontSize',
+  'stylePlaceholderFontStyle',
+  'stylePlaceholderFontWeight',
   // Alert focus ring properties
   'alertFocusRingBorderColor',
   'alertFocusRingBorderRadius',
