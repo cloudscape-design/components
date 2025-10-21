@@ -5,16 +5,15 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import { TokenGroupItemWrapper } from './token';
 
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
-import newTokenSelectors from '../../../token/test-classes/styles.selectors.js';
 import selectors from '../../../token-group/styles.selectors.js';
 
 export default class TokenGroupWrapper extends ComponentWrapper {
   static rootSelector: string = selectors.root;
 
   findTokens(): Array<TokenGroupItemWrapper> {
-    const tokens = this.findAll(`:is(.${selectors.token}, .${newTokenSelectors.root})`);
-
-    return tokens.map(tokenElement => new TokenGroupItemWrapper(tokenElement.getElement()));
+    return this.findAllByClassName(selectors.token).map(
+      tokenElement => new TokenGroupItemWrapper(tokenElement.getElement())
+    );
   }
 
   /**
@@ -24,7 +23,7 @@ export default class TokenGroupWrapper extends ComponentWrapper {
    */
   findToken(tokenIndex: number): TokenGroupItemWrapper | null {
     return this.findComponent(
-      `.${tokenListSelectors['list-item']}:nth-child(${tokenIndex}) > :is(.${selectors.token}, .${newTokenSelectors.root})`,
+      `.${tokenListSelectors['list-item']}:nth-child(${tokenIndex}) > .${selectors.token}`,
       TokenGroupItemWrapper
     );
   }

@@ -14,6 +14,7 @@ import LiveRegion from '../live-region/internal';
 import DismissButton from './dismiss-button';
 import { TokenProps } from './interfaces';
 
+import legacyTestingStyles from '../token-group/styles.css.js';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -102,6 +103,7 @@ function InternalToken({
       ref={__internalRootRef}
       className={clsx(
         styles.root,
+        legacyTestingStyles.token,
         testUtilStyles.root,
         !isInline ? styles['token-normal'] : styles['token-inline'],
         analyticsSelectors.token,
