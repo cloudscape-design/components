@@ -7,7 +7,7 @@ import { StyleDictionary } from '../../utils/interfaces.js';
 import { tokens as parentColorTokens } from '../colors.js';
 import { tokens as parentShadowsTokens } from '../shadows.js';
 
-const background = '{colorGrey950}';
+const background = '{colorNeutral950}';
 
 const colorTokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundLayoutMain: background,

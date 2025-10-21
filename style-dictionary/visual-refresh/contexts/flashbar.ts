@@ -7,8 +7,8 @@ import { StyleDictionary } from '../../utils/interfaces.js';
 import { tokens as parentTokens } from '../colors.js';
 
 export const baseTokens: StyleDictionary.ColorsDictionary = {
-  colorTextButtonNormalDefault: '{colorGrey100}',
-  colorBorderButtonNormalDefault: '{colorGrey100}',
+  colorTextButtonNormalDefault: '{colorNeutral100}',
+  colorBorderButtonNormalDefault: '{colorNeutral100}',
   colorBackgroundButtonNormalDefault: 'transparent',
   colorTextButtonNormalHover: '{colorWhite}',
   colorBorderButtonNormalHover: '{colorWhite}',
@@ -16,14 +16,14 @@ export const baseTokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonNormalActive: '{colorWhite}',
   colorBorderButtonNormalActive: '{colorWhite}',
   colorBackgroundButtonNormalActive: 'rgba(0, 7, 22, 0.2)',
-  colorBorderItemFocused: '{colorGrey100}',
-  colorTextExpandableSectionDefault: '{colorGrey100}',
+  colorBorderItemFocused: '{colorNeutral100}',
+  colorTextExpandableSectionDefault: '{colorNeutral100}',
   colorTextExpandableSectionHover: '{colorWhite}',
-  colorTextBodyDefault: '{colorGrey100}',
-  colorTextHeadingSecondary: '{colorGrey100}',
-  colorBorderDividerDefault: '{colorGrey100}',
-  colorTextTutorialHotspotDefault: '{colorGrey300}',
-  colorTextTutorialHotspotHover: '{colorGrey100}',
+  colorTextBodyDefault: '{colorNeutral100}',
+  colorTextHeadingSecondary: '{colorNeutral100}',
+  colorBorderDividerDefault: '{colorNeutral100}',
+  colorTextTutorialHotspotDefault: '{colorNeutral300}',
+  colorTextTutorialHotspotHover: '{colorNeutral100}',
   colorBackgroundInlineCode: 'rgba(0, 0, 0, 0.2)',
 };
 

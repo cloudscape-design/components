@@ -3,4 +3,5 @@
 module.exports.rules = {
   'ban-files': require('./ban-files'),
   'prefer-live-region': require('./prefer-live-region'),
+  'no-legacy-tokens': require('./no-legacy-tokens'),
 };
