@@ -9,7 +9,7 @@
 .root {
   @include styles.styles-reset;
 
-  &.vertical > .list {
+  > .list {
     list-style: none;
     padding-inline-start: 0;
     margin-block: 0;
@@ -54,8 +54,6 @@
 
 .horizontal {
   > .list {
-    // display: flex;
-    // flex-direction: row;
     display: grid;
     align-items: flex-start;
 
@@ -94,14 +92,7 @@
       }
     }
 
-    .container:first-child {
-      // text-align: left;
-
-      > .connector::before {
-        // display: none;
-      }
-    }
-    .container:last-child {
+    > .container:last-child {
       > .header > .connector {
         display: none;
       }
