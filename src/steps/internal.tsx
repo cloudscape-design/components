@@ -9,25 +9,84 @@ import StatusIndicator from '../status-indicator/internal';
 import { StepsProps } from './interfaces';
 
 import styles from './styles.css.js';
+import InternalIcon from '../icon/internal';
+import InternalSpinner from '../spinner/internal';
+import InternalBox from '../box/internal';
+import { BoxProps } from '../box';
 
 type InternalStepsProps = SomeRequired<StepsProps, 'steps'> & InternalBaseComponentProps;
 
-const InternalStep = ({ status, statusIconAriaLabel, header, details }: StepsProps.Step) => {
+// stolen from status indicator
+const typeToIcon = {
+  error: <InternalIcon name="status-negative" size="small" />,
+  warning: <InternalIcon name="status-warning" size="small" />,
+  success: <InternalIcon name="status-positive" size="small" />,
+  info: <InternalIcon name="status-info" size="small" />,
+  stopped: <InternalIcon name="status-stopped" size="small" />,
+  pending: <InternalIcon name="status-pending" size="small" />,
+  'in-progress': <InternalIcon name="status-in-progress" size="small" />,
+  loading: <InternalSpinner />,
+};
+
+/*
+  'error': awsui.$color-text-status-error,
+  'warning': awsui.$color-text-status-warning,
+  'success': awsui.$color-text-status-success,
+  'info': awsui.$color-text-status-info,
+  'stopped': awsui.$color-text-status-inactive,
+  'pending': awsui.$color-text-status-inactive,
+  'in-progress': awsui.$color-text-status-inactive,
+  'loading': awsui.$color-text-status-inactive,
+  */
+
+const statusToColor: Record<StepsProps.Status, BoxProps.Color> = {
+  error: 'text-status-error',
+  warning: 'text-status-warning',
+  success: 'text-status-success',
+  info: 'text-status-info',
+  stopped: 'text-status-inactive',
+  pending: 'text-status-inactive',
+  'in-progress': 'text-status-inactive',
+  loading: 'text-status-inactive',
+};
+
+const InternalStep = ({
+  status,
+  statusIconAriaLabel,
+  header,
+  details,
+  orientation,
+}: StepsProps.Step & { orientation: StepsProps.Orientation }) => {
   return (
     <li className={styles.container}>
-      <div className={styles.header}>
-        <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
-          {header}
-        </StatusIndicator>
-      </div>
-      <hr className={styles.connector} role="none" />
-      {details && <div className={styles.details}>{details}</div>}
+      {orientation === 'horizontal' ? (
+        <>
+          <div className={styles.header}>
+            <InternalBox color={statusToColor[status]}>{header}</InternalBox>
+          </div>
+          <div className={styles.connector} aria-label={statusIconAriaLabel}>
+            <InternalBox color={statusToColor[status]}>{typeToIcon[status]}</InternalBox>
+          </div>
+          {details && <div className={styles.details}>{details}</div>}
+        </>
+      ) : (
+        <>
+          <div className={styles.header}>
+            <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
+              {header}
+            </StatusIndicator>
+          </div>
+          <hr className={styles.connector} role="none" />
+          {details && <div className={styles.details}>{details}</div>}
+        </>
+      )}
     </li>
   );
 };
 
 const InternalSteps = ({
   steps,
+  orientation = 'horizontal',
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
@@ -35,7 +94,11 @@ const InternalSteps = ({
   ...props
 }: InternalStepsProps) => {
   return (
-    <div {...props} className={clsx(styles.root, props.className)} ref={__internalRootRef}>
+    <div
+      {...props}
+      className={clsx(styles.root, props.className, orientation === 'horizontal' ? styles.horizontal : styles.vertical)}
+      ref={__internalRootRef}
+    >
       <ol
         className={styles.list}
         aria-label={ariaLabel}
@@ -49,6 +112,7 @@ const InternalSteps = ({
             statusIconAriaLabel={step.statusIconAriaLabel}
             header={step.header}
             details={step.details}
+            orientation={orientation}
           />
         ))}
       </ol>

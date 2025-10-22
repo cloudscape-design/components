@@ -15,6 +15,11 @@ export interface StepsProps extends BaseComponentProps {
    */
   steps: ReadonlyArray<StepsProps.Step>;
   /**
+   * The visual orientation of the steps (vertical or horizontal).
+   * By default the orientation is vertical.
+   */
+  orientation?: StepsProps.Orientation;
+  /**
    * Provides an `aria-label` to the progress steps container.
    * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
    */
@@ -40,4 +45,6 @@ export namespace StepsProps {
     header: React.ReactNode;
     details?: React.ReactNode;
   }
+
+  export type Orientation = 'vertical' | 'horizontal';
 }

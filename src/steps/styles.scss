@@ -9,7 +9,7 @@
 .root {
   @include styles.styles-reset;
 
-  > .list {
+  &.vertical > .list {
     list-style: none;
     padding-inline-start: 0;
     margin-block: 0;
@@ -48,6 +48,77 @@
 
     > :last-of-type > .connector {
       display: none;
+    }
+  }
+}
+
+.horizontal {
+  > .list {
+    display: grid;
+    grid-template-rows: [header] auto [line] min-content [details] auto;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+
+    > .container {
+      // display: contents;
+      display: grid;
+      grid-template-rows: subgrid;
+      grid-row: span 3;
+      // text-align: center;
+
+      > .header {
+        grid-row: header;
+        display: flex;
+        justify-content: center;
+      }
+
+      > .details {
+        grid-row: details;
+        display: flex;
+        justify-content: center;
+      }
+
+      > .connector {
+        grid-row: line;
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        &::after,
+        &::before {
+          display: block;
+          // position: absolute;
+          flex: 1;
+          content: '';
+
+          background-color: awsui.$color-border-divider-default;
+          margin-block: 0;
+          border-block: 0;
+          border-inline: 0;
+          block-size: awsui.$border-divider-list-width;
+          inline-size: auto;
+          min-inline-size: awsui.$space-static-xs;
+          position: relative;
+          // inset-block-end: awsui.$space-static-xxxs;
+        }
+
+        &::after {
+          // flex: 1;
+        }
+      }
+    }
+
+    .container:first-child {
+      // text-align: left;
+
+      > .connector::before {
+        // display: none;
+      }
+    }
+    .container:last-child {
+      > .connector::after {
+        // display: none;
+      }
     }
   }
 }
