@@ -54,6 +54,64 @@
 
 .horizontal {
   > .list {
+    // display: flex;
+    // flex-direction: row;
+    display: grid;
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    > .container {
+      display: grid;
+      grid-template-columns: awsui.$space-static-l 1fr;
+      grid-template-rows: minmax(awsui.$space-static-l, auto);
+      flex: 1;
+
+      > .header {
+        display: flex;
+        grid-row: 1;
+        grid-column: 1 / span 2;
+        align-items: center;
+
+        > .connector {
+          display: block;
+          flex: 1;
+          background-color: awsui.$color-border-divider-default;
+          margin-block: 0;
+          border-block: 0;
+          border-inline: 0;
+
+          block-size: awsui.$border-divider-list-width;
+          inline-size: auto;
+          min-inline-size: awsui.$space-static-xs;
+          margin-inline: awsui.$space-static-xxxs;
+        }
+      }
+
+      > .details {
+        display: flex;
+        grid-column: 2;
+      }
+    }
+
+    .container:first-child {
+      // text-align: left;
+
+      > .connector::before {
+        // display: none;
+      }
+    }
+    .container:last-child {
+      > .header > .connector {
+        display: none;
+      }
+    }
+  }
+}
+
+/*
+.horizontal {
+  > .list {
     display: grid;
     grid-template-rows: [header] auto [line] min-content [details] auto;
     grid-auto-flow: column;
@@ -87,7 +145,6 @@
         &::after,
         &::before {
           display: block;
-          // position: absolute;
           flex: 1;
           content: '';
 
@@ -99,7 +156,6 @@
           inline-size: auto;
           min-inline-size: awsui.$space-static-xs;
           position: relative;
-          // inset-block-end: awsui.$space-static-xxxs;
         }
 
         &::after {
@@ -122,3 +178,4 @@
     }
   }
 }
+*/

@@ -62,10 +62,10 @@ const InternalStep = ({
       {orientation === 'horizontal' ? (
         <>
           <div className={styles.header}>
-            <InternalBox color={statusToColor[status]}>{header}</InternalBox>
-          </div>
-          <div className={styles.connector} aria-label={statusIconAriaLabel}>
-            <InternalBox color={statusToColor[status]}>{typeToIcon[status]}</InternalBox>
+            <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
+              {header}
+            </StatusIndicator>
+            <hr className={styles.connector} role="none" />
           </div>
           {details && <div className={styles.details}>{details}</div>}
         </>
@@ -104,6 +104,11 @@ const InternalSteps = ({
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}
         aria-describedby={ariaDescribedby}
+        style={
+          orientation === 'horizontal'
+            ? { gridTemplateColumns: `repeat(${Math.max(1, steps.length - 1)}, 1fr) auto` }
+            : {}
+        }
       >
         {steps.map((step, index) => (
           <InternalStep
