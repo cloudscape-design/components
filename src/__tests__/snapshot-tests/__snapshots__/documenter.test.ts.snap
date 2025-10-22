@@ -22838,6 +22838,22 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "'vertical'",
+      "description": "The visual orientation of the steps (vertical or horizontal).
+By default the orientation is vertical.",
+      "inlineType": {
+        "name": "StepsProps.Orientation",
+        "type": "union",
+        "values": [
+          "horizontal",
+          "vertical",
+        ],
+      },
+      "name": "orientation",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "An array of individual steps
 
 Each step definition has the following properties:
