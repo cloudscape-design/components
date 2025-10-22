@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ButtonGroupProps } from '../../../button-group/interfaces';
+import { FlashbarProps } from '../../../flashbar/interfaces';
 import { NonCancelableEventHandler } from '../../events';
 
 interface Message<Type, Payload> {
@@ -73,6 +74,14 @@ export type AppLayoutUpdateMessage =
   | ExpandDrawerMessage
   | ExitExpandedModeMessage;
 
-export type InitialMessage = RegisterDrawerMessage;
+export interface EmitNotificationPayload {
+  type: FlashbarProps.Type;
+  header: string;
+  content: string;
+}
+
+export type EmitNotificationMessage = Message<'emitNotification', EmitNotificationPayload>;
+
+export type InitialMessage = EmitNotificationMessage | RegisterDrawerMessage;
 
 export type WidgetMessage = InitialMessage | AppLayoutUpdateMessage;
