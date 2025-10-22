@@ -9,6 +9,7 @@ import InternalIcon from '../icon/internal';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { GeneratedAnalyticsMetadataTokenDismiss } from './analytics-metadata/interfaces';
 
+import legacyTestingStyles from '../token-group/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
@@ -38,6 +39,7 @@ function DismissButton(
       type="button"
       className={clsx(
         styles['dismiss-button'],
+        legacyTestingStyles['dismiss-button'],
         testUtilStyles['dismiss-button'],
         inline && styles['dismiss-button-inline']
       )}

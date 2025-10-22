@@ -7,9 +7,9 @@ import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/color-charts.js';
 
 const tokens: StyleDictionary.ColorChartsDictionary = {
-  colorChartsLineGrid: { dark: '{colorGrey700}' },
-  colorChartsLineTick: { dark: '{colorGrey700}' },
-  colorChartsLineAxis: { dark: '{colorGrey700}' },
+  colorChartsLineGrid: { dark: '{colorNeutral700}' },
+  colorChartsLineTick: { dark: '{colorNeutral700}' },
+  colorChartsLineAxis: { dark: '{colorNeutral700}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
