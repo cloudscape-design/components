@@ -18,6 +18,7 @@ export interface ActionConfig {
   id: string;
   orderPriority?: number;
   mountContent: (container: HTMLElement, context: ActionContext) => void;
+  updateContent?: (container: HTMLElement, context: ActionContext) => void;
   unmountContent: (container: HTMLElement) => void;
 }
 
