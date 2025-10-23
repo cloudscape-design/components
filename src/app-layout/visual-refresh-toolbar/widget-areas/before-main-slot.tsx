@@ -46,6 +46,7 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
     drawersOpenQueue,
     onActiveAiDrawerChange,
     activeAiDrawer,
+    bottomDrawerReportedSize,
   } = appLayoutState.widgetizedState;
   const drawerExpandedMode = !!expandedDrawerId;
   const toolsOpen = !!activeDrawer;
@@ -103,8 +104,8 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
           )}
         >
           <AppLayoutNavigation
-            widgetizedState={appLayoutState.widgetizedState}
             appLayoutInternals={appLayoutState.appLayoutInternals}
+            bottomDrawerReportedSize={bottomDrawerReportedSize}
           />
         </div>
       )}

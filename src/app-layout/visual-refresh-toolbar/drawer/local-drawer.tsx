@@ -53,7 +53,7 @@ export function AppLayoutDrawerImplementation({
     verticalOffsets,
     isMobile,
     placement,
-    isMobile ? 0 : bottomDrawerReportedSize
+    isMobile ? 0 : (bottomDrawerReportedSize ?? 0)
   );
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const isToolsDrawer = activeDrawer?.id === TOOLS_DRAWER_ID || toolsOnlyMode;

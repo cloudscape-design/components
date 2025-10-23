@@ -7,7 +7,7 @@ import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import { InternalButton } from '../../../button/internal';
 import { getDrawerStyles } from '../compute-layout';
-import { AppLayoutInternals, AppLayoutWidgetizedState } from '../interfaces';
+import { AppLayoutInternals } from '../interfaces';
 
 import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
@@ -15,12 +15,12 @@ import styles from './styles.css.js';
 
 interface AppLayoutNavigationImplementationProps {
   appLayoutInternals: AppLayoutInternals;
-  widgetizedState: AppLayoutWidgetizedState;
+  bottomDrawerReportedSize?: number;
 }
 
 export function AppLayoutNavigationImplementation({
   appLayoutInternals,
-  widgetizedState,
+  bottomDrawerReportedSize,
 }: AppLayoutNavigationImplementationProps) {
   const {
     ariaLabels,
@@ -32,13 +32,12 @@ export function AppLayoutNavigationImplementation({
     placement,
     verticalOffsets,
   } = appLayoutInternals;
-  const { activeGlobalBottomDrawerId, bottomDrawerReportedSize } = widgetizedState ?? {};
 
   const { drawerTopOffset, drawerHeight } = getDrawerStyles(
     verticalOffsets,
     isMobile,
     placement,
-    activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0
+    isMobile ? 0 : (bottomDrawerReportedSize ?? 0)
   );
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.

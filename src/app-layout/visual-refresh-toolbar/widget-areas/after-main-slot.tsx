@@ -57,7 +57,7 @@ export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: 
           <AppLayoutSplitPanelSide
             appLayoutInternals={appLayoutState.appLayoutInternals}
             splitPanelInternals={appLayoutState.splitPanelInternals}
-            widgetizedState={appLayoutState.widgetizedState}
+            bottomDrawerReportedSize={bottomDrawerReportedSize}
           >
             {appLayoutProps.splitPanel}
           </AppLayoutSplitPanelSide>
