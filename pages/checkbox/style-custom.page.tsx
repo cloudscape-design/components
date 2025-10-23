@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
+
+import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 
 import { Checkbox, SpaceBetween } from '~components';
 
@@ -8,6 +10,25 @@ import { palette } from '../app/themes/style-api';
 import ScreenshotArea from '../utils/screenshot-area';
 
 export default function CustomCheckbox() {
+  const mode = useCurrentMode(useRef(document.body));
+
+  const colors = {
+    light: {
+      checked: palette.neutral100,
+      default: palette.neutral100,
+      disabled: palette.neutral60,
+      indeterminate: palette.neutral100,
+      readOnly: palette.neutral80,
+    },
+    dark: {
+      checked: palette.neutral10,
+      default: palette.neutral10,
+      disabled: palette.neutral40,
+      indeterminate: palette.neutral10,
+      readOnly: palette.neutral40,
+    },
+  };
+
   const style = {
     input: {
       fill: {
@@ -39,13 +60,7 @@ export default function CustomCheckbox() {
       },
     },
     label: {
-      color: {
-        checked: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
-        default: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
-        disabled: `light-dark(${palette.neutral60}, ${palette.neutral40})`,
-        indeterminate: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
-        readOnly: `light-dark(${palette.neutral80}, ${palette.neutral40})`,
-      },
+      color: { ...colors[mode] },
     },
   };
 
