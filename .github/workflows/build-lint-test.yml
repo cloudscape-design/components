@@ -33,6 +33,7 @@ jobs:
   deploy:
     needs: build
     name: deploy${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     strategy:
       matrix:
         react: [16, 18]
