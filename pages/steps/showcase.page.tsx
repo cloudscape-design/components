@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { SpaceBetween } from '~components';
+import { Icon, SpaceBetween } from '~components';
 import Box from '~components/box';
 import Header from '~components/header';
 import Steps from '~components/steps';
@@ -17,7 +17,27 @@ export default function StepsPermutationsWithUpdates() {
           <Header variant="h2">Hobbes use-case</Header>
           <Steps
             orientation="horizontal"
-            separateHorizontalHeader={true}
+            renderStep={step => {
+              if (step.status === 'stopped') {
+                return {
+                  details: step.header,
+                  header: (
+                    <Icon
+                      variant="error"
+                      svg={
+                        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="8" cy="8" r="7" />
+                        </svg>
+                      }
+                    />
+                  ),
+                };
+              }
+              return {
+                header: <Icon name="status-positive" />,
+                details: step.header,
+              };
+            }}
             steps={[
               {
                 status: 'success',
@@ -39,11 +59,6 @@ export default function StepsPermutationsWithUpdates() {
               {
                 status: 'stopped',
                 header: 'Complete',
-                iconSvg: (
-                  <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="8" cy="8" r="7" />
-                  </svg>
-                ),
               },
             ]}
           />
@@ -60,22 +75,6 @@ export default function StepsPermutationsWithUpdates() {
             orientation="horizontal"
           />
           <Header variant="h2">With custom icon, no status, vertical</Header>
-          <Steps
-            steps={loadingSteps2Interactive.map(step => ({
-              ...step,
-              iconName: 'folder-open',
-            }))}
-            separateHorizontalHeader={true}
-          />
-          <Header variant="h2">With custom icon, no status, horizontal</Header>
-          <Steps
-            steps={loadingSteps2Interactive.map(step => ({
-              ...step,
-              iconName: 'folder-open',
-            }))}
-            orientation="horizontal"
-            separateHorizontalHeader={true}
-          />
         </SpaceBetween>
       </Box>
     </article>

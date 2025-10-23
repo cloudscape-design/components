@@ -3,13 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { BoxProps } from '../box/interfaces';
-import InternalBox from '../box/internal';
-import InternalIcon from '../icon/internal';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
-import InternalSpaceBetween from '../space-between/internal';
-import InternalSpinner from '../spinner/internal';
 import StatusIndicator from '../status-indicator/internal';
 import { StepsProps } from './interfaces';
 
@@ -17,27 +12,35 @@ import styles from './styles.css.js';
 
 type InternalStepsProps = SomeRequired<StepsProps, 'steps'> & InternalBaseComponentProps;
 
-const statusToColor: Record<StepsProps.Status, BoxProps.Color> = {
-  error: 'text-status-error',
-  warning: 'text-status-warning',
-  success: 'text-status-success',
-  info: 'text-status-info',
-  stopped: 'text-status-inactive',
-  pending: 'text-status-inactive',
-  'in-progress': 'text-status-inactive',
-  loading: 'text-status-inactive',
+const CustomStep = ({
+  step,
+  orientation,
+  renderStep,
+}: {
+  step: StepsProps.Step;
+  orientation: StepsProps.Orientation;
+  renderStep: Required<StepsProps>['renderStep'];
+}) => {
+  const { header, details } = renderStep(step);
+  return (
+    <li className={clsx(styles.container, styles.custom)}>
+      {orientation === 'horizontal' ? (
+        <>
+          <div className={styles.header}>
+            {header}
+            <hr className={styles.connector} role="none" />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className={styles.header}>{header}</div>
+          <hr className={styles.connector} role="none" />
+        </>
+      )}
+      {details && <div className={styles.details}>{details}</div>}
+    </li>
+  );
 };
-
-const typeToIcon: () => Record<StepsProps.Status, JSX.Element> = () => ({
-  error: <InternalIcon name="status-negative" size="normal" />,
-  warning: <InternalIcon name="status-warning" size="normal" />,
-  success: <InternalIcon name="status-positive" size="normal" />,
-  info: <InternalIcon name="status-info" size="normal" />,
-  stopped: <InternalIcon name="status-stopped" size="normal" />,
-  pending: <InternalIcon name="status-pending" size="normal" />,
-  'in-progress': <InternalIcon name="status-in-progress" size="normal" />,
-  loading: <InternalSpinner />,
-});
 
 const InternalStep = ({
   status,
@@ -45,51 +48,29 @@ const InternalStep = ({
   header,
   details,
   orientation,
-  separateHorizontalHeader,
-  iconName,
-  iconSvg,
-}: StepsProps.Step & { orientation: StepsProps.Orientation; separateHorizontalHeader?: boolean }) => {
-  const hasStatusIndicator = !iconName && !iconSvg && !separateHorizontalHeader;
-
-  const iconWithHeader = hasStatusIndicator ? (
-    <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
-      {header}
-    </StatusIndicator>
-  ) : (
-    <InternalSpaceBetween size="xxs" direction="horizontal">
-      <InternalBox color={statusToColor[status]}>
-        {iconName || iconSvg ? (
-          <InternalIcon name={iconName} svg={iconSvg} ariaLabel={statusIconAriaLabel} />
-        ) : (
-          typeToIcon()[status]
-        )}
-      </InternalBox>
-
-      {(!separateHorizontalHeader || orientation === 'vertical') && header}
-    </InternalSpaceBetween>
-  );
-
+}: StepsProps.Step & { orientation: StepsProps.Orientation }) => {
   return (
-    <li className={clsx(styles.container, separateHorizontalHeader && styles['separate-header'])}>
+    <li className={styles.container}>
       {orientation === 'horizontal' ? (
         <>
           <div className={styles.header}>
-            {iconWithHeader}
+            <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
+              {header}
+            </StatusIndicator>
             <hr className={styles.connector} role="none" />
           </div>
         </>
       ) : (
         <>
-          <div className={styles.header}>{iconWithHeader}</div>
+          <div className={styles.header}>
+            <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
+              {header}
+            </StatusIndicator>
+          </div>
           <hr className={styles.connector} role="none" />
         </>
       )}
-      {(details || separateHorizontalHeader) && (
-        <div className={styles.details}>
-          {separateHorizontalHeader && orientation === 'horizontal' && header}
-          {details}
-        </div>
-      )}
+      {details && <div className={styles.details}>{details}</div>}
     </li>
   );
 };
@@ -97,7 +78,7 @@ const InternalStep = ({
 const InternalSteps = ({
   steps,
   orientation = 'horizontal',
-  separateHorizontalHeader = false,
+  renderStep,
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
@@ -121,19 +102,21 @@ const InternalSteps = ({
             : {}
         }
       >
-        {steps.map((step, index) => (
-          <InternalStep
-            key={index}
-            status={step.status}
-            statusIconAriaLabel={step.statusIconAriaLabel}
-            header={step.header}
-            details={step.details}
-            iconName={step.iconName}
-            iconSvg={step.iconSvg}
-            orientation={orientation}
-            separateHorizontalHeader={separateHorizontalHeader}
-          />
-        ))}
+        {steps.map((step, index) => {
+          if (renderStep) {
+            return <CustomStep key={index} orientation={orientation} step={step} renderStep={renderStep} />;
+          }
+          return (
+            <InternalStep
+              key={index}
+              status={step.status}
+              statusIconAriaLabel={step.statusIconAriaLabel}
+              header={step.header}
+              details={step.details}
+              orientation={orientation}
+            />
+          );
+        })}
       </ol>
     </div>
   );

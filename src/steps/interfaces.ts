@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { StatusIndicatorProps } from '../status-indicator/interfaces';
 
@@ -25,12 +24,17 @@ export interface StepsProps extends BaseComponentProps {
    */
   orientation?: StepsProps.Orientation;
   /**
-   * Enables an alternative placement of the header that seperates the status icon from the header text.
-   * Only has an effect in horizontal orientation.
+   * Render a step. This overrides the default icon, header, and details provided by the component.
+   * The function is called for each step and should return an object with the following keys:
+   * * `header` (React.ReactNode) - Summary corresponding to the step.
+   * * `details` (React.ReactNode) - (Optional) Additional information corresponding to the step.
    *
    * @awsuiSystem core
    */
-  separateHorizontalHeader?: boolean;
+  renderStep?: (step: StepsProps.Step) => {
+    header: React.ReactNode;
+    details?: React.ReactNode;
+  };
   /**
    * Provides an `aria-label` to the progress steps container.
    * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
@@ -56,8 +60,6 @@ export namespace StepsProps {
     statusIconAriaLabel?: string;
     header: React.ReactNode;
     details?: React.ReactNode;
-    iconName?: IconProps.Name;
-    iconSvg?: React.ReactNode;
   }
 
   export type Orientation = 'vertical' | 'horizontal';

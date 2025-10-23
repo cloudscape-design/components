@@ -22857,14 +22857,27 @@ By default the orientation is vertical.",
       "type": "string",
     },
     {
-      "description": "Enables an alternative placement of the header that seperates the status icon from the header text.
-Only has an effect in horizontal orientation.",
-      "name": "separateHorizontalHeader",
+      "description": "Render a step. This overrides the default icon, header, and details provided by the component.
+The function is called for each step and should return an object with the following keys:
+* \`header\` (React.ReactNode) - Summary corresponding to the step.
+* \`details\` (React.ReactNode) - (Optional) Additional information corresponding to the step.",
+      "inlineType": {
+        "name": "(step: StepsProps.Step) => { header: React.ReactNode; details?: React.ReactNode; }",
+        "parameters": [
+          {
+            "name": "step",
+            "type": "StepsProps.Step",
+          },
+        ],
+        "returnType": "{ header: React.ReactNode; details?: React.ReactNode; }",
+        "type": "function",
+      },
+      "name": "renderStep",
       "optional": true,
       "systemTags": [
         "core",
       ],
-      "type": "boolean",
+      "type": "((step: StepsProps.Step) => { header: React.ReactNode; details?: React.ReactNode; })",
     },
     {
       "description": "An array of individual steps
