@@ -739,6 +739,16 @@ const changesetStepsInteractive: ReadonlyArray<StepsProps.Step> = [
 export const stepsPermutations = createPermutations<StepsProps>([
   {
     steps: [
+      loadingSteps2.map(step => ({
+        ...step,
+        iconName: 'settings',
+      })),
+    ],
+    orientation: ['horizontal', 'vertical'],
+    ariaLabel: ['test label'],
+  },
+  {
+    steps: [
       initialSteps,
       loadingSteps,
       loadingSteps2,

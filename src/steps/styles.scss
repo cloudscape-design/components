@@ -90,6 +90,10 @@
         display: flex;
         grid-column: 2;
       }
+
+      &.separate-header > .details {
+        grid-column: span 2;
+      }
     }
 
     > .container:last-child {

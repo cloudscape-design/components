@@ -22851,7 +22851,20 @@ By default the orientation is vertical.",
       },
       "name": "orientation",
       "optional": true,
+      "systemTags": [
+        "core",
+      ],
       "type": "string",
+    },
+    {
+      "description": "Enables an alternative placement of the header that seperates the status icon from the header text.
+Only has an effect in horizontal orientation.",
+      "name": "separateHorizontalHeader",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "boolean",
     },
     {
       "description": "An array of individual steps
@@ -22860,7 +22873,9 @@ Each step definition has the following properties:
  * \`status\` (string) - Status of the step corresponding to a status indicator.
  * \`statusIconAriaLabel\` - (string) - (Optional) Alternative text for the status icon.
  * \`header\` (ReactNode) - Summary corresponding to the step.
- * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.",
+ * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.
+ * \`iconName\` (IconProps.Name) - (Optional) Specifies a custom icon to be displayed instead of the status icon.
+ * \`iconSvg\` (React.ReactNode) - (Optional) Specifies the SVG of a custom icon that is displayed instead of the status icon. For more information, see [SVG icon guidelines](/components/icon/?tabId=api#slots)",
       "name": "steps",
       "optional": false,
       "type": "ReadonlyArray<StepsProps.Step>",
