@@ -30,7 +30,7 @@ export const profileActions = [
         externalIconAriaLabel: ' (opens in new tab)',
       },
       { id: 'feedback', text: 'Feedback', href: '#', external: true, externalIconAriaLabel: ' (opens in new tab)' },
-      { id: 'support', text: 'Customer support' },
+      { id: 'support', text: 'Customer support', itemType: 'checkbox', checked: true },
     ],
   },
   { type: 'button', id: 'signout', text: 'Sign out' },

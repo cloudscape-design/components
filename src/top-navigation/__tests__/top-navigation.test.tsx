@@ -214,53 +214,7 @@ describe('TopNavigation Component', () => {
     });
   });
 
-  test('throws warning when menu-dropdown item with checkbox is provided', () => {
-    expect(warnOnce).toHaveBeenCalledTimes(0);
-    renderTopNavigation({
-      identity: { href: '#' },
-      utilities: [
-        {
-          type: 'menu-dropdown',
-          text: 'Menu dropdown',
-          title: 'Jane Doe',
-          description: 'jane.doe@example.com',
-          items: [{ id: 'one', text: 'First', itemType: 'checkbox', checked: true }],
-        },
-      ],
-    });
-    expect(warnOnce).toHaveBeenCalledWith(
-      'TopNavigation',
-      'The TopNavigation component does not support menu-dropdown items with `itemType` equal to `checkbox`.'
-    );
-  });
-
-  test('throws warning when menu-dropdown item with checkbox is provided (nested)', () => {
-    expect(warnOnce).toHaveBeenCalledTimes(0);
-    renderTopNavigation({
-      identity: { href: '#' },
-      utilities: [
-        {
-          type: 'menu-dropdown',
-          text: 'Menu dropdown',
-          title: 'Jane Doe',
-          description: 'jane.doe@example.com',
-          items: [
-            {
-              id: 'group',
-              itemType: 'group',
-              items: [{ id: 'one', text: 'First', itemType: 'checkbox', checked: true }],
-            },
-          ],
-        },
-      ],
-    });
-    expect(warnOnce).toHaveBeenCalledWith(
-      'TopNavigation',
-      'The TopNavigation component does not support menu-dropdown items with `itemType` equal to `checkbox`.'
-    );
-  });
-
-  test('excludes checkbox items', () => {
+  test('supports checkbox items', () => {
     const rendered = renderTopNavigation({
       identity: { href: '#' },
       utilities: [
@@ -282,8 +236,8 @@ describe('TopNavigation Component', () => {
     });
     const dropdown = rendered.findUtility(1)!.findMenuDropdownType()!;
     dropdown.openDropdown();
-    expect(dropdown.findItemById('checkbox')).toBeNull();
-    expect(dropdown.findItemById('checkbox-nested')).toBeNull();
+    expect(dropdown.findItemById('checkbox')).not.toBeNull();
+    expect(dropdown.findItemById('checkbox-nested')).not.toBeNull();
   });
 });
 
