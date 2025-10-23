@@ -188,6 +188,12 @@ export interface DateRangePickerProps
   customRelativeRangeUnits?: DateRangePickerProps.TimeUnit[];
 
   /**
+   * Specifies custom content to fully override the relative range tab.
+   * When provided, all default relative range functionality is replaced.
+   */
+  customRelativeRangeContent?: DateRangePickerProps.RelativeRangeControl;
+
+  /**
    * Specifies the time format to use for displaying the absolute time range.
    *
    * It can take the following values:
@@ -285,6 +291,11 @@ export namespace DateRangePickerProps {
   export type AbsoluteRangeControl = (
     selectedRange: PendingAbsoluteValue,
     setSelectedRange: React.Dispatch<React.SetStateAction<PendingAbsoluteValue>>
+  ) => React.ReactNode;
+
+  export type RelativeRangeControl = (
+    selectedRange: RelativeValue | null,
+    setSelectedRange: (value: RelativeValue) => void
   ) => React.ReactNode;
 
   export type RangeSelectorMode = 'default' | 'absolute-only' | 'relative-only';
