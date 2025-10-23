@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
+
+import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 
 import { Box, Container, SpaceBetween } from '~components';
 
@@ -8,7 +10,8 @@ import ScreenshotArea from '../utils/screenshot-area';
 import image43 from './images/4-3.png';
 
 export default function CustomContainer() {
-  const background = 'light-dark(#fcfcfc, #000)';
+  const mode = useCurrentMode(useRef(document.body));
+  const background = mode === 'light' ? '#fcfcfc' : '#000';
 
   return (
     <ScreenshotArea>
