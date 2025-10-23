@@ -8,6 +8,7 @@ import { getBaseProps } from '../internal/base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
+import { persistFlashbarDismiss } from '../internal/persistence';
 import { focusFlashById, focusFlashFocusableArea } from './flash';
 import { FlashbarProps, InternalFlashbarProps } from './interfaces';
 import { FOCUS_DEBOUNCE_DELAY } from './utils';
@@ -127,6 +128,7 @@ export function useFlashbar({
 
   const handleFlashDismissed = (dismissedId?: string) => {
     handleFlashDismissedInternal(dismissedId, items, ref.current, flashRefs.current);
+    persistFlashbarDismiss();
   };
 
   return {
