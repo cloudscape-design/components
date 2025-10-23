@@ -14,7 +14,6 @@ export const items: ButtonDropdownProps['items'] = [
     items: [...Array(2)].map((_, index) => ({
       id: 'category1Subitem' + index,
       text: 'Sub item ' + index,
-      secondaryText: `Option ${index}`,
     })),
   },
   {

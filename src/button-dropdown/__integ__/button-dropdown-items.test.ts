@@ -73,7 +73,7 @@ test(
     await page.openDropdown();
     await page.keys('ArrowDown');
 
-    await expect(page.getFocusedElementText()).resolves.toBe('Restart');
-    await expect(page.getHighlightedElementText()).resolves.toBe('Restart');
+    await expect(page.getFocusedElementText()).resolves.toBe('Restart\nCtrl + R\nThis is the Restart option');
+    await expect(page.getHighlightedElementText()).resolves.toBe('Restart\nCtrl + R\nThis is the Restart option');
   })
 );

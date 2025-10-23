@@ -167,7 +167,7 @@ describe.each([true, false])(
           await page.setWindowSize(mobileDimensions);
           await page.focusOnTheTrigger();
           await page.keys(['Enter', ...new Array(13).fill('ArrowDown'), 'Enter', 'ArrowDown']);
-          expect(await page.getFocusedElementText()).toBe('Item 10');
+          expect(await page.getFocusedElementText()).toBe('Item 10\nThis is the last option');
         })
       );
       test(
@@ -193,7 +193,7 @@ describe.each([true, false])(
           expect(await page.getFocusedElementText()).toBe('Sub item 1');
           // move to the next group, expand it, move one item down
           await page.keys(['ArrowDown', 'Enter', 'ArrowDown']);
-          expect(await page.getFocusedElementText()).toBe('Cat 2 Sub item 0');
+          expect(await page.getFocusedElementText()).toBe('Cat 2 Sub item 0\nOption 0');
           expect(await page.getItemCount('category1Subitem1')).toEqual(0);
         })
       );
@@ -251,7 +251,7 @@ describe.each([true, false])(
           expect(await page.getItemCount('category2Subitem1')).toEqual(1);
           await page.keys(['ArrowDown']);
           expect(await page.getItemCount('category2Subitem2')).toEqual(1);
-          expect(await page.getFocusedElementText()).toBe('Option 1');
+          expect(await page.getFocusedElementText()).toBe('Cat 2 Sub item 1\nOption 1');
         })
       );
       test(

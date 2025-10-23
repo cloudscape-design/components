@@ -25,7 +25,6 @@ const viewInstancesItem = {
   href: 'https://instances.com',
   external: true,
   externalIconAriaLabel: '(opens in new tab)',
-  labelTag: 'Ctrl + Click',
 } as const;
 
 const permutations = createPermutations<ButtonDropdownProps>([
