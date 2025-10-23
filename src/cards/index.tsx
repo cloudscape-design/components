@@ -160,6 +160,12 @@ const Cards = React.forwardRef(function <T = any>(
     },
   };
 
+  if (trackBy) {
+    analyticsComponentMetadata.properties.selectedItems = (selectedItems || []).map(
+      (item, index) => `${getItemKey(trackBy, item, index)}`
+    );
+  }
+
   return (
     <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
       <AnalyticsFunnelSubStep>

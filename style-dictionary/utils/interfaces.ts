@@ -13,6 +13,7 @@ import {
   GlobalScopeTokenName,
   MotionScopeTokenName,
   MotionTokenName,
+  ReferenceTokenName,
   ShadowsTokenName,
   SizesTokenName,
   SpacingTokenName,
@@ -32,6 +33,7 @@ export namespace StyleDictionary {
   export type ColorModeEntry = ExpandedColorModeEntry | GlobalEntry;
   export type DensityModeEntry = ExpandedDensityModeEntry | GlobalEntry;
   export type MotionModeEntry = ExpandedMotionModeEntry | GlobalEntry;
+  export type ReferenceEntry = ColorModeEntry | GlobalEntry;
 
   export type GlobalScopeDictionary = Partial<TokenCategory<GlobalScopeTokenName, GlobalValue>>;
 
@@ -42,11 +44,13 @@ export namespace StyleDictionary {
   export type ExpandedGlobalScopeDictionary = Partial<TokenCategory<GlobalScopeTokenName, GlobalEntry>>;
   export type ExpandedColorScopeDictionary = Partial<TokenCategory<ColorScopeTokenName, ExpandedColorModeEntry>>;
   export type ExpandedDensityScopeDictionary = Partial<TokenCategory<DensityScopeTokenName, ExpandedDensityModeEntry>>;
-
   export type ExpandedMotionScopeDictionary = Partial<TokenCategory<MotionScopeTokenName, ExpandedMotionModeEntry>>;
+
   export type ColorPaletteDictionary = Partial<TokenCategory<ColorPaletteTokenName, GlobalEntry>>;
   export type TypographyDictionary = Partial<TokenCategory<TypographyTokenName, GlobalEntry>>;
   export type BordersDictionary = Partial<TokenCategory<BordersTokenName, GlobalEntry>>;
+  export type ReferenceDictionary = Partial<TokenCategory<ReferenceTokenName, ReferenceEntry>>;
+
   export type ColorChartsDictionary = Partial<TokenCategory<ColorChartsTokenName, ColorModeEntry>>;
   export type ColorSeverityDictionary = Partial<TokenCategory<ColorSeverityTokenName, ColorModeEntry>>;
   export type ColorsDictionary = Partial<TokenCategory<ColorsTokenName, ColorModeEntry>>;
