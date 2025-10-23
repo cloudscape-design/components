@@ -3,9 +3,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { isDevelopment, warnOnce } from '@cloudscape-design/component-toolkit/internal';
-
-import { hasCheckboxItems } from '../button-dropdown/utils/utils';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { ButtonTrigger } from '../internal/components/menu-dropdown';
@@ -43,17 +40,6 @@ export default function InternalTopNavigation({
   const isMediumViewport = breakpoint === 'xxs';
   const isLargeViewport = breakpoint === 's';
   const i18n = useInternalI18n('top-navigation');
-
-  // ButtonDropdown supports checkbox items but we don't support these in TopNavigation. Shown an error in development mode
-  // to alert users of this and that it might change in the future.
-  if (isDevelopment) {
-    if (utilities.some(item => item.type === 'menu-dropdown' && hasCheckboxItems(item.items))) {
-      warnOnce(
-        'TopNavigation',
-        'The TopNavigation component does not support menu-dropdown items with `itemType` equal to `checkbox`.'
-      );
-    }
-  }
 
   const onIdentityClick = (event: React.MouseEvent) => {
     if (isPlainLeftClick(event)) {
