@@ -5,7 +5,7 @@ import { getAppLayoutMessageHandler, pushInitialMessage } from './core';
 import { AppLayoutUpdateMessage, DrawerPayload, RegisterDrawerMessage } from './interfaces';
 
 /**
- * Registers a new ai runtime drawer to app layout
+ * Registers a new left runtime drawer to app layout
  * @param drawer
  */
 export function registerLeftDrawer(drawer: DrawerPayload) {
