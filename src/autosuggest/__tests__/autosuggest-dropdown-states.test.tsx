@@ -169,6 +169,32 @@ describe.each([true, false])('footer live announcements [expandToViewport=%s]', 
   });
 });
 
+describe('recovery button keyboard interaction', () => {
+  test('closes dropdown when ESC is pressed on recovery button', () => {
+    const onLoadItems = jest.fn();
+    renderAutosuggest({ statusType: 'error', recoveryText: 'Retry', onLoadItems });
+    focusInput();
+    expectDropdown();
+
+    const wrapper = createWrapper().findAutosuggest()!;
+    const recoveryButton = wrapper.findErrorRecoveryButton();
+    expect(recoveryButton).not.toBe(null);
+
+    // Focus the recovery button
+    recoveryButton!.focus();
+
+    // Press ESC key
+    recoveryButton!.keydown(KeyCode.escape);
+
+    // Dropdown should be closed
+    expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+    expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
+
+    // Focus should return to input
+    expect(wrapper.findNativeInput().getElement()).toHaveFocus();
+  });
+});
+
 describe('filtering results', () => {
   describe('with empty state', () => {
     test('displays empty state footer when value is empty', () => {
