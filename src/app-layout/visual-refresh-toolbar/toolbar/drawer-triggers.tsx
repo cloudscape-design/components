@@ -11,6 +11,7 @@ import OverflowMenu from '../../drawer/overflow-menu';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
 import { OnChangeParams, TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
+import { InternalDrawer } from '../interfaces';
 import TriggerButton from './trigger-button';
 
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.css.js';
@@ -24,21 +25,24 @@ export interface SplitPanelToggleProps {
   active: boolean | undefined;
   position: AppLayoutProps.SplitPanelPosition;
 }
-
 interface DrawerTriggersProps {
   ariaLabels: AppLayoutPropsWithDefaults['ariaLabels'];
 
   activeDrawerId: string | null;
   drawersFocusRef: React.Ref<Focusable> | undefined;
-  drawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  drawers: ReadonlyArray<InternalDrawer>;
   onActiveDrawerChange: ((drawerId: string | null, params: OnChangeParams) => void) | undefined;
 
   activeGlobalDrawersIds: ReadonlyArray<string>;
   globalDrawersFocusControl?: FocusControlMultipleStates;
-  globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  bottomDrawers?: ReadonlyArray<InternalDrawer>;
+  bottomDrawersFocusRef?: React.Ref<Focusable> | undefined;
+  globalDrawers: ReadonlyArray<InternalDrawer>;
   onActiveGlobalDrawersChange?: (newDrawerId: string, params: OnChangeParams) => void;
   expandedDrawerId?: string | null;
   setExpandedDrawerId: (value: string | null) => void;
+  activeGlobalBottomDrawerId?: string | null;
+  onActiveGlobalBottomDrawerChange?: (value: string | null, params: OnChangeParams) => void;
 
   splitPanelOpen?: boolean;
   splitPanelPosition?: AppLayoutProps.SplitPanelPreferences['position'];
@@ -66,13 +70,18 @@ export function DrawerTriggers({
   onActiveGlobalDrawersChange,
   expandedDrawerId,
   setExpandedDrawerId,
+  activeGlobalBottomDrawerId,
+  onActiveGlobalBottomDrawerChange,
+  bottomDrawersFocusRef,
+  bottomDrawers,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
   const previousActiveLocalDrawerId = useRef(activeDrawerId);
+  const previousActiveGlobalBottomDrawerId = useRef(activeGlobalBottomDrawerId);
   const previousActiveGlobalDrawersIds = useRef(activeGlobalDrawersIds);
   const [containerWidth, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxWidth);
-  if (!drawers.length && !globalDrawers.length && !splitPanelToggleProps) {
+  if (!drawers.length && !globalDrawers.length && !bottomDrawers?.length && !splitPanelToggleProps) {
     return null;
   }
 
@@ -82,6 +91,10 @@ export function DrawerTriggers({
 
   if (activeGlobalDrawersIds.length) {
     previousActiveGlobalDrawersIds.current = activeGlobalDrawersIds;
+  }
+
+  if (activeGlobalBottomDrawerId) {
+    previousActiveGlobalBottomDrawerId.current = activeGlobalBottomDrawerId;
   }
 
   const getIndexOfOverflowItem = () => {
@@ -106,7 +119,7 @@ export function DrawerTriggers({
   const indexOfOverflowItem = getIndexOfOverflowItem();
 
   const { visibleItems, overflowItems } = splitItems(
-    [...drawers, ...globalDrawers],
+    [...drawers, ...globalDrawers, ...(bottomDrawers || [])],
     indexOfOverflowItem,
     activeDrawerId ?? null
   );
@@ -204,9 +217,15 @@ export function DrawerTriggers({
           <div className={styles['group-divider']}></div>
         )}
         {visibleItems.slice(globalDrawersStartIndex).map(item => {
-          const isForPreviousActiveDrawer = previousActiveGlobalDrawersIds?.current.includes(item.id);
-          const selected =
+          let isForPreviousActiveDrawer = previousActiveGlobalDrawersIds?.current.includes(item.id);
+          const isBottom = item.position === 'bottom';
+          let selected =
             activeGlobalDrawersIds.includes(item.id) && (!expandedDrawerId || item.id === expandedDrawerId);
+          if (isBottom) {
+            selected = item.id === activeGlobalBottomDrawerId && (!expandedDrawerId || item.id === expandedDrawerId);
+            isForPreviousActiveDrawer = previousActiveGlobalBottomDrawerId.current === item.id;
+          }
+
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -225,9 +244,13 @@ export function DrawerTriggers({
                 if (!!expandedDrawerId && item.id !== expandedDrawerId && activeGlobalDrawersIds.includes(item.id)) {
                   return;
                 }
+                if (isBottom) {
+                  onActiveGlobalBottomDrawerChange?.(selected ? null : item.id, { initiatedByUserAction: true });
+                  return;
+                }
                 onActiveGlobalDrawersChange?.(item.id, { initiatedByUserAction: true });
               }}
-              ref={globalDrawersFocusControl?.refs[item.id]?.toggle}
+              ref={isBottom ? bottomDrawersFocusRef : globalDrawersFocusControl?.refs[item.id]?.toggle}
               selected={selected}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
@@ -242,10 +265,18 @@ export function DrawerTriggers({
         })}
         {overflowItems.length > 0 && (
           <OverflowMenu
-            items={overflowItems.map(item => ({
-              ...item,
-              active: activeGlobalDrawersIds.includes(item.id) && (!expandedDrawerId || item.id === expandedDrawerId),
-            }))}
+            items={overflowItems.map(item => {
+              const isBottom = item?.position === 'bottom';
+              let active =
+                activeGlobalDrawersIds.includes(item.id) && (!expandedDrawerId || item.id === expandedDrawerId);
+              if (isBottom) {
+                active = item.id === activeGlobalBottomDrawerId && (!expandedDrawerId || item.id === expandedDrawerId);
+              }
+              return {
+                ...item,
+                active,
+              };
+            })}
             ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
             customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => {
               return (
@@ -269,6 +300,14 @@ export function DrawerTriggers({
             onItemClick={event => {
               const id = event.detail.id;
               exitExpandedMode();
+              const item = overflowItems.find(item => item.id === id);
+              const isBottom = item?.position === 'bottom';
+              if (isBottom) {
+                const selected =
+                  item.id === activeGlobalBottomDrawerId && (!expandedDrawerId || item.id === expandedDrawerId);
+                onActiveGlobalBottomDrawerChange?.(selected ? null : item.id, { initiatedByUserAction: true });
+                return;
+              }
               if (globalDrawers.find(drawer => drawer.id === id)) {
                 if (!!expandedDrawerId && id !== expandedDrawerId && activeGlobalDrawersIds.includes(id)) {
                   return;

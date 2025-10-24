@@ -10,6 +10,7 @@ import { useCurrentMode, useMergeRefs, useUniqueId } from '@cloudscape-design/co
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -232,7 +233,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
             handleAriaLabel={i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel)}
             handleTooltipText={i18n('i18nStrings.resizeHandleTooltipText', i18nStrings?.resizeHandleTooltipText)}
           >
-            <div id={descriptionId}>{computedAriaDescription}</div>
+            <ScreenreaderOnly id={descriptionId}>{computedAriaDescription}</ScreenreaderOnly>
             <div
               ref={editorRef}
               className={clsx(styles.editor, styles.ace, isRefresh && styles['editor-refresh'])}

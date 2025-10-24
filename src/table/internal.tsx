@@ -521,7 +521,7 @@ const InternalTable = React.forwardRef(
                 {...wrapperProps}
               >
                 <div className={styles['wrapper-content-measure']} ref={wrapperMeasureMergedRef}></div>
-                {!!renderAriaLive && !!firstIndex && (
+                {!!renderAriaLive && !!firstIndex && !loading && (
                   <InternalLiveRegion hidden={true} tagName="span">
                     <span>
                       {renderAriaLive({

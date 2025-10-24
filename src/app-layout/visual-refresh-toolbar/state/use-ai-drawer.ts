@@ -3,7 +3,6 @@
 import { useRef, useState } from 'react';
 
 import { fireNonCancelableEvent } from '../../../internal/events';
-import { metrics } from '../../../internal/metrics';
 import { DrawerPayload as RuntimeAiDrawerConfig, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { mapRuntimeConfigToAiDrawer } from '../../runtime-drawer';
@@ -62,12 +61,6 @@ export function useAiDrawer({
     onAiDrawerFocus?.();
   }
 
-  function checkId(newId: string) {
-    if (runtimeDrawer && runtimeDrawer.id !== newId) {
-      metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-id', { oldId: runtimeDrawer.id, newId });
-    }
-  }
-
   function aiDrawerMessageHandler(event: WidgetMessage) {
     if (event.type === 'registerLeftDrawer') {
       setRuntimeDrawer(event.payload);
@@ -79,27 +72,16 @@ export function useAiDrawer({
 
     switch (event.type) {
       case 'updateDrawerConfig':
-        checkId(event.payload.id);
         setRuntimeDrawer(current => (current ? { ...current, ...event.payload } : current));
         break;
       case 'openDrawer':
-        checkId(event.payload.id);
         onActiveAiDrawerChange(event.payload.id, { initiatedByUserAction: false });
         break;
       case 'closeDrawer':
-        checkId(event.payload.id);
         onActiveAiDrawerChange(null, { initiatedByUserAction: false });
         break;
       case 'resizeDrawer':
-        checkId(event.payload.id);
         onActiveAiDrawerResize(event.payload.size);
-        break;
-      case 'expandDrawer':
-        checkId(event.payload.id);
-        setExpandedDrawerId(event.payload.id);
-        break;
-      case 'exitExpandedMode':
-        setExpandedDrawerId(null);
         break;
     }
   }
