@@ -110,7 +110,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       padding-inline-start: $icon-total-space-normal;
     }
     &.wrapper-expanded {
-      padding-block-end: 0;
+      padding-block-end: awsui.$space-scaled-xxs;
       border-block-end-color: awsui.$color-border-divider-default;
     }
   }
@@ -233,8 +233,6 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     }
   }
 }
-
-// Adding bottom padding if header has no description and is closed, to be vertical centered
 
 // Make sure that actions can wrap for default expandable section headers.
 // The compact variant is used in chart popovers and should not wrap.
