@@ -7,11 +7,18 @@ import { ButtonDropdown, ButtonDropdownProps } from '~components';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const actionsItems: ButtonDropdownProps.Items = [
-  { id: 'connect', text: 'Connect', disabledReason: 'Instance must be running.', disabled: true },
-  { id: 'details', text: 'View details', disabledReason: 'A single instance needs to be selected.', disabled: true },
+  { id: 'connect', text: 'Connect', disabledReason: 'Instance must be running.', disabled: true, labelTag: 'Disabled' },
+  {
+    id: 'details',
+    text: 'View details',
+    disabledReason: 'A single instance needs to be selected.',
+    disabled: true,
+    labelTag: 'Disabled',
+  },
   {
     id: 'manage-state',
     text: 'Manage instance state',
+    secondaryText: 'Option to start/stop/edit instance',
     disabledReason: 'Instance state must not be pending or stopping.',
     disabled: true,
   },
@@ -22,6 +29,7 @@ const actionsItems: ButtonDropdownProps.Items = [
       {
         id: 'auto-scaling',
         text: 'Attach to Auto Scaling Group',
+        secondaryText: 'Manage the Instance to Auto Scaling Group',
         disabledReason: 'Instance must be running and not already be attached to an Auto Scaling Group.',
         disabled: true,
       },
@@ -32,6 +40,7 @@ const actionsItems: ButtonDropdownProps.Items = [
       {
         id: 'stop-protection',
         text: 'Change stop protection',
+        labelTag: 'Ctrl + D',
       },
       {
         id: 'shutdown-behavior',
@@ -112,6 +121,8 @@ export const selectableGroupItems: ButtonDropdownProps.Items = [
         itemType: 'checkbox',
         checked: true,
         disabled: false,
+        secondaryText: 'Manage the settings',
+        labelTag: 'Ctrl + S',
       },
       {
         text: 'Disabled setting',
@@ -119,7 +130,8 @@ export const selectableGroupItems: ButtonDropdownProps.Items = [
         itemType: 'checkbox',
         checked: true,
         disabled: true,
-        disabledReason: 'disabled reason',
+        disabledReason: '',
+        secondaryText: "Can't be modified",
       },
     ],
   },
@@ -130,7 +142,7 @@ export default function DescriptionPage() {
   const [isRightAligned, setIsRightAligned] = useState(false);
   return (
     <>
-      <h1>Descriptions in ButtonDropdown</h1>
+      <h1>Failure Reason in ButtonDropdown</h1>
       <label>
         <input
           type="checkbox"

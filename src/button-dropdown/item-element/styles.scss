@@ -106,3 +106,26 @@
 .external-icon {
   margin-inline-start: awsui.$space-xxs;
 }
+
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: awsui.$space-xxs;
+}
+
+.label-tag {
+  color: awsui.$color-text-body-default;
+}
+
+.secondary-text {
+  @include styles.font(body-s);
+  font-weight: styles.$font-weight-lighter;
+  color: awsui.$color-text-dropdown-item-secondary;
+}
