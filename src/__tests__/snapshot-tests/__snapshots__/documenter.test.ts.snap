@@ -22886,9 +22886,7 @@ Each step definition has the following properties:
  * \`status\` (string) - Status of the step corresponding to a status indicator.
  * \`statusIconAriaLabel\` - (string) - (Optional) Alternative text for the status icon.
  * \`header\` (ReactNode) - Summary corresponding to the step.
- * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.
- * \`iconName\` (IconProps.Name) - (Optional) Specifies a custom icon to be displayed instead of the status icon.
- * \`iconSvg\` (React.ReactNode) - (Optional) Specifies the SVG of a custom icon that is displayed instead of the status icon. For more information, see [SVG icon guidelines](/components/icon/?tabId=api#slots)",
+ * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.",
       "name": "steps",
       "optional": false,
       "type": "ReadonlyArray<StepsProps.Step>",
