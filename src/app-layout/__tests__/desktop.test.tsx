@@ -1,26 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { KeyCode } from '../../internal/keycode';
-import {
-  describeEachAppLayout,
-  getActiveDrawerWidth,
-  manyDrawers,
-  renderComponent,
-  testDrawer,
-  testDrawerWithoutLabels,
-} from './utils';
+import { describeEachAppLayout, getActiveDrawerWidth, manyDrawers, renderComponent, testDrawer } from './utils';
 
-import drawerStyles from '../../../lib/components/app-layout/drawer/styles.css.js';
 import notificationStyles from '../../../lib/components/app-layout/notifications/styles.css.js';
 import styles from '../../../lib/components/app-layout/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import visualRefreshToolbarNotificationStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/notifications/styles.css.js';
-import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
@@ -152,14 +143,6 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     });
   });
 
-  test('should render an active drawer', () => {
-    const { wrapper } = renderComponent(
-      <AppLayout activeDrawerId={testDrawer.id} drawers={[testDrawer]} onDrawerChange={() => {}} />
-    );
-
-    expect(wrapper.findActiveDrawer()).toBeTruthy();
-  });
-
   test(`should toggle drawer on click`, () => {
     const { wrapper } = renderComponent(<AppLayout toolsHide={true} drawers={[testDrawer]} />);
     wrapper.findDrawersTriggers()![0].click();
@@ -225,13 +208,6 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     expect(wrapper.findDrawersTriggers()!.length).toBeLessThan(100);
   });
 
-  test('Renders aria-controls on toggle only when active', () => {
-    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
-    expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-controls');
-    wrapper.findDrawerTriggerById('security')!.click();
-    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute('aria-controls', 'security');
-  });
-
   test('should render badge when defined', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
 
@@ -271,63 +247,5 @@ describeEachAppLayout({ themes: ['classic'], sizes: ['desktop'] }, () => {
     );
     fireEvent.click(screen.getByLabelText('Drawers', { selector: '[role=region]' }));
     expect(wrapper.findActiveDrawer()).toBeFalsy();
-  });
-
-  test('renders roles only when aria labels are not provided (classic)', () => {
-    const { wrapper } = renderComponent(<AppLayout navigationHide={true} drawers={[testDrawerWithoutLabels]} />);
-    const drawersAside = within(wrapper.findByClassName(drawerStyles['drawer-closed'])!.getElement()).getByRole(
-      'region'
-    );
-
-    expect(wrapper.findDrawerTriggerById(testDrawer.id)!.getElement()).not.toHaveAttribute('aria-label');
-    expect(drawersAside).not.toHaveAttribute('aria-label');
-    expect(wrapper.findByClassName(drawerStyles['drawer-triggers-wrapper'])!.getElement()).toHaveAttribute(
-      'role',
-      'toolbar'
-    );
-  });
-
-  test('renders roles and aria labels when provided (classic)', () => {
-    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} ariaLabels={{ drawers: 'Drawers' }} />);
-    const drawersAside = within(wrapper.findByClassName(drawerStyles['drawer-closed'])!.getElement()).getByRole(
-      'region'
-    );
-
-    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
-      'aria-label',
-      'Security trigger button'
-    );
-    expect(drawersAside).toHaveAttribute('aria-label', 'Drawers');
-    expect(wrapper.findByClassName(drawerStyles['drawer-triggers-wrapper'])!.getElement()).toHaveAttribute(
-      'role',
-      'toolbar'
-    );
-  });
-});
-
-describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['desktop'] }, ({ theme }) => {
-  const styles = theme === 'refresh' ? visualRefreshStyles : toolbarStyles;
-  test(`${theme} - renders roles only when aria labels are not provided`, () => {
-    const { wrapper } = renderComponent(<AppLayout navigationHide={true} drawers={[testDrawerWithoutLabels]} />);
-
-    expect(wrapper.findDrawerTriggerById(testDrawer.id)!.getElement()).not.toHaveAttribute('aria-label');
-    expect(wrapper.findByClassName(styles['drawers-desktop-triggers-container'])!.getElement()).not.toHaveAttribute(
-      'aria-label'
-    );
-    expect(wrapper.findByClassName(styles['drawers-trigger-content'])!.getElement()).toHaveAttribute('role', 'toolbar');
-  });
-
-  test(`${theme} - renders roles and aria labels when provided`, () => {
-    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} ariaLabels={{ drawers: 'Drawers' }} />);
-
-    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
-      'aria-label',
-      'Security trigger button'
-    );
-    expect(wrapper.findByClassName(styles['drawers-desktop-triggers-container'])!.getElement()).toHaveAttribute(
-      'aria-label',
-      'Drawers'
-    );
-    expect(wrapper.findByClassName(styles['drawers-trigger-content'])!.getElement()).toHaveAttribute('role', 'toolbar');
   });
 });

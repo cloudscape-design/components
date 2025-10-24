@@ -19,6 +19,7 @@ import styles from './styles.css.js';
 
 export interface RuntimeDrawer extends AppLayoutProps.Drawer {
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
+  position?: 'side' | 'bottom';
 }
 
 export interface DrawersLayout {
@@ -99,6 +100,14 @@ function checkForUnsupportedProps(headerActions: ReadonlyArray<ButtonGroupProps.
   return headerActions;
 }
 
+const convertRuntimeTriggerToReactNode = (runtimeTrigger?: string) => {
+  if (!runtimeTrigger) {
+    return undefined;
+  }
+  // eslint-disable-next-line react/no-danger
+  return <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: runtimeTrigger }} />;
+};
+
 export const mapRuntimeConfigToDrawer = (
   runtimeConfig: RuntimeDrawerConfig
 ): AppLayoutProps.Drawer & {
@@ -114,10 +123,7 @@ export const mapRuntimeConfigToDrawer = (
     trigger: trigger
       ? {
           ...(trigger.iconSvg && {
-            iconSvg: (
-              // eslint-disable-next-line react/no-danger
-              <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
-            ),
+            iconSvg: convertRuntimeTriggerToReactNode(trigger.iconSvg),
           }),
         }
       : undefined,
@@ -142,22 +148,22 @@ export const mapRuntimeConfigToAiDrawer = (
   orderPriority?: number;
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
+  exitExpandedModeTrigger?: React.ReactNode;
 } => {
-  const { mountContent, unmountContent, trigger, ...runtimeDrawer } = runtimeConfig;
+  const { mountContent, unmountContent, trigger, exitExpandedModeTrigger, ...runtimeDrawer } = runtimeConfig;
 
   return {
     ...runtimeDrawer,
     ariaLabels: { drawerName: runtimeDrawer.ariaLabels.content ?? '', ...runtimeDrawer.ariaLabels },
-    trigger: trigger
+    ...(trigger && {
+      trigger: {
+        customIcon: convertRuntimeTriggerToReactNode(trigger?.customIcon),
+        iconSvg: convertRuntimeTriggerToReactNode(trigger?.iconSvg),
+      },
+    }),
+    exitExpandedModeTrigger: exitExpandedModeTrigger
       ? {
-          customIcon: trigger?.customIcon ? (
-            // eslint-disable-next-line react/no-danger
-            <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: trigger.customIcon }} />
-          ) : undefined,
-          iconSvg: trigger.iconSvg ? (
-            // eslint-disable-next-line react/no-danger
-            <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
-          ) : undefined,
+          customIcon: convertRuntimeTriggerToReactNode(exitExpandedModeTrigger?.customIcon),
         }
       : undefined,
     content: (

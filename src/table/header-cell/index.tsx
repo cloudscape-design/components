@@ -46,6 +46,7 @@ export interface TableHeaderCellProps<ItemType> {
   focusedComponent?: null | string;
   tableRole: TableRole;
   resizerRoleDescription?: string;
+  resizerTooltipText?: string;
   isExpandable?: boolean;
   hasDynamicContent?: boolean;
   variant: TableProps.Variant;
@@ -76,6 +77,7 @@ export function TableHeaderCell<ItemType>({
   cellRef,
   tableRole,
   resizerRoleDescription,
+  resizerTooltipText,
   isExpandable,
   hasDynamicContent,
   variant,
@@ -208,6 +210,9 @@ export function TableHeaderCell<ItemType>({
           ariaLabelledby={headerId}
           minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
           roleDescription={i18n('ariaLabels.resizerRoleDescription', resizerRoleDescription)}
+          // TODO: Replace with this when strings are available
+          // tooltipText={i18n('ariaLabels.resizerTooltipText', resizerTooltipText)}
+          tooltipText={resizerTooltipText}
         />
       ) : (
         <Divider className={styles['resize-divider']} />

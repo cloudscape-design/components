@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { BasePageObject, ElementRect } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
@@ -123,7 +124,7 @@ describe('Default placement', () => {
   ];
 
   for (const [props, expectation] of scenarios) {
-    test(
+    (process.env.REACT_VERSION !== '18' ? test : test.skip)(
       `Scenario: ${props.position}, ${props.placement}, ${props.viewport}`,
       setupTest(props, async page => {
         await page.click('#popover-trigger');

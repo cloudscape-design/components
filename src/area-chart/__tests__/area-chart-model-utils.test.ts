@@ -228,8 +228,8 @@ describe('AreaChart computePlotPoints', () => {
 });
 
 describe('AreaChart findClosest', () => {
-  it('throws exception when passing an empty array', () => {
-    expect(() => findClosest([], 0, x => x)).toThrow();
+  it('returns null when passing an empty array', () => {
+    expect(findClosest([], 0, x => x)).toBe(null);
   });
 
   it('finds closest in an asc sorted array', () => {

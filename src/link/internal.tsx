@@ -25,6 +25,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { LinkProps } from './interfaces';
 import { getLinkStyles } from './style';
 
@@ -50,6 +51,7 @@ const InternalLink = React.forwardRef(
       onFollow,
       onClick,
       children,
+      nativeAttributes,
       __internalRootRef,
       style,
       ...props
@@ -210,21 +212,27 @@ const InternalLink = React.forwardRef(
 
     if (isButton) {
       return (
-        <a
+        <WithNativeAttributes
           {...sharedProps}
+          tag="a"
+          componentName="Link"
+          nativeAttributes={nativeAttributes}
           role="button"
           tabIndex={tabIndex}
           onKeyDown={handleButtonKeyDown}
           onClick={handleButtonClick}
         >
           {content}
-        </a>
+        </WithNativeAttributes>
       );
     }
 
     return (
-      <a
+      <WithNativeAttributes
         {...sharedProps}
+        tag="a"
+        componentName="Link"
+        nativeAttributes={nativeAttributes}
         tabIndex={tabIndex}
         target={anchorTarget}
         rel={anchorRel}
@@ -232,7 +240,7 @@ const InternalLink = React.forwardRef(
         onClick={handleLinkClick}
       >
         {content}
-      </a>
+      </WithNativeAttributes>
     );
   }
 );

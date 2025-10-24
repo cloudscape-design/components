@@ -7,7 +7,6 @@ import clsx from 'clsx';
 import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
-import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { getDrawerStyles } from '../compute-layout';
@@ -20,9 +19,13 @@ import styles from './styles.css.js';
 
 interface AppLayoutDrawerImplementationProps {
   appLayoutInternals: AppLayoutInternals;
+  bottomDrawerReportedSize?: number;
 }
 
-export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutDrawerImplementationProps) {
+export function AppLayoutDrawerImplementation({
+  appLayoutInternals,
+  bottomDrawerReportedSize,
+}: AppLayoutDrawerImplementationProps) {
   const {
     activeDrawer,
     minDrawerSize,
@@ -46,7 +49,12 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     content: activeDrawer ? activeDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(
+    verticalOffsets,
+    isMobile,
+    placement,
+    isMobile ? 0 : (bottomDrawerReportedSize ?? 0)
+  );
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const isToolsDrawer = activeDrawer?.id === TOOLS_DRAWER_ID || toolsOnlyMode;
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
@@ -147,5 +155,3 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     </Transition>
   );
 }
-
-export const createWidgetizedAppLayoutDrawer = createWidgetizedComponent(AppLayoutDrawerImplementation);

@@ -1,5 +1,83 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+export type ReferenceTokenName =
+  | 'colorPrimary50'
+  | 'colorPrimary100'
+  | 'colorPrimary200'
+  | 'colorPrimary300'
+  | 'colorPrimary400'
+  | 'colorPrimary500'
+  | 'colorPrimary600'
+  | 'colorPrimary700'
+  | 'colorPrimary800'
+  | 'colorPrimary900'
+  | 'colorPrimary1000'
+  | 'colorNeutral50'
+  | 'colorNeutral100'
+  | 'colorNeutral150'
+  | 'colorNeutral200'
+  | 'colorNeutral250'
+  | 'colorNeutral300'
+  | 'colorNeutral350'
+  | 'colorNeutral400'
+  | 'colorNeutral450'
+  | 'colorNeutral500'
+  | 'colorNeutral550'
+  | 'colorNeutral600'
+  | 'colorNeutral650'
+  | 'colorNeutral700'
+  | 'colorNeutral750'
+  | 'colorNeutral800'
+  | 'colorNeutral850'
+  | 'colorNeutral900'
+  | 'colorNeutral950'
+  | 'colorNeutral1000'
+  | 'colorError50'
+  | 'colorError100'
+  | 'colorError200'
+  | 'colorError300'
+  | 'colorError400'
+  | 'colorError500'
+  | 'colorError600'
+  | 'colorError700'
+  | 'colorError800'
+  | 'colorError900'
+  | 'colorError1000'
+  | 'colorInfo50'
+  | 'colorInfo100'
+  | 'colorInfo200'
+  | 'colorInfo300'
+  | 'colorInfo400'
+  | 'colorInfo500'
+  | 'colorInfo600'
+  | 'colorInfo700'
+  | 'colorInfo800'
+  | 'colorInfo900'
+  | 'colorInfo1000'
+  | 'colorSuccess50'
+  | 'colorSuccess100'
+  | 'colorSuccess200'
+  | 'colorSuccess300'
+  | 'colorSuccess400'
+  | 'colorSuccess500'
+  | 'colorSuccess600'
+  | 'colorSuccess700'
+  | 'colorSuccess800'
+  | 'colorSuccess900'
+  | 'colorSuccess1000'
+  | 'colorWarning50'
+  | 'colorWarning100'
+  | 'colorWarning200'
+  | 'colorWarning300'
+  | 'colorWarning400'
+  | 'colorWarning500'
+  | 'colorWarning600'
+  | 'colorWarning700'
+  | 'colorWarning800'
+  | 'colorWarning900'
+  | 'colorWarning1000';
+
 export type ColorPaletteTokenName =
   | 'colorAwsSquidInk'
   | 'colorWhite'
@@ -456,6 +534,7 @@ export type ColorsTokenName =
   | 'colorBackgroundDropdownItemHover'
   | 'colorBackgroundDropdownItemSelected'
   | 'colorBackgroundHomeHeader'
+  | 'colorBackgroundInlineCode'
   | 'colorBackgroundInputDefault'
   | 'colorBackgroundInputDisabled'
   | 'colorBackgroundItemSelected'
@@ -686,7 +765,8 @@ export type ColorsTokenName =
   | 'colorDropzoneTextHover'
   | 'colorDropzoneBorderDefault'
   | 'colorDropzoneBorderHover'
-  | 'colorGapGlobalDrawer';
+  | 'colorGapGlobalDrawer'
+  | 'colorItemSelected';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'
@@ -954,7 +1034,13 @@ export type ShadowsTokenName =
   | 'shadowStickyColumnLast';
 
 export type GlobalScopeTokenName = ColorPaletteTokenName | TypographyTokenName | BordersTokenName;
-export type ColorScopeTokenName = ColorChartsTokenName | ColorsTokenName | ShadowsTokenName | ColorSeverityTokenName;
+export type ColorScopeTokenName =
+  | ReferenceTokenName
+  | ColorChartsTokenName
+  | ColorsTokenName
+  | ShadowsTokenName
+  | ColorSeverityTokenName
+  | ColorPaletteTokenName;
 export type MotionScopeTokenName = MotionTokenName;
 export type DensityScopeTokenName = SizesTokenName | SpacingTokenName;
 

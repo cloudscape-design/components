@@ -36,6 +36,7 @@ export interface TheadProps {
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
   resizerRoleDescription?: string;
+  resizerTooltipText?: string;
   stripedRows?: boolean;
   stickyState: StickyColumnsModel;
   selectionColumnId: PropertyKey;
@@ -73,6 +74,7 @@ const Thead = React.forwardRef(
       onFocusedComponentChange,
       tableRole,
       resizerRoleDescription,
+      resizerTooltipText,
       isExpandable,
       setLastUserAction,
     }: TheadProps,
@@ -143,6 +145,7 @@ const Thead = React.forwardRef(
                 cellRef={node => setCell(sticky, columnId, node)}
                 tableRole={tableRole}
                 resizerRoleDescription={resizerRoleDescription}
+                resizerTooltipText={resizerTooltipText}
                 // Expandable option is only applicable to the first data column of the table.
                 // When present, the header content receives extra padding to match the first offset in the data cells.
                 isExpandable={colIndex === 0 && isExpandable}

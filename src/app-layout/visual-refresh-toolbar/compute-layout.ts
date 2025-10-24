@@ -19,7 +19,6 @@ interface HorizontalLayoutInput {
 }
 
 export const CONTENT_PADDING = 2 * 24; // space-xl
-const MOBILE_BREAKPOINT = 688;
 
 export function computeHorizontalLayout({
   navigationOpen,
@@ -52,8 +51,7 @@ export function computeHorizontalLayout({
   const maxSplitPanelSize = Math.max(resizableSpaceAvailable - totalActiveGlobalDrawersSize - activeDrawerSize, 0);
   resizableSpaceAvailable -= sideSplitPanelSize;
   const maxDrawerSize = resizableSpaceAvailable - totalActiveGlobalDrawersSize;
-  // let the ai drawer be resized until the "main screen" hits the mobile breakpoint to have consistent UX
-  const maxAiDrawerSize = placement.inlineSize - MOBILE_BREAKPOINT;
+  const maxAiDrawerSize = resizableSpaceAvailable - totalActiveGlobalDrawersSize + activeAiDrawerSize;
   const maxGlobalDrawersSizes: Record<string, number> = Object.keys(activeGlobalDrawersSizes).reduce(
     (acc, drawerId) => {
       return {
@@ -152,12 +150,13 @@ export function computeSplitPanelOffsets({
 export function getDrawerStyles(
   verticalOffsets: VerticalLayoutOutput,
   isMobile: boolean,
-  placement: AppLayoutPropsWithDefaults['placement']
+  placement: AppLayoutPropsWithDefaults['placement'],
+  activeGlobalBottomDrawerSize: number = 0
 ): {
   drawerTopOffset: number;
   drawerHeight: string;
 } {
   const drawerTopOffset = isMobile ? verticalOffsets.toolbar : (verticalOffsets.drawers ?? placement.insetBlockStart);
-  const drawerHeight = `calc(100vh - ${drawerTopOffset}px - ${placement.insetBlockEnd}px)`;
+  const drawerHeight = `calc(100vh - ${drawerTopOffset}px - ${placement.insetBlockEnd}px - ${activeGlobalBottomDrawerSize}px)`;
   return { drawerTopOffset, drawerHeight };
 }

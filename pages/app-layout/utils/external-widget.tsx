@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
-import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import Box from '~components/box';
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
+import { registerBottomDrawer } from '~components/internal/plugins/widget/index';
+import { mount, unmount } from '~mount';
 
 import { IframeWrapper } from '../../utils/iframe-wrapper';
 import { Counter, CustomDrawerContent } from './content-blocks';
@@ -63,9 +64,9 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<Content ref={setSizeRef} />, container);
+    mount(<Content ref={setSizeRef} />, container);
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
   headerActions: [
     {
       type: 'icon-button',
@@ -97,9 +98,9 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<div>Nothing to see here</div>, container);
+    mount(<div>Nothing to see here</div>, container);
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 
 const AutoIncrementCounter: React.FC<{
@@ -168,7 +169,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: (container, mountContext) => {
-    ReactDOM.render(
+    mount(
       <Drawer header={<Box variant="h2">Global drawer</Box>}>
         <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
           global widget content circle 1
@@ -181,7 +182,7 @@ awsuiPlugins.appLayout.registerDrawer({
       container
     );
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
   headerActions: [
     {
       type: 'icon-button',
@@ -221,7 +222,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(
+    mount(
       <>
         <Counter id="global-with-stored-state" />
         global widget content circle 2
@@ -229,7 +230,7 @@ awsuiPlugins.appLayout.registerDrawer({
       container
     );
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 
 awsuiPlugins.appLayout.registerDrawer({
@@ -256,7 +257,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(
+    mount(
       <IframeWrapper
         id="circle3-global"
         AppComponent={() => (
@@ -269,7 +270,7 @@ awsuiPlugins.appLayout.registerDrawer({
       container
     );
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 
 awsuiPlugins.appLayout.registerDrawer({
@@ -290,7 +291,69 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<CustomDrawerContent />, container);
+    mount(<CustomDrawerContent />, container);
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
+
+export const registerRuntimeBottomDrawer = () => {
+  registerBottomDrawer({
+    id: 'circle5-global-bottom',
+    position: 'bottom',
+    defaultActive: false,
+    resizable: true,
+    defaultSize: 350,
+    preserveInactiveContent: true,
+
+    isExpandable: true,
+
+    ariaLabels: {
+      closeButton: 'Close button',
+      content: 'Content bottom',
+      triggerButton: 'Trigger button',
+      resizeHandle: 'Resize handle',
+      expandedModeButton: 'Expanded mode button',
+    },
+    onToggle: event => {
+      console.log('circle-global drawer on toggle', event.detail);
+    },
+
+    trigger: {
+      iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+    </svg>`,
+    },
+
+    onResize: event => {
+      console.log('resize', event.detail);
+    },
+
+    mountContent: (container, mountContext) => {
+      mount(
+        <Drawer header={<Box variant="h2">Global drawer</Box>}>
+          <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
+            global bottom panel
+            {new Array(100).fill(null).map((_, index) => (
+              <div key={index}>{index}</div>
+            ))}
+            <div data-testid="circle-global-bottom-content">circle-global bottom content</div>
+          </AutoIncrementCounter>
+        </Drawer>,
+        container
+      );
+    },
+    unmountContent: container => unmount(container),
+    headerActions: [
+      {
+        type: 'icon-button',
+        id: 'add',
+        iconName: 'add-plus',
+        text: 'Add',
+      },
+    ],
+    onHeaderActionClick: ({ detail }) => {
+      console.log('onHeaderActionClick: ', detail);
+    },
+  });
+};

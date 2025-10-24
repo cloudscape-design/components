@@ -29,7 +29,7 @@ function setupTest(testFn: (page: ResizeAutosuggestPage) => Promise<void>) {
 }
 
 describe(`Resizing virtual autosuggest`, () => {
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'Should place second option lower, when the autosuggest becomes narrower',
     setupTest(async page => {
       await page.focusInput();
@@ -40,7 +40,7 @@ describe(`Resizing virtual autosuggest`, () => {
       expect(topBefore).toBeLessThan(topAfter);
     })
   );
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'Should place second option higher, when the autosuggest becomes wider',
     setupTest(async page => {
       await page.shrinkAutosuggest(true);

@@ -206,6 +206,60 @@
     &:first-of-type:not(.selected, .highlighted) {
       border-block-start-color: awsui.$color-border-dropdown-item-top;
     }
+
+    // When using virtual scrolling, use box-shadows to mimic changing border
+    // width and set the actual border to a fixed width to prevent jumping
+    // behaviour when hovering selectable items
+
+    $virtual-border-offset: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
+    $virtual-border-offset-double: calc(2 * #{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
+
+    &.highlighted:not(.selected),
+    &.selected {
+      border-width: awsui.$border-divider-list-width;
+      padding-block: calc(#{styles.$option-padding-vertical} + #{$virtual-border-offset});
+      padding-inline: calc(#{styles.$control-padding-horizontal} + #{$virtual-border-offset});
+
+      &.pad-bottom {
+        padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs} + #{$virtual-border-offset});
+      }
+
+      &.child {
+        padding-inline-start: calc(#{awsui.$space-xxl} + #{$virtual-border-offset});
+      }
+
+      &.parent.interactiveGroups {
+        padding-block: calc(#{styles.$group-option-padding-vertical} + #{$virtual-border-offset});
+      }
+    }
+
+    &.highlighted:not(.selected) {
+      box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-hover;
+
+      &.is-keyboard {
+        box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-focused;
+      }
+    }
+
+    &.selected {
+      box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected;
+
+      &.highlighted {
+        box-shadow:
+          inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected,
+          inset 0 0 0 $virtual-border-offset-double awsui.$color-border-dropdown-item-hover;
+
+        &.is-keyboard {
+          box-shadow:
+            inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected,
+            inset 0 0 0 $virtual-border-offset-double awsui.$color-border-dropdown-item-focused;
+        }
+      }
+    }
+
+    &.parent:not(.interactiveGroups) {
+      border-block-start-color: awsui.$color-border-dropdown-group;
+    }
   }
 }
 

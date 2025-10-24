@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
@@ -19,6 +20,7 @@ describe('AnchorNavigation', () => {
     return useBrowser(async browser => {
       const page = new AnchorNavigationPage(browser);
       await browser.url('#/light/anchor-navigation/basic');
+      await page.waitForVisible(wrapper.toSelector());
       await testFn(page);
     });
   }

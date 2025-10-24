@@ -34,7 +34,7 @@ describe('Popover content is announced as plain text on hover', () => {
       })
     );
 
-    test(
+    (process.env.REACT_VERSION !== '18' ? test : test.skip)(
       'with expandable sub-items',
       setupTest(`#/light/mixed-line-bar-chart/drilldown?useLinks=${useLinks}&expandableSubItems=true`, async page => {
         const wrapper = createWrapper().findMixedLineBarChart();

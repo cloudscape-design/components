@@ -343,6 +343,12 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorItemSelected: {
+    description:
+      'The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.',
+    public: true,
+    themeable: true,
+  },
   colorBorderContainerTop: {
     description:
       'The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.',
@@ -365,6 +371,17 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBorderDividerSecondary: {
     description: 'The border color for row dividers. For example: row dividers for table and collection preferences.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderDropdownContainer: {
+    description:
+      'The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderPopover: {
+    description: 'The border color of the popover.',
     public: true,
     themeable: true,
   },

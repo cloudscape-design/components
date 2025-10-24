@@ -83,6 +83,9 @@ export interface AutosuggestProps
 
   /**
    * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
+   *
+   * Note that the `matchesCount` includes the `enteredTextLabel` ("Use ${value}") item, so in most cases you
+   * should subtract 1 from `matchesCount`. If using manual filtering, you should provide your own value for `totalCount`.
    */
   filteringResultsText?: (matchesCount: number, totalCount: number) => string;
 

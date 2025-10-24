@@ -232,7 +232,6 @@ export function useMultiselect({
     isEmpty,
     isNoMatch,
     noMatch,
-    isFiltered,
     filteringResultsText: filteredText,
     onRecoveryClick: handleRecoveryClick,
     errorIconAriaLabel: errorIconAriaLabel,

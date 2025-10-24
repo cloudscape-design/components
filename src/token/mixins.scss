@@ -25,3 +25,23 @@
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
 }
+
+@mixin token-box-inline-styles {
+  position: relative;
+  block-size: constants.$token-max-height-inline;
+  max-block-size: constants.$token-max-height-inline;
+  border-block: awsui.$border-width-field solid constants.$token-border-color;
+  border-inline: awsui.$border-width-field solid constants.$token-border-color;
+  padding-inline-start: awsui.$space-scaled-xxs;
+  padding-inline-end: awsui.$space-scaled-xxs;
+  display: flex;
+  align-items: center;
+  background: constants.$token-background;
+  border-start-start-radius: awsui.$space-scaled-xxs;
+  border-start-end-radius: awsui.$space-scaled-xxs;
+  border-end-start-radius: awsui.$space-scaled-xxs;
+  border-end-end-radius: awsui.$space-scaled-xxs;
+  color: awsui.$color-text-body-default;
+  box-sizing: border-box;
+  max-inline-size: 100%;
+}

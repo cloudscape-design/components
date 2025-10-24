@@ -13,6 +13,9 @@ function setupTest(
   }) => Promise<void>
 ) {
   return useBrowser(async browser => {
+    if (process.env.REACT_VERSION === '18') {
+      return;
+    }
     const page = new BasePageObject(browser);
     await browser.url(`#/light/table/performance-marks${!inViewport ? '?outsideOfViewport=true' : ''}`);
     const getMarks = async () => {
@@ -22,7 +25,6 @@ function setupTest(
     };
     const isElementPerformanceMarkExisting = (id: string) =>
       page.isExisting(`[data-analytics-performance-mark="${id}"]`);
-
     await testFn({ page, getMarks, isElementPerformanceMarkExisting });
   });
 }

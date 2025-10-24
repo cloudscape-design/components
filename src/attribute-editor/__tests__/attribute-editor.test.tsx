@@ -353,6 +353,22 @@ describe('Attribute Editor', () => {
     });
   });
 
+  describe('description text', () => {
+    test('adds a description text', () => {
+      const definition = [
+        {
+          label: 'Key label',
+          description: 'Key description text',
+          control: (item: Item) => item.key,
+        },
+      ];
+      const wrapper = renderAttributeEditor({ ...defaultProps, definition });
+      expect(wrapper.findRow(1)!.findField(1)!.findDescription()!.getElement()).toHaveTextContent(
+        'Key description text'
+      );
+    });
+  });
+
   describe('info', () => {
     test('renders correctly', () => {
       const wrapper = renderAttributeEditor();

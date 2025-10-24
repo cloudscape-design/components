@@ -7,16 +7,26 @@ import { ActionButtonsController, ActionConfig, ActionContext } from '../control
 interface RuntimeActionWrapperProps {
   context: ActionContext;
   mountContent: ActionConfig['mountContent'];
+  updateContent: ActionConfig['updateContent'];
   unmountContent: ActionConfig['unmountContent'];
 }
 
-function RuntimeActionWrapper({ mountContent, unmountContent, context }: RuntimeActionWrapperProps) {
+function RuntimeActionWrapper({ mountContent, updateContent, unmountContent, context }: RuntimeActionWrapperProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const mountedRef = useRef(false);
+
+  useEffect(() => {
+    if (mountedRef.current && ref.current) {
+      updateContent?.(ref.current, context);
+    }
+  });
 
   useEffect(() => {
     const container = ref.current!;
     mountContent(container, context);
+    mountedRef.current = true;
     return () => {
+      mountedRef.current = false;
       unmountContent(container);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -25,35 +35,33 @@ function RuntimeActionWrapper({ mountContent, unmountContent, context }: Runtime
   return <div ref={ref}></div>;
 }
 
-function convertRuntimeAction(action: ActionConfig | null, context: ActionContext) {
-  if (!action) {
-    return null;
-  }
-  return (
-    <RuntimeActionWrapper
-      key={action.id + '-' + context.type}
-      context={context}
-      mountContent={action.mountContent}
-      unmountContent={action.unmountContent}
-    />
-  );
-}
-
 export function createUseDiscoveredAction(onActionRegistered: ActionButtonsController['onActionRegistered']) {
   return function useDiscoveredAction(type: string): {
     discoveredActions: React.ReactNode[];
     headerRef: React.Ref<HTMLDivElement>;
     contentRef: React.Ref<HTMLDivElement>;
   } {
-    const [discoveredActions, setDiscoveredActions] = useState<Array<React.ReactNode>>([]);
+    const [actionConfigs, setActionConfigs] = useState<Array<ActionConfig>>([]);
     const headerRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      return onActionRegistered(actions => {
-        setDiscoveredActions(actions.map(action => convertRuntimeAction(action, { type, headerRef, contentRef })));
-      });
+      return onActionRegistered(actions => setActionConfigs(actions));
     }, [type]);
+
+    const discoveredActions = actionConfigs.map(action => (
+      <RuntimeActionWrapper
+        key={action.id + '-' + type}
+        context={{
+          type,
+          headerRef,
+          contentRef,
+        }}
+        mountContent={action.mountContent}
+        updateContent={action.updateContent}
+        unmountContent={action.unmountContent}
+      />
+    ));
 
     return { discoveredActions, headerRef, contentRef };
   };

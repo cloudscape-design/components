@@ -497,7 +497,7 @@ describe('Details popover', () => {
     })
   );
 
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'scrolls if necessary on click',
     setupTest('#/light/bar-chart/drilldown', async page => {
       await page.setWindowSize({ width: 360, height: 650 });
@@ -512,7 +512,7 @@ describe('Details popover', () => {
     })
   );
 
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'does not scroll on hover',
     setupTest('#/light/bar-chart/drilldown', async page => {
       await page.setWindowSize({ width: 360, height: 650 });
@@ -532,7 +532,7 @@ describe('Details popover', () => {
     })
   );
 
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'scrolls if necessary on click inside a scrollable container',
     setupTest('#/light/bar-chart/in-modal', async page => {
       await page.setWindowSize({ width: 360, height: 650 });

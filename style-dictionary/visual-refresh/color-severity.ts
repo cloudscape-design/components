@@ -9,7 +9,7 @@ const tokens: StyleDictionary.ColorSeverityDictionary = {
   colorSeverityRed: { light: '#ce3311', dark: '#fe6e73' },
   colorSeverityOrange: { light: '#f89256', dark: '#f89256' },
   colorSeverityYellow: { light: '#f2cd54', dark: '#f2cd54' },
-  colorSeverityGrey: '{colorGrey600}',
+  colorSeverityGrey: '{colorNeutral600}',
 
   colorBackgroundNotificationSeverityCritical: '{colorSeverityDarkRed}',
   colorBackgroundNotificationSeverityHigh: '{colorSeverityRed}',
@@ -17,11 +17,11 @@ const tokens: StyleDictionary.ColorSeverityDictionary = {
   colorBackgroundNotificationSeverityLow: '{colorSeverityYellow}',
   colorBackgroundNotificationSeverityNeutral: '{colorSeverityGrey}',
 
-  colorTextNotificationSeverityCritical: { light: '{colorGrey100}', dark: '{colorBlack}' },
-  colorTextNotificationSeverityHigh: { light: '{colorGrey100}', dark: '{colorGrey950}' },
-  colorTextNotificationSeverityMedium: '{colorGrey950}',
-  colorTextNotificationSeverityLow: '{colorGrey950}',
-  colorTextNotificationSeverityNeutral: '{colorGrey100}',
+  colorTextNotificationSeverityCritical: { light: '{colorNeutral100}', dark: '{colorBlack}' },
+  colorTextNotificationSeverityHigh: { light: '{colorNeutral100}', dark: '{colorNeutral950}' },
+  colorTextNotificationSeverityMedium: '{colorNeutral950}',
+  colorTextNotificationSeverityLow: '{colorNeutral950}',
+  colorTextNotificationSeverityNeutral: '{colorNeutral100}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

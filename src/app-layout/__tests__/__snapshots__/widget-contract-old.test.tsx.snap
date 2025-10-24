@@ -85,7 +85,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -278,7 +278,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -347,6 +347,7 @@ Map {
         "toolbar": 0,
       },
     },
+    "bottomDrawerReportedSize": 0,
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {
@@ -431,7 +432,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -615,7 +616,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -684,6 +685,7 @@ Map {
         "toolbar": 0,
       },
     },
+    "bottomDrawerReportedSize": 0,
   },
   "AppLayoutGlobalDrawersImplementation" => {
     "appLayoutInternals": {
@@ -768,7 +770,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -930,7 +932,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1132,7 +1134,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1203,6 +1205,7 @@ Map {
         "toolbar": 0,
       },
     },
+    "bottomDrawerReportedSize": 0,
   },
   "AppLayoutNotificationsImplementation" => {
     "appLayoutInternals": {
@@ -1291,7 +1294,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1453,7 +1456,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1645,7 +1648,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1716,6 +1719,7 @@ Map {
         "toolbar": 0,
       },
     },
+    "bottomDrawerReportedSize": 0,
   },
   "AppLayoutGlobalDrawersImplementation" => {
     "appLayoutInternals": {
@@ -1804,7 +1808,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <div>
@@ -1980,7 +1984,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -2191,7 +2195,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -2260,6 +2264,7 @@ Map {
         "toolbar": 0,
       },
     },
+    "bottomDrawerReportedSize": 0,
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {
@@ -2360,7 +2365,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -2560,7 +2565,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
@@ -2629,6 +2634,7 @@ Map {
         "toolbar": 0,
       },
     },
+    "bottomDrawerReportedSize": 0,
   },
   "AppLayoutGlobalDrawersImplementation" => {
     "appLayoutInternals": {
@@ -2729,7 +2735,7 @@ Map {
       "maxAiDrawerSize": Infinity,
       "maxDrawerSize": Infinity,
       "maxGlobalDrawersSizes": {},
-      "minAiDrawerSize": 290,
+      "minAiDrawerSize": 400,
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,

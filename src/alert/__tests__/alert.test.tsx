@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
 import Alert, { AlertProps } from '../../../lib/components/alert';
@@ -132,6 +132,27 @@ describe('Alert Component', () => {
       render(<Alert header="Important" ref={element => (ref = element)} />);
       ref!.focus();
       expect(document.activeElement).toHaveClass(styles['alert-focus-wrapper']);
+    });
+    it('manages tabindex dynamically when focused programmatically', () => {
+      let ref: AlertProps.Ref | null = null;
+      const { container } = render(
+        <Alert header="Important" ref={(element: AlertProps.Ref | null) => (ref = element)} />
+      );
+      const wrapper = createWrapper(container).findAlert()!;
+
+      const focusWrapper = wrapper.findByClassName(styles['alert-focus-wrapper'])!;
+
+      // Initially no tabindex
+      expect(focusWrapper.getElement()).not.toHaveAttribute('tabindex');
+
+      // Focus programmatically - should add tabindex
+      ref!.focus();
+      expect(focusWrapper.getElement()).toHaveAttribute('tabindex', '-1');
+      expect(document.activeElement).toBe(focusWrapper.getElement());
+
+      // Blur should remove tabindex
+      fireEvent.blur(focusWrapper.getElement());
+      expect(focusWrapper.getElement()).not.toHaveAttribute('tabindex');
     });
   });
 
@@ -287,6 +308,9 @@ describe('Style API', () => {
             borderWidth: '4px',
           },
         },
+        icon: {
+          color: 'rgb(255, 0, 0)',
+        },
         dismissButton: {
           color: {
             active: 'rgb(12, 136, 22)',
@@ -336,5 +360,8 @@ describe('Style API', () => {
     );
     expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('6px');
     expect(getComputedStyle(dismissButton).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('4px');
+
+    const iconElement = wrapper.findByClassName(styles.icon)!.getElement();
+    expect(getComputedStyle(iconElement).getPropertyValue(customCssProps.alertIconColor)).toBe('rgb(255, 0, 0)');
   });
 });

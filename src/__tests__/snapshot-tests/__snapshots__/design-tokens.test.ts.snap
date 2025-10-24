@@ -584,6 +584,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#eaeded",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -624,6 +631,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#d5dbdb",
           },
         },
         "color-border-segment-active": {
@@ -1849,6 +1863,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#95a5a6",
             "light": "#687078",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
           },
         },
         "color-text-accent": {
@@ -3209,6 +3230,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#eaeded",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -3249,6 +3277,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#d5dbdb",
           },
         },
         "color-border-segment-active": {
@@ -4474,6 +4509,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#95a5a6",
             "light": "#687078",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
           },
         },
         "color-text-accent": {
@@ -5834,6 +5876,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#eaeded",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -5874,6 +5923,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#d5dbdb",
           },
         },
         "color-border-segment-active": {
@@ -7099,6 +7155,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#95a5a6",
             "light": "#687078",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
           },
         },
         "color-text-accent": {
@@ -8459,6 +8522,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#eaeded",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -8499,6 +8569,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#d5dbdb",
           },
         },
         "color-border-segment-active": {
@@ -9724,6 +9801,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#95a5a6",
             "light": "#687078",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
           },
         },
         "color-text-accent": {
@@ -11084,6 +11168,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#eaeded",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -11124,6 +11215,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#d5dbdb",
           },
         },
         "color-border-segment-active": {
@@ -12349,6 +12447,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#95a5a6",
             "light": "#687078",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
           },
         },
         "color-text-accent": {
@@ -13709,6 +13814,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#414750",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -13749,6 +13861,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#00a1c9",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#545b64",
           },
         },
         "color-border-segment-active": {
@@ -14974,6 +15093,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#95a5a6",
             "light": "#95a5a6",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
           },
         },
         "color-text-accent": {
@@ -16334,6 +16460,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#eaeded",
       },
     },
+    "color-border-dropdown-container": {
+      "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
     "color-border-dropdown-item-focused": {
       "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
       "$value": {
@@ -16374,6 +16507,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#00a1c9",
         "light": "#0073bb",
+      },
+    },
+    "color-border-popover": {
+      "$description": "The border color of the popover.",
+      "$value": {
+        "dark": "#545b64",
+        "light": "#d5dbdb",
       },
     },
     "color-border-segment-active": {
@@ -17599,6 +17739,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#95a5a6",
         "light": "#687078",
+      },
+    },
+    "color-item-selected": {
+      "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#0073bb",
       },
     },
     "color-text-accent": {
@@ -18964,6 +19111,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ebebf0",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -19004,6 +19158,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
           },
         },
         "color-border-segment-active": {
@@ -20229,6 +20390,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#a4a4ad",
             "light": "#656871",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-accent": {
@@ -21589,6 +21757,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#232b37",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -21629,6 +21804,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-border-segment-active": {
@@ -22854,6 +23036,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#a4a4ad",
             "light": "#a4a4ad",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-text-accent": {
@@ -24214,6 +24403,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ebebf0",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -24254,6 +24450,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
           },
         },
         "color-border-segment-active": {
@@ -25479,6 +25682,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#a4a4ad",
             "light": "#656871",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-accent": {
@@ -26839,6 +27049,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ebebf0",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -26879,6 +27096,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
           },
         },
         "color-border-segment-active": {
@@ -28104,6 +28328,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#a4a4ad",
             "light": "#656871",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-accent": {
@@ -29464,6 +29695,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ebebf0",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -29504,6 +29742,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
           },
         },
         "color-border-segment-active": {
@@ -30729,6 +30974,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#a4a4ad",
             "light": "#656871",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-accent": {
@@ -32089,6 +32341,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ebebf0",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -32129,6 +32388,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
           },
         },
         "color-border-segment-active": {
@@ -33354,6 +33620,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#a4a4ad",
             "light": "#656871",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-accent": {
@@ -34714,6 +34987,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#232b37",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -34754,6 +35034,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-border-segment-active": {
@@ -35979,6 +36266,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#a4a4ad",
             "light": "#a4a4ad",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-text-accent": {
@@ -37339,6 +37633,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#232b37",
           },
         },
+        "color-border-dropdown-container": {
+          "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -37379,6 +37680,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-border-popover": {
+          "$description": "The border color of the popover.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-border-segment-active": {
@@ -38604,6 +38912,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#a4a4ad",
             "light": "#a4a4ad",
+          },
+        },
+        "color-item-selected": {
+          "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-text-accent": {
@@ -39964,6 +40279,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#ebebf0",
       },
     },
+    "color-border-dropdown-container": {
+      "$description": "The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#b4b4bb",
+      },
+    },
     "color-border-dropdown-item-focused": {
       "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
       "$value": {
@@ -40004,6 +40326,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#42b4ff",
         "light": "#006ce0",
+      },
+    },
+    "color-border-popover": {
+      "$description": "The border color of the popover.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#b4b4bb",
       },
     },
     "color-border-segment-active": {
@@ -41229,6 +41558,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#a4a4ad",
         "light": "#656871",
+      },
+    },
+    "color-item-selected": {
+      "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
       },
     },
     "color-text-accent": {

@@ -73,6 +73,7 @@ function CustomAlert({ children, type, dismissible, action }: CustomAlertProps) 
   const borderColor = borderColors[mode][type];
   const borderWidth = borderWidths[type];
   const color = colors[mode];
+  const iconColor = iconColors[mode][type];
   return (
     <CloudscapeAlert
       dismissible={dismissible}
@@ -91,6 +92,9 @@ function CustomAlert({ children, type, dismissible, action }: CustomAlertProps) 
             borderRadius: '4px',
             borderWidth: '2px',
           },
+        },
+        icon: {
+          color: iconColor,
         },
         dismissButton: {
           color: {
@@ -151,6 +155,21 @@ const borderWidths = {
   success: '0px',
   error: '6px',
   warning: '0px',
+};
+
+const iconColors = {
+  light: {
+    info: palette.orange80,
+    success: palette.red60,
+    error: palette.blue80,
+    warning: palette.neutral10,
+  },
+  dark: {
+    info: palette.red30,
+    success: palette.red60,
+    error: palette.blue40,
+    warning: palette.neutral90,
+  },
 };
 
 const dismissButtonColors = {

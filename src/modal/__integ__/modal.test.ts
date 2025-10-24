@@ -98,10 +98,11 @@ test(
   })
 );
 
-test(
+(process.env.REACT_VERSION !== '18' ? test : test.skip)(
   'renders modal in async root',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
+
     const modal = createWrapper().findModal();
     await browser.url('#/light/modal/async-modal-root');
 

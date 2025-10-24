@@ -14,7 +14,7 @@ export function getResizerElements(resizerElement: null | HTMLElement) {
     return null;
   }
 
-  const header = findUpUntil(resizerElement, element => element.tagName.toLowerCase() === 'th');
+  const header = findUpUntil(resizerElement, element => element.tagName === 'TH');
   if (!header) {
     return null;
   }
@@ -24,10 +24,12 @@ export function getResizerElements(resizerElement: null | HTMLElement) {
     return null;
   }
 
-  const table = tableRoot.querySelector<HTMLElement>(`table`);
+  const table = tableRoot.querySelector<HTMLTableElement>(`table`);
   if (!table) {
     return null;
   }
+
+  const allHeaders = tableRoot.querySelectorAll<HTMLTableCellElement>(`thead th`);
 
   // tracker is rendered inside table wrapper to align with its size
   const tracker = tableRoot.querySelector<HTMLElement>(`.${resizerStyles.tracker}`);
@@ -40,7 +42,7 @@ export function getResizerElements(resizerElement: null | HTMLElement) {
     return null;
   }
 
-  return { header, table, tracker, scrollParent };
+  return { header, table, allHeaders, tracker, scrollParent };
 }
 
 export function getHeaderWidth(resizerElement: null | HTMLElement): number {

@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { InternalContainerAsSubstep } from '../container/internal';
 import { useInternalI18n } from '../i18n/context';
@@ -30,9 +31,15 @@ import {
 import stickyScrolling from '../table/sticky-scrolling';
 import ToolsHeader from '../table/tools-header';
 import { getItemKey } from '../table/utils';
+import {
+  GeneratedAnalyticsMetadataCardsComponent,
+  GeneratedAnalyticsMetadataCardsDeselect,
+  GeneratedAnalyticsMetadataCardsSelect,
+} from './analytics-metadata/interfaces';
 import { getCardsPerRow } from './cards-layout-helper';
 import { CardsForwardRefType, CardsProps } from './interfaces';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export { CardsProps };
@@ -142,10 +149,32 @@ const Cards = React.forwardRef(function <T = any>(
     status = <div className={styles.empty}>{empty}</div>;
   }
 
+  const analyticsComponentMetadata: GeneratedAnalyticsMetadataCardsComponent = {
+    name: 'awsui.Cards',
+    label: `.${analyticsSelectors.container}`,
+    properties: {
+      selectionType: selectionType || 'none',
+      itemsCount: `${items.length}`,
+      selectedItemsCount: `${(selectedItems || []).length}`,
+      variant,
+    },
+  };
+
+  if (trackBy) {
+    analyticsComponentMetadata.properties.selectedItems = (selectedItems || []).map(
+      (item, index) => `${getItemKey(trackBy, item, index)}`
+    );
+  }
+
   return (
     <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
       <AnalyticsFunnelSubStep>
-        <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
+        <div
+          {...baseProps}
+          className={clsx(baseProps.className, styles.root)}
+          ref={mergedRef}
+          {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })}
+        >
           <InternalContainerAsSubstep
             header={
               hasToolsHeader && (
@@ -171,6 +200,7 @@ const Cards = React.forwardRef(function <T = any>(
             __headerRef={headerRef}
             __fullPage={computedVariant === 'full-page'}
             __disableFooterDivider={true}
+            className={analyticsSelectors.container}
           >
             <div
               className={clsx(
@@ -260,58 +290,87 @@ const CardsList = <T,>({
 
   return (
     <ol
-      className={clsx(styles.list, styles[`list-grid-${columns || 1}`])}
+      className={clsx(styles.list, styles[`list-grid-${columns || 1}`], analyticsSelectors['cards-list'])}
       role={listRole}
       aria-labelledby={ariaLabelledby}
       aria-label={ariaLabel}
       {...(focusMarkers && focusMarkers.root)}
     >
-      {items.map((item, index) => (
-        <li
-          className={clsx(styles.card, {
-            [styles['card-selectable']]: selectable,
-            [styles['card-selected']]: selectable && isItemSelected(item),
-          })}
-          key={getItemKey(trackBy, item, index)}
-          onFocus={onFocus}
-          {...(focusMarkers && focusMarkers.item)}
-          role={listItemRole}
-        >
-          <div
-            className={clsx(styles['card-inner'], isRefresh && styles.refresh)}
-            onClick={
-              canClickEntireCard
-                ? event => {
-                    getItemSelectionProps?.(item).onChange();
-                    // Manually move focus to the native input (checkbox or radio button)
-                    event.currentTarget.querySelector('input')?.focus();
-                  }
-                : undefined
-            }
+      {items.map((item, index) => {
+        const key = getItemKey(trackBy, item, index);
+        const selectionProps = getItemSelectionProps ? getItemSelectionProps(item) : null;
+        const selected = isItemSelected(item);
+        const disabled = selectionProps && selectionProps.disabled;
+        const selectionAnalyticsMetadata:
+          | GeneratedAnalyticsMetadataCardsSelect
+          | GeneratedAnalyticsMetadataCardsDeselect = {
+          action: selected ? 'deselect' : 'select',
+          detail: {
+            label: {
+              selector: `.${analyticsSelectors['cards-list']} li:nth-child(${index + 1}) .${analyticsSelectors['card-header']}`,
+              root: 'component',
+            },
+            position: `${index + 1}`,
+            item: `${key}`,
+          },
+        };
+        return (
+          <li
+            className={clsx(styles.card, {
+              [styles['card-selectable']]: selectable,
+              [styles['card-selected']]: selectable && selected,
+            })}
+            key={key}
+            onFocus={onFocus}
+            {...(focusMarkers && focusMarkers.item)}
+            role={listItemRole}
+            {...getAnalyticsMetadataAttribute({
+              component: {
+                innerContext: {
+                  position: `${index + 1}`,
+                  item: `${key}`,
+                },
+              },
+            })}
           >
-            <div className={styles['card-header']}>
-              <div className={styles['card-header-inner']}>
-                {cardDefinition.header ? cardDefinition.header(item) : ''}
-              </div>
-              {getItemSelectionProps && (
-                <div className={styles['selection-control']}>
-                  <SelectionControl
-                    onFocusDown={moveFocusDown}
-                    onFocusUp={moveFocusUp}
-                    {...getItemSelectionProps(item)}
-                  />
+            <div
+              className={clsx(styles['card-inner'], isRefresh && styles.refresh)}
+              {...(canClickEntireCard && !disabled ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata) : {})}
+              onClick={
+                canClickEntireCard
+                  ? event => {
+                      selectionProps?.onChange();
+                      // Manually move focus to the native input (checkbox or radio button)
+                      event.currentTarget.querySelector('input')?.focus();
+                    }
+                  : undefined
+              }
+            >
+              <div className={styles['card-header']}>
+                <div className={clsx(styles['card-header-inner'], analyticsSelectors['card-header'])}>
+                  {cardDefinition.header ? cardDefinition.header(item) : ''}
                 </div>
-              )}
-            </div>
-            {visibleSectionsDefinition.map(({ width = 100, header, content, id }, index) => (
-              <div key={id || index} className={styles.section} style={{ width: `${width}%` }}>
-                {header ? <div className={styles['section-header']}>{header}</div> : ''}
-                {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
+                {selectionProps && (
+                  <div
+                    className={styles['selection-control']}
+                    {...(!canClickEntireCard && !disabled
+                      ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata)
+                      : {})}
+                  >
+                    <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...selectionProps} />
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
-        </li>
-      ))}
+              {visibleSectionsDefinition.map(({ width = 100, header, content, id }, index) => (
+                <div key={id || index} className={styles.section} style={{ width: `${width}%` }}>
+                  {header ? <div className={styles['section-header']}>{header}</div> : ''}
+                  {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
+                </div>
+              ))}
+            </div>
+          </li>
+        );
+      })}
     </ol>
   );
 };

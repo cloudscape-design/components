@@ -121,6 +121,15 @@ export function getGlobalDrawerWidth(
   return value ?? null;
 }
 
+export function getBottomDrawerHeight(
+  wrapper: ReturnType<typeof getGlobalDrawersTestUtils>,
+  drawerId: string
+): string | null {
+  const drawerElement = wrapper.findDrawerById(drawerId)!.getElement();
+  const value = drawerElement.style.getPropertyValue(customCssProps.bottomDrawerSize);
+  return value ?? null;
+}
+
 export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {
   closeButtonAriaLabel: 'Close panel',
   openButtonAriaLabel: 'Open panel',

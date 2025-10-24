@@ -19,6 +19,7 @@ const customCssPropertiesList = [
   'defaultMinContentWidth',
   'drawerSize',
   'drawerMinSize',
+  'bottomDrawerSize',
   'footerHeight',
   'headerGap',
   'headerHeight',
@@ -99,5 +100,6 @@ const customCssPropertiesList = [
   'alertFocusRingBorderRadius',
   'alertFocusRingBorderWidth',
   'alertFocusRingBoxShadow',
+  'alertIconColor',
 ];
 module.exports = customCssPropertiesList;
