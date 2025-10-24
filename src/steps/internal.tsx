@@ -24,19 +24,11 @@ const CustomStep = ({
   const { header, details } = renderStep(step);
   return (
     <li className={clsx(styles.container, styles.custom)}>
-      {orientation === 'horizontal' ? (
-        <>
-          <div className={styles.header}>
-            {header}
-            <hr className={styles.connector} role="none" />
-          </div>
-        </>
-      ) : (
-        <>
-          <div className={styles.header}>{header}</div>
-          <hr className={styles.connector} role="none" />
-        </>
-      )}
+      <div className={styles.header}>
+        <span>{header}</span>
+        {orientation === 'horizontal' && <hr className={styles.connector} role="none" />}
+      </div>
+      {orientation === 'vertical' && <hr className={styles.connector} role="none" />}
       {details && <div className={styles.details}>{details}</div>}
     </li>
   );
@@ -51,25 +43,13 @@ const InternalStep = ({
 }: StepsProps.Step & { orientation: StepsProps.Orientation }) => {
   return (
     <li className={styles.container}>
-      {orientation === 'horizontal' ? (
-        <>
-          <div className={styles.header}>
-            <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
-              {header}
-            </StatusIndicator>
-            <hr className={styles.connector} role="none" />
-          </div>
-        </>
-      ) : (
-        <>
-          <div className={styles.header}>
-            <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
-              {header}
-            </StatusIndicator>
-          </div>
-          <hr className={styles.connector} role="none" />
-        </>
-      )}
+      <div className={styles.header}>
+        <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
+          {header}
+        </StatusIndicator>
+        {orientation === 'horizontal' && <hr className={styles.connector} role="none" />}
+      </div>
+      {orientation === 'vertical' && <hr className={styles.connector} role="none" />}
       {details && <div className={styles.details}>{details}</div>}
     </li>
   );
@@ -77,14 +57,14 @@ const InternalStep = ({
 
 const InternalSteps = ({
   steps,
-  orientation = 'horizontal',
+  orientation,
   renderStep,
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
   __internalRootRef,
   ...props
-}: InternalStepsProps) => {
+}: SomeRequired<InternalStepsProps, 'orientation'>) => {
   return (
     <div
       {...props}
@@ -96,11 +76,6 @@ const InternalSteps = ({
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}
         aria-describedby={ariaDescribedby}
-        style={
-          orientation === 'horizontal'
-            ? { gridTemplateColumns: `repeat(${Math.max(1, steps.length - 1)}, 1fr) auto` }
-            : {}
-        }
       >
         {steps.map((step, index) => {
           if (renderStep) {

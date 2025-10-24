@@ -179,17 +179,6 @@ describe('Steps', () => {
 
       expect(wrapper.getElement()).not.toHaveClass(stepsStyles.horizontal);
     });
-
-    test('applies correct grid template columns for horizontal orientation', () => {
-      const wrapper = renderSteps({
-        steps: successfullSteps,
-        orientation: 'horizontal',
-      });
-
-      const listElement = wrapper.findByClassName(stepsStyles.list)!.getElement();
-      const expectedColumns = `repeat(${Math.max(1, successfullSteps.length - 1)}, 1fr) auto`;
-      expect(listElement).toHaveStyle(`grid-template-columns: ${expectedColumns}`);
-    });
   });
 
   describe('renderStep', () => {
