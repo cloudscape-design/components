@@ -519,3 +519,227 @@ describe('Internal ButtonDropdown badge property', () => {
     expect(wrapper.findLabelTag()).toBeNull();
   });
 });
+
+describe('ButtonDropdown download property', () => {
+  const testProps = { expandToViewport: false };
+
+  it('should render download attribute with boolean true value', () => {
+    const items: ButtonDropdownProps.Items = [
+      {
+        id: 'download-item',
+        text: 'Download file',
+        href: 'https://example.com/file.pdf',
+        download: true,
+      },
+    ];
+    const wrapper = renderButtonDropdown({ ...testProps, items });
+    wrapper.openDropdown();
+
+    const anchor = wrapper.findItemById('download-item')!.find('a')!.getElement();
+    expect(anchor).toHaveAttribute('download', '');
+    expect(anchor).toHaveAttribute('href', 'https://example.com/file.pdf');
+  });
+
+  it('should render download attribute with string value', () => {
+    const items: ButtonDropdownProps.Items = [
+      {
+        id: 'download-item',
+        text: 'Download file',
+        href: 'https://example.com/file.pdf',
+        download: 'custom-filename.pdf',
+      },
+    ];
+    const wrapper = renderButtonDropdown({ ...testProps, items });
+    wrapper.openDropdown();
+
+    const anchor = wrapper.findItemById('download-item')!.find('a')!.getElement();
+    expect(anchor).toHaveAttribute('download', 'custom-filename.pdf');
+    expect(anchor).toHaveAttribute('href', 'https://example.com/file.pdf');
+  });
+
+  it('should not render download attribute when download is false', () => {
+    const items: ButtonDropdownProps.Items = [
+      {
+        id: 'no-download-item',
+        text: 'Regular link',
+        href: 'https://example.com/page',
+        download: false,
+      },
+    ];
+    const wrapper = renderButtonDropdown({ ...testProps, items });
+    wrapper.openDropdown();
+
+    const anchor = wrapper.findItemById('no-download-item')!.find('a')!.getElement();
+    expect(anchor).not.toHaveAttribute('download');
+    expect(anchor).toHaveAttribute('href', 'https://example.com/page');
+  });
+
+  it('should not render download attribute when download is not specified', () => {
+    const items: ButtonDropdownProps.Items = [
+      {
+        id: 'regular-item',
+        text: 'Regular link',
+        href: 'https://example.com/page',
+      },
+    ];
+    const wrapper = renderButtonDropdown({ ...testProps, items });
+    wrapper.openDropdown();
+
+    const anchor = wrapper.findItemById('regular-item')!.find('a')!.getElement();
+    expect(anchor).not.toHaveAttribute('download');
+    expect(anchor).toHaveAttribute('href', 'https://example.com/page');
+  });
+
+  it('should not render download attribute when href is not provided', () => {
+    const items: ButtonDropdownProps.Items = [
+      {
+        id: 'no-href-item',
+        text: 'Button item',
+        download: true,
+      },
+    ];
+    const wrapper = renderButtonDropdown({ ...testProps, items });
+    wrapper.openDropdown();
+
+    const item = wrapper.findItemById('no-href-item')!;
+    expect(item.find('a')).toBe(null);
+    expect(item.getElement()).toHaveTextContent('Button item');
+  });
+
+  it('should not render download attribute when item is disabled', () => {
+    const items: ButtonDropdownProps.Items = [
+      {
+        id: 'disabled-download-item',
+        text: 'Disabled download',
+        href: 'https://example.com/file.pdf',
+        download: 'filename.pdf',
+        disabled: true,
+      },
+    ];
+    const wrapper = renderButtonDropdown({ ...testProps, items });
+    wrapper.openDropdown();
+
+    const anchor = wrapper.findItemById('disabled-download-item')!.find('a')!.getElement();
+    expect(anchor).not.toHaveAttribute('download');
+    expect(anchor).not.toHaveAttribute('href');
+  });
+
+  it('should not render download attribute when parent category is disabled', () => {
+    const items: ButtonDropdownProps.Items = [
+      {
+        text: 'Disabled category',
+        disabled: true,
+        items: [
+          {
+            id: 'category-download-item',
+            text: 'Download in disabled category',
+            href: 'https://example.com/file.pdf',
+            download: true,
+          },
+        ],
+      },
+    ];
+    const wrapper = renderButtonDropdown({ ...testProps, items });
+    wrapper.openDropdown();
+
+    const anchor = wrapper.findItemById('category-download-item')!.find('a')!.getElement();
+    expect(anchor).not.toHaveAttribute('download');
+    expect(anchor).not.toHaveAttribute('href');
+  });
+
+  it('should render download attribute with external link', () => {
+    const items: ButtonDropdownProps.Items = [
+      {
+        id: 'external-download-item',
+        text: 'Download external file',
+        href: 'https://external.com/file.pdf',
+        download: 'external-file.pdf',
+        external: true,
+        externalIconAriaLabel: '(opens new tab)',
+      },
+    ];
+    const wrapper = renderButtonDropdown({ ...testProps, items });
+    wrapper.openDropdown();
+
+    const anchor = wrapper.findItemById('external-download-item')!.find('a')!.getElement();
+    expect(anchor).toHaveAttribute('download', 'external-file.pdf');
+    expect(anchor).toHaveAttribute('href', 'https://external.com/file.pdf');
+    expect(anchor).toHaveAttribute('target', '_blank');
+    expect(anchor).toHaveAttribute('rel', 'noopener noreferrer');
+  });
+
+  it('should render download attribute in nested category items', () => {
+    const items: ButtonDropdownProps.Items = [
+      {
+        text: 'Downloads',
+        items: [
+          {
+            id: 'nested-download-item',
+            text: 'Download nested file',
+            href: 'https://example.com/nested-file.pdf',
+            download: 'nested-filename.pdf',
+          },
+          {
+            id: 'nested-regular-item',
+            text: 'Regular nested link',
+            href: 'https://example.com/page',
+          },
+        ],
+      },
+    ];
+    const wrapper = renderButtonDropdown({ ...testProps, items });
+    wrapper.openDropdown();
+
+    const downloadAnchor = wrapper.findItemById('nested-download-item')!.find('a')!.getElement();
+    expect(downloadAnchor).toHaveAttribute('download', 'nested-filename.pdf');
+    expect(downloadAnchor).toHaveAttribute('href', 'https://example.com/nested-file.pdf');
+
+    const regularAnchor = wrapper.findItemById('nested-regular-item')!.find('a')!.getElement();
+    expect(regularAnchor).not.toHaveAttribute('download');
+    expect(regularAnchor).toHaveAttribute('href', 'https://example.com/page');
+  });
+
+  it('should handle mixed items with and without download', () => {
+    const items: ButtonDropdownProps.Items = [
+      {
+        id: 'download-boolean',
+        text: 'Download with boolean',
+        href: 'https://example.com/file1.pdf',
+        download: true,
+      },
+      {
+        id: 'download-string',
+        text: 'Download with string',
+        href: 'https://example.com/file2.pdf',
+        download: 'custom-name.pdf',
+      },
+      {
+        id: 'regular-link',
+        text: 'Regular link',
+        href: 'https://example.com/page',
+      },
+      {
+        id: 'button-item',
+        text: 'Button item',
+      },
+    ];
+    const wrapper = renderButtonDropdown({ ...testProps, items });
+    wrapper.openDropdown();
+
+    // Check download with boolean
+    const booleanAnchor = wrapper.findItemById('download-boolean')!.find('a')!.getElement();
+    expect(booleanAnchor).toHaveAttribute('download', '');
+
+    // Check download with string
+    const stringAnchor = wrapper.findItemById('download-string')!.find('a')!.getElement();
+    expect(stringAnchor).toHaveAttribute('download', 'custom-name.pdf');
+
+    // Check regular link
+    const regularAnchor = wrapper.findItemById('regular-link')!.find('a')!.getElement();
+    expect(regularAnchor).not.toHaveAttribute('download');
+
+    // Check button item (no anchor)
+    const buttonItem = wrapper.findItemById('button-item')!;
+    expect(buttonItem.find('a')).toBe(null);
+  });
+});
