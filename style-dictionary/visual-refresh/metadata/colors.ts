@@ -424,22 +424,22 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   colorBorderSegmentActive: {
-    description: 'The border color of the active segment in a segmented control.',
+    description: 'Deprecated - this token is no longer in use.',
     public: true,
     themeable: true,
   },
   colorBorderSegmentDefault: {
-    description: 'The border color of inactive segments in a segmented control.',
+    description: 'Deprecated - this token is no longer in use.',
     public: true,
     themeable: true,
   },
   colorBorderSegmentDisabled: {
-    description: 'The border color of disabled segments in a segmented control.',
+    description: 'Deprecated - this token is no longer in use.',
     public: true,
     themeable: true,
   },
   colorBorderSegmentHover: {
-    description: 'The border color of inactive segments in a segmented control on hover.',
+    description: 'Deprecated - this token is no longer in use.',
     public: true,
     themeable: true,
   },
