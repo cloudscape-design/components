@@ -43,7 +43,6 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceLayoutTogglePadding: '{spaceStaticS}',
   spaceModalContentBottom: '{spaceScaled2xM}',
   spaceModalHorizontal: '{spaceContainerHorizontal}',
-  spaceOptionIconBigTop: '0px',
   spacePanelContentBottom: '{spaceScaledXxxl}',
   spacePanelContentTop: '{spaceScaledL}',
   spacePanelDividerMarginHorizontal: '{spaceXs}',

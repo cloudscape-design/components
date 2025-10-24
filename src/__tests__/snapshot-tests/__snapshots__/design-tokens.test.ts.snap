@@ -641,28 +641,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#879596",
             "light": "#687078",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
@@ -3287,28 +3287,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#879596",
             "light": "#687078",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
@@ -5933,28 +5933,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#879596",
             "light": "#687078",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
@@ -8579,28 +8579,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#879596",
             "light": "#687078",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
@@ -11225,28 +11225,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#879596",
             "light": "#687078",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
@@ -13871,28 +13871,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#879596",
             "light": "#879596",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#414750",
             "light": "#414750",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -16517,28 +16517,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       },
     },
     "color-border-segment-active": {
-      "$description": "The border color of the active segment in a segmented control.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#ffffff",
         "light": "#16191f",
       },
     },
     "color-border-segment-default": {
-      "$description": "The border color of inactive segments in a segmented control.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#879596",
         "light": "#687078",
       },
     },
     "color-border-segment-disabled": {
-      "$description": "The border color of disabled segments in a segmented control.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#414750",
         "light": "#d5dbdb",
       },
     },
     "color-border-segment-hover": {
-      "$description": "The border color of inactive segments in a segmented control on hover.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#ffffff",
         "light": "#16191f",
@@ -19168,28 +19168,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
@@ -21814,28 +21814,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
@@ -24460,28 +24460,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
@@ -27106,28 +27106,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
@@ -29752,28 +29752,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
@@ -32398,28 +32398,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
@@ -35044,28 +35044,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
@@ -37690,28 +37690,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
@@ -40336,28 +40336,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       },
     },
     "color-border-segment-active": {
-      "$description": "The border color of the active segment in a segmented control.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#dedee3",
         "light": "#424650",
       },
     },
     "color-border-segment-default": {
-      "$description": "The border color of inactive segments in a segmented control.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#dedee3",
         "light": "#424650",
       },
     },
     "color-border-segment-disabled": {
-      "$description": "The border color of disabled segments in a segmented control.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#dedee3",
         "light": "#424650",
       },
     },
     "color-border-segment-hover": {
-      "$description": "The border color of inactive segments in a segmented control on hover.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#dedee3",
         "light": "#424650",
