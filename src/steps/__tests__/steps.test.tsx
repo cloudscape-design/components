@@ -68,6 +68,18 @@ const stepsWithIconAriaLabel: ReadonlyArray<StepsProps.Step> = [
   },
 ];
 
+const stepsForCustomRender: ReadonlyArray<StepsProps.Step> = [
+  {
+    header: 'Checked Cross Region Consent',
+    status: 'success',
+  },
+  {
+    header: 'Analyzing security rules',
+    status: 'loading',
+    details: 'Step details',
+  },
+];
+
 const renderSteps = (props: Partial<StepsProps>) => {
   const renderResult = render(<Steps {...defaultProps} {...props} />);
   return createWrapper(renderResult.container).findSteps()!;
@@ -140,6 +152,64 @@ describe('Steps', () => {
           wrapper.findItems()[index]!.findHeader()!.findByClassName(statusIconStyles.icon)!.getElement()
         ).toHaveAccessibleName(step.statusIconAriaLabel);
       });
+    });
+  });
+
+  describe('orientation', () => {
+    test('renders with default vertical orientation', () => {
+      const wrapper = renderSteps({ steps: successfullSteps });
+
+      expect(wrapper.getElement()).not.toHaveClass(stepsStyles.horizontal);
+    });
+
+    test('renders with horizontal orientation when explicitly set', () => {
+      const wrapper = renderSteps({
+        steps: successfullSteps,
+        orientation: 'horizontal',
+      });
+
+      expect(wrapper.getElement()).toHaveClass(stepsStyles.horizontal);
+    });
+
+    test('renders with vertical orientation', () => {
+      const wrapper = renderSteps({
+        steps: successfullSteps,
+        orientation: 'vertical',
+      });
+
+      expect(wrapper.getElement()).not.toHaveClass(stepsStyles.horizontal);
+    });
+  });
+
+  describe('renderStep', () => {
+    const customRenderStep = (step: StepsProps.Step) => ({
+      header: <span data-testid="custom-header">Custom: {step.header}</span>,
+      details: step.details ? <div data-testid="custom-details">Details: {step.details}</div> : undefined,
+    });
+
+    test('renders custom content when using renderStep', () => {
+      const wrapper = renderSteps({ steps: stepsForCustomRender, renderStep: customRenderStep });
+
+      const customHeaders = wrapper.findAll('[data-testid="custom-header"]');
+      expect(customHeaders).toHaveLength(stepsForCustomRender.length);
+
+      expect(customHeaders[0].getElement()).toHaveTextContent('Checked Cross Region Consent');
+      expect(customHeaders[1].getElement()).toHaveTextContent('Analyzing security rules');
+    });
+
+    test('renders custom details when using renderStep', () => {
+      const wrapper = renderSteps({ steps: stepsForCustomRender, renderStep: customRenderStep });
+
+      const customDetails = wrapper.findAll('[data-testid="custom-details"]');
+      // Only last step has details
+      expect(customDetails).toHaveLength(1);
+      expect(customDetails[0].getElement()).toHaveTextContent('Step details');
+    });
+
+    test('does not render status indicators when using renderStep', () => {
+      const wrapper = renderSteps({ steps: stepsForCustomRender, renderStep: customRenderStep });
+
+      expect(wrapper.findItems()[0].findHeader()?.findStatusIndicator()).toBeNull();
     });
   });
 });
