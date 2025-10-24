@@ -9,7 +9,6 @@ import tooltipStyles from '../../../lib/components/internal/components/tooltip/s
 
 const wrapper = createWrapper();
 const expandableSectionWrapper = wrapper.findExpandableSection();
-const keepPositionPopoverWrapper = wrapper.findByClassName('keepPositionPopover');
 const updatePositionPopoverWrapper = wrapper.findByClassName('updatePositionPopover');
 
 const sliderWrapper = wrapper.findSlider();
@@ -47,23 +46,6 @@ const setupTest = (testFn: (page: UsePositionObserverPageObject) => Promise<void
 };
 
 describe('Use position observer', () => {
-  test(
-    'Keep position popover does not move when expandable section is expanded',
-    setupTest(async page => {
-      await page.waitForVisible(expandableSectionWrapper.toSelector());
-
-      const initialKeepPosition = await page.getBoundingBox(keepPositionPopoverWrapper.toSelector());
-
-      // Expand the expandable section
-      await page.click(expandableSectionWrapper.toSelector());
-
-      const newKeepPosition = await page.getBoundingBox(keepPositionPopoverWrapper.toSelector());
-
-      expect(newKeepPosition.top).toEqual(initialKeepPosition.top);
-      expect(newKeepPosition.left).toEqual(initialKeepPosition.left);
-    })
-  );
-
   test(
     'Update position popover moves when expandable section is expanded',
     setupTest(async page => {
