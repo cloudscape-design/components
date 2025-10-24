@@ -26,6 +26,7 @@ export type InternalDrawer = AppLayoutProps.Drawer & {
   header?: React.ReactNode;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
   onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+  position?: 'side' | 'bottom';
 };
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.
@@ -85,7 +86,7 @@ export interface AppLayoutInternals {
   onActiveAiDrawerResize: (size: number) => void;
 }
 
-interface AppLayoutWidgetizedState extends AppLayoutInternals {
+export interface AppLayoutWidgetizedState extends AppLayoutInternals {
   isNested: boolean;
   verticalOffsets: VerticalLayoutOutput;
   navigationAnimationDisabled: boolean;
@@ -94,6 +95,16 @@ interface AppLayoutWidgetizedState extends AppLayoutInternals {
     stickyVerticalBottomOffset: number;
     mainContentPaddingBlockEnd: number | undefined;
   };
+  activeGlobalBottomDrawerId: string | null;
+  onActiveGlobalBottomDrawerChange: (value: string | null, params: OnChangeParams) => void;
+  activeGlobalBottomDrawerSize: number;
+  minGlobalBottomDrawerSize: number;
+  bottomDrawerReportedSize: number;
+  getMaxGlobalBottomDrawerHeight: () => number;
+  reportBottomDrawerSize: (size: number) => void;
+  bottomDrawersFocusControl: FocusControlState;
+  onActiveBottomDrawerResize: ({ id, size }: { id: string; size: number }) => void;
+  bottomDrawers: ReadonlyArray<InternalDrawer>;
 }
 
 // New widget interface

@@ -9,6 +9,7 @@ import {
   AppLayoutDrawerImplementation as AppLayoutDrawer,
   AppLayoutGlobalDrawersImplementation as AppLayoutGlobalDrawers,
 } from '../drawer';
+import { AppLayoutBottomDrawerWrapper } from '../drawer/global-bottom-drawer';
 import { SkeletonPartProps } from '../skeleton/interfaces';
 import { AppLayoutSplitPanelDrawerSideImplementation as AppLayoutSplitPanelSide } from '../split-panel';
 import { isWidgetReady } from '../state/invariants';
@@ -28,12 +29,23 @@ export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: 
     splitPanelOpen,
     drawers,
     splitPanelPosition,
+    activeGlobalBottomDrawerId,
+    bottomDrawers,
+    bottomDrawerReportedSize,
   } = appLayoutState.widgetizedState;
   const drawerExpandedMode = !!expandedDrawerId;
   const toolsOpen = !!activeDrawer;
   const globalToolsOpen = !!activeGlobalDrawersIds?.length;
+
   return (
     <>
+      {!!bottomDrawers.length && (
+        <div className={styles['bottom-tool']}>
+          <ActiveDrawersContext.Provider value={activeGlobalBottomDrawerId ? [activeGlobalBottomDrawerId] : []}>
+            <AppLayoutBottomDrawerWrapper widgetizedState={appLayoutState.widgetizedState} />
+          </ActiveDrawersContext.Provider>
+        </div>
+      )}
       {splitPanelPosition === 'side' && (
         <div
           className={clsx(
@@ -45,6 +57,7 @@ export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: 
           <AppLayoutSplitPanelSide
             appLayoutInternals={appLayoutState.appLayoutInternals}
             splitPanelInternals={appLayoutState.splitPanelInternals}
+            bottomDrawerReportedSize={bottomDrawerReportedSize}
           >
             {appLayoutProps.splitPanel}
           </AppLayoutSplitPanelSide>
@@ -60,7 +73,12 @@ export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: 
           drawerExpandedMode && styles.hidden
         )}
       >
-        {drawers && drawers.length > 0 && <AppLayoutDrawer appLayoutInternals={appLayoutState.appLayoutInternals} />}
+        {drawers && drawers.length > 0 && (
+          <AppLayoutDrawer
+            appLayoutInternals={appLayoutState.appLayoutInternals}
+            bottomDrawerReportedSize={activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0}
+          />
+        )}
       </div>
       <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>
         <ActiveDrawersContext.Provider value={activeGlobalDrawersIds ?? []}>

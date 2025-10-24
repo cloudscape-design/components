@@ -347,6 +347,7 @@ Map {
         "toolbar": 0,
       },
     },
+    "bottomDrawerReportedSize": 0,
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {
@@ -684,6 +685,7 @@ Map {
         "toolbar": 0,
       },
     },
+    "bottomDrawerReportedSize": 0,
   },
   "AppLayoutGlobalDrawersImplementation" => {
     "appLayoutInternals": {
@@ -1203,6 +1205,7 @@ Map {
         "toolbar": 0,
       },
     },
+    "bottomDrawerReportedSize": 0,
   },
   "AppLayoutNotificationsImplementation" => {
     "appLayoutInternals": {
@@ -1716,6 +1719,7 @@ Map {
         "toolbar": 0,
       },
     },
+    "bottomDrawerReportedSize": 0,
   },
   "AppLayoutGlobalDrawersImplementation" => {
     "appLayoutInternals": {
@@ -2260,6 +2264,7 @@ Map {
         "toolbar": 0,
       },
     },
+    "bottomDrawerReportedSize": 0,
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {
@@ -2629,6 +2634,7 @@ Map {
         "toolbar": 0,
       },
     },
+    "bottomDrawerReportedSize": 0,
   },
   "AppLayoutGlobalDrawersImplementation" => {
     "appLayoutInternals": {
