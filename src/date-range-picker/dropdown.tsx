@@ -61,7 +61,7 @@ interface DateRangePickerDropdownProps
   onDropdownClose: () => void;
   isSingleGrid: boolean;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
-  customRelativeRangeContent: DateRangePickerProps.RelativeRangeControl | undefined;
+  renderRelativeRangeContent: DateRangePickerProps.RelativeRangeControl | undefined;
 }
 
 export function DateRangePickerDropdown({
@@ -89,7 +89,7 @@ export function DateRangePickerDropdown({
   ariaDescribedby,
   customAbsoluteRangeControl,
   customRelativeRangeUnits,
-  customRelativeRangeContent,
+  renderRelativeRangeContent,
   granularity = 'day',
 }: DateRangePickerDropdownProps) {
   const i18n = useInternalI18n('date-range-picker');
@@ -228,7 +228,7 @@ export function DateRangePickerDropdown({
                       onChange={range => setSelectedRelativeRange(range)}
                       i18nStrings={i18nStrings}
                       customUnits={customRelativeRangeUnits}
-                      customRelativeRangeContent={customRelativeRangeContent}
+                      renderRelativeRangeContent={renderRelativeRangeContent}
                       granularity={granularity}
                     />
                   )}

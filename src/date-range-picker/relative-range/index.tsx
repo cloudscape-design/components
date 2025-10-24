@@ -27,7 +27,7 @@ interface RelativeRangePickerProps extends Pick<CalendarProps, 'granularity'> {
   i18nStrings?: DateRangePickerProps.I18nStrings;
   isSingleGrid: boolean;
   customUnits?: DateRangePickerProps.TimeUnit[];
-  customRelativeRangeContent?: DateRangePickerProps.RelativeRangeControl;
+  renderRelativeRangeContent?: DateRangePickerProps.RelativeRangeControl;
 }
 
 interface UnitSelectOption {
@@ -50,7 +50,7 @@ export default function RelativeRangePicker({
   isSingleGrid,
   customUnits,
   granularity = 'day',
-  customRelativeRangeContent,
+  renderRelativeRangeContent,
 }: RelativeRangePickerProps) {
   const i18n = useInternalI18n('date-range-picker');
   const formatRelativeRange = i18n(
@@ -117,8 +117,8 @@ export default function RelativeRangePicker({
     initialRange?.unit ?? initialCustomTimeUnit
   );
 
-  if (customRelativeRangeContent) {
-    return <div>{customRelativeRangeContent(initialRange, onChangeRangeSize)}</div>;
+  if (renderRelativeRangeContent) {
+    return <div>{renderRelativeRangeContent(initialRange, onChangeRangeSize)}</div>;
   }
 
   const showRadioControl = clientOptions.length > 0;
