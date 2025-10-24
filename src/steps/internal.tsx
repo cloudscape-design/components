@@ -77,11 +77,10 @@ const InternalSteps = ({
         aria-labelledby={ariaLabelledby}
         aria-describedby={ariaDescribedby}
       >
-        {steps.map((step, index) => {
-          if (renderStep) {
-            return <CustomStep key={index} orientation={orientation} step={step} renderStep={renderStep} />;
-          }
-          return (
+        {steps.map((step, index) =>
+          renderStep ? (
+            <CustomStep key={index} orientation={orientation} step={step} renderStep={renderStep} />
+          ) : (
             <InternalStep
               key={index}
               status={step.status}
@@ -90,8 +89,8 @@ const InternalSteps = ({
               details={step.details}
               orientation={orientation}
             />
-          );
-        })}
+          )
+        )}
       </ol>
     </div>
   );
