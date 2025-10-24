@@ -84,7 +84,7 @@ export default function DatePickerScenario() {
       <FormField label="Custom Relative Range Picker field">
         <DateRangePicker
           {...props}
-          customRelativeRangeContent={(selectedRange, setSelectedRange) =>
+          renderRelativeRangeContent={(selectedRange, setSelectedRange) =>
             renderCustomRelativeRangeControl(selectedRange, setSelectedRange)
           }
         />

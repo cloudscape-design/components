@@ -191,7 +191,7 @@ export interface DateRangePickerProps
    * Specifies custom content to fully override the relative range tab.
    * When provided, all default relative range functionality is replaced.
    */
-  customRelativeRangeContent?: DateRangePickerProps.RelativeRangeControl;
+  renderRelativeRangeContent?: DateRangePickerProps.RelativeRangeControl;
 
   /**
    * Specifies the time format to use for displaying the absolute time range.
