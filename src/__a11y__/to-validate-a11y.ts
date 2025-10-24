@@ -3,7 +3,8 @@
 
 import Axe from 'axe-core';
 import { HtmlValidate } from 'html-validate';
-import { compact, uniq } from 'lodash';
+import compact from 'lodash/compact';
+import uniq from 'lodash/uniq';
 
 import { runOptions, spec } from './axe';
 
