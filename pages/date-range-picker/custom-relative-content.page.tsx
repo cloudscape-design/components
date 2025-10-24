@@ -70,7 +70,7 @@ export default function DatePickerScenario() {
               45
             </Link>
           </SpaceBetween>
-          Selected: {selectedRange ? selectedRange.amount + ' ' + selectedRange.unit : 'null'}
+          Selected: {selectedRange ? selectedRange.amount + ' ' + selectedRange.unit : 'Nothing Selected.'}
         </Grid>
       </div>
     );
