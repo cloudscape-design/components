@@ -110,7 +110,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       padding-inline-start: $icon-total-space-normal;
     }
     &.wrapper-expanded {
-      padding-block-end: awsui.$space-scaled-xxs;
+      padding-block-end: 0;
       border-block-end-color: awsui.$color-border-divider-default;
     }
   }
@@ -138,18 +138,18 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       // Equal top and bottom padding so standalone header has vertical symmetry.
       padding-block-end: awsui.$space-container-header-top;
     }
-    &.header-deprecated {
-      padding-inline-start: container.$header-padding-horizontal;
-    }
-    &:not(.header-deprecated) {
-      padding-inline-start: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-medium});
-    }
+  }
+  &.header-deprecated {
+    padding-inline-start: container.$header-padding-horizontal;
+  }
+  &:not(.header-deprecated) {
+    padding-inline-start: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-medium});
+  }
 
-    @include focus-visible.when-visible {
-      // HACK: Remediate focus border
-      padding-block: calc(#{awsui.$space-scaled-s} - #{awsui.$border-divider-section-width});
-      padding-inline: calc(#{awsui.$space-l} - #{awsui.$border-divider-section-width});
-    }
+  @include focus-visible.when-visible {
+    // HACK: Remediate focus border
+    padding-block: calc(#{awsui.$space-scaled-s} - #{awsui.$border-divider-section-width});
+    padding-inline: calc(#{awsui.$space-l} - #{awsui.$border-divider-section-width});
   }
 }
 
@@ -228,9 +228,13 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 
   &-text {
-    /* used in test-utils */
+    &.not-expanded {
+      padding-block: awsui.$space-xxs;
+    }
   }
 }
+
+// Adding bottom padding if header has no description and is closed, to be vertical centered
 
 // Make sure that actions can wrap for default expandable section headers.
 // The compact variant is used in chart popovers and should not wrap.
