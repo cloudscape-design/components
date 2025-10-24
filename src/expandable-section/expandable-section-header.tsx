@@ -202,7 +202,14 @@ const ExpandableHeaderTextWrapper = ({
       {...(headerButtonListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
     >
       <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
-      <span id={id} className={clsx(styles['header-text'], analyticsSelectors['header-label'])}>
+      <span
+        id={id}
+        className={clsx(
+          styles['header-text'],
+          analyticsSelectors['header-label'],
+          !expanded && !headerDescription && styles['not-expanded']
+        )}
+      >
         {children}
       </span>
     </span>
