@@ -148,6 +148,20 @@ const AutosuggestInput = React.forwardRef(
 
     const fireKeydown = (event: CustomEvent<BaseKeyDetail>) => fireCancelableEvent(onKeyDown, event.detail, event);
 
+    // Shared ESC key handler logic for both input and dropdown elements
+    // When returnFocus is true (from dropdown elements), focus returns to input after closing
+    const handleEscapeKey = (returnFocus: boolean) => {
+      if (open) {
+        closeDropdown();
+        if (returnFocus) {
+          // Return focus to input when closing from dropdown elements (e.g., recovery button)
+          inputRef.current?.focus();
+        }
+      } else if (value) {
+        fireNonCancelableEvent(onChange, { value: '' });
+      }
+    };
+
     const handleKeyDown = (event: CustomEvent<BaseKeyDetail>) => {
       switch (event.detail.keyCode) {
         case KeyCode.down: {
@@ -173,12 +187,10 @@ const AutosuggestInput = React.forwardRef(
           break;
         }
         case KeyCode.escape: {
-          if (open) {
+          // Use shared ESC handler, without focus restoration since ESC came from input
+          handleEscapeKey(false);
+          if (open || value) {
             event.stopPropagation();
-            closeDropdown();
-          } else if (value) {
-            event.stopPropagation();
-            fireNonCancelableEvent(onChange, { value: '' });
           }
           event.preventDefault();
           fireKeydown(event);
@@ -255,6 +267,19 @@ const AutosuggestInput = React.forwardRef(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open]);
 
+    const handleDropdownKeyDown: React.KeyboardEventHandler = event => {
+      // Handle ESC key from focusable elements inside the dropdown (e.g., recovery button)
+      // but NOT from the input itself (that's handled by handleKeyDown)
+      const isFromInput = event.target === inputRef.current || nodeBelongs(inputRef.current, event.target);
+
+      if (event.key === 'Escape' && !isFromInput) {
+        event.stopPropagation();
+        event.preventDefault();
+        // Use shared ESC handler with focus restoration since ESC came from dropdown element
+        handleEscapeKey(true);
+      }
+    };
+
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <Dropdown
@@ -288,7 +313,7 @@ const AutosuggestInput = React.forwardRef(
           open={open && (!!dropdownContent || !!dropdownFooter)}
           footer={
             dropdownFooterRef && (
-              <div ref={dropdownFooterRef} className={styles['dropdown-footer']}>
+              <div ref={dropdownFooterRef} className={styles['dropdown-footer']} onKeyDown={handleDropdownKeyDown}>
                 {open && dropdownFooter ? dropdownFooter : null}
               </div>
             )
