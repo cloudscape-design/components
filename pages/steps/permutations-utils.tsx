@@ -4,6 +4,7 @@ import React from 'react';
 
 import Box from '~components/box';
 import Button from '~components/button';
+import Icon from '~components/icon';
 import Link from '~components/link';
 import Popover from '~components/popover';
 import { StepsProps } from '~components/steps';
@@ -770,6 +771,16 @@ export const stepsPermutations = createPermutations<StepsProps>([
       step => ({
         header: <b>Custom header for {step.header}</b>,
         details: step.details && <i>Custom details for {step.details}</i>,
+      }),
+      step => ({
+        header: <Icon name="status-positive" variant="success" ariaLabel="step status" />,
+        details: (
+          <div>
+            {step.header}
+            <br />
+            {step.details && <i>Custom details for {step.details}</i>}
+          </div>
+        ),
       }),
     ],
   },
