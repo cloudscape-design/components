@@ -15,6 +15,7 @@
     "test:a11y": "gulp test:a11y",
     "test:integ": "gulp test:integ",
     "test:motion": "gulp test:motion",
+    "test:update-snapshots": "npx jest -u snapshot -c jest.unit.config.js",
     "lint": "npm-run-all --parallel lint:*",
     "lint:eslint": "eslint .",
     "lint:stylelint": "stylelint --ignore-path .gitignore '{src,pages}/**/*.{css,scss}'",
