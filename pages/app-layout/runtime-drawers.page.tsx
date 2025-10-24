@@ -20,6 +20,7 @@ import './utils/external-widget';
 import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Containers, CustomDrawerContent } from './utils/content-blocks';
 import { drawerLabels } from './utils/drawers';
+import { registerRuntimeBottomDrawer } from './utils/external-widget';
 import appLayoutLabels from './utils/labels';
 import { splitPaneli18nStrings } from './utils/strings';
 
@@ -125,6 +126,9 @@ export default function WithDrawers() {
                     data-testid="button-circle3-global-resize"
                   >
                     Resize circle3-global drawer to 500px
+                  </Button>
+                  <Button onClick={() => registerRuntimeBottomDrawer()} data-testid="button-register-bottom-drawer">
+                    Register a bottom drawer
                   </Button>
                 </SpaceBetween>
               </SpaceBetween>

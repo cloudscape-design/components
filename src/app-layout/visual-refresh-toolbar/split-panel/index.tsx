@@ -11,6 +11,7 @@ import styles from './styles.css.js';
 interface AppLayoutSplitPanelDrawerSideImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   splitPanelInternals: SplitPanelProviderProps;
+  bottomDrawerReportedSize?: number;
   children: React.ReactNode;
 }
 
@@ -18,9 +19,15 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
   children,
   appLayoutInternals,
   splitPanelInternals,
+  bottomDrawerReportedSize,
 }: AppLayoutSplitPanelDrawerSideImplementationProps) {
   const { splitPanelControlId, placement, verticalOffsets, isMobile, splitPanelAnimationDisabled } = appLayoutInternals;
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(
+    verticalOffsets,
+    isMobile,
+    placement,
+    isMobile ? 0 : (bottomDrawerReportedSize ?? 0)
+  );
 
   return (
     <SplitPanelProvider {...splitPanelInternals} animationDisabled={splitPanelAnimationDisabled}>

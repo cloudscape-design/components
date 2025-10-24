@@ -6,6 +6,10 @@ import { GIT_SHA, PACKAGE_VERSION, THEME } from '../../environment';
 import { metrics } from '../../metrics';
 
 export function checkMissingStyles(ownerDocument: Document) {
+  if (!ownerDocument.defaultView) {
+    // skip the check if this iframe is detached
+    return;
+  }
   const result = getComputedStyle(ownerDocument.body).getPropertyValue(`--awsui-version-info-${GIT_SHA}`);
   if (!result) {
     console.error(`Missing AWS-UI CSS for theme "${THEME}", version "${PACKAGE_VERSION}", and git sha "${GIT_SHA}".`);

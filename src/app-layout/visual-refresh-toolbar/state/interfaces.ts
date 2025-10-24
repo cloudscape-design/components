@@ -18,6 +18,7 @@ export interface SharedProps {
   drawers: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   onActiveDrawerChange: ((drawerId: string | null, params: OnChangeParams) => void) | undefined;
   drawersFocusRef: React.Ref<Focusable> | undefined;
+  bottomDrawersFocusRef?: React.Ref<Focusable> | undefined;
   globalDrawersFocusControl?: FocusControlMultipleStates | undefined;
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   activeGlobalDrawersIds?: ReadonlyArray<string> | undefined;
@@ -30,6 +31,9 @@ export interface SharedProps {
   setExpandedDrawerId?: (value: string | null) => void;
   aiDrawer?: AppLayoutProps.Drawer | undefined;
   aiDrawerFocusRef: React.Ref<Focusable> | undefined;
+  activeGlobalBottomDrawerId?: string | null;
+  onActiveGlobalBottomDrawerChange?: (value: string | null, params: OnChangeParams) => void;
+  bottomDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
 }
 
 export type MergeProps = (

@@ -182,5 +182,38 @@ describe('labels', () => {
 
       expect(getLiveRegionText()).toBe(`${totalItemsCount} ${visibleItemsCount}`);
     });
+    test('should not announce live region when loading = true', () => {
+      renderTableWrapper({
+        loading: true,
+        firstIndex: 1,
+        totalItemsCount: defaultItems.length,
+        renderAriaLive: ({ firstIndex, lastIndex, totalItemsCount, visibleItemsCount }) =>
+          `Displaying items ${firstIndex} to ${lastIndex} of ${totalItemsCount}, ${visibleItemsCount} resources visible`,
+      });
+
+      expect(getLiveRegionText()).toBe('');
+    });
+
+    test('should announce live region when loading switches from true to false', () => {
+      const firstIndex = 1;
+      const { rerender } = rerenderableTableWrapper({
+        loading: true,
+        firstIndex,
+        totalItemsCount: defaultItems.length,
+        renderAriaLive: ({ firstIndex, lastIndex, totalItemsCount, visibleItemsCount }) =>
+          `Displaying items ${firstIndex} to ${lastIndex} of ${totalItemsCount}, ${visibleItemsCount} resources visible`,
+      });
+
+      // Initially loading - no announcement
+      expect(getLiveRegionText()).toBe('');
+
+      // Loading completes - should announce
+      rerender({ loading: false });
+      const lastIndex = firstIndex + defaultItems.length - 1;
+      const visibleItemsCount = defaultItems.length;
+      expect(getLiveRegionText()).toBe(
+        `Displaying items ${firstIndex} to ${lastIndex} of ${defaultItems.length}, ${visibleItemsCount} resources visible`
+      );
+    });
   });
 });

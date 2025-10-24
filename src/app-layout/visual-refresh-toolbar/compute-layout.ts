@@ -150,12 +150,13 @@ export function computeSplitPanelOffsets({
 export function getDrawerStyles(
   verticalOffsets: VerticalLayoutOutput,
   isMobile: boolean,
-  placement: AppLayoutPropsWithDefaults['placement']
+  placement: AppLayoutPropsWithDefaults['placement'],
+  activeGlobalBottomDrawerSize: number = 0
 ): {
   drawerTopOffset: number;
   drawerHeight: string;
 } {
   const drawerTopOffset = isMobile ? verticalOffsets.toolbar : (verticalOffsets.drawers ?? placement.insetBlockStart);
-  const drawerHeight = `calc(100vh - ${drawerTopOffset}px - ${placement.insetBlockEnd}px)`;
+  const drawerHeight = `calc(100vh - ${drawerTopOffset}px - ${placement.insetBlockEnd}px - ${activeGlobalBottomDrawerSize}px)`;
   return { drawerTopOffset, drawerHeight };
 }

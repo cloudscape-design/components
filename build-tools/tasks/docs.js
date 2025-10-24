@@ -17,6 +17,7 @@ module.exports = function docs() {
   writeTestUtilsDocumentation({
     outDir: path.join(workspace.apiDocsPath, 'test-utils-doc'),
     tsconfigPath: require.resolve('../../src/test-utils/tsconfig.json'),
+    includeCoreMethods: false,
     domUtils: {
       root: 'src/test-utils/dom/index.ts',
       extraExports: ['default', 'ElementWrapper'],

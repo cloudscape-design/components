@@ -573,6 +573,31 @@ describe('Code editor component', () => {
       expect(errorTabId).toBeDefined();
       expect(wrapper.findPane()!.getElement().getAttribute('aria-labelledby')).toBe(errorTabId);
     });
+
+    test(`editor has aria-describedby to screenreader-only description`, () => {
+      const { wrapper } = renderCodeEditor();
+      const editorElement = wrapper.findEditor()!.getElement();
+
+      const ariaDescribedby = editorElement.getAttribute('aria-describedby');
+      expect(ariaDescribedby).toBeTruthy();
+
+      const descriptionElement = wrapper.getElement().querySelector(`#${ariaDescribedby}`);
+      expect(descriptionElement).toBeTruthy();
+
+      expect(descriptionElement!.textContent).toMatch(/[0-9]*\sErrors,\s[0-9]*\sWarnings/);
+    });
+
+    test('aria-describedby description updates when annotations change', () => {
+      editorMock.session.getAnnotations.mockReturnValueOnce([{ type: 'error' }]);
+      const { wrapper } = renderCodeEditor();
+
+      act(() => emulateAceAnnotationEvent!());
+
+      const editorElement = wrapper.findEditor()!.getElement();
+      const ariaDescribedby = editorElement.getAttribute('aria-describedby');
+      const descriptionElement = wrapper.getElement().querySelector(`#${ariaDescribedby}`);
+      expect(descriptionElement!.textContent).toMatch(/1\sErrors,\s0\sWarnings/);
+    });
   });
 
   describe('i18n', () => {

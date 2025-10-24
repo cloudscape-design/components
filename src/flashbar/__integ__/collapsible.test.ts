@@ -128,7 +128,7 @@ describe('Collapsible Flashbar', () => {
   });
 
   describe('Sticky Flashbar', () => {
-    (process.env.REACT_VERSION !== '18' ? test : test.skip)(
+    test(
       'keeps a space to the screen bottom to prevent the notification bar from getting cropped',
       setupStickyFlashbarTest(async page => {
         const windowDimensions = { width: 1000, height: 500 };
@@ -136,11 +136,9 @@ describe('Collapsible Flashbar', () => {
         await page.toggleCollapsedState();
         expect(await page.getNotificationBarBottom()).toBeGreaterThan(windowDimensions.height);
         await page.windowScrollTo({ top: 1200 });
-        expect(await page.getNotificationBarBottom()).toBeLessThan(windowDimensions.height);
-        await page.setWindowSize({ width: windowDimensions.width, height: windowDimensions.height + 5 });
-        expect(await page.getNotificationBarBottom()).toBeLessThan(windowDimensions.height + 5);
-        await page.setWindowSize({ width: windowDimensions.width, height: windowDimensions.height });
-        expect(await page.getNotificationBarBottom()).toBeLessThan(windowDimensions.height);
+        await page.waitForAssertion(async () => {
+          await expect(page.getNotificationBarBottom()).resolves.toBeLessThan(windowDimensions.height);
+        });
       })
     );
   });

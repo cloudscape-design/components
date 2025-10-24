@@ -50,9 +50,10 @@ export interface DrawerPayload {
   unmountHeader?: (container: HTMLElement) => void;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
   onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+  position?: 'side' | 'bottom';
 }
 
-export type RegisterDrawerMessage = Message<'registerLeftDrawer', DrawerPayload>;
+export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;
 export type UpdateDrawerConfigMessage = Message<
   'updateDrawerConfig',
   Omit<DrawerPayload, 'mountContent' | 'unmountContent' | 'mountHeader' | 'unmountHeader'>

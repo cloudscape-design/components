@@ -102,6 +102,13 @@ describe('checkMissingStyles', () => {
       );
       expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-missing-css-asset', {});
     });
+
+    test('should skip the check if iframe was detached', () => {
+      const mockDetachedDocument = { body: iframeDocument.body } as Document;
+      checkMissingStyles(mockDetachedDocument);
+      expect(consoleWarnSpy).not.toHaveBeenCalled();
+      expect(sendPanoramaMetricSpy).not.toHaveBeenCalled();
+    });
   });
 });
 
