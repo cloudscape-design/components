@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import clsx from 'clsx';
 
 import { InternalButton } from '../../button/internal';
 import { isLinkItem } from '../../button-dropdown/utils/utils';
@@ -18,10 +17,9 @@ import styles from '../styles.css.js';
 export interface UtilityProps {
   hideText: boolean;
   definition: TopNavigationProps.Utility;
-  offsetRight?: MenuDropdownProps['offsetRight'];
 }
 
-export default function Utility({ hideText, definition, offsetRight }: UtilityProps) {
+export default function Utility({ hideText, definition }: UtilityProps) {
   const hasIcon = !!definition.iconName || !!definition.iconUrl || !!definition.iconAlt || !!definition.iconSvg;
   const shouldHideText = hideText && !definition.disableTextCollapse && hasIcon;
   let ariaLabel = definition.ariaLabel ?? definition.text;
@@ -33,7 +31,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
     checkSafeUrl('TopNavigation', definition.href);
     if (definition.variant === 'primary-button') {
       return (
-        <span className={styles[`offset-right-${offsetRight}`]}>
+        <span className={styles['utility-content']}>
           <InternalButton
             variant="primary"
             href={definition.href}
@@ -53,7 +51,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
                   <>
                     {' '}
                     <span
-                      className={clsx(styles['utility-button-external-icon'], styles[`offset-right-${offsetRight}`])}
+                      className={styles['utility-button-external-icon']}
                       aria-label={definition.externalIconAriaLabel}
                       role={definition.externalIconAriaLabel ? 'img' : undefined}
                     >
@@ -69,7 +67,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
     } else {
       // Link
       return (
-        <span className={styles[`offset-right-${offsetRight}`]}>
+        <span className={styles['utility-content']}>
           <InternalLink
             variant="top-navigation"
             href={definition.href}
@@ -113,14 +111,17 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
     checkSafeUrlRecursively(definition.items);
 
     return (
-      <MenuDropdown
-        {...definition}
-        title={shouldShowTitle ? title : ''}
-        ariaLabel={ariaLabel}
-        offsetRight={offsetRight}
-      >
-        {!shouldHideText && definition.text}
-      </MenuDropdown>
+      <div className={styles['utility-content']}>
+        <MenuDropdown
+          {...definition}
+          title={shouldShowTitle ? title : ''}
+          ariaLabel={ariaLabel}
+          expandToViewport={true}
+          className={styles['utility-menu-dropdown-button']}
+        >
+          {!shouldHideText && definition.text}
+        </MenuDropdown>
+      </div>
     );
   }
 

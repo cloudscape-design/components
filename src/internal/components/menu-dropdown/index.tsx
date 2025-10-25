@@ -31,6 +31,8 @@ export const ButtonTrigger = React.forwardRef(
       expanded,
       children,
       onClick,
+      // Used by TopNavigation to apply styles.
+      className,
     }: ButtonTriggerProps,
     ref: React.Ref<any>
   ) => {
@@ -40,7 +42,7 @@ export const ButtonTrigger = React.forwardRef(
       <button
         ref={ref}
         type="button"
-        className={clsx(styles.button, styles[`offset-right-${offsetRight}`], testUtilsClass, {
+        className={clsx(styles.button, styles[`offset-right-${offsetRight}`], testUtilsClass, className, {
           [styles.expanded]: expanded,
         })}
         aria-label={ariaLabel}
@@ -79,6 +81,7 @@ const MenuDropdown = ({
   badge,
   offsetRight,
   children,
+  className,
   ...props
 }: MenuDropdownProps) => {
   const baseProps = getBaseProps(props);
@@ -94,6 +97,7 @@ const MenuDropdown = ({
     return (
       <ButtonTrigger
         testUtilsClass={testUtilsClass}
+        className={className}
         ref={triggerRef}
         disabled={disabled}
         expanded={isOpen}
