@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import addMonths from 'date-fns/addMonths';
+import dayjs from 'dayjs';
 import range from 'lodash/range';
 import MockDate from 'mockdate';
 
@@ -50,7 +50,7 @@ test('check a11y', async () => {
 });
 
 const eachMonthOfTheYear = range(0, 11).map(
-  month => addMonths(new Date('2025-01-01'), month).toISOString().split('T')[0]
+  month => dayjs(new Date('2025-01-01')).add(month, 'month').toISOString().split('T')[0]
 );
 test.each(eachMonthOfTheYear)('always renders 42 days, value=%s', value => {
   renderCalendar({ value });

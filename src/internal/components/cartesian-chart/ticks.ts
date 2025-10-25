@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { add, differenceInDays } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { ChartScale, NumericChartScale } from '../../components/cartesian-chart/scales';
 import { X_TICK_COUNT_RATIO, Y_TICK_COUNT_RATIO } from './constants';
@@ -66,7 +66,7 @@ function isMixedDayInterval(ticks: Date[]) {
 }
 
 function isDayInterval(a: Date, b: Date, difference = 1) {
-  return Math.abs(differenceInDays(a, b)) === difference;
+  return Math.abs(dayjs(a).diff(dayjs(b), 'day')) === difference;
 }
 
 function createTwoDayInterval(start: Date, max: Date) {
@@ -74,7 +74,7 @@ function createTwoDayInterval(start: Date, max: Date) {
   let curr = start;
   while (curr < max) {
     result.push(curr);
-    curr = add(curr, { days: 2 });
+    curr = dayjs(curr).add(2, 'day').toDate();
   }
   return result;
 }
