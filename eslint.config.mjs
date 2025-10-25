@@ -170,11 +170,6 @@ export default tsEslint.config(
               message:
                 '`react-virtual` gets shipped as a bundled dependency. Use `src/internal/vendor/react-virtual` as import source.',
             },
-            {
-              group: ['date-fns/*'],
-              message:
-                "Disallowed import '{{ path }}'. These imports are not allowed because are not specified as package exports in date-fns package.json.",
-            },
           ],
         },
       ],
