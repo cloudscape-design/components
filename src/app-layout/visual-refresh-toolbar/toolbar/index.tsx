@@ -6,11 +6,14 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
+import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { OnChangeParams } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import { AppLayoutInternals } from '../interfaces';
-import { BreadcrumbsSlot, ToolbarSlot } from '../skeleton/slots';
+import { ToolbarSkeleton } from '../skeleton/skeleton-parts';
+import { ToolbarSlot } from '../skeleton/slots';
+import { ToolbarBreadcrumbsSection, ToolbarContainer } from '../skeleton/toolbar-container';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
 import TriggerButton from './trigger-button';
 
@@ -197,7 +200,7 @@ export function AppLayoutToolbarImplementation({
           </div>
         )}
       </Transition>
-      <div className={clsx(styles['toolbar-container'], !!aiDrawer?.trigger && styles['with-ai-drawer'])}>
+      <ToolbarContainer hasAiDrawer={!!aiDrawer?.trigger}>
         {hasNavigation && (
           <nav {...navLandmarkAttributes} className={clsx(styles['universal-toolbar-nav'])}>
             <TriggerButton
@@ -221,12 +224,11 @@ export function AppLayoutToolbarImplementation({
           </nav>
         )}
         {(breadcrumbs || discoveredBreadcrumbs) && (
-          <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
-            <BreadcrumbsSlot
-              ownBreadcrumbs={appLayoutInternals.breadcrumbs}
-              discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
-            />
-          </div>
+          <ToolbarBreadcrumbsSection
+            ownBreadcrumbs={appLayoutInternals.breadcrumbs}
+            discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
+            includeTestUtils={true}
+          />
         )}
         {(drawers?.length ||
           globalDrawers?.length ||
@@ -256,7 +258,9 @@ export function AppLayoutToolbarImplementation({
             />
           </div>
         )}
-      </div>
+      </ToolbarContainer>
     </ToolbarSlot>
   );
 }
+
+export const AppLayoutToolbar = createWidgetizedComponent(AppLayoutToolbarImplementation, ToolbarSkeleton);
