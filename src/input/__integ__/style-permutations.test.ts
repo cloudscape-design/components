@@ -206,9 +206,9 @@ describe('Input Style Permutations', () => {
     })
   );
 
-  // Index 5: Dark theme, enabled, valid
+  // Index 5: Blue theme, enabled, valid
   test(
-    'dark theme (index 5) - border-radius 0px',
+    'blue theme (index 5) - border-radius 0px',
     setupTest(async page => {
       const value = await page.getComputedStyle(5, 'border-radius');
       expect(value).toBe('0px');
@@ -216,26 +216,26 @@ describe('Input Style Permutations', () => {
   );
 
   test(
-    'dark theme (index 5) - border-color #1f2937',
+    'blue theme (index 5) - border-color #3b82f6',
     setupTest(async page => {
       const value = await page.getComputedStyle(5, 'border-color');
-      expect(value).toBe('rgb(31, 41, 55)');
+      expect(value).toBe('rgb(59, 130, 246)');
     })
   );
 
   test(
-    'dark theme (index 5) - background-color #ffffff',
+    'blue theme (index 5) - background-color #eff6ff',
     setupTest(async page => {
       const value = await page.getComputedStyle(5, 'background-color');
-      expect(value).toBe('rgb(255, 255, 255)');
+      expect(value).toBe('rgb(239, 246, 255)');
     })
   );
 
   test(
-    'dark theme (index 5) - color #000000',
+    'blue theme (index 5) - color #1e40af',
     setupTest(async page => {
       const value = await page.getComputedStyle(5, 'color');
-      expect(value).toBe('rgb(0, 0, 0)');
+      expect(value).toBe('rgb(30, 64, 175)');
     })
   );
 
