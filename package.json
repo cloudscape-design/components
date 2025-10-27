@@ -25,7 +25,8 @@
     "start:integ": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.integ.cjs",
     "start:react18": "npm-run-all --parallel start:watch start:react18:dev",
     "start:react18:dev": "cross-env NODE_ENV=development REACT_VERSION=18 webpack serve --config pages/webpack.config.cjs",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@cloudscape-design/collection-hooks": "^1.0.0",
@@ -116,6 +117,7 @@
     "mississippi": "^4.0.0",
     "mockdate": "^3.0.5",
     "npm-run-all": "^4.1.5",
+    "patch-package": "^8.0.1",
     "prettier": "^3.6.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
