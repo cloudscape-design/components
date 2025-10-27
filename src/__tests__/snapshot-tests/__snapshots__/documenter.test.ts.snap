@@ -35136,6 +35136,37 @@ wrapper.clickSelectAll();
           },
         },
         {
+          "description": "Returns an inline token.",
+          "name": "findInlineToken",
+          "parameters": [
+            {
+              "description": "1-based index of the inline token to return",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "tokenIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "name": "findInlineTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
+              },
+            ],
+          },
+        },
+        {
           "name": "findPlaceholder",
           "parameters": [],
           "returnType": {
@@ -35367,6 +35398,81 @@ wrapper.selectOptionByValue('option_1');
         },
       ],
       "name": "TokenGroupItemWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the token description.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token dismiss button.",
+          "name": "findDismiss",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token tags.",
+          "name": "findTags",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "TokenWrapper",
     },
     {
       "methods": [
@@ -38119,81 +38225,6 @@ Returns the current value of the input.",
         },
       ],
       "name": "TimeInputWrapper",
-    },
-    {
-      "methods": [
-        {
-          "description": "Returns the token description.",
-          "name": "findDescription",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token dismiss button.",
-          "name": "findDismiss",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token label.",
-          "name": "findLabel",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token label tag.",
-          "name": "findLabelTag",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token tags.",
-          "name": "findTags",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "Array",
-            "typeArguments": [
-              {
-                "name": "ElementWrapper<HTMLElement>",
-              },
-            ],
-          },
-        },
-      ],
-      "name": "TokenWrapper",
     },
     {
       "methods": [
@@ -44424,6 +44455,37 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           },
         },
         {
+          "description": "Returns an inline token.",
+          "name": "findInlineToken",
+          "parameters": [
+            {
+              "description": "1-based index of the inline token to return",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "tokenIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "name": "findInlineTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
+              },
+            ],
+          },
+        },
+        {
           "name": "findPlaceholder",
           "parameters": [],
           "returnType": {
@@ -44530,6 +44592,61 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
         },
       ],
       "name": "TokenGroupItemWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the token description.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token dismiss button.",
+          "name": "findDismiss",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token tags.",
+          "name": "findTags",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "TokenWrapper",
     },
     {
       "methods": [
@@ -46466,61 +46583,6 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
         },
       ],
       "name": "TimeInputWrapper",
-    },
-    {
-      "methods": [
-        {
-          "description": "Returns the token description.",
-          "name": "findDescription",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token dismiss button.",
-          "name": "findDismiss",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token label.",
-          "name": "findLabel",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token label tag.",
-          "name": "findLabelTag",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token tags.",
-          "name": "findTags",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "MultiElementWrapper",
-            "typeArguments": [
-              {
-                "name": "ElementWrapper",
-              },
-            ],
-          },
-        },
-      ],
-      "name": "TokenWrapper",
     },
     {
       "methods": [

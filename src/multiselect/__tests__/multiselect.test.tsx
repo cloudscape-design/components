@@ -731,8 +731,12 @@ describe('With inline tokens', () => {
       <Multiselect inlineTokens={true} options={defaultOptions} selectedOptions={[defaultOptions[0]]} />
     );
 
-    // Trigger contains token labels and the number of selected items
-    expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
+    // Inline tokens are displayed in the trigger
+    const inlineTokens = wrapper.findInlineTokens();
+    expect(inlineTokens).toHaveLength(1);
+    expect(inlineTokens[0].findLabel().getElement()).toHaveTextContent('First');
+
+    // Trigger contains the number of selected items
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('(1)');
 
     // Default tokens below the trigger are not displayed
@@ -744,6 +748,7 @@ describe('With inline tokens', () => {
       <Multiselect inlineTokens={true} selectedOptions={[]} placeholder="Choose something" />
     );
 
+    expect(wrapper.findInlineTokens()).toHaveLength(0);
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('Choose something');
   });
 
@@ -755,10 +760,12 @@ describe('With inline tokens', () => {
       <Multiselect inlineTokens={true} options={extendedOptions} selectedOptions={[extendedOptions[0]]} />
     );
 
-    expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
-    expect(wrapper.findTrigger().getElement()).not.toHaveTextContent('description');
-    expect(wrapper.findTrigger().getElement()).not.toHaveTextContent('tag');
-    expect(wrapper.findTrigger().getElement()).not.toHaveTextContent('label');
+    const inlineToken = wrapper.findInlineToken(1);
+    expect(inlineToken).not.toBeNull();
+    expect(inlineToken!.findLabel().getElement()).toHaveTextContent('First');
+    expect(inlineToken!.findLabel().getElement()).not.toHaveTextContent('description');
+    expect(inlineToken!.findLabel().getElement()).not.toHaveTextContent('tag');
+    expect(inlineToken!.findLabel().getElement()).not.toHaveTextContent('label');
   });
 
   it('shows multiple selected options inline', () => {
@@ -770,9 +777,13 @@ describe('With inline tokens', () => {
       />
     );
 
-    expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
-    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Second');
-    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Third');
+    const inlineTokens = wrapper.findInlineTokens();
+    expect(inlineTokens).toHaveLength(3);
+    expect(inlineTokens[0].findLabel().getElement()).toHaveTextContent('First');
+    expect(inlineTokens[1].findLabel().getElement()).toHaveTextContent('Second');
+    expect(inlineTokens[2].findLabel().getElement()).toHaveTextContent('Third');
+
+    // Trigger contains the number of selected items
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('(3)');
   });
 });
