@@ -356,6 +356,7 @@ describe('Wizard Analytics', () => {
         totalFunnelSteps: 3,
         optionalStepNumbers: [2],
         funnelNameSelector: expect.any(String),
+        componentSelector: expect.any(String),
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
         componentTheme: expect.any(String),
