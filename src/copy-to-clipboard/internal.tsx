@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import InternalButton from '../button/internal';
@@ -29,8 +29,24 @@ export default function InternalCopyToClipboard({
   __internalRootRef,
   ...restProps
 }: InternalCopyToClipboardProps) {
-  const [status, setStatus] = useState<'pending' | 'success' | 'error'>('pending');
-  const [statusText, setStatusText] = useState('');
+  const [status, setStatus] = useState<'pending' | 'success' | 'error'>('success');
+  const [statusText, setStatusText] = useState(copySuccessText);
+
+  useEffect(() => {
+    if (navigator.permissions) {
+      navigator.permissions
+        .query({ name: 'clipboard-write' as PermissionName })
+        .then(result => {
+          if (result.state === 'denied') {
+            setStatus('error');
+            setStatusText(copyErrorText);
+          }
+        })
+        .catch(() => {
+          // Permissions API not supported or failed.
+        });
+    }
+  }, [copyErrorText]);
 
   const baseProps = getBaseProps(restProps);
   const onClick = () => {
@@ -41,8 +57,6 @@ export default function InternalCopyToClipboard({
       return;
     }
 
-    setStatus('pending');
-    setStatusText('');
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
