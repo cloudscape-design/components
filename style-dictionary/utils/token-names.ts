@@ -657,7 +657,6 @@ export type ColorsTokenName =
   | 'colorShadowMedium'
   | 'colorShadowSide'
   | 'colorStrokeChartLine'
-  | 'colorStrokeCodeEditorResizeHandler'
   | 'colorStrokeCodeEditorGutterActiveLineDefault'
   | 'colorStrokeCodeEditorGutterActiveLineHover'
   | 'colorTextAccent'
@@ -681,7 +680,6 @@ export type ColorsTokenName =
   | 'colorTextDirectionButtonDefault'
   | 'colorTextDirectionButtonDisabled'
   | 'colorTextCalendarDateHover'
-  | 'colorTextCalendarDateSelected'
   | 'colorTextCalendarMonth'
   | 'colorTextCodeEditorGutterActiveLine'
   | 'colorTextCodeEditorGutterDefault'
@@ -953,7 +951,6 @@ export type SpacingTokenName =
   | 'spaceLayoutTogglePadding'
   | 'spaceModalContentBottom'
   | 'spaceModalHorizontal'
-  | 'spaceOptionIconBigTop'
   | 'spacePanelContentBottom'
   | 'spacePanelContentTop'
   | 'spacePanelDividerMarginHorizontal'
@@ -1016,7 +1013,6 @@ export type SpacingTokenName =
   | 'spaceXxxs';
 export type ShadowsTokenName =
   | 'shadowContainer'
-  | 'shadowContainerStacked'
   | 'shadowContainerActive'
   | 'shadowDropdown'
   | 'shadowDropup'
