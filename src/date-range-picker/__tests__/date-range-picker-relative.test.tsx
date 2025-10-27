@@ -345,6 +345,24 @@ describe('Date range picker', () => {
           expect(getCustomRelativeRangeUnits(wrapper)).toEqual(['hours', 'minutes']);
         });
 
+        test(`${testMessagePrefix}renders custom relative range content when provided`, () => {
+          const customContent = <div data-testid="custom-relative-content">Custom relative range content</div>;
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity,
+            dateOnly,
+            renderRelativeRangeContent: () => customContent,
+          });
+
+          wrapper.findTrigger().click();
+          changeMode(wrapper, 'relative');
+
+          expect(wrapper.findDropdown()!.getElement()).toContainHTML(
+            '<div data-testid="custom-relative-content">Custom relative range content</div>'
+          );
+          expect(wrapper.findDropdown()!.findRelativeRangeRadioGroup()).toBeNull();
+        });
+
         describe('i18n', () => {
           test(`${testMessagePrefix}supports using relative range props from i18n provider`, () => {
             const { container } = render(
