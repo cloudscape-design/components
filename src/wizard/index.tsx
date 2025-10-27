@@ -13,6 +13,8 @@ import { getStepConfiguration } from './analytics';
 import { WizardProps } from './interfaces';
 import InternalWizard from './internal';
 
+import styles from './styles.css.js';
+
 function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: WizardProps) {
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
   const baseComponentProps = useBaseComponent(
@@ -50,6 +52,7 @@ function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: Wi
         .filter(step => step !== -1)}
       totalFunnelSteps={props.steps.length}
       stepConfiguration={getStepConfiguration(props.steps)}
+      componentSelectors={() => [`.${styles.root}`]}
     >
       <InternalWizard
         isLoadingNextStep={isLoadingNextStep}
