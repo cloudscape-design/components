@@ -1,22 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+import { createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 import { act } from '@cloudscape-design/test-utils-core/utils-dom';
 
 import InputWrapper from '../input';
-import DropdownWrapper from '../internal/dropdown';
+import { DropdownContentWrapper } from '../internal/dropdown-host';
 import OptionWrapper from '../internal/option';
-import OptionsListWrapper from '../internal/options-list';
 
 import mainStyles from '../../../autosuggest/styles.selectors.js';
 import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
-import optionStyles from '../../../internal/components/option/styles.selectors.js';
 import selectableStyles from '../../../internal/components/selectable-item/styles.selectors.js';
 
-export class AutosuggestDropdownWrapper extends ComponentWrapper {
+export class AutosuggestDropdownWrapper extends DropdownContentWrapper {
   findOptions(): Array<OptionWrapper> {
     return this.findAll(`.${selectableStyles['selectable-item']}[data-test-index]`).map(
       (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
@@ -36,7 +34,7 @@ export class AutosuggestDropdownWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns an option from the autosuggest by it's value
+   * Returns an option from the autosuggest by its value
    *
    * @param value The 'value' of the option.
    */
@@ -56,47 +54,6 @@ export class AutosuggestDropdownWrapper extends ComponentWrapper {
       `.${selectableStyles['selectable-item']}[data-group-index="${groupIndex}"][data-in-group-index="${optionIndex}"]`,
       OptionWrapper
     );
-  }
-
-  /**
-   * Use this element to scroll through the list of options
-   */
-  findOptionsContainer(): ElementWrapper | null {
-    return this.findByClassName(OptionsListWrapper.rootSelector);
-  }
-
-  findFooterRegion(): ElementWrapper | null {
-    return this.findByClassName(footerStyles.root);
-  }
-
-  findOpenDropdown(): ElementWrapper | null {
-    const dropdown = new DropdownWrapper(this.getElement());
-    return dropdown.findOpenDropdown();
-  }
-
-  findHighlightedOption(): OptionWrapper | null {
-    return this.findComponent(`.${selectableStyles.highlighted}`, OptionWrapper);
-  }
-
-  /**
-   * Returns all the selected options.
-   */
-  findDisabledOptions(): Array<OptionWrapper> {
-    return this.findAllByClassName(selectableStyles.disabled).map(
-      (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
-    );
-  }
-
-  /**
-   * Returns highlighted text fragments from all of the options.
-   * Options get highlighted when they match the value of the input field.
-   */
-  findHighlightedMatches(): Array<ElementWrapper> {
-    return this.findAllByClassName(optionStyles['filtering-match-highlight']);
-  }
-
-  findHighlightedAriaLiveRegion(): ElementWrapper | null {
-    return this.findHighlightedOption()?.findByClassName(selectableStyles['screenreader-content']) ?? null;
   }
 }
 
