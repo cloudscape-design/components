@@ -8,13 +8,13 @@ import TokenWrapper from '../token';
 import TokenGroupWrapper from '../token-group';
 import { TokenGroupItemWrapper } from '../token-group/token';
 
-import tokenTestingStyles from '../../../token/test-classes/styles.css.js';
 import inputStyles from '../../../input/styles.selectors.js';
 import buttonTriggerStyles from '../../../internal/components/button-trigger/styles.selectors.js';
 import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import multiselectStyles from '../../../multiselect/styles.selectors.js';
 import selectPartsStyles from '../../../select/parts/styles.selectors.js';
+import tokenTestingStyles from '../../../token/test-classes/styles.selectors.js';
 import tokenGroupStyles from '../../../token-group/styles.selectors.js';
 
 export default class MultiselectWrapper extends DropdownHostComponentWrapper {
