@@ -63,6 +63,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
       expect(funnelStartEvent.props).toEqual({
         componentVersion: expect.any(String),
         funnelNameSelector: expect.any(String),
+        componentSelector: expect.any(String),
         funnelVersion: expect.any(String),
         funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelName: 'Create Resource',
