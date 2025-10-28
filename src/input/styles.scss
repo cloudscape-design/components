@@ -57,10 +57,19 @@
 
   &.input-readonly {
     @include styles.form-readonly-element(
-      $background-color: var(#{custom-props.$styleBackgroundReadonly}, awsui.$color-background-input-default),
-      $border-color: var(#{custom-props.$styleBorderColorReadonly}, awsui.$color-border-input-disabled)
+      $background-color: var(
+          #{custom-props.$styleBackgroundReadonly},
+          var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+        ),
+      $border-color: var(
+          #{custom-props.$styleBorderColorReadonly},
+          var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-disabled)
+        )
     );
-    color: var(#{custom-props.$styleColorReadonly}, awsui.$color-text-body-default);
+    color: var(
+      #{custom-props.$styleColorReadonly},
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default)
+    );
     box-shadow: var(#{custom-props.$styleBoxShadowReadonly});
   }
 
@@ -100,7 +109,7 @@
     box-shadow: none;
   }
 
-  &:hover:not(:focus):not(:disabled) {
+  &:hover:not(:focus):not(:disabled):not(:read-only) {
     border-color: var(
       #{custom-props.$styleBorderColorHover},
       var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
