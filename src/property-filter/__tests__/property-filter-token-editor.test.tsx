@@ -328,6 +328,7 @@ describe.each([false, true])('with i18n-provider %s', withI18nProvider => {
       withI18nProvider
     );
     const editor = openEditor(0, { expandToViewport: false });
+
     editor.valueAutosuggest().focus();
     editor.valueAutosuggest().setInputValue('123');
     expect(editor.valueAutosuggest().findEnteredTextOption()!.getElement()).toHaveTextContent('Use: "123"');
