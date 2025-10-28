@@ -108,11 +108,14 @@ export interface ButtonGroupProps extends BaseComponentProps {
 export interface InternalIconButton extends ButtonGroupProps.IconButton {
   analyticsAction?: string;
 }
+export interface InternalIconToggleButton extends ButtonGroupProps.IconToggleButton {
+  analyticsAction?: string;
+}
 
 export type InternalItemOrGroup = InternalItem | ButtonGroupProps.Group;
 export type InternalItem =
   | InternalIconButton
-  | ButtonGroupProps.IconToggleButton
+  | InternalIconToggleButton
   | ButtonGroupProps.IconFileInput
   | ButtonGroupProps.MenuDropdown;
 
