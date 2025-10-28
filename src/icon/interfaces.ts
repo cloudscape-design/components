@@ -188,6 +188,7 @@ export namespace IconProps {
     | 'status-in-progress'
     | 'status-info'
     | 'status-negative'
+    | 'status-not-started'
     | 'status-pending'
     | 'status-positive'
     | 'status-stopped'
