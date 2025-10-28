@@ -147,6 +147,9 @@ export namespace SideNavigationProps {
     text: string;
     href: string;
     external?: boolean;
+    /**
+     * @deprecated Use i18nStrings.externalIconAriaLabel instead.
+     */
     externalIconAriaLabel?: string;
     info?: React.ReactNode;
   }
