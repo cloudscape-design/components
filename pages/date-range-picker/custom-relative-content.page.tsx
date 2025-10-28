@@ -78,7 +78,7 @@ export default function DatePickerScenario() {
 
   return (
     <SimplePage
-      title="Date range picker: custom relative cnotent"
+      title="Date range picker: custom relative content"
       settings={<Settings settings={settings} setSettings={setSettings} />}
     >
       <FormField label="Custom Relative Range Picker field">

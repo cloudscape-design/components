@@ -118,7 +118,7 @@ export default function RelativeRangePicker({
   );
 
   if (renderRelativeRangeContent) {
-    return <div>{renderRelativeRangeContent(initialRange, onChangeRangeSize)}</div>;
+    return <>{renderRelativeRangeContent(initialRange, onChangeRangeSize)}</>;
   }
 
   const showRadioControl = clientOptions.length > 0;
