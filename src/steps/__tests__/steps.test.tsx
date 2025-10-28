@@ -207,6 +207,13 @@ describe('Steps', () => {
       expect(customDetails[0].getElement()).toHaveTextContent('Step details');
     });
 
+    test('renders custom icon when using renderStep', () => {
+      const wrapper = renderSteps({ steps: stepsForCustomRender, renderStep: customRenderStep });
+
+      const customHeaders = wrapper.findAll('[data-testid="custom-icon"]');
+      expect(customHeaders).toHaveLength(stepsForCustomRender.length);
+    });
+
     test('does not render status indicators when using renderStep with icon', () => {
       const wrapper = renderSteps({ steps: stepsForCustomRender, renderStep: customRenderStep });
 
