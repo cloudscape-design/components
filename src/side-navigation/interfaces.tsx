@@ -50,7 +50,6 @@ export interface SideNavigationProps extends BaseComponentProps {
    *      The anchor also has the attributes `target="_blank"` and `rel="noopener"`.
    *      Additionally, the `activeHref` property won't be modified when a user chooses the link.
    * - `externalIconAriaLabel` (string) - Adds an aria-label to the external icon.
-   *      @i18n
    * - `info` (ReactNode) - Enables you to display content next to the link. Although it is technically possible to insert any content,
    *     our UX guidelines allow only to add a Badge and/or a "New" label.
    *
@@ -147,6 +146,9 @@ export namespace SideNavigationProps {
     text: string;
     href: string;
     external?: boolean;
+    /**
+     * @i18n
+     */
     externalIconAriaLabel?: string;
     info?: React.ReactNode;
   }
