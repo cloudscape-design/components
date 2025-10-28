@@ -22,9 +22,9 @@ export default function DatePickerScenario() {
         <Header variant="h2" description="Please select the relative time.">
           Custom Relative Control
         </Header>
-        <Grid gridDefinition={[{ colspan: 2 }, { colspan: 10 }, { colspan: 2 }, { colspan: 10 }]}>
-          <b>Minutes</b>
-          <SpaceBetween size="xs" direction="horizontal">
+        <Grid gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
+          <b key="select-minutes-label">Minutes</b>
+          <SpaceBetween size="xs" direction="horizontal" key="select-minutes-values">
             <Link
               onFollow={() =>
                 setSelectedDate({
@@ -70,8 +70,8 @@ export default function DatePickerScenario() {
               45
             </Link>
           </SpaceBetween>
-          Selected: {selectedRange ? selectedRange.amount + ' ' + selectedRange.unit : 'Nothing Selected.'}
         </Grid>
+        Selected: {selectedRange ? selectedRange.amount + ' ' + selectedRange.unit : 'Nothing Selected.'}
       </div>
     );
   };
