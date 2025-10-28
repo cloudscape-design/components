@@ -45,7 +45,7 @@ const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JS
   pending: <InternalIcon name="status-pending" size={size} />,
   'in-progress': <InternalIcon name="status-in-progress" size={size} />,
   loading: <InternalSpinner />,
-  'not-started-yet': <InternalIcon name="status-not-started" size={size} />,
+  'not-started': <InternalIcon name="status-not-started" size={size} />,
 });
 
 export default function StatusIndicator({
