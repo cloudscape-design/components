@@ -109,7 +109,7 @@
     box-shadow: none;
   }
 
-  &:hover:not(:focus):not(:disabled):not(:read-only) {
+  &:hover:not(:focus):not(:disabled):not(.input-readonly) {
     border-color: var(
       #{custom-props.$styleBorderColorHover},
       var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
