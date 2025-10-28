@@ -4,6 +4,7 @@ import { ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom'
 
 import InputWrapper from '../input';
 import DropdownHostComponentWrapper from '../internal/dropdown-host';
+import TokenWrapper from '../token';
 import TokenGroupWrapper from '../token-group';
 import { TokenGroupItemWrapper } from '../token-group/token';
 
@@ -13,6 +14,7 @@ import dropdownStatusStyles from '../../../internal/components/dropdown-status/s
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import multiselectStyles from '../../../multiselect/styles.selectors.js';
 import selectPartsStyles from '../../../select/parts/styles.selectors.js';
+import tokenTestingStyles from '../../../token/test-classes/styles.selectors.js';
 import tokenGroupStyles from '../../../token-group/styles.selectors.js';
 
 export default class MultiselectWrapper extends DropdownHostComponentWrapper {
@@ -76,6 +78,26 @@ export default class MultiselectWrapper extends DropdownHostComponentWrapper {
 
   findTrigger(): ElementWrapper {
     return this.findByClassName(buttonTriggerStyles['button-trigger'])!;
+  }
+
+  findInlineTokens(): Array<TokenWrapper> {
+    return (
+      this.findByClassName(selectPartsStyles['inline-token-list'])
+        ?.findAllByClassName(tokenTestingStyles.root)
+        .map(tokenElement => new TokenWrapper(tokenElement.getElement())) ?? []
+    );
+  }
+
+  /**
+   * Returns an inline token.
+   *
+   * @param tokenIndex 1-based index of the inline token to return
+   */
+  findInlineToken(tokenIndex: number): TokenWrapper | null {
+    return this.findComponent(
+      `.${selectPartsStyles['inline-token-list']} > .${tokenTestingStyles.root}:nth-child(${tokenIndex})`,
+      TokenWrapper
+    );
   }
 
   @usesDom
