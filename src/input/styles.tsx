@@ -20,24 +20,28 @@ export function getInputStyles(style: InputProps['style']) {
         [customCssProps.styleBackgroundDisabled]: style.root.backgroundColor?.disabled,
         [customCssProps.styleBackgroundHover]: style.root.backgroundColor?.hover,
         [customCssProps.styleBackgroundFocus]: style.root.backgroundColor?.focus,
+        [customCssProps.styleBackgroundReadonly]: style.root.backgroundColor?.readonly,
       }),
       ...(style?.root?.borderColor && {
         [customCssProps.styleBorderColorDefault]: style.root.borderColor?.default,
         [customCssProps.styleBorderColorDisabled]: style.root.borderColor?.disabled,
         [customCssProps.styleBorderColorHover]: style.root.borderColor?.hover,
         [customCssProps.styleBorderColorFocus]: style.root.borderColor?.focus,
+        [customCssProps.styleBorderColorReadonly]: style.root.borderColor?.readonly,
       }),
       ...(style?.root?.boxShadow && {
         [customCssProps.styleBoxShadowDefault]: style.root.boxShadow?.default,
         [customCssProps.styleBoxShadowDisabled]: style.root.boxShadow?.disabled,
         [customCssProps.styleBoxShadowHover]: style.root.boxShadow?.hover,
         [customCssProps.styleBoxShadowFocus]: style.root.boxShadow?.focus,
+        [customCssProps.styleBoxShadowReadonly]: style.root.boxShadow?.readonly,
       }),
       ...(style?.root?.color && {
         [customCssProps.styleColorDefault]: style.root.color?.default,
         [customCssProps.styleColorDisabled]: style.root.color?.disabled,
         [customCssProps.styleColorHover]: style.root.color?.hover,
         [customCssProps.styleColorFocus]: style.root.color?.focus,
+        [customCssProps.styleColorReadonly]: style.root.color?.readonly,
       }),
       ...(style?.placeholder && {
         [customCssProps.stylePlaceholderColor]: style.placeholder?.color,

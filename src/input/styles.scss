@@ -56,7 +56,12 @@
   block-size: awsui.$size-vertical-input;
 
   &.input-readonly {
-    @include styles.form-readonly-element;
+    @include styles.form-readonly-element(
+      $background-color: var(#{custom-props.$styleBackgroundReadonly}, awsui.$color-background-input-default),
+      $border-color: var(#{custom-props.$styleBorderColorReadonly}, awsui.$color-border-input-disabled)
+    );
+    color: var(#{custom-props.$styleColorReadonly}, awsui.$color-text-body-default);
+    box-shadow: var(#{custom-props.$styleBoxShadowReadonly});
   }
 
   @include placeholder {

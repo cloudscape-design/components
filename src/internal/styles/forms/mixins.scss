@@ -153,10 +153,13 @@
   cursor: auto;
 }
 
-@mixin form-readonly-element {
-  background-color: awsui.$color-background-input-default;
-  border-block: awsui.$border-width-field solid awsui.$color-border-input-disabled;
-  border-inline: awsui.$border-width-field solid awsui.$color-border-input-disabled;
+@mixin form-readonly-element(
+  $background-color: awsui.$color-background-input-default,
+  $border-color: awsui.$color-border-input-disabled
+) {
+  background-color: $background-color;
+  border-block: awsui.$border-width-field solid $border-color;
+  border-inline: awsui.$border-width-field solid $border-color;
 }
 
 @mixin button-trigger-readonly-element {

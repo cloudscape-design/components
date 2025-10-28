@@ -95,6 +95,11 @@ const customCssPropertiesList = [
   'styleBoxShadowDefault',
   'styleBoxShadowDisabled',
   'styleBoxShadowHover',
+  // Readonly state
+  'styleBackgroundReadonly',
+  'styleBorderColorReadonly',
+  'styleBoxShadowReadonly',
+  'styleColorReadonly',
   // Focus state
   'styleBackgroundFocus',
   'styleBorderColorFocus',

@@ -215,12 +215,14 @@ export namespace InputProps {
         disabled?: string;
         focus?: string;
         hover?: string;
+        readonly?: string;
       };
       borderColor?: {
         default?: string;
         disabled?: string;
         focus?: string;
         hover?: string;
+        readonly?: string;
       };
       borderRadius?: string;
       borderWidth?: string;
@@ -229,12 +231,14 @@ export namespace InputProps {
         disabled?: string;
         focus?: string;
         hover?: string;
+        readonly?: string;
       };
       color?: {
         default?: string;
         disabled?: string;
         focus?: string;
         hover?: string;
+        readonly?: string;
       };
       fontSize?: string;
       fontWeight?: string;
