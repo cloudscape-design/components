@@ -313,6 +313,7 @@ export const registerRuntimeBottomDrawer = () => {
       triggerButton: 'Trigger button',
       resizeHandle: 'Resize handle',
       expandedModeButton: 'Expanded mode button',
+      resizeHandleTooltipText: 'Drag or select to resize',
     },
     onToggle: event => {
       console.log('circle-global drawer on toggle', event.detail);

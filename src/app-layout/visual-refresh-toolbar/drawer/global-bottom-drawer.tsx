@@ -162,10 +162,11 @@ function AppLayoutGlobalBottomDrawerImplementation({
   if (!isMobile && activeDrawer?.isExpandable) {
     drawerActions = [
       {
-        type: 'icon-button',
+        type: 'icon-toggle-button',
         id: 'expand',
         iconName: isExpanded ? 'shrink' : 'expand',
         text: activeDrawer?.ariaLabels?.expandedModeButton ?? '',
+        pressed: !!isExpanded,
         analyticsAction: isExpanded ? 'expand' : 'collapse',
       },
       ...drawerActions,
@@ -242,7 +243,8 @@ function AppLayoutGlobalBottomDrawerImplementation({
             <div className={clsx(styles['global-drawer-wrapper'])}>
               {!isMobile && !isExpanded && <div className={styles['drawer-gap']} />}
               {!isMobile && activeDrawer?.resizable && !isExpanded && (
-                <div className={styles['drawer-slider']}>
+                // Prevents receiving focus in Firefox
+                <div className={styles['drawer-slider']} tabIndex={-1}>
                   <PanelResizeHandle
                     ref={refs?.slider}
                     position="bottom"

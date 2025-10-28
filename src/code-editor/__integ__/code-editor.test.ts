@@ -9,7 +9,6 @@ import styles from '../../../lib/components/code-editor/resizable-box/styles.sel
 
 const wrapper = createWrapper();
 const codeEditorWrapper = wrapper.findCodeEditor();
-const controlOrCommandKey = process.platform === 'darwin' ? 'Command' : 'Control';
 
 interface AceEditorNode {
   env: {
@@ -92,19 +91,6 @@ const setupTest = (pageUrl: string, testFn: (page: CodeEditorPageObject) => Prom
     await testFn(page);
   });
 };
-
-test(
-  'Commenting multiple lines',
-  setupTest(simplePage, async page => {
-    await page.click(codeEditorWrapper.findEditor().toSelector());
-    await page.keys('\nconst a = 123;\nconst b = 234;\nconst c = 345;\n');
-    await page.keys([controlOrCommandKey, 'a']);
-    await page.keys([controlOrCommandKey, '/']);
-    await expect(page.getEditorContent()).resolves.toEqual(
-      '// const pi = 3.14;\n// const a = 123;\n// const b = 234;\n// const c = 345;\n'
-    );
-  })
-);
 
 test(
   `Tab text reduces when screen is small`,

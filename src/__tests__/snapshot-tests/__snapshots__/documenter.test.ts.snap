@@ -14681,6 +14681,236 @@ including the date, month, week, time, datetime-local, number and range types.",
       "type": "InputProps.Step",
     },
     {
+      "inlineType": {
+        "name": "InputProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "name": "color",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontSize",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontStyle",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontWeight",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "placeholder",
+            "optional": true,
+            "type": "{ color?: string | undefined; fontSize?: string | undefined; fontStyle?: string | undefined; fontWeight?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "borderColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderWidth",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "boxShadow",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "name": "fontSize",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontWeight",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "root",
+            "optional": true,
+            "type": "{ backgroundColor?: { default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; } | undefined; ... 8 more ...; paddingInline?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "InputProps.Style",
+    },
+    {
       "defaultValue": "'text'",
       "description": "Specifies the type of control to render.
 Inputs with a \`number\` type use the native element behavior, which might
@@ -35168,6 +35398,37 @@ wrapper.clickSelectAll();
           },
         },
         {
+          "description": "Returns an inline token.",
+          "name": "findInlineToken",
+          "parameters": [
+            {
+              "description": "1-based index of the inline token to return",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "tokenIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "name": "findInlineTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
+              },
+            ],
+          },
+        },
+        {
           "name": "findPlaceholder",
           "parameters": [],
           "returnType": {
@@ -35399,6 +35660,81 @@ wrapper.selectOptionByValue('option_1');
         },
       ],
       "name": "TokenGroupItemWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the token description.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token dismiss button.",
+          "name": "findDismiss",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token tags.",
+          "name": "findTags",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "TokenWrapper",
     },
     {
       "methods": [
@@ -38151,81 +38487,6 @@ Returns the current value of the input.",
         },
       ],
       "name": "TimeInputWrapper",
-    },
-    {
-      "methods": [
-        {
-          "description": "Returns the token description.",
-          "name": "findDescription",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token dismiss button.",
-          "name": "findDismiss",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token label.",
-          "name": "findLabel",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token label tag.",
-          "name": "findLabelTag",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token tags.",
-          "name": "findTags",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "Array",
-            "typeArguments": [
-              {
-                "name": "ElementWrapper<HTMLElement>",
-              },
-            ],
-          },
-        },
-      ],
-      "name": "TokenWrapper",
     },
     {
       "methods": [
@@ -44508,6 +44769,37 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           },
         },
         {
+          "description": "Returns an inline token.",
+          "name": "findInlineToken",
+          "parameters": [
+            {
+              "description": "1-based index of the inline token to return",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "tokenIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "name": "findInlineTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
+              },
+            ],
+          },
+        },
+        {
           "name": "findPlaceholder",
           "parameters": [],
           "returnType": {
@@ -44614,6 +44906,61 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
         },
       ],
       "name": "TokenGroupItemWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the token description.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token dismiss button.",
+          "name": "findDismiss",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token tags.",
+          "name": "findTags",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "TokenWrapper",
     },
     {
       "methods": [
@@ -46550,61 +46897,6 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
         },
       ],
       "name": "TimeInputWrapper",
-    },
-    {
-      "methods": [
-        {
-          "description": "Returns the token description.",
-          "name": "findDescription",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token dismiss button.",
-          "name": "findDismiss",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token label.",
-          "name": "findLabel",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token label tag.",
-          "name": "findLabelTag",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token tags.",
-          "name": "findTags",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "MultiElementWrapper",
-            "typeArguments": [
-              {
-                "name": "ElementWrapper",
-              },
-            ],
-          },
-        },
-      ],
-      "name": "TokenWrapper",
     },
     {
       "methods": [
