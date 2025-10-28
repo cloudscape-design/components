@@ -240,12 +240,12 @@ export namespace InputProps {
       fontWeight?: string;
       paddingBlock?: string;
       paddingInline?: string;
-      placeholder?: {
-        color?: string;
-        fontSize?: string;
-        fontStyle?: string;
-        fontWeight?: string;
-      };
+    };
+    placeholder?: {
+      color?: string;
+      fontSize?: string;
+      fontStyle?: string;
+      fontWeight?: string;
     };
   }
 }

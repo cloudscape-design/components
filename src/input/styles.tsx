@@ -39,11 +39,11 @@ export function getInputStyles(style: InputProps['style']) {
         [customCssProps.styleColorHover]: style.root.color?.hover,
         [customCssProps.styleColorFocus]: style.root.color?.focus,
       }),
-      ...(style?.root?.placeholder && {
-        [customCssProps.stylePlaceholderColor]: style.root.placeholder?.color,
-        [customCssProps.stylePlaceholderFontSize]: style.root.placeholder?.fontSize,
-        [customCssProps.stylePlaceholderFontWeight]: style.root.placeholder?.fontWeight,
-        [customCssProps.stylePlaceholderFontStyle]: style.root.placeholder?.fontStyle,
+      ...(style?.placeholder && {
+        [customCssProps.stylePlaceholderColor]: style.placeholder?.color,
+        [customCssProps.stylePlaceholderFontSize]: style.placeholder?.fontSize,
+        [customCssProps.stylePlaceholderFontWeight]: style.placeholder?.fontWeight,
+        [customCssProps.stylePlaceholderFontStyle]: style.placeholder?.fontStyle,
       }),
     };
 

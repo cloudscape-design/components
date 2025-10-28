@@ -47,12 +47,12 @@ const permutations = createPermutations<InputProps>([
           fontWeight: '500',
           paddingBlock: '12px',
           paddingInline: '16px',
-          placeholder: {
-            color: '#14b8a6',
-            fontSize: '14px',
-            fontStyle: 'italic',
-            fontWeight: '400',
-          },
+        },
+        placeholder: {
+          color: '#14b8a6',
+          fontSize: '14px',
+          fontStyle: 'italic',
+          fontWeight: '400',
         },
       },
       {
