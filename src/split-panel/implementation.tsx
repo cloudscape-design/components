@@ -190,7 +190,10 @@ export function SplitPanelImplementation({
       className={testUtilStyles.slider}
       tooltipText={i18nStrings.resizeHandleTooltipText}
       ariaLabel={i18nStrings.resizeHandleAriaLabel}
-      ariaValuenow={relativeSize}
+      // Allows us to use the logical left/right keys to move the slider left/right,
+      // but match aria keyboard behavior of using left/right to decrease/increase
+      // the slider value.
+      ariaValuenow={position === 'bottom' ? relativeSize : 100 - relativeSize}
       position={position}
       onKeyDown={onKeyDown}
       onPointerDown={onSliderPointerDown}
