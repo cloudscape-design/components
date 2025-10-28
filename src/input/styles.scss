@@ -96,10 +96,19 @@
   }
 
   &:hover:not(:focus):not(:disabled) {
-    border-color: var(#{custom-props.$styleBorderColorHover}, awsui.$color-border-input-default);
-    color: var(#{custom-props.$styleColorHover}, awsui.$color-text-body-default);
-    background-color: var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-input-default);
-    box-shadow: var(#{custom-props.$styleBoxShadowHover});
+    border-color: var(
+      #{custom-props.$styleBorderColorHover},
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+    );
+    color: var(
+      #{custom-props.$styleColorHover},
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-body-default)
+    );
+    background-color: var(
+      #{custom-props.$styleBackgroundHover},
+      var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+    );
+    box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
   }
 
   &.input-invalid {
