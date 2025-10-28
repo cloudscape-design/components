@@ -23070,7 +23070,6 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "defaultValue": "'vertical'",
       "description": "The visual orientation of the steps (vertical or horizontal).
 By default the orientation is vertical.",
       "inlineType": {
