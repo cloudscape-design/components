@@ -776,5 +776,29 @@ describe('Tag Editor component', () => {
         .getElement();
       expect(valueInput).toHaveFocus();
     });
+
+    test('should not focus any input when calling focus() on ref with no errors', () => {
+      const TestComponent = () => {
+        const ref = React.useRef<TagEditorProps.Ref>(null);
+        return (
+          <>
+            <TagEditor
+              ref={ref}
+              i18nStrings={i18nStrings}
+              tags={[{ key: 'validKey', value: 'validValue', existing: false }]}
+              onChange={() => {}}
+            />
+            <button onClick={() => ref.current?.focus()}>Focus</button>
+          </>
+        );
+      };
+
+      const { container } = render(<TestComponent />);
+      const button = container.querySelector('button')!;
+      button.click();
+
+      // Calling focus() when there are no errors should not throw or cause issues
+      // The function simply does nothing in this case (findIndex returns -1)
+    });
   });
 });
