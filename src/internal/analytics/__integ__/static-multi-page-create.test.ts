@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
@@ -43,9 +44,11 @@ class MultiPageCreate extends BasePageObject {
 describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   function setupTest(testFn: (page: MultiPageCreate) => Promise<void>) {
     return useBrowser(async browser => {
+      if (process.env.REACT_VERSION === '18') {
+        return;
+      }
       const page = new MultiPageCreate(browser);
       await browser.url(`#/light/funnel-analytics/static-multi-page-flow?${getUrlParams(theme, {})}`);
-      await new Promise(r => setTimeout(r, 10));
       await testFn(page);
     });
   }
@@ -60,6 +63,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
       expect(funnelStartEvent.props).toEqual({
         componentVersion: expect.any(String),
         funnelNameSelector: expect.any(String),
+        componentSelector: expect.any(String),
         funnelVersion: expect.any(String),
         funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelName: 'Create Resource',

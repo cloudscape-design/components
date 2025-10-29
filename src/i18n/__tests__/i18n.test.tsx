@@ -4,9 +4,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import * as IntlMessageFormat from 'intl-messageformat';
-import { range } from 'lodash';
+import range from 'lodash/range';
 
 import { I18nProvider, I18nProviderProps } from '../../../lib/components/i18n';
+import { namespace } from '../../../lib/components/i18n/context';
 import { MESSAGES, TestComponent } from './test-component';
 
 afterEach(() => {
@@ -22,7 +23,7 @@ describe('with custom "lang" on <html>', () => {
     document.documentElement.lang = 'es';
 
     const spanishMessages: I18nProviderProps.Messages = {
-      '@cloudscape-design/components': {
+      [namespace]: {
         es: {
           'test-component': {
             topLevelString: 'Custom Spanish string',
@@ -67,7 +68,7 @@ it('falls back to "en" if no locale is provided', () => {
 
 it('falls back to a less specific language tag if a string is not provided for a language', () => {
   const britishEnglishMessages: I18nProviderProps.Messages = {
-    '@cloudscape-design/components': {
+    [namespace]: {
       'en-GB': {
         'test-component': {
           topLevelString: 'Custom string - colour',
@@ -111,7 +112,7 @@ it("doesn't override existing strings", () => {
 
 it('merges provided message objects in order', () => {
   const messageOverride: I18nProviderProps.Messages = {
-    '@cloudscape-design/components': {
+    [namespace]: {
       en: {
         'test-component': {
           topLevelString: 'My custom string',
@@ -131,7 +132,7 @@ it('merges provided message objects in order', () => {
 
 it('allows nesting providers', () => {
   const messageOverride: I18nProviderProps.Messages = {
-    '@cloudscape-design/components': {
+    [namespace]: {
       en: {
         'test-component': {
           topLevelString: 'My custom string',

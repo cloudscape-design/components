@@ -1,14 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
 import { KeyCode } from '../../internal/keycode';
-import { KeyboardNavigationProcessor, KeyboardNavigationProvider } from '../keyboard-navigation';
-import { KeyboardNavigationItem as Item, keyboardNavigationItems as items } from './items';
+import { itemsWithFocusables as items, ItemWithFocusables as Item } from './items';
 
 const TestTreeView = (props: Partial<TreeViewProps<Item>> = {}) => (
   <TreeView
@@ -28,7 +27,7 @@ const TestTreeView = (props: Partial<TreeViewProps<Item>> = {}) => (
 function renderTreeView(props: Partial<TreeViewProps<Item>> = {}) {
   const { container, rerender } = render(<TestTreeView {...props} />);
   const wrapper = createWrapper(container).findTreeView()!;
-  return { container, treeView: container.querySelector('[role="tree"]')!, wrapper, rerender };
+  return { container, treeView: container.querySelector('ul')!, wrapper, rerender };
 }
 
 function readActiveElement() {
@@ -62,92 +61,10 @@ test('tree-items have flat indices', () => {
   // second root level item's index should be updated
   expect(secondRootLevelItem.getElement().getAttribute(treeItemIndexAttribute)).toBe('3');
 
-  const allItems = wrapper.findItems();
-  const lastRootLevelItem = allItems[allItems.length - 1];
-  expect(lastRootLevelItem.getElement().getAttribute(treeItemIndexAttribute)).toBe(`${allItems.length - 1}`);
-});
-
-describe('KeyboardNavigationProvider', () => {
-  test('does not throw when not initialized', () => {
-    const navigation = new KeyboardNavigationProcessor({
-      current: {
-        updateFocusTarget: () => {},
-        getFocusTarget: () => null,
-        isRegistered: () => false,
-      },
-    });
-    expect(() => navigation.getNextFocusTarget()).not.toThrow();
-    expect(() => navigation.refresh()).not.toThrow();
-    expect(() => navigation.cleanup()).not.toThrow();
-  });
-
-  test('throws no error when focusing on incorrect target', () => {
-    function TestTreeView() {
-      const treeViewRef = useRef<HTMLUListElement>(null);
-      return (
-        <KeyboardNavigationProvider getTreeView={() => treeViewRef.current}>
-          <ul ref={treeViewRef} data-testid="tree-view">
-            <li>
-              <button tabIndex={0} data-testid="random-button">
-                Random button
-              </button>
-            </li>
-            <li>
-              <svg focusable="false">
-                <g tabIndex={0}>graphic</g>
-              </svg>
-            </li>
-          </ul>
-        </KeyboardNavigationProvider>
-      );
-    }
-
-    const { container } = render(<TestTreeView />);
-
-    const button = container.querySelector('button')!;
-    const g = container.querySelector('g')!;
-
-    button.focus();
-    expect(button).toHaveFocus();
-
-    g.focus();
-    expect(g).toHaveFocus();
-  });
-
-  test('does not focus re-registered element if the focus is not within the tree-view anymore', () => {
-    const { container, rerender } = render(
-      <div>
-        <TestTreeView />
-        <button data-testid="outside-focus-target">outside</button>
-      </div>
-    );
-    const wrapper = createWrapper(container).findTreeView()!;
-
-    const firstToggle = wrapper.findItemById('1-button-actions')!.findItemToggle()!.getElement();
-    const outsideButton = container.querySelector('[data-testid="outside-focus-target"]') as HTMLButtonElement;
-
-    firstToggle.focus();
-    expect(firstToggle).toHaveFocus();
-
-    rerender(
-      <div>
-        <TestTreeView />
-        <button data-testid="outside-focus-target">outside</button>
-      </div>
-    );
-    expect(firstToggle).toHaveFocus();
-
-    outsideButton.focus();
-    expect(outsideButton).toHaveFocus();
-
-    rerender(
-      <div>
-        <TestTreeView />
-        <button data-testid="outside-focus-target">outside</button>
-      </div>
-    );
-    expect(outsideButton).toHaveFocus();
-  });
+  // compare all indices
+  const indices = wrapper.findItems().map(i => i.getElement().getAttribute(treeItemIndexAttribute));
+  const expectedIndices = Array.from(Array(7).keys()).map(i => `${i}`);
+  expect(indices).toEqual(expectedIndices);
 });
 
 describe('Keyboard navigation', () => {
@@ -164,7 +81,7 @@ describe('Keyboard navigation', () => {
     expect(readActiveElement()).toBe('BUTTON[Item 2]');
 
     fireEvent.keyDown(treeView, { keyCode: KeyCode.down });
-    expect(readActiveElement()).toBe('BUTTON[Item 3]');
+    expect(readActiveElement()).toBe('DIV[Item 3]');
 
     // Navigate up
     fireEvent.keyDown(treeView, { keyCode: KeyCode.up });
@@ -182,14 +99,14 @@ describe('Keyboard navigation', () => {
     firstToggle.click();
 
     fireEvent.keyDown(treeView, { keyCode: KeyCode.down });
-    expect(readActiveElement()).toBe('BUTTON[Item 1.1]');
+    expect(readActiveElement()).toBe('DIV[Item 1.1]');
 
     fireEvent.keyDown(treeView, { keyCode: KeyCode.up });
     expect(readActiveElement()).toBe('BUTTON[Item 1]');
 
     fireEvent.keyDown(treeView, { keyCode: KeyCode.down });
     fireEvent.keyDown(treeView, { keyCode: KeyCode.down });
-    expect(readActiveElement()).toBe('BUTTON[Item 1.2]');
+    expect(readActiveElement()).toBe('DIV[Item 1.2]');
 
     fireEvent.keyDown(treeView, { keyCode: KeyCode.down });
     expect(readActiveElement()).toBe('BUTTON[Item 2]');
@@ -241,19 +158,16 @@ describe('Keyboard navigation', () => {
     fireEvent.keyDown(treeView, { keyCode: KeyCode.right });
     expect(readActiveElement()).toBe('BUTTON[Item 1 actions]');
 
-    // Focus back to toggle
+    // Right on last element makes focus move to the toggle
     fireEvent.keyDown(treeView, { keyCode: KeyCode.right });
     expect(readActiveElement()).toBe('BUTTON[Item 1]');
 
+    // Left on toggle makes focus move to the last element
     fireEvent.keyDown(treeView, { keyCode: KeyCode.left });
     expect(readActiveElement()).toBe('BUTTON[Item 1 actions]');
 
-    // Focus back to toggle
     fireEvent.keyDown(treeView, { keyCode: KeyCode.left });
     expect(readActiveElement()).toBe('BUTTON[Item 1]');
-
-    fireEvent.keyDown(treeView, { keyCode: KeyCode.left });
-    expect(readActiveElement()).toBe('BUTTON[Item 1 actions]');
   });
 
   test('right and left arrow key - does not navigate if no focusable elements inside', () => {
@@ -264,13 +178,13 @@ describe('Keyboard navigation', () => {
     firstToggle.click();
 
     fireEvent.keyDown(treeView, { keyCode: KeyCode.down });
-    expect(readActiveElement()).toBe('BUTTON[Item 1.1]');
+    expect(readActiveElement()).toBe('DIV[Item 1.1]');
 
     fireEvent.keyDown(treeView, { keyCode: KeyCode.right });
-    expect(readActiveElement()).toBe('BUTTON[Item 1.1]');
+    expect(readActiveElement()).toBe('DIV[Item 1.1]');
 
     fireEvent.keyDown(treeView, { keyCode: KeyCode.left });
-    expect(readActiveElement()).toBe('BUTTON[Item 1.1]');
+    expect(readActiveElement()).toBe('DIV[Item 1.1]');
   });
 
   test('right and arrow keys - ignores disabled elements', () => {
@@ -278,41 +192,37 @@ describe('Keyboard navigation', () => {
 
     wrapper.findItemById('2-button-group')!.findItemToggle()!.getElement().focus();
     fireEvent.keyDown(treeView, { keyCode: KeyCode.down });
-    expect(readActiveElement()).toBe('BUTTON[Item 3]');
+    expect(readActiveElement()).toBe('DIV[Item 3]');
 
     fireEvent.keyDown(treeView, { keyCode: KeyCode.right });
     expect(readActiveElement()).toBe('BUTTON[Item 3 popover]');
 
     // Skipped the disabled button so focus must be back to the toggle
     fireEvent.keyDown(treeView, { keyCode: KeyCode.right });
-    expect(readActiveElement()).toBe('BUTTON[Item 3]');
+    expect(readActiveElement()).toBe('DIV[Item 3]');
   });
 
   test('page up and down keys - navigates by 10 tree-items', () => {
     const { treeView, wrapper } = renderTreeView();
 
     // Expand all expandable items
-    wrapper.findItemById('1-button-actions')!.findItemToggle()!.getElement().click();
     wrapper.findItemById('2-button-group')!.findItemToggle()!.getElement().click();
     wrapper.findItemById('5-only-text')!.findItemToggle()!.getElement().click();
 
-    expect(wrapper.findItems().length).toBe(15);
+    expect(wrapper.findItems().length).toBe(13);
 
     wrapper.findItemById('2-button-group')!.findItemToggle()!.getElement().focus();
     fireEvent.keyDown(treeView, { keyCode: KeyCode.pageDown });
-    expect(readActiveElement()).toBe('BUTTON[Item 5.3]');
+    expect(readActiveElement()).toBe('DIV[Item 5.3]');
+
+    // Pressing pageDown again moves focus to the last item since there are less than 10 items to move
+    fireEvent.keyDown(treeView, { keyCode: KeyCode.pageDown });
+    expect(readActiveElement()).toBe('DIV[Item 5.4]');
 
     fireEvent.keyDown(treeView, { keyCode: KeyCode.pageUp });
-    expect(readActiveElement()).toBe('BUTTON[Item 2]');
-  });
+    expect(readActiveElement()).toBe('DIV[Item 2.1]');
 
-  test('page up and down keys - focuses on the top or bottom tree-items if there are less than 10 items', () => {
-    const { treeView, wrapper } = renderTreeView();
-
-    wrapper.findItemById('2-button-group')!.findItemToggle()!.getElement().focus();
-    fireEvent.keyDown(treeView, { keyCode: KeyCode.pageDown });
-    expect(readActiveElement()).toBe('BUTTON[Item 5]');
-
+    // Pressing pageUp again moves focus to the first item since there are less than 10 items to move
     fireEvent.keyDown(treeView, { keyCode: KeyCode.pageUp });
     expect(readActiveElement()).toBe('BUTTON[Item 1]');
   });
@@ -332,7 +242,7 @@ describe('Keyboard navigation', () => {
     expect(readActiveElement()).toBe('BUTTON[Item 1]');
 
     fireEvent.keyDown(treeView, { keyCode: KeyCode.end });
-    expect(readActiveElement()).toBe('BUTTON[Item 5.4]');
+    expect(readActiveElement()).toBe('DIV[Item 5.4]');
   });
 
   test('prevents default behavior for handled keyboard events', () => {
@@ -355,10 +265,25 @@ describe('Keyboard navigation', () => {
     // Focus to child by pressing down since the child item doesn't have children (so no toggle button) on its own,
     // the toggle cannot be retrived via test util
     fireEvent.keyDown(treeView, { keyCode: KeyCode.down });
-    expect(readActiveElement()).toBe('BUTTON[Item 1.1]');
+    expect(readActiveElement()).toBe('DIV[Item 1.1]');
 
     treeView.dispatchEvent(rightKeydownEvent);
     // toHaveBeenCalledTimes should stay as 1 since the second event shouldn't get prevented
     expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
+  });
+
+  test('ignores invalid key', () => {
+    const { treeView, wrapper } = renderTreeView();
+
+    const firstToggle = wrapper.findItemById('1-button-actions')!.findItemToggle()!.getElement();
+    firstToggle.focus();
+    expect(firstToggle).toHaveFocus();
+
+    const backspaceKeydownEvent = new KeyboardEvent('keydown', { keyCode: KeyCode.backspace, bubbles: true });
+    const preventDefaultSpy = jest.spyOn(backspaceKeydownEvent, 'preventDefault');
+
+    fireEvent.keyDown(treeView, { keyCode: KeyCode.backspace });
+    expect(preventDefaultSpy).not.toHaveBeenCalled();
+    expect(firstToggle).toHaveFocus();
   });
 });

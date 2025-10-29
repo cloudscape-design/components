@@ -106,6 +106,8 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * * `propertyKey` [string]: The key of the corresponding filtering property in the `filteringProperties` array.
    * * `value` [string]: The value that will be used as a suggestion when creating or modifying a filtering token.
    * * `label` [string]: Optional suggestion label to be matched instead of the value.
+   * * `tags` [string[]]: Optional list of tags giving further guidance about the option.
+   * * `filteringTags` [string[]]: Optional list of additional tags used for automatic filtering.
    *
    * Filtering options that require labels can only use `=` and `!=` operators. The token value must be labelled separately, for example:
    * ```
@@ -386,6 +388,8 @@ export interface InternalFilteringOption {
   property: null | InternalFilteringProperty;
   value: string;
   label: string;
+  tags?: ReadonlyArray<string>;
+  filteringTags?: ReadonlyArray<string>;
 }
 
 export interface InternalFreeTextFiltering {

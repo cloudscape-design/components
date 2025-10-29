@@ -14,7 +14,13 @@ export default function Header({ variant = 'h2', ...props }: HeaderProps) {
   const baseComponentProps = useBaseComponent('Header', {
     props: { headingTagOverride: props.headingTagOverride, variant },
   });
-  return <InternalHeader variant={variant} {...props} {...baseComponentProps} />;
+
+  /**
+   * We are adding a special tabindex -1 for heading variant h1 to allow the focus behavior of flashbars
+   * when closed to programmatically focus the h1 after the last item is closed.
+   */
+  const tabIndex = variant === 'h1' ? -1 : undefined;
+  return <InternalHeader __headingTagTabIndex={tabIndex} variant={variant} {...props} {...baseComponentProps} />;
 }
 
 applyDisplayName(Header, 'Header');

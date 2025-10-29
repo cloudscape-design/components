@@ -538,6 +538,7 @@ exports[`test-utils selectors 1`] = `
   "select": [
     "awsui_disabled-reason-tooltip_dwuol",
     "awsui_inline-label_dwuol",
+    "awsui_inline-token-list_dwuol",
     "awsui_placeholder_dwuol",
     "awsui_root_r2vco",
   ],
@@ -652,6 +653,10 @@ exports[`test-utils selectors 1`] = `
   ],
   "toggle": [
     "awsui_root_4yi2u",
+  ],
+  "token": [
+    "awsui_dismiss-button_1epxo",
+    "awsui_root_1epxo",
   ],
   "token-group": [
     "awsui_dismiss-button_dm8gx",

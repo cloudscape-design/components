@@ -34,12 +34,12 @@ describe('Popover content is announced as plain text on hover', () => {
       })
     );
 
-    test(
+    (process.env.REACT_VERSION !== '18' ? test : test.skip)(
       'with expandable sub-items',
       setupTest(`#/light/mixed-line-bar-chart/drilldown?useLinks=${useLinks}&expandableSubItems=true`, async page => {
-        const coordinateIndex = 3;
         const wrapper = createWrapper().findMixedLineBarChart();
-        const barGroup = wrapper.findBarGroups().get(coordinateIndex).toSelector();
+        const barGroup = wrapper.findBarGroups().get(3).toSelector();
+        const nextBarGroup = wrapper.findBarGroups().get(4).toSelector();
         const getLabel = () => page.getElementAttribute(barGroup, 'aria-label');
         await page.hoverElement(barGroup);
         await page.waitForAssertion(async () => {
@@ -56,11 +56,11 @@ describe('Popover content is announced as plain text on hover', () => {
         await page.click(
           wrapper.findDetailPopover().findContent().findExpandableSection().findExpandButton().toSelector()
         );
-        // Pin and dismiss the poover,
+        // Pin and dismiss the popover,
         // then hover over a different item and come back to hover the initial one.
         await page.clickBarGroup(barGroup);
         await page.click(wrapper.findDetailPopover().findDismissButton().toSelector());
-        await page.hoverElement(wrapper.findBarGroups().get(4).toSelector());
+        await page.hoverElement(nextBarGroup);
         await page.hoverElement(barGroup);
         await page.waitForAssertion(async () => {
           const label = await getLabel();

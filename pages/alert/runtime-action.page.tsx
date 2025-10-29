@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
 
 import Alert, { AlertProps } from '~components/alert';
 import Button from '~components/button';
 import awsuiPlugins from '~components/internal/plugins';
 import SpaceBetween from '~components/space-between';
+import { mount, unmount } from '~mount';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
@@ -19,7 +19,7 @@ awsuiPlugins.alert.registerAction({
     if (context.type !== 'error') {
       return;
     }
-    render(
+    mount(
       <Button
         iconName="status-info"
         onClick={() => {
@@ -38,7 +38,7 @@ awsuiPlugins.alert.registerAction({
       container
     );
   },
-  unmountContent: container => unmountComponentAtNode(container),
+  unmountContent: container => unmount(container),
 });
 
 const multilinetext = (

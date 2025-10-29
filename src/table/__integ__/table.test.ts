@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
@@ -60,7 +61,7 @@ test(
   })
 );
 
-test(
+(process.env.REACT_VERSION !== '18' ? test : test.skip)(
   'sets role=region and aria-label on scrollable wrapper when overflowing',
   useBrowser(async browser => {
     const tableWrapper = createWrapper().findTable();

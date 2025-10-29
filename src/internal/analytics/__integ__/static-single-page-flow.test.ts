@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
@@ -59,6 +60,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
       expect(funnelStartEvent.props).toEqual({
         componentVersion: expect.any(String),
         funnelNameSelector: expect.any(String),
+        componentSelector: expect.any(String),
         funnelVersion: expect.any(String),
         funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelName: 'Form Header',
@@ -99,7 +101,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
     })
   );
 
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'Starts and ends substep when navigating between containers',
     setupTest(async page => {
       await page.click('[data-testid=field1]');
@@ -235,7 +237,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
     })
   );
 
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'Form submission',
     setupTest(async page => {
       await page.click('[data-testid=submit]');

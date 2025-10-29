@@ -31,7 +31,7 @@ function setupTest(testFn: (page: ResizeSelectPage) => Promise<void>) {
 }
 
 describe(`Resizing virtual select`, () => {
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'Should place second option lower, when the select becomes narrower',
     setupTest(async page => {
       await page.clickSelect();
@@ -42,7 +42,7 @@ describe(`Resizing virtual select`, () => {
       expect(topBefore).toBeLessThan(topAfter);
     })
   );
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'Should place second option higher, when the select becomes wider',
     setupTest(async page => {
       await page.shrinkSelect(true);

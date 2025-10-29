@@ -6,10 +6,8 @@ import clsx from 'clsx';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import { InternalButton } from '../../../button/internal';
-import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
-import { NotificationsSlot } from '../skeleton/slots';
 
 import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
@@ -17,9 +15,13 @@ import styles from './styles.css.js';
 
 interface AppLayoutNavigationImplementationProps {
   appLayoutInternals: AppLayoutInternals;
+  bottomDrawerReportedSize?: number;
 }
 
-export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLayoutNavigationImplementationProps) {
+export function AppLayoutNavigationImplementation({
+  appLayoutInternals,
+  bottomDrawerReportedSize,
+}: AppLayoutNavigationImplementationProps) {
   const {
     ariaLabels,
     onNavigationToggle,
@@ -31,7 +33,12 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
     verticalOffsets,
   } = appLayoutInternals;
 
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(
+    verticalOffsets,
+    isMobile,
+    placement,
+    isMobile ? 0 : (bottomDrawerReportedSize ?? 0)
+  );
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.
   const onNavigationClick = (event: React.MouseEvent) => {
@@ -83,8 +90,3 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
     </div>
   );
 }
-
-export const createWidgetizedAppLayoutNavigation = createWidgetizedComponent(
-  AppLayoutNavigationImplementation,
-  NotificationsSlot
-);

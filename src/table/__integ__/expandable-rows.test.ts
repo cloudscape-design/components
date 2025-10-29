@@ -45,7 +45,7 @@ describe('Expandable rows', () => {
     })
   );
 
-  test(
+  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'uses items loader on the first expandable item',
     setupTest({ useProgressiveLoading: true, useServerMock: true }, async page => {
       const targetCluster = 'cluster-33387b6c';

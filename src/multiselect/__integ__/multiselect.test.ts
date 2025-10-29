@@ -179,6 +179,22 @@ describe(`Multiselect with filtering`, () => {
   );
 
   test(
+    'does not select an option using space if it was "selected" via mouse hover',
+    setupTest(async page => {
+      await page.clickSelect();
+      // Type in a filtering query that includes a space
+      await page.keys('first');
+      await page.hoverElement(wrapper.findDropdown()!.findOptions().get(2).toSelector());
+      // space here should continue typing, not select
+      await page.keys(' category');
+      await expect(page.getSelectedOptionLabels()).resolves.toEqual([]);
+      await expect(page.getValue(wrapper.findFilteringInput().findNativeInput().toSelector())).resolves.toBe(
+        'first category'
+      );
+    })
+  );
+
+  test(
     'keeps filtering state after selecting an option using keyboard',
     setupTest(async page => {
       await page.clickSelect();

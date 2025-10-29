@@ -23,6 +23,7 @@
 $global-drawer-gap-size: 8px;
 $global-drawer-expanded-mode-motion: #{awsui.$motion-duration-refresh-only-slow} #{awsui.$motion-easing-refresh-only-a};
 $drawer-resize-handle-size: awsui.$space-m;
+$ai-drawer-heider-height: 41px;
 
 .drawer {
   position: sticky;
@@ -43,6 +44,7 @@ $drawer-resize-handle-size: awsui.$space-m;
     @include styles.with-motion {
       transition:
         inline-size #{$global-drawer-expanded-mode-motion},
+        block-size #{$global-drawer-expanded-mode-motion},
         min-inline-size #{$global-drawer-expanded-mode-motion};
     }
   }
@@ -257,6 +259,8 @@ $drawer-resize-handle-size: awsui.$space-m;
     }
 
     > .drawer-slider {
+      display: flex;
+      justify-content: center;
       inline-size: awsui.$space-xs;
       overflow: hidden;
       grid-column: 2;
@@ -266,7 +270,6 @@ $drawer-resize-handle-size: awsui.$space-m;
     // maybe we need to introduce an additional prop in the component to make it more flexible?
     // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
     .ai-drawer-slider-handle {
-      transform: translate(-4px);
       color: awsui.$color-text-interactive-inverted-default;
 
       &:hover {
@@ -284,8 +287,10 @@ $drawer-resize-handle-size: awsui.$space-m;
       }
 
       > .drawer-content {
+        grid-row: 1 / span 4;
+
         > .drawer-content-header {
-          block-size: 41px;
+          block-size: $ai-drawer-heider-height;
           position: sticky;
           z-index: 1000;
           display: flex;
@@ -377,8 +382,21 @@ $drawer-resize-handle-size: awsui.$space-m;
                   outline: none;
                 }
               }
+
+              > .drawer-back-to-console-custom-button {
+                all: initial;
+                display: flex;
+                cursor: pointer;
+                text-align: center;
+              }
             }
           }
+        }
+
+        > .drawer-content-content {
+          display: flex;
+          flex-direction: column;
+          block-size: calc(100% - #{$ai-drawer-heider-height});
         }
       }
     }
@@ -386,7 +404,11 @@ $drawer-resize-handle-size: awsui.$space-m;
     &:not(.drawer-expanded) {
       > .drawer-content-container {
         @include desktop-only {
-          clip-path: inset(0 0 -9999px 0 round awsui.$space-xxs);
+          clip-path: inset(0 0 -9999px 0 round 0 awsui.$space-xxs 0 0);
+
+          @include styles.with-direction('rtl') {
+            clip-path: inset(0 0 -9999px 0 round awsui.$space-xxs 0 0 0);
+          }
           @include theming.dark-mode-only {
             border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
           }
@@ -399,6 +421,45 @@ $drawer-resize-handle-size: awsui.$space-m;
 
       > .drawer-content-container {
         border-start-end-radius: 0;
+      }
+    }
+  }
+
+  &.bottom-drawer {
+    display: block;
+    inline-size: 100%;
+    block-size: var(#{custom-props.$bottomDrawerSize});
+
+    @include mobile-only {
+      block-size: 100%;
+      &.last-opened {
+        z-index: constants.$drawer-z-index-mobile;
+      }
+    }
+
+    &.drawer-hidden {
+      display: none;
+    }
+
+    > .global-drawer-wrapper {
+      display: block;
+
+      > .drawer-gap {
+        block-size: $global-drawer-gap-size;
+        inline-size: 100%;
+        border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+        border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+        box-sizing: content-box;
+      }
+
+      > .drawer-slider {
+        block-size: auto;
+        justify-content: center;
+      }
+
+      > .drawer-content-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
       }
     }
   }

@@ -33,6 +33,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * ### action
    *
    * - `href` (string) - (Optional) Defines the target URL of the menu item, turning it into a link.
+   * - `download` (boolean | string) - (Optional) Indicates that the link should be downloaded when clicked. Only works when `href` is also provided. If set to `true`, the browser will use the filename from the URL. If set to a string, that string will be used as the suggested filename.
    * - `external` (boolean) - Marks a menu item as external by adding an icon after the menu item text. The link will open in a new tab when clicked. Note that this only works when `href` is also provided.
    * - `externalIconAriaLabel` (string) - Adds an `aria-label` to the external icon.
    * - `iconName` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
@@ -190,6 +191,7 @@ export namespace ButtonDropdownProps {
     disabledReason?: string;
     description?: string;
     href?: string;
+    download?: boolean | string;
     external?: boolean;
     externalIconAriaLabel?: string;
     iconAlt?: string;
@@ -199,7 +201,7 @@ export namespace ButtonDropdownProps {
   }
 
   export interface CheckboxItem
-    extends Omit<ButtonDropdownProps.Item, 'href' | 'external' | 'externalIconAriaLabel' | 'itemType'> {
+    extends Omit<ButtonDropdownProps.Item, 'href' | 'download' | 'external' | 'externalIconAriaLabel' | 'itemType'> {
     itemType: 'checkbox';
     checked: boolean;
   }

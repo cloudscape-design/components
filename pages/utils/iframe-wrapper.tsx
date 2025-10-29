@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
-import ReactDOM from 'react-dom';
+
+import { mount, unmount } from '~mount';
 
 import styles from './iframe-wrapper.scss';
 
@@ -55,10 +56,10 @@ export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: 
     copyStyles(document, iframeDocument);
     iframeDocument.dir = document.dir;
     const syncClassesCleanup = syncClasses(document.body, iframeDocument.body);
-    ReactDOM.render(<AppComponent />, innerAppRoot);
+    mount(<AppComponent />, innerAppRoot);
     return () => {
       syncClassesCleanup();
-      ReactDOM.unmountComponentAtNode(innerAppRoot);
+      unmount(innerAppRoot);
       container.removeChild(iframeEl);
     };
   }, [id, AppComponent]);

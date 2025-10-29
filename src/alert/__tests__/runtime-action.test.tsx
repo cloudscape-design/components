@@ -103,6 +103,46 @@ test('allows skipping rendering actions', async () => {
   expect(screen.queryByTestId('test-action')).toBeTruthy();
 });
 
+test('propagates state changes to update callback', async () => {
+  const updateContentSpy = jest.fn();
+  const testAction: ActionConfig = {
+    ...defaultAction,
+    updateContent: (container, context) => updateContentSpy(context.contentRef.current?.textContent),
+  };
+
+  awsuiPlugins.alert.registerAction(testAction);
+  const { rerender } = render(<Alert>Initial content</Alert>);
+  await delay();
+  expect(updateContentSpy).toHaveBeenCalledTimes(0);
+  rerender(<Alert>Updated content</Alert>);
+  expect(updateContentSpy).toHaveBeenCalledTimes(1);
+  expect(updateContentSpy).toHaveBeenCalledWith('Updated content');
+});
+
+test('container reference is permanent between mount/update/unmount', async () => {
+  let container: HTMLElement | null = null;
+  const testAction: ActionConfig = {
+    id: 'test-action',
+    mountContent: jest.fn(newContainer => (container = newContainer)),
+    updateContent: jest.fn(newContainer => expect(container).toBe(newContainer)),
+    unmountContent: jest.fn(newContainer => expect(container).toBe(newContainer)),
+  };
+  awsuiPlugins.alert.registerAction(testAction);
+  const { rerender } = render(<Alert />);
+  await delay();
+  expect(testAction.mountContent).toHaveBeenCalledTimes(1);
+  expect(testAction.updateContent).toHaveBeenCalledTimes(0);
+  expect(testAction.unmountContent).toHaveBeenCalledTimes(0);
+  rerender(<Alert />);
+  expect(testAction.mountContent).toHaveBeenCalledTimes(1);
+  expect(testAction.updateContent).toHaveBeenCalledTimes(1);
+  expect(testAction.unmountContent).toHaveBeenCalledTimes(0);
+  rerender(<></>);
+  expect(testAction.mountContent).toHaveBeenCalledTimes(1);
+  expect(testAction.updateContent).toHaveBeenCalledTimes(1);
+  expect(testAction.unmountContent).toHaveBeenCalledTimes(1);
+});
+
 test('cleans up on unmount', async () => {
   const testAction: ActionConfig = {
     ...defaultAction,

@@ -1,16 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-
-export function focusElement(element: null | HTMLElement) {
-  element?.focus();
-}
+import treeItemStyles from '../tree-item/styles.css.js';
 
 export function getClosestTreeItem(element: Element) {
   return element.closest('li[data-awsui-tree-item-index]') as null | HTMLLIElement;
 }
 
-export function getToggleButtonOfTreeItem(treeItem: HTMLLIElement) {
-  const toggleElement = treeItem.querySelector('[data-awsui-tree-view-toggle-button=true]');
+export function getToggleButtonOfTreeItem(treeItem: null | HTMLLIElement) {
+  const toggleElement = treeItem?.querySelector(`.${treeItemStyles['tree-item-focus-target']}`);
   return toggleElement as null | HTMLElement;
 }
 
@@ -21,11 +18,7 @@ export function isElementDisabled(element: HTMLElement) {
   return false;
 }
 
-export function findTreeItemByIndex(treeView: null | HTMLUListElement, targetTreeItemIndex: number, delta: number) {
-  if (!treeView) {
-    return null;
-  }
-
+export function findTreeItemByIndex(treeView: HTMLUListElement, targetTreeItemIndex: number, delta: number) {
   let targetTreeItem: null | HTMLLIElement = null;
   const treeItemElements = Array.from(treeView.querySelectorAll('li[data-awsui-tree-item-index]'));
 
@@ -40,27 +33,17 @@ export function findTreeItemByIndex(treeView: null | HTMLUListElement, targetTre
     if (elementIndex === targetTreeItemIndex) {
       break;
     }
-    if (delta >= 0 && elementIndex > targetTreeItemIndex) {
-      break;
-    }
-    if (delta < 0 && elementIndex < targetTreeItemIndex) {
-      break;
-    }
   }
   return targetTreeItem;
 }
 
-export function findTreeItemContentById(treeView: null | HTMLUListElement, treeItemId: string) {
-  if (!treeView) {
-    return null;
-  }
-
-  const treeItem = treeView.querySelector(
-    `li[data-awsui-tree-item-index][id="${treeItemId}"] div[data-awsui-structured-item=true]`
+export function findTreeItemContentById(treeView: HTMLUListElement, treeItemId: string) {
+  const treeItemContent = treeView.querySelector(
+    `li[data-awsui-tree-item-index][id="${treeItemId}"] .${treeItemStyles['tree-item-structured-item']}`
   );
-  return treeItem as null | HTMLLIElement;
+  return treeItemContent as null | HTMLLIElement;
 }
 
 export function isTreeItemToggle(element: Element) {
-  return element.tagName === 'BUTTON' && element.getAttribute('data-awsui-tree-view-toggle-button') === 'true';
+  return element.classList.contains(treeItemStyles['tree-item-focus-target']);
 }

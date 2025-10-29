@@ -35,6 +35,24 @@ const options2: SelectProps.Options = [
   },
 ];
 
+const options3: SelectProps.Options = [
+  {
+    label: 'Option 1',
+    value: '1',
+    iconName: 'settings',
+  },
+  {
+    label: 'Option 2',
+    value: '2',
+    iconName: 'unlocked',
+  },
+  {
+    label: 'Option 3',
+    value: '3',
+    iconName: 'share',
+  },
+];
+
 export default function () {
   const [selected, setSelected] = useState<SelectProps['selectedOption']>(null);
   const [virtualScroll, setVirtualScroll] = useState<boolean>(false);
@@ -86,6 +104,18 @@ export default function () {
             ariaLabel="select demo single option inside group"
             data-testid="select-demo-single-option-inside-group"
           />
+
+          <div style={{ width: '100px' }}>
+            <Select
+              placeholder="Demo with no filtering and limited width"
+              selectedOption={selected}
+              options={options3}
+              onChange={event => setSelected(event.detail.selectedOption)}
+              virtualScroll={virtualScroll}
+              ariaLabel="select demo with no filtering and limited width"
+              data-testid="select-demo-with-no-filtering-and-limited-width"
+            />
+          </div>
         </SpaceBetween>
       </ScreenshotArea>
     </>

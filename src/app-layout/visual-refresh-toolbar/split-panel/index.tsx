@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { createWidgetizedComponent } from '../../../internal/widgets';
 import { SplitPanelProvider, SplitPanelProviderProps } from '../../split-panel';
 import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
@@ -12,6 +11,7 @@ import styles from './styles.css.js';
 interface AppLayoutSplitPanelDrawerSideImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   splitPanelInternals: SplitPanelProviderProps;
+  bottomDrawerReportedSize?: number;
   children: React.ReactNode;
 }
 
@@ -19,9 +19,15 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
   children,
   appLayoutInternals,
   splitPanelInternals,
+  bottomDrawerReportedSize,
 }: AppLayoutSplitPanelDrawerSideImplementationProps) {
   const { splitPanelControlId, placement, verticalOffsets, isMobile, splitPanelAnimationDisabled } = appLayoutInternals;
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(
+    verticalOffsets,
+    isMobile,
+    placement,
+    isMobile ? 0 : (bottomDrawerReportedSize ?? 0)
+  );
 
   return (
     <SplitPanelProvider {...splitPanelInternals} animationDisabled={splitPanelAnimationDisabled}>
@@ -57,11 +63,3 @@ export function AppLayoutSplitPanelDrawerBottomImplementation({
     </SplitPanelProvider>
   );
 }
-
-export const createWidgetizedAppLayoutSplitPanelDrawerSide = createWidgetizedComponent(
-  AppLayoutSplitPanelDrawerSideImplementation
-);
-
-export const createWidgetizedAppLayoutSplitPanelDrawerBottom = createWidgetizedComponent(
-  AppLayoutSplitPanelDrawerBottomImplementation
-);

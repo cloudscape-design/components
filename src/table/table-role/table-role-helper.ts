@@ -33,7 +33,9 @@ export function getTableRoleProps(options: {
   nativeProps['aria-labelledby'] = options.ariaLabelledby;
 
   // Incrementing the total count by one to account for the header row.
-  nativeProps['aria-rowcount'] = typeof options.totalItemsCount === 'number' ? options.totalItemsCount + 1 : -1;
+  if (typeof options.totalItemsCount === 'number' && options.totalItemsCount > 0) {
+    nativeProps['aria-rowcount'] = options.totalItemsCount + 1;
+  }
 
   if (options.tableRole === 'grid' || options.tableRole === 'treegrid') {
     nativeProps['aria-colcount'] = options.totalColumnsCount;

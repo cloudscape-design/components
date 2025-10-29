@@ -68,6 +68,7 @@ export interface FunnelStartProps extends Omit<BaseFunnelProps, 'funnelInteracti
   componentVersion: string;
   componentTheme: string;
   funnelInteractionId?: string;
+  componentSelector?: string;
 }
 
 // A function type for a generic funnel method

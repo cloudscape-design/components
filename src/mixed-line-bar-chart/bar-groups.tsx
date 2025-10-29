@@ -46,7 +46,9 @@ export default function BarGroups<T extends ChartDataTypes>({
           aria-label={ariaLabel}
           aria-haspopup={true}
           aria-expanded={isPopoverPinned}
-          fill="none"
+          // We must use "transparent" instead of "none" so that Firefox popover placement works correctly.
+          // When an SVG element has no stroke or fill color the Firefox optimizes it out.
+          fill="transparent"
           className={styles['bar-group']}
         />
       ))}

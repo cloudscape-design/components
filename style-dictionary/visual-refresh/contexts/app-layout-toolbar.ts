@@ -6,7 +6,7 @@ import { expandColorDictionary } from '../../utils/index.js';
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const tokens = {
-  colorBackgroundLayoutMain: { light: '{colorGrey50}', dark: '{colorGrey900}' },
+  colorBackgroundLayoutMain: { light: '{colorNeutral50}', dark: '{colorNeutral900}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(merge({}, { ...tokens }));

@@ -107,7 +107,7 @@ export function calculateNextState<T = void>(
       return state;
 
     default:
-      throw new Error(`The given action type [${action.type}] is not supported.`);
+      throw new Error(`Invariant violation: unexpected action type: "${action.type}".`);
   }
 }
 

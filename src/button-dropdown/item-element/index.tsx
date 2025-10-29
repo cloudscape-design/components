@@ -136,6 +136,7 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
     <a
       {...menuItemProps}
       href={!disabled ? item.href : undefined}
+      download={!disabled && item.download ? item.download : undefined}
       target={getItemTarget(item)}
       rel={item.external ? 'noopener noreferrer' : undefined}
     >

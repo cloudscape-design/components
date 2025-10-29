@@ -132,7 +132,6 @@ describe('useDropdownStatus', () => {
     const { getContent } = renderComponent({
       statusType: 'pending',
       filteringResultsText: '2 matches',
-      isFiltered: true,
     });
     expect(getContent()).toBe('2 matches');
   });
@@ -141,7 +140,6 @@ describe('useDropdownStatus', () => {
     const { getContent } = renderComponent({
       statusType: 'loading',
       filteringResultsText: '2 matches',
-      isFiltered: true,
       loadingText: 'Loading',
     });
     expect(getContent()).toBe('Loading');
@@ -151,7 +149,6 @@ describe('useDropdownStatus', () => {
     const { getContent } = renderComponent({
       statusType: 'error',
       filteringResultsText: '2 matches',
-      isFiltered: true,
       errorText: 'We got a problem',
       recoveryText: 'do not worry',
       hasRecoveryCallback: true,
@@ -162,8 +159,6 @@ describe('useDropdownStatus', () => {
   test('render finished text when finished and not filtered', () => {
     const { getContent } = renderComponent({
       statusType: 'finished',
-      filteringResultsText: '10 out of 10 items',
-      isFiltered: false,
       finishedText: 'End of results',
     });
     expect(getContent()).toBe('End of results');
@@ -173,7 +168,6 @@ describe('useDropdownStatus', () => {
     const { getContent } = renderComponent({
       statusType: 'finished',
       filteringResultsText: '10 out of 10 items',
-      isFiltered: true,
       finishedText: 'End of results',
     });
     expect(getContent()).toBe('10 out of 10 items');

@@ -107,12 +107,14 @@ const DateRangePicker = React.forwardRef(
       timeOffset,
       getTimeOffset,
       timeInputFormat = 'hh:mm:ss',
+      dateInputFormat = 'slashed',
       expandToViewport = false,
       rangeSelectorMode = 'default',
       customAbsoluteRangeControl,
       absoluteFormat = 'iso',
       hideTimeOffset,
       customRelativeRangeUnits,
+      renderRelativeRangeContent,
       granularity = 'day',
       ...rest
     }: DateRangePickerProps,
@@ -127,6 +129,7 @@ const DateRangePicker = React.forwardRef(
         readOnly,
         showClearButton,
         timeInputFormat,
+        dateInputFormat,
         hideTimeOffset,
         granularity,
       },
@@ -338,12 +341,15 @@ const DateRangePicker = React.forwardRef(
                 relativeOptions={relativeOptions}
                 isValidRange={isValidRange}
                 dateOnly={dateOnly}
+                absoluteFormat={absoluteFormat}
                 timeInputFormat={timeInputFormat}
+                dateInputFormat={dateInputFormat}
                 rangeSelectorMode={rangeSelectorMode}
                 ariaLabelledby={ariaLabelledby}
                 ariaDescribedby={ariaDescribedby}
                 customAbsoluteRangeControl={customAbsoluteRangeControl}
                 customRelativeRangeUnits={customRelativeRangeUnits}
+                renderRelativeRangeContent={renderRelativeRangeContent}
                 granularity={granularity}
               />
             )}

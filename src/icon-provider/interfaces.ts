@@ -41,6 +41,7 @@ export namespace IconProviderProps {
     'arrow-right'?: ReactNode | null;
     'arrow-up'?: ReactNode | null;
     'arrow-down'?: ReactNode | null;
+    'at-symbol'?: ReactNode | null;
     'audio-full'?: ReactNode | null;
     'audio-half'?: ReactNode | null;
     'audio-off'?: ReactNode | null;
@@ -91,6 +92,7 @@ export namespace IconProviderProps {
     group?: ReactNode | null;
     heart?: ReactNode | null;
     'heart-filled'?: ReactNode | null;
+    history?: ReactNode | null;
     'insert-row'?: ReactNode | null;
     key?: ReactNode | null;
     keyboard?: ReactNode | null;
@@ -117,6 +119,7 @@ export namespace IconProviderProps {
     send?: ReactNode | null;
     share?: ReactNode | null;
     shrink?: ReactNode | null;
+    slash?: ReactNode | null;
     'star-filled'?: ReactNode | null;
     'star-half'?: ReactNode | null;
     star?: ReactNode | null;

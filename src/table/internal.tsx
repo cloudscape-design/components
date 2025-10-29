@@ -179,11 +179,11 @@ const InternalTable = React.forwardRef(
       getExpandableItemProps,
     });
 
-    const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
+    const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.borderBoxWidth);
     const wrapperMeasureRefObject = useRef(null);
     const wrapperMeasureMergedRef = useMergeRefs(wrapperMeasureRef, wrapperMeasureRefObject);
 
-    const [tableWidth, tableMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
+    const [tableWidth, tableMeasureRef] = useContainerQuery<number>(rect => rect.borderBoxWidth);
     const tableRefObject = useRef(null);
 
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
@@ -399,6 +399,7 @@ const InternalTable = React.forwardRef(
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
       resizerRoleDescription: ariaLabels?.resizerRoleDescription,
+      resizerTooltipText: ariaLabels?.resizerTooltipText,
       stripedRows,
       stickyState,
       selectionColumnId,
@@ -520,7 +521,7 @@ const InternalTable = React.forwardRef(
                 {...wrapperProps}
               >
                 <div className={styles['wrapper-content-measure']} ref={wrapperMeasureMergedRef}></div>
-                {!!renderAriaLive && !!firstIndex && (
+                {!!renderAriaLive && !!firstIndex && !loading && (
                   <InternalLiveRegion hidden={true} tagName="span">
                     <span>
                       {renderAriaLive({

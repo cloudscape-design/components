@@ -11,6 +11,7 @@ import { InternalButton } from '../button/internal';
 import { CalendarProps } from '../calendar/interfaces';
 import { useInternalI18n } from '../i18n/context';
 import FocusLock from '../internal/components/focus-lock';
+import { SomeRequired } from '../internal/types';
 import InternalLiveRegion, { InternalLiveRegionRef } from '../live-region/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import Calendar from './calendar';
@@ -37,17 +38,22 @@ interface DateRangePickerDropdownProps
       | 'dateOnly'
       | 'rangeSelectorMode'
     >,
-    Pick<
-      DateRangePickerProps,
-      | 'startOfWeek'
-      | 'getTimeOffset'
-      | 'timeInputFormat'
-      | 'timeOffset'
-      | 'ariaLabelledby'
-      | 'ariaDescribedby'
-      | 'i18nStrings'
-      | 'customRelativeRangeUnits'
-      | 'dateDisabledReason'
+    SomeRequired<
+      Pick<
+        DateRangePickerProps,
+        | 'startOfWeek'
+        | 'getTimeOffset'
+        | 'absoluteFormat'
+        | 'timeInputFormat'
+        | 'dateInputFormat'
+        | 'timeOffset'
+        | 'ariaLabelledby'
+        | 'ariaDescribedby'
+        | 'i18nStrings'
+        | 'customRelativeRangeUnits'
+        | 'dateDisabledReason'
+      >,
+      'absoluteFormat' | 'timeInputFormat'
     >,
     Pick<CalendarProps, 'granularity'> {
   onClear: () => void;
@@ -55,6 +61,7 @@ interface DateRangePickerDropdownProps
   onDropdownClose: () => void;
   isSingleGrid: boolean;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
+  renderRelativeRangeContent: DateRangePickerProps.RelativeRangeControl | undefined;
 }
 
 export function DateRangePickerDropdown({
@@ -74,12 +81,15 @@ export function DateRangePickerDropdown({
   isSingleGrid,
   i18nStrings,
   dateOnly,
+  absoluteFormat,
   timeInputFormat,
+  dateInputFormat,
   rangeSelectorMode,
   ariaLabelledby,
   ariaDescribedby,
   customAbsoluteRangeControl,
   customRelativeRangeUnits,
+  renderRelativeRangeContent,
   granularity = 'day',
 }: DateRangePickerDropdownProps) {
   const i18n = useInternalI18n('date-range-picker');
@@ -201,7 +211,9 @@ export function DateRangePickerDropdown({
                       dateDisabledReason={dateDisabledReason}
                       i18nStrings={i18nStrings}
                       dateOnly={dateOnly}
+                      absoluteFormat={absoluteFormat}
                       timeInputFormat={timeInputFormat}
+                      dateInputFormat={dateInputFormat}
                       customAbsoluteRangeControl={customAbsoluteRangeControl}
                       granularity={granularity}
                     />
@@ -216,6 +228,7 @@ export function DateRangePickerDropdown({
                       onChange={range => setSelectedRelativeRange(range)}
                       i18nStrings={i18nStrings}
                       customUnits={customRelativeRangeUnits}
+                      renderRelativeRangeContent={renderRelativeRangeContent}
                       granularity={granularity}
                     />
                   )}

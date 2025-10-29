@@ -24,6 +24,12 @@ jest.mock('../../../lib/components/popover/utils/positions', () => {
   };
 });
 
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  // Mock the chart width with enough space to fit all expected elements (labels, x ticks, etc)
+  useContainerQuery: () => [900, null],
+}));
+
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   getIsRtl: jest.fn().mockReturnValue(false),
@@ -109,10 +115,6 @@ const thresholdSeries: MixedLineBarChartProps.ThresholdSeries = {
   y: 6,
 };
 
-// Mock support for CSS Custom Properties in Jest so that we assign the correct colors.
-// Transformation to fallback colors for browsers that don't support them are covered by the `parseCssVariable` utility.
-const originalCSS = window.CSS;
-
 let originalGetComputedStyle: Window['getComputedStyle'];
 const fakeGetComputedStyle: Window['getComputedStyle'] = (...args) => {
   const result = originalGetComputedStyle(...args);
@@ -123,14 +125,11 @@ const fakeGetComputedStyle: Window['getComputedStyle'] = (...args) => {
 };
 
 beforeEach(() => {
-  window.CSS.supports = () => true;
   originalGetComputedStyle = window.getComputedStyle;
   window.getComputedStyle = fakeGetComputedStyle;
-
   jest.resetAllMocks();
 });
 afterEach(() => {
-  window.CSS = originalCSS;
   window.getComputedStyle = originalGetComputedStyle;
 });
 
@@ -435,15 +434,6 @@ describe('Series', () => {
         expect(wrapper.findSeries()).toHaveLength(2);
       });
     });
-  });
-
-  test('CSS color variables are changed to fallback values in unsupported browsers', () => {
-    window.CSS.supports = () => false;
-
-    const { wrapper } = renderMixedChart(
-      <MixedLineBarChart series={[{ ...lineSeries, color: 'var(--mycolor, red)' }]} />
-    );
-    expect(wrapper.findSeries()[0].find('path')?.getElement()).toHaveAttribute('stroke', 'red');
   });
 
   test('should warn when `series` changes with uncontrolled `visibleSeries`', () => {
@@ -979,6 +969,40 @@ describe('Details popover', () => {
     // Can be unpinned
     wrapper.findDetailPopover()?.findDismissButton()?.click();
     expect(wrapper.findByClassName(styles.exiting)).not.toBeNull();
+  });
+
+  test('can be hidden with Escape and then reopened', async () => {
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
+    const isPopoverVisible = () => !wrapper.findByClassName(styles.exiting);
+    const isPopoverPinned = () => !!wrapper.findDetailPopover()!.findDismissButton();
+
+    wrapper.findApplication()!.focus();
+    expect(isPopoverVisible()).toBe(true);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(isPopoverVisible()).toBe(false);
+
+    wrapper.findApplication()!.keydown(KeyCode.right);
+    expect(isPopoverVisible()).toBe(true);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(isPopoverVisible()).toBe(false);
+
+    wrapper.findApplication()!.keydown(KeyCode.enter);
+    expect(isPopoverVisible()).toBe(true);
+    expect(isPopoverPinned()).toBe(true);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(isPopoverVisible()).toBe(false);
+
+    // The popover is not re-opened within 50ms from un-pinning.
+    wrapper.findApplication()!.keydown(KeyCode.right);
+    expect(isPopoverVisible()).toBe(false);
+
+    await new Promise(resolve => setTimeout(resolve, 50 + 1));
+
+    wrapper.findApplication()!.keydown(KeyCode.right);
+    expect(isPopoverVisible()).toBe(true);
   });
 
   test('delegates focus back to chart when unpinned in a non-grouped chart', async () => {

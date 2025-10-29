@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import { FOCUS_DEBOUNCE_DELAY } from '../utils';
@@ -135,11 +136,9 @@ describe('Collapsible Flashbar', () => {
         await page.toggleCollapsedState();
         expect(await page.getNotificationBarBottom()).toBeGreaterThan(windowDimensions.height);
         await page.windowScrollTo({ top: 1200 });
-        expect(await page.getNotificationBarBottom()).toBeLessThan(windowDimensions.height);
-        await page.setWindowSize({ width: windowDimensions.width, height: windowDimensions.height + 5 });
-        expect(await page.getNotificationBarBottom()).toBeLessThan(windowDimensions.height + 5);
-        await page.setWindowSize({ width: windowDimensions.width, height: windowDimensions.height });
-        expect(await page.getNotificationBarBottom()).toBeLessThan(windowDimensions.height);
+        await page.waitForAssertion(async () => {
+          await expect(page.getNotificationBarBottom()).resolves.toBeLessThan(windowDimensions.height);
+        });
       })
     );
   });

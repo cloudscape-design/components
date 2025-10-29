@@ -1,8 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import balanced from 'balanced-match';
-
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 export function isContainingBlock(element: HTMLElement): boolean {
@@ -56,37 +54,6 @@ export function findUpUntilMultiple({
     }
   }
   return elements;
-}
-
-const cssVariableExpression = /--.+?\s*,\s*(.+)/;
-
-/**
- * Parses a CSS color value that might contain CSS Custom Properties
- * and returns a value that will be understood by the browser, no matter of support level.
- * If the browser support CSS Custom Properties, the value will be return as is. Otherwise,
- * the fallback value will be extracted and returned instead.
- */
-export function parseCssVariable(value: string) {
-  if (typeof window === 'undefined') {
-    return value;
-  }
-
-  if (window.CSS?.supports?.('color', 'var(--dummy, #000)') ?? false) {
-    return value;
-  }
-
-  const varIndex = value.lastIndexOf('var(');
-  if (varIndex === -1) {
-    return value;
-  }
-
-  const expr = balanced('(', ')', value.substr(varIndex));
-  if (!expr) {
-    return value;
-  }
-
-  const match = expr.body.match(cssVariableExpression);
-  return match ? match[1] : value;
 }
 
 // The instanceof Node/HTMLElement/SVGElement checks can fail if the target element

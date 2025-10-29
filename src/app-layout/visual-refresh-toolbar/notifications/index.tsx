@@ -6,9 +6,7 @@ import clsx from 'clsx';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
-import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutInternals } from '../interfaces';
-import { NotificationsSkeleton } from '../skeleton/skeleton-parts';
 import { NotificationsSlot } from '../skeleton/slots';
 
 import testutilStyles from '../../test-classes/styles.css.js';
@@ -58,8 +56,3 @@ export function AppLayoutNotificationsImplementation({
     </NotificationsSlot>
   );
 }
-
-export const createWidgetizedAppLayoutNotifications = createWidgetizedComponent(
-  AppLayoutNotificationsImplementation,
-  NotificationsSkeleton
-);
