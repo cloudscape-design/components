@@ -100,14 +100,14 @@ export class TopNavigationMenuDropdownWrapper extends ButtonDropdownWrapper {
     return this.find<HTMLButtonElement>(`.${menuDropdownStyles.button}`)!;
   }
 
-  // These use createWrapper() for global search because TopNavigation renders
-  // menu dropdowns with expandToViewport={true}, which portals the dropdown
-  // content outside the component's DOM tree.
+  // These use findOpenDropdown() because TopNavigation renders menu dropdowns
+  // with expandToViewport={true}, which portals the dropdown content outside
+  // the component's DOM tree.
   findTitle(): ElementWrapper | null {
-    return createWrapper().findComponent(`.${buttonDropdownStyles.title}`, ElementWrapper);
+    return this.findOpenDropdown()?.findByClassName(buttonDropdownStyles.title) ?? null;
   }
 
   findDescription(): ElementWrapper | null {
-    return createWrapper().findComponent(`.${buttonDropdownStyles.description}`, ElementWrapper);
+    return this.findOpenDropdown()?.findByClassName(buttonDropdownStyles.description) ?? null;
   }
 }

@@ -20,8 +20,7 @@ export interface ButtonTriggerProps {
   expanded?: boolean;
 }
 
-export interface MenuDropdownProps extends Omit<InternalButtonDropdownProps, 'items'> {
-  items: InternalButtonDropdownProps['items'];
+export interface MenuDropdownProps extends InternalButtonDropdownProps {
   iconName?: IconProps.Name;
   iconUrl?: string;
   iconAlt?: string;
