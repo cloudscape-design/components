@@ -3364,6 +3364,13 @@ Note: Manual filtering doesn't disable match highlighting.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
+      "description": "Defines whether entered text option is shown as the first option in the dropdown when value is non-empty.",
+      "name": "hideEnteredTextOption",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -10865,6 +10872,28 @@ modifying the value. A read-only component can receive focus.",
       "name": "relativeOptions",
       "optional": false,
       "type": "ReadonlyArray<DateRangePickerProps.RelativeOption>",
+    },
+    {
+      "description": "Specifies custom content to fully override the relative range tab.
+When provided, all default relative range functionality is replaced.",
+      "inlineType": {
+        "name": "DateRangePickerProps.RelativeRangeControl",
+        "parameters": [
+          {
+            "name": "selectedRange",
+            "type": "DateRangePickerProps.RelativeValue | null",
+          },
+          {
+            "name": "setSelectedRange",
+            "type": "(value: DateRangePickerProps.RelativeValue) => void",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderRelativeRangeContent",
+      "optional": true,
+      "type": "DateRangePickerProps.RelativeRangeControl",
     },
     {
       "defaultValue": "true",
@@ -22264,6 +22293,7 @@ Links are rendered as \`<a>\` tags.
      The anchor also has the attributes \`target="_blank"\` and \`rel="noopener"\`.
      Additionally, the \`activeHref\` property won't be modified when a user chooses the link.
 - \`externalIconAriaLabel\` (string) - Adds an aria-label to the external icon.
+Note: Deprecated, use i18nStrings.externalIconAriaLabel instead.
 - \`info\` (ReactNode) - Enables you to display content next to the link. Although it is technically possible to insert any content,
     our UX guidelines allow only to add a Badge and/or a "New" label.
 
