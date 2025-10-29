@@ -345,6 +345,93 @@ describe('Date range picker', () => {
           expect(getCustomRelativeRangeUnits(wrapper)).toEqual(['hours', 'minutes']);
         });
 
+        test(`${testMessagePrefix}renders custom relative range content when provided`, () => {
+          const customContent = <div data-testid="custom-relative-content">Custom relative range content</div>;
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity,
+            dateOnly,
+            renderRelativeRangeContent: () => customContent,
+          });
+
+          wrapper.findTrigger().click();
+          changeMode(wrapper, 'relative');
+
+          expect(wrapper.findDropdown()!.getElement()).toContainHTML(
+            '<div data-testid="custom-relative-content">Custom relative range content</div>'
+          );
+          expect(wrapper.findDropdown()!.findRelativeRangeRadioGroup()).toBeNull();
+        });
+
+        test(`${testMessagePrefix}calls setSelectedDate and uses selectedRange in custom relative content`, () => {
+          const onChangeSpy = jest.fn();
+          const testRange = { type: 'relative', unit: 'minute', amount: 15 } as DateRangePickerProps.RelativeValue;
+
+          const customContent = (
+            selectedRange: DateRangePickerProps.RelativeValue | null,
+            setSelectedDate: (value: DateRangePickerProps.RelativeValue) => void
+          ) => (
+            <div>
+              <span data-testid="selected-range">{selectedRange?.amount || 'none'}</span>
+              <button data-testid="set-range" onClick={() => setSelectedDate(testRange)}>
+                Set Range
+              </button>
+            </div>
+          );
+
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity,
+            dateOnly,
+            onChange: event => onChangeSpy(event.detail),
+            renderRelativeRangeContent: customContent,
+          });
+
+          wrapper.findTrigger().click();
+          changeMode(wrapper, 'relative');
+
+          const dropdown = wrapper.findDropdown()!;
+
+          // Verify initial display shows 'none'
+          const selectedRangeSpan = dropdown.getElement().querySelector('[data-testid="selected-range"]');
+          expect(selectedRangeSpan).toHaveTextContent('none');
+
+          // Click the custom button to set range
+          const setRangeButton = dropdown.getElement().querySelector('[data-testid="set-range"]') as HTMLButtonElement;
+          setRangeButton?.click();
+
+          // Verify display updates to show selected amount
+          expect(selectedRangeSpan).toHaveTextContent('15');
+
+          wrapper.findDropdown()!.findApplyButton().click();
+
+          expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ value: testRange }));
+        });
+
+        test(`${testMessagePrefix}handles null selectedRange in custom relative content`, () => {
+          const onChangeSpy = jest.fn();
+
+          const customContent = (selectedRange: DateRangePickerProps.RelativeValue | null) => (
+            <div data-testid="null-range">{selectedRange ? 'has-value' : 'null-value'}</div>
+          );
+
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity,
+            dateOnly,
+            value: null,
+            onChange: event => onChangeSpy(event.detail),
+            renderRelativeRangeContent: customContent,
+          });
+
+          wrapper.findTrigger().click();
+          changeMode(wrapper, 'relative');
+
+          const dropdown = wrapper.findDropdown()!;
+          const nullRangeDiv = dropdown.getElement().querySelector('[data-testid="null-range"]');
+          expect(nullRangeDiv).toHaveTextContent('null-value');
+        });
+
         describe('i18n', () => {
           test(`${testMessagePrefix}supports using relative range props from i18n provider`, () => {
             const { container } = render(

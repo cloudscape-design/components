@@ -46,3 +46,56 @@ describe('Input', () => {
     })
   );
 });
+
+describe('Input Style API', () => {
+  test(
+    'hover and focus states',
+    useBrowser(async browser => {
+      await browser.url('#/light/input/style-permutations');
+      const page = new InputPage(browser);
+      const inputSelector = '.screenshot-area input:first-of-type';
+
+      // Default state - teal theme
+      await expect((await browser.$(inputSelector).getCSSProperty('border-color')).value).toBe('rgba(20,184,166,1)');
+      await expect((await browser.$(inputSelector).getCSSProperty('border-width')).value).toBe('2px');
+      await expect((await browser.$(inputSelector).getCSSProperty('border-radius')).value).toBe('8px');
+      await expect((await browser.$(inputSelector).getCSSProperty('background-color')).value).toBe(
+        'rgba(153,246,228,1)'
+      );
+      await expect((await browser.$(inputSelector).getCSSProperty('color')).value).toBe('rgba(13,92,84,1)');
+      await expect((await browser.$(inputSelector).getCSSProperty('font-size')).value).toBe('16px');
+      await expect((await browser.$(inputSelector).getCSSProperty('font-weight')).value).toBe(500);
+      await expect((await browser.$(inputSelector).getCSSProperty('padding-block')).value).toBe('12px');
+      await expect((await browser.$(inputSelector).getCSSProperty('padding-inline')).value).toBe('16px');
+
+      // Placeholder styles
+      await expect((await browser.$(inputSelector).getCSSProperty('color', '::placeholder' as any)).value).toBe(
+        'rgb(20,184,166)'
+      );
+      await expect((await browser.$(inputSelector).getCSSProperty('font-size', '::placeholder' as any)).value).toBe(
+        '14px'
+      );
+      await expect((await browser.$(inputSelector).getCSSProperty('font-style', '::placeholder' as any)).value).toBe(
+        'italic'
+      );
+      await expect((await browser.$(inputSelector).getCSSProperty('font-weight', '::placeholder' as any)).value).toBe(
+        400
+      );
+
+      // Hover state
+      await page.hoverElement(inputSelector);
+      await expect((await browser.$(inputSelector).getCSSProperty('border-color')).value).toBe('rgba(15,118,110,1)');
+      await expect((await browser.$(inputSelector).getCSSProperty('background-color')).value).toBe(
+        'rgba(94,234,212,1)'
+      );
+
+      // Focus state
+      await page.click(inputSelector);
+      await expect((await browser.$(inputSelector).getCSSProperty('border-color')).value).toBe('rgba(13,148,136,1)');
+      await expect((await browser.$(inputSelector).getCSSProperty('background-color')).value).toBe(
+        'rgba(94,234,212,1)'
+      );
+      await expect((await browser.$(inputSelector).getCSSProperty('color')).value).toBe('rgba(13,92,84,1)');
+    })
+  );
+});

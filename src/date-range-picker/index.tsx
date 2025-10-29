@@ -114,6 +114,7 @@ const DateRangePicker = React.forwardRef(
       absoluteFormat = 'iso',
       hideTimeOffset,
       customRelativeRangeUnits,
+      renderRelativeRangeContent,
       granularity = 'day',
       ...rest
     }: DateRangePickerProps,
@@ -348,6 +349,7 @@ const DateRangePicker = React.forwardRef(
                 ariaDescribedby={ariaDescribedby}
                 customAbsoluteRangeControl={customAbsoluteRangeControl}
                 customRelativeRangeUnits={customRelativeRangeUnits}
+                renderRelativeRangeContent={renderRelativeRangeContent}
                 granularity={granularity}
               />
             )}
