@@ -64,8 +64,19 @@ export namespace AttributeEditorProps {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export interface I18nStrings<T = any> {
+    /**
+     * Provides a text alternative for the error icon in the error message.
+     */
     errorIconAriaLabel?: string;
+
+    /**
+     * Provides a text alternative for the warning icon in the warning message.
+     */
     warningIconAriaLabel?: string;
+
+    /**
+     * Announcement made to screen readers when an item is removed.
+     */
     itemRemovedAriaLive?: string;
 
     /**
@@ -199,6 +210,15 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
 
   /**
    * An object containing all the necessary localized strings required by the component.
+   *
+   * Note: If you are using the I18nProvider, these strings are provided automatically
+   * and you do not need to set this property.
+   *
+   * * `errorIconAriaLabel` (string) - Provides a text alternative for the error icon in the error message.
+   * * `warningIconAriaLabel` (string) - Provides a text alternative for the warning icon in the warning message.
+   * * `itemRemovedAriaLive` (string) - Announcement made to screen readers when an item is removed.
+   * * `removeButtonAriaLabel` ((item) => string) - **Deprecated.** Use the top-level `removeButtonAriaLabel` property instead.
+   * @i18n
    */
   i18nStrings?: AttributeEditorProps.I18nStrings<T>;
 }
