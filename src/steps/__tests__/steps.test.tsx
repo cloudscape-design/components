@@ -214,6 +214,18 @@ describe('Steps', () => {
       expect(customHeaders).toHaveLength(stepsForCustomRender.length);
     });
 
+    test('renders custom content in horizontal mode', () => {
+      const wrapper = renderSteps({
+        steps: stepsForCustomRender,
+        orientation: 'horizontal',
+        renderStep: customRenderStep,
+      });
+
+      expect(wrapper.findAll('[data-testid="custom-header"]')).not.toHaveLength(0);
+      expect(wrapper.findAll('[data-testid="custom-details"]')).not.toHaveLength(0);
+      expect(wrapper.findAll('[data-testid="custom-icon"]')).not.toHaveLength(0);
+    });
+
     test('does not render status indicators when using renderStep with icon', () => {
       const wrapper = renderSteps({ steps: stepsForCustomRender, renderStep: customRenderStep });
 
