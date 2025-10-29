@@ -327,7 +327,12 @@ export const ExpandableSectionHeader = ({
     }
     return (
       <ExpandableHeaderTextWrapper
-        className={clsx(className, wrapperClassName, expanded && styles.expanded)}
+        className={clsx(
+          className,
+          wrapperClassName,
+          expanded && styles.expanded,
+          !expanded && (!headerActions || headerDescription) && styles['wrapper-not-expanded-without-actions']
+        )}
         descriptionId={descriptionId}
         headerDescription={headerDescription}
         headerCounter={headerCounter}
