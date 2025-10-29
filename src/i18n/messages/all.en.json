@@ -43,7 +43,8 @@
     "i18nStrings.detailTotalLabel": "Total"
   },
   "attribute-editor": {
-    "removeButtonText": "Remove"
+    "removeButtonText": "Remove",
+    "i18nStrings.itemRemovedAriaLive": "Item removed"
   },
   "autosuggest": {
     "errorIconAriaLabel": "Error",
