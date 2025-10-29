@@ -39,7 +39,7 @@ const CustomStep = ({
   return (
     <li className={styles.container}>
       <div className={styles.header}>
-        {icon ? icon : <InternalStatusIcon type={status} iconAriaLabel={statusIconAriaLabel} size="normal" />}
+        {icon ? icon : <InternalStatusIcon type={status} iconAriaLabel={statusIconAriaLabel} />}
         {orientation === 'vertical' ? header : <hr className={styles.connector} role="none" />}
       </div>
       {orientation === 'vertical' ? (
@@ -69,7 +69,7 @@ const InternalStep = ({
         ) : (
           <>
             <InternalBox color={statusToColor[status]}>
-              <InternalStatusIcon type={status} iconAriaLabel={statusIconAriaLabel} size="normal" />
+              <InternalStatusIcon type={status} iconAriaLabel={statusIconAriaLabel} />
             </InternalBox>
             <hr className={styles.connector} role="none" />
           </>

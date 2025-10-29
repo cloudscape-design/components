@@ -49,7 +49,7 @@ const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JS
 
 interface InternalStatusIconProps extends Pick<InternalStatusIndicatorProps, 'type' | 'iconAriaLabel'> {
   animate?: InternalStatusIndicatorProps['__animate'];
-  size: InternalStatusIndicatorProps['__size'];
+  size?: InternalStatusIndicatorProps['__size'];
   display?: InternalStatusIndicatorProps['__display'];
 }
 
