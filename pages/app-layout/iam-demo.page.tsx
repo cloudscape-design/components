@@ -8,19 +8,29 @@ import {
   Button,
   Checkbox,
   Container,
+  CopyToClipboard,
+  Drawer,
   ExpandableSection,
   Form,
   FormField,
   Header,
   Input,
+  KeyValuePairs,
+  Link,
   Multiselect,
+  ProgressBar,
   Select,
+  SideNavigation,
   SpaceBetween,
+  StatusIndicator,
   Textarea,
 } from '~components';
 import Box from '~components/box';
 import { registerBottomDrawer, updateDrawer } from '~components/internal/plugins/widget/index';
 import { mount, unmount } from '~mount';
+
+import './utils/external-sidecar-widget-demo';
+import './utils/external-global-left-panel-widget';
 
 // Separate component for the IAM role creation form
 interface CreateIamRoleFormProps {
@@ -489,6 +499,88 @@ function Component() {
             { href: '/ec2/instances/launch', text: 'Launch instance' },
           ]}
         />
+      }
+      navigation={
+        <SideNavigation
+          // activeHref={}
+          header={{ text: 'Navigation', href: '#/' }}
+          items={[
+            { type: 'link', text: 'Side nav menu A', href: '#/menu-a' },
+            { type: 'link', text: 'Side nav menu B', href: '#/menu-b' },
+            { type: 'link', text: 'Side nav menu C', href: '#/menu-c' },
+          ]}
+        />
+      }
+      tools={
+        <Drawer header="Overview">
+          <SpaceBetween size="m">
+            <Box>
+              Receive real-time data insights to build process improvements, track key performance indicators, and
+              predict future business outcomes. Create a new Cloud Data Solution account to receive a 30 day free trial
+              of all Cloud Data Solution services.
+            </Box>
+            <KeyValuePairs
+              columns={2}
+              items={[
+                {
+                  type: 'group',
+                  items: [
+                    {
+                      label: 'Distribution ID',
+                      value: 'E1WG1ZNPRXT0D4',
+                    },
+                    {
+                      label: 'ARN',
+                      value: (
+                        <CopyToClipboard
+                          copyButtonAriaLabel="Copy ARN"
+                          copyErrorText="ARN failed to copy"
+                          copySuccessText="ARN copied"
+                          textToCopy="arn:service23G24::111122223333:distribution/23E1WG1ZNPRXT0D4"
+                          variant="inline"
+                        />
+                      ),
+                    },
+                    {
+                      label: 'Status',
+                      value: <StatusIndicator>Available</StatusIndicator>,
+                    },
+                  ],
+                },
+
+                {
+                  type: 'group',
+                  items: [
+                    {
+                      label: 'SSL Certificate',
+                      id: 'ssl-certificate-id',
+                      value: (
+                        <ProgressBar
+                          value={30}
+                          additionalInfo="Additional information"
+                          description="Progress bar description"
+                          ariaLabelledby="ssl-certificate-id"
+                        />
+                      ),
+                    },
+                    {
+                      label: 'Price class',
+                      value: 'Use only US, Canada, Europe',
+                    },
+                    {
+                      label: 'CNAMEs',
+                      value: (
+                        <Link external={true} href="#">
+                          abc.service23G24.xyz
+                        </Link>
+                      ),
+                    },
+                  ],
+                },
+              ]}
+            />
+          </SpaceBetween>
+        </Drawer>
       }
       content={
         <Form
