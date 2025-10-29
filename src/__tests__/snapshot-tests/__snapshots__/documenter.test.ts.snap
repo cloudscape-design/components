@@ -10870,6 +10870,28 @@ modifying the value. A read-only component can receive focus.",
       "type": "ReadonlyArray<DateRangePickerProps.RelativeOption>",
     },
     {
+      "description": "Specifies custom content to fully override the relative range tab.
+When provided, all default relative range functionality is replaced.",
+      "inlineType": {
+        "name": "DateRangePickerProps.RelativeRangeControl",
+        "parameters": [
+          {
+            "name": "selectedRange",
+            "type": "DateRangePickerProps.RelativeValue | null",
+          },
+          {
+            "name": "setSelectedRange",
+            "type": "(value: DateRangePickerProps.RelativeValue) => void",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderRelativeRangeContent",
+      "optional": true,
+      "type": "DateRangePickerProps.RelativeRangeControl",
+    },
+    {
       "defaultValue": "true",
       "description": "Specifies whether the component should show a button that
 allows the user to clear the selected value.",
