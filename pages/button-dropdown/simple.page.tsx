@@ -112,20 +112,15 @@ const withExpandedGroups: ButtonDropdownProps['items'] = [
       {
         id: 'start',
         text: 'Start',
-        secondaryText: 'This is the Start option',
-        labelTag: 'Ctrl + S',
       },
       {
         id: 'stop',
         text: 'Stop',
-        secondaryText: 'This is the Stop Option',
         disabled: true,
       },
       {
         id: 'hibernate',
         text: 'Hibernate',
-        secondaryText: 'This is the Hibernate Option',
-        labelTag: 'Ctrl + H',
         disabled: true,
       },
       {

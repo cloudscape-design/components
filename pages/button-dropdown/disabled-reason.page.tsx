@@ -142,7 +142,7 @@ export default function DescriptionPage() {
   const [isRightAligned, setIsRightAligned] = useState(false);
   return (
     <>
-      <h1>Failure Reason in ButtonDropdown</h1>
+      <h1>Descriptions in ButtonDropdown</h1>
       <label>
         <input
           type="checkbox"

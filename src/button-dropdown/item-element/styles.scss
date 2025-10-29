@@ -122,10 +122,18 @@
 
 .label-tag {
   color: awsui.$color-text-body-default;
+
+  &.highlighted {
+    color: awsui.$color-text-dropdown-item-secondary-hover;
+  }
 }
 
 .secondary-text {
   @include styles.font(body-s);
   font-weight: styles.$font-weight-lighter;
   color: awsui.$color-text-dropdown-item-secondary;
+
+  &.highlighted {
+    color: awsui.$color-text-dropdown-item-secondary-hover;
+  }
 }
