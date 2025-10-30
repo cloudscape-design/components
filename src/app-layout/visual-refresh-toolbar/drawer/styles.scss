@@ -50,7 +50,7 @@ $ai-drawer-heider-height: 41px;
   }
 
   @include desktop-only {
-    &:not(.legacy):not(.ai-drawer) {
+    &:not(.legacy):not(.ai-drawer):not(.bottom-drawer) {
       border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
     }
   }
