@@ -41,6 +41,7 @@ export default function InternalWizard({
   submitButtonText,
   isLoadingNextStep = false,
   allowSkipTo = false,
+  customPrimaryActions,
   secondaryActions,
   onCancel,
   onSubmit,
@@ -201,6 +202,7 @@ export default function InternalWizard({
             activeStepIndex={actualActiveStepIndex}
             isPrimaryLoading={isLoadingNextStep}
             allowSkipTo={allowSkipTo}
+            customPrimaryActions={customPrimaryActions}
             secondaryActions={secondaryActions}
             onCancelClick={onCancelClick}
             onPreviousClick={onPreviousClick}
