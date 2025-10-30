@@ -20,7 +20,7 @@ $item-toggle-column-width: 28px;
   position: relative;
 
   &.offset {
-    margin-inline-start: $item-toggle-column-width;
+    margin-inline-start: 20px;
   }
 
   > .treeitem-content-wrapper {
@@ -37,7 +37,6 @@ $item-toggle-column-width: 28px;
     > .expand-toggle-wrapper {
       grid-column: 1;
       grid-row: 1;
-      padding-inline-end: awsui.$space-scaled-xxs;
 
       > .toggle {
         justify-self: center;
@@ -49,7 +48,7 @@ $item-toggle-column-width: 28px;
     > .structured-item-wrapper {
       grid-column: 2;
       grid-row: 1 / span 2;
-      padding-block: awsui.$space-scaled-xxs;
+      padding-block: awsui.$space-scaled-xxxs;
 
       position: relative;
     }

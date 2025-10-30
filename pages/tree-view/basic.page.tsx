@@ -88,7 +88,11 @@ export default function BasicTreeView() {
                     <Icon name={expandedItems.includes(item.id) ? 'folder-open' : 'folder'} ariaLabel="folder" />
                   ),
                   content: item.content,
-                  secondaryContent: item.details && <Box color="text-status-inactive">{item.details}</Box>,
+                  secondaryContent: item.details && (
+                    <Box color="text-body-secondary" fontSize="body-s">
+                      {item.details}
+                    </Box>
+                  ),
                   actions: item.hasActions ? (
                     <Actions
                       actionType="inline-button-dropdown"

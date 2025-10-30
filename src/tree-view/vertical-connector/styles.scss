@@ -27,7 +27,7 @@ $item-toggle-column-width: 28px;
   &.absolute {
     position: absolute;
     inset: 0;
-    inset-block-end: awsui.$space-scaled-xxs;
+    inset-block-end: awsui.$space-scaled-xs;
     inset-inline-start: calc($item-toggle-column-width / 2);
   }
 }
