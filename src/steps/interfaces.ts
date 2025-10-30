@@ -15,6 +15,27 @@ export interface StepsProps extends BaseComponentProps {
    */
   steps: ReadonlyArray<StepsProps.Step>;
   /**
+   * The visual orientation of the steps (vertical or horizontal).
+   * By default the orientation is vertical.
+   *
+   * @awsuiSystem core
+   */
+  orientation?: StepsProps.Orientation;
+  /**
+   * Render a step. This overrides the default icon, header, and details provided by the component.
+   * The function is called for each step and should return an object with the following keys:
+   * * `header` (React.ReactNode) - Summary corresponding to the step.
+   * * `details` (React.ReactNode) - (Optional) Additional information corresponding to the step.
+   * * `icon` (React.ReactNode) - (Optional) Replaces the standard step icon from the status indicator.
+   *
+   * @awsuiSystem core
+   */
+  renderStep?: (step: StepsProps.Step) => {
+    header: React.ReactNode;
+    details?: React.ReactNode;
+    icon?: React.ReactNode;
+  };
+  /**
    * Provides an `aria-label` to the progress steps container.
    * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
    */
@@ -40,4 +61,6 @@ export namespace StepsProps {
     header: React.ReactNode;
     details?: React.ReactNode;
   }
+
+  export type Orientation = 'vertical' | 'horizontal';
 }

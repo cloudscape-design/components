@@ -56,7 +56,8 @@ export interface DrawerPayload {
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;
 export type UpdateDrawerConfigMessage = Message<
   'updateDrawerConfig',
-  Omit<DrawerPayload, 'mountContent' | 'unmountContent' | 'mountHeader' | 'unmountHeader'>
+  Pick<DrawerPayload, 'id'> &
+    Partial<Omit<DrawerPayload, 'mountContent' | 'unmountContent' | 'mountHeader' | 'unmountHeader'>>
 >;
 export type OpenDrawerMessage = Message<'openDrawer', { id: string }>;
 export type CloseDrawerMessage = Message<'closeDrawer', { id: string }>;

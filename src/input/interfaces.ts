@@ -181,11 +181,6 @@ export interface InputProps
    * including the date, month, week, time, datetime-local, number and range types.
    */
   step?: InputProps.Step;
-
-  /**
-   * @awsuiSystem core
-   */
-  style?: InputProps.Style;
 }
 
 export namespace InputProps {
@@ -207,53 +202,7 @@ export namespace InputProps {
      */
     select(): void;
   }
-
-  export interface Style {
-    root?: {
-      backgroundColor?: {
-        default?: string;
-        disabled?: string;
-        focus?: string;
-        hover?: string;
-        readonly?: string;
-      };
-      borderColor?: {
-        default?: string;
-        disabled?: string;
-        focus?: string;
-        hover?: string;
-        readonly?: string;
-      };
-      borderRadius?: string;
-      borderWidth?: string;
-      boxShadow?: {
-        default?: string;
-        disabled?: string;
-        focus?: string;
-        hover?: string;
-        readonly?: string;
-      };
-      color?: {
-        default?: string;
-        disabled?: string;
-        focus?: string;
-        hover?: string;
-        readonly?: string;
-      };
-      fontSize?: string;
-      fontWeight?: string;
-      paddingBlock?: string;
-      paddingInline?: string;
-    };
-    placeholder?: {
-      color?: string;
-      fontSize?: string;
-      fontStyle?: string;
-      fontWeight?: string;
-    };
-  }
 }
-
 export interface BaseChangeDetail {
   value: string;
 }
