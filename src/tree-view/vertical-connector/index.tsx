@@ -7,9 +7,8 @@ import styles from './styles.css.js';
 
 interface VerticalConnectorProps {
   variant: 'grid' | 'absolute';
-  isHighlighted?: boolean;
 }
 
-export default function VerticalConnector({ variant, isHighlighted }: VerticalConnectorProps) {
-  return <div className={clsx(styles['vertical-connector'], styles[variant], isHighlighted && styles.highlighted)} />;
+export default function VerticalConnector({ variant }: VerticalConnectorProps) {
+  return <div className={clsx(styles['vertical-connector'], styles[variant])} />;
 }

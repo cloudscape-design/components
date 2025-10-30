@@ -12,10 +12,6 @@ $item-toggle-column-width: 28px;
   background-color: awsui.$color-border-divider-default;
   inline-size: awsui.$border-divider-list-width;
 
-  &.highlighted {
-    background-color: awsui.$color-border-divider-interactive-default;
-  }
-
   &.grid {
     grid-row: 2 / span 3;
     grid-column: 1;

@@ -24,8 +24,8 @@ const TreeView = <T,>({ connectorLines = 'none', ...props }: TreeViewProps<T>) =
       {...baseProps}
       {...baseComponentProps}
       {...externalProps}
-      connectorLines={connectorLines}
       {...props}
+      connectorLines={connectorLines}
     />
   );
 };
