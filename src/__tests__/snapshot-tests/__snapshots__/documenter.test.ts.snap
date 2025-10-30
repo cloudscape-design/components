@@ -23104,6 +23104,48 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "The visual orientation of the steps (vertical or horizontal).
+By default the orientation is vertical.",
+      "inlineType": {
+        "name": "StepsProps.Orientation",
+        "type": "union",
+        "values": [
+          "horizontal",
+          "vertical",
+        ],
+      },
+      "name": "orientation",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "string",
+    },
+    {
+      "description": "Render a step. This overrides the default icon, header, and details provided by the component.
+The function is called for each step and should return an object with the following keys:
+* \`header\` (React.ReactNode) - Summary corresponding to the step.
+* \`details\` (React.ReactNode) - (Optional) Additional information corresponding to the step.
+* \`icon\` (React.ReactNode) - (Optional) Replaces the standard step icon from the status indicator.",
+      "inlineType": {
+        "name": "(step: StepsProps.Step) => { header: React.ReactNode; details?: React.ReactNode; icon?: React.ReactNode; }",
+        "parameters": [
+          {
+            "name": "step",
+            "type": "StepsProps.Step",
+          },
+        ],
+        "returnType": "{ header: React.ReactNode; details?: React.ReactNode; icon?: React.ReactNode; }",
+        "type": "function",
+      },
+      "name": "renderStep",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "((step: StepsProps.Step) => { header: React.ReactNode; details?: React.ReactNode; icon?: React.ReactNode; })",
+    },
+    {
       "description": "An array of individual steps
 
 Each step definition has the following properties:
