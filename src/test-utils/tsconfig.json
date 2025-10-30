@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["ES2019", "DOM"],
+   "lib": ["ES2020", "DOM"],
     "target": "ES2019",
     "strict": true,
     "incremental": true,

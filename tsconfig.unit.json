@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["ES2021", "DOM"],
+     "lib": ["es2020", "dom"],
     "target": "ES2021",
     "types": ["node", "jest", "@testing-library/jest-dom"],
     "moduleResolution": "node",
