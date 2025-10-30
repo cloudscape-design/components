@@ -3,6 +3,7 @@
 import React, { createRef } from 'react';
 import { render, waitFor } from '@testing-library/react';
 
+import { LiveRegionController } from '../../../lib/components/live-region/controller.js';
 import InternalLiveRegion, {
   extractTextContent,
   InternalLiveRegionRef,
@@ -30,6 +31,7 @@ beforeEach(() => {
 // We need to reset them after each test.
 afterEach(() => {
   jest.clearAllTimers();
+  (LiveRegionController as any)._nextAvailableSlot = 0;
 });
 
 describe('LiveRegion', () => {
@@ -129,6 +131,159 @@ describe('LiveRegion', () => {
 
     ref.current?.reannounce();
     expect(politeRegion).toHaveTextContent('Announcement');
+  });
+
+  it('announces second message when first is still pending', async () => {
+    // 1. First announcement is made with delay
+    // 2. Before delay expires, second announcement arrives
+    // 3. Second announcement should replace the first
+
+    const ref = createRef<InternalLiveRegionRef>();
+
+    // Use delay > 0 to test the timeout behavior
+    const { rerender } = render(
+      <InternalLiveRegion ref={ref} delay={0.1} hidden={true}>
+        First announcement
+      </InternalLiveRegion>
+    );
+
+    await waitFor(() => expect(document.querySelector('[aria-live]')).toBeTruthy());
+
+    // First announcement is queued but not yet in DOM
+    const politeRegion = document.querySelector('[aria-live=polite]')!;
+    expect(politeRegion).toHaveTextContent(''); // Not announced yet
+
+    // Before first timeout fires, update with second message
+    rerender(
+      <InternalLiveRegion ref={ref} delay={0.1} hidden={true}>
+        Second announcement
+      </InternalLiveRegion>
+    );
+
+    // Fast-forward time to trigger timeout
+    jest.advanceTimersByTime(100);
+
+    // Second message should be announced (not first)
+    await waitFor(() => {
+      expect(politeRegion).toHaveTextContent('Second announcement');
+    });
+
+    // Verify first message was never announced
+    expect(politeRegion).not.toHaveTextContent('First announcement');
+  });
+
+  it('handles rapid successive announcements correctly', async () => {
+    // Scanrrio: "Refreshing" → "Refresh Complete" in quick succession
+
+    const ref = createRef<InternalLiveRegionRef>();
+
+    const { rerender } = render(
+      <InternalLiveRegion ref={ref} delay={0.1} hidden={true}>
+        Refreshing
+      </InternalLiveRegion>
+    );
+
+    await waitFor(() => expect(document.querySelector('[aria-live]')).toBeTruthy());
+
+    // Immediately update to completion message
+    rerender(
+      <InternalLiveRegion ref={ref} delay={0.1} hidden={true}>
+        Refresh complete
+      </InternalLiveRegion>
+    );
+
+    // Fast-forward to trigger timeout
+    jest.advanceTimersByTime(100);
+
+    const politeRegion = document.querySelector('[aria-live=polite]')!;
+
+    // Should announce the latest message
+    await waitFor(() => {
+      expect(politeRegion).toHaveTextContent('Refresh complete');
+    });
+  });
+
+  it('clears pending timeout when new announcement arrives', async () => {
+    // Verifies "old" timeouts are properly cleared
+
+    const ref = createRef<InternalLiveRegionRef>();
+
+    const { rerender } = render(
+      <InternalLiveRegion ref={ref} delay={0.2} hidden={true}>
+        First
+      </InternalLiveRegion>
+    );
+
+    await waitFor(() => expect(document.querySelector('[aria-live]')).toBeTruthy());
+
+    // Wait 100ms (half of delay)
+    jest.advanceTimersByTime(100);
+
+    // Update with new message
+    rerender(
+      <InternalLiveRegion ref={ref} delay={0.2} hidden={true}>
+        Second
+      </InternalLiveRegion>
+    );
+
+    // Advance another 100ms (would trigger first timeout if not cleared)
+    jest.advanceTimersByTime(100);
+
+    const politeRegion = document.querySelector('[aria-live=polite]')!;
+
+    // Should NOT have announced yet (new timeout needs full 200ms)
+    expect(politeRegion).toHaveTextContent('');
+
+    // Advance remaining time for second timeout
+    jest.advanceTimersByTime(100);
+
+    // Now should announce second message
+    await waitFor(() => {
+      expect(politeRegion).toHaveTextContent('Second');
+    });
+  });
+
+  it('staggers announcements from multiple LiveRegion instances', async () => {
+    render(
+      <InternalLiveRegion delay={2} hidden={true}>
+        First message
+      </InternalLiveRegion>
+    );
+
+    render(
+      <InternalLiveRegion delay={2} hidden={true}>
+        Second message
+      </InternalLiveRegion>
+    );
+
+    await waitFor(() => expect(document.querySelectorAll('[aria-live]').length).toBe(2));
+
+    const regions = document.querySelectorAll('[aria-live=polite]');
+    const region1 = regions[0];
+    const region2 = regions[1];
+
+    // Both should be empty initially
+    expect(region1).toHaveTextContent('');
+    expect(region2).toHaveTextContent('');
+
+    // Advance to first announcement time (2000ms)
+    jest.advanceTimersByTime(2000);
+
+    // First should announce
+    await waitFor(() => {
+      expect(region1).toHaveTextContent('First message');
+    });
+
+    // Second should NOT announce yet (staggered by 500ms)
+    expect(region2).toHaveTextContent('');
+
+    // Advance to staggered time (500ms gap)
+    jest.advanceTimersByTime(500);
+
+    // Now second should announce
+    await waitFor(() => {
+      expect(region2).toHaveTextContent('Second message');
+    });
   });
 });
 
