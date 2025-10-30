@@ -232,7 +232,7 @@ describe('Input Style API', () => {
       await expect((await browser.$(inputSelector).getCSSProperty('color')).value).toBe('rgba(219,0,0,1)');
       await expect((await browser.$(inputSelector).getCSSProperty('border-color')).value).toBe('rgba(219,0,0,1)');
       await expect((await browser.$(inputSelector).getCSSProperty('background-color')).value).toBe(
-        'rgba(219,234,254,1)'
+        'rgba(191,219,254,1)'
       );
     })
   );
@@ -257,7 +257,7 @@ describe('Input Style API', () => {
       await expect((await browser.$(inputSelector).getCSSProperty('color')).value).toBe('rgba(133,89,0,1)');
       await expect((await browser.$(inputSelector).getCSSProperty('border-color')).value).toBe('rgba(133,89,0,1)');
       await expect((await browser.$(inputSelector).getCSSProperty('background-color')).value).toBe(
-        'rgba(219,234,254,1)'
+        'rgba(191,219,254,1)'
       );
     })
   );
