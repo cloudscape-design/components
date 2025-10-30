@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { AlertProps } from '../../../lib/components/alert';
-import { FlashbarProps } from '../../../lib/components/flashbar';
+import { AlertProps } from '../../alert/interfaces';
+import { FlashbarProps } from '../../flashbar/interfaces';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function persistFlashbarDismiss(persistenceConfig: FlashbarProps.PersistenceConfig): Promise<void> {

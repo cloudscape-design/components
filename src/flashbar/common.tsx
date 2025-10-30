@@ -126,9 +126,11 @@ export function useFlashbar({
     }
   }, [debouncedFocus, nextFocusId, ref]);
 
-  const handleFlashDismissed = (dismissedId?: string) => {
+  const handleFlashDismissed = (dismissedId?: string, persistenceConfig?: FlashbarProps.PersistenceConfig) => {
     handleFlashDismissedInternal(dismissedId, items, ref.current, flashRefs.current);
-    persistFlashbarDismiss();
+    if (persistenceConfig && persistenceConfig.uniqueKey) {
+      persistFlashbarDismiss(persistenceConfig);
+    }
   };
 
   return {
