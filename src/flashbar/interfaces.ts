@@ -23,11 +23,17 @@ export namespace FlashbarProps {
     onButtonClick?: ButtonProps['onClick'];
     onDismiss?: ButtonProps['onClick'];
     analyticsMetadata?: FlashbarProps.ItemAnalyticsMetadata;
+    persistenceConfig?: FlashbarProps.PersistenceConfig;
   }
 
   export interface ItemAnalyticsMetadata {
     suppressFlowMetricEvents?: boolean;
     errorContext?: ErrorContext;
+  }
+
+  export interface PersistenceConfig {
+    uniqueKey: string;
+    crossServicePersistence?: boolean;
   }
 
   export interface I18nStrings {

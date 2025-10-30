@@ -77,6 +77,10 @@ export namespace AlertProps {
       };
     };
   }
+  export interface PersistenceConfig {
+    uniqueKey: string;
+    crossServicePersistence?: boolean;
+  }
 }
 
 export interface AlertProps extends BaseComponentProps {
@@ -156,4 +160,8 @@ export interface AlertProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   style?: AlertProps.Style;
+  /**
+   * @awsuiSystem console
+   */
+  persistenceConfig?: AlertProps.PersistenceConfig;
 }
