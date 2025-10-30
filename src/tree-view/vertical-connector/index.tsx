@@ -9,6 +9,8 @@ interface VerticalConnectorProps {
   variant: 'grid' | 'absolute';
 }
 
+// istanbul ignore next - tested via screenshot tests
 export default function VerticalConnector({ variant }: VerticalConnectorProps) {
+  // istanbul ignore next - tested via screenshot tests
   return <div className={clsx(styles['vertical-connector'], styles[variant])} />;
 }
