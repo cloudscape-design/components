@@ -800,5 +800,31 @@ describe('Tag Editor component', () => {
       // Calling focus() when there are no errors should not throw or cause issues
       // The function simply does nothing in this case (findIndex returns -1)
     });
+    test('should directly call focus() method and focus first error field', () => {
+      const ref = React.createRef<TagEditorProps.Ref>();
+      const { container } = render(
+        <TagEditor
+          ref={ref}
+          i18nStrings={i18nStrings}
+          tags={[
+            { key: 'validKey', value: 'validValue', existing: false },
+            { key: 'aws:invalid', value: '', existing: false },
+          ]}
+          onChange={() => {}}
+        />
+      );
+      const wrapper = createWrapper(container).findTagEditor()!;
+
+      ref.current?.focus();
+
+      const keyInput = wrapper
+        .findRow(2)!
+        .findField(1)!
+        .findControl()!
+        .findAutosuggest()!
+        .findNativeInput()
+        .getElement();
+      expect(keyInput).toHaveFocus();
+    });
   });
 });
