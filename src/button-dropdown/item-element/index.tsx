@@ -176,8 +176,16 @@ const MenuItemContent = ({ item, disabled }: { item: InternalItem | InternalChec
           badge={item.badge}
         />
       )}
-      {item.text}
-      {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
+      <div className={styles['content-wrapper']}>
+        <div className={styles['main-row']}>
+          <div>
+            {item.text}
+            {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
+          </div>
+          {item.labelTag && <div className={styles['label-tag']}>{item.labelTag}</div>}
+        </div>
+        {item.secondaryText && <div className={styles['secondary-text']}>{item.secondaryText}</div>}
+      </div>
     </>
   );
 };

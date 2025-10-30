@@ -5616,7 +5616,7 @@ The following properties are supported across all types:
 - \`lang\` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
 - \`disabled\` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
 - \`disabledReason\` (string) - (Optional) Displays text near the \`text\` property when item is disabled. Use to provide additional context.
-- \`description\` (string) - additional data that will be passed to a \`data-description\` attribute.
+- \`description\` (string) - additional data that will be passed to a \`data-description\` attribute. **Deprecated**, has no effect.
 - \`ariaLabel\` (string) - (Optional) - ARIA label of the item element.
 
 ### action
@@ -5629,6 +5629,8 @@ The following properties are supported across all types:
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`.
 - \`iconUrl\` (string) - (Optional) Specifies the URL of a custom icon.
 - \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+- \`secondaryText\` (string) - (Optional) Secondary text displayed in the menu for this item.
+- \`labelTag\` (string) - (Optional) - Label for the item. Displayed near the item text for visually impaired users.
 
 ### checkbox
 
@@ -5639,6 +5641,8 @@ When \`type\` is set to "checkbox", the values set to \`href\`, \`external\` and
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`.
 - \`iconUrl\` (string) - (Optional) Specifies the URL of a custom icon.
 - \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+- \`secondaryText\` (string) - (Optional) Secondary text displayed in the menu for this item.
+- \`labelTag\` (string) - (Optional) - Label for the item. Displayed near the item text for visually impaired users.
 
 ### group
 
@@ -28877,6 +28881,20 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           },
         },
         {
+          "description": "Finds the label tag element for a dropdown item. Returns null if the element has no label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findMainAction",
           "parameters": [],
           "returnType": {
@@ -28899,6 +28917,20 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         },
         {
           "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the secondary text element for a dropdown item. Returns null if the element has no secondary text.",
+          "name": "findSecondaryText",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -38827,6 +38859,23 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           },
         },
         {
+          "description": "Finds the label tag element for a dropdown item. Returns null if the element has no label tag.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findLabelTag",
+          },
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "ButtonDropdownWrapper.findMainAction",
           },
@@ -38855,6 +38904,23 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
             "name": "ButtonDropdownWrapper.findOpenDropdown",
           },
           "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the secondary text element for a dropdown item. Returns null if the element has no secondary text.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findSecondaryText",
+          },
+          "name": "findSecondaryText",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -40097,6 +40163,15 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           },
         },
         {
+          "description": "Finds the label tag element for a dropdown item. Returns null if the element has no label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "name": "findMainAction",
           "parameters": [],
           "returnType": {
@@ -40114,6 +40189,15 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         },
         {
           "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the secondary text element for a dropdown item. Returns null if the element has no secondary text.",
+          "name": "findSecondaryText",
           "parameters": [],
           "returnType": {
             "isNullable": false,
@@ -47108,6 +47192,18 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           },
         },
         {
+          "description": "Finds the label tag element for a dropdown item. Returns null if the element has no label tag.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findLabelTag",
+          },
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "ButtonDropdownWrapper.findMainAction",
           },
@@ -47131,6 +47227,18 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
             "name": "ButtonDropdownWrapper.findOpenDropdown",
           },
           "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the secondary text element for a dropdown item. Returns null if the element has no secondary text.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findSecondaryText",
+          },
+          "name": "findSecondaryText",
           "parameters": [],
           "returnType": {
             "isNullable": false,
