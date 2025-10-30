@@ -47,6 +47,31 @@ const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JS
   loading: <InternalSpinner />,
 });
 
+interface InternalStatusIconProps extends Pick<InternalStatusIndicatorProps, 'type' | 'iconAriaLabel'> {
+  animate?: InternalStatusIndicatorProps['__animate'];
+  size?: InternalStatusIndicatorProps['__size'];
+  display?: InternalStatusIndicatorProps['__display'];
+}
+
+export function InternalStatusIcon({
+  type,
+  iconAriaLabel,
+  animate,
+  display,
+  size = 'normal',
+}: InternalStatusIconProps) {
+  return (
+    <span
+      className={clsx(styles.icon, animate && styles['icon-shake'])}
+      aria-label={iconAriaLabel}
+      role={iconAriaLabel ? 'img' : undefined}
+    >
+      {typeToIcon(size)[type]}
+      {display === 'inline' && <>&nbsp;</>}
+    </span>
+  );
+}
+
 export default function StatusIndicator({
   type,
   children,
@@ -85,14 +110,13 @@ export default function StatusIndicator({
           __animate && styles['container-fade-in']
         )}
       >
-        <span
-          className={clsx(styles.icon, __animate && styles['icon-shake'])}
-          aria-label={iconAriaLabel}
-          role={iconAriaLabel ? 'img' : undefined}
-        >
-          {typeToIcon(__size)[type]}
-          {__display === 'inline' && <>&nbsp;</>}
-        </span>
+        <InternalStatusIcon
+          type={type}
+          iconAriaLabel={iconAriaLabel}
+          animate={__animate}
+          display={__display}
+          size={__size}
+        />
         {children}
       </span>
     </WithNativeAttributes>
