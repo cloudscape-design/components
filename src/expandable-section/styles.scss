@@ -138,6 +138,11 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       // Equal top and bottom padding so standalone header has vertical symmetry.
       padding-block-end: awsui.$space-container-header-top;
     }
+
+    &.wrapper-not-expanded-without-actions {
+      padding-block-end: calc(#{awsui.$space-container-header-top} + #{awsui.$space-scaled-xxs});
+    }
+
     &.header-deprecated {
       padding-inline-start: container.$header-padding-horizontal;
     }
@@ -200,6 +205,11 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     // The icon-container style is kept for variant='container' and header
     > .icon-container {
       margin-block-start: awsui.$space-expandable-section-icon-offset-top;
+    }
+
+    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant -- header-text is nested within header-container-button
+    .header-text.not-expanded {
+      padding-block: awsui.$space-xxs;
     }
   }
 
