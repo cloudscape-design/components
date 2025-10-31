@@ -36,6 +36,7 @@ interface WizardFormProps extends InternalBaseComponentProps {
   submitButtonText?: string;
   isPrimaryLoading: boolean;
   allowSkipTo: boolean;
+  customPrimaryActions?: React.ReactNode;
   secondaryActions?: React.ReactNode;
   onCancelClick: () => void;
   onPreviousClick: () => void;
@@ -80,6 +81,7 @@ function WizardForm({
   isPrimaryLoading,
   allowSkipTo,
   secondaryActions,
+  customPrimaryActions,
   onCancelClick,
   onPreviousClick,
   onPrimaryClick,
@@ -151,25 +153,29 @@ function WizardForm({
         __internalRootRef={ref}
         className={styles['form-component']}
         actions={
-          <WizardActions
-            cancelButtonText={i18nStrings.cancelButton}
-            primaryButtonText={isLastStep ? (submitButtonText ?? i18nStrings.submitButton) : i18nStrings.nextButton}
-            primaryButtonLoadingText={
-              isLastStep ? i18nStrings.submitButtonLoadingAnnouncement : i18nStrings.nextButtonLoadingAnnouncement
-            }
-            previousButtonText={i18nStrings.previousButton}
-            onCancelClick={onCancelClick}
-            onPreviousClick={onPreviousClick}
-            onPrimaryClick={onPrimaryClick}
-            onSkipToClick={() => onSkipToClick(skipToTargetIndex)}
-            showPrevious={activeStepIndex !== 0}
-            isPrimaryLoading={isPrimaryLoading}
-            showSkipTo={showSkipTo}
-            skipToButtonText={skipToButtonText}
-            isLastStep={isLastStep}
-            activeStepIndex={activeStepIndex}
-            skipToStepIndex={skipToTargetIndex}
-          />
+          customPrimaryActions ? (
+            customPrimaryActions
+          ) : (
+            <WizardActions
+              cancelButtonText={i18nStrings.cancelButton}
+              primaryButtonText={isLastStep ? (submitButtonText ?? i18nStrings.submitButton) : i18nStrings.nextButton}
+              primaryButtonLoadingText={
+                isLastStep ? i18nStrings.submitButtonLoadingAnnouncement : i18nStrings.nextButtonLoadingAnnouncement
+              }
+              previousButtonText={i18nStrings.previousButton}
+              onCancelClick={onCancelClick}
+              onPreviousClick={onPreviousClick}
+              onPrimaryClick={onPrimaryClick}
+              onSkipToClick={() => onSkipToClick(skipToTargetIndex)}
+              showPrevious={activeStepIndex !== 0}
+              isPrimaryLoading={isPrimaryLoading}
+              showSkipTo={showSkipTo}
+              skipToButtonText={skipToButtonText}
+              isLastStep={isLastStep}
+              activeStepIndex={activeStepIndex}
+              skipToStepIndex={skipToTargetIndex}
+            />
+          )
         }
         secondaryActions={secondaryActions}
         errorText={errorText}

@@ -28028,6 +28028,14 @@ Use this if you need to wait for a response from the server before the user can 
   ],
   "regions": [
     {
+      "description": "Specifies right-aligned custom primary actions for the wizard. Overwrites existing buttons (e.g. Cancel, Next, Finish).",
+      "isDefault": false,
+      "name": "customPrimaryActions",
+      "systemTags": [
+        "core",
+      ],
+    },
+    {
       "description": "Specifies left-aligned secondary actions for the wizard. Use a button dropdown if multiple actions are required.",
       "isDefault": false,
       "name": "secondaryActions",
