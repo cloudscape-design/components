@@ -27,6 +27,7 @@ export type InternalDrawer = AppLayoutProps.Drawer & {
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
   onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
   position?: 'side' | 'bottom';
+  onToggleFocusMode?: NonCancelableEventHandler<{ isExpanded: boolean }>;
 };
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.
