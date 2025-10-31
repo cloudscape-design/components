@@ -43,7 +43,8 @@
     "i18nStrings.detailTotalLabel": "합계"
   },
   "attribute-editor": {
-    "removeButtonText": "제거"
+    "removeButtonText": "제거",
+    "i18nStrings.itemRemovedAriaLive": "항목 제거됨"
   },
   "autosuggest": {
     "errorIconAriaLabel": "오류",

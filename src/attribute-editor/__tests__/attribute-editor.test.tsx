@@ -620,6 +620,36 @@ describe('Attribute Editor', () => {
       const wrapper = createWrapper(container).findAttributeEditor()!;
       expect(wrapper.findRow(1)!.findRemoveButton()!.getElement()).toHaveTextContent('Custom remove');
     });
+    test('supports providing itemRemovedAriaLive from i18n provider', async () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{ 'attribute-editor': { 'i18nStrings.itemRemovedAriaLive': 'Custom removal announcement' } }}
+        >
+          <TestComponent i18nStrings={undefined} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findAttributeEditor()!;
+
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+
+      await waitFor(() =>
+        expect(wrapper.find(`[data-testid="removal-announcement"]`)?.getElement()).toHaveTextContent(
+          'Custom removal announcement'
+        )
+      );
+    });
+    test('supports providing itemRemovedAriaLive from i18nStrings prop', async () => {
+      const { container } = render(<TestComponent i18nStrings={{ itemRemovedAriaLive: 'Item removed via prop' }} />);
+      const wrapper = createWrapper(container).findAttributeEditor()!;
+
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+
+      await waitFor(() =>
+        expect(wrapper.find(`[data-testid="removal-announcement"]`)?.getElement()).toHaveTextContent(
+          'Item removed via prop'
+        )
+      );
+    });
   });
 
   describe('custom buttons', () => {

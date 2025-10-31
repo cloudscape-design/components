@@ -43,7 +43,8 @@
     "i18nStrings.detailTotalLabel": "Toplam"
   },
   "attribute-editor": {
-    "removeButtonText": "Kaldır"
+    "removeButtonText": "Kaldır",
+    "i18nStrings.itemRemovedAriaLive": "Öğe kaldırıldı"
   },
   "autosuggest": {
     "errorIconAriaLabel": "Hata",

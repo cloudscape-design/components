@@ -43,7 +43,8 @@
     "i18nStrings.detailTotalLabel": "Gesamtsumme"
   },
   "attribute-editor": {
-    "removeButtonText": "Entfernen"
+    "removeButtonText": "Entfernen",
+    "i18nStrings.itemRemovedAriaLive": "Artikel wurde entfernt"
   },
   "autosuggest": {
     "errorIconAriaLabel": "Fehler",

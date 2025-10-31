@@ -43,7 +43,8 @@
     "i18nStrings.detailTotalLabel": "Totale"
   },
   "attribute-editor": {
-    "removeButtonText": "Rimuovi"
+    "removeButtonText": "Rimuovi",
+    "i18nStrings.itemRemovedAriaLive": "Elemento rimosso"
   },
   "autosuggest": {
     "errorIconAriaLabel": "Errore",
@@ -214,7 +215,7 @@
     "externalIconAriaLabel": "Si apre in una nuova scheda"
   },
   "list": {
-    "dragHandleAriaLabel": "Punto di trascinamento",
+    "dragHandleAriaLabel": "Maniglia di trascinamento",
     "dragHandleAriaDescription": "Utilizza Spazio o Invio per attivare il trascinamento di un elemento, quindi usa i tasti freccia per spostare la posizione dell'elemento. Per completare lo spostamento della posizione, utilizza Spazio o Invio oppure per annullare lo spostamento, premi Esc.",
     "liveAnnouncementDndStarted": "Elemento raccolto nella posizione {position} di {total}",
     "liveAnnouncementDndDiscarded": "Riordinamento annullato",

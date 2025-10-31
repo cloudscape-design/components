@@ -7,6 +7,7 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
+import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { matchBreakpointMapping } from '../internal/breakpoints';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
@@ -71,10 +72,16 @@ const InternalAttributeEditor = React.forwardRef(
     const infoAriaDescribedBy = additionalInfo ? additionalInfoId : undefined;
 
     const prevItemsLength = usePrevious(items.length);
+    const i18n = useInternalI18n('attribute-editor');
 
     React.useEffect(() => {
-      if (prevItemsLength && prevItemsLength > items.length && i18nStrings?.itemRemovedAriaLive) {
-        setRemovalAnnouncement(i18nStrings.itemRemovedAriaLive);
+      if (prevItemsLength && prevItemsLength > items.length) {
+        const announcement = i18n('i18nStrings.itemRemovedAriaLive', i18nStrings?.itemRemovedAriaLive);
+        if (announcement) {
+          setRemovalAnnouncement(announcement);
+        } else {
+          setRemovalAnnouncement('');
+        }
       } else {
         setRemovalAnnouncement('');
       }

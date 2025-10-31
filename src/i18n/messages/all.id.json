@@ -43,7 +43,8 @@
     "i18nStrings.detailTotalLabel": "Total"
   },
   "attribute-editor": {
-    "removeButtonText": "Hapus"
+    "removeButtonText": "Hapus",
+    "i18nStrings.itemRemovedAriaLive": "Item dihapus"
   },
   "autosuggest": {
     "errorIconAriaLabel": "Kesalahan",
@@ -214,7 +215,7 @@
     "externalIconAriaLabel": "Buka di tab baru"
   },
   "list": {
-    "dragHandleAriaLabel": "Seret handel",
+    "dragHandleAriaLabel": "Handel seret",
     "dragHandleAriaDescription": "Gunakan Spasi atau Enter untuk mengaktifkan seret pada item, lalu gunakan tombol panah untuk memindahkan posisi item. Untuk menyelesaikan perpindahan posisi, gunakan Spasi atau Enter, atau untuk membatalkan perpindahan, gunakan Escape.",
     "liveAnnouncementDndStarted": "Mengambil item pada posisi {position} dari {total}",
     "liveAnnouncementDndDiscarded": "Pengurutan ulang dibatalkan",

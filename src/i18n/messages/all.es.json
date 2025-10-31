@@ -37,13 +37,14 @@
     "ariaLabels.notifications": "Notificaciones",
     "ariaLabels.tools": "Panel de ayuda",
     "ariaLabels.toolsClose": "Cerrar el panel de ayuda",
-    "ariaLabels.toolsToggle": "Abrir panel de ayuda"
+    "ariaLabels.toolsToggle": "Abrir el panel de ayuda"
   },
   "area-chart": {
     "i18nStrings.detailTotalLabel": "Total"
   },
   "attribute-editor": {
-    "removeButtonText": "Eliminar"
+    "removeButtonText": "Eliminar",
+    "i18nStrings.itemRemovedAriaLive": "Elemento eliminado"
   },
   "autosuggest": {
     "errorIconAriaLabel": "Error",

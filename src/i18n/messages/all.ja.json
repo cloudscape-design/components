@@ -43,7 +43,8 @@
     "i18nStrings.detailTotalLabel": "合計"
   },
   "attribute-editor": {
-    "removeButtonText": "削除"
+    "removeButtonText": "削除",
+    "i18nStrings.itemRemovedAriaLive": "アイテムが削除されました"
   },
   "autosuggest": {
     "errorIconAriaLabel": "エラー",

@@ -43,7 +43,8 @@
     "i18nStrings.detailTotalLabel": "المجموع"
   },
   "attribute-editor": {
-    "removeButtonText": "إزالة"
+    "removeButtonText": "إزالة",
+    "i18nStrings.itemRemovedAriaLive": "تمت إزالة العنصر"
   },
   "autosuggest": {
     "errorIconAriaLabel": "خطأ",
