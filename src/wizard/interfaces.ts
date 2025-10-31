@@ -104,7 +104,7 @@ export interface WizardProps extends BaseComponentProps {
   allowSkipTo?: boolean;
 
   /**
-   * Specifies right-aligned custom primary actions for the wizard. Overwrites existing buttons (e.g. Cancel, Next, Finish, ...).
+   * Specifies right-aligned custom primary actions for the wizard. Overwrites existing buttons (e.g. Cancel, Next, Finish).
    *
    * @awsuiSystem core
    */
