@@ -19,6 +19,9 @@ type DrawerInternalProps = DrawerProps & InternalBaseComponentProps;
 
 export function DrawerImplementation({
   header,
+  stickyHeader,
+  footer,
+  stickyFooter,
   children,
   loading,
   i18nStrings,
@@ -52,26 +55,44 @@ export function DrawerImplementation({
     </div>
   ) : (
     <div {...containerProps} ref={__internalRootRef}>
-      {header && (
+      {header && stickyHeader && (
         <div
           className={clsx(
             styles.header,
+            styles['header-sticky'],
             runtimeDrawerContext && styles['with-runtime-context'],
-            hasAdditioalDrawerAction && styles['with-additional-action']
+            hasAdditioalDrawerAction && styles['with-additional-action'],
+            'header-with-paddings'
           )}
         >
           {header}
           {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
         </div>
       )}
-      <div
-        className={clsx(
-          styles['test-utils-drawer-content'],
-          !disableContentPaddings && styles['content-with-paddings']
+
+      <div className={clsx(styles['test-utils-drawer-content'], styles['drawer-content'])}>
+        {header && !stickyHeader && (
+          <div
+            className={clsx(
+              styles.header,
+              runtimeDrawerContext && styles['with-runtime-context'],
+              hasAdditioalDrawerAction && styles['with-additional-action'],
+              'header-with-paddings'
+            )}
+          >
+            {header}
+            {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
+          </div>
         )}
-      >
-        {children}
+        <div className={clsx(styles['content-wrapper'], !disableContentPaddings && styles['content-with-paddings'])}>
+          {children}
+        </div>
+        {footer && !stickyFooter && <div className={clsx(styles.footer, 'footer-with-paddings')}>{footer}</div>}
       </div>
+
+      {footer && stickyFooter && (
+        <div className={clsx(styles.footer, styles['footer-sticky'], 'footer-with-paddings')}>{footer}</div>
+      )}
     </div>
   );
 }

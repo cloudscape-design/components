@@ -16,6 +16,10 @@
 .drawer {
   @include styles.styles-reset;
   word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+  block-size: 100%;
 }
 
 .header {
@@ -24,7 +28,7 @@
   justify-content: space-between;
   color: awsui.$color-text-heading-default;
   padding-block: awsui.$space-panel-header-vertical;
-  padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-l} + #{awsui.$space-scaled-xxl});
+  padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-l} * #{awsui.$space-scaled-xxl});
   // padding to make sure the header doesn't overlap with the close icon
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
 
@@ -73,6 +77,28 @@
   padding-block-end: awsui.$space-panel-content-bottom;
 }
 
+.drawer-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.content-wrapper {
+  padding-block: awsui.$space-scaled-s;
+  flex: 1;
+}
+
 .test-utils-drawer-content {
   /* used in test-utils */
+}
+
+.footer {
+  background: awsui.$color-background-container-content;
+  padding-block: awsui.$space-scaled-m;
+  padding-inline: awsui.$space-scaled-m;
+}
+
+.footer-sticky {
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
 }
