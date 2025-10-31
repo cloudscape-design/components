@@ -55,6 +55,11 @@ export interface TreeViewProps<T = any> extends BaseComponentProps {
   ariaDescribedby?: string;
 
   /**
+   * Shows connector lines highlighting hierarchy between parent and child items.
+   */
+  connectorLines?: TreeViewProps.ConnectorLinesVariant;
+
+  /**
    * Called when an item expands or collapses.
    */
   onItemToggle?: NonCancelableEventHandler<TreeViewProps.ItemToggleDetail<T>>;
@@ -89,6 +94,8 @@ export namespace TreeViewProps {
   export interface ItemToggleRenderIconData {
     expanded: boolean;
   }
+
+  export type ConnectorLinesVariant = 'vertical' | 'none';
 
   export interface I18nStrings<T> {
     collapseButtonLabel?: (item: T) => string;
