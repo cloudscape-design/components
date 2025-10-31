@@ -25,24 +25,38 @@ const tabbables = [
   '[autofocus]',
 ].join(',');
 
+/** Whether the element or any of its ancestors are not hidden. */
+function isVisible(element: HTMLElement): boolean {
+  if (!('checkVisibility' in element)) {
+    // checkVisibility isn't defined in JSDOM. It's safer to assume everything is visible.
+    return true;
+  }
+  // checkVisibility is only defined on element in Typescript 5+
+  // See https://github.com/puppeteer/puppeteer/issues/11059
+  return (element as any).checkVisibility({ visibilityProperty: true });
+}
+
+/** Whether the element can be focused. */
 export function isFocusable(element: HTMLElement): boolean {
-  return element.matches(tabbables);
+  return element.matches(tabbables) && isVisible(element);
 }
 
+/** Get all elements that can be focused, either programmatically or by the user. */
 export function getAllFocusables(container: HTMLElement): HTMLElement[] {
-  return Array.prototype.slice.call(container.querySelectorAll(tabbables));
+  return Array.from(container.querySelectorAll<HTMLElement>(tabbables)).filter(isVisible);
 }
 
-function getFocusables(container: HTMLElement): HTMLElement[] {
+/** Get all focusable elements that can be reached with the keyboard. */
+function getAllTabbables(container: HTMLElement): HTMLElement[] {
   return getAllFocusables(container).filter((element: HTMLElement) => element.tabIndex !== -1);
 }
 
-export function getFirstFocusable(container: HTMLElement): null | HTMLElement {
-  const focusables = getFocusables(container);
-  return focusables[0] ?? null;
+export function getFirstFocusable(container: HTMLElement): HTMLElement | null {
+  const tabbables = getAllTabbables(container);
+  return tabbables[0] ?? null;
 }
 
-export function getLastFocusable(container: HTMLElement): null | HTMLElement {
-  const focusables = getFocusables(container);
-  return focusables[focusables.length - 1] ?? null;
+export function getLastFocusable(container: HTMLElement): HTMLElement | null {
+  const tabbables = getAllTabbables(container);
+  return tabbables[tabbables.length - 1] ?? null;
 }
