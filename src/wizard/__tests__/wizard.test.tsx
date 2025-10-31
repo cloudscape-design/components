@@ -550,11 +550,10 @@ describe('Custom primary actions', () => {
     DEFAULT_STEPS.forEach((_, index) => {
       const customActionButtonWrapper = wrapper.findActions()!.findButton('[data-testid="custom-action"]');
       expect(customActionButtonWrapper).not.toBeNull();
-      customActionButtonWrapper?.click();
+      customActionButtonWrapper!.click();
       expect(onCustomClick).toHaveBeenCalledTimes(index + 1);
 
       // Navigate to next step for next iteration
-      console.log(wrapper.findContent()?.getElement().innerHTML);
       if (index < DEFAULT_STEPS.length - 1) {
         rerender({
           customPrimaryActions: customActions,

@@ -63,7 +63,7 @@ export default function WizardPage() {
   };
 
   const customPrimaryActions = (
-    <SpaceBetween size="m" direction="horizontal">
+    <SpaceBetween size="xs" direction="horizontal">
       {activeStepIndex > 0 && (
         <Button variant="normal" onClick={onPrevious}>
           Custom Previous
@@ -87,7 +87,6 @@ export default function WizardPage() {
       id="wizard"
       steps={steps}
       i18nStrings={i18nStrings}
-      allowSkipTo={true}
       activeStepIndex={activeStepIndex}
       onNavigate={e => setActiveStepIndex(e.detail.requestedStepIndex)}
       secondaryActions={activeStepIndex === 2 ? <Button>Save as draft</Button> : null}
