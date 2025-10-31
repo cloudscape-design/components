@@ -192,6 +192,7 @@ export namespace IconProps {
     | 'status-positive'
     | 'status-stopped'
     | 'status-warning'
+    | 'stop-generating'
     | 'subtract-minus'
     | 'suggestions'
     | 'support'
