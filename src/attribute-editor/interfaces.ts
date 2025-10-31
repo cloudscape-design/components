@@ -210,11 +210,6 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
 
   /**
    * An object containing all the necessary localized strings required by the component.
-   *
-   * * `errorIconAriaLabel` (string) - Provides a text alternative for the error icon in the error message.
-   * * `warningIconAriaLabel` (string) - Provides a text alternative for the warning icon in the warning message.
-   * * `itemRemovedAriaLive` (string) - Announcement made to screen readers when an item is removed.
-   * * `removeButtonAriaLabel` ((item) => string) - **Deprecated.** Use the top-level `removeButtonAriaLabel` property instead.
    * @i18n
    */
   i18nStrings?: AttributeEditorProps.I18nStrings<T>;
