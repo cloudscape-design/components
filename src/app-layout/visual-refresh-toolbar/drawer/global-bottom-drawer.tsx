@@ -81,6 +81,7 @@ function AppLayoutGlobalBottomDrawerImplementation({
     placement,
   } = widgetizedState;
   const drawerRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLHeadingElement>(null);
   const activeDrawerId = activeDrawer?.id ?? '';
 
   const computedAriaLabels = {
@@ -258,43 +259,50 @@ function AppLayoutGlobalBottomDrawerImplementation({
                   />
                 </div>
               )}
+              <header className={styles['bottom-drawer-content-header']} ref={headerRef}>
+                <div className={styles['bottom-drawer-content-header-content']}>
+                  {activeDrawer?.header ?? <div />}
+                  <div className={styles['bottom-drawer-actions']}>
+                    <ButtonGroup
+                      dropdownExpandToViewport={false}
+                      variant="icon"
+                      onItemClick={event => {
+                        switch (event.detail.id) {
+                          case 'close':
+                            onActiveGlobalBottomDrawerChange(null, { initiatedByUserAction: true });
+                            break;
+                          case 'expand':
+                            setExpandedDrawerId(isExpanded ? null : activeDrawerId);
+                            break;
+                          default:
+                            activeDrawer?.onHeaderActionClick?.(event);
+                        }
+                      }}
+                      ariaLabel="Global panel actions"
+                      items={drawerActions}
+                      __internalRootRef={(root: HTMLElement) => {
+                        if (!root) {
+                          return;
+                        }
+                        refs.close = {
+                          current: root.querySelector('[data-itemid="close"]') as unknown as Focusable,
+                        };
+                      }}
+                    />
+                  </div>
+                </div>
+              </header>
               <div
                 className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
                 data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
               >
-                <div className={styles['drawer-actions']}>
-                  <ButtonGroup
-                    dropdownExpandToViewport={false}
-                    variant="icon"
-                    onItemClick={event => {
-                      switch (event.detail.id) {
-                        case 'close':
-                          onActiveGlobalBottomDrawerChange(null, { initiatedByUserAction: true });
-                          break;
-                        case 'expand':
-                          setExpandedDrawerId(isExpanded ? null : activeDrawerId);
-                          break;
-                        default:
-                          activeDrawer?.onHeaderActionClick?.(event);
-                      }
-                    }}
-                    ariaLabel="Global panel actions"
-                    items={drawerActions}
-                    __internalRootRef={(root: HTMLElement) => {
-                      if (!root) {
-                        return;
-                      }
-                      refs.close = { current: root.querySelector('[data-itemid="close"]') as unknown as Focusable };
-                    }}
-                  />
-                </div>
                 <div
                   className={styles['drawer-content']}
                   style={{
                     blockSize:
                       isMobile || isExpanded
                         ? drawerFullScreenHeight
-                        : `${size - GAP_HEIGHT - RESIZE_HANDLER_HEIGHT}px`,
+                        : `${size - GAP_HEIGHT - RESIZE_HANDLER_HEIGHT - (headerRef?.current?.clientHeight ?? 0)}px`,
                   }}
                 >
                   {activeDrawer?.content}

@@ -4,7 +4,7 @@ import { MutableRefObject, useRef, useState } from 'react';
 
 import { fireNonCancelableEvent } from '../../../internal/events';
 import { DrawerPayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
-import { mapRuntimeConfigToDrawer } from '../../runtime-drawer';
+import { mapRuntimeConfigToAiDrawer } from '../../runtime-drawer';
 
 export interface OnChangeParams {
   initiatedByUserAction: boolean;
@@ -32,7 +32,7 @@ export function useBottomDrawers({
   const [runtimeBottomDrawers, setRuntimeBottomDrawers] = useState<Array<DrawerPayload>>([]);
   const bottomDrawerWasOpenRef = useRef(false);
   bottomDrawerWasOpenRef.current = bottomDrawerWasOpenRef.current || !!activeBottomDrawerId;
-  const bottomDrawers = runtimeBottomDrawers.map(mapRuntimeConfigToDrawer);
+  const bottomDrawers = runtimeBottomDrawers.map(mapRuntimeConfigToAiDrawer);
 
   function onActiveBottomDrawerResize({ id, size }: { id: string; size: number }) {
     setDrawerSizes(oldSizes => ({ ...oldSizes, [id]: size }));
