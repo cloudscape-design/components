@@ -130,6 +130,7 @@ export namespace IconProviderProps {
     'status-positive'?: ReactNode | null;
     'status-stopped'?: ReactNode | null;
     'status-warning'?: ReactNode | null;
+    'stop-generating'?: ReactNode | null;
     'subtract-minus'?: ReactNode | null;
     suggestions?: ReactNode | null;
     support?: ReactNode | null;
