@@ -534,7 +534,7 @@ describe('Custom primary actions', () => {
     expect(wrapper.findActions()!.findButton('[data-testid="custom-next"]')).not.toBeNull();
   });
 
-  test('custom primary actions work on all steps', () => {
+  test('custom primary actions work on first step', () => {
     const onCustomClick = jest.fn();
     const customActions = (
       <Button data-testid="custom-action" onClick={onCustomClick}>
@@ -542,25 +542,53 @@ describe('Custom primary actions', () => {
       </Button>
     );
 
-    const [wrapper, rerender] = renderDefaultWizard({
+    const [wrapper] = renderDefaultWizard({
       customPrimaryActions: customActions,
       activeStepIndex: 0,
     });
 
-    DEFAULT_STEPS.forEach((_, index) => {
-      const customActionButtonWrapper = wrapper.findActions()!.findButton('[data-testid="custom-action"]');
-      expect(customActionButtonWrapper).not.toBeNull();
-      customActionButtonWrapper!.click();
-      expect(onCustomClick).toHaveBeenCalledTimes(index + 1);
+    const customActionButtonWrapper = wrapper.findActions()!.findButton('[data-testid="custom-action"]');
+    expect(customActionButtonWrapper).not.toBeNull();
+    customActionButtonWrapper!.click();
+    expect(onCustomClick).toHaveBeenCalledTimes(1);
+  });
 
-      // Navigate to next step for next iteration
-      if (index < DEFAULT_STEPS.length - 1) {
-        rerender({
-          customPrimaryActions: customActions,
-          activeStepIndex: index + 1,
-        });
-      }
+  test('custom primary actions work on middle step', () => {
+    const onCustomClick = jest.fn();
+    const customActions = (
+      <Button data-testid="custom-action" onClick={onCustomClick}>
+        Custom Action
+      </Button>
+    );
+
+    const [wrapper] = renderDefaultWizard({
+      customPrimaryActions: customActions,
+      activeStepIndex: 1,
     });
+
+    const customActionButtonWrapper = wrapper.findActions()!.findButton('[data-testid="custom-action"]');
+    expect(customActionButtonWrapper).not.toBeNull();
+    customActionButtonWrapper!.click();
+    expect(onCustomClick).toHaveBeenCalledTimes(1);
+  });
+
+  test('custom primary actions work on last step', () => {
+    const onCustomClick = jest.fn();
+    const customActions = (
+      <Button data-testid="custom-action" onClick={onCustomClick}>
+        Custom Action
+      </Button>
+    );
+
+    const [wrapper] = renderDefaultWizard({
+      customPrimaryActions: customActions,
+      activeStepIndex: DEFAULT_STEPS.length - 1,
+    });
+
+    const customActionButtonWrapper = wrapper.findActions()!.findButton('[data-testid="custom-action"]');
+    expect(customActionButtonWrapper).not.toBeNull();
+    customActionButtonWrapper!.click();
+    expect(onCustomClick).toHaveBeenCalledTimes(1);
   });
 
   test('custom primary actions override skip-to button', () => {
