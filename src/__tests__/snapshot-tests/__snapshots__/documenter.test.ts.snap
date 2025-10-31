@@ -28028,7 +28028,7 @@ Use this if you need to wait for a response from the server before the user can 
   ],
   "regions": [
     {
-      "description": "Specifies right-aligned custom primary actions for the wizard. Overwrites existing buttons (e.g. Cancel, Next, Finish, ...).",
+      "description": "Specifies right-aligned custom primary actions for the wizard. Overwrites existing buttons (e.g. Cancel, Next, Finish).",
       "isDefault": false,
       "name": "customPrimaryActions",
       "systemTags": [
