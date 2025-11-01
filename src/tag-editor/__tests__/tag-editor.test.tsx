@@ -725,17 +725,20 @@ describe('Tag Editor component', () => {
               tags={[{ key: 'aws:invalid', value: '', existing: false }]}
               onChange={() => {}}
             />
-            <button onClick={() => ref.current?.focus()}>Focus</button>
+            <button data-testid="focus-button" onClick={() => ref.current?.focus()}>
+              Focus
+            </button>
           </>
         );
       };
 
       const { container } = render(<TestComponent />);
-      const wrapper = createWrapper(container).findTagEditor()!;
-      const button = container.querySelector('button')!;
+      const wrapper = createWrapper(container);
+      const button = wrapper.find('[data-testid="focus-button"]')!.getElement();
       button.click();
 
       const keyInput = wrapper
+        .findTagEditor()!
         .findRow(1)!
         .findField(1)!
         .findControl()!
@@ -757,17 +760,20 @@ describe('Tag Editor component', () => {
               tags={[{ key: 'validKey', value: `tooLong${generateString(MAX_VALUE_LENGTH)}`, existing: true }]}
               onChange={() => {}}
             />
-            <button onClick={() => ref.current?.focus()}>Focus</button>
+            <button data-testid="focus-button" onClick={() => ref.current?.focus()}>
+              Focus
+            </button>
           </>
         );
       };
 
       const { container } = render(<TestComponent />);
-      const wrapper = createWrapper(container).findTagEditor()!;
-      const button = container.querySelector('button')!;
+      const wrapper = createWrapper(container);
+      const button = wrapper.find('[data-testid="focus-button"]')!.getElement();
       button.click();
 
       const valueInput = wrapper
+        .findTagEditor()!
         .findRow(1)!
         .findField(2)!
         .findControl()!
@@ -788,13 +794,16 @@ describe('Tag Editor component', () => {
               tags={[{ key: 'validKey', value: 'validValue', existing: false }]}
               onChange={() => {}}
             />
-            <button onClick={() => ref.current?.focus()}>Focus</button>
+            <button data-testid="focus-button" onClick={() => ref.current?.focus()}>
+              Focus
+            </button>
           </>
         );
       };
 
       const { container } = render(<TestComponent />);
-      const button = container.querySelector('button')!;
+      const wrapper = createWrapper(container);
+      const button = wrapper.find('[data-testid="focus-button"]')!.getElement();
       button.click();
 
       // Calling focus() when there are no errors should not throw or cause issues
