@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { ReactNode, useContext, useState } from 'react';
-import flattenChildren from 'react-keyed-flatten-children';
 
 import {
   Box,
@@ -18,6 +17,7 @@ import {
 import awsuiPlugins from '~components/internal/plugins';
 import { mount, unmount } from '~mount';
 
+import flattenChildren from '../../src/internal/vendor/react-keyed-flatten-children';
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 
