@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import merge from 'lodash/merge.js';
 
+import { expandedReferenceTokens } from '../core/color-palette.js';
 import { expandColorDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/color-palette.js';
@@ -51,6 +52,9 @@ const tokens: StyleDictionary.ColorPaletteDictionary = {
 };
 
 const referenceTokens: StyleDictionary.ReferenceDictionary = {
+  // Start with all reference tokens from core
+  ...expandedReferenceTokens,
+  // Override with classic-specific mappings
   colorPrimary50: tokens.colorBlue50,
   colorPrimary200: tokens.colorBlue200,
   colorPrimary300: tokens.colorBlue300,
