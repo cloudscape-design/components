@@ -80,9 +80,19 @@ describe('formatDateLocalized', () => {
     expect(result).toMatch(/^June 15, 2023, 12:00:00 \(UTC\)$/);
   });
 
-  //todo  determine how to handle this failing
-  test.skip('handles different time offsets', () => {
-    (formatTimeOffsetModule.formatTimeOffsetLocalized as jest.Mock).mockReturnValue('UTC-05:00');
+  test('handles invalid date strings by throwing RangeError', () => {
+    expect(() => {
+      formatDateLocalized({
+        date: '15/06/2023 12:00:00',
+        isMonthOnly: false,
+        isDateOnly: false,
+        locale: 'en-US',
+      });
+    }).toThrow('Invalid time value');
+  });
+
+  test('handles different time offsets', () => {
+    jest.mocked(formatTimeOffsetModule.formatTimeOffsetLocalized).mockReturnValue('UTC-05:00');
 
     const result = formatDateLocalized({
       date: '2023-06-15T12:00:00-05:00',
@@ -93,5 +103,41 @@ describe('formatDateLocalized', () => {
     });
 
     expect(result).toMatch(/^June 15, 2023, 17:00:00 UTC-05:00$/);
+  });
+
+  test('formats month-only ISO string correctly', () => {
+    const result = formatDateLocalized({
+      date: '2018-01',
+      isMonthOnly: true,
+      isDateOnly: false,
+      locale: 'en-US',
+    });
+
+    expect(result).toBe('January 2018');
+  });
+
+  test('formats date-only ISO string correctly', () => {
+    const result = formatDateLocalized({
+      date: '2018-01-15',
+      isMonthOnly: false,
+      isDateOnly: true,
+      locale: 'en-US',
+    });
+
+    expect(result).toBe('January 15, 2018');
+  });
+
+  test('handles month-only date with timezone offset correctly', () => {
+    // This test ensures that month-only dates are not affected by timezone conversions
+    const result = formatDateLocalized({
+      date: '2018-01',
+      isMonthOnly: true,
+      isDateOnly: false,
+      locale: 'en-US',
+      timeOffset: -480, // America/Los_Angeles offset in minutes
+    });
+
+    // Should still be January 2018, not December 2017
+    expect(result).toBe('January 2018');
   });
 });

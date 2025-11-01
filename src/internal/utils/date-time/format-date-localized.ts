@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { isValid, parseISO } from 'date-fns';
-
 import { formatTimeOffsetLocalized } from './format-time-offset';
+import { isIsoDateOnly, isIsoMonthOnly } from './is-iso-only';
 
 export default function formatDateLocalized({
   date: isoDate,
@@ -19,17 +18,30 @@ export default function formatDateLocalized({
   timeOffset?: number;
   locale?: string;
 }) {
-  let date = parseISO(isoDate);
-  // if the date is not ISO formatted, fallback to built-in date parsing
-  if (!isValid(date)) {
-    date = new Date(isoDate);
+  // Check if the date is valid
+  let dateObject = new Date(isoDate);
+  if (isNaN(dateObject.getTime())) {
+    // Preserve original behavior: throw RangeError for invalid dates
+    throw new RangeError('Invalid time value');
+  }
+
+  // Detect ISO string format (full datetime, date-only, or month-only)
+  const isISOString =
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(isoDate) || isIsoDateOnly(isoDate) || isIsoMonthOnly(isoDate);
+
+  // For non-ISO strings, date-fns treated them as UTC, so we need to adjust
+  if (!isISOString) {
+    // Convert local time to UTC to match original date-fns behavior
+    const utcTime = dateObject.getTime() - dateObject.getTimezoneOffset() * 60000;
+    dateObject = new Date(utcTime);
   }
 
   if (isMonthOnly) {
     const formattedMonthDate = new Intl.DateTimeFormat(locale, {
       month: 'long',
       year: 'numeric',
-    }).format(date);
+      timeZone: 'UTC',
+    }).format(dateObject);
 
     return formattedMonthDate;
   }
@@ -38,7 +50,8 @@ export default function formatDateLocalized({
     month: 'long',
     year: 'numeric',
     day: 'numeric',
-  }).format(date);
+    timeZone: 'UTC',
+  }).format(dateObject);
 
   if (isDateOnly) {
     return formattedDate;
@@ -49,7 +62,8 @@ export default function formatDateLocalized({
     hourCycle: 'h23',
     minute: '2-digit',
     second: '2-digit',
-  }).format(date);
+    timeZone: 'UTC',
+  }).format(dateObject);
 
   const formattedDateTime = formattedDate + getDateTimeSeparator(locale) + formattedTime;
 
