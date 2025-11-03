@@ -71,6 +71,7 @@ export const useAppLayout = (
   const [navigationAnimationDisabled, setNavigationAnimationDisabled] = useState(true);
   const [splitPanelAnimationDisabled, setSplitPanelAnimationDisabled] = useState(true);
   const [isNested, setIsNested] = useState(false);
+  const [expandedDrawerId, setExpandedDrawerId] = useState<string | null>(null);
   const rootRefInternal = useRef<HTMLDivElement>(null);
   // This workaround ensures the ref is defined before checking if the app layout is nested.
   // On initial render, the ref might be undefined because this component loads asynchronously via the widget API.
@@ -141,16 +142,24 @@ export const useAppLayout = (
     onActiveDrawerChange,
     onActiveDrawerResize,
     onActiveGlobalDrawersChange,
-    expandedDrawerId,
-    setExpandedDrawerId,
-  } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer }, ariaLabels, {
+  } = useDrawers(
+    {
+      ...rest,
+      onGlobalDrawerFocus,
+      onAddNewActiveDrawer,
+      expandedDrawerId,
+      setExpandedDrawerId,
+    },
     ariaLabels,
-    toolsHide,
-    toolsOpen,
-    tools,
-    toolsWidth,
-    onToolsToggle,
-  });
+    {
+      ariaLabels,
+      toolsHide,
+      toolsOpen,
+      tools,
+      toolsWidth,
+      onToolsToggle,
+    }
+  );
   const {
     aiDrawer,
     aiDrawerMessageHandler,
