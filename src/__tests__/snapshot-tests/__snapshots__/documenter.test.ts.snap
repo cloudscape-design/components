@@ -2616,6 +2616,7 @@ A \`gridLayout\` is an array of breakpoint definitions. Each definition consists
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": {
         "name": "AttributeEditorProps.I18nStrings<T>",
         "properties": [
