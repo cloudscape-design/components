@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 
 import { mount, unmount } from '~mount';
 
@@ -30,39 +30,44 @@ function syncClasses(from: HTMLElement, to: HTMLElement) {
 }
 
 export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: React.ComponentType }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const cleanupRef = useRef<(() => void) | null>(null);
 
-  useEffect(() => {
-    const container = ref.current;
-    if (!container) {
-      return;
-    }
-    const iframeEl = container.ownerDocument.createElement('iframe');
-    iframeEl.className = styles['full-screen'];
-    iframeEl.id = id;
-    iframeEl.title = id;
-    container.appendChild(iframeEl);
+  // use callback ref instead of useEffect to avoid double effect issues in React 18+ strict mode
+  const mountIframe = useCallback(
+    (container: HTMLElement | null) => {
+      if (!container) {
+        cleanupRef.current?.();
+        cleanupRef.current = null;
+        return;
+      }
+      const iframeEl = container.ownerDocument.createElement('iframe');
+      iframeEl.className = styles['full-screen'];
+      iframeEl.id = id;
+      iframeEl.title = id;
+      container.appendChild(iframeEl);
 
-    const iframeDocument = iframeEl.contentDocument!;
-    // Prevent iframe document instance from reload
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=543435
-    iframeDocument.open();
-    // set html5 doctype
-    iframeDocument.writeln('<!DOCTYPE html>');
-    iframeDocument.close();
+      const iframeDocument = iframeEl.contentDocument!;
+      // Prevent iframe document instance from reload
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=543435
+      iframeDocument.open();
+      // set html5 doctype
+      iframeDocument.writeln('<!DOCTYPE html>');
+      iframeDocument.close();
 
-    const innerAppRoot = iframeDocument.createElement('div');
-    iframeDocument.body.appendChild(innerAppRoot);
-    copyStyles(document, iframeDocument);
-    iframeDocument.dir = document.dir;
-    const syncClassesCleanup = syncClasses(document.body, iframeDocument.body);
-    mount(<AppComponent />, innerAppRoot);
-    return () => {
-      syncClassesCleanup();
-      unmount(innerAppRoot);
-      container.removeChild(iframeEl);
-    };
-  }, [id, AppComponent]);
+      const innerAppRoot = iframeDocument.createElement('div');
+      iframeDocument.body.appendChild(innerAppRoot);
+      copyStyles(document, iframeDocument);
+      iframeDocument.dir = document.dir;
+      const syncClassesCleanup = syncClasses(document.body, iframeDocument.body);
+      mount(<AppComponent />, innerAppRoot);
+      cleanupRef.current = () => {
+        syncClassesCleanup();
+        unmount(innerAppRoot);
+        container.removeChild(iframeEl);
+      };
+    },
+    [AppComponent, id]
+  );
 
-  return <div ref={ref}></div>;
+  return <div ref={mountIframe}></div>;
 }
