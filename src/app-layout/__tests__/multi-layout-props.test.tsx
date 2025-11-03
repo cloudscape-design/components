@@ -67,6 +67,9 @@ describe('mergeMultiAppLayoutProps', () => {
           id: 'drawer-global',
           ariaLabels: { drawerName: 'Global Drawer' },
           content: <div>Global Drawer Content</div>,
+          trigger: {
+            iconName: 'add-plus',
+          },
         },
       ],
       onActiveGlobalDrawersChange: mockParentActiveGlobalDrawerChange,
@@ -117,6 +120,9 @@ describe('mergeMultiAppLayoutProps', () => {
           id: 'drawer-global',
           ariaLabels: { drawerName: 'Global Drawer' },
           content: <div>Global Drawer Content</div>,
+          trigger: {
+            iconName: 'add-plus',
+          },
         },
       ],
       onActiveGlobalDrawersChange: mockParentActiveGlobalDrawerChange,
