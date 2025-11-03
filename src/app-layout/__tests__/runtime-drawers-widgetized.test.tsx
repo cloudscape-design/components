@@ -54,6 +54,14 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
   });
 
+  test('dedup ai drawer when registered in nested app layouts', () => {
+    awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, defaultActive: true });
+    const { globalDrawersWrapper } = renderComponent(<AppLayout content={<AppLayout />} />);
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+    expect(globalDrawersWrapper.findActiveDrawers().length).toBe(1);
+  });
+
   test('isAppLayoutReady returns true when app layout is ready', async () => {
     expect(awsuiWidgetPlugins.isAppLayoutReady()).toBe(false);
     const { rerender } = renderComponent(<AppLayout />);
