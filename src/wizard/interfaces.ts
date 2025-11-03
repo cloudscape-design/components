@@ -104,6 +104,13 @@ export interface WizardProps extends BaseComponentProps {
   allowSkipTo?: boolean;
 
   /**
+   * Specifies right-aligned custom primary actions for the wizard. Overwrites existing buttons (e.g. Cancel, Next, Finish).
+   *
+   * @awsuiSystem core
+   */
+  customPrimaryActions?: React.ReactNode;
+
+  /**
    * Specifies left-aligned secondary actions for the wizard. Use a button dropdown if multiple actions are required.
    */
   secondaryActions?: React.ReactNode;
