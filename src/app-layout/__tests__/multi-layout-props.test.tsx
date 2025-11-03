@@ -129,6 +129,50 @@ describe('mergeMultiAppLayoutProps', () => {
     });
   });
 
+  it('should merge ownProps and additionalProps (triggerless global drawers)', () => {
+    const result = mergeProps(ownProps, [
+      {
+        ...additionalPropsBase[0],
+        globalDrawers: [
+          {
+            id: 'drawer-global',
+            ariaLabels: { drawerName: 'Global Drawer' },
+            content: <div>Global Drawer Content</div>,
+          },
+        ],
+      },
+      additionalPropsBase[1],
+    ]);
+
+    expect(result).toEqual({
+      //asserting new aria labels overwrite existing yet preserve others
+      ariaLabels: {
+        navigation: 'New Navigation',
+        drawers: 'Drawers',
+      },
+      hasNavigation: true,
+      navigationOpen: true,
+      navigationFocusRef: ownProps.navigationFocusRef,
+      onNavigationToggle: mockParentNavigationToggle,
+      hasBreadcrumbsPortal: true,
+      hasSplitPanel: true,
+      splitPanelToggleProps: {
+        displayed: true,
+        active: false,
+        position: 'bottom',
+        controlId: 'test',
+        ariaLabel: 'test',
+      },
+      splitPanelFocusRef: ownProps.splitPanelFocusRef,
+      onSplitPanelToggle: mockParentSplitPanelToggle,
+      //asserting the ownProps drawer is not overwritten
+      activeDrawerId: ownProps.activeDrawerId,
+      drawers: ownProps.drawers,
+      drawersFocusRef: ownProps.drawersFocusRef,
+      onActiveDrawerChange: mockParentActiveDrawerChange,
+    });
+  });
+
   it('should return null if no fields are defined, except ariaLabels', () => {
     const result = mergeProps({ ariaLabels: {} } as SharedProps, []);
 
