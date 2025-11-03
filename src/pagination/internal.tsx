@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import {
@@ -8,12 +8,17 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
+import { BaseChangeDetail } from '../input/interfaces';
+import InternalInput from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { useTableComponentsContext } from '../internal/context/table-component-context';
-import { fireNonCancelableEvent } from '../internal/events';
+import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import InternalPopover from '../popover/internal';
+import InternalSpaceBetween from '../space-between/internal';
 import { GeneratedAnalyticsMetadataPaginationClick } from './analytics-metadata/interfaces';
 import { PaginationProps } from './interfaces';
 import { getPaginationState, range } from './utils';
@@ -110,10 +115,24 @@ export default function InternalPagination({
   onNextPageClick,
   onPreviousPageClick,
   __internalRootRef,
+  jumpToPage,
+  jumpToPageIsLoading,
+  jumpToPageErrorText,
+  onJumpToPageClick,
   ...rest
 }: InternalPaginationProps) {
   const baseProps = getBaseProps(rest);
   const { leftDots, leftIndex, rightIndex, rightDots } = getPaginationState(currentPageIndex, pagesCount, openEnd);
+  const [jumpToPageValue, setJumpToPageValue] = useState(currentPageIndex.toString());
+  const prevLoadingRef = React.useRef(jumpToPageIsLoading);
+
+  // Sync input with currentPageIndex after loading completes
+  React.useEffect(() => {
+    if (prevLoadingRef.current && !jumpToPageIsLoading) {
+      setJumpToPageValue(String(currentPageIndex));
+    }
+    prevLoadingRef.current = jumpToPageIsLoading;
+  }, [jumpToPageIsLoading, currentPageIndex]);
 
   const i18n = useInternalI18n('pagination');
 
@@ -145,6 +164,15 @@ export default function InternalPagination({
     fireNonCancelableEvent(onChange, { currentPageIndex: requestedPageIndex });
   }
 
+  function handleJumpToPageClick(requestedPageIndex: number) {
+    handlePageClick(requestedPageIndex);
+    fireNonCancelableEvent(onJumpToPageClick, {
+      requestedPageAvailable: requestedPageIndex >= 1 && (openEnd || requestedPageIndex <= pagesCount),
+      requestedPageIndex: requestedPageIndex,
+      currentPageIndex: requestedPageIndex,
+    });
+  }
+
   const previousButtonDisabled = disabled || currentPageIndex === 1;
   const nextButtonDisabled = disabled || (!openEnd && (pagesCount === 0 || currentPageIndex === pagesCount));
   const tableComponentContext = useTableComponentsContext();
@@ -153,6 +181,19 @@ export default function InternalPagination({
     tableComponentContext.paginationRef.current.totalPageCount = pagesCount;
     tableComponentContext.paginationRef.current.openEnd = openEnd;
   }
+
+  const renderJumpToPageButton = () => {
+    return (
+      <InternalButton
+        iconName="arrow-right"
+        variant="icon"
+        loading={jumpToPageIsLoading}
+        onClick={() => handleJumpToPageClick(Number(jumpToPageValue))}
+        disabled={!jumpToPageValue || Number(jumpToPageValue) === currentPageIndex}
+      />
+    );
+  };
+
   return (
     <ul
       aria-label={paginationLabel}
@@ -220,6 +261,27 @@ export default function InternalPagination({
       >
         <InternalIcon name="angle-right" variant={disabled ? 'disabled' : 'normal'} />
       </PageButton>
+      {jumpToPage && (
+        <div className={styles['jump-to-page']}>
+          <InternalSpaceBetween size="xxs" direction="horizontal" alignItems="end">
+            <div className={styles['jump-to-page-input']}>
+              <InternalInput
+                type="number"
+                value={jumpToPageValue}
+                __inlineLabelText="Page"
+                onChange={(e: NonCancelableCustomEvent<BaseChangeDetail>) => setJumpToPageValue(e.detail.value)}
+              />
+            </div>
+            {jumpToPageErrorText ? (
+              <InternalPopover size="medium" content={jumpToPageErrorText} position="bottom" dismissButton={false}>
+                {renderJumpToPageButton()}
+              </InternalPopover>
+            ) : (
+              renderJumpToPageButton()
+            )}
+          </InternalSpaceBetween>
+        </div>
+      )}
     </ul>
   );
 }

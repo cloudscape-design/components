@@ -68,6 +68,26 @@ export interface PaginationProps {
    * * `requestedPageIndex` (integer) - The index of the requested page.
    */
   onNextPageClick?: NonCancelableEventHandler<PaginationProps.PageClickDetail>;
+  /**
+   * Enable jump to page input field, which allows the user to input a certain page
+   */
+  jumpToPage?: boolean;
+  /**
+   * User controlled loading state when jump to page callback is executing
+   */
+  jumpToPageIsLoading?: boolean;
+  /**
+   * Error text to display when jump to page fails
+   */
+  jumpToPageErrorText?: string;
+  /**
+   * Called when the jump to page submit button is clicked. The event `detail` contains the following:
+   * * `requestedPageAvailable` (boolean) - Indicates whether the requested page is available for display.
+   *   The value can be `false` when the `openEnd` property is set to `true`.
+   * * `requestedPageIndex` (integer) - The index of the requested page.
+   * * `currentPageIndex` (integer) - The index of the current page.
+   */
+  onJumpToPageClick?: NonCancelableEventHandler<PaginationProps.JumpToPageClickDetail>;
 }
 
 export namespace PaginationProps {
@@ -84,6 +104,12 @@ export namespace PaginationProps {
   }
 
   export interface ChangeDetail {
+    currentPageIndex: number;
+  }
+
+  export interface JumpToPageClickDetail {
+    requestedPageAvailable: boolean;
+    requestedPageIndex: number;
     currentPageIndex: number;
   }
 }
