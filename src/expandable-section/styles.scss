@@ -206,11 +206,6 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     > .icon-container {
       margin-block-start: awsui.$space-expandable-section-icon-offset-top;
     }
-
-    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant -- header-text is nested within header-container-button
-    .header-text.not-expanded {
-      padding-block: awsui.$space-xxs;
-    }
   }
 
   &-navigation {
