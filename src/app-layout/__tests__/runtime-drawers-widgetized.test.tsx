@@ -257,6 +257,31 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     }
   );
 
+  test(`calls onToggleFocusMode handler by entering / exiting focus mode in left runtime drawer)`, () => {
+    const drawerId = 'global-drawer';
+    const onToggleFocusMode = jest.fn();
+    awsuiWidgetPlugins.registerLeftDrawer({
+      ...drawerDefaults,
+      id: drawerId,
+      isExpandable: true,
+      onToggleFocusMode: event => onToggleFocusMode(event.detail),
+    });
+    const renderProps = renderComponent(<AppLayout />);
+    const { globalDrawersWrapper } = renderProps;
+
+    globalDrawersWrapper.findAiDrawerTrigger()!.click();
+    if (size === 'mobile') {
+      expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)).toBeFalsy();
+    } else {
+      createWrapper().findButtonGroup()!.findButtonById('expand')!.click();
+      expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
+      expect(onToggleFocusMode).toHaveBeenCalledWith({ isExpanded: true });
+      createWrapper().findButtonGroup()!.findButtonById('expand')!.click();
+      expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+      expect(onToggleFocusMode).toHaveBeenCalledWith({ isExpanded: false });
+    }
+  });
+
   describe('metrics', () => {
     let sendPanoramaMetricSpy: jest.SpyInstance;
     beforeEach(() => {
