@@ -8088,10 +8088,10 @@ You can use any theme provided by Ace.",
 element after a user closes the dialog. The function receives the return value
 of the most recent getModalRoot call as an argument.",
       "inlineType": {
-        "name": "(rootElement: HTMLElement) => void",
+        "name": "(container: HTMLElement) => void",
         "parameters": [
           {
-            "name": "rootElement",
+            "name": "container",
             "type": "HTMLElement",
           },
         ],
@@ -8100,7 +8100,7 @@ of the most recent getModalRoot call as an argument.",
       },
       "name": "removeModalRoot",
       "optional": true,
-      "type": "((rootElement: HTMLElement) => void)",
+      "type": "((container: HTMLElement) => void)",
     },
     {
       "description": "List of Ace themes available for selection in preferences dialog. Make sure you include at least one light and at
@@ -8691,10 +8691,10 @@ It contains the following:
 element after a user closes the dialog. The function receives the return value
 of the most recent getModalRoot call as an argument.",
       "inlineType": {
-        "name": "(rootElement: HTMLElement) => void",
+        "name": "(container: HTMLElement) => void",
         "parameters": [
           {
-            "name": "rootElement",
+            "name": "container",
             "type": "HTMLElement",
           },
         ],
@@ -8703,7 +8703,7 @@ of the most recent getModalRoot call as an argument.",
       },
       "name": "removeModalRoot",
       "optional": true,
-      "type": "((rootElement: HTMLElement) => void)",
+      "type": "((container: HTMLElement) => void)",
     },
     {
       "description": "Configures the sticky columns preference that can be set for both left and right columns.
@@ -16796,10 +16796,10 @@ render to an element under \`document.body\`.",
 element after a user closes the dialog. The function receives the return value
 of the most recent getModalRoot call as an argument.",
       "inlineType": {
-        "name": "(rootElement: HTMLElement) => void",
+        "name": "(container: HTMLElement) => void",
         "parameters": [
           {
-            "name": "rootElement",
+            "name": "container",
             "type": "HTMLElement",
           },
         ],
@@ -16808,7 +16808,7 @@ of the most recent getModalRoot call as an argument.",
       },
       "name": "removeModalRoot",
       "optional": true,
-      "type": "((rootElement: HTMLElement) => void)",
+      "type": "((container: HTMLElement) => void)",
     },
     {
       "defaultValue": "'medium'",
@@ -20990,10 +20990,10 @@ and 'Size'.",
 element after a user closes the dialog. The function receives the return value
 of the most recent getModalRoot call as an argument.",
       "inlineType": {
-        "name": "(rootElement: HTMLElement) => void",
+        "name": "(container: HTMLElement) => void",
         "parameters": [
           {
-            "name": "rootElement",
+            "name": "container",
             "type": "HTMLElement",
           },
         ],
@@ -21002,7 +21002,7 @@ of the most recent getModalRoot call as an argument.",
       },
       "name": "removeModalRoot",
       "optional": true,
-      "type": "((rootElement: HTMLElement) => void)",
+      "type": "((container: HTMLElement) => void)",
     },
     {
       "description": "The current selected resource. Resource has the following properties:
