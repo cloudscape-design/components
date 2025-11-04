@@ -56,7 +56,7 @@ async function buildCoreOpenSource(builder: ThemeBuilder) {
   return builder.build();
 }
 
-const builder = new ThemeBuilder('visual-refresh', ':root', modes);
+const builder = new ThemeBuilder('visual-refresh', 'body', modes);
 const theme = await buildCoreOpenSource(builder);
 
 export default theme;
