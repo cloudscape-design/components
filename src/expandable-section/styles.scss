@@ -138,6 +138,11 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       // Equal top and bottom padding so standalone header has vertical symmetry.
       padding-block-end: awsui.$space-container-header-top;
     }
+
+    &.wrapper-not-expanded-without-actions {
+      padding-block-end: calc(#{awsui.$space-container-header-top} + #{awsui.$space-scaled-xxs});
+    }
+
     &.header-deprecated {
       padding-inline-start: container.$header-padding-horizontal;
     }
