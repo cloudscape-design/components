@@ -2,11 +2,39 @@
 // SPDX-License-Identifier: Apache-2.0
 import customCssProps from '../../internal/generated/custom-css-properties';
 import { getInputStyles } from '../styles';
+import { parsePaddingInline } from '../utils';
 
 // Mock the environment module
 jest.mock('../../internal/environment', () => ({
   SYSTEM: 'core',
 }));
+
+describe('parsePaddingInline', () => {
+  test('returns undefined for both start and end when input is undefined', () => {
+    expect(parsePaddingInline(undefined)).toEqual({ start: undefined, end: undefined });
+  });
+
+  test('handles single value - applies to both start and end', () => {
+    expect(parsePaddingInline('10px')).toEqual({ start: '10px', end: '10px' });
+    expect(parsePaddingInline('1rem')).toEqual({ start: '1rem', end: '1rem' });
+    expect(parsePaddingInline('0')).toEqual({ start: '0', end: '0' });
+  });
+
+  test('handles shorthand notation - first value is start, second is end', () => {
+    expect(parsePaddingInline('10px 20px')).toEqual({ start: '10px', end: '20px' });
+    expect(parsePaddingInline('1rem 2rem')).toEqual({ start: '1rem', end: '2rem' });
+    expect(parsePaddingInline('5px 10px')).toEqual({ start: '5px', end: '10px' });
+  });
+
+  test('handles extra whitespace', () => {
+    expect(parsePaddingInline('  10px  20px  ')).toEqual({ start: '10px', end: '20px' });
+    expect(parsePaddingInline('10px    20px')).toEqual({ start: '10px', end: '20px' });
+  });
+
+  test('ignores values beyond the first two', () => {
+    expect(parsePaddingInline('10px 20px 30px 40px')).toEqual({ start: '10px', end: '20px' });
+  });
+});
 
 describe('getInputStyles', () => {
   afterEach(() => {
@@ -68,7 +96,9 @@ describe('getInputStyles', () => {
       fontSize: '14px',
       fontWeight: '400',
       paddingBlock: '8px',
-      paddingInline: '12px',
+      [customCssProps.stylePaddingInline]: '12px',
+      [customCssProps.stylePaddingInlineStart]: '12px',
+      [customCssProps.stylePaddingInlineEnd]: '12px',
       [customCssProps.styleBackgroundDefault]: '#ffffff',
       [customCssProps.styleBackgroundDisabled]: '#f0f0f0',
       [customCssProps.styleBackgroundHover]: '#fafafa',
@@ -94,6 +124,55 @@ describe('getInputStyles', () => {
       [customCssProps.stylePlaceholderFontWeight]: '400',
       [customCssProps.stylePlaceholderFontStyle]: 'italic',
     });
+  });
+
+  test('handles shorthand paddingInline values correctly', () => {
+    const styleWithShorthand = {
+      root: {
+        paddingInline: '10px 20px',
+      },
+    };
+
+    const result = getInputStyles(styleWithShorthand);
+
+    expect(result).toEqual({
+      [customCssProps.stylePaddingInline]: '10px 20px',
+      [customCssProps.stylePaddingInlineStart]: '10px',
+      [customCssProps.stylePaddingInlineEnd]: '20px',
+    });
+  });
+
+  test('handles single value paddingInline correctly', () => {
+    const styleWithSingleValue = {
+      root: {
+        paddingInline: '15px',
+      },
+    };
+
+    const result = getInputStyles(styleWithSingleValue);
+
+    expect(result).toEqual({
+      [customCssProps.stylePaddingInline]: '15px',
+      [customCssProps.stylePaddingInlineStart]: '15px',
+      [customCssProps.stylePaddingInlineEnd]: '15px',
+    });
+  });
+
+  test('does not add padding properties when paddingInline is not provided', () => {
+    const styleWithoutPadding = {
+      root: {
+        fontSize: '14px',
+      },
+    };
+
+    const result = getInputStyles(styleWithoutPadding);
+
+    expect(result).toEqual({
+      fontSize: '14px',
+    });
+    expect(result).not.toHaveProperty(customCssProps.stylePaddingInline);
+    expect(result).not.toHaveProperty(customCssProps.stylePaddingInlineStart);
+    expect(result).not.toHaveProperty(customCssProps.stylePaddingInlineEnd);
   });
 
   test('returns undefined when SYSTEM is not core', async () => {
