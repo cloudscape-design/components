@@ -10,7 +10,6 @@ import PopoverBody from '../../../popover/body';
 import PopoverContainer from '../../../popover/container';
 import { PopoverProps } from '../../../popover/interfaces';
 import { getBaseProps } from '../../base-component';
-import { nodeBelongs } from '../../utils/node-belongs';
 
 import popoverStyles from '../../../popover/styles.css.js';
 import styles from './styles.css.js';
@@ -87,24 +86,31 @@ function ChartPopover(
 ) {
   const baseProps = getBaseProps(restProps);
   const popoverObjectRef = useRef<HTMLDivElement | null>(null);
-
   const popoverRef = useMergeRefs(popoverObjectRef, ref);
 
-  useEffect(() => {
-    const onDocumentClick = (event: MouseEvent) => {
-      if (
-        event.target &&
-        !nodeBelongs(popoverObjectRef.current, event.target as Element) && // click not in popover
-        !nodeContains(container, event.target as Element) // click not in segment
-      ) {
-        onDismiss(true);
-      }
-    };
+  const clickFrameId = useRef<number | null>(null);
+  const onMouseDown = () => {
+    // Indicate there was a click inside popover recently.
+    clickFrameId.current = requestAnimationFrame(() => (clickFrameId.current = null));
+  };
 
-    document.addEventListener('mousedown', onDocumentClick, { capture: true });
-    return () => {
-      document.removeEventListener('mousedown', onDocumentClick, { capture: true });
-    };
+  useEffect(() => {
+    if (popoverObjectRef.current) {
+      const document = popoverObjectRef.current.ownerDocument;
+      const onDocumentClick = (event: MouseEvent) => {
+        // Dismiss popover unless there was a click inside within the last animation frame.
+        // Ignore clicks inside the chart as those are handled separately.
+        if (clickFrameId.current === null && !nodeContains(container, event.target as Element)) {
+          onDismiss(true);
+        }
+      };
+
+      document.addEventListener('mousedown', onDocumentClick);
+
+      return () => {
+        document.removeEventListener('mousedown', onDocumentClick);
+      };
+    }
   }, [container, onDismiss]);
 
   // In chart popovers, dismiss button is present when they are pinned, so both values are equivalent.
@@ -117,6 +123,7 @@ function ChartPopover(
       ref={popoverRef}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onMouseDown={onMouseDown}
       onBlur={onBlur}
       // The tabIndex makes it so that clicking inside popover assigns this element as blur target.
       // That is necessary in charts to ensure the blur target is within the chart and no cleanup is needed.
