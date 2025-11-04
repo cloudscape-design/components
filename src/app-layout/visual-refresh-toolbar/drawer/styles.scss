@@ -50,7 +50,7 @@ $ai-drawer-heider-height: 41px;
   }
 
   @include desktop-only {
-    &:not(.legacy):not(.ai-drawer) {
+    &:not(.legacy):not(.ai-drawer):not(.bottom-drawer) {
       border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
     }
   }
@@ -455,6 +455,27 @@ $ai-drawer-heider-height: 41px;
       > .drawer-slider {
         block-size: auto;
         justify-content: center;
+      }
+
+      > .bottom-drawer-content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        inset-block-start: 0;
+        box-sizing: border-box;
+
+        > .bottom-drawer-content-header-content {
+          display: flex;
+          flex: 1;
+          align-items: center;
+          justify-content: space-between;
+          block-size: 100%;
+          padding-inline-end: awsui.$space-m;
+
+          > .bottom-drawer-actions {
+            display: flex;
+          }
+        }
       }
 
       > .drawer-content-container {

@@ -124,7 +124,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel10",
+      "splitPanelControlId": "split-panel7",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -317,7 +317,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel10",
+      "splitPanelControlId": "split-panel7",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -471,7 +471,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel10",
+      "splitPanelControlId": "split-panel7",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -662,7 +662,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel10",
+      "splitPanelControlId": "split-panel7",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -816,7 +816,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel10",
+      "splitPanelControlId": "split-panel7",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -974,7 +974,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
+      "splitPanelControlId": "split-panel4",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1167,7 +1167,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
+      "splitPanelControlId": "split-panel4",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1321,7 +1321,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
+      "splitPanelControlId": "split-panel4",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1511,7 +1511,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
+      "splitPanelControlId": "split-panel4",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1665,7 +1665,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
+      "splitPanelControlId": "split-panel4",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {

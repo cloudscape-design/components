@@ -55,6 +55,22 @@
   @include styles.font-body-m;
   block-size: awsui.$size-vertical-input;
 
+  &:hover {
+    border-color: var(
+      #{custom-props.$styleBorderColorHover},
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+    );
+    color: var(
+      #{custom-props.$styleColorHover},
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-body-default)
+    );
+    background-color: var(
+      #{custom-props.$styleBackgroundHover},
+      var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+    );
+    box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
+  }
+
   &.input-readonly {
     @include styles.form-readonly-element(
       $background-color: var(
@@ -107,22 +123,6 @@
   &:invalid {
     // discard built-in invalid styles, customers should use `invalid` property only (AWSUI-3947)
     box-shadow: none;
-  }
-
-  &:hover:not(:focus):not(:disabled):not(.input-readonly) {
-    border-color: var(
-      #{custom-props.$styleBorderColorHover},
-      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
-    );
-    color: var(
-      #{custom-props.$styleColorHover},
-      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-body-default)
-    );
-    background-color: var(
-      #{custom-props.$styleBackgroundHover},
-      var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
-    );
-    box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
   }
 
   &.input-invalid {

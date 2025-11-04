@@ -127,6 +127,14 @@ test('should display entered text option/label', () => {
   expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Custom function with 1 placeholder');
 });
 
+test('should not display entered text option when hideEnteredTextOption=false', () => {
+  const { wrapper } = renderAutosuggest(
+    <StatefulAutosuggest enteredTextLabel={() => 'X'} value="" options={defaultOptions} hideEnteredTextOption={true} />
+  );
+  wrapper.setInputValue('1');
+  expect(wrapper.findEnteredTextOption()).toBe(null);
+});
+
 test('entered text option should not get screenreader override', () => {
   const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="1" />);
   wrapper.focus();
@@ -135,7 +143,7 @@ test('entered text option should not get screenreader override', () => {
   ).toBeFalsy();
 });
 
-test('should not close dropdown when no realted target in blur', () => {
+test('should not close dropdown when no related target in blur', () => {
   const { wrapper, container } = renderAutosuggest(
     <div>
       <Autosuggest enteredTextLabel={v => v} value="1" options={defaultOptions} />
@@ -446,6 +454,47 @@ describe('Check if should render dropdown', () => {
     wrapper.focus();
 
     expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+  });
+
+  test('should render dropdown when the only visible option is entered text option', () => {
+    const { wrapper } = renderAutosuggest(
+      <StatefulAutosuggest enteredTextLabel={() => 'X'} value="" options={defaultOptions} />
+    );
+
+    wrapper.focus();
+    wrapper.setInputValue('XXX');
+
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+    expect(wrapper.findDropdown().findOptions()).toHaveLength(0);
+    expect(wrapper.findEnteredTextOption()).not.toBe(null);
+  });
+
+  test('should render dropdown when no options matched with a message', () => {
+    const { wrapper } = renderAutosuggest(
+      <StatefulAutosuggest
+        value=""
+        options={defaultOptions}
+        hideEnteredTextOption={true}
+        filteringResultsText={() => 'No matches'}
+      />
+    );
+
+    wrapper.focus();
+    wrapper.setInputValue('XXX');
+
+    expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('No matches');
+    expect(wrapper.findDropdown().findOptions()).toHaveLength(0);
+  });
+
+  test('should not render dropdown when no options matched with no message', () => {
+    const { wrapper } = renderAutosuggest(
+      <StatefulAutosuggest value="" options={defaultOptions} hideEnteredTextOption={true} />
+    );
+
+    wrapper.focus();
+    wrapper.setInputValue('XXX');
+
+    expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
   });
 });
 

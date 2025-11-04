@@ -31,7 +31,7 @@ export interface AppLayoutStateProps {
 }
 
 export const AppLayoutStateProvider = ({ appLayoutProps, stateManager, forwardRef }: AppLayoutStateProps) => {
-  const [hasToolbar, setHasToolbar] = useState(stateManager.current.hasToolbar ?? true);
+  const [hasToolbar, setHasToolbar] = useState(stateManager.current.hasToolbar ?? false);
   const appLayoutState = useAppLayout(hasToolbar, appLayoutProps, forwardRef);
   const skeletonSlotsAttributes = useSkeletonSlotsAttributes(hasToolbar, appLayoutProps, appLayoutState);
 
