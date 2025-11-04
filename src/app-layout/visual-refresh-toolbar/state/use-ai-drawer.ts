@@ -34,8 +34,6 @@ export function useAiDrawer({
   const aiDrawerWasOpenRef = useRef(false);
   aiDrawerWasOpenRef.current = aiDrawerWasOpenRef.current || !!activeAiDrawerId;
 
-  const aiDrawer = runtimeDrawer && mapRuntimeConfigToAiDrawer(runtimeDrawer);
-
   function onActiveAiDrawerResize(size: number) {
     const limitedSize = getLimitedValue(minAiDrawerSize, size, getMaxAiDrawerSize());
     setSize(limitedSize);
@@ -88,6 +86,7 @@ export function useAiDrawer({
     }
   }
 
+  const aiDrawer = runtimeDrawer && mapRuntimeConfigToAiDrawer(runtimeDrawer);
   const activeAiDrawer = activeAiDrawerId && activeAiDrawerId === aiDrawer?.id ? aiDrawer : null;
   const activeAiDrawerSize = activeAiDrawerId ? (size ?? activeAiDrawer?.defaultSize ?? MIN_DRAWER_SIZE) : 0;
   const minAiDrawerSize = Math.min(activeAiDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
