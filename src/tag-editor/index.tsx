@@ -21,7 +21,7 @@ import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { TagEditorProps } from './interfaces';
 import { TagControl, UndoButton } from './internal';
-import { findIndex, useMemoizedArray } from './utils';
+import { useMemoizedArray } from './utils';
 import { getTagsDiff } from './utils';
 import { validate, ValidationError } from './validation';
 
@@ -91,7 +91,7 @@ const TagEditor = React.forwardRef(
       ref,
       () => ({
         focus() {
-          const errorIndex = findIndex(internalTags, ({ error }) => error?.key || error?.value);
+          const errorIndex = internalTags.findIndex(({ error }) => error?.key || error?.value);
           if (errorIndex !== -1) {
             const refArray = internalTags[errorIndex].error?.key ? keyInputRefs : valueInputRefs;
             refArray.current[errorIndex]?.focus();

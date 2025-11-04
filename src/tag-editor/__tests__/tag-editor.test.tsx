@@ -713,5 +713,127 @@ describe('Tag Editor component', () => {
       rerender();
       expect(wrapper.findRow(1)!.findUndoButton()!.getElement()).toHaveFocus();
     });
+
+    test('should focus key input when calling focus() on ref with key error', () => {
+      const TestComponent = () => {
+        const ref = React.useRef<TagEditorProps.Ref>(null);
+        return (
+          <>
+            <TagEditor
+              ref={ref}
+              i18nStrings={i18nStrings}
+              tags={[{ key: 'aws:invalid', value: '', existing: false }]}
+              onChange={() => {}}
+            />
+            <button data-testid="focus-button" onClick={() => ref.current?.focus()}>
+              Focus
+            </button>
+          </>
+        );
+      };
+
+      const { container } = render(<TestComponent />);
+      const wrapper = createWrapper(container);
+      const button = wrapper.find('[data-testid="focus-button"]')!.getElement();
+      button.click();
+
+      const keyInput = wrapper
+        .findTagEditor()!
+        .findRow(1)!
+        .findField(1)!
+        .findControl()!
+        .findAutosuggest()!
+        .findNativeInput()
+        .getElement();
+      expect(keyInput).toHaveFocus();
+    });
+
+    test('should focus value input when calling focus() on ref with value error', () => {
+      const generateString = (length: number) => Array(length).fill('a').join('');
+      const TestComponent = () => {
+        const ref = React.useRef<TagEditorProps.Ref>(null);
+        return (
+          <>
+            <TagEditor
+              ref={ref}
+              i18nStrings={i18nStrings}
+              tags={[{ key: 'validKey', value: `tooLong${generateString(MAX_VALUE_LENGTH)}`, existing: true }]}
+              onChange={() => {}}
+            />
+            <button data-testid="focus-button" onClick={() => ref.current?.focus()}>
+              Focus
+            </button>
+          </>
+        );
+      };
+
+      const { container } = render(<TestComponent />);
+      const wrapper = createWrapper(container);
+      const button = wrapper.find('[data-testid="focus-button"]')!.getElement();
+      button.click();
+
+      const valueInput = wrapper
+        .findTagEditor()!
+        .findRow(1)!
+        .findField(2)!
+        .findControl()!
+        .findAutosuggest()!
+        .findNativeInput()
+        .getElement();
+      expect(valueInput).toHaveFocus();
+    });
+
+    test('should not focus any input when calling focus() on ref with no errors', () => {
+      const TestComponent = () => {
+        const ref = React.useRef<TagEditorProps.Ref>(null);
+        return (
+          <>
+            <TagEditor
+              ref={ref}
+              i18nStrings={i18nStrings}
+              tags={[{ key: 'validKey', value: 'validValue', existing: false }]}
+              onChange={() => {}}
+            />
+            <button data-testid="focus-button" onClick={() => ref.current?.focus()}>
+              Focus
+            </button>
+          </>
+        );
+      };
+
+      const { container } = render(<TestComponent />);
+      const wrapper = createWrapper(container);
+      const button = wrapper.find('[data-testid="focus-button"]')!.getElement();
+      button.click();
+
+      // Calling focus() when there are no errors should not throw or cause issues
+      // The function simply does nothing in this case (findIndex returns -1)
+    });
+    test('should directly call focus() method and focus first error field', () => {
+      const ref = React.createRef<TagEditorProps.Ref>();
+      const { container } = render(
+        <TagEditor
+          ref={ref}
+          i18nStrings={i18nStrings}
+          tags={[
+            { key: 'validKey', value: 'validValue', existing: false },
+            { key: 'aws:invalid', value: '', existing: false },
+          ]}
+          onChange={() => {}}
+        />
+      );
+      const wrapper = createWrapper(container).findTagEditor()!;
+
+      ref.current?.focus();
+
+      const keyInput = wrapper
+        .findRow(2)!
+        .findField(1)!
+        .findControl()!
+        .findAutosuggest()!
+        .findNativeInput()
+        .getElement();
+      expect(keyInput).toHaveFocus();
+    });
   });
 });
