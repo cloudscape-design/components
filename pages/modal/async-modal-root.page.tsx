@@ -13,7 +13,9 @@ const getModalRoot: ModalProps['getModalRoot'] = async () => {
 };
 
 const removeModalRoot: ModalProps['removeModalRoot'] = root => {
-  document.body.removeChild(root);
+  if (root) {
+    document.body.removeChild(root);
+  }
 };
 
 export default function () {
