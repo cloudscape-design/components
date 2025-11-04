@@ -295,9 +295,9 @@ const allStatusesSteps: ReadonlyArray<StepsProps.Step> = [
     details: 'Test description',
   },
   {
-    status: 'not-started-yet',
-    statusIconAriaLabel: 'not started yet',
-    header: 'not started yet step',
+    status: 'not-started',
+    statusIconAriaLabel: 'not started',
+    header: 'not started step',
     details: 'Test description',
   },
 ];
