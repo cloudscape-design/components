@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { fireNonCancelableEvent } from '../../../internal/events';
-import { usePrevious } from '../../../internal/hooks/use-previous';
 import { DrawerPayload as RuntimeAiDrawerConfig, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { mapRuntimeConfigToAiDrawer } from '../../runtime-drawer';
@@ -34,17 +33,8 @@ export function useAiDrawer({
   const [size, setSize] = useState<number | null>(null);
   const aiDrawerWasOpenRef = useRef(false);
   aiDrawerWasOpenRef.current = aiDrawerWasOpenRef.current || !!activeAiDrawerId;
-  const prevExpandedDrawerId = usePrevious(expandedDrawerId);
 
   const aiDrawer = runtimeDrawer && mapRuntimeConfigToAiDrawer(runtimeDrawer);
-
-  useEffect(() => {
-    if (prevExpandedDrawerId !== expandedDrawerId && (expandedDrawerId === aiDrawer?.id || expandedDrawerId === null)) {
-      fireNonCancelableEvent(runtimeDrawer?.onToggleFocusMode, {
-        isExpanded: !!expandedDrawerId,
-      });
-    }
-  }, [runtimeDrawer?.onToggleFocusMode, expandedDrawerId, prevExpandedDrawerId, aiDrawer]);
 
   function onActiveAiDrawerResize(size: number) {
     const limitedSize = getLimitedValue(minAiDrawerSize, size, getMaxAiDrawerSize());
