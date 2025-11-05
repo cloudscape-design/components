@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import merge from 'lodash/merge.js';
 
-import { expandedReferenceTokens } from '../core/color-palette.js';
-import { expandColorDictionary } from '../utils/index.js';
+import { ReferenceTokens } from '@cloudscape-design/theming-build';
+
 import { StyleDictionary } from '../utils/interfaces.js';
-import { tokens as parentTokens } from '../visual-refresh/color-palette.js';
+import { referenceTokens as vrReferenceTokens, tokens as parentTokens } from '../visual-refresh/color-palette.js';
 
 /**
  * @deprecated These color palette tokens are deprecated and may be removed in a future version.
@@ -51,53 +51,61 @@ const tokens: StyleDictionary.ColorPaletteDictionary = {
   colorYellow900: '#906806',
 };
 
-const referenceTokens: StyleDictionary.ReferenceDictionary = {
-  // Start with all reference tokens from core
-  ...expandedReferenceTokens,
-  // Override with classic-specific mappings
-  colorPrimary50: tokens.colorBlue50,
-  colorPrimary200: tokens.colorBlue200,
-  colorPrimary300: tokens.colorBlue300,
-  colorPrimary400: tokens.colorBlue400,
-  colorPrimary600: tokens.colorBlue600,
-  colorPrimary700: tokens.colorBlue700,
-  colorPrimary1000: tokens.colorBlue1000,
-  colorNeutral100: tokens.colorGrey100,
-  colorNeutral200: tokens.colorGrey200,
-  colorNeutral250: tokens.colorGrey250,
-  colorNeutral300: tokens.colorGrey300,
-  colorNeutral400: tokens.colorGrey400,
-  colorNeutral450: tokens.colorGrey450,
-  colorNeutral500: tokens.colorGrey500,
-  colorNeutral600: tokens.colorGrey600,
-  colorNeutral650: tokens.colorGrey650,
-  colorNeutral700: tokens.colorGrey700,
-  colorNeutral750: tokens.colorGrey750,
-  colorNeutral800: tokens.colorGrey800,
-  colorNeutral850: tokens.colorGrey850,
-  colorNeutral950: tokens.colorGrey950,
-  colorError50: tokens.colorRed50,
-  colorError400: tokens.colorRed400,
-  colorError600: tokens.colorRed600,
-  colorError1000: tokens.colorRed1000,
-  colorInfo50: tokens.colorBlue50,
-  colorInfo300: tokens.colorBlue300,
-  colorInfo400: tokens.colorBlue400,
-  colorInfo600: tokens.colorBlue600,
-  colorInfo1000: tokens.colorBlue1000,
-  colorSuccess50: tokens.colorGreen50,
-  colorSuccess500: tokens.colorGreen500,
-  colorSuccess600: tokens.colorGreen600,
-  colorSuccess1000: tokens.colorGreen1000,
-  colorWarning900: tokens.colorYellow900,
-};
-
-const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
-  {},
-  parentTokens,
-  tokens,
-  expandColorDictionary(referenceTokens)
-);
+// Reference tokens for classic theme
+const referenceTokens: ReferenceTokens = merge({}, vrReferenceTokens, {
+  color: {
+    primary: {
+      50: tokens.colorBlue50,
+      200: tokens.colorBlue200,
+      300: tokens.colorBlue300,
+      400: tokens.colorBlue400,
+      600: tokens.colorBlue600,
+      700: tokens.colorBlue700,
+      1000: tokens.colorBlue1000,
+    },
+    neutral: {
+      100: tokens.colorGrey100,
+      200: tokens.colorGrey200,
+      250: tokens.colorGrey250,
+      300: tokens.colorGrey300,
+      400: tokens.colorGrey400,
+      450: tokens.colorGrey450,
+      500: tokens.colorGrey500,
+      600: tokens.colorGrey600,
+      650: tokens.colorGrey650,
+      700: tokens.colorGrey700,
+      750: tokens.colorGrey750,
+      800: tokens.colorGrey800,
+      850: tokens.colorGrey850,
+      950: tokens.colorGrey950,
+    },
+    error: {
+      50: tokens.colorRed50,
+      400: tokens.colorRed400,
+      600: tokens.colorRed600,
+      1000: tokens.colorRed1000,
+    },
+    success: {
+      50: tokens.colorGreen50,
+      500: tokens.colorGreen500,
+      600: tokens.colorGreen600,
+      1000: tokens.colorGreen1000,
+    },
+    warning: {
+      900: tokens.colorYellow900,
+    },
+    info: {
+      50: tokens.colorBlue50,
+      300: tokens.colorBlue300,
+      400: tokens.colorBlue400,
+      600: tokens.colorBlue600,
+      1000: tokens.colorBlue1000,
+    },
+  },
+});
+const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge({}, parentTokens, tokens);
 
 export { expandedTokens as tokens };
+export { referenceTokens };
+
 export const mode: StyleDictionary.ModeIdentifier = 'color';
