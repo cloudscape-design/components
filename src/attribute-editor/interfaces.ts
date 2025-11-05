@@ -143,6 +143,16 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
   disableAddButton?: boolean;
 
   /**
+   * Determines whether the add button is hidden
+   */
+  hideAddButton?: boolean;
+
+  /**
+   * Specifies additional actions displayed next to the add-button (or instead of the add-button if hidden).
+   */
+  additionalActions?: React.ReactNode;
+
+  /**
    * Specifies the variant to use for the add button. By default a normal button is used.
    * Use `inline-link` when using an attribute editor nested inside complex attribute editing
    * with expandable sections.

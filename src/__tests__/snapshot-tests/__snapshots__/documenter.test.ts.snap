@@ -2615,6 +2615,12 @@ A \`gridLayout\` is an array of breakpoint definitions. Each definition consists
       "type": "ReadonlyArray<AttributeEditorProps.GridLayout>",
     },
     {
+      "description": "Determines whether the add button is hidden",
+      "name": "hideAddButton",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "An object containing all the necessary localized strings required by the component.",
       "i18nTag": true,
       "inlineType": {
@@ -2721,6 +2727,11 @@ The display of a row is handled by the \`definition\` property.",
     },
   ],
   "regions": [
+    {
+      "description": "Specifies additional actions displayed next to the add-button (or instead of the add-button if hidden).",
+      "isDefault": false,
+      "name": "additionalActions",
+    },
     {
       "description": "Displayed below the add button. Use it for additional information related to the attribute editor.",
       "isDefault": false,

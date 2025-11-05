@@ -15,6 +15,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { usePrevious } from '../internal/hooks/use-previous';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
+import InternalSpaceBetween from '../space-between/internal';
 import { AdditionalInfo } from './additional-info';
 import { gridDefaults } from './grid-defaults';
 import { AttributeEditorForwardRefType, AttributeEditorProps } from './interfaces';
@@ -45,6 +46,8 @@ const InternalAttributeEditor = React.forwardRef(
       onAddButtonClick,
       onRemoveButtonClick,
       __internalRootRef,
+      hideAddButton,
+      additionalActions,
       ...props
     }: InternalAttributeEditorProps<T>,
     ref: React.Ref<AttributeEditorProps.Ref>
@@ -153,24 +156,31 @@ const InternalAttributeEditor = React.forwardRef(
         ))}
 
         <div className={styles['add-row']}>
-          <InternalButton
-            className={styles['add-button']}
-            disabled={disableAddButton}
-            // Using aria-disabled="true" and tabindex="-1" instead of "disabled"
-            // because focus can be dynamically moved to this button by calling
-            // `focusAddButton()` on the ref.
-            nativeButtonAttributes={disableAddButton ? { tabIndex: -1 } : {}}
-            __skipNativeAttributesWarnings={true}
-            __focusable={true}
-            onClick={onAddButtonClick}
-            formAction="none"
-            ref={addButtonRef}
-            ariaDescribedby={infoAriaDescribedBy}
-            variant={addButtonVariant}
-            iconName={addButtonVariant === 'inline-link' ? 'add-plus' : undefined}
-          >
-            {addButtonText}
-          </InternalButton>
+          {(!hideAddButton || additionalActions) && (
+            <InternalSpaceBetween size="xs" direction="horizontal">
+              {!hideAddButton && (
+                <InternalButton
+                  className={styles['add-button']}
+                  disabled={disableAddButton}
+                  // Using aria-disabled="true" and tabindex="-1" instead of "disabled"
+                  // because focus can be dynamically moved to this button by calling
+                  // `focusAddButton()` on the ref.
+                  nativeButtonAttributes={disableAddButton ? { tabIndex: -1 } : {}}
+                  __skipNativeAttributesWarnings={true}
+                  __focusable={true}
+                  onClick={onAddButtonClick}
+                  formAction="none"
+                  ref={addButtonRef}
+                  ariaDescribedby={infoAriaDescribedBy}
+                  variant={addButtonVariant}
+                  iconName={addButtonVariant === 'inline-link' ? 'add-plus' : undefined}
+                >
+                  {addButtonText}
+                </InternalButton>
+              )}
+              {additionalActions}
+            </InternalSpaceBetween>
+          )}
           <InternalLiveRegion
             data-testid="removal-announcement"
             tagName="span"
