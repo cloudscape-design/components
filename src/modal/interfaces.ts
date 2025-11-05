@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { PortalProps } from '@cloudscape-design/component-toolkit/internal';
+
 import { FlowType } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
@@ -11,14 +13,14 @@ export interface BaseModalProps {
    * Use this property to specify a different dynamic modal root for the dialog.
    * The function will be called when a user clicks on the trigger button.
    */
-  getModalRoot?: () => Promise<HTMLElement>;
+  getModalRoot?: PortalProps['getContainer'];
 
   /**
    * Use this property when `getModalRoot` is used to clean up the modal root
    * element after a user closes the dialog. The function receives the return value
    * of the most recent getModalRoot call as an argument.
    */
-  removeModalRoot?: (rootElement: HTMLElement) => void;
+  removeModalRoot?: PortalProps['removeContainer'];
 }
 
 export interface ModalProps extends BaseComponentProps, BaseModalProps {
