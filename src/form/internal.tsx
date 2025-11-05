@@ -51,7 +51,7 @@ export default function InternalForm({
     <div
       {...baseProps}
       ref={__internalRootRef}
-      className={clsx(styles.root, baseProps.className)}
+      className={clsx(styles.root, analyticsSelectors.root, baseProps.className)}
       {...(__injectAnalyticsComponentMetadata ? getAnalyticsMetadataAttribute(analyticsComponentMetadata) : {})}
     >
       {header && <div className={clsx(styles.header, analyticsSelectors.header)}>{header}</div>}
