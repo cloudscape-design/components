@@ -16,11 +16,11 @@ export default function AttributeEditorPage() {
   const definition = [
     {
       label: 'Key',
-      control: ({ key = '' }) => <Input value={key} />,
+      control: ({ key = '' }) => <Input value={key} readOnly={true} />,
     },
     {
       label: 'Value',
-      control: ({ value = '' }) => <Input value={value} />,
+      control: ({ value = '' }) => <Input value={value} readOnly={true} />,
     },
   ];
 
