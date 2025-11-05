@@ -4,11 +4,13 @@ import React, { useState } from 'react';
 
 import { Button, Modal, ModalProps } from '~components';
 
-const getModalRoot: ModalProps['getModalRoot'] = async () => {
+const getModalRoot: ModalProps['getModalRoot'] = async ({ abortSignal }) => {
   await new Promise(resolve => setTimeout(resolve, 1000));
   const element = document.createElement('div');
   element.setAttribute('id', 'async-modal-root');
-  document.body.appendChild(element);
+  if (!abortSignal.aborted) {
+    document.body.appendChild(element);
+  }
   return element;
 };
 
