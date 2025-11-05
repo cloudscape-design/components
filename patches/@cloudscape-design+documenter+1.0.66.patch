@@ -1,0 +1,36 @@
+diff --git a/node_modules/@cloudscape-design/documenter/components/object-definition.js b/node_modules/@cloudscape-design/documenter/components/object-definition.js
+index d504cb2..277d099 100644
+--- a/node_modules/@cloudscape-design/documenter/components/object-definition.js
++++ b/node_modules/@cloudscape-design/documenter/components/object-definition.js
+@@ -86,12 +86,30 @@ function getPrimitiveType(type) {
+     if (type.types.every(subtype => subtype.isNumberLiteral())) {
+         return 'number';
+     }
++    // Handle LiteralUnion pattern: string literals + generic string fallback
++    const hasOnlyStringLiteralsAndGenericString = type.types.every(subtype => 
++        subtype.isStringLiteral() || 
++        (subtype.flags & typescript_1.default.TypeFlags.String && !subtype.isStringLiteral())
++    );
++    if (hasOnlyStringLiteralsAndGenericString) {
++        return 'string';
++    }
+     return undefined;
+ }
+ function getUnionTypeDefinition(realTypeName, realType, typeNode, checker) {
+     const valueDescriptions = (0, extract_value_descriptions_1.extractValueDescriptions)(realType, typeNode);
+     const primitiveType = getPrimitiveType(realType);
+-    const values = realType.types.map(subtype => primitiveType ? subtype.value.toString() : (0, type_utils_1.stringifyType)(subtype, checker));
++    const values = realType.types.map(subtype => {
++        if (primitiveType) {
++            return subtype.value ? subtype.value.toString() : (0, type_utils_1.stringifyType)(subtype, checker);
++        }
++        // For string literal types, extract just the literal value without quotes
++        if (subtype.isStringLiteral()) {
++            return subtype.value;
++        }
++        // For other types, use the full stringified representation
++        return (0, type_utils_1.stringifyType)(subtype, checker);
++    });
+     return {
+         type: primitiveType !== null && primitiveType !== void 0 ? primitiveType : realTypeName,
+         inlineType: {

@@ -17,7 +17,7 @@ describe('Components', () => {
 });
 
 describe('Test-utils', () => {
-  test('dom definitions match the snapshot' + '', () => {
+  test('dom definitions match the snapshot', () => {
     expect(testUtilDomDefinitions).toMatchSnapshot();
   });
 
