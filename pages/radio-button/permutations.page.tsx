@@ -8,10 +8,9 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
-const permutations = createPermutations<RadioButtonProps>([
+const permutations = createPermutations<Omit<RadioButtonProps, 'name'>>([
   {
     children: ['First choice'],
-    name: ['radio-group-name'],
     readOnly: [false, true],
     disabled: [false, true],
     checked: [true, false],
@@ -25,12 +24,13 @@ export default function RadioButtonPermutations() {
       <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
-          render={permutation => (
+          render={(permutation, index) => (
             <RadioButton
               onChange={() => {
                 /*empty handler to suppress react controlled property warning*/
               }}
               {...permutation}
+              name={`radio-group-${index}`}
             />
           )}
         />
