@@ -13,6 +13,9 @@ import styles from './external/styles.css.js';
 
 export { RadioButtonProps };
 
+/**
+ * @awsuiSystem core
+ */
 const RadioButton = React.forwardRef((props: RadioButtonProps, ref: React.Ref<HTMLInputElement>) => {
   const baseComponentProps = useBaseComponent('RadioButton', {
     props: { readOnly: Boolean(props.readOnly), disabled: Boolean(props.disabled) },
