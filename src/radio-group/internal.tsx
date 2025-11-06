@@ -11,7 +11,7 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import RadioButton from '../radio-button/internal';
+import RadioButton from '../internal/radio-button';
 import { GeneratedAnalyticsMetadataRadioGroupSelect } from './analytics-metadata/interfaces';
 import { RadioGroupProps } from './interfaces';
 

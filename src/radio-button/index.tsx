@@ -5,11 +5,11 @@ import React from 'react';
 import clsx from 'clsx';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
+import InternalRadioButton from '../internal/radio-button';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { RadioButtonProps } from './interfaces';
-import InternalRadioButton from './internal';
 
-import styles from './external/styles.css.js';
+import styles from './styles.css.js';
 
 export { RadioButtonProps };
 

@@ -8,7 +8,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import InternalCheckbox from '../../checkbox/internal';
 import { KeyCode } from '../../internal/keycode';
-import RadioButton from '../../radio-button/internal';
+import RadioButton from '../../internal/radio-button';
 import { SelectionProps } from './interfaces';
 
 import styles from './styles.css.js';

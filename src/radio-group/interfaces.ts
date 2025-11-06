@@ -4,7 +4,7 @@
 import { BaseComponentProps } from '../internal/base-component';
 import { FormFieldControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
-import { RadioButtonProps } from '../radio-button/interfaces';
+import { Ref as InternalRadioButtonRef, Style as InternalRadioButtonStyle } from '../internal/radio-button/interfaces';
 
 export interface RadioGroupProps extends BaseComponentProps, FormFieldControlProps {
   /**
@@ -83,7 +83,7 @@ export namespace RadioGroupProps {
     value: string;
   }
 
-  export type Ref = RadioButtonProps.Ref;
+  export type Ref = InternalRadioButtonRef;
 
-  export type Style = RadioButtonProps.Style;
+  export type Style = InternalRadioButtonStyle;
 }

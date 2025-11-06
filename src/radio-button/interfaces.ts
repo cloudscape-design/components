@@ -4,9 +4,7 @@ import React from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
-/**
- * @awsuiSystem core
- */
+import { Ref as InternalRadioButtonRef, Style as InternalRadioButtonStyle } from '../internal/radio-button/interfaces';
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface RadioButtonProps extends BaseComponentProps {
@@ -90,54 +88,7 @@ export namespace RadioButtonProps {
     checked: boolean;
   }
 
-  export interface Ref {
-    /**
-     * Sets input focus onto the UI control.
-     */
-    focus(): void;
-  }
+  export type Ref = InternalRadioButtonRef;
 
-  export interface Style {
-    input?: {
-      fill?: {
-        checked?: string;
-        default?: string;
-        disabled?: string;
-        readOnly?: string;
-      };
-      stroke?: {
-        default?: string;
-        disabled?: string;
-        readOnly?: string;
-      };
-      circle?: {
-        fill?: {
-          checked?: string;
-          disabled?: string;
-          readOnly?: string;
-        };
-      };
-      focusRing?: {
-        borderColor?: string;
-        borderRadius?: string;
-        borderWidth?: string;
-      };
-    };
-    label?: {
-      color?: {
-        checked?: string;
-        default?: string;
-        disabled?: string;
-        readOnly?: string;
-      };
-    };
-    description?: {
-      color?: {
-        checked?: string;
-        default?: string;
-        disabled?: string;
-        readOnly?: string;
-      };
-    };
-  }
+  export type Style = InternalRadioButtonStyle;
 }

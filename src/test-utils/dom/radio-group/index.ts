@@ -5,7 +5,7 @@ import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
 import RadioButtonWrapper from '../radio-button';
 
-import radioButtonStyles from '../../../radio-button/test-classes/styles.selectors.js';
+import radioButtonStyles from '../../../internal/radio-button/test-classes/styles.selectors.js';
 import styles from '../../../radio-group/test-classes/styles.selectors.js';
 
 export default class RadioGroupWrapper extends ComponentWrapper {
