@@ -15,7 +15,7 @@ import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-but
 import customCssProps from '../../internal/generated/custom-css-properties';
 
 import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
-import radioButtonStyles from '../../../lib/components/radio-button/styles.selectors.js';
+import radioButtonStyles from '../../../lib/components/internal/radio-button/styles.selectors.js';
 
 const defaultItems: RadioGroupProps.RadioButtonDefinition[] = [
   { value: 'val1', label: 'Option one' },
