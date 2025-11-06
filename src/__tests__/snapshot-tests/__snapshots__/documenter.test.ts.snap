@@ -19996,7 +19996,7 @@ This property should be set for either all or none of the radio buttons in a gro
     },
     {
       "inlineType": {
-        "name": "RadioButtonProps.Style",
+        "name": "Style",
         "properties": [
           {
             "inlineType": {
@@ -20221,7 +20221,7 @@ This property should be set for either all or none of the radio buttons in a gro
       "systemTags": [
         "core",
       ],
-      "type": "RadioButtonProps.Style",
+      "type": "Style",
     },
     {
       "description": "Sets the value attribute to the native control.
@@ -20383,7 +20383,7 @@ being included in a form submission. A read-only control is still focusable.",
     },
     {
       "inlineType": {
-        "name": "RadioButtonProps.Style",
+        "name": "Style",
         "properties": [
           {
             "inlineType": {
@@ -20608,7 +20608,7 @@ being included in a form submission. A read-only control is still focusable.",
       "systemTags": [
         "core",
       ],
-      "type": "RadioButtonProps.Style",
+      "type": "Style",
     },
     {
       "description": "Sets the value of the selected radio button.

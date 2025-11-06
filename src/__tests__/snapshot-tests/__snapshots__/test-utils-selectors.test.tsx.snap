@@ -389,6 +389,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_placeholder_18eso",
     "awsui_recovery_vrgzu",
     "awsui_root_11n0s",
+    "awsui_root_1a2lg",
     "awsui_root_1fcus",
     "awsui_root_1kjc7",
     "awsui_root_1om0h",
@@ -512,9 +513,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_token-editor-submit_1heb1",
     "awsui_token-editor-token-add-actions_1heb1",
     "awsui_token-editor-token-remove-actions_1heb1",
-  ],
-  "radio-button": [
-    "awsui_root_n4fh9",
   ],
   "radio-group": [
     "awsui_root_1np5w",
