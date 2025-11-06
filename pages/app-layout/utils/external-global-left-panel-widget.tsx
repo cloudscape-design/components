@@ -6,6 +6,8 @@ import { Box, Button } from '~components';
 import { registerLeftDrawer, updateDrawer } from '~components/internal/plugins/widget';
 import { mount, unmount } from '~mount';
 
+import { IframeWrapper } from '../../utils/iframe-wrapper';
+
 import styles from '../styles.scss';
 
 const AIDrawer = () => {
@@ -101,7 +103,7 @@ registerLeftDrawer({
   },
 
   mountContent: container => {
-    mount(<AIDrawer />, container);
+    mount(<IframeWrapper id="ai-panel" AppComponent={AIDrawer} />, container);
   },
   unmountContent: container => unmount(container),
 
