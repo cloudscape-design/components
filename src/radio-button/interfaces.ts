@@ -4,6 +4,9 @@ import React from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+/**
+ * @awsuiSystem core
+ */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface RadioButtonProps extends BaseComponentProps {
