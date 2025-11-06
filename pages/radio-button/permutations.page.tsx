@@ -7,10 +7,12 @@ import RadioButton, { RadioButtonProps } from '~components/radio-button';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+import { longText, shortText } from './common';
 
 const permutations = createPermutations<Omit<RadioButtonProps, 'name'>>([
   {
-    children: ['First choice'],
+    description: [undefined, shortText, longText],
+    children: [undefined, shortText, longText],
     readOnly: [false, true],
     disabled: [false, true],
     checked: [true, false],

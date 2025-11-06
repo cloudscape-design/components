@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import FormField from '~components/form-field';
 import Input from '~components/input';
 
-// SPDX-License-Identifier: Apache-2.0
 export const options = [
   { value: 'email', label: 'E-Mail', description: 'First option' },
   { value: 'phone', label: 'Telephone', description: 'Second option', allowDisabled: true, allowReadOnly: true },
@@ -20,3 +19,8 @@ export const ExtraOptions = () => {
     </FormField>
   );
 };
+
+export const shortText = 'Short text';
+
+export const longText =
+  'Long text, long enough to wrap.  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Whatever.';
