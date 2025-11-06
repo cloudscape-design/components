@@ -20277,6 +20277,16 @@ path of the selected resource and \`errorText\` that may contain a validation er
       "detailType": "S3ResourceSelectorProps.ChangeDetail",
       "name": "onChange",
     },
+    {
+      "cancelable": false,
+      "description": "Called when input focus is removed from the S3 URI input.",
+      "name": "onInputBlur",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when input focus is moved to the S3 URI input.",
+      "name": "onInputFocus",
+    },
   ],
   "functions": [
     {

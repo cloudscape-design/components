@@ -7,7 +7,7 @@ import { InternalButton } from '../../button/internal';
 import InternalFormField from '../../form-field/internal';
 import { useInternalI18n } from '../../i18n/context';
 import { InputProps } from '../../input/interfaces';
-import { NonCancelableCustomEvent } from '../../internal/events';
+import { fireNonCancelableEvent, NonCancelableCustomEvent, NonCancelableEventHandler } from '../../internal/events';
 import useForwardFocus from '../../internal/hooks/forward-focus';
 import InternalLiveRegion from '../../live-region/internal';
 import InternalSelect from '../../select/internal';
@@ -28,6 +28,8 @@ interface S3InContextProps {
   inputAriaDescribedby: string | undefined;
   selectableItemsTypes: S3ResourceSelectorProps['selectableItemsTypes'];
   fetchVersions: S3ResourceSelectorProps['fetchVersions'];
+  onInputBlur: NonCancelableEventHandler<null> | undefined;
+  onInputFocus: NonCancelableEventHandler<null> | undefined;
   onBrowse: () => void;
   onChange: (newResource: S3ResourceSelectorProps.Resource, errorText: string | undefined) => void;
 }
@@ -47,6 +49,8 @@ export const S3InContext = React.forwardRef(
       inputAriaDescribedby,
       selectableItemsTypes,
       fetchVersions,
+      onInputBlur,
+      onInputFocus,
       onChange,
       onBrowse,
     }: S3InContextProps,
@@ -76,9 +80,15 @@ export const S3InContext = React.forwardRef(
       setInputTouched(true);
       const errorCode = validate(resource.uri);
       onChange(resource, getErrorText(i18n, i18nStrings, errorCode));
+      fireNonCancelableEvent(onInputBlur);
       if (supportsVersions) {
         loadVersions(resource.uri);
       }
+    }
+
+    function handleUriFocus() {
+      isInputBlurredRef.current = false;
+      fireNonCancelableEvent(onInputFocus);
     }
 
     useEffect(() => {
@@ -105,7 +115,7 @@ export const S3InContext = React.forwardRef(
               placeholder={inputPlaceholder ?? i18nStrings?.inContextInputPlaceholder}
               onChange={handleUriChange}
               invalid={invalid}
-              onFocus={() => (isInputBlurredRef.current = false)}
+              onFocus={handleUriFocus}
               onBlur={handleUriBlur}
             />
           </InternalFormField>
