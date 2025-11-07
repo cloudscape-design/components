@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import Box from '~components/box';
 import RadioGroup, { RadioGroupProps } from '~components/radio-group';
 
 import createPermutations from '../utils/permutations';
@@ -39,17 +40,15 @@ export default function HorizontalRadioGroupPermutations() {
         <PermutationsView
           permutations={[...permutations, ...extraPermutations]}
           render={permutation => (
-            <>
-              <div style={{ borderBlockEnd: '1px solid #DDD', paddingBlockStart: 64, paddingBlockEnd: 80 }}>
-                <RadioGroup
-                  direction="horizontal"
-                  onChange={() => {
-                    /*empty handler to suppress react controlled property warning*/
-                  }}
-                  {...permutation}
-                />
-              </div>
-            </>
+            <Box margin={{ vertical: 'xl' }}>
+              <RadioGroup
+                direction="horizontal"
+                onChange={() => {
+                  /*empty handler to suppress react controlled property warning*/
+                }}
+                {...permutation}
+              />
+            </Box>
           )}
         />
       </ScreenshotArea>
