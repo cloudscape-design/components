@@ -7,11 +7,15 @@ index d504cb2..277d099 100644
          return 'number';
      }
 +    // Handle LiteralUnion pattern: string literals + generic string fallback
-+    const hasOnlyStringLiteralsAndGenericString = type.types.every(subtype => 
-+        subtype.isStringLiteral() || 
-+        (subtype.flags & typescript_1.default.TypeFlags.String && !subtype.isStringLiteral())
-+    );
-+    if (hasOnlyStringLiteralsAndGenericString) {
++    const hasStringLiteralsAndGenericString = type.types.some(subtype => subtype.isStringLiteral()) &&
++        type.types.some(subtype => 
++            subtype.flags & typescript_1.default.TypeFlags.String && 
++            !subtype.isStringLiteral() &&
++            subtype.symbol?.name?.includes('_')
++        );
++    if (hasStringLiteralsAndGenericString && type.types.every(subtype => 
++        subtype.isStringLiteral() || (subtype.flags & typescript_1.default.TypeFlags.String)
++    )) {
 +        return 'string';
 +    }
      return undefined;
