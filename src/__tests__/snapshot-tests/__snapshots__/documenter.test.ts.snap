@@ -20111,7 +20111,7 @@ being included in a form submission. A read-only control is still focusable.",
     },
     {
       "inlineType": {
-        "name": "RadioGroupProps.Style",
+        "name": "RadioButtonProps.Style",
         "properties": [
           {
             "inlineType": {
@@ -20336,7 +20336,7 @@ being included in a form submission. A read-only control is still focusable.",
       "systemTags": [
         "core",
       ],
-      "type": "RadioGroupProps.Style",
+      "type": "RadioButtonProps.Style",
     },
     {
       "description": "Sets the value of the selected radio button.
