@@ -7660,19 +7660,14 @@ is provided by its parent form field component.",
       "description": "Use this property to specify a different dynamic modal root for the dialog.
 The function will be called when a user clicks on the trigger button.",
       "inlineType": {
-        "name": "(options: { abortSignal: AbortSignal; }) => Promise<HTMLElement>",
-        "parameters": [
-          {
-            "name": "options",
-            "type": "{ abortSignal: AbortSignal; }",
-          },
-        ],
+        "name": "() => Promise<HTMLElement>",
+        "parameters": [],
         "returnType": "Promise<HTMLElement>",
         "type": "function",
       },
       "name": "getModalRoot",
       "optional": true,
-      "type": "((options: { abortSignal: AbortSignal; }) => Promise<HTMLElement>)",
+      "type": "(() => Promise<HTMLElement>)",
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.
@@ -8107,11 +8102,11 @@ You can use any theme provided by Ace.",
 element after a user closes the dialog. The function receives the return value
 of the most recent getModalRoot call as an argument.",
       "inlineType": {
-        "name": "(container: HTMLElement | null) => void",
+        "name": "(container: HTMLElement) => void",
         "parameters": [
           {
             "name": "container",
-            "type": "HTMLElement | null",
+            "type": "HTMLElement",
           },
         ],
         "returnType": "void",
@@ -8119,7 +8114,7 @@ of the most recent getModalRoot call as an argument.",
       },
       "name": "removeModalRoot",
       "optional": true,
-      "type": "((container: HTMLElement | null) => void)",
+      "type": "((container: HTMLElement) => void)",
     },
     {
       "description": "List of Ace themes available for selection in preferences dialog. Make sure you include at least one light and at
@@ -8563,19 +8558,14 @@ the custom content is displayed at the bottom of the left column within the moda
       "description": "Use this property to specify a different dynamic modal root for the dialog.
 The function will be called when a user clicks on the trigger button.",
       "inlineType": {
-        "name": "(options: { abortSignal: AbortSignal; }) => Promise<HTMLElement>",
-        "parameters": [
-          {
-            "name": "options",
-            "type": "{ abortSignal: AbortSignal; }",
-          },
-        ],
+        "name": "() => Promise<HTMLElement>",
+        "parameters": [],
         "returnType": "Promise<HTMLElement>",
         "type": "function",
       },
       "name": "getModalRoot",
       "optional": true,
-      "type": "((options: { abortSignal: AbortSignal; }) => Promise<HTMLElement>)",
+      "type": "(() => Promise<HTMLElement>)",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -8715,11 +8705,11 @@ It contains the following:
 element after a user closes the dialog. The function receives the return value
 of the most recent getModalRoot call as an argument.",
       "inlineType": {
-        "name": "(container: HTMLElement | null) => void",
+        "name": "(container: HTMLElement) => void",
         "parameters": [
           {
             "name": "container",
-            "type": "HTMLElement | null",
+            "type": "HTMLElement",
           },
         ],
         "returnType": "void",
@@ -8727,7 +8717,7 @@ of the most recent getModalRoot call as an argument.",
       },
       "name": "removeModalRoot",
       "optional": true,
-      "type": "((container: HTMLElement | null) => void)",
+      "type": "((container: HTMLElement) => void)",
     },
     {
       "description": "Configures the sticky columns preference that can be set for both left and right columns.
@@ -16795,19 +16785,14 @@ The event detail contains the \`reason\`, which can be any of the following:
       "description": "Use this property to specify a different dynamic modal root for the dialog.
 The function will be called when a user clicks on the trigger button.",
       "inlineType": {
-        "name": "(options: { abortSignal: AbortSignal; }) => Promise<HTMLElement>",
-        "parameters": [
-          {
-            "name": "options",
-            "type": "{ abortSignal: AbortSignal; }",
-          },
-        ],
+        "name": "() => Promise<HTMLElement>",
+        "parameters": [],
         "returnType": "Promise<HTMLElement>",
         "type": "function",
       },
       "name": "getModalRoot",
       "optional": true,
-      "type": "((options: { abortSignal: AbortSignal; }) => Promise<HTMLElement>)",
+      "type": "(() => Promise<HTMLElement>)",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -16831,11 +16816,11 @@ render to an element under \`document.body\`.",
 element after a user closes the dialog. The function receives the return value
 of the most recent getModalRoot call as an argument.",
       "inlineType": {
-        "name": "(container: HTMLElement | null) => void",
+        "name": "(container: HTMLElement) => void",
         "parameters": [
           {
             "name": "container",
-            "type": "HTMLElement | null",
+            "type": "HTMLElement",
           },
         ],
         "returnType": "void",
@@ -16843,7 +16828,7 @@ of the most recent getModalRoot call as an argument.",
       },
       "name": "removeModalRoot",
       "optional": true,
-      "type": "((container: HTMLElement | null) => void)",
+      "type": "((container: HTMLElement) => void)",
     },
     {
       "defaultValue": "'medium'",
@@ -20313,16 +20298,6 @@ path of the selected resource and \`errorText\` that may contain a validation er
       "detailType": "S3ResourceSelectorProps.ChangeDetail",
       "name": "onChange",
     },
-    {
-      "cancelable": false,
-      "description": "Called when input focus is removed from the S3 URI input.",
-      "name": "onInputBlur",
-    },
-    {
-      "cancelable": false,
-      "description": "Called when input focus is moved to the S3 URI input.",
-      "name": "onInputFocus",
-    },
   ],
   "functions": [
     {
@@ -20470,19 +20445,14 @@ The return type of the function should be a promise that resolves to a list of v
       "description": "Use this property to specify a different dynamic modal root for the dialog.
 The function will be called when a user clicks on the trigger button.",
       "inlineType": {
-        "name": "(options: { abortSignal: AbortSignal; }) => Promise<HTMLElement>",
-        "parameters": [
-          {
-            "name": "options",
-            "type": "{ abortSignal: AbortSignal; }",
-          },
-        ],
+        "name": "() => Promise<HTMLElement>",
+        "parameters": [],
         "returnType": "Promise<HTMLElement>",
         "type": "function",
       },
       "name": "getModalRoot",
       "optional": true,
-      "type": "((options: { abortSignal: AbortSignal; }) => Promise<HTMLElement>)",
+      "type": "(() => Promise<HTMLElement>)",
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.",
@@ -21041,11 +21011,11 @@ and 'Size'.",
 element after a user closes the dialog. The function receives the return value
 of the most recent getModalRoot call as an argument.",
       "inlineType": {
-        "name": "(container: HTMLElement | null) => void",
+        "name": "(container: HTMLElement) => void",
         "parameters": [
           {
             "name": "container",
-            "type": "HTMLElement | null",
+            "type": "HTMLElement",
           },
         ],
         "returnType": "void",
@@ -21053,7 +21023,7 @@ of the most recent getModalRoot call as an argument.",
       },
       "name": "removeModalRoot",
       "optional": true,
-      "type": "((container: HTMLElement | null) => void)",
+      "type": "((container: HTMLElement) => void)",
     },
     {
       "description": "The current selected resource. Resource has the following properties:
