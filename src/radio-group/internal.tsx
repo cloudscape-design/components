@@ -80,6 +80,7 @@ const InternalRadioGroup = React.forwardRef(
               controlId={item.controlId}
               readOnly={readOnly}
               style={style}
+              className={clsx(styles.radio, item.description && styles['radio--has-description'])}
               {...getAnalyticsMetadataAttribute(
                 !item.disabled && !readOnly
                   ? {
