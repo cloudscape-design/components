@@ -9,6 +9,7 @@ import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { ProgressBarProps } from './interfaces';
+import { getProgressPercentageStyles, getProgressStyles, getProgressValueStyles } from './styles';
 
 import styles from './styles.css.js';
 
@@ -24,10 +25,16 @@ interface ProgressProps {
   ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
+  style?: ProgressBarProps.Style;
 }
-export const Progress = ({ value, isInFlash, ariaLabel, ariaLabelledby, ariaDescribedby }: ProgressProps) => {
+
+export const Progress = ({ value, isInFlash, ariaLabel, ariaLabelledby, ariaDescribedby, style }: ProgressProps) => {
   const roundedValue = Math.round(value);
   const progressValue = clamp(roundedValue, 0, MAX_VALUE);
+
+  const progressBarStyles = getProgressStyles(style);
+  const progressValueStyles = getProgressValueStyles(style);
+  const progressPercentageStyles = getProgressPercentageStyles(style);
 
   return (
     <div className={styles['progress-container']}>
@@ -43,9 +50,18 @@ export const Progress = ({ value, isInFlash, ariaLabel, ariaLabelledby, ariaDesc
         // Ensures aria-label takes precedence over aria-labelledby
         aria-labelledby={!ariaLabel ? ariaLabelledby : undefined}
         aria-describedby={ariaDescribedby}
+        style={{
+          ...(progressBarStyles || {}),
+          ...(progressValueStyles || {}),
+        }}
       />
       <span aria-hidden="true" className={styles['percentage-container']}>
-        <InternalBox className={styles.percentage} variant="small" color={isInFlash ? 'inherit' : undefined}>
+        <InternalBox
+          className={styles.percentage}
+          variant="small"
+          color={isInFlash ? 'inherit' : undefined}
+          nativeAttributes={progressPercentageStyles ? { style: progressPercentageStyles } : undefined}
+        >
           {`${progressValue}%`}
         </InternalBox>
       </span>

@@ -82,9 +82,30 @@ export interface ProgressBarProps extends BaseComponentProps {
    * Use the `buttonText` property and the `onButtonClick` event listener of the flashbar item instead.
    */
   onResultButtonClick?: NonCancelableEventHandler;
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: ProgressBarProps.Style;
 }
 
 export namespace ProgressBarProps {
   export type Status = 'in-progress' | 'success' | 'error';
   export type Variant = 'standalone' | 'flash' | 'key-value';
+
+  export interface Style {
+    progress?: {
+      backgroundColor?: string;
+      borderRadius?: string;
+      height?: string;
+    };
+    progressValue?: {
+      backgroundColor?: string;
+    };
+    progressPercentage?: {
+      color?: string;
+      fontSize?: string;
+      fontWeight?: string;
+    };
+  }
 }

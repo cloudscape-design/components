@@ -18382,6 +18382,88 @@ Add a button using the \`action\` property of the flashbar item instead.",
       "type": "string",
     },
     {
+      "inlineType": {
+        "name": "ProgressBarProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "height",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "progress",
+            "optional": true,
+            "type": "{ backgroundColor?: string | undefined; borderRadius?: string | undefined; height?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "{ color?: string | undefined; fontSize?: string | undefined; fontWeight?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "color",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontSize",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontWeight",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "progressPercentage",
+            "optional": true,
+            "type": "{ color?: string | undefined; fontSize?: string | undefined; fontWeight?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "{ backgroundColor?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "progressValue",
+            "optional": true,
+            "type": "{ backgroundColor?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "ProgressBarProps.Style",
+    },
+    {
       "defaultValue": "0",
       "description": "Indicates the current progress as a percentage. The value must be between 0 and 100. Decimals are rounded.",
       "name": "value",
