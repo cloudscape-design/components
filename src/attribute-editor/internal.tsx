@@ -160,6 +160,7 @@ const InternalAttributeEditor = React.forwardRef(
             <InternalSpaceBetween size="xs" direction="horizontal">
               {!hideAddButton && (
                 <InternalButton
+                  key={'add-button'}
                   className={styles['add-button']}
                   disabled={disableAddButton}
                   // Using aria-disabled="true" and tabindex="-1" instead of "disabled"

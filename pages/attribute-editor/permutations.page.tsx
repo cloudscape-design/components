@@ -151,8 +151,8 @@ export const permutations = createPermutations<AttributeEditorProps<Item>>([
     addButtonText: ['Add item'],
     removeButtonText: ['Remove item'],
     additionalActions: [
-      <Button key="import" variant="normal">
-        Import
+      <Button key="test-button" variant="normal">
+        Test Button
       </Button>,
       <>
         <Button key="import" variant="normal">
