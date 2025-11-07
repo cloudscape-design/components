@@ -154,17 +154,17 @@ export const permutations = createPermutations<AttributeEditorProps<Item>>([
       <Button key="test-button" variant="normal">
         Test Button
       </Button>,
-      <>
+      [
         <Button key="import" variant="normal">
           Import
-        </Button>{' '}
+        </Button>,
         <Button key="export" variant="normal">
           Export
-        </Button>{' '}
+        </Button>,
         <Button key="long-text" variant="normal">
           A very long button text to try out wrapping to a second row
-        </Button>
-      </>,
+        </Button>,
+      ],
     ],
   },
   {
