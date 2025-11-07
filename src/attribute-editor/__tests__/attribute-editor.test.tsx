@@ -669,17 +669,11 @@ describe('Attribute Editor', () => {
   });
 
   describe('additional actions', () => {
-    test('renders additional actions when provided', () => {
+    test('renders additional actions alongside add button if provided', () => {
       const additionalActions = <Button data-testid="additional-test-button">Additional Action Button</Button>;
       const { container } = render(<AttributeEditor {...defaultProps} additionalActions={additionalActions} />);
       const wrapper = createWrapper(container).findAttributeEditor()!;
       expect(wrapper.getElement().querySelector('[data-testid="additional-test-button"]')).not.toBeNull();
-    });
-
-    test('renders additional actions alongside add button', () => {
-      const additionalActions = <Button data-testid="additional-test-button">Additional Action Button</Button>;
-      const { container } = render(<AttributeEditor {...defaultProps} additionalActions={additionalActions} />);
-      const wrapper = createWrapper(container).findAttributeEditor()!;
       expect(wrapper.findAddButton()).not.toBeNull();
     });
   });
