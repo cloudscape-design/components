@@ -30,6 +30,7 @@
 }
 
 .radio.horizontal {
-  // Approximately 80 characters, which is the usually recommended maximum to keep columns readable.
-  max-inline-size: 40em;
+  // Leaves approximately up to 80 characters for the description before wrapping.
+  // This is the usually recommended maximum to keep text columns readable.
+  max-inline-size: calc(16 * #{awsui.$space-scaled-xxl});
 }
