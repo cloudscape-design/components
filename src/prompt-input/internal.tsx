@@ -16,6 +16,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SomeRequired } from '../internal/types';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { PromptInputProps } from './interfaces';
+import { getPromptInputStyles } from './styles';
 
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
@@ -57,6 +58,7 @@ const InternalPromptInput = React.forwardRef(
       disableSecondaryActionsPaddings,
       disableSecondaryContentPaddings,
       nativeTextareaAttributes,
+      style,
       __internalRootRef,
       ...rest
     }: InternalPromptInputProps,
@@ -206,6 +208,7 @@ const InternalPromptInput = React.forwardRef(
         })}
         ref={__internalRootRef}
         role="region"
+        style={getPromptInputStyles(style) as React.CSSProperties}
       >
         {secondaryContent && (
           <div
