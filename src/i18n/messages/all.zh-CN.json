@@ -43,7 +43,8 @@
     "i18nStrings.detailTotalLabel": "总计"
   },
   "attribute-editor": {
-    "removeButtonText": "删除"
+    "removeButtonText": "删除",
+    "i18nStrings.itemRemovedAriaLive": "项目已移除"
   },
   "autosuggest": {
     "errorIconAriaLabel": "错误",

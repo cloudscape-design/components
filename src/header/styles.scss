@@ -5,6 +5,7 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @function space-heading-button-diff($heading-height) {
   @return calc((#{awsui.$size-vertical-input} - #{$heading-height}) / 2);
@@ -219,6 +220,14 @@
   display: inline;
   font-size: inherit;
   @include styles.info-link-spacing();
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.link-focus;
+  }
 
   &-variant-h1 {
     @include styles.font(heading-xl);

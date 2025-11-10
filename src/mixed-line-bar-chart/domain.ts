@@ -50,16 +50,6 @@ export function computeDomainX<T>(series: readonly InternalChartSeries<T>[], xSc
   }, [] as T[]);
 }
 
-function find<Q>(arr: readonly Q[], func: (el: Q) => boolean) {
-  for (let i = 0; i < arr.length; i++) {
-    const found = func(arr[i]);
-    if (found) {
-      return arr[i];
-    }
-  }
-  return null;
-}
-
 export function computeDomainY<T>(
   series: readonly InternalChartSeries<T>[],
   scaleType: 'linear' | 'log',
@@ -74,7 +64,7 @@ export function computeDomainY<T>(
         if (curr.series.type === 'bar') {
           curr.series.data.forEach(({ x, y }) => {
             const data = y < 0 ? acc.negativeData : acc.positiveData;
-            const stackedDatum = find(data, el => matchesX(el.x, x));
+            const stackedDatum = data.find(el => matchesX(el.x, x));
             if (stackedDatum) {
               stackedDatum.y += y;
             } else {
@@ -85,32 +75,13 @@ export function computeDomainY<T>(
         }
         return acc;
       },
-      {
-        positiveData: [] as MixedLineBarChartProps.Datum<T>[],
-        negativeData: [] as MixedLineBarChartProps.Datum<T>[],
-      }
+      { positiveData: [] as MixedLineBarChartProps.Datum<T>[], negativeData: [] as MixedLineBarChartProps.Datum<T>[] }
     );
 
     // Artificial series with the sum of all bars when stacked
     const stackedSeries: InternalChartSeries<T>[] = [
-      {
-        color: '',
-        index: NaN,
-        series: {
-          type: 'bar',
-          title: 'positive',
-          data: positiveData as any,
-        },
-      },
-      {
-        color: '',
-        index: NaN,
-        series: {
-          type: 'bar',
-          title: 'negative',
-          data: negativeData as any,
-        },
-      },
+      { color: '', index: NaN, series: { type: 'bar', title: 'positive', data: positiveData as any } },
+      { color: '', index: NaN, series: { type: 'bar', title: 'negative', data: negativeData as any } },
     ];
 
     // MixedLineBarChart can also contain other non-bar series,

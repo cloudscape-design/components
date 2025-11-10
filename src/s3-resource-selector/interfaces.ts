@@ -158,6 +158,16 @@ export interface S3ResourceSelectorProps extends BaseComponentProps, BaseModalPr
   fetchVersions: (bucketName: string, pathPrefix: string) => Promise<ReadonlyArray<S3ResourceSelectorProps.Version>>;
 
   /**
+   * Called when input focus is removed from the S3 URI input.
+   */
+  onInputBlur?: NonCancelableEventHandler<null>;
+
+  /**
+   * Called when input focus is moved to the S3 URI input.
+   */
+  onInputFocus?: NonCancelableEventHandler<null>;
+
+  /**
    * Fired when the resource selection is changed. The event detail object contains resource that represents the full
    * path of the selected resource and `errorText` that may contain a validation error.
    */

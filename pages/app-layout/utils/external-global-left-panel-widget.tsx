@@ -139,4 +139,8 @@ registerLeftDrawer({
   onHeaderActionClick: ({ detail }) => {
     console.log('onHeaderActionClick: ', detail);
   },
+
+  onToggleFocusMode: ({ detail }) => {
+    console.log('onToggleFocusMode: ', detail);
+  },
 });

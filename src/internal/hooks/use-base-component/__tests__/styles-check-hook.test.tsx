@@ -37,3 +37,11 @@ test('emits style check error only once', async () => {
   await new Promise(resolve => setTimeout(resolve, 1100));
   expect(consoleMock).toHaveBeenCalledTimes(0);
 });
+
+test('no check if component is instantly unmounted', async () => {
+  const { unmount } = render(<Test key={1} />);
+  unmount();
+
+  await new Promise(resolve => setTimeout(resolve, 1100));
+  expect(consoleMock).toHaveBeenCalledTimes(0);
+});
