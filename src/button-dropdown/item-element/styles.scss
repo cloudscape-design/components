@@ -128,8 +128,4 @@
   @include styles.font(body-s);
   font-weight: styles.$font-weight-lighter;
   color: awsui.$color-text-dropdown-item-secondary;
-
-  &.highlighted {
-    color: awsui.$color-text-dropdown-item-secondary-hover;
-  }
 }
