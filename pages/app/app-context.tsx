@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import mapValues from 'lodash/mapValues';
 
@@ -22,6 +22,8 @@ export interface AppContextType<T = unknown> {
   urlParams: AppUrlParams & T;
   setUrlParams: (newParams: Partial<AppUrlParams & T>) => void;
   setMode: (newMode: Mode) => void;
+  header: null | React.ReactNode;
+  setHeader: (header: React.ReactNode) => void;
 }
 
 const appContextDefaults: AppContextType = {
@@ -36,6 +38,8 @@ const appContextDefaults: AppContextType = {
   },
   setMode: () => {},
   setUrlParams: () => {},
+  header: null,
+  setHeader: () => {},
 };
 
 const AppContext = createContext<AppContextType>(appContextDefaults);
@@ -87,8 +91,12 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     history.replace('/' + pathname + location.search + location.hash);
   }
 
+  const [header, setHeader] = useState<React.ReactNode>(null);
+
   return (
-    <AppContext.Provider value={{ mode: mode!, pageId, urlParams, setUrlParams: setUrlParams, setMode: updateMode }}>
+    <AppContext.Provider
+      value={{ mode: mode!, pageId, urlParams, setUrlParams: setUrlParams, setMode: updateMode, header, setHeader }}
+    >
       {children}
     </AppContext.Provider>
   );

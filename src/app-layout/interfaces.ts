@@ -311,6 +311,13 @@ export namespace AppLayoutProps {
     defaultSize?: number;
     onResize?: NonCancelableEventHandler<{ size: number }>;
     preserveInactiveContent?: boolean;
+    featurePrompt?: {
+      visible: boolean;
+      onDismiss: NonCancelableEventHandler<null>;
+      header?: React.ReactNode;
+      content: React.ReactNode;
+      dismissAriaLabel?: string;
+    };
   }
 
   export interface DrawerAriaLabels {

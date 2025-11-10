@@ -1,0 +1,13 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+.root {
+  // used in test utils
+}
