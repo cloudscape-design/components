@@ -4,6 +4,7 @@ import React from 'react';
 
 import AttributeEditor, { AttributeEditorProps } from '~components/attribute-editor';
 import Box from '~components/box';
+import Button from '~components/button';
 import Input from '~components/input';
 import StatusIndicator from '~components/status-indicator';
 
@@ -143,6 +144,41 @@ export const permutations = createPermutations<AttributeEditorProps<Item>>([
     items: [defaultItems],
     addButtonText: ['Add item'],
     removeButtonText: ['Remove item'],
+  },
+  {
+    definition: [definition2],
+    items: [defaultItems],
+    addButtonText: ['Add item'],
+    removeButtonText: ['Remove item'],
+    additionalActions: [
+      <Button key="test-button" variant="normal">
+        Test Button
+      </Button>,
+      [
+        <Button key="import" variant="normal">
+          Import
+        </Button>,
+        <Button key="export" variant="normal">
+          Export
+        </Button>,
+        <Button key="long-text" variant="normal">
+          A very long button text to try out wrapping to a second row
+        </Button>,
+      ],
+    ],
+  },
+  {
+    definition: [definition2],
+    items: [defaultItems],
+    removeButtonText: ['Remove item'],
+    hideAddButton: [true],
+    addButtonText: ['Add item'],
+    additionalActions: [
+      <Button key="add-custom" variant="primary">
+        Add custom item
+      </Button>,
+      undefined,
+    ],
   },
 ]);
 
