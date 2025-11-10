@@ -43,7 +43,7 @@ export default function WithDrawers() {
   const [splitPanelOpen, setSplitPanelOpen] = useState(false);
   const pageLayoutRef = useRef<AppLayoutToolbarProps.Ref>(null);
 
-  const drawersProps: Pick<AppLayoutToolbarProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = {
+  const drawersProps: Pick<AppLayoutToolbarProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> = {
     activeDrawerId: activeDrawerId,
     drawers: [
       {

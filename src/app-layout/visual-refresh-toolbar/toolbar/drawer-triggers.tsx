@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
+import { fireNonCancelableEvent } from '../../../internal/events';
 import { useMobile } from '../../../internal/hooks/use-mobile';
 import { splitItems } from '../../drawer/drawers-helpers';
 import OverflowMenu from '../../drawer/overflow-menu';
@@ -135,6 +136,11 @@ export function DrawerTriggers({
     }
   };
 
+  const onAnyDrawerClick = () => {
+    const drawerWithVisibleFeaturePrompt = drawers.find(d => d.featurePrompt?.visible);
+    fireNonCancelableEvent(drawerWithVisibleFeaturePrompt?.featurePrompt?.onDismiss);
+  };
+
   return (
     <aside
       className={styles[`drawers-${isMobile ? 'mobile' : 'desktop'}-triggers-container`]}
@@ -162,6 +168,7 @@ export function DrawerTriggers({
               iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
               onClick={() => {
                 exitExpandedMode();
+                onAnyDrawerClick();
                 if (!!expandedDrawerId && splitPanelToggleProps.active) {
                   return;
                 }
@@ -195,6 +202,7 @@ export function DrawerTriggers({
               key={item.id}
               onClick={() => {
                 exitExpandedMode();
+                onAnyDrawerClick();
                 if (!!expandedDrawerId && activeDrawerId === item.id) {
                   return;
                 }
@@ -210,6 +218,7 @@ export function DrawerTriggers({
               isForPreviousActiveDrawer={isForPreviousActiveDrawer}
               isMobile={isMobile}
               disabled={disabled}
+              featurePrompt={item.featurePrompt}
             />
           );
         })}
@@ -241,6 +250,7 @@ export function DrawerTriggers({
               key={item.id}
               onClick={() => {
                 exitExpandedMode();
+                onAnyDrawerClick();
                 if (!!expandedDrawerId && item.id !== expandedDrawerId && activeGlobalDrawersIds.includes(item.id)) {
                   return;
                 }
@@ -260,6 +270,7 @@ export function DrawerTriggers({
               isForPreviousActiveDrawer={isForPreviousActiveDrawer}
               isMobile={isMobile}
               disabled={disabled}
+              featurePrompt={item.featurePrompt}
             />
           );
         })}
