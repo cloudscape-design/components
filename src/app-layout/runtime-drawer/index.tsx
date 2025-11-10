@@ -3,13 +3,14 @@
 import React, { useContext, useEffect, useRef } from 'react';
 
 import { ButtonGroupProps, ItemRuntime } from '../../button-group/interfaces';
+import { IconProps } from '../../icon/interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
 import {
   DrawerConfig as RuntimeDrawerConfig,
   DrawerStateChangeParams,
 } from '../../internal/plugins/controllers/drawers';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
-import { DrawerPayload as RuntimeAiDrawerConfig } from '../../internal/plugins/widget/interfaces';
+import { DrawerPayload as RuntimeAiDrawerConfig, Feature } from '../../internal/plugins/widget/interfaces';
 import { AppLayoutProps } from '../interfaces';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 
@@ -18,6 +19,7 @@ import styles from './styles.css.js';
 export interface RuntimeDrawer extends AppLayoutProps.Drawer {
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   position?: 'side' | 'bottom';
+  __features?: Array<Feature<unknown>>;
 }
 
 export interface DrawersLayout {
@@ -114,7 +116,7 @@ export const mapRuntimeConfigToDrawer = (
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
 } => {
-  const { mountContent, unmountContent, trigger, ...runtimeDrawer } = runtimeConfig;
+  const { trigger, mountContent, unmountContent, __content, ...runtimeDrawer } = runtimeConfig;
 
   return {
     ...runtimeDrawer,
@@ -124,9 +126,12 @@ export const mapRuntimeConfigToDrawer = (
           ...(trigger.iconSvg && {
             iconSvg: convertRuntimeTriggerToReactNode(trigger.iconSvg),
           }),
+          ...(trigger.__iconName && {
+            iconName: trigger.__iconName as IconProps.Name,
+          }),
         }
       : undefined,
-    content: (
+    content: __content ?? (
       <RuntimeDrawerWrapper
         key={runtimeDrawer.id}
         mountContent={mountContent}

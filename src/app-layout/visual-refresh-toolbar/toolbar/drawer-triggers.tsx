@@ -1,16 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { RefObject, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
+import FeaturePrompt, { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
 import { useMobile } from '../../../internal/hooks/use-mobile';
+import { FeatureNotificationsPayload } from '../../../internal/plugins/widget/interfaces';
 import { splitItems } from '../../drawer/drawers-helpers';
 import OverflowMenu from '../../drawer/overflow-menu';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
 import { OnChangeParams, TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
+import { RuntimeContentPart } from '../drawer/feature-notifications-drawer-content';
 import { InternalDrawer } from '../interfaces';
 import TriggerButton from './trigger-button';
 
@@ -50,6 +53,8 @@ interface DrawerTriggersProps {
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
   onSplitPanelToggle: (() => void) | undefined;
   disabled: boolean;
+  featurePromptRef?: RefObject<FeaturePromptProps.Ref>;
+  featureNotificationsData?: FeatureNotificationsPayload<unknown> | null;
 }
 
 export function DrawerTriggers({
@@ -74,16 +79,21 @@ export function DrawerTriggers({
   onActiveGlobalBottomDrawerChange,
   bottomDrawersFocusRef,
   bottomDrawers,
+  featurePromptRef,
+  featureNotificationsData,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
   const previousActiveLocalDrawerId = useRef(activeDrawerId);
   const previousActiveGlobalBottomDrawerId = useRef(activeGlobalBottomDrawerId);
   const previousActiveGlobalDrawersIds = useRef(activeGlobalDrawersIds);
+  const featureNotificationLocalTriggerRef = useRef<HTMLButtonElement>(null);
   const [containerWidth, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxWidth);
   if (!drawers.length && !globalDrawers.length && !bottomDrawers?.length && !splitPanelToggleProps) {
     return null;
   }
+
+  const allDrawers = [...drawers, ...globalDrawers, ...(bottomDrawers || [])];
 
   if (activeDrawerId) {
     previousActiveLocalDrawerId.current = activeDrawerId;
@@ -118,16 +128,16 @@ export function DrawerTriggers({
 
   const indexOfOverflowItem = getIndexOfOverflowItem();
 
-  const { visibleItems, overflowItems } = splitItems(
-    [...drawers, ...globalDrawers, ...(bottomDrawers || [])],
-    indexOfOverflowItem,
-    activeDrawerId ?? null
-  );
+  const { visibleItems, overflowItems } = splitItems(allDrawers, indexOfOverflowItem, activeDrawerId ?? null);
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const globalDrawersStartIndex = drawers.length;
   const hasOpenDrawer = !!activeDrawerId || (splitPanelPosition === 'side' && splitPanelOpen);
   const splitPanelResolvedPosition = splitPanelToggleProps?.position;
+  let mostRecentFeature = null;
+  if (featureNotificationsData) {
+    mostRecentFeature = featureNotificationsData.features![0];
+  }
 
   const exitExpandedMode = () => {
     if (setExpandedDrawerId) {
@@ -135,192 +145,240 @@ export function DrawerTriggers({
     }
   };
 
-  return (
-    <aside
-      className={styles[`drawers-${isMobile ? 'mobile' : 'desktop'}-triggers-container`]}
-      aria-label={ariaLabels?.drawers}
-      ref={triggersContainerRef}
-      role="region"
-    >
-      <div
-        className={styles['drawers-trigger-content']}
-        aria-label={ariaLabels?.drawers}
-        role="toolbar"
-        aria-orientation="horizontal"
-      >
-        {splitPanelToggleProps && (
-          <>
-            <TriggerButton
-              ariaLabel={splitPanelToggleProps.ariaLabel}
-              ariaControls={splitPanelToggleProps.controlId}
-              ariaExpanded={!expandedDrawerId && splitPanelToggleProps.active}
-              className={clsx(
-                styles['drawers-trigger'],
-                testutilStyles['drawers-trigger'],
-                splitPanelTestUtilStyles['open-button']
-              )}
-              iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
-              onClick={() => {
-                exitExpandedMode();
-                if (!!expandedDrawerId && splitPanelToggleProps.active) {
-                  return;
-                }
-                onSplitPanelToggle?.();
-              }}
-              selected={!expandedDrawerId && splitPanelToggleProps.active}
-              ref={splitPanelResolvedPosition === 'side' ? splitPanelFocusRef : undefined}
-              hasTooltip={true}
-              isMobile={isMobile}
-              isForSplitPanel={true}
-              disabled={disabled}
-            />
-            {hasMultipleTriggers ? <div className={styles['group-divider']}></div> : null}
-          </>
-        )}
-        {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
-          const isForPreviousActiveDrawer = previousActiveLocalDrawerId?.current === item.id;
-          const selected = !expandedDrawerId && item.id === activeDrawerId;
-          return (
-            <TriggerButton
-              ariaLabel={item.ariaLabels?.triggerButton}
-              ariaExpanded={selected}
-              ariaControls={activeDrawerId === item.id ? item.id : undefined}
-              className={clsx(
-                styles['drawers-trigger'],
-                !toolsOnlyMode && testutilStyles['drawers-trigger'],
-                item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
-              )}
-              iconName={item.trigger!.iconName}
-              iconSvg={item.trigger!.iconSvg}
-              key={item.id}
-              onClick={() => {
-                exitExpandedMode();
-                if (!!expandedDrawerId && activeDrawerId === item.id) {
-                  return;
-                }
-                onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true });
-              }}
-              ref={item.id === previousActiveLocalDrawerId.current ? drawersFocusRef : undefined}
-              selected={selected}
-              badge={item.badge}
-              testId={`awsui-app-layout-trigger-${item.id}`}
-              hasTooltip={true}
-              hasOpenDrawer={hasOpenDrawer}
-              tooltipText={item.ariaLabels?.drawerName}
-              isForPreviousActiveDrawer={isForPreviousActiveDrawer}
-              isMobile={isMobile}
-              disabled={disabled}
-            />
-          );
-        })}
-        {globalDrawersStartIndex > 0 && visibleItems.length > globalDrawersStartIndex && (
-          <div className={styles['group-divider']}></div>
-        )}
-        {visibleItems.slice(globalDrawersStartIndex).map(item => {
-          let isForPreviousActiveDrawer = previousActiveGlobalDrawersIds?.current.includes(item.id);
-          const isBottom = item.position === 'bottom';
-          let selected =
-            activeGlobalDrawersIds.includes(item.id) && (!expandedDrawerId || item.id === expandedDrawerId);
-          if (isBottom) {
-            selected = item.id === activeGlobalBottomDrawerId && (!expandedDrawerId || item.id === expandedDrawerId);
-            isForPreviousActiveDrawer = previousActiveGlobalBottomDrawerId.current === item.id;
-          }
+  const getFeatureNotificationTriggerRef = () => {
+    if (!featureNotificationsData) {
+      return null;
+    }
 
-          return (
-            <TriggerButton
-              ariaLabel={item.ariaLabels?.triggerButton}
-              ariaExpanded={selected}
-              ariaControls={selected ? item.id : undefined}
-              className={clsx(
-                styles['drawers-trigger'],
-                testutilStyles['drawers-trigger'],
-                testutilStyles['drawers-trigger-global']
-              )}
-              iconName={item.trigger!.iconName}
-              iconSvg={item.trigger!.iconSvg}
-              key={item.id}
-              onClick={() => {
-                exitExpandedMode();
-                if (!!expandedDrawerId && item.id !== expandedDrawerId && activeGlobalDrawersIds.includes(item.id)) {
-                  return;
+    return featureNotificationLocalTriggerRef.current;
+  };
+  const featureNotificationTriggerRef = getFeatureNotificationTriggerRef() as HTMLButtonElement;
+
+  return (
+    <>
+      {!!mostRecentFeature && featurePromptRef && featureNotificationsData && (
+        <FeaturePrompt
+          ref={featurePromptRef}
+          onShow={() => {
+            if (!featureNotificationTriggerRef) {
+              return;
+            }
+            featureNotificationTriggerRef!.dataset!.awsuiSuppressTooltip = 'true';
+          }}
+          onDismiss={() => {
+            if (!featureNotificationTriggerRef) {
+              return;
+            }
+            featureNotificationTriggerRef!.dataset!.awsuiSuppressTooltip = 'false';
+          }}
+          header={
+            <RuntimeContentPart mountContent={featureNotificationsData?.mountItem} content={mostRecentFeature.header} />
+          }
+          content={
+            <RuntimeContentPart
+              mountContent={featureNotificationsData?.mountItem}
+              content={mostRecentFeature.content}
+            />
+          }
+          trackKey={mostRecentFeature.id}
+          position="left"
+          getTrack={() => featureNotificationTriggerRef}
+        />
+      )}
+      <aside
+        className={styles[`drawers-${isMobile ? 'mobile' : 'desktop'}-triggers-container`]}
+        aria-label={ariaLabels?.drawers}
+        ref={triggersContainerRef}
+        role="region"
+      >
+        <div
+          className={styles['drawers-trigger-content']}
+          aria-label={ariaLabels?.drawers}
+          role="toolbar"
+          aria-orientation="horizontal"
+        >
+          {splitPanelToggleProps && (
+            <>
+              <TriggerButton
+                ariaLabel={splitPanelToggleProps.ariaLabel}
+                ariaControls={splitPanelToggleProps.controlId}
+                ariaExpanded={!expandedDrawerId && splitPanelToggleProps.active}
+                className={clsx(
+                  styles['drawers-trigger'],
+                  testutilStyles['drawers-trigger'],
+                  splitPanelTestUtilStyles['open-button']
+                )}
+                iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
+                onClick={() => {
+                  exitExpandedMode();
+                  if (!!expandedDrawerId && splitPanelToggleProps.active) {
+                    return;
+                  }
+                  onSplitPanelToggle?.();
+                }}
+                selected={!expandedDrawerId && splitPanelToggleProps.active}
+                ref={splitPanelResolvedPosition === 'side' ? splitPanelFocusRef : undefined}
+                hasTooltip={true}
+                isMobile={isMobile}
+                isForSplitPanel={true}
+                disabled={disabled}
+              />
+              {hasMultipleTriggers ? <div className={styles['group-divider']}></div> : null}
+            </>
+          )}
+          {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
+            const isForPreviousActiveDrawer = previousActiveLocalDrawerId?.current === item.id;
+            const selected = !expandedDrawerId && item.id === activeDrawerId;
+            const isFeatureNotificationsDrawer = featureNotificationsData?.id === item.id;
+            return (
+              <TriggerButton
+                ariaLabel={item.ariaLabels?.triggerButton}
+                ariaExpanded={selected}
+                ariaControls={activeDrawerId === item.id ? item.id : undefined}
+                className={clsx(
+                  styles['drawers-trigger'],
+                  !toolsOnlyMode && testutilStyles['drawers-trigger'],
+                  item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+                )}
+                iconName={item.trigger!.iconName}
+                iconSvg={item.trigger!.iconSvg}
+                key={item.id}
+                onClick={() => {
+                  exitExpandedMode();
+                  if (!!expandedDrawerId && activeDrawerId === item.id) {
+                    return;
+                  }
+                  onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true });
+                }}
+                ref={
+                  item.id === previousActiveLocalDrawerId.current
+                    ? drawersFocusRef
+                    : isFeatureNotificationsDrawer
+                      ? featureNotificationLocalTriggerRef
+                      : null
                 }
+                selected={selected}
+                badge={item.badge}
+                testId={`awsui-app-layout-trigger-${item.id}`}
+                hasTooltip={true}
+                hasOpenDrawer={hasOpenDrawer}
+                tooltipText={item.ariaLabels?.drawerName}
+                isForPreviousActiveDrawer={isForPreviousActiveDrawer}
+                isMobile={isMobile}
+                disabled={disabled}
+              />
+            );
+          })}
+          {globalDrawersStartIndex > 0 && visibleItems.length > globalDrawersStartIndex && (
+            <div className={styles['group-divider']}></div>
+          )}
+          {visibleItems.slice(globalDrawersStartIndex).map(item => {
+            let isForPreviousActiveDrawer = previousActiveGlobalDrawersIds?.current.includes(item.id);
+            const isBottom = item.position === 'bottom';
+            let selected =
+              activeGlobalDrawersIds.includes(item.id) && (!expandedDrawerId || item.id === expandedDrawerId);
+            if (isBottom) {
+              selected = item.id === activeGlobalBottomDrawerId && (!expandedDrawerId || item.id === expandedDrawerId);
+              isForPreviousActiveDrawer = previousActiveGlobalBottomDrawerId.current === item.id;
+            }
+
+            return (
+              <TriggerButton
+                ariaLabel={item.ariaLabels?.triggerButton}
+                ariaExpanded={selected}
+                ariaControls={selected ? item.id : undefined}
+                className={clsx(
+                  styles['drawers-trigger'],
+                  testutilStyles['drawers-trigger'],
+                  testutilStyles['drawers-trigger-global']
+                )}
+                iconName={item.trigger!.iconName}
+                iconSvg={item.trigger!.iconSvg}
+                key={item.id}
+                onClick={() => {
+                  exitExpandedMode();
+                  if (!!expandedDrawerId && item.id !== expandedDrawerId && activeGlobalDrawersIds.includes(item.id)) {
+                    return;
+                  }
+                  if (isBottom) {
+                    onActiveGlobalBottomDrawerChange?.(selected ? null : item.id, { initiatedByUserAction: true });
+                    return;
+                  }
+                  onActiveGlobalDrawersChange?.(item.id, { initiatedByUserAction: true });
+                }}
+                ref={isBottom ? bottomDrawersFocusRef : globalDrawersFocusControl?.refs[item.id]?.toggle}
+                selected={selected}
+                badge={item.badge}
+                testId={`awsui-app-layout-trigger-${item.id}`}
+                hasTooltip={true}
+                hasOpenDrawer={hasOpenDrawer}
+                tooltipText={item.ariaLabels?.drawerName}
+                isForPreviousActiveDrawer={isForPreviousActiveDrawer}
+                isMobile={isMobile}
+                disabled={disabled}
+              />
+            );
+          })}
+          {overflowItems.length > 0 && (
+            <OverflowMenu
+              items={overflowItems.map(item => {
+                const isBottom = item?.position === 'bottom';
+                let active =
+                  activeGlobalDrawersIds.includes(item.id) && (!expandedDrawerId || item.id === expandedDrawerId);
                 if (isBottom) {
+                  active =
+                    item.id === activeGlobalBottomDrawerId && (!expandedDrawerId || item.id === expandedDrawerId);
+                }
+                return {
+                  ...item,
+                  active,
+                };
+              })}
+              ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
+              customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => {
+                return (
+                  <TriggerButton
+                    ref={triggerRef}
+                    ariaLabel={ariaLabel}
+                    ariaExpanded={ariaExpanded}
+                    badge={overflowMenuHasBadge}
+                    className={clsx(
+                      styles['drawers-trigger'],
+                      testutilStyles['drawers-trigger'],
+                      testutilStyles['drawers-trigger-global'],
+                      testUtilsClass
+                    )}
+                    iconName="ellipsis"
+                    onClick={onClick}
+                    disabled={disabled}
+                  />
+                );
+              }}
+              onItemClick={event => {
+                const id = event.detail.id;
+                exitExpandedMode();
+                const item = overflowItems.find(item => item.id === id);
+                const isBottom = item?.position === 'bottom';
+                if (isBottom) {
+                  const selected =
+                    item.id === activeGlobalBottomDrawerId && (!expandedDrawerId || item.id === expandedDrawerId);
                   onActiveGlobalBottomDrawerChange?.(selected ? null : item.id, { initiatedByUserAction: true });
                   return;
                 }
-                onActiveGlobalDrawersChange?.(item.id, { initiatedByUserAction: true });
-              }}
-              ref={isBottom ? bottomDrawersFocusRef : globalDrawersFocusControl?.refs[item.id]?.toggle}
-              selected={selected}
-              badge={item.badge}
-              testId={`awsui-app-layout-trigger-${item.id}`}
-              hasTooltip={true}
-              hasOpenDrawer={hasOpenDrawer}
-              tooltipText={item.ariaLabels?.drawerName}
-              isForPreviousActiveDrawer={isForPreviousActiveDrawer}
-              isMobile={isMobile}
-              disabled={disabled}
-            />
-          );
-        })}
-        {overflowItems.length > 0 && (
-          <OverflowMenu
-            items={overflowItems.map(item => {
-              const isBottom = item?.position === 'bottom';
-              let active =
-                activeGlobalDrawersIds.includes(item.id) && (!expandedDrawerId || item.id === expandedDrawerId);
-              if (isBottom) {
-                active = item.id === activeGlobalBottomDrawerId && (!expandedDrawerId || item.id === expandedDrawerId);
-              }
-              return {
-                ...item,
-                active,
-              };
-            })}
-            ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
-            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => {
-              return (
-                <TriggerButton
-                  ref={triggerRef}
-                  ariaLabel={ariaLabel}
-                  ariaExpanded={ariaExpanded}
-                  badge={overflowMenuHasBadge}
-                  className={clsx(
-                    styles['drawers-trigger'],
-                    testutilStyles['drawers-trigger'],
-                    testutilStyles['drawers-trigger-global'],
-                    testUtilsClass
-                  )}
-                  iconName="ellipsis"
-                  onClick={onClick}
-                  disabled={disabled}
-                />
-              );
-            }}
-            onItemClick={event => {
-              const id = event.detail.id;
-              exitExpandedMode();
-              const item = overflowItems.find(item => item.id === id);
-              const isBottom = item?.position === 'bottom';
-              if (isBottom) {
-                const selected =
-                  item.id === activeGlobalBottomDrawerId && (!expandedDrawerId || item.id === expandedDrawerId);
-                onActiveGlobalBottomDrawerChange?.(selected ? null : item.id, { initiatedByUserAction: true });
-                return;
-              }
-              if (globalDrawers.find(drawer => drawer.id === id)) {
-                if (!!expandedDrawerId && id !== expandedDrawerId && activeGlobalDrawersIds.includes(id)) {
-                  return;
+                if (globalDrawers.find(drawer => drawer.id === id)) {
+                  if (!!expandedDrawerId && id !== expandedDrawerId && activeGlobalDrawersIds.includes(id)) {
+                    return;
+                  }
+                  onActiveGlobalDrawersChange?.(id, { initiatedByUserAction: true });
+                } else {
+                  onActiveDrawerChange?.(event.detail.id, { initiatedByUserAction: true });
                 }
-                onActiveGlobalDrawersChange?.(id, { initiatedByUserAction: true });
-              } else {
-                onActiveDrawerChange?.(event.detail.id, { initiatedByUserAction: true });
-              }
-            }}
-            globalDrawersStartIndex={globalDrawersStartIndex - indexOfOverflowItem}
-          />
-        )}
-      </div>
-    </aside>
+              }}
+              globalDrawersStartIndex={globalDrawersStartIndex - indexOfOverflowItem}
+            />
+          )}
+        </div>
+      </aside>
+    </>
   );
 }

@@ -41,7 +41,9 @@ export function SimplePage({ title, subtitle, settings, children, screenshotArea
             <SpaceBetween size="m">{children}</SpaceBetween>
           </ScreenshotArea>
         ) : (
-          <Box>{children}</Box>
+          <Box>
+            <SpaceBetween size="m">{children}</SpaceBetween>
+          </Box>
         )}
       </SpaceBetween>
     </Box>

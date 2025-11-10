@@ -154,6 +154,9 @@ Map {
         "toolbar": 0,
       },
     },
+    "featurePromptRef": {
+      "current": null,
+    },
     "toolbarProps": {
       "activeDrawerId": null,
       "ariaLabels": {
@@ -1002,6 +1005,9 @@ Map {
         "notifications": 0,
         "toolbar": 0,
       },
+    },
+    "featurePromptRef": {
+      "current": null,
     },
     "toolbarProps": {
       "activeDrawerId": null,
@@ -2052,6 +2058,9 @@ Map {
         "notifications": 0,
         "toolbar": 0,
       },
+    },
+    "featurePromptRef": {
+      "current": null,
     },
     "toolbarProps": {
       "activeDrawerId": "security",
