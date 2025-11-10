@@ -117,9 +117,9 @@ const customCssPropertiesList = [
   'alertFocusRingBoxShadow',
   'alertIconColor',
   // Progress bar style properties
-  'progressBackgroundColor',
-  'progressBorderRadius',
-  'progressHeight',
+  'progressBarBackgroundColor',
+  'progressBarBorderRadius',
+  'progressBarHeight',
   'progressValueBackgroundColor',
 ];
 module.exports = customCssPropertiesList;

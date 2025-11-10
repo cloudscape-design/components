@@ -5,14 +5,14 @@ import customCssProps from '../internal/generated/custom-css-properties';
 import { ProgressBarProps } from './interfaces';
 
 export function getProgressStyles(style: ProgressBarProps['style']) {
-  if (SYSTEM !== 'core' || !style?.progress) {
+  if (SYSTEM !== 'core' || !style?.progressBar) {
     return undefined;
   }
 
   return {
-    [customCssProps.progressBackgroundColor]: style.progress.backgroundColor,
-    [customCssProps.progressBorderRadius]: style.progress.borderRadius,
-    [customCssProps.progressHeight]: style.progress.height,
+    [customCssProps.progressBarBackgroundColor]: style.progressBar.backgroundColor,
+    [customCssProps.progressBarBorderRadius]: style.progressBar.borderRadius,
+    [customCssProps.progressBarHeight]: style.progressBar.height,
   };
 }
 

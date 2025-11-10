@@ -94,7 +94,7 @@ export namespace ProgressBarProps {
   export type Variant = 'standalone' | 'flash' | 'key-value';
 
   export interface Style {
-    progress?: {
+    progressBar?: {
       backgroundColor?: string;
       borderRadius?: string;
       height?: string;

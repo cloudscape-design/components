@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import customCssProps from '../../internal/generated/custom-css-properties';
 import { getProgressPercentageStyles, getProgressStyles, getProgressValueStyles } from '../styles';
 
@@ -20,7 +21,7 @@ describe('getProgressStyles', () => {
 
   test('returns progress bar styles when provided', () => {
     const style = {
-      progress: {
+      progressBar: {
         backgroundColor: '#e0e0e0',
         borderRadius: '8px',
         height: '8px',
@@ -28,9 +29,9 @@ describe('getProgressStyles', () => {
     };
 
     expect(getProgressStyles(style)).toEqual({
-      [customCssProps.progressBackgroundColor]: '#e0e0e0',
-      [customCssProps.progressBorderRadius]: '8px',
-      [customCssProps.progressHeight]: '8px',
+      [customCssProps.progressBarBackgroundColor]: '#e0e0e0',
+      [customCssProps.progressBarBorderRadius]: '8px',
+      [customCssProps.progressBarHeight]: '8px',
     });
   });
 
@@ -43,7 +44,7 @@ describe('getProgressStyles', () => {
     const { getProgressStyles: getProgressStylesNonCore } = await import('../styles');
 
     const style = {
-      progress: {
+      progressBar: {
         backgroundColor: '#e0e0e0',
       },
     };

@@ -14,7 +14,7 @@ const permutations = createPermutations<ProgressBarProps>([
     status: ['in-progress'],
     style: [
       {
-        progress: {
+        progressBar: {
           backgroundColor: '#ccfbf1',
           borderRadius: '8px',
           height: '8px',
@@ -29,7 +29,7 @@ const permutations = createPermutations<ProgressBarProps>([
         },
       },
       {
-        progress: {
+        progressBar: {
           backgroundColor: '#fee2e2',
           borderRadius: '4px',
           height: '10px',
@@ -44,7 +44,7 @@ const permutations = createPermutations<ProgressBarProps>([
         },
       },
       {
-        progress: {
+        progressBar: {
           backgroundColor: '#fef3c7',
           borderRadius: '16px',
           height: '10px',
@@ -59,7 +59,7 @@ const permutations = createPermutations<ProgressBarProps>([
         },
       },
       {
-        progress: {
+        progressBar: {
           backgroundColor: '#dbeafe',
           borderRadius: '4px',
           height: '6px',
@@ -74,7 +74,7 @@ const permutations = createPermutations<ProgressBarProps>([
         },
       },
       {
-        progress: {
+        progressBar: {
           backgroundColor: '#f3e8ff',
           borderRadius: '0px',
           height: '12px',
