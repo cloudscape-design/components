@@ -10,13 +10,17 @@ import ThemeSwitcher from './theme-switcher';
 import styles from './header.scss';
 
 export default function Header({ sticky }: { sticky?: boolean }) {
-  const { mode } = useContext(AppContext);
+  const { mode, header: customHeader } = useContext(AppContext);
   return (
     <>
       {/* #h selector for compatibility with global navigation */}
-      <header id="h" className={clsx(styles.header, sticky && styles['header-sticky'])}>
-        <Link to={`/${mode}/`}>Demo Assets</Link>
-        <ThemeSwitcher />
+      <header id="h" className={clsx(!customHeader && styles.header, sticky && styles['header-sticky'])}>
+        {customHeader ?? (
+          <>
+            <Link to={`/${mode}/`}>Demo Assets</Link>
+            <ThemeSwitcher />
+          </>
+        )}
       </header>
     </>
   );

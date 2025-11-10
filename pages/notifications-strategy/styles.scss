@@ -1,0 +1,17 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.navigation {
+  inline-size: 100%;
+  color: awsui.$color-text-interactive-inverted-default;
+  display: flex;
+  gap: awsui.$space-static-s;
+  justify-content: space-between;
+  align-items: center;
+  margin-block-start: -8px;
+  margin-block-end: -8px;
+}

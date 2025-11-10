@@ -210,6 +210,7 @@ export function DrawerTriggers({
               isForPreviousActiveDrawer={isForPreviousActiveDrawer}
               isMobile={isMobile}
               disabled={disabled}
+              featurePrompt={item.featurePrompt}
             />
           );
         })}
@@ -260,6 +261,7 @@ export function DrawerTriggers({
               isForPreviousActiveDrawer={isForPreviousActiveDrawer}
               isMobile={isMobile}
               disabled={disabled}
+              featurePrompt={item.featurePrompt}
             />
           );
         })}
