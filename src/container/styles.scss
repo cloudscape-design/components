@@ -12,6 +12,10 @@
   word-wrap: break-word;
   position: relative;
 
+  // Necessary, because rounded borders cause the header to overflow. Since the
+  // header has a background color, the edges of the header stick out.
+  overflow: hidden;
+
   &.fit-height {
     display: flex;
     flex-direction: column;
