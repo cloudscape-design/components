@@ -2615,6 +2615,12 @@ A \`gridLayout\` is an array of breakpoint definitions. Each definition consists
       "type": "ReadonlyArray<AttributeEditorProps.GridLayout>",
     },
     {
+      "description": "Determines whether the add button is hidden",
+      "name": "hideAddButton",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "An object containing all the necessary localized strings required by the component.",
       "i18nTag": true,
       "inlineType": {
@@ -2721,6 +2727,11 @@ The display of a row is handled by the \`definition\` property.",
     },
   ],
   "regions": [
+    {
+      "description": "Specifies additional actions displayed next to the add-button (or instead of the add-button if hidden).",
+      "isDefault": false,
+      "name": "additionalActions",
+    },
     {
       "description": "Displayed below the add button. Use it for additional information related to the attribute editor.",
       "isDefault": false,
@@ -13121,13 +13132,6 @@ exports[`Components definition for header matches the snapshot: header 1`] = `
       "type": "string",
     },
     {
-      "description": "Specifies secondary text that's displayed to the right of the heading title. This is commonly used
-to display resource counters in table and cards components.",
-      "name": "counter",
-      "optional": true,
-      "type": "string",
-    },
-    {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
 provided by the variant. Using this property does not change the visual appearance of the component.",
       "inlineType": {
@@ -13189,6 +13193,12 @@ HTML heading tag based on the specified \`variant\` or \`headingTagOverride\`.",
       "displayName": "title",
       "isDefault": true,
       "name": "children",
+    },
+    {
+      "description": "Specifies secondary content that's displayed to the right of the heading title. This is commonly used
+to display resource counters in table and cards components.",
+      "isDefault": false,
+      "name": "counter",
     },
     {
       "description": "Supplementary text below the heading.",
@@ -18384,6 +18394,88 @@ Add a button using the \`action\` property of the flashbar item instead.",
       "name": "status",
       "optional": true,
       "type": "string",
+    },
+    {
+      "inlineType": {
+        "name": "ProgressBarProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "height",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "progressBar",
+            "optional": true,
+            "type": "{ backgroundColor?: string | undefined; borderRadius?: string | undefined; height?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "{ color?: string | undefined; fontSize?: string | undefined; fontWeight?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "color",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontSize",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontWeight",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "progressPercentage",
+            "optional": true,
+            "type": "{ color?: string | undefined; fontSize?: string | undefined; fontWeight?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "{ backgroundColor?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "progressValue",
+            "optional": true,
+            "type": "{ backgroundColor?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "ProgressBarProps.Style",
     },
     {
       "defaultValue": "0",

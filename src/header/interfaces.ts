@@ -34,10 +34,10 @@ export interface HeaderProps extends BaseComponentProps {
    */
   actions?: React.ReactNode;
   /**
-   * Specifies secondary text that's displayed to the right of the heading title. This is commonly used
+   * Specifies secondary content that's displayed to the right of the heading title. This is commonly used
    * to display resource counters in table and cards components.
    */
-  counter?: string;
+  counter?: React.ReactNode;
   /**
    * Area next to the heading to display an Info link.
    */

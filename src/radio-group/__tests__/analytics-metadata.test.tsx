@@ -12,7 +12,13 @@ import InternalRadioGroup from '../../../lib/components/radio-group/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
 
-import labels from '../../../lib/components/internal/components/abstract-switch/analytics-metadata/styles.css.js';
+import abstractSwitchLabels from '../../../lib/components/internal/components/abstract-switch/analytics-metadata/styles.css.js';
+import radioGroupLabels from '../../../lib/components/radio-group/analytics-metadata/styles.css.js';
+
+const labels = {
+  ...abstractSwitchLabels,
+  ...radioGroupLabels,
+};
 
 const items: RadioGroupProps['items'] = [
   {
@@ -57,6 +63,7 @@ const getMetadata = (
           label: componentLabel,
           properties: {
             value: `${currentValue}`,
+            valueLabel: currentValue ? items.find(item => item.value === currentValue)?.label : '',
           },
         },
       },
@@ -102,7 +109,7 @@ describe('Checkbox renders correct analytics metadata', () => {
     test('without aria label', () => {
       const renderResult = render(
         <FormField label="form field label">
-          <RadioGroup items={items} value="2" />
+          <RadioGroup items={items} value="second" />
         </FormField>
       );
       const element = createWrapper(renderResult.container).findRadioGroup()!.getElement()!;
@@ -114,7 +121,8 @@ describe('Checkbox renders correct analytics metadata', () => {
               name: 'awsui.RadioGroup',
               label: 'form field label',
               properties: {
-                value: '2',
+                value: 'second',
+                valueLabel: 'Second choice',
               },
             },
           },
@@ -144,6 +152,7 @@ describe('Checkbox renders correct analytics metadata', () => {
               label: 'aria label',
               properties: {
                 value: '2',
+                valueLabel: '',
               },
             },
           },
