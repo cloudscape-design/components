@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getTabStyles transforms tab styles to CSS properties 1`] = `
+{
+  "--awsui-style-background-active-cdnyga": "#bfdbfe",
+  "--awsui-style-background-default-cdnyga": "#dbeafe",
+  "--awsui-style-background-disabled-cdnyga": "#f3f4f6",
+  "--awsui-style-background-hover-cdnyga": "#eff6ff",
+  "--awsui-style-border-color-active-cdnyga": "#1d4ed8",
+  "--awsui-style-border-color-default-cdnyga": "#3b82f6",
+  "--awsui-style-border-color-disabled-cdnyga": "#93c5fd",
+  "--awsui-style-border-color-hover-cdnyga": "#2563eb",
+  "--awsui-style-color-active-cdnyga": "#1e3a8a",
+  "--awsui-style-color-default-cdnyga": "#1e40af",
+  "--awsui-style-color-disabled-cdnyga": "#93c5fd",
+  "--awsui-style-color-hover-cdnyga": "#1e40af",
+  "--awsui-style-focus-ring-border-color-cdnyga": "#3b82f6",
+  "--awsui-style-focus-ring-border-radius-cdnyga": "4px",
+  "--awsui-style-focus-ring-border-width-cdnyga": "2px",
+  "borderRadius": "4px",
+  "borderWidth": "2px",
+  "fontSize": "16px",
+  "fontWeight": "500",
+  "paddingBlock": "10px",
+  "paddingInline": "14px",
+}
+`;
+
+exports[`getTabStyles transforms tab styles to CSS properties 2`] = `
+{
+  "--awsui-style-tabs-header-divider-color-cdnyga": "#94a3b8",
+  "--awsui-style-tabs-header-divider-width-cdnyga": "3px",
+}
+`;
+
+exports[`getTabStyles transforms tab styles to CSS properties 3`] = `
+{
+  "--awsui-style-tabs-divider-color-cdnyga": "#cbd5e1",
+  "--awsui-style-tabs-divider-width-cdnyga": "2px",
+  "--awsui-style-tabs-underline-border-radius-cdnyga": "2px",
+  "--awsui-style-tabs-underline-color-cdnyga": "#1d4ed8",
+  "--awsui-style-tabs-underline-width-cdnyga": "3px",
+}
+`;

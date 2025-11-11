@@ -100,6 +100,11 @@ export interface TabsProps extends BaseComponentProps {
    * need to introduce friction to the switching of tabs.
    */
   keyboardActivationMode?: 'automatic' | 'manual';
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: TabsProps.Style;
 }
 export namespace TabsProps {
   export type Variant = 'default' | 'container' | 'stacked';
@@ -190,5 +195,52 @@ export namespace TabsProps {
      * with role="application" to provide further information on the purpose of this component
      */
     tabsWithActionsAriaRoleDescription?: string;
+  }
+
+  export interface Style {
+    tabs?: {
+      backgroundColor?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      borderColor?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      color?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      fontSize?: string;
+      fontWeight?: string;
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+      paddingBlock?: string;
+      paddingInline?: string;
+      underline?: {
+        color?: string;
+        width?: string;
+        borderRadius?: string;
+      };
+    };
+    tabSeparator?: {
+      color?: string;
+      width?: string;
+    };
+    headerBorder?: {
+      color?: string;
+      width?: string;
+    };
   }
 }

@@ -6,7 +6,9 @@
 /* stylelint-disable selector-max-type */
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles//foundation' as foundation;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 $separator-color: awsui.$color-border-tabs-divider;
 $label-horizontal-spacing: awsui.$space-xs;
@@ -113,11 +115,6 @@ $label-horizontal-spacing: awsui.$space-xs;
   display: flex;
   align-items: stretch;
 
-  &,
-  & > button {
-    background-color: transparent;
-  }
-
   & > .tabs-tab-dismiss,
   & > .tabs-tab-action {
     position: relative;
@@ -138,12 +135,15 @@ $label-horizontal-spacing: awsui.$space-xs;
     inset-inline-start: 0;
     inline-size: calc(100% - 1px);
     inset-block-end: calc(-1 * #{awsui.$border-divider-section-width});
-    block-size: awsui.$border-active-width;
-    border-start-start-radius: awsui.$border-radius-tabs-focus-ring;
-    border-start-end-radius: awsui.$border-radius-tabs-focus-ring;
-    border-end-start-radius: awsui.$border-radius-tabs-focus-ring;
-    border-end-end-radius: awsui.$border-radius-tabs-focus-ring;
-    background: awsui.$color-border-tabs-underline;
+    block-size: var(#{custom-props.$styleTabsUnderlineWidth}, awsui.$border-active-width);
+    border-start-start-radius: var(
+      #{custom-props.$styleTabsUnderlineBorderRadius},
+      awsui.$border-radius-tabs-focus-ring
+    );
+    border-start-end-radius: var(#{custom-props.$styleTabsUnderlineBorderRadius}, awsui.$border-radius-tabs-focus-ring);
+    border-end-start-radius: var(#{custom-props.$styleTabsUnderlineBorderRadius}, awsui.$border-radius-tabs-focus-ring);
+    border-end-end-radius: var(#{custom-props.$styleTabsUnderlineBorderRadius}, awsui.$border-radius-tabs-focus-ring);
+    background: var(#{custom-props.$styleTabsUnderlineColor}, awsui.$color-border-tabs-underline);
     opacity: 0;
   }
 
@@ -163,7 +163,8 @@ $label-horizontal-spacing: awsui.$space-xs;
     &:before {
       content: '';
       position: absolute;
-      border-inline-end: awsui.$border-divider-section-width solid $separator-color;
+      border-inline-end: var(#{custom-props.$styleTabsSeparatorWidth}, awsui.$border-divider-section-width) solid
+        var(#{custom-props.$styleTabsSeparatorColor}, $separator-color);
       inset: awsui.$space-scaled-s 0;
       opacity: 1;
     }
@@ -185,13 +186,14 @@ $label-horizontal-spacing: awsui.$space-xs;
 
   padding-inline: 0;
   margin-block-start: 1px;
-  border-block: awsui.$border-divider-section-width solid transparent;
-  border-inline: awsui.$border-divider-section-width solid transparent;
+  border-block: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
+  border-inline: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
 
   font-size: awsui.$font-tabs-size;
   line-height: awsui.$font-tabs-line-height;
   font-weight: awsui.$font-wayfinding-link-active-weight;
-  color: awsui.$color-text-interactive-default;
+  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-interactive-default);
+  background-color: var(#{custom-props.$styleBackgroundDefault}, transparent);
 
   padding-inline-start: calc(#{awsui.$space-xxs} - 1px);
   padding-inline-end: awsui.$space-xxs;
@@ -205,7 +207,15 @@ $label-horizontal-spacing: awsui.$space-xs;
   }
 
   &:hover {
-    color: awsui.$color-text-accent;
+    color: var(#{custom-props.$styleColorHover}, awsui.$color-text-accent);
+    border-color: var(
+      #{custom-props.$styleBorderColorHover},
+      var(#{custom-props.$styleBorderColorDefault}, transparent)
+    );
+    background-color: var(
+      #{custom-props.$styleBackgroundHover},
+      var(#{custom-props.$styleBackgroundDefault}, transparent)
+    );
   }
 
   &:focus {
@@ -213,9 +223,18 @@ $label-horizontal-spacing: awsui.$space-xs;
   }
 
   @include focus-visible.when-visible {
-    z-index: 1;
-    border-inline-end-color: transparent;
-    @include styles.focus-highlight(awsui.$space-tabs-focus-outline-gutter);
+    #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+      var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+      var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+
+    @include styles.focus-highlight(
+      $gutter: awsui.$space-tabs-focus-outline-gutter,
+      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow}),
+      // Positions focus ring above the underline to prevent the bottom edge from being obscured.
+      // Previously used z-index on the button, but that hides the underline when the button has a background color.
+      $z-index: 1
+    );
   }
 }
 
@@ -241,20 +260,25 @@ $label-horizontal-spacing: awsui.$space-xs;
   &,
   &:hover {
     cursor: default;
-    color: awsui.$color-text-interactive-disabled;
+    color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled);
+    border-color: var(#{custom-props.$styleBorderColorDisabled}, transparent);
+    background-color: var(#{custom-props.$styleBackgroundDisabled}, transparent);
     font-weight: awsui.$font-tabs-disabled-weight;
   }
 }
 
 .tabs-tab-active:not(.tabs-tab-disabled) {
-  color: awsui.$color-text-accent;
+  color: var(#{custom-props.$styleColorActive}, awsui.$color-text-accent);
+  border-color: var(#{custom-props.$styleBorderColorActive}, transparent);
+  background-color: var(#{custom-props.$styleBackgroundActive}, transparent);
   &:after {
     opacity: 1;
   }
 }
 
 .tabs-header-with-divider {
-  border-block-end: awsui.$border-divider-section-width solid $separator-color;
+  border-block-end: var(#{custom-props.$styleTabsHeaderBorderWidth}, awsui.$border-divider-section-width) solid
+    var(#{custom-props.$styleTabsHeaderBorderColor}, $separator-color);
 }
 
 .tabs-tab-focusable {
