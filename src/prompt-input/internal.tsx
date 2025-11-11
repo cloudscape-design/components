@@ -208,7 +208,7 @@ const InternalPromptInput = React.forwardRef(
         })}
         ref={__internalRootRef}
         role="region"
-        style={getPromptInputStyles(style) as React.CSSProperties}
+        style={getPromptInputStyles(style)}
       >
         {secondaryContent && (
           <div
