@@ -47,9 +47,9 @@ describe('getToggleButtonStyles', () => {
     jest.resetModules();
   });
 
-  test('returns undefined for undefined or empty style objects', () => {
-    expect(getToggleButtonStyles(undefined)).toBeUndefined();
-    expect(getToggleButtonStyles({})).toBeUndefined();
+  test('returns empty object for undefined or empty style objects', () => {
+    expect(getToggleButtonStyles(undefined)).toEqual({});
+    expect(getToggleButtonStyles({})).toEqual({});
   });
 
   test('handles all possible style configurations', () => {
@@ -126,7 +126,7 @@ describe('getToggleButtonStyles', () => {
     });
   });
 
-  test('returns undefined when SYSTEM is not core', async () => {
+  test('returns empty object when SYSTEM is not core', async () => {
     jest.resetModules();
     jest.doMock('../../internal/environment', () => ({
       SYSTEM: 'visual-refresh',
@@ -136,7 +136,7 @@ describe('getToggleButtonStyles', () => {
 
     const result = getToggleButtonStylesNonCore({ root: { borderRadius: '4px' } });
 
-    expect(result).toBeUndefined();
+    expect(result).toEqual({});
   });
 
   describe('individual root properties', () => {
@@ -152,10 +152,7 @@ describe('getToggleButtonStyles', () => {
         const result = getToggleButtonStyles({ root: { [property]: value } });
 
         expect(result).toEqual({
-          borderRadius: property === 'borderRadius' ? value : undefined,
-          borderWidth: property === 'borderWidth' ? value : undefined,
-          paddingBlock: property === 'paddingBlock' ? value : undefined,
-          paddingInline: property === 'paddingInline' ? value : undefined,
+          [property]: value,
         });
       });
     });
@@ -175,18 +172,8 @@ describe('getToggleButtonStyles', () => {
 
             const result = getToggleButtonStyles(style);
 
-            // Verify base properties are undefined
-            expect(result?.borderRadius).toBeUndefined();
-            expect(result?.borderWidth).toBeUndefined();
-            expect(result?.paddingBlock).toBeUndefined();
-            expect(result?.paddingInline).toBeUndefined();
-
-            // Verify the specific state is set
-            expect(result).toHaveProperty(CSS_PROPERTY_MAP[property][state], testValue);
-
-            // Verify other states of the same property are undefined
-            STATES.filter(s => s !== state).forEach(otherState => {
-              expect(result).toHaveProperty(CSS_PROPERTY_MAP[property][otherState], undefined);
+            expect(result).toEqual({
+              [CSS_PROPERTY_MAP[property][state]]: testValue,
             });
           });
         });
@@ -225,20 +212,7 @@ describe('getToggleButtonStyles', () => {
         });
 
         expect(result).toEqual({
-          borderRadius: undefined,
-          borderWidth: undefined,
-          paddingBlock: undefined,
-          paddingInline: undefined,
           [prop]: value,
-          ...Object.entries(focusRingProperties).reduce(
-            (acc, [key, { prop: p }]) => {
-              if (key !== property) {
-                acc[p] = undefined;
-              }
-              return acc;
-            },
-            {} as Record<string, undefined>
-          ),
         });
       });
     });
@@ -255,10 +229,6 @@ describe('getToggleButtonStyles', () => {
       });
 
       expect(result).toEqual({
-        borderRadius: undefined,
-        borderWidth: undefined,
-        paddingBlock: undefined,
-        paddingInline: undefined,
         [customCssProps.styleFocusRingBorderColor]: '#10b981',
         [customCssProps.styleFocusRingBorderRadius]: '10px',
         [customCssProps.styleFocusRingBorderWidth]: '3px',
@@ -279,22 +249,12 @@ describe('getToggleButtonStyles', () => {
 
     expect(result).toEqual({
       borderRadius: '8px',
-      borderWidth: undefined,
       paddingBlock: '10px',
-      paddingInline: undefined,
       [customCssProps.styleBackgroundDefault]: '#3b82f6',
-      [customCssProps.styleBackgroundDisabled]: undefined,
-      [customCssProps.styleBackgroundHover]: undefined,
-      [customCssProps.styleBackgroundActive]: undefined,
       [customCssProps.styleBackgroundPressed]: '#1e40af',
-      [customCssProps.styleColorDefault]: undefined,
-      [customCssProps.styleColorDisabled]: undefined,
       [customCssProps.styleColorHover]: '#ffffff',
-      [customCssProps.styleColorActive]: undefined,
       [customCssProps.styleColorPressed]: '#f0f0f0',
       [customCssProps.styleFocusRingBorderColor]: '#3b82f6',
-      [customCssProps.styleFocusRingBorderRadius]: undefined,
-      [customCssProps.styleFocusRingBorderWidth]: undefined,
     });
   });
 });
