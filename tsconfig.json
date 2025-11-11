@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "lib": ["ES2021", "DOM"],
-    "target": "ES2015",
+    "target": "ES2021",
     "types": [],
     "module": "ES2015",
     "moduleResolution": "node",
@@ -15,11 +15,5 @@
     "incremental": true
   },
   "include": ["src", "types"],
-  "exclude": [
-    "**/__tests__/**",
-    "src/test-utils/**",
-    "**/__integ__/**",
-    "**/__a11y__/**",
-    "**/__motion__/**"
-  ]
+  "exclude": ["**/__tests__/**", "src/test-utils/**", "**/__integ__/**", "**/__a11y__/**", "**/__motion__/**"]
 }
