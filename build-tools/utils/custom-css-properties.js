@@ -110,6 +110,14 @@ const customCssPropertiesList = [
   'stylePlaceholderFontSize',
   'stylePlaceholderFontStyle',
   'stylePlaceholderFontWeight',
+  // Tabs style properties
+  'styleTabsUnderlineColor',
+  'styleTabsUnderlineWidth',
+  'styleTabsUnderlineBorderRadius',
+  'styleTabsDividerColor',
+  'styleTabsDividerWidth',
+  'styleTabsHeaderDividerColor',
+  'styleTabsHeaderDividerWidth',
   // Alert focus ring properties
   'alertFocusRingBorderColor',
   'alertFocusRingBorderRadius',

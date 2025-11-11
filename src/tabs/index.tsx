@@ -55,6 +55,7 @@ export default function Tabs({
   fitHeight,
   keyboardActivationMode = 'automatic',
   actions,
+  style,
   ...rest
 }: TabsProps) {
   for (const tab of tabs) {
@@ -154,6 +155,7 @@ export default function Tabs({
       }}
       i18nStrings={i18nStrings}
       keyboardActivationMode={keyboardActivationMode}
+      style={style}
     />
   );
 
