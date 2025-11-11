@@ -18,59 +18,16 @@ const permutations = createPermutations<TabsProps>([
       ],
     ],
     activeTabId: ['first', 'second'],
+    variant: ['default', 'container', 'stacked'],
+    disableContentPaddings: [false, true],
     style: [
-      {
-        tabs: {
-          backgroundColor: {
-            default: 'light-dark(#f0f9ff, #1e293b)',
-            hover: 'light-dark(#e0f2fe, #334155)',
-            active: 'light-dark(#bae6fd, #0f172a)',
-            disabled: 'light-dark(#f8fafc, #334155)',
-          },
-          borderColor: {
-            default: 'light-dark(#0ea5e9, #0284c7)',
-            hover: 'light-dark(#0284c7, #0369a1)',
-            active: 'light-dark(#0369a1, #0ea5e9)',
-            disabled: 'light-dark(#e0f2fe, #334155)',
-          },
-          borderWidth: '0px',
-          borderRadius: '8px 8px 0 0',
-          color: {
-            default: 'light-dark(#0c4a6e, #e0f2fe)',
-            hover: 'light-dark(#075985, #f0f9ff)',
-            active: 'light-dark(#0c4a6e, #ffffff)',
-            disabled: 'light-dark(#94a3b8, #64748b)',
-          },
-          fontSize: '15px',
-          fontWeight: '600',
-          paddingBlock: '12px',
-          paddingInline: '20px',
-          focusRing: {
-            borderColor: 'light-dark(#0ea5e9, #0284c7)',
-            borderRadius: '8px',
-            borderWidth: '2px',
-          },
-        },
-        underline: {
-          color: 'light-dark(#0ea5e9, #06b6d4)',
-          width: '3px',
-          borderRadius: '3px 3px 0 0',
-        },
-        divider: {
-          color: 'light-dark(#e0f2fe, #334155)',
-          width: '1px',
-        },
-        headerDivider: {
-          color: 'light-dark(#bae6fd, #475569)',
-          width: '2px',
-        },
-      },
+      // Minimal Modern - no background, clean underline
       {
         tabs: {
           backgroundColor: {
             default: 'transparent',
-            hover: 'light-dark(#f8fafc, #1e293b)',
-            active: 'light-dark(#f1f5f9, #0f172a)',
+            hover: 'light-dark(rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.15))',
+            active: 'transparent',
             disabled: 'transparent',
           },
           borderColor: {
@@ -80,22 +37,215 @@ const permutations = createPermutations<TabsProps>([
             disabled: 'transparent',
           },
           borderWidth: '0px',
-          borderRadius: '0px',
+          borderRadius: '6px',
           color: {
-            default: 'light-dark(#64748b, #cbd5e1)',
-            hover: 'light-dark(#1e293b, #f1f5f9)',
+            default: 'light-dark(#64748b, #94a3b8)',
+            hover: 'light-dark(#1e293b, #e2e8f0)',
             active: 'light-dark(#0f172a, #ffffff)',
             disabled: 'light-dark(#cbd5e1, #475569)',
           },
           fontSize: '14px',
           fontWeight: '500',
-          paddingBlock: '10px',
-          paddingInline: '16px',
+          paddingBlock: '12px',
+          paddingInline: '20px',
+          focusRing: {
+            borderColor: 'light-dark(#3b82f6, #60a5fa)',
+            borderRadius: '6px',
+            borderWidth: '2px',
+          },
         },
         underline: {
-          color: 'light-dark(#0f172a, #e2e8f0)',
+          color: 'light-dark(#3b82f6, #60a5fa)',
+          width: '3px',
+          borderRadius: '3px 3px 0 0',
+        },
+        divider: {
+          color: 'transparent',
+          width: '0px',
+        },
+        headerDivider: {
+          color: 'light-dark(#e2e8f0, #334155)',
+          width: '1px',
+        },
+      },
+      // Pill Style - rounded with subtle background
+      {
+        tabs: {
+          backgroundColor: {
+            default: 'light-dark(#f1f5f9, #1e293b)',
+            hover: 'light-dark(#e0e7ff, #312e81)',
+            active: 'light-dark(#6366f1, #4f46e5)',
+            disabled: 'light-dark(#f8fafc, #1e293b)',
+          },
+          borderColor: {
+            default: 'transparent',
+            hover: 'transparent',
+            active: 'transparent',
+            disabled: 'transparent',
+          },
+          borderWidth: '0px',
+          borderRadius: '20px',
+          color: {
+            default: 'light-dark(#475569, #94a3b8)',
+            hover: 'light-dark(#4338ca, #c7d2fe)',
+            active: 'light-dark(#ffffff, #ffffff)',
+            disabled: 'light-dark(#cbd5e1, #64748b)',
+          },
+          fontSize: '14px',
+          fontWeight: '600',
+          paddingBlock: '10px',
+          paddingInline: '24px',
+          focusRing: {
+            borderColor: 'light-dark(#6366f1, #818cf8)',
+            borderRadius: '22px',
+            borderWidth: '2px',
+          },
+        },
+        underline: {
+          color: 'transparent',
+          width: '0px',
+          borderRadius: '0px',
+        },
+        divider: {
+          color: 'light-dark(#e2e8f0, #334155)',
+          width: '1px',
+        },
+        headerDivider: {
+          color: 'light-dark(#cbd5e1, #475569)',
+          width: '1px',
+        },
+      },
+      // Bold Accent - strong colors with background
+      {
+        tabs: {
+          backgroundColor: {
+            default: 'light-dark(#fef3c7, #422006)',
+            hover: 'light-dark(#fde68a, #713f12)',
+            active: 'light-dark(#fbbf24, #d97706)',
+            disabled: 'light-dark(#fef9e7, #78350f)',
+          },
+          borderColor: {
+            default: 'transparent',
+            hover: 'transparent',
+            active: 'transparent',
+            disabled: 'transparent',
+          },
+          borderWidth: '0px',
+          borderRadius: '8px 8px 0 0',
+          color: {
+            default: 'light-dark(#92400e, #fef3c7)',
+            hover: 'light-dark(#78350f, #fef9e7)',
+            active: 'light-dark(#451a03, #ffffff)',
+            disabled: 'light-dark(#d1d5db, #78350f)',
+          },
+          fontSize: '14px',
+          fontWeight: '600',
+          paddingBlock: '12px',
+          paddingInline: '20px',
+          focusRing: {
+            borderColor: 'light-dark(#f59e0b, #fbbf24)',
+            borderRadius: '8px',
+            borderWidth: '2px',
+          },
+        },
+        underline: {
+          color: 'light-dark(#f59e0b, #fbbf24)',
+          width: '4px',
+          borderRadius: '4px 4px 0 0',
+        },
+        divider: {
+          color: 'light-dark(#fde68a, #78350f)',
+          width: '1px',
+        },
+        headerDivider: {
+          color: 'light-dark(#fde047, #92400e)',
           width: '2px',
-          borderRadius: '2px 2px 0 0',
+        },
+      },
+      // Elegant Teal - sophisticated with borders
+      {
+        tabs: {
+          backgroundColor: {
+            default: 'transparent',
+            hover: 'light-dark(#f0fdfa, #134e4a)',
+            active: 'light-dark(#ffffff, #0f766e)',
+            disabled: 'transparent',
+          },
+          borderColor: {
+            default: 'light-dark(#d1fae5, #2dd4bf)',
+            hover: 'light-dark(#14b8a6, #5eead4)',
+            active: 'light-dark(#0d9488, #14b8a6)',
+            disabled: 'light-dark(#e5e7eb, #374151)',
+          },
+          borderWidth: '2px',
+          borderRadius: '10px 10px 0 0',
+          color: {
+            default: 'light-dark(#0f766e, #99f6e4)',
+            hover: 'light-dark(#115e59, #5eead4)',
+            active: 'light-dark(#134e4a, #ffffff)',
+            disabled: 'light-dark(#9ca3af, #6b7280)',
+          },
+          fontSize: '14px',
+          fontWeight: '600',
+          paddingBlock: '12px',
+          paddingInline: '20px',
+          focusRing: {
+            borderColor: 'light-dark(#14b8a6, #2dd4bf)',
+            borderRadius: '10px',
+            borderWidth: '2px',
+          },
+        },
+        underline: {
+          color: 'transparent',
+          width: '0px',
+          borderRadius: '0px',
+        },
+        divider: {
+          color: 'light-dark(#ccfbf1, #134e4a)',
+          width: '1px',
+        },
+        headerDivider: {
+          color: 'light-dark(#99f6e4, #0f766e)',
+          width: '2px',
+        },
+      },
+      // Cool Minimalist - subtle grays with accent
+      {
+        tabs: {
+          backgroundColor: {
+            default: 'transparent',
+            hover: 'light-dark(#f8fafc, #1e293b)',
+            active: 'light-dark(#f1f5f9, #334155)',
+            disabled: 'transparent',
+          },
+          borderColor: {
+            default: 'transparent',
+            hover: 'transparent',
+            active: 'light-dark(#e2e8f0, #64748b)',
+            disabled: 'transparent',
+          },
+          borderWidth: '0px 0px 2px 0px',
+          borderRadius: '0px',
+          color: {
+            default: 'light-dark(#64748b, #94a3b8)',
+            hover: 'light-dark(#334155, #cbd5e1)',
+            active: 'light-dark(#0f172a, #f1f5f9)',
+            disabled: 'light-dark(#cbd5e1, #475569)',
+          },
+          fontSize: '14px',
+          fontWeight: '500',
+          paddingBlock: '12px',
+          paddingInline: '20px',
+          focusRing: {
+            borderColor: 'light-dark(#94a3b8, #cbd5e1)',
+            borderRadius: '4px',
+            borderWidth: '2px',
+          },
+        },
+        underline: {
+          color: 'light-dark(#0f172a, #f1f5f9)',
+          width: '3px',
+          borderRadius: '3px 3px 0 0',
         },
         divider: {
           color: 'transparent',
@@ -106,95 +256,50 @@ const permutations = createPermutations<TabsProps>([
           width: '1px',
         },
       },
+      // Vibrant Rose - energetic and modern
       {
         tabs: {
           backgroundColor: {
-            default: 'light-dark(#faf5ff, #1e1b4b)',
-            hover: 'light-dark(#f3e8ff, #312e81)',
-            active: 'light-dark(#e9d5ff, #1e1b4b)',
-            disabled: 'light-dark(#faf5ff, #312e81)',
+            default: 'light-dark(#fff1f2, #4c0519)',
+            hover: 'light-dark(#ffe4e6, #881337)',
+            active: 'light-dark(#fb7185, #e11d48)',
+            disabled: 'light-dark(#fff5f7, #881337)',
           },
           borderColor: {
-            default: 'light-dark(#a855f7, #9333ea)',
-            hover: 'light-dark(#9333ea, #a855f7)',
-            active: 'light-dark(#7e22ce, #c084fc)',
-            disabled: 'light-dark(#f3e8ff, #4c1d95)',
-          },
-          borderWidth: '2px',
-          borderRadius: '12px 12px 0 0',
-          color: {
-            default: 'light-dark(#6b21a8, #e9d5ff)',
-            hover: 'light-dark(#581c87, #f3e8ff)',
-            active: 'light-dark(#4c1d95, #faf5ff)',
-            disabled: 'light-dark(#c4b5fd, #6b21a8)',
-          },
-          fontSize: '16px',
-          fontWeight: '600',
-          paddingBlock: '14px',
-          paddingInline: '24px',
-          focusRing: {
-            borderColor: 'light-dark(#a855f7, #c084fc)',
-            borderRadius: '12px',
-            borderWidth: '3px',
-          },
-        },
-        underline: {
-          color: 'light-dark(#a855f7, #c084fc)',
-          width: '4px',
-          borderRadius: '4px 4px 0 0',
-        },
-        divider: {
-          color: 'light-dark(#f3e8ff, #4c1d95)',
-          width: '2px',
-        },
-        headerDivider: {
-          color: 'light-dark(#e9d5ff, #6b21a8)',
-          width: '3px',
-        },
-      },
-      {
-        tabs: {
-          backgroundColor: {
-            default: 'light-dark(#f0fdf4, #14532d)',
-            hover: 'light-dark(#dcfce7, #166534)',
-            active: 'light-dark(#bbf7d0, #14532d)',
-            disabled: 'light-dark(#f7fee7, #1e3a8a)',
-          },
-          borderColor: {
-            default: 'light-dark(#10b981, #059669)',
-            hover: 'light-dark(#059669, #10b981)',
-            active: 'light-dark(#047857, #34d399)',
-            disabled: 'light-dark(#d1fae5, #1e40af)',
+            default: 'transparent',
+            hover: 'transparent',
+            active: 'transparent',
+            disabled: 'transparent',
           },
           borderWidth: '0px',
-          borderRadius: '10px 10px 0 0',
+          borderRadius: '12px 12px 0 0',
           color: {
-            default: 'light-dark(#065f46, #d1fae5)',
-            hover: 'light-dark(#047857, #ecfdf5)',
-            active: 'light-dark(#064e3b, #f0fdf4)',
-            disabled: 'light-dark(#a7f3d0, #475569)',
+            default: 'light-dark(#9f1239, #fecdd3)',
+            hover: 'light-dark(#881337, #ffe4e6)',
+            active: 'light-dark(#ffffff, #ffffff)',
+            disabled: 'light-dark(#d1d5db, #881337)',
           },
-          fontSize: '15px',
+          fontSize: '14px',
           fontWeight: '600',
           paddingBlock: '12px',
-          paddingInline: '18px',
+          paddingInline: '20px',
           focusRing: {
-            borderColor: 'light-dark(#10b981, #34d399)',
-            borderRadius: '10px',
+            borderColor: 'light-dark(#f43f5e, #fb7185)',
+            borderRadius: '12px',
             borderWidth: '2px',
           },
         },
         underline: {
-          color: 'light-dark(#10b981, #34d399)',
+          color: 'light-dark(#f43f5e, #fda4af)',
           width: '3px',
           borderRadius: '3px 3px 0 0',
         },
         divider: {
-          color: 'light-dark(#d1fae5, #1e3a8a)',
+          color: 'light-dark(#fecdd3, #881337)',
           width: '1px',
         },
         headerDivider: {
-          color: 'light-dark(#a7f3d0, #334155)',
+          color: 'light-dark(#fda4af, #9f1239)',
           width: '2px',
         },
       },
@@ -207,7 +312,15 @@ export default function TabsStylePermutations() {
     <>
       <h1>Tabs Style Permutations</h1>
       <ScreenshotArea disableAnimations={true}>
-        <PermutationsView permutations={permutations} render={permutation => <Tabs {...permutation} />} />
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => (
+            <Tabs
+              {...permutation}
+              i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+            />
+          )}
+        />
       </ScreenshotArea>
     </>
   );
