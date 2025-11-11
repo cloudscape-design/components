@@ -95,6 +95,9 @@ const customCssPropertiesList = [
   'styleBoxShadowDefault',
   'styleBoxShadowDisabled',
   'styleBoxShadowHover',
+  'stylePaddingInline',
+  'stylePaddingInlineStart',
+  'stylePaddingInlineEnd',
   // Readonly state
   'styleBackgroundReadonly',
   'styleBorderColorReadonly',

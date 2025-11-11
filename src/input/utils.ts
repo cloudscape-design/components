@@ -37,3 +37,18 @@ export const convertAutoComplete = (propertyValue: boolean | string = false): st
   }
   return propertyValue || 'off';
 };
+
+/**
+ * Parses CSS paddingInline value into separate start and end values.
+ * Handles both single values ('10px') and shorthand notation ('10px 20px').
+ */
+export const parsePaddingInline = (
+  paddingInline: string | undefined
+): { start: string | undefined; end: string | undefined } => {
+  if (!paddingInline) {
+    return { start: undefined, end: undefined };
+  }
+
+  const [start, end = start] = paddingInline.trim().split(/\s+/);
+  return { start, end };
+};
