@@ -14,8 +14,8 @@ describe('getPromptInputStyles', () => {
   });
 
   test('handles all possible style configurations', () => {
-    expect(getPromptInputStyles(undefined)).toBeUndefined();
-    expect(getPromptInputStyles({})).toBeUndefined();
+    expect(getPromptInputStyles(undefined)).toEqual({});
+    expect(getPromptInputStyles({})).toEqual({});
 
     const allStyles = {
       root: {
@@ -112,6 +112,6 @@ describe('getPromptInputStyles', () => {
 
     const result = getPromptInputStylesNonCore(style);
 
-    expect(result).toBeUndefined();
+    expect(result).toEqual({});
   });
 });
