@@ -4,74 +4,74 @@ import { SYSTEM } from '../internal/environment';
 import { ContainerProps } from './interfaces';
 
 export function getRootStyles(style: ContainerProps.Style | undefined) {
-  let properties = {};
-
-  if (SYSTEM === 'core' && style?.root) {
-    properties = {
-      background: style.root?.background,
-      borderColor: style.root?.borderColor,
-      borderRadius: style.root?.borderRadius,
-      borderWidth: style.root?.borderWidth,
-      boxShadow: style.root?.boxShadow,
-    };
+  if (SYSTEM !== 'core') {
+    return {};
   }
 
-  return properties;
+  return {
+    background: style?.root?.background,
+    borderColor: style?.root?.borderColor,
+    borderRadius: style?.root?.borderRadius,
+    borderWidth: style?.root?.borderWidth,
+    boxShadow: style?.root?.boxShadow,
+  };
 }
 
 export function getContentStyles(style: ContainerProps.Style | undefined) {
-  let properties = {};
-
-  if (SYSTEM === 'core' && style?.content) {
-    properties = {
-      paddingBlock: style.content?.paddingBlock,
-      paddingInline: style.content?.paddingInline,
-    };
+  if (SYSTEM !== 'core') {
+    return {};
   }
 
-  return properties;
+  return {
+    paddingBlock: style?.content?.paddingBlock,
+    paddingInline: style?.content?.paddingInline,
+  };
+}
+
+export function getContentWrapperStyles(style: ContainerProps.Style | undefined) {
+  if (SYSTEM !== 'core') {
+    return {};
+  }
+
+  return {
+    borderRadius: style?.root?.borderRadius,
+  };
 }
 
 export function getHeaderStyles(style: ContainerProps.Style | undefined) {
-  let properties = {};
-
-  if (SYSTEM === 'core' && style?.header) {
-    properties = {
-      ...(style?.root?.background && { background: style?.root?.background }),
-      ...(style?.root?.borderRadius && { background: style?.root?.borderRadius }),
-      paddingBlock: style.header?.paddingBlock,
-      paddingInline: style.header?.paddingInline,
-    };
+  if (SYSTEM !== 'core') {
+    return {};
   }
 
-  return properties;
+  return {
+    ...(style?.root?.background && { background: 'transparent' }), // Fix for AWSUI-61442
+    borderRadius: style?.root?.borderRadius,
+    paddingBlock: style?.header?.paddingBlock,
+    paddingInline: style?.header?.paddingInline,
+  };
 }
 
 export function getFooterStyles(style: ContainerProps.Style | undefined) {
-  let properties = {};
-
-  if (SYSTEM === 'core' && style?.footer) {
-    properties = {
-      borderColor: style.footer?.divider?.borderColor,
-      borderWidth: style.footer?.divider?.borderWidth,
-      paddingBlock: style.footer?.root?.paddingBlock,
-      paddingInline: style.footer?.root?.paddingInline,
-    };
+  if (SYSTEM !== 'core') {
+    return {};
   }
 
-  return properties;
+  return {
+    borderColor: style?.footer?.divider?.borderColor,
+    borderWidth: style?.footer?.divider?.borderWidth,
+    paddingBlock: style?.footer?.root?.paddingBlock,
+    paddingInline: style?.footer?.root?.paddingInline,
+  };
 }
 
 export function getMediaStyles(mediaPosition: string, style: ContainerProps.Style | undefined) {
-  let properties = {};
-
-  if (SYSTEM === 'core' && style?.root?.borderRadius) {
-    properties = {
-      borderRadius: style?.root?.borderRadius,
-      ...(mediaPosition === 'top' && { borderEndStartRadius: '0px', borderEndEndRadius: '0px' }),
-      ...(mediaPosition === 'side' && { borderStartEndRadius: '0px', borderEndEndRadius: '0px' }),
-    };
+  if (SYSTEM !== 'core') {
+    return {};
   }
 
-  return properties;
+  return {
+    borderRadius: style?.root?.borderRadius,
+    ...(mediaPosition === 'top' && { borderEndStartRadius: '0px', borderEndEndRadius: '0px' }),
+    ...(mediaPosition === 'side' && { borderStartEndRadius: '0px', borderEndEndRadius: '0px' }),
+  };
 }
