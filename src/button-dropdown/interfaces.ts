@@ -40,8 +40,8 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `iconAlt` (string) - (Optional) Specifies alternate text for the icon when using `iconUrl`.
    * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
-   * - `secondaryText` (string) - (Optional) Secondary text displayed in the menu for this item.
-   * - `labelTag` (string) - (Optional) - Label for the item. Displayed near the item text for visually impaired users.
+   * - `secondaryText` (string) - (Optional) Further information about the action that appears below the label.
+   * - `labelTag` (string) - (Optional) - A label tag that provides additional guidance, shown next to the label.
    *
    * ### checkbox
    *
@@ -52,8 +52,8 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `iconAlt` (string) - (Optional) Specifies alternate text for the icon when using `iconUrl`.
    * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
-   * - `secondaryText` (string) - (Optional) Secondary text displayed in the menu for this item.
-   * - `labelTag` (string) - (Optional) - Label for the item. Displayed near the item text for visually impaired users.
+   * - `secondaryText` (string) - (Optional) Further information about the action that appears below the label.
+   * - `labelTag` (string) - (Optional) - A label tag that provides additional guidance, shown next to the label.
    *
    * ### group
    *
