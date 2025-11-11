@@ -28,6 +28,7 @@ import { WizardProps } from './interfaces';
 import WizardForm, { STEP_NAME_SELECTOR } from './wizard-form';
 import WizardNavigation from './wizard-navigation';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 type InternalWizardProps = WizardProps &
@@ -41,6 +42,7 @@ export default function InternalWizard({
   submitButtonText,
   isLoadingNextStep = false,
   allowSkipTo = false,
+  customPrimaryActions,
   secondaryActions,
   onCancel,
   onSubmit,
@@ -171,7 +173,7 @@ export default function InternalWizard({
       {...baseProps}
       {...funnelProps}
       ref={ref}
-      className={clsx(styles.root, baseProps.className)}
+      className={clsx(styles.root, analyticsSelectors.root, baseProps.className)}
       {...(__injectAnalyticsComponentMetadata
         ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
         : {})}
@@ -201,6 +203,7 @@ export default function InternalWizard({
             activeStepIndex={actualActiveStepIndex}
             isPrimaryLoading={isLoadingNextStep}
             allowSkipTo={allowSkipTo}
+            customPrimaryActions={customPrimaryActions}
             secondaryActions={secondaryActions}
             onCancelClick={onCancelClick}
             onPreviousClick={onPreviousClick}

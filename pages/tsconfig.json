@@ -17,8 +17,7 @@
       "~components/*": ["../lib/components/*"],
       "~design-tokens": ["../lib/design-tokens"]
     },
-    "types": ["node", "webpack-env"],
-    "typeRoots": ["./mount.d.ts"]
+    "types": ["node", "webpack-env"]
   },
   "include": ["**/*.ts", "**/*.tsx", "./mount.d.ts"]
 }

@@ -95,11 +95,31 @@ const customCssPropertiesList = [
   'styleBoxShadowDefault',
   'styleBoxShadowDisabled',
   'styleBoxShadowHover',
+  // Readonly state
+  'styleBackgroundReadonly',
+  'styleBorderColorReadonly',
+  'styleBoxShadowReadonly',
+  'styleColorReadonly',
+  // Focus state
+  'styleBackgroundFocus',
+  'styleBorderColorFocus',
+  'styleBoxShadowFocus',
+  'styleColorFocus',
+  // Placeholder style properties
+  'stylePlaceholderColor',
+  'stylePlaceholderFontSize',
+  'stylePlaceholderFontStyle',
+  'stylePlaceholderFontWeight',
   // Alert focus ring properties
   'alertFocusRingBorderColor',
   'alertFocusRingBorderRadius',
   'alertFocusRingBorderWidth',
   'alertFocusRingBoxShadow',
   'alertIconColor',
+  // Progress bar style properties
+  'progressBarBackgroundColor',
+  'progressBarBorderRadius',
+  'progressBarHeight',
+  'progressValueBackgroundColor',
 ];
 module.exports = customCssPropertiesList;

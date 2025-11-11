@@ -22,7 +22,7 @@ const modes = [
 ];
 
 const tokenCategories: Array<StyleDictionary.CategoryModule> = [
-  await import('./color-palette.js'),
+  await import('./color-palette.js'), // Still needed for now for non-deprecated palette tokens like colorWhite, colorBlack
   await import('./color-charts.js'),
   await import('./color-severity.js'),
   await import('./colors.js'),
@@ -35,11 +35,16 @@ const tokenCategories: Array<StyleDictionary.CategoryModule> = [
 ];
 
 export async function buildVisualRefresh(builder: ThemeBuilder) {
+  // Add reference tokens first to generate palette tokens
+  builder.addReferenceTokens((await import('./color-palette.js')).referenceTokens);
+
+  // Add existing token categories
   tokenCategories.forEach(({ tokens, mode: modeId }) => {
     const mode = modes.find(mode => mode.id === modeId);
     builder.addTokens(tokens, mode);
   });
 
+  // Add contexts for component-specific overrides
   builder.addContext(createCompactTableContext((await import('./contexts/compact-table.js')).tokens));
   builder.addContext(createTopNavigationContext((await import('./contexts/top-navigation.js')).tokens));
   builder.addContext(createHeaderContext((await import('./contexts/header.js')).tokens));
@@ -52,7 +57,7 @@ export async function buildVisualRefresh(builder: ThemeBuilder) {
   return builder.build();
 }
 
-const builder = new ThemeBuilder('visual-refresh', ':root', modes);
+const builder = new ThemeBuilder('visual-refresh', 'body', modes);
 const theme = await buildVisualRefresh(builder);
 
 export default theme;

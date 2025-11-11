@@ -94,3 +94,7 @@ export function isSVGElement(target: unknown): target is SVGElement {
       typeof target.ownerSVGElement === 'object')
   );
 }
+
+export function isElement(target: unknown): target is Element {
+  return isHTMLElement(target) || isSVGElement(target);
+}

@@ -59,6 +59,7 @@ export interface I18nFormatArgTypes {
   }
   "attribute-editor": {
     "removeButtonText": never;
+    "i18nStrings.itemRemovedAriaLive": never;
   }
   "autosuggest": {
     "errorIconAriaLabel": never;
