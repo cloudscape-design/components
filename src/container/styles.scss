@@ -14,7 +14,7 @@
 
   // Necessary, because rounded borders cause the header to overflow. Since the
   // header has a background color, the edges of the header stick out.
-  overflow: hidden;
+  // overflow: hidden;
 
   &.fit-height {
     display: flex;
@@ -84,11 +84,12 @@
   display: flex;
   flex-direction: column;
   inline-size: 100%;
+  overflow: hidden;
+  border-end-start-radius: awsui.$border-radius-container;
+  border-end-end-radius: awsui.$border-radius-container;
+
   &-fit-height {
     block-size: 100%;
-    overflow: hidden;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
   }
 }
 

@@ -32,6 +32,18 @@ export function getContentStyles(style: ContainerProps.Style | undefined) {
   return Object.fromEntries(Object.entries(properties).filter(([, value]) => value !== undefined));
 }
 
+export function getContentWrapperStyles(style: ContainerProps.Style | undefined) {
+  if (SYSTEM !== 'core') {
+    return {};
+  }
+
+  const properties = {
+    borderRadius: style?.root?.borderRadius,
+  };
+
+  return Object.fromEntries(Object.entries(properties).filter(([, value]) => value !== undefined));
+}
+
 export function getHeaderStyles(style: ContainerProps.Style | undefined) {
   if (SYSTEM !== 'core') {
     return {};
@@ -39,7 +51,6 @@ export function getHeaderStyles(style: ContainerProps.Style | undefined) {
 
   const properties = {
     background: style?.root?.background,
-    borderRadius: style?.root?.borderRadius,
     paddingBlock: style?.header?.paddingBlock,
     paddingInline: style?.header?.paddingInline,
   };
@@ -73,5 +84,5 @@ export function getMediaStyles(mediaPosition: string, style: ContainerProps.Styl
     ...(mediaPosition === 'side' && { borderStartEndRadius: '0px', borderEndEndRadius: '0px' }),
   };
 
-  return properties;
+  return Object.fromEntries(Object.entries(properties).filter(([, value]) => value !== undefined));
 }
