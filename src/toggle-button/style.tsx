@@ -39,5 +39,5 @@ export function getToggleButtonStyles(style: ToggleButtonProps['style']) {
     [customCssProps.styleFocusRingBorderWidth]: style?.root?.focusRing?.borderWidth,
   };
 
-  return Object.fromEntries(Object.entries(properties).filter(([, value]) => value));
+  return Object.fromEntries(Object.entries(properties).filter(([, value]) => value !== undefined));
 }
