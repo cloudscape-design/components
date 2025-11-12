@@ -95,35 +95,7 @@ describe('getToggleButtonStyles', () => {
       },
     };
 
-    expect(getToggleButtonStyles(allStyles)).toEqual({
-      borderRadius: '4px',
-      borderWidth: '1px',
-      paddingBlock: '8px',
-      paddingInline: '12px',
-      [customCssProps.styleBackgroundDefault]: '#ffffff',
-      [customCssProps.styleBackgroundDisabled]: '#f0f0f0',
-      [customCssProps.styleBackgroundHover]: '#fafafa',
-      [customCssProps.styleBackgroundActive]: '#eeeeee',
-      [customCssProps.styleBackgroundPressed]: '#e0e0e0',
-      [customCssProps.styleBorderColorDefault]: '#cccccc',
-      [customCssProps.styleBorderColorDisabled]: '#e0e0e0',
-      [customCssProps.styleBorderColorHover]: '#999999',
-      [customCssProps.styleBorderColorActive]: '#666666',
-      [customCssProps.styleBorderColorPressed]: '#0073bb',
-      [customCssProps.styleBoxShadowDefault]: 'none',
-      [customCssProps.styleBoxShadowDisabled]: 'none',
-      [customCssProps.styleBoxShadowHover]: '0 1px 2px rgba(0,0,0,0.1)',
-      [customCssProps.styleBoxShadowActive]: '0 1px 2px rgba(0,0,0,0.2)',
-      [customCssProps.styleBoxShadowPressed]: '0 0 0 2px #0073bb',
-      [customCssProps.styleColorDefault]: '#000000',
-      [customCssProps.styleColorDisabled]: '#999999',
-      [customCssProps.styleColorHover]: '#000000',
-      [customCssProps.styleColorActive]: '#000000',
-      [customCssProps.styleColorPressed]: '#0073bb',
-      [customCssProps.styleFocusRingBorderColor]: '#0073bb',
-      [customCssProps.styleFocusRingBorderRadius]: '6px',
-      [customCssProps.styleFocusRingBorderWidth]: '2px',
-    });
+    expect(getToggleButtonStyles(allStyles)).toMatchSnapshot();
   });
 
   test('returns empty object when SYSTEM is not core', async () => {
