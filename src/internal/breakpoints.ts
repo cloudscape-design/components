@@ -12,8 +12,6 @@ const BREAKPOINT_MAPPING: [Breakpoint, number][] = [
   ['default', -1],
 ];
 
-export const mobileBreakpoint = BREAKPOINT_MAPPING.filter(b => b[0] === 'xs')[0][1];
-
 const BREAKPOINTS_DESCENDING = BREAKPOINT_MAPPING.map(([bp]) => bp);
 
 /**
