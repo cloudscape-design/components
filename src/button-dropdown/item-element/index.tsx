@@ -190,6 +190,7 @@ const MenuItemContent = ({
             {item.text}
             {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
           </div>
+
           {item.labelTag && <div className={styles['label-tag']}>{item.labelTag}</div>}
         </div>
         {item.secondaryText && (
