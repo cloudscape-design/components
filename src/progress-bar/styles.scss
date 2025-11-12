@@ -5,7 +5,27 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use './motion';
+
+$progress-height: var(#{custom-props.$progressBarHeight}, 0.4 * styles.$base-size);
+$progress-border-radius: var(#{custom-props.$progressBarBorderRadius}, 10px);
+$progress-background-color: var(
+  #{custom-props.$progressBarBackgroundColor},
+  awsui.$color-background-progress-bar-layout-default
+);
+$progress-background-color-in-flash: var(
+  #{custom-props.$progressBarBackgroundColor},
+  awsui.$color-background-progress-bar-layout-in-flash
+);
+$progress-value-background-color: var(
+  #{custom-props.$progressValueBackgroundColor},
+  awsui.$color-background-progress-bar-content-default
+);
+$progress-value-background-color-in-flash: var(
+  #{custom-props.$progressValueBackgroundColor},
+  awsui.$color-background-progress-bar-content-in-flash
+);
 
 .root {
   @include styles.styles-reset;
@@ -71,28 +91,22 @@
 }
 
 @mixin general-progress-background-style {
-  block-size: 0.4 * styles.$base-size;
+  block-size: $progress-height;
   border-block: 0;
   border-inline: none;
   box-sizing: border-box;
-  border-start-start-radius: 10px;
-  border-start-end-radius: 10px;
-  border-end-start-radius: 10px;
-  border-end-end-radius: 10px;
+  border-start-start-radius: $progress-border-radius;
+  border-start-end-radius: $progress-border-radius;
+  border-end-start-radius: $progress-border-radius;
+  border-end-end-radius: $progress-border-radius;
 }
 
 @mixin general-progress-bar-style {
-  border-start-start-radius: 10px;
+  border-start-start-radius: $progress-border-radius;
   border-start-end-radius: 0;
-  border-end-start-radius: 10px;
+  border-end-start-radius: $progress-border-radius;
   border-end-end-radius: 0;
 }
-
-$background-color: awsui.$color-background-progress-bar-layout-default;
-$background-color-in-flash: awsui.$color-background-progress-bar-layout-in-flash;
-
-$bar-color: awsui.$color-background-progress-bar-content-default;
-$bar-color-in-flash: awsui.$color-background-progress-bar-content-in-flash;
 
 .progress {
   inline-size: 100%;
@@ -100,41 +114,41 @@ $bar-color-in-flash: awsui.$color-background-progress-bar-content-in-flash;
   min-inline-size: 0;
 
   @include general-progress-background-style;
-  background-color: $background-color;
+  background-color: $progress-background-color;
 
   &::-webkit-progress-bar {
     @include general-progress-background-style;
-    background-color: $background-color;
+    background-color: $progress-background-color;
   }
 
   &::-webkit-progress-value {
     @include general-progress-bar-style;
-    background-color: $bar-color;
+    background-color: $progress-value-background-color;
   }
 
   &.complete::-webkit-progress-value {
-    border-start-start-radius: 10px;
-    border-start-end-radius: 10px;
-    border-end-start-radius: 10px;
-    border-end-end-radius: 10px;
+    border-start-start-radius: $progress-border-radius;
+    border-start-end-radius: $progress-border-radius;
+    border-end-start-radius: $progress-border-radius;
+    border-end-end-radius: $progress-border-radius;
   }
 
   &::-moz-progress-bar {
     @include general-progress-bar-style;
-    background-color: $bar-color;
+    background-color: $progress-value-background-color;
   }
 
   &.progress-in-flash {
-    background-color: $background-color-in-flash;
+    background-color: $progress-background-color-in-flash;
     &::-moz-progress-bar {
-      background-color: $bar-color-in-flash;
+      background-color: $progress-value-background-color-in-flash;
     }
 
     &::-webkit-progress-bar {
-      background-color: $background-color-in-flash;
+      background-color: $progress-background-color-in-flash;
     }
     &::-webkit-progress-value {
-      background-color: $bar-color-in-flash;
+      background-color: $progress-value-background-color-in-flash;
     }
   }
 }

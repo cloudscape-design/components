@@ -11,6 +11,8 @@ import { GeneratedAnalyticsMetadataRadioGroupComponent } from './analytics-metad
 import { RadioGroupProps } from './interfaces';
 import InternalRadioGroup from './internal';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
+
 export { RadioGroupProps };
 
 const RadioGroup = React.forwardRef((props: RadioGroupProps, ref: React.Ref<RadioGroupProps.Ref>) => {
@@ -26,6 +28,7 @@ const RadioGroup = React.forwardRef((props: RadioGroupProps, ref: React.Ref<Radi
           label: { root: 'self' },
           properties: {
             value: `${props.value}`,
+            valueLabel: `.${analyticsSelectors.selected}`,
           },
         } as GeneratedAnalyticsMetadataRadioGroupComponent,
       })}
