@@ -66,7 +66,7 @@ export const InternalToggleButton = React.forwardRef(
         ref={ref}
         nativeButtonAttributes={{
           ...nativeButtonAttributes,
-          style: { ...nativeButtonAttributes?.style, ...getToggleButtonStyles(style) } as React.CSSProperties,
+          style: { ...nativeButtonAttributes?.style, ...getToggleButtonStyles(style) },
         }}
         analyticsAction={analyticsAction}
       />
