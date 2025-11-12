@@ -27,7 +27,6 @@ export default function AttributeEditorPage() {
   return (
     <Box margin="xl">
       <h1>Attribute Editor - Additional Actions</h1>
-      <h1>Attribute Editor permutations</h1>
       <ScreenshotArea>
         <SpaceBetween size="m">
           <AttributeEditor
