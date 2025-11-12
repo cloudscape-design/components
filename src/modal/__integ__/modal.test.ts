@@ -98,7 +98,7 @@ test(
   })
 );
 
-(process.env.REACT_VERSION !== '18' ? test : test.skip)(
+test(
   'renders modal in async root',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);

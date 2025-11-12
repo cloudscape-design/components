@@ -21,6 +21,10 @@ describe('Visual refresh toolbar only', () => {
 
       return width;
     }
+
+    hasHorizontalScroll() {
+      return this.browser.execute(() => document.body.scrollWidth - document.body.clientWidth > 0);
+    }
   }
   function setupTest(testFn: (page: PageObject) => Promise<void>) {
     return useBrowser(async browser => {
@@ -51,6 +55,22 @@ describe('Visual refresh toolbar only', () => {
       const { width: viewportWidth } = await page.getViewportSize();
       const drawerWidth = await page.getDrawerWidth(aiDrawerId);
       expect(drawerWidth).toBeLessThan(viewportWidth);
+    })
+  );
+
+  test(
+    'The AI drawer should not make the page overflow when it is at max size and the nav panel opens',
+    setupTest(async page => {
+      const aiDrawerId = 'ai-panel';
+      await page.click(findDrawerTriggerById(wrapper, aiDrawerId).toSelector());
+
+      await expect(page.isClickable(findDrawerById(wrapper, aiDrawerId)!.toSelector())).resolves.toBe(true);
+
+      await page.click(wrapper.findNavigationToggle().toSelector());
+      await page.click(findDrawerById(wrapper, aiDrawerId).findButton('.resize-to-max-width').toSelector());
+      await page.click(wrapper.findNavigationToggle().toSelector());
+
+      await expect(page.hasHorizontalScroll()).resolves.toBe(false);
     })
   );
 });

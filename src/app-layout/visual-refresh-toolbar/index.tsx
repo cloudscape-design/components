@@ -62,7 +62,7 @@ const AppLayoutStateProvider: React.FC<{
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
   (props, forwardRef) => {
-    const stateManager = useRef<StateManager>({ setState: undefined, hasToolbar: true, setToolbar: undefined });
+    const stateManager = useRef<StateManager>({ setState: undefined, hasToolbar: false, setToolbar: undefined });
     const { __forceDeduplicationType: forceDeduplicationType, __embeddedViewMode: embeddedViewMode } = props as any;
 
     return (

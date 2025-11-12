@@ -7,6 +7,7 @@ import Container from '../../../lib/components/container';
 import ExpandableSection from '../../../lib/components/expandable-section';
 import Header from '../../../lib/components/header';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../../../lib/components/internal/analytics/selectors';
+import Spinner from '../../../lib/components/spinner';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/header/styles.css.js';
@@ -39,6 +40,12 @@ test('renders everything provided', () => {
   expect(wrapper.findInfo()!.getElement()).toHaveTextContent('Info');
   expect(wrapper.findDescription()!.getElement()).toHaveTextContent('Description');
   expect(wrapper.findActions()!.find('button')!.getElement()).toHaveTextContent('Click me');
+});
+
+test('renders arbitrary counter content', () => {
+  const { wrapper } = renderHeader(<Header counter={<Spinner />} />);
+  expect(wrapper.findCounter()).not.toBeNull();
+  expect(wrapper.findCounter()!.findSpinner()).not.toBeNull();
 });
 
 test('renders h2 tag and variant by default', () => {

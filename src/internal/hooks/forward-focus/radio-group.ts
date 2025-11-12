@@ -16,7 +16,7 @@ export default function useRadioGroupForwardFocus(
   value: string | null
 ): [React.Ref<HTMLInputElement>, number] {
   const itemRef = useRef<HTMLInputElement | null>(null);
-  const itemIndex = items && findIndex(items, item => item.value === value);
+  const itemIndex = items && items.findIndex(item => item.value === value);
   useImperativeHandle(forwardedRef, () => ({
     focus() {
       itemRef.current?.focus();
@@ -24,13 +24,4 @@ export default function useRadioGroupForwardFocus(
   }));
 
   return [itemRef, itemIndex !== undefined && itemIndex !== -1 ? itemIndex : 0];
-}
-
-function findIndex<T>(items: ReadonlyArray<T>, predicate: (t: T) => any): number {
-  for (let i = 0; i < items.length; i++) {
-    if (predicate(items[i])) {
-      return i;
-    }
-  }
-  return -1;
 }

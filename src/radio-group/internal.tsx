@@ -14,6 +14,7 @@ import { GeneratedAnalyticsMetadataRadioGroupSelect } from './analytics-metadata
 import { RadioGroupProps } from './interfaces';
 import RadioButton from './radio-button';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 type InternalRadioGroupProps = RadioGroupProps & InternalBaseComponentProps;
@@ -59,6 +60,7 @@ const InternalRadioGroup = React.forwardRef(
             <RadioButton
               key={item.value}
               ref={index === radioButtonRefIndex ? radioButtonRef : undefined}
+              className={clsx(item.value === value && analyticsSelectors.selected)}
               checked={item.value === value}
               name={name || generatedName}
               value={item.value}

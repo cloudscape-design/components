@@ -16,6 +16,7 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { GeneratedAnalyticsMetadataTextareaComponent } from './analytics-metadata/interfaces';
 import { TextareaProps } from './interfaces';
+import { getTextareaStyles } from './styles';
 
 import styles from './styles.css.js';
 
@@ -43,6 +44,7 @@ const Textarea = React.forwardRef(
       autoFocus,
       ariaLabel,
       nativeTextareaAttributes,
+      style,
       ...rest
     }: TextareaProps,
     ref: Ref<TextareaProps.Ref>
@@ -116,6 +118,7 @@ const Textarea = React.forwardRef(
           nativeAttributes={nativeTextareaAttributes}
           ref={textareaRef}
           id={controlId}
+          style={getTextareaStyles(style)}
         />
       </span>
     );

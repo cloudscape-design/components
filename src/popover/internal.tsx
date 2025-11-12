@@ -61,7 +61,6 @@ function InternalPopover(
   const baseProps = getBaseProps(restProps);
   const triggerRef = useRef<HTMLElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
-  const clickFrameId = useRef<number | null>(null);
 
   const i18n = useInternalI18n('popover');
   const dismissAriaLabel = i18n('dismissAriaLabel', restProps.dismissAriaLabel);
@@ -110,6 +109,7 @@ function InternalPopover(
     },
   }));
 
+  const clickFrameId = useRef<number | null>(null);
   useEffect(() => {
     if (!triggerRef.current) {
       return;

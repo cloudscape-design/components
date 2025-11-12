@@ -44,6 +44,8 @@ const S3ResourceSelector = React.forwardRef(
       ariaLabel,
       getModalRoot,
       removeModalRoot,
+      onInputFocus,
+      onInputBlur,
       ...rest
     }: S3ResourceSelectorProps,
     ref: React.Ref<S3ResourceSelectorProps.Ref>
@@ -110,6 +112,8 @@ const S3ResourceSelector = React.forwardRef(
           fetchVersions={fetchVersions}
           onBrowse={() => setModalOpen(true)}
           onChange={(resource, errorText) => fireNonCancelableEvent(onChange, { resource, errorText })}
+          onInputFocus={onInputFocus}
+          onInputBlur={onInputBlur}
         />
         {!modalOpen && alert && (
           <InternalBox className={styles.alert} margin={{ top: 's' }}>

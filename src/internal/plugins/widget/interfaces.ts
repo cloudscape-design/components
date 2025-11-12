@@ -50,6 +50,7 @@ export interface DrawerPayload {
   unmountHeader?: (container: HTMLElement) => void;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
   onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+  onToggleFocusMode?: NonCancelableEventHandler<{ isExpanded: boolean }>;
   position?: 'side' | 'bottom';
 }
 

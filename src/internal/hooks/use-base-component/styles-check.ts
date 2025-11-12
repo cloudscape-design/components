@@ -17,42 +17,51 @@ export function checkMissingStyles(ownerDocument: Document) {
   }
 }
 
-export function idleWithDelay(cb: () => void) {
-  // if idle callbacks not supported, we simply do not collect the metric
-  if (typeof requestIdleCallback !== 'function') {
-    return;
+function documentReady(document: Document, callback: () => void) {
+  if (document.readyState === 'complete') {
+    callback();
+  } else {
+    document.defaultView?.addEventListener('load', () => callback(), { once: true });
   }
-  let aborted = false;
+}
 
-  setTimeout(() => {
-    if (aborted) {
-      return;
-    }
-    requestIdleCallback(() => {
-      if (aborted) {
-        return;
-      }
-      cb();
+export function documentReadyAndIdle(document: Document, signal: AbortSignal) {
+  return new Promise<void>((resolve, reject) => {
+    signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+    documentReady(document, () => {
+      setTimeout(() => {
+        requestIdleCallback(() => resolve());
+      }, 1000);
     });
-  }, 1000);
-
-  return () => {
-    aborted = true;
-  };
+  });
 }
 
 const checkedDocs = new WeakMap<Document, boolean>();
-const checkMissingStylesOnce = (elementRef: React.RefObject<HTMLElement>) => {
-  const ownerDocument = elementRef.current?.ownerDocument ?? document;
-  const checked = checkedDocs.get(ownerDocument);
+const checkMissingStylesOnce = (document: Document) => {
+  const checked = checkedDocs.get(document);
   if (!checked) {
-    checkMissingStyles(ownerDocument);
-    checkedDocs.set(ownerDocument, true);
+    checkMissingStyles(document);
+    checkedDocs.set(document, true);
   }
 };
 
 export function useMissingStylesCheck(elementRef: React.RefObject<HTMLElement>) {
   useEffect(() => {
-    return idleWithDelay(() => checkMissingStylesOnce(elementRef));
+    // if idle callbacks not supported, we simply do not collect the metric
+    if (typeof requestIdleCallback !== 'function') {
+      return;
+    }
+    const ownerDocument = elementRef.current?.ownerDocument ?? document;
+    const abortController = new AbortController();
+    documentReadyAndIdle(ownerDocument, abortController.signal).then(
+      () => checkMissingStylesOnce(ownerDocument),
+      error => {
+        // istanbul ignore next
+        if (error.name !== 'AbortError') {
+          throw error;
+        }
+      }
+    );
+    return () => abortController.abort();
   }, [elementRef]);
 }

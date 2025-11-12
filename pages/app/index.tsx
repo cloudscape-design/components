@@ -50,7 +50,7 @@ function isAppLayoutPage(pageId?: string) {
     'prompt-input/simple',
     'funnel-analytics/static-single-page-flow',
     'funnel-analytics/static-multi-page-flow',
-    'charts-with-side-panel',
+    'charts.test',
   ];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
 }

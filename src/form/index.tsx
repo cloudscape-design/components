@@ -138,6 +138,7 @@ export default function Form({ variant = 'full-page', ...props }: FormProps) {
       optionalStepNumbers={[]}
       totalFunnelSteps={1}
       funnelNameSelectors={() => [funnelNameSelector, `.${analyticsSelectors.header}`]}
+      componentSelectors={() => [`.${analyticsSelectors.root}`]}
     >
       <AnalyticsFunnelStep
         stepIdentifier={analyticsMetadata?.instanceIdentifier}

@@ -1,10 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { waitFor } from '@testing-library/react';
+
 import { GIT_SHA } from '../../../../../lib/components/internal/environment';
-import { checkMissingStyles } from '../../../../../lib/components/internal/hooks/use-base-component/styles-check';
+import {
+  checkMissingStyles,
+  documentReadyAndIdle,
+} from '../../../../../lib/components/internal/hooks/use-base-component/styles-check';
 import { metrics } from '../../../../../lib/components/internal/metrics';
-import { idleWithDelay } from '../styles-check';
 
 jest.mock('../../../../../lib/components/internal/environment', () => ({
   ...jest.requireActual('../../../../../lib/components/internal/environment'),
@@ -112,50 +116,70 @@ describe('checkMissingStyles', () => {
   });
 });
 
-describe('idleWithDelay', () => {
+describe('documentReadyAndIdle', () => {
+  function createDocumentMock(readyState: DocumentReadyState): Document {
+    return {
+      readyState,
+      defaultView: {
+        addEventListener: jest.fn() as Window['addEventListener'],
+      },
+    } as Document;
+  }
+
   beforeEach(() => {
-    jest.useFakeTimers();
     // simulate requestIdleCallback for JSDOM
     globalThis.requestIdleCallback = cb => setTimeout(cb, 0);
   });
 
   afterEach(() => {
-    jest.useRealTimers();
     // @ts-expect-error reset to initial state
     globalThis.requestIdleCallback = undefined;
   });
 
-  test('does nothing if requestIdleCallback not supported', () => {
-    // @ts-expect-error simulate missing API
-    globalThis.requestIdleCallback = undefined;
+  test('runs callback when document is idle', async () => {
+    const document = createDocumentMock('complete');
     const cb = jest.fn();
-    expect(requestIdleCallback).toBe(undefined);
-    idleWithDelay(cb);
-    jest.runAllTimers();
-    expect(cb).not.toHaveBeenCalled();
+    documentReadyAndIdle(document, new AbortController().signal).then(cb);
+    await waitFor(
+      () => {
+        expect(document.defaultView!.addEventListener).not.toHaveBeenCalled();
+        expect(cb).toHaveBeenCalled();
+      },
+      { timeout: 2000 }
+    );
   });
 
-  test('runs callback after a delay', () => {
+  test('waits for document to be loaded if it is not ready', async () => {
+    const document = createDocumentMock('loading');
     const cb = jest.fn();
-    idleWithDelay(cb);
-    jest.runAllTimers();
-    expect(cb).toHaveBeenCalled();
+    documentReadyAndIdle(document, new AbortController().signal).then(cb);
+    expect(document.defaultView!.addEventListener).toHaveBeenCalledWith('load', expect.any(Function), { once: true });
+    (document.defaultView!.addEventListener as any).mock.lastCall[1]();
+    await waitFor(
+      () => {
+        expect(cb).toHaveBeenCalled();
+      },
+      { timeout: 2000 }
+    );
   });
 
-  test('delay can be aborted before setTimeout phase', () => {
-    const cb = jest.fn();
-    const abort = idleWithDelay(cb);
-    abort!();
-    jest.runAllTimers();
-    expect(cb).not.toHaveBeenCalled();
+  test('delay can be aborted before loading state phase', async () => {
+    const document = createDocumentMock('loading');
+    const onAbort = jest.fn();
+    const abortController = new AbortController();
+    documentReadyAndIdle(document, abortController.signal).then(() => {}, onAbort);
+    expect(document.defaultView!.addEventListener).toHaveBeenCalledWith('load', expect.any(Function), { once: true });
+    abortController.abort();
+    await waitFor(() => expect(onAbort).toHaveBeenCalledWith(new DOMException('Aborted', 'AbortError')));
   });
 
-  test('delay can be aborted before requestIdleCallback phase', () => {
-    const cb = jest.fn();
-    const abort = idleWithDelay(cb);
-    jest.runOnlyPendingTimers(); // flush setTimeout
-    abort!();
-    jest.runOnlyPendingTimers(); // flush following requestIdleCallback
-    expect(cb).not.toHaveBeenCalled();
+  test('delay can be aborted before requestIdleCallback phase', async () => {
+    const document = createDocumentMock('complete');
+    const onAbort = jest.fn();
+    const abortController = new AbortController();
+    documentReadyAndIdle(document, abortController.signal).then(() => {}, onAbort);
+    expect(document.defaultView!.addEventListener).not.toHaveBeenCalled();
+    abortController.abort();
+    await waitFor(() => expect(onAbort).toHaveBeenCalledWith(new DOMException('Aborted', 'AbortError')));
   });
 });

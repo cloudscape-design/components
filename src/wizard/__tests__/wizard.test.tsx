@@ -515,6 +515,110 @@ describe('Custom actions', () => {
   });
 });
 
+describe('Custom primary actions', () => {
+  test('renders custom primary actions instead of default buttons', () => {
+    const customActions = (
+      <>
+        <Button data-testid="custom-cancel">Custom Cancel</Button>
+        <Button data-testid="custom-next" variant="primary">
+          Custom Next
+        </Button>
+      </>
+    );
+    const [wrapper] = renderDefaultWizard({ customPrimaryActions: customActions });
+
+    expect(wrapper.findPrimaryButton()).toBeNull();
+    expect(wrapper.findCancelButton()).toBeNull();
+    expect(wrapper.findPreviousButton()).toBeNull();
+    expect(wrapper.findActions()!.findButton('[data-testid="custom-cancel"]')).not.toBeNull();
+    expect(wrapper.findActions()!.findButton('[data-testid="custom-next"]')).not.toBeNull();
+  });
+
+  test('custom primary actions work on first step', () => {
+    const onCustomClick = jest.fn();
+    const customActions = (
+      <Button data-testid="custom-action" onClick={onCustomClick}>
+        Custom Action
+      </Button>
+    );
+
+    const [wrapper] = renderDefaultWizard({
+      customPrimaryActions: customActions,
+      activeStepIndex: 0,
+    });
+
+    const customActionButtonWrapper = wrapper.findActions()!.findButton('[data-testid="custom-action"]');
+    expect(customActionButtonWrapper).not.toBeNull();
+    customActionButtonWrapper!.click();
+    expect(onCustomClick).toHaveBeenCalledTimes(1);
+  });
+
+  test('custom primary actions work on middle step', () => {
+    const onCustomClick = jest.fn();
+    const customActions = (
+      <Button data-testid="custom-action" onClick={onCustomClick}>
+        Custom Action
+      </Button>
+    );
+
+    const [wrapper] = renderDefaultWizard({
+      customPrimaryActions: customActions,
+      activeStepIndex: 1,
+    });
+
+    const customActionButtonWrapper = wrapper.findActions()!.findButton('[data-testid="custom-action"]');
+    expect(customActionButtonWrapper).not.toBeNull();
+    customActionButtonWrapper!.click();
+    expect(onCustomClick).toHaveBeenCalledTimes(1);
+  });
+
+  test('custom primary actions work on last step', () => {
+    const onCustomClick = jest.fn();
+    const customActions = (
+      <Button data-testid="custom-action" onClick={onCustomClick}>
+        Custom Action
+      </Button>
+    );
+
+    const [wrapper] = renderDefaultWizard({
+      customPrimaryActions: customActions,
+      activeStepIndex: DEFAULT_STEPS.length - 1,
+    });
+
+    const customActionButtonWrapper = wrapper.findActions()!.findButton('[data-testid="custom-action"]');
+    expect(customActionButtonWrapper).not.toBeNull();
+    customActionButtonWrapper!.click();
+    expect(onCustomClick).toHaveBeenCalledTimes(1);
+  });
+
+  test('custom primary actions override skip-to button', () => {
+    const customActions = <Button>Custom Only</Button>;
+    const [wrapper] = renderDefaultWizard({
+      customPrimaryActions: customActions,
+      allowSkipTo: true,
+    });
+
+    expect(wrapper.findSkipToButton()).toBeNull();
+    expect(wrapper.findActions()!.findButton()!.getElement()).toHaveTextContent('Custom Only');
+  });
+
+  test('falls back to default actions when customPrimaryActions is null', () => {
+    const [wrapper] = renderDefaultWizard({ customPrimaryActions: null });
+
+    expect(wrapper.findPrimaryButton()).not.toBeNull();
+    expect(wrapper.findCancelButton()).not.toBeNull();
+    expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].nextButton!);
+  });
+
+  test('falls back to default actions when customPrimaryActions is undefined', () => {
+    const [wrapper] = renderDefaultWizard({ customPrimaryActions: undefined });
+
+    expect(wrapper.findPrimaryButton()).not.toBeNull();
+    expect(wrapper.findCancelButton()).not.toBeNull();
+    expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].nextButton!);
+  });
+});
+
 describe('i18n', () => {
   test('supports rendering static strings using i18n provider', () => {
     const { container } = render(

@@ -149,6 +149,7 @@ export const mapRuntimeConfigToAiDrawer = (
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
   exitExpandedModeTrigger?: React.ReactNode;
+  onToggleFocusMode?: NonCancelableEventHandler<{ isExpanded: boolean }>;
 } => {
   const { mountContent, unmountContent, trigger, exitExpandedModeTrigger, ...runtimeDrawer } = runtimeConfig;
 
