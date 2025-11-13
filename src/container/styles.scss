@@ -80,7 +80,7 @@
   display: flex;
   flex-direction: column;
   inline-size: 100%;
-  overflow: hidden;
+  overflow: clip;
   border-end-start-radius: awsui.$border-radius-container;
   border-end-end-radius: awsui.$border-radius-container;
 
