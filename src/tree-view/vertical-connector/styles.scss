@@ -9,7 +9,7 @@
 $item-toggle-column-width: 28px;
 
 .vertical-connector {
-  background-color: awsui.$color-border-divider-default;
+  background-color: awsui.$color-tree-view-connector-line;
   inline-size: awsui.$border-divider-list-width;
 
   &.grid {

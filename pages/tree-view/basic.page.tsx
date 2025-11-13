@@ -25,7 +25,7 @@ export default function BasicTreeView() {
     label: 'Default',
     value: 'default',
   });
-  const [showConnectorLines, setShowConnectorLines] = useState(false);
+  const [showConnectorLines, setShowConnectorLines] = useState(true);
 
   const renderItemToggleIcon = ({ expanded }: TreeViewProps.ItemToggleRenderIconData) => {
     if (toggleIconType.value === 'custom') {

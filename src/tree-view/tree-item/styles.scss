@@ -20,7 +20,7 @@ $item-toggle-column-width: 28px;
   position: relative;
 
   &.offset {
-    margin-inline-start: 20px;
+    margin-inline-start: awsui.$space-tree-view-indentation;
   }
 
   > .treeitem-content-wrapper {
