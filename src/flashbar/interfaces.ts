@@ -23,11 +23,16 @@ export namespace FlashbarProps {
     onButtonClick?: ButtonProps['onClick'];
     onDismiss?: ButtonProps['onClick'];
     analyticsMetadata?: FlashbarProps.ItemAnalyticsMetadata;
+    persistenceConfig?: FlashbarProps.PersistenceConfig;
   }
 
   export interface ItemAnalyticsMetadata {
     suppressFlowMetricEvents?: boolean;
     errorContext?: ErrorContext;
+  }
+  export interface PersistenceConfig {
+    uniqueKey: string;
+    crossServicePersistence?: boolean;
   }
 
   export interface I18nStrings {
@@ -179,6 +184,9 @@ export interface FlashbarProps extends BaseComponentProps {
    * * `id` (string) - Specifies a unique flash message identifier. This property is used in two ways:
    *   1. As a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering.
    *   2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.
+   * * `persistenceConfig` (FlashbarProps.PersistenceConfig) - Config to persist dismiss state for dismissable Flashbar item, used only in AWS Management Console.
+   *   * `uniqueKey` (string) - This key to store the persistence state, it must be unique across your console.
+   *   * `crossServicePersistence` (boolean) - If true, the persistence state will be shared across AWS services.
    * * `analyticsMetadata` (FlashbarProps.ItemAnalyticsMetadata) - (Optional) Specifies additional analytics-related metadata.
    *   * `suppressFlowMetricEvents` - Prevent this item from generating events related to flow metrics.
    * @analytics

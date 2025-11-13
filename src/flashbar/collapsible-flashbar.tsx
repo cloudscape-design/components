@@ -24,7 +24,7 @@ import {
   GeneratedAnalyticsMetadataFlashbarExpand,
 } from './analytics-metadata/interfaces';
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
-import { useFlashbar } from './common';
+import { useFlashbar, useFlashbarVisibility } from './common';
 import { Flash, focusFlashById } from './flash';
 import { FlashbarProps, InternalFlashbarProps } from './interfaces';
 import { getCollapsibleFlashStyles, getNotificationBarStyles } from './style';
@@ -46,6 +46,7 @@ const maxNonCollapsibleItems = 1;
 const resizeListenerThrottleDelay = 100;
 
 export default function CollapsibleFlashbar({ items, style, ...restProps }: InternalFlashbarProps) {
+  const visibleItems = useFlashbarVisibility(items);
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
@@ -70,7 +71,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
   const itemCountElementId = useUniqueId('item-count');
 
   const { baseProps, isReducedMotion, isVisualRefresh, mergedRef, ref, flashRefs, handleFlashDismissed } = useFlashbar({
-    items,
+    items: visibleItems,
     ...restProps,
     onItemsAdded: newItems => {
       setEnteringItems([...enteringItems, ...newItems]);
@@ -88,7 +89,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
     },
   });
 
-  if (items.length <= maxNonCollapsibleItems && isFlashbarStackExpanded) {
+  if (visibleItems.length <= maxNonCollapsibleItems && isFlashbarStackExpanded) {
     setIsFlashbarStackExpanded(false);
   }
 
@@ -103,8 +104,8 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
 
   const debouncedFocus = useDebounceCallback(focusFlashById, FOCUS_DEBOUNCE_DELAY);
   useLayoutEffect(() => {
-    if (isFlashbarStackExpanded && items?.length) {
-      const mostRecentItem = items[0];
+    if (isFlashbarStackExpanded && visibleItems?.length) {
+      const mostRecentItem = visibleItems[0];
       if (mostRecentItem.id !== undefined) {
         debouncedFocus(ref.current, mostRecentItem.id);
       }
@@ -188,17 +189,17 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
     }
   }, [updateBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded]);
 
-  const isCollapsible = items.length > maxNonCollapsibleItems;
+  const isCollapsible = visibleItems.length > maxNonCollapsibleItems;
 
-  const countByType = getFlashTypeCount(items);
+  const countByType = getFlashTypeCount(visibleItems);
 
-  const numberOfColorsInStack = new Set(items.map(getItemColor)).size;
+  const numberOfColorsInStack = new Set(visibleItems.map(getItemColor)).size;
   const maxSlots = Math.max(numberOfColorsInStack, 3);
-  const stackDepth = Math.min(maxSlots, items.length);
+  const stackDepth = Math.min(maxSlots, visibleItems.length);
 
   const itemsToShow = isFlashbarStackExpanded
-    ? items.map((item, index) => ({ ...item, expandedIndex: index }))
-    : getVisibleCollapsedItems(items, stackDepth).map((item: StackableItem, index: number) => ({
+    ? visibleItems.map((item, index) => ({ ...item, expandedIndex: index }))
+    : getVisibleCollapsedItems(visibleItems, stackDepth).map((item: StackableItem, index: number) => ({
         ...item,
         collapsedIndex: index,
       }));
@@ -331,12 +332,14 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
         styles.flashbar,
         styles.stack,
         isCollapsible && styles.collapsible,
-        items.length === 2 && styles['short-list'],
+        visibleItems.length === 2 && styles['short-list'],
         isFlashbarStackExpanded && styles.expanded,
         isVisualRefresh && styles['visual-refresh']
       )}
       ref={mergedRef}
-      {...getAnalyticsMetadataAttribute(getComponentsAnalyticsMetadata(items.length, true, isFlashbarStackExpanded))}
+      {...getAnalyticsMetadataAttribute(
+        getComponentsAnalyticsMetadata(visibleItems.length, true, isFlashbarStackExpanded)
+      )}
     >
       {isFlashbarStackExpanded && renderList()}
       {isCollapsible && (
@@ -346,7 +349,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
             isVisualRefresh && styles['visual-refresh'],
             isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
             transitioning && styles['animation-running'],
-            items.length === 2 && styles['short-list'],
+            visibleItems.length === 2 && styles['short-list'],
             getVisualContextClassname('flashbar') // Visual context is needed for focus ring to be white
           )}
           onClick={toggleCollapseExpand}
