@@ -18,13 +18,18 @@ import { BaseKeyDetail, NonCancelableEventHandler } from '../internal/events';
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface PromptInputProps
-  extends Omit<BaseInputProps, 'nativeInputAttributes'>,
+  extends Omit<BaseInputProps, 'nativeInputAttributes' | 'value'>,
     InputKeyEvents,
     InputAutoCorrect,
     InputAutoComplete,
     InputSpellcheck,
     BaseComponentProps,
     FormFieldValidationControlProps {
+  /**
+   * Specifies the content of the prompt input.
+   */
+  value?: string;
+
   /**
    * Called whenever a user clicks the action button or presses the "Enter" key.
    * The event `detail` contains the current value of the field.
