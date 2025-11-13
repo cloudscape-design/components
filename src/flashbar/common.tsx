@@ -8,6 +8,7 @@ import { getBaseProps } from '../internal/base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
+import { persistFlashbarDismiss, retrieveFlashbarDismiss } from '../internal/persistence';
 import { focusFlashById, focusFlashFocusableArea } from './flash';
 import { FlashbarProps, InternalFlashbarProps } from './interfaces';
 import { FOCUS_DEBOUNCE_DELAY } from './utils';
@@ -125,8 +126,11 @@ export function useFlashbar({
     }
   }, [debouncedFocus, nextFocusId, ref]);
 
-  const handleFlashDismissed = (dismissedId?: string) => {
+  const handleFlashDismissed = (dismissedId?: string, persistenceConfig?: FlashbarProps.PersistenceConfig) => {
     handleFlashDismissedInternal(dismissedId, items, ref.current, flashRefs.current);
+    if (persistenceConfig?.uniqueKey && persistenceConfig.uniqueKey.trim()) {
+      persistFlashbarDismiss(persistenceConfig);
+    }
   };
 
   return {
@@ -139,4 +143,49 @@ export function useFlashbar({
     flashRefs,
     handleFlashDismissed,
   };
+}
+
+// Hook for managing flashbar items visibility with persistence
+export function useFlashbarVisibility(items: ReadonlyArray<FlashbarProps.MessageDefinition>) {
+  const [checkedPersistenceKeys, setCheckedPersistenceKeys] = useState<Set<string>>(new Set());
+  const [persistentItemsVisibility, setPersistentItemsVisibility] = useState<Map<string, boolean>>(new Map());
+
+  const visibleItems = useMemo(() => {
+    return items.filter(
+      item =>
+        !item.persistenceConfig?.uniqueKey || persistentItemsVisibility.get(item.persistenceConfig.uniqueKey) === true
+    );
+  }, [items, persistentItemsVisibility]);
+
+  useEffect(() => {
+    const newPersistentItems = items.filter(
+      item => item.persistenceConfig?.uniqueKey && !checkedPersistenceKeys.has(item.persistenceConfig.uniqueKey)
+    );
+
+    if (newPersistentItems.length === 0) {
+      return;
+    }
+
+    const checkNewPersistentItems = async () => {
+      const newVisibility = new Map(persistentItemsVisibility);
+      const newKeys = new Set(checkedPersistenceKeys);
+
+      await Promise.all(
+        newPersistentItems.map(async item => {
+          const isDismissed = await retrieveFlashbarDismiss(item.persistenceConfig!);
+          newVisibility.set(item.persistenceConfig!.uniqueKey, !isDismissed);
+          newKeys.add(item.persistenceConfig!.uniqueKey);
+        })
+      );
+
+      setPersistentItemsVisibility(newVisibility);
+      setCheckedPersistenceKeys(newKeys);
+    };
+
+    checkNewPersistentItems();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
+
+  return visibleItems;
 }
