@@ -35,6 +35,7 @@ $item-toggle-column-width: 28px;
     }
 
     > .expand-toggle-wrapper {
+      display: grid;
       grid-column: 1;
       grid-row: 1;
       padding-inline-end: awsui.$space-scaled-xxs;
@@ -56,7 +57,10 @@ $item-toggle-column-width: 28px;
   }
 }
 
-.tree-item-structured-item,
-.tree-item-focus-target {
+.tree-item-structured-item {
   /* used in keyboard navigation */
+}
+
+.tree-item-focus-target {
+  outline: none;
 }
