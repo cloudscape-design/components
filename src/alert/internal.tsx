@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
@@ -17,6 +17,7 @@ import { LinkDefaultVariantContext } from '../internal/context/link-default-vari
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { persistAlertDismiss, retrieveAlertDismiss } from '../internal/persistence';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
 import { SomeRequired } from '../internal/types';
@@ -63,6 +64,7 @@ const InternalAlert = React.forwardRef(
       dismissAriaLabel: deprecatedDismissAriaLabel,
       messageSlotId,
       style,
+      persistenceConfig,
       ...rest
     }: InternalAlertProps,
     ref: React.Ref<AlertProps.Ref>
@@ -100,6 +102,9 @@ const InternalAlert = React.forwardRef(
     const containerRef = useMergeRefs(containerMeasureRef, __internalRootRef);
     const headerRef = useMergeRefs(headerRefAction, headerRefContent);
     const contentRef = useMergeRefs(contentRefAction, contentRefContent);
+    const [isPersistentlyDismissed, setIsPersistentlyDismissed] = useState(
+      !!(persistenceConfig && persistenceConfig.uniqueKey)
+    );
 
     const isRefresh = useVisualRefresh();
     const size = isRefresh
@@ -123,6 +128,25 @@ const InternalAlert = React.forwardRef(
       'i18nStrings.dismissAriaLabel',
       i18nStrings?.dismissAriaLabel ?? i18n('dismissAriaLabel', deprecatedDismissAriaLabel)
     );
+
+    useEffect(() => {
+      if (persistenceConfig?.uniqueKey && persistenceConfig.uniqueKey.trim()) {
+        retrieveAlertDismiss(persistenceConfig).then(dismissed => {
+          setIsPersistentlyDismissed(!!dismissed);
+        });
+      }
+    }, [persistenceConfig]);
+
+    const dismiss = () => {
+      fireNonCancelableEvent(onDismiss);
+      if (persistenceConfig && persistenceConfig.uniqueKey && persistenceConfig.uniqueKey.trim()) {
+        persistAlertDismiss(persistenceConfig);
+      }
+    };
+
+    if (isPersistentlyDismissed) {
+      return null;
+    }
 
     return (
       <div
@@ -212,7 +236,7 @@ const InternalAlert = React.forwardRef(
                     iconName="close"
                     formAction="none"
                     ariaLabel={dismissAriaLabel}
-                    onClick={() => fireNonCancelableEvent(onDismiss)}
+                    onClick={dismiss}
                     style={getDismissButtonStyles(style)}
                   />
                 </div>

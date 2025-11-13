@@ -23,11 +23,17 @@ export namespace FlashbarProps {
     onButtonClick?: ButtonProps['onClick'];
     onDismiss?: ButtonProps['onClick'];
     analyticsMetadata?: FlashbarProps.ItemAnalyticsMetadata;
+    persistenceConfig?: FlashbarProps.PersistenceConfig;
   }
 
   export interface ItemAnalyticsMetadata {
     suppressFlowMetricEvents?: boolean;
     errorContext?: ErrorContext;
+  }
+
+  export interface PersistenceConfig {
+    uniqueKey: string;
+    crossServicePersistence?: boolean;
   }
 
   export interface I18nStrings {
@@ -182,6 +188,10 @@ export interface FlashbarProps extends BaseComponentProps {
    * * `analyticsMetadata` (FlashbarProps.ItemAnalyticsMetadata) - (Optional) Specifies additional analytics-related metadata.
    *   * `suppressFlowMetricEvents` - Prevent this item from generating events related to flow metrics.
    * @analytics
+   * * `persistenceConfig` (FlashbarProps.PersistenceConfig) - Config to persist dismiss state for dismissable Flashbar item.
+   *   * `uniqueKey` (string) - This key to store the persistence state, it must be unique across your console.
+   *   * `crossServicePersistence` (boolean) - If true, the persistence state will be shared across AWS services.
+   * @awsuiSystem console
    */
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
 
