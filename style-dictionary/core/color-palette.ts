@@ -1,7 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import merge from 'lodash/merge.js';
-
 import { expandColorDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 
@@ -254,88 +252,9 @@ const paletteTokens: StyleDictionary.ColorPaletteDictionary = {
   colorWhite: '#ffffff',
 };
 
-const referenceTokens: StyleDictionary.ReferenceDictionary = {
-  colorPrimary50: paletteTokens.colorBlue50,
-  colorPrimary100: paletteTokens.colorBlue100,
-  colorPrimary200: paletteTokens.colorBlue200,
-  colorPrimary300: paletteTokens.colorBlue300,
-  colorPrimary400: paletteTokens.colorBlue400,
-  colorPrimary500: paletteTokens.colorBlue500,
-  colorPrimary600: paletteTokens.colorBlue600,
-  colorPrimary700: paletteTokens.colorBlue700,
-  colorPrimary800: paletteTokens.colorBlue800,
-  colorPrimary900: paletteTokens.colorBlue900,
-  colorPrimary1000: paletteTokens.colorBlue1000,
-  colorNeutral50: paletteTokens.colorGrey50,
-  colorNeutral100: paletteTokens.colorGrey100,
-  colorNeutral150: paletteTokens.colorGrey150,
-  colorNeutral200: paletteTokens.colorGrey200,
-  colorNeutral250: paletteTokens.colorGrey250,
-  colorNeutral300: paletteTokens.colorGrey300,
-  colorNeutral350: paletteTokens.colorGrey350,
-  colorNeutral400: paletteTokens.colorGrey400,
-  colorNeutral450: paletteTokens.colorGrey450,
-  colorNeutral500: paletteTokens.colorGrey500,
-  colorNeutral550: paletteTokens.colorGrey550,
-  colorNeutral600: paletteTokens.colorGrey600,
-  colorNeutral650: paletteTokens.colorGrey650,
-  colorNeutral700: paletteTokens.colorGrey700,
-  colorNeutral750: paletteTokens.colorGrey750,
-  colorNeutral800: paletteTokens.colorGrey800,
-  colorNeutral850: paletteTokens.colorGrey850,
-  colorNeutral900: paletteTokens.colorGrey900,
-  colorNeutral950: paletteTokens.colorGrey950,
-  colorNeutral1000: paletteTokens.colorGrey1000,
-  colorError50: paletteTokens.colorRed50,
-  colorError100: paletteTokens.colorRed100,
-  colorError200: paletteTokens.colorRed200,
-  colorError300: paletteTokens.colorRed300,
-  colorError400: paletteTokens.colorRed400,
-  colorError500: paletteTokens.colorRed500,
-  colorError600: paletteTokens.colorRed600,
-  colorError700: paletteTokens.colorRed700,
-  colorError800: paletteTokens.colorRed800,
-  colorError900: paletteTokens.colorRed900,
-  colorError1000: paletteTokens.colorRed1000,
-  colorInfo50: paletteTokens.colorBlue50,
-  colorInfo100: paletteTokens.colorBlue100,
-  colorInfo200: paletteTokens.colorBlue200,
-  colorInfo300: paletteTokens.colorBlue300,
-  colorInfo400: paletteTokens.colorBlue400,
-  colorInfo500: paletteTokens.colorBlue500,
-  colorInfo600: paletteTokens.colorBlue600,
-  colorInfo700: paletteTokens.colorBlue700,
-  colorInfo800: paletteTokens.colorBlue800,
-  colorInfo900: paletteTokens.colorBlue900,
-  colorInfo1000: paletteTokens.colorBlue1000,
-  colorSuccess50: paletteTokens.colorGreen50,
-  colorSuccess100: paletteTokens.colorGreen100,
-  colorSuccess200: paletteTokens.colorGreen200,
-  colorSuccess300: paletteTokens.colorGreen300,
-  colorSuccess400: paletteTokens.colorGreen400,
-  colorSuccess500: paletteTokens.colorGreen500,
-  colorSuccess600: paletteTokens.colorGreen600,
-  colorSuccess700: paletteTokens.colorGreen700,
-  colorSuccess800: paletteTokens.colorGreen800,
-  colorSuccess900: paletteTokens.colorGreen900,
-  colorSuccess1000: paletteTokens.colorGreen1000,
-  colorWarning50: paletteTokens.colorYellow50,
-  colorWarning100: paletteTokens.colorYellow100,
-  colorWarning200: paletteTokens.colorYellow200,
-  colorWarning300: paletteTokens.colorYellow300,
-  colorWarning400: paletteTokens.colorYellow400,
-  colorWarning500: paletteTokens.colorYellow500,
-  colorWarning600: paletteTokens.colorYellow600,
-  colorWarning700: paletteTokens.colorYellow700,
-  colorWarning800: paletteTokens.colorYellow800,
-  colorWarning900: paletteTokens.colorYellow900,
-  colorWarning1000: paletteTokens.colorYellow1000,
-};
-
-const expandedReferenceTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(referenceTokens);
-const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge({}, paletteTokens, expandedReferenceTokens);
+const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(paletteTokens);
 
 export const mode: StyleDictionary.ModeIdentifier = 'color';
 
 export { expandedTokens as tokens };
-export { paletteTokens, expandedReferenceTokens };
+export { paletteTokens };

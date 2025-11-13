@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Button, Link } from '~components';
+import { Button, Link, Spinner } from '~components';
 import Header, { HeaderProps } from '~components/header';
 
 import createPermutations from '../utils/permutations';
@@ -22,7 +22,7 @@ const permutations = createPermutations<HeaderProps>([
       'A description text with some content to simulate a text shown below the title of this header.',
       null,
     ],
-    counter: ['(1/10)', undefined],
+    counter: ['(1/10)', <Spinner key="spinner" />, undefined],
     actions: [
       <Button key="button" variant="primary">
         Create Resource
@@ -36,7 +36,7 @@ export default function HeaderPermutations() {
   return (
     <article>
       <h1>Header - Permutations</h1>
-      <ScreenshotArea>
+      <ScreenshotArea disableAnimations={true}>
         <PermutationsView permutations={permutations} render={props => <Header {...props}>{props.variant}</Header>} />
       </ScreenshotArea>
     </article>

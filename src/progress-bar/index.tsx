@@ -35,6 +35,7 @@ export default function ProgressBar({
   additionalInfo,
   resultText,
   onResultButtonClick,
+  style,
   ...rest
 }: ProgressBarProps) {
   const { __internalRootRef } = useBaseComponent('ProgressBar', {
@@ -96,6 +97,7 @@ export default function ProgressBar({
                   ariaDescribedby
                 )}
                 isInFlash={isInFlash}
+                style={style}
               />
               <InternalLiveRegion hidden={true} tagName="span" delay={0}>
                 {label}

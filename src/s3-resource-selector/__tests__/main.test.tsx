@@ -139,6 +139,18 @@ test('focuses the S3Uri field when calling the focus function', () => {
   expect(wrapper.findInContext().findUriInput().findNativeInput().getElement()).toBe(document.activeElement);
 });
 
+test('supports input focus and blur handlers', () => {
+  const onInputFocus = jest.fn();
+  const onInputBlur = jest.fn();
+  const wrapper = renderComponent(
+    <S3ResourceSelector {...defaultProps} onInputFocus={onInputFocus} onInputBlur={onInputBlur} />
+  );
+  wrapper.findInContext().findUriInput().focus();
+  expect(onInputFocus).toHaveBeenCalled();
+  wrapper.findInContext().findUriInput().blur();
+  expect(onInputBlur).toHaveBeenCalled();
+});
+
 describe('URL sanitization', () => {
   let consoleWarnSpy: jest.SpyInstance;
   let consoleErrorSpy: jest.SpyInstance;
