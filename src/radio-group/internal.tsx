@@ -71,6 +71,7 @@ const InternalRadioGroup = React.forwardRef(
               className={clsx(
                 styles.radio,
                 item.description && styles['radio--has-description'],
+                direction === 'horizontal' && styles.horizontal,
                 item.value === value && analyticsSelectors.selected
               )}
               checked={item.value === value}
@@ -86,11 +87,6 @@ const InternalRadioGroup = React.forwardRef(
               controlId={item.controlId}
               readOnly={readOnly}
               style={style}
-              className={clsx(
-                styles.radio,
-                item.description && styles['radio--has-description'],
-                direction === 'horizontal' && styles.horizontal
-              )}
               {...getAnalyticsMetadataAttribute(
                 !item.disabled && !readOnly
                   ? {
