@@ -4,12 +4,11 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import clsx from 'clsx';
 
-import { useMergeRefs, useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useMobile, useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 import { fireNonCancelableEvent } from '../../events';
 import customCssProps from '../../generated/custom-css-properties';
-import { useMobile } from '../../hooks/use-mobile';
 import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { nodeBelongs } from '../../utils/node-belongs';
