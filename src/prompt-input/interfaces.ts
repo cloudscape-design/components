@@ -129,6 +129,11 @@ export interface PromptInputProps
    * @awsuiSystem core
    */
   nativeTextareaAttributes?: NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: PromptInputProps.Style;
 }
 
 export namespace PromptInputProps {
@@ -154,5 +159,50 @@ export namespace PromptInputProps {
      * common pitfalls: https://stackoverflow.com/questions/60129605/is-javascripts-setselectionrange-incompatible-with-react-hooks
      */
     setSelectionRange(start: number | null, end: number | null, direction?: 'forward' | 'backward' | 'none'): void;
+  }
+
+  export interface Style {
+    root?: {
+      backgroundColor?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      borderColor?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      boxShadow?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      color?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      fontSize?: string;
+      fontWeight?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+    placeholder?: {
+      color?: string;
+      fontSize?: string;
+      fontStyle?: string;
+      fontWeight?: string;
+    };
   }
 }
