@@ -126,28 +126,31 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 
 .textarea {
   @include styles.styles-reset;
-  @include styles.control-border-radius-full();
   @include styles.font-body-m;
   // Restore browsers' default resize values
   resize: none;
   // Restore default text cursor
   cursor: text;
-  // Allow multi-line placeholders
+  // Allow multi-line placeholders and word wrapping
   white-space: pre-wrap;
-  background-color: inherit;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  background-color: transparent;
 
   padding-block: styles.$control-padding-vertical;
   padding-inline: styles.$control-padding-horizontal;
 
   color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default);
-  max-inline-size: 100%;
   inline-size: 100%;
   display: block;
   box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   border: 0;
 
-  &::placeholder {
+  &.placeholder-visible::before {
+    content: attr(data-placeholder);
     @include styles.form-placeholder(
       $color: var(#{custom-props.$promptInputStylePlaceholderColor}, awsui.$color-text-input-placeholder),
       $font-size: var(#{custom-props.$promptInputStylePlaceholderFontSize}),
@@ -155,6 +158,10 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
       $font-weight: var(#{custom-props.$promptInputStylePlaceholderFontWeight})
     );
     opacity: 1;
+    pointer-events: none;
+    position: absolute;
+    inset-block-start: styles.$control-padding-vertical;
+    inset-inline-start: styles.$control-padding-horizontal;
   }
 
   &:hover {
@@ -182,8 +189,11 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     padding-inline-start: $invalid-border-offset;
   }
 
-  &:disabled {
+  &:disabled,
+  &.textarea-disabled {
     color: var(#{custom-props.$promptInputStyleColorDisabled}, awsui.$color-text-input-disabled);
+    @include styles.form-disabled-element;
+    border: 0;
     cursor: default;
 
     &::placeholder {
@@ -198,9 +208,15 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
       var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
     );
   }
+  // Placeholder for disabled contentEditable div
+  &.placeholder-visible::before {
+    @include styles.form-placeholder-disabled;
+    opacity: 1;
+  }
 
   &-wrapper {
     display: flex;
+    position: relative;
   }
 }
 

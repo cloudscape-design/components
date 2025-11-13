@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { Ref, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import clsx from 'clsx';
 
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
@@ -14,7 +15,7 @@ import * as tokens from '../internal/generated/styles/tokens';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SomeRequired } from '../internal/types';
-import WithNativeAttributes from '../internal/utils/with-native-attributes';
+import Token from '../token/internal';
 import { PromptInputProps } from './interfaces';
 import { getPromptInputStyles } from './styles';
 
@@ -57,7 +58,6 @@ const InternalPromptInput = React.forwardRef(
       secondaryContent,
       disableSecondaryActionsPaddings,
       disableSecondaryContentPaddings,
-      nativeTextareaAttributes,
       style,
       __internalRootRef,
       ...rest
@@ -68,10 +68,16 @@ const InternalPromptInput = React.forwardRef(
 
     const baseProps = getBaseProps(rest);
 
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    // Get the current text value (will be updated on each render)
+    const editableElementRef = useRef<HTMLDivElement>(null);
+    const reactContainersRef = useRef<Set<HTMLElement>>(new Set());
+    const lastKeyPressedRef = useRef<string>('');
+
+    // Get the current text value from the contentEditable
+    const getCurrentValue = () => editableElementRef.current?.textContent || '';
 
     const isRefresh = useVisualRefresh();
-    const isCompactMode = useDensityMode(textareaRef) === 'compact';
+    const isCompactMode = useDensityMode(editableElementRef) === 'compact';
 
     const PADDING = isRefresh ? tokens.spaceXxs : tokens.spaceXxxs;
     const LINE_HEIGHT = tokens.lineHeightBodyM;
@@ -81,54 +87,122 @@ const InternalPromptInput = React.forwardRef(
       ref,
       () => ({
         focus(...args: Parameters<HTMLElement['focus']>) {
-          textareaRef.current?.focus(...args);
+          editableElementRef.current?.focus(...args);
         },
         select() {
-          textareaRef.current?.select();
+          const selection = window.getSelection();
+          const range = document.createRange();
+          if (editableElementRef.current) {
+            range.selectNodeContents(editableElementRef.current);
+            selection?.removeAllRanges();
+            selection?.addRange(range);
+          }
         },
-        setSelectionRange(...args: Parameters<HTMLTextAreaElement['setSelectionRange']>) {
-          textareaRef.current?.setSelectionRange(...args);
+        setSelectionRange() {
+          // setSelectionRange is not supported on contentEditable divs
+          // This method is kept for API compatibility but does nothing
         },
       }),
-      [textareaRef]
+      [editableElementRef]
     );
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = event => {
+      lastKeyPressedRef.current = event.key;
       fireKeyboardEvent(onKeyDown, event);
 
       if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
-        if (event.currentTarget.form && !event.isDefaultPrevented()) {
-          event.currentTarget.form.requestSubmit();
+        const form = (event.currentTarget as HTMLElement).closest('form');
+        if (form && !event.isDefaultPrevented()) {
+          form.requestSubmit();
         }
         event.preventDefault();
-        fireNonCancelableEvent(onAction, { value });
+        fireNonCancelableEvent(onAction, { value: getCurrentValue() });
       }
     };
 
-    const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      fireNonCancelableEvent(onChange, { value: event.target.value });
+    const handleChange: React.FormEventHandler<HTMLDivElement> = () => {
+      const textValue = getCurrentValue();
+
+      // Check if space was just pressed and there's an @mention in raw text nodes
+      if (lastKeyPressedRef.current === ' ') {
+        const mentionPattern = /(^|\s)@(\w+)\s/;
+
+        // Find text nodes that contain @mentions
+        const findAndConvertMention = (node: Node): boolean => {
+          if (node.nodeType === Node.TEXT_NODE && node.textContent) {
+            const match = node.textContent.match(mentionPattern);
+            if (match) {
+              const mentionText = match[2];
+              const beforeMention = node.textContent.substring(0, match.index! + match[1].length);
+              const afterMention = node.textContent.substring(match.index! + match[0].length);
+
+              // Create Token container
+              const container = document.createElement('span');
+              container.style.display = 'inline';
+              container.contentEditable = 'false';
+              reactContainersRef.current.add(container);
+
+              // Replace text node with: before + Token + after
+              const parent = node.parentNode!;
+              if (beforeMention) {
+                parent.insertBefore(document.createTextNode(beforeMention), node);
+              }
+              parent.insertBefore(container, node);
+              if (afterMention) {
+                parent.insertBefore(document.createTextNode(afterMention), node);
+              }
+              parent.removeChild(node);
+
+              // Render Token into container
+              ReactDOM.render(<Token variant="inline" label={mentionText} />, container);
+
+              return true;
+            }
+          } else if (node.nodeType === Node.ELEMENT_NODE && !reactContainersRef.current.has(node as HTMLElement)) {
+            // Search in child nodes (but skip Token containers)
+            for (const child of Array.from(node.childNodes)) {
+              if (findAndConvertMention(child)) {
+                return true;
+              }
+            }
+          }
+          return false;
+        };
+
+        if (editableElementRef.current) {
+          findAndConvertMention(editableElementRef.current);
+        }
+      }
+
+      fireNonCancelableEvent(onChange, { value: textValue });
       adjustTextareaHeight();
     };
 
     const hasActionButton = actionButtonIconName || actionButtonIconSvg || actionButtonIconUrl || customPrimaryAction;
 
     const adjustTextareaHeight = useCallback(() => {
-      if (textareaRef.current) {
-        // this is required so the scrollHeight becomes dynamic, otherwise it will be locked at the highest value for the size it reached e.g. 500px
-        textareaRef.current.style.height = 'auto';
+      if (editableElementRef.current) {
+        const element = editableElementRef.current;
+        // Save scroll position before adjusting height
+        const scrollTop = element.scrollTop;
 
-        const minTextareaHeight = `calc(${LINE_HEIGHT} +  ${tokens.spaceScaledXxs} * 2)`; // the min height of Textarea with 1 row
+        // this is required so the scrollHeight becomes dynamic, otherwise it will be locked at the highest value for the size it reached e.g. 500px
+        element.style.height = 'auto';
+
+        const minRowsHeight = `calc(${minRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
+        const scrollHeight = `calc(${element.scrollHeight}px)`;
 
         if (maxRows === -1) {
-          const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
-          textareaRef.current.style.height = `max(${scrollHeight}, ${minTextareaHeight})`;
+          element.style.height = `max(${scrollHeight}, ${minRowsHeight})`;
         } else {
           const maxRowsHeight = `calc(${maxRows <= 0 ? DEFAULT_MAX_ROWS : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
-          const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
-          textareaRef.current.style.height = `min(max(${scrollHeight}, ${minTextareaHeight}), ${maxRowsHeight})`;
+          element.style.height = `min(max(${scrollHeight}, ${minRowsHeight}), ${maxRowsHeight})`;
         }
+
+        // Restore scroll position after adjusting height
+        element.scrollTop = scrollTop;
       }
-    }, [maxRows, LINE_HEIGHT, PADDING]);
+    }, [maxRows, minRows, LINE_HEIGHT, PADDING]);
 
     useEffect(() => {
       const handleResize = () => {
@@ -146,28 +220,48 @@ const InternalPromptInput = React.forwardRef(
       adjustTextareaHeight();
     }, [value, adjustTextareaHeight, maxRows, isCompactMode]);
 
-    const attributes: React.TextareaHTMLAttributes<HTMLTextAreaElement> = {
+    useEffect(() => {
+      if (autoFocus && editableElementRef.current) {
+        editableElementRef.current.focus();
+      }
+    }, [autoFocus]);
+
+    // Cleanup React containers on unmount
+    useEffect(() => {
+      const containers = reactContainersRef.current;
+      return () => {
+        containers.forEach(container => {
+          ReactDOM.unmountComponentAtNode(container);
+        });
+        containers.clear();
+      };
+    }, []);
+
+    // Determine if placeholder should be visible (only when value is empty)
+    const showPlaceholder = !getCurrentValue().trim() && placeholder;
+
+    const attributes: React.HTMLAttributes<HTMLDivElement> & {
+      'data-placeholder'?: string;
+      autoComplete?: string;
+    } = {
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledby,
       'aria-describedby': ariaDescribedby,
       'aria-invalid': invalid ? 'true' : undefined,
-      name,
-      placeholder,
-      autoFocus,
+      'aria-disabled': disabled ? 'true' : undefined,
+      'aria-readonly': readOnly ? 'true' : undefined,
+      'data-placeholder': placeholder,
+      autoComplete: convertAutoComplete(autoComplete),
       className: clsx(styles.textarea, testutilStyles.textarea, {
         [styles.invalid]: invalid,
         [styles.warning]: warning,
+        [styles['textarea-disabled']]: disabled,
+        [styles['placeholder-visible']]: showPlaceholder,
       }),
-      autoComplete: convertAutoComplete(autoComplete),
       spellCheck: spellcheck,
-      disabled,
-      readOnly: readOnly ? true : undefined,
-      rows: minRows,
       onKeyDown: handleKeyDown,
       onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
-      // We set a default value on the component in order to force it into the controlled mode.
-      value: value || '',
-      onChange: handleChange,
+      onInput: handleChange,
       onBlur: onBlur && (() => fireNonCancelableEvent(onBlur)),
       onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     };
@@ -189,7 +283,7 @@ const InternalPromptInput = React.forwardRef(
             iconUrl={actionButtonIconUrl}
             iconSvg={actionButtonIconSvg}
             iconAlt={actionButtonIconAlt}
-            onClick={() => fireNonCancelableEvent(onAction, { value })}
+            onClick={() => fireNonCancelableEvent(onAction, { value: getCurrentValue() })}
             variant="icon"
           />
         )}
@@ -222,13 +316,14 @@ const InternalPromptInput = React.forwardRef(
           </div>
         )}
         <div className={styles['textarea-wrapper']}>
-          <WithNativeAttributes
-            {...attributes}
-            tag="textarea"
-            componentName="PromptInput"
-            nativeAttributes={nativeTextareaAttributes}
-            ref={textareaRef}
+          {name && <input type="hidden" name={name} value={getCurrentValue()} />}
+          <div
             id={controlId}
+            ref={editableElementRef}
+            role={'textbox'}
+            contentEditable={!disabled && !readOnly}
+            suppressContentEditableWarning={true}
+            {...attributes}
           />
           {hasActionButton && !secondaryActions && action}
         </div>
@@ -249,7 +344,7 @@ const InternalPromptInput = React.forwardRef(
             >
               {secondaryActions}
             </div>
-            <div className={styles.buffer} onClick={() => textareaRef.current?.focus()} />
+            <div className={styles.buffer} onClick={() => editableElementRef.current?.focus()} />
             {hasActionButton && action}
           </div>
         )}
