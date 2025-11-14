@@ -105,7 +105,8 @@ export function TokenEditor({
           ? temporaryToken.operator
           : allowedOperators[0];
       const matchedProperty = filteringProperties.find(property => property.propertyKey === newPropertyKey) ?? null;
-      setTemporaryToken({ ...temporaryToken, property: matchedProperty, operator, value: null });
+      const value = matchedProperty?.getTokenType() === 'enum' ? null : '';
+      setTemporaryToken({ ...temporaryToken, property: matchedProperty, operator, value });
     };
 
     const operator = temporaryToken.operator;
