@@ -23,6 +23,7 @@ const statusToColor: Record<StepsProps.Status, BoxProps.Color> = {
   pending: 'text-status-inactive',
   'in-progress': 'text-status-inactive',
   loading: 'text-status-inactive',
+  'not-started': 'text-status-inactive',
 };
 
 const CustomStep = ({
