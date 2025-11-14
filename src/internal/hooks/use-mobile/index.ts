@@ -26,7 +26,8 @@ function getIsMobile() {
      * wouldn't know which one of them to use).
      * Instead, we use the media query here in JS too.
      */
-    return window.matchMedia(`(max-width: ${mobileBreakpoint}px)`).matches;
+    /* istanbul ignore next: matchMedia is not available in jsdom. */
+    return window.matchMedia(`(max-width: ${mobileBreakpoint}px)`)?.matches;
   }
 
   return getMatchingBreakpoint(window.innerWidth, ['xs']) !== 'xs';
