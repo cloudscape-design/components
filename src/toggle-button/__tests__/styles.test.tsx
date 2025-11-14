@@ -47,12 +47,12 @@ describe('getToggleButtonStyles', () => {
     jest.resetModules();
   });
 
-  test('returns empty object for undefined or empty style objects', () => {
-    expect(getToggleButtonStyles(undefined)).toEqual({});
-    expect(getToggleButtonStyles({})).toEqual({});
+  test('returns empty nativeButtonStyles for undefined or empty style objects', () => {
+    expect(getToggleButtonStyles(undefined)).toEqual({ nativeButtonStyles: {} });
+    expect(getToggleButtonStyles({})).toEqual({ nativeButtonStyles: {} });
   });
 
-  test('handles all possible style configurations', () => {
+  test('extracts only pressed states to nativeButtonStyles', () => {
     const allStyles = {
       root: {
         borderRadius: '4px',
@@ -95,10 +95,26 @@ describe('getToggleButtonStyles', () => {
       },
     };
 
-    expect(getToggleButtonStyles(allStyles)).toMatchSnapshot();
+    const result = getToggleButtonStyles(allStyles);
+
+    // Should only contain pressed states
+    expect(result).toEqual({
+      nativeButtonStyles: {
+        [customCssProps.styleBackgroundPressed]: '#e0e0e0',
+        [customCssProps.styleBorderColorPressed]: '#0073bb',
+        [customCssProps.styleBoxShadowPressed]: '0 0 0 2px #0073bb',
+        [customCssProps.styleColorPressed]: '#0073bb',
+      },
+    });
+
+    // Should NOT contain non-pressed states (these are handled by InternalButton)
+    expect(result.nativeButtonStyles).not.toHaveProperty('borderRadius');
+    expect(result.nativeButtonStyles).not.toHaveProperty('borderWidth');
+    expect(result.nativeButtonStyles).not.toHaveProperty(customCssProps.styleBackgroundDefault);
+    expect(result.nativeButtonStyles).not.toHaveProperty(customCssProps.styleBackgroundHover);
   });
 
-  test('returns empty object when SYSTEM is not core', async () => {
+  test('returns empty nativeButtonStyles when SYSTEM is not core', async () => {
     jest.resetModules();
     jest.doMock('../../internal/environment', () => ({
       SYSTEM: 'visual-refresh',
@@ -108,7 +124,7 @@ describe('getToggleButtonStyles', () => {
 
     const result = getToggleButtonStylesNonCore({ root: { borderRadius: '4px' } });
 
-    expect(result).toEqual({});
+    expect(result).toEqual({ nativeButtonStyles: {} });
   });
 
   describe('individual root properties', () => {
@@ -120,11 +136,13 @@ describe('getToggleButtonStyles', () => {
     };
 
     Object.entries(rootProperties).forEach(([property, value]) => {
-      test(`${property} only`, () => {
+      test(`${property} only - not extracted (handled by InternalButton)`, () => {
         const result = getToggleButtonStyles({ root: { [property]: value } });
 
+        // These properties are passed to InternalButton via the style prop
+        // and are not extracted to nativeButtonStyles
         expect(result).toEqual({
-          [property]: value,
+          nativeButtonStyles: {},
         });
       });
     });
@@ -133,8 +151,26 @@ describe('getToggleButtonStyles', () => {
   describe('state properties', () => {
     STATE_PROPERTIES.forEach(property => {
       describe(`${property}`, () => {
-        STATES.forEach(state => {
-          test(`${state} only`, () => {
+        test('pressed state only', () => {
+          const testValue = `test-${property}-pressed`;
+          const style = {
+            root: {
+              [property]: { pressed: testValue },
+            },
+          };
+
+          const result = getToggleButtonStyles(style);
+
+          // Pressed state should be extracted to nativeButtonStyles
+          expect(result).toEqual({
+            nativeButtonStyles: {
+              [CSS_PROPERTY_MAP[property].pressed]: testValue,
+            },
+          });
+        });
+
+        ['default', 'disabled', 'hover', 'active'].forEach(state => {
+          test(`${state} only - not extracted (handled by InternalButton)`, () => {
             const testValue = `test-${property}-${state}`;
             const style = {
               root: {
@@ -144,13 +180,14 @@ describe('getToggleButtonStyles', () => {
 
             const result = getToggleButtonStyles(style);
 
+            // Non-pressed states are not extracted
             expect(result).toEqual({
-              [CSS_PROPERTY_MAP[property][state]]: testValue,
+              nativeButtonStyles: {},
             });
           });
         });
 
-        test(`all states together`, () => {
+        test('all states together - only pressed extracted', () => {
           const allStateValues = STATES.reduce(
             (acc, state) => ({
               ...acc,
@@ -162,8 +199,11 @@ describe('getToggleButtonStyles', () => {
           const style = { root: { [property]: allStateValues } };
           const result = getToggleButtonStyles(style);
 
-          STATES.forEach(state => {
-            expect(result).toHaveProperty(CSS_PROPERTY_MAP[property][state], `test-${property}-${state}`);
+          // Only pressed state should be in nativeButtonStyles
+          expect(result).toEqual({
+            nativeButtonStyles: {
+              [CSS_PROPERTY_MAP[property].pressed]: `test-${property}-pressed`,
+            },
           });
         });
       });
@@ -177,19 +217,20 @@ describe('getToggleButtonStyles', () => {
       borderWidth: { prop: customCssProps.styleFocusRingBorderWidth, value: '3px' },
     };
 
-    Object.entries(focusRingProperties).forEach(([property, { prop, value }]) => {
-      test(`${property} only`, () => {
+    Object.entries(focusRingProperties).forEach(([property, { value }]) => {
+      test(`${property} only - not extracted (handled by InternalButton)`, () => {
         const result = getToggleButtonStyles({
           root: { focusRing: { [property]: value } },
         });
 
+        // focusRing properties are passed to InternalButton via the style prop
         expect(result).toEqual({
-          [prop]: value,
+          nativeButtonStyles: {},
         });
       });
     });
 
-    test('all focusRing properties together', () => {
+    test('all focusRing properties together - not extracted (handled by InternalButton)', () => {
       const result = getToggleButtonStyles({
         root: {
           focusRing: {
@@ -200,15 +241,14 @@ describe('getToggleButtonStyles', () => {
         },
       });
 
+      // focusRing properties are passed to InternalButton via the style prop
       expect(result).toEqual({
-        [customCssProps.styleFocusRingBorderColor]: '#10b981',
-        [customCssProps.styleFocusRingBorderRadius]: '10px',
-        [customCssProps.styleFocusRingBorderWidth]: '3px',
+        nativeButtonStyles: {},
       });
     });
   });
 
-  test('handles mixed property types', () => {
+  test('handles mixed property types - only pressed states extracted', () => {
     const result = getToggleButtonStyles({
       root: {
         borderRadius: '8px',
@@ -219,14 +259,19 @@ describe('getToggleButtonStyles', () => {
       },
     });
 
+    // Only pressed states should be extracted
     expect(result).toEqual({
-      borderRadius: '8px',
-      paddingBlock: '10px',
-      [customCssProps.styleBackgroundDefault]: '#3b82f6',
-      [customCssProps.styleBackgroundPressed]: '#1e40af',
-      [customCssProps.styleColorHover]: '#ffffff',
-      [customCssProps.styleColorPressed]: '#f0f0f0',
-      [customCssProps.styleFocusRingBorderColor]: '#3b82f6',
+      nativeButtonStyles: {
+        [customCssProps.styleBackgroundPressed]: '#1e40af',
+        [customCssProps.styleColorPressed]: '#f0f0f0',
+      },
     });
+
+    // Other properties are passed to InternalButton via the style prop
+    expect(result.nativeButtonStyles).not.toHaveProperty('borderRadius');
+    expect(result.nativeButtonStyles).not.toHaveProperty('paddingBlock');
+    expect(result.nativeButtonStyles).not.toHaveProperty(customCssProps.styleBackgroundDefault);
+    expect(result.nativeButtonStyles).not.toHaveProperty(customCssProps.styleColorHover);
+    expect(result.nativeButtonStyles).not.toHaveProperty(customCssProps.styleFocusRingBorderColor);
   });
 });

@@ -48,6 +48,8 @@ export const InternalToggleButton = React.forwardRef(
       }
     }
 
+    const { nativeButtonStyles } = getToggleButtonStyles(style);
+
     return (
       <InternalButton
         className={clsx(className, styles[`variant-${variant}`], { [styles.pressed]: pressed })}
@@ -64,9 +66,10 @@ export const InternalToggleButton = React.forwardRef(
         }}
         {...rest}
         ref={ref}
+        style={style}
         nativeButtonAttributes={{
           ...nativeButtonAttributes,
-          style: { ...nativeButtonAttributes?.style, ...getToggleButtonStyles(style) },
+          style: { ...nativeButtonAttributes?.style, ...nativeButtonStyles },
         }}
         analyticsAction={analyticsAction}
       />
