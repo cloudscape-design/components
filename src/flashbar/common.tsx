@@ -128,7 +128,7 @@ export function useFlashbar({
 
   const handleFlashDismissed = (dismissedId?: string, persistenceConfig?: FlashbarProps.PersistenceConfig) => {
     handleFlashDismissedInternal(dismissedId, items, ref.current, flashRefs.current);
-    if (persistenceConfig?.uniqueKey && persistenceConfig.uniqueKey.trim()) {
+    if (persistenceConfig?.uniqueKey) {
       persistFlashbarDismiss(persistenceConfig);
     }
   };
@@ -147,8 +147,8 @@ export function useFlashbar({
 
 // Hook for managing flashbar items visibility with persistence
 export function useFlashbarVisibility(items: ReadonlyArray<FlashbarProps.MessageDefinition>) {
-  const [checkedPersistenceKeys, setCheckedPersistenceKeys] = useState<Set<string>>(new Set());
-  const [persistentItemsVisibility, setPersistentItemsVisibility] = useState<Map<string, boolean>>(new Map());
+  const [checkedPersistenceKeys, setCheckedPersistenceKeys] = useState<Set<string>>(() => new Set());
+  const [persistentItemsVisibility, setPersistentItemsVisibility] = useState<Map<string, boolean>>(() => new Map());
 
   const visibleItems = useMemo(() => {
     return items.filter(
@@ -167,19 +167,27 @@ export function useFlashbarVisibility(items: ReadonlyArray<FlashbarProps.Message
     }
 
     const checkNewPersistentItems = async () => {
-      const newVisibility = new Map(persistentItemsVisibility);
-      const newKeys = new Set(checkedPersistenceKeys);
-
-      await Promise.all(
+      const results = await Promise.all(
         newPersistentItems.map(async item => {
           const isDismissed = await retrieveFlashbarDismiss(item.persistenceConfig!);
-          newVisibility.set(item.persistenceConfig!.uniqueKey, !isDismissed);
-          newKeys.add(item.persistenceConfig!.uniqueKey);
+          return {
+            key: item.persistenceConfig!.uniqueKey,
+            visible: !isDismissed,
+          };
         })
       );
 
-      setPersistentItemsVisibility(newVisibility);
-      setCheckedPersistenceKeys(newKeys);
+      setPersistentItemsVisibility(prev => {
+        const updated = new Map(prev);
+        results.forEach(({ key, visible }) => updated.set(key, visible));
+        return updated;
+      });
+
+      setCheckedPersistenceKeys(prev => {
+        const updated = new Set(prev);
+        results.forEach(({ key }) => updated.add(key));
+        return updated;
+      });
     };
 
     checkNewPersistentItems();

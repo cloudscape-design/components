@@ -62,9 +62,15 @@ describe('Flashbar persistence', () => {
     });
 
     it('handles mixed persistent and non-persistent items', async () => {
-      mockRetrieveFlashbarDismiss
-        .mockResolvedValueOnce(true) // key-0: hidden
-        .mockResolvedValueOnce(false); // key-2: visible
+      mockRetrieveFlashbarDismiss.mockImplementation(config => {
+        if (config.uniqueKey === 'key-0') {
+          return Promise.resolve(true);
+        }
+        if (config.uniqueKey === 'key-2') {
+          return Promise.resolve(false);
+        }
+        throw new Error(`Unknown key ${config.uniqueKey}`);
+      });
 
       const items = createItems([true, false, true]);
 
@@ -194,6 +200,82 @@ describe('Flashbar persistence', () => {
       await waitFor(() => {
         expect(mockRetrieveFlashbarDismiss).toHaveBeenCalledTimes(2);
         expect(mockRetrieveFlashbarDismiss).toHaveBeenLastCalledWith({ uniqueKey: 'new-key' });
+      });
+    });
+
+    it('checks persistence only for newly added items when start with empty array', async () => {
+      mockRetrieveFlashbarDismiss.mockResolvedValue(false);
+
+      // Start with empty array
+      const { rerender } = render(<Flashbar items={[]} />);
+
+      expect(mockRetrieveFlashbarDismiss).not.toHaveBeenCalled();
+
+      // Add one item, check that mockRetrieveFlashbarDismiss was called with that item id
+      const items = createItems([true]);
+      rerender(<Flashbar items={items} />);
+
+      await waitFor(() => {
+        expect(mockRetrieveFlashbarDismiss).toHaveBeenCalledTimes(1);
+        expect(mockRetrieveFlashbarDismiss).toHaveBeenCalledWith({ uniqueKey: 'key-0' });
+      });
+
+      mockRetrieveFlashbarDismiss.mockClear();
+
+      // Add one more item, check that mockRetrieveFlashbarDismiss was called with only the 2nd item id
+      const secondItem = { ...createItems([true])[0], id: 'item-1', persistenceConfig: { uniqueKey: 'key-1' } };
+      rerender(<Flashbar items={[...items, secondItem]} />);
+
+      await waitFor(() => {
+        expect(mockRetrieveFlashbarDismiss).toHaveBeenCalledTimes(1);
+        expect(mockRetrieveFlashbarDismiss).toHaveBeenCalledWith({ uniqueKey: 'key-1' });
+      });
+    });
+
+    it('handles concurrent async calls without race conditions', async () => {
+      let resolveFirst: (value: boolean) => void;
+      let resolveSecond: (value: boolean) => void;
+
+      const firstPromise = new Promise<boolean>(resolve => {
+        resolveFirst = resolve;
+      });
+      const secondPromise = new Promise<boolean>(resolve => {
+        resolveSecond = resolve;
+      });
+
+      mockRetrieveFlashbarDismiss.mockImplementation(config => {
+        if (config.uniqueKey === 'key-0') {
+          return firstPromise;
+        }
+        if (config.uniqueKey === 'key-2') {
+          return secondPromise;
+        }
+        throw new Error(`Unknown key ${config.uniqueKey}`);
+      });
+
+      const initialItems = createItems([true, false]); // Create item 0 with persistence, item 1 without persistence
+      const { rerender, container } = render(<Flashbar items={initialItems} />);
+
+      // Add third item while first item still loading
+      const updatedItems = [
+        ...initialItems,
+        { ...createItems([true])[0], content: 'Item 2', id: 'item-second', persistenceConfig: { uniqueKey: 'key-2' } },
+      ];
+      rerender(<Flashbar items={updatedItems} />);
+
+      // Resolve second call first (race condition scenario)
+      resolveSecond!(false); // Item 2 should be visible
+      await waitFor(() => {});
+
+      // Then resolve first call
+      resolveFirst!(true); // Item 0 should be hidden
+
+      const wrapper = createWrapper(container).findFlashbar()!;
+      await waitFor(() => {
+        const items = wrapper.findItems();
+        expect(items).toHaveLength(2);
+        expect(items[0].findContent()!.getElement()).toHaveTextContent('Item 1');
+        expect(items[1].findContent()!.getElement()).toHaveTextContent('Item 2');
       });
     });
   });

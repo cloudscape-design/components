@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Button from '~components/button';
 import Flashbar, { FlashbarProps } from '~components/flashbar';
@@ -9,6 +9,7 @@ import { setPersistenceFunctionsForTesting } from '~components/internal/persiste
 import SpaceBetween from '~components/space-between';
 import Toggle from '~components/toggle';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const params = new URLSearchParams(window.location.hash.split('?')[1] || '');
@@ -22,7 +23,10 @@ setPersistenceFunctionsForTesting({
   },
 });
 
+type PageContext = React.Context<AppContextType<{ stackItems: boolean }>>;
+
 export default function FlashbarTest() {
+  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   const [items, setItems] = useState<FlashbarProps.MessageDefinition[]>([
     {
       type: 'success',
@@ -63,7 +67,7 @@ export default function FlashbarTest() {
       },
     },
   ]);
-  const [stackItems, setStackItems] = useState(params.get('stackItems') === 'true');
+  const stackItems = urlParams.stackItems ?? false;
 
   const addFlashItem = (withPersistence: boolean) => {
     const id = `message_${Date.now()}`;
@@ -100,11 +104,7 @@ export default function FlashbarTest() {
             data-id="stack-items"
             checked={stackItems}
             onChange={({ detail }) => {
-              setStackItems(detail.checked);
-              const url = new URL(window.location.href);
-              const params = new URLSearchParams(url.hash.split('?')[1] || '');
-              params.set('stackItems', detail.checked.toString());
-              window.history.replaceState({}, '', `${url.pathname}${url.hash.split('?')[0]}?${params}`);
+              setUrlParams({ stackItems: detail.checked });
             }}
           >
             Stack items

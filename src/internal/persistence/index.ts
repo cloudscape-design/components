@@ -27,32 +27,34 @@ export function setPersistenceFunctionsForTesting(functions: PersistenceFunction
   }
 }
 
+// eslint-disable-next-line require-await
 export let persistFlashbarDismiss = async function (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   persistenceConfig: FlashbarProps.PersistenceConfig
 ): Promise<void> {
-  // No-op
+  return Promise.resolve();
 };
 
+// eslint-disable-next-line require-await
 export let retrieveFlashbarDismiss = async function (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   persistenceConfig: FlashbarProps.PersistenceConfig
 ): Promise<boolean> {
-  const result = await new Promise<boolean>(resolve => resolve(false));
-  return result;
+  return Promise.resolve(false);
 };
 
+// eslint-disable-next-line require-await
 export let persistAlertDismiss = async function (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   persistenceConfig: AlertProps.PersistenceConfig
 ): Promise<void> {
-  // No-op
+  return Promise.resolve();
 };
 
+// eslint-disable-next-line require-await
 export let retrieveAlertDismiss = async function (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   persistenceConfig: AlertProps.PersistenceConfig
 ): Promise<boolean> {
-  const result = await new Promise<boolean>(resolve => resolve(false));
-  return result;
+  return Promise.resolve(false);
 };

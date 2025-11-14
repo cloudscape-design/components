@@ -130,16 +130,17 @@ const InternalAlert = React.forwardRef(
     );
 
     useEffect(() => {
-      if (persistenceConfig?.uniqueKey && persistenceConfig.uniqueKey.trim()) {
+      if (persistenceConfig?.uniqueKey) {
         retrieveAlertDismiss(persistenceConfig).then(dismissed => {
           setIsPersistentlyDismissed(!!dismissed);
         });
       }
-    }, [persistenceConfig]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [persistenceConfig?.uniqueKey]);
 
     const dismiss = () => {
       fireNonCancelableEvent(onDismiss);
-      if (persistenceConfig && persistenceConfig.uniqueKey && persistenceConfig.uniqueKey.trim()) {
+      if (persistenceConfig && persistenceConfig.uniqueKey) {
         persistAlertDismiss(persistenceConfig);
       }
     };

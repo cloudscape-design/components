@@ -35,7 +35,7 @@ describe('Alert Persistence', () => {
       renderAlert({ persistenceConfig, dismissible: true });
 
       await waitFor(() => {
-        expect(mockRetrieveAlertDismiss).toHaveBeenCalledWith(persistenceConfig);
+        expect(mockRetrieveAlertDismiss).toHaveBeenCalledWith({ uniqueKey: 'test-alert' });
       });
     });
 
@@ -88,7 +88,7 @@ describe('Alert Persistence', () => {
 
       getWrapper()!.findDismissButton()!.click();
 
-      expect(mockPersistAlertDismiss).toHaveBeenCalledWith(persistenceConfig);
+      expect(mockPersistAlertDismiss).toHaveBeenCalledWith({ uniqueKey: 'test-alert' });
       expect(onDismiss).toHaveBeenCalled();
     });
 
@@ -123,7 +123,10 @@ describe('Alert Persistence', () => {
 
       getWrapper()!.findDismissButton()!.click();
 
-      expect(mockPersistAlertDismiss).toHaveBeenCalledWith(persistenceConfig);
+      expect(mockPersistAlertDismiss).toHaveBeenCalledWith({
+        uniqueKey: 'test-alert',
+        crossServicePersistence: true,
+      });
     });
   });
 
