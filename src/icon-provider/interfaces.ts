@@ -126,6 +126,7 @@ export namespace IconProviderProps {
     'status-in-progress'?: ReactNode | null;
     'status-info'?: ReactNode | null;
     'status-negative'?: ReactNode | null;
+    'status-not-started'?: ReactNode | null;
     'status-pending'?: ReactNode | null;
     'status-positive'?: ReactNode | null;
     'status-stopped'?: ReactNode | null;

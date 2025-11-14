@@ -295,6 +295,12 @@ const allStatusesSteps: ReadonlyArray<StepsProps.Step> = [
     header: 'loading step',
     details: 'Test description',
   },
+  {
+    status: 'not-started',
+    statusIconAriaLabel: 'not started',
+    header: 'not started step',
+    details: 'Test description',
+  },
 ];
 
 const emptySteps: ReadonlyArray<StepsProps.Step> = [];

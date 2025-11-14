@@ -18,6 +18,7 @@ $_status-colors: (
   'pending': awsui.$color-text-status-inactive,
   'in-progress': awsui.$color-text-status-inactive,
   'loading': awsui.$color-text-status-inactive,
+  'not-started': awsui.$color-text-status-inactive,
 );
 
 $_color-overrides: (
