@@ -122,7 +122,7 @@ const metadata: StyleDictionary.MetadataIndex = {
   spaceTreeViewIndentation: {
     description: 'The indentation of tree view items.',
     public: true,
-    themeable: true,
+    themeable: false,
   },
 };
 
