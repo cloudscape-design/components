@@ -9,7 +9,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { useInternalI18n } from '../i18n/context';
 import { Transition } from '../internal/components/transition';
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
-import { useFlashbar } from './common';
+import { useFlashbar, useFlashbarVisibility } from './common';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { Flash } from './flash';
 import { FlashbarProps, InternalFlashbarProps } from './interfaces';
@@ -17,9 +17,11 @@ import { FlashbarProps, InternalFlashbarProps } from './interfaces';
 import styles from './styles.css.js';
 
 export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...restProps }: InternalFlashbarProps) {
+  const visibleItems = useFlashbarVisibility(items);
+
   const { allItemsHaveId, baseProps, isReducedMotion, isVisualRefresh, mergedRef, flashRefs, handleFlashDismissed } =
     useFlashbar({
-      items,
+      items: visibleItems,
       ...restProps,
     });
 
@@ -47,7 +49,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
    * from the flashbar will render with visual transitions.
    */
   function renderFlatItemsWithTransitions() {
-    if (motionDisabled || !items) {
+    if (motionDisabled || !visibleItems) {
       return;
     }
 
@@ -55,7 +57,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
       // This is a proxy for <ul>, so we're not applying a class to another actual component.
 
       <TransitionGroup component="ul" className={styles['flash-list']} aria-label={ariaLabel}>
-        {items.map((item, index) => (
+        {visibleItems.map((item, index) => (
           <Transition
             transitionChangeDelay={{ entering: TIMEOUT_FOR_ENTERING_ANIMATION }}
             key={item.id ?? index}
@@ -77,7 +79,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
    * from the flashbar will render without visual transitions.
    */
   function renderFlatItemsWithoutTransitions() {
-    if (!motionDisabled || !items) {
+    if (!motionDisabled || !visibleItems) {
       return;
     }
 
@@ -85,9 +87,9 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
       <ul
         className={styles['flash-list']}
         aria-label={ariaLabel}
-        {...getAnalyticsMetadataAttribute(getComponentsAnalyticsMetadata(items.length, false))}
+        {...getAnalyticsMetadataAttribute(getComponentsAnalyticsMetadata(visibleItems.length, false))}
       >
-        {items.map((item, index) => (
+        {visibleItems.map((item, index) => (
           <li
             key={item.id ?? index}
             className={styles['flash-list-item']}
