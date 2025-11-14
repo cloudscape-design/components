@@ -190,10 +190,16 @@ const MenuItemContent = ({
             {item.text}
             {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
           </div>
-          {item.labelTag && <div className={styles['label-tag']}>{item.labelTag}</div>}
+          {item.labelTag && (
+            <div className={clsx(styles['label-tag'], disabled && styles.disabled)}>{item.labelTag}</div>
+          )}
         </div>
         {item.secondaryText && (
-          <div className={clsx(styles['secondary-text'], highlighted && styles.highlighted)}>{item.secondaryText}</div>
+          <div
+            className={clsx(styles['secondary-text'], highlighted && styles.highlighted, disabled && styles.disabled)}
+          >
+            {item.secondaryText}
+          </div>
         )}
       </div>
     </>
