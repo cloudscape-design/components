@@ -17,6 +17,7 @@ const launchInstanceItem = {
 const launchInstanceFromTemplateItem = {
   text: 'Launch instance from template',
   iconName: 'file',
+  secondaryText: 'Use an existing template',
 } as const;
 
 const viewInstancesItem = {
