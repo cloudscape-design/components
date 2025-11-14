@@ -5,13 +5,14 @@ import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
 import RadioButtonWrapper from './radio-button';
 
-import styles from '../../../radio-group/styles.selectors.js';
+import radioButtonStyles from '../../../internal/components/radio-button/test-classes/styles.selectors.js';
+import styles from '../../../radio-group/test-classes/styles.selectors.js';
 
 export default class RadioGroupWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
 
   findButtons(): Array<RadioButtonWrapper> {
-    return this.findAllByClassName(styles.radio).map(r => new RadioButtonWrapper(r.getElement()));
+    return this.findAllByClassName(radioButtonStyles.root).map(r => new RadioButtonWrapper(r.getElement()));
   }
 
   findInputByValue(value: string): ElementWrapper<HTMLInputElement> | null {

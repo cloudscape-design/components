@@ -15,7 +15,7 @@ import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-gro
 import customCssProps from '../../internal/generated/custom-css-properties';
 
 import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
-import styles from '../../../lib/components/radio-group/styles.selectors.js';
+import radioButtonStyles from '../../../lib/components/internal/components/radio-button/styles.selectors.js';
 
 const defaultItems: RadioGroupProps.RadioButtonDefinition[] = [
   { value: 'val1', label: 'Option one' },
@@ -434,8 +434,8 @@ test('all style api properties', function () {
     />
   );
 
-  const outerCircle = wrapper.findByClassName(styles['styled-circle-border'])!.getElement();
-  const innerCircle = wrapper.findByClassName(styles['styled-circle-fill'])!.getElement();
+  const outerCircle = wrapper.findByClassName(radioButtonStyles['styled-circle-border'])!.getElement();
+  const innerCircle = wrapper.findByClassName(radioButtonStyles['styled-circle-fill'])!.getElement();
   const label = wrapper.findByClassName(abstractSwitchStyles.label)!.getElement();
   const description = wrapper.findByClassName(abstractSwitchStyles.description)!.getElement();
   const control = wrapper.findByClassName(abstractSwitchStyles.control)!.getElement();
