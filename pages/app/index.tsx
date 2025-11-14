@@ -51,6 +51,7 @@ function isAppLayoutPage(pageId?: string) {
     'funnel-analytics/static-single-page-flow',
     'funnel-analytics/static-multi-page-flow',
     'charts.test',
+    'error-boundary',
   ];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
 }

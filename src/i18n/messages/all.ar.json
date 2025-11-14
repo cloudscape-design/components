@@ -172,6 +172,12 @@
   "drawer": {
     "i18nStrings.loadingText": "جار تحميل المحتوى"
   },
+  "error-boundary": {
+    "i18nStrings.headerText": "حدث خطأ غير متوقع، فشل عرض المحتوى",
+    "i18nStrings.descriptionText": "قم بتحديث الصفحة للمحاولة مرة أخرى.",
+    "i18nStrings.descriptionWithFeedbackText": "قم بتحديث الصفحة للمحاولة مرة أخرى. نحن نتابع هذه المشكلة، ولكن يمكنك <Feedback>مشاركة مزيد من المعلومات هنا</Feedback>.",
+    "i18nStrings.refreshActionText": "تحديث الصفحة"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "إظهار عدد أقل من عوامل التصفية",
     "i18nStrings.limitShowMore": "عرض المزيد من عوامل التصفية",
