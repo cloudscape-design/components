@@ -6,10 +6,10 @@ import clsx from 'clsx';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import RadioButton from '../internal/components/radio-button';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import RadioButton from '../radio-group/radio-button';
 import { TilesProps } from './interfaces';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -63,13 +63,14 @@ export const Tile = React.forwardRef(
             ref={mergedRef}
             name={name}
             value={item.value}
-            label={item.label}
             description={item.description}
             disabled={item.disabled}
             controlId={item.controlId}
             readOnly={readOnly}
             className={analyticsSelectors['radio-button']}
-          />
+          >
+            {item.label}
+          </RadioButton>
         </div>
         {item.image && <div className={clsx(styles.image, { [styles.disabled]: !!item.disabled })}>{item.image}</div>}
       </div>

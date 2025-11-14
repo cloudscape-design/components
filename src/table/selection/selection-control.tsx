@@ -7,8 +7,8 @@ import { useSingleTabStopNavigation, useUniqueId } from '@cloudscape-design/comp
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalCheckbox from '../../checkbox/internal';
+import RadioButton from '../../internal/components/radio-button';
 import { KeyCode } from '../../internal/keycode';
-import RadioButton from '../../radio-group/radio-button';
 import { SelectionProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -90,7 +90,7 @@ export function SelectionControl({
       indeterminate={indeterminate}
     />
   ) : (
-    <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} label={''} />
+    <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} />
   );
 
   return (

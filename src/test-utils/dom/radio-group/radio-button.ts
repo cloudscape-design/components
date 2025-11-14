@@ -4,7 +4,11 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import AbstractSwitchWrapper from '../internal/abstract-switch';
 
+import styles from '../../../internal/components/radio-button/test-classes/styles.selectors.js';
+
 export default class RadioButtonWrapper extends ComponentWrapper {
+  static rootSelector: string = styles.root;
+
   private findAbstractSwitch(): AbstractSwitchWrapper {
     return new AbstractSwitchWrapper(this.getElement());
   }
