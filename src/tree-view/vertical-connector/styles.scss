@@ -1,0 +1,29 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+@use '../../internal/styles/tokens' as awsui;
+
+$item-toggle-column-width: 28px;
+
+.vertical-connector {
+  background-color: awsui.$color-tree-view-connector-line;
+  inline-size: awsui.$border-divider-list-width;
+
+  &.grid {
+    grid-row: 2 / span 3;
+    grid-column: 1;
+    block-size: 100%;
+    position: relative;
+    inset-inline-start: calc($item-toggle-column-width / 2);
+  }
+
+  &.absolute {
+    position: absolute;
+    inset: 0;
+    inset-block-end: awsui.$space-scaled-xs;
+    inset-inline-start: calc($item-toggle-column-width / 2);
+  }
+}

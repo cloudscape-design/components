@@ -282,6 +282,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDropzoneBorderDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorDropzoneBorderHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
   colorGapGlobalDrawer: { light: '{colorNeutral250}', dark: '{colorNeutral950}' },
+  colorTreeViewConnectorLine: { light: '{colorNeutral500}', dark: '{colorNeutral300}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

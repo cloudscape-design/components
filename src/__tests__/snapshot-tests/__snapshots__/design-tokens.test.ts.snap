@@ -2313,6 +2313,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#879596",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -2645,6 +2652,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -4959,6 +4973,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#879596",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -5291,6 +5312,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -7605,6 +7633,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#879596",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -7937,6 +7972,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -10251,6 +10293,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#879596",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -10583,6 +10632,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -12897,6 +12953,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#879596",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -13229,6 +13292,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -15543,6 +15613,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fafafa",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -15875,6 +15952,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -18189,6 +18273,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#16191f",
       },
     },
+    "color-tree-view-connector-line": {
+      "$description": "The color of the tree view connector lines.",
+      "$value": {
+        "dark": "#d5dbdb",
+        "light": "#879596",
+      },
+    },
     "font-family-base": {
       "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -18521,6 +18612,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "comfortable": "2px",
         "compact": "2px",
+      },
+    },
+    "space-tree-view-indentation": {
+      "$description": "The indentation of tree view items.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "20px",
       },
     },
   },
@@ -20840,6 +20938,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#8c8c94",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -21172,6 +21277,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -23486,6 +23598,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -23818,6 +23937,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -26132,6 +26258,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#8c8c94",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -26464,6 +26597,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -28778,6 +28918,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#8c8c94",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -29110,6 +29257,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -31424,6 +31578,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#8c8c94",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -31756,6 +31917,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -34070,6 +34238,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#8c8c94",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -34402,6 +34577,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -36716,6 +36898,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -37048,6 +37237,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -39362,6 +39558,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -39694,6 +39897,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
           },
         },
       },
@@ -42008,6 +42218,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#0f141a",
       },
     },
+    "color-tree-view-connector-line": {
+      "$description": "The color of the tree view connector lines.",
+      "$value": {
+        "dark": "#dedee3",
+        "light": "#8c8c94",
+      },
+    },
     "font-family-base": {
       "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -42340,6 +42557,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "comfortable": "2px",
         "compact": "2px",
+      },
+    },
+    "space-tree-view-indentation": {
+      "$description": "The indentation of tree view items.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "20px",
       },
     },
   },
