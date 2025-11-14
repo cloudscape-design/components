@@ -106,3 +106,37 @@
 .external-icon {
   margin-inline-start: awsui.$space-xxs;
 }
+
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: awsui.$space-s;
+}
+
+.label-tag {
+  color: awsui.$color-text-body-default;
+
+  &.disabled {
+    color: awsui.$color-text-interactive-disabled;
+  }
+}
+
+.secondary-text {
+  @include styles.font(body-s);
+  color: awsui.$color-text-dropdown-item-secondary;
+
+  &.highlighted {
+    color: awsui.$color-text-dropdown-item-highlighted;
+  }
+
+  &.disabled {
+    color: awsui.$color-text-interactive-disabled;
+  }
+}
