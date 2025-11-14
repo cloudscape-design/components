@@ -61,7 +61,7 @@ test(
   })
 );
 
-(process.env.REACT_VERSION !== '18' ? test : test.skip)(
+test(
   'sets role=region and aria-label on scrollable wrapper when overflowing',
   useBrowser(async browser => {
     const tableWrapper = createWrapper().findTable();
@@ -84,6 +84,6 @@ test(
     ariaLabelledby = await page.getElementAttribute(scrollableWrapperSelector, 'aria-labelledby');
     expect(role).toEqual('region');
     expect(ariaLabelledby).not.toBeFalsy();
-    await expect(page.getElementsText(`#${ariaLabelledby}`)).resolves.toEqual([tableHeading]);
+    await expect(page.getElementsText(`#${CSS.escape(ariaLabelledby)}`)).resolves.toEqual([tableHeading]);
   })
 );
