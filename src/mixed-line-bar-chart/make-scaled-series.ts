@@ -118,18 +118,9 @@ function getAllX<T>(series: ReadonlyArray<InternalChartSeries<T>>) {
         break;
     }
   }
-  const allDataX: T[] = [];
-  addDataXSet.forEach(x => allDataX.push(x));
-
-  return allDataX;
+  return Array.from(addDataXSet);
 }
 
 function flatten<T>(arrays: T[][]): T[] {
-  const merged: T[] = [];
-  for (const array of arrays) {
-    for (const item of array) {
-      merged.push(item);
-    }
-  }
-  return merged;
+  return arrays.flat();
 }
