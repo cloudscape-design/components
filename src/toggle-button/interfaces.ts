@@ -72,6 +72,11 @@ export interface ToggleButtonProps extends BaseComponentProps, Omit<BaseButtonPr
    * The event `detail` contains the current value for the `pressed` property.
    */
   onChange?: NonCancelableEventHandler<ToggleButtonProps.ChangeDetail>;
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: ToggleButtonProps.Style;
 }
 
 export namespace ToggleButtonProps {
@@ -86,5 +91,47 @@ export namespace ToggleButtonProps {
      * Focuses the underlying native button.
      */
     focus(options?: FocusOptions): void;
+  }
+
+  export interface Style {
+    root?: {
+      background?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+        pressed?: string;
+      };
+      borderColor?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+        pressed?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      boxShadow?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+        pressed?: string;
+      };
+      color?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+        pressed?: string;
+      };
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
   }
 }

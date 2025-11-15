@@ -33,6 +33,7 @@ const ToggleButton = React.forwardRef(
       pressed = false,
       nativeButtonAttributes,
       onChange,
+      style,
       ...props
     }: ToggleButtonProps,
     ref: React.Ref<ToggleButtonProps.Ref>
@@ -68,6 +69,7 @@ const ToggleButton = React.forwardRef(
         pressed={pressed}
         nativeButtonAttributes={nativeButtonAttributes}
         onChange={onChange}
+        style={style}
       >
         {children}
       </InternalToggleButton>
