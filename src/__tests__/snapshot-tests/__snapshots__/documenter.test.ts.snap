@@ -20314,6 +20314,20 @@ is provided by its parent form field component.",
       "type": "string",
     },
     {
+      "description": "Defines the direction in which the radio buttons are laid out.",
+      "inlineType": {
+        "name": ""horizontal" | "vertical"",
+        "type": "union",
+        "values": [
+          "horizontal",
+          "vertical",
+        ],
+      },
+      "name": "direction",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
