@@ -123,13 +123,17 @@ const DatePicker = React.forwardRef(
 
     const hasFullValue = isValidFullDate({ date: value, granularity });
 
-    const buttonAriaLabel =
-      openCalendarAriaLabel &&
-      openCalendarAriaLabel(
-        hasFullValue && parsedValue
-          ? getSelectedDateLabel({ date: parsedValue, granularity, locale: normalizedLocale })
-          : null
-      );
+    const selectedDateLabel =
+      hasFullValue && parsedValue
+        ? getSelectedDateLabel({ date: parsedValue, granularity, locale: normalizedLocale })
+        : null;
+
+    let buttonAriaLabel: string;
+    if (openCalendarAriaLabel) {
+      buttonAriaLabel = openCalendarAriaLabel(selectedDateLabel);
+    } else {
+      buttonAriaLabel = selectedDateLabel ? `Choose Date, selected date is ${selectedDateLabel}` : 'Choose Date';
+    }
 
     const trigger = (
       <div className={styles['date-picker-trigger']}>

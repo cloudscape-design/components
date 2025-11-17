@@ -422,3 +422,37 @@ describe('generates aria-label for the "Open calendar" button', () => {
     expect(button).toHaveAttribute('aria-label', 'Choose Date');
   });
 });
+
+describe('generates default aria-label for the "Open calendar" button when openCalendarAriaLabel is not provided', () => {
+  test('Without a selected date', () => {
+    const { wrapper } = renderDatePicker({
+      ...defaultProps,
+      openCalendarAriaLabel: undefined,
+      locale: 'en-US',
+    });
+    const button = wrapper.findOpenCalendarButton().getElement();
+    expect(button).toHaveAttribute('aria-label', 'Choose Date');
+  });
+
+  test('With a selected date', () => {
+    const { wrapper } = renderDatePicker({
+      ...defaultProps,
+      openCalendarAriaLabel: undefined,
+      value: '2003-04-11',
+      locale: 'en-US',
+    });
+    const button = wrapper.findOpenCalendarButton().getElement();
+    expect(button).toHaveAttribute('aria-label', 'Choose Date, selected date is Friday, April 11, 2003');
+  });
+
+  test('With an incomplete date', () => {
+    const { wrapper } = renderDatePicker({
+      ...defaultProps,
+      openCalendarAriaLabel: undefined,
+      value: '2003-04-0',
+      locale: 'en-US',
+    });
+    const button = wrapper.findOpenCalendarButton().getElement();
+    expect(button).toHaveAttribute('aria-label', 'Choose Date');
+  });
+});
