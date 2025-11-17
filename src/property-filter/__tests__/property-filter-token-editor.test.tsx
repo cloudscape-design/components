@@ -139,6 +139,36 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
     expect(editor.header.getElement()).toHaveTextContent(i18nStrings.editTokenHeader!);
   });
 
+  test('changing the property to a string property without providing a value defaults the value to empty string', () => {
+    const onChange = jest.fn();
+    const { container } = renderComponent({
+      onChange,
+      query: { tokens: [{ propertyKey: 'string', value: 'value', operator: '=' }], operation: 'and' },
+      expandToViewport,
+    });
+
+    const propertyFilter = createWrapper(container).findPropertyFilter()!;
+    const tokens = propertyFilter.findTokens();
+    expect(tokens).toHaveLength(1);
+
+    tokens[0].findLabel().click();
+    const dropdown = propertyFilter.findTokens()[0].findEditorDropdown({ expandToViewport })!;
+    const select = dropdown.findForm().findSelect()!;
+    select.openDropdown();
+    select.selectOptionByValue('other-string');
+    dropdown.findSubmitButton().click();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          tokens: [{ propertyKey: 'other-string', value: '', operator: '=' }],
+          operation: 'and',
+        },
+      })
+    );
+  });
+
   describe('form controls content', () => {
     test('default', () => {
       renderComponent({
