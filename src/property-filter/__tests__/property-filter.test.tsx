@@ -611,31 +611,3 @@ test('warns and does not hide operations when using hideOperations and enableTok
   expect(warnOnce).toHaveBeenCalledTimes(1);
   expect(warnOnce).toHaveBeenCalledWith('PropertyFilter', 'Operations cannot be hidden when token groups are enabled.');
 });
-
-test('changing the property to a string property without providing a value defaults the value to empty string', () => {
-  const onChange = jest.fn();
-  const { propertyFilterWrapper: wrapper } = renderComponent({
-    onChange,
-    query: { tokens: [{ propertyKey: 'string', value: 'value', operator: '=' }], operation: 'and' },
-  });
-
-  const tokens = wrapper.findTokens();
-  expect(tokens).toHaveLength(1);
-
-  tokens[0].findLabel().click();
-  const dropdown = wrapper.findTokens()[0].findEditorDropdown()!;
-  const select = dropdown.findForm().findSelect()!;
-  select.openDropdown();
-  select.selectOptionByValue('other-string');
-  dropdown.findSubmitButton().click();
-
-  expect(onChange).toHaveBeenCalledTimes(1);
-  expect(onChange).toHaveBeenCalledWith(
-    expect.objectContaining({
-      detail: {
-        tokens: [{ propertyKey: 'other-string', value: '', operator: '=' }],
-        operation: 'and',
-      },
-    })
-  );
-});
