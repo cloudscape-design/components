@@ -139,32 +139,55 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
     expect(editor.header.getElement()).toHaveTextContent(i18nStrings.editTokenHeader!);
   });
 
-  test('changing the property to a string property without providing a value defaults the value to empty string', () => {
+  test('changing token property to another property sets correct default value type', () => {
+    function changeTokenProperty(propertyKey: string) {
+      const propertyFilter = createWrapper().findPropertyFilter()!;
+      const tokens = propertyFilter.findTokens();
+
+      tokens[0].findLabel().click();
+      const dropdown = propertyFilter.findTokens()[0].findEditorDropdown({ expandToViewport })!;
+      const select = dropdown.findForm().findSelect()!;
+      select.openDropdown();
+      select.selectOptionByValue(propertyKey);
+      dropdown.findSubmitButton().click();
+    }
+
     const onChange = jest.fn();
-    const { container } = renderComponent({
+    renderComponent({
       onChange,
+      filteringProperties: [
+        { key: 'string', propertyLabel: 'string', operators: ['=', '!='], groupValuesLabel: '' },
+        { key: 'other-string', propertyLabel: 'string-other', operators: ['=', '!='], groupValuesLabel: '' },
+        { key: 'enum', propertyLabel: 'enum', operators: [{ operator: '=', tokenType: 'enum' }], groupValuesLabel: '' },
+        {
+          key: 'date',
+          propertyLabel: 'date',
+          operators: [{ operator: '=', form: () => <div /> }],
+          groupValuesLabel: '',
+        },
+      ],
       query: { tokens: [{ propertyKey: 'string', value: 'value', operator: '=' }], operation: 'and' },
       expandToViewport,
     });
 
-    const propertyFilter = createWrapper(container).findPropertyFilter()!;
-    const tokens = propertyFilter.findTokens();
-    expect(tokens).toHaveLength(1);
-
-    tokens[0].findLabel().click();
-    const dropdown = propertyFilter.findTokens()[0].findEditorDropdown({ expandToViewport })!;
-    const select = dropdown.findForm().findSelect()!;
-    select.openDropdown();
-    select.selectOptionByValue('other-string');
-    dropdown.findSubmitButton().click();
-
-    expect(onChange).toHaveBeenCalledTimes(1);
+    changeTokenProperty('other-string');
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
-        detail: {
-          tokens: [{ propertyKey: 'other-string', value: '', operator: '=' }],
-          operation: 'and',
-        },
+        detail: { tokens: [{ propertyKey: 'other-string', operator: '=', value: '' }], operation: 'and' },
+      })
+    );
+
+    changeTokenProperty('enum');
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { tokens: [{ propertyKey: 'enum', operator: '=', value: [] }], operation: 'and' },
+      })
+    );
+
+    changeTokenProperty('date');
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { tokens: [{ propertyKey: 'date', operator: '=', value: null }], operation: 'and' },
       })
     );
   });
