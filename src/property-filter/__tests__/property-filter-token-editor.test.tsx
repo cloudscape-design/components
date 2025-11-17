@@ -501,7 +501,7 @@ describe('token editor with groups', () => {
         expect.objectContaining({
           detail: {
             operation: 'and',
-            tokenGroups: [{ propertyKey: 'other-string', operator: '=', value: null }],
+            tokenGroups: [{ propertyKey: 'other-string', operator: '=', value: '' }],
             tokens: [],
           },
         })
