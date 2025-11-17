@@ -629,6 +629,7 @@ test('changing the property to a string property without providing a value defau
   select.selectOptionByValue('other-string');
   dropdown.findSubmitButton().click();
 
+  expect(onChange).toHaveBeenCalledTimes(1);
   expect(onChange).toHaveBeenCalledWith(
     expect.objectContaining({
       detail: {
