@@ -129,9 +129,9 @@ describe('Date picker calendar', () => {
       expect(findCalendarHeaderText(wrapper)).toBe('translated');
       // For each calendar we render 6 weeks (42 days) and each requires a label.
       // Additionally, we generate short and full labels for weekday names (14 in total),
-      // and 2 labels for month name.
-      // 42 + 14 + 2 = 58.
-      expect(localStringMock).toHaveBeenCalledTimes(58);
+      // and 2 labels for month name, and 1 label for the selected date button aria-label.
+      // 42 + 14 + 2 + 1 = 59.
+      expect(localStringMock).toHaveBeenCalledTimes(59);
       expect(localStringMock).toHaveBeenCalledWith(locale, expect.any(Object));
     });
 
