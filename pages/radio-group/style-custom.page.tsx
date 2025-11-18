@@ -4,7 +4,7 @@ import React from 'react';
 
 import { RadioGroup, SpaceBetween } from '~components';
 
-import { palette } from '../app/themes/style-api';
+import customStyle from '../radio-button/custom-style';
 import ScreenshotArea from '../utils/screenshot-area';
 
 export default function CustomRadio() {
@@ -27,59 +27,15 @@ export default function CustomRadio() {
     },
   ];
 
-  const style = {
-    input: {
-      stroke: {
-        default: palette.neutral80,
-        disabled: palette.neutral100,
-        readOnly: palette.neutral90,
-      },
-      fill: {
-        checked: palette.teal80,
-        default: palette.neutral10,
-        disabled: palette.neutral60,
-        readOnly: palette.neutral40,
-      },
-      circle: {
-        fill: {
-          checked: palette.neutral10,
-          disabled: palette.neutral10,
-          readOnly: palette.neutral80,
-        },
-      },
-      focusRing: {
-        borderColor: palette.teal80,
-        borderRadius: '2px',
-        borderWidth: '1px',
-      },
-    },
-    label: {
-      color: {
-        checked: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
-        default: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
-        disabled: `light-dark(${palette.neutral80}, ${palette.neutral40})`,
-        readOnly: `light-dark(${palette.neutral80}, ${palette.neutral40})`,
-      },
-    },
-    description: {
-      color: {
-        checked: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
-        default: `light-dark(${palette.neutral100}, ${palette.neutral10})`,
-        disabled: `light-dark(${palette.neutral80}, ${palette.neutral40})`,
-        readOnly: `light-dark(${palette.neutral80}, ${palette.neutral40})`,
-      },
-    },
-  };
-
   return (
     <ScreenshotArea>
       <h1>Custom Radio</h1>
 
       <SpaceBetween size="m" direction="vertical">
         <SpaceBetween size="m" direction="horizontal">
-          <RadioGroup value="first" items={items} style={style} data-testid="1" />
-          <RadioGroup value="second" items={items} style={style} />
-          <RadioGroup value="third" items={items} style={style} readOnly={true} />
+          <RadioGroup value="first" items={items} style={customStyle} data-testid="1" />
+          <RadioGroup value="second" items={items} style={customStyle} />
+          <RadioGroup value="third" items={items} style={customStyle} readOnly={true} />
         </SpaceBetween>
       </SpaceBetween>
     </ScreenshotArea>

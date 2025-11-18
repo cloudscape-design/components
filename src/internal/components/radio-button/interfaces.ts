@@ -4,9 +4,6 @@ import React from 'react';
 
 import { BaseComponentProps } from '../../base-component';
 import { NonCancelableEventHandler } from '../../events';
-/**
- * @awsuiSystem core
- */
 import { NativeAttributes } from '../../utils/with-native-attributes';
 
 export interface RadioButtonProps extends BaseComponentProps {
@@ -52,8 +49,6 @@ export interface RadioButtonProps extends BaseComponentProps {
    * - Event handlers will be chained, unless the default is prevented.
    *
    * We do not support using this attribute to apply custom styling.
-   *
-   * @awsuiSystem core
    */
   nativeInputAttributes?: NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>;
 
@@ -71,9 +66,6 @@ export interface RadioButtonProps extends BaseComponentProps {
    */
   readOnly?: boolean;
 
-  /**
-   * @awsuiSystem core
-   */
   style?: RadioButtonProps.Style;
 
   /**
