@@ -33,11 +33,11 @@ const tokenCategories: Array<StyleDictionary.CategoryModule> = [
 ];
 
 export async function buildClassicOpenSource(builder: ThemeBuilder) {
-  // Add reference tokens first to generate palette tokens
-  builder.addReferenceTokens((await import('./color-palette.js')).referenceTokens);
-
-  tokenCategories.forEach(({ tokens, mode: modeId }) => {
+  tokenCategories.forEach(({ tokens, mode: modeId, referenceTokens }) => {
     const mode = modes.find(mode => mode.id === modeId);
+    if (referenceTokens) {
+      builder.addReferenceTokens(referenceTokens, mode);
+    }
     builder.addTokens(tokens, mode);
   });
 

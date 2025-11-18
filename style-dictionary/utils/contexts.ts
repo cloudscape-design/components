@@ -7,6 +7,7 @@ export const createTopNavigationContext = (tokens: TokenCategory<string, GlobalV
     id: 'top-navigation',
     selector: '.awsui-context-top-navigation',
     tokens,
+    defaultMode: 'dark',
   };
 };
 
@@ -23,6 +24,7 @@ export const createHeaderContext = (tokens: TokenCategory<string, GlobalValue | 
     id: 'header',
     selector: '.awsui-context-content-header',
     tokens,
+    defaultMode: 'dark',
   };
 };
 
