@@ -1,34 +1,31 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
 import { IconProps } from '../icon/interfaces';
-import {
-  BaseChangeDetail,
-  BaseInputProps,
-  InputAutoComplete,
-  InputAutoCorrect,
-  InputKeyEvents,
-  InputSpellcheck,
-} from '../input/interfaces';
+import { BaseInputProps, InputAutoCorrect, InputKeyEvents, InputSpellcheck } from '../input/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { BaseKeyDetail, NonCancelableEventHandler } from '../internal/events';
-/**
- * @awsuiSystem core
- */
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface PromptInputProps
-  extends Omit<BaseInputProps, 'nativeInputAttributes' | 'value'>,
+  extends Omit<BaseInputProps, 'nativeInputAttributes' | 'value' | 'onChange'>,
     InputKeyEvents,
     InputAutoCorrect,
-    InputAutoComplete,
     InputSpellcheck,
     BaseComponentProps,
     FormFieldValidationControlProps {
   /**
    * Specifies the content of the prompt input.
+   * Can be a string or React nodes including Token components.
    */
-  value?: string;
+  value?: React.ReactNode;
+
+  /**
+   * Called whenever a user changes the input value (by typing or pasting).
+   * The event `detail` contains the current value as a React.ReactNode.
+   */
+  onChange?: NonCancelableEventHandler<PromptInputProps.ChangeDetail>;
 
   /**
    * Called whenever a user clicks the action button or presses the "Enter" key.
@@ -124,18 +121,6 @@ export interface PromptInputProps
   disableSecondaryContentPaddings?: boolean;
 
   /**
-   * Attributes to add to the native `textarea` element.
-   * Some attributes will be automatically combined with internal attribute values:
-   * - `className` will be appended.
-   * - Event handlers will be chained, unless the default is prevented.
-   *
-   * We do not support using this attribute to apply custom styling.
-   *
-   * @awsuiSystem core
-   */
-  nativeTextareaAttributes?: NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
-
-  /**
    * @awsuiSystem core
    */
   style?: PromptInputProps.Style;
@@ -143,7 +128,14 @@ export interface PromptInputProps
 
 export namespace PromptInputProps {
   export type KeyDetail = BaseKeyDetail;
-  export type ActionDetail = BaseChangeDetail;
+
+  export interface ChangeDetail {
+    value: React.ReactNode;
+  }
+
+  export interface ActionDetail {
+    value: React.ReactNode;
+  }
 
   export interface Ref {
     /**
@@ -155,15 +147,6 @@ export namespace PromptInputProps {
      * Selects all text in the textarea control.
      */
     select(): void;
-
-    /**
-     * Selects a range of text in the textarea control.
-     *
-     * See https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement/setSelectionRange
-     * for more details on this method. Be aware that using this method in React has some
-     * common pitfalls: https://stackoverflow.com/questions/60129605/is-javascripts-setselectionrange-incompatible-with-react-hooks
-     */
-    setSelectionRange(start: number | null, end: number | null, direction?: 'forward' | 'backward' | 'none'): void;
   }
 
   export interface Style {

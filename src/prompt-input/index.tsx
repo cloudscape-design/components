@@ -13,7 +13,6 @@ export { PromptInputProps };
 const PromptInput = React.forwardRef(
   (
     {
-      autoComplete,
       autoFocus,
       disableBrowserAutocorrect,
       disableActionButton,
@@ -29,7 +28,6 @@ const PromptInput = React.forwardRef(
     const baseComponentProps = useBaseComponent('PromptInput', {
       props: {
         readOnly,
-        autoComplete,
         autoFocus,
         disableBrowserAutocorrect,
         disableActionButton,
@@ -42,7 +40,6 @@ const PromptInput = React.forwardRef(
     return (
       <InternalPromptInput
         readOnly={readOnly}
-        autoComplete={autoComplete}
         autoFocus={autoFocus}
         disableBrowserAutocorrect={disableBrowserAutocorrect}
         disableActionButton={disableActionButton}

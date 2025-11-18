@@ -7,7 +7,6 @@ import clsx from 'clsx';
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal';
-import { convertAutoComplete } from '../input/utils';
 import { getBaseProps } from '../internal/base-component';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
@@ -18,9 +17,116 @@ import { SomeRequired } from '../internal/types';
 import Token from '../token/internal';
 import { PromptInputProps } from './interfaces';
 import { getPromptInputStyles } from './styles';
+import { getPromptText } from './utils';
 
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
+
+/**
+ * Helper to render a Token element into a non-editable container.
+ * If beforeNode is provided, inserts before it; otherwise appends to parent.
+ */
+function renderTokenToDOM(
+  tokenElement: React.ReactElement,
+  parent: HTMLElement,
+  reactContainers: Set<HTMLElement>,
+  beforeNode?: Node | null
+): HTMLElement {
+  const container = document.createElement('span');
+  container.style.display = 'inline';
+  container.contentEditable = 'false';
+
+  if (beforeNode) {
+    parent.insertBefore(container, beforeNode);
+  } else {
+    parent.appendChild(container);
+  }
+  reactContainers.add(container);
+  ReactDOM.render(tokenElement, container);
+
+  return container;
+}
+
+/**
+ * Renders React content (strings and Tokens) into a contentEditable element.
+ * Tokens are wrapped in non-editable spans with data-token-value attributes.
+ */
+function renderReactContentToDOM(
+  content: React.ReactNode,
+  targetElement: HTMLElement,
+  reactContainers: Set<HTMLElement>
+): void {
+  // Clean up previous render
+  reactContainers.forEach(container => ReactDOM.unmountComponentAtNode(container));
+  reactContainers.clear();
+  targetElement.innerHTML = '';
+
+  const renderNode = (node: React.ReactNode, parent: HTMLElement) => {
+    // Primitives: render as text
+    if (typeof node === 'string' || typeof node === 'number') {
+      parent.appendChild(document.createTextNode(String(node)));
+      return;
+    }
+
+    // Arrays: render each child
+    if (Array.isArray(node)) {
+      node.forEach(child => renderNode(child, parent));
+      return;
+    }
+
+    // React elements: Token or Fragment
+    const element = node as React.ReactElement;
+
+    // Fragment: render children directly
+    if (element.type === React.Fragment) {
+      renderNode(element.props?.children, parent);
+      return;
+    }
+
+    // Token: render in non-editable span
+    renderTokenToDOM(element, parent, reactContainers);
+  };
+
+  renderNode(content, targetElement);
+
+  // Ensure cursor can be placed at end
+  if (targetElement.lastChild?.nodeType === Node.ELEMENT_NODE) {
+    targetElement.appendChild(document.createTextNode(''));
+  }
+}
+
+/**
+ * Converts DOM back to ReactNode, preserving Tokens with their labels and values.
+ * Extracts the label from DOM text content and value from data-token-value attribute.
+ */
+function domToReactNode(node: Node): React.ReactNode {
+  // Element with data-token-value: convert to Token
+  if (node.nodeType === Node.ELEMENT_NODE) {
+    const element = node as HTMLElement;
+    const tokenValue = element.getAttribute('data-token-value');
+    if (tokenValue) {
+      // Extract label from the DOM text content (rendered by Token component)
+      const label = element.textContent || '';
+      return <Token variant="inline" label={label} value={tokenValue} />;
+    }
+  }
+
+  // Text node: return text content
+  if (node.nodeType === Node.TEXT_NODE) {
+    return node.textContent || '';
+  }
+
+  // Other elements: recursively convert children
+  const children: React.ReactNode[] = [];
+  for (const child of Array.from(node.childNodes)) {
+    const childNode = domToReactNode(child);
+    if (childNode) {
+      children.push(childNode);
+    }
+  }
+
+  return children.length === 0 ? '' : children.length === 1 ? children[0] : <>{children}</>;
+}
 
 interface InternalPromptInputProps
   extends SomeRequired<PromptInputProps, 'maxRows' | 'minRows'>,
@@ -36,7 +142,6 @@ const InternalPromptInput = React.forwardRef(
       actionButtonIconSvg,
       actionButtonIconAlt,
       ariaLabel,
-      autoComplete,
       autoFocus,
       disableActionButton,
       disableBrowserAutocorrect,
@@ -68,13 +173,10 @@ const InternalPromptInput = React.forwardRef(
 
     const baseProps = getBaseProps(rest);
 
-    // Get the current text value (will be updated on each render)
     const editableElementRef = useRef<HTMLDivElement>(null);
     const reactContainersRef = useRef<Set<HTMLElement>>(new Set());
-    const lastKeyPressedRef = useRef<string>('');
-
-    // Get the current text value from the contentEditable
-    const getCurrentValue = () => editableElementRef.current?.textContent || '';
+    const isRenderingRef = useRef(false);
+    const lastValueRef = useRef<React.ReactNode>(value);
 
     const isRefresh = useVisualRefresh();
     const isCompactMode = useDensityMode(editableElementRef) === 'compact';
@@ -98,16 +200,11 @@ const InternalPromptInput = React.forwardRef(
             selection?.addRange(range);
           }
         },
-        setSelectionRange() {
-          // setSelectionRange is not supported on contentEditable divs
-          // This method is kept for API compatibility but does nothing
-        },
       }),
       [editableElementRef]
     );
 
     const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = event => {
-      lastKeyPressedRef.current = event.key;
       fireKeyboardEvent(onKeyDown, event);
 
       if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
@@ -116,65 +213,76 @@ const InternalPromptInput = React.forwardRef(
           form.requestSubmit();
         }
         event.preventDefault();
-        fireNonCancelableEvent(onAction, { value: getCurrentValue() });
+        fireNonCancelableEvent(onAction, { value });
+      }
+
+      // Detect space key for @mention conversion (prototype feature)
+      if (event.key === ' ' && editableElementRef.current) {
+        // Check if there's an @mention pattern before the cursor
+        const selection = window.getSelection();
+        if (selection && selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+          const textNode = range.startContainer;
+
+          if (textNode.nodeType === Node.TEXT_NODE && textNode.textContent) {
+            const textBeforeCursor = textNode.textContent.substring(0, range.startOffset);
+            const mentionMatch = textBeforeCursor.match(/(^|\s)@(\w+)$/);
+
+            if (mentionMatch) {
+              // Prevent default space insertion
+              event.preventDefault();
+
+              const mentionText = mentionMatch[2];
+              const beforeMention = textBeforeCursor.substring(0, mentionMatch.index! + mentionMatch[1].length);
+              const afterCursor = textNode.textContent.substring(range.startOffset);
+
+              // Create the full token value (will come from menu selection in the future)
+              const tokenValue = `<file_content path="some_test_file.txt">${mentionText}</file_content>`;
+
+              // Replace text with: before + Token + space + after
+              const parent = textNode.parentNode as HTMLElement;
+              const beforeText = document.createTextNode(beforeMention);
+              const spaceText = document.createTextNode(' ');
+              const afterText = document.createTextNode(afterCursor);
+
+              parent.insertBefore(beforeText, textNode);
+
+              // Render Token using helper (insert before textNode)
+              const tokenElement = <Token variant="inline" label={mentionText} value={tokenValue} />;
+              renderTokenToDOM(tokenElement, parent, reactContainersRef.current, textNode);
+
+              parent.insertBefore(spaceText, textNode);
+              parent.insertBefore(afterText, textNode);
+              parent.removeChild(textNode);
+
+              // Place cursor after the space
+              const newRange = document.createRange();
+              newRange.setStart(spaceText, 1);
+              newRange.collapse(true);
+              selection.removeAllRanges();
+              selection.addRange(newRange);
+
+              // Trigger change event
+              const changeEvent = new Event('input', { bubbles: true });
+              editableElementRef.current.dispatchEvent(changeEvent);
+            }
+          }
+        }
       }
     };
 
     const handleChange: React.FormEventHandler<HTMLDivElement> = () => {
-      const textValue = getCurrentValue();
-
-      // Check if space was just pressed and there's an @mention in raw text nodes
-      if (lastKeyPressedRef.current === ' ') {
-        const mentionPattern = /(^|\s)@(\w+)\s/;
-
-        // Find text nodes that contain @mentions
-        const findAndConvertMention = (node: Node): boolean => {
-          if (node.nodeType === Node.TEXT_NODE && node.textContent) {
-            const match = node.textContent.match(mentionPattern);
-            if (match) {
-              const mentionText = match[2];
-              const beforeMention = node.textContent.substring(0, match.index! + match[1].length);
-              const afterMention = node.textContent.substring(match.index! + match[0].length);
-
-              // Create Token container
-              const container = document.createElement('span');
-              container.style.display = 'inline';
-              container.contentEditable = 'false';
-              reactContainersRef.current.add(container);
-
-              // Replace text node with: before + Token + after
-              const parent = node.parentNode!;
-              if (beforeMention) {
-                parent.insertBefore(document.createTextNode(beforeMention), node);
-              }
-              parent.insertBefore(container, node);
-              if (afterMention) {
-                parent.insertBefore(document.createTextNode(afterMention), node);
-              }
-              parent.removeChild(node);
-
-              // Render Token into container
-              ReactDOM.render(<Token variant="inline" label={mentionText} />, container);
-
-              return true;
-            }
-          } else if (node.nodeType === Node.ELEMENT_NODE && !reactContainersRef.current.has(node as HTMLElement)) {
-            // Search in child nodes (but skip Token containers)
-            for (const child of Array.from(node.childNodes)) {
-              if (findAndConvertMention(child)) {
-                return true;
-              }
-            }
-          }
-          return false;
-        };
-
-        if (editableElementRef.current) {
-          findAndConvertMention(editableElementRef.current);
-        }
+      if (isRenderingRef.current) {
+        return; // Skip onChange during programmatic rendering
       }
 
-      fireNonCancelableEvent(onChange, { value: textValue });
+      // Convert DOM back to ReactNode and emit to consumer
+      if (!editableElementRef.current) {
+        return;
+      }
+      const reactNodeValue = domToReactNode(editableElementRef.current);
+      lastValueRef.current = reactNodeValue; // Track the value we're emitting
+      fireNonCancelableEvent(onChange, { value: reactNodeValue });
       adjustTextareaHeight();
     };
 
@@ -216,7 +324,21 @@ const InternalPromptInput = React.forwardRef(
       };
     }, [adjustTextareaHeight]);
 
+    // Render value prop into contentEditable only when it changes externally
     useEffect(() => {
+      if (!editableElementRef.current) {
+        return;
+      }
+
+      // Only re-render if the value actually changed from outside
+      // (not from user typing which would have updated lastValueRef)
+      if (value !== lastValueRef.current) {
+        isRenderingRef.current = true;
+        renderReactContentToDOM(value || '', editableElementRef.current, reactContainersRef.current);
+        isRenderingRef.current = false;
+        lastValueRef.current = value;
+      }
+
       adjustTextareaHeight();
     }, [value, adjustTextareaHeight, maxRows, isCompactMode]);
 
@@ -224,7 +346,8 @@ const InternalPromptInput = React.forwardRef(
       if (autoFocus && editableElementRef.current) {
         editableElementRef.current.focus();
       }
-    }, [autoFocus]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Cleanup React containers on unmount
     useEffect(() => {
@@ -238,11 +361,10 @@ const InternalPromptInput = React.forwardRef(
     }, []);
 
     // Determine if placeholder should be visible (only when value is empty)
-    const showPlaceholder = !getCurrentValue().trim() && placeholder;
+    const showPlaceholder = !value && placeholder;
 
     const attributes: React.HTMLAttributes<HTMLDivElement> & {
       'data-placeholder'?: string;
-      autoComplete?: string;
     } = {
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledby,
@@ -250,8 +372,8 @@ const InternalPromptInput = React.forwardRef(
       'aria-invalid': invalid ? 'true' : undefined,
       'aria-disabled': disabled ? 'true' : undefined,
       'aria-readonly': readOnly ? 'true' : undefined,
+      'aria-required': rest.ariaRequired ? 'true' : undefined,
       'data-placeholder': placeholder,
-      autoComplete: convertAutoComplete(autoComplete),
       className: clsx(styles.textarea, testutilStyles.textarea, {
         [styles.invalid]: invalid,
         [styles.warning]: warning,
@@ -283,7 +405,7 @@ const InternalPromptInput = React.forwardRef(
             iconUrl={actionButtonIconUrl}
             iconSvg={actionButtonIconSvg}
             iconAlt={actionButtonIconAlt}
-            onClick={() => fireNonCancelableEvent(onAction, { value: getCurrentValue() })}
+            onClick={() => fireNonCancelableEvent(onAction, { value })}
             variant="icon"
           />
         )}
@@ -316,7 +438,7 @@ const InternalPromptInput = React.forwardRef(
           </div>
         )}
         <div className={styles['textarea-wrapper']}>
-          {name && <input type="hidden" name={name} value={getCurrentValue()} />}
+          {name && <input type="hidden" name={name} value={getPromptText(value)} />}
           <div
             id={controlId}
             ref={editableElementRef}
