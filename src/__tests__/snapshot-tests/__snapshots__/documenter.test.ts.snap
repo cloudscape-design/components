@@ -20315,6 +20315,9 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeInputAttributes",
       "optional": true,
+      "systemTags": [
+        "core",
+      ],
       "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
