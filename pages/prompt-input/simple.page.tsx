@@ -15,6 +15,7 @@ import {
   SpaceBetween,
   SplitPanel,
 } from '~components';
+import getPromptText from '~components/prompt-input/utils';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import labels from '../app-layout/utils/labels';
@@ -37,6 +38,7 @@ type DemoContext = React.Context<
     disableBrowserAutocorrect: boolean;
     enableSpellcheck: boolean;
     hasName: boolean;
+    enableAutoFocus: boolean;
   }>
 >;
 
@@ -44,9 +46,11 @@ const placeholderText =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
 export default function PromptInputPage() {
-  const [textareaValue, setTextareaValue] = useState<string>('');
-  const [valueInSplitPanel, setValueInSplitPanel] = useState<string>('');
+  const [textareaValue, setTextareaValue] = useState<React.ReactNode>('');
+  const [valueInSplitPanel, setValueInSplitPanel] = useState<React.ReactNode>('');
   const [files, setFiles] = useState<File[]>([]);
+  const [extractedText, setExtractedText] = useState<string>('');
+
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
   const {
@@ -63,6 +67,7 @@ export default function PromptInputPage() {
     disableBrowserAutocorrect,
     enableSpellcheck,
     hasName,
+    enableAutoFocus,
   } = urlParams;
 
   const [items, setItems] = React.useState([
@@ -78,7 +83,7 @@ export default function PromptInputPage() {
   }, [hasText]);
 
   useEffect(() => {
-    if (textareaValue !== placeholderText) {
+    if (typeof textareaValue === 'string' && textareaValue !== placeholderText) {
       setUrlParams({ hasText: false });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -211,6 +216,16 @@ export default function PromptInputPage() {
               >
                 Has name attribute (for forms)
               </Checkbox>
+              <Checkbox
+                checked={enableAutoFocus}
+                onChange={() =>
+                  setUrlParams({
+                    enableAutoFocus: !enableAutoFocus,
+                  })
+                }
+              >
+                Enable auto focus
+              </Checkbox>
             </FormField>
             <button id="placeholder-text-button" onClick={() => setUrlParams({ hasText: true })}>
               Fill with placeholder text
@@ -223,148 +238,141 @@ export default function PromptInputPage() {
             <button onClick={() => buttonGroupRef.current?.focus('files')}>Focus file input</button>
             <button onClick={() => ref.current?.select()}>Select all text</button>
 
+            {extractedText && (
+              <Box variant="awsui-key-label">
+                <div>
+                  <Box variant="awsui-key-label">Last extracted text (using extractTextFromReactNode):</Box>
+                  <Box padding={{ top: 'xs' }}>
+                    <code>{extractedText}</code>
+                  </Box>
+                </div>
+              </Box>
+            )}
+
             <form
               onSubmit={event => {
                 event.preventDefault();
                 const formData = new FormData(event.currentTarget);
-                const data: Record<string, string> = {};
-                const entries: Array<{ name: string; value: string }> = [];
-
-                formData.forEach((value, key) => {
-                  data[key] = String(value);
-                  entries.push({ name: key, value: String(value) });
-                });
-
-                console.log('FORM SUBMITTED:', {
-                  formData: data,
-                  entries,
+                console.log('FORM SUBMITTED (fallback):', {
+                  'user-prompt': formData.get('user-prompt'),
                 });
               }}
             >
               <ColumnLayout columns={2}>
                 <FormField
-                  errorText={(textareaValue.length > MAX_CHARS || isInvalid) && 'The query has too many characters.'}
+                  errorText={
+                    (getPromptText(textareaValue, true).length > MAX_CHARS || isInvalid) &&
+                    'The query has too many characters.'
+                  }
                   warningText={hasWarning && 'This input has a warning'}
                   constraintText={
                     <>
-                      This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
+                      This service is subject to some policy. Character count:{' '}
+                      {getPromptText(textareaValue, true).length}/{MAX_CHARS}
                     </>
                   }
                   label={<span>User prompt</span>}
                   i18nStrings={{ errorIconAriaLabel: 'Error' }}
                 >
-                  <div
-                    onSubmitCapture={e => {
-                      // Prevent form submission from secondary action buttons
-                      e.preventDefault();
-                      e.stopPropagation();
+                  <PromptInput
+                    data-testid="prompt-input"
+                    ariaLabel="Chat input"
+                    actionButtonIconName="send"
+                    actionButtonAriaLabel="Submit prompt"
+                    value={textareaValue}
+                    onChange={(event: any) => setTextareaValue(event.detail.value)}
+                    onAction={event => {
+                      // Demo: Extract plain text from ReactNode value using utility
+                      // In a real app, you'd send this extracted text to your backend
+                      const plainText = getPromptText(event.detail.value);
+
+                      setExtractedText(plainText);
+                      window.alert(`Submitted plain text: ${plainText}`);
                     }}
-                  >
-                    <PromptInput
-                      data-testid="prompt-input"
-                      ariaLabel="Chat input"
-                      actionButtonIconName="send"
-                      actionButtonAriaLabel="Submit prompt"
-                      value={textareaValue}
-                      onChange={(event: any) => setTextareaValue(event.detail.value)}
-                      onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
-                      placeholder="Ask a question"
-                      maxRows={hasInfiniteMaxRows ? -1 : 4}
-                      disabled={isDisabled}
-                      readOnly={isReadOnly}
-                      invalid={isInvalid || textareaValue.length > MAX_CHARS}
-                      warning={hasWarning}
-                      ref={ref}
-                      disableSecondaryActionsPaddings={true}
-                      disableActionButton={disableActionButton}
-                      disableBrowserAutocorrect={disableBrowserAutocorrect}
-                      spellcheck={enableSpellcheck}
-                      name={hasName ? 'user-prompt' : undefined}
-                      customPrimaryAction={
-                        hasPrimaryActions ? (
+                    placeholder="Ask a question"
+                    maxRows={hasInfiniteMaxRows ? -1 : 4}
+                    disabled={isDisabled}
+                    readOnly={isReadOnly}
+                    invalid={isInvalid || getPromptText(textareaValue, true).length > MAX_CHARS}
+                    warning={hasWarning}
+                    ref={ref}
+                    disableSecondaryActionsPaddings={true}
+                    disableActionButton={disableActionButton}
+                    disableBrowserAutocorrect={disableBrowserAutocorrect}
+                    spellcheck={enableSpellcheck}
+                    name={hasName ? 'user-prompt' : undefined}
+                    autoFocus={enableAutoFocus}
+                    customPrimaryAction={
+                      hasPrimaryActions ? (
+                        <ButtonGroup
+                          variant="icon"
+                          items={[
+                            {
+                              type: 'icon-button',
+                              id: 'record',
+                              text: 'Record',
+                              iconName: 'microphone',
+                              disabled: isDisabled || isReadOnly,
+                            },
+                            {
+                              type: 'icon-button',
+                              id: 'submit',
+                              text: 'Submit',
+                              iconName: 'send',
+                              disabled: isDisabled || isReadOnly,
+                            },
+                          ]}
+                        />
+                      ) : undefined
+                    }
+                    secondaryActions={
+                      hasSecondaryActions ? (
+                        <Box padding={{ left: 'xxs', top: 'xs' }}>
                           <ButtonGroup
-                            variant="icon"
+                            ref={buttonGroupRef}
+                            ariaLabel="Chat actions"
+                            onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
                             items={[
                               {
+                                type: 'icon-file-input',
+                                id: 'files',
+                                text: 'Upload files',
+                                multiple: true,
+                              },
+                              {
                                 type: 'icon-button',
-                                id: 'record',
-                                text: 'Record',
-                                iconName: 'microphone',
+                                id: 'expand',
+                                iconName: 'expand',
+                                text: 'Go full page',
                                 disabled: isDisabled || isReadOnly,
                               },
                               {
                                 type: 'icon-button',
-                                id: 'submit',
-                                text: 'Submit',
-                                iconName: 'send',
+                                id: 'remove',
+                                iconName: 'remove',
+                                text: 'Remove',
                                 disabled: isDisabled || isReadOnly,
                               },
                             ]}
+                            variant="icon"
                           />
-                        ) : undefined
-                      }
-                      secondaryActions={
-                        hasSecondaryActions ? (
-                          <Box padding={{ left: 'xxs', top: 'xs' }}>
-                            <ButtonGroup
-                              ref={buttonGroupRef}
-                              ariaLabel="Chat actions"
-                              onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
-                              onItemClick={({ detail }) => {
-                                if (detail.id === 'bug') {
-                                  // Add @debug mention - will be automatically converted to Token
-                                  setTextareaValue(prev => `${prev} @debug `);
-                                }
-                              }}
-                              items={[
-                                {
-                                  type: 'icon-file-input',
-                                  id: 'files',
-                                  text: 'Upload files',
-                                  multiple: true,
-                                },
-                                {
-                                  type: 'icon-button',
-                                  id: 'bug',
-                                  iconName: 'bug',
-                                  text: 'Add debug token',
-                                  disabled: isDisabled || isReadOnly,
-                                },
-                                {
-                                  type: 'icon-button',
-                                  id: 'expand',
-                                  iconName: 'expand',
-                                  text: 'Go full page',
-                                  disabled: isDisabled || isReadOnly,
-                                },
-                                {
-                                  type: 'icon-button',
-                                  id: 'remove',
-                                  iconName: 'remove',
-                                  text: 'Remove',
-                                  disabled: isDisabled || isReadOnly,
-                                },
-                              ]}
-                              variant="icon"
-                            />
-                          </Box>
-                        ) : undefined
-                      }
-                      secondaryContent={
-                        hasSecondaryContent && files.length > 0 ? (
-                          <FileTokenGroup
-                            items={files.map(file => ({
-                              file,
-                            }))}
-                            showFileThumbnail={true}
-                            onDismiss={onDismiss}
-                            i18nStrings={i18nStrings}
-                            alignment="horizontal"
-                          />
-                        ) : undefined
-                      }
-                    />
-                  </div>
+                        </Box>
+                      ) : undefined
+                    }
+                    secondaryContent={
+                      hasSecondaryContent && files.length > 0 ? (
+                        <FileTokenGroup
+                          items={files.map(file => ({
+                            file,
+                          }))}
+                          showFileThumbnail={true}
+                          onDismiss={onDismiss}
+                          i18nStrings={i18nStrings}
+                          alignment="horizontal"
+                        />
+                      ) : undefined
+                    }
+                  />
                 </FormField>
                 <div />
               </ColumnLayout>

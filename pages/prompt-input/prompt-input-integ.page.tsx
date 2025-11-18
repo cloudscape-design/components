@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import PromptInput from '~components/prompt-input';
 
 export default function Page() {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState<React.ReactNode>('');
   const [submitStatus, setSubmitStatus] = useState(false);
   const [isKeyboardSubmittingDisabled, setDisableKeyboardSubmitting] = useState(false);
 
