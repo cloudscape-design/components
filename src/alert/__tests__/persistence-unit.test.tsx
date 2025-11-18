@@ -69,6 +69,22 @@ describe('Alert Persistence', () => {
       await new Promise(resolve => setTimeout(resolve, 200));
       expect(getWrapper()).toBeNull();
     });
+
+    it('shows alert as visible when retrieveAlertDismiss fails', async () => {
+      mockRetrieveAlertDismiss.mockRejectedValue(new Error('Storage error'));
+      const { getWrapper } = renderAlert({
+        persistenceConfig: { uniqueKey: 'test-alert' },
+        dismissible: true,
+        children: 'Test content',
+      });
+
+      await waitFor(() => {
+        const wrapper = getWrapper();
+        expect(wrapper).toBeTruthy();
+        expect(wrapper!.getElement()).toBeInTheDocument();
+        expect(wrapper!.findContent().getElement()).toHaveTextContent('Test content');
+      });
+    });
   });
 
   describe('dismiss functionality', () => {

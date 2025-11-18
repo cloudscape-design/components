@@ -130,17 +130,34 @@ const InternalAlert = React.forwardRef(
     );
 
     useEffect(() => {
+      let isMounted = true;
       if (persistenceConfig?.uniqueKey) {
-        retrieveAlertDismiss(persistenceConfig).then(dismissed => {
-          setIsPersistentlyDismissed(!!dismissed);
-        });
+        retrieveAlertDismiss(persistenceConfig)
+          .then(dismissed => {
+            if (isMounted) {
+              try {
+                setIsPersistentlyDismissed(!!dismissed);
+              } catch {
+                setIsPersistentlyDismissed(false);
+              }
+            }
+          })
+          .catch(() => {
+            if (isMounted) {
+              setIsPersistentlyDismissed(false);
+            }
+          });
       }
+      return () => {
+        isMounted = false;
+      };
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [persistenceConfig?.uniqueKey]);
+    }, [persistenceConfig?.uniqueKey, persistenceConfig?.crossServicePersistence]);
 
     const dismiss = () => {
       fireNonCancelableEvent(onDismiss);
-      if (persistenceConfig && persistenceConfig.uniqueKey) {
+      if (persistenceConfig?.uniqueKey) {
         persistAlertDismiss(persistenceConfig);
       }
     };

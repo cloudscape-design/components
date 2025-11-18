@@ -150,12 +150,10 @@ export function useFlashbarVisibility(items: ReadonlyArray<FlashbarProps.Message
   const [checkedPersistenceKeys, setCheckedPersistenceKeys] = useState<Set<string>>(() => new Set());
   const [persistentItemsVisibility, setPersistentItemsVisibility] = useState<Map<string, boolean>>(() => new Map());
 
-  const visibleItems = useMemo(() => {
-    return items.filter(
-      item =>
-        !item.persistenceConfig?.uniqueKey || persistentItemsVisibility.get(item.persistenceConfig.uniqueKey) === true
-    );
-  }, [items, persistentItemsVisibility]);
+  const visibleItems = items.filter(
+    item =>
+      !item.persistenceConfig?.uniqueKey || persistentItemsVisibility.get(item.persistenceConfig.uniqueKey) === true
+  );
 
   useEffect(() => {
     const newPersistentItems = items.filter(
@@ -166,31 +164,60 @@ export function useFlashbarVisibility(items: ReadonlyArray<FlashbarProps.Message
       return;
     }
 
+    let isMounted = true;
+
     const checkNewPersistentItems = async () => {
-      const results = await Promise.all(
-        newPersistentItems.map(async item => {
-          const isDismissed = await retrieveFlashbarDismiss(item.persistenceConfig!);
-          return {
-            key: item.persistenceConfig!.uniqueKey,
-            visible: !isDismissed,
-          };
-        })
-      );
+      try {
+        const results = await Promise.all(
+          newPersistentItems.map(async item => {
+            try {
+              const isDismissed = await retrieveFlashbarDismiss(item.persistenceConfig!);
+              return {
+                key: item.persistenceConfig!.uniqueKey,
+                visible: !isDismissed,
+              };
+            } catch {
+              return {
+                key: item.persistenceConfig!.uniqueKey,
+                visible: true,
+              };
+            }
+          })
+        );
 
-      setPersistentItemsVisibility(prev => {
-        const updated = new Map(prev);
-        results.forEach(({ key, visible }) => updated.set(key, visible));
-        return updated;
-      });
+        if (!isMounted) {
+          return;
+        }
 
-      setCheckedPersistenceKeys(prev => {
-        const updated = new Set(prev);
-        results.forEach(({ key }) => updated.add(key));
-        return updated;
-      });
+        setPersistentItemsVisibility(prev => {
+          const updated = new Map(prev);
+          results.forEach(({ key, visible }) => updated.set(key, visible));
+          return updated;
+        });
+
+        setCheckedPersistenceKeys(prev => {
+          const updated = new Set(prev);
+          results.forEach(({ key }) => updated.add(key));
+          return updated;
+        });
+      } catch {
+        if (!isMounted) {
+          return;
+        }
+        // Fallback if Promise.all itself fails, set all newPersistentItems to visible
+        setPersistentItemsVisibility(prev => {
+          const updated = new Map(prev);
+          newPersistentItems.forEach(item => updated.set(item.persistenceConfig!.uniqueKey, true));
+          return updated;
+        });
+      }
     };
 
     checkNewPersistentItems();
+
+    return () => {
+      isMounted = false;
+    };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);

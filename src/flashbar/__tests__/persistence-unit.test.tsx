@@ -83,6 +83,20 @@ describe('Flashbar persistence', () => {
         expect(wrapper.findItems()[1].findContent()!.getElement()).toHaveTextContent('Item 2');
       });
     });
+
+    it('shows items as visible when retrieveFlashbarDismiss fails', async () => {
+      mockRetrieveFlashbarDismiss.mockRejectedValue(new Error('Storage error'));
+      const items = createItems([true, false]);
+
+      const { container } = render(<Flashbar items={items} />);
+      const wrapper = createWrapper(container).findFlashbar()!;
+
+      await waitFor(() => {
+        expect(wrapper.findItems()).toHaveLength(2);
+        expect(wrapper.findItems()[0].findContent()!.getElement()).toHaveTextContent('Item 0');
+        expect(wrapper.findItems()[1].findContent()!.getElement()).toHaveTextContent('Item 1');
+      });
+    });
   });
 
   describe('Collapsible flashbar', () => {
@@ -265,7 +279,6 @@ describe('Flashbar persistence', () => {
 
       // Resolve second call first (race condition scenario)
       resolveSecond!(false); // Item 2 should be visible
-      await waitFor(() => {});
 
       // Then resolve first call
       resolveFirst!(true); // Item 0 should be hidden
