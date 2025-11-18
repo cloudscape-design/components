@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { expandColorDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
+import { referenceTokens as vrReferenceTokens } from '../visual-refresh/color-palette.js';
 
 const paletteTokens: StyleDictionary.ColorPaletteDictionary = {
   colorGrey50: '#fcfcfd',
@@ -257,4 +258,5 @@ const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColor
 export const mode: StyleDictionary.ModeIdentifier = 'color';
 
 export { expandedTokens as tokens };
+export { vrReferenceTokens as referenceTokens };
 export { paletteTokens };

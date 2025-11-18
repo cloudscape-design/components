@@ -63,6 +63,7 @@ export namespace StyleDictionary {
   export interface CategoryModule {
     mode?: string;
     tokens: Record<string, any>;
+    referenceTokens?: Record<string, any>;
   }
 
   export interface Metadata {
