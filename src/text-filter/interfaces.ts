@@ -59,6 +59,11 @@ export interface TextFilterProps extends BaseComponentProps, FormFieldControlPro
    * period of time. If you want a delayed handler to invoke a filtering API call, you can use this event in addition to `onChange`.
    */
   onDelayedChange?: NonCancelableEventHandler<TextFilterProps.ChangeDetail>;
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: TextFilterProps.Style;
 }
 
 export namespace TextFilterProps {
@@ -71,5 +76,50 @@ export namespace TextFilterProps {
      * Sets focus on the underlying input control.
      */
     focus(): void;
+  }
+
+  export interface Style {
+    root?: {
+      backgroundColor?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      borderColor?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      boxShadow?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      color?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      fontSize?: string;
+      fontWeight?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+    placeholder?: {
+      color?: string;
+      fontSize?: string;
+      fontStyle?: string;
+      fontWeight?: string;
+    };
   }
 }
