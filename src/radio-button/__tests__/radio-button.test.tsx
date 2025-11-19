@@ -74,6 +74,16 @@ describe('events', () => {
     expect(onSelect).toHaveBeenCalledTimes(1);
   });
 
+  test('does not fire onSelect when already checked', () => {
+    const onSelect = jest.fn();
+    const radioButton = renderRadioButton(<RadioButton name="group" checked={true} onSelect={onSelect} />);
+
+    radioButton.findNativeInput().click();
+
+    expect(radioButton.findNativeInput().getElement()).toBeChecked();
+    expect(onSelect).not.toHaveBeenCalled();
+  });
+
   test('fires a single onSelect event on description click', () => {
     const onSelect = jest.fn();
     const radioButton = renderRadioButton(
