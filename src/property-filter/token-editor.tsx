@@ -105,9 +105,7 @@ export function TokenEditor({
           ? temporaryToken.operator
           : allowedOperators[0];
       const matchedProperty = filteringProperties.find(property => property.propertyKey === newPropertyKey) ?? null;
-      const isCustomType = !!matchedProperty?.externalProperty.operators?.find(
-        o => typeof o !== 'string' && o.operator === operator && !!o.form
-      );
+      const isCustomType = !!matchedProperty?.getValueFormRenderer(operator);
       const value = isCustomType || matchedProperty?.getTokenType(operator) === 'enum' ? null : '';
       setTemporaryToken({ ...temporaryToken, property: matchedProperty, operator, value });
     };
