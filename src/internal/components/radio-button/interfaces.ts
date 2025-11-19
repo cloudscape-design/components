@@ -60,7 +60,7 @@ export interface RadioButtonProps extends BaseComponentProps {
   /**
    * Called when the user clicks on the radio button and it is not disabled or read-only.
    */
-  onClick?: NonCancelableEventHandler<RadioButtonProps.ChangeDetail>;
+  onSelect?: NonCancelableEventHandler;
 
   /**
    * Specifies if the radio button is read-only, which prevents the

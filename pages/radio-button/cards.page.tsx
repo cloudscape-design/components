@@ -25,7 +25,7 @@ type RadioButtonDemoContext = React.Context<
 const Card = ({
   label,
   checked,
-  onClick,
+  onSelect,
   description,
   disabled,
   readOnly,
@@ -45,7 +45,7 @@ const Card = ({
           checked={checked}
           disabled={disabled}
           readOnly={readOnly}
-          onClick={onClick}
+          onSelect={onSelect}
           ref={ref}
         />
       </label>
@@ -93,7 +93,7 @@ export default function RadioButtonsCardsPage() {
               label={option.label}
               description={option.description}
               checked={option.value === value}
-              onClick={() => setValue(option.value)}
+              onSelect={() => setValue(option.value)}
               disabled={option.allowDisabled && urlParams.disabled}
               readOnly={option.allowReadOnly && urlParams.readOnly}
             />

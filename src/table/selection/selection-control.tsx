@@ -92,7 +92,7 @@ export function SelectionControl({
       indeterminate={indeterminate}
     />
   ) : (
-    <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} onClick={onChange} />
+    <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} onSelect={onChange} />
   );
 
   return (

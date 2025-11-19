@@ -18,7 +18,7 @@ export default function RadioButtonScenario() {
         </button>
       </p>
       <ScreenshotArea>
-        <RadioButton name="radio-button-group" checked={checked} onClick={() => setChecked(true)}>
+        <RadioButton name="radio-button-group" checked={checked} onSelect={() => setChecked(true)}>
           Radio button label
         </RadioButton>
       </ScreenshotArea>

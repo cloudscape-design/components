@@ -20229,19 +20229,7 @@ exports[`Components definition for radio-button matches the snapshot: radio-butt
     {
       "cancelable": false,
       "description": "Called when the user clicks on the radio button and it is not disabled or read-only.",
-      "detailInlineType": {
-        "name": "RadioButtonProps.ChangeDetail",
-        "properties": [
-          {
-            "name": "checked",
-            "optional": false,
-            "type": "boolean",
-          },
-        ],
-        "type": "object",
-      },
-      "detailType": "RadioButtonProps.ChangeDetail",
-      "name": "onClick",
+      "name": "onSelect",
     },
   ],
   "functions": [

@@ -79,7 +79,7 @@ const InternalRadioGroup = React.forwardRef(
               value={item.value}
               description={item.description}
               disabled={item.disabled}
-              onClick={() => fireNonCancelableEvent(onChange, { value: item.value })}
+              onSelect={() => fireNonCancelableEvent(onChange, { value: item.value })}
               controlId={item.controlId}
               readOnly={readOnly}
               style={style}
