@@ -132,6 +132,26 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     );
   });
 
+  test('updated config should persist between application remounts', () => {
+    awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, defaultActive: false });
+    const { globalDrawersWrapper: globalDrawersWrapperInitial, unmount } = renderComponent(<AppLayout />);
+
+    expect(globalDrawersWrapperInitial.findDrawerById(drawerDefaults.id)).toBeFalsy();
+
+    act(() =>
+      awsuiWidgetPlugins.updateDrawer({
+        type: 'updateDrawerConfig',
+        payload: { id: drawerDefaults.id, defaultActive: true },
+      })
+    );
+
+    unmount();
+
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+  });
+
   test('can update drawer config dynamically for bottom drawer', () => {
     awsuiWidgetPlugins.registerBottomDrawer(drawerDefaults);
     const { wrapper } = renderComponent(<AppLayout />);

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { getAppLayoutMessageHandler, pushInitialMessage } from './core';
+import { getAppLayoutInitialMessages, getAppLayoutMessageHandler, pushInitialMessage } from './core';
 import { AppLayoutUpdateMessage, DrawerPayload, RegisterDrawerMessage } from './interfaces';
 
 /**
@@ -29,5 +29,12 @@ export function registerBottomDrawer(drawer: DrawerPayload) {
  * @param message
  */
 export function updateDrawer(message: AppLayoutUpdateMessage) {
+  if (message.type === 'updateDrawerConfig') {
+    getAppLayoutInitialMessages().forEach(initialMessage => {
+      if (initialMessage.payload.id === message.payload.id) {
+        initialMessage.payload = { ...initialMessage.payload, ...message.payload };
+      }
+    });
+  }
   getAppLayoutMessageHandler()?.(message);
 }
