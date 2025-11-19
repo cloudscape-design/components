@@ -14,7 +14,7 @@ const setupTest = (itemId: string, testFn: (page: ButtonDropdownPage, itemId: st
     await expect(page.getDropdownCheckMessage()).resolves.toEqual('');
     await page.openDropdown();
     if (itemId) {
-      await page.click(page.findButtonDropdown().findItemById(itemId).toSelector());
+      await page.click(page.findButtonDropdown().findItemById(itemId)!.toSelector());
     }
     await testFn(page, itemId);
   });
@@ -48,7 +48,7 @@ describe('clicking on a ButtonDropdown item', () => {
     'allows navigation on item with href - mouse',
     setupTest('', async page => {
       const oldLocation = await page.getLocation();
-      await page.click(page.findButtonDropdown().findItemById('plain_href').toSelector());
+      await page.click(page.findButtonDropdown().findItemById('plain_href')!.toSelector());
       await expect(page.getLocation()).resolves.not.toEqual(oldLocation);
     })
   );
@@ -56,7 +56,7 @@ describe('clicking on a ButtonDropdown item', () => {
     'allows navigation to be prevented on item with href - mouse',
     setupTest('', async page => {
       const oldLocation = await page.getLocation();
-      await page.click(page.findButtonDropdown().findItemById('plain_href_prevented').toSelector());
+      await page.click(page.findButtonDropdown().findItemById('plain_href_prevented')!.toSelector());
       await expect(page.getLocation()).resolves.toEqual(oldLocation);
     })
   );

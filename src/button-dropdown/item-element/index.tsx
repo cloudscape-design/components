@@ -20,6 +20,7 @@ import { isCheckboxItem, isLinkItem } from '../utils/utils';
 import { getItemTarget } from '../utils/utils';
 
 import analyticsLabels from '../analytics-metadata/styles.css.js';
+import testClasses from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 const ItemElement = ({
@@ -187,7 +188,7 @@ const MenuItemContent = ({
       <div className={styles['content-wrapper']}>
         <div className={styles['main-row']}>
           <div>
-            {item.text}
+            <div className={testClasses.text}>{item.text}</div>
             {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
           </div>
           {item.labelTag && (

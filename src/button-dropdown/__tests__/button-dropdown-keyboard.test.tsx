@@ -58,7 +58,7 @@ const items: ButtonDropdownProps.Items = [
 
       const highlightedElement = highlighted!.getElement();
       expect(highlightedElement).toHaveTextContent('item1');
-      expect(highlightedElement).toHaveTextContent('Description 1');
+      expect(highlighted!.findSecondaryText()!.getElement()).toHaveTextContent('Description 1');
     });
 
     describe('when dropdown is open', () => {
