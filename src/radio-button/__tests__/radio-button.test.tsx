@@ -83,6 +83,7 @@ describe('events', () => {
     );
     radioButton.findDescription()!.click();
     expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onClick).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true } }));
   });
 
   test('does not trigger onClick if disabled', () => {
