@@ -8,6 +8,7 @@ import { ExpandToggleButton } from '../../internal/components/expand-toggle-butt
 import InternalStructuredItem from '../../internal/components/structured-item';
 import { joinStrings } from '../../internal/utils/strings';
 import { TreeViewProps } from '../interfaces';
+import VerticalConnector from '../vertical-connector';
 import FocusTarget from './focus-target';
 
 import testUtilStyles from '../test-classes/styles.css.js';
@@ -16,7 +17,13 @@ import styles from './styles.css.js';
 interface InternalTreeItemProps<T>
   extends Pick<
     TreeViewProps,
-    'expandedItems' | 'renderItem' | 'getItemId' | 'getItemChildren' | 'renderItemToggleIcon' | 'i18nStrings'
+    | 'expandedItems'
+    | 'renderItem'
+    | 'getItemId'
+    | 'getItemChildren'
+    | 'renderItemToggleIcon'
+    | 'i18nStrings'
+    | 'connectorLines'
   > {
   item: T;
   index: number;
@@ -33,6 +40,7 @@ const InternalTreeItem = <T,>({
   level,
   i18nStrings,
   expandedItems = [],
+  connectorLines,
   renderItemToggleIcon,
   renderItem,
   getItemId,
@@ -48,6 +56,8 @@ const InternalTreeItem = <T,>({
   const isExpandable = children.length > 0;
   const isExpanded = isExpandable && expandedItems.includes(id);
   const nextLevel = level + 1;
+
+  const showVerticalConnectorLines = connectorLines === 'vertical' && isExpanded;
 
   let customIcon: React.ReactNode | undefined = undefined;
   if (isExpandable && renderItemToggleIcon) {
@@ -101,6 +111,8 @@ const InternalTreeItem = <T,>({
           </div>
         </div>
 
+        {showVerticalConnectorLines && <VerticalConnector variant="grid" />}
+
         <div className={styles['structured-item-wrapper']}>
           <InternalStructuredItem
             icon={icon}
@@ -131,9 +143,12 @@ const InternalTreeItem = <T,>({
                 getItemChildren={getItemChildren}
                 renderItemToggleIcon={renderItemToggleIcon}
                 allVisibleItemsIndices={allVisibleItemsIndices}
+                connectorLines={connectorLines}
               />
             );
           })}
+
+          {showVerticalConnectorLines && <VerticalConnector variant="absolute" />}
         </ul>
       )}
     </li>
