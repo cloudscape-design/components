@@ -37,6 +37,7 @@ export function SelectionControl({
   rowIndex,
   itemKey,
   verticalAlign = 'middle',
+  onChange,
   ...sharedProps
 }: SelectionControlProps) {
   const controlId = useUniqueId();
@@ -84,13 +85,14 @@ export function SelectionControl({
   const selector = isMultiSelection ? (
     <InternalCheckbox
       {...sharedProps}
+      onChange={onChange}
       showOutline={focusedComponent === 'selection-control'}
       controlId={controlId}
       data-focus-id="selection-control"
       indeterminate={indeterminate}
     />
   ) : (
-    <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} />
+    <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} onClick={onChange} />
   );
 
   return (
