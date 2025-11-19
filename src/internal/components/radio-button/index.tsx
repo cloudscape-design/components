@@ -75,7 +75,7 @@ export default React.forwardRef(function RadioButton(
       )}
       onClick={() => {
         radioButtonRef.current?.focus();
-        fireNonCancelableEvent(onClick, { checked: true });
+        fireNonCancelableEvent(onClick);
       }}
       styledControl={
         <svg viewBox="0 0 100 100" focusable="false" aria-hidden="true">
