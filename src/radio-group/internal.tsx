@@ -34,6 +34,7 @@ const InternalRadioGroup = React.forwardRef(
       readOnly,
       __internalRootRef,
       style,
+      direction,
       ...props
     }: InternalRadioGroupProps,
     ref: React.Ref<RadioGroupProps.Ref>
@@ -54,7 +55,12 @@ const InternalRadioGroup = React.forwardRef(
         aria-controls={ariaControls}
         aria-readonly={readOnly ? 'true' : undefined}
         {...baseProps}
-        className={clsx(baseProps.className, testUtilStyles.root, styles['radio-group'])}
+        className={clsx(
+          baseProps.className,
+          testUtilStyles.root,
+          styles['radio-group'],
+          direction === 'horizontal' && styles['horizontal-group']
+        )}
         ref={__internalRootRef}
       >
         {items &&
@@ -65,6 +71,7 @@ const InternalRadioGroup = React.forwardRef(
               className={clsx(
                 styles.radio,
                 item.description && styles['radio--has-description'],
+                direction === 'horizontal' && styles.horizontal,
                 item.value === value && analyticsSelectors.selected
               )}
               checked={item.value === value}
