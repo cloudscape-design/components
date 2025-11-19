@@ -1,0 +1,104 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+/* stylelint-disable selector-max-type */
+
+/* Amazon Q specific styles */
+
+.action-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: awsui.$space-scaled-s;
+  background-color: awsui.$color-background-container-content;
+  min-inline-size: 48px;
+}
+
+.amazon-q-action-card {
+  display: flex;
+  border-start-start-radius: awsui.$border-radius-item;
+  border-start-end-radius: awsui.$border-radius-item;
+  border-end-start-radius: awsui.$border-radius-item;
+  border-end-end-radius: awsui.$border-radius-item;
+
+  border-block: awsui.$border-width-field solid awsui.$color-border-divider-default;
+  border-inline: awsui.$border-width-field solid awsui.$color-border-divider-default;
+
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+  margin-block-end: awsui.$space-scaled-xs;
+  overflow: hidden;
+
+  &:hover {
+    border-color: awsui.$color-border-control-default;
+  }
+}
+
+/* Different background colors for each action type */
+.amazon-q-action-card:nth-child(1) > .action-card-icon {
+  background-color: #f0f8ff;
+  /* Light blue for contact */
+}
+
+.amazon-q-action-card:nth-child(2) > .action-card-icon {
+  background-color: #fff8f0;
+  /* Light orange for status-info */
+}
+
+.amazon-q-action-card:nth-child(3) > .action-card-icon {
+  background-color: #f0fff0;
+  /* Light green for security */
+}
+
+.amazon-q-action-card:nth-child(4) > .action-card-icon {
+  background-color: #f8f0ff;
+  /* Light purple for search */
+}
+
+.amazon-q-action-card:nth-child(5) > .action-card-icon {
+  background-color: #fff0f8;
+  /* Light pink for share */
+}
+
+.amazon-q-action-card > span {
+  color: awsui.$color-text-body-default;
+  font-weight: normal;
+}
+
+.action-card-text {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-scaled-s;
+  background-color: awsui.$color-background-container-content;
+  line-height: awsui.$line-height-body-s;
+}
+
+.action-card-text > span {
+  text-wrap: no-wrap;
+}
+
+.welcome {
+  display: flex;
+  align-items: flex-start;
+  gap: awsui.$space-scaled-s;
+}
+
+.welcome > .q-logo {
+  inline-size: 40px;
+  block-size: 40px;
+  max-inline-size: 40px;
+  max-block-size: 40px;
+  object-fit: contain;
+}
+
+.welcome > :first-child {
+  inline-size: 40px;
+  block-size: 40px;
+  flex-shrink: 0;
+}
