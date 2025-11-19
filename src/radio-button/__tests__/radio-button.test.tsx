@@ -56,58 +56,58 @@ describe('native attributes API', () => {
 });
 
 describe('events', () => {
-  test('fires a single onChange event on input click', () => {
-    const onChange = jest.fn();
-    const radioButton = renderRadioButton(<RadioButton name="group" checked={false} onChange={onChange} />);
+  test('fires a single onClick event on input click', () => {
+    const onClick = jest.fn();
+    const radioButton = renderRadioButton(<RadioButton name="group" checked={false} onClick={onClick} />);
     radioButton.findNativeInput()!.click();
-    expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true } }));
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onClick).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true } }));
   });
 
-  test('fires a single onChange event on label click', () => {
-    const onChange = jest.fn();
+  test('fires a single onClick event on label click', () => {
+    const onClick = jest.fn();
     const radioButton = renderRadioButton(
-      <RadioButton name="group" checked={false} onChange={onChange}>
+      <RadioButton name="group" checked={false} onClick={onClick}>
         My radio button label
       </RadioButton>
     );
     radioButton.findLabel()!.click();
-    expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true } }));
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onClick).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true } }));
   });
 
-  test('fires a single onChange event on description click', () => {
-    const onChange = jest.fn();
+  test('fires a single onClick event on description click', () => {
+    const onClick = jest.fn();
     const radioButton = renderRadioButton(
-      <RadioButton name="group" checked={false} onChange={onChange} description="My radio button description" />
+      <RadioButton name="group" checked={false} onClick={onClick} description="My radio button description" />
     );
     radioButton.findDescription()!.click();
-    expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true } }));
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onClick).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true } }));
   });
 
-  test('does not trigger change handler if disabled', () => {
-    const onChange = jest.fn();
+  test('does not trigger onClick if disabled', () => {
+    const onClick = jest.fn();
     const radioButton = renderRadioButton(
-      <RadioButton name="group" checked={false} disabled={true} onChange={onChange} />
+      <RadioButton name="group" checked={false} disabled={true} onClick={onClick} />
     );
 
     radioButton.findLabel().click();
 
     expect(radioButton.findNativeInput().getElement()).not.toBeChecked();
-    expect(onChange).not.toHaveBeenCalled();
+    expect(onClick).not.toHaveBeenCalled();
   });
 
-  test('does not trigger change handler if readOnly', () => {
-    const onChange = jest.fn();
+  test('does not trigger onClick if readOnly', () => {
+    const onClick = jest.fn();
     const radioButton = renderRadioButton(
-      <RadioButton name="group" checked={false} readOnly={true} onChange={onChange} />
+      <RadioButton name="group" checked={false} readOnly={true} onClick={onClick} />
     );
 
     radioButton.findLabel().click();
 
     expect(radioButton.findNativeInput().getElement()).not.toBeChecked();
-    expect(onChange).not.toHaveBeenCalled();
+    expect(onClick).not.toHaveBeenCalled();
   });
 
   test('can be focused via API', () => {
@@ -123,16 +123,16 @@ describe('events', () => {
   });
 
   test('does not trigger any change events when value is changed through API', () => {
-    const onChange = jest.fn();
-    const { container, rerender } = render(<RadioButton name="group" checked={false} onChange={onChange} />);
+    const onClick = jest.fn();
+    const { container, rerender } = render(<RadioButton name="group" checked={false} onClick={onClick} />);
     const radioButton = createWrapper(container).findRadioButton()!;
     expect(radioButton.findNativeInput().getElement()).not.toBeChecked();
 
-    rerender(<RadioButton name="group" checked={true} onChange={onChange} />);
+    rerender(<RadioButton name="group" checked={true} onClick={onClick} />);
     expect(radioButton.findNativeInput().getElement()).toBeChecked();
 
-    rerender(<RadioButton name="group" checked={false} onChange={onChange} />);
-    expect(onChange).not.toHaveBeenCalled();
+    rerender(<RadioButton name="group" checked={false} onClick={onClick} />);
+    expect(onClick).not.toHaveBeenCalled();
   });
 });
 

@@ -55,9 +55,6 @@ export const RadioButtonPermutation = ({
     disabled,
     checked,
     name: `radio-group-${index}`,
-    onChange: () => {
-      /*empty handler to suppress react controlled property warning*/
-    },
   };
   if (children) {
     return <RadioButton {...commonProps} />;

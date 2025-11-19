@@ -58,9 +58,9 @@ export interface RadioButtonProps extends BaseComponentProps {
   nativeInputAttributes?: NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>;
 
   /**
-   * Called when the user changes the component state. The event `detail` contains the current value for the `checked` property.
+   * Called when the user clicks on the radio button and it is not disabled or read-only.
    */
-  onChange?: NonCancelableEventHandler<RadioButtonProps.ChangeDetail>;
+  onClick?: NonCancelableEventHandler<RadioButtonProps.ChangeDetail>;
 
   /**
    * Specifies if the radio button is read-only, which prevents the

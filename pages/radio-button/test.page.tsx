@@ -42,7 +42,7 @@ const CustomRadioButton = ({
   description,
   children,
   disabled,
-  onChange,
+  onClick,
   readOnly,
 }: Omit<RadioButtonProps, 'name'>) => {
   const { urlParams } = useContext(AppContext as RadioButtonDemoContext);
@@ -63,7 +63,7 @@ const CustomRadioButton = ({
       checked={checked}
       disabled={disabled}
       readOnly={readOnly}
-      onChange={onChange}
+      onClick={onClick}
       description={fullDescription}
       style={urlParams.customStyle ? customStyle : undefined}
     >
@@ -92,11 +92,7 @@ export default function RadioButtonsPage() {
           key={index}
           checked={option.value === value}
           description={option.description}
-          onChange={({ detail }) => {
-            if (detail.checked) {
-              setValue(option.value);
-            }
-          }}
+          onClick={() => setValue(option.value)}
           disabled={option.allowDisabled && urlParams.disabled}
           readOnly={option.allowReadOnly && urlParams.readOnly}
         >

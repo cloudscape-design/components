@@ -28,7 +28,7 @@ const Row = ({
   description,
   disabled,
   readOnly,
-  onChange,
+  onClick,
 }: Omit<RadioButtonProps, 'name'> & { label: string }) => {
   const ref = useRef<HTMLInputElement>(null);
   return (
@@ -40,7 +40,7 @@ const Row = ({
             checked={checked}
             disabled={disabled}
             readOnly={readOnly}
-            onChange={onChange}
+            onClick={onClick}
             ref={ref}
           />
         </label>
@@ -101,11 +101,7 @@ export default function RadioButtonsTablePage() {
                 label={option.label}
                 description={option.description}
                 checked={option.value === value}
-                onChange={({ detail }) => {
-                  if (detail.checked) {
-                    setValue(option.value);
-                  }
-                }}
+                onClick={() => setValue(option.value)}
                 disabled={option.allowDisabled && urlParams.disabled}
                 readOnly={option.allowReadOnly && urlParams.readOnly}
               >
