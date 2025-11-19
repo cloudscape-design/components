@@ -71,14 +71,20 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   }
 
   &.textarea-invalid {
-    @include styles.form-invalid-control();
+    @include styles.form-invalid-control(
+      $color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-status-error),
+      $border-color: var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-text-status-error)
+    );
     & {
       padding-inline-start: 0;
     }
 
     &:focus-within,
     &:focus {
-      @include styles.form-invalid-control();
+      @include styles.form-invalid-control(
+        $color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-status-error),
+        $border-color: var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-text-status-error)
+      );
       & {
         padding-inline-start: 0;
         box-shadow: foundation.$box-shadow-focused-light-invalid;
@@ -87,14 +93,20 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   }
 
   &.textarea-warning {
-    @include styles.form-warning-control();
+    @include styles.form-warning-control(
+      $color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-status-warning),
+      $border-color: var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-text-status-warning)
+    );
     & {
       padding-inline-start: 0;
     }
 
     &:focus-within,
     &:focus {
-      @include styles.form-warning-control();
+      @include styles.form-warning-control(
+        $color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-status-warning),
+        $border-color: var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-text-status-warning)
+      );
       & {
         padding-inline-start: 0;
         box-shadow: foundation.$box-shadow-focused-light-invalid;

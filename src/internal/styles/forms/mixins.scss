@@ -193,9 +193,9 @@
   @include typography.font-body-s;
 }
 
-@mixin form-invalid-control {
-  color: awsui.$color-text-status-error;
-  border-color: awsui.$color-text-status-error;
+@mixin form-invalid-control($color: awsui.$color-text-status-error, $border-color: awsui.$color-text-status-error) {
+  color: $color;
+  border-color: $border-color;
   padding-inline-start: constants.$invalid-control-left-padding;
   border-inline-start-width: constants.$invalid-control-left-border;
   &:focus {
@@ -204,9 +204,9 @@
   @content;
 }
 
-@mixin form-warning-control {
-  color: awsui.$color-text-status-warning;
-  border-color: awsui.$color-text-status-warning;
+@mixin form-warning-control($color: awsui.$color-text-status-warning, $border-color: awsui.$color-text-status-warning) {
+  color: $color;
+  border-color: $border-color;
   padding-inline-start: constants.$invalid-control-left-padding;
   border-inline-start-width: constants.$invalid-control-left-border;
   &:focus {

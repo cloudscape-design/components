@@ -126,7 +126,10 @@
   }
 
   &.input-invalid {
-    @include styles.form-invalid-control();
+    @include styles.form-invalid-control(
+      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-error),
+      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error)
+    );
     &.input-has-icon-left {
       padding-inline-start: calc(
         #{styles.$control-icon-horizontal-padding} -
@@ -136,7 +139,10 @@
   }
 
   &.input-warning {
-    @include styles.form-warning-control();
+    @include styles.form-warning-control(
+      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-warning),
+      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning)
+    );
     &.input-has-icon-left {
       padding-inline-start: calc(
         #{styles.$control-icon-horizontal-padding} -
