@@ -2,20 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { SimplePage } from '../app/templates';
 import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
 import { permutations, RadioButtonPermutation } from './common';
 
 export default function RadioButtonPermutations() {
   return (
-    <>
-      <h1>RadioButton permutations</h1>
-      <ScreenshotArea>
-        <PermutationsView
-          permutations={permutations}
-          render={(permutation, index) => <RadioButtonPermutation {...permutation} index={index} />}
-        />
-      </ScreenshotArea>
-    </>
+    <SimplePage title="RadioButton permutations">
+      <PermutationsView
+        permutations={permutations}
+        render={(permutation, index) => <RadioButtonPermutation {...permutation} index={index} />}
+      />
+    </SimplePage>
   );
 }

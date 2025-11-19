@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 import RadioButton from '~components/radio-button';
 
+import FocusTarget from '../common/focus-target';
 import ScreenshotArea from '../utils/screenshot-area';
 
 export default function RadioButtonScenario() {
@@ -11,12 +12,7 @@ export default function RadioButtonScenario() {
   return (
     <article>
       <h1>Radio buttons should be focused using the correct highlight</h1>
-      <p>
-        Click here to focus so we can tab to the content below{' '}
-        <button type="button" id="focus-target">
-          focus
-        </button>
-      </p>
+      <FocusTarget />
       <ScreenshotArea>
         <RadioButton name="radio-button-group" checked={checked} onSelect={() => setChecked(true)}>
           Radio button label
