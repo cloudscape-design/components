@@ -6,28 +6,59 @@ import { render } from '@testing-library/react';
 import { RadioButtonProps } from '../../../lib/components/internal/components/radio-button/interfaces';
 import RadioButton from '../../../lib/components/radio-button';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import customCssProps from '../../internal/generated/custom-css-properties';
+
+import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
+import styles from '../../../lib/components/internal/components/radio-button/styles.selectors.js';
 
 function renderRadioButton(node: React.ReactNode) {
   const wrapper = createWrapper(render(<>{node}</>).container);
   return wrapper.findRadioButton()!;
 }
 
-describe('native attributes', () => {
+describe('native attributes from props', () => {
+  test('sets the `checked` attribute of the native element to true when `checked` is true', () => {
+    const radioButton = renderRadioButton(<RadioButton name="my-radio-group-name" checked={true} />);
+    expect(radioButton.findNativeInput()!.getElement().checked).toBe(true);
+  });
+
+  test('sets the `checked` attribute of the native element to false when `checked` is false', () => {
+    const radioButton = renderRadioButton(<RadioButton name="my-radio-group-name" checked={false} />);
+    expect(radioButton.findNativeInput()!.getElement().checked).toBe(false);
+  });
+
   test('propagates the value of the `name` prop to the `name` attribute of the native element', () => {
     const radioButton = renderRadioButton(<RadioButton name="my-radio-group-name" checked={false} />);
     expect(radioButton.findNativeInput()!.getElement().getAttribute('name')).toBe('my-radio-group-name');
   });
 
   test('propagates the value of the `value` prop to the `value` attribute of the native element', () => {
-    const radioButton = renderRadioButton(<RadioButton value="my-radio-button-value" name="name" checked={false} />);
+    const radioButton = renderRadioButton(<RadioButton value="my-radio-button-value" name="group" checked={false} />);
     expect(radioButton.findNativeInput()!.getElement().getAttribute('value')).toBe('my-radio-button-value');
+  });
+});
+
+describe('native attributes API', () => {
+  it('adds native attributes', () => {
+    const { container } = render(
+      <RadioButton name="group" checked={true} nativeInputAttributes={{ 'data-testid': 'my-test-id' }} />
+    );
+    expect(container.querySelector('[data-testid="my-test-id"]')).not.toBeNull();
+  });
+  it('concatenates class names', () => {
+    const { container } = render(
+      <RadioButton name="group" checked={true} nativeInputAttributes={{ className: 'additional-class' }} />
+    );
+    const input = container.querySelector('input');
+    expect(input).toHaveClass(abstractSwitchStyles['native-input']);
+    expect(input).toHaveClass('additional-class');
   });
 });
 
 describe('events', () => {
   test('fires a single onChange event on input click', () => {
     const onChange = jest.fn();
-    const radioButton = renderRadioButton(<RadioButton name="name" checked={false} onChange={onChange} />);
+    const radioButton = renderRadioButton(<RadioButton name="group" checked={false} onChange={onChange} />);
     radioButton.findNativeInput()!.click();
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true } }));
@@ -36,7 +67,7 @@ describe('events', () => {
   test('fires a single onChange event on label click', () => {
     const onChange = jest.fn();
     const radioButton = renderRadioButton(
-      <RadioButton name="name" checked={false} onChange={onChange}>
+      <RadioButton name="group" checked={false} onChange={onChange}>
         My radio button label
       </RadioButton>
     );
@@ -48,7 +79,7 @@ describe('events', () => {
   test('fires a single onChange event on description click', () => {
     const onChange = jest.fn();
     const radioButton = renderRadioButton(
-      <RadioButton name="name" checked={false} onChange={onChange} description="My radio button description" />
+      <RadioButton name="group" checked={false} onChange={onChange} description="My radio button description" />
     );
     radioButton.findDescription()!.click();
     expect(onChange).toHaveBeenCalledTimes(1);
@@ -58,7 +89,7 @@ describe('events', () => {
   test('does not trigger change handler if disabled', () => {
     const onChange = jest.fn();
     const radioButton = renderRadioButton(
-      <RadioButton name="name" checked={false} disabled={true} onChange={onChange} />
+      <RadioButton name="group" checked={false} disabled={true} onChange={onChange} />
     );
 
     radioButton.findLabel().click();
@@ -70,7 +101,7 @@ describe('events', () => {
   test('does not trigger change handler if readOnly', () => {
     const onChange = jest.fn();
     const radioButton = renderRadioButton(
-      <RadioButton name="name" checked={false} readOnly={true} onChange={onChange} />
+      <RadioButton name="group" checked={false} readOnly={true} onChange={onChange} />
     );
 
     radioButton.findLabel().click();
@@ -82,30 +113,83 @@ describe('events', () => {
   test('can be focused via API', () => {
     let checkboxRef: RadioButtonProps.Ref | null = null;
 
-    const radioButton = renderRadioButton(<RadioButton name="name" ref={ref => (checkboxRef = ref)} checked={false} />);
+    const radioButton = renderRadioButton(
+      <RadioButton name="group" ref={ref => (checkboxRef = ref)} checked={false} />
+    );
     expect(checkboxRef).toBeDefined();
 
     checkboxRef!.focus();
     expect(radioButton.findNativeInput().getElement()).toHaveFocus();
   });
 
-  test('does not trigger any change events when value is changed through api', () => {
+  test('does not trigger any change events when value is changed through API', () => {
     const onChange = jest.fn();
-    const { container, rerender } = render(<RadioButton name="name" checked={false} onChange={onChange} />);
+    const { container, rerender } = render(<RadioButton name="group" checked={false} onChange={onChange} />);
     const radioButton = createWrapper(container).findRadioButton()!;
     expect(radioButton.findNativeInput().getElement()).not.toBeChecked();
 
-    rerender(<RadioButton name="name" checked={true} onChange={onChange} />);
+    rerender(<RadioButton name="group" checked={true} onChange={onChange} />);
     expect(radioButton.findNativeInput().getElement()).toBeChecked();
 
-    rerender(<RadioButton name="name" checked={false} onChange={onChange} />);
+    rerender(<RadioButton name="group" checked={false} onChange={onChange} />);
     expect(onChange).not.toHaveBeenCalled();
   });
 });
 
+test('style API', () => {
+  const wrapper = createWrapper(
+    render(
+      <RadioButton
+        name="group"
+        checked={false}
+        style={{
+          input: {
+            stroke: {
+              default: 'green',
+            },
+            fill: {
+              default: 'blue',
+            },
+            focusRing: {
+              borderColor: 'orange',
+              borderRadius: '2px',
+              borderWidth: '1px',
+            },
+          },
+          label: {
+            color: {
+              default: 'brown',
+            },
+          },
+          description: {
+            color: {
+              default: 'yellow',
+            },
+          },
+        }}
+      >
+        Label
+      </RadioButton>
+    ).container
+  );
+
+  const control = wrapper.findByClassName(abstractSwitchStyles.control)!.getElement();
+  const label = wrapper.findByClassName(abstractSwitchStyles.label)!.getElement();
+  const outerCircle = wrapper.findByClassName(styles['styled-circle-border'])!.getElement();
+  const innerCircle = wrapper.findByClassName(styles['styled-circle-fill'])!.getElement();
+
+  expect(getComputedStyle(outerCircle).getPropertyValue('fill')).toBe('blue');
+  expect(getComputedStyle(outerCircle).getPropertyValue('stroke')).toBe('green');
+  expect(getComputedStyle(innerCircle).getPropertyValue('stroke')).toBe('blue');
+  expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('orange');
+  expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('2px');
+  expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('1px');
+  expect(getComputedStyle(label).getPropertyValue('color')).toBe('brown');
+});
+
 describe('test utils', () => {
   test('findRadioButton', () => {
-    const radioButton = renderRadioButton(<RadioButton name="name" checked={false} />);
+    const radioButton = renderRadioButton(<RadioButton name="group" checked={false} />);
     expect(radioButton).toBeTruthy();
   });
 
@@ -113,8 +197,8 @@ describe('test utils', () => {
     const wrapper = createWrapper(
       render(
         <div>
-          <RadioButton name="name" checked={false} />
-          <RadioButton name="name" checked={false} />
+          <RadioButton name="group" checked={false} />
+          <RadioButton name="group" checked={false} />
         </div>
       ).container
     );
@@ -123,7 +207,7 @@ describe('test utils', () => {
 
   test('findLabel', () => {
     const radioButton = renderRadioButton(
-      <RadioButton name="name" checked={false}>
+      <RadioButton name="group" checked={false}>
         My radio button label
       </RadioButton>
     );
@@ -132,13 +216,13 @@ describe('test utils', () => {
 
   test('findDescription', () => {
     const radioButton = renderRadioButton(
-      <RadioButton name="name" checked={false} description="My radio button description" />
+      <RadioButton name="group" checked={false} description="My radio button description" />
     );
     expect(radioButton.findDescription()!.getElement().textContent).toBe('My radio button description');
   });
 
   test('findNativeInput', () => {
-    const radioButton = renderRadioButton(<RadioButton name="name" checked={false} />);
+    const radioButton = renderRadioButton(<RadioButton name="group" checked={false} />);
     expect(radioButton.findNativeInput()!.getElement().tagName).toBe('INPUT');
   });
 });

@@ -12,6 +12,7 @@ import { getBaseProps } from '../../base-component';
 import AbstractSwitch from '../../components/abstract-switch';
 import { fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
+import WithNativeAttributes from '../../utils/with-native-attributes';
 import { RadioButtonProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -30,6 +31,7 @@ export default React.forwardRef(function RadioButton(
     readOnly,
     className,
     style,
+    nativeInputAttributes,
     ...rest
   }: RadioButtonProps & InternalBaseComponentProps,
   ref: React.Ref<HTMLInputElement>
@@ -55,8 +57,11 @@ export default React.forwardRef(function RadioButton(
       __internalRootRef={rest.__internalRootRef}
       {...copyAnalyticsMetadataAttribute(rest)}
       nativeControl={nativeControlProps => (
-        <input
+        <WithNativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>
           {...nativeControlProps}
+          tag="input"
+          componentName="RadioButton"
+          nativeAttributes={nativeInputAttributes}
           tabIndex={tabIndex}
           type="radio"
           ref={mergedRefs}
