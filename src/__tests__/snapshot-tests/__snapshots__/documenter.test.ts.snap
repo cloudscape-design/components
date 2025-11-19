@@ -20542,6 +20542,9 @@ This property should be set for either all or none of the radio buttons in a gro
       },
       "name": "style",
       "optional": true,
+      "systemTags": [
+        "core",
+      ],
       "type": "RadioButtonProps.Style",
     },
     {
@@ -20666,6 +20669,20 @@ a label element's \`for\` attribute to this control.
 It defaults to an automatically generated ID that
 is provided by its parent form field component.",
       "name": "controlId",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Defines the direction in which the radio buttons are laid out.",
+      "inlineType": {
+        "name": ""horizontal" | "vertical"",
+        "type": "union",
+        "values": [
+          "horizontal",
+          "vertical",
+        ],
+      },
+      "name": "direction",
       "optional": true,
       "type": "string",
     },
