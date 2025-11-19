@@ -145,7 +145,6 @@ $label-horizontal-spacing: awsui.$space-xs;
     border-end-end-radius: var(#{custom-props.$styleTabsUnderlineBorderRadius}, awsui.$border-radius-tabs-focus-ring);
     background: var(#{custom-props.$styleTabsUnderlineColor}, awsui.$color-border-tabs-underline);
     opacity: 0;
-    //z-index: 2; // ensures the active tab underline always appears above the focused tab button (z-index: 1)
   }
 
   &.refresh {
