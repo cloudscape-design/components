@@ -71,6 +71,9 @@ export interface RadioButtonProps extends BaseComponentProps {
    */
   readOnly?: boolean;
 
+  /**
+   * @awsuiSystem core
+   */
   style?: RadioButtonProps.Style;
 
   /**
