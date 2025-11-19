@@ -11,6 +11,7 @@ import {
   InputAutoCorrect,
   InputClearLabel,
   InputKeyEvents,
+  InputProps,
 } from '../../../input/interfaces';
 import InternalInput from '../../../input/internal';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
@@ -48,6 +49,7 @@ interface AutosuggestInputProps
   onPressArrowDown?: () => void;
   onPressArrowUp?: () => void;
   onPressEnter?: () => boolean;
+  style?: InputProps['style'];
 }
 
 interface AutosuggestInputFocusOptions {
@@ -94,6 +96,7 @@ const AutosuggestInput = React.forwardRef(
       onPressArrowDown,
       onPressArrowUp,
       onPressEnter,
+      style,
       __internalRootRef,
       ...restProps
     }: AutosuggestInputProps,
@@ -306,6 +309,7 @@ const AutosuggestInput = React.forwardRef(
               autoComplete={false}
               nativeInputAttributes={processAttributes(nativeAttributes, nativeInputAttributes, 'Autosuggest')}
               __skipNativeAttributesWarnings={Object.keys(nativeAttributes)}
+              style={style}
               {...formFieldContext}
             />
           }
