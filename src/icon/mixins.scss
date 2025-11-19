@@ -27,6 +27,27 @@ $_icon-sizes: (
     scaleFactor: 1,
   ),
   (
+    name: 'small-12',
+    size: awsui.$size-icon-small-12,
+    supportedLineHeight: awsui.$line-height-body-s,
+    stroke: awsui.$border-width-icon-small,
+    scaleFactor: 0.75,
+  ),
+  (
+    name: 'small-13',
+    size: awsui.$size-icon-small-13,
+    supportedLineHeight: awsui.$line-height-body-s,
+    stroke: awsui.$border-width-icon-small,
+    scaleFactor: 0.8125,
+  ),
+  (
+    name: 'small-14',
+    size: awsui.$size-icon-small-14,
+    supportedLineHeight: awsui.$line-height-body-s,
+    stroke: awsui.$border-width-icon-small,
+    scaleFactor: 0.875,
+  ),
+  (
     name: 'normal',
     size: awsui.$size-icon-normal,
     supportedLineHeight: awsui.$line-height-body-m,

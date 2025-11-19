@@ -226,5 +226,5 @@ export namespace IconProps {
 
   export type Variant = 'normal' | 'disabled' | 'error' | 'inverted' | 'link' | 'subtle' | 'success' | 'warning';
 
-  export type Size = 'small' | 'normal' | 'medium' | 'big' | 'large' | 'inherit';
+  export type Size = 'small' | 'small-12' | 'small-13' | 'small-14' | 'normal' | 'medium' | 'big' | 'large' | 'inherit';
 }
