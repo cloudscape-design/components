@@ -88,7 +88,12 @@ export namespace RadioGroupProps {
     value: string;
   }
 
-  export type Ref = RadioButtonProps.Ref;
+  export interface Ref {
+    /**
+     * Sets input focus onto the UI control.
+     */
+    focus(): void;
+  }
 
   export type Style = RadioButtonProps.Style;
 }

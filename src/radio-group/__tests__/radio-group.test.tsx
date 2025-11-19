@@ -11,7 +11,7 @@ import {
 import '../../__a11y__/to-validate-a11y';
 import RadioGroup, { RadioGroupProps } from '../../../lib/components/radio-group';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-group/radio-button';
+import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-button';
 import customCssProps from '../../internal/generated/custom-css-properties';
 
 import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';

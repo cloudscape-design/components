@@ -12,6 +12,7 @@ import { getBaseProps } from '../../base-component';
 import AbstractSwitch from '../../components/abstract-switch';
 import { fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
+import WithNativeAttributes from '../../utils/with-native-attributes';
 import { RadioButtonProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -26,10 +27,11 @@ export default React.forwardRef(function RadioButton(
     description,
     disabled,
     controlId,
-    onChange,
     readOnly,
     className,
     style,
+    nativeInputAttributes,
+    onSelect,
     ...rest
   }: RadioButtonProps & InternalBaseComponentProps,
   ref: React.Ref<HTMLInputElement>
@@ -55,8 +57,11 @@ export default React.forwardRef(function RadioButton(
       __internalRootRef={rest.__internalRootRef}
       {...copyAnalyticsMetadataAttribute(rest)}
       nativeControl={nativeControlProps => (
-        <input
+        <WithNativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>
           {...nativeControlProps}
+          tag="input"
+          componentName="RadioButton"
+          nativeAttributes={nativeInputAttributes}
           tabIndex={tabIndex}
           type="radio"
           ref={mergedRefs}
@@ -70,7 +75,9 @@ export default React.forwardRef(function RadioButton(
       )}
       onClick={() => {
         radioButtonRef.current?.focus();
-        fireNonCancelableEvent(onChange, { checked: !checked });
+        if (!checked) {
+          fireNonCancelableEvent(onSelect);
+        }
       }}
       styledControl={
         <svg viewBox="0 0 100 100" focusable="false" aria-hidden="true">
