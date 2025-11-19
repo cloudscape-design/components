@@ -37,6 +37,7 @@ const InternalTextFilter = React.forwardRef(
       onChange,
       onDelayedChange,
       loading = false,
+      style,
       __internalRootRef,
       ...rest
     }: InternalTextFilterProps,
@@ -79,6 +80,7 @@ const InternalTextFilter = React.forwardRef(
           clearAriaLabel={filteringClearAriaLabel}
           onChange={event => fireNonCancelableEvent(onChange, { filteringText: event.detail.value })}
           __onDelayedInput={event => fireNonCancelableEvent(onDelayedChange, { filteringText: event.detail.value })}
+          style={style}
         />
         {showResults ? (
           <SearchResults renderLiveRegion={!loading} id={searchResultsId} ref={searchResultsRef}>
