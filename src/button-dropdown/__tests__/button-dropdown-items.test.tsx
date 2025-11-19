@@ -500,23 +500,22 @@ describe('Internal ButtonDropdown badge property', () => {
   });
 
   it('should render secondaryText and labelTag', () => {
-    const items = [{ id: 'i1', text: 'Option 1', secondaryText: 'Description', labelTag: 'Ctrl+D' }];
+    const items = [
+      { id: 'i1', text: 'Option 1', secondaryText: 'Description 1', labelTag: 'Ctrl+D 1' },
+      { id: 'i2', text: 'Option 2', secondaryText: 'Description 2', labelTag: 'Ctrl+D 2' },
+    ];
     const wrapper = renderButtonDropdown({ items });
     wrapper.openDropdown();
 
-    const item = wrapper.findItemById('i1')!;
-    expect(item.getElement()).toHaveTextContent('Option 1');
-    expect(wrapper.findSecondaryText()?.getElement()).toHaveTextContent('Description');
-    expect(wrapper.findLabelTag()?.getElement()).toHaveTextContent('Ctrl+D');
-  });
+    const item1 = wrapper.findItemById('i1')!;
+    expect(item1.getElement()).toHaveTextContent('Option 1');
+    expect(item1.getElement()).toHaveTextContent('Description 1');
+    expect(item1.getElement()).toHaveTextContent('Ctrl+D 1');
 
-  it('should return null when secondaryText and labelTag are not present', () => {
-    const items = [{ id: 'i1', text: 'Option 1' }];
-    const wrapper = renderButtonDropdown({ items });
-    wrapper.openDropdown();
-
-    expect(wrapper.findSecondaryText()).toBeNull();
-    expect(wrapper.findLabelTag()).toBeNull();
+    const item2 = wrapper.findItemById('i2')!;
+    expect(item2.getElement()).toHaveTextContent('Option 2');
+    expect(item2.getElement()).toHaveTextContent('Description 2');
+    expect(item2.getElement()).toHaveTextContent('Ctrl+D 2');
   });
 });
 
