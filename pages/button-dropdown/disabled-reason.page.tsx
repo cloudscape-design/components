@@ -126,7 +126,7 @@ export const selectableGroupItems: ButtonDropdownProps.Items = [
         itemType: 'checkbox',
         checked: true,
         disabled: true,
-        disabledReason: '',
+        disabledReason: 'disabled reason',
       },
     ],
   },
