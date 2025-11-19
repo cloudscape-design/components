@@ -19,6 +19,8 @@ type DrawerInternalProps = DrawerProps & InternalBaseComponentProps;
 
 export function DrawerImplementation({
   header,
+  stickyHeader = false,
+  footer,
   children,
   loading,
   i18nStrings,
@@ -36,42 +38,101 @@ export function DrawerImplementation({
   };
 
   const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: __internalRootRef as RefObject<HTMLElement> });
-  const hasAdditioalDrawerAction = !!runtimeDrawerContext?.isExpandable;
 
-  return loading ? (
-    <div
-      {...containerProps}
-      className={clsx(containerProps.className, styles['content-with-paddings'])}
-      ref={__internalRootRef}
-    >
-      <InternalStatusIndicator type="loading">
-        <InternalLiveRegion tagName="span">
-          {i18n('i18nStrings.loadingText', i18nStrings?.loadingText)}
-        </InternalLiveRegion>
-      </InternalStatusIndicator>
-    </div>
-  ) : (
+  if (loading) {
+    return (
+      <div
+        {...containerProps}
+        className={clsx(
+          containerProps.className,
+          styles['content-with-paddings'],
+          ((header && stickyHeader) || footer) && styles.flex
+        )}
+        ref={__internalRootRef}
+      >
+        <InternalStatusIndicator type="loading">
+          <InternalLiveRegion tagName="span">
+            {i18n('i18nStrings.loadingText', i18nStrings?.loadingText)}
+          </InternalLiveRegion>
+        </InternalStatusIndicator>
+      </div>
+    );
+  }
+
+  return (
     <div {...containerProps} ref={__internalRootRef}>
-      {header && (
+      {stickyHeader && (
+        <HeaderComponent
+          header={header}
+          headerActions={headerActions}
+          runtimeDrawerContext={runtimeDrawerContext}
+          isSticky={true}
+        />
+      )}
+
+      <div className={clsx(styles['drawer-content-wrapper'])}>
+        {!stickyHeader && (
+          <HeaderComponent
+            header={header}
+            headerActions={headerActions}
+            runtimeDrawerContext={runtimeDrawerContext}
+            isSticky={false}
+          />
+        )}
+
         <div
           className={clsx(
-            styles.header,
-            runtimeDrawerContext && styles['with-runtime-context'],
-            hasAdditioalDrawerAction && styles['with-additional-action']
+            styles['test-utils-drawer-content'],
+            styles['drawer-content'],
+            !disableContentPaddings && styles['with-paddings']
           )}
         >
-          {header}
-          {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
+          {children}
+        </div>
+      </div>
+
+      {footer && (
+        <div
+          className={clsx(
+            styles.footer,
+            styles['footer-sticky'],
+            runtimeDrawerContext && styles['with-runtime-context']
+          )}
+        >
+          {footer}
         </div>
       )}
-      <div
-        className={clsx(
-          styles['test-utils-drawer-content'],
-          !disableContentPaddings && styles['content-with-paddings']
-        )}
-      >
-        {children}
-      </div>
+    </div>
+  );
+}
+
+function HeaderComponent({
+  header,
+  headerActions,
+  runtimeDrawerContext,
+  isSticky,
+}: {
+  header: React.ReactNode;
+  headerActions?: React.ReactNode;
+  runtimeDrawerContext: any;
+  isSticky: boolean;
+}) {
+  if (!header) {
+    return null;
+  }
+
+  const headerClassName = clsx(
+    styles.header,
+    isSticky && styles['header-sticky'],
+    runtimeDrawerContext && styles['with-runtime-context'],
+    runtimeDrawerContext?.isExpandable && styles['with-additional-action'],
+    'header-with-paddings'
+  );
+
+  return (
+    <div className={headerClassName}>
+      {header}
+      {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
     </div>
   );
 }

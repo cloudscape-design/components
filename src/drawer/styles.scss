@@ -6,6 +6,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../app-layout/constants.scss' as constants;
+@use '../container/shared' as container;
 
 @mixin desktop-only {
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -16,6 +17,10 @@
 .drawer {
   @include styles.styles-reset;
   word-wrap: break-word;
+  block-size: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
 }
 
 .header {
@@ -66,11 +71,31 @@
   z-index: 1;
 }
 
-.content-with-paddings:not(:empty) {
-  padding-block-start: awsui.$space-panel-content-top;
-  padding-inline-start: awsui.$space-panel-side-left;
-  padding-inline-end: awsui.$space-panel-side-right;
-  padding-block-end: awsui.$space-panel-content-bottom;
+.footer {
+  @include container.divider;
+  padding-block: awsui.$space-scaled-l;
+  padding-inline: awsui.$space-container-horizontal;
+}
+
+.drawer-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.drawer-content {
+  display: flex;
+  flex-direction: column;
+  // flex: 1;
+  // overflow-y: scroll;
+
+  &.with-paddings:not(:empty) {
+    padding-block-start: awsui.$space-panel-content-top;
+    padding-inline-start: awsui.$space-panel-side-left;
+    padding-inline-end: awsui.$space-panel-side-right;
+    padding-block-end: awsui.$space-panel-content-bottom;
+  }
 }
 
 .test-utils-drawer-content {

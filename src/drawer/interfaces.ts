@@ -13,6 +13,13 @@ export interface DrawerProps extends BaseComponentProps {
   header?: React.ReactNode;
 
   /**
+   * If set to `true`, the drawer header remains visible when the user scrolls down.
+   *
+   * Doesn't do anything if `header` is not provided.
+   */
+  stickyHeader?: boolean;
+
+  /**
    * Main content of the drawer.
    *
    */
@@ -38,6 +45,11 @@ export interface DrawerProps extends BaseComponentProps {
    * Actions for the header. Available only if you specify the `header` property.
    */
   headerActions?: React.ReactNode;
+
+  /**
+   * Footer of the drawer.
+   */
+  footer?: React.ReactNode;
 }
 
 interface I18nStrings {
