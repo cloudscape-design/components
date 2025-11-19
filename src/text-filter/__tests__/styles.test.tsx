@@ -78,7 +78,6 @@ describe('getTextFilterStyles', () => {
     };
 
     const result = getTextFilterStylesNonCore(style);
-
     expect(result).toBeUndefined();
   });
 });
