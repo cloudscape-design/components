@@ -125,6 +125,11 @@ export interface AutosuggestProps
    * [accessibility guidelines](/components/autosuggest/?tabId=usage#accessibility-guidelines).
    */
   renderHighlightedAriaLive?: AutosuggestProps.ContainingOptionAndGroupString;
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: AutosuggestProps.Style;
 }
 
 export namespace AutosuggestProps {
@@ -159,6 +164,51 @@ export namespace AutosuggestProps {
      * Selects all text in the input control.
      */
     select(): void;
+  }
+
+  export interface Style {
+    root?: {
+      backgroundColor?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      borderColor?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      boxShadow?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      color?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      fontSize?: string;
+      fontWeight?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+    placeholder?: {
+      color?: string;
+      fontSize?: string;
+      fontStyle?: string;
+      fontWeight?: string;
+    };
   }
 }
 
