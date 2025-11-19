@@ -5632,7 +5632,7 @@ The following properties are supported across all types:
 - \`lang\` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
 - \`disabled\` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
 - \`disabledReason\` (string) - (Optional) Displays text near the \`text\` property when item is disabled. Use to provide additional context.
-- \`description\` (string) - additional data that will be passed to a \`data-description\` attribute.
+- \`description\` (string) - additional data that will be passed to a \`data-description\` attribute. **Deprecated**, has no effect.
 - \`ariaLabel\` (string) - (Optional) - ARIA label of the item element.
 
 ### action
@@ -5645,6 +5645,8 @@ The following properties are supported across all types:
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`.
 - \`iconUrl\` (string) - (Optional) Specifies the URL of a custom icon.
 - \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+- \`secondaryText\` (string) - (Optional) Further information about the action that appears below the label.
+- \`labelTag\` (string) - (Optional) - A label tag that provides additional guidance, shown next to the label.
 
 ### checkbox
 
@@ -5655,6 +5657,8 @@ When \`type\` is set to "checkbox", the values set to \`href\`, \`external\` and
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`.
 - \`iconUrl\` (string) - (Optional) Specifies the URL of a custom icon.
 - \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+- \`secondaryText\` (string) - (Optional) Further information about the action that appears below the label.
+- \`labelTag\` (string) - (Optional) - A label tag that provides additional guidance, shown next to the label.
 
 ### group
 

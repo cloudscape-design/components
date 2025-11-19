@@ -22,11 +22,13 @@ export const items: ButtonDropdownProps['items'] = [
     items: [...Array(50)].map((_, index) => ({
       id: 'category2Subitem' + index,
       text: 'Cat 2 Sub item ' + index,
+      secondaryText: `Option ${index}`,
     })),
   },
   ...[...Array(10)].map((_, index) => ({
     id: 'item' + index,
     text: 'Item ' + index,
+    secondaryText: `Option ${index}`,
   })),
   {
     id: 'category3',
@@ -45,6 +47,7 @@ export const items: ButtonDropdownProps['items'] = [
   {
     id: 'item10',
     text: 'Item 10',
+    secondaryText: 'This is the last option',
   },
 ];
 
