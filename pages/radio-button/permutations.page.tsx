@@ -8,7 +8,7 @@ import { permutations, RadioButtonPermutation } from './common';
 
 export default function RadioButtonPermutations() {
   return (
-    <SimplePage title="RadioButton permutations">
+    <SimplePage title="RadioButton permutations" screenshotArea={{}}>
       <PermutationsView
         permutations={permutations}
         render={(permutation, index) => <RadioButtonPermutation {...permutation} index={index} />}

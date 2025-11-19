@@ -9,7 +9,7 @@ import customStyle from './custom-style';
 
 export default function RadioButtonPermutations() {
   return (
-    <SimplePage title="RadioButton permutations with custom styles">
+    <SimplePage title="RadioButton permutations with custom styles" screenshotArea={{}}>
       <PermutationsView
         permutations={permutations}
         render={(permutation, index) => <RadioButtonPermutation {...permutation} index={index} style={customStyle} />}
