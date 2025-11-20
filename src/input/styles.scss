@@ -116,7 +116,9 @@
     );
     box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
     @include placeholder {
-      @include styles.form-placeholder-disabled;
+      @include styles.form-placeholder-disabled(
+        $color: var(#{custom-props.$stylePlaceholderColor}, awsui.$color-text-input-placeholder-disabled)
+      );
     }
   }
 
