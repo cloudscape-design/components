@@ -16,22 +16,22 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 export { RadioGroupProps };
 
 const RadioGroup = React.forwardRef(
-  ({ direction = 'vertical', ...props }: RadioGroupProps, ref: React.Ref<RadioGroupProps.Ref>) => {
+  ({ direction = 'vertical', ...rest }: RadioGroupProps, ref: React.Ref<RadioGroupProps.Ref>) => {
     const baseComponentProps = useBaseComponent('RadioGroup', {
-      props: { readOnly: props.readOnly, direction: direction ?? 'vertical' },
+      props: { readOnly: rest.readOnly, direction: direction ?? 'vertical' },
     });
     return (
       <InternalRadioGroup
         ref={ref}
         direction={direction}
-        {...props}
+        {...rest}
         {...baseComponentProps}
         {...getAnalyticsMetadataAttribute({
           component: {
             name: 'awsui.RadioGroup',
             label: { root: 'self' },
             properties: {
-              value: `${props.value}`,
+              value: `${rest.value}`,
               valueLabel: `.${analyticsSelectors.selected}`,
             },
           } as GeneratedAnalyticsMetadataRadioGroupComponent,
