@@ -42,6 +42,9 @@ export default function () {
   return (
     <div style={{ padding: 15 }}>
       <h1>Themed Icon Stroke Width</h1>
+      <Box padding={{ bottom: 'm' }} variant="small">
+        When not working, reload the page
+      </Box>
       <SpaceBetween size="m" direction="vertical">
         <label>
           <input
@@ -54,7 +57,7 @@ export default function () {
         </label>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px', maxWidth: '800px' }}>
-          <FormField label="Small (16px)" description="Default: 2px">
+          <FormField label="New small size" description="Default: 2px">
             <Input
               type="number"
               value={strokeSmall}
@@ -102,7 +105,7 @@ export default function () {
       </SpaceBetween>
 
       <Box variant="h2" padding={{ top: 'l' }}>
-        Small Icon Size Options
+        New small icon size options
       </Box>
       <Box variant="p" color="text-body-secondary" padding={{ bottom: 'm' }}>
         Compare three potential small icon sizes with custom stroke widths applied.
@@ -111,7 +114,7 @@ export default function () {
       <ScreenshotArea>
         <SpaceBetween size="xl">
           <SpaceBetween size="xs">
-            <Box variant="h3">Option 1: 12px (They look too small)</Box>
+            <Box variant="h3">Option 1: 12px (Too small, details are broken)</Box>
             <div className={styles.wrapper}>
               {Object.keys(icons).map(icon => (
                 <Icon key={`12-${icon}`} name={icon as IconProps['name']} variant="normal" size="small-12" />
@@ -120,7 +123,7 @@ export default function () {
           </SpaceBetween>
 
           <SpaceBetween size="xs">
-            <Box variant="h3">Option 2: 13px (They look too small)</Box>
+            <Box variant="h3">Option 2: 13px (Look ok)</Box>
             <div className={styles.wrapper}>
               {Object.keys(icons).map(icon => (
                 <Icon key={`13-${icon}`} name={icon as IconProps['name']} variant="normal" size="small-13" />
@@ -129,7 +132,9 @@ export default function () {
           </SpaceBetween>
 
           <SpaceBetween size="xs">
-            <Box variant="h3">Option 3: 14px (Look good)</Box>
+            <Box variant="h3">
+              Option 3: 14px (✅ Look better than other two maintaining visual details in 1px stroke)
+            </Box>
             <div className={styles.wrapper}>
               {Object.keys(icons).map(icon => (
                 <Icon key={`14-${icon}`} name={icon as IconProps['name']} variant="normal" size="small-14" />
