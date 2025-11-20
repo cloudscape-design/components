@@ -6,6 +6,14 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+.root {
+  /* used for backwards-compatibility with older versions of test-utils */
+}
+
+.radio {
+  /* used for backwards-compatibility with older versions of test-utils */
+}
+
 .radio-group {
   @include styles.styles-reset;
 
