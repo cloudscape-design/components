@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { getInputStyles } from '../styles';
+import { getTextFilterStyles } from '../styles';
 
 // Mock the environment module
 jest.mock('../../internal/environment', () => ({
@@ -52,15 +52,15 @@ const allStyles = {
   },
 };
 
-describe('getInputStyles', () => {
+describe('getTextFilterStyles', () => {
   afterEach(() => {
     jest.resetModules();
   });
 
   test('handles all possible style configurations', () => {
-    expect(getInputStyles({})).toMatchSnapshot();
-    expect(getInputStyles(undefined)).toMatchSnapshot();
-    expect(getInputStyles(allStyles)).toMatchSnapshot();
+    expect(getTextFilterStyles(undefined)).toMatchSnapshot();
+    expect(getTextFilterStyles({})).toMatchSnapshot();
+    expect(getTextFilterStyles(allStyles)).toMatchSnapshot();
   });
 
   test('returns undefined when SYSTEM is not core', async () => {
@@ -69,7 +69,7 @@ describe('getInputStyles', () => {
       SYSTEM: 'visual-refresh',
     }));
 
-    const { getInputStyles: getInputStylesNonCore } = await import('../styles');
+    const { getTextFilterStyles: getTextFilterStylesNonCore } = await import('../styles');
 
     const style = {
       root: {
@@ -77,8 +77,7 @@ describe('getInputStyles', () => {
       },
     };
 
-    const result = getInputStylesNonCore(style);
-
+    const result = getTextFilterStylesNonCore(style);
     expect(result).toBeUndefined();
   });
 });

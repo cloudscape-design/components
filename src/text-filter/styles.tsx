@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { SYSTEM } from '../internal/environment';
 import customCssProps from '../internal/generated/custom-css-properties';
-import { InputProps } from './interfaces';
+import { TextFilterProps } from './interfaces';
 
-export function getInputStyles(style: InputProps['style']) {
+export function getTextFilterStyles(style: TextFilterProps['style']) {
   let properties = {};
 
   if (SYSTEM === 'core') {
