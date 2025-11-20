@@ -223,8 +223,6 @@ $label-horizontal-spacing: awsui.$space-xs;
   }
 
   @include focus-visible.when-visible {
-    border-inline-end-color: transparent;
-
     #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
       var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
       var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
