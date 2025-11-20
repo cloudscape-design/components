@@ -130,7 +130,8 @@
   &.input-invalid {
     @include styles.form-invalid-control(
       $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-error),
-      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error)
+      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error),
+      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
     );
     &.input-has-icon-left {
       padding-inline-start: calc(
@@ -143,7 +144,8 @@
   &.input-warning {
     @include styles.form-warning-control(
       $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-warning),
-      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning)
+      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning),
+      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
     );
     &.input-has-icon-left {
       padding-inline-start: calc(
