@@ -31,10 +31,10 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
-  findDropdown(options = { expandToViewport: false }): DropdownContentWrapper {
+  findDropdown(options = { expandToViewport: false }): SelectDropdownContentWrapper {
     return options.expandToViewport
       ? createWrapper().findComponent(`.${dropdownStyles.dropdown}[data-open=true]`, PortalDropdownContentWrapper)!
-      : new DropdownContentWrapper(this.getElement());
+      : new SelectDropdownContentWrapper(this.getElement());
   }
 
   @usesDom
@@ -223,12 +223,6 @@ export class DropdownContentWrapper extends ComponentWrapper {
     return this.findByClassName(OptionsListWrapper.rootSelector);
   }
 
-  findSelectedOptions(): Array<OptionWrapper> {
-    return this.findAllByClassName(selectableStyles.selected).map(
-      (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
-    );
-  }
-
   /**
    * Returns an option group from the dropdown.
    *
@@ -244,6 +238,13 @@ export class DropdownContentWrapper extends ComponentWrapper {
   findGroups(): Array<ElementWrapper> {
     return this.findAll(`.${selectableStyles['selectable-item']}[data-group-index]:not([data-test-index])`);
   }
+}
+export class SelectDropdownContentWrapper extends DropdownContentWrapper {
+  findSelectedOptions(): Array<OptionWrapper> {
+    return this.findAllByClassName(selectableStyles.selected).map(
+      (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
+    );
+  }
 
   /*
    * Returns the element that selects or deselects all options in Multiselect when using the `enableSelectAll` flag.
@@ -253,7 +254,7 @@ export class DropdownContentWrapper extends ComponentWrapper {
   }
 }
 
-export class PortalDropdownContentWrapper extends DropdownContentWrapper {
+export class PortalDropdownContentWrapper extends SelectDropdownContentWrapper {
   findOpenDropdown(): ElementWrapper | null {
     return createWrapper().findComponent(`.${dropdownStyles.dropdown}[data-open=true]`, DropdownWrapper);
   }
