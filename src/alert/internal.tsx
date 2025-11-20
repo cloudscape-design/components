@@ -135,11 +135,7 @@ const InternalAlert = React.forwardRef(
         retrieveAlertDismiss(persistenceConfig)
           .then(dismissed => {
             if (isMounted) {
-              try {
-                setIsPersistentlyDismissed(!!dismissed);
-              } catch {
-                setIsPersistentlyDismissed(false);
-              }
+              setIsPersistentlyDismissed(!!dismissed);
             }
           })
           .catch(() => {
@@ -152,6 +148,7 @@ const InternalAlert = React.forwardRef(
         isMounted = false;
       };
 
+      // Only track specific properties to avoid re-running when persistenceConfig object reference changes
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [persistenceConfig?.uniqueKey, persistenceConfig?.crossServicePersistence]);
 

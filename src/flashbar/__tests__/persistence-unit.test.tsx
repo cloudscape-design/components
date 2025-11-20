@@ -291,5 +291,23 @@ describe('Flashbar persistence', () => {
         expect(items[1].findContent()!.getElement()).toHaveTextContent('Item 2');
       });
     });
+
+    it('sets all items to visible when Promise.all fails', async () => {
+      // Mock Promise.all to fail
+      const originalPromiseAll = Promise.all;
+      Promise.all = jest.fn().mockRejectedValue(new Error('Promise.all failed'));
+
+      const items = createItems([true, true]);
+      const { container } = render(<Flashbar items={items} />);
+      const wrapper = createWrapper(container).findFlashbar()!;
+
+      await waitFor(() => {
+        expect(wrapper.findItems()).toHaveLength(2);
+        expect(wrapper.findItems()[0].findContent()!.getElement()).toHaveTextContent('Item 0');
+        expect(wrapper.findItems()[1].findContent()!.getElement()).toHaveTextContent('Item 1');
+      });
+
+      Promise.all = originalPromiseAll;
+    });
   });
 });
