@@ -34,7 +34,7 @@
 .input {
   @include styles.styles-reset;
   padding-block: styles.$control-padding-vertical;
-  padding-inline: styles.$control-padding-horizontal;
+  padding-inline: var(#{custom-props.$stylePaddingInline}, #{styles.$control-padding-horizontal});
   color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default);
   inline-size: 100%;
   cursor: text;
@@ -128,9 +128,12 @@
   &.input-invalid {
     @include styles.form-invalid-control();
     &.input-has-icon-left {
-      padding-inline-start: calc(
-        #{styles.$control-icon-horizontal-padding} -
-          (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+      padding-inline-start: max(
+        var(#{custom-props.$stylePaddingInlineStart}, #{styles.$control-padding-horizontal}),
+        calc(
+          #{styles.$control-icon-horizontal-padding} -
+            (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+        )
       );
     }
   }
@@ -138,9 +141,12 @@
   &.input-warning {
     @include styles.form-warning-control();
     &.input-has-icon-left {
-      padding-inline-start: calc(
-        #{styles.$control-icon-horizontal-padding} -
-          (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+      padding-inline-start: max(
+        var(#{custom-props.$stylePaddingInlineStart}, #{styles.$control-padding-horizontal}),
+        calc(
+          #{styles.$control-icon-horizontal-padding} -
+            (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+        )
       );
     }
   }
@@ -159,10 +165,16 @@
     }
   }
   &.input-has-icon-left {
-    padding-inline-start: styles.$control-icon-horizontal-padding;
+    padding-inline-start: max(
+      var(#{custom-props.$stylePaddingInlineStart}, #{styles.$control-padding-horizontal}),
+      #{styles.$control-icon-horizontal-padding}
+    );
   }
   &.input-has-icon-right {
-    padding-inline-end: styles.$control-icon-horizontal-padding;
+    padding-inline-end: max(
+      var(#{custom-props.$stylePaddingInlineEnd}, #{styles.$control-padding-horizontal}),
+      #{styles.$control-icon-horizontal-padding}
+    );
   }
   &.input-has-no-border-radius {
     border-start-start-radius: awsui.$border-radius-dropdown;
