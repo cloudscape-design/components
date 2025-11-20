@@ -3584,6 +3584,236 @@ This is required to provide a good screen reader experience. For more informatio
       "type": "string",
     },
     {
+      "inlineType": {
+        "name": "AutosuggestProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "name": "color",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontSize",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontStyle",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontWeight",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "placeholder",
+            "optional": true,
+            "type": "{ color?: string | undefined; fontSize?: string | undefined; fontStyle?: string | undefined; fontWeight?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "borderColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderWidth",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "boxShadow",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "name": "fontSize",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontWeight",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "root",
+            "optional": true,
+            "type": "{ backgroundColor?: { default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; } | undefined; ... 8 more ...; paddingInline?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "AutosuggestProps.Style",
+    },
+    {
       "description": "Specifies the text entered into the form element.",
       "name": "value",
       "optional": false,
