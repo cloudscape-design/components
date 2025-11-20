@@ -20673,6 +20673,7 @@ is provided by its parent form field component.",
       "type": "string",
     },
     {
+      "defaultValue": "'vertical'",
       "description": "Defines the direction in which the radio buttons are laid out.",
       "inlineType": {
         "name": ""horizontal" | "vertical"",

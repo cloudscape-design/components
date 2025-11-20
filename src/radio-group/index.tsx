@@ -15,28 +15,31 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 
 export { RadioGroupProps };
 
-const RadioGroup = React.forwardRef((props: RadioGroupProps, ref: React.Ref<RadioGroupProps.Ref>) => {
-  const baseComponentProps = useBaseComponent('RadioGroup', {
-    props: { readOnly: props.readOnly, direction: props.direction ?? 'vertical' },
-  });
-  return (
-    <InternalRadioGroup
-      ref={ref}
-      {...props}
-      {...baseComponentProps}
-      {...getAnalyticsMetadataAttribute({
-        component: {
-          name: 'awsui.RadioGroup',
-          label: { root: 'self' },
-          properties: {
-            value: `${props.value}`,
-            valueLabel: `.${analyticsSelectors.selected}`,
-          },
-        } as GeneratedAnalyticsMetadataRadioGroupComponent,
-      })}
-    />
-  );
-});
+const RadioGroup = React.forwardRef(
+  ({ direction = 'vertical', ...rest }: RadioGroupProps, ref: React.Ref<RadioGroupProps.Ref>) => {
+    const baseComponentProps = useBaseComponent('RadioGroup', {
+      props: { readOnly: rest.readOnly, direction: direction ?? 'vertical' },
+    });
+    return (
+      <InternalRadioGroup
+        ref={ref}
+        direction={direction}
+        {...rest}
+        {...baseComponentProps}
+        {...getAnalyticsMetadataAttribute({
+          component: {
+            name: 'awsui.RadioGroup',
+            label: { root: 'self' },
+            properties: {
+              value: `${rest.value}`,
+              valueLabel: `.${analyticsSelectors.selected}`,
+            },
+          } as GeneratedAnalyticsMetadataRadioGroupComponent,
+        })}
+      />
+    );
+  }
+);
 
 applyDisplayName(RadioGroup, 'RadioGroup');
 export default RadioGroup;
