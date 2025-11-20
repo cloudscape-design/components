@@ -44,7 +44,7 @@ const style1 = {
   underline: {
     color: 'light-dark(#3b82f6, #60a5fa)',
     width: '3px',
-    borderRadius: '3px 3px 0 0',
+    borderRadius: '3px',
   },
   divider: {
     color: 'transparent',
@@ -66,12 +66,12 @@ const style2 = {
       disabled: 'light-dark(#f8fafc, #1e293b)',
     },
     borderColor: {
-      default: 'transparent',
-      hover: 'transparent',
-      active: 'transparent',
-      disabled: 'transparent',
+      default: 'lightblue',
+      hover: 'lightblue',
+      active: 'lightblue',
+      disabled: 'lightblue',
     },
-    borderWidth: '0px',
+    borderWidth: '2px',
     borderRadius: '20px',
     color: {
       default: 'light-dark(#475569, #94a3b8)',
@@ -140,7 +140,7 @@ const style3 = {
   underline: {
     color: 'light-dark(#f59e0b, #fbbf24)',
     width: '4px',
-    borderRadius: '4px 4px 0 0',
+    borderRadius: '4px',
   },
   divider: {
     color: 'light-dark(#fde68a, #78350f)',
