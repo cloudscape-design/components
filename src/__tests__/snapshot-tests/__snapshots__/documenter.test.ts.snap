@@ -17801,6 +17801,9 @@ need to be direct children of the group:
     },
   ],
   "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
 }
 `;
 
