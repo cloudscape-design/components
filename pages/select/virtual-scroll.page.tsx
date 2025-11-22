@@ -3,9 +3,10 @@
 
 import React, { useState } from 'react';
 
+import { SpaceBetween } from '~components';
 import Select, { SelectProps } from '~components/select';
 
-import { SimplePage } from '../app/templates';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const options: SelectProps.Options = Array.from({ length: 1000 }, (_, i) => ({
   value: `${i}`,
@@ -16,28 +17,31 @@ export default function () {
   const [selected, setSelected] = useState<SelectProps['selectedOption']>(null);
 
   return (
-    <SimplePage title="Select Virtual Scroll" i18n={{}} screenshotArea={{}}>
-      <div
+    <>
+      <h1>Virtual Scroll</h1>
+
+      <ScreenshotArea
         style={{
           height: 500,
-          padding: 10,
           // Prevents dropdown from expanding outside of the screenshot area
           overflow: 'auto',
         }}
       >
-        <Select
-          placeholder="Select with virtual scroll"
-          selectedOption={selected}
-          options={options}
-          filteringType="auto"
-          finishedText="End of all results"
-          onChange={event => setSelected(event.detail.selectedOption)}
-          virtualScroll={true}
-          expandToViewport={false}
-          ariaLabel="select demo"
-          data-testid="select-demo"
-        />
-      </div>
-    </SimplePage>
+        <SpaceBetween size="s">
+          <Select
+            placeholder="Demo with manual filtering"
+            selectedOption={selected}
+            options={options}
+            filteringType="auto"
+            finishedText="End of all results"
+            onChange={event => setSelected(event.detail.selectedOption)}
+            virtualScroll={true}
+            expandToViewport={false}
+            ariaLabel="select demo"
+            data-testid="select-demo"
+          />
+        </SpaceBetween>
+      </ScreenshotArea>
+    </>
   );
 }
