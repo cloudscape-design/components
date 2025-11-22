@@ -304,6 +304,13 @@
     }
 
     &.parent:not(.interactiveGroups) {
+      border-block-start-width: awsui.$border-divider-list-width;
+      border-block-start-color: awsui.$color-border-dropdown-group;
+      padding-block: awsui.$space-xs;
+      padding-inline: awsui.$space-xs;
+    }
+
+    &.parent.interactiveGroups:not(.highlighted):not(.selected) {
       border-block-start-color: awsui.$color-border-dropdown-group;
     }
   }
