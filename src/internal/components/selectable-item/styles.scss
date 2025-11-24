@@ -50,15 +50,10 @@
   &.has-background {
     background-color: awsui.$color-background-dropdown-item-hover;
   }
-
   &.child {
     padding-inline-start: awsui.$border-item-width;
     > .option-content {
       padding-inline-start: awsui.$space-xxl;
-    }
-    &.highlighted,
-    &.selected {
-      padding-inline-start: 0;
     }
   }
   &.highlighted,
@@ -76,7 +71,12 @@
       padding-block: styles.$option-padding-vertical;
       padding-inline: styles.$control-padding-horizontal;
     }
-
+    &.child {
+      padding-inline-start: 0;
+      > .option-content {
+        padding-inline-start: awsui.$space-xxl;
+      }
+    }
     &.pad-bottom {
       padding-block-end: 0;
       > .option-content {
