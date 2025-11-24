@@ -11427,12 +11427,6 @@ Behaves similar to the Header component counter.",
       "type": "string",
     },
     {
-      "description": "Supplementary text below the heading. Use with the container, default or footer variants.",
-      "name": "headerDescription",
-      "optional": true,
-      "type": "string",
-    },
-    {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements).
 Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Using this
 property does not change the visual appearance of the component. Note that this only works with the \`headerText\`
@@ -11504,6 +11498,11 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Actions for the header. Use with the default or container variant.",
       "isDefault": false,
       "name": "headerActions",
+    },
+    {
+      "description": "Supplementary text below the heading. Use with the container, default or footer variants.",
+      "isDefault": false,
+      "name": "headerDescription",
     },
     {
       "description": "The area next to the heading, used to display an Info link. Use with the container variant.",
