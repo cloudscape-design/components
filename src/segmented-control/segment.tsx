@@ -10,6 +10,7 @@ import Tooltip from '../internal/components/tooltip';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SegmentedControlProps } from './interfaces';
+import { getSegmentedControlSegmentStyles } from './style';
 
 import styles from './styles.css.js';
 
@@ -18,6 +19,7 @@ interface SegmentProps extends SegmentedControlProps.Option {
   onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => void;
   isActive: boolean;
   tabIndex: number;
+  style: SegmentedControlProps['style'];
 }
 
 export const Segment = React.forwardRef(
@@ -35,6 +37,7 @@ export const Segment = React.forwardRef(
       onKeyDown,
       tabIndex,
       id,
+      style,
     }: SegmentProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
@@ -68,6 +71,7 @@ export const Segment = React.forwardRef(
         onMouseLeave={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
         {...(isDisabledWithReason ? targetProps : {})}
         data-testid={id}
+        style={getSegmentedControlSegmentStyles(style)}
       >
         {(iconName || iconUrl || iconSvg) && (
           <InternalIcon
