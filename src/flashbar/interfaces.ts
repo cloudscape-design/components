@@ -184,7 +184,7 @@ export interface FlashbarProps extends BaseComponentProps {
    * * `id` (string) - Specifies a unique flash message identifier. This property is used in two ways:
    *   1. As a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering.
    *   2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.
-   * * `persistenceConfig` (FlashbarProps.PersistenceConfig) - Config to persist dismiss state for dismissable Flashbar item, used only in AWS Management Console.
+   * * `persistenceConfig` (FlashbarProps.PersistenceConfig) - Config to persist dismiss state for dismissable Flashbar item, used only in AWS Consoles.
    *   * `uniqueKey` (string) - This key to store the persistence state, it must be unique across your console.
    *   * `crossServicePersistence` (boolean) - If true, the persistence state will be shared across AWS services.
    * * `analyticsMetadata` (FlashbarProps.ItemAnalyticsMetadata) - (Optional) Specifies additional analytics-related metadata.
