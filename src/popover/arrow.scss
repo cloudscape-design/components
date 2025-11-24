@@ -13,7 +13,7 @@
   //   - A foreground triangle with popover background color overlapping
   //     the outer triangle 1 pixel in
   //
-  // For the sake of accurate positioning, the arrow box has to be an even integer in px
+  // For the sake of accurate positioning, the arrow box has to be an even integer (in px, not rem).
   // The box-shadow rotates with the arrow, so we need different shadows for each direction
 
   // Based on $awsui-box-shadow-inner shadow, but rotated based on x and y multipliers.
@@ -22,8 +22,8 @@
     box-shadow: ($box-shadow-size * $x) ($box-shadow-size * $y) 4px -2px awsui.$color-shadow-default;
   }
 
-  $arrow-edge-length: 14px;
-  $arrow-width: 20px;
+  $arrow-edge-length: 1.4 * styles.$base-size;
+  $arrow-width: 2 * styles.$base-size;
   $arrow-height: $arrow-width * 0.5;
 
   inline-size: $arrow-width;
@@ -111,6 +111,20 @@
   &-position-bottom-responsive {
     > .arrow-outer::after {
       @include awsui-box-shadow-inner-rotated(1, 1);
+    }
+  }
+}
+
+.arrow-variant-info {
+  > .arrow-outer {
+    &::after {
+      background-color: awsui.$color-border-status-info;
+    }
+  }
+
+  > .arrow-inner {
+    &::after {
+      background-color: awsui.$color-background-status-info;
     }
   }
 }
