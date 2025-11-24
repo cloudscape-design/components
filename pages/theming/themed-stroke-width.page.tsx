@@ -2,7 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
 
-import { Box, FormField, Input, SpaceBetween } from '~components';
+import {
+  Alert,
+  Box,
+  Button,
+  Flashbar,
+  FormField,
+  IconProvider,
+  Input,
+  KeyValuePairs,
+  Link,
+  Select,
+  SelectProps,
+  SpaceBetween,
+  StatusIndicator,
+} from '~components';
 import Icon, { IconProps } from '~components/icon';
 import icons from '~components/icon/generated/icons';
 import { applyTheme, Theme } from '~components/theming';
@@ -18,6 +32,7 @@ export default function () {
   const [strokeMedium, setStrokeMedium] = useState<string>('1px');
   const [strokeBig, setStrokeBig] = useState<string>('1.5px');
   const [strokeLarge, setStrokeLarge] = useState<string>('2px');
+  const [selectedOption, setSelectedOption] = useState<SelectProps.Option>({ label: 'Option 1', value: '1' });
 
   useEffect(() => {
     const theme: Theme = {
@@ -180,6 +195,89 @@ export default function () {
                 <Icon key={icon} name={icon as IconProps['name']} variant="normal" size="large" />
               ))}
             </div>
+          </SpaceBetween>
+
+          <Box variant="h2" padding={{ top: 'l' }}>
+            Inline Context Examples
+          </Box>
+
+          <SpaceBetween size="m">
+            <div>
+              <Button iconName="call" variant="primary">
+                Button
+              </Button>
+            </div>
+
+            <div>
+              <Link external={true} href="https://example.com/" variant="primary">
+                Learn more
+              </Link>
+            </div>
+
+            <div style={{ maxWidth: '300px' }}>
+              <Select
+                selectedOption={selectedOption}
+                onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
+                options={[
+                  { label: 'Option 1', value: '1', iconName: 'settings' },
+                  { label: 'Option 2', value: '2', iconName: 'unlocked' },
+                  { label: 'Option 3', value: '3', iconName: 'share' },
+                ]}
+              />
+            </div>
+            <SpaceBetween size="xs">
+              <StatusIndicator type="error">Error</StatusIndicator>
+              <StatusIndicator type="success">Success</StatusIndicator>
+              <StatusIndicator type="warning">Warning</StatusIndicator>
+              <StatusIndicator type="info">Info</StatusIndicator>
+            </SpaceBetween>
+            <IconProvider
+              icons={{
+                'status-positive': (
+                  <svg viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 9L7 11L11 7" />
+                    <path d="M8 2C6.29 3.53 4.13 4.32 2 4.48V7.96C2 10.01 2.76 11.84 3.71 13.1C4.63 14.32 6.03 15.31 8 16C9.97 15.31 11.37 14.32 12.29 13.1C13.3935 11.6128 13.9926 9.81183 14 7.96V4.48C11.87 4.32 9.71 3.52 8 2Z" />
+                  </svg>
+                ),
+              }}
+            >
+              <SpaceBetween size="xs">
+                <Box variant="h2" padding={{ top: 'l' }}>
+                  Custom icon using icon-provider component
+                </Box>
+                <KeyValuePairs
+                  columns={1}
+                  items={[
+                    {
+                      label: 'Custom icon in a status indicator',
+                      value: <StatusIndicator type="success">Two-factor authentication enabled</StatusIndicator>,
+                    },
+                    {
+                      label: 'Custom icon in an alert',
+                      value: (
+                        <Alert type="success" statusIconAriaLabel="Success">
+                          Two-factor authentication enabled successfully.
+                        </Alert>
+                      ),
+                    },
+                    {
+                      label: 'Custom icon in a flashbar',
+                      value: (
+                        <Flashbar
+                          items={[
+                            {
+                              type: 'success',
+                              content: 'Two-factor authentication enabled successfully.',
+                              statusIconAriaLabel: 'Success',
+                            },
+                          ]}
+                        />
+                      ),
+                    },
+                  ]}
+                />
+              </SpaceBetween>
+            </IconProvider>
           </SpaceBetween>
         </SpaceBetween>
       </ScreenshotArea>
