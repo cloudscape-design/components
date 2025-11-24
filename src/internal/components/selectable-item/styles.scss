@@ -2,6 +2,7 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+/* stylelint-disable no-descending-specificity */
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
@@ -26,19 +27,25 @@
   border-inline-end-width: 0;
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)
-  padding-block: 0;
-  padding-inline: 0;
+  padding-block: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
+  padding-inline: awsui.$border-item-width;
 
   > .option-content {
-    padding-block: styles.$option-padding-with-border-placeholder-vertical;
-    padding-inline: calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
+    padding-block: styles.$option-padding-vertical;
+    padding-inline: styles.$control-padding-horizontal;
   }
 
   &.pad-bottom {
-    padding-block-end: 0;
+    padding-block-end: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
     border-block-end-color: transparent;
     > .option-content {
-      padding-block-end: calc(#{styles.$option-padding-with-border-placeholder-vertical} + #{awsui.$space-xxxs});
+      padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs});
+    }
+  }
+  &.no-content-padding {
+    > .option-content {
+      padding-block: 0;
+      padding-inline: 0;
     }
   }
 
@@ -54,6 +61,12 @@
     padding-inline-start: awsui.$border-item-width;
     > .option-content {
       padding-inline-start: awsui.$space-xxl;
+    }
+    &.no-content-padding {
+      > .option-content {
+        padding-block: 0;
+        padding-inline: 0;
+      }
     }
   }
   &.highlighted,
@@ -76,11 +89,23 @@
       > .option-content {
         padding-inline-start: awsui.$space-xxl;
       }
+      &.no-content-padding {
+        > .option-content {
+          padding-block: 0;
+          padding-inline: 0;
+        }
+      }
     }
     &.pad-bottom {
       padding-block-end: 0;
       > .option-content {
         padding-block-end: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
+      }
+    }
+    &.no-content-padding {
+      > .option-content {
+        padding-block: 0;
+        padding-inline: 0;
       }
     }
   }
@@ -148,6 +173,12 @@
         padding-block: awsui.$space-xs;
         padding-inline: awsui.$space-xs;
       }
+      &.no-content-padding {
+        > .option-content {
+          padding-block: 0;
+          padding-inline: 0;
+        }
+      }
     }
     &.interactiveGroups {
       padding-block: 0;
@@ -155,6 +186,12 @@
       > .option-content {
         padding-block: styles.$group-option-padding-with-border-placeholder-vertical;
         padding-inline: styles.$control-padding-horizontal;
+      }
+      &.no-content-padding {
+        > .option-content {
+          padding-block: 0;
+          padding-inline: 0;
+        }
       }
       &.highlighted {
         color: awsui.$color-text-dropdown-item-highlighted;
@@ -165,6 +202,12 @@
         padding-inline: 0;
         > .option-content {
           padding-block: styles.$group-option-padding-vertical;
+        }
+        &.no-content-padding {
+          > .option-content {
+            padding-block: 0;
+            padding-inline: 0;
+          }
         }
       }
     }
