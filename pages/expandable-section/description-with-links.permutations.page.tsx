@@ -16,7 +16,7 @@ const permutations = createPermutations<ExpandableSectionProps>([
     children: ['Sample content'],
     headerDescription: [
       <>
-        Sample description <Link href="#">with a link</Link> within a sentence.
+        Sample description <Link href={`${window.location.href}#link-target`}>with a link</Link> within a sentence.
       </>,
     ],
     defaultExpanded: [true],
@@ -30,6 +30,7 @@ export default function ExpandableSectionPermutations() {
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView permutations={permutations} render={permutation => <ExpandableSection {...permutation} />} />
       </ScreenshotArea>
+      <div id="link-target"></div>
     </>
   );
 }
