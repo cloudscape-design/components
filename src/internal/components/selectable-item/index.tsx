@@ -29,7 +29,7 @@ const SelectableItem = (
     isSelectAll,
     virtualPosition,
     padBottom,
-    disableContentPaddings = false,
+    disableContentPaddings,
     isNextSelected,
     isPreviousSelected,
     useInteractiveGroups,
@@ -69,7 +69,7 @@ const SelectableItem = (
   });
 
   const contentClassNames = clsx(styles['option-content'], analyticsSelectors['option-content'], {
-    [styles['no-content-padding']]: disableContentPaddings,
+    [styles['no-content-padding']]: !!disableContentPaddings,
   });
 
   const contentRef = useRef<HTMLDivElement>(null);
