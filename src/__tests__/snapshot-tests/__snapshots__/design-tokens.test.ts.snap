@@ -115,7 +115,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -2799,7 +2799,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -5483,7 +5483,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -8167,7 +8167,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -10851,7 +10851,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -13535,7 +13535,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -16219,7 +16219,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-width-icon-small": {
       "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-      "$value": "2px",
+      "$value": "1px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",
@@ -18908,7 +18908,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -21592,7 +21592,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -24276,7 +24276,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -26960,7 +26960,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -29644,7 +29644,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -32328,7 +32328,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -35012,7 +35012,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -37696,7 +37696,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -40380,7 +40380,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "border-width-icon-small": {
       "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
-      "$value": "2px",
+      "$value": "1px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",
