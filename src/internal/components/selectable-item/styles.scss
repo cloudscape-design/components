@@ -2,7 +2,6 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-/* stylelint-disable no-descending-specificity */
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
@@ -33,6 +32,10 @@
   > .option-content {
     padding-block: styles.$option-padding-vertical;
     padding-inline: styles.$control-padding-horizontal;
+    &.no-content-padding {
+      padding-block: 0;
+      padding-inline: 0;
+    }
   }
 
   &.pad-bottom {
@@ -40,12 +43,9 @@
     border-block-end-color: transparent;
     > .option-content {
       padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs});
-    }
-  }
-  &.no-content-padding {
-    > .option-content {
-      padding-block: 0;
-      padding-inline: 0;
+      &.no-content-padding {
+        padding-block-end: 0;
+      }
     }
   }
 
@@ -61,11 +61,8 @@
     padding-inline-start: awsui.$border-item-width;
     > .option-content {
       padding-inline-start: awsui.$space-xxl;
-    }
-    &.no-content-padding {
-      > .option-content {
-        padding-block: 0;
-        padding-inline: 0;
+      &.no-content-padding {
+        padding-inline-start: 0;
       }
     }
   }
@@ -83,16 +80,17 @@
     > .option-content {
       padding-block: styles.$option-padding-vertical;
       padding-inline: styles.$control-padding-horizontal;
+      &.no-content-padding {
+        padding-block: 0;
+        padding-inline: 0;
+      }
     }
     &.child {
       padding-inline-start: 0;
       > .option-content {
         padding-inline-start: awsui.$space-xxl;
-      }
-      &.no-content-padding {
-        > .option-content {
-          padding-block: 0;
-          padding-inline: 0;
+        &.no-content-padding {
+          padding-inline-start: 0;
         }
       }
     }
@@ -100,12 +98,10 @@
       padding-block-end: 0;
       > .option-content {
         padding-block-end: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
-      }
-    }
-    &.no-content-padding {
-      > .option-content {
-        padding-block: 0;
-        padding-inline: 0;
+
+        &.no-content-padding {
+          padding-block-end: 0;
+        }
       }
     }
   }
@@ -172,9 +168,7 @@
       > .option-content {
         padding-block: awsui.$space-xs;
         padding-inline: awsui.$space-xs;
-      }
-      &.no-content-padding {
-        > .option-content {
+        &.no-content-padding {
           padding-block: 0;
           padding-inline: 0;
         }
@@ -186,9 +180,7 @@
       > .option-content {
         padding-block: styles.$group-option-padding-with-border-placeholder-vertical;
         padding-inline: styles.$control-padding-horizontal;
-      }
-      &.no-content-padding {
-        > .option-content {
+        &.no-content-padding {
           padding-block: 0;
           padding-inline: 0;
         }
@@ -202,11 +194,8 @@
         padding-inline: 0;
         > .option-content {
           padding-block: styles.$group-option-padding-vertical;
-        }
-        &.no-content-padding {
-          > .option-content {
+          &.no-content-padding {
             padding-block: 0;
-            padding-inline: 0;
           }
         }
       }
@@ -231,6 +220,9 @@
       padding-inline: 0;
       > .option-content {
         padding-inline: styles.$control-padding-horizontal;
+        &.no-content-padding {
+          padding-inline: 0;
+        }
       }
 
       &:not(.with-scrollbar) {
