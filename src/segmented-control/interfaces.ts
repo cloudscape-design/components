@@ -44,6 +44,11 @@ export interface SegmentedControlProps extends BaseComponentProps {
    * Called when the user selects a different segment.
    */
   onChange?: NonCancelableEventHandler<SegmentedControlProps.ChangeDetail>;
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: SegmentedControlProps.Style;
 }
 
 export namespace SegmentedControlProps {
@@ -60,5 +65,34 @@ export namespace SegmentedControlProps {
 
   export interface ChangeDetail {
     selectedId: string;
+  }
+
+  export interface Style {
+    root?: {
+      borderRadius?: string;
+    };
+    segment?: {
+      background?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      color?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+      borderRadius?: string;
+      fontSize?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
   }
 }

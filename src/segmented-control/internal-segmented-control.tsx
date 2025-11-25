@@ -9,6 +9,7 @@ import { KeyCode } from '../internal/keycode';
 import handleKey from '../internal/utils/handle-key';
 import { SegmentedControlProps } from './interfaces';
 import { Segment } from './segment';
+import { getSegmentedControlRootStyles } from './style';
 
 import styles from './styles.css.js';
 
@@ -18,6 +19,7 @@ export default function InternalSegmentedControl({
   label,
   ariaLabelledby,
   onChange,
+  style,
 }: SegmentedControlProps) {
   const segmentByIdRef = useRef<{ [id: string]: HTMLButtonElement }>({});
   const selectedOptions = (options || []).filter(option => {
@@ -53,6 +55,7 @@ export default function InternalSegmentedControl({
       aria-label={label}
       aria-labelledby={ariaLabelledby}
       role="toolbar"
+      style={getSegmentedControlRootStyles(style)}
     >
       {options &&
         options.map((option: SegmentedControlProps.Option, index) => {
@@ -92,6 +95,7 @@ export default function InternalSegmentedControl({
                 }
               }}
               onKeyDown={event => moveHighlight(event, focusableSegmentIndex)}
+              style={style}
             />
           );
         })}
