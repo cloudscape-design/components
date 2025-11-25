@@ -76,7 +76,7 @@ const permutations = createPermutations<SegmentedControlProps>([
 export default function SegmentedControlScenario() {
   return (
     <article>
-      <h1>SegmentedControl permutations</h1>
+      <h1>SegmentedControl Custom Style Permutations</h1>
       <ScreenshotArea>
         <PermutationsView permutations={permutations} render={permutation => <SegmentedControl {...permutation} />} />
       </ScreenshotArea>
