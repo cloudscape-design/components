@@ -43,6 +43,14 @@ export interface DropdownOption {
   afterHeader?: boolean;
 }
 
+export interface DropdownItem<T> {
+  type: 'child' | 'parent' | 'select-all' | 'use-entered';
+  disabled: boolean;
+  highlighted: boolean;
+  selected: boolean;
+  option: T;
+}
+
 export interface OptionProps extends BaseComponentProps {
   option?: InternalOptionDefinition;
   triggerVariant?: boolean;
