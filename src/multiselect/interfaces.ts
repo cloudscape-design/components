@@ -1,15 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ReactNode } from 'react';
+
 import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
-import { BaseSelectProps } from '../select/interfaces';
+import { BaseSelectProps, SelectProps } from '../select/interfaces';
 
 export interface MultiselectProps extends BaseSelectProps {
+  /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * @awsuiSystem core
+   */
+  renderOption?: (option: SelectProps.SelectOptionItem) => ReactNode;
+
   /**
    * Specifies the currently selected options.
    * Provide an empty array to clear the selection.
    */
   selectedOptions: ReadonlyArray<MultiselectProps.Option>;
+
   /**
    * Specifies an inline label that appears next to the multiselect trigger.
    */
@@ -79,7 +89,6 @@ export namespace MultiselectProps {
   export type Options = ReadonlyArray<Option | OptionGroup>;
   export type DeselectAriaLabelFunction = (option: Option) => string;
   export type TriggerVariant = 'placeholder' | 'tokens';
-
   export interface I18nStrings {
     selectAllText?: string;
     tokenLimitShowFewer?: string;
