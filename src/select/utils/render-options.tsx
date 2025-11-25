@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { DropdownOption } from '../../internal/components/option/interfaces';
 import { NestedDropdownOption, unflattenOptions } from '../../internal/components/option/utils/unflatten-options';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 import { VirtualItem } from '../../internal/vendor/react-virtual';
+import { SelectProps } from '../interfaces';
 import Item from '../parts/item';
 import MultiselectItem from '../parts/multiselect-item';
 import OptionGroup from '../parts/option-group';
@@ -26,6 +27,7 @@ interface RenderOptionProps {
   withScrollbar: boolean;
   firstOptionSticky?: boolean;
   stickyOptionRef?: React.Ref<HTMLDivElement>;
+  renderOption?: (option: SelectProps.SelectOptionItem) => ReactNode;
 }
 
 export const renderOptions = ({
@@ -43,6 +45,7 @@ export const renderOptions = ({
   withScrollbar,
   firstOptionSticky,
   stickyOptionRef,
+  renderOption,
 }: RenderOptionProps) => {
   const getNestedItemProps = ({ index, option }: NestedDropdownOption) => {
     const virtualItem = virtualItems && virtualItems[index];
@@ -78,6 +81,7 @@ export const renderOptions = ({
         highlightType={highlightType.type}
         withScrollbar={withScrollbar}
         sticky={isSticky}
+        renderOption={renderOption}
       />
     );
   };
