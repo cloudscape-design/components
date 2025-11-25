@@ -47,7 +47,8 @@
 @mixin focus-highlight(
   $gutter,
   $border-radius: awsui.$border-radius-control-default-focus-ring,
-  $box-shadow: foundation.$box-shadow-focused
+  $box-shadow: foundation.$box-shadow-focused,
+  $z-index: null
 ) {
   $gutter-vertical: $gutter;
   $gutter-horizontal: $gutter;
@@ -93,6 +94,9 @@
     border-end-start-radius: $border-radius;
     border-end-end-radius: $border-radius;
     box-shadow: $box-shadow;
+    @if $z-index {
+      z-index: $z-index;
+    }
   }
 }
 
