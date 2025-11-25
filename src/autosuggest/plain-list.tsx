@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { ReactNode, useEffect, useRef } from 'react';
 
 import { getBaseProps } from '../internal/base-component';
 import OptionsList, { OptionsListProps } from '../internal/components/options-list';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import AutosuggestOption from './autosuggest-option';
-import { AutosuggestItem } from './interfaces';
+import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import { AutosuggestItemsState } from './options-controller';
 
 import styles from './styles.css.js';
@@ -20,6 +20,7 @@ export interface ListProps {
   highlightText: string;
   listBottom?: React.ReactNode;
   screenReaderContent?: string;
+  renderOption?: (option: AutosuggestProps.AutosuggestItem) => ReactNode;
 }
 
 export const getOptionProps = (
@@ -48,6 +49,7 @@ const PlainList = ({
   highlightText,
   listBottom,
   screenReaderContent,
+  renderOption,
 }: ListProps) => {
   const listRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -81,6 +83,7 @@ const PlainList = ({
             data-mouse-target={index}
             screenReaderContent={screenReaderContent}
             highlightType={autosuggestItemsState.highlightType}
+            renderOption={renderOption}
             {...optionProps}
           />
         );
