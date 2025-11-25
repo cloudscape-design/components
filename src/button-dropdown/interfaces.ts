@@ -27,7 +27,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `lang` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
    * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
    * - `disabledReason` (string) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context.
-   * - `description` (string) - additional data that will be passed to a `data-description` attribute.
+   * - `description` (string) - additional data that will be passed to a `data-description` attribute. **Deprecated**, has no effect.
    * - `ariaLabel` (string) - (Optional) - ARIA label of the item element.
    *
    * ### action
@@ -40,6 +40,8 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `iconAlt` (string) - (Optional) Specifies alternate text for the icon when using `iconUrl`.
    * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * - `secondaryText` (string) - (Optional) Further information about the action that appears below the label.
+   * - `labelTag` (string) - (Optional) - A label tag that provides additional guidance, shown next to the label.
    *
    * ### checkbox
    *
@@ -50,6 +52,8 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `iconAlt` (string) - (Optional) Specifies alternate text for the icon when using `iconUrl`.
    * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * - `secondaryText` (string) - (Optional) Further information about the action that appears below the label.
+   * - `labelTag` (string) - (Optional) - A label tag that provides additional guidance, shown next to the label.
    *
    * ### group
    *
@@ -185,10 +189,14 @@ export namespace ButtonDropdownProps {
     itemType?: ItemType;
     id: string;
     text: string;
+    secondaryText?: string;
     ariaLabel?: string;
     lang?: string;
     disabled?: boolean;
     disabledReason?: string;
+    /**
+     * @deprecated Has no effect.
+     */
     description?: string;
     href?: string;
     download?: boolean | string;
@@ -198,6 +206,7 @@ export namespace ButtonDropdownProps {
     iconName?: IconProps.Name;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
+    labelTag?: string;
   }
 
   export interface CheckboxItem
@@ -206,7 +215,7 @@ export namespace ButtonDropdownProps {
     checked: boolean;
   }
 
-  export interface ItemGroup extends Omit<Item, 'id' | 'text' | 'itemType'> {
+  export interface ItemGroup extends Omit<Item, 'id' | 'text' | 'itemType' | 'secondaryText' | 'labelTag'> {
     itemType?: 'group';
     id?: string;
     text?: string;

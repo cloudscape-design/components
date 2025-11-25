@@ -10,19 +10,32 @@ const dropdownItems = [
   {
     text: 'enabled category',
     items: [
-      { id: 'c1long1', text: 'VeryLongOptionTextValueHereToTestTheCaseWithThisDropdown' },
-      { id: 'c1_disabled_item', text: 'disabled item', disabled: true },
+      {
+        id: 'c1long1',
+        text: 'VeryLongOptionTextValueHereToTestTheCaseWithThisDropdown',
+        secondaryText: 'Very long option',
+      },
+      { id: 'c1_disabled_item', text: 'disabled item', disabled: true, secondaryText: 'Disabled option' },
       { id: 'c1_enabled_item', text: 'option2' },
-      { id: 'c1long2', text: 'VeryLongOptionTextValueHereToTestTheCaseWithThisDropdown', disabled: true },
-      { id: 'c1i3', text: 'option3' },
-      { id: 'c1i4', text: 'option4' },
+      {
+        id: 'c1long2',
+        text: 'VeryLongOptionTextValueHereToTestTheCaseWithThisDropdown',
+        disabled: true,
+        secondaryText: 'Very long option',
+      },
+      { id: 'c1i3', text: 'option3', secondaryText: 'option 3' },
+      { id: 'c1i4', text: 'option4', secondaryText: 'option 4' },
     ],
   },
   {
     text: 'disabled category',
     disabled: true,
     items: [
-      { id: 'dci1', text: 'VeryLongOptionTextValueHereToTestTheCaseWithThisDropdown' },
+      {
+        id: 'dci1',
+        text: 'VeryLongOptionTextValueHereToTestTheCaseWithThisDropdown',
+        secondaryText: 'Very long option',
+      },
       { id: 'item_in_disabled_category', text: 'option4' },
       { id: 'dci5', text: 'option5' },
     ],
@@ -35,11 +48,13 @@ const dropdownItems = [
     id: 'individual_disabled_item',
     text: 'VeryLongOptionTextValueHereToTestTheCaseWithThisDropdown',
     disabled: true,
+    labelTag: 'Disabled',
   },
   {
     id: 'plain_href',
     text: 'option6',
     href: '#',
+    labelTag: 'Link',
   },
   {
     id: 'plain_href_prevented',

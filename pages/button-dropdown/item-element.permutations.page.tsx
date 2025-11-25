@@ -50,6 +50,33 @@ const permutations = createPermutations<ItemProps>([
     onItemActivate: [() => {}],
     highlightItem: [() => {}],
   },
+
+  // With secondaryText
+  {
+    item: [
+      { id: '1', text: 'Option', secondaryText: 'This is the first option' },
+      { id: '2', text: 'Option 2', secondaryText: 'This is the second option' },
+    ],
+    disabled: [false, true],
+    highlighted: [false, true],
+    hasCategoryHeader: [false],
+    showDivider: [false],
+    onItemActivate: [() => {}],
+    highlightItem: [() => {}],
+  },
+  // With labelTag
+  {
+    item: [
+      { id: '1', text: 'Option', labelTag: 'This is a label tag' },
+      { id: '2', text: 'Option 2', secondaryText: 'This is the second option', labelTag: 'This is a label tag' },
+    ],
+    disabled: [false, true],
+    highlighted: [false, true],
+    hasCategoryHeader: [false],
+    showDivider: [false],
+    onItemActivate: [() => {}],
+    highlightItem: [() => {}],
+  },
   // With icons
   {
     item: [
