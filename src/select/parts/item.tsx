@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
@@ -14,6 +14,7 @@ import { HighlightType } from '../../internal/components/options-list/utils/use-
 import SelectableItem from '../../internal/components/selectable-item';
 import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { SelectProps } from '../interfaces';
 
 import styles from './styles.css.js';
 
@@ -33,6 +34,7 @@ export interface ItemProps {
   highlightType?: HighlightType['type'];
   withScrollbar?: boolean;
   sticky?: boolean;
+  renderOption?: (option: SelectProps.SelectOptionItem) => ReactNode;
 }
 
 const Item = (
@@ -52,6 +54,7 @@ const Item = (
     highlightType,
     withScrollbar,
     sticky,
+    renderOption,
     ...restProps
   }: ItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -95,24 +98,34 @@ const Item = (
       {...baseProps}
     >
       <div className={clsx(styles.item, !isParent && wrappedOption.labelTag && styles['show-label-tag'])}>
-        {hasCheckbox && !isParent && (
+        {!renderOption && hasCheckbox && !isParent && (
           <div className={styles.checkbox}>
             <CheckboxIcon checked={selected || false} disabled={option.disabled} />
           </div>
         )}
-        <Option
-          option={{ ...wrappedOption, disabled }}
-          highlightedOption={highlighted}
-          selectedOption={selected}
-          highlightText={filteringValue}
-          isGroupOption={isParent}
-        />
-        {!hasCheckbox && !isParent && selected && (
+        {renderOption ? (
+          renderOption({
+            option: option.option,
+            selected: !!selected,
+            highlighted: !!highlighted,
+            disabled: !!disabled,
+            type: option.type === 'select-all' ? 'child' : (option.type ?? 'child'),
+          })
+        ) : (
+          <Option
+            option={{ ...wrappedOption, disabled }}
+            highlightedOption={highlighted}
+            selectedOption={selected}
+            highlightText={filteringValue}
+            isGroupOption={isParent}
+          />
+        )}
+        {!renderOption && !hasCheckbox && !isParent && selected && (
           <div className={styles['selected-icon']}>
             <InternalIcon name="check" />
           </div>
         )}
-        {isDisabledWithReason && (
+        {!renderOption && isDisabledWithReason && (
           <>
             {descriptionEl}
             {highlighted && canShowTooltip && (

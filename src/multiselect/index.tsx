@@ -24,6 +24,7 @@ const Multiselect = React.forwardRef(
       selectedOptions = [],
       keepOpen = true,
       hideTokens = false,
+      renderOption,
       ...restProps
     }: MultiselectProps,
     ref: React.Ref<MultiselectProps.Ref>
@@ -61,6 +62,7 @@ const Multiselect = React.forwardRef(
 
     return (
       <InternalMultiselect
+        renderOption={renderOption}
         options={options}
         filteringType={filteringType}
         statusType={statusType}
