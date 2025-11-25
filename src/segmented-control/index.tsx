@@ -17,6 +17,7 @@ export default function SegmentedControl(props: SegmentedControlProps) {
       hasDisabledReasons: (props.options ?? []).some(option => Boolean(option.disabledReason)),
     },
   });
+
   return <InternalSegmentedControl {...props} {...baseComponentProps} />;
 }
 
