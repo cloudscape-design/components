@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
@@ -11,11 +11,13 @@ import { OptionDefinition } from '../../internal/components/option/interfaces';
 import SelectableItem from '../../internal/components/selectable-item';
 import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { SelectProps } from '../interfaces';
 import { ItemProps } from './item';
 
 import styles from './styles.css.js';
 interface MultiselectItemProps extends ItemProps {
   indeterminate?: boolean;
+  renderOption?: (option: SelectProps.SelectOptionItem) => ReactNode;
 }
 
 const MultiSelectItem = (
@@ -36,6 +38,7 @@ const MultiSelectItem = (
     highlightType,
     withScrollbar,
     sticky,
+    renderOption,
     ...restProps
   }: MultiselectItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -86,7 +89,7 @@ const MultiSelectItem = (
       {...baseProps}
     >
       <div className={className}>
-        {hasCheckbox && (
+        {!renderOption && hasCheckbox && (
           <div className={styles.checkbox}>
             <CheckboxIcon
               checked={selected}
@@ -95,15 +98,25 @@ const MultiSelectItem = (
             />
           </div>
         )}
-        <Option
-          option={{ ...wrappedOption, disabled }}
-          highlightedOption={highlighted}
-          selectedOption={selected}
-          highlightText={filteringValue}
-          isGroupOption={isParent}
-        />
+        {renderOption ? (
+          renderOption({
+            option: option.option,
+            selected: !!selected,
+            highlighted: !!highlighted,
+            disabled: !!disabled,
+            type: option.type ?? 'child',
+          })
+        ) : (
+          <Option
+            option={{ ...wrappedOption, disabled }}
+            highlightedOption={highlighted}
+            selectedOption={selected}
+            highlightText={filteringValue}
+            isGroupOption={isParent}
+          />
+        )}
       </div>
-      {isDisabledWithReason && (
+      {!renderOption && isDisabledWithReason && (
         <>
           {descriptionEl}
           {highlighted && canShowTooltip && (
