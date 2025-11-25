@@ -225,6 +225,17 @@ export default function () {
                 ]}
               />
             </div>
+
+            <div style={{ maxWidth: '300px' }}>
+              <FormField
+                label="Email address"
+                errorText="Please enter a valid email address"
+                constraintText="Use your company email"
+              >
+                <Input value="invalid-email" type="email" />
+              </FormField>
+            </div>
+
             <SpaceBetween size="xs">
               <StatusIndicator type="error">Error</StatusIndicator>
               <StatusIndicator type="success">Success</StatusIndicator>
@@ -278,6 +289,16 @@ export default function () {
                 />
               </SpaceBetween>
             </IconProvider>
+            <p style={{ lineHeight: '28px', fontSize: '18px' }}>
+              Lorem ipsum dolor sit amet,{' '}
+              <Link external={true} href="#">
+                Learn more
+              </Link>{' '}
+              consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+              minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+              irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+              sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+            </p>
           </SpaceBetween>
         </SpaceBetween>
       </ScreenshotArea>

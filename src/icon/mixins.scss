@@ -21,10 +21,10 @@ $_variant-colors: (
 $_icon-sizes: (
   (
     name: 'small',
-    size: awsui.$size-icon-normal,
+    size: awsui.$size-icon-small-12,
     supportedLineHeight: awsui.$line-height-body-s,
     stroke: awsui.$border-width-icon-small,
-    scaleFactor: 1,
+    scaleFactor: 0.875,
   ),
   (
     name: 'small-12',
