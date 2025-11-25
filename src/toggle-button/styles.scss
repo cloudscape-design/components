@@ -4,15 +4,18 @@
 */
 
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .variant-normal.pressed {
-  background: awsui.$color-background-toggle-button-normal-pressed;
-  border-color: awsui.$color-border-toggle-button-normal-pressed;
-  color: awsui.$color-text-toggle-button-normal-pressed;
+  background: var(#{custom-props.$styleBackgroundPressed}, awsui.$color-background-toggle-button-normal-pressed);
+  border-color: var(#{custom-props.$styleBorderColorPressed}, awsui.$color-border-toggle-button-normal-pressed);
+  color: var(#{custom-props.$styleColorPressed}, awsui.$color-text-toggle-button-normal-pressed);
+  box-shadow: var(#{custom-props.$styleBoxShadowPressed});
 }
 
 .variant-icon.pressed {
-  background: transparent;
-  border-color: transparent;
-  color: awsui.$color-text-toggle-button-icon-pressed;
+  background: var(#{custom-props.$styleBackgroundPressed}, transparent);
+  border-color: var(#{custom-props.$styleBorderColorPressed}, transparent);
+  color: var(#{custom-props.$styleColorPressed}, awsui.$color-text-toggle-button-icon-pressed);
+  box-shadow: var(#{custom-props.$styleBoxShadowPressed});
 }

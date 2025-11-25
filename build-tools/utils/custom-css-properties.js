@@ -105,6 +105,11 @@ const customCssPropertiesList = [
   'styleBorderColorFocus',
   'styleBoxShadowFocus',
   'styleColorFocus',
+  // Pressed state
+  'styleBackgroundPressed',
+  'styleBorderColorPressed',
+  'styleBoxShadowPressed',
+  'styleColorPressed',
   // Placeholder style properties
   'stylePlaceholderColor',
   'stylePlaceholderFontSize',
