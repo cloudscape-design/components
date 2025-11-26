@@ -29,7 +29,7 @@ class AppLayoutDrawersPage extends BasePageObject {
       if (width < inOverflowMenuWidth) {
         //links on mobile is thrown inside the overflow menu
         await this.click(wrapper.findDrawersOverflowTrigger().toSelector());
-        await this.click(wrapper.findDrawersOverflowTrigger().findItemById(thirdDrawerId).toSelector());
+        await this.click(wrapper.findDrawersOverflowTrigger().findItemById(thirdDrawerId)!.toSelector());
       }
     } else {
       await this.click(wrapper.findDrawerTriggerById(thirdDrawerId).toSelector());

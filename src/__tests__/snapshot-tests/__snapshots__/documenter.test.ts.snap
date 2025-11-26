@@ -30503,12 +30503,7 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           "parameters": [],
           "returnType": {
             "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
+            "name": "ButtonDropdownItemWrapper",
           },
         },
         {
@@ -30527,12 +30522,7 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           ],
           "returnType": {
             "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
+            "name": "ButtonDropdownItemWrapper",
           },
         },
         {
@@ -30565,7 +30555,7 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
             "name": "Array",
             "typeArguments": [
               {
-                "name": "ElementWrapper<HTMLElement>",
+                "name": "ButtonDropdownItemWrapper",
               },
             ],
           },
@@ -30622,6 +30612,53 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         },
       ],
       "name": "ButtonDropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Finds the label tag of a dropdown item.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the secondary text of a dropdown item.",
+          "name": "findSecondaryText",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the text of a dropdown item.",
+          "name": "findText",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "ButtonDropdownItemWrapper",
     },
     {
       "methods": [
@@ -40444,12 +40481,7 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           "parameters": [],
           "returnType": {
             "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
+            "name": "ButtonDropdownItemWrapper",
           },
         },
         {
@@ -40471,12 +40503,7 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           ],
           "returnType": {
             "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
+            "name": "ButtonDropdownItemWrapper",
           },
         },
         {
@@ -40515,7 +40542,7 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
             "name": "Array",
             "typeArguments": [
               {
-                "name": "ElementWrapper<HTMLElement>",
+                "name": "ButtonDropdownItemWrapper",
               },
             ],
           },
@@ -41751,8 +41778,8 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           "name": "findHighlightedItem",
           "parameters": [],
           "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
+            "isNullable": true,
+            "name": "ButtonDropdownItemWrapper",
           },
         },
         {
@@ -41770,8 +41797,8 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
             },
           ],
           "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
+            "isNullable": true,
+            "name": "ButtonDropdownItemWrapper",
           },
         },
         {
@@ -41785,7 +41812,7 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
             "name": "MultiElementWrapper",
             "typeArguments": [
               {
-                "name": "ElementWrapper",
+                "name": "ButtonDropdownItemWrapper",
               },
             ],
           },
@@ -41824,6 +41851,38 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         },
       ],
       "name": "ButtonDropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Finds the label tag of a dropdown item.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the secondary text of a dropdown item.",
+          "name": "findSecondaryText",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the text of a dropdown item.",
+          "name": "findText",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "ButtonDropdownItemWrapper",
     },
     {
       "methods": [
@@ -48756,8 +48815,8 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           "name": "findHighlightedItem",
           "parameters": [],
           "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
+            "isNullable": true,
+            "name": "ButtonDropdownItemWrapper",
           },
         },
         {
@@ -48778,8 +48837,8 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
             },
           ],
           "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
+            "isNullable": true,
+            "name": "ButtonDropdownItemWrapper",
           },
         },
         {
@@ -48796,7 +48855,7 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
             "name": "MultiElementWrapper",
             "typeArguments": [
               {
-                "name": "ElementWrapper",
+                "name": "ButtonDropdownItemWrapper",
               },
             ],
           },
