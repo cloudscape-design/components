@@ -1,0 +1,307 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useEffect, useState } from 'react';
+
+import {
+  Alert,
+  Box,
+  Button,
+  Flashbar,
+  FormField,
+  IconProvider,
+  Input,
+  KeyValuePairs,
+  Link,
+  Select,
+  SelectProps,
+  SpaceBetween,
+  StatusIndicator,
+} from '~components';
+import Icon, { IconProps } from '~components/icon';
+import icons from '~components/icon/generated/icons';
+import { applyTheme, Theme } from '~components/theming';
+
+import ScreenshotArea from '../utils/screenshot-area';
+
+import styles from '../icon/icons-list.scss';
+
+export default function () {
+  const [themed, setThemed] = useState<boolean>(true);
+  const [strokeSmall, setStrokeSmall] = useState<string>('1px');
+  const [strokeNormal, setStrokeNormal] = useState<string>('1px');
+  const [strokeMedium, setStrokeMedium] = useState<string>('1px');
+  const [strokeBig, setStrokeBig] = useState<string>('1.5px');
+  const [strokeLarge, setStrokeLarge] = useState<string>('2px');
+  const [selectedOption, setSelectedOption] = useState<SelectProps.Option>({ label: 'Option 1', value: '1' });
+
+  useEffect(() => {
+    const theme: Theme = {
+      tokens: {
+        borderWidthIconSmall: strokeSmall,
+        borderWidthIconNormal: strokeNormal,
+        borderWidthIconMedium: strokeMedium,
+        borderWidthIconBig: strokeBig,
+        borderWidthIconLarge: strokeLarge,
+      },
+    };
+
+    let reset: () => void = () => {};
+    const result = applyTheme({
+      theme: themed ? theme : { tokens: {} },
+      baseThemeId: 'visual-refresh',
+    });
+    reset = result.reset;
+    return reset;
+  }, [themed, strokeSmall, strokeNormal, strokeMedium, strokeBig, strokeLarge]);
+
+  return (
+    <div style={{ padding: 15 }}>
+      <h1>Themed Icon Stroke Width</h1>
+      <Box padding={{ bottom: 'm' }} variant="small">
+        When not working, reload the page
+      </Box>
+      <SpaceBetween size="m" direction="vertical">
+        <label>
+          <input
+            type="checkbox"
+            data-testid="apply-theme"
+            checked={themed}
+            onChange={evt => setThemed(evt.currentTarget.checked)}
+          />
+          <span style={{ marginInlineStart: 5 }}>Apply custom stroke widths</span>
+        </label>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px', maxWidth: '800px' }}>
+          <FormField label="New small size" description="Default: 2px">
+            <Input
+              type="number"
+              value={strokeSmall}
+              onChange={evt => setStrokeSmall(evt.detail.value)}
+              placeholder="1px"
+            />
+          </FormField>
+
+          <FormField label="Normal (16px)" description="Default: 2px">
+            <Input
+              type="number"
+              value={strokeNormal}
+              onChange={evt => setStrokeNormal(evt.detail.value)}
+              placeholder="1px"
+            />
+          </FormField>
+
+          <FormField label="Medium (20px)" description="Default: 2px">
+            <Input
+              type="number"
+              value={strokeMedium}
+              onChange={evt => setStrokeMedium(evt.detail.value)}
+              placeholder="1px"
+            />
+          </FormField>
+
+          <FormField label="Big (32px)" description="Default: 3px">
+            <Input
+              type="number"
+              value={strokeBig}
+              onChange={evt => setStrokeBig(evt.detail.value)}
+              placeholder="1.5px"
+            />
+          </FormField>
+
+          <FormField label="Large (48px)" description="Default: 4px">
+            <Input
+              type="number"
+              value={strokeLarge}
+              onChange={evt => setStrokeLarge(evt.detail.value)}
+              placeholder="2px"
+            />
+          </FormField>
+        </div>
+      </SpaceBetween>
+
+      <Box variant="h2" padding={{ top: 'l' }}>
+        New small icon size options
+      </Box>
+      <Box variant="p" color="text-body-secondary" padding={{ bottom: 'm' }}>
+        Compare three potential small icon sizes with custom stroke widths applied.
+      </Box>
+
+      <ScreenshotArea>
+        <SpaceBetween size="xl">
+          <SpaceBetween size="xs">
+            <Box variant="h3">Option 1: 12px (Too small, details are broken)</Box>
+            <div className={styles.wrapper}>
+              {Object.keys(icons).map(icon => (
+                <Icon key={`12-${icon}`} name={icon as IconProps['name']} variant="normal" size="small-12" />
+              ))}
+            </div>
+          </SpaceBetween>
+
+          <SpaceBetween size="xs">
+            <Box variant="h3">Option 2: 13px (Look ok)</Box>
+            <div className={styles.wrapper}>
+              {Object.keys(icons).map(icon => (
+                <Icon key={`13-${icon}`} name={icon as IconProps['name']} variant="normal" size="small-13" />
+              ))}
+            </div>
+          </SpaceBetween>
+
+          <SpaceBetween size="xs">
+            <Box variant="h3">
+              Option 3: 14px (✅ Look better than other two maintaining visual details in 1px stroke)
+            </Box>
+            <div className={styles.wrapper}>
+              {Object.keys(icons).map(icon => (
+                <Icon key={`14-${icon}`} name={icon as IconProps['name']} variant="normal" size="small-14" />
+              ))}
+            </div>
+          </SpaceBetween>
+
+          <Box variant="h2" padding={{ top: 'l' }}>
+            Other Icon Sizes
+          </Box>
+
+          <SpaceBetween size="xs">
+            <Box variant="h3">Normal (16px)</Box>
+            <div className={styles.wrapper}>
+              {Object.keys(icons).map(icon => (
+                <Icon key={icon} name={icon as IconProps['name']} variant="normal" size="normal" />
+              ))}
+            </div>
+          </SpaceBetween>
+
+          <SpaceBetween size="xs">
+            <Box variant="h3">Medium (20px)</Box>
+            <div className={styles.wrapper}>
+              {Object.keys(icons).map(icon => (
+                <Icon key={icon} name={icon as IconProps['name']} variant="normal" size="medium" />
+              ))}
+            </div>
+          </SpaceBetween>
+
+          <SpaceBetween size="xs">
+            <Box variant="h3">Big (32px)</Box>
+            <div className={styles.wrapper}>
+              {Object.keys(icons).map(icon => (
+                <Icon key={icon} name={icon as IconProps['name']} variant="normal" size="big" />
+              ))}
+            </div>
+          </SpaceBetween>
+
+          <SpaceBetween size="xs">
+            <Box variant="h3">Large (48px)</Box>
+            <div className={styles.wrapper}>
+              {Object.keys(icons).map(icon => (
+                <Icon key={icon} name={icon as IconProps['name']} variant="normal" size="large" />
+              ))}
+            </div>
+          </SpaceBetween>
+
+          <Box variant="h2" padding={{ top: 'l' }}>
+            Inline Context Examples
+          </Box>
+
+          <SpaceBetween size="m">
+            <div>
+              <Button iconName="call" variant="primary">
+                Button
+              </Button>
+            </div>
+
+            <div>
+              <Link external={true} href="https://example.com/" variant="primary">
+                Learn more
+              </Link>
+            </div>
+
+            <div style={{ maxWidth: '300px' }}>
+              <Select
+                selectedOption={selectedOption}
+                onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
+                options={[
+                  { label: 'Option 1', value: '1', iconName: 'settings' },
+                  { label: 'Option 2', value: '2', iconName: 'unlocked' },
+                  { label: 'Option 3', value: '3', iconName: 'share' },
+                ]}
+              />
+            </div>
+
+            <div style={{ maxWidth: '300px' }}>
+              <FormField
+                label="Email address"
+                errorText="Please enter a valid email address"
+                constraintText="Use your company email"
+              >
+                <Input value="invalid-email" type="email" />
+              </FormField>
+            </div>
+
+            <SpaceBetween size="xs">
+              <StatusIndicator type="error">Error</StatusIndicator>
+              <StatusIndicator type="success">Success</StatusIndicator>
+              <StatusIndicator type="warning">Warning</StatusIndicator>
+              <StatusIndicator type="info">Info</StatusIndicator>
+            </SpaceBetween>
+            <IconProvider
+              icons={{
+                'status-positive': (
+                  <svg viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 9L7 11L11 7" />
+                    <path d="M8 2C6.29 3.53 4.13 4.32 2 4.48V7.96C2 10.01 2.76 11.84 3.71 13.1C4.63 14.32 6.03 15.31 8 16C9.97 15.31 11.37 14.32 12.29 13.1C13.3935 11.6128 13.9926 9.81183 14 7.96V4.48C11.87 4.32 9.71 3.52 8 2Z" />
+                  </svg>
+                ),
+              }}
+            >
+              <SpaceBetween size="xs">
+                <Box variant="h2" padding={{ top: 'l' }}>
+                  Custom icon using icon-provider component
+                </Box>
+                <KeyValuePairs
+                  columns={1}
+                  items={[
+                    {
+                      label: 'Custom icon in a status indicator',
+                      value: <StatusIndicator type="success">Two-factor authentication enabled</StatusIndicator>,
+                    },
+                    {
+                      label: 'Custom icon in an alert',
+                      value: (
+                        <Alert type="success" statusIconAriaLabel="Success">
+                          Two-factor authentication enabled successfully.
+                        </Alert>
+                      ),
+                    },
+                    {
+                      label: 'Custom icon in a flashbar',
+                      value: (
+                        <Flashbar
+                          items={[
+                            {
+                              type: 'success',
+                              content: 'Two-factor authentication enabled successfully.',
+                              statusIconAriaLabel: 'Success',
+                            },
+                          ]}
+                        />
+                      ),
+                    },
+                  ]}
+                />
+              </SpaceBetween>
+            </IconProvider>
+            <p style={{ lineHeight: '28px', fontSize: '18px' }}>
+              Lorem ipsum dolor sit amet,{' '}
+              <Link external={true} href="#">
+                Learn more
+              </Link>{' '}
+              consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+              minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+              irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+              sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+            </p>
+          </SpaceBetween>
+        </SpaceBetween>
+      </ScreenshotArea>
+    </div>
+  );
+}
