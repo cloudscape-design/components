@@ -49,9 +49,17 @@ export function useTableInteractionMetrics<T>({
   const lastUserAction = useRef<{ name: string; time: number } | null>(null);
   const capturedUserAction = useRef<string | null>(null);
   const loadingStartTime = useRef<number | null>(null);
+  const isMountedRef = useRef(true);
 
   const metadata = useRef({ itemCount, getComponentIdentifier, getComponentConfiguration, interactionMetadata });
   metadata.current = { itemCount, getComponentIdentifier, getComponentConfiguration, interactionMetadata };
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (isInFunnel) {
@@ -94,6 +102,9 @@ export function useTableInteractionMetrics<T>({
   }, [instanceIdentifier, loading, taskInteractionId, isInFunnel]);
 
   const debouncedUpdated = useDebounceCallback(() => {
+    if (!isMountedRef.current) {
+      return;
+    }
     ComponentMetrics.componentUpdated({
       taskInteractionId,
       componentName: 'table',
