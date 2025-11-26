@@ -29,10 +29,13 @@
   padding-block: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
   padding-inline: awsui.$border-item-width;
 
+  // For custom styles and background on the option-content, the content should not clip through the selectable-item borders..
+  overflow: hidden;
+
   > .option-content {
     padding-block: styles.$option-padding-vertical;
     padding-inline: styles.$control-padding-horizontal;
-    &.no-content-padding {
+    &.no-content-styling {
       padding-block: 0;
       padding-inline: 0;
     }
@@ -43,7 +46,7 @@
     border-block-end-color: transparent;
     > .option-content {
       padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs});
-      &.no-content-padding {
+      &.no-content-styling {
         padding-block-end: 0;
       }
     }
@@ -61,11 +64,19 @@
     padding-inline-start: awsui.$border-item-width;
     > .option-content {
       padding-inline-start: awsui.$space-xxl;
-      &.no-content-padding {
+      &.no-content-styling {
         padding-inline-start: 0;
       }
     }
   }
+
+  &.disabled > .option-content {
+    color: awsui.$color-text-dropdown-item-disabled;
+    &.no-content-styling {
+      color: inherit;
+    }
+  }
+
   &.highlighted,
   &.selected {
     color: awsui.$color-text-dropdown-item-highlighted;
@@ -80,7 +91,7 @@
     > .option-content {
       padding-block: styles.$option-padding-vertical;
       padding-inline: styles.$control-padding-horizontal;
-      &.no-content-padding {
+      &.no-content-styling {
         padding-block: 0;
         padding-inline: 0;
       }
@@ -89,7 +100,7 @@
       padding-inline-start: 0;
       > .option-content {
         padding-inline-start: awsui.$space-xxl;
-        &.no-content-padding {
+        &.no-content-styling {
           padding-inline-start: 0;
         }
       }
@@ -99,7 +110,7 @@
       > .option-content {
         padding-block-end: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
 
-        &.no-content-padding {
+        &.no-content-styling {
           padding-block-end: 0;
         }
       }
@@ -159,8 +170,6 @@
   }
 
   &.parent {
-    font-weight: bold;
-    color: awsui.$color-text-dropdown-group-label;
     &:not(.interactiveGroups) {
       border-block-start-color: awsui.$color-border-dropdown-group;
       padding-block: 0;
@@ -168,9 +177,14 @@
       > .option-content {
         padding-block: awsui.$space-xs;
         padding-inline: awsui.$space-xs;
-        &.no-content-padding {
+        font-weight: bold;
+        color: awsui.$color-text-dropdown-group-label;
+
+        &.no-content-styling {
           padding-block: 0;
           padding-inline: 0;
+          font-weight: normal;
+          color: inherit;
         }
       }
     }
@@ -178,13 +192,18 @@
       > .option-content {
         padding-block: styles.$group-option-padding-vertical;
         padding-inline: styles.$control-padding-horizontal;
-        &.no-content-padding {
+        &.no-content-styling {
           padding-block: 0;
           padding-inline: 0;
         }
       }
       &.highlighted {
-        color: awsui.$color-text-dropdown-item-highlighted;
+        > .option-content {
+          color: awsui.$color-text-dropdown-item-highlighted;
+          &.no-content-styling {
+            color: inherit;
+          }
+        }
       }
       &.highlighted,
       &.selected {
@@ -192,7 +211,7 @@
         padding-inline: 0;
         > .option-content {
           padding-block: styles.$group-option-padding-vertical;
-          &.no-content-padding {
+          &.no-content-styling {
             padding-block: 0;
           }
         }
@@ -218,7 +237,7 @@
       padding-inline: 0;
       > .option-content {
         padding-inline: styles.$control-padding-horizontal;
-        &.no-content-padding {
+        &.no-content-styling {
           padding-inline: 0;
         }
       }
@@ -250,10 +269,6 @@
       border-inline-start-color: transparent;
       border-inline-end-color: transparent;
     }
-  }
-
-  &.disabled {
-    color: awsui.$color-text-dropdown-item-disabled;
   }
 
   &:not(.disabled):not(.parent) {
