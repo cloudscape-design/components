@@ -175,10 +175,8 @@
       }
     }
     &.interactiveGroups {
-      padding-block: 0;
-      padding-inline: awsui.$border-item-width;
       > .option-content {
-        padding-block: styles.$group-option-padding-with-border-placeholder-vertical;
+        padding-block: styles.$group-option-padding-vertical;
         padding-inline: styles.$control-padding-horizontal;
         &.no-content-padding {
           padding-block: 0;
