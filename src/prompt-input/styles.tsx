@@ -9,7 +9,7 @@ export function getPromptInputStyles(style: PromptInputProps['style']) {
     return {};
   }
 
-  const properties = {
+  return {
     borderRadius: style?.root?.borderRadius,
     borderWidth: style?.root?.borderWidth,
     fontSize: style?.root?.fontSize,
@@ -41,6 +41,4 @@ export function getPromptInputStyles(style: PromptInputProps['style']) {
     [customCssProps.promptInputStylePlaceholderFontWeight]: style?.placeholder?.fontWeight,
     [customCssProps.promptInputStylePlaceholderFontStyle]: style?.placeholder?.fontStyle,
   };
-
-  return Object.fromEntries(Object.entries(properties).filter(([, value]) => value !== undefined));
 }

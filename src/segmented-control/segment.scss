@@ -4,34 +4,21 @@
 */
 
 @use 'sass:map';
-@use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../button/constants' as constants;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/foundation' as foundation;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
-$segment-properties: (
-  'default-background': awsui.$color-background-segment-default,
-  'default-color': awsui.$color-text-segment-default,
-  'hover-background': awsui.$color-background-segment-hover,
-  'hover-color': awsui.$color-text-segment-hover,
-  'active-background': awsui.$color-background-segment-active,
-  'disabled-background': awsui.$color-background-segment-disabled,
-  'disabled-border-color': awsui.$color-border-segment-disabled,
-  'disabled-color': awsui.$color-text-interactive-disabled,
-);
-
-$default-background: map.get($segment-properties, 'default-background');
-$default-color: map.get($segment-properties, 'default-color');
-$default-border-color: awsui.$color-border-segment-default;
-$hover-background: map.get($segment-properties, 'hover-background');
-$hover-border-color: awsui.$color-border-segment-hover;
-$hover-color: map.get($segment-properties, 'hover-color');
-$disabled-background: map.get($segment-properties, 'disabled-background');
-$disabled-border-color: map.get($segment-properties, 'disabled-border-color');
-$disabled-color: map.get($segment-properties, 'disabled-color');
-$selected-background: map.get($segment-properties, 'active-background');
-$selected-border-color: awsui.$color-border-segment-active;
-$selected-color: awsui.$color-text-segment-active;
+$default-background: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-segment-default);
+$default-color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-segment-default);
+$hover-background: var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-segment-hover);
+$hover-color: var(#{custom-props.$styleColorHover}, awsui.$color-text-segment-hover);
+$disabled-background: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-segment-disabled);
+$disabled-color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled);
+$selected-background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-segment-active);
+$selected-color: var(#{custom-props.$styleColorActive}, awsui.$color-text-segment-active);
 $segment-gap: awsui.$space-static-xxs;
 $segment-divider-width: 1px;
 
@@ -70,12 +57,20 @@ $segment-divider-width: 1px;
 
   &.disabled {
     background: $disabled-background;
-    border-color: $disabled-border-color;
     color: $disabled-color;
   }
 
+  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+
   @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-segmented-control-focus-outline-gutter);
+    @include styles.focus-highlight(
+      $gutter: awsui.$space-segmented-control-focus-outline-gutter,
+      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow}),
+      $z-index: 1 // Prevents adjacent segments from overlapping the focus ring
+    );
   }
 
   &:not(:last-child)::after {
@@ -101,30 +96,12 @@ $segment-divider-width: 1px;
   &.selected {
     background: $selected-background;
     color: $selected-color;
-
-    & + .segment,
-    & + .segment.disabled {
-      border-inline-start-color: $selected-border-color;
-    }
-  }
-
-  &:not(.disabled) + .segment.disabled {
-    border-inline-start-color: $default-border-color;
   }
 
   &:hover:not(.selected):not(.disabled):not(:focus) {
     background: $hover-background;
     color: $hover-color;
-    border-color: $hover-border-color;
     cursor: pointer;
-
-    & + .segment:not(.selected) {
-      border-inline-start-color: $hover-border-color;
-    }
-  }
-
-  &.selected + .segment:hover:not(.selected):not(.disabled):not(:focus) {
-    border-inline-start-color: $selected-border-color;
   }
 }
 

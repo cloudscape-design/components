@@ -139,6 +139,70 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
     expect(editor.header.getElement()).toHaveTextContent(i18nStrings.editTokenHeader!);
   });
 
+  describe('changing token property to another property sets correct default value type', () => {
+    function changeTokenProperty(propertyKey: string) {
+      const propertyFilter = createWrapper().findPropertyFilter()!;
+      const tokens = propertyFilter.findTokens();
+
+      tokens[0].findLabel().click();
+      const dropdown = propertyFilter.findTokens()[0].findEditorDropdown({ expandToViewport })!;
+      const select = dropdown.findForm().findSelect()!;
+      select.openDropdown();
+      select.selectOptionByValue(propertyKey);
+      dropdown.findSubmitButton().click();
+    }
+
+    const baseProps: Partial<PropertyFilterProps> = {
+      filteringProperties: [
+        { key: 'string', propertyLabel: 'string', operators: ['=', '!='], groupValuesLabel: '' },
+        { key: 'other-string', propertyLabel: 'string-other', operators: ['=', '!='], groupValuesLabel: '' },
+        { key: 'enum', propertyLabel: 'enum', operators: [{ operator: '=', tokenType: 'enum' }], groupValuesLabel: '' },
+        {
+          key: 'date',
+          propertyLabel: 'date',
+          operators: [{ operator: '=', form: () => <div /> }],
+          groupValuesLabel: '',
+        },
+      ],
+      query: { tokens: [{ propertyKey: 'string', value: 'value', operator: '=' }], operation: 'and' },
+      expandToViewport,
+    };
+
+    test('string property initializes to string', () => {
+      const onChange = jest.fn();
+      renderComponent({ ...baseProps, onChange });
+
+      changeTokenProperty('other-string');
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { tokens: [{ propertyKey: 'other-string', operator: '=', value: '' }], operation: 'and' },
+        })
+      );
+    });
+
+    test('enum property initializes to empty array', () => {
+      const onChange = jest.fn();
+      renderComponent({ ...baseProps, onChange });
+      changeTokenProperty('enum');
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { tokens: [{ propertyKey: 'enum', operator: '=', value: [] }], operation: 'and' },
+        })
+      );
+    });
+
+    test('custom property initializes to null', () => {
+      const onChange = jest.fn();
+      renderComponent({ ...baseProps, onChange });
+      changeTokenProperty('date');
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { tokens: [{ propertyKey: 'date', operator: '=', value: null }], operation: 'and' },
+        })
+      );
+    });
+  });
+
   describe('form controls content', () => {
     test('default', () => {
       renderComponent({
@@ -501,7 +565,7 @@ describe('token editor with groups', () => {
         expect.objectContaining({
           detail: {
             operation: 'and',
-            tokenGroups: [{ propertyKey: 'other-string', operator: '=', value: null }],
+            tokenGroups: [{ propertyKey: 'other-string', operator: '=', value: '' }],
             tokens: [],
           },
         })

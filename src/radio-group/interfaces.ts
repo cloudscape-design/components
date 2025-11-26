@@ -68,6 +68,11 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
    * @awsuiSystem core
    */
   style?: RadioGroupProps.Style;
+
+  /**
+   * Defines the direction in which the radio buttons are laid out.
+   */
+  direction?: 'horizontal' | 'vertical';
 }
 
 export namespace RadioGroupProps {
@@ -83,7 +88,12 @@ export namespace RadioGroupProps {
     value: string;
   }
 
-  export type Ref = RadioButtonProps.Ref;
+  export interface Ref {
+    /**
+     * Sets input focus onto the UI control.
+     */
+    focus(): void;
+  }
 
   export type Style = RadioButtonProps.Style;
 }

@@ -53,7 +53,8 @@ function dismissButton(
   type?: string,
   ref?: React.Ref<ButtonProps.Ref>,
   id?: string,
-  onDismissed?: (id?: string) => void
+  onDismissed?: (id?: string, persistenceConfig?: FlashbarProps.PersistenceConfig) => void,
+  persistenceConfig?: FlashbarProps.PersistenceConfig
 ) {
   return (
     <div
@@ -67,7 +68,7 @@ function dismissButton(
             onDismiss(event);
           }
           if (onDismissed) {
-            onDismissed(id);
+            onDismissed(id, persistenceConfig);
           }
         }}
         className={styles['dismiss-button']}
@@ -139,6 +140,7 @@ export const Flash = React.forwardRef(
       style,
       rootRef,
       onDismissed,
+      persistenceConfig,
       ...props
     }: FlashProps,
     ref: React.Ref<HTMLDivElement>
@@ -283,7 +285,16 @@ export const Flash = React.forwardRef(
           />
         </div>
         {dismissible &&
-          dismissButton(dismissLabel, onDismiss, style, effectiveType, dismissButtonRefObject, id, onDismissed)}
+          dismissButton(
+            dismissLabel,
+            onDismiss,
+            style,
+            effectiveType,
+            dismissButtonRefObject,
+            id,
+            onDismissed,
+            persistenceConfig
+          )}
         {ariaRole === 'status' && (
           <InternalLiveRegion sources={[statusIconAriaLabel, headerRefObject, contentRefObject]} />
         )}

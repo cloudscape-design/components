@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getSegmentedControlRootStyles handles all possible style configurations 1`] = `
+{
+  "borderRadius": undefined,
+}
+`;
+
+exports[`getSegmentedControlRootStyles handles all possible style configurations 2`] = `
+{
+  "borderRadius": undefined,
+}
+`;
+
+exports[`getSegmentedControlRootStyles handles all possible style configurations 3`] = `
+{
+  "borderRadius": "8px",
+}
+`;
+
+exports[`getSegmentedControlSegmentStyles handles all possible style configurations 1`] = `
+{
+  "--awsui-style-background-active-d43v8n": undefined,
+  "--awsui-style-background-default-d43v8n": undefined,
+  "--awsui-style-background-disabled-d43v8n": undefined,
+  "--awsui-style-background-hover-d43v8n": undefined,
+  "--awsui-style-color-active-d43v8n": undefined,
+  "--awsui-style-color-default-d43v8n": undefined,
+  "--awsui-style-color-disabled-d43v8n": undefined,
+  "--awsui-style-color-hover-d43v8n": undefined,
+  "--awsui-style-focus-ring-border-color-d43v8n": undefined,
+  "--awsui-style-focus-ring-border-radius-d43v8n": undefined,
+  "--awsui-style-focus-ring-border-width-d43v8n": undefined,
+  "borderRadius": undefined,
+  "fontSize": undefined,
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getSegmentedControlSegmentStyles handles all possible style configurations 2`] = `
+{
+  "--awsui-style-background-active-d43v8n": undefined,
+  "--awsui-style-background-default-d43v8n": undefined,
+  "--awsui-style-background-disabled-d43v8n": undefined,
+  "--awsui-style-background-hover-d43v8n": undefined,
+  "--awsui-style-color-active-d43v8n": undefined,
+  "--awsui-style-color-default-d43v8n": undefined,
+  "--awsui-style-color-disabled-d43v8n": undefined,
+  "--awsui-style-color-hover-d43v8n": undefined,
+  "--awsui-style-focus-ring-border-color-d43v8n": undefined,
+  "--awsui-style-focus-ring-border-radius-d43v8n": undefined,
+  "--awsui-style-focus-ring-border-width-d43v8n": undefined,
+  "borderRadius": undefined,
+  "fontSize": undefined,
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getSegmentedControlSegmentStyles handles all possible style configurations 3`] = `
+{
+  "--awsui-style-background-active-d43v8n": "#0073bb",
+  "--awsui-style-background-default-d43v8n": "#ffffff",
+  "--awsui-style-background-disabled-d43v8n": "#f0f0f0",
+  "--awsui-style-background-hover-d43v8n": "#fafafa",
+  "--awsui-style-color-active-d43v8n": "#ffffff",
+  "--awsui-style-color-default-d43v8n": "#000000",
+  "--awsui-style-color-disabled-d43v8n": "#999999",
+  "--awsui-style-color-hover-d43v8n": "#000000",
+  "--awsui-style-focus-ring-border-color-d43v8n": "#0073bb",
+  "--awsui-style-focus-ring-border-radius-d43v8n": "8px",
+  "--awsui-style-focus-ring-border-width-d43v8n": "2px",
+  "borderRadius": "6px",
+  "fontSize": "14px",
+  "paddingBlock": "8px",
+  "paddingInline": "12px",
+}
+`;

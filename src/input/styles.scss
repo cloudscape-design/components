@@ -116,7 +116,9 @@
     );
     box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
     @include placeholder {
-      @include styles.form-placeholder-disabled;
+      @include styles.form-placeholder-disabled(
+        $color: var(#{custom-props.$stylePlaceholderColor}, awsui.$color-text-input-placeholder-disabled)
+      );
     }
   }
 
@@ -126,7 +128,11 @@
   }
 
   &.input-invalid {
-    @include styles.form-invalid-control();
+    @include styles.form-invalid-control(
+      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-error),
+      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error),
+      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+    );
     &.input-has-icon-left {
       padding-inline-start: calc(
         #{styles.$control-icon-horizontal-padding} -
@@ -136,7 +142,11 @@
   }
 
   &.input-warning {
-    @include styles.form-warning-control();
+    @include styles.form-warning-control(
+      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-warning),
+      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning),
+      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+    );
     &.input-has-icon-left {
       padding-inline-start: calc(
         #{styles.$control-icon-horizontal-padding} -
