@@ -58,6 +58,11 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   disableContentPaddings?: boolean;
 
   /**
+   * Optional slot for a footer that is only available when the `container` or `stacked` variant for this component is used.
+   */
+  footer?: React.ReactNode;
+
+  /**
    * Primary content displayed in the expandable section element.
    */
   children?: React.ReactNode;
