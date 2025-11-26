@@ -7,6 +7,8 @@
 @use '../internal/styles' as styles;
 @use './shared' as shared;
 
+@use './motion';
+
 .root {
   @include styles.styles-reset;
   word-wrap: break-word;
@@ -281,5 +283,22 @@
 
   &.with-divider {
     @include shared.divider;
+  }
+}
+
+.expandable-container-footer {
+  display: none;
+
+  &.with-paddings {
+    padding-block: awsui.$space-scaled-s;
+    padding-inline: awsui.$space-container-horizontal;
+  }
+
+  &.with-divider {
+    @include shared.divider;
+  }
+
+  &-expanded {
+    display: block;
   }
 }
