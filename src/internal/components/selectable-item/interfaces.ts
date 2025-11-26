@@ -15,7 +15,7 @@ export type SelectableItemProps = BaseComponentProps & {
   isSelectAll?: boolean;
   virtualPosition?: number;
   padBottom?: boolean;
-  disableContentPaddings?: boolean;
+  disableContentStyling?: boolean;
   isPreviousSelected?: boolean;
   isNextSelected?: boolean;
   useInteractiveGroups?: boolean;
