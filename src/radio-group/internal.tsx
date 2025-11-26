@@ -58,6 +58,7 @@ const InternalRadioGroup = React.forwardRef(
         className={clsx(
           baseProps.className,
           testUtilStyles.root,
+          styles.root,
           styles['radio-group'],
           direction === 'horizontal' && styles['horizontal-group']
         )}
@@ -79,11 +80,7 @@ const InternalRadioGroup = React.forwardRef(
               value={item.value}
               description={item.description}
               disabled={item.disabled}
-              onChange={({ detail }) => {
-                if (onChange && detail.checked) {
-                  fireNonCancelableEvent(onChange, { value: item.value });
-                }
-              }}
+              onSelect={() => fireNonCancelableEvent(onChange, { value: item.value })}
               controlId={item.controlId}
               readOnly={readOnly}
               style={style}
