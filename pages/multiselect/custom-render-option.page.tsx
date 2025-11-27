@@ -51,15 +51,6 @@ export default function SelectPage() {
               setSelectedOptions(event.detail.selectedOptions);
             }}
             options={options}
-          />{' '}
-          <Multiselect
-            renderOption={renderOptionItem}
-            selectedOptions={selectedOptions}
-            onChange={event => {
-              setSelectedOptions(event.detail.selectedOptions);
-            }}
-            options={options}
-            virtualScroll={true}
           />
         </div>
       </Box>
