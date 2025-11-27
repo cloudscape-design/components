@@ -61,7 +61,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     renderHighlightedAriaLive,
     style,
     __internalRootRef,
-    renderOption,
     ...restProps
   } = props;
 
@@ -245,7 +244,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
               !dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} id={footerControlId} /> : null
             }
             ariaDescribedby={dropdownStatus.content ? footerControlId : undefined}
-            renderOption={renderOption}
           />
         )
       }
