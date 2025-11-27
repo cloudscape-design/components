@@ -16,12 +16,12 @@ import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/wi
 import { DrawerPayload as WidgetDrawerPayload } from '../../../lib/components/internal/plugins/widget/interfaces';
 import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import AppLayoutRuntimeWrapper from '../../../lib/components/test-utils/dom/internal/app-layout-drawers';
 import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
   getActiveDrawerWidth,
   getBottomDrawerHeight,
-  getGlobalDrawersTestUtils,
   getGlobalDrawerWidth,
   manyDrawers,
   testDrawer,
@@ -45,7 +45,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 async function renderComponent(jsx: React.ReactElement) {
   const { container, rerender, getByTestId, ...rest } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
-  const globalDrawersWrapper = getGlobalDrawersTestUtils(wrapper);
+  const globalDrawersWrapper = new AppLayoutRuntimeWrapper(wrapper.getElement());
   await delay();
   return {
     wrapper,
@@ -1811,8 +1811,8 @@ describe('toolbar mode only features', () => {
 
           const outerLayout = createWrapper().find('[data-testid="first"]')!.findAppLayout()!;
           const innerLayout = createWrapper().find('[data-testid="second"]')!.findAppLayout()!;
-          const innerGlobalDrawers = getGlobalDrawersTestUtils(outerLayout);
-          const outerGlobalDrawers = getGlobalDrawersTestUtils(innerLayout);
+          const outerGlobalDrawers = new AppLayoutRuntimeWrapper(outerLayout.getElement());
+          const innerGlobalDrawers = new AppLayoutRuntimeWrapper(innerLayout.getElement());
 
           await delay();
 
@@ -1827,8 +1827,8 @@ describe('toolbar mode only features', () => {
 
           innerGlobalDrawers.findExpandedModeButtonByActiveDrawerId(drawerId)!.click();
 
-          expect(innerGlobalDrawers.isLayoutInDrawerExpandedMode()).toBe(false);
-          expect(outerGlobalDrawers.isLayoutInDrawerExpandedMode()).toBe(true);
+          expect(innerGlobalDrawers.isLayoutInDrawerExpandedMode()).toBe(true);
+          expect(outerGlobalDrawers.isLayoutInDrawerExpandedMode()).toBe(false);
 
           await waitFor(() =>
             expect(outerLayout.find(`.${skeletonStyles.navigation}`)!.getElement()).toHaveClass(skeletonStyles.hidden)
