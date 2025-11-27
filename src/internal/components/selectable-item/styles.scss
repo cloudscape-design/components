@@ -116,15 +116,19 @@
       }
     }
   }
-
   &.highlighted {
     z-index: 3;
     background-color: awsui.$color-background-dropdown-item-hover;
     border-color: awsui.$color-border-dropdown-item-hover;
     &.disabled {
-      color: awsui.$color-text-dropdown-item-dimmed;
       border-color: awsui.$color-border-dropdown-item-dimmed-hover;
       background-color: awsui.$color-background-dropdown-item-dimmed;
+      > .option-content {
+        color: awsui.$color-text-dropdown-item-dimmed;
+        &.no-content-styling {
+          color: inherit;
+        }
+      }
     }
     &.is-keyboard {
       border-color: awsui.$color-border-dropdown-item-focused;
