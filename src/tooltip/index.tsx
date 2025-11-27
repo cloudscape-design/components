@@ -3,6 +3,7 @@
 'use client';
 import React from 'react';
 
+import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { TooltipProps } from './interfaces';
@@ -10,49 +11,45 @@ import InternalTooltip from './internal';
 
 export { TooltipProps };
 
-export default function Tooltip({
-  position = 'top',
-  align = 'center',
-  trigger = 'hover-focus',
-  open,
-  defaultOpen = false,
-  onOpenChange,
-  showDelay = 120,
-  hideDelay = 200,
-  hideOnOverscroll = true,
-  disableHoverableContent = false,
-  ...props
-}: TooltipProps) {
-  const baseComponentProps = useBaseComponent('Tooltip', {
-    props: {
+const Tooltip = React.forwardRef(
+  (
+    {
+      value,
+      trackRef,
+      trackKey,
       position,
-      align,
-      trigger,
-      open,
-      defaultOpen,
-      showDelay,
-      hideDelay,
+      className,
+      contentAttributes,
+      size,
       hideOnOverscroll,
-      disableHoverableContent,
-    },
-  });
+      onDismiss,
+      ...props
+    }: TooltipProps,
+    ref: React.Ref<TooltipProps.Ref>
+  ) => {
+    const baseComponentProps = useBaseComponent('Tooltip', {
+      props: { position, size },
+    });
+    const baseProps = getBaseProps(props);
 
-  return (
-    <InternalTooltip
-      position={position}
-      align={align}
-      trigger={trigger}
-      open={open}
-      defaultOpen={defaultOpen}
-      onOpenChange={onOpenChange}
-      showDelay={showDelay}
-      hideDelay={hideDelay}
-      hideOnOverscroll={hideOnOverscroll}
-      disableHoverableContent={disableHoverableContent}
-      {...props}
-      {...baseComponentProps}
-    />
-  );
-}
+    return (
+      <InternalTooltip
+        {...baseProps}
+        {...baseComponentProps}
+        ref={ref}
+        value={value}
+        trackRef={trackRef}
+        trackKey={trackKey}
+        position={position}
+        className={className}
+        contentAttributes={contentAttributes}
+        size={size}
+        hideOnOverscroll={hideOnOverscroll}
+        onDismiss={onDismiss}
+      />
+    );
+  }
+);
 
 applyDisplayName(Tooltip, 'Tooltip');
+export default Tooltip;

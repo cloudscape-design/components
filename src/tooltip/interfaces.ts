@@ -2,108 +2,60 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
+import { PopoverProps } from '../popover/interfaces';
 
-export interface TooltipProps extends BaseComponentProps {
+export interface TooltipProps {
   /**
-   * The content to display inside the tooltip.
-   * Supports plain text, formatted content, and interactive elements like links.
+   * The content to display in the tooltip.
    */
-  content: React.ReactNode;
+  value: React.ReactNode;
 
   /**
-   * The trigger element that shows the tooltip on interaction.
+   * Reference to the element the tooltip is positioned against.
    */
-  children: React.ReactNode;
+  trackRef: React.RefObject<HTMLElement | SVGElement>;
 
   /**
-   * Specifies the preferred position of the tooltip relative to the trigger element.
-   * The positioning system will automatically choose the best position based on available space.
-   * @defaultValue 'top'
+   * A unique key to identify the tooltip. If not provided and value is a string or number,
+   * the value will be used as the key.
    */
-  position?: TooltipProps.Position;
+  trackKey?: string | number;
 
   /**
-   * Controls when the tooltip is displayed.
-   * @defaultValue 'hover-focus'
+   * The position of the tooltip relative to the tracked element.
+   * @default 'top'
    */
-  trigger?: TooltipProps.Trigger;
+  position?: 'top' | 'right' | 'bottom' | 'left';
 
   /**
-   * Controlled open state. When provided, the tooltip visibility is controlled by the parent.
+   * Additional CSS class name to apply to the tooltip container.
    */
-  open?: boolean;
+  className?: string;
 
   /**
-   * Default open state for uncontrolled usage.
-   * @defaultValue false
+   * Additional HTML attributes to apply to the tooltip content container.
    */
-  defaultOpen?: boolean;
+  contentAttributes?: React.HTMLAttributes<HTMLDivElement>;
 
   /**
-   * Callback fired when the tooltip's open state changes.
+   * The size of the tooltip.
+   * @default 'small'
    */
-  onOpenChange?: (open: boolean) => void;
+  size?: PopoverProps['size'];
 
   /**
-   * Delay in milliseconds before showing the tooltip.
-   * Note: Keyboard interactions bypass this delay.
-   * @defaultValue 120
-   */
-  showDelay?: number;
-
-  /**
-   * Delay in milliseconds before hiding the tooltip.
-   * Note: Keyboard interactions bypass this delay.
-   * @defaultValue 200
-   */
-  hideDelay?: number;
-
-  /**
-   * Whether to hide the tooltip when scrolled out of view.
-   * @defaultValue true
+   * If true, the tooltip will be hidden when the page is scrolled.
    */
   hideOnOverscroll?: boolean;
 
   /**
-   * Controls whether users can hover over tooltip content to keep it open.
-   * Set to false when content includes interactive elements like links.
-   * @defaultValue false
+   * Callback function called when the tooltip should be dismissed.
    */
-  disableHoverableContent?: boolean;
-
-  /**
-   * Custom styling for the tooltip appearance.
-   */
-  style?: TooltipProps.Style;
-
-  /**
-   * Alignment of the tooltip relative to the trigger element.
-   * The positioning system automatically chooses the best position based on available space.
-   * @defaultValue 'center'
-   */
-  align?: TooltipProps.Align;
+  onDismiss?: () => void;
 }
 
 export namespace TooltipProps {
-  export type Position = 'top' | 'right' | 'bottom' | 'left';
-
-  export type Trigger = 'hover' | 'focus' | 'hover-focus' | 'manual';
-
-  export type Align = 'start' | 'center' | 'end';
-
-  export interface Style {
-    content?: {
-      backgroundColor?: string;
-      borderColor?: string;
-      borderRadius?: string;
-      borderWidth?: string;
-      boxShadow?: string;
-      color?: string;
-      fontSize?: string;
-      fontWeight?: string;
-      maxWidth?: string;
-      padding?: string;
-    };
+  export interface Ref {
+    focus(): void;
   }
 }
