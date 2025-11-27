@@ -110,7 +110,7 @@ const Item = (
             selected: !!selected,
             highlighted: !!highlighted,
             disabled: !!disabled,
-            type: option.type === 'select-all' ? 'child' : (option.type ?? 'child'),
+            type: option.type === 'parent' ? 'parent' : 'child',
           })
         ) : (
           <Option

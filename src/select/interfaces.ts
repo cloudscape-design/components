@@ -165,7 +165,7 @@ export interface SelectProps extends BaseSelectProps {
    *
    * @awsuiSystem core
    */
-  renderOption?: (option: SelectProps.SelectOptionItem) => ReactNode;
+  renderOption?: SelectProps.SelectOptionItemRenderer;
 
   /**
    * Adds a small label inline with the input for saving vertical space in the UI.
@@ -210,7 +210,9 @@ export namespace SelectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
-  export type SelectOptionItem = DropdownOptionItem<Option | OptionGroup>;
+  export type SelectOptionItem = DropdownOptionItem<Option | OptionGroup, 'child' | 'parent'>;
+  export type SelectOptionItemRenderer = (item: SelectOptionItem) => ReactNode;
+
   export type LoadItemsDetail = OptionsLoadItemsDetail;
 
   export interface ChangeDetail {
