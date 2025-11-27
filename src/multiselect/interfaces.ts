@@ -2,9 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ReactNode } from 'react';
 
-import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
+import {
+  DropdownOptionItem,
+  OptionDefinition,
+  OptionGroup as OptionGroupDefinition,
+} from '../internal/components/option/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
-import { BaseSelectProps, SelectProps } from '../select/interfaces';
+import { BaseSelectProps } from '../select/interfaces';
 
 export interface MultiselectProps extends BaseSelectProps {
   /**
@@ -12,7 +16,7 @@ export interface MultiselectProps extends BaseSelectProps {
    *
    * @awsuiSystem core
    */
-  renderOption?: (option: SelectProps.SelectOptionItem) => ReactNode;
+  renderOption?: (item: MultiselectProps.MultiselectOptionItem) => ReactNode;
 
   /**
    * Specifies the currently selected options.
@@ -87,8 +91,11 @@ export namespace MultiselectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
+  export type MultiselectOptionItem = DropdownOptionItem<Option | OptionGroup>;
+
   export type DeselectAriaLabelFunction = (option: Option) => string;
   export type TriggerVariant = 'placeholder' | 'tokens';
+
   export interface I18nStrings {
     selectAllText?: string;
     tokenLimitShowFewer?: string;

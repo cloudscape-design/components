@@ -10,7 +10,7 @@ import {
 } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import {
-  DropdownItem,
+  DropdownOptionItem,
   OptionDefinition,
   OptionGroup as OptionGroupDefinition,
 } from '../internal/components/option/interfaces';
@@ -210,8 +210,7 @@ export namespace SelectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
-  export type SelectOptionItem = DropdownItem<Option | OptionGroup>;
-
+  export type SelectOptionItem = DropdownOptionItem<Option | OptionGroup>;
   export type LoadItemsDetail = OptionsLoadItemsDetail;
 
   export interface ChangeDetail {
