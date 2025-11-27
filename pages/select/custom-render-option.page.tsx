@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { Badge } from '~components';
 import Box from '~components/box';
 import Select, { SelectProps } from '~components/select';
 
@@ -46,24 +45,7 @@ const options: SelectProps.Options = [
 export default function SelectPage() {
   const [selectedOption, setSelectedOption] = useState<SelectProps.Option | null>(null);
   const renderOptionItem = (item: SelectProps.SelectOptionItem) => {
-    return (
-      <div style={{ width: '100%', padding: '8px' }}>
-        <span>Test: {item.option.label}</span>
-        <div
-          style={{
-            display: 'flex',
-            gap: '4px',
-          }}
-        >
-          {item.option.tags?.map((tag, index) => (
-            <Badge key={index} color={item.disabled ? 'grey' : 'green'}>
-              {tag}
-            </Badge>
-          ))}
-        </div>
-        <div style={{ fontSize: '10px' }}>{item.option.disabledReason}</div>
-      </div>
-    );
+    return <div>{item.option.label}</div>;
   };
 
   return (
@@ -77,13 +59,6 @@ export default function SelectPage() {
             selectedOption={selectedOption}
             onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
             options={options}
-          />{' '}
-          <Select
-            renderOption={renderOptionItem}
-            selectedOption={selectedOption}
-            onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
-            options={options}
-            virtualScroll={true}
           />
         </div>
       </Box>
