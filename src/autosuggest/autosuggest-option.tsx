@@ -71,7 +71,6 @@ const AutosuggestOption = (
 
   return (
     <SelectableItem
-      disableContentStyling={true}
       {...baseProps}
       className={styles.option}
       ariaSelected={current}
