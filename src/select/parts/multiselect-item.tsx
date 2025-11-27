@@ -11,13 +11,13 @@ import { OptionDefinition } from '../../internal/components/option/interfaces';
 import SelectableItem from '../../internal/components/selectable-item';
 import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
-import { SelectProps } from '../interfaces';
+import { MultiselectProps } from '../../multiselect/interfaces';
 import { ItemProps } from './item';
 
 import styles from './styles.css.js';
 interface MultiselectItemProps extends ItemProps {
   indeterminate?: boolean;
-  renderOption?: (option: SelectProps.SelectOptionItem) => ReactNode;
+  renderOption?: (option: MultiselectProps.MultiselectOptionItem) => ReactNode;
 }
 
 const MultiSelectItem = (
@@ -64,6 +64,7 @@ const MultiSelectItem = (
   useEffect(() => setCanShowTooltip(true), [highlighted]);
   return (
     <SelectableItem
+      disableContentStyling={!!renderOption}
       ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}

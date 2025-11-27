@@ -76,6 +76,7 @@ const Item = (
 
   return (
     <SelectableItem
+      disableContentStyling={!!renderOption}
       ariaSelected={Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}

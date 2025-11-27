@@ -14,18 +14,18 @@
 $checkbox-size: awsui.$size-control;
 $inlineLabel-border-radius: 2px;
 
+.multiselect-item-checkbox {
+  position: relative;
+  min-block-size: $checkbox-size;
+  min-inline-size: $checkbox-size;
+  block-size: $checkbox-size;
+  inline-size: $checkbox-size;
+  margin-inline-end: styles.$control-padding-horizontal;
+}
+
 .item {
   display: flex;
   align-items: center;
-
-  > .checkbox {
-    position: relative;
-    min-block-size: $checkbox-size;
-    min-inline-size: $checkbox-size;
-    block-size: $checkbox-size;
-    inline-size: $checkbox-size;
-    margin-inline-end: styles.$control-padding-horizontal;
-  }
 }
 
 .option-group {
