@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 import { DropdownOption } from '../../internal/components/option/interfaces';
 import { NestedDropdownOption, unflattenOptions } from '../../internal/components/option/utils/unflatten-options';
@@ -28,7 +28,7 @@ interface RenderOptionProps {
   withScrollbar: boolean;
   firstOptionSticky?: boolean;
   stickyOptionRef?: React.Ref<HTMLDivElement>;
-  renderOption?: (option: SelectProps.SelectOptionItem | MultiselectProps.MultiselectOptionItem) => ReactNode;
+  renderOption?: SelectProps.SelectOptionItemRenderer | MultiselectProps.MultiselectOptionItemRenderer;
 }
 
 export const renderOptions = ({

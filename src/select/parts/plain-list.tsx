@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, ReactNode, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -29,7 +29,7 @@ export interface SelectListProps {
   useInteractiveGroups?: boolean;
   screenReaderContent?: string;
   firstOptionSticky?: boolean;
-  renderOption?: (option: SelectProps.SelectOptionItem | MultiselectProps.MultiselectOptionItem) => ReactNode;
+  renderOption?: SelectProps.SelectOptionItemRenderer | MultiselectProps.MultiselectOptionItemRenderer;
 }
 
 export namespace SelectListProps {
