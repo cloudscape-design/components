@@ -20,7 +20,6 @@ const VirtualList = ({
   highlightText,
   listBottom,
   screenReaderContent,
-  renderOption,
 }: ListProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   // update component, when it gets wider or narrower to reposition items
@@ -78,7 +77,6 @@ const VirtualList = ({
             ariaSetsize={autosuggestItemsState.items.length}
             ariaPosinset={index + 1}
             highlightType={autosuggestItemsState.highlightType}
-            renderOption={renderOption}
             {...optionProps}
           />
         );

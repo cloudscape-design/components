@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 import { useAnnouncement } from '../select/utils/use-announcement';
 import { AutosuggestProps } from './interfaces';
@@ -21,7 +21,6 @@ interface AutosuggestOptionsListProps
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
   ariaDescribedby?: string;
-  renderOption?: (option: AutosuggestProps.AutosuggestItem) => ReactNode;
 }
 
 const createMouseEventHandler = (handler: (index: number) => void) => (itemIndex: number) => {
@@ -46,7 +45,6 @@ export default function AutosuggestOptionsList({
   renderHighlightedAriaLive,
   listBottom,
   ariaDescribedby,
-  renderOption,
 }: AutosuggestOptionsListProps) {
   const handleMouseUp = createMouseEventHandler(autosuggestItemsHandlers.selectVisibleOptionWithMouse);
   const handleMouseMove = createMouseEventHandler(autosuggestItemsHandlers.highlightVisibleOptionWithMouse);
@@ -79,7 +77,6 @@ export default function AutosuggestOptionsList({
         statusType,
       }}
       screenReaderContent={announcement}
-      renderOption={renderOption}
     />
   );
 }

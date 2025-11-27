@@ -21,7 +21,6 @@ const Autosuggest = React.forwardRef(
       statusType = 'finished',
       disableBrowserAutocorrect = false,
       hideEnteredTextOption = false,
-      renderOption,
       ...props
     }: AutosuggestProps,
     ref: React.Ref<AutosuggestProps.Ref>
@@ -54,7 +53,6 @@ const Autosuggest = React.forwardRef(
         statusType={statusType}
         disableBrowserAutocorrect={disableBrowserAutocorrect}
         hideEnteredTextOption={hideEnteredTextOption}
-        renderOption={renderOption}
         {...externalProps}
         {...baseComponentProps}
         ref={ref}
