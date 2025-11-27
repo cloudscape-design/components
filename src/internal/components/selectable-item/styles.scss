@@ -176,6 +176,12 @@
   &.parent {
     &:not(.interactiveGroups) {
       border-block-start-color: awsui.$color-border-dropdown-group;
+      padding-block: 0;
+      padding-inline: 0;
+      &:has(> .option-content.no-content-styling) {
+        padding-block: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
+        padding-inline: awsui.$border-item-width;
+      }
       > .option-content {
         padding-block: awsui.$space-xs;
         padding-inline: awsui.$space-xs;
