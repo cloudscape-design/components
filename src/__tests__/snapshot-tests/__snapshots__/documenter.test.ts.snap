@@ -17792,6 +17792,26 @@ For more information, see the
       "type": "SelectProps.ContainingOptionAndGroupString",
     },
     {
+      "description": "Specifies a render function to render custom options in the dropdown menu.",
+      "inlineType": {
+        "name": "MultiselectProps.MultiselectOptionItemRenderer",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "MultiselectProps.MultiselectOptionItem",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderOption",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "MultiselectProps.MultiselectOptionItemRenderer",
+    },
+    {
       "description": "Specifies the localized string that describes an option as being selected.
 This is required to provide a good screen reader experience. For more information, see the
 [accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).",
@@ -23335,6 +23355,26 @@ For more information, see the
       "name": "renderHighlightedAriaLive",
       "optional": true,
       "type": "SelectProps.ContainingOptionAndGroupString",
+    },
+    {
+      "description": "Specifies a render function to render custom options in the dropdown menu.",
+      "inlineType": {
+        "name": "SelectProps.SelectOptionItemRenderer",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "SelectProps.SelectOptionItem",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderOption",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "SelectProps.SelectOptionItemRenderer",
     },
     {
       "description": "Specifies the localized string that describes an option as being selected.
