@@ -105,7 +105,7 @@ const MultiSelectItem = (
             selected: !!selected,
             highlighted: !!highlighted,
             disabled: !!disabled,
-            type: option.type ?? 'child',
+            type: option.type !== 'use-entered' ? (option.type ?? 'child') : 'child',
           })
         ) : (
           <Option

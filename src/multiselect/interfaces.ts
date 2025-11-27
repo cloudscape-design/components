@@ -16,7 +16,7 @@ export interface MultiselectProps extends BaseSelectProps {
    *
    * @awsuiSystem core
    */
-  renderOption?: (item: MultiselectProps.MultiselectOptionItem) => ReactNode;
+  renderOption?: MultiselectProps.MultiselectOptionItemRenderer;
 
   /**
    * Specifies the currently selected options.
@@ -91,7 +91,8 @@ export namespace MultiselectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
-  export type MultiselectOptionItem = DropdownOptionItem<Option | OptionGroup>;
+  export type MultiselectOptionItem = DropdownOptionItem<Option | OptionGroup, 'child' | 'parent' | 'select-all'>;
+  export type MultiselectOptionItemRenderer = (item: MultiselectOptionItem) => ReactNode;
 
   export type DeselectAriaLabelFunction = (option: Option) => string;
   export type TriggerVariant = 'placeholder' | 'tokens';
