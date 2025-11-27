@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import OptionComponent from '../internal/components/option';
 import { getTestOptionIndexes } from '../internal/components/options-list/utils/test-indexes';
 import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option';
 import SelectableItem from '../internal/components/selectable-item';
-import { AutosuggestItem, AutosuggestProps } from './interfaces';
+import { AutosuggestItem } from './interfaces';
 
 import styles from './styles.css.js';
 
@@ -23,7 +23,6 @@ interface AutosuggestOptionProps extends BaseComponentProps {
   screenReaderContent?: string;
   ariaSetsize?: number;
   ariaPosinset?: number;
-  renderOption?: (option: AutosuggestProps.AutosuggestItem) => ReactNode;
 }
 
 const AutosuggestOption = (
@@ -39,7 +38,6 @@ const AutosuggestOption = (
     screenReaderContent,
     ariaSetsize,
     ariaPosinset,
-    renderOption,
     ...rest
   }: AutosuggestOptionProps,
   ref: React.Ref<HTMLDivElement>
@@ -71,23 +69,9 @@ const AutosuggestOption = (
     );
   }
 
-  const renderOptionWrapper = (option: AutosuggestItem) => {
-    if (renderOption) {
-      return renderOption({
-        option,
-        disabled: !!option.disabled,
-        highlighted: highlighted,
-        selected: current,
-        type: option.type ?? 'child',
-      });
-    }
-    return optionContent;
-  };
-
   return (
     <SelectableItem
       {...baseProps}
-      disableContentPaddings={!!renderOption}
       className={styles.option}
       ariaSelected={current}
       highlighted={highlighted}
@@ -107,7 +91,7 @@ const AutosuggestOption = (
       highlightType={highlightType.type}
       value={option.value}
     >
-      {renderOptionWrapper(option)}
+      {optionContent}
     </SelectableItem>
   );
 };

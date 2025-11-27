@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
@@ -10,7 +10,7 @@ import {
   OptionsLoadItemsDetail,
 } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { DropdownItem, OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
+import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
 
@@ -56,14 +56,6 @@ export interface AutosuggestProps
    * on your own.
    **/
   options?: AutosuggestProps.Options;
-
-  /**
-   * Specifies a render function to render custom options in the dropdown menu.
-   *
-   * @awsuiSystem core
-   */
-  renderOption?: (option: AutosuggestProps.AutosuggestItem) => ReactNode;
-
   /**
    * Determines how filtering is applied to the list of `options`:
    *
@@ -146,13 +138,7 @@ export namespace AutosuggestProps {
   export type FilteringType = OptionsFilteringType;
   export type Option = OptionDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
-
-  export interface AutosuggestItem extends DropdownItem<Option | OptionGroup> {
-    type: 'child' | 'parent' | 'use-entered';
-  }
-
   export type EnteredTextLabel = (value: string) => string;
-
   export interface OptionGroup extends Option {
     label?: string;
     options: ReadonlyArray<Option>;
