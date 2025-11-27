@@ -6,6 +6,7 @@ import { DropdownOption } from '../../internal/components/option/interfaces';
 import { NestedDropdownOption, unflattenOptions } from '../../internal/components/option/utils/unflatten-options';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 import { VirtualItem } from '../../internal/vendor/react-virtual';
+import { MultiselectProps } from '../../multiselect/interfaces';
 import { SelectProps } from '../interfaces';
 import Item from '../parts/item';
 import MultiselectItem from '../parts/multiselect-item';
@@ -27,7 +28,7 @@ interface RenderOptionProps {
   withScrollbar: boolean;
   firstOptionSticky?: boolean;
   stickyOptionRef?: React.Ref<HTMLDivElement>;
-  renderOption?: (option: SelectProps.SelectOptionItem) => ReactNode;
+  renderOption?: (option: SelectProps.SelectOptionItem | MultiselectProps.MultiselectOptionItem) => ReactNode;
 }
 
 export const renderOptions = ({

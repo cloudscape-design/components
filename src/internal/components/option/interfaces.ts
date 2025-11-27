@@ -43,7 +43,7 @@ export interface DropdownOption {
   afterHeader?: boolean;
 }
 
-export interface DropdownItem<T> {
+export interface DropdownOptionItem<T> {
   type: 'child' | 'parent' | 'select-all' | 'use-entered';
   disabled: boolean;
   highlighted: boolean;

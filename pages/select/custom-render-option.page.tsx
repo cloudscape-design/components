@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { Badge, SpaceBetween } from '~components';
+import { Badge } from '~components';
 import Box from '~components/box';
 import Select, { SelectProps } from '~components/select';
 
@@ -43,23 +43,26 @@ const options: SelectProps.Options = [
   { label: 'Last option', disabled: true, disabledReason: 'disabled reason' },
 ];
 
-console.log(options);
-
 export default function SelectPage() {
   const [selectedOption, setSelectedOption] = useState<SelectProps.Option | null>(null);
   const renderOptionItem = (item: SelectProps.SelectOptionItem) => {
     return (
-      <SpaceBetween size={'xs'} direction={'vertical'}>
+      <div style={{ width: '100%', padding: '8px' }}>
         <span>Test: {item.option.label}</span>
-        <SpaceBetween size={'xs'} direction={'horizontal'}>
+        <div
+          style={{
+            display: 'flex',
+            gap: '4px',
+          }}
+        >
           {item.option.tags?.map((tag, index) => (
             <Badge key={index} color={item.disabled ? 'grey' : 'green'}>
               {tag}
             </Badge>
           ))}
-        </SpaceBetween>
+        </div>
         <div style={{ fontSize: '10px' }}>{item.option.disabledReason}</div>
-      </SpaceBetween>
+      </div>
     );
   };
 
