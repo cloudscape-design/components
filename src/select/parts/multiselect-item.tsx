@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
@@ -8,14 +9,18 @@ import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import Option from '../../internal/components/option';
 import { OptionDefinition } from '../../internal/components/option/interfaces';
+import { getTestOptionIndexes } from '../../internal/components/options-list/utils/test-indexes';
 import SelectableItem from '../../internal/components/selectable-item';
 import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { MultiselectProps } from '../../multiselect/interfaces';
 import { ItemProps } from './item';
 
+import optionStyles from '../../internal/components/option/styles.css.js';
 import styles from './styles.css.js';
 interface MultiselectItemProps extends ItemProps {
   indeterminate?: boolean;
+  renderOption?: (option: MultiselectProps.MultiselectOptionItem) => ReactNode;
 }
 
 const MultiSelectItem = (
@@ -36,6 +41,7 @@ const MultiSelectItem = (
     highlightType,
     withScrollbar,
     sticky,
+    renderOption,
     ...restProps
   }: MultiselectItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -59,8 +65,14 @@ const MultiSelectItem = (
 
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
+  const { throughIndex, inGroupIndex, groupIndex } = getTestOptionIndexes(option) || {};
+
   return (
     <SelectableItem
+      data-test-index={throughIndex}
+      data-in-group-index={inGroupIndex}
+      data-group-index={groupIndex}
+      disableContentStyling={!!renderOption}
       ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
@@ -86,7 +98,7 @@ const MultiSelectItem = (
       {...baseProps}
     >
       <div className={className}>
-        {hasCheckbox && (
+        {!renderOption && hasCheckbox && (
           <div className={styles.checkbox}>
             <CheckboxIcon
               checked={selected}
@@ -95,15 +107,34 @@ const MultiSelectItem = (
             />
           </div>
         )}
-        <Option
-          option={{ ...wrappedOption, disabled }}
-          highlightedOption={highlighted}
-          selectedOption={selected}
-          highlightText={filteringValue}
-          isGroupOption={isParent}
-        />
+        {renderOption ? (
+          <div
+            data-value={wrappedOption.value}
+            className={clsx(optionStyles.option, {
+              disabled: !!disabled,
+              selected: !!selected,
+              highlighted: !!highlighted,
+            })}
+          >
+            {renderOption({
+              option: option.option,
+              selected: !!selected,
+              highlighted: !!highlighted,
+              disabled: !!disabled,
+              type: option.type !== 'use-entered' ? (option.type ?? 'child') : 'child',
+            })}
+          </div>
+        ) : (
+          <Option
+            option={{ ...wrappedOption, disabled }}
+            highlightedOption={highlighted}
+            selectedOption={selected}
+            highlightText={filteringValue}
+            isGroupOption={isParent}
+          />
+        )}
       </div>
-      {isDisabledWithReason && (
+      {!renderOption && isDisabledWithReason && (
         <>
           {descriptionEl}
           {highlighted && canShowTooltip && (

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
@@ -10,11 +10,14 @@ import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import Option from '../../internal/components/option';
 import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
+import { getTestOptionIndexes } from '../../internal/components/options-list/utils/test-indexes';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
 import SelectableItem from '../../internal/components/selectable-item';
 import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { SelectProps } from '../interfaces';
 
+import optionStyles from '../../internal/components/option/styles.css.js';
 import styles from './styles.css.js';
 
 export interface ItemProps {
@@ -33,6 +36,7 @@ export interface ItemProps {
   highlightType?: HighlightType['type'];
   withScrollbar?: boolean;
   sticky?: boolean;
+  renderOption?: (option: SelectProps.SelectOptionItem) => ReactNode;
 }
 
 const Item = (
@@ -52,6 +56,7 @@ const Item = (
     highlightType,
     withScrollbar,
     sticky,
+    renderOption,
     ...restProps
   }: ItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -71,8 +76,13 @@ const Item = (
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
 
+  const { throughIndex, inGroupIndex, groupIndex } = getTestOptionIndexes(option) || {};
   return (
     <SelectableItem
+      data-test-index={throughIndex}
+      data-in-group-index={inGroupIndex}
+      data-group-index={groupIndex}
+      disableContentStyling={!!renderOption}
       ariaSelected={Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
@@ -95,24 +105,43 @@ const Item = (
       {...baseProps}
     >
       <div className={clsx(styles.item, !isParent && wrappedOption.labelTag && styles['show-label-tag'])}>
-        {hasCheckbox && !isParent && (
+        {!renderOption && hasCheckbox && !isParent && (
           <div className={styles.checkbox}>
             <CheckboxIcon checked={selected || false} disabled={option.disabled} />
           </div>
         )}
-        <Option
-          option={{ ...wrappedOption, disabled }}
-          highlightedOption={highlighted}
-          selectedOption={selected}
-          highlightText={filteringValue}
-          isGroupOption={isParent}
-        />
-        {!hasCheckbox && !isParent && selected && (
+        {renderOption ? (
+          <div
+            data-value={wrappedOption.value}
+            className={clsx(optionStyles.option, {
+              disabled: !!disabled,
+              selected: !!selected,
+              highlighted: !!highlighted,
+            })}
+          >
+            {renderOption({
+              option: option.option,
+              selected: !!selected,
+              highlighted: !!highlighted,
+              disabled: !!disabled,
+              type: option.type === 'parent' ? 'parent' : 'child',
+            })}
+          </div>
+        ) : (
+          <Option
+            option={{ ...wrappedOption, disabled }}
+            highlightedOption={highlighted}
+            selectedOption={selected}
+            highlightText={filteringValue}
+            isGroupOption={isParent}
+          />
+        )}
+        {!renderOption && !hasCheckbox && !isParent && selected && (
           <div className={styles['selected-icon']}>
             <InternalIcon name="check" />
           </div>
         )}
-        {isDisabledWithReason && (
+        {!renderOption && isDisabledWithReason && (
           <>
             {descriptionEl}
             {highlighted && canShowTooltip && (

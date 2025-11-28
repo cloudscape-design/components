@@ -26,12 +26,30 @@
   border-inline-end-width: 0;
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)
-  padding-block: styles.$option-padding-with-border-placeholder-vertical;
-  padding-inline: calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
+  padding-block: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
+  padding-inline: awsui.$border-item-width;
+
+  // For custom styles and background on the option-content, the content should not clip through the selectable-item borders..
+  overflow: hidden;
+
+  > .option-content {
+    padding-block: styles.$option-padding-vertical;
+    padding-inline: styles.$control-padding-horizontal;
+    &.no-content-styling {
+      padding-block: 0;
+      padding-inline: 0;
+    }
+  }
 
   &.pad-bottom {
-    padding-block-end: calc(#{styles.$option-padding-with-border-placeholder-vertical} + #{awsui.$space-xxxs});
+    padding-block-end: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
     border-block-end-color: transparent;
+    > .option-content {
+      padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs});
+      &.no-content-styling {
+        padding-block-end: 0;
+      }
+    }
   }
 
   &:not(:first-child),
@@ -42,6 +60,22 @@
   &.has-background {
     background-color: awsui.$color-background-dropdown-item-hover;
   }
+  &.child {
+    padding-inline-start: awsui.$border-item-width;
+    > .option-content {
+      padding-inline-start: awsui.$space-xxl;
+      &.no-content-styling {
+        padding-inline-start: 0;
+      }
+    }
+  }
+
+  &.disabled > .option-content {
+    color: awsui.$color-text-dropdown-item-disabled;
+    &.no-content-styling {
+      color: inherit;
+    }
+  }
 
   &.highlighted,
   &.selected {
@@ -51,11 +85,35 @@
     border-start-end-radius: awsui.$border-radius-item;
     border-end-start-radius: awsui.$border-radius-item;
     border-end-end-radius: awsui.$border-radius-item;
-    padding-block: styles.$option-padding-vertical;
-    padding-inline: styles.$control-padding-horizontal;
+    padding-block: 0;
+    padding-inline: 0;
 
+    > .option-content {
+      padding-block: styles.$option-padding-vertical;
+      padding-inline: styles.$control-padding-horizontal;
+      &.no-content-styling {
+        padding-block: 0;
+        padding-inline: 0;
+      }
+    }
+    &.child {
+      padding-inline-start: 0;
+      > .option-content {
+        padding-inline-start: awsui.$space-xxl;
+        &.no-content-styling {
+          padding-inline-start: 0;
+        }
+      }
+    }
     &.pad-bottom {
-      padding-block-end: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
+      padding-block-end: 0;
+      > .option-content {
+        padding-block-end: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
+
+        &.no-content-styling {
+          padding-block-end: 0;
+        }
+      }
     }
   }
 
@@ -64,9 +122,14 @@
     background-color: awsui.$color-background-dropdown-item-hover;
     border-color: awsui.$color-border-dropdown-item-hover;
     &.disabled {
-      color: awsui.$color-text-dropdown-item-dimmed;
       border-color: awsui.$color-border-dropdown-item-dimmed-hover;
       background-color: awsui.$color-background-dropdown-item-dimmed;
+      > .option-content {
+        color: awsui.$color-text-dropdown-item-dimmed;
+        &.no-content-styling {
+          color: inherit;
+        }
+      }
     }
     &.is-keyboard {
       border-color: awsui.$color-border-dropdown-item-focused;
@@ -112,32 +175,56 @@
   }
 
   &.parent {
-    font-weight: bold;
-    color: awsui.$color-text-dropdown-group-label;
     &:not(.interactiveGroups) {
       border-block-start-color: awsui.$color-border-dropdown-group;
-      padding-block: awsui.$space-xs;
-      padding-inline: awsui.$space-xs;
+      padding-block: 0;
+      padding-inline: 0;
+      &:has(> .option-content.no-content-styling) {
+        padding-block: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
+        padding-inline: awsui.$border-item-width;
+      }
+      > .option-content {
+        padding-block: awsui.$space-xs;
+        padding-inline: awsui.$space-xs;
+        font-weight: bold;
+        color: awsui.$color-text-dropdown-group-label;
+
+        &.no-content-styling {
+          padding-block: 0;
+          padding-inline: 0;
+          font-weight: normal;
+          color: inherit;
+        }
+      }
     }
     &.interactiveGroups {
-      padding-block: styles.$group-option-padding-with-border-placeholder-vertical;
-      padding-inline: calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
+      > .option-content {
+        padding-block: styles.$group-option-padding-vertical;
+        padding-inline: styles.$control-padding-horizontal;
+        &.no-content-styling {
+          padding-block: 0;
+          padding-inline: 0;
+        }
+      }
       &.highlighted {
-        color: awsui.$color-text-dropdown-item-highlighted;
+        > .option-content {
+          color: awsui.$color-text-dropdown-item-highlighted;
+          &.no-content-styling {
+            color: inherit;
+          }
+        }
       }
       &.highlighted,
       &.selected {
-        padding-block: styles.$group-option-padding-vertical;
-        padding-inline: styles.$control-padding-horizontal;
+        padding-block: 0;
+        padding-inline: 0;
+        > .option-content {
+          padding-block: styles.$group-option-padding-vertical;
+          &.no-content-styling {
+            padding-block: 0;
+          }
+        }
       }
-    }
-  }
-
-  &.child {
-    padding-inline-start: calc(#{awsui.$space-xxl} + #{awsui.$border-item-width});
-    &.highlighted,
-    &.selected {
-      padding-inline-start: awsui.$space-xxl;
     }
   }
 
@@ -156,7 +243,13 @@
       border-inline-start-width: awsui.$border-item-width;
       border-inline-start-color: awsui.$color-border-dropdown-container;
       border-inline-end-color: awsui.$color-border-dropdown-container;
-      padding-inline: styles.$control-padding-horizontal;
+      padding-inline: 0;
+      > .option-content {
+        padding-inline: styles.$control-padding-horizontal;
+        &.no-content-styling {
+          padding-inline: 0;
+        }
+      }
 
       &:not(.with-scrollbar) {
         border-inline-end-width: awsui.$border-item-width;
@@ -185,10 +278,6 @@
       border-inline-start-color: transparent;
       border-inline-end-color: transparent;
     }
-  }
-
-  &.disabled {
-    color: awsui.$color-text-dropdown-item-disabled;
   }
 
   &:not(.disabled):not(.parent) {

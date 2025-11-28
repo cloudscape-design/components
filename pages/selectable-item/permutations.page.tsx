@@ -6,7 +6,7 @@ import Option from '~components/internal/components/option';
 import SelectableItem, { SelectableItemProps } from '~components/internal/components/selectable-item';
 import SpaceBetween from '~components/space-between';
 
-import createPermutations from '../utils/permutations';
+import createPermutations, { ComponentPermutations } from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -20,7 +20,7 @@ const optionHasBackground = <Option option={{ value: 'has background' }} />;
 const optionGroupHeader = 'group header';
 const childOption = 'child option';
 
-const permutations = createPermutations<SelectableItemProps>([
+let permutationsConfigs: ComponentPermutations<SelectableItemProps>[] = [
   {
     selected: [false],
     highlighted: [false, true],
@@ -66,7 +66,15 @@ const permutations = createPermutations<SelectableItemProps>([
     isChild: [true],
     children: [childOption],
   },
-]);
+];
+
+// Copy permutations and add selectable-items with no-content-styling.
+permutationsConfigs = [
+  ...permutationsConfigs,
+  ...permutationsConfigs.map(config => ({ ...config, disableContentStyling: [true] })),
+];
+
+const permutations = createPermutations<SelectableItemProps>(permutationsConfigs);
 
 export default function InputPermutations() {
   return (

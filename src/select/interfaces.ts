@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
 import {
@@ -9,7 +9,11 @@ import {
   OptionsLoadItemsDetail,
 } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
-import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
+import {
+  DropdownOptionItem,
+  OptionDefinition,
+  OptionGroup as OptionGroupDefinition,
+} from '../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
 
@@ -53,6 +57,7 @@ export interface BaseSelectProps
    * on your own.
    **/
   options?: SelectProps.Options;
+
   /**
    * Determines how filtering is applied to the list of `options`:
    *
@@ -156,6 +161,13 @@ export interface BaseSelectProps
 
 export interface SelectProps extends BaseSelectProps {
   /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * @awsuiSystem core
+   */
+  renderOption?: SelectProps.SelectOptionItemRenderer;
+
+  /**
    * Adds a small label inline with the input for saving vertical space in the UI.
    * For use with collection select filters only.
    */
@@ -198,6 +210,8 @@ export namespace SelectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
+  export type SelectOptionItem = DropdownOptionItem<Option | OptionGroup, 'child' | 'parent'>;
+  export type SelectOptionItemRenderer = (item: SelectOptionItem) => ReactNode;
 
   export type LoadItemsDetail = OptionsLoadItemsDetail;
 

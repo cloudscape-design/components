@@ -32,6 +32,7 @@ const VirtualListOpen = forwardRef(
       useInteractiveGroups,
       screenReaderContent,
       firstOptionSticky,
+      renderOption,
     }: SelectListProps,
     ref: React.Ref<SelectListProps.SelectListRef>
   ) => {
@@ -87,6 +88,7 @@ const VirtualListOpen = forwardRef(
     const idPrefix = useUniqueId('select-list-');
     const finalOptions = renderOptions({
       options: virtualItems.map(({ index }) => filteredOptions[index]),
+      renderOption,
       getOptionProps,
       filteringValue,
       highlightType,
