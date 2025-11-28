@@ -10,12 +10,14 @@ import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import Option from '../../internal/components/option';
 import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
+import { getTestOptionIndexes } from '../../internal/components/options-list/utils/test-indexes';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
 import SelectableItem from '../../internal/components/selectable-item';
 import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { SelectProps } from '../interfaces';
 
+import optionStyles from '../../internal/components/option/styles.css.js';
 import styles from './styles.css.js';
 
 export interface ItemProps {
@@ -74,8 +76,12 @@ const Item = (
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
 
+  const { throughIndex, inGroupIndex, groupIndex } = getTestOptionIndexes(option) || {};
   return (
     <SelectableItem
+      data-test-index={throughIndex}
+      data-in-group-index={inGroupIndex}
+      data-group-index={groupIndex}
       disableContentStyling={!!renderOption}
       ariaSelected={Boolean(selected)}
       selected={selected}
@@ -105,13 +111,22 @@ const Item = (
           </div>
         )}
         {renderOption ? (
-          renderOption({
-            option: option.option,
-            selected: !!selected,
-            highlighted: !!highlighted,
-            disabled: !!disabled,
-            type: option.type === 'parent' ? 'parent' : 'child',
-          })
+          <div
+            data-value={wrappedOption.value}
+            className={clsx(optionStyles.option, {
+              disabled: !!disabled,
+              selected: !!selected,
+              highlighted: !!highlighted,
+            })}
+          >
+            {renderOption({
+              option: option.option,
+              selected: !!selected,
+              highlighted: !!highlighted,
+              disabled: !!disabled,
+              type: option.type === 'parent' ? 'parent' : 'child',
+            })}
+          </div>
         ) : (
           <Option
             option={{ ...wrappedOption, disabled }}
