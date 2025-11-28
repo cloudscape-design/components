@@ -859,12 +859,7 @@ export type BordersTokenName =
   | 'borderWidthDropdown'
   | 'borderWidthField'
   | 'borderWidthPopover'
-  | 'borderWidthToken'
-  | 'borderStrokeWidthIconSmall'
-  | 'borderStrokeWidthIconNormal'
-  | 'borderStrokeWidthIconMedium'
-  | 'borderStrokeWidthIconBig'
-  | 'borderStrokeWidthIconLarge';
+  | 'borderWidthToken';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'
