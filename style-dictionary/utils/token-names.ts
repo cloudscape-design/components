@@ -860,11 +860,11 @@ export type BordersTokenName =
   | 'borderWidthField'
   | 'borderWidthPopover'
   | 'borderWidthToken'
-  | 'borderStrokeWidthIconSmall'
-  | 'borderStrokeWidthIconNormal'
-  | 'borderStrokeWidthIconMedium'
-  | 'borderStrokeWidthIconBig'
-  | 'borderStrokeWidthIconLarge';
+  | 'borderWidthIconSmall'
+  | 'borderWidthIconNormal'
+  | 'borderWidthIconMedium'
+  | 'borderWidthIconBig'
+  | 'borderWidthIconLarge';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'
