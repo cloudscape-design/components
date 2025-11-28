@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import {
   Box,
@@ -8,7 +8,6 @@ import {
   Checkbox,
   Drawer,
   ExpandableSection,
-  FeaturePrompt,
   Flashbar,
   FlashbarProps,
   FormField,
@@ -25,6 +24,7 @@ import {
   TextFilter,
 } from '~components';
 import AppLayoutToolbar, { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
+import FeaturePrompt, { FeaturePromptProps } from '~components/feature-prompt';
 import { mount } from '~mount';
 
 import AppContext, { AppContextType } from '../app/app-context';
@@ -170,11 +170,13 @@ export default function () {
   const [showGlobalFeatureNotification, setShowGlobalFeatureNotification] = useState(
     featureNotificationType === 'global'
   );
+  const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
 
   useEffect(() => {
     mount(
       <div className={styles.navigation}>
         <FeaturePrompt
+          ref={featurePromptRef}
           visible={showGlobalFeatureNotification}
           onDismiss={() => setShowGlobalFeatureNotification(false)}
           position="bottom"
@@ -189,6 +191,9 @@ export default function () {
               <Link href="#">top 10 things it can do for you</Link>.
             </Box>
           }
+          onBlur={() => {
+            featurePromptRef.current?.dismiss();
+          }}
         >
           <Box padding="xxs" color="inherit">
             <Icon name="bug" />
@@ -391,6 +396,28 @@ export default function () {
                 />
               </FormField>
             </Section>
+
+            <button
+              onClick={() => {
+                featurePromptRef.current?.focus();
+              }}
+            >
+              focus feature prompt
+            </button>
+            <button
+              onClick={() => {
+                featurePromptRef.current?.dismiss();
+              }}
+            >
+              dismiss feature prompt
+            </button>
+            <button
+              onClick={() => {
+                featurePromptRef.current?.show();
+              }}
+            >
+              show feature prompt
+            </button>
           </SimplePage>
         }
       />

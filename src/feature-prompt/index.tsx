@@ -8,28 +8,31 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
 import { FeaturePromptProps } from './interfaces';
-import { InternalFeaturePrompt } from './internal';
+import InternalFeaturePrompt from './internal';
 
 export { FeaturePromptProps };
 
-export default function FeaturePrompt({
-  fixedWidth = false,
-  size = 'medium',
-  position = 'top',
-  ...rest
-}: FeaturePromptProps): JSX.Element {
-  const baseComponentProps = useBaseComponent('FeaturePromptProps', { props: { fixedWidth, size, position } });
+const FeaturePrompt = React.forwardRef(
+  (
+    { fixedWidth = false, size = 'medium', position = 'top', onBlur, ...rest }: FeaturePromptProps,
+    ref: React.Ref<FeaturePromptProps.Ref>
+  ): JSX.Element => {
+    const baseComponentProps = useBaseComponent('FeaturePromptProps', { props: { fixedWidth, size, position } });
 
-  const externalProps = getExternalProps(rest);
-  return (
-    <InternalFeaturePrompt
-      fixedWidth={fixedWidth}
-      size={size}
-      position={position}
-      {...externalProps}
-      {...baseComponentProps}
-    />
-  );
-}
+    const externalProps = getExternalProps(rest);
+    return (
+      <InternalFeaturePrompt
+        ref={ref}
+        fixedWidth={fixedWidth}
+        size={size}
+        position={position}
+        onBlur={onBlur}
+        {...externalProps}
+        {...baseComponentProps}
+      />
+    );
+  }
+);
 
 applyDisplayName(FeaturePrompt, 'FeaturePrompt');
+export default FeaturePrompt;
