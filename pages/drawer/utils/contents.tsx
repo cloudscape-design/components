@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Header from '~components/header';
 import Icon from '~components/icon';
 
 export const longContent = (
@@ -63,11 +62,9 @@ export const shortContent = (
   </span>
 );
 
-export const longHeader = (
-  <Header variant="h1">Header: Lorem nesciunt praesentium voluptatem, molestias aliquid animi aspernatur!</Header>
-);
+export const longHeader = <h2>Header: Lorem nesciunt praesentium voluptatem, molestias aliquid animi aspernatur!</h2>;
 
-export const shortHeader = <Header variant="h1">Header: Lorem nesciunt!</Header>;
+export const shortHeader = <h2>Header: Lorem nesciunt!</h2>;
 
 export const longFooter = (
   <span>Footer: Lorem nesciunt praesentium voluptatem, molestias aliquid animi aspernatur!</span>
