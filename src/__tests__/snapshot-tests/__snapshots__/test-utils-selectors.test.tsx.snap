@@ -245,6 +245,7 @@ exports[`test-utils selectors 1`] = `
   ],
   "drawer": [
     "awsui_drawer_1sxt8",
+    "awsui_footer_1sxt8",
     "awsui_header-actions_1sxt8",
     "awsui_header_1sxt8",
     "awsui_test-utils-drawer-content_1sxt8",
