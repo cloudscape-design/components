@@ -23,31 +23,36 @@ $_icon-sizes: (
     name: 'small',
     size: awsui.$size-icon-normal,
     supportedLineHeight: awsui.$line-height-body-s,
-    stroke: 2px,
+    stroke: awsui.$border-width-icon-small,
+    scaleFactor: 0.875,
   ),
   (
     name: 'normal',
     size: awsui.$size-icon-normal,
     supportedLineHeight: awsui.$line-height-body-m,
-    stroke: 2px,
+    stroke: awsui.$border-width-icon-normal,
+    scaleFactor: 1,
   ),
   (
     name: 'medium',
     size: awsui.$size-icon-medium,
     supportedLineHeight: awsui.$line-height-heading-l,
-    stroke: 1.6px,
+    stroke: awsui.$border-width-icon-medium,
+    scaleFactor: 1.25,
   ),
   (
     name: 'big',
     size: awsui.$size-icon-big,
     supportedLineHeight: awsui.$line-height-heading-xl,
-    stroke: 1.5px,
+    stroke: awsui.$border-width-icon-big,
+    scaleFactor: 2,
   ),
   (
     name: 'large',
     size: awsui.$size-icon-large,
     supportedLineHeight: awsui.$line-height-display-l,
-    stroke: 1.333px,
+    stroke: awsui.$border-width-icon-large,
+    scaleFactor: 3,
   )
 );
 
@@ -57,6 +62,7 @@ $_icon-sizes: (
     $size: map.get($type, 'size');
     $supportedLineHeight: map.get($type, 'supportedLineHeight');
     $stroke: map.get($type, 'stroke');
+    $scaleFactor: map.get($type, 'scaleFactor');
     $padding: calc((#{$supportedLineHeight} - #{$size}) / 2);
 
     &.size-#{$name} {
@@ -78,7 +84,7 @@ $_icon-sizes: (
       > svg {
         &,
         * {
-          stroke-width: $stroke;
+          stroke-width: calc(#{$stroke} / #{$scaleFactor});
         }
       }
     }
