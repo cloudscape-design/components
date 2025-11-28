@@ -100,6 +100,10 @@ const VirtualListOpen = forwardRef(
       withScrollbar,
     });
 
+    // Adjust totalSize to account for 1px overlap per item (matching the position adjustment in renderOptions)
+    const overlapAdjustment = filteredOptions.length;
+    const adjustedTotalSize = totalSize - overlapAdjustment;
+
     return (
       <OptionsList {...menuProps} stickyItemBlockSize={stickySize} ref={menuRef}>
         {finalOptions}
@@ -107,7 +111,7 @@ const VirtualListOpen = forwardRef(
           aria-hidden="true"
           key="total-size"
           className={styles['layout-strut']}
-          style={{ height: totalSize - stickySize }}
+          style={{ height: adjustedTotalSize - stickySize }}
         />
         {listBottom ? (
           <div role="option" className={styles['list-bottom']}>
