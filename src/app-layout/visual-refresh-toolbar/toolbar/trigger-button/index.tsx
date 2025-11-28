@@ -10,7 +10,7 @@ import {
   GeneratedAnalyticsMetadataAppLayoutToolbarOpen,
 } from '../../../../app-layout-toolbar/analytics-metadata/interfaces';
 import { ButtonProps } from '../../../../button/interfaces';
-import { InternalFeaturePrompt } from '../../../../feature-prompt/internal';
+import InternalFeaturePrompt from '../../../../feature-prompt/internal';
 import { IconProps } from '../../../../icon/interfaces';
 import Icon from '../../../../icon/internal';
 import Tooltip from '../../../../internal/components/tooltip';
