@@ -35451,6 +35451,19 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findHeader",
           "parameters": [],
           "returnType": {
@@ -45181,6 +45194,14 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
       "methods": [
         {
           "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findFooter",
           "parameters": [],
           "returnType": {
             "isNullable": false,
