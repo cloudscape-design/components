@@ -19,6 +19,7 @@ type DrawerInternalProps = DrawerProps & InternalBaseComponentProps;
 
 export function DrawerImplementation({
   header,
+  footer,
   children,
   loading,
   i18nStrings,
@@ -32,7 +33,12 @@ export function DrawerImplementation({
   const i18n = useInternalI18n('drawer');
   const containerProps = {
     ...baseProps,
-    className: clsx(baseProps.className, styles.drawer, isToolbar && styles['with-toolbar']),
+    className: clsx(
+      baseProps.className,
+      styles.drawer,
+      isToolbar && styles['with-toolbar'],
+      !!footer && styles['with-footer']
+    ),
   };
 
   const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: __internalRootRef as RefObject<HTMLElement> });
@@ -67,11 +73,13 @@ export function DrawerImplementation({
       <div
         className={clsx(
           styles['test-utils-drawer-content'],
+          styles.content,
           !disableContentPaddings && styles['content-with-paddings']
         )}
       >
         {children}
       </div>
+      {footer && <div className={styles.footer}>{footer}</div>}
     </div>
   );
 }

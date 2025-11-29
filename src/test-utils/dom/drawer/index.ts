@@ -11,6 +11,10 @@ export default class DrawerWrapper extends ComponentWrapper {
     return this.findByClassName(styles.header);
   }
 
+  findFooter(): ElementWrapper | null {
+    return this.findByClassName(styles.footer);
+  }
+
   findHeaderActions(): ElementWrapper | null {
     return this.findByClassName(styles['header-actions']);
   }

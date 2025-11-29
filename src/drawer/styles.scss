@@ -16,6 +16,18 @@
 .drawer {
   @include styles.styles-reset;
   word-wrap: break-word;
+
+  &.with-footer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    block-size: fit-content;
+    min-block-size: 100%;
+  }
+
+  > .content {
+    flex: 1;
+  }
 }
 
 .header {
@@ -75,4 +87,15 @@
 
 .test-utils-drawer-content {
   /* used in test-utils */
+}
+
+.footer {
+  position: sticky;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  background-color: awsui.$color-background-container-content;
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
+  padding-block: awsui.$space-panel-content-top;
+  padding-inline: awsui.$space-panel-side-left awsui.$space-panel-side-right;
 }
