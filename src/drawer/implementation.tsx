@@ -3,8 +3,6 @@
 import React, { RefObject } from 'react';
 import clsx from 'clsx';
 
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-
 import { useRuntimeDrawerContext } from '../app-layout/runtime-drawer/use-runtime-drawer-context';
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
 import { useInternalI18n } from '../i18n/context';
@@ -35,13 +33,16 @@ export function DrawerImplementation({
   const i18n = useInternalI18n('drawer');
   const containerProps = {
     ...baseProps,
-    className: clsx(baseProps.className, styles.drawer, isToolbar && styles['with-toolbar']),
+    className: clsx(
+      baseProps.className,
+      styles.drawer,
+      isToolbar && styles['with-toolbar'],
+      !!footer && styles['with-footer']
+    ),
   };
 
-  const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
   const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: __internalRootRef as RefObject<HTMLElement> });
   const hasAdditioalDrawerAction = !!runtimeDrawerContext?.isExpandable;
-  console.log(footerHeight);
 
   return loading ? (
     <div
@@ -72,20 +73,13 @@ export function DrawerImplementation({
       <div
         className={clsx(
           styles['test-utils-drawer-content'],
+          styles.content,
           !disableContentPaddings && styles['content-with-paddings']
         )}
       >
-        <div
-          style={{
-            paddingBottom: footerHeight ? footerHeight : 0,
-          }}
-        >
-          {children}
-        </div>
+        {children}
       </div>
-      <div className={styles['footer-wrapper']} ref={footerRef}>
-        {footer && <div className={styles.footer}>{footer}</div>}
-      </div>
+      {footer && <div className={styles.footer}>{footer}</div>}
     </div>
   );
 }
