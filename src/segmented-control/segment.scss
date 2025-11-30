@@ -47,6 +47,10 @@ $segment-divider-width: 1px;
   border-inline: none;
   border-block: none;
 
+  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+
   &:not(.refresh) {
     block-size: calc(100% - $segment-gap - (2 * awsui.$border-width-field));
   }
@@ -59,10 +63,6 @@ $segment-divider-width: 1px;
     background: $disabled-background;
     color: $disabled-color;
   }
-
-  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(
