@@ -205,7 +205,7 @@ export default function () {
                 errorText="Please enter a valid email address"
                 constraintText="Use your company email"
               >
-                <Input value="invalid-email" type="email" />
+                <Input value="invalid-email" type="email" readOnly={true} />
               </FormField>
             </div>
 
