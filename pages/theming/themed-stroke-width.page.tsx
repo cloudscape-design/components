@@ -45,13 +45,12 @@ export default function () {
       },
     };
 
-    let reset: () => void = () => {};
     const result = applyTheme({
       theme: themed ? theme : { tokens: {} },
       baseThemeId: 'visual-refresh',
     });
-    reset = result.reset;
-    return reset;
+
+    return result.reset;
   }, [themed, strokeSmall, strokeNormal, strokeMedium, strokeBig, strokeLarge]);
 
   return (
