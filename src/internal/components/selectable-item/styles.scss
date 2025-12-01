@@ -152,9 +152,6 @@
     z-index: 4;
 
     // Apply fixed border width to sticky items when there are virtual siblings (virtual scroll is enabled)
-    & ~ .virtual {
-      // This selector exists just to enable the next rule
-    }
     &:has(~ .virtual) {
       $virtual-border-offset: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
 
