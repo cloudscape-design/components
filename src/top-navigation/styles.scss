@@ -6,11 +6,17 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/foundation/breakpoints' as breakpoints;
 
 .top-navigation {
   @include styles.styles-reset;
   background: awsui.$color-background-container-content;
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  container-type: inline-size;
+
+  // Workaround for bug with container overflow in Safari < 18.4
+  position: relative;
+  z-index: 1;
 
   > .padding-box {
     display: flex;
@@ -23,18 +29,49 @@
     padding-inline-start: awsui.$space-xxl;
   }
 
-  &.medium > .padding-box,
-  &.narrow > .padding-box {
-    padding-inline-start: awsui.$space-l;
+  @include breakpoints.container-breakpoint-up(breakpoints.$container-breakpoint-s) {
+    > .padding-box {
+      > .utilities > .utility-wrapper:last-of-type {
+        padding-inline-end: 0;
+
+        // Add right margin to last utility at large breakpoints (matches old offset-right-xxl behavior)
+        > .utility-content {
+          margin-inline-end: awsui.$space-m;
+        }
+      }
+    }
   }
 
-  &.medium > .padding-box {
-    block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
-    padding-inline-end: 0;
+  @include breakpoints.container-breakpoint-down(breakpoints.$container-breakpoint-s) {
+    > .padding-box {
+      block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
+      padding-inline-start: awsui.$space-l;
+
+      > .utilities > .utility-wrapper:last-of-type {
+        padding-inline-end: 0;
+
+        // Add right margin to last utility at smaller breakpoints (matches old offset-right-l behavior)
+        > .utility-content {
+          margin-inline-end: awsui.$space-xxs;
+        }
+      }
+    }
   }
 
-  &.narrow > .padding-box {
-    block-size: awsui.$space-xxxl;
+  @include breakpoints.container-breakpoint-down(breakpoints.$container-breakpoint-xxs) {
+    > .padding-box {
+      block-size: awsui.$space-xxxl;
+      padding-inline-start: awsui.$space-l;
+
+      > .utilities {
+        padding-inline-start: 0;
+      }
+
+      // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+      .logo {
+        max-block-size: awsui.$space-xl;
+      }
+    }
   }
 }
 
@@ -88,10 +125,6 @@
 
   // Setting an arbitrary min-width here discourages browser from lazy rendering
   min-inline-size: 10px;
-
-  &.narrow {
-    max-block-size: awsui.$space-xl;
-  }
 }
 
 .title {
@@ -130,11 +163,6 @@
 
   // Expand height of utilies fully so that the dropdown is anchored directly underneath it.
   block-size: 100%;
-
-  .medium > .padding-box > &,
-  .narrow > .padding-box > & {
-    padding-inline-start: 0;
-  }
 }
 
 .utility-wrapper {
@@ -162,6 +190,11 @@
   }
 }
 
+.utility-content {
+  // Wrapper for utility content (buttons, links, menu dropdowns).
+  // Used for applying consistent spacing.
+}
+
 .utility-type-button-link {
   padding-block: 0;
   padding-inline: awsui.$space-l;
@@ -171,11 +204,6 @@
   padding-block: 0;
   padding-inline: awsui.$space-s;
   align-items: stretch;
-
-  &:not(.narrow):last-of-type,
-  &:not(.medium):last-of-type {
-    padding-inline-end: 0;
-  }
 }
 
 .utility-type-button-primary-button {
@@ -193,18 +221,6 @@
 
 .utility-button-external-icon {
   display: inline-block;
-}
-
-.offset-right-none {
-  margin-inline-end: 0;
-}
-
-.offset-right-l {
-  margin-inline-end: awsui.$space-xxs;
-}
-
-.offset-right-xxl {
-  margin-inline-end: awsui.$space-m;
 }
 
 /* Overflow Menu */
