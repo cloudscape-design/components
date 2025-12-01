@@ -3,7 +3,7 @@
 
 import React, { useContext, useState } from 'react';
 
-import { ContentLayout, Drawer, Header, Icon, Link, SideNavigation, SpaceBetween, Toggle } from '~components';
+import { Drawer, Header, Icon, Link, SideNavigation, SpaceBetween, Toggle } from '~components';
 import AppLayout, { AppLayoutProps } from '~components/app-layout';
 import Box from '~components/box';
 import SplitPanel from '~components/split-panel';
@@ -105,63 +105,58 @@ export default function () {
           </SplitPanel>
         }
         content={
-          <ContentLayout
-            header={
-              <Header
-                variant="h1"
-                description="Sometimes all you need is a large cappuchino, and a million bucks."
-                info={
-                  <Link data-testid="info-link-header" variant="info">
-                    Info
-                  </Link>
-                }
-              >
-                Drawers with Footer Demo, how it would look like in the app layout,
-              </Header>
-            }
-          >
-            <SpaceBetween size="xs">
-              {activeDrawerId === 'sample-demo' && (
-                <Toggle checked={longContent} onChange={({ detail }) => setUrlParams({ longContent: detail.checked })}>
-                  Long content
-                </Toggle>
-              )}
-
-              <Toggle
-                checked={hasHeader}
-                onChange={({ detail }) => setUrlParams({ hasHeader: detail.checked })}
-                disabled={!activeDrawerId}
-              >
-                Has Header
+          <SpaceBetween size="xs">
+            <Header
+              variant="h1"
+              description="Sometimes all you need is a large cappuchino, and a million bucks."
+              info={
+                <Link data-testid="info-link-header" variant="info">
+                  Info
+                </Link>
+              }
+            >
+              Drawers with Footer Demo, how it would look like in the app layout,
+            </Header>
+            {activeDrawerId === 'sample-demo' && (
+              <Toggle checked={longContent} onChange={({ detail }) => setUrlParams({ longContent: detail.checked })}>
+                Long content
               </Toggle>
+            )}
 
-              {hasHeader && activeDrawerId === 'sample-demo' && (
-                <Box margin={{ left: 'l' }}>
-                  <Toggle
-                    checked={longHeader}
-                    onChange={({ detail }) => setUrlParams({ longHeader: detail.checked })}
-                    disabled={!activeDrawerId}
-                  >
-                    Long Header
-                  </Toggle>
-                </Box>
-              )}
+            <Toggle
+              checked={hasHeader}
+              onChange={({ detail }) => setUrlParams({ hasHeader: detail.checked })}
+              disabled={!activeDrawerId}
+            >
+              Has Header
+            </Toggle>
 
-              {activeDrawerId === 'sample-demo' && (
-                <Toggle checked={hasFooter} onChange={({ detail }) => setUrlParams({ hasFooter: detail.checked })}>
-                  Has Footer
+            {hasHeader && activeDrawerId === 'sample-demo' && (
+              <Box margin={{ left: 'l' }}>
+                <Toggle
+                  checked={longHeader}
+                  onChange={({ detail }) => setUrlParams({ longHeader: detail.checked })}
+                  disabled={!activeDrawerId}
+                >
+                  Long Header
                 </Toggle>
-              )}
+              </Box>
+            )}
 
-              {hasFooter && activeDrawerId === 'sample-demo' && (
-                <Box margin={{ left: 'l' }}>
-                  <Toggle checked={longFooter} onChange={({ detail }) => setUrlParams({ longFooter: detail.checked })}>
-                    Long Footer
-                  </Toggle>
-                </Box>
-              )}
-            </SpaceBetween>
-          </ContentLayout>
+            {activeDrawerId === 'sample-demo' && (
+              <Toggle checked={hasFooter} onChange={({ detail }) => setUrlParams({ hasFooter: detail.checked })}>
+                Has Footer
+              </Toggle>
+            )}
+
+            {hasFooter && activeDrawerId === 'sample-demo' && (
+              <Box margin={{ left: 'l' }}>
+                <Toggle checked={longFooter} onChange={({ detail }) => setUrlParams({ longFooter: detail.checked })}>
+                  Long Footer
+                </Toggle>
+              </Box>
+            )}
+          </SpaceBetween>
         }
       />
     </ScreenshotArea>
