@@ -94,23 +94,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -2774,23 +2774,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -5454,23 +5454,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -8134,23 +8134,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -10814,23 +10814,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -13494,23 +13494,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -16174,23 +16174,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": "1px",
     },
     "border-width-icon-big": {
-      "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+      "$description": "The visual stroke width of big icons.",
       "$value": "3px",
     },
     "border-width-icon-large": {
-      "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+      "$description": "The visual stroke width of large icons.",
       "$value": "4px",
     },
     "border-width-icon-medium": {
-      "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+      "$description": "The visual stroke width of medium icons.",
       "$value": "2px",
     },
     "border-width-icon-normal": {
-      "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+      "$description": "The visual stroke width of normal icons.",
       "$value": "2px",
     },
     "border-width-icon-small": {
-      "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+      "$description": "The visual stroke width of small icons.",
       "$value": "2px",
     },
     "border-width-popover": {
@@ -18859,23 +18859,23 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -21539,23 +21539,23 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -24219,23 +24219,23 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -26899,23 +26899,23 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -29579,23 +29579,23 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -32259,23 +32259,23 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -34939,23 +34939,23 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -37619,23 +37619,23 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "1px",
         },
         "border-width-icon-big": {
-          "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of big icons.",
           "$value": "3px",
         },
         "border-width-icon-large": {
-          "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of large icons.",
           "$value": "4px",
         },
         "border-width-icon-medium": {
-          "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of medium icons.",
           "$value": "2px",
         },
         "border-width-icon-normal": {
-          "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of normal icons.",
           "$value": "2px",
         },
         "border-width-icon-small": {
-          "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+          "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -40299,23 +40299,23 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": "1px",
     },
     "border-width-icon-big": {
-      "$description": "The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.",
+      "$description": "The visual stroke width of big icons.",
       "$value": "3px",
     },
     "border-width-icon-large": {
-      "$description": "The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.",
+      "$description": "The visual stroke width of large icons.",
       "$value": "4px",
     },
     "border-width-icon-medium": {
-      "$description": "The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.",
+      "$description": "The visual stroke width of medium icons.",
       "$value": "2px",
     },
     "border-width-icon-normal": {
-      "$description": "The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.",
+      "$description": "The visual stroke width of normal icons.",
       "$value": "2px",
     },
     "border-width-icon-small": {
-      "$description": "The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.",
+      "$description": "The visual stroke width of small icons.",
       "$value": "2px",
     },
     "border-width-popover": {
