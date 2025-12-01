@@ -10320,7 +10320,7 @@ Defaults to \`day\`.",
 the component.",
       "i18nTag": true,
       "inlineType": {
-        "name": "CalendarProps.I18nStrings",
+        "name": "DatePickerProps.I18nStrings",
         "properties": [
           {
             "name": "currentMonthAriaLabel",
@@ -10336,6 +10336,22 @@ the component.",
             "name": "nextYearAriaLabel",
             "optional": true,
             "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "DatePickerProps.OpenCalendarAriaLabel",
+              "parameters": [
+                {
+                  "name": "selectedDate",
+                  "type": "string | null",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "openCalendarAriaLabel",
+            "optional": true,
+            "type": "DatePickerProps.OpenCalendarAriaLabel",
           },
           {
             "name": "previousMonthAriaLabel",
@@ -10357,7 +10373,7 @@ the component.",
       },
       "name": "i18nStrings",
       "optional": true,
-      "type": "CalendarProps.I18nStrings",
+      "type": "DatePickerProps.I18nStrings",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -10440,9 +10456,11 @@ Supported values and formats are listed in the
       "type": "string",
     },
     {
+      "deprecatedTag": "Use \`i18nStrings.openCalendarAriaLabel\` instead.",
       "description": "Specifies a function that generates the \`aria-label\` for the 'open calendar' button. The \`selectedDate\` parameter is
 a human-readable localised string representing the current value of the input.
 (for example, \`\`selectedDate => 'Choose Date' + (selectedDate ? \`, selected date is \${selectedDate}\` : '')\`\`)",
+      "i18nTag": true,
       "inlineType": {
         "name": "DatePickerProps.OpenCalendarAriaLabel",
         "parameters": [
