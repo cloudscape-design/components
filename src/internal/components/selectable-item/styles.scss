@@ -276,6 +276,7 @@
 
       &.parent.interactiveGroups {
         padding-block: calc(#{styles.$group-option-padding-vertical} + #{$virtual-border-offset});
+        padding-inline: calc(#{styles.$control-padding-horizontal} + #{$virtual-border-offset});
       }
     }
 
