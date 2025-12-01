@@ -10,4 +10,10 @@ const labels = {
   toolsClose: 'Close tools',
 };
 
+export const drawerLabels = {
+  drawers: 'Drawers',
+  drawersOverflow: 'Drawers overflow',
+  drawersOverflowWithBadge: 'Drawers overflow with badge',
+};
+
 export default labels;

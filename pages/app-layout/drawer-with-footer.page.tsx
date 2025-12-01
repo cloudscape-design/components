@@ -107,7 +107,7 @@ export default function () {
         content={
           <SpaceBetween size="xs">
             <Header
-              variant="h1"
+              variant="h3"
               description="Sometimes all you need is a large cappuchino, and a million bucks."
               info={
                 <Link data-testid="info-link-header" variant="info">
