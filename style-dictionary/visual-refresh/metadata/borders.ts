@@ -140,32 +140,27 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   borderWidthIconSmall: {
-    description:
-      'The visual stroke width of small icons (16px size). This is the actual rendered stroke width users see.',
+    description: 'The visual stroke width of small icons.',
     public: true,
     themeable: true,
   },
   borderWidthIconNormal: {
-    description:
-      'The visual stroke width of normal icons (16px size). This is the actual rendered stroke width users see.',
+    description: 'The visual stroke width of normal icons.',
     public: true,
     themeable: true,
   },
   borderWidthIconMedium: {
-    description:
-      'The visual stroke width of medium icons (20px size). This is the actual rendered stroke width users see.',
+    description: 'The visual stroke width of medium icons.',
     public: true,
     themeable: true,
   },
   borderWidthIconBig: {
-    description:
-      'The visual stroke width of big icons (32px size). This is the actual rendered stroke width users see.',
+    description: 'The visual stroke width of big icons.',
     public: true,
     themeable: true,
   },
   borderWidthIconLarge: {
-    description:
-      'The visual stroke width of large icons (48px size). This is the actual rendered stroke width users see.',
+    description: 'The visual stroke width of large icons.',
     public: true,
     themeable: true,
   },
