@@ -161,13 +161,6 @@ export interface BaseSelectProps
 
 export interface SelectProps extends BaseSelectProps {
   /**
-   * Specifies a render function to render custom options in the dropdown menu.
-   *
-   * @awsuiSystem core
-   */
-  renderOption?: SelectProps.SelectOptionItemRenderer;
-
-  /**
    * Adds a small label inline with the input for saving vertical space in the UI.
    * For use with collection select filters only.
    */
@@ -201,6 +194,12 @@ export interface SelectProps extends BaseSelectProps {
    * Automatically focuses the trigger when component is mounted.
    */
   autoFocus?: boolean;
+  /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * @awsuiSystem core
+   */
+  renderOption?: SelectProps.SelectOptionItemRenderer;
 }
 
 export namespace SelectProps {

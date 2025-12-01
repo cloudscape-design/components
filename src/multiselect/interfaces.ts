@@ -12,13 +12,6 @@ import { BaseSelectProps } from '../select/interfaces';
 
 export interface MultiselectProps extends BaseSelectProps {
   /**
-   * Specifies a render function to render custom options in the dropdown menu.
-   *
-   * @awsuiSystem core
-   */
-  renderOption?: MultiselectProps.MultiselectOptionItemRenderer;
-
-  /**
    * Specifies the currently selected options.
    * Provide an empty array to clear the selection.
    */
@@ -85,6 +78,12 @@ export interface MultiselectProps extends BaseSelectProps {
    * Enables users to select and deselect all options with a special extra checkbox which is displayed at the start of the dropdown.
    */
   enableSelectAll?: boolean;
+  /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * @awsuiSystem core
+   */
+  renderOption?: MultiselectProps.MultiselectOptionItemRenderer;
 }
 
 export namespace MultiselectProps {
