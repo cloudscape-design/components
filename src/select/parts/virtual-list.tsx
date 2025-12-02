@@ -109,7 +109,11 @@ const VirtualListOpen = forwardRef(
           className={styles['layout-strut']}
           style={{
             // Adjust totalSize to account for 1px overlap per item (matching the position adjustment in renderOptions)
-            height: totalSize - filteredOptions.length - stickySize,
+            // When firstOptionSticky is enabled, the select-all is shifted down by 1 and other items are shifted up by (index + 1),
+            // resulting in a different total adjustment than the standard case
+            height: firstOptionSticky
+              ? totalSize - filteredOptions.length - stickySize + 2 // Compensate for the different positioning logic with sticky
+              : totalSize - filteredOptions.length - stickySize,
           }}
         />
         {listBottom ? (
