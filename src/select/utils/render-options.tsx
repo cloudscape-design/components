@@ -65,8 +65,8 @@ export const renderOptions = ({
     const ListItem = useInteractiveGroups ? MultiselectItem : Item;
     const isSticky = firstOptionSticky && globalIndex === 0;
 
-    // Adjust virtual position to create 1px overlap between consecutive selected items in multiselect
-    const adjustedVirtualPosition = virtualItem ? virtualItem.start - index : undefined;
+    // Adjust virtual position to create 1px overlap between consecutive selected items
+    const adjustedVirtualPosition = virtualItem ? virtualItem.start - index * 1 : undefined;
 
     return (
       <ListItem
