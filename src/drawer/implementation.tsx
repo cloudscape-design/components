@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { RefObject } from 'react';
+import React, { RefObject, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useRuntimeDrawerContext } from '../app-layout/runtime-drawer/use-runtime-drawer-context';
@@ -12,6 +12,7 @@ import { createWidgetizedComponent } from '../internal/widgets';
 import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { DrawerProps } from './interfaces';
+import { useStickyFooter } from './use-sticky-footer';
 
 import styles from './styles.css.js';
 
@@ -40,9 +41,14 @@ export function DrawerImplementation({
       !!footer && styles['with-footer']
     ),
   };
+  const footerRef = useRef<HTMLDivElement>(null);
 
   const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: __internalRootRef as RefObject<HTMLElement> });
   const hasAdditioalDrawerAction = !!runtimeDrawerContext?.isExpandable;
+  const { isSticky: isFooterSticky } = useStickyFooter({
+    drawerRef: __internalRootRef as RefObject<HTMLElement>,
+    footerRef,
+  });
 
   return loading ? (
     <div
@@ -79,7 +85,16 @@ export function DrawerImplementation({
       >
         {children}
       </div>
-      {footer && <div className={styles.footer}>{footer}</div>}
+      {footer && (
+        <div
+          ref={footerRef}
+          className={clsx(styles.footer, {
+            [styles['is-sticky']]: isFooterSticky,
+          })}
+        >
+          {footer}
+        </div>
+      )}
     </div>
   );
 }
