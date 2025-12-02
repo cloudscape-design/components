@@ -73,11 +73,14 @@ export const renderOptions = ({
     if (!virtualItem) {
       adjustedVirtualPosition = undefined;
     } else if (!firstOptionSticky) {
-      adjustedVirtualPosition = virtualItem.start - index;
+      // Shift every item up by one to create a 1px overlap
+      adjustedVirtualPosition = virtualItem.start - index * 1;
     } else if (globalIndex === 0) {
-      adjustedVirtualPosition = virtualItem.start + 1; // Shift select-all down by 1
+      // Shift select-all down by one
+      adjustedVirtualPosition = virtualItem.start + 1;
     } else {
-      adjustedVirtualPosition = virtualItem.start - (index - 2); // Shift other items up by (index + 2)
+      // Shift items down by 2 if first item is sticky
+      adjustedVirtualPosition = virtualItem.start + 2 - index * 1;
     }
 
     return (

@@ -16,11 +16,13 @@ interface UseVirtualProps<Item> {
   parentRef: React.RefObject<HTMLElement>;
   estimateSize: () => number;
   firstItemSticky?: boolean;
+  applyItemOffset?: boolean;
 }
 
 interface RowVirtualizer {
   virtualItems: VirtualItem[];
   totalSize: number;
+  adjustedTotalSize: number;
   scrollToIndex: (index: number) => void;
 }
 
@@ -41,6 +43,7 @@ export function useVirtual<Item extends object>({
   parentRef,
   estimateSize,
   firstItemSticky,
+  applyItemOffset = false,
 }: UseVirtualProps<Item>): RowVirtualizer {
   const rowVirtualizer = useVirtualDefault({
     size: items.length,
@@ -74,9 +77,25 @@ export function useVirtual<Item extends object>({
     [items, rowVirtualizer.virtualItems]
   );
 
+  const adjustedTotalSize = useMemo(() => {
+    if (!applyItemOffset) {
+      return rowVirtualizer.totalSize;
+    }
+
+    const stickySize = firstItemSticky && virtualItems.length > 0 ? virtualItems[0].size : 0;
+
+    // Adjust totalSize to account for 1px overlap per item (matching the position adjustment in renderOptions: /select/utils/render-options.tsx)
+    // When firstItemSticky is enabled, the select-all is shifted down by 1 and other items are shifted up by (index + 1),
+    // resulting in a different total adjustment than the standard case
+    return firstItemSticky
+      ? rowVirtualizer.totalSize - items.length - stickySize + 2 // Compensate for the different positioning logic with sticky
+      : rowVirtualizer.totalSize - items.length - stickySize;
+  }, [applyItemOffset, firstItemSticky, virtualItems, rowVirtualizer.totalSize, items.length]);
+
   return {
     virtualItems,
     totalSize: rowVirtualizer.totalSize,
+    adjustedTotalSize,
     scrollToIndex: rowVirtualizer.scrollToIndex,
   };
 }
