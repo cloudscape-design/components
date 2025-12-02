@@ -66,7 +66,19 @@ export const renderOptions = ({
     const isSticky = firstOptionSticky && globalIndex === 0;
 
     // Adjust virtual position to create 1px overlap between consecutive selected items
-    const adjustedVirtualPosition = virtualItem ? virtualItem.start - index * 1 : undefined;
+    // When firstOptionSticky is enabled (enableSelectAll), the select-all option needs to be shifted down by 1,
+    // and all subsequent items need to be shifted up by (index + 1) instead of just index
+    let adjustedVirtualPosition: number | undefined = undefined;
+
+    if (!virtualItem) {
+      adjustedVirtualPosition = undefined;
+    } else if (!firstOptionSticky) {
+      adjustedVirtualPosition = virtualItem.start - index;
+    } else if (globalIndex === 0) {
+      adjustedVirtualPosition = virtualItem.start + 1; // Shift select-all down by 1
+    } else {
+      adjustedVirtualPosition = virtualItem.start - (index - 2); // Shift other items up by (index + 2)
+    }
 
     return (
       <ListItem
