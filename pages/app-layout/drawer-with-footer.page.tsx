@@ -12,7 +12,8 @@ import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs } from './utils/content-blocks';
 import * as content from './utils/contents';
-import labels, { drawerLabels } from './utils/labels';
+import { drawerLabels } from './utils/drawers';
+import labels from './utils/labels';
 import { splitPaneli18nStrings } from './utils/strings';
 
 type DrawerHeaderAndFooterDemoContext = React.Context<
@@ -51,7 +52,7 @@ export default function () {
     setUrlParams,
   } = useContext(AppContext as DrawerHeaderAndFooterDemoContext);
 
-  const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
+  const [activeDrawerId, setActiveDrawerId] = useState<string | null>('sample-demo');
 
   return (
     <ScreenshotArea gutters={false}>
