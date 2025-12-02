@@ -9,7 +9,6 @@
 // When using virtual scrolling, use box-shadows to mimic changing border width
 // and set the actual border to a fixed width to prevent jumping behaviour when
 // hovering selectable items
-
 $virtual-border-offset: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
 $virtual-border-offset-double: calc(2 * #{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
 
