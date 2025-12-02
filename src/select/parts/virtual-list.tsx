@@ -43,7 +43,7 @@ const VirtualListOpen = forwardRef(
     const menuRefObject = useRef(null);
     const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, menuProps.ref);
     const previousHighlightedIndex = useRef<number>();
-    const { virtualItems, totalSize, scrollToIndex } = useVirtual({
+    const { virtualItems, adjustedTotalSize, scrollToIndex } = useVirtual({
       items: filteredOptions,
       parentRef: menuRefObject,
       // estimateSize is a dependency of measurements memo. We update it to force full recalculation
@@ -53,6 +53,7 @@ const VirtualListOpen = forwardRef(
       // eslint-disable-next-line react-hooks/exhaustive-deps
       estimateSize: useCallback(() => fallbackItemHeight, [width?.inner, filteringValue]),
       firstItemSticky: firstOptionSticky,
+      applyItemOffset: true,
     });
 
     useImperativeHandle(
@@ -110,14 +111,7 @@ const VirtualListOpen = forwardRef(
           aria-hidden="true"
           key="total-size"
           className={styles['layout-strut']}
-          style={{
-            // Adjust totalSize to account for 1px overlap per item (matching the position adjustment in renderOptions)
-            // When firstOptionSticky is enabled, the select-all is shifted down by 1 and other items are shifted up by (index + 1),
-            // resulting in a different total adjustment than the standard case
-            height: firstOptionSticky
-              ? totalSize - filteredOptions.length - stickySize + 2 // Compensate for the different positioning logic with sticky
-              : totalSize - filteredOptions.length - stickySize,
-          }}
+          style={{ height: adjustedTotalSize }}
         />
         {listBottom ? (
           <div role="option" className={styles['list-bottom']}>
