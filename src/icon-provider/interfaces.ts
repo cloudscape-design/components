@@ -66,6 +66,7 @@ export namespace IconProviderProps {
     download?: ReactNode | null;
     'drag-indicator'?: ReactNode | null;
     edit?: ReactNode | null;
+    'edit-gen-ai'?: ReactNode | null;
     ellipsis?: ReactNode | null;
     envelope?: ReactNode | null;
     'exit-full-screen'?: ReactNode | null;
@@ -86,9 +87,6 @@ export namespace IconProviderProps {
     'forward-10-seconds'?: ReactNode | null;
     'full-screen'?: ReactNode | null;
     'gen-ai'?: ReactNode | null;
-    'gen-ai-edit'?: ReactNode | null;
-    'gen-ai-search'?: ReactNode | null;
-    'gen-ai-suggestions'?: ReactNode | null;
     globe?: ReactNode | null;
     'grid-view'?: ReactNode | null;
     'group-active'?: ReactNode | null;
@@ -117,6 +115,7 @@ export namespace IconProviderProps {
     'resize-area'?: ReactNode | null;
     script?: ReactNode | null;
     search?: ReactNode | null;
+    'search-gen-ai'?: ReactNode | null;
     security?: ReactNode | null;
     settings?: ReactNode | null;
     send?: ReactNode | null;
@@ -137,6 +136,7 @@ export namespace IconProviderProps {
     'stop-circle'?: ReactNode | null;
     'subtract-minus'?: ReactNode | null;
     suggestions?: ReactNode | null;
+    'suggestions-gen-ai'?: ReactNode | null;
     support?: ReactNode | null;
     'thumbs-down-filled'?: ReactNode | null;
     'thumbs-down'?: ReactNode | null;
