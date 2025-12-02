@@ -27,21 +27,21 @@ import styles from '../icon/icons-list.scss';
 
 export default function () {
   const [themed, setThemed] = useState<boolean>(false);
-  const [strokeSmall, setStrokeSmall] = useState<string>('1px');
-  const [strokeNormal, setStrokeNormal] = useState<string>('1px');
-  const [strokeMedium, setStrokeMedium] = useState<string>('1px');
-  const [strokeBig, setStrokeBig] = useState<string>('1.5px');
-  const [strokeLarge, setStrokeLarge] = useState<string>('2px');
+  const [strokeSmall, setStrokeSmall] = useState<string>('1');
+  const [strokeNormal, setStrokeNormal] = useState<string>('1');
+  const [strokeMedium, setStrokeMedium] = useState<string>('1');
+  const [strokeBig, setStrokeBig] = useState<string>('1.5');
+  const [strokeLarge, setStrokeLarge] = useState<string>('2');
   const [selectedOption, setSelectedOption] = useState<SelectProps.Option>({ label: 'Option 1', value: '1' });
 
   useEffect(() => {
     const theme: Theme = {
       tokens: {
-        borderWidthIconSmall: strokeSmall,
-        borderWidthIconNormal: strokeNormal,
-        borderWidthIconMedium: strokeMedium,
-        borderWidthIconBig: strokeBig,
-        borderWidthIconLarge: strokeLarge,
+        borderWidthIconSmall: strokeSmall ? `${strokeSmall}px` : '1px',
+        borderWidthIconNormal: strokeNormal ? `${strokeNormal}px` : '1px',
+        borderWidthIconMedium: strokeMedium ? `${strokeMedium}px` : '1px',
+        borderWidthIconBig: strokeBig ? `${strokeBig}px` : '1.5px',
+        borderWidthIconLarge: strokeLarge ? `${strokeLarge}px` : '2px',
       },
     };
 
@@ -55,10 +55,7 @@ export default function () {
 
   return (
     <div style={{ padding: 15 }}>
-      <h1>Themed Icon Stroke Width</h1>
-      <Box padding={{ bottom: 'm' }} variant="small">
-        When not working, reload the page
-      </Box>
+      <h1>Themed icon stroke width</h1>
       <SpaceBetween size="m" direction="vertical">
         <label>
           <input
@@ -75,8 +72,17 @@ export default function () {
             <Input
               type="number"
               value={strokeSmall}
-              onChange={evt => setStrokeSmall(evt.detail.value)}
+              onChange={evt => {
+                const numValue = parseFloat(evt.detail.value);
+                if (!isNaN(numValue) && numValue >= 1) {
+                  setStrokeSmall(evt.detail.value);
+                } else if (evt.detail.value === '') {
+                  setStrokeSmall(evt.detail.value);
+                }
+              }}
               placeholder="1px"
+              step={0.5}
+              inputMode="decimal"
             />
           </FormField>
 
@@ -84,8 +90,17 @@ export default function () {
             <Input
               type="number"
               value={strokeNormal}
-              onChange={evt => setStrokeNormal(evt.detail.value)}
+              onChange={evt => {
+                const numValue = parseFloat(evt.detail.value);
+                if (!isNaN(numValue) && numValue >= 1) {
+                  setStrokeNormal(evt.detail.value);
+                } else if (evt.detail.value === '') {
+                  setStrokeNormal(evt.detail.value);
+                }
+              }}
               placeholder="1px"
+              step={0.5}
+              inputMode="decimal"
             />
           </FormField>
 
@@ -93,8 +108,17 @@ export default function () {
             <Input
               type="number"
               value={strokeMedium}
-              onChange={evt => setStrokeMedium(evt.detail.value)}
+              onChange={evt => {
+                const numValue = parseFloat(evt.detail.value);
+                if (!isNaN(numValue) && numValue >= 1) {
+                  setStrokeMedium(evt.detail.value);
+                } else if (evt.detail.value === '') {
+                  setStrokeMedium(evt.detail.value);
+                }
+              }}
               placeholder="1px"
+              step={0.5}
+              inputMode="decimal"
             />
           </FormField>
 
@@ -102,8 +126,17 @@ export default function () {
             <Input
               type="number"
               value={strokeBig}
-              onChange={evt => setStrokeBig(evt.detail.value)}
+              onChange={evt => {
+                const numValue = parseFloat(evt.detail.value);
+                if (!isNaN(numValue) && numValue >= 1) {
+                  setStrokeBig(evt.detail.value);
+                } else if (evt.detail.value === '') {
+                  setStrokeBig(evt.detail.value);
+                }
+              }}
               placeholder="1.5px"
+              step={0.5}
+              inputMode="decimal"
             />
           </FormField>
 
@@ -111,8 +144,17 @@ export default function () {
             <Input
               type="number"
               value={strokeLarge}
-              onChange={evt => setStrokeLarge(evt.detail.value)}
+              onChange={evt => {
+                const numValue = parseFloat(evt.detail.value);
+                if (!isNaN(numValue) && numValue >= 1) {
+                  setStrokeLarge(evt.detail.value);
+                } else if (evt.detail.value === '') {
+                  setStrokeLarge(evt.detail.value);
+                }
+              }}
               placeholder="2px"
+              step={0.5}
+              inputMode="decimal"
             />
           </FormField>
         </div>
