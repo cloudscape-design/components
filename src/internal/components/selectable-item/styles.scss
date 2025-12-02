@@ -29,26 +29,19 @@
   padding-block: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
   padding-inline: awsui.$border-item-width;
 
-  // For custom styles and background on the option-content, the content should not clip through the selectable-item borders..
+  // For custom styles and background on the selectable-item-content, the content should not clip through the selectable-item borders..
   overflow: hidden;
 
-  > .option-content {
+  > .selectable-item-content {
     padding-block: styles.$option-padding-vertical;
     padding-inline: styles.$control-padding-horizontal;
-    &.no-content-styling {
-      padding-block: 0;
-      padding-inline: 0;
-    }
   }
 
   &.pad-bottom {
     padding-block-end: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
     border-block-end-color: transparent;
-    > .option-content {
+    > .selectable-item-content {
       padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs});
-      &.no-content-styling {
-        padding-block-end: 0;
-      }
     }
   }
 
@@ -62,19 +55,13 @@
   }
   &.child {
     padding-inline-start: awsui.$border-item-width;
-    > .option-content {
+    > .selectable-item-content {
       padding-inline-start: awsui.$space-xxl;
-      &.no-content-styling {
-        padding-inline-start: 0;
-      }
     }
   }
 
-  &.disabled > .option-content {
+  &.disabled > .selectable-item-content {
     color: awsui.$color-text-dropdown-item-disabled;
-    &.no-content-styling {
-      color: inherit;
-    }
   }
 
   &.highlighted,
@@ -88,31 +75,20 @@
     padding-block: 0;
     padding-inline: 0;
 
-    > .option-content {
+    > .selectable-item-content {
       padding-block: styles.$option-padding-vertical;
       padding-inline: styles.$control-padding-horizontal;
-      &.no-content-styling {
-        padding-block: 0;
-        padding-inline: 0;
-      }
     }
     &.child {
       padding-inline-start: 0;
-      > .option-content {
+      > .selectable-item-content {
         padding-inline-start: awsui.$space-xxl;
-        &.no-content-styling {
-          padding-inline-start: 0;
-        }
       }
     }
     &.pad-bottom {
       padding-block-end: 0;
-      > .option-content {
+      > .selectable-item-content {
         padding-block-end: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
-
-        &.no-content-styling {
-          padding-block-end: 0;
-        }
       }
     }
   }
@@ -123,11 +99,8 @@
     &.disabled {
       border-color: awsui.$color-border-dropdown-item-dimmed-hover;
       background-color: awsui.$color-background-dropdown-item-dimmed;
-      > .option-content {
+      > .selectable-item-content {
         color: awsui.$color-text-dropdown-item-dimmed;
-        &.no-content-styling {
-          color: inherit;
-        }
       }
     }
     &.is-keyboard {
@@ -175,7 +148,7 @@
 
   &.parent {
     &:not(.disabled) {
-      > .option-content {
+      > .selectable-item-content {
         color: awsui.$color-text-dropdown-group-label;
       }
     }
@@ -183,50 +156,33 @@
       border-block-start-color: awsui.$color-border-dropdown-group;
       padding-block: 0;
       padding-inline: 0;
-      &:has(> .option-content.no-content-styling) {
+      &:not(:has(> .selectable-item-content)) {
         padding-block: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
         padding-inline: awsui.$border-item-width;
       }
 
-      > .option-content {
+      > .selectable-item-content {
         padding-block: awsui.$space-xs;
         padding-inline: awsui.$space-xs;
         font-weight: bold;
-
-        &.no-content-styling {
-          padding-block: 0;
-          padding-inline: 0;
-          font-weight: normal;
-          color: inherit;
-        }
       }
     }
     &.interactiveGroups {
-      > .option-content {
+      > .selectable-item-content {
         padding-block: styles.$group-option-padding-vertical;
         padding-inline: styles.$control-padding-horizontal;
-        &.no-content-styling {
-          padding-block: 0;
-          padding-inline: 0;
-        }
       }
       &.highlighted {
-        > .option-content {
+        > .selectable-item-content {
           color: awsui.$color-text-dropdown-item-highlighted;
-          &.no-content-styling {
-            color: inherit;
-          }
         }
       }
       &.highlighted,
       &.selected {
         padding-block: 0;
         padding-inline: 0;
-        > .option-content {
+        > .selectable-item-content {
           padding-block: styles.$group-option-padding-vertical;
-          &.no-content-styling {
-            padding-block: 0;
-          }
         }
       }
     }
@@ -248,11 +204,8 @@
       border-inline-start-color: awsui.$color-border-dropdown-container;
       border-inline-end-color: awsui.$color-border-dropdown-container;
       padding-inline: 0;
-      > .option-content {
+      > .selectable-item-content {
         padding-inline: styles.$control-padding-horizontal;
-        &.no-content-styling {
-          padding-inline: 0;
-        }
       }
 
       &:not(.with-scrollbar) {
