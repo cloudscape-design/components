@@ -1,0 +1,98 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+import React, { useState } from 'react';
+
+import { Multiselect, MultiselectProps, SpaceBetween } from '~components';
+import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
+import Select, { SelectProps } from '~components/select';
+
+import { SimplePage } from '../app/templates';
+
+const options: SelectProps.Options = Array.from({ length: 1000 }, (_, i) => ({
+  value: `${i}`,
+  label: `Option ${i + 1}`,
+}));
+
+const autosuggestOptions: AutosuggestProps.Options = Array.from({ length: 1000 }, (_, i) => ({
+  value: `Option ${i + 1}`,
+  description: `Description for option ${i + 1}`,
+}));
+
+export default function () {
+  const [selected, setSelected] = useState<SelectProps['selectedOption']>(null);
+  const [selectedMulti, setSelectedMulti] = useState<MultiselectProps.Options>(options.slice(0, 2));
+  const [selectedMultiWithSelectAll, setSelectedMultiWithSelectAll] = useState<MultiselectProps.Options>([]);
+  const [autosuggestValue, setAutosuggestValue] = useState('');
+
+  return (
+    <SimplePage title="Virtual Scroll" i18n={{}}>
+      <div
+        style={{
+          height: 500,
+          padding: 10,
+          // Prevents dropdown from expanding outside of the screenshot area
+          overflow: 'auto',
+        }}
+      >
+        <SpaceBetween size="m">
+          <Select
+            placeholder="Select with virtual scroll"
+            selectedOption={selected}
+            options={options}
+            filteringType="auto"
+            finishedText="End of all results"
+            onChange={event => setSelected(event.detail.selectedOption)}
+            virtualScroll={true}
+            expandToViewport={false}
+            ariaLabel="select demo"
+            data-testid="select-demo"
+          />
+
+          <Multiselect
+            placeholder="Multiselect with virtual scroll"
+            selectedOptions={selectedMulti}
+            options={options}
+            filteringType="manual"
+            finishedText="End of all results"
+            errorText="verylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspaces"
+            recoveryText="Retry"
+            onLoadItems={() => {}}
+            onChange={event => setSelectedMulti(event.detail.selectedOptions)}
+            tokenLimit={2}
+            virtualScroll={true}
+            expandToViewport={false}
+            ariaLabel="multiselect demo"
+            data-testid="multiselect-demo"
+          />
+
+          <Multiselect
+            placeholder="Multiselect with virtual scroll and select all"
+            selectedOptions={selectedMultiWithSelectAll}
+            options={options}
+            filteringType="auto"
+            finishedText="End of all results"
+            onChange={event => setSelectedMultiWithSelectAll(event.detail.selectedOptions)}
+            enableSelectAll={true}
+            virtualScroll={true}
+            expandToViewport={false}
+            ariaLabel="multiselect with select all demo"
+            data-testid="multiselect-select-all-demo"
+          />
+
+          <Autosuggest
+            value={autosuggestValue}
+            options={autosuggestOptions}
+            onChange={event => setAutosuggestValue(event.detail.value)}
+            enteredTextLabel={value => `Use: "${value}"`}
+            placeholder="Autosuggest with virtual scroll"
+            ariaLabel="autosuggest demo"
+            virtualScroll={true}
+            expandToViewport={false}
+            data-testid="autosuggest-demo"
+          />
+        </SpaceBetween>
+      </div>
+    </SimplePage>
+  );
+}
