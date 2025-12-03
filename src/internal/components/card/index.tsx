@@ -19,7 +19,7 @@ export default function Card({
   onClick,
   onFocus,
   role,
-  TagName = 'div',
+  tagName: TagName = 'div',
 }: InternalCardProps) {
   const isRefresh = useVisualRefresh();
 
