@@ -184,6 +184,7 @@
         padding-inline: 0;
         > .selectable-item-content {
           padding-block: styles.$group-option-padding-vertical;
+          padding-inline: styles.$control-padding-horizontal;
         }
       }
     }
