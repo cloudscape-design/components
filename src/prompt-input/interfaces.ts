@@ -3,23 +3,40 @@
 import React from 'react';
 
 import { IconProps } from '../icon/interfaces';
-import { BaseInputProps, InputAutoCorrect, InputKeyEvents, InputSpellcheck } from '../input/interfaces';
+import {
+  BaseInputProps,
+  InputAutoComplete,
+  InputAutoCorrect,
+  InputKeyEvents,
+  InputSpellcheck,
+} from '../input/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
+import { OptionsFilteringType, OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
+import { DropdownStatusProps } from '../internal/components/dropdown-status';
+import { OptionDefinition } from '../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { BaseKeyDetail, NonCancelableEventHandler } from '../internal/events';
+import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface PromptInputProps
   extends Omit<BaseInputProps, 'nativeInputAttributes' | 'value' | 'onChange'>,
     InputKeyEvents,
     InputAutoCorrect,
+    InputAutoComplete,
     InputSpellcheck,
     BaseComponentProps,
     FormFieldValidationControlProps {
   /**
-   * Specifies the content of the prompt input.
-   * Can be a string or React nodes including Token components.
+   * Specifies the content of the prompt input, not in use if `tokens` is defined.
    */
-  value?: React.ReactNode;
+  value?: string;
+
+  /**
+   * Specifies the content of the prompt input when modes/references are in use.
+   * Represented as an array of TextToken or ReferenceToken.
+   * When defined, `autocomplete` will no longer function.
+   */
+  tokens?: readonly PromptInputProps.InputToken[];
 
   /**
    * Called whenever a user changes the input value (by typing or pasting).
@@ -121,6 +138,31 @@ export interface PromptInputProps
   disableSecondaryContentPaddings?: boolean;
 
   /**
+   * Menus that can be triggered via shortcuts (e.g., "/" or "@").
+   * For menus only relevant to triggers at the start of the input, set `useAtStart: true`, defaults to `false`.
+   */
+  menus?: PromptInputProps.MenuDefinition[];
+
+  /**
+   * The ID of the menu to show. When undefined, no menu is shown.
+   * If undefined then the input can show a menu based depending on the shortcut trigger.
+   */
+  activeMenuId?: string;
+
+  /**
+   * Attributes to add to the native `textarea` element.
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   * If `tokens` is defined, nativeTextareaAttributes will be ignored.
+   *
+   * @awsuiSystem core
+   */
+  nativeTextareaAttributes?: NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
+
+  /**
    * @awsuiSystem core
    */
   style?: PromptInputProps.Style;
@@ -129,12 +171,105 @@ export interface PromptInputProps
 export namespace PromptInputProps {
   export type KeyDetail = BaseKeyDetail;
 
+  export interface TextInputToken {
+    type: 'text';
+    text: string;
+  }
+
+  export interface ReferenceInputToken {
+    type: 'reference';
+    id: string;
+    label: string;
+    value: string;
+  }
+
+  export type InputToken = TextInputToken | ReferenceInputToken;
+
   export interface ChangeDetail {
-    value: React.ReactNode;
+    value?: string;
+    tokens?: InputToken[];
   }
 
   export interface ActionDetail {
-    value: React.ReactNode;
+    value?: string;
+    tokens?: InputToken[];
+  }
+
+  export interface MenuDefinition {
+    id: string;
+    trigger: string;
+    onSelect: (option: OptionDefinition) => void;
+    options: OptionDefinition[];
+    useAtStart?: boolean;
+    /**
+     * Determines how filtering is applied to the list of `options`:
+     *
+     * * `auto` - The component will automatically filter options based on user input.
+     * * `manual` - You will set up `onLoadItems` event listener and filter options on your side or request
+     * them from server.
+     *
+     * By default the component will filter the provided `options` based on the value of the filtering input.
+     * Only options that have a `value`, `label`, `description` or `labelTag` that contains the input value as a substring
+     * are displayed in the list of options.
+     *
+     * If you set this property to `manual`, this default filtering mechanism is disabled and all provided `options` are
+     * displayed in the dropdown menu. In that case make sure that you use the `onLoadItems` event in order
+     * to set the `options` property to the options that are relevant for the user, given the filtering input value.
+     *
+     * Note: Manual filtering doesn't disable match highlighting.
+     **/
+    filteringType?: OptionsFilteringType;
+    /**
+     * Use this event to implement the asynchronous behavior for the menu.
+     *
+     * The event is called in the following situations:
+     * * The user scrolls to the end of the list of options, if `statusType` is set to `pending`.
+     * * The user clicks on the recovery button in the error state.
+     * * The user types after the trigger character.
+     * * The menu is opened.
+     *
+     * The detail object contains the following properties:
+     * * `filteringText` - The value that you need to use to fetch options.
+     * * `firstPage` - Indicates that you should fetch the first page of options that match the `filteringText`.
+     * * `samePage` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).
+     **/
+    onLoadItems?: NonCancelableEventHandler<OptionsLoadItemsDetail>;
+    /**
+     * Displayed when there are no options to display.
+     * This is only shown when `statusType` is set to `finished` or not set at all.
+     */
+    empty?: React.ReactNode;
+    /**
+     * Specifies the text to display when in the loading state.
+     **/
+    loadingText?: string;
+    /**
+     * Specifies the text to display at the bottom of the dropdown menu after pagination has reached the end.
+     **/
+    finishedText?: string;
+    /**
+     * Specifies the text to display when a data fetching error occurs. Make sure that you provide `recoveryText`.
+     **/
+    errorText?: string;
+    /**
+     * Specifies the text for the recovery button. The text is displayed next to the error text.
+     * Use the `onLoadItems` event to perform a recovery action (for example, retrying the request).
+     * @i18n
+     **/
+    recoveryText?: string;
+    /**
+     * Provides a text alternative for the error icon in the error message.
+     * @i18n
+     */
+    errorIconAriaLabel?: string;
+    /**
+     * Specifies the current status of loading more options.
+     * * `pending` - Indicates that no request in progress, but more options may be loaded.
+     * * `loading` - Indicates that data fetching is in progress.
+     * * `finished` - Indicates that pagination has finished and no more requests are expected.
+     * * `error` - Indicates that an error occurred during fetch. You should use `recoveryText` to enable the user to recover.
+     **/
+    statusType?: DropdownStatusProps.StatusType;
   }
 
   export interface Ref {
@@ -147,6 +282,15 @@ export namespace PromptInputProps {
      * Selects all text in the textarea control.
      */
     select(): void;
+
+    /**
+     * Selects a range of text in the textarea control.
+     *
+     * See https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement/setSelectionRange
+     * for more details on this method. Be aware that using this method in React has some
+     * common pitfalls: https://stackoverflow.com/questions/60129605/is-javascripts-setselectionrange-incompatible-with-react-hooks
+     */
+    setSelectionRange(start: number | null, end: number | null, direction?: 'forward' | 'backward' | 'none'): void;
   }
 
   export interface Style {

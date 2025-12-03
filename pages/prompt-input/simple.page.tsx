@@ -12,6 +12,7 @@ import {
   FileTokenGroup,
   FormField,
   PromptInput,
+  PromptInputProps,
   SpaceBetween,
   SplitPanel,
 } from '~components';
@@ -39,6 +40,7 @@ type DemoContext = React.Context<
     enableSpellcheck: boolean;
     hasName: boolean;
     enableAutoFocus: boolean;
+    enableReferences: boolean;
   }>
 >;
 
@@ -46,10 +48,14 @@ const placeholderText =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
 export default function PromptInputPage() {
-  const [textareaValue, setTextareaValue] = useState<React.ReactNode>('');
-  const [valueInSplitPanel, setValueInSplitPanel] = useState<React.ReactNode>('');
+  const [textareaValue, setTextareaValue] = useState<string>('');
+  const [tokens, setTokens] = useState<PromptInputProps.InputToken[]>([]);
+  const [valueInSplitPanel, setValueInSplitPanel] = useState<string>('');
   const [files, setFiles] = useState<File[]>([]);
   const [extractedText, setExtractedText] = useState<string>('');
+  const [lastCommandToken, setLastCommandToken] = useState<PromptInputProps.ReferenceInputToken | null>(null);
+  const [selectionStart, setSelectionStart] = useState<string>('0');
+  const [selectionEnd, setSelectionEnd] = useState<string>('0');
 
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
@@ -68,6 +74,7 @@ export default function PromptInputPage() {
     enableSpellcheck,
     hasName,
     enableAutoFocus,
+    enableReferences,
   } = urlParams;
 
   const [items, setItems] = React.useState([
@@ -78,16 +85,27 @@ export default function PromptInputPage() {
 
   useEffect(() => {
     if (hasText) {
-      setTextareaValue(placeholderText);
+      if (enableReferences) {
+        setTokens([{ type: 'text', text: placeholderText }]);
+      } else {
+        setTextareaValue(placeholderText);
+      }
     }
-  }, [hasText]);
+  }, [hasText, enableReferences]);
 
   useEffect(() => {
-    if (typeof textareaValue === 'string' && textareaValue !== placeholderText) {
-      setUrlParams({ hasText: false });
+    if (enableReferences) {
+      const plainText = getPromptText(tokens);
+      if (plainText !== placeholderText) {
+        setUrlParams({ hasText: false });
+      }
+    } else {
+      if (textareaValue !== placeholderText) {
+        setUrlParams({ hasText: false });
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [textareaValue]);
+  }, [textareaValue, tokens, enableReferences]);
 
   useEffect(() => {
     if (items.length === 0) {
@@ -106,7 +124,7 @@ export default function PromptInputPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDisabled]);
 
-  const ref = React.createRef<HTMLTextAreaElement>();
+  const ref = React.createRef<PromptInputProps.Ref>();
 
   const buttonGroupRef = React.useRef<ButtonGroupProps.Ref>(null);
 
@@ -226,6 +244,17 @@ export default function PromptInputPage() {
               >
                 Enable auto focus
               </Checkbox>
+              <Checkbox
+                checked={enableReferences}
+                onChange={() => {
+                  setUrlParams({ enableReferences: !enableReferences });
+                  // Reset values when switching modes
+                  setTextareaValue('');
+                  setTokens([]);
+                }}
+              >
+                Enable references (tokens mode - supports @mentions and /commands)
+              </Checkbox>
             </FormField>
             <button id="placeholder-text-button" onClick={() => setUrlParams({ hasText: true })}>
               Fill with placeholder text
@@ -238,12 +267,59 @@ export default function PromptInputPage() {
             <button onClick={() => buttonGroupRef.current?.focus('files')}>Focus file input</button>
             <button onClick={() => ref.current?.select()}>Select all text</button>
 
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <label>
+                Start:
+                <input
+                  type="number"
+                  value={selectionStart}
+                  onChange={e => setSelectionStart(e.target.value)}
+                  style={{ width: '60px', marginLeft: '4px' }}
+                />
+              </label>
+              <label>
+                End:
+                <input
+                  type="number"
+                  value={selectionEnd}
+                  onChange={e => setSelectionEnd(e.target.value)}
+                  style={{ width: '60px', marginLeft: '4px' }}
+                />
+              </label>
+              <button
+                onClick={() => {
+                  const start = parseInt(selectionStart, 10);
+                  const end = parseInt(selectionEnd, 10);
+                  if (!isNaN(start) && !isNaN(end)) {
+                    ref.current?.focus();
+                    // Use setTimeout to ensure focus completes before setting selection
+                    setTimeout(() => {
+                      ref.current?.setSelectionRange(start, end);
+                    }, 0);
+                  }
+                }}
+              >
+                Set selection range
+              </button>
+            </div>
+
             {extractedText && (
               <Box variant="awsui-key-label">
                 <div>
-                  <Box variant="awsui-key-label">Last extracted text (using extractTextFromReactNode):</Box>
+                  <Box variant="awsui-key-label">Last extracted text (using getPromptText):</Box>
                   <Box padding={{ top: 'xs' }}>
                     <code>{extractedText}</code>
+                  </Box>
+                </div>
+              </Box>
+            )}
+
+            {enableReferences && tokens.length > 0 && (
+              <Box variant="awsui-key-label">
+                <div>
+                  <Box variant="awsui-key-label">Current tokens:</Box>
+                  <Box padding={{ top: 'xs' }}>
+                    <code>{JSON.stringify(tokens, null, 2)}</code>
                   </Box>
                 </div>
               </Box>
@@ -261,17 +337,19 @@ export default function PromptInputPage() {
               <ColumnLayout columns={2}>
                 <FormField
                   errorText={
-                    (getPromptText(textareaValue, true).length > MAX_CHARS || isInvalid) &&
+                    ((enableReferences ? getPromptText(tokens, true).length : textareaValue.length) > MAX_CHARS ||
+                      isInvalid) &&
                     'The query has too many characters.'
                   }
                   warningText={hasWarning && 'This input has a warning'}
                   constraintText={
                     <>
                       This service is subject to some policy. Character count:{' '}
-                      {getPromptText(textareaValue, true).length}/{MAX_CHARS}
+                      {enableReferences ? getPromptText(tokens, true).length : textareaValue.length}/{MAX_CHARS}
+                      {enableReferences && ' (Token mode: type @word or /command and press space)'}
                     </>
                   }
-                  label={<span>User prompt</span>}
+                  label={<span>User prompt {enableReferences && '(with references)'}</span>}
                   i18nStrings={{ errorIconAriaLabel: 'Error' }}
                 >
                   <PromptInput
@@ -279,21 +357,66 @@ export default function PromptInputPage() {
                     ariaLabel="Chat input"
                     actionButtonIconName="send"
                     actionButtonAriaLabel="Submit prompt"
-                    value={textareaValue}
-                    onChange={(event: any) => setTextareaValue(event.detail.value)}
-                    onAction={event => {
-                      // Demo: Extract plain text from ReactNode value using utility
-                      // In a real app, you'd send this extracted text to your backend
-                      const plainText = getPromptText(event.detail.value);
+                    value={enableReferences ? undefined : textareaValue}
+                    tokens={enableReferences ? tokens : undefined}
+                    onChange={(event: any) => {
+                      if (enableReferences) {
+                        const newTokens = event.detail.tokens;
+                        setTokens(newTokens);
 
-                      setExtractedText(plainText);
-                      window.alert(`Submitted plain text: ${plainText}`);
+                        // Check if user manually removed the command token
+                        const hasCommandToken = newTokens.some(
+                          (token: PromptInputProps.InputToken) =>
+                            token.type === 'reference' && token.id.startsWith('command:')
+                        );
+                        if (!hasCommandToken && lastCommandToken) {
+                          // User removed the command, clear it so it doesn't come back
+                          setLastCommandToken(null);
+                        }
+                      } else {
+                        setTextareaValue(event.detail.value);
+                      }
+                    }}
+                    onAction={({ detail }) => {
+                      const plainText = enableReferences ? getPromptText(detail.tokens ?? []) : detail.value;
+
+                      setExtractedText(plainText ?? '');
+
+                      if (enableReferences) {
+                        // Find command token in submitted tokens
+                        const commandToken = detail.tokens?.find(
+                          (token: PromptInputProps.InputToken) =>
+                            token.type === 'reference' && token.id.startsWith('command:')
+                        ) as PromptInputProps.ReferenceInputToken | undefined;
+
+                        if (commandToken) {
+                          // Save command token and restore it with a space after clearing
+                          setLastCommandToken(commandToken);
+                          setTokens([commandToken, { type: 'text', text: ' ' }]);
+                        } else {
+                          // No command token, clear everything
+                          setTokens([]);
+                        }
+                      } else {
+                        setTextareaValue('');
+                      }
+
+                      window.alert(
+                        `Submitted:\n\nPlain text: ${plainText}\n\n${
+                          enableReferences ? `Tokens: ${JSON.stringify(detail.tokens, null, 2)}` : ''
+                        }`
+                      );
                     }}
                     placeholder="Ask a question"
                     maxRows={hasInfiniteMaxRows ? -1 : 4}
                     disabled={isDisabled}
                     readOnly={isReadOnly}
-                    invalid={isInvalid || getPromptText(textareaValue, true).length > MAX_CHARS}
+                    invalid={
+                      isInvalid ||
+                      (enableReferences
+                        ? getPromptText(tokens, true).length > MAX_CHARS
+                        : textareaValue.length > MAX_CHARS)
+                    }
                     warning={hasWarning}
                     ref={ref}
                     disableSecondaryActionsPaddings={true}
@@ -400,7 +523,7 @@ export default function PromptInputPage() {
           <PromptInput
             data-testid="Prompt-input-in-split-panel"
             value={valueInSplitPanel}
-            onChange={event => setValueInSplitPanel(event.detail.value)}
+            onChange={event => setValueInSplitPanel(event.detail.value ?? '')}
           />
         </SplitPanel>
       }

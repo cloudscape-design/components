@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import PromptInput from '~components/prompt-input';
 
 export default function Page() {
-  const [value, setValue] = useState<React.ReactNode>('');
+  const [value, setValue] = useState<string>('');
   const [submitStatus, setSubmitStatus] = useState(false);
   const [isKeyboardSubmittingDisabled, setDisableKeyboardSubmitting] = useState(false);
 
@@ -25,7 +25,7 @@ export default function Page() {
           actionButtonIconName="send"
           actionButtonAriaLabel="Send"
           value={value}
-          onChange={event => setValue(event.detail.value)}
+          onChange={event => setValue(event.detail.value ?? '')}
           onAction={() => window.alert('Sent message!')}
           onKeyDown={event => {
             if (isKeyboardSubmittingDisabled) {

@@ -1,44 +1,39 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
-
-import Token from '../token/internal';
+import { PromptInputProps } from './interfaces';
 
 /**
- * Extracts text from a PromptInput value.
+ * Extracts text from a PromptInput token array.
  * By default, returns full token values (for form submission).
  * Set labelsOnly=true to get just the visible labels (for UI display/counting).
  *
- * @param value - The PromptInput value (ReactNode)
+ * @param tokens - The PromptInput token array
  * @param labelsOnly - If true, returns only visible text; if false, returns full token values
  *
  * @example
- * const value = <>Hello <Token label="user" value="<file_content>user</file_content>" /></>;
- * getPromptText(value); // "Hello <file_content>user</file_content>"
- * getPromptText(value, true); // "Hello user"
+ * const tokens = [
+ *   { type: 'text', text: 'Hello ' },
+ *   { type: 'reference', id: 'file:user', label: 'user', value: '<file_content>user</file_content>' }
+ * ];
+ * getPromptText(tokens); // "Hello <file_content>user</file_content>"
+ * getPromptText(tokens, true); // "Hello user"
  */
-export function getPromptText(value: React.ReactNode, labelsOnly = false): string {
-  if (!value) {
+export function getPromptText(tokens: readonly PromptInputProps.InputToken[], labelsOnly = false): string {
+  if (!tokens) {
     return '';
   }
-  if (typeof value === 'string') {
-    return value;
-  }
-  if (typeof value === 'number') {
-    return String(value);
-  }
-  if (Array.isArray(value)) {
-    return value.map(child => getPromptText(child, labelsOnly)).join('');
-  }
 
-  // React element (Token or Fragment)
-  const element = value as React.ReactElement;
-  if (element.type === Token) {
-    // Return label or full value based on labelsOnly flag
-    return labelsOnly ? element.props.label || '' : element.props.value || element.props.label || '';
-  }
-  return getPromptText(element.props.children, labelsOnly);
+  return tokens
+    .map(token => {
+      if (token.type === 'text') {
+        return token.text;
+      } else if (token.type === 'reference') {
+        return labelsOnly ? token.label : token.value;
+      }
+      return '';
+    })
+    .join('');
 }
 
 export default getPromptText;
