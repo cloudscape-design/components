@@ -46,11 +46,11 @@ export default class CardsWrapper extends ComponentWrapper {
   private containerWrapper = new ContainerWrapper(this.getElement());
 
   findItems(): Array<CardWrapper> {
-    return this.findAllByClassName(styles.card).map(c => new CardWrapper(c.getElement()));
+    return this.findAll(styles.card).map(c => new CardWrapper(c.getElement()));
   }
 
   findSelectedItems(): Array<CardWrapper> {
-    return this.findAllByClassName(cardStyles['card-active']).map(c => new CardWrapper(c.getElement()));
+    return this.findAllByClassName(styles['card-selected']).map(c => new CardWrapper(c.getElement()));
   }
 
   findHeader(): ElementWrapper | null {
