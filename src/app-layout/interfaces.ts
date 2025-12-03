@@ -313,7 +313,7 @@ export namespace AppLayoutProps {
     preserveInactiveContent?: boolean;
     featurePrompt?: {
       visible: boolean;
-      onDismiss: NonCancelableEventHandler<null>;
+      onDismiss?: NonCancelableEventHandler<null>;
       header?: React.ReactNode;
       content: React.ReactNode;
       dismissAriaLabel?: string;

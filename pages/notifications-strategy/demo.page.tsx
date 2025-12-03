@@ -3,7 +3,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import {
-  Badge,
   Box,
   Button,
   Checkbox,
@@ -14,6 +13,7 @@ import {
   FormField,
   Icon,
   Link,
+  List,
   Modal,
   Popover,
   Select,
@@ -24,9 +24,9 @@ import {
   TextFilter,
 } from '~components';
 import AppLayoutToolbar, { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
-import FeaturePrompt, { FeaturePromptProps } from '~components/internal/do-not-use/feature-prompt';
-import { registerFeatureNotifications, showFeaturePromptIfPossible } from '~components/internal/plugins/widget';
-import { mount, unmount } from '~mount';
+import FeaturePrompt, { FeaturePromptProps } from '~components/feature-prompt';
+import awsuiPlugins from '~components/internal/plugins';
+import { mount } from '~mount';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
@@ -64,6 +64,66 @@ const createStatusNotifications = (onDismiss: (id: string) => void): readonly Fl
   },
 ];
 
+const featureNotifications = [
+  {
+    id: 'feature-1',
+    header: (
+      <Box fontWeight="bold">
+        <Icon name="history" /> Improved tracking
+      </Box>
+    ),
+    content: (
+      <div>
+        <Box variant="p">
+          It is now possible to see event propagation history from event detail. Learn more in the{' '}
+          <Link href="#">Events management</Link>.
+        </Box>
+        <Box fontSize="body-s" color="text-body-secondary">
+          Released less than 48 hours ago!
+        </Box>
+      </div>
+    ),
+  },
+  {
+    id: 'feature-2',
+    header: (
+      <Box fontWeight="bold">
+        <Icon name="gen-ai" /> Smart priority evaluation
+      </Box>
+    ),
+    content: (
+      <div>
+        <Box variant="p">
+          We can now order events by priority using our new agentic AI solution! Learn how to configure it for your
+          needs in the <Link href="#">Smart tools</Link>.
+        </Box>
+        <Box fontSize="body-s" color="text-body-secondary">
+          Released 8 days ago
+        </Box>
+      </div>
+    ),
+  },
+  {
+    id: 'feature-3',
+    header: (
+      <Box fontWeight="bold">
+        <Icon name="gen-ai" /> Smart descriptions
+      </Box>
+    ),
+    content: (
+      <div>
+        <Box variant="p">
+          We can now generate event descriptions which summarize event properties, propagation metrics, and comments.
+          Refer to <Link href="#">Smart tools</Link> to learn how to turn this on and customize.
+        </Box>
+        <Box fontSize="body-s" color="text-body-secondary">
+          Released 29 days ago
+        </Box>
+      </div>
+    ),
+  },
+];
+
 const featureNotificationTypeOptions: SelectProps.Option[] = [
   {
     value: 'global',
@@ -93,72 +153,30 @@ const activeDrawerOptions: SelectProps.Option[] = [
   },
 ];
 
-registerFeatureNotifications({
-  id: 'local-feature-notifications',
-  suppressFeaturePrompt: false,
-  featuresPageLink: '/new-amazing-features',
+awsuiPlugins.appLayout.registerFeatureNotificationsDrawer({
   features: [
     {
       id: '1',
-      header: <Box fontWeight="bold">New feature, events with more resource tags</Box>,
-      content: (
-        <Box variant="p">
-          You can now enrich CloudTrail events with additional information by adding resources tags and IAM global keys
-          in CloudTrail lake.{' '}
-          <Link external={true} href="https://amazon.com">
-            Learn more
-          </Link>
-        </Box>
-      ),
-      contentCategory: (
-        <Box fontSize="body-s" color="text-label">
-          Event coverage
-        </Box>
-      ),
-      releaseDate: new Date('2025-11-29'),
+      header: 'Improved tracking',
+      content:
+        'It is now possible to see event propagation history from event detail. Learn more in the Events management.',
+      releaseDate: '2025-12-01',
     },
     {
       id: '2',
-      header: (
-        <Box fontWeight="bold">Enhanced filtering options for CloudTrail events ingested into event data stores</Box>
-      ),
-      content: (
-        <>
-          <Box variant="p">
-            More enhanced filtering options provide tighter control over your AWS activity data, improving the
-            efficiency and precision of security, compliance, and operational investigations.{' '}
-            <Link external={true} href="https://amazon.com">
-              View user guide
-            </Link>
-          </Box>
-          <Box margin={{ top: 'xs' }}>
-            <Button>Create an Enhanced trail</Button>
-          </Box>
-        </>
-      ),
-      releaseDate: new Date('2025-12-01'),
+      header: 'Smart priority evaluation',
+      content:
+        'We can now order events by priority using our new agentic AI solution! Learn how to configure it for your needs in the Smart tools.',
+      releaseDate: '2025-11-24',
     },
     {
       id: '3',
-      header: <Box fontWeight="bold">Introducing Application Map</Box>,
-      content: (
-        <>
-          <Box variant="p">
-            Use application map to automatically discover and organize your services into groups based on your business
-            needs. Identify root cause faster instead of troubleshooting isolated symptoms with operational signals such
-            as SLOs, health indicators, and top insights in a contextual drawer. <Link href="#">Learn more</Link>
-          </Box>
-        </>
-      ),
-      contentCategory: <Badge>Operational investigations</Badge>,
-      releaseDate: new Date('2025-12-02'),
+      header: 'Smart descriptions',
+      content:
+        'We can now generate event descriptions which summarize event properties, propagation metrics, and comments. Refer to Smart tools to learn how to turn this on and customize.',
+      releaseDate: '2025-11-20',
     },
   ],
-  mountItem: (container, data) => {
-    mount(data, container);
-
-    return () => unmount(container);
-  },
 });
 
 export default function () {
@@ -173,24 +191,92 @@ export default function () {
     setUrlParams,
     setHeader,
   } = useContext(AppContext as PageContext);
-  const localFeaturePromptRef = useRef<FeaturePromptProps.Ref>(null);
-  const globalFeaturePromptRef = useRef<FeaturePromptProps.Ref>(null);
+  const shouldShowNotificationsPrompt =
+    featureNotificationType === 'service' && (!showStatusNotifications || delayStatusNotifications);
+
+  const [showGlobalFeatureNotification, setShowGlobalFeatureNotification] = useState(
+    featureNotificationType === 'global'
+  );
+  const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
 
   useEffect(() => {
     mount(
       <div className={styles.navigation}>
-        <Box padding="xxs" color="inherit" id="bug-icon">
-          <Icon name="bug" />
-        </Box>
+        <FeaturePrompt
+          ref={featurePromptRef}
+          visible={showGlobalFeatureNotification}
+          onDismiss={() => setShowGlobalFeatureNotification(false)}
+          position="bottom"
+          header={
+            <Box fontWeight="bold">
+              <Icon name="gen-ai" /> Our AI buddy is smarter than ever
+            </Box>
+          }
+          content={
+            <Box>
+              It supports filtering with plain language, reports generation with .pdf, and so much more! See{' '}
+              <Link href="#">top 10 things it can do for you</Link>.
+            </Box>
+          }
+          onBlur={() => {
+            featurePromptRef.current?.dismiss();
+          }}
+        >
+          <Box padding="xxs" color="inherit">
+            <Icon name="bug" />
+          </Box>
+        </FeaturePrompt>
         <TextFilter filteringText="" filteringPlaceholder="search" />
       </div>,
       document.querySelector('#h')!
     );
-  }, [setHeader]);
+  }, [setHeader, showGlobalFeatureNotification]);
 
+  const [hasNewNotifications, setHasNewNotifications] = useState(true);
+  const [showNotificationsFeaturePrompt, setShowNotificationsFeaturePrompt] = useState(shouldShowNotificationsPrompt);
   const drawersProps: Pick<AppLayoutToolbarProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> = {
     activeDrawerId: activeDrawerId,
     drawers: [
+      {
+        id: 'service-notifications',
+        resizable: true,
+        badge: hasNewNotifications,
+        ariaLabels: {
+          closeButton: 'Close feature notifications',
+          drawerName: 'Feature notifications',
+          triggerButton: 'Toggle feature notifications',
+          resizeHandle: 'Resize feature notifications panel',
+        },
+        content: (
+          <Drawer header="Latest feature releases">
+            <SpaceBetween size="m">
+              <Box>Features released less than 30 days ago</Box>
+
+              <List
+                items={featureNotifications}
+                renderItem={item => ({ id: item.id, content: item.header, secondaryContent: item.content })}
+              />
+
+              <Link
+                href="#"
+                onFollow={event => {
+                  event.preventDefault();
+                  setWhatsNewOpened(true);
+                }}
+              >
+                See all feature releases
+              </Link>
+            </SpaceBetween>
+          </Drawer>
+        ),
+        featurePrompt: {
+          visible: showNotificationsFeaturePrompt,
+          onDismiss: () => setShowNotificationsFeaturePrompt(false),
+          header: featureNotifications[0].header,
+          content: featureNotifications[0].content,
+        },
+        trigger: { iconName: 'suggestions' },
+      },
       {
         id: 'tools',
         resizable: true,
@@ -206,6 +292,9 @@ export default function () {
     ],
     onDrawerChange: event => {
       setUrlParams({ activeDrawerId: event.detail.activeDrawerId as any });
+      if (event.detail.activeDrawerId === 'service-notifications') {
+        setHasNewNotifications(false);
+      }
     },
   };
 
@@ -227,45 +316,6 @@ export default function () {
 
   return (
     <ScreenshotArea gutters={false}>
-      <FeaturePrompt
-        ref={globalFeaturePromptRef}
-        onDismiss={() => {
-          // handle focus behavior here
-        }}
-        position="bottom"
-        header={
-          <Box fontWeight="bold">
-            <Icon name="gen-ai" /> Our AI buddy is smarter than ever
-          </Box>
-        }
-        content={
-          <Box>
-            It supports filtering with plain language, reports generation with .pdf, and so much more! See{' '}
-            <Link href="#">top 10 things it can do for you</Link>.
-          </Box>
-        }
-        getTrack={() => document.querySelector('#bug-icon')}
-        trackKey="bug-icon"
-      />
-      <FeaturePrompt
-        ref={localFeaturePromptRef}
-        onDismiss={() => {
-          const triggerElement = document.querySelector(
-            '[data-testid="awsui-app-layout-trigger-service-notifications"]'
-          ) as HTMLButtonElement;
-          triggerElement!.dataset!.awsuiSuppressTooltip = 'false';
-          // TODO handle focus
-        }}
-        position="left"
-        header={<div>Improved tracking</div>}
-        content={
-          <div>
-            It is now possible to see event propagation history from event detail. Learn more in the Events management.
-          </div>
-        }
-        getTrack={() => document.querySelector('[data-testid="awsui-app-layout-trigger-service-notifications"]')}
-        trackKey="awsui-app-layout-trigger-service-notifications"
-      />
       <Modal
         header="Fake what's new page"
         visible={whatsNewOpened}
@@ -376,42 +426,24 @@ export default function () {
 
             <button
               onClick={() => {
-                globalFeaturePromptRef.current?.dismiss();
+                featurePromptRef.current?.focus();
               }}
             >
-              dismiss global feature prompt
+              focus feature prompt
             </button>
             <button
               onClick={() => {
-                globalFeaturePromptRef.current?.show();
+                featurePromptRef.current?.dismiss();
               }}
             >
-              show global feature prompt
+              dismiss feature prompt
             </button>
             <button
               onClick={() => {
-                localFeaturePromptRef.current?.dismiss();
+                featurePromptRef.current?.show();
               }}
             >
-              dismiss local feature prompt
-            </button>
-            <button
-              onClick={() => {
-                localFeaturePromptRef.current?.show();
-                const triggerElement = document.querySelector(
-                  '[data-testid="awsui-app-layout-trigger-service-notifications"]'
-                ) as HTMLButtonElement;
-                triggerElement!.dataset!.awsuiSuppressTooltip = 'true';
-              }}
-            >
-              show local feature prompt
-            </button>
-            <button
-              onClick={() => {
-                showFeaturePromptIfPossible();
-              }}
-            >
-              showFeaturePromptIfPossible
+              show feature prompt
             </button>
           </SimplePage>
         }
