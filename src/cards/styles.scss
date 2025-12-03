@@ -73,6 +73,14 @@
   }
 }
 
+.card {
+  /* Used in test utils */
+}
+
+.card-header-inner {
+  /* Used in test utils */
+}
+
 .card-header {
   @include styles.font-heading-m;
 }

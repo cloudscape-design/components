@@ -19,15 +19,15 @@ export default function Card({
   onClick,
   onFocus,
   role,
-  TagName = 'div',
+  tagName: TagName = 'div',
 }: InternalCardProps) {
   const isRefresh = useVisualRefresh();
 
   return (
     <TagName
       className={clsx(className, styles.root, {
-        [styles['card-with-action']]: !!action,
-        [styles['card-active']]: active,
+        [styles['with-action']]: !!action,
+        [styles.active]: active,
       })}
       onFocus={onFocus}
       role={role}
@@ -38,8 +38,8 @@ export default function Card({
         {...innerMetadataAttributes}
         onClick={onClick}
       >
-        <div className={styles['card-header']}>
-          <div className={styles['card-header-inner']}>{header}</div>
+        <div className={styles.header}>
+          <div className={styles['header-inner']}>{header}</div>
           {action && <div className={styles.action}>{action}</div>}
         </div>
         {children}

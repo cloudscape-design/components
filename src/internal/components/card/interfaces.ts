@@ -48,7 +48,7 @@ export interface InternalCardProps extends BaseComponentProps {
 
   role?: string;
 
-  TagName?: 'li' | 'div';
+  tagName?: 'li' | 'div';
 
   metadataAttributes: Record<string, string | undefined>;
 

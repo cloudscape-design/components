@@ -32,7 +32,7 @@ class CardWrapper extends ComponentWrapper {
   }
 
   findCardHeader(): ElementWrapper | null {
-    return this.findByClassName(cardStyles['card-header-inner']);
+    return this.find(`:is(.${cardStyles['header-inner']}, .${styles['card-header-inner']})`);
   }
 
   findSelectionArea(): ElementWrapper | null {
@@ -46,11 +46,11 @@ export default class CardsWrapper extends ComponentWrapper {
   private containerWrapper = new ContainerWrapper(this.getElement());
 
   findItems(): Array<CardWrapper> {
-    return this.findAllByClassName(styles.card).map(c => new CardWrapper(c.getElement()));
+    return this.findAll(`:is(.${cardStyles.root}, .${styles.card})`).map(c => new CardWrapper(c.getElement()));
   }
 
   findSelectedItems(): Array<CardWrapper> {
-    return this.findAllByClassName(cardStyles['card-active']).map(c => new CardWrapper(c.getElement()));
+    return this.findAllByClassName(cardStyles.active).map(c => new CardWrapper(c.getElement()));
   }
 
   findHeader(): ElementWrapper | null {
