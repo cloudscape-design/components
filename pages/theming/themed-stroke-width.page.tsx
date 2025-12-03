@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 
 import {
   Alert,
@@ -34,23 +34,35 @@ export default function () {
   const [strokeLarge, setStrokeLarge] = useState<string>('2');
   const [selectedOption, setSelectedOption] = useState<SelectProps.Option>({ label: 'Option 1', value: '1' });
 
-  useEffect(() => {
-    const theme: Theme = {
-      tokens: {
-        borderWidthIconSmall: strokeSmall ? `${strokeSmall}px` : '1px',
-        borderWidthIconNormal: strokeNormal ? `${strokeNormal}px` : '1px',
-        borderWidthIconMedium: strokeMedium ? `${strokeMedium}px` : '1px',
-        borderWidthIconBig: strokeBig ? `${strokeBig}px` : '1.5px',
-        borderWidthIconLarge: strokeLarge ? `${strokeLarge}px` : '2px',
-      },
-    };
+  // Reload page once after initial load to fix theme application
+  useLayoutEffect(() => {
+    const hasReloaded = sessionStorage.getItem('themed-stroke-width-reloaded');
+    if (!hasReloaded) {
+      sessionStorage.setItem('themed-stroke-width-reloaded', 'true');
+      window.location.reload();
+    }
+  }, []);
 
-    const result = applyTheme({
-      theme: themed ? theme : { tokens: {} },
-      baseThemeId: 'visual-refresh',
-    });
+  useLayoutEffect(() => {
+    let reset: () => void = () => {};
+    if (themed) {
+      const theme: Theme = {
+        tokens: {
+          borderWidthIconSmall: strokeSmall ? `${strokeSmall}px` : '1px',
+          borderWidthIconNormal: strokeNormal ? `${strokeNormal}px` : '1px',
+          borderWidthIconMedium: strokeMedium ? `${strokeMedium}px` : '1px',
+          borderWidthIconBig: strokeBig ? `${strokeBig}px` : '1.5px',
+          borderWidthIconLarge: strokeLarge ? `${strokeLarge}px` : '2px',
+        },
+      };
 
-    return result.reset;
+      const result = applyTheme({
+        theme,
+        baseThemeId: 'visual-refresh',
+      });
+      reset = result.reset;
+    }
+    return reset;
   }, [themed, strokeSmall, strokeNormal, strokeMedium, strokeBig, strokeLarge]);
 
   return (
@@ -160,7 +172,9 @@ export default function () {
         </div>
       </SpaceBetween>
 
-      <ScreenshotArea>
+      <ScreenshotArea
+        key={`themed-${themed}-${strokeSmall}-${strokeNormal}-${strokeMedium}-${strokeBig}-${strokeLarge}`}
+      >
         <SpaceBetween size="xl">
           <Box variant="h2" padding={{ top: 'l' }}>
             Icon sizes
