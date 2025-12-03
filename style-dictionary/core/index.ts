@@ -35,8 +35,11 @@ const tokenCategories: Array<StyleDictionary.CategoryModule> = [
 ];
 
 async function buildCoreOpenSource(builder: ThemeBuilder) {
-  tokenCategories.forEach(({ tokens, mode: modeId }) => {
+  tokenCategories.forEach(({ tokens, mode: modeId, referenceTokens }) => {
     const mode = modes.find(mode => mode.id === modeId);
+    if (referenceTokens) {
+      builder.addReferenceTokens(referenceTokens, mode);
+    }
     builder.addTokens(tokens, mode);
   });
 
