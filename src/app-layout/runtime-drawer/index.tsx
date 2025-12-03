@@ -4,14 +4,20 @@ import React, { useContext, useEffect, useRef } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import Box from '../../box/internal';
 import { ButtonGroupProps } from '../../button-group/interfaces';
+import { InternalDrawer } from '../../drawer/internal';
+import { IconProps } from '../../icon/interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
 import {
   DrawerConfig as RuntimeDrawerConfig,
   DrawerStateChangeParams,
+  Feature,
 } from '../../internal/plugins/controllers/drawers';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
 import { DrawerPayload as RuntimeAiDrawerConfig } from '../../internal/plugins/widget/interfaces';
+import List from '../../list/internal';
+import SpaceBetween from '../../space-between/internal';
 import { AppLayoutProps } from '../interfaces';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 
@@ -63,6 +69,45 @@ function RuntimeDrawerWrapper({ mountContent, unmountContent, id }: RuntimeConte
   return <div ref={ref} className={styles['runtime-content-wrapper']} data-awsui-runtime-drawer-root-id={id}></div>;
 }
 
+function RuntimeFeaturesNotificationDrawer({ features }: { features: Array<Feature> }) {
+  return (
+    // TODO i18n strings
+    <InternalDrawer header="Latest feature releases">
+      <SpaceBetween size="m">
+        <Box>Features released less than 30 days ago</Box>
+
+        <List
+          items={features}
+          renderItem={item => ({
+            id: item.id,
+            content: <Box fontWeight="bold">{item.header}</Box>,
+            secondaryContent: (
+              <div>
+                <Box variant="p">{item.content}</Box>
+                {!!item.releaseDate && (
+                  <Box fontSize="body-s" color="text-body-secondary">
+                    Released {item.releaseDate}
+                  </Box>
+                )}
+              </div>
+            ),
+          })}
+        />
+
+        {/*<Link*/}
+        {/*  href="#"*/}
+        {/*  onFollow={event => {*/}
+        {/*    event.preventDefault();*/}
+        {/*    setWhatsNewOpened(true);*/}
+        {/*  }}*/}
+        {/*>*/}
+        {/*  See all feature releases*/}
+        {/*</Link>*/}
+      </SpaceBetween>
+    </InternalDrawer>
+  );
+}
+
 interface RuntimeContentHeaderProps {
   mountHeader: (container: HTMLElement) => void;
   unmountHeader?: (container: HTMLElement) => void;
@@ -108,6 +153,23 @@ const convertRuntimeTriggerToReactNode = (runtimeTrigger?: string) => {
   return <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: runtimeTrigger }} />;
 };
 
+const renderContent = (runtimeConfig: RuntimeDrawerConfig) => {
+  const { mountContent, unmountContent, __features, ...runtimeDrawer } = runtimeConfig;
+
+  if (__features && __features.length > 0) {
+    return <RuntimeFeaturesNotificationDrawer features={__features} />;
+  }
+
+  return (
+    <RuntimeDrawerWrapper
+      key={runtimeDrawer.id}
+      mountContent={mountContent}
+      unmountContent={unmountContent}
+      id={runtimeDrawer.id}
+    />
+  );
+};
+
 export const mapRuntimeConfigToDrawer = (
   runtimeConfig: RuntimeDrawerConfig
 ): AppLayoutProps.Drawer & {
@@ -115,7 +177,8 @@ export const mapRuntimeConfigToDrawer = (
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
 } => {
-  const { mountContent, unmountContent, trigger, ...runtimeDrawer } = runtimeConfig;
+  const { trigger, __features, ...runtimeDrawer } = runtimeConfig;
+  const showFeaturePrompt = __features && __features?.length > 0;
 
   return {
     ...runtimeDrawer,
@@ -125,16 +188,20 @@ export const mapRuntimeConfigToDrawer = (
           ...(trigger.iconSvg && {
             iconSvg: convertRuntimeTriggerToReactNode(trigger.iconSvg),
           }),
+          ...(trigger.iconName && {
+            iconName: trigger.iconName as IconProps.Name,
+          }),
         }
       : undefined,
-    content: (
-      <RuntimeDrawerWrapper
-        key={runtimeDrawer.id}
-        mountContent={mountContent}
-        unmountContent={unmountContent}
-        id={runtimeDrawer.id}
-      />
-    ),
+    ...(showFeaturePrompt && {
+      featurePrompt: {
+        visible: true,
+        header: __features[0].header,
+        content: __features[0].content,
+        dismissAriaLabel: 'dismissAriaLabel',
+      },
+    }),
+    content: renderContent(runtimeConfig),
     onResize: event => {
       fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
     },
