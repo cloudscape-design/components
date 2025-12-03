@@ -369,7 +369,7 @@ const CardsList = <T,>({
             }
             onFocus={onFocus}
             role={listItemRole}
-            TagName="li"
+            tagName="li"
           >
             {visibleSectionsDefinition.map(({ width = 100, header, content, id }, index) => (
               <div key={id || index} className={styles.section} style={{ width: `${width}%` }}>

@@ -57,36 +57,40 @@
   padding-inline-start: awsui.$space-grid-gutter;
   padding-inline-end: 0;
   list-style: none;
+}
+
+.card-inner {
+  position: relative;
+  background-color: awsui.$color-background-container-content;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: awsui.$space-card-vertical;
+  padding-inline: awsui.$space-card-horizontal;
+  inline-size: 100%;
+  min-inline-size: 0;
+  @include card-style;
+}
+
+.header {
+  @include styles.font-heading-m;
   &-inner {
-    position: relative;
-    background-color: awsui.$color-background-container-content;
-    margin-block: 0;
-    margin-inline: 0;
-    padding-block: awsui.$space-card-vertical;
-    padding-inline: awsui.$space-card-horizontal;
     inline-size: 100%;
-    min-inline-size: 0;
-    @include card-style;
+    display: inline-block;
   }
-  &-header {
-    @include styles.font-heading-m;
-    &-inner {
-      inline-size: 100%;
-      display: inline-block;
-    }
+}
+
+.with-action {
+  > .card-inner > .card-header {
+    inline-size: 90%;
   }
-  &-with-action {
-    > .card-inner > .card-header {
-      inline-size: 90%;
-    }
-  }
-  &-active {
-    > .card-inner {
-      background-color: awsui.$color-background-item-selected;
-      &::before {
-        border-block: awsui.$border-item-width solid awsui.$color-border-item-selected;
-        border-inline: awsui.$border-item-width solid awsui.$color-border-item-selected;
-      }
+}
+
+.active {
+  > .card-inner {
+    background-color: awsui.$color-background-item-selected;
+    &::before {
+      border-block: awsui.$border-item-width solid awsui.$color-border-item-selected;
+      border-inline: awsui.$border-item-width solid awsui.$color-border-item-selected;
     }
   }
 }

@@ -73,55 +73,12 @@
   }
 }
 
-<<<<<<< HEAD
-.card {
-  display: flex;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  box-sizing: border-box;
-  margin-block: 0;
-  margin-inline: 0;
-  padding-block-start: 0;
-  padding-block-end: awsui.$space-grid-gutter;
-  padding-inline-start: awsui.$space-grid-gutter;
-  padding-inline-end: 0;
-  list-style: none;
-  &-inner {
-    position: relative;
-    background-color: awsui.$color-background-container-content;
-    margin-block: 0;
-    margin-inline: 0;
-    padding-block: awsui.$space-card-vertical;
-    padding-inline: awsui.$space-card-horizontal;
-    inline-size: 100%;
-    min-inline-size: 0;
-    @include card-style;
-  }
-  &-header {
-    @include styles.font-heading-m;
-    &-inner {
-      inline-size: 100%;
-      display: inline-block;
-    }
-  }
-  &-selectable {
-    > .card-inner > .card-header {
-      inline-size: 90%;
-    }
-  }
-  &-selected {
-    > .card-inner {
-      background-color: awsui.$color-background-item-selected;
-      &::before {
-        border-block: awsui.$border-item-width solid awsui.$color-border-item-selected;
-        border-inline: awsui.$border-item-width solid awsui.$color-border-item-selected;
-      }
-    }
-  }
-=======
+.card-header-inner {
+  /* Used in test utils */
+}
+
 .card-header {
   @include styles.font-heading-m;
->>>>>>> 781f5e623 (chore: Refactor card into separate internal component)
 }
 
 .section {
