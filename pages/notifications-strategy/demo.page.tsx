@@ -25,6 +25,7 @@ import {
 } from '~components';
 import AppLayoutToolbar, { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
 import FeaturePrompt, { FeaturePromptProps } from '~components/feature-prompt';
+import awsuiPlugins from '~components/internal/plugins';
 import { mount } from '~mount';
 
 import AppContext, { AppContextType } from '../app/app-context';
@@ -151,6 +152,32 @@ const activeDrawerOptions: SelectProps.Option[] = [
     label: 'None',
   },
 ];
+
+awsuiPlugins.appLayout.registerFeatureNotificationsDrawer({
+  features: [
+    {
+      id: '1',
+      header: 'Improved tracking',
+      content:
+        'It is now possible to see event propagation history from event detail. Learn more in the Events management.',
+      releaseDate: '2025-12-01',
+    },
+    {
+      id: '2',
+      header: 'Smart priority evaluation',
+      content:
+        'We can now order events by priority using our new agentic AI solution! Learn how to configure it for your needs in the Smart tools.',
+      releaseDate: '2025-11-24',
+    },
+    {
+      id: '3',
+      header: 'Smart descriptions',
+      content:
+        'We can now generate event descriptions which summarize event properties, propagation metrics, and comments. Refer to Smart tools to learn how to turn this on and customize.',
+      releaseDate: '2025-11-20',
+    },
+  ],
+});
 
 export default function () {
   const {
