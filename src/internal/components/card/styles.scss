@@ -46,9 +46,6 @@
 
 .root {
   @include styles.styles-reset();
-}
-
-.card {
   display: flex;
   overflow-wrap: break-word;
   word-wrap: break-word;
