@@ -5,7 +5,7 @@ import pick from 'lodash/pick.js';
 import { ReferenceTokens } from '@cloudscape-design/theming-build';
 
 import { paletteTokens as brand } from '../core/color-palette.js';
-import { expandColorDictionary } from '../utils/index.js';
+import { expandColorDictionary, expandReferenceTokens } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 
 /**
@@ -144,8 +144,8 @@ const referenceTokens: ReferenceTokens = {
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);
+const expandedReferenceTokens: ReferenceTokens = expandReferenceTokens(referenceTokens);
 
 export const mode: StyleDictionary.ModeIdentifier = 'color';
-
 export { expandedTokens as tokens };
-export { referenceTokens };
+export { expandedReferenceTokens as referenceTokens };

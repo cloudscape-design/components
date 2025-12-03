@@ -64,6 +64,30 @@ export const expandMotionDictionary = (
   }, {} as StyleDictionary.ExpandedMotionScopeDictionary);
 };
 
+export const expandReferenceTokens = (referenceTokens: any) => {
+  if (!referenceTokens.color) {
+    return referenceTokens;
+  }
+
+  const expandedColor = Object.entries(referenceTokens.color).reduce(
+    (acc: any, [colorType, palette]: [string, any]) => {
+      if (!palette) {
+        return acc;
+      }
+
+      acc[colorType] = Object.entries(palette).reduce((paletteAcc: any, [step, value]: [string, any]) => {
+        paletteAcc[step] = expandColorEntry(value);
+        return paletteAcc;
+      }, {});
+
+      return acc;
+    },
+    {}
+  );
+
+  return { ...referenceTokens, color: expandedColor };
+};
+
 export const pickState = (tokenCategory: TokenCategory<string, Record<string, string>>, state: string) => {
   return Object.fromEntries(
     Object.entries(tokenCategory).map(([token, value]) => {
