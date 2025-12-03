@@ -331,12 +331,16 @@ const CardsList = <T,>({
             active={selectable && selected}
             className={styles.card}
             header={
-              <div className={clsx(styles['card-header'], analyticsSelectors['card-header'])}>
-                {cardDefinition.header ? cardDefinition.header(item) : ''}
-              </div>
+              cardDefinition.header ? (
+                <div className={clsx(styles['card-header'], analyticsSelectors['card-header'])}>
+                  {cardDefinition.header(item)}
+                </div>
+              ) : (
+                ''
+              )
             }
             innerMetadataAttributes={
-              entireCardClickable && !disabled ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata) : {}
+              canClickEntireCard && !disabled ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata) : {}
             }
             key={index}
             metadataAttributes={{

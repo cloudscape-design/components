@@ -25,7 +25,7 @@ export default function Card({
 
   return (
     <TagName
-      className={clsx(className, styles.card, styles.root, {
+      className={clsx(className, styles.root, {
         [styles['card-with-action']]: !!action,
         [styles['card-active']]: active,
       })}
