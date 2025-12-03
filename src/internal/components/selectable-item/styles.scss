@@ -171,6 +171,7 @@
       > .selectable-item-content {
         padding-block: styles.$group-option-padding-vertical;
         padding-inline: styles.$control-padding-horizontal;
+        font-weight: bold;
       }
       &.highlighted {
         > .selectable-item-content {
