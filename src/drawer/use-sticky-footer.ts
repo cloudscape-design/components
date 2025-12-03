@@ -1,9 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { RefObject, useCallback, useState } from 'react';
-
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { RefObject, useCallback, useEffect, useState } from 'react';
 
 // Minimum scrollable space is the space other than the sticky content, for instance for a sticky footer it's the
 // the space other than htat, which would be drawer height minus footer height.
@@ -15,7 +13,7 @@ export function useStickyFooter({
 }: {
   drawerRef: RefObject<HTMLElement>;
   footerRef: RefObject<HTMLElement>;
-}): { isSticky: boolean } {
+}) {
   const [isSticky, setIsSticky] = useState(true);
 
   const checkStickyState = useCallback(() => {
@@ -37,8 +35,17 @@ export function useStickyFooter({
     setIsSticky(hasEnoughSpace);
   }, [footerRef, drawerRef]);
 
-  window.addEventListener('resize', checkStickyState);
-  useResizeObserver(footerRef, checkStickyState);
+  useEffect(() => {
+    // for server rendering
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.addEventListener('resize', checkStickyState);
+    checkStickyState();
+
+    return () => window.removeEventListener('resize', checkStickyState);
+  }, [checkStickyState]);
 
   return { isSticky };
 }
