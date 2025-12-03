@@ -50,7 +50,7 @@ export default class CardsWrapper extends ComponentWrapper {
   }
 
   findSelectedItems(): Array<CardWrapper> {
-    return this.findAllByClassName(styles['card-selected']).map(c => new CardWrapper(c.getElement()));
+    return this.findAllByClassName(cardStyles['card-active']).map(c => new CardWrapper(c.getElement()));
   }
 
   findHeader(): ElementWrapper | null {
