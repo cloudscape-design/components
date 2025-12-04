@@ -7,19 +7,23 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import Option from '../../internal/components/option';
-import { OptionDefinition } from '../../internal/components/option/interfaces';
+import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
+import { getTestOptionIndexes } from '../../internal/components/options-list/utils/test-indexes';
 import SelectableItem from '../../internal/components/selectable-item';
 import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { MultiselectProps } from '../../multiselect/interfaces';
 import { ItemProps } from './item';
 
 import styles from './styles.css.js';
-interface MultiselectItemProps extends ItemProps {
+interface MultiselectItemProps extends ItemProps<MultiselectProps.MultiselectOptionItemRenderer> {
   indeterminate?: boolean;
 }
 
 const MultiSelectItem = (
   {
+    index,
+    virtualIndex,
     option,
     highlighted,
     selected,
@@ -36,6 +40,7 @@ const MultiSelectItem = (
     highlightType,
     withScrollbar,
     sticky,
+    renderOption,
     ...restProps
   }: MultiselectItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -59,8 +64,60 @@ const MultiSelectItem = (
 
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
+  const { throughIndex, inGroupIndex, groupIndex } = getTestOptionIndexes(option) || {};
+  const globalIndex = virtualIndex ?? index ?? null;
+
+  const renderOptionWrapper = (option: DropdownOption) => {
+    if (!renderOption) {
+      return null;
+    }
+
+    const baseItem = {
+      index: globalIndex,
+      selected: !!selected,
+      highlighted: !!highlighted,
+      disabled: !!disabled,
+    };
+
+    let item:
+      | MultiselectProps.MultiselectOptionItem
+      | MultiselectProps.MultiselectOptionGroupItem
+      | MultiselectProps.MultiselectSelectAllItem;
+
+    switch (option.type) {
+      case 'select-all':
+        item = {
+          type: 'select-all',
+          option: option.option as OptionDefinition,
+          indeterminate: indeterminate ?? false,
+          ...baseItem,
+        };
+        break;
+      case 'parent':
+        item = {
+          type: 'parent',
+          option: option.option as OptionGroup,
+          indeterminate: indeterminate ?? false,
+          ...baseItem,
+        };
+        break;
+      case 'child':
+      default:
+        item = { type: 'child', option: option.option as OptionDefinition, ...baseItem };
+        break;
+    }
+
+    return renderOption({ item, filterText: filteringValue });
+  };
+
+  const renderResult = renderOptionWrapper(option);
+
   return (
     <SelectableItem
+      data-test-index={throughIndex}
+      data-in-group-index={inGroupIndex}
+      data-group-index={groupIndex}
+      disableContentStyling={!!renderResult}
       ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
@@ -86,7 +143,7 @@ const MultiSelectItem = (
       {...baseProps}
     >
       <div className={className}>
-        {hasCheckbox && (
+        {!renderResult && hasCheckbox && (
           <div className={styles.checkbox}>
             <CheckboxIcon
               checked={selected}
@@ -96,6 +153,7 @@ const MultiSelectItem = (
           </div>
         )}
         <Option
+          customContent={renderResult}
           option={{ ...wrappedOption, disabled }}
           highlightedOption={highlighted}
           selectedOption={selected}
@@ -103,7 +161,7 @@ const MultiSelectItem = (
           isGroupOption={isParent}
         />
       </div>
-      {isDisabledWithReason && (
+      {!renderResult && isDisabledWithReason && (
         <>
           {descriptionEl}
           {highlighted && canShowTooltip && (

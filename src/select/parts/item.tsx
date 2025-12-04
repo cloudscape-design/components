@@ -9,15 +9,19 @@ import InternalIcon from '../../icon/internal.js';
 import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import Option from '../../internal/components/option';
-import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
+import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
+import { getTestOptionIndexes } from '../../internal/components/options-list/utils/test-indexes';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
 import SelectableItem from '../../internal/components/selectable-item';
 import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { SelectProps } from '../interfaces';
 
 import styles from './styles.css.js';
 
-export interface ItemProps {
+export interface ItemProps<T = SelectProps.SelectOptionItemRenderer> {
+  index?: number;
+  virtualIndex?: number;
   option: DropdownOption;
   highlighted?: boolean;
   selected?: boolean;
@@ -33,10 +37,13 @@ export interface ItemProps {
   highlightType?: HighlightType['type'];
   withScrollbar?: boolean;
   sticky?: boolean;
+  renderOption?: T;
 }
 
 const Item = (
   {
+    index,
+    virtualIndex,
     option,
     highlighted,
     selected,
@@ -52,6 +59,7 @@ const Item = (
     highlightType,
     withScrollbar,
     sticky,
+    renderOption,
     ...restProps
   }: ItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -71,8 +79,47 @@ const Item = (
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
 
+  const { throughIndex, inGroupIndex, groupIndex } = getTestOptionIndexes(option) || {};
+  const globalIndex = virtualIndex ?? index ?? null;
+
+  const renderOptionWrapper = (option: DropdownOption) => {
+    if (!renderOption) {
+      return null;
+    }
+
+    const baseItem = {
+      index: globalIndex,
+      selected: !!selected,
+      highlighted: !!highlighted,
+      disabled: !!disabled,
+    };
+
+    let item: SelectProps.SelectOptionItem | SelectProps.SelectOptionGroupItem;
+
+    switch (option.type) {
+      case 'parent':
+        item = {
+          type: 'parent',
+          option: option.option as OptionGroup,
+          ...baseItem,
+        };
+        break;
+      case 'child':
+      default:
+        item = { type: 'child', option: option.option as OptionDefinition, ...baseItem };
+        break;
+    }
+
+    return renderOption({ item, filterText: filteringValue });
+  };
+  const renderResult = renderOptionWrapper(option);
+
   return (
     <SelectableItem
+      data-test-index={throughIndex}
+      data-in-group-index={inGroupIndex}
+      data-group-index={groupIndex}
+      disableContentStyling={!!renderOption}
       ariaSelected={Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
@@ -95,24 +142,27 @@ const Item = (
       {...baseProps}
     >
       <div className={clsx(styles.item, !isParent && wrappedOption.labelTag && styles['show-label-tag'])}>
-        {hasCheckbox && !isParent && (
+        {!renderResult && hasCheckbox && !isParent && (
           <div className={styles.checkbox}>
             <CheckboxIcon checked={selected || false} disabled={option.disabled} />
           </div>
         )}
-        <Option
-          option={{ ...wrappedOption, disabled }}
-          highlightedOption={highlighted}
-          selectedOption={selected}
-          highlightText={filteringValue}
-          isGroupOption={isParent}
-        />
-        {!hasCheckbox && !isParent && selected && (
+        {
+          <Option
+            customContent={renderResult}
+            option={{ ...wrappedOption, disabled }}
+            highlightedOption={highlighted}
+            selectedOption={selected}
+            highlightText={filteringValue}
+            isGroupOption={isParent}
+          />
+        }
+        {!renderResult && !hasCheckbox && !isParent && selected && (
           <div className={styles['selected-icon']}>
             <InternalIcon name="check" />
           </div>
         )}
-        {isDisabledWithReason && (
+        {!renderResult && isDisabledWithReason && (
           <>
             {descriptionEl}
             {highlighted && canShowTooltip && (

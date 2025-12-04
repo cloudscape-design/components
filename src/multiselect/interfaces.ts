@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ReactNode } from 'react';
+
 import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
 import { BaseSelectProps } from '../select/interfaces';
@@ -10,6 +12,7 @@ export interface MultiselectProps extends BaseSelectProps {
    * Provide an empty array to clear the selection.
    */
   selectedOptions: ReadonlyArray<MultiselectProps.Option>;
+
   /**
    * Specifies an inline label that appears next to the multiselect trigger.
    */
@@ -71,12 +74,43 @@ export interface MultiselectProps extends BaseSelectProps {
    * Enables users to select and deselect all options with a special extra checkbox which is displayed at the start of the dropdown.
    */
   enableSelectAll?: boolean;
+  /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * @awsuiSystem core
+   */
+  renderOption?: MultiselectProps.MultiselectOptionItemRenderer;
 }
 
 export namespace MultiselectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
+  interface BaseMultiselectItem {
+    index: number | null;
+    disabled: boolean;
+    highlighted: boolean;
+    selected: boolean;
+  }
+  export type MultiselectOptionItem = BaseMultiselectItem & {
+    type: 'child';
+    option: Option;
+  };
+  export type MultiselectOptionGroupItem = BaseMultiselectItem & {
+    type: 'parent';
+    option: OptionGroup;
+    indeterminate: boolean;
+  };
+  export type MultiselectSelectAllItem = BaseMultiselectItem & {
+    type: 'select-all';
+    option: Option;
+    indeterminate: boolean;
+  };
+  export type MultiselectOptionItemRenderer = (props: {
+    item: MultiselectOptionItem | MultiselectOptionGroupItem | MultiselectSelectAllItem;
+    filterText?: string;
+  }) => ReactNode | null;
+
   export type DeselectAriaLabelFunction = (option: Option) => string;
   export type TriggerVariant = 'placeholder' | 'tokens';
 

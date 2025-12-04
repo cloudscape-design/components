@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
 import {
@@ -53,6 +53,7 @@ export interface BaseSelectProps
    * on your own.
    **/
   options?: SelectProps.Options;
+
   /**
    * Determines how filtering is applied to the list of `options`:
    *
@@ -189,6 +190,12 @@ export interface SelectProps extends BaseSelectProps {
    * Automatically focuses the trigger when component is mounted.
    */
   autoFocus?: boolean;
+  /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * @awsuiSystem core
+   */
+  renderOption?: SelectProps.SelectOptionItemRenderer;
 }
 
 export namespace SelectProps {
@@ -198,6 +205,24 @@ export namespace SelectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
+  interface BaseSelectItem {
+    index: number | null;
+    disabled: boolean;
+    highlighted: boolean;
+    selected: boolean;
+  }
+  export type SelectOptionItem = BaseSelectItem & {
+    type: 'child';
+    option: Option;
+  };
+  export type SelectOptionGroupItem = BaseSelectItem & {
+    type: 'parent';
+    option: OptionGroup;
+  };
+  export type SelectOptionItemRenderer = (props: {
+    item: SelectOptionItem | SelectOptionGroupItem;
+    filterText?: string;
+  }) => ReactNode | null;
 
   export type LoadItemsDetail = OptionsLoadItemsDetail;
 

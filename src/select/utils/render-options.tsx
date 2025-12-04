@@ -6,6 +6,8 @@ import { DropdownOption } from '../../internal/components/option/interfaces';
 import { NestedDropdownOption, unflattenOptions } from '../../internal/components/option/utils/unflatten-options';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 import { VirtualItem } from '../../internal/vendor/react-virtual';
+import { MultiselectProps } from '../../multiselect/interfaces';
+import { SelectProps } from '../interfaces';
 import Item from '../parts/item';
 import MultiselectItem from '../parts/multiselect-item';
 import OptionGroup from '../parts/option-group';
@@ -26,6 +28,7 @@ interface RenderOptionProps {
   withScrollbar: boolean;
   firstOptionSticky?: boolean;
   stickyOptionRef?: React.Ref<HTMLDivElement>;
+  renderOption?: SelectProps.SelectOptionItemRenderer | MultiselectProps.MultiselectOptionItemRenderer;
 }
 
 export const renderOptions = ({
@@ -43,6 +46,7 @@ export const renderOptions = ({
   withScrollbar,
   firstOptionSticky,
   stickyOptionRef,
+  renderOption,
 }: RenderOptionProps) => {
   const getNestedItemProps = ({ index, option }: NestedDropdownOption) => {
     const virtualItem = virtualItems && virtualItems[index];
@@ -67,6 +71,8 @@ export const renderOptions = ({
 
     return (
       <ListItem
+        index={index}
+        virtualIndex={virtualItem ? virtualItem.index : undefined}
         key={globalIndex}
         {...props}
         virtualPosition={virtualItem && virtualItem.start}
@@ -78,6 +84,7 @@ export const renderOptions = ({
         highlightType={highlightType.type}
         withScrollbar={withScrollbar}
         sticky={isSticky}
+        renderOption={renderOption}
       />
     );
   };
