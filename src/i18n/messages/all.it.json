@@ -177,8 +177,7 @@
   },
   "error-boundary": {
     "i18nStrings.headerText": "Errore imprevisto, impossibile visualizzare il contenuto",
-    "i18nStrings.descriptionText": "Aggiorna la pagina per riprovare.",
-    "i18nStrings.descriptionWithFeedbackText": "Aggiorna la pagina per riprovare. Stiamo monitorando il problema, ma puoi condividere <Feedback>maggiori informazioni qui</Feedback>.",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Aggiorna la pagina per riprovare. Stiamo monitorando il problema, ma puoi condividere <Feedback>maggiori informazioni qui</Feedback>.} other {Aggiorna la pagina per riprovare.}}",
     "i18nStrings.refreshActionText": "Aggiorna pagina"
   },
   "file-token-group": {

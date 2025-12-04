@@ -177,8 +177,7 @@
   },
   "error-boundary": {
     "i18nStrings.headerText": "Error inesperado. No se pudo mostrar el contenido",
-    "i18nStrings.descriptionText": "Actualice para intentarlo de nuevo.",
-    "i18nStrings.descriptionWithFeedbackText": "Actualice para intentarlo de nuevo. Estamos siguiendo este problema, pero puede compartir <Feedback>más información aquí</Feedback>.",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Actualice para intentarlo de nuevo. Estamos siguiendo este problema, pero puede compartir <Feedback>más información aquí</Feedback>.} other {Actualice para intentarlo de nuevo.}}",
     "i18nStrings.refreshActionText": "Actualizar página"
   },
   "file-token-group": {

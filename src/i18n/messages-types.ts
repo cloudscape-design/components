@@ -224,8 +224,9 @@ export interface I18nFormatArgTypes {
   }
   "error-boundary": {
     "i18nStrings.headerText": never;
-    "i18nStrings.descriptionText": never;
-    "i18nStrings.descriptionWithFeedbackText": never;
+    "i18nStrings.descriptionText": {
+      "hasFeedback": string;
+    }
     "i18nStrings.refreshActionText": never;
   }
   "file-token-group": {

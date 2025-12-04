@@ -177,8 +177,7 @@
   },
   "error-boundary": {
     "i18nStrings.headerText": "Kesalahan tak terduga, konten gagal ditampilkan",
-    "i18nStrings.descriptionText": "Refresh untuk mencoba lagi.",
-    "i18nStrings.descriptionWithFeedbackText": "Refresh untuk mencoba lagi. Kami sedang melacak masalah ini, tetapi Anda dapat membagikan <Feedback>informasi selengkapnya di sini</Feedback>.",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Refresh untuk mencoba lagi. Kami sedang melacak masalah ini, tetapi Anda dapat membagikan <Feedback>informasi selengkapnya di sini</Feedback>.} other {Refresh untuk mencoba lagi.}}",
     "i18nStrings.refreshActionText": "Segarkan halaman"
   },
   "file-token-group": {

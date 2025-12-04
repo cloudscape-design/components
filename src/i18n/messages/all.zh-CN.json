@@ -177,8 +177,7 @@
   },
   "error-boundary": {
     "i18nStrings.headerText": "意外错误，内容无法显示",
-    "i18nStrings.descriptionText": "刷新再试一次。",
-    "i18nStrings.descriptionWithFeedbackText": "刷新再试一次。我们正在跟踪此问题，但您可以<Feedback>在此处共享更多信息</Feedback>。",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {刷新再试一次。我们正在跟踪此问题，但您可以<Feedback>在此处共享更多信息</Feedback>。} other {刷新再试一次。}}",
     "i18nStrings.refreshActionText": "刷新页面"
   },
   "file-token-group": {

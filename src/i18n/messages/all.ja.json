@@ -177,8 +177,7 @@
   },
   "error-boundary": {
     "i18nStrings.headerText": "予期しないエラー、コンテンツを表示できませんでした",
-    "i18nStrings.descriptionText": "更新してもう一度お試しください。",
-    "i18nStrings.descriptionWithFeedbackText": "更新してもう一度お試しください。この問題は現在追跡中ですが、<Feedback>詳しい情報はこちら</Feedback>で共有できます。",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {更新してもう一度お試しください。この問題は現在追跡中ですが、<Feedback>詳しい情報はこちら</Feedback>で共有できます。} other {更新してもう一度お試しください。}}",
     "i18nStrings.refreshActionText": "ページを更新"
   },
   "file-token-group": {
