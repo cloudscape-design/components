@@ -27,11 +27,11 @@ import styles from '../icon/icons-list.scss';
 
 export default function () {
   const [themed, setThemed] = useState<boolean>(false);
-  const [strokeSmall, setStrokeSmall] = useState<string>('1');
-  const [strokeNormal, setStrokeNormal] = useState<string>('1');
-  const [strokeMedium, setStrokeMedium] = useState<string>('1');
-  const [strokeBig, setStrokeBig] = useState<string>('1.5');
-  const [strokeLarge, setStrokeLarge] = useState<string>('2');
+  const [strokeSmall, setStrokeSmall] = useState<string>('2');
+  const [strokeNormal, setStrokeNormal] = useState<string>('2');
+  const [strokeMedium, setStrokeMedium] = useState<string>('2');
+  const [strokeBig, setStrokeBig] = useState<string>('3');
+  const [strokeLarge, setStrokeLarge] = useState<string>('4');
   const [selectedOption, setSelectedOption] = useState<SelectProps.Option>({ label: 'Option 1', value: '1' });
 
   // Reload page once after initial load to fix theme application
@@ -86,7 +86,7 @@ export default function () {
               value={strokeSmall}
               onChange={evt => {
                 const numValue = parseFloat(evt.detail.value);
-                if (!isNaN(numValue) && numValue >= 1) {
+                if (!isNaN(numValue) && numValue >= 1 && numValue <= 10) {
                   setStrokeSmall(evt.detail.value);
                 } else if (evt.detail.value === '') {
                   setStrokeSmall(evt.detail.value);
@@ -104,7 +104,7 @@ export default function () {
               value={strokeNormal}
               onChange={evt => {
                 const numValue = parseFloat(evt.detail.value);
-                if (!isNaN(numValue) && numValue >= 1) {
+                if (!isNaN(numValue) && numValue >= 1 && numValue <= 10) {
                   setStrokeNormal(evt.detail.value);
                 } else if (evt.detail.value === '') {
                   setStrokeNormal(evt.detail.value);
@@ -122,7 +122,7 @@ export default function () {
               value={strokeMedium}
               onChange={evt => {
                 const numValue = parseFloat(evt.detail.value);
-                if (!isNaN(numValue) && numValue >= 1) {
+                if (!isNaN(numValue) && numValue >= 1 && numValue <= 10) {
                   setStrokeMedium(evt.detail.value);
                 } else if (evt.detail.value === '') {
                   setStrokeMedium(evt.detail.value);
@@ -140,7 +140,7 @@ export default function () {
               value={strokeBig}
               onChange={evt => {
                 const numValue = parseFloat(evt.detail.value);
-                if (!isNaN(numValue) && numValue >= 1) {
+                if (!isNaN(numValue) && numValue >= 1 && numValue <= 10) {
                   setStrokeBig(evt.detail.value);
                 } else if (evt.detail.value === '') {
                   setStrokeBig(evt.detail.value);
@@ -158,7 +158,7 @@ export default function () {
               value={strokeLarge}
               onChange={evt => {
                 const numValue = parseFloat(evt.detail.value);
-                if (!isNaN(numValue) && numValue >= 1) {
+                if (!isNaN(numValue) && numValue >= 1 && numValue <= 10) {
                   setStrokeLarge(evt.detail.value);
                 } else if (evt.detail.value === '') {
                   setStrokeLarge(evt.detail.value);
