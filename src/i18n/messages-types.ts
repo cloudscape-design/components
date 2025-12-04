@@ -166,6 +166,11 @@ export interface I18nFormatArgTypes {
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": never;
   }
+  "date-picker": {
+    "i18nStrings.openCalendarAriaLabel": {
+      "selectedDate": string;
+    }
+  }
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": never;
     "i18nStrings.absoluteModeTitle": never;
@@ -216,6 +221,12 @@ export interface I18nFormatArgTypes {
   }
   "drawer": {
     "i18nStrings.loadingText": never;
+  }
+  "error-boundary": {
+    "i18nStrings.headerText": never;
+    "i18nStrings.descriptionText": never;
+    "i18nStrings.descriptionWithFeedbackText": never;
+    "i18nStrings.refreshActionText": never;
   }
   "file-token-group": {
     "i18nStrings.limitShowFewer": never;
