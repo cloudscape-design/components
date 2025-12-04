@@ -12,10 +12,10 @@ import { permutationsConfigs } from './common';
 // Copy permutations and add selectable-items with no-content-styling.
 const permutations = createPermutations<SelectableItemProps>(permutationsConfigs);
 
-export default function DisableContentStylingSelectableItemPermutations() {
+export default function SelectableItemPermutations() {
   return (
     <>
-      <h1>Selectable item permutations</h1>
+      <h1>Selectable item permutations with disableContentStyling</h1>
       <ScreenshotArea>
         <ul role="listbox" aria-label="list">
           <PermutationsView
