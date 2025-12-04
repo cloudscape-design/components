@@ -68,19 +68,9 @@ export default function () {
   return (
     <div style={{ padding: 15 }}>
       <h1>Themed icon stroke width</h1>
-      <SpaceBetween size="m" direction="vertical">
-        <label>
-          <input
-            type="checkbox"
-            data-testid="apply-theme"
-            checked={themed}
-            onChange={evt => setThemed(evt.currentTarget.checked)}
-          />
-          <span style={{ marginInlineStart: 5 }}>Apply custom stroke width themes</span>
-        </label>
-
+      <SpaceBetween size="l" direction="vertical">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px', maxWidth: '800px' }}>
-          <FormField label="Small (16px)" description="Default: 2px">
+          <FormField label="Small (16px)">
             <Input
               type="number"
               value={strokeSmall}
@@ -98,7 +88,7 @@ export default function () {
             />
           </FormField>
 
-          <FormField label="Normal (16px)" description="Default: 2px">
+          <FormField label="Normal (16px)">
             <Input
               type="number"
               value={strokeNormal}
@@ -116,7 +106,7 @@ export default function () {
             />
           </FormField>
 
-          <FormField label="Medium (20px)" description="Default: 2px">
+          <FormField label="Medium (20px)">
             <Input
               type="number"
               value={strokeMedium}
@@ -134,7 +124,7 @@ export default function () {
             />
           </FormField>
 
-          <FormField label="Big (32px)" description="Default: 3px">
+          <FormField label="Big (32px)">
             <Input
               type="number"
               value={strokeBig}
@@ -152,7 +142,7 @@ export default function () {
             />
           </FormField>
 
-          <FormField label="Large (48px)" description="Default: 4px">
+          <FormField label="Large (48px)">
             <Input
               type="number"
               value={strokeLarge}
@@ -170,6 +160,16 @@ export default function () {
             />
           </FormField>
         </div>
+
+        <label>
+          <input
+            type="checkbox"
+            data-testid="apply-theme"
+            checked={themed}
+            onChange={evt => setThemed(evt.currentTarget.checked)}
+          />
+          <span style={{ marginInlineStart: 5 }}>Apply custom stroke width themes</span>
+        </label>
       </SpaceBetween>
 
       <ScreenshotArea
@@ -258,7 +258,14 @@ export default function () {
               <FormField
                 label="Email address"
                 errorText="Please enter a valid email address"
-                constraintText="Use your company email"
+                constraintText={
+                  <SpaceBetween direction="horizontal" size="xxs">
+                    <>Use your company email.</>
+                    <Link href="#" fontSize="inherit" external={true}>
+                      Lean more
+                    </Link>
+                  </SpaceBetween>
+                }
               >
                 <Input value="invalid-email" type="email" readOnly={true} />
               </FormField>
