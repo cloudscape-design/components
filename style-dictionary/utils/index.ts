@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { TokenCategory } from '@cloudscape-design/theming-build';
+import { ReferenceTokens, TokenCategory } from '@cloudscape-design/theming-build';
 
 import { StyleDictionary } from './interfaces.js';
 
@@ -64,7 +64,7 @@ export const expandMotionDictionary = (
   }, {} as StyleDictionary.ExpandedMotionScopeDictionary);
 };
 
-export const expandReferenceTokens = (referenceTokens: any) => {
+export const expandReferenceTokens = (referenceTokens: ReferenceTokens) => {
   if (!referenceTokens.color) {
     return referenceTokens;
   }
