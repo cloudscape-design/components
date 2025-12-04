@@ -10,7 +10,6 @@ import { TooltipProps } from './interfaces';
 import InternalTooltip from './internal';
 
 export { TooltipProps };
-export { useTooltipAdvanced, type UseTooltipAdvancedOptions, type TooltipApi } from './use-tooltip-advanced';
 
 const Tooltip = React.forwardRef(
   (
