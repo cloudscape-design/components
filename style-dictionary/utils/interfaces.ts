@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { GlobalValue, ModeValue, TokenCategory } from '@cloudscape-design/theming-build';
+import { GlobalValue, ModeValue, ReferenceTokens, TokenCategory } from '@cloudscape-design/theming-build';
 
 import {
   BordersTokenName,
@@ -63,7 +63,7 @@ export namespace StyleDictionary {
   export interface CategoryModule {
     mode?: string;
     tokens: Record<string, any>;
-    referenceTokens?: Record<string, any>;
+    referenceTokens?: ReferenceTokens;
   }
 
   export interface Metadata {
