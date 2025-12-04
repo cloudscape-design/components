@@ -7,59 +7,61 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import AbstractSwitch from '../internal/components/abstract-switch';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { RadioGroupProps } from './interfaces';
+import { getBaseProps } from '../../base-component';
+import AbstractSwitch from '../../components/abstract-switch';
+import { fireNonCancelableEvent } from '../../events';
+import { InternalBaseComponentProps } from '../../hooks/use-base-component';
+import WithNativeAttributes from '../../utils/with-native-attributes';
+import { RadioButtonProps } from './interfaces';
 import { getAbstractSwitchStyles, getInnerCircleStyle, getOuterCircleStyle } from './style';
 
 import styles from './styles.css.js';
-
-interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
-  name: string;
-  checked: boolean;
-  onChange?: NonCancelableEventHandler<RadioGroupProps.ChangeDetail>;
-  readOnly?: boolean;
-  className?: string;
-  style?: RadioGroupProps.Style;
-}
+import testUtilStyles from './test-classes/styles.css.js';
 
 export default React.forwardRef(function RadioButton(
   {
     name,
-    label,
+    children,
     value,
     checked,
     description,
     disabled,
     controlId,
-    onChange,
     readOnly,
     className,
     style,
+    nativeInputAttributes,
+    onSelect,
     ...rest
-  }: RadioButtonProps,
+  }: RadioButtonProps & InternalBaseComponentProps,
   ref: React.Ref<HTMLInputElement>
 ) {
   const radioButtonRef = useRef<HTMLInputElement>(null);
   const mergedRefs = useMergeRefs(radioButtonRef, ref);
 
   const { tabIndex } = useSingleTabStopNavigation(radioButtonRef);
+  const baseProps = getBaseProps(rest);
 
   return (
     <AbstractSwitch
-      className={clsx(styles.radio, description && styles['radio--has-description'], className)}
+      {...baseProps}
+      className={clsx(testUtilStyles.root, className)}
       controlClassName={styles['radio-control']}
       outlineClassName={styles.outline}
-      label={label}
+      label={children}
       description={description}
       disabled={disabled}
       readOnly={readOnly}
       controlId={controlId}
       style={getAbstractSwitchStyles(style, checked, disabled, readOnly)}
+      __internalRootRef={rest.__internalRootRef}
       {...copyAnalyticsMetadataAttribute(rest)}
       nativeControl={nativeControlProps => (
-        <input
+        <WithNativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>
           {...nativeControlProps}
+          tag="input"
+          componentName="RadioButton"
+          nativeAttributes={nativeInputAttributes}
           tabIndex={tabIndex}
           type="radio"
           ref={mergedRefs}
@@ -73,10 +75,9 @@ export default React.forwardRef(function RadioButton(
       )}
       onClick={() => {
         radioButtonRef.current?.focus();
-        if (checked) {
-          return;
+        if (!checked) {
+          fireNonCancelableEvent(onSelect);
         }
-        fireNonCancelableEvent(onChange, { value });
       }}
       styledControl={
         <svg viewBox="0 0 100 100" focusable="false" aria-hidden="true">

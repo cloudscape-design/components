@@ -140,11 +140,11 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
       target={getItemTarget(item)}
       rel={item.external ? 'noopener noreferrer' : undefined}
     >
-      <MenuItemContent item={item} disabled={disabled} />
+      <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} />
     </a>
   ) : (
     <span {...menuItemProps}>
-      <MenuItemContent item={item} disabled={disabled} />
+      <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} />
     </span>
   );
 
@@ -160,7 +160,15 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
   );
 }
 
-const MenuItemContent = ({ item, disabled }: { item: InternalItem | InternalCheckboxItem; disabled: boolean }) => {
+const MenuItemContent = ({
+  item,
+  disabled,
+  highlighted,
+}: {
+  item: InternalItem | InternalCheckboxItem;
+  disabled: boolean;
+  highlighted: boolean;
+}) => {
   const hasIcon = !!(item.iconName || item.iconUrl || item.iconSvg);
   const hasExternal = isLinkItem(item) && item.external;
   const isCheckbox = isCheckboxItem(item);
@@ -176,8 +184,24 @@ const MenuItemContent = ({ item, disabled }: { item: InternalItem | InternalChec
           badge={item.badge}
         />
       )}
-      {item.text}
-      {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
+      <div className={styles['content-wrapper']}>
+        <div className={styles['main-row']}>
+          <div>
+            {item.text}
+            {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
+          </div>
+          {item.labelTag && (
+            <div className={clsx(styles['label-tag'], disabled && styles.disabled)}>{item.labelTag}</div>
+          )}
+        </div>
+        {item.secondaryText && (
+          <div
+            className={clsx(styles['secondary-text'], highlighted && styles.highlighted, disabled && styles.disabled)}
+          >
+            {item.secondaryText}
+          </div>
+        )}
+      </div>
     </>
   );
 };

@@ -10,7 +10,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<InternalStatusIndicatorProps>([
   {
-    type: ['error', 'warning', 'success', 'info', 'stopped', 'pending', 'in-progress', 'loading'],
+    type: ['error', 'warning', 'success', 'info', 'stopped', 'pending', 'in-progress', 'loading', 'not-started'],
   },
   {
     type: ['pending'],

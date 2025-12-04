@@ -33,10 +33,7 @@ export default function VisibleContentPreference({
 }: VisibleContentPreferenceProps) {
   const idPrefix = useUniqueId('visible-content');
 
-  const flatOptionsIds = options.reduce<string[]>(
-    (ids, group) => [...ids, ...group.options.reduce<string[]>((groupIds, option) => [...groupIds, option.id], [])],
-    []
-  );
+  const flatOptionsIds = options.flatMap(group => group.options.map(option => option.id));
 
   const onToggle = (id: string) => {
     if (!isVisible(id, value)) {

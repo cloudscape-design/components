@@ -797,6 +797,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTreeViewConnectorLine: {
+    description: 'The color of the tree view connector lines.',
+    public: true,
+    themeable: true,
+  },
   colorBoardPlaceholderActive: {
     description: 'The color of board placeholder in active state.',
     themeable: false,

@@ -22,6 +22,7 @@ export default function ButtonDropdownPage() {
               {
                 text: 'Launch instance from template',
                 id: 'launch-instance-from-template',
+                secondaryText: 'Use the existing templates',
               },
             ]}
             onItemClick={() => setClickedButton('Launch instance from template')}

@@ -389,6 +389,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_placeholder_18eso",
     "awsui_recovery_vrgzu",
     "awsui_root_11n0s",
+    "awsui_root_15oj2",
     "awsui_root_1fcus",
     "awsui_root_1kjc7",
     "awsui_root_1om0h",
@@ -516,6 +517,7 @@ exports[`test-utils selectors 1`] = `
   "radio-group": [
     "awsui_radio_1mabk",
     "awsui_root_1mabk",
+    "awsui_root_1np5w",
   ],
   "s3-resource-selector": [
     "awsui_alert_1u0yw",

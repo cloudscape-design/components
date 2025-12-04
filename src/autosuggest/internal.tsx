@@ -59,6 +59,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     expandToViewport,
     onSelect,
     renderHighlightedAriaLive,
+    style,
     __internalRootRef,
     ...restProps
   } = props;
@@ -223,6 +224,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       ariaControls={listId}
       ariaActivedescendant={highlightedOptionId}
       dropdownExpanded={shouldRenderDropdownContent}
+      style={style}
       dropdownContent={
         shouldRenderDropdownContent && (
           <AutosuggestOptionsList

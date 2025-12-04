@@ -273,5 +273,22 @@ describe('useTableInteractionMetrics', () => {
         })
       );
     });
+
+    test('componentUpdated should not be called after unmount', () => {
+      const { setLastUserAction, rerender, unmount } = renderUseTableInteractionMetricsHook({});
+
+      setLastUserAction('filter');
+      rerender({ loading: true });
+      rerender({ loading: false });
+
+      // Unmount before the debounced callback fires
+      unmount();
+
+      // Run timers to trigger the debounced callback
+      jest.runAllTimers();
+
+      // componentUpdated should not have been called because component was unmounted
+      expect(ComponentMetrics.componentUpdated).toHaveBeenCalledTimes(0);
+    });
   });
 });

@@ -173,6 +173,34 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Config to persist dismiss state for dismissable Alert
+persistenceConfig contains:
+* \`uniqueKey\` (string) - This key to store the persistence state, it must be unique across your console.
+* \`crossServicePersistence\` (boolean) - (Optional) If true, the persistence state will be shared across AWS services.",
+      "inlineType": {
+        "name": "AlertProps.PersistenceConfig",
+        "properties": [
+          {
+            "name": "crossServicePersistence",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
+            "name": "uniqueKey",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "persistenceConfig",
+      "optional": true,
+      "systemTags": [
+        "console",
+      ],
+      "type": "AlertProps.PersistenceConfig",
+    },
+    {
       "deprecatedTag": "Use the label properties inside \`i18nStrings\` instead.
 If the label is assigned via the \`i18nStrings\` property, this label will be ignored.",
       "description": "Provides a text alternative for the icon.",
@@ -3066,6 +3094,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "status-in-progress",
                       "status-info",
                       "status-negative",
+                      "status-not-started",
                       "status-positive",
                       "status-stopped",
                       "status-warning",
@@ -3553,6 +3582,236 @@ This is required to provide a good screen reader experience. For more informatio
       "name": "statusType",
       "optional": true,
       "type": "string",
+    },
+    {
+      "inlineType": {
+        "name": "AutosuggestProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "name": "color",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontSize",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontStyle",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontWeight",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "placeholder",
+            "optional": true,
+            "type": "{ color?: string | undefined; fontSize?: string | undefined; fontStyle?: string | undefined; fontWeight?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "borderColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderWidth",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "boxShadow",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "name": "fontSize",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontWeight",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "root",
+            "optional": true,
+            "type": "{ backgroundColor?: { default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; } | undefined; ... 8 more ...; paddingInline?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "AutosuggestProps.Style",
     },
     {
       "description": "Specifies the text entered into the form element.",
@@ -5059,6 +5318,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "status-in-progress",
           "status-info",
           "status-negative",
+          "status-not-started",
           "status-positive",
           "status-stopped",
           "status-warning",
@@ -5630,7 +5890,7 @@ The following properties are supported across all types:
 - \`lang\` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
 - \`disabled\` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
 - \`disabledReason\` (string) - (Optional) Displays text near the \`text\` property when item is disabled. Use to provide additional context.
-- \`description\` (string) - additional data that will be passed to a \`data-description\` attribute.
+- \`description\` (string) - additional data that will be passed to a \`data-description\` attribute. **Deprecated**, has no effect.
 - \`ariaLabel\` (string) - (Optional) - ARIA label of the item element.
 
 ### action
@@ -5643,6 +5903,8 @@ The following properties are supported across all types:
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`.
 - \`iconUrl\` (string) - (Optional) Specifies the URL of a custom icon.
 - \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+- \`secondaryText\` (string) - (Optional) Further information about the action that appears below the label.
+- \`labelTag\` (string) - (Optional) - A label tag that provides additional guidance, shown next to the label.
 
 ### checkbox
 
@@ -5653,6 +5915,8 @@ When \`type\` is set to "checkbox", the values set to \`href\`, \`external\` and
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`.
 - \`iconUrl\` (string) - (Optional) Specifies the URL of a custom icon.
 - \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+- \`secondaryText\` (string) - (Optional) Further information about the action that appears below the label.
+- \`labelTag\` (string) - (Optional) - A label tag that provides additional guidance, shown next to the label.
 
 ### group
 
@@ -5844,6 +6108,7 @@ The main action also supports the following properties of the [button](/componen
                 "status-in-progress",
                 "status-info",
                 "status-negative",
+                "status-not-started",
                 "status-positive",
                 "status-stopped",
                 "status-warning",
@@ -10055,7 +10320,7 @@ Defaults to \`day\`.",
 the component.",
       "i18nTag": true,
       "inlineType": {
-        "name": "CalendarProps.I18nStrings",
+        "name": "DatePickerProps.I18nStrings",
         "properties": [
           {
             "name": "currentMonthAriaLabel",
@@ -10071,6 +10336,22 @@ the component.",
             "name": "nextYearAriaLabel",
             "optional": true,
             "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "DatePickerProps.OpenCalendarAriaLabel",
+              "parameters": [
+                {
+                  "name": "selectedDate",
+                  "type": "string | null",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "openCalendarAriaLabel",
+            "optional": true,
+            "type": "DatePickerProps.OpenCalendarAriaLabel",
           },
           {
             "name": "previousMonthAriaLabel",
@@ -10092,7 +10373,7 @@ the component.",
       },
       "name": "i18nStrings",
       "optional": true,
-      "type": "CalendarProps.I18nStrings",
+      "type": "DatePickerProps.I18nStrings",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -10175,6 +10456,7 @@ Supported values and formats are listed in the
       "type": "string",
     },
     {
+      "deprecatedTag": "Use \`i18nStrings.openCalendarAriaLabel\` instead.",
       "description": "Specifies a function that generates the \`aria-label\` for the 'open calendar' button. The \`selectedDate\` parameter is
 a human-readable localised string representing the current value of the input.
 (for example, \`\`selectedDate => 'Choose Date' + (selectedDate ? \`, selected date is \${selectedDate}\` : '')\`\`)",
@@ -12094,6 +12376,9 @@ If the \`action\` property is set, this property is ignored. **Deprecated**, rep
 * \`id\` (string) - Specifies a unique flash message identifier. This property is used in two ways:
   1. As a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering.
   2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.
+* \`persistenceConfig\` (FlashbarProps.PersistenceConfig) - Config to persist dismiss state for dismissable Flashbar item, used only in AWS Consoles.
+  * \`uniqueKey\` (string) - This key to store the persistence state, it must be unique across your console.
+  * \`crossServicePersistence\` (boolean) - If true, the persistence state will be shared across AWS services.
 * \`analyticsMetadata\` (FlashbarProps.ItemAnalyticsMetadata) - (Optional) Specifies additional analytics-related metadata.
   * \`suppressFlowMetricEvents\` - Prevent this item from generating events related to flow metrics.",
       "name": "items",
@@ -13504,6 +13789,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "status-in-progress",
           "status-info",
           "status-negative",
+          "status-not-started",
           "status-positive",
           "status-stopped",
           "status-warning",
@@ -14158,6 +14444,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
           },
           {
             "name": "status-negative",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "status-not-started",
             "optional": true,
             "type": "React.ReactNode",
           },
@@ -17527,6 +17818,9 @@ need to be direct children of the group:
     },
   ],
   "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
 }
 `;
 
@@ -18839,6 +19133,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "status-in-progress",
           "status-info",
           "status-negative",
+          "status-not-started",
           "status-positive",
           "status-stopped",
           "status-warning",
@@ -20208,26 +20503,14 @@ This is only shown when \`statusType\` is set to \`finished\` or not set at all.
 }
 `;
 
-exports[`Components definition for radio-group matches the snapshot: radio-group 1`] = `
+exports[`Components definition for radio-button matches the snapshot: radio-button 1`] = `
 {
-  "dashCaseName": "radio-group",
+  "dashCaseName": "radio-button",
   "events": [
     {
       "cancelable": false,
-      "description": "Called when the user selects a different radio button. The event \`detail\` contains the current \`value\`.",
-      "detailInlineType": {
-        "name": "RadioGroupProps.ChangeDetail",
-        "properties": [
-          {
-            "name": "value",
-            "optional": false,
-            "type": "string",
-          },
-        ],
-        "type": "object",
-      },
-      "detailType": "RadioGroupProps.ChangeDetail",
-      "name": "onChange",
+      "description": "Called when the user clicks on the radio button and it is not disabled or read-only.",
+      "name": "onSelect",
     },
   ],
   "functions": [
@@ -20238,51 +20521,12 @@ exports[`Components definition for radio-group matches the snapshot: radio-group
       "returnType": "void",
     },
   ],
-  "name": "RadioGroup",
+  "name": "RadioButton",
   "properties": [
     {
-      "description": "Adds \`aria-controls\` attribute to the radio group.
-If the radio group controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
-      "name": "ariaControls",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
-don't set this property because the form field component automatically sets it.
-
-Use this property if the component isn't surrounded by a form field, or you want to override the value
-automatically set by the form field (for example, if you have two components within a single form field).
-
-To use it correctly, define an ID for each element that you want to use as a description
-and set the property to a string of each ID separated by spaces (for example, \`"id1 id2 id3"\`).",
-      "name": "ariaDescribedby",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "Adds \`aria-label\` to the group. If you are using this form element within a form field,
-don't set this property because the form field component automatically sets the correct labels to make the component accessible.",
-      "name": "ariaLabel",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
-don't set this property because the form field component automatically sets it.
-
-Use this property if the component isn't surrounded by a form field, or you want to override the value
-automatically set by the form field (for example, if you have two components within a single form field).
-
-To use it correctly, define an ID for the element you want to use as label and set the property to that ID.",
-      "name": "ariaLabelledby",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "Adds \`aria-required\` to the group.",
-      "name": "ariaRequired",
-      "optional": true,
+      "description": "Specifies if the component is selected.",
+      "name": "checked",
+      "optional": false,
       "type": "boolean",
     },
     {
@@ -20293,15 +20537,20 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     {
-      "deprecatedTag": "Has no effect.",
       "description": "Specifies the ID of the native form element. You can use it to relate
-a label element's \`for\` attribute to this control.
-
-It defaults to an automatically generated ID that
-is provided by its parent form field component.",
+a label element's \`for\` attribute to this control.",
       "name": "controlId",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Specifies if the control is disabled, which prevents the
+user from modifying the value and prevents the value from
+being included in a form submission. A disabled control can't
+receive focus.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -20313,35 +20562,46 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "Specifies an array of radio buttons to display. Each of these objects have the following properties:
-
-- \`value\` (string) - Sets the value of the radio button. Assigned to the radio group when a user selects the radio button.
-- \`label\` (ReactNode) - Specifies a label for the radio button.
-- \`description\` (ReactNode) - (Optional) Specifies descriptive text that appears below the label.
-- \`disabled\` (boolean) - (Optional) Determines whether the radio button is disabled, which prevents the user from selecting it.
-- \`controlId\` (string) - (Optional) Sets the ID of the internal input. You can use it to relate a label element's \`for\` attribute to this control.
-       In general it's not recommended to set this because the ID is automatically set by the radio group component.",
-      "name": "items",
-      "optional": true,
-      "type": "ReadonlyArray<RadioGroupProps.RadioButtonDefinition>",
-    },
-    {
-      "description": "Specify a custom name for the radio buttons. If not provided, the radio group generates a random name.",
+      "description": "Name of the group that the radio button belongs to.",
       "name": "name",
-      "optional": true,
+      "optional": false,
       "type": "string",
     },
     {
-      "description": "Specifies if the whole group is read-only, which prevents the
+      "description": "Attributes to add to the native \`input\` element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeInputAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "description": "Specifies if the radio button is read-only, which prevents the
 user from modifying the value, but does not prevent the value from
-being included in a form submission. A read-only control is still focusable.",
+being included in a form submission. A read-only control is still focusable.
+
+This property should be set for either all or none of the radio buttons in a group.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
     },
     {
       "inlineType": {
-        "name": "RadioGroupProps.Style",
+        "name": "RadioButtonProps.Style",
         "properties": [
           {
             "inlineType": {
@@ -20566,7 +20826,412 @@ being included in a form submission. A read-only control is still focusable.",
       "systemTags": [
         "core",
       ],
-      "type": "RadioGroupProps.Style",
+      "type": "RadioButtonProps.Style",
+    },
+    {
+      "description": "Sets the value attribute to the native control.
+If using native form submission, this value is sent to the server if the radio button is checked.
+It is never shown to the user by their user agent.
+For more details, see the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/radio#value).",
+      "name": "value",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The control's label that's displayed next to the radio button. A state change occurs when a user clicks on it.",
+      "displayName": "label",
+      "isDefault": true,
+      "name": "children",
+    },
+    {
+      "description": "Description that appears below the label.",
+      "isDefault": false,
+      "name": "description",
+    },
+  ],
+  "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
+}
+`;
+
+exports[`Components definition for radio-group matches the snapshot: radio-group 1`] = `
+{
+  "dashCaseName": "radio-group",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user selects a different radio button. The event \`detail\` contains the current \`value\`.",
+      "detailInlineType": {
+        "name": "RadioGroupProps.ChangeDetail",
+        "properties": [
+          {
+            "name": "value",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "RadioGroupProps.ChangeDetail",
+      "name": "onChange",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Sets input focus onto the UI control.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "RadioGroup",
+  "properties": [
+    {
+      "description": "Adds \`aria-controls\` attribute to the radio group.
+If the radio group controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
+      "name": "ariaControls",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`"id1 id2 id3"\`).",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-label\` to the group. If you are using this form element within a form field,
+don't set this property because the form field component automatically sets the correct labels to make the component accessible.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-required\` to the group.",
+      "name": "ariaRequired",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Has no effect.",
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+
+It defaults to an automatically generated ID that
+is provided by its parent form field component.",
+      "name": "controlId",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "'vertical'",
+      "description": "Defines the direction in which the radio buttons are laid out.",
+      "inlineType": {
+        "name": ""horizontal" | "vertical"",
+        "type": "union",
+        "values": [
+          "horizontal",
+          "vertical",
+        ],
+      },
+      "name": "direction",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies an array of radio buttons to display. Each of these objects have the following properties:
+
+- \`value\` (string) - Sets the value of the radio button. Assigned to the radio group when a user selects the radio button.
+- \`label\` (ReactNode) - Specifies a label for the radio button.
+- \`description\` (ReactNode) - (Optional) Specifies descriptive text that appears below the label.
+- \`disabled\` (boolean) - (Optional) Determines whether the radio button is disabled, which prevents the user from selecting it.
+- \`controlId\` (string) - (Optional) Sets the ID of the internal input. You can use it to relate a label element's \`for\` attribute to this control.
+       In general it's not recommended to set this because the ID is automatically set by the radio group component.",
+      "name": "items",
+      "optional": true,
+      "type": "ReadonlyArray<RadioGroupProps.RadioButtonDefinition>",
+    },
+    {
+      "description": "Specify a custom name for the radio buttons. If not provided, the radio group generates a random name.",
+      "name": "name",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies if the whole group is read-only, which prevents the
+user from modifying the value, but does not prevent the value from
+being included in a form submission. A read-only control is still focusable.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "inlineType": {
+        "name": "RadioButtonProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "checked",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "description",
+            "optional": true,
+            "type": "{ color?: { checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "inlineType": {
+                          "name": "{ checked?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                          "properties": [
+                            {
+                              "name": "checked",
+                              "optional": true,
+                              "type": "string",
+                            },
+                            {
+                              "name": "disabled",
+                              "optional": true,
+                              "type": "string",
+                            },
+                            {
+                              "name": "readOnly",
+                              "optional": true,
+                              "type": "string",
+                            },
+                          ],
+                          "type": "object",
+                        },
+                        "name": "fill",
+                        "optional": true,
+                        "type": "{ checked?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "circle",
+                  "optional": true,
+                  "type": "{ fill?: { checked?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "checked",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "fill",
+                  "optional": true,
+                  "type": "{ checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "borderColor",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderRadius",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderWidth",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "focusRing",
+                  "optional": true,
+                  "type": "{ borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "stroke",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "input",
+            "optional": true,
+            "type": "{ fill?: { checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; stroke?: { default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; circle?: { ...; } | undefined; focusRing?: { ...; }...",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "checked",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "label",
+            "optional": true,
+            "type": "{ color?: { checked?: string | undefined; default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "RadioButtonProps.Style",
     },
     {
       "description": "Sets the value of the selected radio button.
@@ -21525,6 +22190,155 @@ Each segment has the following properties:
       "optional": false,
       "type": "string | null",
     },
+    {
+      "inlineType": {
+        "name": "SegmentedControlProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "{ borderRadius?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "root",
+            "optional": true,
+            "type": "{ borderRadius?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "background",
+                  "optional": true,
+                  "type": "{ active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; }",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "borderColor",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderRadius",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderWidth",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "focusRing",
+                  "optional": true,
+                  "type": "{ borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; }",
+                },
+                {
+                  "name": "fontSize",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "segment",
+            "optional": true,
+            "type": "{ background?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; color?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; ... 4 more ...; paddingI...",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "SegmentedControlProps.Style",
+    },
   ],
   "regions": [],
   "releaseStatus": "stable",
@@ -21691,6 +22505,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "status-in-progress",
                       "status-info",
                       "status-negative",
+                      "status-not-started",
                       "status-positive",
                       "status-stopped",
                       "status-warning",
@@ -22282,6 +23097,7 @@ If you want to clear the selection, use \`null\`.",
                 "status-in-progress",
                 "status-info",
                 "status-negative",
+                "status-not-started",
                 "status-positive",
                 "status-stopped",
                 "status-warning",
@@ -23394,6 +24210,7 @@ We do not support using this attribute to apply custom styling.",
           "success",
           "warning",
           "info",
+          "not-started",
         ],
       },
       "name": "type",
@@ -25368,6 +26185,236 @@ If set to \`true\`, the live announcement of countText by assistive technologies
       "optional": true,
       "type": "boolean",
     },
+    {
+      "inlineType": {
+        "name": "TextFilterProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "name": "color",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontSize",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontStyle",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontWeight",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "placeholder",
+            "optional": true,
+            "type": "{ color?: string | undefined; fontSize?: string | undefined; fontStyle?: string | undefined; fontWeight?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "borderColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderWidth",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "boxShadow",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "focus",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readonly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; }",
+                },
+                {
+                  "name": "fontSize",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontWeight",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "root",
+            "optional": true,
+            "type": "{ backgroundColor?: { default?: string | undefined; disabled?: string | undefined; focus?: string | undefined; hover?: string | undefined; readonly?: string | undefined; } | undefined; ... 8 more ...; paddingInline?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "TextFilterProps.Style",
+    },
   ],
   "regions": [],
   "releaseStatus": "stable",
@@ -26924,6 +27971,7 @@ If an href is provided, it opens the link in a new tab.",
           "status-in-progress",
           "status-info",
           "status-negative",
+          "status-not-started",
           "status-positive",
           "status-stopped",
           "status-warning",
@@ -27127,6 +28175,7 @@ We do not support using this attribute to apply custom styling.",
           "status-in-progress",
           "status-info",
           "status-negative",
+          "status-not-started",
           "status-positive",
           "status-stopped",
           "status-warning",
@@ -27771,6 +28820,21 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "'none'",
+      "description": "Shows connector lines highlighting hierarchy between parent and child items.",
+      "inlineType": {
+        "name": "TreeViewProps.ConnectorLinesVariant",
+        "type": "union",
+        "values": [
+          "none",
+          "vertical",
+        ],
+      },
+      "name": "connectorLines",
       "optional": true,
       "type": "string",
     },

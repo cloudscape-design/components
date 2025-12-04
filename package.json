@@ -101,7 +101,7 @@
     "eslint-plugin-unicorn": "^60.0.0",
     "execa": "^4.1.0",
     "fs-extra": "^11.2.0",
-    "glob": "^11.0.3",
+    "glob": "^11.1.0",
     "globals": "^16.1.0",
     "gulp": "^5.0.0",
     "html-validate": "^7.3.0",
@@ -124,7 +124,7 @@
     "react-test-renderer": "^16.14.0",
     "react-virtual": "^2.8.2",
     "react18": "npm:react@^18.3.1",
-    "rimraf": "^5.0.5",
+    "rimraf": "^6.1.0",
     "rollup": "^3.29.5",
     "rollup-plugin-license": "^3.0.1",
     "sass": "^1.89.2",
@@ -175,7 +175,7 @@
     {
       "path": "lib/components/internal/widget-exports.js",
       "brotli": false,
-      "limit": "1000 kB",
+      "limit": "1040 kB",
       "ignore": "react-dom"
     }
   ],

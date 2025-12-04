@@ -7,8 +7,8 @@ import { useSingleTabStopNavigation, useUniqueId } from '@cloudscape-design/comp
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalCheckbox from '../../checkbox/internal';
+import RadioButton from '../../internal/components/radio-button';
 import { KeyCode } from '../../internal/keycode';
-import RadioButton from '../../radio-group/radio-button';
 import { SelectionProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -37,6 +37,7 @@ export function SelectionControl({
   rowIndex,
   itemKey,
   verticalAlign = 'middle',
+  onChange,
   ...sharedProps
 }: SelectionControlProps) {
   const controlId = useUniqueId();
@@ -84,13 +85,14 @@ export function SelectionControl({
   const selector = isMultiSelection ? (
     <InternalCheckbox
       {...sharedProps}
+      onChange={onChange}
       showOutline={focusedComponent === 'selection-control'}
       controlId={controlId}
       data-focus-id="selection-control"
       indeterminate={indeterminate}
     />
   ) : (
-    <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} label={''} />
+    <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} onSelect={onChange} />
   );
 
   return (
