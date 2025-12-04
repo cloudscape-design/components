@@ -12,6 +12,33 @@
 $virtual-border-offset: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
 $virtual-border-offset-double: calc(2 * #{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
 
+@mixin virtual-border-padding {
+  border-width: awsui.$border-divider-list-width;
+  padding-block: calc(#{styles.$option-padding-vertical} + #{$virtual-border-offset});
+  padding-inline: calc(#{styles.$control-padding-horizontal} + #{$virtual-border-offset});
+}
+
+@mixin virtual-highlighted-shadow {
+  box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-hover;
+  &.is-keyboard {
+    box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-focused;
+  }
+}
+
+@mixin virtual-selected-shadow {
+  box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected;
+  &.highlighted {
+    box-shadow:
+      inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected,
+      inset 0 0 0 $virtual-border-offset-double awsui.$color-border-dropdown-item-hover;
+    &.is-keyboard {
+      box-shadow:
+        inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected,
+        inset 0 0 0 $virtual-border-offset-double awsui.$color-border-dropdown-item-focused;
+    }
+  }
+}
+
 // Outer borders of adjacent cells overlap and we want selected option border
 // to take precedence over the other ones, hence negative margins and z-indices
 .selectable-item {
@@ -208,37 +235,18 @@ $virtual-border-offset-double: calc(2 * #{awsui.$border-item-width} - #{awsui.$b
     &:has(~ .virtual) {
       &.highlighted:not(.selected),
       &.selected {
-        border-width: awsui.$border-divider-list-width;
-        padding-block: calc(#{styles.$option-padding-vertical} + #{$virtual-border-offset});
-        padding-inline: calc(#{styles.$control-padding-horizontal} + #{$virtual-border-offset});
+        @include virtual-border-padding;
         margin-block-end: calc(
           #{awsui.$border-item-width} - #{awsui.$border-divider-list-width} - #{$virtual-border-offset}
         );
       }
 
       &.highlighted:not(.selected) {
-        box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-hover;
-
-        &.is-keyboard {
-          box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-focused;
-        }
+        @include virtual-highlighted-shadow;
       }
 
       &.selected {
-        box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected;
-
-        &.highlighted {
-          $virtual-border-offset-double: calc(2 * #{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
-          box-shadow:
-            inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected,
-            inset 0 0 0 $virtual-border-offset-double awsui.$color-border-dropdown-item-hover;
-
-          &.is-keyboard {
-            box-shadow:
-              inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected,
-              inset 0 0 0 $virtual-border-offset-double awsui.$color-border-dropdown-item-focused;
-          }
-        }
+        @include virtual-selected-shadow;
       }
     }
 
@@ -299,9 +307,7 @@ $virtual-border-offset-double: calc(2 * #{awsui.$border-item-width} - #{awsui.$b
 
     &.highlighted:not(.selected),
     &.selected {
-      border-width: awsui.$border-divider-list-width;
-      padding-block: calc(#{styles.$option-padding-vertical} + #{$virtual-border-offset});
-      padding-inline: calc(#{styles.$control-padding-horizontal} + #{$virtual-border-offset});
+      @include virtual-border-padding;
 
       &.pad-bottom {
         padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs} + #{$virtual-border-offset});
@@ -318,27 +324,11 @@ $virtual-border-offset-double: calc(2 * #{awsui.$border-item-width} - #{awsui.$b
     }
 
     &.highlighted:not(.selected) {
-      box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-hover;
-
-      &.is-keyboard {
-        box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-focused;
-      }
+      @include virtual-highlighted-shadow;
     }
 
     &.selected {
-      box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected;
-
-      &.highlighted {
-        box-shadow:
-          inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected,
-          inset 0 0 0 $virtual-border-offset-double awsui.$color-border-dropdown-item-hover;
-
-        &.is-keyboard {
-          box-shadow:
-            inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected,
-            inset 0 0 0 $virtual-border-offset-double awsui.$color-border-dropdown-item-focused;
-        }
-      }
+      @include virtual-selected-shadow;
     }
 
     &.parent:not(.interactiveGroups) {
@@ -355,33 +345,15 @@ $virtual-border-offset-double: calc(2 * #{awsui.$border-item-width} - #{awsui.$b
     &.sticky {
       &.highlighted:not(.selected),
       &.selected {
-        border-width: awsui.$border-divider-list-width;
-        padding-block: calc(#{styles.$option-padding-vertical} + #{$virtual-border-offset});
-        padding-inline: calc(#{styles.$control-padding-horizontal} + #{$virtual-border-offset});
+        @include virtual-border-padding;
       }
 
       &.highlighted:not(.selected) {
-        box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-hover;
-
-        &.is-keyboard {
-          box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-focused;
-        }
+        @include virtual-highlighted-shadow;
       }
 
       &.selected {
-        box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected;
-
-        &.highlighted {
-          box-shadow:
-            inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected,
-            inset 0 0 0 $virtual-border-offset-double awsui.$color-border-dropdown-item-hover;
-
-          &.is-keyboard {
-            box-shadow:
-              inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected,
-              inset 0 0 0 $virtual-border-offset-double awsui.$color-border-dropdown-item-focused;
-          }
-        }
+        @include virtual-selected-shadow;
       }
     }
   }
