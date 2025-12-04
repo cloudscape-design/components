@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { IconProps } from '../../../icon/interfaces';
 import { BaseComponentProps } from '../../base-component';
@@ -43,18 +43,6 @@ export interface DropdownOption {
   afterHeader?: boolean;
 }
 
-export type DropdownOptionItemType = 'child' | 'parent' | 'select-all' | 'use-entered';
-export interface DropdownOptionItem<
-  T,
-  TType extends DropdownOptionItemType = 'child' | 'parent' | 'select-all' | 'use-entered',
-> {
-  type: TType;
-  disabled: boolean;
-  highlighted: boolean;
-  selected: boolean;
-  option: T;
-}
-
 export interface OptionProps extends BaseComponentProps {
   option?: InternalOptionDefinition;
   triggerVariant?: boolean;
@@ -66,4 +54,5 @@ export interface OptionProps extends BaseComponentProps {
   labelContainerRef?: React.RefObject<HTMLSpanElement>;
   labelRef?: React.RefObject<HTMLSpanElement>;
   labelId?: string;
+  customContent?: ReactNode;
 }

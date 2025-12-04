@@ -18,13 +18,19 @@ describe('Select renderOption', () => {
   }
 
   test('renders custom option content', () => {
-    const renderOption = jest.fn(item => <div data-testid="custom">{item.option.label}</div>);
+    const renderOption = jest.fn(() => <div>Custom</div>);
     const wrapper = renderSelect({ options: defaultOptions, renderOption });
     wrapper.openDropdown();
     expect(renderOption).toHaveBeenCalled();
-    expect(wrapper.findDropdown().getElement().querySelector('[data-testid="custom"]')).toBeTruthy();
+    const elementWrapper = wrapper.findDropdown().findOption(1)!.findCustomContent();
+    expect(elementWrapper).not.toBeNull();
+    expect(elementWrapper.getElement()).toHaveTextContent('Custom');
   });
-
+  test('renders no custom option content when no renderOption specified', () => {
+    const wrapper = renderSelect({ options: defaultOptions });
+    wrapper.openDropdown();
+    expect(wrapper.findDropdown().findOption(1)!.findCustomContent()).toBeNull();
+  });
   test('receives correct item properties for child option', () => {
     const renderOption = jest.fn(() => <div>Custom</div>);
     const childOption = { label: 'Test', value: '1' };
@@ -35,15 +41,16 @@ describe('Select renderOption', () => {
     wrapper.openDropdown();
     expect(renderOption).toHaveBeenCalledWith(
       expect.objectContaining({
-        option: expect.objectContaining(childOption),
-        selected: false,
-        highlighted: false,
-        disabled: false,
-        type: 'child',
+        item: expect.objectContaining({
+          option: expect.objectContaining(childOption),
+          selected: false,
+          highlighted: false,
+          disabled: false,
+          type: 'child',
+        }),
       })
     );
   });
-
   test('receives correct item properties for parent option', () => {
     const renderOption = jest.fn(() => <div>Custom</div>);
     const groupOption = { label: 'Group', value: 'g1', options: [{ label: 'Child', value: 'c1' }] };
@@ -54,24 +61,25 @@ describe('Select renderOption', () => {
     wrapper.openDropdown();
     expect(renderOption).toHaveBeenCalledWith(
       expect.objectContaining({
-        option: expect.objectContaining(groupOption),
-        selected: false,
-        highlighted: false,
-        disabled: false,
-        type: 'parent',
+        item: expect.objectContaining({
+          option: expect.objectContaining(groupOption),
+          selected: false,
+          highlighted: false,
+          disabled: false,
+          type: 'parent',
+        }),
       })
     );
   });
-
   test('reflects highlighted state', () => {
-    const renderOption = jest.fn(item => <div>{item.highlighted ? 'highlighted' : 'normal'}</div>);
+    const renderOption = jest.fn(props => <div>{props.item.highlighted ? 'highlighted' : 'normal'}</div>);
     const wrapper = renderSelect({ options: [{ label: 'First', value: '1' }], renderOption });
     wrapper.openDropdown();
     wrapper.findDropdown().findOptionsContainer()!.keydown(KeyCode.down);
     expect(wrapper.findDropdown().getElement().textContent).toContain('highlighted');
   });
   test('reflects selected state', () => {
-    const renderOption = jest.fn(item => <div>{item.selected ? 'selected' : 'not-selected'}</div>);
+    const renderOption = jest.fn(props => <div>{props.item.selected ? 'selected' : 'not-selected'}</div>);
     const option = { label: 'Test', value: '1' };
     const wrapper = renderSelect({
       options: [option],
@@ -79,13 +87,16 @@ describe('Select renderOption', () => {
       renderOption,
     });
     wrapper.openDropdown();
-    expect(renderOption).toHaveBeenCalledWith(expect.objectContaining({ selected: true }));
+    expect(renderOption).toHaveBeenCalledWith(
+      expect.objectContaining({
+        item: expect.objectContaining({ selected: true }),
+      })
+    );
   });
-
   test('renders children within groups correctly', () => {
-    const renderOption = jest.fn(item => (
+    const renderOption = jest.fn(props => (
       <div>
-        {item.type}-{item.option.label}
+        {props.item.type}-{props.item.option.label}
       </div>
     ));
     const wrapper = renderSelect({
@@ -93,23 +104,30 @@ describe('Select renderOption', () => {
       renderOption,
     });
     wrapper.openDropdown();
-    expect(renderOption).toHaveBeenCalledWith(expect.objectContaining({ type: 'child' }));
+    expect(renderOption).toHaveBeenCalledWith(
+      expect.objectContaining({
+        item: expect.objectContaining({ type: 'child' }),
+      })
+    );
   });
-
   test('reflects disabled state', () => {
-    const renderOption = jest.fn(item => <div>{item.disabled ? 'disabled' : 'enabled'}</div>);
+    const renderOption = jest.fn(props => <div>{props.item.disabled ? 'disabled' : 'enabled'}</div>);
     const wrapper = renderSelect({
       options: [{ label: 'Test', value: '1', disabled: true }],
       renderOption,
     });
     wrapper.openDropdown();
-
-    expect(renderOption).toHaveBeenCalledWith(expect.objectContaining({ disabled: true }));
+    expect(renderOption).toHaveBeenCalledWith(
+      expect.objectContaining({
+        item: expect.objectContaining({
+          disabled: true,
+        }),
+      })
+    );
   });
-
   test('allows selection with custom rendered options', () => {
     const onChange = jest.fn();
-    const renderOption = jest.fn(item => <div>{item.option.value}</div>);
+    const renderOption = jest.fn(props => <div>{props.item.option.value}</div>);
     const wrapper = renderSelect({
       options: [
         { label: 'Test', value: '1' },

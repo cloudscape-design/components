@@ -44,8 +44,12 @@ const options: SelectProps.Options = [
 
 export default function SelectPage() {
   const [selectedOption, setSelectedOption] = useState<SelectProps.Option | null>(null);
-  const renderOptionItem = (item: SelectProps.SelectOptionItem) => {
-    return <div>{item.option.label}</div>;
+  const renderOptionItem: SelectProps.SelectOptionItemRenderer = ({ item, filterText }) => {
+    return (
+      <div>
+        {item.option.label} + {filterText}
+      </div>
+    );
   };
 
   return (

@@ -71,6 +71,8 @@ export const renderOptions = ({
 
     return (
       <ListItem
+        index={index}
+        virtualIndex={virtualItem ? virtualItem.index : undefined}
         key={globalIndex}
         {...props}
         virtualPosition={virtualItem && virtualItem.start}
