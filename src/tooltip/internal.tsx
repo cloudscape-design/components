@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
 import { Transition } from '../internal/components/transition';
+import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import PopoverArrow from '../popover/arrow';
 import PopoverBody from '../popover/body';
@@ -46,7 +47,7 @@ const InternalTooltip = React.forwardRef<TooltipProps.Ref, InternalTooltipProps>
           if (event.key === 'Escape') {
             // Prevent any surrounding modals or dialogs from acting on this Esc.
             event.stopPropagation();
-            onDismiss?.();
+            fireNonCancelableEvent(onDismiss);
           }
         },
         {
