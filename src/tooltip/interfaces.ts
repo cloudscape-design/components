@@ -50,6 +50,7 @@ export interface TooltipProps {
 
   /**
    * Callback function called when the tooltip should be dismissed.
+   * @internal
    */
   onDismiss?: () => void;
 }
