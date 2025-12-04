@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { NonCancelableEventHandler } from '../internal/events';
 import { PopoverProps } from '../popover/interfaces';
 
 export interface TooltipProps {
@@ -52,7 +53,7 @@ export interface TooltipProps {
    * Callback function called when the tooltip should be dismissed.
    * @internal
    */
-  onDismiss?: () => void;
+  onDismiss?: NonCancelableEventHandler;
 }
 
 export namespace TooltipProps {
