@@ -17797,8 +17797,8 @@ For more information, see the
         "name": "MultiselectProps.MultiselectOptionItemRenderer",
         "parameters": [
           {
-            "name": "item",
-            "type": "MultiselectProps.MultiselectOptionItem",
+            "name": "props",
+            "type": "{ item: MultiselectProps.MultiselectOptionItem | MultiselectProps.MultiselectOptionGroupItem | MultiselectProps.MultiselectSelectAllItem; filterText?: string | undefined; }",
           },
         ],
         "returnType": "React.ReactNode",
@@ -23362,8 +23362,8 @@ For more information, see the
         "name": "SelectProps.SelectOptionItemRenderer",
         "parameters": [
           {
-            "name": "item",
-            "type": "SelectProps.SelectOptionItem",
+            "name": "props",
+            "type": "{ item: SelectProps.SelectOptionItem | SelectProps.SelectOptionGroupItem; filterText?: string | undefined; }",
           },
         ],
         "returnType": "React.ReactNode",
@@ -32402,6 +32402,19 @@ Options get highlighted when they match the value of the input field.",
     },
     {
       "methods": [
+        {
+          "name": "findCustomContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
         {
           "name": "findDescription",
           "parameters": [],
@@ -43432,6 +43445,14 @@ Options get highlighted when they match the value of the input field.",
     },
     {
       "methods": [
+        {
+          "name": "findCustomContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
         {
           "name": "findDescription",
           "parameters": [],
