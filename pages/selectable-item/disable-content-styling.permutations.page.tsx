@@ -11,9 +11,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { permutationsConfigs } from './common';
 
 // Copy permutations and add selectable-items with no-content-styling.
-const permutations = createPermutations<SelectableItemProps>(
-  permutationsConfigs.map(permutation => ({ ...permutation, disableContentStyling: [true] }))
-);
+const permutations = createPermutations<SelectableItemProps>(permutationsConfigs);
 
 export default function InputPermutations() {
   return (
@@ -22,7 +20,10 @@ export default function InputPermutations() {
       <ScreenshotArea>
         <SpaceBetween size="xs">
           <ul role="listbox" aria-label="list">
-            <PermutationsView permutations={permutations} render={permutation => <SelectableItem {...permutation} />} />
+            <PermutationsView
+              permutations={permutations}
+              render={permutation => <SelectableItem {...permutation} disableContentStyling={true} />}
+            />
           </ul>
         </SpaceBetween>
       </ScreenshotArea>
