@@ -10,7 +10,10 @@ import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { permutationsConfigs } from './common';
 
-const permutations = createPermutations<SelectableItemProps>(permutationsConfigs);
+// Copy permutations and add selectable-items with no-content-styling.
+const permutations = createPermutations<SelectableItemProps>(
+  permutationsConfigs.map(permutation => ({ ...permutation, disableContentStyling: [true] }))
+);
 
 export default function InputPermutations() {
   return (
