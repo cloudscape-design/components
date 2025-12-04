@@ -77,8 +77,7 @@ export function useVirtual<Item extends object>({
   );
 
   // Adjust totalSize to account for 1px overlap per item (matching the position adjustment in renderOptions: /select/utils/render-options.tsx)
-  // When firstItemSticky is enabled, the select-all is shifted down by 1 and other items are shifted up by (index + 1),
-  // resulting in a different total adjustment than the standard case
+  // When firstItemSticky is enabled, the select-all is shifted down by 1 and other items are shifted down by (index + 2)
   const firstItemSize = virtualItems[0]?.size ?? 0;
   let adjustedTotalSize = rowVirtualizer.totalSize - items.length * itemOverlap;
   adjustedTotalSize = firstItemSticky ? adjustedTotalSize - firstItemSize + 2 : adjustedTotalSize;
