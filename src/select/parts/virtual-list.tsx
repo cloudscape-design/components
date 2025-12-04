@@ -43,7 +43,7 @@ const VirtualListOpen = forwardRef(
     const menuRefObject = useRef(null);
     const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, menuProps.ref);
     const previousHighlightedIndex = useRef<number>();
-    const { virtualItems, adjustedTotalSize, scrollToIndex } = useVirtual({
+    const { virtualItems, totalSize, scrollToIndex } = useVirtual({
       items: filteredOptions,
       parentRef: menuRefObject,
       // estimateSize is a dependency of measurements memo. We update it to force full recalculation
@@ -53,7 +53,7 @@ const VirtualListOpen = forwardRef(
       // eslint-disable-next-line react-hooks/exhaustive-deps
       estimateSize: useCallback(() => fallbackItemHeight, [width?.inner, filteringValue]),
       firstItemSticky: firstOptionSticky,
-      applyItemOffset: true,
+      itemOverlap: 1, // 1px overlap
     });
 
     useImperativeHandle(
@@ -107,12 +107,7 @@ const VirtualListOpen = forwardRef(
     return (
       <OptionsList {...menuProps} stickyItemBlockSize={stickySize} ref={menuRef}>
         {finalOptions}
-        <div
-          aria-hidden="true"
-          key="total-size"
-          className={styles['layout-strut']}
-          style={{ height: adjustedTotalSize }}
-        />
+        <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize }} />
         {listBottom ? (
           <div role="option" className={styles['list-bottom']}>
             {listBottom}
