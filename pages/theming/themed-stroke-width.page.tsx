@@ -258,14 +258,7 @@ export default function () {
               <FormField
                 label="Email address"
                 errorText="Please enter a valid email address"
-                constraintText={
-                  <SpaceBetween direction="horizontal" size="xxs">
-                    <>Use your company email.</>
-                    <Link href="#" fontSize="inherit" external={true}>
-                      Lean more
-                    </Link>
-                  </SpaceBetween>
-                }
+                constraintText="Use your company email."
               >
                 <Input value="invalid-email" type="email" readOnly={true} />
               </FormField>
