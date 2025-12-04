@@ -177,8 +177,7 @@
   },
   "error-boundary": {
     "i18nStrings.headerText": "Erreur inattendue, le contenu n'a pas pu s'afficher",
-    "i18nStrings.descriptionText": "Actualisez pour réessayer.",
-    "i18nStrings.descriptionWithFeedbackText": "Actualisez pour réessayer. Nous suivons ce problème mais vous pouvez fournir <Feedback>plus d'informations ici</Feedback>.",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Actualisez pour réessayer. Nous suivons ce problème mais vous pouvez fournir <Feedback>plus d'informations ici</Feedback>.} other {Actualisez pour réessayer.}}",
     "i18nStrings.refreshActionText": "Actualiser la page"
   },
   "file-token-group": {

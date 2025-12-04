@@ -177,8 +177,7 @@
   },
   "error-boundary": {
     "i18nStrings.headerText": "Unexpected error, content failed to show",
-    "i18nStrings.descriptionText": "Refresh to try again.",
-    "i18nStrings.descriptionWithFeedbackText": "Refresh to try again. We are tracking this issue, but you can share <Feedback>more information here</Feedback>.",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Refresh to try again. We are tracking this issue, but you can share <Feedback>more information here</Feedback>.} other {Refresh to try again.}}",
     "i18nStrings.refreshActionText": "Refresh page"
   },
   "file-token-group": {

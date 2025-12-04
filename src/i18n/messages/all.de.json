@@ -177,8 +177,7 @@
   },
   "error-boundary": {
     "i18nStrings.headerText": "Unerwarteter Fehler, Inhalt konnte nicht angezeigt werden",
-    "i18nStrings.descriptionText": "Aktualisieren Sie die Seite, um es erneut zu versuchen.",
-    "i18nStrings.descriptionWithFeedbackText": "Aktualisieren Sie die Seite, um es erneut zu versuchen. Wir verfolgen dieses Problem nach, Sie können aber <Feedback>hier zusätzliche Informationen mitteilen</Feedback>.",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Aktualisieren Sie die Seite, um es erneut zu versuchen. Wir verfolgen dieses Problem nach, Sie können aber <Feedback>hier zusätzliche Informationen mitteilen</Feedback>.} other {Aktualisieren Sie die Seite, um es erneut zu versuchen.}}",
     "i18nStrings.refreshActionText": "Seite aktualisieren"
   },
   "file-token-group": {
