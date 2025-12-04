@@ -9,11 +9,7 @@ import {
   OptionsLoadItemsDetail,
 } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
-import {
-  DropdownOptionItem,
-  OptionDefinition,
-  OptionGroup as OptionGroupDefinition,
-} from '../internal/components/option/interfaces';
+import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
 
@@ -209,8 +205,24 @@ export namespace SelectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
-  export type SelectOptionItem = DropdownOptionItem<Option | OptionGroup, 'child' | 'parent'>;
-  export type SelectOptionItemRenderer = (item: SelectOptionItem) => ReactNode;
+  interface BaseSelectItem {
+    index: number | null;
+    disabled: boolean;
+    highlighted: boolean;
+    selected: boolean;
+  }
+  export type SelectOptionItem = BaseSelectItem & {
+    type: 'child';
+    option: Option;
+  };
+  export type SelectOptionGroupItem = BaseSelectItem & {
+    type: 'parent';
+    option: OptionGroup;
+  };
+  export type SelectOptionItemRenderer = (props: {
+    item: SelectOptionItem | SelectOptionGroupItem;
+    filterText?: string;
+  }) => ReactNode | null;
 
   export type LoadItemsDetail = OptionsLoadItemsDetail;
 

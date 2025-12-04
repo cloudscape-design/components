@@ -1,14 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import Option from '../../internal/components/option';
-import { OptionDefinition } from '../../internal/components/option/interfaces';
+import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import { getTestOptionIndexes } from '../../internal/components/options-list/utils/test-indexes';
 import SelectableItem from '../../internal/components/selectable-item';
 import Tooltip from '../../internal/components/tooltip';
@@ -16,15 +15,15 @@ import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { MultiselectProps } from '../../multiselect/interfaces';
 import { ItemProps } from './item';
 
-import optionStyles from '../../internal/components/option/styles.css.js';
 import styles from './styles.css.js';
-interface MultiselectItemProps extends ItemProps {
+interface MultiselectItemProps extends ItemProps<MultiselectProps.MultiselectOptionItemRenderer> {
   indeterminate?: boolean;
-  renderOption?: (option: MultiselectProps.MultiselectOptionItem) => ReactNode;
 }
 
 const MultiSelectItem = (
   {
+    index,
+    virtualIndex,
     option,
     highlighted,
     selected,
@@ -66,13 +65,59 @@ const MultiSelectItem = (
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
   const { throughIndex, inGroupIndex, groupIndex } = getTestOptionIndexes(option) || {};
+  const globalIndex = virtualIndex ?? index ?? null;
+
+  const renderOptionWrapper = (option: DropdownOption) => {
+    if (!renderOption) {
+      return null;
+    }
+
+    const baseItem = {
+      index: globalIndex,
+      selected: !!selected,
+      highlighted: !!highlighted,
+      disabled: !!disabled,
+    };
+
+    let item:
+      | MultiselectProps.MultiselectOptionItem
+      | MultiselectProps.MultiselectOptionGroupItem
+      | MultiselectProps.MultiselectSelectAllItem;
+
+    switch (option.type) {
+      case 'select-all':
+        item = {
+          type: 'select-all',
+          option: option.option as OptionDefinition,
+          indeterminate: indeterminate ?? false,
+          ...baseItem,
+        };
+        break;
+      case 'parent':
+        item = {
+          type: 'parent',
+          option: option.option as OptionGroup,
+          indeterminate: indeterminate ?? false,
+          ...baseItem,
+        };
+        break;
+      case 'child':
+      default:
+        item = { type: 'child', option: option.option as OptionDefinition, ...baseItem };
+        break;
+    }
+
+    return renderOption({ item, filterText: filteringValue });
+  };
+
+  const renderResult = renderOptionWrapper(option);
 
   return (
     <SelectableItem
       data-test-index={throughIndex}
       data-in-group-index={inGroupIndex}
       data-group-index={groupIndex}
-      disableContentStyling={!!renderOption}
+      disableContentStyling={!!renderResult}
       ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
@@ -98,7 +143,7 @@ const MultiSelectItem = (
       {...baseProps}
     >
       <div className={className}>
-        {!renderOption && hasCheckbox && (
+        {!renderResult && hasCheckbox && (
           <div className={styles.checkbox}>
             <CheckboxIcon
               checked={selected}
@@ -107,34 +152,16 @@ const MultiSelectItem = (
             />
           </div>
         )}
-        {renderOption ? (
-          <div
-            data-value={wrappedOption.value}
-            className={clsx(optionStyles.option, {
-              disabled: !!disabled,
-              selected: !!selected,
-              highlighted: !!highlighted,
-            })}
-          >
-            {renderOption({
-              option: option.option,
-              selected: !!selected,
-              highlighted: !!highlighted,
-              disabled: !!disabled,
-              type: option.type !== 'use-entered' ? (option.type ?? 'child') : 'child',
-            })}
-          </div>
-        ) : (
-          <Option
-            option={{ ...wrappedOption, disabled }}
-            highlightedOption={highlighted}
-            selectedOption={selected}
-            highlightText={filteringValue}
-            isGroupOption={isParent}
-          />
-        )}
+        <Option
+          customContent={renderResult}
+          option={{ ...wrappedOption, disabled }}
+          highlightedOption={highlighted}
+          selectedOption={selected}
+          highlightText={filteringValue}
+          isGroupOption={isParent}
+        />
       </div>
-      {!renderOption && isDisabledWithReason && (
+      {!renderResult && isDisabledWithReason && (
         <>
           {descriptionEl}
           {highlighted && canShowTooltip && (

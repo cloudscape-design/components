@@ -2,11 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ReactNode } from 'react';
 
-import {
-  DropdownOptionItem,
-  OptionDefinition,
-  OptionGroup as OptionGroupDefinition,
-} from '../internal/components/option/interfaces';
+import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
 import { BaseSelectProps } from '../select/interfaces';
 
@@ -90,8 +86,30 @@ export namespace MultiselectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
-  export type MultiselectOptionItem = DropdownOptionItem<Option | OptionGroup, 'child' | 'parent' | 'select-all'>;
-  export type MultiselectOptionItemRenderer = (item: MultiselectOptionItem) => ReactNode;
+  interface BaseMultiselectItem {
+    index: number | null;
+    disabled: boolean;
+    highlighted: boolean;
+    selected: boolean;
+  }
+  export type MultiselectOptionItem = BaseMultiselectItem & {
+    type: 'child';
+    option: Option;
+  };
+  export type MultiselectOptionGroupItem = BaseMultiselectItem & {
+    type: 'parent';
+    option: OptionGroup;
+    indeterminate: boolean;
+  };
+  export type MultiselectSelectAllItem = BaseMultiselectItem & {
+    type: 'select-all';
+    option: Option;
+    indeterminate: boolean;
+  };
+  export type MultiselectOptionItemRenderer = (props: {
+    item: MultiselectOptionItem | MultiselectOptionGroupItem | MultiselectSelectAllItem;
+    filterText?: string;
+  }) => ReactNode | null;
 
   export type DeselectAriaLabelFunction = (option: Option) => string;
   export type TriggerVariant = 'placeholder' | 'tokens';
