@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { Box, ButtonGroup, Link, SpaceBetween } from '~components';
 import Icon from '~components/icon';
+import PromptInput from '~components/prompt-input';
 
 export const longContent = (
   <>
@@ -67,7 +69,45 @@ export const longHeader = <h2>Header: Lorem nesciunt praesentium voluptatem, mol
 export const shortHeader = <h2>Header: Lorem nesciunt!</h2>;
 
 export const longFooter = (
-  <span>Footer: Lorem nesciunt praesentium voluptatem, molestias aliquid animi aspernatur!</span>
+  <span>
+    <SpaceBetween size="xs">
+      <PromptInput
+        value="Hey there, can you help me write some integration tests."
+        disableSecondaryActionsPaddings={true}
+        actionButtonAriaLabel={'Need Help?'}
+        actionButtonIconName={'stop-circle'}
+        maxRows={3}
+        secondaryActions={
+          <Box padding={{ left: 'xxs', top: 'xs' }}>
+            <ButtonGroup
+              ariaLabel="Additional chat input actions"
+              items={[
+                {
+                  type: 'icon-button',
+                  id: 'upload-files',
+                  iconName: 'upload',
+                  text: 'Upload files',
+                },
+                {
+                  type: 'icon-button',
+                  id: 'add-reference',
+                  iconName: 'at-symbol',
+                  text: 'Add reference or citation',
+                },
+              ]}
+              variant="icon"
+            />
+          </Box>
+        }
+      />
+      <Box fontSize="body-s" color="text-body-secondary">
+        Use of this service is subject to the{' '}
+        <Link external={true} variant="primary" href="https://aws.amazon.com/machine-learning/responsible-ai/policy/">
+          AWS Responsible AI Policy
+        </Link>
+      </Box>
+    </SpaceBetween>
+  </span>
 );
 
 export const shortFooter = <span>Footer: Lorem nesciuntnatur!</span>;

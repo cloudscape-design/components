@@ -3,7 +3,7 @@
 
 import React, { useContext, useState } from 'react';
 
-import { Drawer, Header, Icon, Link, SideNavigation, SpaceBetween, Toggle } from '~components';
+import { Drawer, Header, Icon, SideNavigation, SpaceBetween, Toggle } from '~components';
 import AppLayout, { AppLayoutProps } from '~components/app-layout';
 import Box from '~components/box';
 import SplitPanel from '~components/split-panel';
@@ -84,7 +84,7 @@ export default function () {
               <Drawer
                 header={hasHeader && (longHeader ? content.longHeader : content.shortHeader)}
                 footer={hasFooter && (longFooter ? content.longFooter : content.shortFooter)}
-                headerActions={[<Icon key="icon" name="add-plus" />]}
+                headerActions={[<Icon key="icon" name="add-plus" data-testid="drawer-header-action-button" />]}
               >
                 {longContent ? content.longContent : content.shortContent}
               </Drawer>
@@ -107,16 +107,8 @@ export default function () {
         }
         content={
           <SpaceBetween size="xs">
-            <Header
-              variant="h1"
-              description="Sometimes all you need is a large cappuchino, and a million bucks."
-              info={
-                <Link data-testid="info-link-header" variant="info">
-                  Info
-                </Link>
-              }
-            >
-              Drawers with Footer Demo, how it would look like in the app layout,
+            <Header variant="h1" description="Sometimes all you need is a large cappuchino, and a million bucks.">
+              Drawers with Footer Demo
             </Header>
             {activeDrawerId === 'sample-demo' && (
               <Toggle checked={longContent} onChange={({ detail }) => setUrlParams({ longContent: detail.checked })}>
