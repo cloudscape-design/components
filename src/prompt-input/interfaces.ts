@@ -16,6 +16,9 @@ import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { OptionDefinition } from '../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { BaseKeyDetail, NonCancelableEventHandler } from '../internal/events';
+/**
+ * @awsuiSystem core
+ */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface PromptInputProps
