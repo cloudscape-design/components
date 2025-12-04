@@ -3,7 +3,6 @@
 import React from 'react';
 
 import SelectableItem, { SelectableItemProps } from '~components/internal/components/selectable-item';
-import SpaceBetween from '~components/space-between';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
@@ -13,19 +12,17 @@ import { permutationsConfigs } from './common';
 // Copy permutations and add selectable-items with no-content-styling.
 const permutations = createPermutations<SelectableItemProps>(permutationsConfigs);
 
-export default function InputPermutations() {
+export default function DisableContentStylingSelectableItemPermutations() {
   return (
     <>
       <h1>Selectable item permutations</h1>
       <ScreenshotArea>
-        <SpaceBetween size="xs">
-          <ul role="listbox" aria-label="list">
-            <PermutationsView
-              permutations={permutations}
-              render={permutation => <SelectableItem {...permutation} disableContentStyling={true} />}
-            />
-          </ul>
-        </SpaceBetween>
+        <ul role="listbox" aria-label="list">
+          <PermutationsView
+            permutations={permutations}
+            render={permutation => <SelectableItem {...permutation} disableContentStyling={true} />}
+          />
+        </ul>
       </ScreenshotArea>
     </>
   );
