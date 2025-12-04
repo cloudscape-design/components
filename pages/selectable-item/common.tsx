@@ -22,21 +22,18 @@ export const permutationsConfigs: ComponentPermutations<SelectableItemProps>[] =
     highlighted: [false, true],
     disabled: [false, true],
     children: [simpleOption],
-    disableContentStyling: [true],
   },
   {
     selected: [false, true],
     highlighted: [false],
     disabled: [false, true],
     children: [iconOption],
-    disableContentStyling: [true],
   },
   {
     selected: [false, true],
     highlighted: [false],
     disabled: [false, true],
     children: [bigOption],
-    disableContentStyling: [true],
   },
   {
     selected: [false, true],
@@ -44,7 +41,6 @@ export const permutationsConfigs: ComponentPermutations<SelectableItemProps>[] =
     highlightType: ['keyboard'],
     disabled: [false],
     children: [bigOption],
-    disableContentStyling: [true],
   },
   {
     selected: [false],
@@ -52,7 +48,6 @@ export const permutationsConfigs: ComponentPermutations<SelectableItemProps>[] =
     disabled: [false],
     hasBackground: [true],
     children: [optionHasBackground],
-    disableContentStyling: [true],
   },
   {
     selected: [false],
@@ -60,13 +55,11 @@ export const permutationsConfigs: ComponentPermutations<SelectableItemProps>[] =
     disabled: [true, false],
     isParent: [true],
     children: [optionGroupHeader],
-    disableContentStyling: [true],
   },
   {
     selected: [false, true],
     highlighted: [false, true],
     isChild: [true],
     children: [childOption],
-    disableContentStyling: [true],
   },
 ];
