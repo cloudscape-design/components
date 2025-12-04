@@ -5,6 +5,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { TooltipProps } from './interfaces';
 import { useTooltipCoordinator } from './tooltip-coordinator';
 
+/**
+ * @internal
+ */
 export interface UseTooltipAdvancedOptions {
   position?: TooltipProps['position'];
   size?: TooltipProps['size'];
@@ -14,6 +17,9 @@ export interface UseTooltipAdvancedOptions {
   disableCoordination?: boolean;
 }
 
+/**
+ * @internal
+ */
 export interface TooltipApi {
   show: () => void;
   hide: () => void;
@@ -22,25 +28,7 @@ export interface TooltipApi {
 }
 
 /**
- * Advanced tooltip hook that properly handles both hover and focus states.
- * The tooltip remains visible as long as the element is either hovered OR focused.
- *
- * @example
- * ```tsx
- * function MyComponent() {
- *   const [targetProps, tooltipProps, tooltipApi] = useTooltipAdvanced({
- *     content: "Tooltip text",
- *     position: "top"
- *   });
- *
- *   return (
- *     <div>
- *       <button {...targetProps}>Hover or focus me</button>
- *       {tooltipProps && <Tooltip {...tooltipProps} />}
- *     </div>
- *   );
- * }
- * ```
+ * @internal
  */
 export function useTooltipAdvanced(options: UseTooltipAdvancedOptions): [
   targetProps: {
