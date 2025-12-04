@@ -7,6 +7,7 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { defaultOptions } from '../../select/__tests__/common';
 import { optionsWithGroups } from './common';
 
 describe('Multiselect renderOption', () => {
@@ -18,11 +19,19 @@ describe('Multiselect renderOption', () => {
   }
 
   test('renders custom option content', () => {
-    const renderOption = jest.fn(item => <div data-testid="custom">{item.option.label}</div>);
+    const renderOption = jest.fn(props => <div>Custom {props.item.index}</div>);
     const wrapper = renderMultiselect({ options: optionsWithGroups, renderOption });
     wrapper.openDropdown();
     expect(renderOption).toHaveBeenCalled();
-    expect(wrapper.findDropdown().getElement().querySelector('[data-testid="custom"]')).toBeTruthy();
+    const elementWrapper = wrapper.findDropdown().findOption(1)!.findCustomContent();
+    expect(elementWrapper).not.toBeNull();
+    expect(elementWrapper.getElement()).toHaveTextContent('Custom 0');
+  });
+
+  test('renders no custom option content when no renderOption specified', () => {
+    const wrapper = renderMultiselect({ options: defaultOptions });
+    wrapper.openDropdown();
+    expect(wrapper.findDropdown().findOption(1)!.findCustomContent()).toBeNull();
   });
 
   test('receives correct item properties for child option', () => {
@@ -35,11 +44,13 @@ describe('Multiselect renderOption', () => {
     wrapper.openDropdown();
     expect(renderOption).toHaveBeenCalledWith(
       expect.objectContaining({
-        option: expect.objectContaining(childOption),
-        selected: false,
-        highlighted: false,
-        disabled: false,
-        type: 'child',
+        item: expect.objectContaining({
+          option: expect.objectContaining(childOption),
+          selected: false,
+          highlighted: false,
+          disabled: false,
+          type: 'child',
+        }),
       })
     );
   });
@@ -54,11 +65,13 @@ describe('Multiselect renderOption', () => {
     wrapper.openDropdown();
     expect(renderOption).toHaveBeenCalledWith(
       expect.objectContaining({
-        option: expect.objectContaining(groupOption),
-        selected: false,
-        highlighted: false,
-        disabled: false,
-        type: 'parent',
+        item: expect.objectContaining({
+          option: expect.objectContaining(groupOption),
+          selected: false,
+          highlighted: false,
+          disabled: false,
+          type: 'parent',
+        }),
       })
     );
   });
@@ -73,13 +86,15 @@ describe('Multiselect renderOption', () => {
     wrapper.openDropdown();
     expect(renderOption).toHaveBeenCalledWith(
       expect.objectContaining({
-        type: 'select-all',
+        item: expect.objectContaining({
+          type: 'select-all',
+        }),
       })
     );
   });
 
   test('reflects highlighted state', () => {
-    const renderOption = jest.fn(item => <div>{item.highlighted ? 'highlighted' : 'normal'}</div>);
+    const renderOption = jest.fn(props => <div>{props.item.highlighted ? 'highlighted' : 'normal'}</div>);
     const wrapper = renderMultiselect({ options: [{ label: 'First', value: '1' }], renderOption });
     wrapper.openDropdown();
     wrapper.findDropdown().findOptionsContainer()!.keydown(KeyCode.down);
@@ -87,17 +102,23 @@ describe('Multiselect renderOption', () => {
   });
 
   test('reflects disabled state', () => {
-    const renderOption = jest.fn(item => <div>{item.disabled ? 'disabled' : 'enabled'}</div>);
+    const renderOption = jest.fn(props => <div>{props.item.disabled ? 'disabled' : 'enabled'}</div>);
     const wrapper = renderMultiselect({
       options: [{ label: 'Test', value: '1', disabled: true }],
       renderOption,
     });
     wrapper.openDropdown();
-    expect(renderOption).toHaveBeenCalledWith(expect.objectContaining({ disabled: true }));
+    expect(renderOption).toHaveBeenCalledWith(
+      expect.objectContaining({
+        item: expect.objectContaining({
+          disabled: true,
+        }),
+      })
+    );
   });
 
   test('reflects selected state', () => {
-    const renderOption = jest.fn(item => <div>{item.selected ? 'selected' : 'unselected'}</div>);
+    const renderOption = jest.fn(props => <div>{props.item.selected ? 'selected' : 'unselected'}</div>);
     const option = { label: 'Test', value: '1' };
     const wrapper = renderMultiselect({
       options: [option],
@@ -105,7 +126,11 @@ describe('Multiselect renderOption', () => {
       renderOption,
     });
     wrapper.openDropdown();
-    expect(renderOption).toHaveBeenCalledWith(expect.objectContaining({ selected: true }));
+    expect(renderOption).toHaveBeenCalledWith(
+      expect.objectContaining({
+        item: expect.objectContaining({ selected: true }),
+      })
+    );
   });
 
   test('reflects partial selection state for parent option', () => {
@@ -126,21 +151,25 @@ describe('Multiselect renderOption', () => {
     wrapper.openDropdown();
     expect(renderOption).toHaveBeenCalledWith(
       expect.objectContaining({
-        type: 'parent',
-        selected: false,
+        item: expect.objectContaining({
+          type: 'parent',
+          selected: false,
+        }),
       })
     );
     expect(renderOption).toHaveBeenCalledWith(
       expect.objectContaining({
-        type: 'child',
-        selected: true,
+        item: expect.objectContaining({
+          type: 'child',
+          selected: true,
+        }),
       })
     );
   });
 
   test('allows selection with custom rendered options', () => {
     const onChange = jest.fn();
-    const renderOption = jest.fn(item => <div>{item.option.value}</div>);
+    const renderOption = jest.fn(props => <div>{props.item.option.value}</div>);
     const wrapper = renderMultiselect({
       options: [
         { label: 'Test', value: '1' },

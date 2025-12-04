@@ -155,7 +155,6 @@ export class DropdownContentWrapper extends ComponentWrapper {
       (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
     );
   }
-
   findFooterRegion(): ElementWrapper | null {
     return this.findByClassName(footerStyles.root);
   }
@@ -196,7 +195,6 @@ export class DropdownContentWrapper extends ComponentWrapper {
     const toReplace = escapeSelector(value);
     return this.findComponent(`.${OptionWrapper.rootSelector}[data-value="${toReplace}"]`, OptionWrapper);
   }
-
   /**
    * Returns an option from the dropdown.
    *
@@ -209,7 +207,6 @@ export class DropdownContentWrapper extends ComponentWrapper {
       OptionWrapper
     );
   }
-
   findOptions(): Array<OptionWrapper> {
     return this.findAll(`.${selectableStyles['selectable-item']}[data-test-index] .${OptionWrapper.rootSelector}`).map(
       (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
