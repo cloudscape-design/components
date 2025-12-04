@@ -130,6 +130,9 @@
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Copia"
   },
+  "date-picker": {
+    "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Scegli data} other {Scegli data, la data selezionata è {selectedDate}}}"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Modalità relativa",
     "i18nStrings.absoluteModeTitle": "Modalità assoluta",
@@ -171,6 +174,12 @@
   },
   "drawer": {
     "i18nStrings.loadingText": "Caricamento dei contenuti"
+  },
+  "error-boundary": {
+    "i18nStrings.headerText": "Errore imprevisto, impossibile visualizzare il contenuto",
+    "i18nStrings.descriptionText": "Aggiorna la pagina per riprovare.",
+    "i18nStrings.descriptionWithFeedbackText": "Aggiorna la pagina per riprovare. Stiamo monitorando il problema, ma puoi condividere <Feedback>maggiori informazioni qui</Feedback>.",
+    "i18nStrings.refreshActionText": "Aggiorna pagina"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostra meno",

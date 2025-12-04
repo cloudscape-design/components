@@ -130,6 +130,9 @@
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Kopieren"
   },
+  "date-picker": {
+    "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Datum wählen} other {Datum wählen, ausgewähltes Datum ist {selectedDate}}}"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Relativer Modus",
     "i18nStrings.absoluteModeTitle": "Absoluter Modus",
@@ -171,6 +174,12 @@
   },
   "drawer": {
     "i18nStrings.loadingText": "Inhalte werden geladen"
+  },
+  "error-boundary": {
+    "i18nStrings.headerText": "Unerwarteter Fehler, Inhalt konnte nicht angezeigt werden",
+    "i18nStrings.descriptionText": "Aktualisieren Sie die Seite, um es erneut zu versuchen.",
+    "i18nStrings.descriptionWithFeedbackText": "Aktualisieren Sie die Seite, um es erneut zu versuchen. Wir verfolgen dieses Problem nach, Sie können aber <Feedback>hier zusätzliche Informationen mitteilen</Feedback>.",
+    "i18nStrings.refreshActionText": "Seite aktualisieren"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Weniger anzeigen",
