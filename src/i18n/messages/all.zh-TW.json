@@ -177,8 +177,7 @@
   },
   "error-boundary": {
     "i18nStrings.headerText": "意外錯誤，內容無法顯示",
-    "i18nStrings.descriptionText": "重新整理以再試一次。",
-    "i18nStrings.descriptionWithFeedbackText": "重新整理以再試一次。我們正在追蹤此問題，但您可以在此處分享<Feedback>更多資訊</Feedback>。",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {重新整理以再試一次。我們正在追蹤此問題，但您可以在此處分享<Feedback>更多資訊</Feedback>。} other {重新整理以再試一次。}}",
     "i18nStrings.refreshActionText": "重新整理頁面"
   },
   "file-token-group": {

@@ -177,8 +177,7 @@
   },
   "error-boundary": {
     "i18nStrings.headerText": "Erro inesperado, falha na exibição do conteúdo",
-    "i18nStrings.descriptionText": "Atualize para tentar novamente.",
-    "i18nStrings.descriptionWithFeedbackText": "Atualize para tentar novamente. Estamos rastreando esse problema, mas você pode compartilhar <Feedback>mais informações aqui</Feedback>.",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Atualize para tentar novamente. Estamos rastreando esse problema, mas você pode compartilhar <Feedback>mais informações aqui</Feedback>.} other {Atualize para tentar novamente.}}",
     "i18nStrings.refreshActionText": "Atualizar página"
   },
   "file-token-group": {

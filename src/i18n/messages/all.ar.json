@@ -177,8 +177,7 @@
   },
   "error-boundary": {
     "i18nStrings.headerText": "خطأ غير متوقع، فشل عرض المحتوى",
-    "i18nStrings.descriptionText": "حدِّث الصفحة للمحاولة مرة أخرى.",
-    "i18nStrings.descriptionWithFeedbackText": "حدِّث الصفحة للمحاولة مرة أخرى. نحن نتتبع هذه المشكلة، ولكن يمكنك مشاركة <Feedback>المزيد من المعلومات هنا</Feedback>.",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {حدِّث الصفحة للمحاولة مرة أخرى. نحن نتتبع هذه المشكلة، ولكن يمكنك مشاركة <Feedback>المزيد من المعلومات هنا</Feedback>.} other {حدِّث الصفحة للمحاولة مرة أخرى.}}",
     "i18nStrings.refreshActionText": "تحديث الصفحة"
   },
   "file-token-group": {
