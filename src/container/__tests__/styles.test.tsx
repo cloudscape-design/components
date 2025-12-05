@@ -1,54 +1,48 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import {
-  getContentStyles,
-  getContentWrapperStyles,
-  getFooterStyles,
-  getHeaderStyles,
-  getMediaStyles,
-  getRootStyles,
-} from '../style';
+import { getContentStyles, getFooterStyles, getHeaderStyles, getMediaStyles, getRootStyles } from '../style';
 
 jest.mock('../../internal/environment', () => ({
   SYSTEM: 'core',
 }));
 
-describe('Container style utilities', () => {
+const allStyles = {
+  root: {
+    background: '#ffffff',
+    borderColor: '#e0e0e0',
+    borderRadius: '8px',
+    borderWidth: '1px',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+  },
+  content: {
+    paddingBlock: '16px',
+    paddingInline: '20px',
+  },
+  header: {
+    paddingBlock: '12px',
+    paddingInline: '20px',
+  },
+  footer: {
+    root: {
+      paddingBlock: '12px',
+      paddingInline: '20px',
+    },
+    divider: {
+      borderColor: '#e0e0e0',
+      borderWidth: '1px',
+    },
+  },
+};
+
+describe('getRootStyles', () => {
   afterEach(() => {
     jest.resetModules();
   });
 
-  test('getRootStyles returns empty object when style is undefined', () => {
-    expect(getRootStyles(undefined)).toEqual({});
-  });
-
-  test('getContentStyles returns empty object when style is undefined', () => {
-    expect(getContentStyles(undefined)).toEqual({});
-  });
-
-  test('getContentWrapperStyles returns empty object when style is undefined', () => {
-    expect(getContentWrapperStyles(undefined)).toEqual({});
-  });
-
-  test('getContentWrapperStyles returns borderRadius when provided', () => {
-    expect(getContentWrapperStyles({ root: { borderRadius: '20px' } })).toEqual({
-      borderRadius: '20px',
-    });
-  });
-
-  test('getHeaderStyles returns empty object when style is undefined', () => {
-    expect(getHeaderStyles(undefined)).toEqual({});
-  });
-
-  test('getFooterStyles returns empty object when style is undefined', () => {
-    expect(getFooterStyles(undefined)).toEqual({});
-  });
-
-  test('getMediaStyles returns border radius properties when style is undefined', () => {
-    expect(getMediaStyles('top', undefined)).toEqual({
-      borderEndEndRadius: '0px',
-      borderEndStartRadius: '0px',
-    });
+  test('handles all possible style configurations', () => {
+    expect(getRootStyles(undefined)).toMatchSnapshot();
+    expect(getRootStyles({})).toMatchSnapshot();
+    expect(getRootStyles(allStyles)).toMatchSnapshot();
   });
 
   test('returns empty object when SYSTEM is not core', async () => {
@@ -57,14 +51,108 @@ describe('Container style utilities', () => {
       SYSTEM: 'visual-refresh',
     }));
 
-    const styleModule = await import('../style');
-    const style = { root: { background: 'red' } };
+    const { getRootStyles: getRootStylesNonCore } = await import('../style');
 
-    expect(styleModule.getRootStyles(style)).toEqual({});
-    expect(styleModule.getContentStyles(style)).toEqual({});
-    expect(styleModule.getContentWrapperStyles(style)).toEqual({});
-    expect(styleModule.getHeaderStyles(style)).toEqual({});
-    expect(styleModule.getFooterStyles(style)).toEqual({});
-    expect(styleModule.getMediaStyles('top', style)).toEqual({});
+    const result = getRootStylesNonCore(allStyles);
+    expect(result).toEqual({});
+  });
+});
+
+describe('getContentStyles', () => {
+  afterEach(() => {
+    jest.resetModules();
+  });
+
+  test('handles all possible style configurations', () => {
+    expect(getContentStyles(undefined)).toMatchSnapshot();
+    expect(getContentStyles({})).toMatchSnapshot();
+    expect(getContentStyles(allStyles)).toMatchSnapshot();
+  });
+
+  test('returns empty object when SYSTEM is not core', async () => {
+    jest.resetModules();
+    jest.doMock('../../internal/environment', () => ({
+      SYSTEM: 'visual-refresh',
+    }));
+
+    const { getContentStyles: getContentStylesNonCore } = await import('../style');
+
+    const result = getContentStylesNonCore(allStyles);
+    expect(result).toEqual({});
+  });
+});
+
+describe('getHeaderStyles', () => {
+  afterEach(() => {
+    jest.resetModules();
+  });
+
+  test('handles all possible style configurations', () => {
+    expect(getHeaderStyles(undefined)).toMatchSnapshot();
+    expect(getHeaderStyles({})).toMatchSnapshot();
+    expect(getHeaderStyles(allStyles)).toMatchSnapshot();
+  });
+
+  test('returns empty object when SYSTEM is not core', async () => {
+    jest.resetModules();
+    jest.doMock('../../internal/environment', () => ({
+      SYSTEM: 'visual-refresh',
+    }));
+
+    const { getHeaderStyles: getHeaderStylesNonCore } = await import('../style');
+
+    const result = getHeaderStylesNonCore(allStyles);
+    expect(result).toEqual({});
+  });
+});
+
+describe('getFooterStyles', () => {
+  afterEach(() => {
+    jest.resetModules();
+  });
+
+  test('handles all possible style configurations', () => {
+    expect(getFooterStyles(undefined)).toMatchSnapshot();
+    expect(getFooterStyles({})).toMatchSnapshot();
+    expect(getFooterStyles(allStyles)).toMatchSnapshot();
+  });
+
+  test('returns empty object when SYSTEM is not core', async () => {
+    jest.resetModules();
+    jest.doMock('../../internal/environment', () => ({
+      SYSTEM: 'visual-refresh',
+    }));
+
+    const { getFooterStyles: getFooterStylesNonCore } = await import('../style');
+
+    const result = getFooterStylesNonCore(allStyles);
+    expect(result).toEqual({});
+  });
+});
+
+describe('getMediaStyles', () => {
+  afterEach(() => {
+    jest.resetModules();
+  });
+
+  test('handles all possible style configurations', () => {
+    expect(getMediaStyles('top', undefined)).toMatchSnapshot();
+    expect(getMediaStyles('top', {})).toMatchSnapshot();
+    expect(getMediaStyles('top', allStyles)).toMatchSnapshot();
+    expect(getMediaStyles('side', undefined)).toMatchSnapshot();
+    expect(getMediaStyles('side', {})).toMatchSnapshot();
+    expect(getMediaStyles('side', allStyles)).toMatchSnapshot();
+  });
+
+  test('returns empty object when SYSTEM is not core', async () => {
+    jest.resetModules();
+    jest.doMock('../../internal/environment', () => ({
+      SYSTEM: 'visual-refresh',
+    }));
+
+    const { getMediaStyles: getMediaStylesNonCore } = await import('../style');
+
+    const result = getMediaStylesNonCore('top', allStyles);
+    expect(result).toEqual({});
   });
 });

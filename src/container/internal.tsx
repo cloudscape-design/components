@@ -14,14 +14,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { ContainerProps } from './interfaces';
-import {
-  getContentStyles,
-  getContentWrapperStyles,
-  getFooterStyles,
-  getHeaderStyles,
-  getMediaStyles,
-  getRootStyles,
-} from './style';
+import { getContentStyles, getFooterStyles, getHeaderStyles, getMediaStyles, getRootStyles } from './style';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -151,7 +144,6 @@ export default function InternalContainer({
         id={contentId}
         ref={__subStepRef}
         className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}
-        style={getContentWrapperStyles(style)}
       >
         {header && (
           <ContainerHeaderContextProvider>

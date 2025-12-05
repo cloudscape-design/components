@@ -28,16 +28,6 @@ export function getContentStyles(style: ContainerProps.Style | undefined) {
   };
 }
 
-export function getContentWrapperStyles(style: ContainerProps.Style | undefined) {
-  if (SYSTEM !== 'core') {
-    return {};
-  }
-
-  return {
-    borderRadius: style?.root?.borderRadius,
-  };
-}
-
 export function getHeaderStyles(style: ContainerProps.Style | undefined) {
   if (SYSTEM !== 'core') {
     return {};
