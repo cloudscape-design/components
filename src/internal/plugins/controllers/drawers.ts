@@ -46,11 +46,6 @@ export interface DrawerConfig {
   onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
   // Do not use directly
   __features?: Array<Feature>;
-  __featurePrompt?: FeaturePrompt;
-}
-
-export interface FeaturePrompt extends Feature {
-  defaultActive?: boolean;
 }
 
 export interface Feature {
@@ -61,6 +56,7 @@ export interface Feature {
 }
 
 interface FeatureNotificationsConfig {
+  id: string;
   type?: 'local' | 'global';
   features: Array<Feature>;
 }
@@ -238,16 +234,11 @@ export class DrawersController {
 
   registerFeatureNotificationsDrawer = (config: FeatureNotificationsConfig) => {
     this.registerDrawer({
-      id:
-        config?.type === 'local' || !config?.type
-          ? 'local-features-notifications-drawer'
-          : 'global-features-notifications-drawer',
+      id: config.id,
       type: config.type,
       defaultActive: false,
       resizable: true,
       defaultSize: 320,
-
-      isExpandable: true,
 
       ariaLabels: {
         closeButton: 'Close button',
