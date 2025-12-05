@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { RefObject, useCallback, useEffect, useState } from 'react';
+import { RefObject, useCallback, useLayoutEffect, useState } from 'react';
+
+import { throttle } from '../internal/utils/throttle';
 
 // Minimum scrollable space is the space other than the sticky content, for instance for a sticky footer it's the
-// the space other than htat, which would be drawer height minus footer height.
+// the space other than that, which would be drawer height minus footer height.
 export const MINIMUM_SCROLLABLE_SPACE = 148;
+const STICKY_STATE_CHECK_THROTTLE_DELAY = 100; // every tenth of a second
 
 export function useStickyFooter({
   drawerRef,
@@ -16,26 +19,29 @@ export function useStickyFooter({
 }) {
   const [isSticky, setIsSticky] = useState(true);
 
-  const checkStickyState = useCallback(() => {
-    if (!drawerRef.current || !footerRef.current) {
-      return;
-    }
+  const checkStickyState = throttle(
+    useCallback(() => {
+      if (!drawerRef.current || !footerRef.current) {
+        return;
+      }
 
-    const parentElement = drawerRef.current.parentElement;
-    const parentElementHeight = parentElement?.getBoundingClientRect().height;
-    const drawerHeight = drawerRef.current.getBoundingClientRect().height;
-    const effectiveHeight = Math.min(parentElementHeight ?? drawerHeight, drawerHeight);
+      const parentElement = drawerRef.current.parentElement;
+      const parentElementHeight = parentElement?.getBoundingClientRect().height;
+      const drawerHeight = drawerRef.current.getBoundingClientRect().height;
+      const effectiveHeight = Math.min(parentElementHeight ?? drawerHeight, drawerHeight);
 
-    // take minimum of drawer and parent height
-    const footerHeight = footerRef.current.getBoundingClientRect().height;
+      // take minimum of drawer and parent height
+      const footerHeight = footerRef.current.getBoundingClientRect().height;
 
-    const scrollableHeight = effectiveHeight - footerHeight;
-    const hasEnoughSpace = scrollableHeight >= MINIMUM_SCROLLABLE_SPACE;
+      const scrollableHeight = effectiveHeight - footerHeight;
+      const hasEnoughSpace = scrollableHeight >= MINIMUM_SCROLLABLE_SPACE;
 
-    setIsSticky(hasEnoughSpace);
-  }, [footerRef, drawerRef]);
+      setIsSticky(hasEnoughSpace);
+    }, [footerRef, drawerRef]),
+    STICKY_STATE_CHECK_THROTTLE_DELAY
+  );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // for server rendering
     if (typeof window === 'undefined') {
       return;
@@ -44,7 +50,10 @@ export function useStickyFooter({
     window.addEventListener('resize', checkStickyState);
     checkStickyState();
 
-    return () => window.removeEventListener('resize', checkStickyState);
+    return () => {
+      window.removeEventListener('resize', checkStickyState);
+      checkStickyState.cancel();
+    };
   }, [checkStickyState]);
 
   return { isSticky };
