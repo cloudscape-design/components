@@ -63,17 +63,30 @@ export function useVirtual<Item extends object>({
 
   const virtualItems = useMemo(
     () =>
-      rowVirtualizer.virtualItems.map(virtualItem => ({
-        ...virtualItem,
-        measureRef: (node: null | HTMLElement) => {
-          const mountedCount = measuresCache.current.get(items[virtualItem.index]) ?? 0;
-          if (mountedCount < MAX_ITEM_MOUNTS) {
-            virtualItem.measureRef(node);
-            measuresCache.current.set(items[virtualItem.index], mountedCount + 1);
-          }
-        },
-      })),
-    [items, rowVirtualizer.virtualItems]
+      rowVirtualizer.virtualItems.map((virtualItem, index) => {
+        let adjustedStart: number;
+
+        if (firstItemSticky && virtualItem.index === 0) {
+          adjustedStart = virtualItem.start + 1;
+        } else if (firstItemSticky) {
+          adjustedStart = virtualItem.start + 2 - index * itemOverlap;
+        } else {
+          adjustedStart = virtualItem.start - index * itemOverlap;
+        }
+
+        return {
+          ...virtualItem,
+          start: adjustedStart,
+          measureRef: (node: null | HTMLElement) => {
+            const mountedCount = measuresCache.current.get(items[virtualItem.index]) ?? 0;
+            if (mountedCount < MAX_ITEM_MOUNTS) {
+              virtualItem.measureRef(node);
+              measuresCache.current.set(items[virtualItem.index], mountedCount + 1);
+            }
+          },
+        };
+      }),
+    [items, rowVirtualizer.virtualItems, firstItemSticky, itemOverlap]
   );
 
   // Adjust totalSize to account for 1px overlap per item When firstItemSticky
