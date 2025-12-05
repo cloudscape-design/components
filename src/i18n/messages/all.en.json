@@ -242,6 +242,10 @@
     "ariaLabels.pageLabel": "Page {pageNumber} of all pages",
     "ariaLabels.previousPageLabel": "Previous page"
   },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "Panel resize handle",
+    "i18nStrings.resizeHandleTooltipText": "Drag or select to resize"
+  },
   "pie-chart": {
     "i18nStrings.detailsValue": "Value",
     "i18nStrings.detailsPercentage": "Percentage",

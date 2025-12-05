@@ -582,6 +582,12 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_rjqu5",
     "awsui_slider_rjqu5",
   ],
+  "split-view": [
+    "awsui_content_cz4sm",
+    "awsui_panel_cz4sm",
+    "awsui_root_cz4sm",
+    "awsui_slider_cz4sm",
+  ],
   "status-indicator": [
     "awsui_root_1cbgc",
   ],

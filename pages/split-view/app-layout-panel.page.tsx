@@ -1,0 +1,203 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useContext, useState } from 'react';
+
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
+import { Checkbox, Drawer, FormField, Header, Input, SegmentedControl, SpaceBetween } from '~components';
+import AppLayout from '~components/app-layout';
+import Button from '~components/button';
+import { I18nProvider } from '~components/i18n';
+import messages from '~components/i18n/messages/all.en';
+import SplitView, { SplitViewProps } from '~components/split-view';
+
+import AppContext, { AppContextType } from '../app/app-context';
+import labels from '../app-layout/utils/labels';
+import ScreenshotArea from '../utils/screenshot-area';
+
+interface SplitViewContentProps {
+  longPanelContent: boolean;
+  longMainContent: boolean;
+  minPanelSize: number;
+  maxPanelSize: number;
+  minContentSize: number;
+  display: SplitViewProps.Display;
+  panelPosition: SplitViewProps.PanelPosition;
+}
+type PageContext = React.Context<AppContextType<Partial<SplitViewContentProps>>>;
+
+const SplitViewContent = ({
+  longPanelContent,
+  longMainContent,
+  minContentSize,
+  minPanelSize,
+  maxPanelSize,
+  display,
+  panelPosition,
+}: SplitViewContentProps) => {
+  const [size, setSize] = useState(Math.max(200, minPanelSize));
+
+  const [_actualMaxPanelSize, ref] = useContainerQuery(
+    entry => Math.min(entry.contentBoxWidth - minContentSize, maxPanelSize),
+    [minContentSize, maxPanelSize]
+  );
+  const actualMaxPanelSize = _actualMaxPanelSize ?? maxPanelSize;
+  const actualSize = Math.min(size, actualMaxPanelSize);
+
+  const collapsed = actualMaxPanelSize < minPanelSize;
+
+  return (
+    <div ref={ref} style={{ height: '100%', overflow: 'hidden', backgroundColor: 'lightgrey' }}>
+      {collapsed ? (
+        'Collapsed view'
+      ) : (
+        <SplitView
+          panelSize={actualSize}
+          minPanelSize={minPanelSize}
+          maxPanelSize={actualMaxPanelSize}
+          resizable={true}
+          onPanelResize={({ detail }) => setSize(detail.panelSize)}
+          display={display}
+          panelPosition={panelPosition}
+          panelContent={
+            <>
+              <Header>Panel content</Header>
+              {new Array(longPanelContent ? 20 : 1)
+                .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+                .map((t, i) => (
+                  <div key={i}>{t}</div>
+                ))}
+              <Button>Button</Button>
+            </>
+          }
+          mainContent={
+            <>
+              <Header>Main content</Header>
+              {new Array(longMainContent ? 200 : 1)
+                .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+                .map((t, i) => (
+                  <div key={i}>{t}</div>
+                ))}
+              <Button>button</Button>
+            </>
+          }
+        />
+      )}
+    </div>
+  );
+};
+
+export default function SplitViewPage() {
+  const {
+    urlParams: {
+      longPanelContent = false,
+      longMainContent = false,
+      minPanelSize = 200,
+      maxPanelSize = 600,
+      minContentSize = 600,
+      display = 'all',
+      panelPosition = 'side-start',
+    },
+    setUrlParams,
+  } = useContext(AppContext as PageContext);
+
+  return (
+    <I18nProvider messages={[messages]} locale="en">
+      <ScreenshotArea disableAnimations={true} gutters={false}>
+        <AppLayout
+          ariaLabels={labels}
+          navigation={
+            <Drawer header="Settings">
+              <SpaceBetween direction="vertical" size="m">
+                <Checkbox
+                  checked={longMainContent}
+                  onChange={({ detail }) => setUrlParams({ longMainContent: detail.checked })}
+                >
+                  Long main content
+                </Checkbox>
+                <Checkbox
+                  checked={longPanelContent}
+                  onChange={({ detail }) => setUrlParams({ longPanelContent: detail.checked })}
+                >
+                  Long panel content
+                </Checkbox>
+                <FormField label="Minimum panel size">
+                  <Input
+                    type="number"
+                    value={minPanelSize.toString()}
+                    onChange={({ detail }) => setUrlParams({ minPanelSize: detail.value ? parseInt(detail.value) : 0 })}
+                  />
+                </FormField>
+                <FormField label="Maximum panel size">
+                  <Input
+                    type="number"
+                    value={maxPanelSize.toString()}
+                    onChange={({ detail }) =>
+                      setUrlParams({ maxPanelSize: detail.value ? parseInt(detail.value) : Number.MAX_SAFE_INTEGER })
+                    }
+                  />
+                </FormField>
+                <FormField label="Minimum content size">
+                  <Input
+                    type="number"
+                    value={minContentSize.toString()}
+                    onChange={({ detail }) =>
+                      setUrlParams({ minContentSize: detail.value ? parseInt(detail.value) : 0 })
+                    }
+                  />
+                </FormField>
+                <FormField label="Panel position">
+                  <SegmentedControl
+                    options={[
+                      { id: 'side-start', text: 'side-start' },
+                      { id: 'side-end', text: 'side-end' },
+                    ]}
+                    selectedId={panelPosition}
+                    onChange={({ detail }) => setUrlParams({ panelPosition: detail.selectedId as any })}
+                  />
+                </FormField>
+                <FormField label="Display">
+                  <SegmentedControl
+                    options={[
+                      { id: 'all', text: 'all' },
+                      { id: 'panel-only', text: 'panel-only' },
+                      { id: 'main-only', text: 'main-only' },
+                    ]}
+                    selectedId={display}
+                    onChange={({ detail }) => setUrlParams({ display: detail.selectedId as any })}
+                  />
+                </FormField>
+              </SpaceBetween>
+            </Drawer>
+          }
+          content={<Header variant="h1">Split view in drawer demo</Header>}
+          drawers={[
+            {
+              id: 'panel',
+              content: (
+                <SplitViewContent
+                  longMainContent={longMainContent}
+                  longPanelContent={longPanelContent}
+                  minPanelSize={minPanelSize}
+                  maxPanelSize={maxPanelSize}
+                  minContentSize={minContentSize}
+                  display={display}
+                  panelPosition={panelPosition}
+                />
+              ),
+              resizable: true,
+              defaultSize: 1000,
+              ariaLabels: {
+                drawerName: 'Panel',
+                triggerButton: 'Open panel',
+                closeButton: 'Close panel',
+                resizeHandle: 'Resize drawer',
+              },
+              trigger: { iconName: 'contact' },
+            },
+          ]}
+        />
+      </ScreenshotArea>
+    </I18nProvider>
+  );
+}

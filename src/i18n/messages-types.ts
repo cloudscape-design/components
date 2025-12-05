@@ -315,6 +315,10 @@ export interface I18nFormatArgTypes {
     }
     "ariaLabels.previousPageLabel": never;
   }
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": never;
+    "i18nStrings.resizeHandleTooltipText": never;
+  }
   "pie-chart": {
     "i18nStrings.detailsValue": never;
     "i18nStrings.detailsPercentage": never;
