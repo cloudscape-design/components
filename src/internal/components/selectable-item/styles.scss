@@ -253,6 +253,9 @@
     &:first-of-type:not(.selected, .highlighted) {
       border-block-start-color: awsui.$color-border-dropdown-item-top;
     }
+    &.selected {
+      padding-block-end: awsui.$border-dropdown-virtual-offset-width;
+    }
   }
 }
 
@@ -264,15 +267,17 @@
   inset-block-start: 0;
   inset-inline-start: 0;
   padding-block-start: awsui.$border-divider-list-width;
+
   &-first {
     padding-block-end: awsui.$border-divider-list-width;
   }
 }
-.selectable-item.virtual.highlighted,
-.selectable-item.virtual.selected {
-  > .measure-strut {
-    padding-block-start: calc(awsui.$border-divider-list-width + 2px);
-  }
+
+// Virtual items and select-all items need additional top padding for proper spacing
+.selectable-item.virtual.highlighted:not(.selected) > .measure-strut,
+.selectable-item.select-all:has(+ .selectable-item.virtual).highlighted > .measure-strut,
+.selectable-item.select-all:has(+ .selectable-item.virtual).selected > .measure-strut {
+  padding-block-start: calc(awsui.$border-divider-list-width + awsui.$border-dropdown-virtual-offset-width);
 }
 
 .screenreader-content {
