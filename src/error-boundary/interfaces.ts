@@ -49,7 +49,7 @@ export interface ErrorBoundaryProps {
   i18nStrings?: ErrorBoundaryProps.I18nStrings;
 
   /**
-   * Content, rendered when no error is captured.
+   * Content rendered when no error is captured.
    */
   children: React.ReactNode;
 }

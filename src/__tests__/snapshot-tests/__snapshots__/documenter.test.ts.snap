@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Components definition for alert matches the snapshot: alert 1`] = `
 {
@@ -11484,7 +11484,7 @@ case, any error originating from the error boundary content will be captured by 
   ],
   "regions": [
     {
-      "description": "Content, rendered when no error is captured.",
+      "description": "Content rendered when no error is captured.",
       "isDefault": true,
       "name": "children",
     },

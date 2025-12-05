@@ -24,7 +24,7 @@ console.error = () => {};
 
 export default function () {
   return (
-    <SimplePage title="Error boundary fallbacks" i18n={{}}>
+    <SimplePage title="Error boundary fallbacks" i18n={{}} screenshotArea={{}}>
       <SpaceBetween size="l">
         <Section title="Default">
           <Example code="{}" />
