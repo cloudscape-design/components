@@ -70,6 +70,8 @@ function RuntimeDrawerWrapper({ mountContent, unmountContent, id }: RuntimeConte
 }
 
 function RuntimeFeaturesNotificationDrawer({ features }: { features: Array<Feature> }) {
+  // const showFeaturePrompt = __features && __features?.length > 0;
+  // TODO show the feature prompt
   return (
     // TODO i18n strings
     <InternalDrawer header="Latest feature releases">
@@ -177,8 +179,7 @@ export const mapRuntimeConfigToDrawer = (
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
 } => {
-  const { trigger, __features, ...runtimeDrawer } = runtimeConfig;
-  const showFeaturePrompt = __features && __features?.length > 0;
+  const { trigger, ...runtimeDrawer } = runtimeConfig;
 
   return {
     ...runtimeDrawer,
@@ -193,14 +194,6 @@ export const mapRuntimeConfigToDrawer = (
           }),
         }
       : undefined,
-    ...(showFeaturePrompt && {
-      featurePrompt: {
-        visible: true,
-        header: __features[0].header,
-        content: __features[0].content,
-        dismissAriaLabel: 'dismissAriaLabel',
-      },
-    }),
     content: renderContent(runtimeConfig),
     onResize: event => {
       fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
