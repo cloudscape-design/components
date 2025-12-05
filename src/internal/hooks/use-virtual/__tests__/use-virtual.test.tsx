@@ -6,7 +6,6 @@ import { render } from '@testing-library/react';
 
 import { useVirtual } from '../index';
 
-// Mock the vendor react-virtual to avoid ES module issues
 jest.mock('../../../vendor/react-virtual', () => ({
   useVirtual: jest.fn(),
 }));
@@ -128,5 +127,95 @@ describe('useVirtual', () => {
     expect(capturedResult).not.toBeNull();
     // totalSize = 160 - (3 items * 1 overlap) - 60 (firstItemSize) + 2 = 99
     expect(capturedResult!.totalSize).toBe(99);
+  });
+
+  test('calculates item positions without itemOverlap=0', () => {
+    const items: TestItem[] = [{ id: '1' }, { id: '2' }, { id: '3' }];
+
+    mockUseVirtual.mockReturnValue({
+      virtualItems: [
+        { index: 0, size: 50, start: 0, end: 50, measureRef: mockMeasureRef },
+        { index: 1, size: 50, start: 50, end: 100, measureRef: mockMeasureRef },
+        { index: 2, size: 50, start: 100, end: 150, measureRef: mockMeasureRef },
+      ],
+      totalSize: 150,
+      scrollToIndex: mockScrollToIndex,
+    });
+
+    let capturedResult: ReturnType<typeof useVirtual<TestItem>> | null = null;
+    render(<TestComponent items={items} onResult={result => (capturedResult = result)} />);
+
+    expect(capturedResult!.virtualItems[0].start).toBe(0);
+    expect(capturedResult!.virtualItems[1].start).toBe(50);
+    expect(capturedResult!.virtualItems[2].start).toBe(100);
+  });
+
+  test('calculates item positions with itemOverlap=1', () => {
+    const items: TestItem[] = [{ id: '1' }, { id: '2' }, { id: '3' }];
+
+    mockUseVirtual.mockReturnValue({
+      virtualItems: [
+        { index: 0, size: 50, start: 0, end: 50, measureRef: mockMeasureRef },
+        { index: 1, size: 50, start: 50, end: 100, measureRef: mockMeasureRef },
+        { index: 2, size: 50, start: 100, end: 150, measureRef: mockMeasureRef },
+      ],
+      totalSize: 150,
+      scrollToIndex: mockScrollToIndex,
+    });
+
+    let capturedResult: ReturnType<typeof useVirtual<TestItem>> | null = null;
+    render(<TestComponent items={items} itemOverlap={1} onResult={result => (capturedResult = result)} />);
+
+    expect(capturedResult!.virtualItems[0].start).toBe(0);
+    expect(capturedResult!.virtualItems[1].start).toBe(49);
+    expect(capturedResult!.virtualItems[2].start).toBe(98);
+  });
+
+  test('calculates item positions with sticky first item and itemOverlap=0', () => {
+    const items: TestItem[] = [{ id: '1' }, { id: '2' }, { id: '3' }];
+
+    mockUseVirtual.mockReturnValue({
+      virtualItems: [
+        { index: 0, size: 60, start: 0, end: 60, measureRef: mockMeasureRef },
+        { index: 1, size: 50, start: 60, end: 110, measureRef: mockMeasureRef },
+        { index: 2, size: 50, start: 110, end: 160, measureRef: mockMeasureRef },
+      ],
+      totalSize: 160,
+      scrollToIndex: mockScrollToIndex,
+    });
+
+    let capturedResult: ReturnType<typeof useVirtual<TestItem>> | null = null;
+    render(<TestComponent items={items} firstItemSticky={true} onResult={result => (capturedResult = result)} />);
+
+    expect(capturedResult!.virtualItems[1].start).toBe(62);
+    expect(capturedResult!.virtualItems[2].start).toBe(112);
+  });
+
+  test('calculates item positions with sticky first item and itemOverlap=1', () => {
+    const items: TestItem[] = [{ id: '1' }, { id: '2' }, { id: '3' }];
+
+    mockUseVirtual.mockReturnValue({
+      virtualItems: [
+        { index: 0, size: 60, start: 0, end: 60, measureRef: mockMeasureRef },
+        { index: 1, size: 50, start: 60, end: 110, measureRef: mockMeasureRef },
+        { index: 2, size: 50, start: 110, end: 160, measureRef: mockMeasureRef },
+      ],
+      totalSize: 160,
+      scrollToIndex: mockScrollToIndex,
+    });
+
+    let capturedResult: ReturnType<typeof useVirtual<TestItem>> | null = null;
+    render(
+      <TestComponent
+        items={items}
+        firstItemSticky={true}
+        itemOverlap={1}
+        onResult={result => (capturedResult = result)}
+      />
+    );
+
+    expect(capturedResult!.virtualItems[0].start).toBe(1);
+    expect(capturedResult!.virtualItems[1].start).toBe(61);
+    expect(capturedResult!.virtualItems[2].start).toBe(110);
   });
 });
