@@ -11492,7 +11492,7 @@ case, any error originating from the error boundary content will be captured by 
   ],
   "regions": [
     {
-      "description": "Content, rendered when no error is captured.",
+      "description": "Content rendered when no error is captured.",
       "isDefault": true,
       "name": "children",
     },

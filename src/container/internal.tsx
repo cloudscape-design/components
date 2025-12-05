@@ -156,6 +156,7 @@ export default function InternalContainer({
         key={__contentKey}
         className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}
       >
+        {/* We use a wrapper around the boundary to preserve container's paddings. */}
         <BuiltInErrorBoundary wrapper={content => <InternalBox padding="m">{content}</InternalBox>}>
           {header && (
             <ContainerHeaderContextProvider>
@@ -197,6 +198,9 @@ export default function InternalContainer({
               })}
               style={getContentStyles(style)}
             >
+              {/* We use a wrapper around the boundary to preserve paddings in case they were disabled by the consumer.
+              That is needed because the consumer-defined paddings that normally come with the content can no longer
+              apply since the content failed to render. */}
               <BuiltInErrorBoundary
                 wrapper={content => (
                   <InternalBox padding={disableContentPaddings ? 'm' : undefined}>{content}</InternalBox>
