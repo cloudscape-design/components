@@ -5,7 +5,7 @@ import React from 'react';
 
 import { Box, SpaceBetween } from '~components';
 import I18nProvider, { I18nProviderProps } from '~components/i18n';
-import messages from '~components/i18n/messages/all.en';
+import messages from '~components/i18n/messages/all.all';
 
 import { IframeWrapper } from '../utils/iframe-wrapper';
 import ScreenshotArea, { ScreenshotAreaProps } from '../utils/screenshot-area';
@@ -48,7 +48,7 @@ export function SimplePage({ title, subtitle, settings, children, screenshotArea
   );
 
   content = i18n ? (
-    <I18nProvider messages={[messages]} locale="en-GB" {...i18n}>
+    <I18nProvider messages={[messages]} locale="en" {...i18n}>
       {content}
     </I18nProvider>
   ) : (
