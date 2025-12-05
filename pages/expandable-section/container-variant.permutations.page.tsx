@@ -19,6 +19,8 @@ const permutations = createPermutations<ExpandableSectionProps>([
     ],
     headerInfo: [undefined, headerInfo],
     headerActions: [undefined, headerActions],
+    footer: ['Expandable section footer value', undefined],
+    disableContentPaddings: [true, false],
   },
   {
     headerCounter: ['(5)'],
