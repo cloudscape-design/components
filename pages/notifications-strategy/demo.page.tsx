@@ -13,7 +13,6 @@ import {
   FormField,
   Icon,
   Link,
-  List,
   Modal,
   Popover,
   Select,
@@ -64,66 +63,6 @@ const createStatusNotifications = (onDismiss: (id: string) => void): readonly Fl
   },
 ];
 
-const featureNotifications = [
-  {
-    id: 'feature-1',
-    header: (
-      <Box fontWeight="bold">
-        <Icon name="history" /> Improved tracking
-      </Box>
-    ),
-    content: (
-      <div>
-        <Box variant="p">
-          It is now possible to see event propagation history from event detail. Learn more in the{' '}
-          <Link href="#">Events management</Link>.
-        </Box>
-        <Box fontSize="body-s" color="text-body-secondary">
-          Released less than 48 hours ago!
-        </Box>
-      </div>
-    ),
-  },
-  {
-    id: 'feature-2',
-    header: (
-      <Box fontWeight="bold">
-        <Icon name="gen-ai" /> Smart priority evaluation
-      </Box>
-    ),
-    content: (
-      <div>
-        <Box variant="p">
-          We can now order events by priority using our new agentic AI solution! Learn how to configure it for your
-          needs in the <Link href="#">Smart tools</Link>.
-        </Box>
-        <Box fontSize="body-s" color="text-body-secondary">
-          Released 8 days ago
-        </Box>
-      </div>
-    ),
-  },
-  {
-    id: 'feature-3',
-    header: (
-      <Box fontWeight="bold">
-        <Icon name="gen-ai" /> Smart descriptions
-      </Box>
-    ),
-    content: (
-      <div>
-        <Box variant="p">
-          We can now generate event descriptions which summarize event properties, propagation metrics, and comments.
-          Refer to <Link href="#">Smart tools</Link> to learn how to turn this on and customize.
-        </Box>
-        <Box fontSize="body-s" color="text-body-secondary">
-          Released 29 days ago
-        </Box>
-      </div>
-    ),
-  },
-];
-
 const featureNotificationTypeOptions: SelectProps.Option[] = [
   {
     value: 'global',
@@ -154,6 +93,7 @@ const activeDrawerOptions: SelectProps.Option[] = [
 ];
 
 awsuiPlugins.appLayout.registerFeatureNotificationsDrawer({
+  id: 'local-feature-notifications',
   features: [
     {
       id: '1',
@@ -206,44 +146,9 @@ export default function () {
     );
   }, [setHeader]);
 
-  const [hasNewNotifications, setHasNewNotifications] = useState(true);
   const drawersProps: Pick<AppLayoutToolbarProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> = {
     activeDrawerId: activeDrawerId,
     drawers: [
-      {
-        id: 'service-notifications',
-        resizable: true,
-        badge: hasNewNotifications,
-        ariaLabels: {
-          closeButton: 'Close feature notifications',
-          drawerName: 'Feature notifications',
-          triggerButton: 'Toggle feature notifications',
-          resizeHandle: 'Resize feature notifications panel',
-        },
-        content: (
-          <Drawer header="Latest feature releases">
-            <SpaceBetween size="m">
-              <Box>Features released less than 30 days ago</Box>
-
-              <List
-                items={featureNotifications}
-                renderItem={item => ({ id: item.id, content: item.header, secondaryContent: item.content })}
-              />
-
-              <Link
-                href="#"
-                onFollow={event => {
-                  event.preventDefault();
-                  setWhatsNewOpened(true);
-                }}
-              >
-                See all feature releases
-              </Link>
-            </SpaceBetween>
-          </Drawer>
-        ),
-        trigger: { iconName: 'suggestions' },
-      },
       {
         id: 'tools',
         resizable: true,
@@ -259,9 +164,6 @@ export default function () {
     ],
     onDrawerChange: event => {
       setUrlParams({ activeDrawerId: event.detail.activeDrawerId as any });
-      if (event.detail.activeDrawerId === 'service-notifications') {
-        setHasNewNotifications(false);
-      }
     },
   };
 
@@ -313,8 +215,12 @@ export default function () {
           // TODO handle focus
         }}
         position="left"
-        header={featureNotifications[0].header}
-        content={featureNotifications[0].content}
+        header={<div>Improved tracking</div>}
+        content={
+          <div>
+            It is now possible to see event propagation history from event detail. Learn more in the Events management.
+          </div>
+        }
         getTrack={() => document.querySelector('[data-testid="awsui-app-layout-trigger-service-notifications"]')}
         trackKey="awsui-app-layout-trigger-service-notifications"
       />
