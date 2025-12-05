@@ -60,7 +60,7 @@ describe('useVirtual', () => {
     jest.clearAllMocks();
   });
 
-  test('adjusts totalSize with itemOverlap', () => {
+  test('computes totalSize with itemOverlap=1', () => {
     const items: TestItem[] = [{ id: '1' }, { id: '2' }, { id: '3' }];
 
     // Mock react-virtual to return 3 items with size 50 each, total 150
@@ -82,7 +82,7 @@ describe('useVirtual', () => {
     expect(capturedResult!.totalSize).toBe(147);
   });
 
-  test('adjusts totalSize with no itemOverlap', () => {
+  test('computes totalSize with itemOverlap=0', () => {
     const items: TestItem[] = [{ id: '1' }, { id: '2' }];
 
     mockUseVirtual.mockReturnValue({
@@ -98,12 +98,11 @@ describe('useVirtual', () => {
     let capturedResult: ReturnType<typeof useVirtual<TestItem>> | null = null;
     render(<TestComponent items={items} onResult={result => (capturedResult = result)} />);
 
-    expect(capturedResult).not.toBeNull();
     // totalSize = 150 - (3 items * 0 overlap) = 150
     expect(capturedResult!.totalSize).toBe(150);
   });
 
-  test('adjusts totalSize differently with firstItemSticky', () => {
+  test('subtracts sticky item size from totalSize', () => {
     const items: TestItem[] = [{ id: '1' }, { id: '2' }, { id: '3' }];
 
     mockUseVirtual.mockReturnValue({

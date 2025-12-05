@@ -1,13 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { Multiselect, MultiselectProps, SegmentedControl, SpaceBetween } from '~components';
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
 import Select, { SelectProps } from '~components/select';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
+
+type DemoContext = React.Context<AppContextType<{ type?: string }>>;
 
 const options: SelectProps.Options = Array.from({ length: 1000 }, (_, i) => ({
   value: `${i}`,
@@ -20,7 +23,9 @@ const autosuggestOptions: AutosuggestProps.Options = Array.from({ length: 1000 }
 }));
 
 export default function () {
-  const [selectedType, setSelectedType] = useState('select');
+  const { urlParams } = useContext(AppContext as DemoContext);
+  const [selectedType, setSelectedType] = useState(urlParams.type || 'select');
+
   const [selected, setSelected] = useState<SelectProps['selectedOption']>(null);
   const [selectedMulti, setSelectedMulti] = useState<MultiselectProps.Options>(options.slice(0, 2));
   const [selectedMultiWithSelectAll, setSelectedMultiWithSelectAll] = useState<MultiselectProps.Options>([]);
