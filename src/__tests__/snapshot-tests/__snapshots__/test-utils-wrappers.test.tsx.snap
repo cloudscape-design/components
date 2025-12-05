@@ -76,6 +76,7 @@ import SliderWrapper from './slider';
 import SpaceBetweenWrapper from './space-between';
 import SpinnerWrapper from './spinner';
 import SplitPanelWrapper from './split-panel';
+import SplitViewWrapper from './split-view';
 import StatusIndicatorWrapper from './status-indicator';
 import StepsWrapper from './steps';
 import TableWrapper from './table';
@@ -163,6 +164,7 @@ export { SliderWrapper };
 export { SpaceBetweenWrapper };
 export { SpinnerWrapper };
 export { SplitPanelWrapper };
+export { SplitViewWrapper };
 export { StatusIndicatorWrapper };
 export { StepsWrapper };
 export { TableWrapper };
@@ -1459,6 +1461,25 @@ findSplitPanel(selector?: string): SplitPanelWrapper | null;
  */
 findAllSplitPanels(selector?: string): Array<SplitPanelWrapper>;
 /**
+ * Returns the wrapper of the first SplitView that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first SplitView.
+ * If no matching SplitView is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {SplitViewWrapper | null}
+ */
+findSplitView(selector?: string): SplitViewWrapper | null;
+
+/**
+ * Returns an array of SplitView wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the SplitViews inside the current wrapper.
+ * If no matching SplitView is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<SplitViewWrapper>}
+ */
+findAllSplitViews(selector?: string): Array<SplitViewWrapper>;
+/**
  * Returns the wrapper of the first StatusIndicator that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first StatusIndicator.
  * If no matching StatusIndicator is found, returns \`null\`.
@@ -2675,6 +2696,19 @@ ElementWrapper.prototype.findSplitPanel = function(selector) {
 ElementWrapper.prototype.findAllSplitPanels = function(selector) {
   return this.findAllComponents(SplitPanelWrapper, selector);
 };
+ElementWrapper.prototype.findSplitView = function(selector) {
+  let rootSelector = \`.\${SplitViewWrapper.rootSelector}\`;
+  if("legacyRootSelector" in SplitViewWrapper && SplitViewWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${SplitViewWrapper.rootSelector}, .\${SplitViewWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SplitViewWrapper);
+};
+
+ElementWrapper.prototype.findAllSplitViews = function(selector) {
+  return this.findAllComponents(SplitViewWrapper, selector);
+};
 ElementWrapper.prototype.findStatusIndicator = function(selector) {
   let rootSelector = \`.\${StatusIndicatorWrapper.rootSelector}\`;
   if("legacyRootSelector" in StatusIndicatorWrapper && StatusIndicatorWrapper.legacyRootSelector){
@@ -2996,6 +3030,7 @@ import SliderWrapper from './slider';
 import SpaceBetweenWrapper from './space-between';
 import SpinnerWrapper from './spinner';
 import SplitPanelWrapper from './split-panel';
+import SplitViewWrapper from './split-view';
 import StatusIndicatorWrapper from './status-indicator';
 import StepsWrapper from './steps';
 import TableWrapper from './table';
@@ -3083,6 +3118,7 @@ export { SliderWrapper };
 export { SpaceBetweenWrapper };
 export { SpinnerWrapper };
 export { SplitPanelWrapper };
+export { SplitViewWrapper };
 export { StatusIndicatorWrapper };
 export { StepsWrapper };
 export { TableWrapper };
@@ -4244,6 +4280,23 @@ findSplitPanel(selector?: string): SplitPanelWrapper;
  * @returns {MultiElementWrapper<SplitPanelWrapper>}
  */
 findAllSplitPanels(selector?: string): MultiElementWrapper<SplitPanelWrapper>;
+/**
+ * Returns a wrapper that matches the SplitViews with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches SplitViews.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {SplitViewWrapper}
+ */
+findSplitView(selector?: string): SplitViewWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches SplitViews with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches SplitViews.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<SplitViewWrapper>}
+ */
+findAllSplitViews(selector?: string): MultiElementWrapper<SplitViewWrapper>;
 /**
  * Returns a wrapper that matches the StatusIndicators with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches StatusIndicators.
@@ -5424,6 +5477,19 @@ ElementWrapper.prototype.findSplitPanel = function(selector) {
 
 ElementWrapper.prototype.findAllSplitPanels = function(selector) {
   return this.findAllComponents(SplitPanelWrapper, selector);
+};
+ElementWrapper.prototype.findSplitView = function(selector) {
+  let rootSelector = \`.\${SplitViewWrapper.rootSelector}\`;
+  if("legacyRootSelector" in SplitViewWrapper && SplitViewWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${SplitViewWrapper.rootSelector}, .\${SplitViewWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SplitViewWrapper);
+};
+
+ElementWrapper.prototype.findAllSplitViews = function(selector) {
+  return this.findAllComponents(SplitViewWrapper, selector);
 };
 ElementWrapper.prototype.findStatusIndicator = function(selector) {
   let rootSelector = \`.\${StatusIndicatorWrapper.rootSelector}\`;
