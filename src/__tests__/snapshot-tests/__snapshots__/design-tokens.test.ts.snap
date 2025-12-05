@@ -93,6 +93,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -2752,6 +2772,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -5413,6 +5453,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -8072,6 +8132,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -10733,6 +10813,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -13393,6 +13493,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -16052,6 +16172,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "border-width-field": {
       "$description": "The border width of form fields.",
       "$value": "1px",
+    },
+    "border-width-icon-big": {
+      "$description": "The visual stroke width of big icons.",
+      "$value": "3px",
+    },
+    "border-width-icon-large": {
+      "$description": "The visual stroke width of large icons.",
+      "$value": "4px",
+    },
+    "border-width-icon-medium": {
+      "$description": "The visual stroke width of medium icons.",
+      "$value": "2px",
+    },
+    "border-width-icon-normal": {
+      "$description": "The visual stroke width of normal icons.",
+      "$value": "2px",
+    },
+    "border-width-icon-small": {
+      "$description": "The visual stroke width of small icons.",
+      "$value": "2px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",
@@ -18718,6 +18858,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -21377,6 +21537,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -24038,6 +24218,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -26697,6 +26897,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -29358,6 +29578,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -32017,6 +32257,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -34678,6 +34938,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -37338,6 +37618,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -39997,6 +40297,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "border-width-field": {
       "$description": "The border width of form fields.",
       "$value": "1px",
+    },
+    "border-width-icon-big": {
+      "$description": "The visual stroke width of big icons.",
+      "$value": "3px",
+    },
+    "border-width-icon-large": {
+      "$description": "The visual stroke width of large icons.",
+      "$value": "4px",
+    },
+    "border-width-icon-medium": {
+      "$description": "The visual stroke width of medium icons.",
+      "$value": "2px",
+    },
+    "border-width-icon-normal": {
+      "$description": "The visual stroke width of normal icons.",
+      "$value": "2px",
+    },
+    "border-width-icon-small": {
+      "$description": "The visual stroke width of small icons.",
+      "$value": "2px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",
