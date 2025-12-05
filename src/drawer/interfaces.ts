@@ -40,9 +40,10 @@ export interface DrawerProps extends BaseComponentProps {
   headerActions?: React.ReactNode;
 
   /**
-   * Sticky footer of the drawer. The footer remains visible at the bottom when users scroll.
+   * Sticky footer content that remains visible at the bottom during scroll.
    *
-   * For non-sticky footer content, we recommend adding it to the end of the main content instead.
+   * Automatically becomes non-sticky when scrollable content area is too small
+   * to ensure content remains accessible (not covered by the footer).
    */
   footer?: React.ReactNode;
 }
