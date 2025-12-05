@@ -6,11 +6,6 @@ import { NonCancelableEventHandler } from '../../events';
 
 export interface FeaturePromptProps {
   /**
-   * Called when the feature prompt shows.
-   */
-  onShow?: NonCancelableEventHandler<null>;
-
-  /**
    * Called when a user closes the modal by using the close icon button,
    * clicking outside the modal, shifting focus out of the modal or pressing ESC.
    */
