@@ -33,8 +33,7 @@ export const usePointerEvents = ({ position, panelRef, handleRef, onResize }: Si
         // The handle offset aligns the cursor with the middle of the resize handle.
         const handleOffset = getLogicalBoundingClientRect(handleRef.current).inlineSize / 2;
         const panelBoundingClientRect = getLogicalBoundingClientRect(panelRef.current);
-        const width =
-          panelBoundingClientRect.insetInlineEnd + mouseClientX + handleOffset - panelBoundingClientRect.inlineSize;
+        const width = mouseClientX + handleOffset - panelBoundingClientRect.insetInlineStart;
 
         onResize(width);
       } else {
