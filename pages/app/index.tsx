@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { Suspense, useContext, useEffect } from 'react';
-import { HashRouter, Redirect } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { createHashHistory } from 'history';
 
 import { applyDensity, applyMode, disableMotion } from '@cloudscape-design/global-styles';
@@ -57,9 +57,8 @@ function isAppLayoutPage(pageId?: string) {
 
 function App() {
   const {
-    mode,
     pageId,
-    urlParams: { density, motionDisabled },
+    urlParams: { density, motionDisabled, mode },
   } = useContext(AppContext);
 
   // AppLayout already contains <main>
@@ -79,9 +78,6 @@ function App() {
     disableMotion(motionDisabled);
   }, [motionDisabled]);
 
-  if (!mode) {
-    return <Redirect to="/light/" />;
-  }
   return (
     <StrictModeWrapper pageId={pageId}>
       <Suspense fallback={<span>Loading...</span>}>
