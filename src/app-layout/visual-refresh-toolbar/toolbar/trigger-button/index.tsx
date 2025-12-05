@@ -3,6 +3,7 @@
 import React, { Ref, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import {
@@ -10,11 +11,9 @@ import {
   GeneratedAnalyticsMetadataAppLayoutToolbarOpen,
 } from '../../../../app-layout-toolbar/analytics-metadata/interfaces';
 import { ButtonProps } from '../../../../button/interfaces';
-import InternalFeaturePrompt from '../../../../feature-prompt/internal';
 import { IconProps } from '../../../../icon/interfaces';
 import Icon from '../../../../icon/internal';
 import Tooltip from '../../../../internal/components/tooltip';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../../../internal/events';
 
 import testutilStyles from '../../../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -69,14 +68,6 @@ export interface TriggerButtonProps {
   isForSplitPanel?: boolean;
   tabIndex?: number | undefined;
   variant?: 'circle' | 'custom';
-
-  featurePrompt?: {
-    visible: boolean;
-    onDismiss: NonCancelableEventHandler<null>;
-    header?: React.ReactNode;
-    content: React.ReactNode;
-    dismissAriaLabel?: string;
-  };
 }
 
 function TriggerButton(
@@ -100,29 +91,33 @@ function TriggerButton(
     isForPreviousActiveDrawer = false,
     isForSplitPanel = false,
     variant = 'circle',
-    featurePrompt,
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const tooltipValue = tooltipText ? tooltipText : ariaLabel ? ariaLabel : '';
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
-  const [suppressTooltip, setSuppressTooltip] = useState<boolean>(false);
+  const [suppressTooltip, setSupressTooltip] = useState<boolean>(false);
 
   const handleTriggerClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation(); // Stop the event from propagating to the badge icon
     setShowTooltip(false);
-    setSuppressTooltip(true);
+    setSupressTooltip(true);
     onClick(event);
   };
 
-  const handleBlur = (keepSuppressed = false) => {
-    setSuppressTooltip(keepSuppressed);
+  const handleBlur = (keepSupressed = false) => {
+    setSupressTooltip(keepSupressed);
     setShowTooltip(false);
   };
 
-  const handlePointerEnter = () => {
-    setSuppressTooltip(false);
+  const handlePointerEnter = (event: React.MouseEvent) => {
+    const suppressedTooltip = event.currentTarget.querySelector('button')?.dataset?.awsuiSuppressTooltip === 'true';
+    if (suppressedTooltip) {
+      return;
+    }
+    setSupressTooltip(false);
     setShowTooltip(true);
   };
 
@@ -145,7 +140,7 @@ function TriggerButton(
       ) {
         shouldShowTooltip = true;
       }
-      setSuppressTooltip(!shouldShowTooltip);
+      setSupressTooltip(!shouldShowTooltip);
       setShowTooltip(true);
     },
     [
@@ -170,7 +165,7 @@ function TriggerButton(
     if (hasTooltip && tooltipValue) {
       const close = () => {
         setShowTooltip(false);
-        setSuppressTooltip(false);
+        setSupressTooltip(false);
       };
 
       const shouldCloseTooltip = (event: PointerEvent) => {
@@ -212,71 +207,52 @@ function TriggerButton(
     detail: { label: { root: 'self' } },
   };
 
-  const trigger = (
-    <button
-      aria-expanded={ariaExpanded}
-      aria-controls={ariaControls}
-      aria-haspopup={true}
-      aria-label={ariaLabel}
-      aria-disabled={disabled}
-      disabled={disabled}
-      className={clsx(
-        styles.trigger,
-        styles[variant],
-        {
-          [styles.selected]: selected,
-          [styles['trigger-with-badge']]: badge,
-          [testutilStyles['drawers-trigger-with-badge']]: badge,
-        },
-        className
-      )}
-      onClick={handleTriggerClick}
-      ref={ref as Ref<HTMLButtonElement>}
-      type="button"
-      data-testid={testId}
-      data-shift-focus="awsui-layout-drawer-trigger"
-      {...getAnalyticsMetadataAttribute(triggerEventMetadata)}
-    >
-      {customSvg ?? ((iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />)}
-    </button>
-  );
-
   return (
     <div
       ref={containerRef}
       {...(hasTooltip && {
-        onPointerEnter: () => handlePointerEnter(),
+        onPointerEnter: event => handlePointerEnter(event),
         onPointerLeave: () => handleBlur(true),
         onFocus: e => handleOnFocus(e as any),
         onBlur: () => handleBlur(true),
       })}
       className={styles['trigger-wrapper']}
     >
-      {featurePrompt ? (
-        <InternalFeaturePrompt
-          {...featurePrompt}
-          position="left"
-          size="medium"
-          fixedWidth={false}
-          onDismiss={() => {
-            fireNonCancelableEvent(featurePrompt.onDismiss);
-            setShowTooltip(false);
-          }}
-        >
-          {trigger}
-        </InternalFeaturePrompt>
-      ) : (
-        trigger
-      )}
+      <button
+        aria-expanded={ariaExpanded}
+        aria-controls={ariaControls}
+        aria-haspopup={true}
+        aria-label={ariaLabel}
+        aria-disabled={disabled}
+        disabled={disabled}
+        className={clsx(
+          styles.trigger,
+          styles[variant],
+          {
+            [styles.selected]: selected,
+            [styles['trigger-with-badge']]: badge,
+            [testutilStyles['drawers-trigger-with-badge']]: badge,
+          },
+          className
+        )}
+        onClick={handleTriggerClick}
+        ref={useMergeRefs(ref as Ref<HTMLButtonElement>, buttonRef)}
+        type="button"
+        data-testid={testId}
+        data-shift-focus="awsui-layout-drawer-trigger"
+        {...getAnalyticsMetadataAttribute(triggerEventMetadata)}
+      >
+        {customSvg ?? ((iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />)}
+      </button>
       {badge && <div className={styles.dot} />}
-      {tooltipVisible && !featurePrompt?.visible && (
+      {tooltipVisible && (
         <Tooltip
           trackRef={containerRef}
           value={tooltipValue}
           className={testutilStyles['trigger-tooltip']}
           onDismiss={() => {
             setShowTooltip(false);
-            setSuppressTooltip(false);
+            setSupressTooltip(false);
           }}
         />
       )}

@@ -24,7 +24,7 @@ import {
   TextFilter,
 } from '~components';
 import AppLayoutToolbar, { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
-import FeaturePrompt, { FeaturePromptProps } from '~components/feature-prompt';
+import FeaturePrompt, { FeaturePromptProps } from '~components/internal/do-not-use/feature-prompt';
 import awsuiPlugins from '~components/internal/plugins';
 import { mount } from '~mount';
 
@@ -191,49 +191,22 @@ export default function () {
     setUrlParams,
     setHeader,
   } = useContext(AppContext as PageContext);
-  const shouldShowNotificationsPrompt =
-    featureNotificationType === 'service' && (!showStatusNotifications || delayStatusNotifications);
-
-  const [showGlobalFeatureNotification, setShowGlobalFeatureNotification] = useState(
-    featureNotificationType === 'global'
-  );
-  const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
+  const localFeaturePromptRef = useRef<FeaturePromptProps.Ref>(null);
+  const globalFeaturePromptRef = useRef<FeaturePromptProps.Ref>(null);
 
   useEffect(() => {
     mount(
       <div className={styles.navigation}>
-        <FeaturePrompt
-          ref={featurePromptRef}
-          visible={showGlobalFeatureNotification}
-          onDismiss={() => setShowGlobalFeatureNotification(false)}
-          position="bottom"
-          header={
-            <Box fontWeight="bold">
-              <Icon name="gen-ai" /> Our AI buddy is smarter than ever
-            </Box>
-          }
-          content={
-            <Box>
-              It supports filtering with plain language, reports generation with .pdf, and so much more! See{' '}
-              <Link href="#">top 10 things it can do for you</Link>.
-            </Box>
-          }
-          onBlur={() => {
-            featurePromptRef.current?.dismiss();
-          }}
-        >
-          <Box padding="xxs" color="inherit">
-            <Icon name="bug" />
-          </Box>
-        </FeaturePrompt>
+        <Box padding="xxs" color="inherit" id="bug-icon">
+          <Icon name="bug" />
+        </Box>
         <TextFilter filteringText="" filteringPlaceholder="search" />
       </div>,
       document.querySelector('#h')!
     );
-  }, [setHeader, showGlobalFeatureNotification]);
+  }, [setHeader]);
 
   const [hasNewNotifications, setHasNewNotifications] = useState(true);
-  const [showNotificationsFeaturePrompt, setShowNotificationsFeaturePrompt] = useState(shouldShowNotificationsPrompt);
   const drawersProps: Pick<AppLayoutToolbarProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> = {
     activeDrawerId: activeDrawerId,
     drawers: [
@@ -269,12 +242,6 @@ export default function () {
             </SpaceBetween>
           </Drawer>
         ),
-        featurePrompt: {
-          visible: showNotificationsFeaturePrompt,
-          onDismiss: () => setShowNotificationsFeaturePrompt(false),
-          header: featureNotifications[0].header,
-          content: featureNotifications[0].content,
-        },
         trigger: { iconName: 'suggestions' },
       },
       {
@@ -316,6 +283,41 @@ export default function () {
 
   return (
     <ScreenshotArea gutters={false}>
+      <FeaturePrompt
+        ref={globalFeaturePromptRef}
+        onDismiss={() => {
+          // handle focus behavior here
+        }}
+        position="bottom"
+        header={
+          <Box fontWeight="bold">
+            <Icon name="gen-ai" /> Our AI buddy is smarter than ever
+          </Box>
+        }
+        content={
+          <Box>
+            It supports filtering with plain language, reports generation with .pdf, and so much more! See{' '}
+            <Link href="#">top 10 things it can do for you</Link>.
+          </Box>
+        }
+        getTrack={() => document.querySelector('#bug-icon')}
+        trackKey="bug-icon"
+      />
+      <FeaturePrompt
+        ref={localFeaturePromptRef}
+        onDismiss={() => {
+          const triggerElement = document.querySelector(
+            '[data-testid="awsui-app-layout-trigger-service-notifications"]'
+          ) as HTMLButtonElement;
+          triggerElement!.dataset!.awsuiSuppressTooltip = 'false';
+          // TODO handle focus
+        }}
+        position="left"
+        header={featureNotifications[0].header}
+        content={featureNotifications[0].content}
+        getTrack={() => document.querySelector('[data-testid="awsui-app-layout-trigger-service-notifications"]')}
+        trackKey="awsui-app-layout-trigger-service-notifications"
+      />
       <Modal
         header="Fake what's new page"
         visible={whatsNewOpened}
@@ -426,24 +428,35 @@ export default function () {
 
             <button
               onClick={() => {
-                featurePromptRef.current?.focus();
+                globalFeaturePromptRef.current?.dismiss();
               }}
             >
-              focus feature prompt
+              dismiss global feature prompt
             </button>
             <button
               onClick={() => {
-                featurePromptRef.current?.dismiss();
+                globalFeaturePromptRef.current?.show();
               }}
             >
-              dismiss feature prompt
+              show global feature prompt
             </button>
             <button
               onClick={() => {
-                featurePromptRef.current?.show();
+                localFeaturePromptRef.current?.dismiss();
               }}
             >
-              show feature prompt
+              dismiss local feature prompt
+            </button>
+            <button
+              onClick={() => {
+                localFeaturePromptRef.current?.show();
+                const triggerElement = document.querySelector(
+                  '[data-testid="awsui-app-layout-trigger-service-notifications"]'
+                ) as HTMLButtonElement;
+                triggerElement!.dataset!.awsuiSuppressTooltip = 'true';
+              }}
+            >
+              show local feature prompt
             </button>
           </SimplePage>
         }

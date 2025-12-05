@@ -6,51 +6,44 @@ import clsx from 'clsx';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../internal/base-component';
-import { getFirstFocusable } from '../internal/components/focus-lock/utils';
-import { fireNonCancelableEvent } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { SomeRequired } from '../internal/types';
-import Arrow from '../popover/arrow';
-import PopoverBody from '../popover/body';
-import PopoverContainer from '../popover/container';
+import Arrow from '../../../popover/arrow';
+import PopoverBody from '../../../popover/body';
+import PopoverContainer from '../../../popover/container';
+import { getBaseProps } from '../../base-component';
+import { fireNonCancelableEvent } from '../../events';
+import { InternalBaseComponentProps } from '../../hooks/use-base-component';
+import { SomeRequired } from '../../types';
 import { FeaturePromptProps } from './interfaces';
 
 import styles from './styles.css.js';
 
 interface InternalFeaturePromptProps
-  extends SomeRequired<FeaturePromptProps, 'fixedWidth' | 'size' | 'position'>,
+  extends SomeRequired<FeaturePromptProps, 'size' | 'position'>,
     InternalBaseComponentProps {}
 
 function InternalFeaturePrompt(
   {
-    visible,
     onDismiss,
-    children,
     header,
     content,
-    dismissAriaLabel,
-    fixedWidth,
+    i18nStrings,
     size,
     position,
-    onBlur,
+    getTrack,
+    trackKey,
     __internalRootRef,
     ...restProps
   }: InternalFeaturePromptProps,
   ref: React.Ref<FeaturePromptProps.Ref>
 ) {
   const baseProps = getBaseProps(restProps);
-  const [show, setShow] = useState(visible);
+  const [show, setShow] = useState(false);
 
-  const trackRef = useRef<HTMLSpanElement>(null);
   const popoverBodyRef = useRef<HTMLDivElement | null>(null);
 
   useImperativeHandle(ref, () => ({
     dismiss: () => {
       setShow(false);
-    },
-    focus: () => {
-      getFirstFocusable(popoverBodyRef.current!)?.focus();
     },
     show: () => {
       setShow(true);
@@ -59,14 +52,14 @@ function InternalFeaturePrompt(
 
   return (
     <span {...baseProps} className={clsx(styles.root)} ref={__internalRootRef}>
-      <span ref={trackRef}>{children}</span>
       {show && (
         <Portal>
           <PopoverContainer
             size={size}
-            fixedWidth={fixedWidth}
+            fixedWidth={false}
             position={position}
-            trackRef={trackRef}
+            getTrack={getTrack}
+            trackKey={trackKey}
             variant="annotation"
             arrow={position => <Arrow position={position} variant="info" />}
             zIndex={7000}
@@ -75,7 +68,7 @@ function InternalFeaturePrompt(
             <PopoverBody
               ref={popoverBodyRef}
               dismissButton={true}
-              dismissAriaLabel={dismissAriaLabel}
+              dismissAriaLabel={i18nStrings?.dismissAriaLabel}
               header={header}
               onDismiss={() => {
                 setShow(false);
@@ -84,7 +77,8 @@ function InternalFeaturePrompt(
               variant="annotation"
               overflowVisible="content"
               onBlur={() => {
-                fireNonCancelableEvent(onBlur);
+                setShow(false);
+                fireNonCancelableEvent(onDismiss);
               }}
             >
               {content}
