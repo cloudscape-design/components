@@ -11341,6 +11341,14 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "name": "children",
     },
     {
+      "description": "Sticky footer content that remains visible at the bottom during scroll.
+
+Automatically becomes non-sticky when scrollable content area is too small
+to ensure content remains accessible (not covered by the footer).",
+      "isDefault": false,
+      "name": "footer",
+    },
+    {
       "description": "Header of the drawer.
 
 It should contain the only \`h2\` used in the drawer.",
@@ -35461,6 +35469,19 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findHeader",
           "parameters": [],
           "returnType": {
@@ -45191,6 +45212,14 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
       "methods": [
         {
           "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findFooter",
           "parameters": [],
           "returnType": {
             "isNullable": false,
