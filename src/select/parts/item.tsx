@@ -12,8 +12,8 @@ import Option from '../../internal/components/option';
 import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
 import SelectableItem from '../../internal/components/selectable-item';
-import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import Tooltip from '../../tooltip/internal.js';
 
 import styles from './styles.css.js';
 
@@ -118,11 +118,11 @@ const Item = (
             {highlighted && canShowTooltip && (
               <Tooltip
                 className={styles['disabled-reason-tooltip']}
-                trackRef={internalRef}
-                value={disabledReason!}
+                anchorRef={internalRef}
+                content={disabledReason!}
                 position="right"
-                hideOnOverscroll={true}
-                onDismiss={() => setCanShowTooltip(false)}
+                dismissOnScroll={true}
+                onClose={() => setCanShowTooltip(false)}
               />
             )}
           </>

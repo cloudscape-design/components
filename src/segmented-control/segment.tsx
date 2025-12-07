@@ -6,9 +6,9 @@ import clsx from 'clsx';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalIcon from '../icon/internal';
-import Tooltip from '../internal/components/tooltip';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import Tooltip from '../tooltip/internal.js';
 import { SegmentedControlProps } from './interfaces';
 import { getSegmentedControlSegmentStyles } from './style';
 
@@ -91,9 +91,9 @@ export const Segment = React.forwardRef(
             {showTooltip && (
               <Tooltip
                 className={styles['disabled-reason-tooltip']}
-                trackRef={buttonRef}
-                value={disabledReason!}
-                onDismiss={() => setShowTooltip(false)}
+                anchorRef={buttonRef}
+                content={disabledReason!}
+                onClose={() => setShowTooltip(false)}
               />
             )}
           </>

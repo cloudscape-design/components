@@ -8,8 +8,8 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalButton from '../button/internal';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import ButtonDropdown from '../button-dropdown/internal';
-import Tooltip from '../internal/components/tooltip';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
+import Tooltip from '../tooltip/internal.js';
 import { ButtonGroupProps } from './interfaces';
 
 import testUtilStyles from './test-classes/styles.css.js';
@@ -49,11 +49,11 @@ const MenuDropdownItem = React.forwardRef(
           <div ref={containerRef} {...(item.disabled ? {} : getAnalyticsMetadataAttribute({ detail: { position } }))}>
             {!isOpen && showTooltip && !item.disabled && !item.loading && (
               <Tooltip
-                trackRef={containerRef}
-                trackKey={item.id}
-                value={item.text}
+                anchorRef={containerRef}
+                testId={item.id}
+                content={item.text}
                 className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
-                onDismiss={onTooltipDismiss}
+                onClose={onTooltipDismiss}
               />
             )}
             <InternalButton

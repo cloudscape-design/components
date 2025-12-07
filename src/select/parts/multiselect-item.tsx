@@ -9,8 +9,8 @@ import CheckboxIcon from '../../internal/components/checkbox-icon';
 import Option from '../../internal/components/option';
 import { OptionDefinition } from '../../internal/components/option/interfaces';
 import SelectableItem from '../../internal/components/selectable-item';
-import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import Tooltip from '../../tooltip/internal.js';
 import { ItemProps } from './item';
 
 import styles from './styles.css.js';
@@ -109,11 +109,11 @@ const MultiSelectItem = (
           {highlighted && canShowTooltip && (
             <Tooltip
               className={styles['disabled-reason-tooltip']}
-              trackRef={internalRef}
-              value={disabledReason!}
+              anchorRef={internalRef}
+              content={disabledReason!}
               position="right"
-              hideOnOverscroll={true}
-              onDismiss={() => setCanShowTooltip(false)}
+              dismissOnScroll={true}
+              onClose={() => setCanShowTooltip(false)}
             />
           )}
         </>

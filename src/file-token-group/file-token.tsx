@@ -9,11 +9,11 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import InternalBox from '../box/internal.js';
 import { FormFieldError, FormFieldWarning } from '../form-field/internal';
 import { BaseComponentProps } from '../internal/base-component/index.js';
-import Tooltip from '../internal/components/tooltip/index';
 import InternalSpaceBetween from '../space-between/internal.js';
 import InternalSpinner from '../spinner/internal.js';
 import DismissButton from '../token/dismiss-button.js';
 import { TokenGroupProps } from '../token-group/interfaces.js';
+import Tooltip from '../tooltip/internal.js';
 import * as defaultFormatters from './default-formatters.js';
 import { FileOptionThumbnail } from './thumbnail.js';
 
@@ -171,7 +171,7 @@ function InternalFileToken({
             </InternalSpaceBetween>
           </div>
         </InternalBox>
-        {onDismiss && !readOnly && <DismissButton dismissLabel={getDismissLabel(index)} onDismiss={onDismiss} />}
+        {onDismiss && !readOnly && <DismissButton dismissLabel={getDismissLabel(index)} onClose={onDismiss} />}
       </div>
       {errorText && (
         <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
@@ -185,10 +185,10 @@ function InternalFileToken({
       )}
       {showTooltip && isEllipsisActive() && (
         <Tooltip
-          trackRef={containerRef}
-          trackKey={file.name}
-          value={<InternalBox fontWeight="normal">{file.name}</InternalBox>}
-          onDismiss={() => setShowTooltip(false)}
+          anchorRef={containerRef}
+          testId={file.name}
+          content={<InternalBox fontWeight="normal">{file.name}</InternalBox>}
+          onClose={() => setShowTooltip(false)}
         />
       )}
     </div>

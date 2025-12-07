@@ -12,7 +12,7 @@ import {
 import { ButtonProps } from '../../../../button/interfaces';
 import { IconProps } from '../../../../icon/interfaces';
 import Icon from '../../../../icon/internal';
-import Tooltip from '../../../../internal/components/tooltip';
+import Tooltip from '../../../../tooltip/internal.js';
 
 import testutilStyles from '../../../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -241,10 +241,10 @@ function TriggerButton(
       {badge && <div className={styles.dot} />}
       {tooltipVisible && (
         <Tooltip
-          trackRef={containerRef}
-          value={tooltipValue}
+          anchorRef={containerRef}
+          content={tooltipValue}
           className={testutilStyles['trigger-tooltip']}
-          onDismiss={() => {
+          onClose={() => {
             setShowTooltip(false);
             setSupressTooltip(false);
           }}

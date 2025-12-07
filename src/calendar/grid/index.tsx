@@ -7,10 +7,10 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { DatePickerProps } from '../../date-picker/interfaces';
 import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
-import Tooltip from '../../internal/components/tooltip';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { applyDisplayName } from '../../internal/utils/apply-display-name';
+import Tooltip from '../../tooltip/internal.js';
 import { CalendarProps } from '../interfaces';
 
 import styles from '../styles.css.js';
@@ -77,9 +77,9 @@ const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.Ref<HTM
           {showTooltip && (
             <Tooltip
               className={styles['disabled-reason-tooltip']}
-              trackRef={ref}
-              value={disabledReason!}
-              onDismiss={() => setShowTooltip(false)}
+              anchorRef={ref}
+              content={disabledReason!}
+              onClose={() => setShowTooltip(false)}
             />
           )}
         </>
