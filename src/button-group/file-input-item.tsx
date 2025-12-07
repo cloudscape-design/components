@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 import { FileInputProps } from '../file-input/interfaces.js';
 import InternalFileInput from '../file-input/internal.js';
-import Tooltip from '../internal/components/tooltip/index.js';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events/index.js';
+import Tooltip from '../tooltip/internal.js';
 import { ButtonGroupProps } from './interfaces.js';
 
 import testUtilStyles from './test-classes/styles.css.js';
@@ -47,11 +47,11 @@ const FileInputItem = forwardRef(
         />
         {canShowTooltip && (
           <Tooltip
-            trackRef={containerRef}
-            trackKey={item.id}
-            value={item.text}
             className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
-            onDismiss={onTooltipDismiss}
+            getTrack={() => containerRef.current}
+            trackKey={item.id}
+            content={item.text}
+            onEscape={onTooltipDismiss}
           />
         )}
       </div>

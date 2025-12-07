@@ -9,11 +9,11 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import InternalBox from '../box/internal.js';
 import { FormFieldError, FormFieldWarning } from '../form-field/internal';
 import { BaseComponentProps } from '../internal/base-component/index.js';
-import Tooltip from '../internal/components/tooltip/index';
 import InternalSpaceBetween from '../space-between/internal.js';
 import InternalSpinner from '../spinner/internal.js';
 import DismissButton from '../token/dismiss-button.js';
 import { TokenGroupProps } from '../token-group/interfaces.js';
+import Tooltip from '../tooltip/internal.js';
 import * as defaultFormatters from './default-formatters.js';
 import { FileOptionThumbnail } from './thumbnail.js';
 
@@ -185,10 +185,10 @@ function InternalFileToken({
       )}
       {showTooltip && isEllipsisActive() && (
         <Tooltip
-          trackRef={containerRef}
+          getTrack={() => containerRef.current}
           trackKey={file.name}
-          value={<InternalBox fontWeight="normal">{file.name}</InternalBox>}
-          onDismiss={() => setShowTooltip(false)}
+          content={<InternalBox fontWeight="normal">{file.name}</InternalBox>}
+          onEscape={() => setShowTooltip(false)}
         />
       )}
     </div>

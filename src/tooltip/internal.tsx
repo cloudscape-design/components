@@ -1,40 +1,43 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
+import clsx from 'clsx';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
-import PopoverArrow from '../../../popover/arrow';
-import PopoverBody from '../../../popover/body';
-import PopoverContainer from '../../../popover/container';
-import { PopoverProps } from '../../../popover/interfaces';
-import { Transition } from '../transition';
+import { getBaseProps } from '../internal/base-component';
+import { Transition } from '../internal/components/transition';
+import { fireNonCancelableEvent } from '../internal/events';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import PopoverArrow from '../popover/arrow';
+import PopoverBody from '../popover/body';
+import PopoverContainer from '../popover/container';
+import { InternalTooltipProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface TooltipProps {
-  value: React.ReactNode;
-  trackRef: React.RefObject<HTMLElement | SVGElement>;
-  trackKey?: string | number;
-  position?: 'top' | 'right' | 'bottom' | 'left';
-  className?: string;
-  size?: PopoverProps['size'];
-  hideOnOverscroll?: boolean;
-  onDismiss?: () => void;
-}
+type InternalTooltipComponentProps = InternalTooltipProps & InternalBaseComponentProps;
 
-export default function Tooltip({
-  value,
-  trackRef,
+export default function InternalTooltip({
+  content,
+  getTrack,
   trackKey,
   className,
   position = 'top',
-  size = 'small',
-  hideOnOverscroll,
-  onDismiss,
-}: TooltipProps) {
-  if (!trackKey && (typeof value === 'string' || typeof value === 'number')) {
-    trackKey = value;
+  onEscape,
+  __internalRootRef,
+  ...restProps
+}: InternalTooltipComponentProps) {
+  const baseProps = getBaseProps(restProps);
+  const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
+
+  // Update the ref with the current tracked element
+  React.useEffect(() => {
+    const element = getTrack();
+    trackRef.current = element;
+  }, [getTrack]);
+  if (!trackKey && (typeof content === 'string' || typeof content === 'number')) {
+    trackKey = content;
   }
 
   useEffect(() => {
@@ -45,7 +48,7 @@ export default function Tooltip({
         if (event.key === 'Escape') {
           // Prevent any surrounding modals or dialogs from acting on this Esc.
           event.stopPropagation();
-          onDismiss?.();
+          fireNonCancelableEvent(onEscape);
         }
       },
       {
@@ -59,26 +62,32 @@ export default function Tooltip({
     return () => {
       controller.abort();
     };
-  }, [onDismiss]);
+  }, [onEscape]);
 
   return (
     <Portal>
-      <div className={styles.root} data-testid={trackKey} role="tooltip">
+      <div
+        {...baseProps}
+        className={clsx(styles.root, baseProps.className)}
+        data-testid={trackKey}
+        ref={__internalRootRef}
+        role="tooltip"
+      >
         <Transition in={true}>
           {() => (
             <PopoverContainer
-              trackRef={trackRef}
+              getTrack={getTrack}
               trackKey={trackKey}
-              size={size}
+              size="medium"
               fixedWidth={false}
               position={position}
               zIndex={7000}
               arrow={position => <PopoverArrow position={position} />}
-              hideOnOverscroll={hideOnOverscroll}
+              hideOnOverscroll={true}
               className={className}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
-                {value}
+                {content}
               </PopoverBody>
             </PopoverContainer>
           )}

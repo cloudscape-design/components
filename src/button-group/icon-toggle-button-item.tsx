@@ -6,10 +6,10 @@ import clsx from 'clsx';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonProps } from '../button/interfaces.js';
-import Tooltip from '../internal/components/tooltip/index.js';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events/index.js';
 import InternalLiveRegion from '../live-region/internal.js';
 import { InternalToggleButton } from '../toggle-button/internal.js';
+import Tooltip from '../tooltip/internal.js';
 import { ButtonGroupProps, InternalIconToggleButton } from './interfaces.js';
 
 import testUtilStyles from './test-classes/styles.css.js';
@@ -69,13 +69,13 @@ const IconToggleButtonItem = forwardRef(
         </InternalToggleButton>
         {(canShowTooltip || canShowFeedback) && (
           <Tooltip
-            trackRef={containerRef}
+            className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
+            getTrack={() => containerRef.current}
             trackKey={item.id}
-            value={
+            content={
               (showFeedback && <InternalLiveRegion tagName="span">{feedbackContent}</InternalLiveRegion>) || item.text
             }
-            className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
-            onDismiss={onTooltipDismiss}
+            onEscape={onTooltipDismiss}
           />
         )}
       </div>

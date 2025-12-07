@@ -13,7 +13,7 @@ import { defaultProps, renderSplitPanel } from './common';
 import { defaultSplitPanelContextProps } from './helpers';
 
 import styles from '../../../lib/components/split-panel/styles.css.js';
-import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
+import tooltipStyles from '../../../lib/components/tooltip/styles.selectors.js';
 
 const onKeyDown = jest.fn();
 jest.mock('../../../lib/components/app-layout/utils/use-keyboard-events', () => ({
