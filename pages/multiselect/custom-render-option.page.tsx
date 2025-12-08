@@ -4,7 +4,6 @@ import * as React from 'react';
 
 import { Multiselect, MultiselectProps } from '~components';
 import Box from '~components/box';
-import CheckboxIcon from '~components/internal/components/checkbox-icon';
 import { SelectProps } from '~components/select';
 
 import ScreenshotArea from '../utils/screenshot-area';
@@ -21,7 +20,7 @@ const options: SelectProps.Options = [
     label: 'With big icon icon',
     description: 'Very big option',
     iconName: 'heart',
-    disabled: true,
+    disabled: false,
     disabledReason: 'disabled reason',
     tags: ['Cool', 'Intelligent', 'Cat'],
   },
@@ -31,22 +30,21 @@ const options: SelectProps.Options = [
     disabledReason: 'disabled reason',
   },
   ...lotsOfOptions,
-  { label: 'Last option', disabled: true, disabledReason: 'disabled reason' },
+  { label: 'Last option', disabled: false, disabledReason: 'disabled reason' },
 ];
 
 export default function SelectPage() {
   const [selectedOptions, setSelectedOptions] = React.useState<MultiselectProps.Options>([]);
   const renderOptionItem: MultiselectProps.MultiselectOptionItemRenderer = ({ item }) => {
-    if (item.type === 'item') {
-      return <div>{item.option.label}</div>;
-    } else {
-      return (
-        <div>
-          <CheckboxIcon checked={item.selected} indeterminate={item.indeterminate}></CheckboxIcon>
-          {item.option.label}
-        </div>
-      );
+    if (item.type === 'select-all') {
+      return <div>Select all? {item.selected ? 'Yes' : 'No'}</div>;
+    } else if (item.type === 'group') {
+      return <div>Group: {item.option.label}</div>;
+    } else if (item.type === 'item') {
+      return <div>Item: {item.option.label}</div>;
     }
+
+    return null;
   };
 
   return (

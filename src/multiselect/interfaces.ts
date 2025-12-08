@@ -86,26 +86,30 @@ export namespace MultiselectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
-  interface BaseMultiselectItem {
+  export interface MultiselectOptionItem {
+    type: 'item';
     index: number | null;
+    option: Option;
     disabled: boolean;
     highlighted: boolean;
     selected: boolean;
   }
-  export type MultiselectOptionItem = BaseMultiselectItem & {
-    type: 'item';
-    option: Option;
-  };
-  export type MultiselectOptionGroupItem = BaseMultiselectItem & {
+  export interface MultiselectOptionGroupItem {
     type: 'group';
+    index: number | null;
     option: OptionGroup;
     indeterminate: boolean;
-  };
-  export type MultiselectSelectAllItem = BaseMultiselectItem & {
+    disabled: boolean;
+    highlighted: boolean;
+    selected: boolean;
+  }
+  export interface MultiselectSelectAllItem {
     type: 'select-all';
     option: Option;
     indeterminate: boolean;
-  };
+    highlighted: boolean;
+    selected: boolean;
+  }
   export type MultiselectItem = MultiselectOptionItem | MultiselectOptionGroupItem | MultiselectSelectAllItem;
   export type MultiselectOptionItemRenderer = (props: {
     item: MultiselectItem;
