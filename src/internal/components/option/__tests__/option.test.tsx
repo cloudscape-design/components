@@ -50,6 +50,7 @@ describe('Option component', () => {
         ...baseOption,
       },
     });
+    expect(optionWrapper.findLabel()!.getElement()).toHaveTextContent('My Custom Content');
     expect(optionWrapper.findCustomContent()!.getElement()).toHaveTextContent('My Custom Content');
   });
 
