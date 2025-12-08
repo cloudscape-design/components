@@ -28,6 +28,10 @@ $direction-button-offset: awsui.$space-static-xxs;
   z-index: 7000;
 }
 
+.portal-overlay-disabled {
+  display: none;
+}
+
 .portal-overlay-contents {
   pointer-events: auto;
 }
