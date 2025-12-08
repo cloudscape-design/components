@@ -8,7 +8,7 @@ import Select, { SelectProps } from '~components/select';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
-const extraOptions = [...Array(10).keys()].map(n => {
+const lotsOfOptions = [...Array(50).keys()].map(n => {
   const numberToDisplay = (n + 5).toString();
   return {
     value: numberToDisplay,
@@ -33,12 +33,7 @@ const options: SelectProps.Options = [
     options: [{ value: 'forth', label: 'Nested option' }],
     disabledReason: 'disabled reason',
   },
-  {
-    label: 'Option group',
-    options: [{ value: 'forth2', label: 'Nested option' }],
-    disabledReason: 'disabled reason',
-  },
-  ...extraOptions,
+  ...lotsOfOptions,
   { label: 'Last option', disabled: true, disabledReason: 'disabled reason' },
 ];
 
