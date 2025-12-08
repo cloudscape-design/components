@@ -3,7 +3,6 @@
 import React, { Ref, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import {
@@ -95,7 +94,6 @@ function TriggerButton(
   ref: React.Ref<ButtonProps.Ref>
 ) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
   const tooltipValue = tooltipText ? tooltipText : ariaLabel ? ariaLabel : '';
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const [suppressTooltip, setSupressTooltip] = useState<boolean>(false);
@@ -236,7 +234,7 @@ function TriggerButton(
           className
         )}
         onClick={handleTriggerClick}
-        ref={useMergeRefs(ref as Ref<HTMLButtonElement>, buttonRef)}
+        ref={ref as Ref<HTMLButtonElement>}
         type="button"
         data-testid={testId}
         data-shift-focus="awsui-layout-drawer-trigger"

@@ -204,7 +204,8 @@ export const useAppLayout = (
   });
   const activeGlobalBottomDrawerId = activeBottomDrawer?.id ?? null;
 
-  const { featureNotificationsData, featurePromptRef, featureNotificationsMessageHandler } = useFeatureNotifications({
+  const { featurePromptRef } = useFeatureNotifications({
+    drawers: [...(drawers ?? []), ...globalDrawers],
     activeDrawersIds: [...activeGlobalDrawersIds, ...(activeDrawer ? [activeDrawer.id] : [])],
   });
 
@@ -242,11 +243,6 @@ export const useAppLayout = (
   useWidgetMessages(hasToolbar, message => {
     if (message.type === 'expandDrawer' || message.type === 'exitExpandedMode') {
       drawerGenericMessageHandler(message);
-      return;
-    }
-
-    if (['registerFeatureNotifications', 'showFeaturePromptIfPossible'].includes(message.type)) {
-      featureNotificationsMessageHandler(message);
       return;
     }
 
@@ -630,7 +626,6 @@ export const useAppLayout = (
       bottomDrawers,
       bottomDrawersFocusControl,
       featurePromptRef,
-      featureNotificationsData,
     },
   };
 };
