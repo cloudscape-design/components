@@ -72,13 +72,6 @@ const MultiSelectItem = (
       return null;
     }
 
-    const baseItem = {
-      index: globalIndex,
-      selected: !!selected,
-      highlighted: !!highlighted,
-      disabled: !!disabled,
-    };
-
     let item:
       | MultiselectProps.MultiselectOptionItem
       | MultiselectProps.MultiselectOptionGroupItem
@@ -87,23 +80,36 @@ const MultiSelectItem = (
     switch (option.type) {
       case 'select-all':
         item = {
+          index: globalIndex,
           type: 'select-all',
           option: option.option as OptionDefinition,
           indeterminate: indeterminate ?? false,
-          ...baseItem,
+          selected: !!selected,
+          highlighted: !!highlighted,
+          disabled: !!disabled,
         };
         break;
       case 'parent':
         item = {
+          index: globalIndex,
           type: 'parent',
           option: option.option as OptionGroup,
           indeterminate: indeterminate ?? false,
-          ...baseItem,
+          selected: !!selected,
+          highlighted: !!highlighted,
+          disabled: !!disabled,
         };
         break;
       case 'child':
       default:
-        item = { type: 'child', option: option.option as OptionDefinition, ...baseItem };
+        item = {
+          index: globalIndex,
+          type: 'child',
+          option: option.option as OptionDefinition,
+          selected: !!selected,
+          highlighted: !!highlighted,
+          disabled: !!disabled,
+        };
         break;
     }
 
