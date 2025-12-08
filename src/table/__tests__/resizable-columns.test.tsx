@@ -84,6 +84,11 @@ test('should render resizers when enabled', () => {
   expect(wrapper.findColumnResizer(2)).not.toBeNull();
 });
 
+test('should not submit surrounding forms when activated', () => {
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+  expect(wrapper.findColumnResizer(1)!.getElement()).toHaveAttribute('type', 'button');
+});
+
 test('should allow dragging a column only with the left mouse button', () => {
   const { wrapper } = renderTable(<Table {...defaultProps} />);
   const leftButton = 0;
