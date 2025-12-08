@@ -8,7 +8,6 @@ import {
   FeatureNotificationsPayload,
   RegisterDrawerMessage,
   RegisterFeatureNotificationsMessage,
-  WidgetMessage,
 } from './interfaces';
 
 /**
@@ -18,7 +17,7 @@ import {
 export function registerLeftDrawer(drawer: DrawerPayload) {
   const message: RegisterDrawerMessage = { type: 'registerLeftDrawer', payload: drawer };
   pushInitialMessage(message);
-  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
+  getAppLayoutMessageHandler()?.(message);
 }
 
 /**
@@ -28,27 +27,27 @@ export function registerLeftDrawer(drawer: DrawerPayload) {
 export function registerBottomDrawer(drawer: DrawerPayload) {
   const message: RegisterDrawerMessage = { type: 'registerBottomDrawer', payload: { ...drawer, position: 'bottom' } };
   pushInitialMessage(message);
-  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
+  getAppLayoutMessageHandler()?.(message);
 }
 
 /**
  * Registers a new feature notifications runtime drawer to app layout
  * @param payload
  */
-export function registerFeatureNotifications<T>(payload: FeatureNotificationsPayload<T>) {
-  const message: RegisterFeatureNotificationsMessage<T> = {
+export function registerFeatureNotifications(payload: FeatureNotificationsPayload) {
+  const message: RegisterFeatureNotificationsMessage = {
     type: 'registerFeatureNotifications',
     payload,
   };
   pushInitialMessage(message);
-  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
+  getAppLayoutMessageHandler()?.(message);
 }
 
 /**
  * Interact with already registered app layout drawers
  * @param message
  */
-export function updateDrawer<T = unknown>(message: AppLayoutUpdateMessage<T>) {
+export function updateDrawer(message: AppLayoutUpdateMessage) {
   if (message.type === 'updateDrawerConfig') {
     getAppLayoutInitialMessages().forEach(initialMessage => {
       if (initialMessage.payload.id === message.payload.id) {
@@ -56,13 +55,5 @@ export function updateDrawer<T = unknown>(message: AppLayoutUpdateMessage<T>) {
       }
     });
   }
-  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
-}
-
-/**
- * Interact with already registered app layout drawers
- * Forwards update
- */
-export function showFeaturePromptIfPossible() {
-  updateDrawer({ type: 'showFeaturePromptIfPossible' });
+  getAppLayoutMessageHandler()?.(message);
 }

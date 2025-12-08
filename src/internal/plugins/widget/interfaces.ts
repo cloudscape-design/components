@@ -54,34 +54,21 @@ export interface DrawerPayload {
   position?: 'side' | 'bottom';
 }
 
-type Destructor = () => void;
-export type MountContentPart<T> = (container: HTMLElement, data: T) => Destructor | void;
-
-export interface Feature<T> {
+export interface Feature {
   id: string;
-  header: T;
-  content: T;
-  contentCategory?: T;
-  releaseDate: Date;
+  header: string;
+  content: string;
+  releaseDate?: string;
 }
 
-export interface FeatureNotificationsPayload<T> {
+export interface FeatureNotificationsPayload {
   id: string;
-  suppressFeaturePrompt?: boolean;
-  features: Array<Feature<T>>;
-  mountItem: MountContentPart<T>;
-  featuresPageLink?: string;
-  filterFeatures?: (value: Feature<T>) => boolean;
-  i18nStrings?: {
-    featuresPageLinkLabel?: string;
-  };
+  type?: 'local' | 'global';
+  features: Array<Feature>;
 }
 
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;
-export type RegisterFeatureNotificationsMessage<T> = Message<
-  'registerFeatureNotifications',
-  FeatureNotificationsPayload<T>
->;
+export type RegisterFeatureNotificationsMessage = Message<'registerFeatureNotifications', FeatureNotificationsPayload>;
 export type UpdateDrawerConfigMessage = Message<
   'updateDrawerConfig',
   Pick<DrawerPayload, 'id'> &
@@ -94,20 +81,16 @@ export type ExpandDrawerMessage = Message<'expandDrawer', { id: string }>;
 export interface ExitExpandedModeMessage {
   type: 'exitExpandedMode';
 }
-export interface ShowFeaturePromptIfPossible {
-  type: 'showFeaturePromptIfPossible';
-}
 
-export type AppLayoutUpdateMessage<T = unknown> =
+export type AppLayoutUpdateMessage =
   | UpdateDrawerConfigMessage
   | OpenDrawerMessage
   | CloseDrawerMessage
   | ResizeDrawerMessage
   | ExpandDrawerMessage
   | ExitExpandedModeMessage
-  | RegisterFeatureNotificationsMessage<T>
-  | ShowFeaturePromptIfPossible;
+  | RegisterFeatureNotificationsMessage;
 
-export type InitialMessage<T> = RegisterDrawerMessage | RegisterFeatureNotificationsMessage<T>;
+export type InitialMessage = RegisterDrawerMessage | RegisterFeatureNotificationsMessage;
 
-export type WidgetMessage<T = unknown> = InitialMessage<T> | AppLayoutUpdateMessage<T>;
+export type WidgetMessage = InitialMessage | AppLayoutUpdateMessage;
