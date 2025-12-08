@@ -51,7 +51,7 @@ interface DrawerTriggersProps {
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
   onSplitPanelToggle: (() => void) | undefined;
   disabled: boolean;
-  featurePromptRef: RefObject<FeaturePromptProps.Ref>;
+  featurePromptRef?: RefObject<FeaturePromptProps.Ref>;
 }
 
 export function DrawerTriggers({

@@ -204,7 +204,7 @@ export const useAppLayout = (
   });
   const activeGlobalBottomDrawerId = activeBottomDrawer?.id ?? null;
 
-  const { featurePromptRef } = useFeatureNotifications({
+  const { featurePromptRef, featureNotificationsMessageHandler } = useFeatureNotifications({
     drawers: [...(drawers ?? []), ...globalDrawers],
     activeDrawersIds: [...activeGlobalDrawersIds, ...(activeDrawer ? [activeDrawer.id] : [])],
   });
@@ -264,6 +264,11 @@ export const useAppLayout = (
 
     if (checkBottomDrawerIdExists(id) || message.type === 'registerBottomDrawer') {
       bottomDrawersMessageHandler(message);
+      return;
+    }
+
+    if (message.type === 'registerFeatureNotifications') {
+      featureNotificationsMessageHandler(message);
       return;
     }
 

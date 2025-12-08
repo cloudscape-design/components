@@ -4,6 +4,7 @@ import { ButtonGroupProps, ItemRuntime } from '../../../button-group/interfaces'
 import debounce from '../../debounce';
 import { NonCancelableEventHandler } from '../../events';
 import { reportRuntimeApiWarning } from '../helpers/metrics';
+import { Feature } from '../widget/interfaces';
 
 type DrawerVisibilityChange = (callback: (isVisible: boolean) => void) => void;
 
@@ -36,7 +37,7 @@ export interface DrawerConfig {
   defaultActive?: boolean;
   trigger?: {
     iconSvg?: string;
-    iconName?: string;
+    __iconName?: string;
   };
   mountContent: (container: HTMLElement, mountContext: MountContentContext) => void;
   unmountContent: (container: HTMLElement) => void;
@@ -47,19 +48,6 @@ export interface DrawerConfig {
   // Do not use directly
   __features?: Array<Feature>;
   __suppressFeaturePrompt?: boolean;
-}
-
-export interface Feature {
-  id: string;
-  header: string;
-  content: string;
-  releaseDate?: string;
-}
-
-interface FeatureNotificationsConfig {
-  id: string;
-  type?: 'local' | 'global';
-  features: Array<Feature>;
 }
 
 const updatableProperties = [
@@ -91,7 +79,6 @@ export interface DrawersApiPublic {
   openDrawer(drawerId: string, params?: OpenCloseDrawerParams): void;
   closeDrawer(drawerId: string, params?: OpenCloseDrawerParams): void;
   resizeDrawer(drawerId: string, size: number): void;
-  registerFeatureNotificationsDrawer(config: FeatureNotificationsConfig): void;
 }
 
 export interface DrawersApiInternal {
@@ -233,36 +220,12 @@ export class DrawersController {
     return this.drawers;
   };
 
-  registerFeatureNotificationsDrawer = (config: FeatureNotificationsConfig) => {
-    this.registerDrawer({
-      id: config.id,
-      type: config.type,
-      defaultActive: false,
-      resizable: true,
-      defaultSize: 320,
-
-      ariaLabels: {
-        closeButton: 'Close button',
-        content: 'Content',
-        triggerButton: 'Trigger button',
-        resizeHandle: 'Resize handle',
-      },
-
-      trigger: { iconName: 'suggestions' },
-      mountContent: () => {},
-      unmountContent: () => {},
-
-      __features: config.features,
-    });
-  };
-
   installPublic(api: Partial<DrawersApiPublic> = {}): DrawersApiPublic {
     api.registerDrawer ??= this.registerDrawer;
     api.updateDrawer ??= this.updateDrawer;
     api.openDrawer ??= this.openDrawer;
     api.closeDrawer ??= this.closeDrawer;
     api.resizeDrawer ??= this.resizeDrawer;
-    api.registerFeatureNotificationsDrawer ??= this.registerFeatureNotificationsDrawer;
     return api as DrawersApiPublic;
   }
 

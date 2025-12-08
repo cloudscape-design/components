@@ -8,7 +8,7 @@ import { ButtonGroupProps } from '../../button-group/interfaces';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { FeaturePromptProps } from '../../internal/do-not-use/feature-prompt';
 import { NonCancelableEventHandler } from '../../internal/events';
-import { Feature } from '../../internal/plugins/controllers/drawers';
+import { Feature } from '../../internal/plugins/widget/interfaces';
 import { SomeOptional } from '../../internal/types';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
@@ -110,7 +110,7 @@ export interface AppLayoutWidgetizedState extends AppLayoutInternals {
   bottomDrawersFocusControl: FocusControlState;
   onActiveBottomDrawerResize: ({ id, size }: { id: string; size: number }) => void;
   bottomDrawers: ReadonlyArray<InternalDrawer>;
-  featurePromptRef: RefObject<FeaturePromptProps.Ref>;
+  featurePromptRef?: RefObject<FeaturePromptProps.Ref>;
 }
 
 // New widget interface

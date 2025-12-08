@@ -67,7 +67,7 @@ export interface ToolbarProps {
 export interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   toolbarProps: ToolbarProps;
-  featurePromptRef: RefObject<FeaturePromptProps.Ref>;
+  featurePromptRef?: RefObject<FeaturePromptProps.Ref>;
 }
 
 export function AppLayoutToolbarImplementation({

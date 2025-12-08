@@ -54,7 +54,21 @@ export interface DrawerPayload {
   position?: 'side' | 'bottom';
 }
 
+export interface Feature {
+  id: string;
+  header: string;
+  content: string;
+  releaseDate?: string;
+}
+
+export interface FeatureNotificationsPayload {
+  id: string;
+  type?: 'local' | 'global';
+  features: Array<Feature>;
+}
+
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;
+export type RegisterFeatureNotificationsMessage = Message<'registerFeatureNotifications', FeatureNotificationsPayload>;
 export type UpdateDrawerConfigMessage = Message<
   'updateDrawerConfig',
   Pick<DrawerPayload, 'id'> &
@@ -74,8 +88,9 @@ export type AppLayoutUpdateMessage =
   | CloseDrawerMessage
   | ResizeDrawerMessage
   | ExpandDrawerMessage
-  | ExitExpandedModeMessage;
+  | ExitExpandedModeMessage
+  | RegisterFeatureNotificationsMessage;
 
-export type InitialMessage = RegisterDrawerMessage;
+export type InitialMessage = RegisterDrawerMessage | RegisterFeatureNotificationsMessage;
 
 export type WidgetMessage = InitialMessage | AppLayoutUpdateMessage;
