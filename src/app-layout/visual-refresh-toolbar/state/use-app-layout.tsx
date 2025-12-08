@@ -30,6 +30,7 @@ import { AppLayoutState } from '../interfaces';
 import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
 import { useAiDrawer } from './use-ai-drawer';
 import { useBottomDrawers } from './use-bottom-drawers';
+import { useFeatureNotifications } from './use-feature-notifications';
 import { useWidgetMessages } from './use-widget-messages';
 
 export const useAppLayout = (
@@ -202,6 +203,11 @@ export const useAppLayout = (
     drawersOpenQueue,
   });
   const activeGlobalBottomDrawerId = activeBottomDrawer?.id ?? null;
+
+  const { featurePromptRef } = useFeatureNotifications({
+    drawers: [...(drawers ?? []), ...globalDrawers],
+    activeDrawersIds: [...activeGlobalDrawersIds, ...(activeDrawer ? [activeDrawer.id] : [])],
+  });
 
   const checkAIDrawerIdExists = (id: string) => {
     return aiDrawer?.id === id;
@@ -619,6 +625,7 @@ export const useAppLayout = (
       onActiveBottomDrawerResize,
       bottomDrawers,
       bottomDrawersFocusControl,
+      featurePromptRef,
     },
   };
 };
