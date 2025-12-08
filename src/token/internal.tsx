@@ -149,7 +149,7 @@ function InternalToken({
           <DismissButton
             disabled={disabled}
             dismissLabel={dismissLabel}
-            onClose={onDismiss}
+            onDismiss={onDismiss}
             readOnly={readOnly}
             inline={isInline}
           />

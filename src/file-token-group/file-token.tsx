@@ -171,7 +171,7 @@ function InternalFileToken({
             </InternalSpaceBetween>
           </div>
         </InternalBox>
-        {onDismiss && !readOnly && <DismissButton dismissLabel={getDismissLabel(index)} onClose={onDismiss} />}
+        {onDismiss && !readOnly && <DismissButton dismissLabel={getDismissLabel(index)} onDismiss={onDismiss} />}
       </div>
       {errorText && (
         <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
