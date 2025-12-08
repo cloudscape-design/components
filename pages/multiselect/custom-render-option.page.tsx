@@ -45,7 +45,7 @@ const options: SelectProps.Options = [
 export default function SelectPage() {
   const [selectedOptions, setSelectedOptions] = React.useState<MultiselectProps.Options>([]);
   const renderOptionItem: MultiselectProps.MultiselectOptionItemRenderer = ({ item }) => {
-    if (item.type === 'child') {
+    if (item.type === 'item') {
       return <div>{item.option.label}</div>;
     } else {
       return (

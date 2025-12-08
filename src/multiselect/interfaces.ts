@@ -93,11 +93,11 @@ export namespace MultiselectProps {
     selected: boolean;
   }
   export type MultiselectOptionItem = BaseMultiselectItem & {
-    type: 'child';
+    type: 'item';
     option: Option;
   };
   export type MultiselectOptionGroupItem = BaseMultiselectItem & {
-    type: 'parent';
+    type: 'group';
     option: OptionGroup;
     indeterminate: boolean;
   };
@@ -106,8 +106,9 @@ export namespace MultiselectProps {
     option: Option;
     indeterminate: boolean;
   };
+  export type MultiselectItem = MultiselectOptionItem | MultiselectOptionGroupItem | MultiselectSelectAllItem;
   export type MultiselectOptionItemRenderer = (props: {
-    item: MultiselectOptionItem | MultiselectOptionGroupItem | MultiselectSelectAllItem;
+    item: MultiselectItem;
     filterText?: string;
   }) => ReactNode | null;
 

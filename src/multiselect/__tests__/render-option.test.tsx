@@ -25,7 +25,7 @@ describe('Multiselect renderOption', () => {
     expect(renderOption).toHaveBeenCalled();
     const elementWrapper = wrapper.findDropdown().findOption(1)!.findCustomContent();
     expect(elementWrapper).not.toBeNull();
-    expect(elementWrapper.getElement()).toHaveTextContent('Custom 0');
+    expect(elementWrapper!.getElement()).toHaveTextContent('Custom 0');
   });
 
   test('renders no custom option content when no renderOption specified', () => {
@@ -49,7 +49,7 @@ describe('Multiselect renderOption', () => {
           selected: false,
           highlighted: false,
           disabled: false,
-          type: 'child',
+          type: 'item',
         }),
       })
     );
@@ -70,7 +70,7 @@ describe('Multiselect renderOption', () => {
           selected: false,
           highlighted: false,
           disabled: false,
-          type: 'parent',
+          type: 'group',
         }),
       })
     );
@@ -152,7 +152,7 @@ describe('Multiselect renderOption', () => {
     expect(renderOption).toHaveBeenCalledWith(
       expect.objectContaining({
         item: expect.objectContaining({
-          type: 'parent',
+          type: 'group',
           selected: false,
         }),
       })
@@ -160,7 +160,7 @@ describe('Multiselect renderOption', () => {
     expect(renderOption).toHaveBeenCalledWith(
       expect.objectContaining({
         item: expect.objectContaining({
-          type: 'child',
+          type: 'item',
           selected: true,
         }),
       })

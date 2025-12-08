@@ -87,13 +87,13 @@ const Item = (
       return null;
     }
 
-    let item: SelectProps.SelectOptionItem | SelectProps.SelectOptionGroupItem;
+    let item: SelectProps.SelectItem;
 
     switch (option.type) {
       case 'parent':
         item = {
           index: globalIndex,
-          type: 'parent',
+          type: 'group',
           option: option.option as OptionGroup,
           disabled: !!disabled,
         };
@@ -102,7 +102,7 @@ const Item = (
       default:
         item = {
           index: globalIndex,
-          type: 'child',
+          type: 'item',
           option: option.option as OptionDefinition,
           selected: !!selected,
           highlighted: !!highlighted,
