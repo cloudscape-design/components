@@ -10,6 +10,7 @@ import {
   FormField,
   IconProvider,
   Input,
+  InputProps,
   KeyValuePairs,
   Link,
   Select,
@@ -19,13 +20,31 @@ import {
 } from '~components';
 import Icon, { IconProps } from '~components/icon';
 import icons from '~components/icon/generated/icons';
+import { NonCancelableCustomEvent } from '~components/internal/events';
 import { applyTheme, Theme } from '~components/theming';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
 import styles from '../icon/icons-list.scss';
 
-export default function () {
+const STROKE_WIDTH_CONFIG = {
+  MIN: 1,
+  MAX: 10,
+  STEP: 0.5,
+} as const;
+
+const createStrokeHandler = (setter: (value: string) => void) => {
+  return (evt: NonCancelableCustomEvent<InputProps.ChangeDetail>) => {
+    const numValue = parseFloat(evt.detail.value);
+    if (!isNaN(numValue) && numValue >= STROKE_WIDTH_CONFIG.MIN && numValue <= STROKE_WIDTH_CONFIG.MAX) {
+      setter(evt.detail.value);
+    } else if (evt.detail.value === '') {
+      setter(evt.detail.value);
+    }
+  };
+};
+
+export default function ThemedStrokeWidthPage() {
   const [themed, setThemed] = useState<boolean>(false);
   const [strokeSmall, setStrokeSmall] = useState<string>('2');
   const [strokeNormal, setStrokeNormal] = useState<string>('2');
@@ -74,16 +93,9 @@ export default function () {
             <Input
               type="number"
               value={strokeSmall}
-              onChange={evt => {
-                const numValue = parseFloat(evt.detail.value);
-                if (!isNaN(numValue) && numValue >= 1 && numValue <= 10) {
-                  setStrokeSmall(evt.detail.value);
-                } else if (evt.detail.value === '') {
-                  setStrokeSmall(evt.detail.value);
-                }
-              }}
+              onChange={createStrokeHandler(setStrokeSmall)}
               placeholder="1px"
-              step={0.5}
+              step={STROKE_WIDTH_CONFIG.STEP}
               inputMode="decimal"
             />
           </FormField>
@@ -92,16 +104,9 @@ export default function () {
             <Input
               type="number"
               value={strokeNormal}
-              onChange={evt => {
-                const numValue = parseFloat(evt.detail.value);
-                if (!isNaN(numValue) && numValue >= 1 && numValue <= 10) {
-                  setStrokeNormal(evt.detail.value);
-                } else if (evt.detail.value === '') {
-                  setStrokeNormal(evt.detail.value);
-                }
-              }}
+              onChange={createStrokeHandler(setStrokeNormal)}
               placeholder="1px"
-              step={0.5}
+              step={STROKE_WIDTH_CONFIG.STEP}
               inputMode="decimal"
             />
           </FormField>
@@ -110,16 +115,9 @@ export default function () {
             <Input
               type="number"
               value={strokeMedium}
-              onChange={evt => {
-                const numValue = parseFloat(evt.detail.value);
-                if (!isNaN(numValue) && numValue >= 1 && numValue <= 10) {
-                  setStrokeMedium(evt.detail.value);
-                } else if (evt.detail.value === '') {
-                  setStrokeMedium(evt.detail.value);
-                }
-              }}
+              onChange={createStrokeHandler(setStrokeMedium)}
               placeholder="1px"
-              step={0.5}
+              step={STROKE_WIDTH_CONFIG.STEP}
               inputMode="decimal"
             />
           </FormField>
@@ -128,16 +126,9 @@ export default function () {
             <Input
               type="number"
               value={strokeBig}
-              onChange={evt => {
-                const numValue = parseFloat(evt.detail.value);
-                if (!isNaN(numValue) && numValue >= 1 && numValue <= 10) {
-                  setStrokeBig(evt.detail.value);
-                } else if (evt.detail.value === '') {
-                  setStrokeBig(evt.detail.value);
-                }
-              }}
+              onChange={createStrokeHandler(setStrokeBig)}
               placeholder="1.5px"
-              step={0.5}
+              step={STROKE_WIDTH_CONFIG.STEP}
               inputMode="decimal"
             />
           </FormField>
@@ -146,16 +137,9 @@ export default function () {
             <Input
               type="number"
               value={strokeLarge}
-              onChange={evt => {
-                const numValue = parseFloat(evt.detail.value);
-                if (!isNaN(numValue) && numValue >= 1 && numValue <= 10) {
-                  setStrokeLarge(evt.detail.value);
-                } else if (evt.detail.value === '') {
-                  setStrokeLarge(evt.detail.value);
-                }
-              }}
+              onChange={createStrokeHandler(setStrokeLarge)}
               placeholder="2px"
-              step={0.5}
+              step={STROKE_WIDTH_CONFIG.STEP}
               inputMode="decimal"
             />
           </FormField>
