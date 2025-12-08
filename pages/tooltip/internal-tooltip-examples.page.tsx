@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import AppLayout from '~components/app-layout';
 import Box from '~components/box';
 import BreadcrumbGroup from '~components/breadcrumb-group';
 import Button from '~components/button';
@@ -28,7 +27,6 @@ export default function InternalTooltipExamples() {
       <Box padding="l">
         <SpaceBetween size="l">
           <Header variant="h1">Internal Tooltip - Current Implementations</Header>
-
           <FileInputItemExample />
           <IconButtonItemExample />
           <IconToggleButtonItemExample />
@@ -44,7 +42,6 @@ export default function InternalTooltipExamples() {
           <CalendarExample />
           <DateRangePickerExample />
           <TabsExample />
-          <AppLayoutTriggerButtonExample />
         </SpaceBetween>
       </Box>
     </>
@@ -245,26 +242,41 @@ function TokenExample() {
   return (
     <Container header={<Header variant="h2">Token (Inline with Tooltip)</Header>}>
       <ScreenshotArea>
-        <Box>
+        <SpaceBetween size="m">
+          <Box color="text-status-info" fontSize="body-s">
+            <strong>Note:</strong> Hover or focus on long tokens. Tooltip shows full text when truncated. Requires
+            variant=&quot;inline&quot; and tooltipContent prop.
+          </Box>
           <SpaceBetween direction="horizontal" size="xs">
-            <div style={{ maxWidth: '150px' }}>
+            <div style={{ maxWidth: '120px' }}>
               <Token
-                label="Very long label that will be truncated and show a tooltip"
+                variant="inline"
+                label="Short label"
+                dismissLabel="Remove"
+                onDismiss={() => {}}
+                tooltipContent="Short label"
+              />
+            </div>
+            <div style={{ maxWidth: '200px' }}>
+              <Token
+                variant="inline"
+                label="Very long label that will be truncated and show a tooltip on hover or focus"
                 dismissLabel="Remove token"
                 onDismiss={() => {}}
-                tooltipContent="Very long label that will be truncated and show a tooltip"
+                tooltipContent="Very long label that will be truncated and show a tooltip on hover or focus"
               />
             </div>
             <div style={{ maxWidth: '180px' }}>
               <Token
-                label="Another very long token label demonstrating overflow behavior"
+                variant="inline"
+                label="Another extremely long token label that demonstrates the overflow tooltip functionality when text exceeds container width"
                 dismissLabel="Remove token"
                 onDismiss={() => {}}
-                tooltipContent="Another very long token label demonstrating overflow behavior"
+                tooltipContent="Another extremely long token label that demonstrates the overflow tooltip functionality when text exceeds container width"
               />
             </div>
           </SpaceBetween>
-        </Box>
+        </SpaceBetween>
       </ScreenshotArea>
     </Container>
   );
@@ -359,15 +371,16 @@ function BreadcrumbGroupExample() {
 }
 
 function SliderExample() {
-  const [value, setValue] = useState(50);
+  const [value1, setValue1] = useState(50);
+  const [value2, setValue2] = useState(500);
 
   return (
     <Container header={<Header variant="h2">Slider (Value Tooltip)</Header>}>
       <ScreenshotArea>
         <SpaceBetween size="l">
           <Slider
-            value={value}
-            onChange={({ detail }) => setValue(detail.value)}
+            value={value1}
+            onChange={({ detail }) => setValue1(detail.value)}
             min={0}
             max={100}
             step={5}
@@ -379,8 +392,8 @@ function SliderExample() {
             }}
           />
           <Slider
-            value={value}
-            onChange={({ detail }) => setValue(detail.value)}
+            value={value2}
+            onChange={({ detail }) => setValue2(detail.value)}
             min={0}
             max={1000}
             step={50}
@@ -528,73 +541,9 @@ function TabsExample() {
   );
 }
 
-function AppLayoutTriggerButtonExample() {
-  const [toolsOpen, setToolsOpen] = useState(false);
-  const [navigationOpen, setNavigationOpen] = useState(false);
-
-  return (
-    <Container header={<Header variant="h2">AppLayout - TriggerButton (Toolbar)</Header>}>
-      <ScreenshotArea>
-        <Box color="text-status-info" fontSize="body-s">
-          <strong>Note:</strong> Trigger buttons with tooltips are visible in visual refresh mode with the toolbar.
-          Hover over navigation/tools icons in the toolbar to see label tooltips.
-        </Box>
-        <div style={{ height: '600px', border: '1px solid #ccc' }}>
-          <AppLayout
-            headerSelector="#header"
-            toolsOpen={toolsOpen}
-            onToolsChange={({ detail }) => setToolsOpen(detail.open)}
-            navigationOpen={navigationOpen}
-            onNavigationChange={({ detail }) => setNavigationOpen(detail.open)}
-            tools={
-              <Box padding="l">
-                <Header variant="h2">Tools Panel</Header>
-                <Box>Tools content goes here</Box>
-              </Box>
-            }
-            navigation={
-              <Box padding="l">
-                <Header variant="h2">Navigation Panel</Header>
-                <Box>Navigation content goes here</Box>
-              </Box>
-            }
-            content={
-              <Box padding="l">
-                <SpaceBetween size="m">
-                  <Header variant="h1">Main Content</Header>
-                  <Box>
-                    The toolbar trigger buttons (navigation, tools) use tooltips to show their labels when you hover
-                    over them.
-                  </Box>
-                  <Box>These tooltips help users understand what each icon button does.</Box>
-                </SpaceBetween>
-              </Box>
-            }
-            ariaLabels={{
-              navigation: 'Navigation panel',
-              navigationClose: 'Close navigation',
-              navigationToggle: 'Open navigation',
-              tools: 'Help panel',
-              toolsClose: 'Close help',
-              toolsToggle: 'Open help',
-            }}
-          />
-        </div>
-      </ScreenshotArea>
-    </Container>
-  );
-}
-
 /**
- * TEMPLATE FOR ADDING NEW EXAMPLES
- *
- * function ComponentNameExample() {
- *   return (
- *     <Container header={<Header variant="h2">Component Name</Header>}>
- *       <ScreenshotArea>
- *         // Add component implementation here
- *       </ScreenshotArea>
- *     </Container>
- *   );
- * }
+ * Note: AppLayout TriggerButton implementation uses tooltips internally but cannot
+ * be properly demonstrated through the public API. Tooltips are enabled automatically
+ * in visual refresh mode based on internal logic.
+ * Source: src/app-layout/visual-refresh-toolbar/toolbar/trigger-button/index.tsx
  */
