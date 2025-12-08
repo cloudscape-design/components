@@ -23,6 +23,7 @@ export default function Tooltip({
   position = 'top',
   dismissOnScroll,
   onClose,
+  contentAttributes = {},
 }: TooltipProps) {
   if (!trackingKey && (typeof content === 'string' || typeof content === 'number')) {
     trackingKey = content;
@@ -54,7 +55,7 @@ export default function Tooltip({
 
   return (
     <Portal>
-      <div className={styles.root} data-testid={trackingKey}>
+      <div className={styles.root} {...contentAttributes} data-testid={trackingKey}>
         <Transition in={true}>
           {() => (
             <PopoverContainer

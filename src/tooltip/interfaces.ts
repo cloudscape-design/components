@@ -44,4 +44,18 @@ export interface TooltipProps {
    * Callback fired when the tooltip should be closed (e.g., on Escape key press).
    */
   onClose?: NonCancelableEventHandler;
+
+  /**
+   * Additional HTML attributes to apply to the tooltip container element.
+   * This can be used for custom event handlers, data attributes, or other DOM properties.
+   *
+   * @example
+   * // Add click-to-dismiss behavior
+   * contentAttributes={{ onPointerDown: () => setShowTooltip(false) }}
+   *
+   * @example
+   * // Add analytics tracking
+   * contentAttributes={{ 'data-analytics': 'help-tooltip' }}
+   */
+  contentAttributes?: React.HTMLAttributes<HTMLDivElement>;
 }
