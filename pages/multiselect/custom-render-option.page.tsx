@@ -9,7 +9,7 @@ import { SelectProps } from '~components/select';
 
 import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings } from './constants';
-const lotsOfOptions: SelectProps.Options = [...Array(100)].map((_, index) => ({
+const lotsOfOptions: SelectProps.Options = [...Array(50)].map((_, index) => ({
   value: `Option ${index}`,
   label: `Option ${index}`,
 }));
@@ -27,19 +27,11 @@ const options: SelectProps.Options = [
   },
   {
     label: 'Option group',
-    options: [
-      { value: 'forth', label: 'Nested option' },
-      { value: 'forth0', label: 'Nested option' },
-    ],
+    options: [{ value: 'forth', label: 'Nested option' }],
     disabledReason: 'disabled reason',
   },
-  {
-    label: 'Option group',
-    options: [{ value: 'forth2', label: 'Nested option' }],
-    disabledReason: 'disabled reason',
-  },
-  { label: 'Last option', disabled: true, disabledReason: 'disabled reason' },
   ...lotsOfOptions,
+  { label: 'Last option', disabled: true, disabledReason: 'disabled reason' },
 ];
 
 export default function SelectPage() {
@@ -59,7 +51,7 @@ export default function SelectPage() {
 
   return (
     <ScreenshotArea>
-      <Box variant="h1">Select with custom item renderer</Box>
+      <Box variant="h1">Multiselect with custom item renderer</Box>
       <Box padding="l">
         <div style={{ width: '400px' }}>
           <Multiselect
