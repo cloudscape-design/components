@@ -23,6 +23,7 @@ interface InternalFeaturePromptProps
 
 function InternalFeaturePrompt(
   {
+    onShow,
     onDismiss,
     header,
     content,
@@ -47,6 +48,7 @@ function InternalFeaturePrompt(
     },
     show: () => {
       setShow(true);
+      fireNonCancelableEvent(onShow);
     },
   }));
 

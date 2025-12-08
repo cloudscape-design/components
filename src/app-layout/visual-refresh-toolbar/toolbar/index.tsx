@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { RefObject, useEffect, useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
+import { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { OnChangeParams } from '../../utils/use-drawers';
@@ -66,6 +67,7 @@ export interface ToolbarProps {
 export interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   toolbarProps: ToolbarProps;
+  featurePromptRef: RefObject<FeaturePromptProps.Ref>;
 }
 
 export function AppLayoutToolbarImplementation({
@@ -73,6 +75,7 @@ export function AppLayoutToolbarImplementation({
   // the value could be undefined if this component is loaded as a widget by a different app layout version
   // not testable in a single-version setup
   toolbarProps = {},
+  featurePromptRef,
 }: AppLayoutToolbarImplementationProps) {
   const {
     breadcrumbs,
@@ -254,6 +257,7 @@ export function AppLayoutToolbarImplementation({
               bottomDrawers={bottomDrawers}
               onActiveGlobalBottomDrawerChange={onActiveGlobalBottomDrawerChange}
               activeGlobalBottomDrawerId={activeGlobalBottomDrawerId}
+              featurePromptRef={featurePromptRef}
             />
           </div>
         )}

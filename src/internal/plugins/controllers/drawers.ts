@@ -46,6 +46,7 @@ export interface DrawerConfig {
   onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
   // Do not use directly
   __features?: Array<Feature>;
+  __suppressFeaturePrompt?: boolean;
 }
 
 export interface Feature {
