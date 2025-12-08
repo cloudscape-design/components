@@ -12,8 +12,8 @@ export default class OptionWrapper extends ComponentWrapper {
    * Finds the custom content wrapper of this option.
    * @returns {ElementWrapper} the ElementWrapper for the custom-content.
    */
-  findCustomContent(): ElementWrapper {
-    return this.findByClassName(styles['custom-content'])!;
+  findCustomContent(): ElementWrapper | null {
+    return this.findByClassName(styles['custom-content']);
   }
 
   /**
