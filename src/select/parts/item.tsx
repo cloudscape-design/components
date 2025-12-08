@@ -10,7 +10,6 @@ import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import Option from '../../internal/components/option';
 import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
-import { getTestOptionIndexes } from '../../internal/components/options-list/utils/test-indexes';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
 import SelectableItem from '../../internal/components/selectable-item';
 import Tooltip from '../../internal/components/tooltip';
@@ -79,7 +78,6 @@ const Item = (
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
 
-  const { throughIndex, inGroupIndex, groupIndex } = getTestOptionIndexes(option) || {};
   const globalIndex = virtualIndex ?? index ?? null;
 
   const renderOptionWrapper = (option: DropdownOption) => {
@@ -117,9 +115,6 @@ const Item = (
 
   return (
     <SelectableItem
-      data-test-index={throughIndex}
-      data-in-group-index={inGroupIndex}
-      data-group-index={groupIndex}
       disableContentStyling={!!renderOption}
       ariaSelected={Boolean(selected)}
       selected={selected}
