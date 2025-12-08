@@ -108,7 +108,6 @@ const MultiSelectItem = (
           {descriptionEl}
           {highlighted && canShowTooltip && (
             <Tooltip
-              className={styles['disabled-reason-tooltip']}
               anchorRef={internalRef}
               content={disabledReason!}
               position="right"

@@ -19,7 +19,6 @@ export default function Tooltip({
   content,
   anchorRef,
   testId,
-  className,
   position = 'top',
   dismissOnScroll,
   onClose,
@@ -66,7 +65,6 @@ export default function Tooltip({
               zIndex={7000}
               arrow={position => <PopoverArrow position={position} />}
               hideOnOverscroll={dismissOnScroll}
-              className={className}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
                 {content}

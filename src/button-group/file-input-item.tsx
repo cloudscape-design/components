@@ -46,13 +46,7 @@ const FileInputItem = forwardRef(
           __inputClassName={testUtilStyles.item}
         />
         {canShowTooltip && (
-          <Tooltip
-            anchorRef={containerRef}
-            testId={item.id}
-            content={item.text}
-            className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
-            onClose={onTooltipDismiss}
-          />
+          <Tooltip anchorRef={containerRef} testId={item.id} content={item.text} onClose={onTooltipDismiss} />
         )}
       </div>
     );

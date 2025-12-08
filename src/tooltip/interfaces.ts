@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { PopoverProps } from '../popover/interfaces';
+
 export interface TooltipProps {
   /**
    * Content to display in the tooltip.
    */
-  content: React.ReactNode;
+  content: string;
 
   /**
    * Reference to the element that the tooltip should track.
@@ -23,12 +25,7 @@ export interface TooltipProps {
    * Position of the tooltip relative to the tracked element.
    * @defaultValue 'top'
    */
-  position?: 'top' | 'right' | 'bottom' | 'left';
-
-  /**
-   * Additional CSS class name to apply to the tooltip.
-   */
-  className?: string;
+  position?: PopoverProps.Position;
 
   /**
    * Whether to dismiss the tooltip when the user scrolls.
