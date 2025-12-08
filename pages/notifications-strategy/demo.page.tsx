@@ -24,7 +24,7 @@ import {
 } from '~components';
 import AppLayoutToolbar, { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
 import FeaturePrompt, { FeaturePromptProps } from '~components/internal/do-not-use/feature-prompt';
-import awsuiPlugins from '~components/internal/plugins';
+import { registerFeatureNotifications } from '~components/internal/plugins/widget';
 import { mount } from '~mount';
 
 import AppContext, { AppContextType } from '../app/app-context';
@@ -92,7 +92,7 @@ const activeDrawerOptions: SelectProps.Option[] = [
   },
 ];
 
-awsuiPlugins.appLayout.registerFeatureNotificationsDrawer({
+registerFeatureNotifications({
   id: 'local-feature-notifications',
   features: [
     {

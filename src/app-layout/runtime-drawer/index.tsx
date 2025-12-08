@@ -12,10 +12,9 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../interna
 import {
   DrawerConfig as RuntimeDrawerConfig,
   DrawerStateChangeParams,
-  Feature,
 } from '../../internal/plugins/controllers/drawers';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
-import { DrawerPayload as RuntimeAiDrawerConfig } from '../../internal/plugins/widget/interfaces';
+import { DrawerPayload as RuntimeAiDrawerConfig, Feature } from '../../internal/plugins/widget/interfaces';
 import List from '../../list/internal';
 import SpaceBetween from '../../space-between/internal';
 import { AppLayoutProps } from '../interfaces';
@@ -190,8 +189,8 @@ export const mapRuntimeConfigToDrawer = (
           ...(trigger.iconSvg && {
             iconSvg: convertRuntimeTriggerToReactNode(trigger.iconSvg),
           }),
-          ...(trigger.iconName && {
-            iconName: trigger.iconName as IconProps.Name,
+          ...(trigger.__iconName && {
+            iconName: trigger.__iconName as IconProps.Name,
           }),
         }
       : undefined,

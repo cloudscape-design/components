@@ -2,7 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getAppLayoutInitialMessages, getAppLayoutMessageHandler, pushInitialMessage } from './core';
-import { AppLayoutUpdateMessage, DrawerPayload, RegisterDrawerMessage } from './interfaces';
+import {
+  AppLayoutUpdateMessage,
+  DrawerPayload,
+  FeatureNotificationsPayload,
+  RegisterDrawerMessage,
+  RegisterFeatureNotificationsMessage,
+} from './interfaces';
 
 /**
  * Registers a new left runtime drawer to app layout
@@ -20,6 +26,19 @@ export function registerLeftDrawer(drawer: DrawerPayload) {
  */
 export function registerBottomDrawer(drawer: DrawerPayload) {
   const message: RegisterDrawerMessage = { type: 'registerBottomDrawer', payload: { ...drawer, position: 'bottom' } };
+  pushInitialMessage(message);
+  getAppLayoutMessageHandler()?.(message);
+}
+
+/**
+ * Registers a new feature notifications runtime drawer to app layout
+ * @param payload
+ */
+export function registerFeatureNotifications(payload: FeatureNotificationsPayload) {
+  const message: RegisterFeatureNotificationsMessage = {
+    type: 'registerFeatureNotifications',
+    payload,
+  };
   pushInitialMessage(message);
   getAppLayoutMessageHandler()?.(message);
 }

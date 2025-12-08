@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
 import awsuiPlugins from '../../../internal/plugins';
+import { WidgetMessage } from '../../../internal/plugins/widget/interfaces';
 import { InternalDrawer } from '../interfaces';
 
 interface UseFeatureNotificationsProps {
@@ -11,6 +12,7 @@ interface UseFeatureNotificationsProps {
   activeDrawersIds: Array<string>;
 }
 
+// TODO replace with a real continuum request
 const delay = () =>
   new Promise(resolve => {
     setTimeout(() => {
@@ -29,7 +31,7 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
     }
     const id = featureNotificationsDrawer.id;
     if (activeDrawersIds.includes(id)) {
-      // make a request to continuum and mark all notifications as read
+      // TODO make a request to continuum and mark all notifications as read
       awsuiPlugins.appLayout.updateDrawer({ id, badge: false });
       setMarkAllAsRead(true);
       return;
@@ -48,7 +50,36 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
     });
   }, [featureNotificationsDrawer, activeDrawersIds, markAllAsRead]);
 
+  function featureNotificationsMessageHandler(event: WidgetMessage) {
+    if (event.type === 'registerFeatureNotifications') {
+      const config = event.payload;
+      // TODO pass correct properties
+      awsuiPlugins.appLayout.registerDrawer({
+        id: config.id,
+        type: config.type,
+        defaultActive: false,
+        resizable: true,
+        defaultSize: 320,
+
+        ariaLabels: {
+          closeButton: 'Close button',
+          content: 'Content',
+          triggerButton: 'Trigger button',
+          resizeHandle: 'Resize handle',
+        },
+
+        trigger: { __iconName: 'suggestions' },
+        mountContent: () => {},
+        unmountContent: () => {},
+
+        __features: config.features,
+      });
+      return;
+    }
+  }
+
   return {
     featurePromptRef,
+    featureNotificationsMessageHandler,
   };
 }
