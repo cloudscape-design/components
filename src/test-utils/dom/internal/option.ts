@@ -18,14 +18,14 @@ export default class OptionWrapper extends ComponentWrapper {
 
   /**
    * Finds the label wrapper of this option.
-   * If no label element is found, falls back to custom content.
-   * @returns {ElementWrapper} the ElementWrapper for the label or custom content as fallback.
+   * @returns {ElementWrapper} the ElementWrapper for the label.
    */
   findLabel(): ElementWrapper {
     const labelElementWrapper = this.findByClassName(styles.label);
     if (!labelElementWrapper) {
+      // Fallback, if label is null due to custom content.
       return this.findCustomContent()!;
-    } // Fallback, if label is null due to custom content.
+    }
     return labelElementWrapper;
   }
 
