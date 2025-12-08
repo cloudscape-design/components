@@ -75,13 +75,11 @@ const MultiSelectItem = (
     switch (option.type) {
       case 'select-all':
         item = {
-          index: globalIndex,
           type: 'select-all',
           option: option.option as OptionDefinition,
           indeterminate: indeterminate ?? false,
           selected: !!selected,
           highlighted: !!highlighted,
-          disabled: !!disabled,
         };
         break;
       case 'parent':
