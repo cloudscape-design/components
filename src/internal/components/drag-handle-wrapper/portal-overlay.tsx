@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 
 import {
   getIsRtl,
@@ -80,7 +81,7 @@ export default function PortalOverlay({
 
   return (
     <Portal container={container}>
-      <span ref={ref} className={styles['portal-overlay']}>
+      <span ref={ref} className={clsx(styles['portal-overlay'], isDisabled && styles['portal-overlay-disabled'])}>
         <span className={styles['portal-overlay-contents']}>{children}</span>
       </span>
     </Portal>
