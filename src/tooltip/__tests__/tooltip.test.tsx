@@ -3,7 +3,6 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import StatusIndicator from '../../../lib/components/status-indicator';
 import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../lib/components/test-utils/dom';
 import Tooltip, { TooltipProps } from '../../../lib/components/tooltip';
 
@@ -30,7 +29,7 @@ function renderTooltip(props: Partial<TooltipProps>) {
   const { container } = render(
     <Tooltip
       anchorRef={dummyRef}
-      testId={props.testId}
+      trackingKey={props.trackingKey}
       content={props.content ?? ''}
       onClose={props.onClose ?? (() => {})}
     />
@@ -45,11 +44,10 @@ describe('Tooltip', () => {
     expect(wrapper.findContent()!.getElement()).toHaveTextContent('Value');
   });
 
-  it('renders node correctly', () => {
-    const wrapper = renderTooltip({ content: <StatusIndicator type="success">Success</StatusIndicator> });
-    const statusIndicatorWrapper = createWrapper(wrapper.findContent()!.getElement()).findStatusIndicator()!;
+  it('renders text content correctly', () => {
+    const wrapper = renderTooltip({ content: 'Success message' });
 
-    expect(statusIndicatorWrapper.getElement()).toHaveTextContent('Success');
+    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Success message');
   });
 
   it('renders arrow', () => {
@@ -64,17 +62,17 @@ describe('Tooltip', () => {
     expect(wrapper.findHeader()).toBeNull();
   });
 
-  it('testId is set correctly for strings', () => {
+  it('trackingKey is set correctly for strings', () => {
     const wrapper = renderTooltip({ content: 'Value' });
 
     expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', 'Value');
   });
 
-  it('testId is set correctly for explicit value', () => {
-    const testId = 'test-id';
-    const wrapper = renderTooltip({ content: 'Value', testId });
+  it('trackingKey is set correctly for explicit value', () => {
+    const trackingKey = 'test-id';
+    const wrapper = renderTooltip({ content: 'Value', trackingKey });
 
-    expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', testId);
+    expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', trackingKey);
   });
 
   it('calls onClose when an Escape keypress is detected anywhere', () => {

@@ -243,7 +243,6 @@ function TriggerButton(
         <Tooltip
           anchorRef={containerRef}
           content={tooltipValue}
-          className={testutilStyles['trigger-tooltip']}
           onClose={() => {
             setShowTooltip(false);
             setSupressTooltip(false);

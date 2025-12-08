@@ -562,7 +562,6 @@ const TabTrigger = forwardRef(
             {descriptionEl}
             {showTooltip && (
               <Tooltip
-                className={styles['disabled-reason-tooltip']}
                 anchorRef={tabLabelRefObject}
                 content={tab.disabledReason!}
                 onClose={() => setShowTooltip(false)}

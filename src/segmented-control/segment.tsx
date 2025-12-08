@@ -89,12 +89,7 @@ export const Segment = React.forwardRef(
           <>
             {descriptionEl}
             {showTooltip && (
-              <Tooltip
-                className={styles['disabled-reason-tooltip']}
-                anchorRef={buttonRef}
-                content={disabledReason!}
-                onClose={() => setShowTooltip(false)}
-              />
+              <Tooltip anchorRef={buttonRef} content={disabledReason!} onClose={() => setShowTooltip(false)} />
             )}
           </>
         )}

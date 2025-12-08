@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
 import { Transition } from '../internal/components/transition';
+import { fireNonCancelableEvent } from '../internal/events';
 import PopoverArrow from '../popover/arrow';
 import PopoverBody from '../popover/body';
 import PopoverContainer from '../popover/container';
@@ -18,13 +19,13 @@ export { TooltipProps };
 export default function Tooltip({
   content,
   anchorRef,
-  testId,
+  trackingKey,
   position = 'top',
   dismissOnScroll,
   onClose,
 }: TooltipProps) {
-  if (!testId && (typeof content === 'string' || typeof content === 'number')) {
-    testId = content;
+  if (!trackingKey && (typeof content === 'string' || typeof content === 'number')) {
+    trackingKey = content;
   }
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function Tooltip({
         if (event.key === 'Escape') {
           // Prevent any surrounding modals or dialogs from acting on this Esc.
           event.stopPropagation();
-          onClose?.();
+          fireNonCancelableEvent(onClose);
         }
       },
       {
@@ -53,12 +54,12 @@ export default function Tooltip({
 
   return (
     <Portal>
-      <div className={styles.root} data-testid={testId}>
+      <div className={styles.root} data-testid={trackingKey}>
         <Transition in={true}>
           {() => (
             <PopoverContainer
               trackRef={anchorRef}
-              trackKey={testId}
+              trackKey={trackingKey}
               size="medium"
               fixedWidth={false}
               position={position}

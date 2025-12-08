@@ -46,7 +46,7 @@ const FileInputItem = forwardRef(
           __inputClassName={testUtilStyles.item}
         />
         {canShowTooltip && (
-          <Tooltip anchorRef={containerRef} testId={item.id} content={item.text} onClose={onTooltipDismiss} />
+          <Tooltip anchorRef={containerRef} trackingKey={item.id} content={item.text} onClose={onTooltipDismiss} />
         )}
       </div>
     );
