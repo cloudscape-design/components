@@ -43,6 +43,16 @@ describe('Option component', () => {
     value: 'optionABC',
     label: 'ABC',
   };
+  test('displays custom content', () => {
+    const optionWrapper = renderOption({
+      customContent: <div>My Custom Content</div>,
+      option: {
+        ...baseOption,
+      },
+    });
+    expect(optionWrapper.findCustomContent()!.getElement()).toHaveTextContent('My Custom Content');
+  });
+
   test('displays label', () => {
     const optionWrapper = renderOption({
       option: baseOption,
