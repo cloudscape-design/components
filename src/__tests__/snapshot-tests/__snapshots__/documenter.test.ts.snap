@@ -31686,8 +31686,7 @@ Options get highlighted when they match the value of the input field.",
           },
         },
         {
-          "description": "Finds the label wrapper of this option.
-If no label element is found, falls back to custom content.",
+          "description": "Finds the label wrapper of this option.",
           "name": "findLabel",
           "parameters": [],
           "returnType": {
@@ -42586,8 +42585,7 @@ Options get highlighted when they match the value of the input field.",
           },
         },
         {
-          "description": "Finds the label wrapper of this option.
-If no label element is found, falls back to custom content.",
+          "description": "Finds the label wrapper of this option.",
           "name": "findLabel",
           "parameters": [],
           "returnType": {
