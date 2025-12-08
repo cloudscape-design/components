@@ -356,6 +356,7 @@ export function Resizer({
         }}
       >
         <button
+          type="button"
           ref={resizerToggleRef}
           className={clsx(
             styles.resizer,
