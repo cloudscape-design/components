@@ -130,6 +130,9 @@
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "نسخ"
   },
+  "date-picker": {
+    "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {اختر التاريخ} other {اختر التاريخ، التاريخ المحدد هو {selectedDate}}}"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "الوضع النسبي",
     "i18nStrings.absoluteModeTitle": "الوضع المُطلق",
@@ -171,6 +174,11 @@
   },
   "drawer": {
     "i18nStrings.loadingText": "جار تحميل المحتوى"
+  },
+  "error-boundary": {
+    "i18nStrings.headerText": "خطأ غير متوقع، فشل عرض المحتوى",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {حدِّث الصفحة للمحاولة مرة أخرى. نحن نتتبع هذه المشكلة، ولكن يمكنك مشاركة <Feedback>المزيد من المعلومات هنا</Feedback>.} other {حدِّث الصفحة للمحاولة مرة أخرى.}}",
+    "i18nStrings.refreshActionText": "تحديث الصفحة"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "إظهار عدد أقل من عوامل التصفية",
