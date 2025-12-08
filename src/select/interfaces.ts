@@ -208,12 +208,12 @@ export namespace SelectProps {
   interface BaseSelectItem {
     index: number | null;
     disabled: boolean;
-    highlighted: boolean;
-    selected: boolean;
   }
   export type SelectOptionItem = BaseSelectItem & {
     type: 'child';
     option: Option;
+    highlighted: boolean;
+    selected: boolean;
   };
   export type SelectOptionGroupItem = BaseSelectItem & {
     type: 'parent';
