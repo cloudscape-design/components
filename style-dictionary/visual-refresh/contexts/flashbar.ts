@@ -6,7 +6,8 @@ import { expandColorDictionary } from '../../utils/index.js';
 import { StyleDictionary } from '../../utils/interfaces.js';
 import { tokens as parentTokens } from '../colors.js';
 
-export const baseTokens: StyleDictionary.ColorsDictionary = {
+// Token configuration that is shared between classic and visual refresh
+export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonNormalDefault: '{colorNeutral100}',
   colorBorderButtonNormalDefault: '{colorNeutral100}',
   colorBackgroundButtonNormalDefault: 'transparent',
@@ -20,15 +21,21 @@ export const baseTokens: StyleDictionary.ColorsDictionary = {
   colorTextExpandableSectionDefault: '{colorNeutral100}',
   colorTextExpandableSectionHover: '{colorWhite}',
   colorTextBodyDefault: '{colorNeutral100}',
+  colorTextBodySecondary: '{colorNeutral100}',
   colorTextHeadingSecondary: '{colorNeutral100}',
   colorBorderDividerDefault: '{colorNeutral100}',
   colorTextTutorialHotspotDefault: '{colorNeutral300}',
   colorTextTutorialHotspotHover: '{colorNeutral100}',
   colorBackgroundInlineCode: 'rgba(0, 0, 0, 0.2)',
+  // Key-value pairs
+  colorTextLabel: '{colorNeutral100}',
+  // Info links
+  colorTextLinkDefault: '{colorNeutral100}',
+  colorTextLinkHover: '{colorWhite}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
-  merge({}, parentTokens, baseTokens)
+  merge({}, parentTokens, sharedTokens)
 );
 
 export { expandedTokens as tokens };
