@@ -205,21 +205,26 @@ export namespace SelectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
-  interface BaseSelectItem {
-    index: number | null;
-    disabled: boolean;
-  }
-  export type SelectOptionItem = BaseSelectItem & {
+
+  export interface SelectOptionItem {
     type: 'item';
+    index: number | null;
     option: Option;
     highlighted: boolean;
     selected: boolean;
-  };
-  export type SelectOptionGroupItem = BaseSelectItem & {
+    disabled: boolean;
+  }
+  export interface SelectOptionGroupItem {
     type: 'group';
+    index: number | null;
     option: OptionGroup;
-  };
-  export type SelectItem = SelectOptionItem | SelectOptionGroupItem;
+    disabled: boolean;
+  }
+  export interface SelectTriggerOptionItem {
+    type: 'trigger';
+    option: Option;
+  }
+  export type SelectItem = SelectOptionItem | SelectOptionGroupItem | SelectTriggerOptionItem;
   export type SelectOptionItemRenderer = (props: { item: SelectItem; filterText?: string }) => ReactNode | null;
 
   export type LoadItemsDetail = OptionsLoadItemsDetail;

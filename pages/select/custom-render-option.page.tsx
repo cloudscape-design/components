@@ -39,12 +39,15 @@ const options: SelectProps.Options = [
 
 export default function SelectPage() {
   const [selectedOption, setSelectedOption] = useState<SelectProps.Option | null>(null);
-  const renderOptionItem: SelectProps.SelectOptionItemRenderer = ({ item, filterText }) => {
-    return (
-      <div>
-        {item.option.label} + {filterText}
-      </div>
-    );
+  const renderOption: SelectProps.SelectOptionItemRenderer = ({ item }) => {
+    if (item.type === 'trigger') {
+      return <div>Trigger: {item.option.label}</div>;
+    } else if (item.type === 'group') {
+      return <div>Group: {item.option.label}</div>;
+    } else if (item.type === 'item') {
+      return <div>Item: {item.option.label}</div>;
+    }
+    return null;
   };
 
   return (
@@ -53,11 +56,13 @@ export default function SelectPage() {
       <Box padding="l">
         <div style={{ width: '400px' }}>
           <Select
-            renderOption={renderOptionItem}
+            filteringType="auto"
+            renderOption={renderOption}
             placeholder="Choose option"
             selectedOption={selectedOption}
             onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
             options={options}
+            triggerVariant="option"
           />
         </div>
       </Box>

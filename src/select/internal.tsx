@@ -164,6 +164,7 @@ const InternalSelect = React.forwardRef(
 
     const trigger = (
       <Trigger
+        renderOption={renderOption}
         ref={triggerRef}
         placeholder={placeholder}
         disabled={disabled}
