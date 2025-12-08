@@ -210,19 +210,17 @@ export namespace SelectProps {
     disabled: boolean;
   }
   export type SelectOptionItem = BaseSelectItem & {
-    type: 'child';
+    type: 'item';
     option: Option;
     highlighted: boolean;
     selected: boolean;
   };
   export type SelectOptionGroupItem = BaseSelectItem & {
-    type: 'parent';
+    type: 'group';
     option: OptionGroup;
   };
-  export type SelectOptionItemRenderer = (props: {
-    item: SelectOptionItem | SelectOptionGroupItem;
-    filterText?: string;
-  }) => ReactNode | null;
+  export type SelectItem = SelectOptionItem | SelectOptionGroupItem;
+  export type SelectOptionItemRenderer = (props: { item: SelectItem; filterText?: string }) => ReactNode | null;
 
   export type LoadItemsDetail = OptionsLoadItemsDetail;
 

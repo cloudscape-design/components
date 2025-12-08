@@ -72,10 +72,7 @@ const MultiSelectItem = (
       return null;
     }
 
-    let item:
-      | MultiselectProps.MultiselectOptionItem
-      | MultiselectProps.MultiselectOptionGroupItem
-      | MultiselectProps.MultiselectSelectAllItem;
+    let item: MultiselectProps.MultiselectItem;
 
     switch (option.type) {
       case 'select-all':
@@ -92,7 +89,7 @@ const MultiSelectItem = (
       case 'parent':
         item = {
           index: globalIndex,
-          type: 'parent',
+          type: 'group',
           option: option.option as OptionGroup,
           indeterminate: indeterminate ?? false,
           selected: !!selected,
@@ -104,7 +101,7 @@ const MultiSelectItem = (
       default:
         item = {
           index: globalIndex,
-          type: 'child',
+          type: 'item',
           option: option.option as OptionDefinition,
           selected: !!selected,
           highlighted: !!highlighted,

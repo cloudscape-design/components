@@ -17798,7 +17798,7 @@ For more information, see the
         "parameters": [
           {
             "name": "props",
-            "type": "{ item: MultiselectProps.MultiselectOptionItem | MultiselectProps.MultiselectOptionGroupItem | MultiselectProps.MultiselectSelectAllItem; filterText?: string | undefined; }",
+            "type": "{ item: MultiselectProps.MultiselectItem; filterText?: string | undefined; }",
           },
         ],
         "returnType": "React.ReactNode",
@@ -23363,7 +23363,7 @@ For more information, see the
         "parameters": [
           {
             "name": "props",
-            "type": "{ item: SelectProps.SelectOptionItem | SelectProps.SelectOptionGroupItem; filterText?: string | undefined; }",
+            "type": "{ item: SelectProps.SelectItem; filterText?: string | undefined; }",
           },
         ],
         "returnType": "React.ReactNode",
@@ -32407,7 +32407,7 @@ Options get highlighted when they match the value of the input field.",
           "name": "findCustomContent",
           "parameters": [],
           "returnType": {
-            "isNullable": false,
+            "isNullable": true,
             "name": "ElementWrapper",
             "typeArguments": [
               {

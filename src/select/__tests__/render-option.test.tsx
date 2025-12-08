@@ -24,7 +24,7 @@ describe('Select renderOption', () => {
     expect(renderOption).toHaveBeenCalled();
     const elementWrapper = wrapper.findDropdown().findOption(1)!.findCustomContent();
     expect(elementWrapper).not.toBeNull();
-    expect(elementWrapper.getElement()).toHaveTextContent('Custom');
+    expect(elementWrapper!.getElement()).toHaveTextContent('Custom');
   });
   test('renders no custom option content when no renderOption specified', () => {
     const wrapper = renderSelect({ options: defaultOptions });
@@ -46,7 +46,7 @@ describe('Select renderOption', () => {
           selected: false,
           highlighted: false,
           disabled: false,
-          type: 'child',
+          type: 'item',
         }),
       })
     );
@@ -63,10 +63,8 @@ describe('Select renderOption', () => {
       expect.objectContaining({
         item: expect.objectContaining({
           option: expect.objectContaining(groupOption),
-          selected: false,
-          highlighted: false,
           disabled: false,
-          type: 'parent',
+          type: 'group',
         }),
       })
     );
@@ -106,7 +104,7 @@ describe('Select renderOption', () => {
     wrapper.openDropdown();
     expect(renderOption).toHaveBeenCalledWith(
       expect.objectContaining({
-        item: expect.objectContaining({ type: 'child' }),
+        item: expect.objectContaining({ type: 'item' }),
       })
     );
   });
