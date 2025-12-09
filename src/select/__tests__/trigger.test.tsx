@@ -203,9 +203,9 @@ describe('Trigger component', () => {
     test('should render custom content in trigger when renderOption returns JSX', () => {
       const customContent = (
         <div data-testid="custom-trigger">
-          <span>Prefix: </span>
-          <strong>{selectedOption.label}</strong>
-          <span> - {selectedOption.description}</span>
+          <span>
+            Prefix: {selectedOption.label} - {selectedOption.description}
+          </span>
         </div>
       );
       mockRenderOption.mockReturnValue(customContent);
