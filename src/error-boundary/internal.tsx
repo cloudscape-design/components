@@ -112,7 +112,7 @@ class ErrorBoundaryImpl extends Component<ErrorBoundaryImplProps, ErrorBoundaryS
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-    this.props.onError({ error, errorInfo, errorBoundaryId: this.props.errorBoundaryId });
+    this.props.onError?.({ error, errorInfo, errorBoundaryId: this.props.errorBoundaryId });
   }
 
   render() {
