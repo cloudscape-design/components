@@ -68,6 +68,14 @@ function stylesTask(theme) {
       }
     });
 
+    // Quietly support deprecated color palette tokens for backward compatibility.
+    // These were never officially public but customers may have used them (https://github.com/cloudscape-design/demos/blob/main/src/pages/product-detail-page/root.tsx#L38).
+    // eslint-disable-next-line no-unsanitized/method
+    const { tokens: deprecatedColorPaletteTokens } = await import(
+      join(styleDictionaryRoot, theme.primaryThemePath, '../color-palette.js')
+    );
+    exposed.push(...Object.keys(deprecatedColorPaletteTokens));
+
     return buildThemedComponentsInternal({
       primary,
       secondary,
