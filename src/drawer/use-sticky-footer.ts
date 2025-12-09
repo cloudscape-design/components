@@ -42,12 +42,6 @@ export function useStickyFooter({
   );
 
   useLayoutEffect(() => {
-    // for server rendering
-    if (typeof window === 'undefined') {
-      /* istanbul ignore next - unreachable: effects don't run in SSR where window is undefined, and in normal tests window is defined. */
-      return;
-    }
-
     window.addEventListener('resize', checkStickyState);
     checkStickyState();
 
