@@ -70,7 +70,7 @@ const IconToggleButtonItem = forwardRef(
           <Tooltip
             anchorRef={containerRef}
             trackingKey={item.id}
-            content={feedbackContent || item.text}
+            content={feedbackContent && typeof feedbackContent === 'string' ? feedbackContent : item.text}
             onClose={onTooltipDismiss}
           />
         )}

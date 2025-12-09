@@ -63,7 +63,13 @@ const IconButtonItem = forwardRef(
           <Tooltip
             anchorRef={containerRef}
             trackingKey={item.id}
-            content={canShowFeedback ? (item.popoverFeedback ?? item.text) : item.text}
+            content={
+              canShowFeedback
+                ? typeof item.popoverFeedback === 'string'
+                  ? item.popoverFeedback
+                  : item.text
+                : item.text
+            }
             onClose={onTooltipDismiss}
           />
         )}
