@@ -101,6 +101,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of tokens.",
           "$value": "1px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -498,6 +516,66 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#12293b",
+            "light": "#12293b",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#99cbe4",
+            "light": "#99cbe4",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f1faff",
+            "light": "#f1faff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#0a4a74",
+            "light": "#0a4a74",
+          },
+        },
+        "color-blue-900": {
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": {
@@ -1865,11 +1943,197 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#172211",
+            "light": "#172211",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#f2f8f0",
+            "light": "#f2f8f0",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#6aaf35",
+            "light": "#6aaf35",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f2f3f3",
+            "light": "#f2f3f3",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#eaeded",
+            "light": "#eaeded",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#aab7b8",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#95a5a6",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#21252c",
+            "light": "#21252c",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#1a2029",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0073bb",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#270a11",
+            "light": "#270a11",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fdf3f1",
+            "light": "#fdf3f1",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -2313,11 +2577,53 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#879596",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#906806",
+            "light": "#906806",
           },
         },
         "font-family-base": {
@@ -2761,6 +3067,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of tokens.",
           "$value": "1px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -3158,6 +3482,66 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#12293b",
+            "light": "#12293b",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#99cbe4",
+            "light": "#99cbe4",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f1faff",
+            "light": "#f1faff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#0a4a74",
+            "light": "#0a4a74",
+          },
+        },
+        "color-blue-900": {
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": {
@@ -4525,11 +4909,197 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#172211",
+            "light": "#172211",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#f2f8f0",
+            "light": "#f2f8f0",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#6aaf35",
+            "light": "#6aaf35",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f2f3f3",
+            "light": "#f2f3f3",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#eaeded",
+            "light": "#eaeded",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#aab7b8",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#95a5a6",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#21252c",
+            "light": "#21252c",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#1a2029",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0073bb",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#270a11",
+            "light": "#270a11",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fdf3f1",
+            "light": "#fdf3f1",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -4973,11 +5543,53 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#879596",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#906806",
+            "light": "#906806",
           },
         },
         "font-family-base": {
@@ -5421,6 +6033,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of tokens.",
           "$value": "1px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -5818,6 +6448,66 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#12293b",
+            "light": "#12293b",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#99cbe4",
+            "light": "#99cbe4",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f1faff",
+            "light": "#f1faff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#0a4a74",
+            "light": "#0a4a74",
+          },
+        },
+        "color-blue-900": {
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": {
@@ -7185,11 +7875,197 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#172211",
+            "light": "#172211",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#f2f8f0",
+            "light": "#f2f8f0",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#6aaf35",
+            "light": "#6aaf35",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f2f3f3",
+            "light": "#f2f3f3",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#eaeded",
+            "light": "#eaeded",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#aab7b8",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#95a5a6",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#21252c",
+            "light": "#21252c",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#1a2029",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0073bb",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#270a11",
+            "light": "#270a11",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fdf3f1",
+            "light": "#fdf3f1",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -7633,11 +8509,53 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#879596",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#906806",
+            "light": "#906806",
           },
         },
         "font-family-base": {
@@ -8081,6 +8999,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of tokens.",
           "$value": "1px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -8478,6 +9414,66 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#12293b",
+            "light": "#12293b",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#99cbe4",
+            "light": "#99cbe4",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f1faff",
+            "light": "#f1faff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#0a4a74",
+            "light": "#0a4a74",
+          },
+        },
+        "color-blue-900": {
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": {
@@ -9845,11 +10841,197 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#172211",
+            "light": "#172211",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#f2f8f0",
+            "light": "#f2f8f0",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#6aaf35",
+            "light": "#6aaf35",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f2f3f3",
+            "light": "#f2f3f3",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#eaeded",
+            "light": "#eaeded",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#aab7b8",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#95a5a6",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#21252c",
+            "light": "#21252c",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#1a2029",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0073bb",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#270a11",
+            "light": "#270a11",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fdf3f1",
+            "light": "#fdf3f1",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -10293,11 +11475,53 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#879596",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#906806",
+            "light": "#906806",
           },
         },
         "font-family-base": {
@@ -10741,6 +11965,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of tokens.",
           "$value": "1px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -11138,6 +12380,66 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#12293b",
+            "light": "#12293b",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#99cbe4",
+            "light": "#99cbe4",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f1faff",
+            "light": "#f1faff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#0a4a74",
+            "light": "#0a4a74",
+          },
+        },
+        "color-blue-900": {
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": {
@@ -12505,11 +13807,197 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#172211",
+            "light": "#172211",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#f2f8f0",
+            "light": "#f2f8f0",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#6aaf35",
+            "light": "#6aaf35",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f2f3f3",
+            "light": "#f2f3f3",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#eaeded",
+            "light": "#eaeded",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#aab7b8",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#95a5a6",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#21252c",
+            "light": "#21252c",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#1a2029",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0073bb",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#270a11",
+            "light": "#270a11",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fdf3f1",
+            "light": "#fdf3f1",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -12953,11 +14441,53 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#879596",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#906806",
+            "light": "#906806",
           },
         },
         "font-family-base": {
@@ -13401,6 +14931,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of tokens.",
           "$value": "1px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -13798,6 +15346,66 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#0a4a74",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#12293b",
+            "light": "#12293b",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#99cbe4",
+            "light": "#99cbe4",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f1faff",
+            "light": "#f1faff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#0a4a74",
+            "light": "#0a4a74",
+          },
+        },
+        "color-blue-900": {
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": {
@@ -15165,11 +16773,197 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#95a5a6",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#172211",
+            "light": "#172211",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#f2f8f0",
+            "light": "#f2f8f0",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#6aaf35",
+            "light": "#6aaf35",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f2f3f3",
+            "light": "#f2f3f3",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#eaeded",
+            "light": "#eaeded",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#aab7b8",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#95a5a6",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#21252c",
+            "light": "#21252c",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#1a2029",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#44b9d6",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#270a11",
+            "light": "#270a11",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fdf3f1",
+            "light": "#fdf3f1",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -15613,11 +17407,53 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fafafa",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#d5dbdb",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#906806",
+            "light": "#906806",
           },
         },
         "font-family-base": {
@@ -16061,6 +17897,24 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The border width of tokens.",
       "$value": "1px",
     },
+    "color-amber-400": {
+      "$value": {
+        "dark": "#ff9900",
+        "light": "#ff9900",
+      },
+    },
+    "color-amber-500": {
+      "$value": {
+        "dark": "#fa6f00",
+        "light": "#fa6f00",
+      },
+    },
+    "color-aws-squid-ink": {
+      "$value": {
+        "dark": "#232f3e",
+        "light": "#232f3e",
+      },
+    },
     "color-background-avatar-default": {
       "$description": "The default background color of avatars.",
       "$value": {
@@ -16458,6 +18312,66 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#0a4a74",
         "light": "#99cbe4",
+      },
+    },
+    "color-black": {
+      "$value": {
+        "dark": "#000000",
+        "light": "#000000",
+      },
+    },
+    "color-blue-100": {
+      "$value": {
+        "dark": "#d1f1ff",
+        "light": "#d1f1ff",
+      },
+    },
+    "color-blue-1000": {
+      "$value": {
+        "dark": "#12293b",
+        "light": "#12293b",
+      },
+    },
+    "color-blue-200": {
+      "$value": {
+        "dark": "#99cbe4",
+        "light": "#99cbe4",
+      },
+    },
+    "color-blue-300": {
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#44b9d6",
+      },
+    },
+    "color-blue-400": {
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#00a1c9",
+      },
+    },
+    "color-blue-50": {
+      "$value": {
+        "dark": "#f1faff",
+        "light": "#f1faff",
+      },
+    },
+    "color-blue-600": {
+      "$value": {
+        "dark": "#0073bb",
+        "light": "#0073bb",
+      },
+    },
+    "color-blue-700": {
+      "$value": {
+        "dark": "#0a4a74",
+        "light": "#0a4a74",
+      },
+    },
+    "color-blue-900": {
+      "$value": {
+        "dark": "#002b66",
+        "light": "#002b66",
       },
     },
     "color-board-placeholder-active": {
@@ -17825,11 +19739,197 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#687078",
       },
     },
+    "color-green-1000": {
+      "$value": {
+        "dark": "#172211",
+        "light": "#172211",
+      },
+    },
+    "color-green-50": {
+      "$value": {
+        "dark": "#f2f8f0",
+        "light": "#f2f8f0",
+      },
+    },
+    "color-green-500": {
+      "$value": {
+        "dark": "#6aaf35",
+        "light": "#6aaf35",
+      },
+    },
+    "color-green-600": {
+      "$value": {
+        "dark": "#1d8102",
+        "light": "#1d8102",
+      },
+    },
+    "color-green-900": {
+      "$value": {
+        "dark": "#00471e",
+        "light": "#00471e",
+      },
+    },
+    "color-grey-100": {
+      "$value": {
+        "dark": "#fafafa",
+        "light": "#fafafa",
+      },
+    },
+    "color-grey-1000": {
+      "$value": {
+        "dark": "#06080a",
+        "light": "#06080a",
+      },
+    },
+    "color-grey-150": {
+      "$value": {
+        "dark": "#f6f6f9",
+        "light": "#f6f6f9",
+      },
+    },
+    "color-grey-200": {
+      "$value": {
+        "dark": "#f2f3f3",
+        "light": "#f2f3f3",
+      },
+    },
+    "color-grey-250": {
+      "$value": {
+        "dark": "#eaeded",
+        "light": "#eaeded",
+      },
+    },
+    "color-grey-300": {
+      "$value": {
+        "dark": "#d5dbdb",
+        "light": "#d5dbdb",
+      },
+    },
+    "color-grey-350": {
+      "$value": {
+        "dark": "#c6c6cd",
+        "light": "#c6c6cd",
+      },
+    },
+    "color-grey-400": {
+      "$value": {
+        "dark": "#aab7b8",
+        "light": "#aab7b8",
+      },
+    },
+    "color-grey-450": {
+      "$value": {
+        "dark": "#95a5a6",
+        "light": "#95a5a6",
+      },
+    },
+    "color-grey-50": {
+      "$value": {
+        "dark": "#fcfcfd",
+        "light": "#fcfcfd",
+      },
+    },
+    "color-grey-500": {
+      "$value": {
+        "dark": "#879596",
+        "light": "#879596",
+      },
+    },
+    "color-grey-600": {
+      "$value": {
+        "dark": "#687078",
+        "light": "#687078",
+      },
+    },
+    "color-grey-650": {
+      "$value": {
+        "dark": "#545b64",
+        "light": "#545b64",
+      },
+    },
+    "color-grey-700": {
+      "$value": {
+        "dark": "#414750",
+        "light": "#414750",
+      },
+    },
+    "color-grey-750": {
+      "$value": {
+        "dark": "#2a2e33",
+        "light": "#2a2e33",
+      },
+    },
+    "color-grey-800": {
+      "$value": {
+        "dark": "#21252c",
+        "light": "#21252c",
+      },
+    },
+    "color-grey-850": {
+      "$value": {
+        "dark": "#1a2029",
+        "light": "#1a2029",
+      },
+    },
+    "color-grey-900": {
+      "$value": {
+        "dark": "#131920",
+        "light": "#131920",
+      },
+    },
+    "color-grey-950": {
+      "$value": {
+        "dark": "#16191f",
+        "light": "#16191f",
+      },
+    },
     "color-item-selected": {
       "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
       "$value": {
         "dark": "#44b9d6",
         "light": "#0073bb",
+      },
+    },
+    "color-purple-400": {
+      "$value": {
+        "dark": "#bf80ff",
+        "light": "#bf80ff",
+      },
+    },
+    "color-purple-700": {
+      "$value": {
+        "dark": "#7300e5",
+        "light": "#7300e5",
+      },
+    },
+    "color-red-1000": {
+      "$value": {
+        "dark": "#270a11",
+        "light": "#270a11",
+      },
+    },
+    "color-red-400": {
+      "$value": {
+        "dark": "#ff5d64",
+        "light": "#ff5d64",
+      },
+    },
+    "color-red-50": {
+      "$value": {
+        "dark": "#fdf3f1",
+        "light": "#fdf3f1",
+      },
+    },
+    "color-red-600": {
+      "$value": {
+        "dark": "#d13212",
+        "light": "#d13212",
+      },
+    },
+    "color-red-900": {
+      "$value": {
+        "dark": "#700000",
+        "light": "#700000",
       },
     },
     "color-text-accent": {
@@ -18273,11 +20373,53 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#16191f",
       },
     },
+    "color-transparent": {
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
     "color-tree-view-connector-line": {
       "$description": "The color of the tree view connector lines.",
       "$value": {
         "dark": "#d5dbdb",
         "light": "#879596",
+      },
+    },
+    "color-white": {
+      "$value": {
+        "dark": "#ffffff",
+        "light": "#ffffff",
+      },
+    },
+    "color-yellow-1000": {
+      "$value": {
+        "dark": "#191100",
+        "light": "#191100",
+      },
+    },
+    "color-yellow-400": {
+      "$value": {
+        "dark": "#ffe347",
+        "light": "#ffe347",
+      },
+    },
+    "color-yellow-50": {
+      "$value": {
+        "dark": "#fffef0",
+        "light": "#fffef0",
+      },
+    },
+    "color-yellow-500": {
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#fbd332",
+      },
+    },
+    "color-yellow-900": {
+      "$value": {
+        "dark": "#906806",
+        "light": "#906806",
       },
     },
     "font-family-base": {
@@ -18726,6 +20868,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of tokens.",
           "$value": "2px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -19123,6 +21283,66 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#b8e7ff",
+            "light": "#b8e7ff",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f0fbff",
+            "light": "#f0fbff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#004a9e",
+            "light": "#004a9e",
+          },
+        },
+        "color-blue-900": {
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": {
@@ -20490,11 +22710,197 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#001401",
+            "light": "#001401",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#effff1",
+            "light": "#effff1",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#2bb534",
+            "light": "#2bb534",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f3f3f7",
+            "light": "#f3f3f7",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#ebebf0",
+            "light": "#ebebf0",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#a4a4ad",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#232b37",
+            "light": "#232b37",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#1f0000",
+            "light": "#1f0000",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fff5f5",
+            "light": "#fff5f5",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -20938,11 +23344,53 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#dedee3",
             "light": "#8c8c94",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#855900",
+            "light": "#855900",
           },
         },
         "font-family-base": {
@@ -21386,6 +23834,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of tokens.",
           "$value": "2px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -21780,6 +24246,66 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-toggle-checked-disabled": {
           "$description": "The background color of checked toggles in disabled state.",
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#b8e7ff",
+            "light": "#b8e7ff",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f0fbff",
+            "light": "#f0fbff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#004a9e",
+            "light": "#004a9e",
+          },
+        },
+        "color-blue-900": {
           "$value": {
             "dark": "#002b66",
             "light": "#002b66",
@@ -23150,11 +25676,197 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#a4a4ad",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#001401",
+            "light": "#001401",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#effff1",
+            "light": "#effff1",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#2bb534",
+            "light": "#2bb534",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f3f3f7",
+            "light": "#f3f3f7",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#ebebf0",
+            "light": "#ebebf0",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#a4a4ad",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#232b37",
+            "light": "#232b37",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#1f0000",
+            "light": "#1f0000",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fff5f5",
+            "light": "#fff5f5",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -23598,11 +26310,53 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#855900",
+            "light": "#855900",
           },
         },
         "font-family-base": {
@@ -24046,6 +26800,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of tokens.",
           "$value": "2px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -24443,6 +27215,66 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#b8e7ff",
+            "light": "#b8e7ff",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f0fbff",
+            "light": "#f0fbff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#004a9e",
+            "light": "#004a9e",
+          },
+        },
+        "color-blue-900": {
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": {
@@ -25810,11 +28642,197 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#001401",
+            "light": "#001401",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#effff1",
+            "light": "#effff1",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#2bb534",
+            "light": "#2bb534",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f3f3f7",
+            "light": "#f3f3f7",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#ebebf0",
+            "light": "#ebebf0",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#a4a4ad",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#232b37",
+            "light": "#232b37",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#1f0000",
+            "light": "#1f0000",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fff5f5",
+            "light": "#fff5f5",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -26258,11 +29276,53 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#dedee3",
             "light": "#8c8c94",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#855900",
+            "light": "#855900",
           },
         },
         "font-family-base": {
@@ -26706,6 +29766,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of tokens.",
           "$value": "2px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -27103,6 +30181,66 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#b8e7ff",
+            "light": "#b8e7ff",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f0fbff",
+            "light": "#f0fbff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#004a9e",
+            "light": "#004a9e",
+          },
+        },
+        "color-blue-900": {
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": {
@@ -28470,11 +31608,197 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#001401",
+            "light": "#001401",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#effff1",
+            "light": "#effff1",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#2bb534",
+            "light": "#2bb534",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f3f3f7",
+            "light": "#f3f3f7",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#ebebf0",
+            "light": "#ebebf0",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#a4a4ad",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#232b37",
+            "light": "#232b37",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#1f0000",
+            "light": "#1f0000",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fff5f5",
+            "light": "#fff5f5",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -28918,11 +32242,53 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#dedee3",
             "light": "#8c8c94",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#855900",
+            "light": "#855900",
           },
         },
         "font-family-base": {
@@ -29366,6 +32732,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of tokens.",
           "$value": "2px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -29763,6 +33147,66 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#b8e7ff",
+            "light": "#b8e7ff",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f0fbff",
+            "light": "#f0fbff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#004a9e",
+            "light": "#004a9e",
+          },
+        },
+        "color-blue-900": {
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": {
@@ -31130,11 +34574,197 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#001401",
+            "light": "#001401",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#effff1",
+            "light": "#effff1",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#2bb534",
+            "light": "#2bb534",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f3f3f7",
+            "light": "#f3f3f7",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#ebebf0",
+            "light": "#ebebf0",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#a4a4ad",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#232b37",
+            "light": "#232b37",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#1f0000",
+            "light": "#1f0000",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fff5f5",
+            "light": "#fff5f5",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -31578,11 +35208,53 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#dedee3",
             "light": "#8c8c94",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#855900",
+            "light": "#855900",
           },
         },
         "font-family-base": {
@@ -32026,6 +35698,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of tokens.",
           "$value": "2px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -32423,6 +36113,66 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#b8e7ff",
+            "light": "#b8e7ff",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f0fbff",
+            "light": "#f0fbff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#004a9e",
+            "light": "#004a9e",
+          },
+        },
+        "color-blue-900": {
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": {
@@ -33790,11 +37540,197 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#001401",
+            "light": "#001401",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#effff1",
+            "light": "#effff1",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#2bb534",
+            "light": "#2bb534",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f3f3f7",
+            "light": "#f3f3f7",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#ebebf0",
+            "light": "#ebebf0",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#a4a4ad",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#232b37",
+            "light": "#232b37",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#1f0000",
+            "light": "#1f0000",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fff5f5",
+            "light": "#fff5f5",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -34238,11 +38174,53 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#dedee3",
             "light": "#8c8c94",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#855900",
+            "light": "#855900",
           },
         },
         "font-family-base": {
@@ -34686,6 +38664,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of tokens.",
           "$value": "2px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -35080,6 +39076,66 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-toggle-checked-disabled": {
           "$description": "The background color of checked toggles in disabled state.",
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#b8e7ff",
+            "light": "#b8e7ff",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f0fbff",
+            "light": "#f0fbff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#004a9e",
+            "light": "#004a9e",
+          },
+        },
+        "color-blue-900": {
           "$value": {
             "dark": "#002b66",
             "light": "#002b66",
@@ -36450,11 +40506,197 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#a4a4ad",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#001401",
+            "light": "#001401",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#effff1",
+            "light": "#effff1",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#2bb534",
+            "light": "#2bb534",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f3f3f7",
+            "light": "#f3f3f7",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#ebebf0",
+            "light": "#ebebf0",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#a4a4ad",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#232b37",
+            "light": "#232b37",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#1f0000",
+            "light": "#1f0000",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fff5f5",
+            "light": "#fff5f5",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -36898,11 +41140,53 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#855900",
+            "light": "#855900",
           },
         },
         "font-family-base": {
@@ -37346,6 +41630,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of tokens.",
           "$value": "2px",
         },
+        "color-amber-400": {
+          "$value": {
+            "dark": "#ff9900",
+            "light": "#ff9900",
+          },
+        },
+        "color-amber-500": {
+          "$value": {
+            "dark": "#fa6f00",
+            "light": "#fa6f00",
+          },
+        },
+        "color-aws-squid-ink": {
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -37740,6 +42042,66 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-toggle-checked-disabled": {
           "$description": "The background color of checked toggles in disabled state.",
+          "$value": {
+            "dark": "#002b66",
+            "light": "#002b66",
+          },
+        },
+        "color-black": {
+          "$value": {
+            "dark": "#000000",
+            "light": "#000000",
+          },
+        },
+        "color-blue-100": {
+          "$value": {
+            "dark": "#d1f1ff",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-blue-1000": {
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
+        "color-blue-200": {
+          "$value": {
+            "dark": "#b8e7ff",
+            "light": "#b8e7ff",
+          },
+        },
+        "color-blue-300": {
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-blue-400": {
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-blue-50": {
+          "$value": {
+            "dark": "#f0fbff",
+            "light": "#f0fbff",
+          },
+        },
+        "color-blue-600": {
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-blue-700": {
+          "$value": {
+            "dark": "#004a9e",
+            "light": "#004a9e",
+          },
+        },
+        "color-blue-900": {
           "$value": {
             "dark": "#002b66",
             "light": "#002b66",
@@ -39110,11 +43472,197 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#a4a4ad",
           },
         },
+        "color-green-1000": {
+          "$value": {
+            "dark": "#001401",
+            "light": "#001401",
+          },
+        },
+        "color-green-50": {
+          "$value": {
+            "dark": "#effff1",
+            "light": "#effff1",
+          },
+        },
+        "color-green-500": {
+          "$value": {
+            "dark": "#2bb534",
+            "light": "#2bb534",
+          },
+        },
+        "color-green-600": {
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-green-900": {
+          "$value": {
+            "dark": "#00471e",
+            "light": "#00471e",
+          },
+        },
+        "color-grey-100": {
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-grey-1000": {
+          "$value": {
+            "dark": "#06080a",
+            "light": "#06080a",
+          },
+        },
+        "color-grey-150": {
+          "$value": {
+            "dark": "#f6f6f9",
+            "light": "#f6f6f9",
+          },
+        },
+        "color-grey-200": {
+          "$value": {
+            "dark": "#f3f3f7",
+            "light": "#f3f3f7",
+          },
+        },
+        "color-grey-250": {
+          "$value": {
+            "dark": "#ebebf0",
+            "light": "#ebebf0",
+          },
+        },
+        "color-grey-300": {
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-grey-350": {
+          "$value": {
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-grey-400": {
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-grey-450": {
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#a4a4ad",
+          },
+        },
+        "color-grey-50": {
+          "$value": {
+            "dark": "#fcfcfd",
+            "light": "#fcfcfd",
+          },
+        },
+        "color-grey-500": {
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
+        "color-grey-600": {
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-grey-650": {
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-grey-700": {
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-grey-750": {
+          "$value": {
+            "dark": "#232b37",
+            "light": "#232b37",
+          },
+        },
+        "color-grey-800": {
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
+        },
+        "color-grey-850": {
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-grey-900": {
+          "$value": {
+            "dark": "#131920",
+            "light": "#131920",
+          },
+        },
+        "color-grey-950": {
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-item-selected": {
           "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-purple-400": {
+          "$value": {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
+        "color-purple-700": {
+          "$value": {
+            "dark": "#7300e5",
+            "light": "#7300e5",
+          },
+        },
+        "color-red-1000": {
+          "$value": {
+            "dark": "#1f0000",
+            "light": "#1f0000",
+          },
+        },
+        "color-red-400": {
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-red-50": {
+          "$value": {
+            "dark": "#fff5f5",
+            "light": "#fff5f5",
+          },
+        },
+        "color-red-600": {
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-red-900": {
+          "$value": {
+            "dark": "#700000",
+            "light": "#700000",
           },
         },
         "color-text-accent": {
@@ -39558,11 +44106,53 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-transparent": {
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-tree-view-connector-line": {
           "$description": "The color of the tree view connector lines.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
+          },
+        },
+        "color-white": {
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-yellow-1000": {
+          "$value": {
+            "dark": "#191100",
+            "light": "#191100",
+          },
+        },
+        "color-yellow-400": {
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
+        "color-yellow-50": {
+          "$value": {
+            "dark": "#fffef0",
+            "light": "#fffef0",
+          },
+        },
+        "color-yellow-500": {
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-yellow-900": {
+          "$value": {
+            "dark": "#855900",
+            "light": "#855900",
           },
         },
         "font-family-base": {
@@ -40006,6 +44596,24 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The border width of tokens.",
       "$value": "2px",
     },
+    "color-amber-400": {
+      "$value": {
+        "dark": "#ff9900",
+        "light": "#ff9900",
+      },
+    },
+    "color-amber-500": {
+      "$value": {
+        "dark": "#fa6f00",
+        "light": "#fa6f00",
+      },
+    },
+    "color-aws-squid-ink": {
+      "$value": {
+        "dark": "#232f3e",
+        "light": "#232f3e",
+      },
+    },
     "color-background-avatar-default": {
       "$description": "The default background color of avatars.",
       "$value": {
@@ -40403,6 +45011,66 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#002b66",
         "light": "#b8e7ff",
+      },
+    },
+    "color-black": {
+      "$value": {
+        "dark": "#000000",
+        "light": "#000000",
+      },
+    },
+    "color-blue-100": {
+      "$value": {
+        "dark": "#d1f1ff",
+        "light": "#d1f1ff",
+      },
+    },
+    "color-blue-1000": {
+      "$value": {
+        "dark": "#001129",
+        "light": "#001129",
+      },
+    },
+    "color-blue-200": {
+      "$value": {
+        "dark": "#b8e7ff",
+        "light": "#b8e7ff",
+      },
+    },
+    "color-blue-300": {
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#75cfff",
+      },
+    },
+    "color-blue-400": {
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#42b4ff",
+      },
+    },
+    "color-blue-50": {
+      "$value": {
+        "dark": "#f0fbff",
+        "light": "#f0fbff",
+      },
+    },
+    "color-blue-600": {
+      "$value": {
+        "dark": "#006ce0",
+        "light": "#006ce0",
+      },
+    },
+    "color-blue-700": {
+      "$value": {
+        "dark": "#004a9e",
+        "light": "#004a9e",
+      },
+    },
+    "color-blue-900": {
+      "$value": {
+        "dark": "#002b66",
+        "light": "#002b66",
       },
     },
     "color-board-placeholder-active": {
@@ -41770,11 +46438,197 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#656871",
       },
     },
+    "color-green-1000": {
+      "$value": {
+        "dark": "#001401",
+        "light": "#001401",
+      },
+    },
+    "color-green-50": {
+      "$value": {
+        "dark": "#effff1",
+        "light": "#effff1",
+      },
+    },
+    "color-green-500": {
+      "$value": {
+        "dark": "#2bb534",
+        "light": "#2bb534",
+      },
+    },
+    "color-green-600": {
+      "$value": {
+        "dark": "#00802f",
+        "light": "#00802f",
+      },
+    },
+    "color-green-900": {
+      "$value": {
+        "dark": "#00471e",
+        "light": "#00471e",
+      },
+    },
+    "color-grey-100": {
+      "$value": {
+        "dark": "#f9f9fa",
+        "light": "#f9f9fa",
+      },
+    },
+    "color-grey-1000": {
+      "$value": {
+        "dark": "#06080a",
+        "light": "#06080a",
+      },
+    },
+    "color-grey-150": {
+      "$value": {
+        "dark": "#f6f6f9",
+        "light": "#f6f6f9",
+      },
+    },
+    "color-grey-200": {
+      "$value": {
+        "dark": "#f3f3f7",
+        "light": "#f3f3f7",
+      },
+    },
+    "color-grey-250": {
+      "$value": {
+        "dark": "#ebebf0",
+        "light": "#ebebf0",
+      },
+    },
+    "color-grey-300": {
+      "$value": {
+        "dark": "#dedee3",
+        "light": "#dedee3",
+      },
+    },
+    "color-grey-350": {
+      "$value": {
+        "dark": "#c6c6cd",
+        "light": "#c6c6cd",
+      },
+    },
+    "color-grey-400": {
+      "$value": {
+        "dark": "#b4b4bb",
+        "light": "#b4b4bb",
+      },
+    },
+    "color-grey-450": {
+      "$value": {
+        "dark": "#a4a4ad",
+        "light": "#a4a4ad",
+      },
+    },
+    "color-grey-50": {
+      "$value": {
+        "dark": "#fcfcfd",
+        "light": "#fcfcfd",
+      },
+    },
+    "color-grey-500": {
+      "$value": {
+        "dark": "#8c8c94",
+        "light": "#8c8c94",
+      },
+    },
+    "color-grey-600": {
+      "$value": {
+        "dark": "#656871",
+        "light": "#656871",
+      },
+    },
+    "color-grey-650": {
+      "$value": {
+        "dark": "#424650",
+        "light": "#424650",
+      },
+    },
+    "color-grey-700": {
+      "$value": {
+        "dark": "#333843",
+        "light": "#333843",
+      },
+    },
+    "color-grey-750": {
+      "$value": {
+        "dark": "#232b37",
+        "light": "#232b37",
+      },
+    },
+    "color-grey-800": {
+      "$value": {
+        "dark": "#1b232d",
+        "light": "#1b232d",
+      },
+    },
+    "color-grey-850": {
+      "$value": {
+        "dark": "#161d26",
+        "light": "#161d26",
+      },
+    },
+    "color-grey-900": {
+      "$value": {
+        "dark": "#131920",
+        "light": "#131920",
+      },
+    },
+    "color-grey-950": {
+      "$value": {
+        "dark": "#0f141a",
+        "light": "#0f141a",
+      },
+    },
     "color-item-selected": {
       "$description": "The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.",
       "$value": {
         "dark": "#42b4ff",
         "light": "#006ce0",
+      },
+    },
+    "color-purple-400": {
+      "$value": {
+        "dark": "#bf80ff",
+        "light": "#bf80ff",
+      },
+    },
+    "color-purple-700": {
+      "$value": {
+        "dark": "#7300e5",
+        "light": "#7300e5",
+      },
+    },
+    "color-red-1000": {
+      "$value": {
+        "dark": "#1f0000",
+        "light": "#1f0000",
+      },
+    },
+    "color-red-400": {
+      "$value": {
+        "dark": "#ff7a7a",
+        "light": "#ff7a7a",
+      },
+    },
+    "color-red-50": {
+      "$value": {
+        "dark": "#fff5f5",
+        "light": "#fff5f5",
+      },
+    },
+    "color-red-600": {
+      "$value": {
+        "dark": "#db0000",
+        "light": "#db0000",
+      },
+    },
+    "color-red-900": {
+      "$value": {
+        "dark": "#700000",
+        "light": "#700000",
       },
     },
     "color-text-accent": {
@@ -42218,11 +47072,53 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#0f141a",
       },
     },
+    "color-transparent": {
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
     "color-tree-view-connector-line": {
       "$description": "The color of the tree view connector lines.",
       "$value": {
         "dark": "#dedee3",
         "light": "#8c8c94",
+      },
+    },
+    "color-white": {
+      "$value": {
+        "dark": "#ffffff",
+        "light": "#ffffff",
+      },
+    },
+    "color-yellow-1000": {
+      "$value": {
+        "dark": "#191100",
+        "light": "#191100",
+      },
+    },
+    "color-yellow-400": {
+      "$value": {
+        "dark": "#ffe347",
+        "light": "#ffe347",
+      },
+    },
+    "color-yellow-50": {
+      "$value": {
+        "dark": "#fffef0",
+        "light": "#fffef0",
+      },
+    },
+    "color-yellow-500": {
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#fbd332",
+      },
+    },
+    "color-yellow-900": {
+      "$value": {
+        "dark": "#855900",
+        "light": "#855900",
       },
     },
     "font-family-base": {
