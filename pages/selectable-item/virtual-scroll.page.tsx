@@ -5,6 +5,7 @@ import React, { useContext, useState } from 'react';
 
 import { Multiselect, MultiselectProps, SegmentedControl, SpaceBetween } from '~components';
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
+import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
 import Select, { SelectProps } from '~components/select';
 
 import AppContext, { AppContextType } from '../app/app-context';
@@ -30,6 +31,7 @@ export default function () {
   const [selectedMulti, setSelectedMulti] = useState<MultiselectProps.Options>(options.slice(0, 2));
   const [selectedMultiWithSelectAll, setSelectedMultiWithSelectAll] = useState<MultiselectProps.Options>([]);
   const [autosuggestValue, setAutosuggestValue] = useState('');
+  const [query, setQuery] = useState<PropertyFilterProps.Query>({ tokens: [], operation: 'and' });
 
   return (
     <SimplePage title="Virtual Scroll" i18n={{}} screenshotArea={{}}>
@@ -50,6 +52,7 @@ export default function () {
               { id: 'multiselect', text: 'Multiselect' },
               { id: 'multiselect-select-all', text: 'Multiselect with Select All' },
               { id: 'autosuggest', text: 'Autosuggest' },
+              { id: 'property-filter', text: 'PropertyFilter' },
             ]}
           />
 
@@ -114,6 +117,25 @@ export default function () {
               virtualScroll={true}
               expandToViewport={false}
               data-testid="autosuggest-demo"
+            />
+          )}
+
+          {selectedType === 'property-filter' && (
+            <PropertyFilter
+              query={query}
+              onChange={({ detail }) => setQuery(detail)}
+              filteringProperties={[
+                {
+                  key: 'property',
+                  operators: ['=', '!='],
+                  propertyLabel: 'Property',
+                  groupValuesLabel: 'Property values',
+                },
+              ]}
+              filteringOptions={options.map(opt => ({ propertyKey: 'property', value: opt.value! }))}
+              virtualScroll={true}
+              expandToViewport={false}
+              data-testid="property-filter-demo"
             />
           )}
         </SpaceBetween>
