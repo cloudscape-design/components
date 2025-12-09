@@ -208,7 +208,7 @@ export namespace SelectProps {
 
   export interface SelectOptionItem {
     type: 'item';
-    index: number | null;
+    index: number;
     option: Option;
     highlighted: boolean;
     selected: boolean;
@@ -216,7 +216,7 @@ export namespace SelectProps {
   }
   export interface SelectOptionGroupItem {
     type: 'group';
-    index: number | null;
+    index: number;
     option: OptionGroup;
     disabled: boolean;
   }
