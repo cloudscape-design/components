@@ -115,7 +115,7 @@ const Item = (
 
   return (
     <SelectableItem
-      disableContentStyling={!!renderOption}
+      disableContentStyling={!!renderResult}
       ariaSelected={Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
@@ -143,16 +143,14 @@ const Item = (
             <CheckboxIcon checked={selected || false} disabled={option.disabled} />
           </div>
         )}
-        {
-          <Option
-            customContent={renderResult}
-            option={{ ...wrappedOption, disabled }}
-            highlightedOption={highlighted}
-            selectedOption={selected}
-            highlightText={filteringValue}
-            isGroupOption={isParent}
-          />
-        }
+        <Option
+          customContent={renderResult}
+          option={{ ...wrappedOption, disabled }}
+          highlightedOption={highlighted}
+          selectedOption={selected}
+          highlightText={filteringValue}
+          isGroupOption={isParent}
+        />
         {!renderResult && !hasCheckbox && !isParent && selected && (
           <div className={styles['selected-icon']}>
             <InternalIcon name="check" />
