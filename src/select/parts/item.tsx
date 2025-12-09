@@ -19,7 +19,7 @@ import { SelectProps } from '../interfaces';
 import styles from './styles.css.js';
 
 export interface ItemProps<T = SelectProps.SelectOptionItemRenderer> {
-  index?: number;
+  index: number;
   virtualIndex?: number;
   option: DropdownOption;
   highlighted?: boolean;
@@ -78,7 +78,7 @@ const Item = (
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
 
-  const globalIndex = virtualIndex ?? index ?? null;
+  const globalIndex = virtualIndex ?? index;
 
   const renderOptionWrapper = (option: DropdownOption) => {
     if (!renderOption) {

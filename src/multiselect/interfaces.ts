@@ -88,7 +88,7 @@ export namespace MultiselectProps {
   export type Options = ReadonlyArray<Option | OptionGroup>;
   export interface MultiselectOptionItem {
     type: 'item';
-    index: number | null;
+    index: number;
     option: Option;
     disabled: boolean;
     highlighted: boolean;
@@ -96,7 +96,7 @@ export namespace MultiselectProps {
   }
   export interface MultiselectOptionGroupItem {
     type: 'group';
-    index: number | null;
+    index: number;
     option: OptionGroup;
     indeterminate: boolean;
     disabled: boolean;

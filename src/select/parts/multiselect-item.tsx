@@ -63,7 +63,7 @@ const MultiSelectItem = (
 
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
-  const globalIndex = virtualIndex ?? index ?? null;
+  const globalIndex = virtualIndex ?? index;
 
   const renderOptionWrapper = (option: DropdownOption) => {
     if (!renderOption) {
