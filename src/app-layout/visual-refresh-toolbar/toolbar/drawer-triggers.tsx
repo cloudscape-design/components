@@ -10,6 +10,7 @@ import { useMobile } from '../../../internal/hooks/use-mobile';
 import { splitItems } from '../../drawer/drawers-helpers';
 import OverflowMenu from '../../drawer/overflow-menu';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
+import { RuntimeContentPart } from '../../runtime-drawer';
 import { OnChangeParams, TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import { InternalDrawer } from '../interfaces';
@@ -172,8 +173,8 @@ export function DrawerTriggers({
             }
             featureNotificationTriggerRef!.dataset!.awsuiSuppressTooltip = 'false';
           }}
-          header={mostRecentFeature.header}
-          content={mostRecentFeature.content}
+          header={<RuntimeContentPart mountContent={mostRecentFeature.mountHeader} />}
+          content={<RuntimeContentPart mountContent={mostRecentFeature.mountContent} />}
           trackKey={mostRecentFeature.id}
           position="left"
           getTrack={() => featureNotificationTriggerRef}

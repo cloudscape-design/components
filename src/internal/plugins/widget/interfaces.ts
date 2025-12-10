@@ -54,18 +54,22 @@ export interface DrawerPayload {
   position?: 'side' | 'bottom';
 }
 
+type Destructor = () => void;
+export type MountContentPart = (container: HTMLElement) => Destructor | void;
+
 export interface Feature {
   id: string;
-  header: string;
-  content: string;
-  releaseDate?: string;
+  mountHeader: MountContentPart;
+  mountContent: MountContentPart;
+  mountContentCategory?: MountContentPart;
+  date?: string;
 }
 
 export interface FeatureNotificationsPayload {
   id: string;
-  type?: 'local' | 'global';
   suppressFeaturePrompt?: boolean;
   features: Array<Feature>;
+  featuresPageLink?: string;
 }
 
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;

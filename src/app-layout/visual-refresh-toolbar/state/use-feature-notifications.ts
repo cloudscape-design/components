@@ -57,7 +57,6 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
       // TODO pass correct properties
       awsuiPlugins.appLayout.registerDrawer({
         id: payload.id,
-        type: payload.type,
         defaultActive: false,
         resizable: true,
         defaultSize: 320,
@@ -74,6 +73,7 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
         unmountContent: () => {},
 
         __features: payload.features,
+        __featuresPageLink: payload.featuresPageLink,
       });
       return;
     }

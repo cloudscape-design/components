@@ -13,8 +13,8 @@ import {
 } from '../../internal/plugins/controllers/drawers';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
 import { DrawerPayload as RuntimeAiDrawerConfig, Feature } from '../../internal/plugins/widget/interfaces';
+import Link from '../../link/internal';
 import List from '../../list/internal';
-import SpaceBetween from '../../space-between/internal';
 import { AppLayoutProps } from '../interfaces';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 
@@ -67,43 +67,72 @@ function RuntimeDrawerWrapper({ mountContent, unmountContent, id }: RuntimeConte
   return <div ref={ref} className={styles['runtime-content-wrapper']} data-awsui-runtime-drawer-root-id={id}></div>;
 }
 
-function RuntimeFeaturesNotificationDrawer({ features }: { features: Array<Feature> }) {
-  // const showFeaturePrompt = __features && __features?.length > 0;
-  // TODO show the feature prompt
+type Destructor = () => void;
+interface RuntimeContentPartProps {
+  mountContent: (container: HTMLElement) => Destructor | void;
+}
+
+export function RuntimeContentPart({ mountContent }: RuntimeContentPartProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = ref.current!;
+    const destructor = mountContent(container);
+
+    return () => {
+      destructor?.();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return <div ref={ref} />;
+}
+
+function RuntimeFeaturesNotificationDrawer({
+  features,
+  featuresPageLink,
+}: {
+  features: Array<Feature>;
+  featuresPageLink?: string;
+}) {
   return (
     // TODO i18n strings
-    <InternalDrawer header="Latest feature releases">
-      <SpaceBetween size="m">
-        <Box>Features released less than 30 days ago</Box>
-
+    <InternalDrawer header="Latest feature releases" disableContentPaddings={true}>
+      <Box
+        padding={{ top: 'm', left: 'xl', right: 'xl', bottom: 'm' }}
+        className={styles['runtime-feature-notifications-drawer-content']}
+      >
         <List
           items={features}
           renderItem={item => ({
             id: item.id,
-            content: <Box fontWeight="bold">{item.header}</Box>,
+            content: <RuntimeContentPart mountContent={item.mountHeader} />,
             secondaryContent: (
-              <div>
-                <Box variant="p">{item.content}</Box>
-                {!!item.releaseDate && (
-                  <Box fontSize="body-s" color="text-body-secondary">
-                    Released {item.releaseDate}
+              <>
+                {!!item.date && (
+                  <Box margin={{ top: 'xs' }} fontSize="body-s" color="text-body-secondary">
+                    {item.date}
                   </Box>
                 )}
-              </div>
+                {!!item.mountContentCategory && (
+                  <Box margin={{ top: 'xs' }}>
+                    <RuntimeContentPart mountContent={item.mountContentCategory} />
+                  </Box>
+                )}
+                <Box margin={{ top: 'xs' }}>
+                  <RuntimeContentPart mountContent={item.mountContent} />
+                </Box>
+              </>
             ),
           })}
         />
 
-        {/*<Link*/}
-        {/*  href="#"*/}
-        {/*  onFollow={event => {*/}
-        {/*    event.preventDefault();*/}
-        {/*    setWhatsNewOpened(true);*/}
-        {/*  }}*/}
-        {/*>*/}
-        {/*  See all feature releases*/}
-        {/*</Link>*/}
-      </SpaceBetween>
+        {!!featuresPageLink && (
+          <Box padding={{ top: 's' }} className={styles['runtime-feature-notifications-footer']}>
+            <Link href={featuresPageLink}>See all feature releases</Link>
+          </Box>
+        )}
+      </Box>
     </InternalDrawer>
   );
 }
@@ -155,10 +184,10 @@ const convertRuntimeTriggerToReactNode = (runtimeTrigger?: string) => {
 };
 
 const renderContent = (runtimeConfig: RuntimeDrawerConfig) => {
-  const { mountContent, unmountContent, __features, ...runtimeDrawer } = runtimeConfig;
+  const { mountContent, unmountContent, __features, __featuresPageLink, ...runtimeDrawer } = runtimeConfig;
 
   if (__features && __features.length > 0) {
-    return <RuntimeFeaturesNotificationDrawer features={__features} />;
+    return <RuntimeFeaturesNotificationDrawer features={__features} featuresPageLink={__featuresPageLink} />;
   }
 
   return (
