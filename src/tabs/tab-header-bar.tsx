@@ -564,7 +564,7 @@ const TabTrigger = forwardRef(
               <Tooltip
                 anchorRef={tabLabelRefObject}
                 content={tab.disabledReason!}
-                onClose={() => setShowTooltip(false)}
+                onEscape={() => setShowTooltip(false)}
               />
             )}
           </>

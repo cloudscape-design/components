@@ -46,7 +46,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
       {...itemAttributes}
     >
       {children}
-      {showTooltip && <Tooltip anchorRef={textRef} content={item.text} onClose={() => setShowTooltip(false)} />}
+      {showTooltip && <Tooltip anchorRef={textRef} content={item.text} onEscape={() => setShowTooltip(false)} />}
     </Item>
   );
 };

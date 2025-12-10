@@ -54,11 +54,35 @@ export interface TooltipProps {
 
   /**
    * Whether to dismiss the tooltip when the user scrolls.
+   * @internal
    */
-  dismissOnScroll?: boolean;
+  __dismissOnScroll?: boolean;
 
   /**
-   * Callback fired when the tooltip should be closed (e.g., on Escape key press).
+   * Callback fired when the user presses the Escape key while the tooltip is visible.
+   *
+   * Note: Managing tooltip visibility based on hover/focus/blur events is the
+   * responsibility of the parent component. The parent should control when to
+   * render/unmount this Tooltip component.
+   *
+   * @example
+   * const [showTooltip, setShowTooltip] = useState(false);
+   *
+   * <button
+   *   onMouseEnter={() => setShowTooltip(true)}
+   *   onMouseLeave={() => setShowTooltip(false)}
+   *   onFocus={() => setShowTooltip(true)}
+   *   onBlur={() => setShowTooltip(false)}
+   * >
+   *   Hover me
+   * </button>
+   * {showTooltip && (
+   *   <Tooltip
+   *     content="Help text"
+   *     anchorRef={buttonRef}
+   *     onEscape={() => setShowTooltip(false)}
+   *   />
+   * )}
    */
-  onClose?: NonCancelableEventHandler;
+  onEscape?: NonCancelableEventHandler;
 }

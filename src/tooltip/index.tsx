@@ -21,8 +21,8 @@ export default function Tooltip({
   anchorRef,
   trackingKey,
   position = 'top',
-  dismissOnScroll,
-  onClose,
+  __dismissOnScroll,
+  onEscape,
 }: TooltipProps) {
   if (!trackingKey && (typeof content === 'string' || typeof content === 'number')) {
     trackingKey = content;
@@ -36,7 +36,7 @@ export default function Tooltip({
         if (event.key === 'Escape') {
           // Prevent any surrounding modals or dialogs from acting on this Esc.
           event.stopPropagation();
-          fireNonCancelableEvent(onClose);
+          fireNonCancelableEvent(onEscape);
         }
       },
       {
@@ -50,7 +50,7 @@ export default function Tooltip({
     return () => {
       controller.abort();
     };
-  }, [onClose]);
+  }, [onEscape]);
 
   return (
     <Portal>
@@ -65,7 +65,7 @@ export default function Tooltip({
               position={position}
               zIndex={7000}
               arrow={position => <PopoverArrow position={position} />}
-              hideOnOverscroll={dismissOnScroll}
+              hideOnOverscroll={__dismissOnScroll}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
                 {content}

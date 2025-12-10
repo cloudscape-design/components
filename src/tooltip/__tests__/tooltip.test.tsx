@@ -31,7 +31,7 @@ function renderTooltip(props: Partial<TooltipProps>) {
       anchorRef={dummyRef}
       trackingKey={props.trackingKey}
       content={props.content ?? ''}
-      onClose={props.onClose ?? (() => {})}
+      onEscape={props.onEscape ?? (() => {})}
     />
   );
   return new TooltipInternalWrapper(container);
@@ -75,19 +75,19 @@ describe('Tooltip', () => {
     expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', trackingKey);
   });
 
-  it('calls onClose when an Escape keypress is detected anywhere', () => {
-    const onClose = jest.fn();
+  it('calls onEscape when an Escape keypress is detected anywhere', () => {
+    const onEscape = jest.fn();
     const keydownEvent = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true });
     jest.spyOn(keydownEvent, 'stopPropagation');
 
-    renderTooltip({ content: 'Value', onClose });
-    expect(onClose).not.toHaveBeenCalled();
+    renderTooltip({ content: 'Value', onEscape });
+    expect(onEscape).not.toHaveBeenCalled();
 
     act(() => {
       // Dispatch the exect event instance so that we can spy stopPropagation on it.
       document.body.dispatchEvent(keydownEvent);
     });
     expect(keydownEvent.stopPropagation).toHaveBeenCalled();
-    expect(onClose).toHaveBeenCalled();
+    expect(onEscape).toHaveBeenCalled();
   });
 });

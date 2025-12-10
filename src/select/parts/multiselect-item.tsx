@@ -111,8 +111,8 @@ const MultiSelectItem = (
               anchorRef={internalRef}
               content={disabledReason!}
               position="right"
-              dismissOnScroll={true}
-              onClose={() => setCanShowTooltip(false)}
+              __dismissOnScroll={true}
+              onEscape={() => setCanShowTooltip(false)}
             />
           )}
         </>

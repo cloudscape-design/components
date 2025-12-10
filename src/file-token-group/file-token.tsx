@@ -188,7 +188,7 @@ function InternalFileToken({
           anchorRef={containerRef}
           trackingKey={file.name}
           content={<InternalBox fontWeight="normal">{file.name}</InternalBox>}
-          onClose={() => setShowTooltip(false)}
+          onEscape={() => setShowTooltip(false)}
         />
       )}
     </div>
