@@ -18,7 +18,6 @@ export interface TooltipProps {
   trackKey?: string | number;
   position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
-  contentAttributes?: React.HTMLAttributes<HTMLDivElement>;
   size?: PopoverProps['size'];
   hideOnOverscroll?: boolean;
   onDismiss?: () => void;
@@ -29,7 +28,6 @@ export default function Tooltip({
   trackRef,
   trackKey,
   className,
-  contentAttributes = {},
   position = 'top',
   size = 'small',
   hideOnOverscroll,
@@ -65,7 +63,7 @@ export default function Tooltip({
 
   return (
     <Portal>
-      <div className={styles.root} {...contentAttributes} data-testid={trackKey}>
+      <div className={styles.root} data-testid={trackKey}>
         <Transition in={true}>
           {() => (
             <PopoverContainer

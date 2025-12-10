@@ -32,7 +32,6 @@ function renderTooltip(props: Partial<TooltipProps>) {
       trackRef={dummyRef}
       trackKey={props.trackKey}
       value={props.value ?? ''}
-      contentAttributes={props.contentAttributes}
       onDismiss={props.onDismiss ?? (() => {})}
     />
   );
@@ -63,12 +62,6 @@ describe('Tooltip', () => {
     const wrapper = renderTooltip({ value: 'Value' });
 
     expect(wrapper.findHeader()).toBeNull();
-  });
-
-  it('contentAttributes work as expected', () => {
-    const wrapper = renderTooltip({ value: 'Value', contentAttributes: { title: 'test' } });
-
-    expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('title', 'test');
   });
 
   it('trackKey is set correctly for strings', () => {

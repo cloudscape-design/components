@@ -7,8 +7,9 @@ import { PopoverProps } from '../popover/interfaces';
 export interface TooltipProps {
   /**
    * Content to display in the tooltip.
+   * Accepts any valid React node including strings, numbers, elements, and fragments.
    */
-  content: string;
+  content: React.ReactNode;
 
   /**
    * Reference to the element that the tooltip should track.
@@ -23,9 +24,25 @@ export interface TooltipProps {
    * significant content changes.
    *
    * If not provided and content is a string or number, it will be auto-generated from content.
+   * For complex content (elements, fragments), you should provide an explicit trackingKey.
    *
    * @remarks
-   * The trackingKey is also applied as the data-testid attribute for testing purposes.
+   * - The trackingKey is also applied as the data-testid attribute for testing purposes.
+   * - Update trackingKey when tooltip content changes significantly to force position recalculation.
+   * - For dynamic content, use a unique value based on your state: `trackingKey={`tooltip-${id}`}`
+   *
+   * @example
+   * // Auto-generated from simple content
+   * <Tooltip content="Help text" />
+   *
+   * // Explicit trackingKey for complex content
+   * <Tooltip content={<div>Rich content</div>} trackingKey="help-tooltip" />
+   *
+   * // Explicit trackingKey for dynamic content
+   * <Tooltip content={dynamicText} trackingKey={`user-${userId}`} />
+   *
+   * // Force recalculation when state changes
+   * <Tooltip content={message} trackingKey={`status-${currentStatus}`} />
    */
   trackingKey?: string | number;
 
@@ -44,18 +61,4 @@ export interface TooltipProps {
    * Callback fired when the tooltip should be closed (e.g., on Escape key press).
    */
   onClose?: NonCancelableEventHandler;
-
-  /**
-   * Additional HTML attributes to apply to the tooltip container element.
-   * This can be used for custom event handlers, data attributes, or other DOM properties.
-   *
-   * @example
-   * // Add click-to-dismiss behavior
-   * contentAttributes={{ onPointerDown: () => setShowTooltip(false) }}
-   *
-   * @example
-   * // Add analytics tracking
-   * contentAttributes={{ 'data-analytics': 'help-tooltip' }}
-   */
-  contentAttributes?: React.HTMLAttributes<HTMLDivElement>;
 }

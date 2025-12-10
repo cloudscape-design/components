@@ -7,6 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonProps } from '../button/interfaces.js';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events/index.js';
+import InternalLiveRegion from '../live-region/internal.js';
 import { InternalToggleButton } from '../toggle-button/internal.js';
 import Tooltip from '../tooltip/internal.js';
 import { ButtonGroupProps, InternalIconToggleButton } from './interfaces.js';
@@ -70,7 +71,9 @@ const IconToggleButtonItem = forwardRef(
           <Tooltip
             anchorRef={containerRef}
             trackingKey={item.id}
-            content={feedbackContent && typeof feedbackContent === 'string' ? feedbackContent : item.text}
+            content={
+              (showFeedback && <InternalLiveRegion tagName="span">{feedbackContent}</InternalLiveRegion>) || item.text
+            }
             onClose={onTooltipDismiss}
           />
         )}
