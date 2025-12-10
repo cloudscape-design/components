@@ -31,7 +31,6 @@ export type InternalDrawer = AppLayoutProps.Drawer & {
   position?: 'side' | 'bottom';
   onToggleFocusMode?: NonCancelableEventHandler<{ isExpanded: boolean }>;
   __features?: Array<Feature>;
-  __suppressFeaturePrompt?: boolean;
 };
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.

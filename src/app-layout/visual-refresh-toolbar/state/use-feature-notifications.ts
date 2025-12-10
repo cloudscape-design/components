@@ -22,6 +22,7 @@ const delay = () =>
 
 export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatureNotificationsProps) {
   const [markAllAsRead, setMarkAllAsRead] = useState(false);
+  const [suppressedFeaturePrompt, setSuppressedFeaturePrompt] = useState(false);
   const featureNotificationsDrawer = drawers.find(drawer => !!drawer.__features);
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
 
@@ -40,23 +41,23 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
     // const features = featureNotificationsDrawer?.__features;
     // call continuum to determine if all notifications were read, if not, show the badge and trigger the feature prompt
     delay().then(() => {
-      if (!featureNotificationsDrawer.__suppressFeaturePrompt) {
-        // TODO show the feature prompt
+      if (!suppressedFeaturePrompt) {
         featurePromptRef.current?.show();
       }
       if (!featureNotificationsDrawer.badge) {
         awsuiPlugins.appLayout.updateDrawer({ id, badge: true });
       }
     });
-  }, [featureNotificationsDrawer, activeDrawersIds, markAllAsRead]);
+  }, [featureNotificationsDrawer, activeDrawersIds, markAllAsRead, suppressedFeaturePrompt]);
 
   function featureNotificationsMessageHandler(event: WidgetMessage) {
     if (event.type === 'registerFeatureNotifications') {
-      const config = event.payload;
+      const payload = event.payload;
+      setSuppressedFeaturePrompt(payload.suppressFeaturePrompt ?? false);
       // TODO pass correct properties
       awsuiPlugins.appLayout.registerDrawer({
-        id: config.id,
-        type: config.type,
+        id: payload.id,
+        type: payload.type,
         defaultActive: false,
         resizable: true,
         defaultSize: 320,
@@ -72,8 +73,16 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
         mountContent: () => {},
         unmountContent: () => {},
 
-        __features: config.features,
+        __features: payload.features,
       });
+      return;
+    }
+
+    if (event.type === 'showFeaturePromptIfPossible') {
+      if (markAllAsRead) {
+        return;
+      }
+      featurePromptRef.current?.show();
       return;
     }
   }

@@ -57,3 +57,11 @@ export function updateDrawer(message: AppLayoutUpdateMessage) {
   }
   getAppLayoutMessageHandler()?.(message);
 }
+
+/**
+ * Interact with already registered app layout drawers
+ * Forwards update
+ */
+export function showFeaturePromptIfPossible() {
+  updateDrawer({ type: 'showFeaturePromptIfPossible' });
+}

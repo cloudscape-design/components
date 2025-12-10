@@ -24,7 +24,7 @@ import {
 } from '~components';
 import AppLayoutToolbar, { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
 import FeaturePrompt, { FeaturePromptProps } from '~components/internal/do-not-use/feature-prompt';
-import { registerFeatureNotifications } from '~components/internal/plugins/widget';
+import { registerFeatureNotifications, showFeaturePromptIfPossible } from '~components/internal/plugins/widget';
 import { mount } from '~mount';
 
 import AppContext, { AppContextType } from '../app/app-context';
@@ -94,6 +94,7 @@ const activeDrawerOptions: SelectProps.Option[] = [
 
 registerFeatureNotifications({
   id: 'local-feature-notifications',
+  suppressFeaturePrompt: false,
   features: [
     {
       id: '1',
@@ -363,6 +364,13 @@ export default function () {
               }}
             >
               show local feature prompt
+            </button>
+            <button
+              onClick={() => {
+                showFeaturePromptIfPossible();
+              }}
+            >
+              showFeaturePromptIfPossible
             </button>
           </SimplePage>
         }

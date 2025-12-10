@@ -64,6 +64,7 @@ export interface Feature {
 export interface FeatureNotificationsPayload {
   id: string;
   type?: 'local' | 'global';
+  suppressFeaturePrompt?: boolean;
   features: Array<Feature>;
 }
 
@@ -81,6 +82,9 @@ export type ExpandDrawerMessage = Message<'expandDrawer', { id: string }>;
 export interface ExitExpandedModeMessage {
   type: 'exitExpandedMode';
 }
+export interface ShowFeaturePromptIfPossible {
+  type: 'showFeaturePromptIfPossible';
+}
 
 export type AppLayoutUpdateMessage =
   | UpdateDrawerConfigMessage
@@ -89,7 +93,8 @@ export type AppLayoutUpdateMessage =
   | ResizeDrawerMessage
   | ExpandDrawerMessage
   | ExitExpandedModeMessage
-  | RegisterFeatureNotificationsMessage;
+  | RegisterFeatureNotificationsMessage
+  | ShowFeaturePromptIfPossible;
 
 export type InitialMessage = RegisterDrawerMessage | RegisterFeatureNotificationsMessage;
 
