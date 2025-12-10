@@ -6,6 +6,15 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 
+.measure-strut {
+  position: absolute;
+  pointer-events: none;
+  block-size: 100%;
+  inline-size: 100%;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+}
+
 // Outer borders of adjacent cells overlap and we want selected option border
 // to take precedence over the other ones, hence negative margins and z-indices
 .selectable-item {
@@ -74,6 +83,10 @@
     border-end-end-radius: awsui.$border-radius-item;
     padding-block: 0;
     padding-inline: 0;
+
+    > .measure-strut {
+      block-size: calc(100% + awsui.$border-dropdown-virtual-offset-width);
+    }
 
     > .selectable-item-content {
       padding-block: styles.$option-padding-vertical;
@@ -199,6 +212,15 @@
     // Stay on top of the other options when they are scrolled up
     z-index: 4;
 
+    > .measure-strut {
+      block-size: calc(100% + awsui.$border-divider-list-width);
+    }
+
+    &.highlighted > .measure-strut,
+    &.selected > .measure-strut {
+      block-size: calc(100% + awsui.$border-dropdown-virtual-offset-width + awsui.$border-divider-list-width);
+    }
+
     &:not(.highlighted):not(.selected) {
       // Prevent covering the list border despite the higher z-index
       border-inline-start-width: awsui.$border-item-width;
@@ -253,31 +275,7 @@
     &:first-of-type:not(.selected, .highlighted) {
       border-block-start-color: awsui.$color-border-dropdown-item-top;
     }
-    &.selected {
-      padding-block-end: awsui.$border-dropdown-virtual-offset-width;
-    }
   }
-}
-
-.measure-strut {
-  position: absolute;
-  pointer-events: none;
-  block-size: 100%;
-  inline-size: 100%;
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  padding-block-start: awsui.$border-divider-list-width;
-
-  &-first {
-    padding-block-end: awsui.$border-divider-list-width;
-  }
-}
-
-// Virtual items and select-all items need additional top padding for proper spacing
-.selectable-item.virtual.highlighted:not(.selected) > .measure-strut,
-.selectable-item.select-all:has(+ .selectable-item.virtual).highlighted > .measure-strut,
-.selectable-item.select-all:has(+ .selectable-item.virtual).selected > .measure-strut {
-  padding-block-start: calc(awsui.$border-divider-list-width + awsui.$border-dropdown-virtual-offset-width);
 }
 
 .screenreader-content {
