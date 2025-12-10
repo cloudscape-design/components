@@ -118,6 +118,10 @@ class TablePage extends BasePageObject {
       timeoutMsg: `Column at index "${columnIndex}" should have width "${expected}"`,
     });
   }
+
+  getDocumentScrollWidth() {
+    return this.browser.execute(() => document.documentElement.scrollWidth);
+  }
 }
 
 interface PageConfig {
@@ -367,4 +371,21 @@ test.each([false, true])(
       { enableKeyboardNavigation }
     );
   }
+);
+
+test(
+  'does not increase the document scroll size after the UAP buttons on resize handles are hidden',
+  setupTest(async page => {
+    const widthBefore = await page.getDocumentScrollWidth();
+
+    // Shows UAP buttons
+    await page.click(tableWrapper.findColumnResizer(4).toSelector());
+    // The UAP buttons move outside the screen boundaries. Not ideal - but expected, while the buttons are visible.
+    await page.setWindowSize({ ...defaultScreen, width: defaultScreen.width - 100 });
+    // Hides UAP buttons
+    await page.click(tableWrapper.findHeaderSlot().toSelector());
+
+    const widthAfter = await page.getDocumentScrollWidth();
+    expect(widthAfter).toBe(widthBefore - 100);
+  })
 );
