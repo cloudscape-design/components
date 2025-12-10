@@ -246,6 +246,11 @@ export const useAppLayout = (
       return;
     }
 
+    if (['registerFeatureNotifications', 'showFeaturePromptIfPossible'].includes(message.type)) {
+      featureNotificationsMessageHandler(message);
+      return;
+    }
+
     if (!('payload' in message && 'id' in message.payload)) {
       metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-payload', {
         type: message.type,
@@ -264,11 +269,6 @@ export const useAppLayout = (
 
     if (checkBottomDrawerIdExists(id) || message.type === 'registerBottomDrawer') {
       bottomDrawersMessageHandler(message);
-      return;
-    }
-
-    if (message.type === 'registerFeatureNotifications') {
-      featureNotificationsMessageHandler(message);
       return;
     }
 
