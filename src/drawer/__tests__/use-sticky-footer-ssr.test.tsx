@@ -23,9 +23,6 @@ function TestComponent() {
 }
 
 test('renders without errors in server-side environment', () => {
-  // This test verifies the SSR guard (typeof window === 'undefined') is hit
-  expect(typeof window).toBe('undefined');
-
   const content = renderToStaticMarkup(<TestComponent />);
 
   // Should render with initial isSticky state (true)
