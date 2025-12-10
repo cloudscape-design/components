@@ -65,7 +65,9 @@ export const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.
       {isDisabledWithReason && (
         <>
           {descriptionEl}
-          {showTooltip && <Tooltip anchorRef={ref} content={disabledReason!} onEscape={() => setShowTooltip(false)} />}
+          {showTooltip && (
+            <Tooltip getTrack={() => ref.current} content={disabledReason!} onEscape={() => setShowTooltip(false)} />
+          )}
         </>
       )}
     </td>

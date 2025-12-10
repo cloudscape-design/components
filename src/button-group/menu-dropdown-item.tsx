@@ -48,7 +48,12 @@ const MenuDropdownItem = React.forwardRef(
         customTriggerBuilder={({ onClick, isOpen, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
           <div ref={containerRef} {...(item.disabled ? {} : getAnalyticsMetadataAttribute({ detail: { position } }))}>
             {!isOpen && showTooltip && !item.disabled && !item.loading && (
-              <Tooltip anchorRef={containerRef} trackingKey={item.id} content={item.text} onClose={onTooltipDismiss} />
+              <Tooltip
+                getTrack={() => containerRef.current}
+                trackKey={item.id}
+                content={item.text}
+                onEscape={onTooltipDismiss}
+              />
             )}
             <InternalButton
               ref={triggerRef}

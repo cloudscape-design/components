@@ -18,14 +18,21 @@ export { TooltipProps };
 
 export default function Tooltip({
   content,
-  anchorRef,
-  trackingKey,
+  getTrack,
+  trackKey,
   position = 'top',
   __dismissOnScroll,
   onEscape,
 }: TooltipProps) {
-  if (!trackingKey && (typeof content === 'string' || typeof content === 'number')) {
-    trackingKey = content;
+  const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
+
+  // Update the ref with the current tracked element
+  React.useEffect(() => {
+    trackRef.current = getTrack();
+  });
+
+  if (!trackKey && (typeof content === 'string' || typeof content === 'number')) {
+    trackKey = content;
   }
 
   useEffect(() => {
@@ -54,12 +61,12 @@ export default function Tooltip({
 
   return (
     <Portal>
-      <div className={styles.root} data-testid={trackingKey}>
+      <div className={styles.root} data-testid={trackKey}>
         <Transition in={true}>
           {() => (
             <PopoverContainer
-              trackRef={anchorRef}
-              trackKey={trackingKey}
+              trackRef={trackRef}
+              trackKey={trackKey}
               size="medium"
               fixedWidth={false}
               position={position}

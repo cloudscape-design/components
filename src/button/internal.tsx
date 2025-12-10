@@ -281,7 +281,11 @@ export const InternalButton = React.forwardRef(
       <>
         {descriptionEl}
         {showTooltip && (
-          <Tooltip anchorRef={buttonRef} content={disabledReason!} onEscape={() => setShowTooltip(false)} />
+          <Tooltip
+            getTrack={() => buttonRef.current}
+            content={disabledReason!}
+            onEscape={() => setShowTooltip(false)}
+          />
         )}
       </>
     );

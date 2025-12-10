@@ -61,8 +61,8 @@ const IconButtonItem = forwardRef(
         </InternalButton>
         {(canShowTooltip || canShowFeedback) && (
           <Tooltip
-            anchorRef={containerRef}
-            trackingKey={item.id}
+            getTrack={() => containerRef.current}
+            trackKey={item.id}
             content={
               canShowFeedback
                 ? typeof item.popoverFeedback === 'string'
@@ -70,7 +70,7 @@ const IconButtonItem = forwardRef(
                   : item.text
                 : item.text
             }
-            onClose={onTooltipDismiss}
+            onEscape={onTooltipDismiss}
           />
         )}
       </div>

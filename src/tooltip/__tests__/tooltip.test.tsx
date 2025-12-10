@@ -24,12 +24,11 @@ class TooltipInternalWrapper extends PopoverWrapper {
   }
 }
 
-const dummyRef = { current: null };
 function renderTooltip(props: Partial<TooltipProps>) {
   const { container } = render(
     <Tooltip
-      anchorRef={dummyRef}
-      trackingKey={props.trackingKey}
+      getTrack={props.getTrack ?? (() => null)}
+      trackKey={props.trackKey}
       content={props.content ?? ''}
       onEscape={props.onEscape ?? (() => {})}
     />
@@ -62,17 +61,17 @@ describe('Tooltip', () => {
     expect(wrapper.findHeader()).toBeNull();
   });
 
-  it('trackingKey is set correctly for strings', () => {
+  it('trackKey is set correctly for strings', () => {
     const wrapper = renderTooltip({ content: 'Value' });
 
     expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', 'Value');
   });
 
-  it('trackingKey is set correctly for explicit value', () => {
-    const trackingKey = 'test-id';
-    const wrapper = renderTooltip({ content: 'Value', trackingKey });
+  it('trackKey is set correctly for explicit value', () => {
+    const trackKey = 'test-id';
+    const wrapper = renderTooltip({ content: 'Value', trackKey });
 
-    expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', trackingKey);
+    expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', trackKey);
   });
 
   it('calls onEscape when an Escape keypress is detected anywhere', () => {

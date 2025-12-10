@@ -117,7 +117,7 @@ const Item = (
             {descriptionEl}
             {highlighted && canShowTooltip && (
               <Tooltip
-                anchorRef={internalRef}
+                getTrack={() => internalRef.current}
                 content={disabledReason!}
                 position="right"
                 __dismissOnScroll={true}

@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { NonCancelableEventHandler } from '../internal/events';
-import { RefShim } from '../internal/types';
 import { PopoverProps } from '../popover/interfaces';
 
 export interface TooltipProps {
@@ -12,9 +11,10 @@ export interface TooltipProps {
   content: React.ReactNode;
 
   /**
-   * Reference to the element that the tooltip should track.
+   * Function that returns the element to track for positioning the tooltip.
+   * Can return null if the element is not yet mounted or available.
    */
-  anchorRef: RefShim<HTMLElement | SVGElement>;
+  getTrack: () => null | HTMLElement | SVGElement;
 
   /**
    * Unique identifier for the tooltip instance. Changing this value will cause the tooltip
@@ -24,27 +24,27 @@ export interface TooltipProps {
    * significant content changes.
    *
    * If not provided and content is a string or number, it will be auto-generated from content.
-   * For complex content (elements, fragments), you should provide an explicit trackingKey.
+   * For complex content (elements, fragments), you should provide an explicit trackKey.
    *
    * @remarks
-   * - The trackingKey is also applied as the data-testid attribute for testing purposes.
-   * - Update trackingKey when tooltip content changes significantly to force position recalculation.
-   * - For dynamic content, use a unique value based on your state: `trackingKey={`tooltip-${id}`}`
+   * - The trackKey is also applied as the data-testid attribute for testing purposes.
+   * - Update trackKey when tooltip content changes significantly to force position recalculation.
+   * - For dynamic content, use a unique value based on your state: `trackKey={`tooltip-${id}`}`
    *
    * @example
    * // Auto-generated from simple content
    * <Tooltip content="Help text" />
    *
-   * // Explicit trackingKey for complex content
-   * <Tooltip content={<div>Rich content</div>} trackingKey="help-tooltip" />
+   * // Explicit trackKey for complex content
+   * <Tooltip content={<div>Rich content</div>} trackKey="help-tooltip" />
    *
-   * // Explicit trackingKey for dynamic content
-   * <Tooltip content={dynamicText} trackingKey={`user-${userId}`} />
+   * // Explicit trackKey for dynamic content
+   * <Tooltip content={dynamicText} trackKey={`user-${userId}`} />
    *
    * // Force recalculation when state changes
-   * <Tooltip content={message} trackingKey={`status-${currentStatus}`} />
+   * <Tooltip content={message} trackKey={`status-${currentStatus}`} />
    */
-  trackingKey?: string | number;
+  trackKey?: string | number;
 
   /**
    * Position of the tooltip relative to the tracked element.
@@ -79,7 +79,7 @@ export interface TooltipProps {
    * {showTooltip && (
    *   <Tooltip
    *     content="Help text"
-   *     anchorRef={buttonRef}
+   *     getTrack={() => buttonRef.current}
    *     onEscape={() => setShowTooltip(false)}
    *   />
    * )}

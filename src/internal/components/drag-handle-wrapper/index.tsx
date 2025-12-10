@@ -203,7 +203,11 @@ export default function DragHandleWrapper({
           {!isDisabled && !showButtons && showTooltip && tooltipText && (
             // Rendered in a portal but pointerenter/pointerleave events still propagate
             // up the React DOM tree, which is why it's placed in this nested context.
-            <Tooltip anchorRef={dragHandleRef} content={tooltipText} onEscape={() => setShowTooltip(false)} />
+            <Tooltip
+              getTrack={() => dragHandleRef.current}
+              content={tooltipText}
+              onEscape={() => setShowTooltip(false)}
+            />
           )}
         </div>
       </div>

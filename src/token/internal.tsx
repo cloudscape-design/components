@@ -158,13 +158,13 @@ function InternalToken({
       {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
         <Tooltip
           data-testid="token-tooltip"
-          anchorRef={labelContainerRef}
+          getTrack={() => labelContainerRef.current}
           content={
             <LiveRegion>
               <span data-testid="tooltip-live-region-content">{tooltipContent}</span>
             </LiveRegion>
           }
-          onClose={() => {
+          onEscape={() => {
             setShowTooltip(false);
           }}
         />
