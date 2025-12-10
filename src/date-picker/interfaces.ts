@@ -22,6 +22,7 @@ export interface DatePickerProps
    * Specifies a function that generates the `aria-label` for the 'open calendar' button. The `selectedDate` parameter is
    * a human-readable localised string representing the current value of the input.
    * (for example, ``selectedDate => 'Choose Date' + (selectedDate ? `, selected date is ${selectedDate}` : '')``)
+   * @deprecated Use `i18nStrings.openCalendarAriaLabel` instead.
    */
   openCalendarAriaLabel?: DatePickerProps.OpenCalendarAriaLabel;
 
@@ -130,7 +131,14 @@ export namespace DatePickerProps {
     focus(): void;
   }
 
-  export type I18nStrings = CalendarProps.I18nStrings;
+  export interface I18nStrings extends CalendarProps.I18nStrings {
+    /**
+     * Specifies a function that generates the `aria-label` for the 'open calendar' button. The `selectedDate` parameter is
+     * a human-readable localised string representing the current value of the input, or `null` when no date is selected.
+     * @i18n
+     */
+    openCalendarAriaLabel?: OpenCalendarAriaLabel;
+  }
 
   export type Granularity = DateGranularity;
 

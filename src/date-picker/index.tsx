@@ -11,6 +11,7 @@ import { InternalButton } from '../button/internal';
 import InternalCalendar from '../calendar/internal';
 import { useFormFieldContext } from '../contexts/form-field.js';
 import InternalDateInput from '../date-input/internal';
+import { useInternalI18n } from '../i18n/context.js';
 import { useLocale } from '../i18n/context.js';
 import { InputProps } from '../input/interfaces';
 import { getBaseProps } from '../internal/base-component';
@@ -73,6 +74,7 @@ const DatePicker = React.forwardRef(
     });
     checkControlled('DatePicker', 'value', value, 'onChange', onChange);
 
+    const i18n = useInternalI18n('date-picker');
     const contextLocale = useLocale();
     const normalizedLocale = normalizeLocale('DatePicker', locale || contextLocale);
 
@@ -123,13 +125,17 @@ const DatePicker = React.forwardRef(
 
     const hasFullValue = isValidFullDate({ date: value, granularity });
 
-    const buttonAriaLabel =
-      openCalendarAriaLabel &&
-      openCalendarAriaLabel(
-        hasFullValue && parsedValue
-          ? getSelectedDateLabel({ date: parsedValue, granularity, locale: normalizedLocale })
-          : null
-      );
+    const defaultOpenCalendarAriaLabel = i18n(
+      'i18nStrings.openCalendarAriaLabel',
+      i18nStrings?.openCalendarAriaLabel ?? openCalendarAriaLabel,
+      format => (selectedDate: string | null) => format({ selectedDate: selectedDate ?? 'none' })
+    );
+
+    const buttonAriaLabel = defaultOpenCalendarAriaLabel?.(
+      hasFullValue && parsedValue
+        ? getSelectedDateLabel({ date: parsedValue, granularity, locale: normalizedLocale })
+        : null
+    );
 
     const trigger = (
       <div className={styles['date-picker-trigger']}>

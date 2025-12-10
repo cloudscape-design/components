@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 
 import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
 import FormField from '../../../lib/components/form-field';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
@@ -420,5 +421,70 @@ describe('generates aria-label for the "Open calendar" button', () => {
     });
     const button = wrapper.findOpenCalendarButton().getElement();
     expect(button).toHaveAttribute('aria-label', 'Choose Date');
+  });
+});
+
+describe('i18n', () => {
+  test('uses openCalendarAriaLabel from i18n provider when no date is selected', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          'date-picker': {
+            'i18nStrings.openCalendarAriaLabel':
+              '{selectedDate, select, none {Choose calendar date} other {Choose calendar date, selected {selectedDate}}}',
+          },
+        }}
+      >
+        <DatePicker value="" locale="en-US" openCalendarAriaLabel={undefined} />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findDatePicker()!;
+    expect(wrapper.findOpenCalendarButton().getElement()).toHaveAttribute('aria-label', 'Choose calendar date');
+  });
+
+  test('uses openCalendarAriaLabel from i18n provider when date is selected', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          'date-picker': {
+            'i18nStrings.openCalendarAriaLabel':
+              '{selectedDate, select, none {Choose calendar date} other {Choose calendar date, selected {selectedDate}}}',
+          },
+        }}
+      >
+        <DatePicker value="2003-04-11" locale="en-US" openCalendarAriaLabel={undefined} />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findDatePicker()!;
+    expect(wrapper.findOpenCalendarButton().getElement()).toHaveAttribute(
+      'aria-label',
+      'Choose calendar date, selected Friday, April 11, 2003'
+    );
+  });
+
+  test('uses openCalendarAriaLabel prop over i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          'date-picker': {
+            'i18nStrings.openCalendarAriaLabel':
+              '{selectedDate, select, none {Choose calendar date} other {Choose calendar date, selected {selectedDate}}}',
+          },
+        }}
+      >
+        <DatePicker
+          value="2003-04-11"
+          locale="en-US"
+          openCalendarAriaLabel={selectedDate =>
+            selectedDate ? `Custom label, selected ${selectedDate}` : 'Custom label'
+          }
+        />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findDatePicker()!;
+    expect(wrapper.findOpenCalendarButton().getElement()).toHaveAttribute(
+      'aria-label',
+      'Custom label, selected Friday, April 11, 2003'
+    );
   });
 });

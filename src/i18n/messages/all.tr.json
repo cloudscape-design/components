@@ -130,6 +130,9 @@
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Kopyala"
   },
+  "date-picker": {
+    "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Tarih seç} other {Tarih seç, seçilen tarih {selectedDate}}}"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Göreceli mod",
     "i18nStrings.absoluteModeTitle": "Mutlak mod",
@@ -171,6 +174,11 @@
   },
   "drawer": {
     "i18nStrings.loadingText": "İçerik yükleniyor"
+  },
+  "error-boundary": {
+    "i18nStrings.headerText": "Beklenmeyen hata, içerik gösterilemedi",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Yeniden denemek için yenileyin. Bu sorunu takip ediyoruz ancak <Feedback>buradan daha fazla bilgi</Feedback> paylaşabilirsiniz.} other {Yeniden denemek için yenileyin.}}",
+    "i18nStrings.refreshActionText": "Sayfayı yenile"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Daha az göster",

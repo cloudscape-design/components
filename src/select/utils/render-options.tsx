@@ -92,7 +92,7 @@ export const renderOptions = ({
       const optionId = props.id ?? `${idPrefix}-option-${index}`;
       return (
         <OptionGroup
-          key={index}
+          key={`group-${index}`}
           virtual={virtualItems?.[index] !== undefined}
           ariaLabelledby={optionId}
           ariaDisabled={props['aria-disabled']}

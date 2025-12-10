@@ -130,6 +130,9 @@
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "복사"
   },
+  "date-picker": {
+    "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {날짜 선택} other {날짜 선택, 선택된 날짜는 {selectedDate}입니다.}}"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "상대 모드",
     "i18nStrings.absoluteModeTitle": "절대 모드",
@@ -171,6 +174,11 @@
   },
   "drawer": {
     "i18nStrings.loadingText": "콘텐츠 로드 중"
+  },
+  "error-boundary": {
+    "i18nStrings.headerText": "예상치 못한 오류 발생, 콘텐츠 표시 실패",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {새로 고침하여 다시 시도하세요. 현재 이 문제를 추적하고 있지만 <Feedback>여기에서 더 자세한 정보를</Feedback> 공유할 수 있습니다.} other {새로 고침하여 다시 시도하세요.}}",
+    "i18nStrings.refreshActionText": "페이지 새로고침"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "간단히 표시",

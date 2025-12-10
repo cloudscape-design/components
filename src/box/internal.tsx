@@ -47,11 +47,15 @@ export default function InternalBox({
     styles[`t-${textAlign}`]
   );
 
+  // allow auto-focusing of h1 boxes from flashbar
+  const tabindex = variant === 'h1' ? -1 : undefined;
+
   return (
     <WithNativeAttributes
       {...baseProps}
       tag={getTag(variant, tagOverride)}
       componentName="Box"
+      tabIndex={tabindex}
       nativeAttributes={nativeAttributes}
       className={className}
       ref={__internalRootRef}
