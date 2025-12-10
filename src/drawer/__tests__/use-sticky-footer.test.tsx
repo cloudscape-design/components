@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { fireEvent } from '@testing-library/react';
+
 import { MINIMUM_SCROLLABLE_SPACE, useStickyFooter } from '../../../lib/components/drawer/use-sticky-footer';
 import { renderHook } from '../../__tests__/render-hook';
 
@@ -112,7 +114,7 @@ describe('useStickyFooter', () => {
     // Change parent height to reduce scrollable space
     jest.spyOn(parentElement, 'getBoundingClientRect').mockImplementation(() => ({ height: 200 }) as DOMRect);
 
-    window.dispatchEvent(new Event('resize'));
+    fireEvent.resize(window);
 
     rerender({});
 
@@ -195,14 +197,14 @@ describe('useStickyFooter', () => {
 
     jest.spyOn(footerElement, 'getBoundingClientRect').mockImplementation(() => ({ height: 300 }) as DOMRect);
 
-    window.dispatchEvent(new Event('resize'));
+    fireEvent.resize(window);
 
     rerender({});
     expect(result.current.isSticky).toBe(false);
 
     jest.spyOn(footerElement, 'getBoundingClientRect').mockImplementation(() => ({ height: 50 }) as DOMRect);
 
-    window.dispatchEvent(new Event('resize'));
+    fireEvent.resize(window);
 
     rerender({});
     expect(result.current.isSticky).toBe(true);
