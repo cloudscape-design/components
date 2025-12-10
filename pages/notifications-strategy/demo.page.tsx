@@ -3,6 +3,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import {
+  Badge,
   Box,
   Button,
   Checkbox,
@@ -24,8 +25,8 @@ import {
 } from '~components';
 import AppLayoutToolbar, { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
 import FeaturePrompt, { FeaturePromptProps } from '~components/internal/do-not-use/feature-prompt';
-import { registerFeatureNotifications } from '~components/internal/plugins/widget';
-import { mount } from '~mount';
+import { registerFeatureNotifications, showFeaturePromptIfPossible } from '~components/internal/plugins/widget';
+import { mount, unmount } from '~mount';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
@@ -94,27 +95,102 @@ const activeDrawerOptions: SelectProps.Option[] = [
 
 registerFeatureNotifications({
   id: 'local-feature-notifications',
+  suppressFeaturePrompt: false,
+  featuresPageLink: '/new-amazing-features',
   features: [
     {
       id: '1',
-      header: 'Improved tracking',
-      content:
-        'It is now possible to see event propagation history from event detail. Learn more in the Events management.',
-      releaseDate: '2025-12-01',
+      mountHeader: container => {
+        mount(<Box fontWeight="bold">New feature, events with more resource tags</Box>, container);
+
+        return () => unmount(container);
+      },
+      mountContent: container => {
+        mount(
+          <>
+            <Box variant="p">
+              You can now enrich CloudTrail events with additional information by adding resources tags and IAM global
+              keys in CloudTrail lake.{' '}
+              <Link external={true} href="https://amazon.com">
+                Learn more
+              </Link>
+            </Box>
+          </>,
+          container
+        );
+
+        return () => unmount(container);
+      },
+      mountContentCategory: container => {
+        mount(
+          <Box fontSize="body-s" color="text-label">
+            Event coverage
+          </Box>,
+          container
+        );
+
+        return () => unmount(container);
+      },
+      date: 'November 1, 2025',
     },
     {
       id: '2',
-      header: 'Smart priority evaluation',
-      content:
-        'We can now order events by priority using our new agentic AI solution! Learn how to configure it for your needs in the Smart tools.',
-      releaseDate: '2025-11-24',
+      mountHeader: container => {
+        mount(
+          <Box fontWeight="bold">Enhanced filtering options for CloudTrail events ingested into event data stores</Box>,
+          container
+        );
+
+        return () => unmount(container);
+      },
+      mountContent: container => {
+        mount(
+          <>
+            <Box variant="p">
+              More enhanced filtering options provide tighter control over your AWS activity data, improving the
+              efficiency and precision of security, compliance, and operational investigations.{' '}
+              <Link external={true} href="https://amazon.com">
+                View user guide
+              </Link>
+            </Box>
+            <Box margin={{ top: 'xs' }}>
+              <Button>Create an Enhanced trail</Button>
+            </Box>
+          </>,
+          container
+        );
+
+        return () => unmount(container);
+      },
+      date: 'July 28, 2025',
     },
     {
       id: '3',
-      header: 'Smart descriptions',
-      content:
-        'We can now generate event descriptions which summarize event properties, propagation metrics, and comments. Refer to Smart tools to learn how to turn this on and customize.',
-      releaseDate: '2025-11-20',
+      mountHeader: container => {
+        mount(<Box fontWeight="bold">Introducing Application Map</Box>, container);
+
+        return () => unmount(container);
+      },
+      mountContent: container => {
+        mount(
+          <>
+            <Box variant="p">
+              Use application map to automatically discover and organize your services into groups based on your
+              business needs. Identify root cause faster instead of troubleshooting isolated symptoms with operational
+              signals such as SLOs, health indicators, and top insights in a contextual drawer.{' '}
+              <Link href="#">Learn more</Link>
+            </Box>
+          </>,
+          container
+        );
+
+        return () => unmount(container);
+      },
+      mountContentCategory: container => {
+        mount(<Badge>Operational investigations</Badge>, container);
+
+        return () => unmount(container);
+      },
     },
   ],
 });
@@ -363,6 +439,13 @@ export default function () {
               }}
             >
               show local feature prompt
+            </button>
+            <button
+              onClick={() => {
+                showFeaturePromptIfPossible();
+              }}
+            >
+              showFeaturePromptIfPossible
             </button>
           </SimplePage>
         }
