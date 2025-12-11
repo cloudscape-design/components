@@ -37,7 +37,50 @@ export interface ItemProps<T = SelectProps.SelectOptionItemRenderer> {
   withScrollbar?: boolean;
   sticky?: boolean;
   renderOption?: T;
+  parentProps?: ItemParentProps;
 }
+
+export interface ItemParentProps {
+  index: number;
+  virtualIndex?: number;
+  option: DropdownOption;
+  disabled: boolean;
+}
+const toSelectOptionGroupItem = (props: ItemParentProps): SelectProps.SelectOptionGroupItem => {
+  return {
+    type: 'group',
+    index: props.virtualIndex ?? props.index,
+    option: props.option.option as OptionGroup,
+    disabled: props.disabled,
+  };
+};
+
+const toSelectOptionItem = (props: {
+  index: number;
+  virtualIndex?: number;
+  option: DropdownOption;
+  disabled: boolean;
+  selected: boolean;
+  highlighted: boolean;
+  parentProps?: ItemParentProps;
+}): SelectProps.SelectOptionItem => {
+  return {
+    type: 'item',
+    index: props.virtualIndex ?? props.index,
+    option: props.option.option as OptionDefinition,
+    selected: props.selected,
+    highlighted: props.highlighted,
+    disabled: props.disabled,
+    parent: props.parentProps
+      ? toSelectOptionGroupItem({
+          index: props.parentProps?.index,
+          virtualIndex: props.parentProps?.virtualIndex,
+          option: props.parentProps?.option,
+          disabled: props.disabled,
+        })
+      : null,
+  };
+};
 
 const Item = (
   {
@@ -59,6 +102,7 @@ const Item = (
     withScrollbar,
     sticky,
     renderOption,
+    parentProps,
     ...restProps
   }: ItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -78,38 +122,33 @@ const Item = (
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
 
-  const globalIndex = virtualIndex ?? index;
+  const getSelectItemProps = (option: DropdownOption): SelectProps.SelectItem => {
+    if (option.type === 'parent') {
+      return toSelectOptionGroupItem({
+        option: option,
+        index: index,
+        virtualIndex: virtualIndex,
+        disabled: !!disabled,
+      });
+    } else {
+      return toSelectOptionItem({
+        option: option,
+        index: index,
+        virtualIndex: virtualIndex,
+        disabled: !!disabled,
+        highlighted: !!highlighted,
+        selected: !!selected,
+        parentProps: parentProps,
+      });
+    }
+  };
 
   const renderOptionWrapper = (option: DropdownOption) => {
     if (!renderOption) {
       return null;
     }
 
-    let item: SelectProps.SelectItem;
-
-    switch (option.type) {
-      case 'parent':
-        item = {
-          index: globalIndex,
-          type: 'group',
-          option: option.option as OptionGroup,
-          disabled: !!disabled,
-        };
-        break;
-      case 'child':
-      default:
-        item = {
-          index: globalIndex,
-          type: 'item',
-          option: option.option as OptionDefinition,
-          selected: !!selected,
-          highlighted: !!highlighted,
-          disabled: !!disabled,
-        };
-        break;
-    }
-
-    return renderOption({ item, filterText: filteringValue });
+    return renderOption({ item: getSelectItemProps(option), filterText: filteringValue });
   };
   const renderResult = renderOptionWrapper(option);
 

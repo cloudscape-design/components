@@ -93,6 +93,7 @@ export namespace MultiselectProps {
     disabled: boolean;
     highlighted: boolean;
     selected: boolean;
+    parent: MultiselectOptionGroupItem | null;
   }
   export interface MultiselectOptionGroupItem {
     type: 'group';

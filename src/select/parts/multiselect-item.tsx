@@ -12,12 +12,61 @@ import SelectableItem from '../../internal/components/selectable-item';
 import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { MultiselectProps } from '../../multiselect/interfaces';
-import { ItemProps } from './item';
+import { ItemParentProps, ItemProps } from './item';
 
 import styles from './styles.css.js';
 interface MultiselectItemProps extends ItemProps<MultiselectProps.MultiselectOptionItemRenderer> {
   indeterminate?: boolean;
+  parentProps?: MultiselectItemParentProps;
 }
+
+export interface MultiselectItemParentProps extends ItemParentProps {
+  indeterminate: boolean;
+  highlighted: boolean;
+  selected: boolean;
+}
+const toMultiselectOptionGroupItem = (
+  props: MultiselectItemParentProps
+): MultiselectProps.MultiselectOptionGroupItem => {
+  return {
+    type: 'group',
+    index: props.virtualIndex ?? props.index,
+    option: props.option.option as OptionGroup,
+    indeterminate: props.indeterminate ?? false,
+    selected: props.selected,
+    highlighted: props.highlighted,
+    disabled: props.disabled,
+  };
+};
+const toMultiselectOptionItem = (props: {
+  index: number;
+  virtualIndex?: number;
+  option: DropdownOption;
+  disabled: boolean;
+  selected: boolean;
+  highlighted: boolean;
+  parentProps?: MultiselectItemParentProps;
+}): MultiselectProps.MultiselectOptionItem => {
+  return {
+    type: 'item',
+    index: props.virtualIndex ?? props.index,
+    option: props.option.option as OptionDefinition,
+    selected: props.selected,
+    highlighted: props.highlighted,
+    disabled: props.disabled,
+    parent: props.parentProps
+      ? toMultiselectOptionGroupItem({
+          index: props.parentProps?.index,
+          virtualIndex: props.parentProps?.virtualIndex,
+          option: props.parentProps?.option,
+          disabled: props.disabled,
+          highlighted: props.parentProps?.highlighted ?? false,
+          indeterminate: props.parentProps?.indeterminate ?? false,
+          selected: props.parentProps?.selected ?? false,
+        })
+      : null,
+  };
+};
 
 const MultiSelectItem = (
   {
@@ -40,6 +89,7 @@ const MultiSelectItem = (
     withScrollbar,
     sticky,
     renderOption,
+    parentProps,
     ...restProps
   }: MultiselectItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -63,50 +113,45 @@ const MultiSelectItem = (
 
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
-  const globalIndex = virtualIndex ?? index;
+
+  const getMultiselectItemProps = (option: DropdownOption): MultiselectProps.MultiselectItem => {
+    if (option.type === 'parent') {
+      return toMultiselectOptionGroupItem({
+        option: option,
+        index: index,
+        virtualIndex: virtualIndex,
+        disabled: !!disabled,
+        highlighted: !!highlighted,
+        selected: !!selected,
+        indeterminate: indeterminate ?? false,
+      });
+    } else if (option.type === 'select-all') {
+      return {
+        type: 'select-all',
+        option: option.option as OptionDefinition,
+        indeterminate: indeterminate ?? false,
+        selected: !!selected,
+        highlighted: !!highlighted,
+      };
+    } else {
+      return toMultiselectOptionItem({
+        option: option,
+        index: index,
+        virtualIndex: virtualIndex,
+        disabled: !!disabled,
+        highlighted: !!highlighted,
+        selected: !!selected,
+        parentProps: parentProps,
+      });
+    }
+  };
 
   const renderOptionWrapper = (option: DropdownOption) => {
     if (!renderOption) {
       return null;
     }
 
-    let item: MultiselectProps.MultiselectItem;
-
-    switch (option.type) {
-      case 'select-all':
-        item = {
-          type: 'select-all',
-          option: option.option as OptionDefinition,
-          indeterminate: indeterminate ?? false,
-          selected: !!selected,
-          highlighted: !!highlighted,
-        };
-        break;
-      case 'parent':
-        item = {
-          index: globalIndex,
-          type: 'group',
-          option: option.option as OptionGroup,
-          indeterminate: indeterminate ?? false,
-          selected: !!selected,
-          highlighted: !!highlighted,
-          disabled: !!disabled,
-        };
-        break;
-      case 'child':
-      default:
-        item = {
-          index: globalIndex,
-          type: 'item',
-          option: option.option as OptionDefinition,
-          selected: !!selected,
-          highlighted: !!highlighted,
-          disabled: !!disabled,
-        };
-        break;
-    }
-
-    return renderOption({ item, filterText: filteringValue });
+    return renderOption({ item: getMultiselectItemProps(option), filterText: filteringValue });
   };
 
   const renderResult = renderOptionWrapper(option);
