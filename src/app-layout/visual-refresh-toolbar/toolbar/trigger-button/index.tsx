@@ -241,10 +241,10 @@ function TriggerButton(
       {badge && <div className={styles.dot} />}
       {tooltipVisible && (
         <Tooltip
-          anchorRef={containerRef}
+          getTrack={() => containerRef.current}
           className={testutilStyles['trigger-tooltip']}
           content={tooltipValue}
-          onClose={() => {
+          onEscape={() => {
             setShowTooltip(false);
             setSupressTooltip(false);
           }}
