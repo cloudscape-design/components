@@ -213,6 +213,7 @@ export namespace SelectProps {
     highlighted: boolean;
     selected: boolean;
     disabled: boolean;
+    parent: SelectOptionGroupItem | null;
   }
   export interface SelectOptionGroupItem {
     type: 'group';
