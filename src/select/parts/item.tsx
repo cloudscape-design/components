@@ -117,6 +117,7 @@ const Item = (
             {descriptionEl}
             {highlighted && canShowTooltip && (
               <Tooltip
+                className={styles['disabled-reason-tooltip']}
                 getTrack={() => internalRef.current}
                 content={disabledReason!}
                 position="right"

@@ -69,6 +69,7 @@ const IconToggleButtonItem = forwardRef(
         </InternalToggleButton>
         {(canShowTooltip || canShowFeedback) && (
           <Tooltip
+            className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
             getTrack={() => containerRef.current}
             trackKey={item.id}
             content={
