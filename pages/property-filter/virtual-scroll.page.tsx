@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
 
 import { SimplePage } from '../app/templates';
+import { i18nStrings, labels } from './common-props';
 
 const options = Array.from({ length: 1000 }, (_, i) => ({
   value: `${i}`,
@@ -40,6 +41,8 @@ export default function () {
           virtualScroll={true}
           expandToViewport={false}
           data-testid="property-filter-demo"
+          i18nStrings={i18nStrings}
+          {...labels}
         />
       </div>
     </SimplePage>
