@@ -16,8 +16,8 @@ const options: MultiselectProps.Options = Array.from({ length: 1000 }, (_, i) =>
 }));
 
 export default function () {
-  const { urlParams } = useContext(AppContext as DemoContext);
-  const [selectedType, setSelectedType] = useState(urlParams.type || 'multiselect');
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+  const selectedType = urlParams.type || 'multiselect';
 
   const [selectedMulti, setSelectedMulti] = useState<MultiselectProps.Options>(options.slice(0, 2));
   const [selectedMultiWithSelectAll, setSelectedMultiWithSelectAll] = useState<MultiselectProps.Options>([]);
@@ -30,7 +30,9 @@ export default function () {
       settings={
         <SegmentedControl
           selectedId={selectedType}
-          onChange={({ detail }) => setSelectedType(detail.selectedId)}
+          onChange={({ detail }) => {
+            setUrlParams({ type: detail.selectedId });
+          }}
           options={[
             { id: 'multiselect', text: 'Multiselect' },
             { id: 'multiselect-select-all', text: 'Multiselect with Select All' },
