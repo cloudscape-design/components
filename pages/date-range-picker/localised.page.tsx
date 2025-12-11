@@ -20,8 +20,31 @@ const localizedErrors = {
   endDateMissing: 'Sie müssen ein Enddatum angeben.',
 };
 
+// Locale-specific placeholder formats
+const localePlaceholders: Record<string, { date: string; time: string }> = {
+  de: { date: 'JJJJ-MM-TT', time: 'hh:mm:ss' },
+  en: { date: 'YYYY-MM-DD', time: 'hh:mm:ss' },
+  es: { date: 'AAAA-MM-DD', time: 'hh:mm:ss' },
+  fr: { date: 'AAAA-MM-JJ', time: 'hh:mm:ss' },
+  it: { date: 'AAAA-MM-GG', time: 'hh:mm:ss' },
+};
+
 export default function DatePickerScenario() {
   const { props, settings, setSettings } = useDateRangePickerSettings({ hasValue: false });
+
+  // Get locale from browser or default to German
+  const currentLocale = navigator.language.split('-')[0] || 'de';
+  const placeholders = localePlaceholders[currentLocale] || localePlaceholders.de;
+
+  // Localized placeholders based on detected locale
+  const localizedI18nStrings = {
+    ...props.i18nStrings,
+    startDatePlaceholder: placeholders.date,
+    endDatePlaceholder: placeholders.date,
+    startTimePlaceholder: placeholders.time,
+    endTimePlaceholder: placeholders.time,
+  };
+
   return (
     <SimplePage
       title="Date range picker: localized"
@@ -31,8 +54,8 @@ export default function DatePickerScenario() {
       <FormField label="Date Range Picker field">
         <DateRangePicker
           {...props}
-          locale={undefined}
-          i18nStrings={undefined}
+          locale={currentLocale}
+          i18nStrings={localizedI18nStrings}
           placeholder="Nach einem Zeitraum filtern"
           isValidRange={value =>
             props.granularity === 'month'
