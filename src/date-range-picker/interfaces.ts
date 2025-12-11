@@ -132,7 +132,8 @@ export interface DateRangePickerBaseProps {
   getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction;
 }
 export interface DateRangePickerProps
-  extends BaseComponentProps,
+  extends
+    BaseComponentProps,
     FormFieldValidationControlProps,
     ExpandToViewport,
     DateRangePickerBaseProps,
@@ -570,6 +571,34 @@ export namespace DateRangePickerProps {
      * @i18n
      */
     previousYearAriaLabel?: string;
+
+    /**
+     * Placeholder text for the start date input in absolute mode.
+     * Should match the expected date format (e.g., "YYYY-MM-DD", "JJJJ-MM-TT" for German).
+     * @i18n
+     */
+    startDatePlaceholder?: string;
+
+    /**
+     * Placeholder text for the end date input in absolute mode.
+     * Should match the expected date format (e.g., "YYYY-MM-DD", "JJJJ-MM-TT" for German).
+     * @i18n
+     */
+    endDatePlaceholder?: string;
+
+    /**
+     * Placeholder text for the start time input in absolute mode.
+     * Should match the expected time format (e.g., "hh:mm:ss", "HH:MM:SS").
+     * @i18n
+     */
+    startTimePlaceholder?: string;
+
+    /**
+     * Placeholder text for the end time input in absolute mode.
+     * Should match the expected time format (e.g., "hh:mm:ss", "HH:MM:SS").
+     * @i18n
+     */
+    endTimePlaceholder?: string;
   }
 
   export type AbsoluteFormat = DateFormat;
