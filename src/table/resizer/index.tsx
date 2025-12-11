@@ -27,6 +27,7 @@ interface ResizerProps {
   showFocusRing?: boolean;
   roleDescription?: string;
   tooltipText?: string;
+  isBorderless: boolean;
 }
 
 const AUTO_GROW_START_TIME = 10;
@@ -47,6 +48,7 @@ export function Resizer({
   focusId,
   roleDescription,
   tooltipText,
+  isBorderless,
 }: ResizerProps) {
   onWidthUpdate = useStableCallback(onWidthUpdate);
   onWidthUpdateCommit = useStableCallback(onWidthUpdateCommit);
@@ -319,7 +321,9 @@ export function Resizer({
 
   return (
     <div
-      className={clsx(styles['resizer-wrapper'], isVisualRefresh && styles['is-visual-refresh'])}
+      // When the table is borderless (works in visual refresh tables only), the last resize handle must not
+      // exceed table's edges, as it causes an unintended overflow otherwise.
+      className={clsx(styles['resizer-wrapper'], (!isVisualRefresh || isBorderless) && styles['is-borderless'])}
       ref={positioningWrapperRef}
     >
       <DragHandleWrapper
@@ -360,8 +364,7 @@ export function Resizer({
           ref={resizerToggleRef}
           className={clsx(
             styles.resizer,
-            (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus'],
-            isVisualRefresh && styles['is-visual-refresh']
+            (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus']
           )}
           onPointerDown={event => {
             if (event.pointerType === 'mouse' && event.button !== 0) {
@@ -400,11 +403,7 @@ export function Resizer({
           data-focus-id={focusId}
         />
         <span
-          className={clsx(
-            styles['divider-interactive'],
-            (isPointerDown || isDragging) && styles['divider-active'],
-            isVisualRefresh && styles['is-visual-refresh']
-          )}
+          className={clsx(styles['divider-interactive'], (isPointerDown || isDragging) && styles['divider-active'])}
           data-awsui-table-suppress-navigation={true}
           ref={resizerSeparatorRef}
           id={separatorId}

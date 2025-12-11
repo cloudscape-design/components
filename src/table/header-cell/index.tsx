@@ -50,7 +50,7 @@ export interface TableHeaderCellProps<ItemType> {
   isExpandable?: boolean;
   hasDynamicContent?: boolean;
   variant: TableProps.Variant;
-  tableVariant?: string;
+  tableVariant?: TableProps.Variant;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -213,6 +213,7 @@ export function TableHeaderCell<ItemType>({
           // TODO: Replace with this when strings are available
           // tooltipText={i18n('ariaLabels.resizerTooltipText', resizerTooltipText)}
           tooltipText={resizerTooltipText}
+          isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
         />
       ) : (
         <Divider className={styles['resize-divider']} />
