@@ -33,6 +33,10 @@
   &-variant-panel {
     background-color: awsui.$color-background-layout-panel-content;
     border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
+    .content + & {
+      border-inline-end: 0;
+      border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
+    }
     > .panel-content {
       padding-inline-start: awsui.$space-m;
       padding-block-start: awsui.$space-m;
