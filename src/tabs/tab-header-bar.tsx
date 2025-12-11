@@ -562,6 +562,7 @@ const TabTrigger = forwardRef(
             {descriptionEl}
             {showTooltip && (
               <Tooltip
+                className={styles['disabled-reason-tooltip']}
                 getTrack={() => tabLabelRefObject.current}
                 content={tab.disabledReason!}
                 onEscape={() => setShowTooltip(false)}

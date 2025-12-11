@@ -153,7 +153,8 @@ export interface InputClearLabel {
 }
 
 export interface InputProps
-  extends BaseComponentProps,
+  extends
+    BaseComponentProps,
     BaseInputProps,
     InputKeyEvents,
     InputAutoCorrect,

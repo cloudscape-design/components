@@ -14,17 +14,16 @@ import FocusTarget from './focus-target';
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
-interface InternalTreeItemProps<T>
-  extends Pick<
-    TreeViewProps,
-    | 'expandedItems'
-    | 'renderItem'
-    | 'getItemId'
-    | 'getItemChildren'
-    | 'renderItemToggleIcon'
-    | 'i18nStrings'
-    | 'connectorLines'
-  > {
+interface InternalTreeItemProps<T> extends Pick<
+  TreeViewProps,
+  | 'expandedItems'
+  | 'renderItem'
+  | 'getItemId'
+  | 'getItemChildren'
+  | 'renderItemToggleIcon'
+  | 'i18nStrings'
+  | 'connectorLines'
+> {
   item: T;
   index: number;
   level: number;

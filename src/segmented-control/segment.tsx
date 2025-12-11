@@ -90,6 +90,7 @@ export const Segment = React.forwardRef(
             {descriptionEl}
             {showTooltip && (
               <Tooltip
+                className={styles['disabled-reason-tooltip']}
                 getTrack={() => buttonRef.current}
                 content={disabledReason!}
                 onEscape={() => setShowTooltip(false)}

@@ -30,7 +30,8 @@ import { convertAutoComplete, useSearchProps } from './utils';
 import styles from './styles.css.js';
 
 export interface InternalInputProps
-  extends BaseComponentProps,
+  extends
+    BaseComponentProps,
     BaseInputProps,
     Omit<InputProps, 'type'>,
     InputAutoCorrect,

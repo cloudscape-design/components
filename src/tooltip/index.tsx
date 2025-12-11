@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 'use client';
 import React, { useEffect } from 'react';
+import clsx from 'clsx';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
@@ -10,7 +11,7 @@ import { fireNonCancelableEvent } from '../internal/events';
 import PopoverArrow from '../popover/arrow';
 import PopoverBody from '../popover/body';
 import PopoverContainer from '../popover/container';
-import { TooltipProps } from './interfaces';
+import { InternalTooltipProps, TooltipProps } from './interfaces';
 
 import styles from './styles.css.js';
 
@@ -22,8 +23,9 @@ export default function Tooltip({
   trackKey,
   position = 'top',
   __dismissOnScroll,
+  className,
   onEscape,
-}: TooltipProps) {
+}: InternalTooltipProps) {
   const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
 
   // Update the ref with the current tracked element
@@ -61,7 +63,7 @@ export default function Tooltip({
 
   return (
     <Portal>
-      <div className={styles.root} data-testid={trackKey}>
+      <div className={clsx(styles.root, className)} data-testid={trackKey}>
         <Transition in={true}>
           {() => (
             <PopoverContainer
@@ -73,6 +75,7 @@ export default function Tooltip({
               zIndex={7000}
               arrow={position => <PopoverArrow position={position} />}
               hideOnOverscroll={__dismissOnScroll}
+              className={className}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
                 {content}

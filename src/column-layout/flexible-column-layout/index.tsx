@@ -31,11 +31,10 @@ export function calculcateCssColumnCount(
   );
 }
 
-interface FlexibleColumnLayoutProps
-  extends Pick<
-    InternalColumnLayoutProps,
-    'minColumnWidth' | 'columns' | 'variant' | 'borders' | 'disableGutters' | '__tagOverride'
-  > {
+interface FlexibleColumnLayoutProps extends Pick<
+  InternalColumnLayoutProps,
+  'minColumnWidth' | 'columns' | 'variant' | 'borders' | 'disableGutters' | '__tagOverride'
+> {
   children: React.ReactNode;
 }
 

@@ -53,12 +53,6 @@ export interface TooltipProps {
   position?: PopoverProps.Position;
 
   /**
-   * Whether to dismiss the tooltip when the user scrolls.
-   * @internal
-   */
-  __dismissOnScroll?: boolean;
-
-  /**
    * Callback fired when the user presses the Escape key while the tooltip is visible.
    *
    * Note: Managing tooltip visibility based on hover/focus/blur events is the
@@ -85,4 +79,22 @@ export interface TooltipProps {
    * )}
    */
   onEscape?: NonCancelableEventHandler;
+}
+
+/**
+ * Internal tooltip props - includes props not exposed in public API.
+ * @internal
+ */
+export interface InternalTooltipProps extends TooltipProps {
+  /**
+   * Whether to dismiss the tooltip when the user scrolls.
+   * @internal
+   */
+  __dismissOnScroll?: boolean;
+
+  /**
+   * Additional CSS class for the tooltip container.
+   * @internal
+   */
+  className?: string;
 }
