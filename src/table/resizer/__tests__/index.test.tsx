@@ -27,7 +27,12 @@ describe('Resizer component', () => {
         <thead>
           <tr>
             <th>
-              <Resizer onWidthUpdate={mockOnWidthUpdate} onWidthUpdateCommit={mockOnWidthUpdateCommit} minWidth={80} />
+              <Resizer
+                onWidthUpdate={mockOnWidthUpdate}
+                onWidthUpdateCommit={mockOnWidthUpdateCommit}
+                minWidth={80}
+                isBorderless={false}
+              />
             </th>
           </tr>
         </thead>
@@ -54,7 +59,12 @@ describe('Resizer component', () => {
         <thead>
           <tr>
             <th>
-              <Resizer onWidthUpdate={mockOnWidthUpdate} onWidthUpdateCommit={mockOnWidthUpdateCommit} minWidth={80} />
+              <Resizer
+                onWidthUpdate={mockOnWidthUpdate}
+                onWidthUpdateCommit={mockOnWidthUpdateCommit}
+                minWidth={80}
+                isBorderless={false}
+              />
             </th>
           </tr>
         </thead>

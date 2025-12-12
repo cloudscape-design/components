@@ -76,6 +76,14 @@ class TablePage extends BasePageObject {
     });
   }
 
+  getTableClientWidth() {
+    return this.browser.execute(() => document.querySelector('table')!.clientWidth);
+  }
+
+  getTableScrollWidth() {
+    return this.browser.execute(() => document.querySelector('table')!.scrollWidth);
+  }
+
   async getColumnMinWidth(columnIndex: number) {
     const columnSelector = tableWrapper
       // use internal CSS-selector to always receive the real table header and not a sticky copy
@@ -367,4 +375,16 @@ test.each([false, true])(
       { enableKeyboardNavigation }
     );
   }
+);
+
+test.each([false, true])('should not be horizontally scrollable upon rendering, isFullPage=%s', isFullPage =>
+  useBrowser({ width: 1200, height: 1000 }, async browser => {
+    const page = new TablePage(browser);
+    await browser.url(`#/light/table/resizable-columns?visualRefresh=true&fullPage=${String(isFullPage)}`);
+    await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
+
+    const tableClientWidth = await page.getTableClientWidth();
+    const tableScrollWidth = await page.getTableScrollWidth();
+    expect(tableScrollWidth).toBe(tableClientWidth);
+  })()
 );
