@@ -134,8 +134,6 @@
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {날짜 선택} other {날짜 선택, 선택된 날짜는 {selectedDate}입니다.}}"
   },
   "date-range-picker": {
-    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
-    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.relativeModeTitle": "상대 모드",
     "i18nStrings.absoluteModeTitle": "절대 모드",
     "i18nStrings.relativeRangeSelectionHeading": "범위 선택",
