@@ -69,6 +69,7 @@ const pluralizationMap = {
   SpaceBetween: 'SpaceBetweens',
   Spinner: 'Spinners',
   SplitPanel: 'SplitPanels',
+  SplitView: 'SplitViews',
   StatusIndicator: 'StatusIndicators',
   Steps: 'Steps',
   Table: 'Tables',

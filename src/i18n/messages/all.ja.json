@@ -242,6 +242,10 @@
     "ariaLabels.pageLabel": "全ページ中 {pageNumber} ページ",
     "ariaLabels.previousPageLabel": "前のページ"
   },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "パネルのサイズ変更ハンドル",
+    "i18nStrings.resizeHandleTooltipText": "ドラッグまたは選択してリサイズする"
+  },
   "pie-chart": {
     "i18nStrings.detailsValue": "値",
     "i18nStrings.detailsPercentage": "パーセンテージ",

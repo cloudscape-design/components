@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useInternalI18n } from '../../do-not-use/i18n';
 import InternalDragHandle, { DragHandleProps } from '../drag-handle';
 
 import styles from './styles.css.js';
@@ -23,11 +24,12 @@ export default React.forwardRef<HTMLDivElement, ResizeHandleProps>(function Pane
   { className, ariaLabel, tooltipText, ariaValuenow, position, onDirectionClick, onKeyDown, onPointerDown, disabled },
   ref
 ) {
+  const i18n = useInternalI18n('panel-resize-handle');
   return (
     <InternalDragHandle
       className={clsx(className, styles.slider, styles[`slider-${position}`])}
-      ariaLabel={ariaLabel}
-      tooltipText={tooltipText}
+      ariaLabel={i18n('i18nStrings.resizeHandleAriaLabel', ariaLabel)}
+      tooltipText={i18n('i18nStrings.resizeHandleTooltipText', tooltipText)}
       ariaValue={{ valueMin: 0, valueMax: 100, valueNow: ariaValuenow ?? 0 }}
       variant={['side', 'side-start'].includes(position) ? 'resize-horizontal' : 'resize-vertical'}
       directions={
