@@ -20,7 +20,7 @@ export interface SplitViewProps extends BaseComponentProps {
 
   /**
    * Size of the panel. If provided, and panel is resizable, the component is controlled,
-   * so you must also provide `onResize`.
+   * so you must also provide `onPanelResize`.
    *
    * The actual size may vary, depending on `minPanelSize` and `maxPanelSize`.
    */

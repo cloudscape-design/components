@@ -24258,7 +24258,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
     {
       "description": "Size of the panel. If provided, and panel is resizable, the component is controlled,
-so you must also provide \`onResize\`.
+so you must also provide \`onPanelResize\`.
 
 The actual size may vary, depending on \`minPanelSize\` and \`maxPanelSize\`.",
       "name": "panelSize",
@@ -39644,7 +39644,7 @@ Returns the current value of the input.",
       "methods": [
         {
           "description": "Returns the wrapper for the main content element.",
-          "name": "findContent",
+          "name": "findMainContent",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -39658,7 +39658,7 @@ Returns the current value of the input.",
         },
         {
           "description": "Returns the wrapper for the panel element.",
-          "name": "findPanel",
+          "name": "findPanelContent",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -48257,7 +48257,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
       "methods": [
         {
           "description": "Returns the wrapper for the main content element.",
-          "name": "findContent",
+          "name": "findMainContent",
           "parameters": [],
           "returnType": {
             "isNullable": false,
@@ -48266,7 +48266,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
         },
         {
           "description": "Returns the wrapper for the panel element.",
-          "name": "findPanel",
+          "name": "findPanelContent",
           "parameters": [],
           "returnType": {
             "isNullable": false,

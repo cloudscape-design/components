@@ -10,14 +10,14 @@ export default class SplitViewWrapper extends ComponentWrapper {
   /**
    * Returns the wrapper for the panel element.
    */
-  findPanel(): ElementWrapper | null {
+  findPanelContent(): ElementWrapper | null {
     return this.findByClassName(styles.panel);
   }
 
   /**
    * Returns the wrapper for the main content element.
    */
-  findContent(): ElementWrapper | null {
+  findMainContent(): ElementWrapper | null {
     return this.findByClassName(styles.content);
   }
 

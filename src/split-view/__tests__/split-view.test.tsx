@@ -59,8 +59,8 @@ describe('SplitView Component', () => {
         panelContent: 'Test panel content',
       });
 
-      expect(wrapper.findContent()!.getElement()).toHaveTextContent('Test main content');
-      expect(wrapper.findPanel()!.getElement()).toHaveTextContent('Test panel content');
+      expect(wrapper.findMainContent()!.getElement()).toHaveTextContent('Test main content');
+      expect(wrapper.findPanelContent()!.getElement()).toHaveTextContent('Test panel content');
     });
 
     test('renders without resize handle when not resizable', () => {
@@ -79,28 +79,28 @@ describe('SplitView Component', () => {
   describe('Panel sizing', () => {
     test('applies default panel size when no size specified', () => {
       const { wrapper } = renderSplitView();
-      const panel = wrapper.findPanel()!.getElement();
+      const panel = wrapper.findPanelContent()!.getElement();
 
       expect(panel).toHaveStyle('inline-size: 200px');
     });
 
     test('applies defaultPanelSize in uncontrolled mode', () => {
       const { wrapper } = renderSplitView({ defaultPanelSize: 300 });
-      const panel = wrapper.findPanel()!.getElement();
+      const panel = wrapper.findPanelContent()!.getElement();
 
       expect(panel).toHaveStyle('inline-size: 300px');
     });
 
     test('applies panelSize in controlled mode', () => {
       const { wrapper } = renderSplitView({ panelSize: 250, onPanelResize: () => {} });
-      const panel = wrapper.findPanel()!.getElement();
+      const panel = wrapper.findPanelContent()!.getElement();
 
       expect(panel).toHaveStyle('inline-size: 250px');
     });
 
     test('uses minPanelSize when defaultPanelSize is not provided', () => {
       const { wrapper } = renderSplitView({ minPanelSize: 150 });
-      const panel = wrapper.findPanel()!.getElement();
+      const panel = wrapper.findPanelContent()!.getElement();
 
       expect(panel).toHaveStyle('inline-size: 150px');
     });
@@ -110,13 +110,13 @@ describe('SplitView Component', () => {
     test('renders with panel variant by default', () => {
       const { wrapper } = renderSplitView();
 
-      expect(wrapper.findPanel()!.getElement()).toHaveClass(styles['panel-variant-panel']);
+      expect(wrapper.findPanelContent()!.getElement()).toHaveClass(styles['panel-variant-panel']);
     });
 
     test('renders with custom variant when specified', () => {
       const { wrapper } = renderSplitView({ panelVariant: 'custom' });
 
-      expect(wrapper.findPanel()!.getElement()).not.toHaveClass(styles['panel-variant-panel']);
+      expect(wrapper.findPanelContent()!.getElement()).not.toHaveClass(styles['panel-variant-panel']);
     });
   });
 
@@ -171,8 +171,8 @@ describe('SplitView Component', () => {
         panelContent: 'Test panel content',
       });
 
-      const content = wrapper.findContent();
-      const panel = wrapper.findPanel();
+      const content = wrapper.findMainContent();
+      const panel = wrapper.findPanelContent();
 
       expect(content).not.toBeNull();
       expect(panel).not.toBeNull();
@@ -186,8 +186,8 @@ describe('SplitView Component', () => {
         panelContent: 'Test panel content',
       });
 
-      const content = wrapper.findContent();
-      const panel = wrapper.findPanel();
+      const content = wrapper.findMainContent();
+      const panel = wrapper.findPanelContent();
 
       expect(content).not.toBeNull();
       expect(panel).not.toBeNull();
@@ -200,8 +200,8 @@ describe('SplitView Component', () => {
         panelContent: 'Test panel content',
       });
 
-      const content = wrapper.findContent();
-      const panel = wrapper.findPanel();
+      const content = wrapper.findMainContent();
+      const panel = wrapper.findPanelContent();
 
       expect(content).toBeNull();
       expect(panel).not.toBeNull();
@@ -214,8 +214,8 @@ describe('SplitView Component', () => {
         panelContent: 'Test panel content',
       });
 
-      const content = wrapper.findContent();
-      const panel = wrapper.findPanel();
+      const content = wrapper.findMainContent();
+      const panel = wrapper.findPanelContent();
 
       expect(content).not.toBeNull();
       expect(panel).toBeNull();
@@ -246,7 +246,7 @@ describe('SplitView Component', () => {
         onPanelResize: () => {},
       });
 
-      expect(wrapper.findPanel()!.getElement()).not.toHaveStyle('inline-size: 300px');
+      expect(wrapper.findPanelContent()!.getElement()).not.toHaveStyle('inline-size: 300px');
     });
   });
 
@@ -301,6 +301,281 @@ describe('SplitView Component', () => {
           detail: { totalSize: CONTAINER_WIDTH, panelSize: 350 },
         })
       );
+    });
+  });
+
+  describe('Panel size bounds handling', () => {
+    describe('panelSize (controlled mode)', () => {
+      test('clamps panelSize below minPanelSize to minPanelSize', () => {
+        const { wrapper } = renderSplitView({
+          panelSize: 50,
+          minPanelSize: 150,
+          maxPanelSize: 500,
+          onPanelResize: () => {},
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle('inline-size: 150px');
+      });
+
+      test('clamps panelSize above maxPanelSize to maxPanelSize', () => {
+        const { wrapper } = renderSplitView({
+          panelSize: 600,
+          minPanelSize: 100,
+          maxPanelSize: 400,
+          onPanelResize: () => {},
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle('inline-size: 400px');
+      });
+
+      test('clamps panelSize above container width to container width', () => {
+        const { wrapper } = renderSplitView({
+          panelSize: 1000,
+          onPanelResize: () => {},
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle(`inline-size: ${CONTAINER_WIDTH}px`);
+      });
+
+      test('clamps panelSize when both above maxPanelSize and container width', () => {
+        const { wrapper } = renderSplitView({
+          panelSize: 1000,
+          maxPanelSize: 600,
+          onPanelResize: () => {},
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        // Should clamp to maxPanelSize (600), which is less than containerWidth (800)
+        expect(panel).toHaveStyle('inline-size: 600px');
+      });
+
+      test('uses panelSize within bounds without clamping', () => {
+        const { wrapper } = renderSplitView({
+          panelSize: 250,
+          minPanelSize: 100,
+          maxPanelSize: 400,
+          onPanelResize: () => {},
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle('inline-size: 250px');
+      });
+
+      test('clamps panelSize below minPanelSize when minPanelSize equals maxPanelSize', () => {
+        const { wrapper } = renderSplitView({
+          panelSize: 100,
+          minPanelSize: 300,
+          maxPanelSize: 300,
+          onPanelResize: () => {},
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle('inline-size: 300px');
+      });
+    });
+
+    describe('defaultPanelSize (uncontrolled mode)', () => {
+      test('clamps defaultPanelSize below minPanelSize to minPanelSize', () => {
+        const { wrapper } = renderSplitView({
+          defaultPanelSize: 50,
+          minPanelSize: 150,
+          maxPanelSize: 500,
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle('inline-size: 150px');
+      });
+
+      test('clamps defaultPanelSize above maxPanelSize to maxPanelSize', () => {
+        const { wrapper } = renderSplitView({
+          defaultPanelSize: 600,
+          minPanelSize: 100,
+          maxPanelSize: 400,
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle('inline-size: 400px');
+      });
+
+      test('clamps defaultPanelSize above container width to container width', () => {
+        const { wrapper } = renderSplitView({
+          defaultPanelSize: 1000,
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle(`inline-size: ${CONTAINER_WIDTH}px`);
+      });
+
+      test('clamps defaultPanelSize when both above maxPanelSize and container width', () => {
+        const { wrapper } = renderSplitView({
+          defaultPanelSize: 1000,
+          maxPanelSize: 600,
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        // Should clamp to maxPanelSize (600), which is less than containerWidth (800)
+        expect(panel).toHaveStyle('inline-size: 600px');
+      });
+
+      test('uses defaultPanelSize within bounds without clamping', () => {
+        const { wrapper } = renderSplitView({
+          defaultPanelSize: 250,
+          minPanelSize: 100,
+          maxPanelSize: 400,
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle('inline-size: 250px');
+      });
+
+      test('clamps defaultPanelSize when minPanelSize equals maxPanelSize', () => {
+        const { wrapper } = renderSplitView({
+          defaultPanelSize: 100,
+          minPanelSize: 300,
+          maxPanelSize: 300,
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle('inline-size: 300px');
+      });
+    });
+
+    describe('edge cases with missing min/max bounds', () => {
+      test('clamps panelSize when only maxPanelSize is provided', () => {
+        const { wrapper } = renderSplitView({
+          panelSize: 600,
+          maxPanelSize: 400,
+          onPanelResize: () => {},
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle('inline-size: 400px');
+      });
+
+      test('clamps panelSize when only minPanelSize is provided', () => {
+        const { wrapper } = renderSplitView({
+          panelSize: 50,
+          minPanelSize: 150,
+          onPanelResize: () => {},
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle('inline-size: 150px');
+      });
+
+      test('uses defaultPanelSize when only maxPanelSize is provided and size is within bounds', () => {
+        const { wrapper } = renderSplitView({
+          defaultPanelSize: 250,
+          maxPanelSize: 400,
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle('inline-size: 250px');
+      });
+
+      test('clamps negative panelSize to minPanelSize when provided', () => {
+        const { wrapper } = renderSplitView({
+          panelSize: -50,
+          minPanelSize: 100,
+          onPanelResize: () => {},
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle('inline-size: 100px');
+      });
+
+      test('clamps negative panelSize to 0 when minPanelSize is not provided', () => {
+        const { wrapper } = renderSplitView({
+          panelSize: -50,
+          onPanelResize: () => {},
+        });
+
+        const panel = wrapper.findPanelContent()!.getElement();
+        expect(panel).toHaveStyle('inline-size: 0px');
+      });
+    });
+
+    describe('useResize hook receives clamped values', () => {
+      test('passes clamped panelSize to useResize when below minPanelSize', () => {
+        mockUseResize.mockClear();
+
+        renderSplitView({
+          resizable: true,
+          panelSize: 50,
+          minPanelSize: 150,
+          maxPanelSize: 500,
+          onPanelResize: () => {},
+        });
+
+        expect(mockUseResize).toHaveBeenCalledWith(
+          expect.objectContaining({
+            currentWidth: 150,
+            minWidth: 150,
+            maxWidth: 500,
+          })
+        );
+      });
+
+      test('passes clamped panelSize to useResize when above maxPanelSize', () => {
+        mockUseResize.mockClear();
+
+        renderSplitView({
+          resizable: true,
+          panelSize: 600,
+          minPanelSize: 100,
+          maxPanelSize: 400,
+          onPanelResize: () => {},
+        });
+
+        expect(mockUseResize).toHaveBeenCalledWith(
+          expect.objectContaining({
+            currentWidth: 400,
+            minWidth: 100,
+            maxWidth: 400,
+          })
+        );
+      });
+
+      test('passes clamped defaultPanelSize to useResize when below minPanelSize', () => {
+        mockUseResize.mockClear();
+
+        renderSplitView({
+          resizable: true,
+          defaultPanelSize: 50,
+          minPanelSize: 150,
+          maxPanelSize: 500,
+        });
+
+        expect(mockUseResize).toHaveBeenCalledWith(
+          expect.objectContaining({
+            currentWidth: 150,
+            minWidth: 150,
+            maxWidth: 500,
+          })
+        );
+      });
+
+      test('passes clamped defaultPanelSize to useResize when above maxPanelSize', () => {
+        mockUseResize.mockClear();
+
+        renderSplitView({
+          resizable: true,
+          defaultPanelSize: 600,
+          minPanelSize: 100,
+          maxPanelSize: 400,
+        });
+
+        expect(mockUseResize).toHaveBeenCalledWith(
+          expect.objectContaining({
+            currentWidth: 400,
+            minWidth: 100,
+            maxWidth: 400,
+          })
+        );
+      });
     });
   });
 });

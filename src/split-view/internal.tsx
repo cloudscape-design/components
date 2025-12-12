@@ -72,11 +72,15 @@ const InternalSplitView = React.forwardRef<SplitViewProps.Ref, InternalSplitView
       }
     );
 
+    const actualMaxSize = Math.min(maxPanelSize ?? containerWidth, containerWidth);
+    const actualMinSize = minPanelSize ?? 0;
+    const actualPanelSize = Math.max(Math.min(panelSize, actualMaxSize), actualMinSize);
+
     const resizeHandlePosition = panelPosition === 'side-end' ? 'side' : panelPosition;
     const resizeProps = useResize({
-      currentWidth: panelSize,
-      minWidth: minPanelSize ?? 0,
-      maxWidth: Math.min(maxPanelSize ?? containerWidth, containerWidth),
+      currentWidth: actualPanelSize,
+      minWidth: actualMinSize,
+      maxWidth: actualMaxSize,
       panelRef: panelRef,
       handleRef: sliderRef,
       position: resizeHandlePosition,
@@ -107,7 +111,7 @@ const InternalSplitView = React.forwardRef<SplitViewProps.Ref, InternalSplitView
             display !== 'main-only' && testStyles.panel
           )}
           ref={panelRef}
-          style={display === 'all' ? { inlineSize: `${panelSize}px` } : undefined}
+          style={display === 'all' ? { inlineSize: `${actualPanelSize}px` } : undefined}
         >
           {panelPosition === 'side-start' && wrappedPanelContent}
           {resizable && display === 'all' && (

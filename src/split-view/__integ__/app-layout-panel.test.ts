@@ -33,7 +33,7 @@ class SplitViewAppLayoutPage extends BasePageObject {
 
   async getSplitViewPanelSize() {
     const splitView = this.getSplitViewWrapper();
-    const panel = splitView.findPanel();
+    const panel = splitView.findPanelContent();
     if (!panel) {
       return null;
     }
@@ -56,25 +56,25 @@ class SplitViewAppLayoutPage extends BasePageObject {
 
   async focusPanelButton() {
     const splitView = this.getSplitViewWrapper();
-    const panelButton = splitView.findPanel().findButton();
+    const panelButton = splitView.findPanelContent().findButton();
     await this.click(panelButton.toSelector());
   }
 
   async focusMainContentButton() {
     const splitView = this.getSplitViewWrapper();
-    const contentButton = splitView.findContent().findButton();
+    const contentButton = splitView.findMainContent().findButton();
     await this.click(contentButton.toSelector());
   }
 
   isPanelButtonFocused() {
     const splitView = this.getSplitViewWrapper();
-    const panelButton = splitView.findPanel().findButton();
+    const panelButton = splitView.findPanelContent().findButton();
     return this.isFocused(panelButton.toSelector());
   }
 
   isMainContentButtonFocused() {
     const splitView = this.getSplitViewWrapper();
-    const contentButton = splitView.findContent().findButton();
+    const contentButton = splitView.findMainContent().findButton();
     return this.isFocused(contentButton.toSelector());
   }
 
@@ -106,8 +106,8 @@ describe('SplitView in App Layout Panel', () => {
     'displays panel and main content with proper headers',
     setupTest({}, async page => {
       const splitView = page.getSplitViewWrapper();
-      const panel = splitView.findPanel();
-      const content = splitView.findContent();
+      const panel = splitView.findPanelContent();
+      const content = splitView.findMainContent();
 
       await expect(page.getText(panel.findHeader().toSelector())).resolves.toContain('Panel content');
       await expect(page.getText(content.findHeader().toSelector())).resolves.toContain('Main content');
