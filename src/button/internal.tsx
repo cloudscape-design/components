@@ -20,7 +20,6 @@ import {
   getSubStepAllSelector,
   getTextFromSelector,
 } from '../internal/analytics/selectors';
-import Tooltip from '../internal/components/tooltip/index.js';
 import { useButtonContext } from '../internal/context/button-context';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -31,6 +30,7 @@ import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import InternalLiveRegion from '../live-region/internal';
+import Tooltip from '../tooltip/internal.js';
 import { GeneratedAnalyticsMetadataButtonFragment } from './analytics-metadata/interfaces';
 import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
 import { ButtonProps } from './interfaces';
@@ -283,9 +283,9 @@ export const InternalButton = React.forwardRef(
         {showTooltip && (
           <Tooltip
             className={testUtilStyles['disabled-reason-tooltip']}
-            trackRef={buttonRef}
-            value={disabledReason!}
-            onDismiss={() => setShowTooltip(false)}
+            getTrack={() => buttonRef.current}
+            content={disabledReason!}
+            onEscape={() => setShowTooltip(false)}
           />
         )}
       </>

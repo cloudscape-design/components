@@ -9,10 +9,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DateFormat, DateGranularity, EditableDateFormat } from '../internal/utils/date-time/interfaces';
 
 export interface DatePickerProps
-  extends BaseComponentProps,
-    FormFieldValidationControlProps,
-    ExpandToViewport,
-    CalendarProps {
+  extends BaseComponentProps, FormFieldValidationControlProps, ExpandToViewport, CalendarProps {
   /**
    * Specifies the placeholder text rendered when the value is an empty string.
    */

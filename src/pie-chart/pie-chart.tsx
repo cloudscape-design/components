@@ -32,11 +32,10 @@ export interface InternalChartDatum<T> {
   datum: Readonly<T>;
 }
 
-interface InternalPieChartProps<T extends PieChartProps.Datum>
-  extends SomeRequired<
-    Omit<PieChartProps<T>, 'onHighlightChange' | 'statusType'>,
-    'variant' | 'size' | 'i18nStrings' | 'hideTitles' | 'hideDescriptions'
-  > {
+interface InternalPieChartProps<T extends PieChartProps.Datum> extends SomeRequired<
+  Omit<PieChartProps<T>, 'onHighlightChange' | 'statusType'>,
+  'variant' | 'size' | 'i18nStrings' | 'hideTitles' | 'hideDescriptions'
+> {
   width: number;
   height: number;
 

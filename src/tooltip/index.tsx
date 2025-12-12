@@ -1,40 +1,40 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React, { useEffect } from 'react';
+import clsx from 'clsx';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
-import PopoverArrow from '../../../popover/arrow';
-import PopoverBody from '../../../popover/body';
-import PopoverContainer from '../../../popover/container';
-import { PopoverProps } from '../../../popover/interfaces';
-import { Transition } from '../transition';
+import { Transition } from '../internal/components/transition';
+import { fireNonCancelableEvent } from '../internal/events';
+import PopoverArrow from '../popover/arrow';
+import PopoverBody from '../popover/body';
+import PopoverContainer from '../popover/container';
+import { InternalTooltipProps, TooltipProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface TooltipProps {
-  value: React.ReactNode;
-  trackRef: React.RefObject<HTMLElement | SVGElement>;
-  trackKey?: string | number;
-  position?: 'top' | 'right' | 'bottom' | 'left';
-  className?: string;
-  size?: PopoverProps['size'];
-  hideOnOverscroll?: boolean;
-  onDismiss?: () => void;
-}
+export { TooltipProps };
 
 export default function Tooltip({
-  value,
-  trackRef,
+  content,
+  getTrack,
   trackKey,
-  className,
   position = 'top',
-  size = 'small',
-  hideOnOverscroll,
-  onDismiss,
-}: TooltipProps) {
-  if (!trackKey && (typeof value === 'string' || typeof value === 'number')) {
-    trackKey = value;
+  __dismissOnScroll,
+  className,
+  onEscape,
+}: InternalTooltipProps) {
+  const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
+
+  // Update the ref with the current tracked element
+  React.useEffect(() => {
+    trackRef.current = getTrack();
+  });
+
+  if (!trackKey && (typeof content === 'string' || typeof content === 'number')) {
+    trackKey = content;
   }
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function Tooltip({
         if (event.key === 'Escape') {
           // Prevent any surrounding modals or dialogs from acting on this Esc.
           event.stopPropagation();
-          onDismiss?.();
+          fireNonCancelableEvent(onEscape);
         }
       },
       {
@@ -59,26 +59,26 @@ export default function Tooltip({
     return () => {
       controller.abort();
     };
-  }, [onDismiss]);
+  }, [onEscape]);
 
   return (
     <Portal>
-      <div className={styles.root} data-testid={trackKey}>
+      <div className={clsx(styles.root, className)} data-testid={trackKey}>
         <Transition in={true}>
           {() => (
             <PopoverContainer
               trackRef={trackRef}
               trackKey={trackKey}
-              size={size}
+              size="medium"
               fixedWidth={false}
               position={position}
               zIndex={7000}
               arrow={position => <PopoverArrow position={position} />}
-              hideOnOverscroll={hideOnOverscroll}
+              hideOnOverscroll={__dismissOnScroll}
               className={className}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
-                {value}
+                {content}
               </PopoverBody>
             </PopoverContainer>
           )}

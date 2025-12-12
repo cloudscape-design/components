@@ -132,7 +132,8 @@ export interface DateRangePickerBaseProps {
   getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction;
 }
 export interface DateRangePickerProps
-  extends BaseComponentProps,
+  extends
+    BaseComponentProps,
     FormFieldValidationControlProps,
     ExpandToViewport,
     DateRangePickerBaseProps,

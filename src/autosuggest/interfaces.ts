@@ -15,7 +15,8 @@ import { FormFieldValidationControlProps } from '../internal/context/form-field-
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface AutosuggestProps
-  extends BaseComponentProps,
+  extends
+    BaseComponentProps,
     BaseInputProps,
     InputAutoCorrect,
     BaseDropdownHostProps,

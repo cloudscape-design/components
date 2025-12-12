@@ -18,8 +18,7 @@ import { StatusIndicatorProps } from './interfaces';
 import styles from './styles.css.js';
 
 export interface InternalStatusIndicatorProps
-  extends SomeRequired<StatusIndicatorProps, 'type'>,
-    InternalBaseComponentProps {
+  extends SomeRequired<StatusIndicatorProps, 'type'>, InternalBaseComponentProps {
   /**
    * Play an animation on the error icon when first rendered
    */

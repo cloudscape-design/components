@@ -7,8 +7,7 @@ import { TableTdElement, TableTdElementProps } from '../body-cell/td-element';
 import { ItemsLoader, ItemsLoaderProps } from './items-loader';
 
 export interface TableLoaderCellProps<ItemType>
-  extends Omit<TableTdElementProps, 'isEditable' | 'isEditing' | 'children'>,
-    ItemsLoaderProps<ItemType> {}
+  extends Omit<TableTdElementProps, 'isEditable' | 'isEditing' | 'children'>, ItemsLoaderProps<ItemType> {}
 
 export function TableLoaderCell<ItemType>({ item, trackBy, children, ...props }: TableLoaderCellProps<ItemType>) {
   return (

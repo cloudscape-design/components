@@ -31,7 +31,8 @@ export type RangeCalendarI18nStrings = Pick<
 >;
 
 export interface DateRangePickerCalendarProps
-  extends BaseComponentProps,
+  extends
+    BaseComponentProps,
     SomeRequired<
       Pick<
         DateRangePickerProps,
@@ -55,7 +56,8 @@ export interface DateRangePickerCalendarProps
 }
 
 export interface RangeInputsProps
-  extends BaseComponentProps,
+  extends
+    BaseComponentProps,
     SomeRequired<
       Pick<DateRangePickerProps, 'granularity' | 'dateOnly' | 'timeInputFormat' | 'dateInputFormat'>,
       'dateOnly' | 'timeInputFormat' | 'granularity'

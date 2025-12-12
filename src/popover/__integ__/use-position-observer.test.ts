@@ -5,7 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 
-import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
+import tooltipStyles from '../../../lib/components/tooltip/styles.selectors.js';
 
 const wrapper = createWrapper();
 const expandableSectionWrapper = wrapper.findExpandableSection();

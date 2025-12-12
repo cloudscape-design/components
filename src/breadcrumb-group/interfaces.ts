@@ -5,8 +5,9 @@ import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
-export interface BreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>
-  extends BaseComponentProps {
+export interface BreadcrumbGroupProps<
+  T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item,
+> extends BaseComponentProps {
   /**
    * An array of breadcrumb items that describes the link hierarchy for this navigation.
    * Each option has the following properties:
@@ -47,8 +48,9 @@ export namespace BreadcrumbGroupProps {
     href: string;
   }
 
-  export interface ClickDetail<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>
-    extends BaseNavigationDetail {
+  export interface ClickDetail<
+    T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item,
+  > extends BaseNavigationDetail {
     item: T;
     text: string;
     href: string;

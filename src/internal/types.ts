@@ -38,6 +38,21 @@ export type SomeOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>
 export type Optional<Type> = Type | undefined;
 
 /**
+ * A React ref shim that avoids dependency on React typings.
+ * This makes the code portable across major React versions.
+ *
+ * @example
+ * ```
+ * interface MyProps {
+ *   anchorRef: RefShim<HTMLElement>;
+ * }
+ * ```
+ */
+export interface RefShim<T> {
+  current: T | null;
+}
+
+/**
  * Use this function to mark conditions which should never be visited
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

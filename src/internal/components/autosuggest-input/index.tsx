@@ -27,7 +27,8 @@ import { ExpandToViewport } from '../dropdown/interfaces';
 import styles from './styles.css.js';
 
 interface AutosuggestInputProps
-  extends BaseComponentProps,
+  extends
+    BaseComponentProps,
     BaseInputProps,
     InputAutoCorrect,
     InputKeyEvents,

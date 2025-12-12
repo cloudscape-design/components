@@ -34,8 +34,7 @@ const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
 const DROPDOWN_WIDTH_CUSTOM_FORM = 200;
 
 export interface PropertyFilterAutosuggestProps
-  extends Omit<AutosuggestProps, 'filteringResultsText'>,
-    InternalBaseComponentProps {
+  extends Omit<AutosuggestProps, 'filteringResultsText'>, InternalBaseComponentProps {
   customForm?: {
     content: React.ReactNode;
     footer: React.ReactNode;
