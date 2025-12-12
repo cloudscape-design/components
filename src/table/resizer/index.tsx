@@ -229,7 +229,7 @@ export function Resizer({
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (isKeyboardDragging) {
-        const keys = [KeyCode.left, KeyCode.right, KeyCode.enter, KeyCode.right, KeyCode.space, KeyCode.escape];
+        const keys = [KeyCode.left, KeyCode.right, KeyCode.enter, KeyCode.space, KeyCode.escape];
 
         if (keys.indexOf(event.keyCode) !== -1) {
           event.preventDefault();
@@ -312,9 +312,7 @@ export function Resizer({
   ]);
 
   useEffect(() => {
-    if (isDragging) {
-      return () => clearTimeout(autoGrowTimeout.current);
-    }
+    return () => clearTimeout(autoGrowTimeout.current);
   }, [isDragging]);
 
   const { tabIndex: resizerTabIndex } = useSingleTabStopNavigation(resizerToggleRef, { tabIndex });
