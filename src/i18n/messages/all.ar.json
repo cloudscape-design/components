@@ -134,10 +134,10 @@
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {اختر التاريخ} other {اختر التاريخ، التاريخ المحدد هو {selectedDate}}}"
   },
   "date-range-picker": {
-    "i18nStrings.startDatePlaceholder": "YYYY-MM-DD",
-    "i18nStrings.endDatePlaceholder": "YYYY-MM-DD",
-    "i18nStrings.startTimePlaceholder": "hh:mm:ss",
-    "i18nStrings.endTimePlaceholder": "hh:mm:ss",
+    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
+    
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
+    
     "i18nStrings.relativeModeTitle": "الوضع النسبي",
     "i18nStrings.absoluteModeTitle": "الوضع المُطلق",
     "i18nStrings.relativeRangeSelectionHeading": "اختر النطاق",

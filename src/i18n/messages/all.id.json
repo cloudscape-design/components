@@ -134,10 +134,10 @@
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Pilih tanggal} other {Pilih tanggal, tanggal yang dipilih adalah {selectedDate}}}"
   },
   "date-range-picker": {
-    "i18nStrings.startDatePlaceholder": "TTTT-BB-HH",
-    "i18nStrings.endDatePlaceholder": "TTTT-BB-HH",
-    "i18nStrings.startTimePlaceholder": "jj:mm:dd",
-    "i18nStrings.endTimePlaceholder": "jj:mm:dd",
+    "i18nStrings.datePlaceholder": "TTTT-BB-HH",
+    
+    "i18nStrings.timePlaceholder": "jj:mm:dd",
+    
     "i18nStrings.relativeModeTitle": "Mode relatif",
     "i18nStrings.absoluteModeTitle": "Mode absolut",
     "i18nStrings.relativeRangeSelectionHeading": "Pilih rentang",

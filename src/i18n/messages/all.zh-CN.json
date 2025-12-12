@@ -134,10 +134,10 @@
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {选择日期} other {选择日期，所选日期为 {selectedDate}}}"
   },
   "date-range-picker": {
-    "i18nStrings.startDatePlaceholder": "YYYY-MM-DD",
-    "i18nStrings.endDatePlaceholder": "YYYY-MM-DD",
-    "i18nStrings.startTimePlaceholder": "hh:mm:ss",
-    "i18nStrings.endTimePlaceholder": "hh:mm:ss",
+    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
+    
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
+    
     "i18nStrings.relativeModeTitle": "相对模式",
     "i18nStrings.absoluteModeTitle": "绝对模式",
     "i18nStrings.relativeRangeSelectionHeading": "选择一个范围",

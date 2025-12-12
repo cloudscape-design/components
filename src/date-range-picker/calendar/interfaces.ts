@@ -28,15 +28,12 @@ export type RangeCalendarI18nStrings = Pick<
   | 'isoMonthConstraintText'
   | 'slashedMonthConstraintText'
   | 'renderSelectedAbsoluteRangeAriaLive'
-  | 'startDatePlaceholder'
-  | 'endDatePlaceholder'
-  | 'startTimePlaceholder'
-  | 'endTimePlaceholder'
+  | 'datePlaceholder'
+  | 'timePlaceholder'
 >;
 
 export interface DateRangePickerCalendarProps
-  extends
-    BaseComponentProps,
+  extends BaseComponentProps,
     SomeRequired<
       Pick<
         DateRangePickerProps,
@@ -60,8 +57,7 @@ export interface DateRangePickerCalendarProps
 }
 
 export interface RangeInputsProps
-  extends
-    BaseComponentProps,
+  extends BaseComponentProps,
     SomeRequired<
       Pick<DateRangePickerProps, 'granularity' | 'dateOnly' | 'timeInputFormat' | 'dateInputFormat'>,
       'dateOnly' | 'timeInputFormat' | 'granularity'
