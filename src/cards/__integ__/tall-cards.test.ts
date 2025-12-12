@@ -7,7 +7,7 @@ const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 1000, height: 1600 });
-    await browser.url('#/light/cards/tall-cards');
+    await browser.url('#/cards/tall-cards');
     await testFn(page);
   });
 };

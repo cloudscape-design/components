@@ -12,7 +12,7 @@ test(
   useBrowser({ width: 375, height: 871 }, async browser => {
     const tableWrapper = createWrapper().findTable('[data-testid="items-table"]');
     const wrapperSelector = tableWrapper.findAllByClassName(styles.wrapper).toSelector();
-    await browser.url('#/light/table/keyboard-scroll');
+    await browser.url('#/table/keyboard-scroll');
     const page = new BasePageObject(browser);
     await page.click('h1');
     await page.keys('Tab');

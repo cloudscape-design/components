@@ -14,7 +14,7 @@ class PopoverFocusPage extends BasePageObject {
 const setupTest = (renderWithPortal: boolean, testFn: (page: PopoverFocusPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new PopoverFocusPage(browser);
-    await browser.url('#/light/popover/focus-test');
+    await browser.url('#/popover/focus-test');
     if (renderWithPortal) {
       await page.enableRenderWithPortal();
     }

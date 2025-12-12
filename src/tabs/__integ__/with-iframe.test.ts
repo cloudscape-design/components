@@ -11,7 +11,7 @@ const wrapper = createWrapper().findTabs();
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser({ width: 1600, height: 800 }, async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/tabs/with-iframe');
+    await browser.url('#/tabs/with-iframe');
     await page.runInsideIframe('#iframe', true, async () => {
       await page.waitForVisible(wrapper.findTabContent().toSelector());
       await testFn(page);

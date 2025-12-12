@@ -77,7 +77,7 @@ export const setupTest = (
       appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
       ...(splitPanelPosition ? { splitPanelPosition } : {}),
     }).toString();
-    await browser.url(`#/light/app-layout/with-drawers?${params}`);
+    await browser.url(`#/app-layout/with-drawers?${params}`);
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);
   });

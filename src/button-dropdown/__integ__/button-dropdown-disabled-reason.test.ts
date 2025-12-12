@@ -40,7 +40,7 @@ const setupTest = (testFn: (page: ButtonDropdownDisabledReasonPage) => Promise<v
       await page.setMobileWindow();
     }
 
-    await browser.url('#/light/button-dropdown/disabled-reason?visualRefresh=false');
+    await browser.url('#/button-dropdown/disabled-reason?visualRefresh=false');
     await page.waitForVisible(page.findButtonDropdown().toSelector());
     await page.openDropdown();
     await testFn(page);

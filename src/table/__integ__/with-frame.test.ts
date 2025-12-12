@@ -25,7 +25,7 @@ class TablePage extends BasePageObject {
 const setupTest = (testFn: (page: TablePage) => Promise<void>) => {
   return useBrowser({ width: 1600, height: 800 }, async browser => {
     const page = new TablePage(browser);
-    await browser.url('#/light/table/with-iframe');
+    await browser.url('#/table/with-iframe');
     await page.runInsideIframe('#inner-iframe', true, async () => {
       await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
     });

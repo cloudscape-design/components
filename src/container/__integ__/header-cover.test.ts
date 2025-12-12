@@ -29,7 +29,7 @@ function setupTest(
   return useBrowser(async browser => {
     const page = new ContainerStickyPage(browser);
     await page.setWindowSize(viewport);
-    await browser.url(`#/light/container/sticky-permutations?visualRefresh=${visualRefresh}&${search}`);
+    await browser.url(`#/container/sticky-permutations?visualRefresh=${visualRefresh}&${search}`);
     await page.waitForVisible(tableWrapper.findBodyCell(1, 1).toSelector());
     await testFn(page);
   });

@@ -11,7 +11,7 @@ test(
   'allows to move focus using right arrow when segment to the right was last focused',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/segmented-control/two-segment?selectedId=seg-1');
+    await browser.url('#/segmented-control/two-segment?selectedId=seg-1');
     await page.waitForVisible(control.toSelector());
 
     // Focus seg-2
@@ -32,7 +32,7 @@ test(
   'allows to move focus using left arrow when segment to the left was last focused',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/segmented-control/two-segment?selectedId=seg-2');
+    await browser.url('#/segmented-control/two-segment?selectedId=seg-2');
     await page.waitForVisible(control.toSelector());
 
     // Focus seg-1

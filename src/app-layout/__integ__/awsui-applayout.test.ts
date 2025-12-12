@@ -36,7 +36,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
     return useBrowser(async browser => {
       const page = new AppLayoutPage(browser);
       await page.setWindowSize(viewport);
-      await page.visit(`#/light/app-layout/${pageName}?${getUrlParams(theme, extraParams)}`);
+      await page.visit(`#/app-layout/${pageName}?${getUrlParams(theme, extraParams)}`);
       await testFn(page);
     });
   }
@@ -177,9 +177,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
       // get reference offset on a page with notifications disabled
       const { top: expectedOffset } = await page.getBoundingBox('[data-testid="content-root"]');
       // visit the same page with notifications enabled to compare
-      await page.visit(
-        `#/light/app-layout/with-notifications?${getUrlParams(theme, { disableNotifications: 'false' })}`
-      );
+      await page.visit(`#/app-layout/with-notifications?${getUrlParams(theme, { disableNotifications: 'false' })}`);
       await page.click(wrapper.findNotifications().findFlashbar().findItems().get(1).findDismissButton().toSelector());
       await expect(page.isExisting(wrapper.findNotifications().findFlashbar().toSelector())).resolves.toBe(true);
       await expect(

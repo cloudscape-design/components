@@ -18,7 +18,7 @@ class FormSubmitPageObject extends BasePageObject {
 function setupTest(testFn: (page: FormSubmitPageObject) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new FormSubmitPageObject(browser);
-    await browser.url('#/light/autosuggest/form-submit');
+    await browser.url('#/autosuggest/form-submit');
     await testFn(page);
   });
 }

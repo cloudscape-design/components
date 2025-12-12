@@ -75,7 +75,7 @@ describe('Shift selection', () => {
     return useBrowser(async browser => {
       const page = new TablePage(browser);
       const query = new URLSearchParams({ enableKeyboardNavigation: String(enableKeyboardNavigation) });
-      await browser.url(`#/light/table/shift-selection?${query.toString()}`);
+      await browser.url(`#/table/shift-selection?${query.toString()}`);
       await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
       await testFn(page);
     });

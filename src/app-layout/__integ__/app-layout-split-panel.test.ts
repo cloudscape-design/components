@@ -15,10 +15,7 @@ const scrollbarSelector = `.${tableScrollbarStyles['sticky-scrollbar-visible']}`
 const wrapper = createWrapper().findAppLayout();
 
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
-  function setupTest(
-    testFn: (page: AppLayoutSplitViewPage) => Promise<void>,
-    url = '#/light/app-layout/with-split-panel'
-  ) {
+  function setupTest(testFn: (page: AppLayoutSplitViewPage) => Promise<void>, url = '#/app-layout/with-split-panel') {
     return useBrowser(async browser => {
       const page = new AppLayoutSplitViewPage(browser);
       await page.setWindowSize(viewports.desktop);
@@ -70,7 +67,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
     setupTest(async page => {
       await page.click('button=Add widget');
       await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
-    }, '#/light/app-layout/dashboard-content-type')
+    }, '#/app-layout/dashboard-content-type')
   );
 
   (theme === 'classic' ? test : test.skip).each([
@@ -101,7 +98,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
     useBrowser(async browser => {
       const page = new AppLayoutSplitViewPage(browser);
       await page.setWindowSize(viewports.desktop);
-      await browser.url(`#/light/app-layout/with-split-panel?visualRefresh=false&splitPanelPosition=side`);
+      await browser.url(`#/app-layout/with-split-panel?visualRefresh=false&splitPanelPosition=side`);
       await page.waitForVisible(wrapper.findContentRegion().toSelector());
       await page.openPanel();
       await expect(page.getPanelPosition()).resolves.toEqual('side');
@@ -170,8 +167,8 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   );
 
   [
-    { url: '#/light/app-layout/disable-paddings-with-split-panel', name: 'paddings disabled' },
-    { url: '#/light/app-layout/with-split-panel', name: 'paddings enabled' },
+    { url: '#/app-layout/disable-paddings-with-split-panel', name: 'paddings disabled' },
+    { url: '#/app-layout/with-split-panel', name: 'paddings enabled' },
   ].forEach(({ url, name }) => {
     test(
       `should not allow resize split panel beyond min and max limits (side position) (${name})`,
@@ -292,7 +289,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(windowHeight / 2 + splitPanelPadding + 'px');
         await page.switchPosition('side');
         await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(splitPanelPadding + 'px');
-      }, '#/light/app-layout/with-full-page-table-and-split-panel')
+      }, '#/app-layout/with-full-page-table-and-split-panel')
     );
 
     test(
@@ -303,7 +300,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         await page.switchPosition('side');
         await page.switchPosition('bottom');
         await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(windowHeight / 2 + splitPanelPadding + 'px');
-      }, '#/light/app-layout/with-full-page-table-and-split-panel')
+      }, '#/app-layout/with-full-page-table-and-split-panel')
     );
 
     test(
@@ -317,7 +314,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           page.isDisplayedInViewport(wrapper.findSplitPanel().findOpenPanelBottom().toSelector())
         ).resolves.toBe(true);
         await expect(page.isClickable(scrollbarSelector)).resolves.toBe(true);
-      }, '#/light/app-layout/with-sticky-table-and-split-panel')
+      }, '#/app-layout/with-sticky-table-and-split-panel')
     );
   });
 });

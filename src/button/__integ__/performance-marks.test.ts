@@ -18,7 +18,7 @@ function setupTest(
 ) {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url(`#/light/button/${pageName}`);
+    await browser.url(`#/button/${pageName}`);
     await page.waitForVisible(wrapper.toSelector());
     if (process.env.REACT_VERSION === '18') {
       return;

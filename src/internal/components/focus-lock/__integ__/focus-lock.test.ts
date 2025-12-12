@@ -7,7 +7,7 @@ import createWrapper, { ElementWrapper } from '../../../../../lib/components/tes
 
 function setupTest(testFn: (page: BasePageObject, wrapper: ElementWrapper) => Promise<void>) {
   return useBrowser(async browser => {
-    await browser.url('#/light/focus-lock');
+    await browser.url('#/focus-lock');
     const page = new BasePageObject(browser);
     const wrapper = createWrapper();
     await page.waitForVisible(wrapper.findButton().toSelector());

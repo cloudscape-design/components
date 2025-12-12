@@ -20,7 +20,7 @@ function setup(
   return useBrowser(async browser => {
     const page = new AsyncDropdownComponentPage(browser, autosuggest, opts.expandToViewport);
     await page.setWindowSize({ width: 800, height: 300 });
-    await browser.url('/#/light/autosuggest/async');
+    await browser.url('/#/autosuggest/async');
     await page.waitForVisible(autosuggest.findNativeInput().toSelector());
     if (opts.virtualScrolling) {
       await page.enableVirtualScrolling();

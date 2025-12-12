@@ -30,7 +30,7 @@ describe('OptionList "LoadMore" Event', () => {
   test(
     'fires loadMore event when the content is scrolled to the end',
     useBrowser(async browser => {
-      await browser.url('#/light/options-list/simple');
+      await browser.url('#/options-list/simple');
       const page = new OptionsListPageObject(browser);
       await page.waitForVisible(page.getTrigger());
       await page.click(page.getTrigger());

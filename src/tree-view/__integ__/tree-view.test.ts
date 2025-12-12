@@ -10,7 +10,7 @@ const wrapper = createWrapper().findTreeView();
 test(
   'Expands and collapses item',
   useBrowser(async browser => {
-    await browser.url('#/light/tree-view/basic');
+    await browser.url('#/tree-view/basic');
     const page = new BasePageObject(browser);
 
     const itemsSelector = wrapper.findItems().toSelector();

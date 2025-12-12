@@ -22,7 +22,7 @@ class RadioPage extends BasePageObject {
 const setupTest = (testFn: (page: RadioPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new RadioPage(browser);
-    await browser.url('#/light/radio-group/index');
+    await browser.url('#/radio-group/index');
     await page.waitForVisible(radioGroupWrapper.findButtons().toSelector());
     await testFn(page);
   });
@@ -70,7 +70,7 @@ test(
 test(
   'style api focus state',
   useBrowser(async browser => {
-    await browser.url('#/light/radio-group/style-custom/');
+    await browser.url('#/radio-group/style-custom/');
     const page = new RadioPage(browser);
 
     await page.click('[data-testid="1"]');

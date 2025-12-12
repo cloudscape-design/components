@@ -69,7 +69,7 @@ test(
   'should keep table width in flex parent when resizing column to full page width',
   useBrowser({ width: 1680, height: 800 }, async browser => {
     const page = new ResizableColumnsPage(browser);
-    await browser.url('#/light/table/resizable-columns-flex');
+    await browser.url('#/table/resizable-columns-flex');
     await page.waitForVisible(wrapper.toSelector());
     const previousWidth = await page.getTableWidth();
 
@@ -84,7 +84,7 @@ test(
   'should not have oscillating size when the last column has the minimal width',
   useBrowser(async browser => {
     const page = new ResizableColumnsPage(browser);
-    await browser.url('#/light/table/resizable-columns-rounding');
+    await browser.url('#/table/resizable-columns-rounding');
     await page.waitForVisible(wrapper.toSelector());
     await page.installObserver(wrapper.find('table').toSelector());
     await page.click('#shrink-container');
@@ -104,7 +104,7 @@ test.skip(
   'should not oscillate when resizing table rendered in flex container',
   useBrowser({ width: 800, height: 800 }, async browser => {
     const page = new ResizableColumnsPage(browser);
-    await browser.url('#/light/table/resizable-coloumns-flex-grow/?visualRefresh=true');
+    await browser.url('#/table/resizable-coloumns-flex-grow/?visualRefresh=true');
     await page.waitForVisible(wrapper.toSelector());
 
     const resizerSelector = wrapper.findColumnResizer(2).toSelector();

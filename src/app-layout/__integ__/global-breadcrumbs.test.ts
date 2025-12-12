@@ -39,7 +39,7 @@ describe.each(['classic', 'refresh'])('%s', theme => {
     'does not work in this design',
     setupTest(
       {
-        url: `#/light/app-layout/global-breadcrumbs/?${new URLSearchParams({ visualRefresh, hasOwnBreadcrumbs: 'true' }).toString()}`,
+        url: `#/app-layout/global-breadcrumbs/?${new URLSearchParams({ visualRefresh, hasOwnBreadcrumbs: 'true' }).toString()}`,
       },
       async page => {
         await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');
@@ -58,7 +58,7 @@ describe('classic', () => {
     'does not react to the feature flag even if it is enabled',
     setupTest(
       {
-        url: `#/light/app-layout/global-breadcrumbs/?${new URLSearchParams({ visualRefresh: 'false', appLayoutToolbar: 'true', hasOwnBreadcrumbs: 'true' }).toString()}`,
+        url: `#/app-layout/global-breadcrumbs/?${new URLSearchParams({ visualRefresh: 'false', appLayoutToolbar: 'true', hasOwnBreadcrumbs: 'true' }).toString()}`,
       },
       async page => {
         await page.toggleExtraBreadcrumb();
@@ -74,7 +74,7 @@ describe('refresh-toolbar', () => {
     'deduplicates breadcrumbs',
     setupTest(
       {
-        url: `#/light/app-layout/global-breadcrumbs/?${getUrlParams('refresh-toolbar', { hasOwnBreadcrumbs: 'false' })}`,
+        url: `#/app-layout/global-breadcrumbs/?${getUrlParams('refresh-toolbar', { hasOwnBreadcrumbs: 'false' })}`,
       },
       async page => {
         await expect(page.getRootBreadcrumbText()).resolves.toEqual('Default');
@@ -95,7 +95,7 @@ describe('refresh-toolbar', () => {
     'does not deduplicate breadcrumbs if breadcrumbs slot is not empty',
     setupTest(
       {
-        url: `#/light/app-layout/global-breadcrumbs/?${getUrlParams('refresh-toolbar', { hasOwnBreadcrumbs: 'true' })}`,
+        url: `#/app-layout/global-breadcrumbs/?${getUrlParams('refresh-toolbar', { hasOwnBreadcrumbs: 'true' })}`,
       },
       async page => {
         await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');

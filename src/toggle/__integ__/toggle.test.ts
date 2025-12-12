@@ -14,7 +14,7 @@ class TogglePage extends BasePageObject {}
 const setupTest = (testFn: (page: TogglePage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new TogglePage(browser);
-    await browser.url('#/light/toggle/simple');
+    await browser.url('#/toggle/simple');
     await testFn(page);
   });
 };
@@ -32,7 +32,7 @@ test(
 test(
   'style api focus state',
   useBrowser(async browser => {
-    await browser.url('#/light/toggle/style-custom/');
+    await browser.url('#/toggle/style-custom/');
     const page = new TogglePage(browser);
 
     await page.click('[data-testid="1"]');

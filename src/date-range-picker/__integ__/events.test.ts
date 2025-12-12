@@ -40,7 +40,7 @@ describe('Date Range Picker', () => {
         monthOnly: granularity === 'month' ? 'true' : 'false',
         expandToViewport: `${expandToViewport}`,
       });
-      await browser.url(`#/light/date-range-picker/with-event-handlers?${params}`);
+      await browser.url(`#/date-range-picker/with-event-handlers?${params}`);
       await page.waitForLoad();
       await testFn(page);
     });

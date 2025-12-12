@@ -19,7 +19,7 @@ function setupTest(url: string, name: string, testFn: (page: AreaChartPageObject
 describe('Filter', () => {
   test(
     'can hide/un-hide series with a filter',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await expect(page.getSeriesCount()).resolves.toBe(6);
       await expect(page.getSeriesLabel(1)).resolves.toEqual('p90');
       await expect(page.getSeriesLabel(2)).resolves.toEqual('p80');
@@ -52,7 +52,7 @@ describe('Filter', () => {
 describe('Legend', () => {
   test(
     'can hover on the legend items to highlight the underlying series',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
 
       // Scroll down to get access to the legend.
@@ -65,7 +65,7 @@ describe('Legend', () => {
 
   test(
     'can focus on the legend items to highlight the underlying series',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
 
       await page.focusLegend();
@@ -81,7 +81,7 @@ describe('Legend', () => {
 
   test(
     'when legend is focused series hover can move the focus target',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
 
       await page.focusLegend();
@@ -96,7 +96,7 @@ describe('Legend', () => {
   );
   test(
     'highlighted legend elements should be not be highlighted when user hovers away',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       // Scroll down to get access to the legend.
       await page.windowScrollTo({ top: 200 });
 
@@ -111,7 +111,7 @@ describe('Legend', () => {
 describe('Popover', () => {
   test(
     'popover is shown when mouseover non-empty chart plot',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await expect(page.hasPopover()).resolves.toBe(false);
 
       await page.hoverElement(page.chart.toSelector());
@@ -122,7 +122,7 @@ describe('Popover', () => {
 
   test(
     'popover is shown when chart plot is focused',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await expect(page.hasPopover()).resolves.toBe(false);
 
       await page.focusPlot();
@@ -133,7 +133,7 @@ describe('Popover', () => {
 
   test(
     'popover is shown when mouse is over popover',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.setWindowSize({ width: 2000, height: 800 });
       await expect(page.hasPopover()).resolves.toBe(false);
 
@@ -147,7 +147,7 @@ describe('Popover', () => {
 
   test(
     'popover can be pinned/unpinned by clicking on the plot',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.focusPlot();
 
       await expect(page.hasPopover()).resolves.toBe(true);
@@ -169,7 +169,7 @@ describe('Popover', () => {
 
   test(
     'popover can be pinned by pressing Enter when plot point is focused',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.focusPlot();
       await page.keys(['Enter']);
 
@@ -180,7 +180,7 @@ describe('Popover', () => {
 
   test(
     'popover should have the same details order as declared series do',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.focusPlot();
       await page.keys(['ArrowRight']);
 
@@ -196,7 +196,7 @@ describe('Popover', () => {
 
   test(
     'popover stays in the same position after dismissed',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.focusPlot();
       await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight']);
       await page.keys(['Enter']);
@@ -213,7 +213,7 @@ describe('Popover', () => {
 
   test(
     'popover can be closed when Escape is pressed after hover',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await expect(page.hasPopover()).resolves.toBe(false);
       await page.hoverElement(page.chart.toSelector());
       await expect(page.hasPopover()).resolves.toBe(true);
@@ -224,7 +224,7 @@ describe('Popover', () => {
 
   test(
     'popover can be closed when Escape is pressed after chart plot is focused',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.focusPlot();
       await expect(page.hasPopover()).resolves.toBe(true);
       await page.keys(['Escape']);
@@ -234,7 +234,7 @@ describe('Popover', () => {
 
   test(
     'popover can be closed by moving focus away',
-    setupTest('#/light/area-chart/test', 'Controlled linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Controlled linear latency chart', async page => {
       await page.focusPlot();
       await expect(page.hasPopover()).resolves.toBe(true);
       const popover = page.getPopover();
@@ -250,7 +250,7 @@ describe('Popover', () => {
 
   test(
     'tabbing from the popover back to the chart keeps the highlights',
-    setupTest('#/light/area-chart/test', 'Controlled linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Controlled linear latency chart', async page => {
       await page.focusPlot();
       await expect(page.hasPopover()).resolves.toBe(true);
       const popover = page.getPopover();
@@ -277,7 +277,7 @@ describe('Popover', () => {
 describe('Keyboard navigation', () => {
   test(
     'can navigate between data points within series',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.setWindowSize({ width: 2000, height: 800 });
       await page.focusPlot();
 
@@ -295,7 +295,7 @@ describe('Keyboard navigation', () => {
 
   test(
     'can navigate between series',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.focusPlot();
 
       await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
@@ -320,7 +320,7 @@ describe('Keyboard navigation', () => {
 
   test(
     'maintains X coordinate after switching between focusing a single series and all series',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.focusPlot();
 
       await expect(page.getPopoverTitle()).resolves.toBe('1s');
@@ -352,7 +352,7 @@ describe('Keyboard navigation', () => {
 describe('Focus delegation', () => {
   test(
     'when unpinning the popover the previously highlighted data point is focused',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.focusPlot();
 
       await page.keys(['ArrowUp', 'ArrowRight', 'ArrowRight', 'Enter']);
@@ -371,7 +371,7 @@ describe('Focus delegation', () => {
 
   test(
     'when unpinning the popover the previously highlighted data point group is focused',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.focusPlot();
 
       await page.keys(['ArrowRight', 'ArrowRight', 'Enter']);
@@ -390,7 +390,7 @@ describe('Focus delegation', () => {
 
   test(
     'preserves series highlight when focused away from plot',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.setWindowSize({ width: 2000, height: 800 });
       await page.focusPlot();
 
@@ -408,7 +408,7 @@ describe('Focus delegation', () => {
 
   test(
     'clears series highlight when focused away from chart',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.focusPlot();
 
       await page.keys(['ArrowDown', 'ArrowRight']);
@@ -426,7 +426,7 @@ describe('Focus delegation', () => {
 
   test(
     'when focusing away from plot and popover is pinned the highlight stays',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Linear latency chart', async page => {
       await page.focusPlot();
 
       await page.keys(['ArrowDown', 'ArrowRight', 'Enter']);
@@ -445,7 +445,7 @@ describe('Focus delegation', () => {
 describe('Controlled', () => {
   test(
     'can use filter series same as in uncontrolled chart',
-    setupTest('#/light/area-chart/test', 'Controlled linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Controlled linear latency chart', async page => {
       await expect(page.getSeriesCount()).resolves.toBe(6);
 
       await page.toggleFilterOption(1);
@@ -461,7 +461,7 @@ describe('Controlled', () => {
 
   test(
     'can use highlight X same as in uncontrolled chart',
-    setupTest('#/light/area-chart/test', 'Controlled linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Controlled linear latency chart', async page => {
       await page.focusPlot();
 
       await expect(page.getPopoverTitle()).resolves.toBe('1s');
@@ -476,7 +476,7 @@ describe('Controlled', () => {
 
   test(
     'can use highlight series same as in uncontrolled chart',
-    setupTest('#/light/area-chart/test', 'Controlled linear latency chart', async page => {
+    setupTest('#/area-chart/test', 'Controlled linear latency chart', async page => {
       await page.focusPlot();
 
       await page.keys(['ArrowUp']);
@@ -494,7 +494,7 @@ describe('Controlled', () => {
 describe('Loading state', () => {
   test(
     'height of the chart is displayed correctly after changing loading state to finished',
-    setupTest('#/light/area-chart/loading', 'chart', async page => {
+    setupTest('#/area-chart/loading', 'chart', async page => {
       await page.setWindowSize({ width: 500, height: 800 });
       // the loading is about 1000ms in the loading page and then the
       // statusType becomes 'finished'. This just waits for it.
@@ -510,7 +510,7 @@ describe('Loading state', () => {
 describe('Labels', () => {
   test(
     'log labels have no intersections',
-    setupTest('#/light/area-chart/test', 'Log-x latency chart', async page => {
+    setupTest('#/area-chart/test', 'Log-x latency chart', async page => {
       await page.setWindowSize({ width: 500, height: 800 });
 
       let lastEdge = 0;

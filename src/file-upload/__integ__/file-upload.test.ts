@@ -20,7 +20,7 @@ class FileUploadPageObject extends BasePageObject {
 const setupTest = (testFn: (page: FileUploadPageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new FileUploadPageObject(browser);
-    await browser.url('/#/light/file-upload/test');
+    await browser.url('/#/file-upload/test');
     await testFn(page);
   });
 };

@@ -15,7 +15,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           const page = new BasePageObject(browser);
 
           await browser.url(
-            `#/light/app-layout/${pageName}?${new URLSearchParams({
+            `#/app-layout/${pageName}?${new URLSearchParams({
               hasDrawers: 'false',
               hasTools: 'true',
               visualRefresh: `${theme !== 'classic'}`,

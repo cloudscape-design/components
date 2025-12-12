@@ -47,7 +47,7 @@ type ThemeMethod = 'applyTheme' | 'generateThemeStylesheet';
 const setupTest = (testFn: (page: ColorTokensMosaikPage) => Promise<void>, vr: boolean, themeMethod: ThemeMethod) => {
   return useBrowser(async browser => {
     const page = new ColorTokensMosaikPage(browser);
-    await browser.url(`#/light/theming/tokens${!vr ? '?visualRefresh=false' : ''}`);
+    await browser.url(`#/theming/tokens${!vr ? '?visualRefresh=false' : ''}`);
     await page.switchTheme();
     if (themeMethod === 'generateThemeStylesheet') {
       await page.switchThemeMethod();

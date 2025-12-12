@@ -27,7 +27,7 @@ class PromptInputPage extends BasePageObject {
 const setupTest = (testFn: (page: PromptInputPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new PromptInputPage(browser);
-    await browser.url(`#/light/prompt-input/prompt-input-integ`);
+    await browser.url(`#/prompt-input/prompt-input-integ`);
     await page.waitForVisible(promptInputWrapper.toSelector());
     await testFn(page);
   });

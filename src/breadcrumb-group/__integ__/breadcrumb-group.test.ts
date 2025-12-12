@@ -67,7 +67,7 @@ const setupTest = (
     if (sizes) {
       page.setWindowSize(sizes);
     }
-    await browser.url(`#/light/breadcrumb-group/events`);
+    await browser.url(`#/breadcrumb-group/events`);
     await page.waitForVisible(breadcrumbGroupWrapper.toSelector());
     await testFn(page, browser);
   });

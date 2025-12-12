@@ -148,7 +148,7 @@ describe('Flashbar Style API', () => {
   test(
     'active, hover and focus states',
     useBrowser(async browser => {
-      await browser.url('#/light/flashbar/style-custom');
+      await browser.url('#/flashbar/style-custom');
 
       const page = new FlashbarBasePage(browser);
       const dismissButton = page.getDismissButton();

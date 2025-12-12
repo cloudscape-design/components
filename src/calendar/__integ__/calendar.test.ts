@@ -12,7 +12,7 @@ describe('Date picker calendar interactions', () => {
     return useBrowser(async browser => {
       const page = new BasePageObject(browser);
 
-      await browser.url('#/light/calendar/integ');
+      await browser.url('#/calendar/integ');
       await testFn(page);
     });
   };

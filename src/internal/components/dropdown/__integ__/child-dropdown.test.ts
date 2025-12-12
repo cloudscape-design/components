@@ -27,7 +27,7 @@ describe('Child dropdown', () => {
   test(
     'opens to the bottom right',
     setupChildTest(
-      '#/light/dropdown/interior-fitting',
+      '#/dropdown/interior-fitting',
       'parentDropdown1',
       'childDropdown1',
       async (parentDropdown, childDropdown) => {
@@ -42,7 +42,7 @@ describe('Child dropdown', () => {
   test(
     'opens to the bottom left',
     setupChildTest(
-      '#/light/dropdown/interior-fitting',
+      '#/dropdown/interior-fitting',
       'parentDropdown2',
       'childDropdown2',
       async (parentDropdown, childDropdown) => {
@@ -57,7 +57,7 @@ describe('Child dropdown', () => {
   test(
     'opens to the top right',
     setupChildTest(
-      '#/light/dropdown/interior-fitting',
+      '#/dropdown/interior-fitting',
       'parentDropdown3',
       'childDropdown3',
       async (parentDropdown, childDropdown) => {
@@ -72,7 +72,7 @@ describe('Child dropdown', () => {
   test(
     'opens to the top left',
     setupChildTest(
-      '#/light/dropdown/interior-fitting',
+      '#/dropdown/interior-fitting',
       'parentDropdown4',
       'childDropdown4',
       async (parentDropdown, childDropdown) => {
@@ -87,7 +87,7 @@ describe('Child dropdown', () => {
   test(
     'opens to the bottom right and wraps text',
     setupChildTest(
-      '#/light/dropdown/interior-with-wrapping',
+      '#/dropdown/interior-with-wrapping',
       'parentDropdown5',
       'childDropdown5',
       async (parentDropdown, childDropdown) => {
@@ -103,7 +103,7 @@ describe('Child dropdown', () => {
   test(
     'opens to the top left and wraps text',
     setupChildTest(
-      '#/light/dropdown/interior-with-wrapping',
+      '#/dropdown/interior-with-wrapping',
       'parentDropdown6',
       'childDropdown6',
       async (parentDropdown, childDropdown) => {

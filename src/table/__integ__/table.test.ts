@@ -13,7 +13,7 @@ test(
   useBrowser(async browser => {
     const wrapper = createWrapper().findTable();
     const inputSelector = wrapper.findTextFilter().findInput().toSelector();
-    await browser.url('#/light/table/hooks');
+    await browser.url('#/table/hooks');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.findRows().toSelector());
     await expect(page.getElementsCount(wrapper.findRows().toSelector())).resolves.toEqual(20);
@@ -39,7 +39,7 @@ test(
       return parseInt(height) + parseInt(marginBottom);
     };
     const header = createWrapper().findContainer().findHeader().toSelector();
-    await browser.url('#/light/table/full-page-variant?visualRefresh=true');
+    await browser.url('#/table/full-page-variant?visualRefresh=true');
     const page = new BasePageObject(browser);
     const heightBefore = await browser.execute(extractHeight, header);
     await page.windowScrollTo({ top: 100 });
@@ -52,7 +52,7 @@ test(
   'body scrolls synchronously with header in visual refresh',
   useBrowser({ width: 400, height: 800 }, async browser => {
     const tableWrapper = createWrapper().findTable();
-    await browser.url('#/light/table/full-page-variant?visualRefresh=true');
+    await browser.url('#/table/full-page-variant?visualRefresh=true');
     const page = new BasePageObject(browser);
     await page.elementScrollTo(tableWrapper.findByClassName(styles['header-secondary']).toSelector(), { left: 50 });
     await page.waitForJsTimers();
@@ -66,7 +66,7 @@ test(
   useBrowser(async browser => {
     const tableWrapper = createWrapper().findTable();
     const tableHeading = 'Full-page table';
-    await browser.url('#/light/table/full-page-variant?visualRefresh=true');
+    await browser.url('#/table/full-page-variant?visualRefresh=true');
     const page = new BasePageObject(browser);
 
     // Find the scrollable wrapper element

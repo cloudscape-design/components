@@ -36,7 +36,7 @@ class CardsPage extends BasePageObject {
 function setupTest(testFn: (page: CardsPage) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new CardsPage(browser);
-    await browser.url('/#/light/cards/basic');
+    await browser.url('/#/cards/basic');
     await testFn(page);
   });
 }

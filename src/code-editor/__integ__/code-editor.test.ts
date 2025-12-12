@@ -79,9 +79,9 @@ class CodeEditorPageObject extends BasePageObject {
   }
 }
 
-const simplePage = '#/light/code-editor/simple';
-const verticalScrollPage = '#/light/code-editor/vertical-scroll';
-const controllableHeightPage = '#/light/code-editor/controllable-height';
+const simplePage = '#/code-editor/simple';
+const verticalScrollPage = '#/code-editor/vertical-scroll';
+const controllableHeightPage = '#/code-editor/controllable-height';
 
 const setupTest = (pageUrl: string, testFn: (page: CodeEditorPageObject) => Promise<void>) => {
   return useBrowser(async browser => {

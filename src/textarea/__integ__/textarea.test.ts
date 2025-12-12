@@ -8,7 +8,7 @@ describe('Textarea', () => {
   const setupTest = (testFn: (page: TextareaPage) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new TextareaPage(browser);
-      page.visit('#/light/textarea/integration');
+      page.visit('#/textarea/integration');
       await testFn(page);
     });
   };

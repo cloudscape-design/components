@@ -14,7 +14,7 @@ const windowDimensions = {
 const setupTest = (testFn: (page: ContentDisplayPageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new ContentDisplayPageObject(browser);
-    await browser.url('#/light/collection-preferences/reorder-content');
+    await browser.url('#/collection-preferences/reorder-content');
     await page.setWindowSize(windowDimensions);
     await testFn(page);
   });

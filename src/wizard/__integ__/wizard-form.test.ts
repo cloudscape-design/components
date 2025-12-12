@@ -5,7 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
   return useBrowser(async browser => {
-    await browser.url('/#/light/wizard/wizard-form/');
+    await browser.url('/#/wizard/wizard-form/');
     const page = new BasePageObject(browser);
     await page.waitForVisible('#increase-counter');
     await testFn(page);

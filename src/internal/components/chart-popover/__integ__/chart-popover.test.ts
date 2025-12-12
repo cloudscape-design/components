@@ -11,7 +11,7 @@ describe.each([false, true])('iframe=%s', iframe => {
     'can be unpinned by clicking outside',
     useBrowser(async browser => {
       const page = new BasePageObject(browser);
-      await browser.url(`#/light/charts.test?iframe=${iframe}`);
+      await browser.url(`#/charts.test?iframe=${iframe}`);
       await page.runInsideIframe('#content-iframe', iframe, async () => {
         const chart = createWrapper().findLineChart();
         const popover = chart.findDetailPopover();

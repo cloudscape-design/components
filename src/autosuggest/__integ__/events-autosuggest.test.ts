@@ -8,7 +8,7 @@ describe.each<boolean>([false, true])('Autosuggest events (expandToViewport=%s)'
   function setupTest(testFn: (page: EventsAutosuggestPage) => Promise<void>) {
     return useBrowser(async browser => {
       const page = new EventsAutosuggestPage(browser, expandToViewport);
-      await browser.url(`/#/light/autosuggest/events?expandToViewport=${expandToViewport}`);
+      await browser.url(`/#/autosuggest/events?expandToViewport=${expandToViewport}`);
       await testFn(page);
     });
   }

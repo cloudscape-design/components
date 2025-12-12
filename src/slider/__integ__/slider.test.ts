@@ -17,7 +17,7 @@ class SliderPage extends BasePageObject {
 const setupTest = (testFn: (page: SliderPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new SliderPage(browser);
-    await browser.url(`#/light/slider/basic`);
+    await browser.url(`#/slider/basic`);
     await page.waitForVisible(sliderWrapper.toSelector());
     await testFn(page);
   });

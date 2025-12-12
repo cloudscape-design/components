@@ -7,7 +7,7 @@ import SelectPageObject from './page-objects/select-page';
 
 function setupTest(testFn: (page: SelectPageObject) => Promise<void>) {
   return useBrowser(async browser => {
-    await browser.url('/#/light/select/disabled-reason');
+    await browser.url('/#/select/disabled-reason');
     const select = createWrapper().findSelect();
     const page = new SelectPageObject(browser, select);
     await testFn(page);

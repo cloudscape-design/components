@@ -23,7 +23,7 @@ function setup(
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 950, height: 300 });
     const params = new URLSearchParams({ visualRefresh: String(visualRefresh) }).toString();
-    await browser.url(`/#/light/multiselect/select-all?${params}`);
+    await browser.url(`/#/multiselect/select-all?${params}`);
     await page.click(multiselect.findTrigger().toSelector());
     await testFn(page);
   });

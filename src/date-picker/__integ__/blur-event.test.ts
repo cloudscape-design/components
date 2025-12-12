@@ -28,7 +28,7 @@ describe.each<boolean>([false, true])('DatePicker blur events (expandToViewport=
   const setupTest = (testFn: (page: DatePickerBlurPage) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new DatePickerBlurPage(createWrapper().findDatePicker().getElement(), browser, expandToViewport);
-      await browser.url(`#/light/date-picker/with-event-handlers?expandToViewport=${expandToViewport}`);
+      await browser.url(`#/date-picker/with-event-handlers?expandToViewport=${expandToViewport}`);
       await page.waitForLoad();
       await testFn(page);
     });

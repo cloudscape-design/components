@@ -31,7 +31,7 @@ describe('Selection has no effect on table height', () => {
   const setupTest = (testFn: (page: TablePage) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new TablePage(browser);
-      await browser.url('#/light/table/shift-selection');
+      await browser.url('#/table/shift-selection');
       await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
       await testFn(page);
     });

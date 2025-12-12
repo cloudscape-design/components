@@ -27,7 +27,7 @@ const setupTest = (
     const page = new AppLayoutSplitViewPage(browser);
     await page.setWindowSize({ ...viewports.desktop, width: initialViewportWidth });
 
-    const url = `#/light/app-layout/with-split-panel-and-body-scroll?${params.toString()}`;
+    const url = `#/app-layout/with-split-panel-and-body-scroll?${params.toString()}`;
 
     await browser.url(url);
     const content = createWrapper().findAppLayout().findContentRegion();

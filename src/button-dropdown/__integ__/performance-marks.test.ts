@@ -13,7 +13,7 @@ function setupTest(
 ) {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url(`#/light/button-dropdown/${pageName}`);
+    await browser.url(`#/button-dropdown/${pageName}`);
     const getMarks = async () => {
       await new Promise(r => setTimeout(r, 200));
       const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);

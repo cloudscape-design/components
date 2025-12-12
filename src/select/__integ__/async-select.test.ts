@@ -24,7 +24,7 @@ function setup(
     const page = new AsyncDropdownComponentPage(browser, select);
     await page.setWindowSize({ width: 950, height: 300 });
     const params = new URLSearchParams({ visualRefresh: String(visualRefresh) }).toString();
-    await browser.url(`/#/light/select/select.test.async?${params}`);
+    await browser.url(`/#/select/select.test.async?${params}`);
     await page.waitForVisible(select.findTrigger().toSelector());
     if (virtualScrolling) {
       await page.enableVirtualScrolling();

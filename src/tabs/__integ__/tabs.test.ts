@@ -77,7 +77,7 @@ const setupTest = (
   return useBrowser(async browser => {
     const page = new TabsPage(browser);
     await browser.url(
-      `#/light/tabs/${pagePath}${keyboardActivationMode ? `?keyboardActivationMode=${keyboardActivationMode}` : ''}`
+      `#/tabs/${pagePath}${keyboardActivationMode ? `?keyboardActivationMode=${keyboardActivationMode}` : ''}`
     );
     await page.waitForVisible(wrapper.findTabContent().toSelector());
     if (smallViewport) {

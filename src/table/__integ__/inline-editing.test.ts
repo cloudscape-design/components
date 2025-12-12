@@ -59,7 +59,7 @@ const setupTest = (
       expandableRows: String(expandableRows),
       renderInModal: String(renderInModal),
     });
-    await browser.url(`#/light/table/editable?${query.toString()}`);
+    await browser.url(`#/table/editable?${query.toString()}`);
     await testFn(page);
   });
 };

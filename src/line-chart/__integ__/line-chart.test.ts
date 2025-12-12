@@ -30,7 +30,7 @@ function setupTest(url: string, testFn: (page: LineChartPageObject) => Promise<v
 
 describe('Keyboard navigation', () => {
   describe('with one single series', () => {
-    const testPath = '#/light/line-chart/single-series';
+    const testPath = '#/line-chart/single-series';
 
     test(
       'line series is navigable with keyboard',
@@ -55,7 +55,7 @@ describe('Keyboard navigation', () => {
 
     test(
       'retains focus after dismissing popover',
-      setupTest('#/light/line-chart/single-series', async page => {
+      setupTest('#/line-chart/single-series', async page => {
         await focusChart(page);
 
         // First series is highlighted
@@ -78,7 +78,7 @@ describe('Keyboard navigation', () => {
   });
 
   describe('with multiple series', () => {
-    const testPath = '#/light/line-chart/test';
+    const testPath = '#/line-chart/test';
 
     test(
       'line series are navigable with keyboard',

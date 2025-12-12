@@ -19,7 +19,7 @@ describe('AnchorNavigation', () => {
   function setupTest(testFn: (page: AnchorNavigationPage) => Promise<void>) {
     return useBrowser(async browser => {
       const page = new AnchorNavigationPage(browser);
-      await browser.url('#/light/anchor-navigation/basic');
+      await browser.url('#/anchor-navigation/basic');
       await page.waitForVisible(wrapper.toSelector());
       await testFn(page);
     });

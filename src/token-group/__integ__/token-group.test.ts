@@ -30,7 +30,7 @@ class TokenGroupPage extends BasePageObject {
 const setupTest = (testFn: (page: TokenGroupPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new TokenGroupPage(browser);
-    await browser.url('#/light/token-group/index');
+    await browser.url('#/token-group/index');
     await page.waitForVisible(tokenGroupWrapper.findToken(1).toSelector());
     await testFn(page);
   });

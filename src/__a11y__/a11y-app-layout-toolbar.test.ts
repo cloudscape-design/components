@@ -16,7 +16,7 @@ describe('A11y checks for app layout toolbar', () => {
   findAllPages()
     .filter(page => page.startsWith('app-layout') && !EXCLUDED_PAGES.includes(page))
     .forEach(inputUrl => {
-      const url = `#/light/${inputUrl}?${getUrlParams('refresh-toolbar')}`;
+      const url = `#/${inputUrl}?${getUrlParams('refresh-toolbar')}`;
       test(
         `${url}`,
         useBrowser(async browser => {

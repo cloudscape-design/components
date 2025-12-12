@@ -8,7 +8,7 @@ import MultiselectPageObject from './page-objects/multiselect-page';
 const createSetupTest = (wrapper: MultiselectWrapper) => (testFn: (page: MultiselectPageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new MultiselectPageObject(browser, wrapper);
-    await browser.url('/#/light/multiselect/multiselect.test');
+    await browser.url('/#/multiselect/multiselect.test');
     await page.setWindowSize({ width: 400, height: 1200 });
     await page.waitForVisible(wrapper.findTrigger().toSelector());
     await testFn(page);

@@ -26,7 +26,7 @@ describe('Multi app layout navigation', () => {
       useBrowser(async browser => {
         const page = new PageObject(browser);
         await browser.url(
-          `#/light/app-layout/multi-layout-with-hidden-instances${iframe ? '-iframe' : ''}?${getUrlParams(theme)}`
+          `#/app-layout/multi-layout-with-hidden-instances${iframe ? '-iframe' : ''}?${getUrlParams(theme)}`
         );
         await testFn(page);
       });

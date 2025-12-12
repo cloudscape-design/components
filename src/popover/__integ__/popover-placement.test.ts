@@ -107,7 +107,7 @@ const setupTest = (
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width, height });
-    await browser.url(`#/light/popover/placement-test?position=${position}&placement=${placement}`);
+    await browser.url(`#/popover/placement-test?position=${position}&placement=${placement}`);
     await page.windowScrollTo({ left: scrollLeft, top: scrollTop });
     await testFn(page);
   });
@@ -163,7 +163,7 @@ test(
   `Large size popover should fallback to medium size in mobile`,
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/popover/scenarios');
+    await browser.url('#/popover/scenarios');
 
     const wrapper = createWrapper();
     const largePopover = wrapper.findPopover('#large-popover');
