@@ -133,6 +133,13 @@ $padding-block-inner-filtering-token: 0px;
     }
   }
 
+  &.custom-option {
+    // Remove default paddings for custom options
+    padding-block: 0;
+    padding-inline-start: 0;
+    overflow: clip;
+  }
+
   &.inline-tokens {
     // Remove default paddings and just rely on center alignment of the content
     padding-block: 0;
