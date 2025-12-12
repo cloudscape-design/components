@@ -22,6 +22,7 @@ const localizedErrors = {
 
 export default function DatePickerScenario() {
   const { props, settings, setSettings } = useDateRangePickerSettings({ hasValue: false });
+
   return (
     <SimplePage
       title="Date range picker: localized"
@@ -31,8 +32,7 @@ export default function DatePickerScenario() {
       <FormField label="Date Range Picker field">
         <DateRangePicker
           {...props}
-          locale={undefined}
-          i18nStrings={undefined}
+          locale="de"
           placeholder="Nach einem Zeitraum filtern"
           isValidRange={value =>
             props.granularity === 'month'
