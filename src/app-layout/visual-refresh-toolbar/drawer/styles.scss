@@ -156,6 +156,7 @@ $ai-drawer-heider-height: 41px;
   }
 
   > .drawer-slider {
+    z-index: 850;
     grid-column: 1;
     grid-row: 1;
     block-size: 100%;
@@ -184,6 +185,7 @@ $ai-drawer-heider-height: 41px;
     }
 
     > .drawer-slider {
+      z-index: 850;
       grid-column: 2;
       grid-row: 1;
       display: flex;
@@ -259,6 +261,7 @@ $ai-drawer-heider-height: 41px;
     }
 
     > .drawer-slider {
+      z-index: 850;
       display: flex;
       justify-content: center;
       inline-size: awsui.$space-xs;
