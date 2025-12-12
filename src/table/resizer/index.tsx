@@ -312,7 +312,9 @@ export function Resizer({
   ]);
 
   useEffect(() => {
-    return () => clearTimeout(autoGrowTimeout.current);
+    if (isDragging) {
+      return () => clearTimeout(autoGrowTimeout.current);
+    }
   }, [isDragging]);
 
   const { tabIndex: resizerTabIndex } = useSingleTabStopNavigation(resizerToggleRef, { tabIndex });
