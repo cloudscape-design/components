@@ -191,7 +191,7 @@ export interface SelectProps extends BaseSelectProps {
    */
   autoFocus?: boolean;
   /**
-   * Specifies a render function to render custom options in the dropdown menu.
+   * Specifies a render function to render custom options in the dropdown menu or trigger.
    *
    * @awsuiSystem core
    */

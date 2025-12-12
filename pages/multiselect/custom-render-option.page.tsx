@@ -3,10 +3,9 @@
 import * as React from 'react';
 
 import { Multiselect, MultiselectProps } from '~components';
-import Box from '~components/box';
 import { SelectProps } from '~components/select';
 
-import ScreenshotArea from '../utils/screenshot-area';
+import { SimplePage } from '../app/templates';
 import { i18nStrings } from './constants';
 const lotsOfOptions: SelectProps.Options = [...Array(50)].map((_, index) => ({
   value: `Option ${index}`,
@@ -48,24 +47,21 @@ export default function SelectPage() {
   };
 
   return (
-    <ScreenshotArea>
-      <Box variant="h1">Multiselect with custom item renderer</Box>
-      <Box padding="l">
-        <div style={{ width: '400px' }}>
-          <Multiselect
-            enableSelectAll={true}
-            i18nStrings={{ ...i18nStrings, selectAllText: 'Select all' }}
-            filteringType={'auto'}
-            renderOption={renderOptionItem}
-            placeholder="Choose option"
-            selectedOptions={selectedOptions}
-            onChange={event => {
-              setSelectedOptions(event.detail.selectedOptions);
-            }}
-            options={options}
-          />
-        </div>
-      </Box>
-    </ScreenshotArea>
+    <SimplePage title="Multiselect with custom item renderer" screenshotArea={{}}>
+      <div style={{ width: '400px' }}>
+        <Multiselect
+          enableSelectAll={true}
+          i18nStrings={{ ...i18nStrings, selectAllText: 'Select all' }}
+          filteringType={'auto'}
+          renderOption={renderOptionItem}
+          placeholder="Choose option"
+          selectedOptions={selectedOptions}
+          onChange={event => {
+            setSelectedOptions(event.detail.selectedOptions);
+          }}
+          options={options}
+        />
+      </div>
+    </SimplePage>
   );
 }
