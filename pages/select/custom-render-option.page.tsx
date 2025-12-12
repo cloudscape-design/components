@@ -3,10 +3,9 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import Box from '~components/box';
 import Select, { SelectProps } from '~components/select';
 
-import ScreenshotArea from '../utils/screenshot-area';
+import { SimplePage } from '../app/templates';
 
 const lotsOfOptions = [...Array(50).keys()].map(n => {
   const numberToDisplay = (n + 5).toString();
@@ -51,21 +50,18 @@ export default function SelectPage() {
   };
 
   return (
-    <ScreenshotArea>
-      <Box variant="h1">Select with custom item renderer</Box>
-      <Box padding="l">
-        <div style={{ width: '400px' }}>
-          <Select
-            filteringType="auto"
-            renderOption={renderOption}
-            placeholder="Choose option"
-            selectedOption={selectedOption}
-            onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
-            options={options}
-            triggerVariant="option"
-          />
-        </div>
-      </Box>
-    </ScreenshotArea>
+    <SimplePage title="Select with custom item renderer" screenshotArea={{}}>
+      <div style={{ width: '400px' }}>
+        <Select
+          filteringType="auto"
+          renderOption={renderOption}
+          placeholder="Choose option"
+          selectedOption={selectedOption}
+          onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
+          options={options}
+          triggerVariant="option"
+        />
+      </div>
+    </SimplePage>
   );
 }
