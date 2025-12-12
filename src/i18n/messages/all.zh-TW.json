@@ -134,6 +134,10 @@
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {選擇日期} other {選擇日期，所選日期為 {selectedDate}}}"
   },
   "date-range-picker": {
+    "i18nStrings.startDatePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.endDatePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.startTimePlaceholder": "hh:mm:ss",
+    "i18nStrings.endTimePlaceholder": "hh:mm:ss",
     "i18nStrings.relativeModeTitle": "相對模式",
     "i18nStrings.absoluteModeTitle": "絕對模式",
     "i18nStrings.relativeRangeSelectionHeading": "選擇範圍",

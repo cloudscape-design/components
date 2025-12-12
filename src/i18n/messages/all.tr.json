@@ -134,6 +134,10 @@
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Tarih seç} other {Tarih seç, seçilen tarih {selectedDate}}}"
   },
   "date-range-picker": {
+    "i18nStrings.startDatePlaceholder": "YYYY-AA-GG",
+    "i18nStrings.endDatePlaceholder": "YYYY-AA-GG",
+    "i18nStrings.startTimePlaceholder": "ss:dd:ss",
+    "i18nStrings.endTimePlaceholder": "ss:dd:ss",
     "i18nStrings.relativeModeTitle": "Göreceli mod",
     "i18nStrings.absoluteModeTitle": "Mutlak mod",
     "i18nStrings.relativeRangeSelectionHeading": "Bir aralık seçin",

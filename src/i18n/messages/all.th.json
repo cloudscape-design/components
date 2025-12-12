@@ -97,6 +97,10 @@
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {รายการย้ายกลับไปยังตำแหน่งเดิม {initialPosition} จาก {total}} false {รายการย้ายจากตำแหน่ง {initialPosition} ไปยังตำแหน่ง {finalPosition} จาก {total}} other {}}"
   },
   "date-range-picker": {
+    "i18nStrings.startDatePlaceholder": "PPPP-DD-WW",
+    "i18nStrings.endDatePlaceholder": "PPPP-DD-WW",
+    "i18nStrings.startTimePlaceholder": "ชช:นน:วว",
+    "i18nStrings.endTimePlaceholder": "ชช:นน:วว",
     "i18nStrings.relativeModeTitle": "โหมดสัมพัทธ์",
     "i18nStrings.absoluteModeTitle": "โหมดสัมบูรณ์",
     "i18nStrings.relativeRangeSelectionHeading": "เลือกช่วง",

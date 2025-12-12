@@ -134,6 +134,10 @@
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Escolher data} other {Escolher data. A data selecionada é {selectedDate}}}"
   },
   "date-range-picker": {
+    "i18nStrings.startDatePlaceholder": "AAAA-MM-DD",
+    "i18nStrings.endDatePlaceholder": "AAAA-MM-DD",
+    "i18nStrings.startTimePlaceholder": "hh:mm:ss",
+    "i18nStrings.endTimePlaceholder": "hh:mm:ss",
     "i18nStrings.relativeModeTitle": "Modo relativo",
     "i18nStrings.absoluteModeTitle": "Modo absoluto",
     "i18nStrings.relativeRangeSelectionHeading": "Escolher um intervalo",
