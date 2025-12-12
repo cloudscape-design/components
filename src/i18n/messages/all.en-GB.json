@@ -135,9 +135,7 @@
   },
   "date-range-picker": {
     "i18nStrings.datePlaceholder": "DD-MM-YYYY",
-    
     "i18nStrings.timePlaceholder": "hh:mm:ss",
-    
     "i18nStrings.relativeModeTitle": "Relative mode",
     "i18nStrings.absoluteModeTitle": "Absolute mode",
     "i18nStrings.relativeRangeSelectionHeading": "Choose a range",

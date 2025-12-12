@@ -135,9 +135,7 @@
   },
   "date-range-picker": {
     "i18nStrings.datePlaceholder": "TTTT-BB-HH",
-    
     "i18nStrings.timePlaceholder": "jj:mm:dd",
-    
     "i18nStrings.relativeModeTitle": "Mode relatif",
     "i18nStrings.absoluteModeTitle": "Mode absolut",
     "i18nStrings.relativeRangeSelectionHeading": "Pilih rentang",

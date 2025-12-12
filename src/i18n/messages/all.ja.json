@@ -135,9 +135,7 @@
   },
   "date-range-picker": {
     "i18nStrings.datePlaceholder": "YYYY-MM-DD",
-    
     "i18nStrings.timePlaceholder": "hh:mm:ss",
-    
     "i18nStrings.relativeModeTitle": "相対モード",
     "i18nStrings.absoluteModeTitle": "絶対モード",
     "i18nStrings.relativeRangeSelectionHeading": "範囲を選択",

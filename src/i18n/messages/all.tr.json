@@ -135,9 +135,7 @@
   },
   "date-range-picker": {
     "i18nStrings.datePlaceholder": "YYYY-AA-GG",
-    
     "i18nStrings.timePlaceholder": "ss:dd:ss",
-    
     "i18nStrings.relativeModeTitle": "Göreceli mod",
     "i18nStrings.absoluteModeTitle": "Mutlak mod",
     "i18nStrings.relativeRangeSelectionHeading": "Bir aralık seçin",
