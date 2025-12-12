@@ -8192,15 +8192,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-button-normal-active": {
           "$description": "The background color of normal buttons in active state.",
           "$value": {
-            "dark": "#16191f",
-            "light": "#eaeded",
+            "dark": "rgba(0, 7, 22, 0.2)",
+            "light": "rgba(0, 7, 22, 0.2)",
           },
         },
         "color-background-button-normal-default": {
           "$description": "The default background color of normal buttons.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-normal-disabled": {
@@ -8213,8 +8213,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-button-normal-hover": {
           "$description": "The background color of normal buttons in hover state.",
           "$value": {
-            "dark": "#21252c",
-            "light": "#fafafa",
+            "dark": "rgba(0, 7, 22, 0.15)",
+            "light": "rgba(0, 7, 22, 0.15)",
           },
         },
         "color-background-button-primary-active": {
@@ -8500,8 +8500,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-default": {
           "$description": "The background color of inactive segments in a segmented control.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-segment-disabled": {
@@ -8514,8 +8514,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#21252c",
-            "light": "#fafafa",
+            "dark": "rgba(0, 7, 22, 0.15)",
+            "light": "rgba(0, 7, 22, 0.15)",
           },
         },
         "color-background-status-error": {
@@ -8577,15 +8577,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
-            "dark": "#879596",
-            "light": "#545b64",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-border-button-normal-default": {
           "$description": "The border color of normal buttons.",
           "$value": {
-            "dark": "#879596",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-button-normal-disabled": {
@@ -8598,8 +8598,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-button-normal-hover": {
           "$description": "The border color of normal buttons in hover state.",
           "$value": {
-            "dark": "#aab7b8",
-            "light": "#16191f",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-border-button-primary-disabled": {
@@ -9956,8 +9956,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-body-secondary": {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-breadcrumb-current": {
@@ -9984,15 +9984,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
-            "dark": "#fafafa",
-            "light": "#16191f",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-button-normal-default": {
           "$description": "The default text color of normal buttons.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-button-normal-disabled": {
@@ -10005,8 +10005,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-button-normal-hover": {
           "$description": "The hover text color of normal buttons.",
           "$value": {
-            "dark": "#fafafa",
-            "light": "#16191f",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-button-primary-active": {
@@ -10110,8 +10110,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-group-label": {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": {
-            "dark": "#95a5a6",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-heading-default": {
@@ -10201,8 +10201,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-label": {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": {
-            "dark": "#95a5a6",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-label-gen-ai": {
@@ -10243,15 +10243,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#44b9d6",
-            "light": "#0073bb",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-link-hover": {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#99cbe4",
-            "light": "#0a4a74",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-notification-default": {
@@ -10306,15 +10306,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-segment-default": {
           "$description": "The text color of inactive segments in a segmented control.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#fafafa",
-            "light": "#16191f",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-status-error": {
@@ -10872,15 +10872,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-button-normal-active": {
           "$description": "The background color of normal buttons in active state.",
           "$value": {
-            "dark": "#16191f",
-            "light": "#eaeded",
+            "dark": "rgba(0, 7, 22, 0.1)",
+            "light": "rgba(0, 7, 22, 0.1)",
           },
         },
         "color-background-button-normal-default": {
           "$description": "The default background color of normal buttons.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-normal-disabled": {
@@ -10893,8 +10893,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-button-normal-hover": {
           "$description": "The background color of normal buttons in hover state.",
           "$value": {
-            "dark": "#21252c",
-            "light": "#fafafa",
+            "dark": "rgba(0, 7, 22, 0.05)",
+            "light": "rgba(0, 7, 22, 0.05)",
           },
         },
         "color-background-button-primary-active": {
@@ -11180,8 +11180,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-default": {
           "$description": "The background color of inactive segments in a segmented control.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-segment-disabled": {
@@ -11194,8 +11194,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#21252c",
-            "light": "#fafafa",
+            "dark": "rgba(0, 7, 22, 0.05)",
+            "light": "rgba(0, 7, 22, 0.05)",
           },
         },
         "color-background-status-error": {
@@ -11257,14 +11257,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
-            "dark": "#879596",
-            "light": "#545b64",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-border-button-normal-default": {
           "$description": "The border color of normal buttons.",
           "$value": {
-            "dark": "#879596",
+            "dark": "#545b64",
             "light": "#545b64",
           },
         },
@@ -11278,7 +11278,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-button-normal-hover": {
           "$description": "The border color of normal buttons in hover state.",
           "$value": {
-            "dark": "#aab7b8",
+            "dark": "#16191f",
             "light": "#16191f",
           },
         },
@@ -12636,8 +12636,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-body-secondary": {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-breadcrumb-current": {
@@ -12664,14 +12664,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
-            "dark": "#fafafa",
+            "dark": "#16191f",
             "light": "#16191f",
           },
         },
         "color-text-button-normal-default": {
           "$description": "The default text color of normal buttons.",
           "$value": {
-            "dark": "#d5dbdb",
+            "dark": "#545b64",
             "light": "#545b64",
           },
         },
@@ -12685,7 +12685,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-button-normal-hover": {
           "$description": "The hover text color of normal buttons.",
           "$value": {
-            "dark": "#fafafa",
+            "dark": "#16191f",
             "light": "#16191f",
           },
         },
@@ -12790,8 +12790,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-group-label": {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": {
-            "dark": "#95a5a6",
-            "light": "#545b64",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-heading-default": {
@@ -12881,8 +12881,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-label": {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": {
-            "dark": "#95a5a6",
-            "light": "#545b64",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-label-gen-ai": {
@@ -12923,15 +12923,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#44b9d6",
-            "light": "#0073bb",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-link-hover": {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#99cbe4",
-            "light": "#0a4a74",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-notification-default": {
@@ -12986,14 +12986,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-segment-default": {
           "$description": "The text color of inactive segments in a segmented control.",
           "$value": {
-            "dark": "#d5dbdb",
+            "dark": "#545b64",
             "light": "#545b64",
           },
         },
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#fafafa",
+            "dark": "#16191f",
             "light": "#16191f",
           },
         },
@@ -31401,8 +31401,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-body-secondary": {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": {
-            "dark": "#c6c6cd",
-            "light": "#424650",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-breadcrumb-current": {
@@ -31646,8 +31646,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-label": {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": {
-            "dark": "#dedee3",
-            "light": "#0f141a",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-label-gen-ai": {
@@ -31688,15 +31688,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-link-hover": {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#75cfff",
-            "light": "#002b66",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-notification-default": {
@@ -34081,8 +34081,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-body-secondary": {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": {
-            "dark": "#c6c6cd",
-            "light": "#424650",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-breadcrumb-current": {
@@ -34326,7 +34326,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-label": {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": {
-            "dark": "#dedee3",
+            "dark": "#0f141a",
             "light": "#0f141a",
           },
         },
@@ -34368,15 +34368,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-link-hover": {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#75cfff",
-            "light": "#002b66",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-notification-default": {
