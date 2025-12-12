@@ -18840,10 +18840,17 @@ exports[`Components definition for prompt-input matches the snapshot: prompt-inp
     {
       "cancelable": false,
       "description": "Called whenever a user clicks the action button or presses the "Enter" key.
-The event \`detail\` contains the current value of the field.",
+The event \`detail\` contains the current value as a string and an array of tokens.
+
+When \`menus\` is defined, the \`value\` is derived from \`tokensToText(tokens)\` if provided, otherwise from the default token-to-text conversion.",
       "detailInlineType": {
-        "name": "BaseChangeDetail",
+        "name": "PromptInputProps.ActionDetail",
         "properties": [
+          {
+            "name": "tokens",
+            "optional": false,
+            "type": "Array<PromptInputProps.InputToken>",
+          },
           {
             "name": "value",
             "optional": false,
@@ -18852,7 +18859,7 @@ The event \`detail\` contains the current value of the field.",
         ],
         "type": "object",
       },
-      "detailType": "BaseChangeDetail",
+      "detailType": "PromptInputProps.ActionDetail",
       "name": "onAction",
     },
     {
@@ -18863,10 +18870,17 @@ The event \`detail\` contains the current value of the field.",
     {
       "cancelable": false,
       "description": "Called whenever a user changes the input value (by typing or pasting).
-The event \`detail\` contains the current value of the field.",
+The event \`detail\` contains the current value as a string and an array of tokens.
+
+When \`menus\` is defined, the \`value\` is derived from \`tokensToText(tokens)\` if provided, otherwise from the default token-to-text conversion.",
       "detailInlineType": {
-        "name": "BaseChangeDetail",
+        "name": "PromptInputProps.ChangeDetail",
         "properties": [
+          {
+            "name": "tokens",
+            "optional": false,
+            "type": "Array<PromptInputProps.InputToken>",
+          },
           {
             "name": "value",
             "optional": false,
@@ -18875,7 +18889,7 @@ The event \`detail\` contains the current value of the field.",
         ],
         "type": "object",
       },
-      "detailType": "BaseChangeDetail",
+      "detailType": "PromptInputProps.ChangeDetail",
       "name": "onChange",
     },
     {
@@ -18981,12 +18995,370 @@ about modifiers (that is, CTRL, ALT, SHIFT, META, etc.).",
       "detailType": "BaseKeyDetail",
       "name": "onKeyUp",
     },
+    {
+      "cancelable": false,
+      "description": "Called when the user types to filter options in manual filtering mode for a menu.
+Use this to filter the options based on the filtering text.
+
+The detail object contains:
+- \`menuId\` - The ID of the menu that triggered the event.
+- \`filteringText\` - The text to use for filtering options.",
+      "detailInlineType": {
+        "name": "PromptInputProps.MenuFilterDetail",
+        "properties": [
+          {
+            "name": "filteringText",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "menuId",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "PromptInputProps.MenuFilterDetail",
+      "name": "onMenuFilter",
+    },
+    {
+      "cancelable": false,
+      "description": "Called whenever a user selects an option in a menu.",
+      "detailInlineType": {
+        "name": "PromptInputProps.MenuItemSelectDetail",
+        "properties": [
+          {
+            "name": "menuId",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "OptionDefinition",
+              "properties": [
+                {
+                  "name": "__labelPrefix",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "description",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "disabled",
+                  "optional": true,
+                  "type": "boolean",
+                },
+                {
+                  "name": "disabledReason",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "filteringTags",
+                  "optional": true,
+                  "type": "ReadonlyArray<string>",
+                },
+                {
+                  "name": "iconAlt",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "iconAriaLabel",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "inlineType": {
+                    "name": "IconProps.Name",
+                    "type": "union",
+                    "values": [
+                      "search",
+                      "map",
+                      "filter",
+                      "key",
+                      "file",
+                      "pause",
+                      "play",
+                      "microphone",
+                      "remove",
+                      "copy",
+                      "menu",
+                      "script",
+                      "close",
+                      "status-pending",
+                      "refresh",
+                      "external",
+                      "history",
+                      "group",
+                      "calendar",
+                      "ellipsis",
+                      "zoom-in",
+                      "zoom-out",
+                      "security",
+                      "download",
+                      "edit",
+                      "add-plus",
+                      "anchor-link",
+                      "angle-left-double",
+                      "angle-left",
+                      "angle-right-double",
+                      "angle-right",
+                      "angle-up",
+                      "angle-down",
+                      "arrow-left",
+                      "arrow-right",
+                      "arrow-up",
+                      "arrow-down",
+                      "at-symbol",
+                      "audio-full",
+                      "audio-half",
+                      "audio-off",
+                      "backward-10-seconds",
+                      "bug",
+                      "call",
+                      "caret-down-filled",
+                      "caret-down",
+                      "caret-left-filled",
+                      "caret-right-filled",
+                      "caret-up-filled",
+                      "caret-up",
+                      "check",
+                      "contact",
+                      "closed-caption",
+                      "closed-caption-unavailable",
+                      "command-prompt",
+                      "delete-marker",
+                      "drag-indicator",
+                      "envelope",
+                      "exit-full-screen",
+                      "expand",
+                      "face-happy",
+                      "face-happy-filled",
+                      "face-neutral",
+                      "face-neutral-filled",
+                      "face-sad",
+                      "face-sad-filled",
+                      "file-open",
+                      "flag",
+                      "folder-open",
+                      "folder",
+                      "forward-10-seconds",
+                      "full-screen",
+                      "gen-ai",
+                      "globe",
+                      "grid-view",
+                      "group-active",
+                      "heart",
+                      "heart-filled",
+                      "insert-row",
+                      "keyboard",
+                      "list-view",
+                      "location-pin",
+                      "lock-private",
+                      "microphone-off",
+                      "mini-player",
+                      "multiscreen",
+                      "notification",
+                      "redo",
+                      "resize-area",
+                      "settings",
+                      "send",
+                      "share",
+                      "shrink",
+                      "slash",
+                      "star-filled",
+                      "star-half",
+                      "star",
+                      "status-in-progress",
+                      "status-info",
+                      "status-negative",
+                      "status-not-started",
+                      "status-positive",
+                      "status-stopped",
+                      "status-warning",
+                      "stop-circle",
+                      "subtract-minus",
+                      "suggestions",
+                      "support",
+                      "thumbs-down-filled",
+                      "thumbs-down",
+                      "thumbs-up-filled",
+                      "thumbs-up",
+                      "ticket",
+                      "transcript",
+                      "treeview-collapse",
+                      "treeview-expand",
+                      "undo",
+                      "unlocked",
+                      "upload-download",
+                      "upload",
+                      "user-profile-active",
+                      "user-profile",
+                      "video-off",
+                      "video-on",
+                      "video-unavailable",
+                      "video-camera-off",
+                      "video-camera-on",
+                      "video-camera-unavailable",
+                      "view-full",
+                      "view-horizontal",
+                      "view-vertical",
+                      "zoom-to-fit",
+                    ],
+                  },
+                  "name": "iconName",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "iconSvg",
+                  "optional": true,
+                  "type": "React.ReactNode",
+                },
+                {
+                  "name": "iconUrl",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "label",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "labelContent",
+                  "optional": true,
+                  "type": "React.ReactNode",
+                },
+                {
+                  "name": "labelTag",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "lang",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "tags",
+                  "optional": true,
+                  "type": "ReadonlyArray<string>",
+                },
+                {
+                  "name": "value",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "option",
+            "optional": false,
+            "type": "OptionDefinition",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "PromptInputProps.MenuItemSelectDetail",
+      "name": "onMenuItemSelect",
+    },
+    {
+      "cancelable": false,
+      "description": "Use this event to implement the asynchronous behavior for menus.
+
+The event is called in the following situations:
+- The user scrolls to the end of the list of options, if \`statusType\` is set to \`pending\`.
+- The user clicks on the recovery button in the error state.
+- The user types after the trigger character.
+- The menu is opened.
+
+The detail object contains the following properties:
+- \`menuId\` - The ID of the menu that triggered the event.
+- \`filteringText\` - The value that you need to use to fetch options.
+- \`firstPage\` - Indicates that you should fetch the first page of options that match the \`filteringText\`.
+- \`samePage\` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).",
+      "detailInlineType": {
+        "name": "PromptInputProps.MenuLoadItemsDetail",
+        "properties": [
+          {
+            "name": "filteringText",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "firstPage",
+            "optional": false,
+            "type": "boolean",
+          },
+          {
+            "name": "menuId",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "samePage",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "PromptInputProps.MenuLoadItemsDetail",
+      "name": "onMenuLoadItems",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when the user scrolls to the end of the options list in a menu and more items are available.
+Use this to load additional pages of options for pagination.
+
+The detail object contains the \`menuId\` of the menu that triggered the event.",
+      "detailInlineType": {
+        "name": "PromptInputProps.MenuLoadMoreItemsDetail",
+        "properties": [
+          {
+            "name": "menuId",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "PromptInputProps.MenuLoadMoreItemsDetail",
+      "name": "onMenuLoadMoreItems",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when the user removes the active mode.",
+      "name": "onModeRemoved",
+    },
   ],
   "functions": [
     {
       "description": "Sets input focus on the textarea control.",
       "name": "focus",
       "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Inserts text at the current cursor position (or at a specified position).
+This properly triggers keyboard and input events, including menu detection when \`menus\` is defined.",
+      "name": "insertText",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "string",
+        },
+        {
+          "name": "position",
+          "type": "number",
+        },
+      ],
       "returnType": "void",
     },
     {
@@ -19022,6 +19394,7 @@ common pitfalls: https://stackoverflow.com/questions/60129605/is-javascripts-set
   "name": "PromptInput",
   "properties": [
     {
+      "deprecatedTag": "Use \`i18nStrings.actionButtonAriaLabel\` instead.",
       "description": "Adds an aria-label to the action button.",
       "i18nTag": true,
       "name": "actionButtonAriaLabel",
@@ -19201,9 +19574,9 @@ and set the property to a string of each ID separated by spaces (for example, \`
       "type": "string",
     },
     {
-      "description": "Adds an \`aria-label\` to the native control.
-
-Use this if you don't have a visible label for this control.",
+      "deprecatedTag": "Use \`i18nStrings.ariaLabel\` instead.",
+      "description": "Adds an aria-label to the input element.",
+      "i18nTag": true,
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
@@ -19232,7 +19605,9 @@ In some cases it might be appropriate to disable autocomplete (for example, for 
 To use it correctly, set the \`name\` property.
 
 You can either provide a boolean value to set the property to "on" or "off", or specify a string value
-for the [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) attribute.",
+for the [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) attribute.
+
+Note: When \`menus\` is defined, autocomplete will not function.",
       "inlineType": {
         "name": "string | boolean",
         "type": "union",
@@ -19311,6 +19686,82 @@ receive focus.",
       "type": "boolean",
     },
     {
+      "description": "By default, the menu height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the menu to extend beyond that container by using fixed positioning and
+[React Portals](https://reactjs.org/docs/portals.html).
+
+Set this property if the menu would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+We recommend you use discretion, and don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.",
+      "name": "expandMenusToViewport",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "An object containing all the localized strings required by the component.
+
+- \`ariaLabel\` (string) - Adds an aria-label to the input element.
+- \`actionButtonAriaLabel\` (string) - Adds an aria-label to the action button.
+- \`menuErrorIconAriaLabel\` (string) - Provides a text alternative for the error icon in the error message in menus.
+- \`menuRecoveryText\` (string) - Specifies the text for the recovery button in menus. The text is displayed next to the error text.
+- \`menuLoadingText\` (string) - Specifies the text to display when menus are in a loading state.
+- \`menuFinishedText\` (string) - Specifies the text to display when menus have finished loading all items.
+- \`menuErrorText\` (string) - Specifies the text to display when menus encounter an error while loading.
+- \`selectedMenuItemAriaLabel\` (string) - Specifies the localized string that describes an option as being selected.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "PromptInputProps.I18nStrings",
+        "properties": [
+          {
+            "name": "actionButtonAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "menuErrorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "menuErrorText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "menuFinishedText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "menuLoadingText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "menuRecoveryText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "selectedMenuItemAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "PromptInputProps.I18nStrings",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -19338,6 +19789,13 @@ Defaults to 3. Use -1 for infinite rows.",
       "type": "number",
     },
     {
+      "description": "Menus that can be triggered via specific symbols (e.g., "/" or "@").
+For menus only relevant to triggers at the start of the input, set \`useAtStart: true\`, defaults to \`false\`.",
+      "name": "menus",
+      "optional": true,
+      "type": "Array<PromptInputProps.MenuDefinition>",
+    },
+    {
       "defaultValue": "1",
       "description": "Specifies the minimum number of lines of text to set the height to.",
       "name": "minRows",
@@ -19345,7 +19803,37 @@ Defaults to 3. Use -1 for infinite rows.",
       "type": "number",
     },
     {
-      "description": "Specifies the name of the control used in HTML forms.",
+      "description": "Specifies the active mode (e.g., /dev, /creative).",
+      "inlineType": {
+        "name": "PromptInputProps.ModeToken",
+        "properties": [
+          {
+            "name": "id",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "label",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "value",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "mode",
+      "optional": true,
+      "type": "PromptInputProps.ModeToken",
+    },
+    {
+      "description": "Specifies the name of the prompt input for form submissions.
+
+When \`tokens\` is set, the value will be the \`tokensToText\` output if provided,
+else it will be the concatenated \`value\` properties from \`tokens\`.",
       "name": "name",
       "optional": true,
       "type": "string",
@@ -19356,7 +19844,8 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+If \`tokens\` is defined, nativeTextareaAttributes will be ignored.",
       "inlineType": {
         "name": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
         "type": "union",
@@ -19387,6 +19876,35 @@ Don't use read-only inputs outside a form.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "description": "Overrides the element that is announced to screen readers in menus
+when the highlighted option changes. By default, this announces
+the option's name and properties, and its selected state if
+the \`selectedLabel\` property is defined.
+The highlighted option is provided, and its group (if groups
+are used and it differs from the group of the previously highlighted option).
+
+For more information, see the
+[accessibility guidelines](/components/prompt-input/?tabId=usage#accessibility-guidelines).",
+      "inlineType": {
+        "name": "AutosuggestProps.ContainingOptionAndGroupString",
+        "parameters": [
+          {
+            "name": "option",
+            "type": "OptionDefinition",
+          },
+          {
+            "name": "group",
+            "type": "AutosuggestProps.OptionGroup",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "renderHighlightedMenuItemAriaLive",
+      "optional": true,
+      "type": "AutosuggestProps.ContainingOptionAndGroupString",
     },
     {
       "description": "Specifies the value of the \`spellcheck\` attribute on the native control.
@@ -19632,7 +20150,45 @@ inadvertently sending data (such as user passwords) to third parties.",
       "type": "PromptInputProps.Style",
     },
     {
-      "description": "Specifies the text entered into the form element.",
+      "description": "Specifies the content of the prompt input when using token mode.
+
+All tokens use the same unified structure with a \`value\` property:
+- Text tokens: \`value\` contains the text content
+- Reference tokens: \`value\` contains the reference value, \`label\` for display (e.g., '@john')",
+      "name": "tokens",
+      "optional": true,
+      "type": "ReadonlyArray<PromptInputProps.InputToken>",
+    },
+    {
+      "description": "Custom function to transform tokens into plain text for the \`value\` field in \`onChange\` and \`onAction\` events
+and for the hidden input when \`name\` is specified.
+
+If not provided, the default implementation is:
+\`\`\`
+tokens.map(token => token.value).join('');
+\`\`\`
+
+Use this to customize serialization, for example:
+- Using \`label\` instead of \`value\` for reference tokens
+- Adding custom formatting or separators between tokens",
+      "inlineType": {
+        "name": "(tokens: ReadonlyArray<PromptInputProps.InputToken>) => string",
+        "parameters": [
+          {
+            "name": "tokens",
+            "type": "ReadonlyArray<PromptInputProps.InputToken>",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "tokensToText",
+      "optional": true,
+      "type": "((tokens: ReadonlyArray<PromptInputProps.InputToken>) => string)",
+    },
+    {
+      "description": "Specifies the content of the prompt input.
+When \`tokens\` is defined, this represents the plain text equivalent of the tokens.",
       "name": "value",
       "optional": false,
       "type": "string",
@@ -37805,6 +38361,21 @@ If not specified, the method returns the result text that is currently displayed
           },
         },
         {
+          "description": "Finds the contentEditable element used when menus are defined.
+Returns null if the component does not have menus defined.",
+          "name": "findContentEditableElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLDivElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findCustomPrimaryAction",
           "parameters": [],
           "returnType": {
@@ -37818,6 +38389,29 @@ If not specified, the method returns the result text that is currently displayed
           },
         },
         {
+          "name": "findMenu",
+          "parameters": [
+            {
+              "defaultValue": "{ expandMenusToViewport: false }",
+              "description": "* expandMenusToViewport (boolean) - Use this when the component under test is rendered with an \`expandMenusToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandMenusToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "PromptInputMenuWrapper",
+          },
+        },
+        {
+          "description": "Finds the native textarea element.
+
+Note: When menus are defined, the component uses a contentEditable element instead of a textarea.
+In this case, this method may fail to find the textarea element. Use findContentEditableElement()
+or the getValue()/setValue() methods instead.",
           "name": "findNativeTextarea",
           "parameters": [],
           "returnType": {
@@ -37858,9 +38452,6 @@ If not specified, the method returns the result text that is currently displayed
           },
         },
         {
-          "description": "Gets the value of the component.
-
-Returns the current value of the textarea.",
           "name": "getTextareaValue",
           "parameters": [],
           "returnType": {
@@ -37869,7 +38460,89 @@ Returns the current value of the textarea.",
           },
         },
         {
-          "description": "Sets the value of the component and calls the onChange handler.",
+          "description": "Gets the value of the component.
+
+Returns the current value of the textarea (when no menus are defined) or the text content of the contentEditable element (when menus are defined).",
+          "name": "getValue",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "name": "isMenuOpen",
+          "parameters": [
+            {
+              "defaultValue": "{ expandMenusToViewport: false }",
+              "description": "* expandMenusToViewport (boolean) - Use this when the component under test is rendered with an \`expandMenusToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandMenusToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+        {
+          "description": "Selects an option from the menu by simulating mouse events.",
+          "name": "selectMenuOption",
+          "parameters": [
+            {
+              "description": "1-based index of the option to select",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "optionIndex",
+              "typeName": "number",
+            },
+            {
+              "defaultValue": "{ expandMenusToViewport: false }",
+              "description": "* expandMenusToViewport (boolean) - Use this when the component under test is rendered with an \`expandMenusToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandMenusToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "description": "Selects an option from the menu by simulating mouse events.",
+          "name": "selectMenuOptionByValue",
+          "parameters": [
+            {
+              "description": "value of option to select",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "value",
+              "typeName": "string",
+            },
+            {
+              "defaultValue": "{ expandMenusToViewport: false }",
+              "description": "* expandMenusToViewport (boolean) - Use this when the component under test is rendered with an \`expandMenusToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandMenusToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
           "name": "setTextareaValue",
           "parameters": [
             {
@@ -37886,8 +38559,95 @@ Returns the current value of the textarea.",
             "name": "void",
           },
         },
+        {
+          "description": "Sets the value of the component by directly setting text content.
+This does NOT trigger menu detection. Use the component ref's insertText() method
+to simulate typing and trigger menus.",
+          "name": "setValue",
+          "parameters": [
+            {
+              "description": "String value to set the component to.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "value",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
       ],
       "name": "PromptInputWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findOpenMenu",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns an option from the menu.",
+          "name": "findOption",
+          "parameters": [
+            {
+              "description": "1-based index of the option to select.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "optionIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "OptionWrapper",
+          },
+        },
+        {
+          "description": "Returns an option from the menu by its value",
+          "name": "findOptionByValue",
+          "parameters": [
+            {
+              "description": "The 'value' of the option.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "value",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "OptionWrapper",
+          },
+        },
+        {
+          "name": "findOptions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "OptionWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "PromptInputMenuWrapper",
     },
     {
       "methods": [
@@ -46918,6 +47678,16 @@ If not specified, the method returns the result text that is currently displayed
           },
         },
         {
+          "description": "Finds the contentEditable element used when menus are defined.
+Returns null if the component does not have menus defined.",
+          "name": "findContentEditableElement",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "name": "findCustomPrimaryAction",
           "parameters": [],
           "returnType": {
@@ -46926,6 +47696,31 @@ If not specified, the method returns the result text that is currently displayed
           },
         },
         {
+          "name": "findMenu",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandMenusToViewport: false
+  }",
+              "description": "* expandMenusToViewport (boolean) - Use this when the component under test is rendered with an \`expandMenusToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandMenusToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "PromptInputMenuWrapper",
+          },
+        },
+        {
+          "description": "Finds the native textarea element.
+
+Note: When menus are defined, the component uses a contentEditable element instead of a textarea.
+In this case, this method may fail to find the textarea element. Use findContentEditableElement()
+or the getValue()/setValue() methods instead.",
           "name": "findNativeTextarea",
           "parameters": [],
           "returnType": {
@@ -46952,6 +47747,68 @@ If not specified, the method returns the result text that is currently displayed
         },
       ],
       "name": "PromptInputWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findOpenMenu",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns an option from the menu.",
+          "name": "findOption",
+          "parameters": [
+            {
+              "description": "1-based index of the option to select.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "optionIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "OptionWrapper",
+          },
+        },
+        {
+          "description": "Returns an option from the menu by its value",
+          "name": "findOptionByValue",
+          "parameters": [
+            {
+              "description": "The 'value' of the option.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "value",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "OptionWrapper",
+          },
+        },
+        {
+          "name": "findOptions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "OptionWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "PromptInputMenuWrapper",
     },
     {
       "methods": [
