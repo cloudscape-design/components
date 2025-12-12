@@ -9,7 +9,7 @@ import SelectPageObject from './page-objects/select-page';
 test(
   'allows filtering for options which have labels with spaces',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const page = new BasePageObject(browser);
     const select = createWrapper().findSelect('#simple_select');
     const optionsSelector = select.findDropdown().findOptions().toSelector();
@@ -22,7 +22,7 @@ test(
 test(
   'closes the dropdown only after the mouse button is released',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const select = createWrapper().findSelect('#simple_select');
     const page = new SelectPageObject(browser, select);
     await page.clickSelect();
@@ -36,7 +36,7 @@ test(
 test(
   'should support drag-to-select interaction',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const select = createWrapper().findSelect('#simple_select');
     const page = new SelectPageObject(browser, select);
     await expect(page.getTriggerLabel()).resolves.toEqual('Choose option');
@@ -48,7 +48,7 @@ test(
 test(
   'should allow selecting text in the filtering input',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const select = createWrapper().findSelect('#simple_select');
     const page = new SelectPageObject(browser, select);
     await page.clickSelect();
@@ -62,7 +62,7 @@ test(
 test(
   'allows space to select an option',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const select = createWrapper().findSelect('#simple_select');
     const page = new SelectPageObject(browser, select);
     await page.clickSelect();
@@ -78,7 +78,7 @@ test(
 test(
   'input aria-activedescendant is same as highlighted option id',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const wrapper = createWrapper().findSelect('#simple_select');
     const page = new SelectPageObject(browser, wrapper);
     await page.focusSelect();
@@ -98,7 +98,7 @@ test(
 test(
   'cuts the dropdown to fit the viewport [inside containers with overflow:hidden]',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const page = new BasePageObject(browser);
     const select = createWrapper().findSelect('#select_overflow');
     const triggerSelector = select.findTrigger().toSelector();
@@ -117,7 +117,7 @@ test(
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ height: 1000, width: 1100 });
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const select = createWrapper().findSelect('#select_overflow');
     const triggerSelector = select.findTrigger().toSelector();
     const optionsSelector = select.findDropdown().findOpenDropdown().toSelector();
@@ -142,7 +142,7 @@ test(
       return window.outerHeight - window.innerHeight;
     });
     await page.setWindowSize({ height: 500 + browserUIHeight, width: 1100 });
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const select = createWrapper().findSelect('#select_overflow');
     const triggerSelector = select.findTrigger().toSelector();
     const optionsSelector = select.findDropdown().findOpenDropdown().toSelector();
@@ -159,7 +159,7 @@ test(
 test(
   'allows the select to be opened and closed using space',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const page = new SelectPageObject(browser, createWrapper().findSelect('#select_native_search_simple'));
     await page.focusSelect();
     await page.keys(['Space']);
@@ -172,7 +172,7 @@ test(
 test(
   'allows the select to be closed and reopened using space',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const page = new SelectPageObject(browser, createWrapper().findSelect('#select_native_search_simple'));
     await page.focusSelect();
     await page.keys(['Space', 'ArrowDown', 'Space']);
@@ -185,7 +185,7 @@ test(
 test(
   'allows to focus the first item by pressing down arrow key',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const page = new SelectPageObject(browser, createWrapper().findSelect('#simple_select'));
     await page.focusSelect();
     await page.keys(['Space']);
@@ -198,7 +198,7 @@ test(
 test(
   'allows to focus the last item by pressing up arrow key',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const page = new SelectPageObject(browser, createWrapper().findSelect('#simple_select'));
     await page.focusSelect();
     await page.keys(['Space']);
@@ -211,7 +211,7 @@ test(
 test(
   'allows to focus the last item by pressing up arrow key on first item',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const page = new SelectPageObject(browser, createWrapper().findSelect('#simple_select'));
     await page.focusSelect();
     await page.keys(['Space']);
@@ -226,7 +226,7 @@ test(
 test(
   'allows to focus the first item by pressing down arrow key on last item',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const page = new SelectPageObject(browser, createWrapper().findSelect('#simple_select'));
     await page.focusSelect();
     await page.keys(['Space']);
@@ -242,7 +242,7 @@ test(
 test(
   'allows the select to be closed with space and reopened using mouse',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const page = new SelectPageObject(browser, createWrapper().findSelect('#select_native_search_simple'));
     await page.focusSelect();
     await page.keys(['Space', 'ArrowDown', 'Space']);
@@ -255,7 +255,7 @@ test(
 test(
   'keeps simple select in focus after item was selected',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const page = new SelectPageObject(browser, createWrapper().findSelect('#simple_select'));
     await page.focusSelect();
     await page.keys(['Space', 'ArrowDown', 'Enter']);
@@ -266,7 +266,7 @@ test(
 test(
   'keeps expanded select in focus after item was selected',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test');
+    await browser.url('/#/select/select.test');
     const page = new SelectPageObject(browser, createWrapper().findSelect('#expanded_select'));
     await page.focusSelect();
     await page.keys(['Space', 'ArrowDown', 'Enter']);
@@ -277,7 +277,7 @@ test(
 test(
   'should not scroll when opening select upwards with scroll margin',
   useBrowser(async browser => {
-    await browser.url('/#/light/select/select.test.scroll-padding');
+    await browser.url('/#/select/select.test.scroll-padding');
     const page = new SelectPageObject(browser, createWrapper().findSelect());
     await page.setWindowSize({ width: 800, height: 250 });
     await page.waitForVisible(createWrapper().findSelect().findTrigger().toSelector());

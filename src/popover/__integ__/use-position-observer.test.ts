@@ -40,7 +40,7 @@ class UsePositionObserverPageObject extends BasePageObject {
 const setupTest = (testFn: (page: UsePositionObserverPageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new UsePositionObserverPageObject(browser);
-    await browser.url('#/light/popover/use-position-observer');
+    await browser.url('#/popover/use-position-observer');
     await testFn(page);
   });
 };

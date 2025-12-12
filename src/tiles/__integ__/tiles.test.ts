@@ -20,7 +20,7 @@ class TilesPage extends BasePageObject {
 const setupTest = (testFn: (page: TilesPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new TilesPage(browser);
-    await browser.url('#/light/tiles/simple');
+    await browser.url('#/tiles/simple');
     await page.waitForVisible(wrapper.findItems().toSelector());
     await testFn(page);
   });

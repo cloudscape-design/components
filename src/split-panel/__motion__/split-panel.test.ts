@@ -27,7 +27,7 @@ const setupTest = (
       visualRefresh: `${theme !== 'classic'}`,
       appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
     }).toString();
-    await browser.url(`#/light/app-layout/dashboard-content-type?${params}`);
+    await browser.url(`#/app-layout/dashboard-content-type?${params}`);
     await page.waitForVisible(appLayout.findContentRegion().toSelector());
     await testFn(page);
   });

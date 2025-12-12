@@ -35,7 +35,7 @@ function setupTest(
         : {}
     );
     await page.setWindowSize(mobile ? viewports.mobile : viewports.desktop);
-    await browser.url(`#/light/app-layout/${pageName}?${params}`);
+    await browser.url(`#/app-layout/${pageName}?${params}`);
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);
   });

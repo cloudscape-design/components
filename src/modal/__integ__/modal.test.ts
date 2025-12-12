@@ -10,7 +10,7 @@ test(
   'Should focus input after opening the modal',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/modal/with-input-focus');
+    await browser.url('#/modal/with-input-focus');
     await page.click('#open-modal');
     const inputSelector = createWrapper().findInput('#input').findNativeInput().toSelector();
 
@@ -21,7 +21,7 @@ test(
 test.each(['destructible', 'controlled'])(`should reset focus to previously active element (%s)`, name =>
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/modal/focus-restoration');
+    await browser.url('#/modal/focus-restoration');
     await page.click(`#${name}`);
     await page.keys('Enter');
     await expect(page.isFocused(`#${name}`)).resolves.toBe(true);
@@ -32,7 +32,7 @@ test(
   'should not move focus to the modal close button when content focus gets lost',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/modal/focus-restoration');
+    await browser.url('#/modal/focus-restoration');
 
     // Open modal
     await page.click('#destructible');
@@ -59,7 +59,7 @@ test(
   'should not let the sticky footer cover focused elements',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/modal/scroll-padding');
+    await browser.url('#/modal/scroll-padding');
 
     // Open modal
     await page.click('[data-testid="modal-trigger"]');
@@ -86,7 +86,7 @@ test(
   'should not let content with z-index overlap footer',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/modal/vertical-scroll');
+    await browser.url('#/modal/vertical-scroll');
 
     // Open modal
     await page.click('[data-testid="modal-trigger"]');
@@ -104,7 +104,7 @@ test(
     const page = new BasePageObject(browser);
 
     const modal = createWrapper().findModal();
-    await browser.url('#/light/modal/async-modal-root');
+    await browser.url('#/modal/async-modal-root');
 
     // Open modal
     await page.click('[data-testid="modal-trigger"]');
@@ -122,7 +122,7 @@ test(
   'should emit modal performance metrics when all components are loaded',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/modal/with-component-load');
+    await browser.url('#/modal/with-component-load');
     const getModalPerformanceMetrics = () =>
       browser.execute(() => ((window as any).modalPerformanceMetrics ?? []) as ModalPerformanceDataProps[]);
     await page.click('[data-testid="modal-trigger"]');
@@ -149,7 +149,7 @@ test(
   'should emit modal performance metrics with timeToContentReadyInModal 0 when components are already loaded',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/modal/with-component-load');
+    await browser.url('#/modal/with-component-load');
     const getModalPerformanceMetrics = () =>
       browser.execute(() => ((window as any).modalPerformanceMetrics ?? []) as ModalPerformanceDataProps[]);
 
@@ -177,7 +177,7 @@ test(
   'should not emit modal performance metrics more than once',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/modal/with-component-load');
+    await browser.url('#/modal/with-component-load');
     const getModalPerformanceMetrics = () =>
       browser.execute(() => ((window as any).modalPerformanceMetrics ?? []) as ModalPerformanceDataProps[]);
     await page.click('[data-testid="modal-trigger"]');

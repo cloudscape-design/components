@@ -25,9 +25,7 @@ describe.each(['classic', 'visualRefresh'])('In %s', type => {
     return useBrowser(async browser => {
       const page = new AppLayoutLegacyStickyPage(browser);
       await page.setWindowSize(viewport);
-      await browser.url(
-        `#/light/app-layout/legacy-table-sticky-notifications/?visualRefresh=${type === 'visualRefresh'}`
-      );
+      await browser.url(`#/app-layout/legacy-table-sticky-notifications/?visualRefresh=${type === 'visualRefresh'}`);
       await page.waitForVisible(appLayoutWrapper.findContentRegion().toSelector());
       await testFn(page);
     });

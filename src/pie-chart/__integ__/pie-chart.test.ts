@@ -39,7 +39,7 @@ class PieChartPageObject extends BasePageObject {
 const createSetupTest = (wrapper: PieChartWrapper) => (testFn: (page: PieChartPageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new PieChartPageObject(browser, wrapper);
-    await browser.url('#/light/pie-chart/test');
+    await browser.url('#/pie-chart/test');
     await testFn(page);
   });
 };

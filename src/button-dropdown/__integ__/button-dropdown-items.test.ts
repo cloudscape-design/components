@@ -8,7 +8,7 @@ test(
   'follow external link in button dropdown group',
   useBrowser(async browser => {
     const page = new ButtonDropdownPage('ButtonDropdown4', browser);
-    await browser.url('#/light/button-dropdown/simple');
+    await browser.url('#/button-dropdown/simple');
     await page.waitForVisible(page.getTrigger());
     await page.openDropdown();
     await expect(page.isDropdownOpen()).resolves.toBe(true);
@@ -24,7 +24,7 @@ test(
   useBrowser(async browser => {
     const page1 = new ButtonDropdownPage('ButtonDropdown3', browser);
     const page2 = new ButtonDropdownPage('ButtonDropdown1', browser);
-    await browser.url('#/light/button-dropdown/simple');
+    await browser.url('#/button-dropdown/simple');
 
     await page1.waitForVisible(page1.getTrigger());
     await page1.openDropdown();
@@ -39,7 +39,7 @@ test(
   'focus on first menu item when dropdown is opened',
   useBrowser(async browser => {
     const page = new ButtonDropdownPage('ButtonDropdown1', browser);
-    await browser.url('#/light/button-dropdown/simple');
+    await browser.url('#/button-dropdown/simple');
 
     await page.waitForVisible(page.getTrigger());
     await page.openDropdown();
@@ -53,7 +53,7 @@ test(
   'focus stays on the trigger on mobiles',
   useBrowser(async browser => {
     const page = new ButtonDropdownPage('ButtonDropdown1', browser);
-    await browser.url('#/light/button-dropdown/simple');
+    await browser.url('#/button-dropdown/simple');
 
     await page.setWindowSize({ width: 400, height: 800 });
     await page.waitForVisible(page.getTrigger());
@@ -67,7 +67,7 @@ test(
   'pressing arrow-down after the dropdown was opened moves the focus to the next item',
   useBrowser(async browser => {
     const page = new ButtonDropdownPage('ButtonDropdown3', browser);
-    await browser.url('#/light/button-dropdown/simple');
+    await browser.url('#/button-dropdown/simple');
 
     await page.waitForVisible(page.getTrigger());
     await page.openDropdown();

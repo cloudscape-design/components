@@ -34,7 +34,7 @@ class PopoverPositionPage extends BasePageObject {
 export function setupPopoverPositionTest(testFn: (page: PopoverPositionPage) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new PopoverPositionPage(browser);
-    await browser.url('#/light/mixed-line-bar-chart/popover-position');
+    await browser.url('#/mixed-line-bar-chart/popover-position');
     await testFn(page);
   });
 }

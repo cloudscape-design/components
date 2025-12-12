@@ -10,7 +10,7 @@ import SpaceBetween from '~components/space-between';
 import AppContext from '../app-context';
 
 export default function ThemeSwitcher() {
-  const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
+  const { urlParams, setUrlParams, setMode } = useContext(AppContext);
 
   const vrSwitchProps: React.InputHTMLAttributes<HTMLInputElement> = {
     id: 'visual-refresh-toggle',
@@ -38,7 +38,7 @@ export default function ThemeSwitcher() {
         <input
           id="mode-toggle"
           type="checkbox"
-          checked={mode === 'dark'}
+          checked={urlParams.mode === 'dark'}
           onChange={event => setMode(event.target.checked ? Mode.Dark : Mode.Light)}
         />
         Dark mode

@@ -9,7 +9,7 @@ describe(`Select (Native Search)`, () => {
   const setupTest = (selectorType: string, testFn: (page: SelectPageObject) => Promise<void>) => {
     return useBrowser(async browser => {
       const wrapper = createWrapper().findSelect(`#select_native_search_${selectorType}`);
-      await browser.url('/#/light/select/select.test');
+      await browser.url('/#/select/select.test');
       const page = new SelectPageObject(browser, wrapper);
       await page.waitForVisible(wrapper.findTrigger().toSelector());
       await testFn(page);

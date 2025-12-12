@@ -8,7 +8,7 @@ describe('use-breakpoint-query', () => {
   const setupTest = (testFn: (page: PageObject) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new PageObject(browser);
-      await browser.url('#/light/container-queries');
+      await browser.url('#/container-queries');
       await testFn(page);
     });
   };

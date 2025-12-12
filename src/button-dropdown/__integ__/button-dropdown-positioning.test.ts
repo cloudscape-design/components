@@ -7,7 +7,7 @@ import ButtonDropdownPage from '../../__integ__/page-objects/button-dropdown-pag
 const setupTest = (id: string, testFn: (page: ButtonDropdownPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new ButtonDropdownPage(id, browser);
-    await browser.url('#/light/button-dropdown/expandable');
+    await browser.url('#/button-dropdown/expandable');
     await page.waitForVisible(page.getTrigger());
     await testFn(page);
   });

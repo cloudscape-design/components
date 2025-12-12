@@ -8,7 +8,7 @@ import { FlashbarInteractivePage } from '../__integ__/pages/interactive-page';
 const setupTest = (options: { visualRefresh?: boolean }, testFn: (page: FlashbarInteractivePage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new FlashbarInteractivePage(browser);
-    const baseUrl = '#/light/flashbar/interactive';
+    const baseUrl = '#/flashbar/interactive';
     const url =
       options.visualRefresh === undefined
         ? baseUrl

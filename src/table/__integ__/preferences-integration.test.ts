@@ -13,7 +13,7 @@ const preferences = wrapper.findCollectionPreferences();
 test(
   'changes page size on confirm',
   useBrowser(async browser => {
-    await browser.url('#/light/table/hooks');
+    await browser.url('#/table/hooks');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.findRows().toSelector());
     await expect(page.getElementsCount(wrapper.findRows().toSelector())).resolves.toEqual(20);
@@ -30,7 +30,7 @@ test(
 test(
   'does not change page size on cancel',
   useBrowser(async browser => {
-    await browser.url('#/light/table/hooks');
+    await browser.url('#/table/hooks');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.findRows().toSelector());
     await expect(page.getElementsCount(wrapper.findRows().toSelector())).resolves.toEqual(20);
@@ -47,7 +47,7 @@ test(
 test(
   'changes column visibility using the visibleColumn property',
   useBrowser(async browser => {
-    await browser.url('#/light/table/visible-content');
+    await browser.url('#/table/visible-content');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.findRows().toSelector());
     await expect(
@@ -68,7 +68,7 @@ test(
 test(
   'changes column visibility using the columnDisplay property',
   useBrowser(async browser => {
-    await browser.url('#/light/table/hooks');
+    await browser.url('#/table/hooks');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.findRows().toSelector());
     await expect(
@@ -91,7 +91,7 @@ test(
 test(
   'changes column order',
   useBrowser(async browser => {
-    await browser.url('#/light/table/hooks');
+    await browser.url('#/table/hooks');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.findRows().toSelector());
     await expect(

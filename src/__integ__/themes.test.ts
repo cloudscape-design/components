@@ -37,17 +37,17 @@ class CustomPropertyPageObject extends BasePageObject {
 
 describe('CSS Custom Properties', () => {
   test.each<[string, string, string?]>([
-    ['light', `#light/?visualRefresh=false`],
-    ['dark', '#dark/?visualRefresh=false'],
-    ['compact', '#light/?visualRefresh=false&density=compact'],
+    ['light', '#/?visualRefresh=false&mode=light'],
+    ['dark', '#/?visualRefresh=false&mode=dark'],
+    ['compact', '#/?visualRefresh=false&density=compact'],
     // use motionDisabled to force design tokens into expected values
-    ['reduced-motion', '#light/?visualRefresh=false&motionDisabled=true'],
-    ['visual-refresh', '#light/?visualRefresh=true'],
-    ['visual-refresh-dark', '#dark/?visualRefresh=true'],
-    ['visual-refresh-compact', '#light/?visualRefresh=true&density=compact'],
+    ['reduced-motion', '#/?visualRefresh=false&motionDisabled=true'],
+    ['visual-refresh', '#/?visualRefresh=true'],
+    ['visual-refresh-dark', '#/?visualRefresh=true&mode=dark'],
+    ['visual-refresh-compact', '#/?visualRefresh=true&density=compact'],
     [
       'visual-refresh-content-header',
-      '#/light/visual-contexts/content-header/?visualRefresh=true',
+      'visual-contexts/content-header/?visualRefresh=true&mode=light',
       '.awsui-context-content-header',
     ],
   ])('match previous snapshot for mode %p', (_, url, selector = 'body') =>

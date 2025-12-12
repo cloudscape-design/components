@@ -111,7 +111,7 @@ const basePropertyFilterConfiguration = {
 
 const setupTest = (
   testFn: (testFnProps: { page: TableWithAnalyticsPageObject; wrapper: TableWrapper }) => Promise<void>,
-  url = '#/light/funnel-analytics/with-table'
+  url = '#/funnel-analytics/with-table'
 ) => {
   return useBrowser(async browser => {
     await browser.url(url);
@@ -285,7 +285,7 @@ describe('async loading', () => {
           },
         },
       });
-    }, '#/light/funnel-analytics/with-async-table')
+    }, '#/funnel-analytics/with-async-table')
   );
 
   test(
@@ -296,7 +296,7 @@ describe('async loading', () => {
       const componentsLog = await page.getComponentMetricsLog();
       expect(componentsLog.length).toBe(2);
       expect(componentsLog[1].name).toBe('componentUpdated');
-    }, '#/light/funnel-analytics/with-async-table')
+    }, '#/funnel-analytics/with-async-table')
   );
 });
 
@@ -355,7 +355,7 @@ describe('filtering', () => {
           },
         },
       });
-    }, '#/light/funnel-analytics/with-table-property-filter')
+    }, '#/funnel-analytics/with-table-property-filter')
   );
 
   test(
@@ -384,6 +384,6 @@ describe('filtering', () => {
           },
         },
       });
-    }, '#/light/funnel-analytics/with-table-property-filter')
+    }, '#/funnel-analytics/with-table-property-filter')
   );
 });

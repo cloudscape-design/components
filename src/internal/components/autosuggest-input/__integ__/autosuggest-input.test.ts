@@ -8,7 +8,7 @@ import AutosuggestInputWrapper from '../../../../../lib/components/test-utils/se
 
 const wrapper = new AutosuggestInputWrapper('*');
 
-function setupTest(testFn: (page: BasePageObject) => Promise<void>, url = '/#/light/autosuggest/autosuggest-input') {
+function setupTest(testFn: (page: BasePageObject) => Promise<void>, url = '/#/autosuggest/autosuggest-input') {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await browser.url(url);

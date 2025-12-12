@@ -43,7 +43,7 @@ class TokenPage extends BasePageObject {
 
 function setupTest(testFn: (page: TokenPage) => Promise<void>) {
   return useBrowser(async browser => {
-    await browser.url('#/light/token/simple');
+    await browser.url('#/token/simple');
     const page = new TokenPage(browser);
     await page.waitForVisible('h1');
     await testFn(page);

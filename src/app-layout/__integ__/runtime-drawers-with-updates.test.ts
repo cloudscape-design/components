@@ -15,7 +15,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
       const page = new BasePageObject(browser);
 
       await browser.url(
-        `#/light/app-layout/runtime-drawers-with-updates?${getUrlParams(theme, {
+        `#/app-layout/runtime-drawers-with-updates?${getUrlParams(theme, {
           hasTools: 'true',
         })}`
       );

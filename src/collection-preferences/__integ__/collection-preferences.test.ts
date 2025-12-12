@@ -8,7 +8,7 @@ import CollectionPreferencesPageObject from './pages/collection-preferences-page
 const setupTest = (testFn: (page: CollectionPreferencesPageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new CollectionPreferencesPageObject(browser);
-    await browser.url('#/light/collection-preferences/simple');
+    await browser.url('#/collection-preferences/simple');
     await page.setWindowSize({ width: 1200, height: 1200 });
     await testFn(page);
   });

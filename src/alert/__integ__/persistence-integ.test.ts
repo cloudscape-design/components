@@ -31,7 +31,7 @@ const setupTest = (
     if (params.dismissedKeys !== undefined) {
       urlParams.set('dismissedKeys', params.dismissedKeys);
     }
-    const url = `#/light/alert/persistence${urlParams.toString() ? '?' + urlParams.toString() : ''}`;
+    const url = `#/alert/persistence${urlParams.toString() ? '?' + urlParams.toString() : ''}`;
     await browser.url(url);
     await page.waitForVisible(wrapper.findAlert().toSelector());
     await testFn(page);

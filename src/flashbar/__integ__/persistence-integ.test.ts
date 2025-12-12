@@ -30,7 +30,7 @@ const setupTest = (
     if (params.dismissedKeys !== undefined) {
       urlParams.set('dismissedKeys', params.dismissedKeys);
     }
-    const url = `#/light/flashbar/persistence${urlParams.toString() ? '?' + urlParams.toString() : ''}`;
+    const url = `#/flashbar/persistence${urlParams.toString() ? '?' + urlParams.toString() : ''}`;
     await browser.url(url);
     await page.waitForVisible(flashbar.toSelector());
     await testFn(page);

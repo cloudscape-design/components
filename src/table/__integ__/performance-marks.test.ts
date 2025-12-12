@@ -17,7 +17,7 @@ function setupTest(
       return;
     }
     const page = new BasePageObject(browser);
-    await browser.url(`#/light/table/performance-marks${!inViewport ? '?outsideOfViewport=true' : ''}`);
+    await browser.url(`#/table/performance-marks${!inViewport ? '?outsideOfViewport=true' : ''}`);
     const getMarks = async () => {
       await new Promise(r => setTimeout(r, 200));
       const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);

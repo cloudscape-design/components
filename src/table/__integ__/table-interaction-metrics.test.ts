@@ -16,7 +16,7 @@ const setupTest = (
 ) => {
   return useBrowser(async browser => {
     const wrapper = createWrapper().findTable();
-    await browser.url('#/light/table/simulated-server-actions');
+    await browser.url('#/table/simulated-server-actions');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.toSelector());
 

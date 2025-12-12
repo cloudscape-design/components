@@ -17,7 +17,7 @@ function setupTest(url: string, dropdownId: string, testFn: (page: DropdownPageO
 describe('Dropdown', () => {
   test(
     'dropdown opens down, if there is enough space below it',
-    setupTest('#/light/dropdown/simple', 'smallDropDown', async page => {
+    setupTest('#/dropdown/simple', 'smallDropDown', async page => {
       const { top: dropdownTop } = await page.getBoundingBox(page.getOpenDropdown());
       const { top: triggerTop } = await page.getBoundingBox(page.getTrigger());
       expect(dropdownTop).toBeGreaterThan(triggerTop);
@@ -25,13 +25,13 @@ describe('Dropdown', () => {
   );
   test(
     'dropdown opens down, if there is more space below than above',
-    setupTest('#/light/dropdown/simple', 'largeDropDown', async page => {
+    setupTest('#/dropdown/simple', 'largeDropDown', async page => {
       await expect(page.getDropdownVerticalDirection()).resolves.toEqual('down');
     })
   );
   test(
     'dropdown opens up, if there is more space above than below',
-    setupTest('#/light/dropdown/simple', 'largeDropUp', async page => {
+    setupTest('#/dropdown/simple', 'largeDropUp', async page => {
       const { top: dropdownTop } = await page.getBoundingBox(page.getOpenDropdown());
       expect(dropdownTop).toBeGreaterThan(0);
       await expect(page.getDropdownVerticalDirection()).resolves.toEqual('up');
@@ -39,7 +39,7 @@ describe('Dropdown', () => {
   );
   test(
     'dropdown opens to the right, if there is enough space on the right side',
-    setupTest('#/light/dropdown/positioning', 'topLeftDropDown', async page => {
+    setupTest('#/dropdown/positioning', 'topLeftDropDown', async page => {
       const { left: dropdownLeft, right: dropdownRight } = await page.getBoundingBox(page.getOpenDropdown());
       const { left: triggerLeft, right: triggerRight } = await page.getBoundingBox(page.getTrigger());
       expect(dropdownRight).toBeGreaterThan(triggerRight);
@@ -48,7 +48,7 @@ describe('Dropdown', () => {
   );
   test(
     'dropdown width is equal trigger width, if dropdown content is narrower than trigger',
-    setupTest('#/light/dropdown/positioning', 'bottomLeftDropDown', async page => {
+    setupTest('#/dropdown/positioning', 'bottomLeftDropDown', async page => {
       const { width: dropdownWidth } = await page.getBoundingBox(page.getOpenDropdown());
       const { width: triggerWidth } = await page.getBoundingBox(page.getTrigger());
       expect(dropdownWidth).toEqual(triggerWidth);
@@ -56,7 +56,7 @@ describe('Dropdown', () => {
   );
   test(
     'dropdown opens down in a container with fixed position',
-    setupTest('#/light/dropdown/fixed-container', 'fixedDropdown', async page => {
+    setupTest('#/dropdown/fixed-container', 'fixedDropdown', async page => {
       const { height: windowHeight, pageHeight } = await page.getViewportSize();
       await expect(page.getDropdownVerticalDirection()).resolves.toEqual('down');
       await page.click(page.getTrigger()); // close already open dropdown
@@ -73,14 +73,14 @@ describe('Dropdown', () => {
     const MIN_WIDTH = 800;
     test(
       'is used as a minimum width of the dropdown instead of the trigger width',
-      setupTest('#/light/dropdown/min-width', 'minWidthDropdown', async page => {
+      setupTest('#/dropdown/min-width', 'minWidthDropdown', async page => {
         const { width: dropdownWidth } = await page.getBoundingBox(page.getOpenDropdown());
         expect(dropdownWidth).toEqual(MIN_WIDTH);
       })
     );
     test(
       'does nothing, if trigger width is smaller than the provided minWidth',
-      setupTest('#/light/dropdown/min-width', 'minWidthDropdown', async page => {
+      setupTest('#/dropdown/min-width', 'minWidthDropdown', async page => {
         await page.setWindowSize({ width: 600, height: 600 });
         // reopen the dropdown after the window got resized
         await page.click(page.getTrigger());
@@ -94,7 +94,7 @@ describe('Dropdown', () => {
   });
   test(
     'dropdown opens to the left, if there is not enough space on the right side and enough on the left',
-    setupTest('#/light/dropdown/positioning', 'topRightDropDown', async page => {
+    setupTest('#/dropdown/positioning', 'topRightDropDown', async page => {
       const { left: dropdownLeft, right: dropdownRight } = await page.getBoundingBox(page.getOpenDropdown());
       const { left: triggerLeft, right: triggerRight } = await page.getBoundingBox(page.getTrigger());
       expect(dropdownLeft).toBeLessThan(triggerLeft);
@@ -103,7 +103,7 @@ describe('Dropdown', () => {
   );
   test(
     'dropdown opens to the right, if there is not enough space on both sides, but more space on the right',
-    setupTest('#/light/dropdown/positioning', 'topMiddleDropDown', async page => {
+    setupTest('#/dropdown/positioning', 'topMiddleDropDown', async page => {
       const { left: dropdownLeft, right: dropdownRight } = await page.getBoundingBox(page.getOpenDropdown());
       const { left: triggerLeft, right: triggerRight } = await page.getBoundingBox(page.getTrigger());
       expect(dropdownLeft).toEqual(triggerLeft);
@@ -112,7 +112,7 @@ describe('Dropdown', () => {
   );
   test(
     'dropdown opens to the left, if there is not enough space on both sides, but more space on the left',
-    setupTest('#/light/dropdown/positioning', 'bottomRightDropDown', async page => {
+    setupTest('#/dropdown/positioning', 'bottomRightDropDown', async page => {
       const { left: dropdownLeft, right: dropdownRight } = await page.getBoundingBox(page.getOpenDropdown());
       const { left: triggerLeft, right: triggerRight } = await page.getBoundingBox(page.getTrigger());
       expect(dropdownRight).toEqual(triggerRight);
@@ -121,7 +121,7 @@ describe('Dropdown', () => {
   );
   it(
     'stretch height: vertically stretch to fit the content and overflow to the bottom and not to the right',
-    setupTest('#/light/dropdown/interior-stretch-height', 'dropdown1', async page => {
+    setupTest('#/dropdown/interior-stretch-height', 'dropdown1', async page => {
       const { bottom: containerBottom, right: containerRight } = await page.getBoundingBox('#container-1');
       const { bottom: dropdownBottom, right: dropdownRight } = await page.getBoundingBox(page.getOpenDropdown());
       expect(dropdownRight).toBeLessThan(containerRight);
@@ -130,7 +130,7 @@ describe('Dropdown', () => {
   );
   it(
     'do not stretch height: content does not fit vertically, dropdown adds scrollbar and do not overlap',
-    setupTest('#/light/dropdown/interior-stretch-height', 'dropdown2', async page => {
+    setupTest('#/dropdown/interior-stretch-height', 'dropdown2', async page => {
       const { bottom: containerBottom, right: containerRight } = await page.getBoundingBox('#container-2');
       const { bottom: dropdownBottom, right: dropdownRight } = await page.getBoundingBox(page.getOpenDropdown());
       expect(dropdownRight).toBeLessThan(containerRight);
@@ -139,7 +139,7 @@ describe('Dropdown', () => {
   );
   test(
     'dropdown reserves 50px space on right side',
-    setupTest('#/light/dropdown/interior-stretch-height', 'dropdown2', async page => {
+    setupTest('#/dropdown/interior-stretch-height', 'dropdown2', async page => {
       const { right: containerRight } = await page.getBoundingBox('#container-2');
       const { right: dropdownRight } = await page.getBoundingBox(page.getOpenDropdown());
       expect(containerRight - dropdownRight).toEqual(50);
@@ -147,7 +147,7 @@ describe('Dropdown', () => {
   );
   test(
     'dropdown reserves 20px on right side on small screen',
-    setupTest('#/light/dropdown/interior-stretch-height', 'dropdown2', async page => {
+    setupTest('#/dropdown/interior-stretch-height', 'dropdown2', async page => {
       await page.setWindowSize({ width: 500, height: 800 });
       const { right: containerRight } = await page.getBoundingBox('#container-2');
       const { right: dropdownRight } = await page.getBoundingBox(page.getOpenDropdown());
@@ -156,7 +156,7 @@ describe('Dropdown', () => {
   );
   test(
     'dropdown reserves 31px less at bottom on small screen',
-    setupTest('#/light/dropdown/interior-stretch-height', 'dropdown2', async page => {
+    setupTest('#/dropdown/interior-stretch-height', 'dropdown2', async page => {
       const { bottom: containerBottom } = await page.getBoundingBox('#container-2');
       const { bottom: dropdownBottom } = await page.getBoundingBox(page.getOpenDropdown());
       const bottomPadding = containerBottom - dropdownBottom;
@@ -169,7 +169,7 @@ describe('Dropdown', () => {
   );
   it(
     'stretch height and width: content does not fit vertically and horizontally, overflow to the bottom and to the right',
-    setupTest('#/light/dropdown/interior-stretch-height', 'dropdown3', async page => {
+    setupTest('#/dropdown/interior-stretch-height', 'dropdown3', async page => {
       const { bottom: containerBottom, right: containerRight } = await page.getBoundingBox('#container-3');
       const { bottom: dropdownBottom, right: dropdownRight } = await page.getBoundingBox(page.getOpenDropdown());
       expect(dropdownRight).toBeGreaterThan(containerRight);
@@ -180,7 +180,7 @@ describe('Dropdown', () => {
   describe('with preferred center position', () => {
     it(
       'is centered when there is enough space',
-      setupTest('#/light/dropdown/prefer-center', 'centerDropdown', async page => {
+      setupTest('#/dropdown/prefer-center', 'centerDropdown', async page => {
         const { left: dropdownLeft, right: dropdownRight } = await page.getBoundingBox(page.getOpenDropdown());
         const { left: triggerLeft, right: triggerRight } = await page.getBoundingBox(page.getTrigger());
 
@@ -191,7 +191,7 @@ describe('Dropdown', () => {
 
     it(
       'drops to the left if it cannot be centered and there is more space to the left',
-      setupTest('#/light/dropdown/prefer-center', 'rightDropdown', async page => {
+      setupTest('#/dropdown/prefer-center', 'rightDropdown', async page => {
         const { left: dropdownLeft, right: dropdownRight } = await page.getBoundingBox(page.getOpenDropdown());
         const { left: triggerLeft, right: triggerRight } = await page.getBoundingBox(page.getTrigger());
 
@@ -202,7 +202,7 @@ describe('Dropdown', () => {
 
     it(
       'drops to the right if it cannot be centered and there is more space to the right',
-      setupTest('#/light/dropdown/prefer-center', 'leftDropdown', async page => {
+      setupTest('#/dropdown/prefer-center', 'leftDropdown', async page => {
         const { left: dropdownLeft, right: dropdownRight } = await page.getBoundingBox(page.getOpenDropdown());
         const { left: triggerLeft, right: triggerRight } = await page.getBoundingBox(page.getTrigger());
 

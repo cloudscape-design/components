@@ -5,7 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import AutosuggestPage from './page-objects/autosuggest-page';
 
-function setupTest(testFn: (page: AutosuggestPage) => Promise<void>, url = '/#/light/autosuggest/simple') {
+function setupTest(testFn: (page: AutosuggestPage) => Promise<void>, url = '/#/autosuggest/simple') {
   return useBrowser(async browser => {
     const page = new AutosuggestPage(browser);
     await browser.url(url);
@@ -157,6 +157,6 @@ describe(`Simple Autosuggest`, () => {
       await expect(page.isFocused(inputSelector)).resolves.toBe(true);
       await page.keys(['Shift', 'Tab', 'Null']);
       await expect(page.isExisting(dropdownSelector)).resolves.toBe(false);
-    }, '/#/light/autosuggest/recovery-test')
+    }, '/#/autosuggest/recovery-test')
   );
 });

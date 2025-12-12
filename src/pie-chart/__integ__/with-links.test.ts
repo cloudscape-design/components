@@ -7,7 +7,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 function setupTest(linksIn: string, testFn: (page: BasePageObject) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url(`#/light/pie-chart/with-links-in-${linksIn}`);
+    await browser.url(`#/pie-chart/with-links-in-${linksIn}`);
     await testFn(page);
   });
 }

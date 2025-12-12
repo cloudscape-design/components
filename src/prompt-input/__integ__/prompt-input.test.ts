@@ -29,7 +29,7 @@ const setupTest = (
       isReadOnly: String(isReadOnly),
       hasInfiniteMaxRows: String(hasInfiniteMaxRows),
     });
-    await browser.url(`#/light/prompt-input/simple/?${params}`);
+    await browser.url(`#/prompt-input/simple/?${params}`);
     await page.waitForVisible(getPromptInputWrapper().toSelector());
     await testFn(page);
   });
