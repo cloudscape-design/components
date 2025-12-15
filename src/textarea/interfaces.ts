@@ -16,8 +16,7 @@ import { BaseKeyDetail } from '../internal/events';
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface TextareaProps
-  extends
-    Omit<BaseInputProps, 'nativeInputAttributes'>,
+  extends Omit<BaseInputProps, 'nativeInputAttributes'>,
     InputKeyEvents,
     InputAutoCorrect,
     InputAutoComplete,

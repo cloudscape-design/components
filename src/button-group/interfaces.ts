@@ -120,7 +120,8 @@ export type InternalItem =
   | ButtonGroupProps.MenuDropdown;
 
 export interface InternalButtonGroupProps
-  extends SomeRequired<ButtonGroupProps, 'dropdownExpandToViewport'>, InternalBaseComponentProps {
+  extends SomeRequired<ButtonGroupProps, 'dropdownExpandToViewport'>,
+    InternalBaseComponentProps {
   style?: ButtonGroupProps.Style;
   items: ReadonlyArray<InternalItemOrGroup>;
 }

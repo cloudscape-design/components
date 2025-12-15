@@ -27,8 +27,7 @@ import testutilStyles from './test-classes/styles.css.js';
 const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
 
 interface DateRangePickerDropdownProps
-  extends
-    Pick<
+  extends Pick<
       Required<DateRangePickerProps>,
       | 'locale'
       | 'isDateEnabled'

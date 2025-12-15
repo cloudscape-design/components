@@ -14,7 +14,10 @@ import { FormFieldValidationControlProps } from '../internal/context/form-field-
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface BaseSelectProps
-  extends BaseDropdownHostProps, BaseComponentProps, FormFieldValidationControlProps, DropdownStatusProps {
+  extends BaseDropdownHostProps,
+    BaseComponentProps,
+    FormFieldValidationControlProps,
+    DropdownStatusProps {
   /**
    * Specifies an array of options that are displayed to the user as a dropdown list.
    * The options can be grouped using `OptionGroup` objects.

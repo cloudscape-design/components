@@ -18,8 +18,7 @@ import { BaseKeyDetail, NonCancelableEventHandler } from '../internal/events';
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface PromptInputProps
-  extends
-    Omit<BaseInputProps, 'nativeInputAttributes'>,
+  extends Omit<BaseInputProps, 'nativeInputAttributes'>,
     InputKeyEvents,
     InputAutoCorrect,
     InputAutoComplete,

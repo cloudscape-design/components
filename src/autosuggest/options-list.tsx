@@ -8,10 +8,8 @@ import { AutosuggestItemsHandlers, AutosuggestItemsState } from './options-contr
 import PlainList from './plain-list';
 import VirtualList from './virtual-list';
 
-interface AutosuggestOptionsListProps extends Pick<
-  AutosuggestProps,
-  'virtualScroll' | 'selectedAriaLabel' | 'renderHighlightedAriaLive'
-> {
+interface AutosuggestOptionsListProps
+  extends Pick<AutosuggestProps, 'virtualScroll' | 'selectedAriaLabel' | 'renderHighlightedAriaLive'> {
   statusType: AutosuggestProps.StatusType;
   autosuggestItemsState: AutosuggestItemsState;
   autosuggestItemsHandlers: AutosuggestItemsHandlers;

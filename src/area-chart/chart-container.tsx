@@ -27,20 +27,21 @@ const BLOCK_END_LABELS_OFFSET = 12;
 
 type TickFormatter = undefined | ((value: AreaChartProps.DataTypes) => string);
 
-interface ChartContainerProps<T extends AreaChartProps.DataTypes> extends Pick<
-  AreaChartProps<T>,
-  | 'xTitle'
-  | 'yTitle'
-  | 'xTickFormatter'
-  | 'yTickFormatter'
-  | 'detailTotalFormatter'
-  | 'detailPopoverSize'
-  | 'detailPopoverFooter'
-  | 'ariaLabel'
-  | 'ariaLabelledby'
-  | 'ariaDescription'
-  | 'i18nStrings'
-> {
+interface ChartContainerProps<T extends AreaChartProps.DataTypes>
+  extends Pick<
+    AreaChartProps<T>,
+    | 'xTitle'
+    | 'yTitle'
+    | 'xTickFormatter'
+    | 'yTickFormatter'
+    | 'detailTotalFormatter'
+    | 'detailPopoverSize'
+    | 'detailPopoverFooter'
+    | 'ariaLabel'
+    | 'ariaLabelledby'
+    | 'ariaDescription'
+    | 'i18nStrings'
+  > {
   model: ChartModel<T>;
   autoWidth: (value: number) => void;
   fitHeight?: boolean;

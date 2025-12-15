@@ -15,10 +15,8 @@ export interface InternalChartSeries<T> {
 }
 
 // Properties that are shared as is (including API doc comments) by mixed, line and bar charts.
-export interface CommonMixedChartProps<T extends ChartDataTypes> extends CartesianChartProps<
-  T,
-  MixedLineBarChartProps.ChartSeries<T>
-> {
+export interface CommonMixedChartProps<T extends ChartDataTypes>
+  extends CartesianChartProps<T, MixedLineBarChartProps.ChartSeries<T>> {
   /**
    * When set to `true`, adds a visual emphasis on the zero baseline axis.
    * See the usage guidelines for more details.

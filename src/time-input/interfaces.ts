@@ -5,7 +5,10 @@ import { BaseComponentProps } from '../internal/base-component';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 
 export interface TimeInputProps
-  extends BaseInputProps, InputAutoCorrect, FormFieldValidationControlProps, BaseComponentProps {
+  extends BaseInputProps,
+    InputAutoCorrect,
+    FormFieldValidationControlProps,
+    BaseComponentProps {
   /**
    * Specifies the format of the time input.
    *

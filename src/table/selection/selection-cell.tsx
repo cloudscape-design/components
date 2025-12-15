@@ -20,10 +20,8 @@ interface TableHeaderSelectionCellProps extends Omit<TableThElementProps, 'child
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
 }
 
-interface TableBodySelectionCellProps extends Omit<
-  TableTdElementProps,
-  'children' | 'colIndex' | 'wrapLines' | 'isEditable' | 'isEditing'
-> {
+interface TableBodySelectionCellProps
+  extends Omit<TableTdElementProps, 'children' | 'colIndex' | 'wrapLines' | 'isEditable' | 'isEditing'> {
   selectionControlProps?: SelectionControlProps;
 }
 

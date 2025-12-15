@@ -21,8 +21,7 @@ const COLUMN_DEFS: Record<number, GridProps.ElementDefinition | undefined> = {
 };
 
 interface GridColumnLayoutProps
-  extends
-    Required<Pick<InternalColumnLayoutProps, 'columns' | 'variant' | 'borders' | 'disableGutters'>>,
+  extends Required<Pick<InternalColumnLayoutProps, 'columns' | 'variant' | 'borders' | 'disableGutters'>>,
     Pick<InternalColumnLayoutProps, '__tagOverride'> {
   children: React.ReactNode;
   __breakpoint?: ColumnLayoutBreakpoint;

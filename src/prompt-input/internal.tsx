@@ -22,7 +22,8 @@ import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
 
 interface InternalPromptInputProps
-  extends SomeRequired<PromptInputProps, 'maxRows' | 'minRows'>, InternalBaseComponentProps {}
+  extends SomeRequired<PromptInputProps, 'maxRows' | 'minRows'>,
+    InternalBaseComponentProps {}
 
 const InternalPromptInput = React.forwardRef(
   (

@@ -209,10 +209,8 @@ export namespace ButtonDropdownProps {
     labelTag?: string;
   }
 
-  export interface CheckboxItem extends Omit<
-    ButtonDropdownProps.Item,
-    'href' | 'download' | 'external' | 'externalIconAriaLabel' | 'itemType'
-  > {
+  export interface CheckboxItem
+    extends Omit<ButtonDropdownProps.Item, 'href' | 'download' | 'external' | 'externalIconAriaLabel' | 'itemType'> {
     itemType: 'checkbox';
     checked: boolean;
   }
@@ -333,7 +331,8 @@ type InternalItems = ReadonlyArray<InternalItemOrGroup>;
 export type InternalItemOrGroup = InternalItem | InternalCheckboxItem | InternalItemGroup;
 
 export interface InternalButtonDropdownProps
-  extends Omit<ButtonDropdownProps, 'variant' | 'items'>, InternalBaseComponentProps {
+  extends Omit<ButtonDropdownProps, 'variant' | 'items'>,
+    InternalBaseComponentProps {
   customTriggerBuilder?: (props: CustomTriggerProps) => React.ReactNode;
   variant?: ButtonDropdownProps['variant'] | 'navigation';
   items: ReadonlyArray<InternalItemOrGroup>;
