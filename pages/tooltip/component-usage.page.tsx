@@ -29,21 +29,21 @@ export default function InternalTooltipExamples() {
       <Box padding="l">
         <SpaceBetween size="l">
           <Header variant="h1">Tooltip</Header>
-          <InteractivePositionControlExample />
-          <TrackKeyBehaviorExample />
-          <EscapeKeyBehaviorExample />
-          <ContentStressTestExample />
+          {/* <InteractivePositionControlExample /> */}
+          {/* <TrackKeyBehaviorExample /> */}
+          {/* <EscapeKeyBehaviorExample /> */}
+          {/* <ContentStressTestExample /> */}
           <DisabledActionsExample />
           <TruncatedTextExample />
           <IconOnlyButtonsExample />
-          <TableActionsExample />
-          <RapidHoverTestExample />
-          <NestedElementsExample />
-          <InteractiveContentExample />
+          {/* <TableActionsExample /> */}
+          {/* <RapidHoverTestExample /> */}
+          {/* <NestedElementsExample /> */}
+          {/* <InteractiveContentExample /> */}
           <FileInputItemExample />
-          <IconButtonItemExample />
-          <IconToggleButtonItemExample />
-          <MenuDropdownItemExample />
+          {/* <IconButtonItemExample />
+          <IconToggleButtonItemExample /> */}
+          {/* <MenuDropdownItemExample /> */}
           <ButtonExample />
           <SelectItemExample />
           <MultiselectItemExample />
@@ -61,229 +61,229 @@ export default function InternalTooltipExamples() {
   );
 }
 
-function InteractivePositionControlExample() {
-  const [showTooltip, setShowTooltip] = useState(false);
-  const [position, setPosition] = useState<'top' | 'right' | 'bottom' | 'left'>('top');
-  const buttonRef = useRef<HTMLDivElement>(null);
+// function InteractivePositionControlExample() {
+//   const [showTooltip, setShowTooltip] = useState(false);
+//   const [position, setPosition] = useState<'top' | 'right' | 'bottom' | 'left'>('top');
+//   const buttonRef = useRef<HTMLDivElement>(null);
 
-  return (
-    <Container header={<Header variant="h2">Interactive Position Control</Header>}>
-      <ScreenshotArea>
-        <SpaceBetween size="m">
-          <SpaceBetween direction="horizontal" size="l" alignItems="center">
-            <SegmentedControl
-              selectedId={position}
-              onChange={({ detail }) => setPosition(detail.selectedId as 'top' | 'right' | 'bottom' | 'left')}
-              options={[
-                { id: 'top', text: 'Top' },
-                { id: 'right', text: 'Right' },
-                { id: 'bottom', text: 'Bottom' },
-                { id: 'left', text: 'Left' },
-              ]}
-            />
-            <div
-              ref={buttonRef}
-              onMouseEnter={() => setShowTooltip(true)}
-              onMouseLeave={() => setShowTooltip(false)}
-              style={{ display: 'inline-block' }}
-            >
-              <Button
-                variant="primary"
-                nativeButtonAttributes={{
-                  onFocus: () => setShowTooltip(true),
-                  onBlur: () => setShowTooltip(false),
-                }}
-              >
-                Hover
-              </Button>
-              {showTooltip && (
-                <Tooltip
-                  content={`Tooltip positioned on ${position}`}
-                  getTrack={() => buttonRef.current}
-                  position={position}
-                  onEscape={() => setShowTooltip(false)}
-                  trackKey={`position-${position}`}
-                />
-              )}
-            </div>
-          </SpaceBetween>
-        </SpaceBetween>
-      </ScreenshotArea>
-    </Container>
-  );
-}
+//   return (
+//     <Container header={<Header variant="h2">Interactive Position Control</Header>}>
+//       <ScreenshotArea>
+//         <SpaceBetween size="m">
+//           <SpaceBetween direction="horizontal" size="l" alignItems="center">
+//             <SegmentedControl
+//               selectedId={position}
+//               onChange={({ detail }) => setPosition(detail.selectedId as 'top' | 'right' | 'bottom' | 'left')}
+//               options={[
+//                 { id: 'top', text: 'Top' },
+//                 { id: 'right', text: 'Right' },
+//                 { id: 'bottom', text: 'Bottom' },
+//                 { id: 'left', text: 'Left' },
+//               ]}
+//             />
+//             <div
+//               ref={buttonRef}
+//               onMouseEnter={() => setShowTooltip(true)}
+//               onMouseLeave={() => setShowTooltip(false)}
+//               style={{ display: 'inline-block' }}
+//             >
+//               <Button
+//                 variant="primary"
+//                 nativeButtonAttributes={{
+//                   onFocus: () => setShowTooltip(true),
+//                   onBlur: () => setShowTooltip(false),
+//                 }}
+//               >
+//                 Hover
+//               </Button>
+//               {showTooltip && (
+//                 <Tooltip
+//                   content={`Tooltip positioned on ${position}`}
+//                   getTrack={() => buttonRef.current}
+//                   position={position}
+//                   onEscape={() => setShowTooltip(false)}
+//                   trackKey={`position-${position}`}
+//                 />
+//               )}
+//             </div>
+//           </SpaceBetween>
+//         </SpaceBetween>
+//       </ScreenshotArea>
+//     </Container>
+//   );
+// }
 
-function TrackKeyBehaviorExample() {
-  // Example 1: undefined trackKey
-  const example1Ref = useRef<HTMLDivElement>(null);
-  const [show1, setShow1] = useState(false);
+// function TrackKeyBehaviorExample() {
+//   // Example 1: undefined trackKey
+//   const example1Ref = useRef<HTMLDivElement>(null);
+//   const [show1, setShow1] = useState(false);
 
-  // Example 2: trackKey changes every render
-  const example2Ref = useRef<HTMLDivElement>(null);
-  const [show2, setShow2] = useState(false);
-  const [renderCount, setRenderCount] = useState(0);
+//   // Example 2: trackKey changes every render
+//   const example2Ref = useRef<HTMLDivElement>(null);
+//   const [show2, setShow2] = useState(false);
+//   const [renderCount, setRenderCount] = useState(0);
 
-  // Example 3: different trackKeys, same element
-  const example4Ref = useRef<HTMLDivElement>(null);
-  const [show4, setShow4] = useState(false);
-  const [trackKey4, setTrackKey4] = useState('trackKey-A');
+//   // Example 3: different trackKeys, same element
+//   const example4Ref = useRef<HTMLDivElement>(null);
+//   const [show4, setShow4] = useState(false);
+//   const [trackKey4, setTrackKey4] = useState('trackKey-A');
 
-  return (
-    <Container header={<Header variant="h2">TrackKey Behavior</Header>}>
-      <ScreenshotArea>
-        <SpaceBetween size="l">
-          {/* Example 1: undefined trackKey (auto-generated) */}
-          <Container header={<Header variant="h3">1. Undefined TrackKey (Auto-Generated)</Header>}>
-            <SpaceBetween size="s">
-              {/* <Box fontSize="body-s">
-                <strong>Test:</strong> No explicit trackKey provided. Should auto-generate from string content.
-              </Box> */}
-              <div
-                ref={example1Ref}
-                onMouseEnter={() => setShow1(true)}
-                onMouseLeave={() => setShow1(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <Button
-                  variant="primary"
-                  nativeButtonAttributes={{
-                    onFocus: () => setShow1(true),
-                    onBlur: () => setShow1(false),
-                  }}
-                >
-                  Hover - no explicit trackKey
-                </Button>
-                {show1 && (
-                  <Tooltip
-                    content="Auto-generated trackKey from this string"
-                    getTrack={() => example1Ref.current}
-                    position="top"
-                    onEscape={() => setShow1(false)}
-                    // No trackKey prop - should auto-generate
-                  />
-                )}
-              </div>
-            </SpaceBetween>
-          </Container>
+//   return (
+//     <Container header={<Header variant="h2">TrackKey Behavior</Header>}>
+//       <ScreenshotArea>
+//         <SpaceBetween size="l">
+//           {/* Example 1: undefined trackKey (auto-generated) */}
+//           <Container header={<Header variant="h3">1. Undefined TrackKey (Auto-Generated)</Header>}>
+//             <SpaceBetween size="s">
+//               {/* <Box fontSize="body-s">
+//                 <strong>Test:</strong> No explicit trackKey provided. Should auto-generate from string content.
+//               </Box> */}
+//               <div
+//                 ref={example1Ref}
+//                 onMouseEnter={() => setShow1(true)}
+//                 onMouseLeave={() => setShow1(false)}
+//                 style={{ display: 'inline-block' }}
+//               >
+//                 <Button
+//                   variant="primary"
+//                   nativeButtonAttributes={{
+//                     onFocus: () => setShow1(true),
+//                     onBlur: () => setShow1(false),
+//                   }}
+//                 >
+//                   Hover - no explicit trackKey
+//                 </Button>
+//                 {show1 && (
+//                   <Tooltip
+//                     content="Auto-generated trackKey from this string"
+//                     getTrack={() => example1Ref.current}
+//                     position="top"
+//                     onEscape={() => setShow1(false)}
+//                     // No trackKey prop - should auto-generate
+//                   />
+//                 )}
+//               </div>
+//             </SpaceBetween>
+//           </Container>
 
-          {/* Example 2: trackKey changes every render */}
-          <Container header={<Header variant="h3">2. TrackKey Changes Every Render</Header>}>
-            <SpaceBetween size="s">
-              {/* <Box fontSize="body-s">
-                <strong>Test:</strong> TrackKey includes render count. Each render creates new tooltip instance.
-              </Box> */}
-              <SpaceBetween direction="horizontal" size="s">
-                <div
-                  ref={example2Ref}
-                  onMouseEnter={() => setShow2(true)}
-                  onMouseLeave={() => setShow2(false)}
-                  style={{ display: 'inline-block' }}
-                >
-                  <Button
-                    variant="primary"
-                    nativeButtonAttributes={{
-                      onFocus: () => setShow2(true),
-                      onBlur: () => setShow2(false),
-                    }}
-                  >
-                    Hover - trackKey changes per render
-                  </Button>
-                  {show2 && (
-                    <Tooltip
-                      content={`Render count: ${renderCount}`}
-                      getTrack={() => example2Ref.current}
-                      position="top"
-                      onEscape={() => setShow2(false)}
-                      trackKey={`render-${renderCount}`}
-                    />
-                  )}
-                </div>
-                <Button onClick={() => setRenderCount(renderCount + 1)}>Force Re-render ({renderCount})</Button>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Container>
+//           {/* Example 2: trackKey changes every render */}
+//           <Container header={<Header variant="h3">2. TrackKey Changes Every Render</Header>}>
+//             <SpaceBetween size="s">
+//               {/* <Box fontSize="body-s">
+//                 <strong>Test:</strong> TrackKey includes render count. Each render creates new tooltip instance.
+//               </Box> */}
+//               <SpaceBetween direction="horizontal" size="s">
+//                 <div
+//                   ref={example2Ref}
+//                   onMouseEnter={() => setShow2(true)}
+//                   onMouseLeave={() => setShow2(false)}
+//                   style={{ display: 'inline-block' }}
+//                 >
+//                   <Button
+//                     variant="primary"
+//                     nativeButtonAttributes={{
+//                       onFocus: () => setShow2(true),
+//                       onBlur: () => setShow2(false),
+//                     }}
+//                   >
+//                     Hover - trackKey changes per render
+//                   </Button>
+//                   {show2 && (
+//                     <Tooltip
+//                       content={`Render count: ${renderCount}`}
+//                       getTrack={() => example2Ref.current}
+//                       position="top"
+//                       onEscape={() => setShow2(false)}
+//                       trackKey={`render-${renderCount}`}
+//                     />
+//                   )}
+//                 </div>
+//                 <Button onClick={() => setRenderCount(renderCount + 1)}>Force Re-render ({renderCount})</Button>
+//               </SpaceBetween>
+//             </SpaceBetween>
+//           </Container>
 
-          {/* Example 3: different trackKeys, same element */}
-          <Container header={<Header variant="h3">3. Different TrackKeys, Same Element</Header>}>
-            <SpaceBetween size="s">
-              {/* <Box fontSize="body-s">
-                <strong>Test:</strong> Same button, but tooltip uses different trackKeys. Forces position recalculation.
-              </Box> */}
-              <SpaceBetween direction="horizontal" size="s">
-                <div
-                  ref={example4Ref}
-                  onMouseEnter={() => setShow4(true)}
-                  onMouseLeave={() => setShow4(false)}
-                  style={{ display: 'inline-block' }}
-                >
-                  <Button
-                    variant="primary"
-                    nativeButtonAttributes={{
-                      onFocus: () => setShow4(true),
-                      onBlur: () => setShow4(false),
-                    }}
-                  >
-                    Hover - trackKey switches
-                  </Button>
-                  {show4 && (
-                    <Tooltip
-                      content={`Using trackKey: ${trackKey4}`}
-                      getTrack={() => example4Ref.current}
-                      position="top"
-                      onEscape={() => setShow4(false)}
-                      trackKey={trackKey4}
-                    />
-                  )}
-                </div>
-                <Button onClick={() => setTrackKey4(trackKey4 === 'trackKey-A' ? 'trackKey-B' : 'trackKey-A')}>
-                  Switch TrackKey (Current: {trackKey4})
-                </Button>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Container>
+//           {/* Example 3: different trackKeys, same element */}
+//           <Container header={<Header variant="h3">3. Different TrackKeys, Same Element</Header>}>
+//             <SpaceBetween size="s">
+//               {/* <Box fontSize="body-s">
+//                 <strong>Test:</strong> Same button, but tooltip uses different trackKeys. Forces position recalculation.
+//               </Box> */}
+//               <SpaceBetween direction="horizontal" size="s">
+//                 <div
+//                   ref={example4Ref}
+//                   onMouseEnter={() => setShow4(true)}
+//                   onMouseLeave={() => setShow4(false)}
+//                   style={{ display: 'inline-block' }}
+//                 >
+//                   <Button
+//                     variant="primary"
+//                     nativeButtonAttributes={{
+//                       onFocus: () => setShow4(true),
+//                       onBlur: () => setShow4(false),
+//                     }}
+//                   >
+//                     Hover - trackKey switches
+//                   </Button>
+//                   {show4 && (
+//                     <Tooltip
+//                       content={`Using trackKey: ${trackKey4}`}
+//                       getTrack={() => example4Ref.current}
+//                       position="top"
+//                       onEscape={() => setShow4(false)}
+//                       trackKey={trackKey4}
+//                     />
+//                   )}
+//                 </div>
+//                 <Button onClick={() => setTrackKey4(trackKey4 === 'trackKey-A' ? 'trackKey-B' : 'trackKey-A')}>
+//                   Switch TrackKey (Current: {trackKey4})
+//                 </Button>
+//               </SpaceBetween>
+//             </SpaceBetween>
+//           </Container>
 
-          {/* Example 4: changing trackKey forces position recalc */}
-          {/* <Container header={<Header variant="h3">4. TrackKey Forces Position Recalculation</Header>}>
-            <SpaceBetween size="s">
-              <Box fontSize="body-s">
-                <strong>Test:</strong> When position changes, trackKey must change to force position recalculation.
-              </Box>
-              <SpaceBetween direction="horizontal" size="s">
-                <SegmentedControl
-                  selectedId={position5}
-                  onChange={({ detail }) => setPosition5(detail.selectedId as any)}
-                  options={[
-                    { id: 'top', text: 'Top' },
-                    { id: 'right', text: 'Right' },
-                    { id: 'bottom', text: 'Bottom' },
-                    { id: 'left', text: 'Left' },
-                  ]}
-                />
-                <div
-                  ref={example5Ref}
-                  onMouseEnter={() => setShow5(true)}
-                  onMouseLeave={() => setShow5(false)}
-                  style={{ display: 'inline-block' }}
-                >
-                  <Button variant="primary">Hover - trackKey includes position</Button>
-                  {show5 && (
-                    <Tooltip
-                      content={`Position: ${position5} (trackKey forces recalc)`}
-                      getTrack={() => example5Ref.current}
-                      position={position5}
-                      onEscape={() => setShow5(false)}
-                      trackKey={`position-recalc-${position5}`}
-                    />
-                  )}
-                </div>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Container> */}
-        </SpaceBetween>
-      </ScreenshotArea>
-    </Container>
-  );
-}
+//           {/* Example 4: changing trackKey forces position recalc */}
+//           {/* <Container header={<Header variant="h3">4. TrackKey Forces Position Recalculation</Header>}>
+//             <SpaceBetween size="s">
+//               <Box fontSize="body-s">
+//                 <strong>Test:</strong> When position changes, trackKey must change to force position recalculation.
+//               </Box>
+//               <SpaceBetween direction="horizontal" size="s">
+//                 <SegmentedControl
+//                   selectedId={position5}
+//                   onChange={({ detail }) => setPosition5(detail.selectedId as any)}
+//                   options={[
+//                     { id: 'top', text: 'Top' },
+//                     { id: 'right', text: 'Right' },
+//                     { id: 'bottom', text: 'Bottom' },
+//                     { id: 'left', text: 'Left' },
+//                   ]}
+//                 />
+//                 <div
+//                   ref={example5Ref}
+//                   onMouseEnter={() => setShow5(true)}
+//                   onMouseLeave={() => setShow5(false)}
+//                   style={{ display: 'inline-block' }}
+//                 >
+//                   <Button variant="primary">Hover - trackKey includes position</Button>
+//                   {show5 && (
+//                     <Tooltip
+//                       content={`Position: ${position5} (trackKey forces recalc)`}
+//                       getTrack={() => example5Ref.current}
+//                       position={position5}
+//                       onEscape={() => setShow5(false)}
+//                       trackKey={`position-recalc-${position5}`}
+//                     />
+//                   )}
+//                 </div>
+//               </SpaceBetween>
+//             </SpaceBetween>
+//           </Container> */}
+//         </SpaceBetween>
+//       </ScreenshotArea>
+//     </Container>
+//   );
+// }
 
 function EscapeKeyBehaviorExample() {
   // Test 1: Tooltip with modal open
@@ -449,226 +449,226 @@ function EscapeKeyBehaviorExample() {
   );
 }
 
-function ContentStressTestExample() {
-  // Test 1: Very long unbroken text
-  const longTextRef = useRef<HTMLDivElement>(null);
-  const [showLongText, setShowLongText] = useState(false);
+// function ContentStressTestExample() {
+//   // Test 1: Very long unbroken text
+//   const longTextRef = useRef<HTMLDivElement>(null);
+//   const [showLongText, setShowLongText] = useState(false);
 
-  // Test 2: Multiline with inline elements
-  const multilineRef = useRef<HTMLDivElement>(null);
-  const [showMultiline, setShowMultiline] = useState(false);
+//   // Test 2: Multiline with inline elements
+//   const multilineRef = useRef<HTMLDivElement>(null);
+//   const [showMultiline, setShowMultiline] = useState(false);
 
-  // Test 3: Very long URL
-  const urlRef = useRef<HTMLDivElement>(null);
-  const [showUrl, setShowUrl] = useState(false);
+//   // Test 3: Very long URL
+//   const urlRef = useRef<HTMLDivElement>(null);
+//   const [showUrl, setShowUrl] = useState(false);
 
-  // Test 4: Mixed content (text + code + lists + inline elements)
-  const mixedRef = useRef<HTMLDivElement>(null);
-  const [showMixed, setShowMixed] = useState(false);
+//   // Test 4: Mixed content (text + code + lists + inline elements)
+//   const mixedRef = useRef<HTMLDivElement>(null);
+//   const [showMixed, setShowMixed] = useState(false);
 
-  return (
-    <Container header={<Header variant="h2">Content</Header>}>
-      <ScreenshotArea>
-        <SpaceBetween size="l">
-          {/* Test 1: Very long unbroken text */}
-          <Container header={<Header variant="h3">1. Very Long Unbroken Text (No Spaces)</Header>}>
-            <SpaceBetween size="s">
-              <Box fontSize="body-s">
-                <strong>Test:</strong> Single word with 200+ characters. Should wrap or handle overflow gracefully.
-              </Box>
-              <div
-                ref={longTextRef}
-                onMouseEnter={() => setShowLongText(true)}
-                onMouseLeave={() => setShowLongText(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <Button
-                  variant="primary"
-                  nativeButtonAttributes={{
-                    onFocus: () => setShowLongText(true),
-                    onBlur: () => setShowLongText(false),
-                  }}
-                >
-                  Hover for unbroken text
-                </Button>
-                {showLongText && (
-                  <Tooltip
-                    content="verylongunbrokenwordwithnospacesthatshouldtestwrappingbehaviorandoverflowhandlinginthtooltipcomponentthisisaverylongstringthatgoeson andgoesandonandontotesttheedgecasesofcontentrendering"
-                    getTrack={() => longTextRef.current}
-                    position="top"
-                    onEscape={() => setShowLongText(false)}
-                    trackKey="unbroken-text"
-                  />
-                )}
-              </div>
-            </SpaceBetween>
-          </Container>
+//   return (
+//     <Container header={<Header variant="h2">Content</Header>}>
+//       <ScreenshotArea>
+//         <SpaceBetween size="l">
+//           {/* Test 1: Very long unbroken text */}
+//           <Container header={<Header variant="h3">1. Very Long Unbroken Text (No Spaces)</Header>}>
+//             <SpaceBetween size="s">
+//               <Box fontSize="body-s">
+//                 <strong>Test:</strong> Single word with 200+ characters. Should wrap or handle overflow gracefully.
+//               </Box>
+//               <div
+//                 ref={longTextRef}
+//                 onMouseEnter={() => setShowLongText(true)}
+//                 onMouseLeave={() => setShowLongText(false)}
+//                 style={{ display: 'inline-block' }}
+//               >
+//                 <Button
+//                   variant="primary"
+//                   nativeButtonAttributes={{
+//                     onFocus: () => setShowLongText(true),
+//                     onBlur: () => setShowLongText(false),
+//                   }}
+//                 >
+//                   Hover for unbroken text
+//                 </Button>
+//                 {showLongText && (
+//                   <Tooltip
+//                     content="verylongunbrokenwordwithnospacesthatshouldtestwrappingbehaviorandoverflowhandlinginthtooltipcomponentthisisaverylongstringthatgoeson andgoesandonandontotesttheedgecasesofcontentrendering"
+//                     getTrack={() => longTextRef.current}
+//                     position="top"
+//                     onEscape={() => setShowLongText(false)}
+//                     trackKey="unbroken-text"
+//                   />
+//                 )}
+//               </div>
+//             </SpaceBetween>
+//           </Container>
 
-          {/* Test 2: Multiline with inline elements */}
-          <Container header={<Header variant="h3">2. Multiline with Inline Elements</Header>}>
-            <SpaceBetween size="s">
-              <Box fontSize="body-s">
-                <strong>Test:</strong> Complex multiline content with mixed inline elements (strong, em, code, br).
-              </Box>
-              <div
-                ref={multilineRef}
-                onMouseEnter={() => setShowMultiline(true)}
-                onMouseLeave={() => setShowMultiline(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <Button
-                  variant="primary"
-                  nativeButtonAttributes={{
-                    onFocus: () => setShowMultiline(true),
-                    onBlur: () => setShowMultiline(false),
-                  }}
-                >
-                  Hover for multiline content
-                </Button>
-                {showMultiline && (
-                  <Tooltip
-                    content={
-                      <div style={{ maxWidth: '350px' }}>
-                        <strong>Bold Header Text</strong> followed by <em>italic emphasis</em> and regular text
-                        <br />
-                        <br />
-                        Line 2: <code style={{ background: '#f0f0f0', padding: '2px 4px' }}>
-                          inline code block
-                        </code>{' '}
-                        with more text after it
-                        <br />
-                        <br />
-                        Line 3: Mixed <strong>bold</strong>, <em>italic</em>,{' '}
-                        <code style={{ background: '#f0f0f0', padding: '2px 4px' }}>code</code>, and{' '}
-                        <a href="#" style={{ color: '#0073bb' }}>
-                          link
-                        </a>
-                        <br />
-                        <br />
-                        Line 4: Special characters &lt;&gt;&amp;&quot;&#39; and{' '}
-                        <span style={{ background: '#ff9900', padding: '2px 4px' }}>highlighted span</span>
-                      </div>
-                    }
-                    getTrack={() => multilineRef.current}
-                    position="top"
-                    onEscape={() => setShowMultiline(false)}
-                    trackKey="multiline-inline"
-                  />
-                )}
-              </div>
-            </SpaceBetween>
-          </Container>
+//           {/* Test 2: Multiline with inline elements */}
+//           <Container header={<Header variant="h3">2. Multiline with Inline Elements</Header>}>
+//             <SpaceBetween size="s">
+//               <Box fontSize="body-s">
+//                 <strong>Test:</strong> Complex multiline content with mixed inline elements (strong, em, code, br).
+//               </Box>
+//               <div
+//                 ref={multilineRef}
+//                 onMouseEnter={() => setShowMultiline(true)}
+//                 onMouseLeave={() => setShowMultiline(false)}
+//                 style={{ display: 'inline-block' }}
+//               >
+//                 <Button
+//                   variant="primary"
+//                   nativeButtonAttributes={{
+//                     onFocus: () => setShowMultiline(true),
+//                     onBlur: () => setShowMultiline(false),
+//                   }}
+//                 >
+//                   Hover for multiline content
+//                 </Button>
+//                 {showMultiline && (
+//                   <Tooltip
+//                     content={
+//                       <div style={{ maxWidth: '350px' }}>
+//                         <strong>Bold Header Text</strong> followed by <em>italic emphasis</em> and regular text
+//                         <br />
+//                         <br />
+//                         Line 2: <code style={{ background: '#f0f0f0', padding: '2px 4px' }}>
+//                           inline code block
+//                         </code>{' '}
+//                         with more text after it
+//                         <br />
+//                         <br />
+//                         Line 3: Mixed <strong>bold</strong>, <em>italic</em>,{' '}
+//                         <code style={{ background: '#f0f0f0', padding: '2px 4px' }}>code</code>, and{' '}
+//                         <a href="#" style={{ color: '#0073bb' }}>
+//                           link
+//                         </a>
+//                         <br />
+//                         <br />
+//                         Line 4: Special characters &lt;&gt;&amp;&quot;&#39; and{' '}
+//                         <span style={{ background: '#ff9900', padding: '2px 4px' }}>highlighted span</span>
+//                       </div>
+//                     }
+//                     getTrack={() => multilineRef.current}
+//                     position="top"
+//                     onEscape={() => setShowMultiline(false)}
+//                     trackKey="multiline-inline"
+//                   />
+//                 )}
+//               </div>
+//             </SpaceBetween>
+//           </Container>
 
-          {/* Test 3: Very long URL */}
-          <Container header={<Header variant="h3">3. Very Long URL/Path (Unbroken)</Header>}>
-            <SpaceBetween size="s">
-              <Box fontSize="body-s">
-                <strong>Test:</strong> Long URL with no natural break points. Should handle word-break appropriately.
-              </Box>
-              <div
-                ref={urlRef}
-                onMouseEnter={() => setShowUrl(true)}
-                onMouseLeave={() => setShowUrl(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <Button
-                  variant="primary"
-                  nativeButtonAttributes={{
-                    onFocus: () => setShowUrl(true),
-                    onBlur: () => setShowUrl(false),
-                  }}
-                >
-                  Hover for long URL
-                </Button>
-                {showUrl && (
-                  <Tooltip
-                    content={
-                      <div style={{ maxWidth: '300px', wordBreak: 'break-all' }}>
-                        https://example-domain-name.com/very/long/path/with/many/segments/that/continues/for/a/very/long/time/and/includes/query/parameters?param1=verylongvalue&param2=anotherlongvalue&param3=yetanotherlongparametervalue
-                      </div>
-                    }
-                    getTrack={() => urlRef.current}
-                    position="top"
-                    onEscape={() => setShowUrl(false)}
-                    trackKey="long-url"
-                  />
-                )}
-              </div>
-            </SpaceBetween>
-          </Container>
+//           {/* Test 3: Very long URL */}
+//           <Container header={<Header variant="h3">3. Very Long URL/Path (Unbroken)</Header>}>
+//             <SpaceBetween size="s">
+//               <Box fontSize="body-s">
+//                 <strong>Test:</strong> Long URL with no natural break points. Should handle word-break appropriately.
+//               </Box>
+//               <div
+//                 ref={urlRef}
+//                 onMouseEnter={() => setShowUrl(true)}
+//                 onMouseLeave={() => setShowUrl(false)}
+//                 style={{ display: 'inline-block' }}
+//               >
+//                 <Button
+//                   variant="primary"
+//                   nativeButtonAttributes={{
+//                     onFocus: () => setShowUrl(true),
+//                     onBlur: () => setShowUrl(false),
+//                   }}
+//                 >
+//                   Hover for long URL
+//                 </Button>
+//                 {showUrl && (
+//                   <Tooltip
+//                     content={
+//                       <div style={{ maxWidth: '300px', wordBreak: 'break-all' }}>
+//                         https://example-domain-name.com/very/long/path/with/many/segments/that/continues/for/a/very/long/time/and/includes/query/parameters?param1=verylongvalue&param2=anotherlongvalue&param3=yetanotherlongparametervalue
+//                       </div>
+//                     }
+//                     getTrack={() => urlRef.current}
+//                     position="top"
+//                     onEscape={() => setShowUrl(false)}
+//                     trackKey="long-url"
+//                   />
+//                 )}
+//               </div>
+//             </SpaceBetween>
+//           </Container>
 
-          {/* Test 4: Mixed content stress */}
-          <Container header={<Header variant="h3">4. Mixed Content Stress Test</Header>}>
-            <SpaceBetween size="s">
-              <Box fontSize="body-s">
-                <strong>Test:</strong> Combination of text, code blocks, lists, and inline elements in one tooltip.
-              </Box>
-              <div
-                ref={mixedRef}
-                onMouseEnter={() => setShowMixed(true)}
-                onMouseLeave={() => setShowMixed(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <Button
-                  variant="primary"
-                  nativeButtonAttributes={{
-                    onFocus: () => setShowMixed(true),
-                    onBlur: () => setShowMixed(false),
-                  }}
-                >
-                  Hover for mixed content
-                </Button>
-                {showMixed && (
-                  <Tooltip
-                    content={
-                      <div style={{ maxWidth: '320px' }}>
-                        <strong>Configuration Required:</strong>
-                        <br />
-                        <br />
-                        Set the following parameters:
-                        <ul style={{ margin: '8px 0', paddingLeft: '20px' }}>
-                          <li>
-                            <code style={{ background: '#f0f0f0', padding: '2px 4px' }}>region</code>: AWS region code
-                          </li>
-                          <li>
-                            <code style={{ background: '#f0f0f0', padding: '2px 4px' }}>accessKeyId</code>: Your access
-                            key
-                          </li>
-                          <li>
-                            <code style={{ background: '#f0f0f0', padding: '2px 4px' }}>secretAccessKey</code>:{' '}
-                            <em>Keep secret!</em>
-                          </li>
-                        </ul>
-                        <strong>Example:</strong>
-                        <br />
-                        <code
-                          style={{
-                            display: 'block',
-                            padding: '8px',
-                            background: '#232f3e',
-                            color: '#fff',
-                            fontSize: '11px',
-                            marginTop: '4px',
-                          }}
-                        >
-                          region: &quot;us-west-2&quot;
-                        </code>
-                      </div>
-                    }
-                    getTrack={() => mixedRef.current}
-                    position="top"
-                    onEscape={() => setShowMixed(false)}
-                    trackKey="mixed-content"
-                  />
-                )}
-              </div>
-            </SpaceBetween>
-          </Container>
-        </SpaceBetween>
-      </ScreenshotArea>
-    </Container>
-  );
-}
+//           {/* Test 4: Mixed content stress */}
+//           <Container header={<Header variant="h3">4. Mixed Content Stress Test</Header>}>
+//             <SpaceBetween size="s">
+//               <Box fontSize="body-s">
+//                 <strong>Test:</strong> Combination of text, code blocks, lists, and inline elements in one tooltip.
+//               </Box>
+//               <div
+//                 ref={mixedRef}
+//                 onMouseEnter={() => setShowMixed(true)}
+//                 onMouseLeave={() => setShowMixed(false)}
+//                 style={{ display: 'inline-block' }}
+//               >
+//                 <Button
+//                   variant="primary"
+//                   nativeButtonAttributes={{
+//                     onFocus: () => setShowMixed(true),
+//                     onBlur: () => setShowMixed(false),
+//                   }}
+//                 >
+//                   Hover for mixed content
+//                 </Button>
+//                 {showMixed && (
+//                   <Tooltip
+//                     content={
+//                       <div style={{ maxWidth: '320px' }}>
+//                         <strong>Configuration Required:</strong>
+//                         <br />
+//                         <br />
+//                         Set the following parameters:
+//                         <ul style={{ margin: '8px 0', paddingLeft: '20px' }}>
+//                           <li>
+//                             <code style={{ background: '#f0f0f0', padding: '2px 4px' }}>region</code>: AWS region code
+//                           </li>
+//                           <li>
+//                             <code style={{ background: '#f0f0f0', padding: '2px 4px' }}>accessKeyId</code>: Your access
+//                             key
+//                           </li>
+//                           <li>
+//                             <code style={{ background: '#f0f0f0', padding: '2px 4px' }}>secretAccessKey</code>:{' '}
+//                             <em>Keep secret!</em>
+//                           </li>
+//                         </ul>
+//                         <strong>Example:</strong>
+//                         <br />
+//                         <code
+//                           style={{
+//                             display: 'block',
+//                             padding: '8px',
+//                             background: '#232f3e',
+//                             color: '#fff',
+//                             fontSize: '11px',
+//                             marginTop: '4px',
+//                           }}
+//                         >
+//                           region: &quot;us-west-2&quot;
+//                         </code>
+//                       </div>
+//                     }
+//                     getTrack={() => mixedRef.current}
+//                     position="top"
+//                     onEscape={() => setShowMixed(false)}
+//                     trackKey="mixed-content"
+//                   />
+//                 )}
+//               </div>
+//             </SpaceBetween>
+//           </Container>
+//         </SpaceBetween>
+//       </ScreenshotArea>
+//     </Container>
+//   );
+// }
 
 function DisabledActionsExample() {
   const deleteWrapperRef = useRef<HTMLDivElement>(null);
