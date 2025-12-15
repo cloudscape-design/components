@@ -30,7 +30,7 @@ function renderTooltip(props: Partial<TooltipProps>) {
       getTrack={props.getTrack ?? (() => null)}
       trackKey={props.trackKey}
       content={props.content ?? ''}
-      onEscape={props.onEscape ?? (() => {})}
+      onEscape={props.onEscape}
     />
   );
   return new TooltipInternalWrapper(container);

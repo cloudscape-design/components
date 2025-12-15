@@ -94,7 +94,7 @@ function InteractivePositionControlExample() {
                   onBlur: () => setShowTooltip(false),
                 }}
               >
-                Hover me
+                Hover
               </Button>
               {showTooltip && (
                 <Tooltip
