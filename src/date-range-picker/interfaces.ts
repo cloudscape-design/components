@@ -581,7 +581,7 @@ export namespace DateRangePickerProps {
 
     /**
      * Placeholder text for time inputs in absolute mode.
-     * Should match the expected time format (e.g., "hh:mm:ss", "HH:MM:SS").
+     * Should match the expected time format (for example "hh:mm:ss", "HH:MM:SS").
      * Used for both start and end time inputs.
      * @i18n
      */
