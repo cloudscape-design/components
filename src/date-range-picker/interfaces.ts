@@ -573,7 +573,7 @@ export namespace DateRangePickerProps {
 
     /**
      * Placeholder text for date inputs in absolute mode.
-     * Should match the expected date format (e.g., "YYYY-MM-DD", "JJJJ-MM-TT" for German).
+     * Should match the expected date format (for example "YYYY-MM-DD", "JJJJ-MM-TT" for German).
      * Used for both start and end date inputs.
      * @i18n
      */
