@@ -1220,6 +1220,34 @@ describe('toolbar mode only features', () => {
           findDrawerHeaderActionById('add', renderProps)!.click();
           expect(onHeaderActionClick).toHaveBeenCalledWith({ id: 'add' });
         });
+
+        test('propagates iconSvg / pressedIconSvg as html content for headerActions', async () => {
+          registerDrawer({
+            ...drawerDefaults,
+            id: 'global-drawer',
+            headerActions: [
+              {
+                type: 'icon-button',
+                id: 'add',
+                iconSvg: `<rect data-testid="custom-icon" />`,
+                text: 'Add',
+              },
+              {
+                type: 'icon-toggle-button',
+                id: 'add',
+                pressed: true,
+                iconSvg: `<rect data-testid="custom-icon-non-pressed" />`,
+                pressedIconSvg: `<rect data-testid="custom-icon-pressed" />`,
+                text: 'Add',
+              },
+            ],
+          });
+          const renderProps = await renderComponent(<AppLayout />);
+          const { wrapper } = renderProps;
+          findDrawerTriggerById('global-drawer', renderProps)!.click();
+          expect(wrapper.find('[data-testid="custom-icon"]')).toBeTruthy();
+          expect(wrapper.find('[data-testid="custom-icon-pressed"]')).toBeTruthy();
+        });
       });
     });
 

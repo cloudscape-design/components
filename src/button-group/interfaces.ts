@@ -112,6 +112,24 @@ export interface InternalIconToggleButton extends ButtonGroupProps.IconToggleBut
   analyticsAction?: string;
 }
 
+export interface IconButtonRuntime extends Omit<ButtonGroupProps.IconButton, 'iconSvg' | 'popoverFeedback'> {
+  iconSvg?: string;
+}
+export interface IconToggleButtonRuntime
+  extends Omit<
+    ButtonGroupProps.IconToggleButton,
+    'iconSvg' | 'pressedIconSvg' | 'popoverFeedback' | 'pressedPopoverFeedback'
+  > {
+  iconSvg?: string;
+  pressedIconSvg?: string;
+}
+export type ItemOrGroupRuntime = ItemRuntime | ButtonGroupProps.Group;
+export type ItemRuntime =
+  | IconButtonRuntime
+  | IconToggleButtonRuntime
+  | ButtonGroupProps.IconFileInput
+  | ButtonGroupProps.MenuDropdown;
+
 export type InternalItemOrGroup = InternalItem | ButtonGroupProps.Group;
 export type InternalItem =
   | InternalIconButton
