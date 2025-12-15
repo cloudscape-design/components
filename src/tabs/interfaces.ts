@@ -3,6 +3,7 @@
 import { ButtonProps } from '../button/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { FocusRingStyle } from '../internal/types';
 
 export interface TabsProps extends BaseComponentProps {
   /**
@@ -221,11 +222,7 @@ export namespace TabsProps {
       };
       fontSize?: string;
       fontWeight?: string;
-      focusRing?: {
-        borderColor?: string;
-        borderRadius?: string;
-        borderWidth?: string;
-      };
+      focusRing?: FocusRingStyle;
       paddingBlock?: string;
       paddingInline?: string;
       underline?: {
