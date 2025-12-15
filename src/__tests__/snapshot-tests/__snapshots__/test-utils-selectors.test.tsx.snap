@@ -456,6 +456,12 @@ exports[`test-utils selectors 1`] = `
     "awsui_page-number_fvjdu",
     "awsui_root_fvjdu",
   ],
+  "panel-layout": [
+    "awsui_content_119z0",
+    "awsui_panel_119z0",
+    "awsui_root_119z0",
+    "awsui_slider_119z0",
+  ],
   "pie-chart": [
     "awsui_inner-content_1edmh",
     "awsui_label--highlighted_1edmh",

@@ -61,6 +61,7 @@ import ModalWrapper from './modal';
 import MultiselectWrapper from './multiselect';
 import NavigableGroupWrapper from './navigable-group';
 import PaginationWrapper from './pagination';
+import PanelLayoutWrapper from './panel-layout';
 import PieChartWrapper from './pie-chart';
 import PopoverWrapper from './popover';
 import ProgressBarWrapper from './progress-bar';
@@ -148,6 +149,7 @@ export { ModalWrapper };
 export { MultiselectWrapper };
 export { NavigableGroupWrapper };
 export { PaginationWrapper };
+export { PanelLayoutWrapper };
 export { PieChartWrapper };
 export { PopoverWrapper };
 export { ProgressBarWrapper };
@@ -1173,6 +1175,25 @@ findPagination(selector?: string): PaginationWrapper | null;
  * @returns {Array<PaginationWrapper>}
  */
 findAllPaginations(selector?: string): Array<PaginationWrapper>;
+/**
+ * Returns the wrapper of the first PanelLayout that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first PanelLayout.
+ * If no matching PanelLayout is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {PanelLayoutWrapper | null}
+ */
+findPanelLayout(selector?: string): PanelLayoutWrapper | null;
+
+/**
+ * Returns an array of PanelLayout wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the PanelLayouts inside the current wrapper.
+ * If no matching PanelLayout is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<PanelLayoutWrapper>}
+ */
+findAllPanelLayouts(selector?: string): Array<PanelLayoutWrapper>;
 /**
  * Returns the wrapper of the first PieChart that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first PieChart.
@@ -2480,6 +2501,19 @@ ElementWrapper.prototype.findPagination = function(selector) {
 ElementWrapper.prototype.findAllPaginations = function(selector) {
   return this.findAllComponents(PaginationWrapper, selector);
 };
+ElementWrapper.prototype.findPanelLayout = function(selector) {
+  let rootSelector = \`.\${PanelLayoutWrapper.rootSelector}\`;
+  if("legacyRootSelector" in PanelLayoutWrapper && PanelLayoutWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${PanelLayoutWrapper.rootSelector}, .\${PanelLayoutWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PanelLayoutWrapper);
+};
+
+ElementWrapper.prototype.findAllPanelLayouts = function(selector) {
+  return this.findAllComponents(PanelLayoutWrapper, selector);
+};
 ElementWrapper.prototype.findPieChart = function(selector) {
   let rootSelector = \`.\${PieChartWrapper.rootSelector}\`;
   if("legacyRootSelector" in PieChartWrapper && PieChartWrapper.legacyRootSelector){
@@ -2981,6 +3015,7 @@ import ModalWrapper from './modal';
 import MultiselectWrapper from './multiselect';
 import NavigableGroupWrapper from './navigable-group';
 import PaginationWrapper from './pagination';
+import PanelLayoutWrapper from './panel-layout';
 import PieChartWrapper from './pie-chart';
 import PopoverWrapper from './popover';
 import ProgressBarWrapper from './progress-bar';
@@ -3068,6 +3103,7 @@ export { ModalWrapper };
 export { MultiselectWrapper };
 export { NavigableGroupWrapper };
 export { PaginationWrapper };
+export { PanelLayoutWrapper };
 export { PieChartWrapper };
 export { PopoverWrapper };
 export { ProgressBarWrapper };
@@ -3989,6 +4025,23 @@ findPagination(selector?: string): PaginationWrapper;
  * @returns {MultiElementWrapper<PaginationWrapper>}
  */
 findAllPaginations(selector?: string): MultiElementWrapper<PaginationWrapper>;
+/**
+ * Returns a wrapper that matches the PanelLayouts with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches PanelLayouts.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {PanelLayoutWrapper}
+ */
+findPanelLayout(selector?: string): PanelLayoutWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches PanelLayouts with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches PanelLayouts.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<PanelLayoutWrapper>}
+ */
+findAllPanelLayouts(selector?: string): MultiElementWrapper<PanelLayoutWrapper>;
 /**
  * Returns a wrapper that matches the PieCharts with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches PieCharts.
@@ -5229,6 +5282,19 @@ ElementWrapper.prototype.findPagination = function(selector) {
 
 ElementWrapper.prototype.findAllPaginations = function(selector) {
   return this.findAllComponents(PaginationWrapper, selector);
+};
+ElementWrapper.prototype.findPanelLayout = function(selector) {
+  let rootSelector = \`.\${PanelLayoutWrapper.rootSelector}\`;
+  if("legacyRootSelector" in PanelLayoutWrapper && PanelLayoutWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${PanelLayoutWrapper.rootSelector}, .\${PanelLayoutWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PanelLayoutWrapper);
+};
+
+ElementWrapper.prototype.findAllPanelLayouts = function(selector) {
+  return this.findAllComponents(PanelLayoutWrapper, selector);
 };
 ElementWrapper.prototype.findPieChart = function(selector) {
   let rootSelector = \`.\${PieChartWrapper.rootSelector}\`;

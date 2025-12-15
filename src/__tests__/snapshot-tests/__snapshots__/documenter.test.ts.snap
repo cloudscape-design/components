@@ -18000,6 +18000,219 @@ never disabled. When the user clicks on it but there are no more items to show, 
 }
 `;
 
+exports[`Components definition for panel-layout matches the snapshot: panel-layout 1`] = `
+{
+  "dashCaseName": "panel-layout",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user resizes the panel.",
+      "detailInlineType": {
+        "name": "PanelLayoutProps.PanelResizeDetail",
+        "properties": [
+          {
+            "name": "panelSize",
+            "optional": false,
+            "type": "number",
+          },
+          {
+            "name": "totalSize",
+            "optional": false,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "PanelLayoutProps.PanelResizeDetail",
+      "name": "onPanelResize",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Focuses the resize handle of the panel layout.",
+      "name": "focusResizeHandle",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "PanelLayout",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Initial panel size, for uncontrolled behavior.
+
+The actual size may vary, depending on \`minPanelSize\` and \`maxPanelSize\`.",
+      "name": "defaultPanelSize",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "defaultValue": "'all'",
+      "description": "Determines which content is displayed:
+- 'all': Both panel and main content are displayed.
+- 'panel-only': Only panel is displayed.
+- 'main-only': Only main content is displayed.",
+      "inlineType": {
+        "name": "PanelLayoutProps.Display",
+        "type": "union",
+        "values": [
+          "all",
+          "panel-only",
+          "main-only",
+        ],
+      },
+      "name": "display",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "PanelLayoutProps.I18nStrings",
+        "properties": [
+          {
+            "name": "resizeHandleAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "resizeHandleTooltipText",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "PanelLayoutProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Makes the main content area focusable. This should be used if there are no focusable elements
+inside the content, to ensure it is keyboard scrollable.
+
+Provide either \`{ariaLabel: "Main label"}\` or \`{ariaLabelledby: "main-label-id"}\`",
+      "inlineType": {
+        "name": "PanelLayoutProps.FocusableConfig",
+        "properties": [
+          {
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "ariaLabelledby",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "mainFocusable",
+      "optional": true,
+      "type": "PanelLayoutProps.FocusableConfig",
+    },
+    {
+      "description": "The maximum size of the panel.",
+      "name": "maxPanelSize",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "The minimum size of the panel.",
+      "name": "minPanelSize",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Makes the panel content focusable. This should be used if there are no focusable elements
+inside the panel, to ensure it is keyboard scrollable.
+
+Provide either \`{ariaLabel: "Panel label"}\` or \`{ariaLabelledby: "panel-label-id"}\`",
+      "inlineType": {
+        "name": "PanelLayoutProps.FocusableConfig",
+        "properties": [
+          {
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "ariaLabelledby",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "panelFocusable",
+      "optional": true,
+      "type": "PanelLayoutProps.FocusableConfig",
+    },
+    {
+      "defaultValue": "'side-start'",
+      "description": "Position of the panel with respect to the main content",
+      "inlineType": {
+        "name": "PanelLayoutProps.PanelPosition",
+        "type": "union",
+        "values": [
+          "side-start",
+          "side-end",
+        ],
+      },
+      "name": "panelPosition",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Size of the panel. If provided, and panel is resizable, the component is controlled,
+so you must also provide \`onPanelResize\`.
+
+The actual size may vary, depending on \`minPanelSize\` and \`maxPanelSize\`.",
+      "name": "panelSize",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Indicates whether the panel is resizable.",
+      "name": "resizable",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Main content area displayed next to the panel.",
+      "isDefault": false,
+      "name": "mainContent",
+    },
+    {
+      "description": "Panel contents.",
+      "isDefault": false,
+      "name": "panelContent",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for pie-chart matches the snapshot: pie-chart 1`] = `
 {
   "dashCaseName": "pie-chart",
@@ -37487,6 +37700,54 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "description": "Returns the wrapper for the main content element.",
+          "name": "findMainContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the wrapper for the panel element.",
+          "name": "findPanelContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the wrapper for the resize handle element.
+Returns null if the panel layout is not resizable.",
+          "name": "findResizeHandle",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "PanelLayoutWrapper",
+    },
+    {
+      "methods": [
+        {
           "description": "Returns a focusable element that controls keyboard interactions.",
           "name": "findApplication",
           "parameters": [],
@@ -46660,6 +46921,39 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
         },
       ],
       "name": "NavigableGroupWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the wrapper for the main content element.",
+          "name": "findMainContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the wrapper for the panel element.",
+          "name": "findPanelContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the wrapper for the resize handle element.
+Returns null if the panel layout is not resizable.",
+          "name": "findResizeHandle",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "PanelLayoutWrapper",
     },
     {
       "methods": [

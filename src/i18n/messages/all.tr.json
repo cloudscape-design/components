@@ -242,6 +242,10 @@
     "ariaLabels.pageLabel": "Sayfa {pageNumber}/tüm sayfalar",
     "ariaLabels.previousPageLabel": "Önceki sayfa"
   },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "Panel yeniden boyutlandırma tutamacı",
+    "i18nStrings.resizeHandleTooltipText": "Yeniden boyutlandırmak için sürükleyin veya seçin"
+  },
   "pie-chart": {
     "i18nStrings.detailsValue": "Değer",
     "i18nStrings.detailsPercentage": "Yüzde",

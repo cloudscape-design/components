@@ -180,6 +180,10 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Refresh to try again. We are tracking this issue, but you can share <Feedback>more information here</Feedback>.} other {Refresh to try again.}}",
     "i18nStrings.refreshActionText": "Refresh page"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Latest feature releases",
+    "i18nStrings.viewAll": "View all feature releases"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Show fewer",
     "i18nStrings.limitShowMore": "Show more",
@@ -241,6 +245,10 @@
     "ariaLabels.nextPageLabel": "Next page",
     "ariaLabels.pageLabel": "Page {pageNumber} of all pages",
     "ariaLabels.previousPageLabel": "Previous page"
+  },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "Panel resize handle",
+    "i18nStrings.resizeHandleTooltipText": "Drag or select to resize"
   },
   "pie-chart": {
     "i18nStrings.detailsValue": "Value",
