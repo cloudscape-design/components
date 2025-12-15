@@ -51,7 +51,7 @@ export default function SelectPage() {
 
   return (
     <SimplePage title="Select with custom item renderer" screenshotArea={{}}>
-      <div style={{ width: '400px' }}>
+      <div style={{ inlineSize: '400px' }}>
         <Select
           filteringType="auto"
           renderOption={renderOption}
