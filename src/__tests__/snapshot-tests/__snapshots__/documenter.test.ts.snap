@@ -23357,7 +23357,7 @@ For more information, see the
       "type": "SelectProps.ContainingOptionAndGroupString",
     },
     {
-      "description": "Specifies a render function to render custom options in the dropdown menu.",
+      "description": "Specifies a render function to render custom options in the dropdown menu or trigger.",
       "inlineType": {
         "name": "SelectProps.SelectOptionItemRenderer",
         "parameters": [
