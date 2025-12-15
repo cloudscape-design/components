@@ -59,7 +59,7 @@ th:not(:last-child) > .divider-disabled {
 }
 
 // stylelint-disable-next-line selector-combinator-disallowed-list
-th:last-child > .resizer-wrapper.is-borderless .divider-interactive {
+th:last-child > .resizer-wrapper.visual-refresh.is-borderless .divider-interactive {
   inset-inline-end: 0;
 }
 

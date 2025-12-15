@@ -323,7 +323,11 @@ export function Resizer({
     <div
       // When the table is borderless (works in visual refresh tables only), the last resize handle must not
       // exceed table's edges, as it causes an unintended overflow otherwise.
-      className={clsx(styles['resizer-wrapper'], (!isVisualRefresh || isBorderless) && styles['is-borderless'])}
+      className={clsx(
+        styles['resizer-wrapper'],
+        isVisualRefresh && styles['visual-refresh'],
+        (!isVisualRefresh || isBorderless) && styles['is-borderless']
+      )}
       ref={positioningWrapperRef}
     >
       <DragHandleWrapper
