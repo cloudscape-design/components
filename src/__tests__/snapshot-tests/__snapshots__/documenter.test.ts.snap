@@ -25666,7 +25666,7 @@ need to introduce friction to the switching of tabs.",
                 },
                 {
                   "inlineType": {
-                    "name": "object",
+                    "name": "FocusRingStyle",
                     "properties": [
                       {
                         "name": "borderColor",
@@ -25688,7 +25688,7 @@ need to introduce friction to the switching of tabs.",
                   },
                   "name": "focusRing",
                   "optional": true,
-                  "type": "{ borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; }",
+                  "type": "FocusRingStyle",
                 },
                 {
                   "name": "fontSize",
