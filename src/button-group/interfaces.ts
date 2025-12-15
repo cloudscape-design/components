@@ -112,10 +112,14 @@ export interface InternalIconToggleButton extends ButtonGroupProps.IconToggleBut
   analyticsAction?: string;
 }
 
-export interface IconButtonRuntime extends Omit<ButtonGroupProps.IconButton, 'iconSvg'> {
+export interface IconButtonRuntime extends Omit<ButtonGroupProps.IconButton, 'iconSvg' | 'popoverFeedback'> {
   iconSvg?: string;
 }
-export interface IconToggleButtonRuntime extends Omit<ButtonGroupProps.IconToggleButton, 'iconSvg' | 'pressedIconSvg'> {
+export interface IconToggleButtonRuntime
+  extends Omit<
+    ButtonGroupProps.IconToggleButton,
+    'iconSvg' | 'pressedIconSvg' | 'popoverFeedback' | 'pressedPopoverFeedback'
+  > {
   iconSvg?: string;
   pressedIconSvg?: string;
 }

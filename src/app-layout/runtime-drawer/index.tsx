@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useRef } from 'react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-
-import { ButtonGroupProps, ItemOrGroupRuntime, ItemRuntime } from '../../button-group/interfaces';
+import { ButtonGroupProps, ItemRuntime } from '../../button-group/interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
 import {
   DrawerConfig as RuntimeDrawerConfig,
@@ -83,21 +81,9 @@ function RuntimeDrawerHeader({ mountHeader, unmountHeader }: RuntimeContentHeade
   return <div className={styles['runtime-header-wrapper']} ref={ref} />;
 }
 
-function checkForUnsupportedProps(headerActions: ReadonlyArray<ItemOrGroupRuntime>) {
-  const unsupportedProps = new Set(['popoverFeedback', 'popoverFeedback', 'pressedPopoverFeedback']);
-  for (const item of headerActions) {
-    const unsupported = Object.keys(item).filter(key => unsupportedProps.has(key));
-    if (unsupported.length > 0) {
-      warnOnce('AppLayout', `The headerActions properties are not supported for runtime api: ${unsupported.join(' ')}`);
-    }
-  }
-  return headerActions;
-}
-
 function mapRuntimeHeaderActionsToHeaderActions(
   runtimeHeaderActions: ReadonlyArray<ItemRuntime>
 ): ReadonlyArray<ButtonGroupProps.Item> {
-  checkForUnsupportedProps(runtimeHeaderActions);
   return runtimeHeaderActions.map(runtimeHeaderAction => {
     return {
       ...runtimeHeaderAction,
