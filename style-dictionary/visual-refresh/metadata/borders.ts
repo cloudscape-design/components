@@ -139,6 +139,31 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthIconSmall: {
+    description: 'The visual stroke width of small icons.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthIconNormal: {
+    description: 'The visual stroke width of normal icons.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthIconMedium: {
+    description: 'The visual stroke width of medium icons.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthIconBig: {
+    description: 'The visual stroke width of big icons.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthIconLarge: {
+    description: 'The visual stroke width of large icons.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;

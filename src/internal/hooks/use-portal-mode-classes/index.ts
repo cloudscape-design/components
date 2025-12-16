@@ -9,7 +9,7 @@ import { useVisualContext } from '../../components/visual-context';
 import { ALWAYS_VISUAL_REFRESH } from '../../environment';
 import { useVisualRefresh } from '../use-visual-mode';
 
-export function usePortalModeClasses(ref: React.RefObject<HTMLElement>) {
+export function usePortalModeClasses(ref: React.RefObject<HTMLElement>, options?: { resetVisualContext?: boolean }) {
   const colorMode = useCurrentMode(ref);
   const densityMode = useDensityMode(ref);
   const context = useVisualContext(ref);
@@ -19,6 +19,6 @@ export function usePortalModeClasses(ref: React.RefObject<HTMLElement>) {
     'awsui-polaris-dark-mode awsui-dark-mode': colorMode === 'dark',
     'awsui-polaris-compact-mode awsui-compact-mode': densityMode === 'compact',
     'awsui-visual-refresh': visualRefreshWithClass,
-    [`awsui-context-${context}`]: context,
+    [`awsui-context-${context}`]: context && !options?.resetVisualContext,
   });
 }

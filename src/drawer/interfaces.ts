@@ -38,6 +38,14 @@ export interface DrawerProps extends BaseComponentProps {
    * Actions for the header. Available only if you specify the `header` property.
    */
   headerActions?: React.ReactNode;
+
+  /**
+   * Sticky footer content that remains visible at the bottom during scroll.
+   *
+   * Automatically becomes non-sticky when scrollable content area is too small
+   * to ensure content remains accessible (not covered by the footer).
+   */
+  footer?: React.ReactNode;
 }
 
 interface I18nStrings {

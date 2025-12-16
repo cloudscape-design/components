@@ -4,21 +4,11 @@ import merge from 'lodash/merge.js';
 
 import { expandColorDictionary } from '../../utils/index.js';
 import { StyleDictionary } from '../../utils/interfaces.js';
+import { sharedTokens } from '../../visual-refresh/contexts/flashbar.js';
 import { tokens as parentTokens } from '../colors.js';
 
-const tokens = {
-  colorBorderItemFocused: '{colorNeutral100}',
-  colorTextExpandableSectionDefault: '{colorNeutral100}',
-  colorTextExpandableSectionHover: '{colorNeutral100}',
-  colorTextBodyDefault: '{colorNeutral100}',
-  colorTextHeadingSecondary: '{colorNeutral100}',
-  colorBorderDividerDefault: '{colorNeutral100}',
-  colorTextTutorialHotspotDefault: '{colorNeutral300}',
-  colorTextTutorialHotspotHover: '{colorNeutral100}',
-};
-
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
-  merge({}, parentTokens, tokens)
+  merge({}, parentTokens, sharedTokens)
 );
 
 export { expandedTokens as tokens };

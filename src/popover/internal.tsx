@@ -130,7 +130,7 @@ function InternalPopover(
     };
   }, []);
 
-  const popoverClasses = usePortalModeClasses(triggerRef);
+  const popoverClasses = usePortalModeClasses(triggerRef, { resetVisualContext: true });
 
   const triggerProps = {
     // https://github.com/microsoft/TypeScript/issues/36659
