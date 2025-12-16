@@ -11,6 +11,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 // Rounded with background
 const style1 = {
   container: {
+    // container styling is tested in pages/container/style-custom.page.tsx
     root: {
       borderRadius: '0px',
     },
@@ -61,12 +62,6 @@ const style1 = {
 
 // Border colors with background
 const style2 = {
-  container: {
-    // All container properties are tested in pages/container/style-custom.page.tsx
-    root: {
-      borderRadius: '0px',
-    },
-  },
   tab: {
     backgroundColor: {
       default: 'light-dark(#fef3c7, #422006)',
@@ -86,7 +81,7 @@ const style2 = {
       default: 'light-dark(#92400e, #fef3c7)',
       hover: 'light-dark(#78350f, #fef9e7)',
       active: 'light-dark(#451a03, #ffffff)',
-      disabled: 'light-dark(#d1d5db, #78350f)',
+      disabled: 'light-dark(#cbd5e1, #b5b1a3ff)',
     },
     fontSize: '14px',
     fontWeight: '600',
