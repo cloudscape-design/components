@@ -8,6 +8,7 @@ import {
   FeatureNotificationsPayload,
   RegisterDrawerMessage,
   RegisterFeatureNotificationsMessage,
+  WidgetMessage,
 } from './interfaces';
 
 /**
@@ -17,7 +18,7 @@ import {
 export function registerLeftDrawer(drawer: DrawerPayload) {
   const message: RegisterDrawerMessage = { type: 'registerLeftDrawer', payload: drawer };
   pushInitialMessage(message);
-  getAppLayoutMessageHandler()?.(message);
+  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
 }
 
 /**
@@ -27,27 +28,27 @@ export function registerLeftDrawer(drawer: DrawerPayload) {
 export function registerBottomDrawer(drawer: DrawerPayload) {
   const message: RegisterDrawerMessage = { type: 'registerBottomDrawer', payload: { ...drawer, position: 'bottom' } };
   pushInitialMessage(message);
-  getAppLayoutMessageHandler()?.(message);
+  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
 }
 
 /**
  * Registers a new feature notifications runtime drawer to app layout
  * @param payload
  */
-export function registerFeatureNotifications(payload: FeatureNotificationsPayload) {
-  const message: RegisterFeatureNotificationsMessage = {
+export function registerFeatureNotifications<T>(payload: FeatureNotificationsPayload<T>) {
+  const message: RegisterFeatureNotificationsMessage<T> = {
     type: 'registerFeatureNotifications',
     payload,
   };
   pushInitialMessage(message);
-  getAppLayoutMessageHandler()?.(message);
+  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
 }
 
 /**
  * Interact with already registered app layout drawers
  * @param message
  */
-export function updateDrawer(message: AppLayoutUpdateMessage) {
+export function updateDrawer<T = unknown>(message: AppLayoutUpdateMessage<T>) {
   if (message.type === 'updateDrawerConfig') {
     getAppLayoutInitialMessages().forEach(initialMessage => {
       if (initialMessage.payload.id === message.payload.id) {
@@ -55,7 +56,7 @@ export function updateDrawer(message: AppLayoutUpdateMessage) {
       }
     });
   }
-  getAppLayoutMessageHandler()?.(message);
+  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
 }
 
 /**

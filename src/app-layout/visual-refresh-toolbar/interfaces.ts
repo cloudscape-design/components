@@ -8,7 +8,7 @@ import { ButtonGroupProps } from '../../button-group/interfaces';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { FeaturePromptProps } from '../../internal/do-not-use/feature-prompt';
 import { NonCancelableEventHandler } from '../../internal/events';
-import { Feature } from '../../internal/plugins/widget/interfaces';
+import { Feature, MountContentPart } from '../../internal/plugins/widget/interfaces';
 import { SomeOptional } from '../../internal/types';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
@@ -30,7 +30,8 @@ export type InternalDrawer = AppLayoutProps.Drawer & {
   onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
   position?: 'side' | 'bottom';
   onToggleFocusMode?: NonCancelableEventHandler<{ isExpanded: boolean }>;
-  __features?: Array<Feature>;
+  __features?: Array<Feature<unknown>>;
+  __mountFeatureItem?: MountContentPart<unknown>;
 };
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.

@@ -4,7 +4,7 @@ import { ButtonGroupProps, ItemRuntime } from '../../../button-group/interfaces'
 import debounce from '../../debounce';
 import { NonCancelableEventHandler } from '../../events';
 import { reportRuntimeApiWarning } from '../helpers/metrics';
-import { Feature } from '../widget/interfaces';
+import { Feature, MountContentPart } from '../widget/interfaces';
 
 type DrawerVisibilityChange = (callback: (isVisible: boolean) => void) => void;
 
@@ -46,7 +46,8 @@ export interface DrawerConfig {
   headerActions?: ReadonlyArray<ItemRuntime>;
   onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
   // Do not use directly
-  __features?: Array<Feature>;
+  __features?: Array<Feature<unknown>>;
+  __mountFeatureItem?: MountContentPart<unknown>;
   __featuresPageLink?: string;
   __suppressFeaturePrompt?: boolean;
 }
