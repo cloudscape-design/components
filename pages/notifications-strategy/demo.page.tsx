@@ -115,7 +115,7 @@ registerFeatureNotifications({
           Event coverage
         </Box>
       ),
-      date: 'November 1, 2025',
+      date: '2025-11-29',
     },
     {
       id: '2',
@@ -136,7 +136,7 @@ registerFeatureNotifications({
           </Box>
         </>
       ),
-      date: 'July 28, 2025',
+      date: '2025-12-01',
     },
     {
       id: '3',
@@ -151,6 +151,7 @@ registerFeatureNotifications({
         </>
       ),
       contentCategory: <Badge>Operational investigations</Badge>,
+      date: '2025-12-02',
     },
   ],
   mountItem: (container, data) => {

@@ -62,7 +62,7 @@ export interface Feature<T> {
   header: T;
   content: T;
   contentCategory?: T;
-  date?: string;
+  date: string;
 }
 
 export interface FeatureNotificationsPayload<T> {
@@ -71,6 +71,10 @@ export interface FeatureNotificationsPayload<T> {
   features: Array<Feature<T>>;
   mountItem: MountContentPart<T>;
   featuresPageLink?: string;
+  filterFeatures?: (value: Feature<T>) => boolean;
+  i18nStrings?: {
+    viewAll?: string;
+  };
 }
 
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;

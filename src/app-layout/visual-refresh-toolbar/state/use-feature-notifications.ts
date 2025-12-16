@@ -53,6 +53,18 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
   function featureNotificationsMessageHandler(event: WidgetMessage) {
     if (event.type === 'registerFeatureNotifications') {
       const payload = event.payload;
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      const features = payload.features
+        .slice()
+        .filter(
+          payload.filterFeatures
+            ? payload.filterFeatures
+            : feature => {
+                return new Date(feature.date) >= thirtyDaysAgo;
+              }
+        )
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       setSuppressedFeaturePrompt(payload.suppressFeaturePrompt ?? false);
       // TODO pass correct properties
       awsuiPlugins.appLayout.registerDrawer({
@@ -72,7 +84,7 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
         mountContent: () => {},
         unmountContent: () => {},
 
-        __features: payload.features,
+        __features: features,
         __mountFeatureItem: payload.mountItem,
         __featuresPageLink: payload.featuresPageLink,
       });

@@ -17,6 +17,7 @@ import {
   Feature,
   MountContentPart,
 } from '../../internal/plugins/widget/interfaces';
+import { formatDate } from '../../internal/utils/date-time';
 import Link from '../../link/internal';
 import List from '../../list/internal';
 import { AppLayoutProps } from '../interfaces';
@@ -117,7 +118,7 @@ function RuntimeFeaturesNotificationDrawer<T>({
               <>
                 {!!item.date && (
                   <Box margin={{ top: 'xs' }} fontSize="body-s" color="text-body-secondary">
-                    {item.date}
+                    {formatDate(new Date(item.date))}
                   </Box>
                 )}
                 {!!item.contentCategory && (
