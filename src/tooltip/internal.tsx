@@ -31,7 +31,6 @@ export default function InternalTooltip({
 }: InternalTooltipComponentProps) {
   const baseProps = getBaseProps(restProps);
   const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
-  const [isVisible, setIsVisible] = React.useState(true);
 
   // Update the ref with the current tracked element
   React.useEffect(() => {
@@ -67,13 +66,8 @@ export default function InternalTooltip({
   }, [onEscape]);
 
   const handleDismissOnScroll = React.useCallback(() => {
-    setIsVisible(false);
     fireNonCancelableEvent(__onDismissOnScroll);
   }, [__onDismissOnScroll]);
-
-  if (!isVisible) {
-    return null;
-  }
 
   return (
     <Portal>
