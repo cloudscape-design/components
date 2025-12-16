@@ -73,6 +73,7 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
         unmountContent: () => {},
 
         __features: payload.features,
+        __mountFeatureItem: payload.mountItem,
         __featuresPageLink: payload.featuresPageLink,
       });
       return;

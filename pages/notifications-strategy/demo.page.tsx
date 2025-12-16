@@ -100,99 +100,64 @@ registerFeatureNotifications({
   features: [
     {
       id: '1',
-      mountHeader: container => {
-        mount(<Box fontWeight="bold">New feature, events with more resource tags</Box>, container);
-
-        return () => unmount(container);
-      },
-      mountContent: container => {
-        mount(
-          <>
-            <Box variant="p">
-              You can now enrich CloudTrail events with additional information by adding resources tags and IAM global
-              keys in CloudTrail lake.{' '}
-              <Link external={true} href="https://amazon.com">
-                Learn more
-              </Link>
-            </Box>
-          </>,
-          container
-        );
-
-        return () => unmount(container);
-      },
-      mountContentCategory: container => {
-        mount(
-          <Box fontSize="body-s" color="text-label">
-            Event coverage
-          </Box>,
-          container
-        );
-
-        return () => unmount(container);
-      },
+      header: <Box fontWeight="bold">New feature, events with more resource tags</Box>,
+      content: (
+        <Box variant="p">
+          You can now enrich CloudTrail events with additional information by adding resources tags and IAM global keys
+          in CloudTrail lake.{' '}
+          <Link external={true} href="https://amazon.com">
+            Learn more
+          </Link>
+        </Box>
+      ),
+      contentCategory: (
+        <Box fontSize="body-s" color="text-label">
+          Event coverage
+        </Box>
+      ),
       date: 'November 1, 2025',
     },
     {
       id: '2',
-      mountHeader: container => {
-        mount(
-          <Box fontWeight="bold">Enhanced filtering options for CloudTrail events ingested into event data stores</Box>,
-          container
-        );
-
-        return () => unmount(container);
-      },
-      mountContent: container => {
-        mount(
-          <>
-            <Box variant="p">
-              More enhanced filtering options provide tighter control over your AWS activity data, improving the
-              efficiency and precision of security, compliance, and operational investigations.{' '}
-              <Link external={true} href="https://amazon.com">
-                View user guide
-              </Link>
-            </Box>
-            <Box margin={{ top: 'xs' }}>
-              <Button>Create an Enhanced trail</Button>
-            </Box>
-          </>,
-          container
-        );
-
-        return () => unmount(container);
-      },
+      header: (
+        <Box fontWeight="bold">Enhanced filtering options for CloudTrail events ingested into event data stores</Box>
+      ),
+      content: (
+        <>
+          <Box variant="p">
+            More enhanced filtering options provide tighter control over your AWS activity data, improving the
+            efficiency and precision of security, compliance, and operational investigations.{' '}
+            <Link external={true} href="https://amazon.com">
+              View user guide
+            </Link>
+          </Box>
+          <Box margin={{ top: 'xs' }}>
+            <Button>Create an Enhanced trail</Button>
+          </Box>
+        </>
+      ),
       date: 'July 28, 2025',
     },
     {
       id: '3',
-      mountHeader: container => {
-        mount(<Box fontWeight="bold">Introducing Application Map</Box>, container);
-
-        return () => unmount(container);
-      },
-      mountContent: container => {
-        mount(
-          <>
-            <Box variant="p">
-              Use application map to automatically discover and organize your services into groups based on your
-              business needs. Identify root cause faster instead of troubleshooting isolated symptoms with operational
-              signals such as SLOs, health indicators, and top insights in a contextual drawer.{' '}
-              <Link href="#">Learn more</Link>
-            </Box>
-          </>,
-          container
-        );
-
-        return () => unmount(container);
-      },
-      mountContentCategory: container => {
-        mount(<Badge>Operational investigations</Badge>, container);
-
-        return () => unmount(container);
-      },
+      header: <Box fontWeight="bold">Introducing Application Map</Box>,
+      content: (
+        <>
+          <Box variant="p">
+            Use application map to automatically discover and organize your services into groups based on your business
+            needs. Identify root cause faster instead of troubleshooting isolated symptoms with operational signals such
+            as SLOs, health indicators, and top insights in a contextual drawer. <Link href="#">Learn more</Link>
+          </Box>
+        </>
+      ),
+      contentCategory: <Badge>Operational investigations</Badge>,
     },
   ],
+  mountItem: (container, data) => {
+    mount(data, container);
+
+    return () => unmount(container);
+  },
 });
 
 export default function () {

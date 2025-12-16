@@ -158,7 +158,7 @@ export function DrawerTriggers({
 
   return (
     <>
-      {!!mostRecentFeature && featurePromptRef && (
+      {!!mostRecentFeature && featurePromptRef && featureNotificationsDrawer?.__mountFeatureItem && (
         <FeaturePrompt
           ref={featurePromptRef}
           onShow={() => {
@@ -173,8 +173,18 @@ export function DrawerTriggers({
             }
             featureNotificationTriggerRef!.dataset!.awsuiSuppressTooltip = 'false';
           }}
-          header={<RuntimeContentPart mountContent={mostRecentFeature.mountHeader} />}
-          content={<RuntimeContentPart mountContent={mostRecentFeature.mountContent} />}
+          header={
+            <RuntimeContentPart
+              mountContent={featureNotificationsDrawer.__mountFeatureItem!}
+              content={mostRecentFeature.header}
+            />
+          }
+          content={
+            <RuntimeContentPart
+              mountContent={featureNotificationsDrawer.__mountFeatureItem!}
+              content={mostRecentFeature.content}
+            />
+          }
           trackKey={mostRecentFeature.id}
           position="left"
           getTrack={() => featureNotificationTriggerRef}

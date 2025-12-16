@@ -55,25 +55,29 @@ export interface DrawerPayload {
 }
 
 type Destructor = () => void;
-export type MountContentPart = (container: HTMLElement) => Destructor | void;
+export type MountContentPart<T> = (container: HTMLElement, data: T) => Destructor | void;
 
-export interface Feature {
+export interface Feature<T> {
   id: string;
-  mountHeader: MountContentPart;
-  mountContent: MountContentPart;
-  mountContentCategory?: MountContentPart;
+  header: T;
+  content: T;
+  contentCategory?: T;
   date?: string;
 }
 
-export interface FeatureNotificationsPayload {
+export interface FeatureNotificationsPayload<T> {
   id: string;
   suppressFeaturePrompt?: boolean;
-  features: Array<Feature>;
+  features: Array<Feature<T>>;
+  mountItem: MountContentPart<T>;
   featuresPageLink?: string;
 }
 
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;
-export type RegisterFeatureNotificationsMessage = Message<'registerFeatureNotifications', FeatureNotificationsPayload>;
+export type RegisterFeatureNotificationsMessage<T> = Message<
+  'registerFeatureNotifications',
+  FeatureNotificationsPayload<T>
+>;
 export type UpdateDrawerConfigMessage = Message<
   'updateDrawerConfig',
   Pick<DrawerPayload, 'id'> &
@@ -90,16 +94,16 @@ export interface ShowFeaturePromptIfPossible {
   type: 'showFeaturePromptIfPossible';
 }
 
-export type AppLayoutUpdateMessage =
+export type AppLayoutUpdateMessage<T = unknown> =
   | UpdateDrawerConfigMessage
   | OpenDrawerMessage
   | CloseDrawerMessage
   | ResizeDrawerMessage
   | ExpandDrawerMessage
   | ExitExpandedModeMessage
-  | RegisterFeatureNotificationsMessage
+  | RegisterFeatureNotificationsMessage<T>
   | ShowFeaturePromptIfPossible;
 
-export type InitialMessage = RegisterDrawerMessage | RegisterFeatureNotificationsMessage;
+export type InitialMessage<T> = RegisterDrawerMessage | RegisterFeatureNotificationsMessage<T>;
 
-export type WidgetMessage = InitialMessage | AppLayoutUpdateMessage;
+export type WidgetMessage<T = unknown> = InitialMessage<T> | AppLayoutUpdateMessage<T>;

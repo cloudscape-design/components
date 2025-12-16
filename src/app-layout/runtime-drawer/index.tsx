@@ -12,7 +12,11 @@ import {
   DrawerStateChangeParams,
 } from '../../internal/plugins/controllers/drawers';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
-import { DrawerPayload as RuntimeAiDrawerConfig, Feature } from '../../internal/plugins/widget/interfaces';
+import {
+  DrawerPayload as RuntimeAiDrawerConfig,
+  Feature,
+  MountContentPart,
+} from '../../internal/plugins/widget/interfaces';
 import Link from '../../link/internal';
 import List from '../../list/internal';
 import { AppLayoutProps } from '../interfaces';
@@ -23,7 +27,7 @@ import styles from './styles.css.js';
 export interface RuntimeDrawer extends AppLayoutProps.Drawer {
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   position?: 'side' | 'bottom';
-  __features?: Array<Feature>;
+  __features?: Array<Feature<unknown>>;
 }
 
 export interface DrawersLayout {
@@ -67,17 +71,17 @@ function RuntimeDrawerWrapper({ mountContent, unmountContent, id }: RuntimeConte
   return <div ref={ref} className={styles['runtime-content-wrapper']} data-awsui-runtime-drawer-root-id={id}></div>;
 }
 
-type Destructor = () => void;
-interface RuntimeContentPartProps {
-  mountContent: (container: HTMLElement) => Destructor | void;
+interface RuntimeContentPartProps<T> {
+  mountContent: MountContentPart<T>;
+  content: T;
 }
 
-export function RuntimeContentPart({ mountContent }: RuntimeContentPartProps) {
+export function RuntimeContentPart<T>({ content, mountContent }: RuntimeContentPartProps<T>) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const container = ref.current!;
-    const destructor = mountContent(container);
+    const destructor = mountContent(container, content);
 
     return () => {
       destructor?.();
@@ -88,11 +92,13 @@ export function RuntimeContentPart({ mountContent }: RuntimeContentPartProps) {
   return <div ref={ref} />;
 }
 
-function RuntimeFeaturesNotificationDrawer({
+function RuntimeFeaturesNotificationDrawer<T>({
   features,
+  mountItem,
   featuresPageLink,
 }: {
-  features: Array<Feature>;
+  features: Array<Feature<T>>;
+  mountItem: MountContentPart<T>;
   featuresPageLink?: string;
 }) {
   return (
@@ -106,7 +112,7 @@ function RuntimeFeaturesNotificationDrawer({
           items={features}
           renderItem={item => ({
             id: item.id,
-            content: <RuntimeContentPart mountContent={item.mountHeader} />,
+            content: <RuntimeContentPart mountContent={mountItem} content={item.header} />,
             secondaryContent: (
               <>
                 {!!item.date && (
@@ -114,13 +120,13 @@ function RuntimeFeaturesNotificationDrawer({
                     {item.date}
                   </Box>
                 )}
-                {!!item.mountContentCategory && (
+                {!!item.contentCategory && (
                   <Box margin={{ top: 'xs' }}>
-                    <RuntimeContentPart mountContent={item.mountContentCategory} />
+                    <RuntimeContentPart mountContent={mountItem} content={item.contentCategory} />
                   </Box>
                 )}
                 <Box margin={{ top: 'xs' }}>
-                  <RuntimeContentPart mountContent={item.mountContent} />
+                  <RuntimeContentPart mountContent={mountItem} content={item.content} />
                 </Box>
               </>
             ),
@@ -184,10 +190,17 @@ const convertRuntimeTriggerToReactNode = (runtimeTrigger?: string) => {
 };
 
 const renderContent = (runtimeConfig: RuntimeDrawerConfig) => {
-  const { mountContent, unmountContent, __features, __featuresPageLink, ...runtimeDrawer } = runtimeConfig;
+  const { mountContent, unmountContent, __features, __featuresPageLink, __mountFeatureItem, ...runtimeDrawer } =
+    runtimeConfig;
 
-  if (__features && __features.length > 0) {
-    return <RuntimeFeaturesNotificationDrawer features={__features} featuresPageLink={__featuresPageLink} />;
+  if (__features && __features.length > 0 && __mountFeatureItem) {
+    return (
+      <RuntimeFeaturesNotificationDrawer
+        features={__features}
+        featuresPageLink={__featuresPageLink}
+        mountItem={__mountFeatureItem}
+      />
+    );
   }
 
   return (
