@@ -10,7 +10,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 // Rounded with background
 const style1 = {
-  tabs: {
+  tab: {
     backgroundColor: {
       default: 'light-dark(#f1f5f9, #1e293b)',
       hover: 'light-dark(#dbeafe, #1e3a8a)',
@@ -58,7 +58,7 @@ const style1 = {
 
 // Border colors with background
 const style2 = {
-  tabs: {
+  tab: {
     backgroundColor: {
       default: 'light-dark(#fef3c7, #422006)',
       hover: 'light-dark(#fde68a, #713f12)',

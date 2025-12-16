@@ -9,7 +9,7 @@ jest.mock('../../internal/environment', () => ({
 }));
 
 const testStyles = {
-  tabs: {
+  tab: {
     borderRadius: '4px',
     borderWidth: '2px',
     fontSize: '16px',

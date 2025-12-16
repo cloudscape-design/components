@@ -10,27 +10,27 @@ export function getTabStyles(style: TabsProps['style']) {
   }
 
   return {
-    borderRadius: style?.tabs?.borderRadius,
-    borderWidth: style?.tabs?.borderWidth,
-    fontSize: style?.tabs?.fontSize,
-    fontWeight: style?.tabs?.fontWeight,
-    paddingBlock: style?.tabs?.paddingBlock,
-    paddingInline: style?.tabs?.paddingInline,
-    [customCssProps.styleBackgroundActive]: style?.tabs?.backgroundColor?.active,
-    [customCssProps.styleBackgroundDefault]: style?.tabs?.backgroundColor?.default,
-    [customCssProps.styleBackgroundDisabled]: style?.tabs?.backgroundColor?.disabled,
-    [customCssProps.styleBackgroundHover]: style?.tabs?.backgroundColor?.hover,
-    [customCssProps.styleBorderColorActive]: style?.tabs?.borderColor?.active,
-    [customCssProps.styleBorderColorDefault]: style?.tabs?.borderColor?.default,
-    [customCssProps.styleBorderColorDisabled]: style?.tabs?.borderColor?.disabled,
-    [customCssProps.styleBorderColorHover]: style?.tabs?.borderColor?.hover,
-    [customCssProps.styleColorActive]: style?.tabs?.color?.active,
-    [customCssProps.styleColorDefault]: style?.tabs?.color?.default,
-    [customCssProps.styleColorDisabled]: style?.tabs?.color?.disabled,
-    [customCssProps.styleColorHover]: style?.tabs?.color?.hover,
-    [customCssProps.styleFocusRingBorderColor]: style?.tabs?.focusRing?.borderColor,
-    [customCssProps.styleFocusRingBorderRadius]: style?.tabs?.focusRing?.borderRadius,
-    [customCssProps.styleFocusRingBorderWidth]: style?.tabs?.focusRing?.borderWidth,
+    borderRadius: style?.tab?.borderRadius,
+    borderWidth: style?.tab?.borderWidth,
+    fontSize: style?.tab?.fontSize,
+    fontWeight: style?.tab?.fontWeight,
+    paddingBlock: style?.tab?.paddingBlock,
+    paddingInline: style?.tab?.paddingInline,
+    [customCssProps.styleBackgroundActive]: style?.tab?.backgroundColor?.active,
+    [customCssProps.styleBackgroundDefault]: style?.tab?.backgroundColor?.default,
+    [customCssProps.styleBackgroundDisabled]: style?.tab?.backgroundColor?.disabled,
+    [customCssProps.styleBackgroundHover]: style?.tab?.backgroundColor?.hover,
+    [customCssProps.styleBorderColorActive]: style?.tab?.borderColor?.active,
+    [customCssProps.styleBorderColorDefault]: style?.tab?.borderColor?.default,
+    [customCssProps.styleBorderColorDisabled]: style?.tab?.borderColor?.disabled,
+    [customCssProps.styleBorderColorHover]: style?.tab?.borderColor?.hover,
+    [customCssProps.styleColorActive]: style?.tab?.color?.active,
+    [customCssProps.styleColorDefault]: style?.tab?.color?.default,
+    [customCssProps.styleColorDisabled]: style?.tab?.color?.disabled,
+    [customCssProps.styleColorHover]: style?.tab?.color?.hover,
+    [customCssProps.styleFocusRingBorderColor]: style?.tab?.focusRing?.borderColor,
+    [customCssProps.styleFocusRingBorderRadius]: style?.tab?.focusRing?.borderRadius,
+    [customCssProps.styleFocusRingBorderWidth]: style?.tab?.focusRing?.borderWidth,
   };
 }
 
@@ -40,9 +40,9 @@ export function getTabContainerStyles(style: TabsProps['style']) {
   }
 
   return {
-    [customCssProps.styleTabsUnderlineColor]: style?.tabs?.underline?.color,
-    [customCssProps.styleTabsUnderlineWidth]: style?.tabs?.underline?.width,
-    [customCssProps.styleTabsUnderlineBorderRadius]: style?.tabs?.underline?.borderRadius,
+    [customCssProps.styleTabsUnderlineColor]: style?.tab?.underline?.color,
+    [customCssProps.styleTabsUnderlineWidth]: style?.tab?.underline?.width,
+    [customCssProps.styleTabsUnderlineBorderRadius]: style?.tab?.underline?.borderRadius,
     [customCssProps.styleTabsSeparatorColor]: style?.tabSeparator?.color,
     [customCssProps.styleTabsSeparatorWidth]: style?.tabSeparator?.width,
   };

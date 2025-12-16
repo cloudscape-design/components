@@ -199,7 +199,7 @@ export namespace TabsProps {
   }
 
   export interface Style {
-    tabs?: {
+    tab?: {
       backgroundColor?: {
         active?: string;
         default?: string;
