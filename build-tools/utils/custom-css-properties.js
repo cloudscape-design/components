@@ -116,8 +116,6 @@ const customCssPropertiesList = [
   'styleTabsActiveIndicatorBorderRadius',
   'styleTabsSeparatorColor',
   'styleTabsSeparatorWidth',
-  'styleTabsHeaderBorderColor',
-  'styleTabsHeaderBorderWidth',
   // Alert focus ring properties
   'alertFocusRingBorderColor',
   'alertFocusRingBorderRadius',

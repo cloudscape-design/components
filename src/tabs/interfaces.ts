@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ButtonProps } from '../button/interfaces';
+import { ContainerProps } from '../container/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { FocusRingStyle } from '../internal/types';
@@ -199,6 +200,7 @@ export namespace TabsProps {
   }
 
   export interface Style {
+    container?: ContainerProps.Style;
     tab?: {
       backgroundColor?: {
         active?: string;
@@ -232,10 +234,6 @@ export namespace TabsProps {
       };
     };
     tabSeparator?: {
-      color?: string;
-      width?: string;
-    };
-    headerBorder?: {
       color?: string;
       width?: string;
     };

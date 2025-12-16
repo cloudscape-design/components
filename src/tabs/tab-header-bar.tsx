@@ -39,7 +39,7 @@ import {
   onPaginationClick,
   scrollIntoView,
 } from './scroll-utils';
-import { getTabContainerStyles, getTabHeaderStyles, getTabStyles } from './styles';
+import { getTabContainerStyles, getTabStyles } from './styles';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -326,7 +326,7 @@ export function TabHeaderBar({
   const TabList = hasActionOrDismissible ? 'div' : 'ul';
 
   return (
-    <div className={classes} style={getTabHeaderStyles(style)}>
+    <div className={classes}>
       <div className={styles['tab-header-scroll-container']} ref={containerRef}>
         {horizontalOverflow && (
           <span ref={inlineStartOverflowButton} className={leftButtonClasses}>

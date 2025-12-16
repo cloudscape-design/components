@@ -286,8 +286,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 }
 
 .tabs-header-with-divider {
-  border-block-end: var(#{custom-props.$styleTabsHeaderBorderWidth}, awsui.$border-divider-section-width) solid
-    var(#{custom-props.$styleTabsHeaderBorderColor}, $separator-color);
+  border-block-end: awsui.$border-divider-section-width solid $separator-color;
 }
 
 .tabs-tab-focusable {

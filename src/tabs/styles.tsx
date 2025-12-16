@@ -47,14 +47,3 @@ export function getTabContainerStyles(style: TabsProps['style']) {
     [customCssProps.styleTabsSeparatorWidth]: style?.tabSeparator?.width,
   };
 }
-
-export function getTabHeaderStyles(style: TabsProps['style']) {
-  if (SYSTEM !== 'core') {
-    return undefined;
-  }
-
-  return {
-    [customCssProps.styleTabsHeaderBorderColor]: style?.headerBorder?.color,
-    [customCssProps.styleTabsHeaderBorderWidth]: style?.headerBorder?.width,
-  };
-}

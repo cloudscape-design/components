@@ -171,6 +171,7 @@ export default function Tabs({
         variant={variant === 'stacked' ? 'stacked' : 'default'}
         fitHeight={fitHeight}
         {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })}
+        style={style?.container}
       >
         {content()}
       </InternalContainer>

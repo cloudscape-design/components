@@ -25538,24 +25538,145 @@ need to introduce friction to the switching of tabs.",
         "properties": [
           {
             "inlineType": {
-              "name": "{ color?: string | undefined; width?: string | undefined; }",
+              "name": "ContainerProps.Style",
               "properties": [
                 {
-                  "name": "color",
+                  "inlineType": {
+                    "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "paddingBlock",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "paddingInline",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "content",
                   "optional": true,
-                  "type": "string",
+                  "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
                 },
                 {
-                  "name": "width",
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "inlineType": {
+                          "name": "{ borderColor?: string | undefined; borderWidth?: string | undefined; }",
+                          "properties": [
+                            {
+                              "name": "borderColor",
+                              "optional": true,
+                              "type": "string",
+                            },
+                            {
+                              "name": "borderWidth",
+                              "optional": true,
+                              "type": "string",
+                            },
+                          ],
+                          "type": "object",
+                        },
+                        "name": "divider",
+                        "optional": false,
+                        "type": "{ borderColor?: string | undefined; borderWidth?: string | undefined; }",
+                      },
+                      {
+                        "inlineType": {
+                          "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                          "properties": [
+                            {
+                              "name": "paddingBlock",
+                              "optional": true,
+                              "type": "string",
+                            },
+                            {
+                              "name": "paddingInline",
+                              "optional": true,
+                              "type": "string",
+                            },
+                          ],
+                          "type": "object",
+                        },
+                        "name": "root",
+                        "optional": false,
+                        "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "footer",
                   "optional": true,
-                  "type": "string",
+                  "type": "{ root: { paddingBlock?: string | undefined; paddingInline?: string | undefined; }; divider: { borderColor?: string | undefined; borderWidth?: string | undefined; }; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "paddingBlock",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "paddingInline",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "header",
+                  "optional": true,
+                  "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "background",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderColor",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderRadius",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderWidth",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "boxShadow",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "root",
+                  "optional": true,
+                  "type": "{ background?: string | undefined; borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; boxShadow?: string | undefined; }",
                 },
               ],
               "type": "object",
             },
-            "name": "headerBorder",
+            "name": "container",
             "optional": true,
-            "type": "{ color?: string | undefined; width?: string | undefined; }",
+            "type": "ContainerProps.Style",
           },
           {
             "inlineType": {

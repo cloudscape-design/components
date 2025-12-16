@@ -10,6 +10,11 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 // Rounded with background
 const style1 = {
+  container: {
+    root: {
+      borderRadius: '0px',
+    },
+  },
   tab: {
     backgroundColor: {
       default: 'light-dark(#f1f5f9, #1e293b)',
@@ -48,14 +53,20 @@ const style1 = {
     color: 'light-dark(#e2e8f0, #334155)',
     width: '1px',
   },
-  headerBorder: {
-    color: 'light-dark(#cbd5e1, #475569)',
-    width: '1px',
+  header: {
+    borderColor: 'light-dark(#cbd5e1, #475569)',
+    borderWidth: '2px',
   },
 };
 
 // Border colors with background
 const style2 = {
+  container: {
+    // All container properties are tested in pages/container/style-custom.page.tsx
+    root: {
+      borderRadius: '0px',
+    },
+  },
   tab: {
     backgroundColor: {
       default: 'light-dark(#fef3c7, #422006)',
@@ -94,10 +105,6 @@ const style2 = {
   },
   tabSeparator: {
     color: 'light-dark(#fde68a, #78350f)',
-    width: '2px',
-  },
-  headerBorder: {
-    color: 'light-dark(#fde047, #92400e)',
     width: '2px',
   },
 };
