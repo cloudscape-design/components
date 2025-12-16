@@ -25563,6 +25563,32 @@ need to introduce friction to the switching of tabs.",
               "properties": [
                 {
                   "inlineType": {
+                    "name": "{ color?: string | undefined; width?: string | undefined; borderRadius?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "borderRadius",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "color",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "width",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "activeIndicator",
+                  "optional": true,
+                  "type": "{ color?: string | undefined; width?: string | undefined; borderRadius?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
                     "name": "object",
                     "properties": [
                       {
@@ -25709,32 +25735,6 @@ need to introduce friction to the switching of tabs.",
                   "name": "paddingInline",
                   "optional": true,
                   "type": "string",
-                },
-                {
-                  "inlineType": {
-                    "name": "{ color?: string | undefined; width?: string | undefined; borderRadius?: string | undefined; }",
-                    "properties": [
-                      {
-                        "name": "borderRadius",
-                        "optional": true,
-                        "type": "string",
-                      },
-                      {
-                        "name": "color",
-                        "optional": true,
-                        "type": "string",
-                      },
-                      {
-                        "name": "width",
-                        "optional": true,
-                        "type": "string",
-                      },
-                    ],
-                    "type": "object",
-                  },
-                  "name": "underline",
-                  "optional": true,
-                  "type": "{ color?: string | undefined; width?: string | undefined; borderRadius?: string | undefined; }",
                 },
               ],
               "type": "object",

@@ -39,7 +39,7 @@ const testStyles = {
       borderRadius: '4px',
       borderWidth: '2px',
     },
-    underline: {
+    activeIndicator: {
       color: '#1d4ed8',
       width: '3px',
       borderRadius: '2px',

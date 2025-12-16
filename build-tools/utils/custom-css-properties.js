@@ -111,9 +111,9 @@ const customCssPropertiesList = [
   'stylePlaceholderFontStyle',
   'stylePlaceholderFontWeight',
   // Tabs style properties
-  'styleTabsUnderlineColor',
-  'styleTabsUnderlineWidth',
-  'styleTabsUnderlineBorderRadius',
+  'styleTabsActiveIndicatorColor',
+  'styleTabsActiveIndicatorWidth',
+  'styleTabsActiveIndicatorBorderRadius',
   'styleTabsSeparatorColor',
   'styleTabsSeparatorWidth',
   'styleTabsHeaderBorderColor',

@@ -135,15 +135,24 @@ $label-horizontal-spacing: awsui.$space-xs;
     inset-inline-start: 0;
     inline-size: calc(100% - 1px);
     inset-block-end: calc(-1 * #{awsui.$border-divider-section-width});
-    block-size: var(#{custom-props.$styleTabsUnderlineWidth}, awsui.$border-active-width);
+    block-size: var(#{custom-props.$styleTabsActiveIndicatorWidth}, awsui.$border-active-width);
     border-start-start-radius: var(
-      #{custom-props.$styleTabsUnderlineBorderRadius},
+      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
       awsui.$border-radius-tabs-focus-ring
     );
-    border-start-end-radius: var(#{custom-props.$styleTabsUnderlineBorderRadius}, awsui.$border-radius-tabs-focus-ring);
-    border-end-start-radius: var(#{custom-props.$styleTabsUnderlineBorderRadius}, awsui.$border-radius-tabs-focus-ring);
-    border-end-end-radius: var(#{custom-props.$styleTabsUnderlineBorderRadius}, awsui.$border-radius-tabs-focus-ring);
-    background: var(#{custom-props.$styleTabsUnderlineColor}, awsui.$color-border-tabs-underline);
+    border-start-end-radius: var(
+      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
+      awsui.$border-radius-tabs-focus-ring
+    );
+    border-end-start-radius: var(
+      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
+      awsui.$border-radius-tabs-focus-ring
+    );
+    border-end-end-radius: var(
+      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
+      awsui.$border-radius-tabs-focus-ring
+    );
+    background: var(#{custom-props.$styleTabsActiveIndicatorColor}, awsui.$color-border-tabs-underline);
     opacity: 0;
   }
 

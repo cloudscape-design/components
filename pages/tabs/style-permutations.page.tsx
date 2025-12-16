@@ -40,10 +40,8 @@ const style1 = {
       borderRadius: '22px',
       borderWidth: '2px',
     },
-    underline: {
+    activeIndicator: {
       color: 'transparent',
-      width: '0px',
-      borderRadius: '0px',
     },
   },
   tabSeparator: {
@@ -88,7 +86,7 @@ const style2 = {
       borderRadius: '8px',
       borderWidth: '2px',
     },
-    underline: {
+    activeIndicator: {
       color: 'light-dark(#f59e0b, #fbbf24)',
       width: '4px',
       borderRadius: '4px',

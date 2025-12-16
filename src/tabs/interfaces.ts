@@ -225,7 +225,7 @@ export namespace TabsProps {
       focusRing?: FocusRingStyle;
       paddingBlock?: string;
       paddingInline?: string;
-      underline?: {
+      activeIndicator?: {
         color?: string;
         width?: string;
         borderRadius?: string;

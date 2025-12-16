@@ -40,9 +40,9 @@ export function getTabContainerStyles(style: TabsProps['style']) {
   }
 
   return {
-    [customCssProps.styleTabsUnderlineColor]: style?.tab?.underline?.color,
-    [customCssProps.styleTabsUnderlineWidth]: style?.tab?.underline?.width,
-    [customCssProps.styleTabsUnderlineBorderRadius]: style?.tab?.underline?.borderRadius,
+    [customCssProps.styleTabsActiveIndicatorColor]: style?.tab?.activeIndicator?.color,
+    [customCssProps.styleTabsActiveIndicatorWidth]: style?.tab?.activeIndicator?.width,
+    [customCssProps.styleTabsActiveIndicatorBorderRadius]: style?.tab?.activeIndicator?.borderRadius,
     [customCssProps.styleTabsSeparatorColor]: style?.tabSeparator?.color,
     [customCssProps.styleTabsSeparatorWidth]: style?.tabSeparator?.width,
   };
