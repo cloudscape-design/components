@@ -112,7 +112,6 @@ const MultiSelectItem = (
               getTrack={() => internalRef.current}
               content={disabledReason!}
               position="right"
-              __dismissOnScroll={true}
               onEscape={() => setCanShowTooltip(false)}
             />
           )}

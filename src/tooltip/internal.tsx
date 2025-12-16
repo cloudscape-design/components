@@ -23,7 +23,6 @@ export default function InternalTooltip({
   getTrack,
   trackKey,
   position = 'top',
-  __dismissOnScroll,
   __onDismissOnScroll,
   onEscape,
   __internalRootRef,
@@ -87,7 +86,7 @@ export default function InternalTooltip({
               position={position}
               zIndex={7000}
               arrow={position => <PopoverArrow position={position} />}
-              hideOnOverscroll={__dismissOnScroll}
+              hideOnOverscroll={true}
               onOverscroll={handleDismissOnScroll}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
