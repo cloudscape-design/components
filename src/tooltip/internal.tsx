@@ -24,12 +24,14 @@ export default function InternalTooltip({
   trackKey,
   position = 'top',
   __dismissOnScroll,
+  __onDismissOnScroll,
   onEscape,
   __internalRootRef,
   ...restProps
 }: InternalTooltipComponentProps) {
   const baseProps = getBaseProps(restProps);
   const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
+  const [isVisible, setIsVisible] = React.useState(true);
 
   // Update the ref with the current tracked element
   React.useEffect(() => {
@@ -64,6 +66,15 @@ export default function InternalTooltip({
     };
   }, [onEscape]);
 
+  const handleDismissOnScroll = React.useCallback(() => {
+    setIsVisible(false);
+    fireNonCancelableEvent(__onDismissOnScroll);
+  }, [__onDismissOnScroll]);
+
+  if (!isVisible) {
+    return null;
+  }
+
   return (
     <Portal>
       <div
@@ -83,6 +94,7 @@ export default function InternalTooltip({
               zIndex={7000}
               arrow={position => <PopoverArrow position={position} />}
               hideOnOverscroll={__dismissOnScroll}
+              onOverscroll={handleDismissOnScroll}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
                 {content}

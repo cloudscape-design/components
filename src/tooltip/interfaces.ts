@@ -53,6 +53,12 @@ export interface InternalTooltipProps extends TooltipProps {
   __dismissOnScroll?: boolean;
 
   /**
+   * Callback fired when the tooltip is dismissed due to scroll.
+   * @internal
+   */
+  __onDismissOnScroll?: NonCancelableEventHandler;
+
+  /**
    * Additional CSS class for the tooltip container.
    * @internal
    */

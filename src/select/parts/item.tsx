@@ -122,6 +122,7 @@ const Item = (
                 content={disabledReason!}
                 position="right"
                 __dismissOnScroll={true}
+                __onDismissOnScroll={() => setCanShowTooltip(false)}
                 onEscape={() => setCanShowTooltip(false)}
               />
             )}
