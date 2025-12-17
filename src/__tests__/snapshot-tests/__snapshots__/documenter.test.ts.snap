@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Components definition for alert matches the snapshot: alert 1`] = `
 {
@@ -18047,7 +18047,7 @@ exports[`Components definition for panel-layout matches the snapshot: panel-layo
     {
       "description": "Initial panel size, for uncontrolled behavior.
 
-The actual size may vary, depending on \`minPanelSize\` and \`maxPanelSize\`.",
+The actual size will be constrained by \`minPanelSize\` and \`maxPanelSize\`, if set.",
       "name": "defaultPanelSize",
       "optional": true,
       "type": "number",
@@ -18184,7 +18184,7 @@ Provide either \`{ariaLabel: "Panel label"}\` or \`{ariaLabelledby: "panel-label
       "description": "Size of the panel. If provided, and panel is resizable, the component is controlled,
 so you must also provide \`onPanelResize\`.
 
-The actual size may vary, depending on \`minPanelSize\` and \`maxPanelSize\`.",
+The actual size will be constrained by \`minPanelSize\` and \`maxPanelSize\`, if set.",
       "name": "panelSize",
       "optional": true,
       "type": "number",

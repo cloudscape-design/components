@@ -77,28 +77,28 @@ describe('PanelLayout Component', () => {
   describe('Panel sizing', () => {
     test('applies default panel size when no size specified', () => {
       const { wrapper } = renderPanelLayout();
-      const panel = wrapper.findPanelContent()!.getElement();
+      const panel = wrapper.findPanelContent()!.getElement().parentElement;
 
       expect(panel).toHaveStyle('inline-size: 200px');
     });
 
     test('applies defaultPanelSize in uncontrolled mode', () => {
       const { wrapper } = renderPanelLayout({ defaultPanelSize: 300 });
-      const panel = wrapper.findPanelContent()!.getElement();
+      const panel = wrapper.findPanelContent()!.getElement().parentElement;
 
       expect(panel).toHaveStyle('inline-size: 300px');
     });
 
     test('applies panelSize in controlled mode', () => {
       const { wrapper } = renderPanelLayout({ panelSize: 250, onPanelResize: () => {} });
-      const panel = wrapper.findPanelContent()!.getElement();
+      const panel = wrapper.findPanelContent()!.getElement().parentElement;
 
       expect(panel).toHaveStyle('inline-size: 250px');
     });
 
     test('uses minPanelSize when defaultPanelSize is not provided', () => {
       const { wrapper } = renderPanelLayout({ minPanelSize: 150 });
-      const panel = wrapper.findPanelContent()!.getElement();
+      const panel = wrapper.findPanelContent()!.getElement().parentElement;
 
       expect(panel).toHaveStyle('inline-size: 150px');
     });
@@ -233,7 +233,7 @@ describe('PanelLayout Component', () => {
         onPanelResize: () => {},
       });
 
-      expect(wrapper.findPanelContent()!.getElement()).not.toHaveStyle('inline-size: 300px');
+      expect(wrapper.findPanelContent()!.getElement().parentElement).not.toHaveStyle('inline-size: 300px');
     });
   });
 
@@ -301,7 +301,7 @@ describe('PanelLayout Component', () => {
           onPanelResize: () => {},
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle('inline-size: 150px');
       });
 
@@ -313,7 +313,7 @@ describe('PanelLayout Component', () => {
           onPanelResize: () => {},
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle('inline-size: 400px');
       });
 
@@ -323,7 +323,7 @@ describe('PanelLayout Component', () => {
           onPanelResize: () => {},
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle(`inline-size: ${CONTAINER_WIDTH}px`);
       });
 
@@ -334,7 +334,7 @@ describe('PanelLayout Component', () => {
           onPanelResize: () => {},
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         // Should clamp to maxPanelSize (600), which is less than containerWidth (800)
         expect(panel).toHaveStyle('inline-size: 600px');
       });
@@ -347,7 +347,7 @@ describe('PanelLayout Component', () => {
           onPanelResize: () => {},
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle('inline-size: 250px');
       });
 
@@ -359,7 +359,7 @@ describe('PanelLayout Component', () => {
           onPanelResize: () => {},
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle('inline-size: 300px');
       });
     });
@@ -372,7 +372,7 @@ describe('PanelLayout Component', () => {
           maxPanelSize: 500,
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle('inline-size: 150px');
       });
 
@@ -383,7 +383,7 @@ describe('PanelLayout Component', () => {
           maxPanelSize: 400,
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle('inline-size: 400px');
       });
 
@@ -392,7 +392,7 @@ describe('PanelLayout Component', () => {
           defaultPanelSize: 1000,
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle(`inline-size: ${CONTAINER_WIDTH}px`);
       });
 
@@ -402,7 +402,7 @@ describe('PanelLayout Component', () => {
           maxPanelSize: 600,
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         // Should clamp to maxPanelSize (600), which is less than containerWidth (800)
         expect(panel).toHaveStyle('inline-size: 600px');
       });
@@ -414,7 +414,7 @@ describe('PanelLayout Component', () => {
           maxPanelSize: 400,
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle('inline-size: 250px');
       });
 
@@ -425,7 +425,7 @@ describe('PanelLayout Component', () => {
           maxPanelSize: 300,
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle('inline-size: 300px');
       });
     });
@@ -438,7 +438,7 @@ describe('PanelLayout Component', () => {
           onPanelResize: () => {},
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle('inline-size: 400px');
       });
 
@@ -449,7 +449,7 @@ describe('PanelLayout Component', () => {
           onPanelResize: () => {},
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle('inline-size: 150px');
       });
 
@@ -459,7 +459,7 @@ describe('PanelLayout Component', () => {
           maxPanelSize: 400,
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle('inline-size: 250px');
       });
 
@@ -470,7 +470,7 @@ describe('PanelLayout Component', () => {
           onPanelResize: () => {},
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle('inline-size: 100px');
       });
 
@@ -480,7 +480,7 @@ describe('PanelLayout Component', () => {
           onPanelResize: () => {},
         });
 
-        const panel = wrapper.findPanelContent()!.getElement();
+        const panel = wrapper.findPanelContent()!.getElement().parentElement;
         expect(panel).toHaveStyle('inline-size: 0px');
       });
     });
@@ -572,7 +572,7 @@ describe('PanelLayout Component', () => {
         panelFocusable: { ariaLabel: 'Panel region' },
       });
 
-      const panel = wrapper.findPanelContent()!.getElement().firstChild;
+      const panel = wrapper.findPanelContent()!.getElement();
       expect(panel).toHaveAttribute('tabindex', '0');
       expect(panel).toHaveAttribute('role', 'region');
       expect(panel).toHaveAttribute('aria-label', 'Panel region');
@@ -583,7 +583,7 @@ describe('PanelLayout Component', () => {
         panelFocusable: { ariaLabelledby: 'panel-header-id' },
       });
 
-      const panel = wrapper.findPanelContent()!.getElement().firstChild;
+      const panel = wrapper.findPanelContent()!.getElement();
       expect(panel).toHaveAttribute('tabindex', '0');
       expect(panel).toHaveAttribute('role', 'region');
       expect(panel).toHaveAttribute('aria-labelledby', 'panel-header-id');
@@ -592,7 +592,7 @@ describe('PanelLayout Component', () => {
     test('does not make panel content focusable when panelFocusable is not provided', () => {
       const { wrapper } = renderPanelLayout();
 
-      const panel = wrapper.findPanelContent()!.getElement().firstChild;
+      const panel = wrapper.findPanelContent()!.getElement();
       expect(panel).not.toHaveAttribute('tabindex');
       expect(panel).not.toHaveAttribute('role');
       expect(panel).not.toHaveAttribute('aria-label');

@@ -4,12 +4,10 @@ import React, { useContext } from 'react';
 
 import { Container, FormField, Header, SegmentedControl, SpaceBetween } from '~components';
 import Button from '~components/button';
-import { I18nProvider } from '~components/i18n';
-import messages from '~components/i18n/messages/all.en';
 import PanelLayout, { PanelLayoutProps } from '~components/panel-layout';
 
 import AppContext, { AppContextType } from '../app/app-context';
-import ScreenshotArea from '../utils/screenshot-area';
+import { SimplePage } from '../app/templates';
 
 interface NestedPanelLayoutProps {
   outerPanelPosition: PanelLayoutProps.PanelPosition;
@@ -87,72 +85,62 @@ export default function NestedPanelLayoutPage() {
   } = useContext(AppContext as PageContext);
 
   return (
-    <I18nProvider messages={[messages]} locale="en">
-      <ScreenshotArea disableAnimations={true} gutters={false}>
-        <SpaceBetween size="l">
-          <Container
-            header={
-              <Header variant="h1" description="Demonstrates how panel layouts can be nested within each other">
-                Nested Panel Layout Demo
-              </Header>
-            }
-          >
-            <SpaceBetween size="m">
-              <p>
-                This page demonstrates nested panel layouts, where one panel layout contains another panel layout in
-                either its panel or main content area.
-              </p>
-              <p>
-                Each panel layout maintains its own resize behavior and can be configured with different panel positions
-                and constraints.
-              </p>
+    <SimplePage title="Nested Panel Layout Demo" i18n={{}} screenshotArea={{}}>
+      <SpaceBetween size="l">
+        <Container>
+          <p>
+            This page demonstrates nested panel layouts, where one panel layout contains another panel layout in either
+            its panel or main content area.
+          </p>
+          <p>
+            Each panel layout maintains its own resize behavior and can be configured with different panel positions and
+            constraints.
+          </p>
 
-              <SpaceBetween size="s" direction="horizontal">
-                <FormField label="Outer panel position">
-                  <SegmentedControl
-                    options={[
-                      { id: 'side-start', text: 'side-start' },
-                      { id: 'side-end', text: 'side-end' },
-                    ]}
-                    selectedId={outerPanelPosition}
-                    onChange={({ detail }) => setUrlParams({ outerPanelPosition: detail.selectedId as any })}
-                  />
-                </FormField>
+          <SpaceBetween size="s" direction="horizontal">
+            <FormField label="Outer panel position">
+              <SegmentedControl
+                options={[
+                  { id: 'side-start', text: 'side-start' },
+                  { id: 'side-end', text: 'side-end' },
+                ]}
+                selectedId={outerPanelPosition}
+                onChange={({ detail }) => setUrlParams({ outerPanelPosition: detail.selectedId as any })}
+              />
+            </FormField>
 
-                <FormField label="Inner panel position">
-                  <SegmentedControl
-                    options={[
-                      { id: 'side-start', text: 'side-start' },
-                      { id: 'side-end', text: 'side-end' },
-                    ]}
-                    selectedId={innerPanelPosition}
-                    onChange={({ detail }) => setUrlParams({ innerPanelPosition: detail.selectedId as any })}
-                  />
-                </FormField>
+            <FormField label="Inner panel position">
+              <SegmentedControl
+                options={[
+                  { id: 'side-start', text: 'side-start' },
+                  { id: 'side-end', text: 'side-end' },
+                ]}
+                selectedId={innerPanelPosition}
+                onChange={({ detail }) => setUrlParams({ innerPanelPosition: detail.selectedId as any })}
+              />
+            </FormField>
 
-                <FormField label="Nested location">
-                  <SegmentedControl
-                    options={[
-                      { id: 'panel', text: 'In panel' },
-                      { id: 'main', text: 'In main' },
-                    ]}
-                    selectedId={nestedLocation}
-                    onChange={({ detail }) => setUrlParams({ nestedLocation: detail.selectedId as any })}
-                  />
-                </FormField>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Container>
+            <FormField label="Nested location">
+              <SegmentedControl
+                options={[
+                  { id: 'panel', text: 'In panel' },
+                  { id: 'main', text: 'In main' },
+                ]}
+                selectedId={nestedLocation}
+                onChange={({ detail }) => setUrlParams({ nestedLocation: detail.selectedId as any })}
+              />
+            </FormField>
+          </SpaceBetween>
+        </Container>
 
-          <div style={{ maxHeight: '600px' }}>
-            <NestedPanelLayoutDemo
-              outerPanelPosition={outerPanelPosition}
-              innerPanelPosition={innerPanelPosition}
-              nestedLocation={nestedLocation}
-            />
-          </div>
-        </SpaceBetween>
-      </ScreenshotArea>
-    </I18nProvider>
+        <div style={{ maxHeight: '600px' }}>
+          <NestedPanelLayoutDemo
+            outerPanelPosition={outerPanelPosition}
+            innerPanelPosition={innerPanelPosition}
+            nestedLocation={nestedLocation}
+          />
+        </div>
+      </SpaceBetween>
+    </SimplePage>
   );
 }

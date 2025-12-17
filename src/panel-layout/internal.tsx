@@ -46,7 +46,7 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
   ) => {
     const baseProps = getBaseProps(props);
 
-    const sliderRef = React.useRef<HTMLDivElement>(null);
+    const resizeHandleRef = React.useRef<HTMLDivElement>(null);
     const panelRef = React.useRef<HTMLDivElement>(null);
     const [containerWidth, rootRef] = useContainerWidth();
 
@@ -54,12 +54,10 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
       ref,
       () => ({
         focusResizeHandle() {
-          if (resizable && display === 'all' && sliderRef.current) {
-            sliderRef.current.focus();
-          }
+          resizeHandleRef.current?.focus();
         },
       }),
-      [resizable, display]
+      []
     );
 
     const [panelSize = DEFAULT_PANEL_SIZE, setPanelSize] = useControllable(
@@ -83,7 +81,7 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
       minWidth: actualMinSize,
       maxWidth: actualMaxSize,
       panelRef: panelRef,
-      handleRef: sliderRef,
+      handleRef: resizeHandleRef,
       position: resizeHandlePosition,
       onResize: size => {
         setPanelSize(size);
@@ -95,7 +93,7 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
 
     const wrappedPanelContent = (
       <div
-        className={styles['panel-content']}
+        className={clsx(styles['panel-content'], display !== 'main-only' && testStyles.panel)}
         tabIndex={panelFocusable && 0}
         role={panelFocusable && 'region'}
         aria-label={panelFocusable?.ariaLabel}
@@ -124,7 +122,7 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
       >
         {panelPosition === 'side-end' && wrappedMainContent}
         <div
-          className={clsx(styles.panel, display !== 'main-only' && testStyles.panel)}
+          className={clsx(styles.panel)}
           ref={panelRef}
           style={display === 'all' ? { inlineSize: `${actualPanelSize}px` } : undefined}
         >
@@ -132,8 +130,8 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
           {resizable && display === 'all' && (
             <div className={styles.handle}>
               <PanelResizeHandle
-                ref={sliderRef}
-                className={testStyles.slider}
+                ref={resizeHandleRef}
+                className={testStyles['resize-handle']}
                 position={resizeHandlePosition}
                 ariaLabel={i18nStrings?.resizeHandleAriaLabel}
                 tooltipText={i18nStrings?.resizeHandleTooltipText}

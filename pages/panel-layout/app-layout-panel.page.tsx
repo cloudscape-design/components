@@ -18,6 +18,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 interface PanelLayoutContentProps {
   longPanelContent: boolean;
   longMainContent: boolean;
+  buttons: boolean;
   minPanelSize: number;
   maxPanelSize: number;
   minContentSize: number;
@@ -29,6 +30,7 @@ type PageContext = React.Context<AppContextType<Partial<PanelLayoutContentProps>
 const PanelLayoutContent = ({
   longPanelContent,
   longMainContent,
+  buttons,
   minContentSize,
   minPanelSize,
   maxPanelSize,
@@ -59,6 +61,8 @@ const PanelLayoutContent = ({
           onPanelResize={({ detail }) => setSize(detail.panelSize)}
           display={display}
           panelPosition={panelPosition}
+          mainFocusable={longMainContent && !buttons ? { ariaLabel: 'Main content' } : undefined}
+          panelFocusable={longPanelContent && !buttons ? { ariaLabel: 'Panel content' } : undefined}
           panelContent={
             <Box padding="m">
               <Header>Panel content</Header>
@@ -67,7 +71,7 @@ const PanelLayoutContent = ({
                 .map((t, i) => (
                   <div key={i}>{t}</div>
                 ))}
-              <Button>Button</Button>
+              {buttons && <Button>Button</Button>}
             </Box>
           }
           mainContent={
@@ -78,7 +82,7 @@ const PanelLayoutContent = ({
                 .map((t, i) => (
                   <div key={i}>{t}</div>
                 ))}
-              <Button>button</Button>
+              {buttons && <Button>button</Button>}
             </Box>
           }
         />
@@ -92,6 +96,7 @@ export default function PanelLayoutPage() {
     urlParams: {
       longPanelContent = false,
       longMainContent = false,
+      buttons = true,
       minPanelSize = 200,
       maxPanelSize = 600,
       minContentSize = 600,
@@ -120,6 +125,9 @@ export default function PanelLayoutPage() {
                   onChange={({ detail }) => setUrlParams({ longPanelContent: detail.checked })}
                 >
                   Long panel content
+                </Checkbox>
+                <Checkbox checked={buttons} onChange={({ detail }) => setUrlParams({ buttons: detail.checked })}>
+                  Include interactive content
                 </Checkbox>
                 <FormField label="Minimum panel size">
                   <Input
@@ -178,6 +186,7 @@ export default function PanelLayoutPage() {
                 <PanelLayoutContent
                   longMainContent={longMainContent}
                   longPanelContent={longPanelContent}
+                  buttons={buttons}
                   minPanelSize={minPanelSize}
                   maxPanelSize={maxPanelSize}
                   minContentSize={minContentSize}

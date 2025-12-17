@@ -14,7 +14,7 @@ export interface PanelLayoutProps extends BaseComponentProps {
   /**
    * Initial panel size, for uncontrolled behavior.
    *
-   * The actual size may vary, depending on `minPanelSize` and `maxPanelSize`.
+   * The actual size will be constrained by `minPanelSize` and `maxPanelSize`, if set.
    */
   defaultPanelSize?: number;
 
@@ -22,7 +22,7 @@ export interface PanelLayoutProps extends BaseComponentProps {
    * Size of the panel. If provided, and panel is resizable, the component is controlled,
    * so you must also provide `onPanelResize`.
    *
-   * The actual size may vary, depending on `minPanelSize` and `maxPanelSize`.
+   * The actual size will be constrained by `minPanelSize` and `maxPanelSize`, if set.
    */
   panelSize?: number;
 

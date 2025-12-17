@@ -26,6 +26,6 @@ export default class PanelLayoutWrapper extends ComponentWrapper {
    * Returns null if the panel layout is not resizable.
    */
   findResizeHandle(): ElementWrapper | null {
-    return this.findByClassName(styles.slider);
+    return this.findByClassName(styles['resize-handle']);
   }
 }

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`test-utils selectors 1`] = `
 {
@@ -459,8 +459,8 @@ exports[`test-utils selectors 1`] = `
   "panel-layout": [
     "awsui_content_119z0",
     "awsui_panel_119z0",
+    "awsui_resize-handle_119z0",
     "awsui_root_119z0",
-    "awsui_slider_119z0",
   ],
   "pie-chart": [
     "awsui_inner-content_1edmh",

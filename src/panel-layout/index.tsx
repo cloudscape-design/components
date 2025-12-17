@@ -5,6 +5,7 @@ import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { getExternalProps } from '../internal/utils/external-props';
 import { PanelLayoutProps } from './interfaces';
 import InternalPanelLayout from './internal';
 
@@ -17,10 +18,12 @@ const PanelLayout = React.forwardRef<PanelLayoutProps.Ref, PanelLayoutProps>(fun
   const baseComponentProps = useBaseComponent('PanelLayout', {
     props: { panelPosition, resizable },
     metadata: {
-      hasDefaultSize: props.defaultPanelSize !== undefined,
-      hasSize: props.panelSize !== undefined,
-      hasMinSize: props.minPanelSize !== undefined,
-      hasMaxSize: props.maxPanelSize !== undefined,
+      mainFocusable: props.mainFocusable !== undefined,
+      panelFocusable: props.panelFocusable !== undefined,
+      hasDefaultPanelSize: props.defaultPanelSize !== undefined,
+      hasPanelSize: props.panelSize !== undefined,
+      hasMinPanelSize: props.minPanelSize !== undefined,
+      hasMaxPanelSize: props.maxPanelSize !== undefined,
     },
   });
   return (
@@ -29,7 +32,7 @@ const PanelLayout = React.forwardRef<PanelLayoutProps.Ref, PanelLayoutProps>(fun
       panelPosition={panelPosition}
       resizable={resizable}
       display={display}
-      {...props}
+      {...getExternalProps(props)}
       {...baseComponentProps}
     />
   );

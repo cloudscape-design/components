@@ -38,7 +38,7 @@ class PanelLayoutAppLayoutPage extends BasePageObject {
       return null;
     }
 
-    const element = await this.browser.$(panel.toSelector());
+    const element = await this.browser.$(panel.toSelector()).parentElement();
     const size = await element.getCSSProperty('inline-size');
     return size.value;
   }
