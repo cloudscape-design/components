@@ -7,6 +7,19 @@
 @use '../internal/styles' as styles;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
+// Our standard focus rings don't work for this use-case because the element
+// is scrollable. This renders a ring inside the element, that is sticky and
+// overlays the content and scrollbars as expected.
+@mixin container-inner-focus-ring {
+  $width: 2px;
+  border-start-start-radius: calc(#{awsui.$border-radius-control-default-focus-ring} + #{$width});
+  border-start-end-radius: calc(#{awsui.$border-radius-control-default-focus-ring} + #{$width});
+  border-end-start-radius: calc(#{awsui.$border-radius-control-default-focus-ring} + #{$width});
+  border-end-end-radius: calc(#{awsui.$border-radius-control-default-focus-ring} + #{$width});
+  outline: $width solid awsui.$color-border-item-focused;
+  outline-offset: calc(-1 * #{$width});
+}
+
 .root {
   @include styles.styles-reset;
   block-size: 100%;
@@ -26,7 +39,7 @@
     overflow-x: visible;
     flex-grow: 1;
     @include focus-visible.when-visible {
-      @include styles.container-focus(4px, inset);
+      @include container-inner-focus-ring;
     }
   }
   .display-main-only > & {
@@ -45,6 +58,6 @@
     display: none;
   }
   @include focus-visible.when-visible {
-    @include styles.container-focus(4px, inset);
+    @include container-inner-focus-ring;
   }
 }
