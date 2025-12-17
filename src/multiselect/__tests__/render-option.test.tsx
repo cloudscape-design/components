@@ -7,7 +7,6 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { defaultOptions } from '../../select/__tests__/common';
 import { optionsWithGroups } from './common';
 
 describe('Multiselect renderOption', () => {
@@ -23,15 +22,9 @@ describe('Multiselect renderOption', () => {
     const wrapper = renderMultiselect({ options: optionsWithGroups, renderOption });
     wrapper.openDropdown();
     expect(renderOption).toHaveBeenCalled();
-    const elementWrapper = wrapper.findDropdown().findOption(1)!.findCustomContent();
+    const elementWrapper = wrapper.findDropdown().findOption(1)!.getElement();
     expect(elementWrapper).not.toBeNull();
-    expect(elementWrapper!.getElement()).toHaveTextContent('Custom 0');
-  });
-
-  test('renders no custom option content when no renderOption specified', () => {
-    const wrapper = renderMultiselect({ options: defaultOptions });
-    wrapper.openDropdown();
-    expect(wrapper.findDropdown().findOption(1)!.findCustomContent()).toBeNull();
+    expect(elementWrapper).toHaveTextContent('Custom 0');
   });
 
   test('receives correct item properties for child option', () => {

@@ -9,14 +9,6 @@ export default class OptionWrapper extends ComponentWrapper {
   static rootSelector: string = styles.option;
 
   /**
-   * Finds the custom content wrapper of this option.
-   * @returns {ElementWrapper} the ElementWrapper for the custom-content.
-   */
-  findCustomContent(): ElementWrapper | null {
-    return this.findByClassName(styles['custom-content']);
-  }
-
-  /**
    * Finds the label wrapper of this option.
    * @returns {ElementWrapper} the ElementWrapper for the label.
    */
@@ -24,7 +16,7 @@ export default class OptionWrapper extends ComponentWrapper {
     const labelElementWrapper = this.findByClassName(styles.label);
     if (!labelElementWrapper) {
       // Fallback, if label is null due to custom content.
-      return this.findCustomContent()!;
+      return this.findByClassName(styles['custom-content'])!;
     }
     return labelElementWrapper;
   }

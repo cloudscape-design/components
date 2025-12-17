@@ -51,7 +51,7 @@ describe('Option component', () => {
       },
     });
     expect(optionWrapper.findLabel()!.getElement()).toHaveTextContent('My Custom Content');
-    expect(optionWrapper.findCustomContent()!.getElement()).toHaveTextContent('My Custom Content');
+    expect(optionWrapper!.getElement()).toHaveTextContent('My Custom Content');
   });
 
   test('displays label', () => {

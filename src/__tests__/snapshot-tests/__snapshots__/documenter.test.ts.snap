@@ -32403,20 +32403,6 @@ Options get highlighted when they match the value of the input field.",
     {
       "methods": [
         {
-          "description": "Finds the custom content wrapper of this option.",
-          "name": "findCustomContent",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
           "name": "findDescription",
           "parameters": [],
           "returnType": {
@@ -43447,15 +43433,6 @@ Options get highlighted when they match the value of the input field.",
     },
     {
       "methods": [
-        {
-          "description": "Finds the custom content wrapper of this option.",
-          "name": "findCustomContent",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
         {
           "name": "findDescription",
           "parameters": [],

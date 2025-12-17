@@ -22,15 +22,11 @@ describe('Select renderOption', () => {
     const wrapper = renderSelect({ options: defaultOptions, renderOption });
     wrapper.openDropdown();
     expect(renderOption).toHaveBeenCalled();
-    const elementWrapper = wrapper.findDropdown().findOption(1)!.findCustomContent();
+    const elementWrapper = wrapper.findDropdown().findOption(1)!.getElement();
     expect(elementWrapper).not.toBeNull();
-    expect(elementWrapper!.getElement()).toHaveTextContent('Custom');
+    expect(elementWrapper).toHaveTextContent('Custom');
   });
-  test('renders no custom option content when no renderOption specified', () => {
-    const wrapper = renderSelect({ options: defaultOptions });
-    wrapper.openDropdown();
-    expect(wrapper.findDropdown().findOption(1)!.findCustomContent()).toBeNull();
-  });
+
   test('receives correct item properties for child option', () => {
     const renderOption = jest.fn(() => <div>Custom</div>);
     const childOption = { label: 'Test', value: '1' };
