@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
@@ -33,6 +33,7 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
       panelSize: controlledPanelSize,
       resizable,
       onPanelResize,
+      onLayoutChange,
       minPanelSize,
       maxPanelSize,
       i18nStrings,
@@ -74,6 +75,10 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
     const actualMaxSize = Math.min(maxPanelSize ?? containerWidth, containerWidth);
     const actualMinSize = minPanelSize ?? 0;
     const actualPanelSize = Math.max(Math.min(panelSize, actualMaxSize), actualMinSize);
+
+    useEffect(() => {
+      fireNonCancelableEvent(onLayoutChange, { totalSize: containerWidth, panelSize: actualPanelSize });
+    }, [containerWidth, actualPanelSize, onLayoutChange]);
 
     const resizeHandlePosition = panelPosition === 'side-end' ? 'side' : panelPosition;
     const resizeProps = useResize({

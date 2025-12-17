@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import { useResize } from '../../../lib/components/app-layout/visual-refresh-toolbar/drawer/use-resize';
 import useContainerWidth from '../../../lib/components/internal/utils/use-container-width';
@@ -631,6 +631,178 @@ describe('PanelLayout Component', () => {
       expect(content).not.toHaveAttribute('role');
       expect(content).not.toHaveAttribute('aria-label');
       expect(content).not.toHaveAttribute('aria-labelledby');
+    });
+  });
+
+  describe('onLayoutChange', () => {
+    test('is called when container width changes', () => {
+      const onLayoutChange = jest.fn();
+
+      const { rerender } = render(
+        <PanelLayout panelContent="Panel" mainContent="Main" onLayoutChange={onLayoutChange} />
+      );
+
+      expect(onLayoutChange).toHaveBeenCalledTimes(1);
+      onLayoutChange.mockClear();
+
+      // Simulate container width change
+      mockUseContainerWidth.mockReturnValue([1000, React.createRef()]);
+      rerender(<PanelLayout panelContent="Panel" mainContent="Main" onLayoutChange={onLayoutChange} />);
+
+      expect(onLayoutChange).toHaveBeenCalledTimes(1);
+      expect(onLayoutChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { totalSize: 1000, panelSize: 200 },
+        })
+      );
+    });
+
+    test('is called when panelSize prop changes in controlled mode', () => {
+      const onLayoutChange = jest.fn();
+      const onPanelResize = jest.fn();
+
+      const { rerender } = render(
+        <PanelLayout
+          panelContent="Panel"
+          mainContent="Main"
+          panelSize={300}
+          onPanelResize={onPanelResize}
+          onLayoutChange={onLayoutChange}
+        />
+      );
+
+      expect(onLayoutChange).toHaveBeenCalledTimes(1);
+      expect(onLayoutChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { totalSize: CONTAINER_WIDTH, panelSize: 300 },
+        })
+      );
+      onLayoutChange.mockClear();
+
+      // Change panelSize prop
+      rerender(
+        <PanelLayout
+          panelContent="Panel"
+          mainContent="Main"
+          panelSize={400}
+          onPanelResize={onPanelResize}
+          onLayoutChange={onLayoutChange}
+        />
+      );
+
+      expect(onLayoutChange).toHaveBeenCalledTimes(1);
+      expect(onLayoutChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { totalSize: CONTAINER_WIDTH, panelSize: 400 },
+        })
+      );
+    });
+
+    test('is called when user resizes the panel', () => {
+      const onLayoutChange = jest.fn();
+      let newPanelSize = 300;
+      const onPanelResize = jest.fn(event => {
+        newPanelSize = event.detail.panelSize;
+      });
+      let capturedOnResize: ((size: number) => void) | undefined;
+
+      mockUseResize.mockImplementation(({ onResize }) => {
+        capturedOnResize = onResize;
+        return {
+          onKeyDown: jest.fn(),
+          onDirectionClick: jest.fn(),
+          onPointerDown: jest.fn(),
+          relativeSize: 50,
+        };
+      });
+
+      const { rerender } = render(
+        <PanelLayout
+          panelContent="Panel"
+          mainContent="Main"
+          resizable={true}
+          panelSize={newPanelSize}
+          onPanelResize={onPanelResize}
+          onLayoutChange={onLayoutChange}
+        />
+      );
+
+      expect(onLayoutChange).toHaveBeenCalledTimes(1);
+      onLayoutChange.mockClear();
+
+      // Simulate user resize - this triggers onPanelResize
+      act(() => {
+        capturedOnResize!(350);
+      });
+
+      // In controlled mode, parent would update panelSize prop
+      rerender(
+        <PanelLayout
+          panelContent="Panel"
+          mainContent="Main"
+          resizable={true}
+          panelSize={newPanelSize}
+          onPanelResize={onPanelResize}
+          onLayoutChange={onLayoutChange}
+        />
+      );
+
+      expect(onLayoutChange).toHaveBeenCalledTimes(1);
+      expect(onLayoutChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { totalSize: CONTAINER_WIDTH, panelSize: 350 },
+        })
+      );
+    });
+
+    test('is called with clamped panel size when below minPanelSize', () => {
+      const onLayoutChange = jest.fn();
+
+      renderPanelLayout({
+        panelSize: 50,
+        minPanelSize: 150,
+        onPanelResize: () => {},
+        onLayoutChange,
+      });
+
+      expect(onLayoutChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { totalSize: CONTAINER_WIDTH, panelSize: 150 },
+        })
+      );
+    });
+
+    test('is called with clamped panel size when above maxPanelSize', () => {
+      const onLayoutChange = jest.fn();
+
+      renderPanelLayout({
+        panelSize: 600,
+        maxPanelSize: 400,
+        onPanelResize: () => {},
+        onLayoutChange,
+      });
+
+      expect(onLayoutChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { totalSize: CONTAINER_WIDTH, panelSize: 400 },
+        })
+      );
+    });
+
+    test('is called with clamped panel size when above container width', () => {
+      const onLayoutChange = jest.fn();
+
+      renderPanelLayout({
+        panelSize: 1000,
+        onPanelResize: () => {},
+        onLayoutChange,
+      });
+
+      expect(onLayoutChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { totalSize: CONTAINER_WIDTH, panelSize: CONTAINER_WIDTH },
+        })
+      );
     });
   });
 });

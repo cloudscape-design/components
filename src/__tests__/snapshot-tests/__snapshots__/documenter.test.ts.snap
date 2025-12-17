@@ -18006,6 +18006,29 @@ exports[`Components definition for panel-layout matches the snapshot: panel-layo
   "events": [
     {
       "cancelable": false,
+      "description": "Called when the panel and/or main content size changes. This can be due
+to user resizing or changes to the available space on the page.",
+      "detailInlineType": {
+        "name": "PanelLayoutProps.PanelResizeDetail",
+        "properties": [
+          {
+            "name": "panelSize",
+            "optional": false,
+            "type": "number",
+          },
+          {
+            "name": "totalSize",
+            "optional": false,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "PanelLayoutProps.PanelResizeDetail",
+      "name": "onLayoutChange",
+    },
+    {
+      "cancelable": false,
       "description": "Called when the user resizes the panel.",
       "detailInlineType": {
         "name": "PanelLayoutProps.PanelResizeDetail",

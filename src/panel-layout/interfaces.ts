@@ -85,6 +85,12 @@ export interface PanelLayoutProps extends BaseComponentProps {
    * Called when the user resizes the panel.
    */
   onPanelResize?: NonCancelableEventHandler<PanelLayoutProps.PanelResizeDetail>;
+
+  /**
+   * Called when the panel and/or main content size changes. This can be due
+   * to user resizing or changes to the available space on the page.
+   */
+  onLayoutChange?: NonCancelableEventHandler<PanelLayoutProps.PanelResizeDetail>;
 }
 
 export namespace PanelLayoutProps {

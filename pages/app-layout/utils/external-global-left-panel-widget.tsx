@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-
 import { Box, Button, PanelLayout } from '~components';
 import { registerLeftDrawer, updateDrawer } from '~components/internal/plugins/widget';
 import { mount, unmount } from '~mount';
@@ -19,8 +17,7 @@ const AIDrawer = () => {
   const [hasArtifact, setHasArtifact] = useState(false);
   const [artifactLoaded, setArtifactLoaded] = useState(false);
   const [chatSize, setChatSize] = useState(CHAT_SIZE);
-  const [_maxPanelSize, ref] = useContainerQuery(entry => entry.contentBoxWidth - MIN_ARTIFACT_SIZE);
-  const maxPanelSize = _maxPanelSize ?? Number.MAX_SAFE_INTEGER;
+  const [maxPanelSize, setMaxPanelSize] = useState(Number.MAX_SAFE_INTEGER);
   const constrainedChatSize = Math.min(chatSize, maxPanelSize);
   const collapsed = constrainedChatSize < MIN_CHAT_SIZE;
 
@@ -87,18 +84,17 @@ const AIDrawer = () => {
     </Box>
   );
   return (
-    <div ref={ref} style={{ width: '100%', overflow: 'hidden' }}>
-      <PanelLayout
-        resizable={true}
-        panelSize={constrainedChatSize}
-        maxPanelSize={maxPanelSize}
-        minPanelSize={MIN_CHAT_SIZE}
-        onPanelResize={({ detail }) => setChatSize(detail.panelSize)}
-        panelContent={chatContent}
-        mainContent={<div className={styles['ai-artifact-panel']}>{artifactContent}</div>}
-        display={hasArtifact ? (collapsed ? 'main-only' : 'all') : 'panel-only'}
-      />
-    </div>
+    <PanelLayout
+      resizable={true}
+      panelSize={constrainedChatSize}
+      maxPanelSize={maxPanelSize}
+      minPanelSize={MIN_CHAT_SIZE}
+      onPanelResize={({ detail }) => setChatSize(detail.panelSize)}
+      onLayoutChange={({ detail }) => setMaxPanelSize(detail.totalSize - MIN_ARTIFACT_SIZE)}
+      panelContent={chatContent}
+      mainContent={<div className={styles['ai-artifact-panel']}>{artifactContent}</div>}
+      display={hasArtifact ? (collapsed ? 'main-only' : 'all') : 'panel-only'}
+    />
   );
 };
 

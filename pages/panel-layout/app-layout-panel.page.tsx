@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
 
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-
 import { Box, Checkbox, Drawer, FormField, Header, Input, SegmentedControl, SpaceBetween } from '~components';
 import AppLayout from '~components/app-layout';
 import Button from '~components/button';
@@ -38,56 +36,46 @@ const PanelLayoutContent = ({
   panelPosition,
 }: PanelLayoutContentProps) => {
   const [size, setSize] = useState(Math.max(200, minPanelSize));
+  const [actualMaxPanelSize, setActualMaxPanelSize] = useState(size);
 
-  const [_actualMaxPanelSize, ref] = useContainerQuery(
-    entry => Math.min(entry.contentBoxWidth - minContentSize, maxPanelSize),
-    [minContentSize, maxPanelSize]
-  );
-  const actualMaxPanelSize = _actualMaxPanelSize ?? maxPanelSize;
   const actualSize = Math.min(size, actualMaxPanelSize);
-
   const collapsed = actualMaxPanelSize < minPanelSize;
 
   return (
-    <div ref={ref} style={{ height: '100%', overflow: 'hidden' }}>
-      {collapsed ? (
-        'Collapsed view'
-      ) : (
-        <PanelLayout
-          panelSize={actualSize}
-          minPanelSize={minPanelSize}
-          maxPanelSize={actualMaxPanelSize}
-          resizable={true}
-          onPanelResize={({ detail }) => setSize(detail.panelSize)}
-          display={display}
-          panelPosition={panelPosition}
-          mainFocusable={longMainContent && !buttons ? { ariaLabel: 'Main content' } : undefined}
-          panelFocusable={longPanelContent && !buttons ? { ariaLabel: 'Panel content' } : undefined}
-          panelContent={
-            <Box padding="m">
-              <Header>Panel content</Header>
-              {new Array(longPanelContent ? 20 : 1)
-                .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
-                .map((t, i) => (
-                  <div key={i}>{t}</div>
-                ))}
-              {buttons && <Button>Button</Button>}
-            </Box>
-          }
-          mainContent={
-            <Box padding="m">
-              <Header>Main content</Header>
-              {new Array(longMainContent ? 200 : 1)
-                .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
-                .map((t, i) => (
-                  <div key={i}>{t}</div>
-                ))}
-              {buttons && <Button>button</Button>}
-            </Box>
-          }
-        />
-      )}
-    </div>
+    <PanelLayout
+      panelSize={actualSize}
+      minPanelSize={minPanelSize}
+      maxPanelSize={actualMaxPanelSize}
+      resizable={true}
+      onPanelResize={({ detail }) => setSize(detail.panelSize)}
+      onLayoutChange={({ detail }) => setActualMaxPanelSize(Math.min(detail.totalSize - minContentSize, maxPanelSize))}
+      display={display === 'all' && collapsed ? 'main-only' : display}
+      panelPosition={panelPosition}
+      mainFocusable={longMainContent && !buttons ? { ariaLabel: 'Main content' } : undefined}
+      panelFocusable={longPanelContent && !buttons ? { ariaLabel: 'Panel content' } : undefined}
+      panelContent={
+        <Box padding="m">
+          <Header>Panel content</Header>
+          {new Array(longPanelContent ? 20 : 1)
+            .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+            .map((t, i) => (
+              <div key={i}>{t}</div>
+            ))}
+          {buttons && <Button>Button</Button>}
+        </Box>
+      }
+      mainContent={
+        <Box padding="m">
+          <Header>Main content{collapsed && ' [collapsed]'}</Header>
+          {new Array(longMainContent ? 200 : 1)
+            .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+            .map((t, i) => (
+              <div key={i}>{t}</div>
+            ))}
+          {buttons && <Button>button</Button>}
+        </Box>
+      }
+    />
   );
 };
 
