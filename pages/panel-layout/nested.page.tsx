@@ -46,7 +46,6 @@ const NestedPanelLayoutDemo = ({ outerPanelPosition, innerPanelPosition, nestedL
           </SpaceBetween>
         </Container>
       }
-      mainFocusable={{ ariaLabel: 'Level 2 main' }}
     />
   );
 
@@ -64,17 +63,15 @@ const NestedPanelLayoutDemo = ({ outerPanelPosition, innerPanelPosition, nestedL
   );
 
   return (
-    <div style={{ height: '100%', overflow: 'hidden' }}>
-      <PanelLayout
-        defaultPanelSize={400}
-        minPanelSize={300}
-        maxPanelSize={800}
-        resizable={true}
-        panelPosition={outerPanelPosition}
-        panelContent={nestedLocation === 'panel' ? innerPanelLayout : simpleContent}
-        mainContent={nestedLocation === 'main' ? innerPanelLayout : simpleContent}
-      />
-    </div>
+    <PanelLayout
+      defaultPanelSize={400}
+      minPanelSize={300}
+      maxPanelSize={800}
+      resizable={true}
+      panelPosition={outerPanelPosition}
+      panelContent={nestedLocation === 'panel' ? innerPanelLayout : simpleContent}
+      mainContent={nestedLocation === 'main' ? innerPanelLayout : simpleContent}
+    />
   );
 };
 
