@@ -23,6 +23,10 @@ export interface TooltipProps {
   onDismiss?: () => void;
 }
 
+// Generate unique ID for older React versions
+let tooltipIdCounter = 0;
+const generateTooltipId = () => `internal-tooltip-${++tooltipIdCounter}`;
+
 export default function Tooltip({
   value,
   trackRef,
@@ -33,6 +37,23 @@ export default function Tooltip({
   hideOnOverscroll,
   onDismiss,
 }: TooltipProps) {
+  const tooltipId = React.useMemo(() => generateTooltipId(), []);
+
+  // Add aria-describedby to the tracked element for accessibility
+  React.useEffect(() => {
+    const element = trackRef.current;
+    if (element) {
+      element.setAttribute('aria-describedby', tooltipId);
+    }
+
+    return () => {
+      // Clean up aria-describedby when tooltip unmounts
+      if (element) {
+        element.removeAttribute('aria-describedby');
+      }
+    };
+  }, [tooltipId, trackRef]);
+
   if (!trackKey && (typeof value === 'string' || typeof value === 'number')) {
     trackKey = value;
   }
@@ -63,7 +84,7 @@ export default function Tooltip({
 
   return (
     <Portal>
-      <div className={styles.root} data-testid={trackKey}>
+      <div className={styles.root} data-testid={trackKey} id={tooltipId} role="tooltip">
         <Transition in={true}>
           {() => (
             <PopoverContainer

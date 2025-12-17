@@ -67,7 +67,15 @@ function DisabledActionsExample() {
             onMouseLeave={() => setShowDelete(false)}
             style={{ display: 'inline-block' }}
           >
-            <Button disabled={true} iconName="remove">
+            <Button
+              aria-disabled="true"
+              iconName="remove"
+              onClick={e => e.preventDefault()}
+              nativeButtonAttributes={{
+                onFocus: () => setShowDelete(true),
+                onBlur: () => setShowDelete(false),
+              }}
+            >
               Delete
             </Button>
             {showDelete && (
@@ -87,7 +95,16 @@ function DisabledActionsExample() {
             onMouseLeave={() => setShowSave(false)}
             style={{ display: 'inline-block' }}
           >
-            <Button disabled={true} variant="primary" iconName="upload">
+            <Button
+              aria-disabled="true"
+              variant="primary"
+              iconName="upload"
+              onClick={e => e.preventDefault()}
+              nativeButtonAttributes={{
+                onFocus: () => setShowSave(true),
+                onBlur: () => setShowSave(false),
+              }}
+            >
               Save
             </Button>
             {showSave && (
@@ -107,7 +124,15 @@ function DisabledActionsExample() {
             onMouseLeave={() => setShowDownload(false)}
             style={{ display: 'inline-block' }}
           >
-            <Button disabled={true} iconName="download">
+            <Button
+              aria-disabled="true"
+              iconName="download"
+              onClick={e => e.preventDefault()}
+              nativeButtonAttributes={{
+                onFocus: () => setShowDownload(true),
+                onBlur: () => setShowDownload(false),
+              }}
+            >
               Download Report
             </Button>
             {showDownload && (

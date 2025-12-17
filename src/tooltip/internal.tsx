@@ -18,6 +18,10 @@ import styles from './styles.css.js';
 
 type InternalTooltipComponentProps = InternalTooltipProps & InternalBaseComponentProps;
 
+// Generate unique ID for older React versions
+let tooltipIdCounter = 0;
+const generateTooltipId = () => `tooltip-${++tooltipIdCounter}`;
+
 export default function InternalTooltip({
   content,
   getTrack,
@@ -30,11 +34,23 @@ export default function InternalTooltip({
 }: InternalTooltipComponentProps) {
   const baseProps = getBaseProps(restProps);
   const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
+  const tooltipId = React.useMemo(() => generateTooltipId(), []);
 
   // Update the ref with the current tracked element
   React.useEffect(() => {
-    trackRef.current = getTrack();
-  });
+    const element = getTrack();
+    trackRef.current = element;
+    // Add aria-describedby to the tracked element for accessibility
+    if (element) {
+      element.setAttribute('aria-describedby', tooltipId);
+    }
+    return () => {
+      // Clean up aria-describedby when tooltip unmounts
+      if (element) {
+        element.removeAttribute('aria-describedby');
+      }
+    };
+  }, [getTrack, tooltipId]);
 
   if (!trackKey && (typeof content === 'string' || typeof content === 'number')) {
     trackKey = content;
@@ -75,6 +91,8 @@ export default function InternalTooltip({
         className={clsx(styles.root, baseProps.className)}
         data-testid={trackKey}
         ref={__internalRootRef}
+        id={tooltipId}
+        role="tooltip"
       >
         <Transition in={true}>
           {() => (

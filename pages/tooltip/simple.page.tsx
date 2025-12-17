@@ -296,6 +296,9 @@ export default function TooltipSimple() {
               ref={disabledRef}
               onMouseEnter={() => setShowDisabled(true)}
               onMouseLeave={() => setShowDisabled(false)}
+              onFocus={() => setShowDisabled(true)}
+              onBlur={() => setShowDisabled(false)}
+              tabIndex={0}
               style={{ display: 'inline-block' }}
             >
               <Button disabled={true} iconName="upload">
@@ -389,6 +392,9 @@ export default function TooltipSimple() {
                 ref={codeRef}
                 onMouseEnter={() => setShowCode(true)}
                 onMouseLeave={() => setShowCode(false)}
+                onFocus={() => setShowCode(true)}
+                onBlur={() => setShowCode(false)}
+                tabIndex={0}
                 style={{ display: 'inline-block' }}
               >
                 <span
