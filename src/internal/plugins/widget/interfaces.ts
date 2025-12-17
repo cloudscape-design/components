@@ -62,7 +62,7 @@ export interface Feature<T> {
   header: T;
   content: T;
   contentCategory?: T;
-  date: string;
+  releaseDate: Date;
 }
 
 export interface FeatureNotificationsPayload<T> {
@@ -73,7 +73,7 @@ export interface FeatureNotificationsPayload<T> {
   featuresPageLink?: string;
   filterFeatures?: (value: Feature<T>) => boolean;
   i18nStrings?: {
-    viewAll?: string;
+    featuresPageLinkLabel?: string;
   };
 }
 

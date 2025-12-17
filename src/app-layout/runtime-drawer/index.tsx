@@ -116,9 +116,9 @@ function RuntimeFeaturesNotificationDrawer<T>({
             content: <RuntimeContentPart mountContent={mountItem} content={item.header} />,
             secondaryContent: (
               <>
-                {!!item.date && (
+                {!!item.releaseDate && (
                   <Box margin={{ top: 'xs' }} fontSize="body-s" color="text-body-secondary">
-                    {formatDate(new Date(item.date))}
+                    {formatDate(item.releaseDate)}
                   </Box>
                 )}
                 {!!item.contentCategory && (

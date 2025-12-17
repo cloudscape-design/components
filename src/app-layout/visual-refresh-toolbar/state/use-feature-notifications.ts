@@ -61,10 +61,10 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
           payload.filterFeatures
             ? payload.filterFeatures
             : feature => {
-                return new Date(feature.date) >= thirtyDaysAgo;
+                return feature.releaseDate >= thirtyDaysAgo;
               }
         )
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        .sort((a, b) => b.releaseDate.getTime() - a.releaseDate.getTime());
       setSuppressedFeaturePrompt(payload.suppressFeaturePrompt ?? false);
       // TODO pass correct properties
       awsuiPlugins.appLayout.registerDrawer({
