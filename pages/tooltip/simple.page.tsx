@@ -77,6 +77,7 @@ export default function TooltipSimple() {
                 onFocus: () => setShowInteractive(true),
                 onBlur: () => setShowInteractive(false),
               }}
+              data-testid="hover-button"
             >
               Hover
             </Button>
