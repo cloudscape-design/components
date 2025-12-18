@@ -1,25 +1,46 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Box, Button } from '~components';
+import { Box, Button, PanelLayout } from '~components';
 import { registerLeftDrawer, updateDrawer } from '~components/internal/plugins/widget';
 import { mount, unmount } from '~mount';
 
 import styles from '../styles.scss';
 
+const DEFAULT_SIZE = 360;
+const CHAT_SIZE = 280;
+const MIN_CHAT_SIZE = 150;
+const MIN_ARTIFACT_SIZE = 360;
+
 const AIDrawer = () => {
-  return (
+  const [hasArtifact, setHasArtifact] = useState(false);
+  const [artifactLoaded, setArtifactLoaded] = useState(false);
+  const [chatSize, setChatSize] = useState(CHAT_SIZE);
+  const [maxPanelSize, setMaxPanelSize] = useState(Number.MAX_SAFE_INTEGER);
+  const constrainedChatSize = Math.min(chatSize, maxPanelSize);
+  const collapsed = constrainedChatSize < MIN_CHAT_SIZE;
+
+  const chatContent = (
     <Box padding="m">
       <Box variant="h2" padding={{ bottom: 'm' }}>
         Chat demo
       </Box>
       <Button
         onClick={() => {
+          setHasArtifact(true);
           updateDrawer({ type: 'expandDrawer', payload: { id: 'ai-panel' } });
+          updateDrawer({
+            type: 'updateDrawerConfig',
+            payload: {
+              id: 'ai-panel',
+              defaultSize: DEFAULT_SIZE + CHAT_SIZE,
+              minSize: DEFAULT_SIZE + CHAT_SIZE,
+            } as any,
+          });
         }}
       >
-        expand programmatically
+        Open artifact
       </Button>
       <Button
         onClick={() => {
@@ -37,9 +58,43 @@ const AIDrawer = () => {
         resize to window.innerWidth + 1000
       </Button>
       {new Array(100).fill(null).map((_, index) => (
-        <div key={index}>Tela content</div>
+        <div key={index}>Tela chat content</div>
       ))}
     </Box>
+  );
+  const artifactContent = (
+    <Box padding="m">
+      <Box variant="h2" padding={{ bottom: 'm' }}>
+        Artifact
+      </Box>
+      <Button
+        onClick={() => {
+          setHasArtifact(false);
+          updateDrawer({ type: 'exitExpandedMode' });
+          updateDrawer({
+            type: 'updateDrawerConfig',
+            payload: { id: 'ai-panel', defaultSize: DEFAULT_SIZE, minSize: DEFAULT_SIZE } as any,
+          });
+        }}
+      >
+        Close artifact panel
+      </Button>
+      <Button onClick={() => setArtifactLoaded(true)}>Load artifact details</Button>
+      {artifactLoaded && new Array(100).fill(null).map((_, index) => <div key={index}>Tela content</div>)}
+    </Box>
+  );
+  return (
+    <PanelLayout
+      resizable={true}
+      panelSize={constrainedChatSize}
+      maxPanelSize={maxPanelSize}
+      minPanelSize={MIN_CHAT_SIZE}
+      onPanelResize={({ detail }) => setChatSize(detail.panelSize)}
+      onLayoutChange={({ detail }) => setMaxPanelSize(detail.totalSize - MIN_ARTIFACT_SIZE)}
+      panelContent={chatContent}
+      mainContent={<div className={styles['ai-artifact-panel']}>{artifactContent}</div>}
+      display={hasArtifact ? (collapsed ? 'main-only' : 'all') : 'panel-only'}
+    />
   );
 };
 
@@ -47,7 +102,7 @@ registerLeftDrawer({
   id: 'ai-panel',
   resizable: true,
   isExpandable: true,
-  defaultSize: 420,
+  defaultSize: DEFAULT_SIZE,
   preserveInactiveContent: true,
 
   ariaLabels: {
