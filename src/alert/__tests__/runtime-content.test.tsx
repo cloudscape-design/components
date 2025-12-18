@@ -7,7 +7,6 @@ import Alert from '../../../lib/components/alert';
 import Button from '../../../lib/components/button';
 import { metrics } from '../../../lib/components/internal/metrics';
 import awsuiPlugins from '../../../lib/components/internal/plugins';
-import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { AlertFlashContentConfig } from '../../../lib/components/internal/plugins/controllers/alert-flash-content';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { expectContent } from './runtime-content-utils';
@@ -36,7 +35,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  awsuiPluginsInternal.alertContent.clearRegisteredReplacer();
+  awsuiPlugins.alertContent.clearRegisteredReplacerForTesting();
   jest.resetAllMocks();
   jest.restoreAllMocks();
 });

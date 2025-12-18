@@ -5,13 +5,12 @@ import testRenderer, { ReactTestRendererJSON } from 'react-test-renderer';
 
 import Alert from '../../../lib/components/alert';
 import awsuiPlugins from '../../../lib/components/internal/plugins';
-import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { AlertFlashContentConfig } from '../../../lib/components/internal/plugins/controllers/alert-flash-content';
 
 import stylesCss from '../../../lib/components/alert/styles.css.js';
 
 afterEach(() => {
-  awsuiPluginsInternal.alertContent.clearRegisteredReplacer();
+  awsuiPlugins.alertContent.clearRegisteredReplacerForTesting();
   jest.resetAllMocks();
   jest.restoreAllMocks();
 });
