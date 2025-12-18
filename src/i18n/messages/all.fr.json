@@ -242,6 +242,10 @@
     "ariaLabels.pageLabel": "Page {pageNumber} de toutes les pages",
     "ariaLabels.previousPageLabel": "Page précédente"
   },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "Poignée de redimensionnement du panneau",
+    "i18nStrings.resizeHandleTooltipText": "Faites glisser ou sélectionnez pour redimensionner"
+  },
   "pie-chart": {
     "i18nStrings.detailsValue": "Valeur",
     "i18nStrings.detailsPercentage": "Pourcentage",
