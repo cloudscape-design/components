@@ -8,6 +8,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
+import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useInternalI18n } from '../i18n/context';
 import FocusLock from '../internal/components/focus-lock';
 import { KeyCode } from '../internal/keycode';
@@ -110,6 +111,7 @@ const PopoverBody = React.forwardRef(
         onBlur={onBlur}
         {...dialogProps}
       >
+        <BuiltInErrorBoundary>
         <FocusLock disabled={!shouldTrapFocus} autoFocus={false}>
           {header && (
             <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
@@ -126,6 +128,7 @@ const PopoverBody = React.forwardRef(
             </div>
           </div>
         </FocusLock>
+      </BuiltInErrorBoundary>
       </div>
     );
   }

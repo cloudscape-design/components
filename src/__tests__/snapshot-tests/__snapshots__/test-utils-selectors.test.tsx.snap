@@ -250,6 +250,14 @@ exports[`test-utils selectors 1`] = `
     "awsui_header_1sxt8",
     "awsui_test-utils-drawer-content_1sxt8",
   ],
+  "error-boundary": [
+    "awsui_action_11u4a",
+    "awsui_description_11u4a",
+    "awsui_fallback_11u4a",
+    "awsui_feedback-action_11u4a",
+    "awsui_header_11u4a",
+    "awsui_refresh-action_11u4a",
+  ],
   "expandable-section": [
     "awsui_content-expanded_gwq0h",
     "awsui_content_gwq0h",
