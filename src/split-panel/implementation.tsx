@@ -10,6 +10,7 @@ import { SizeControlProps } from '../app-layout/utils/interfaces';
 import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
 import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
 import { InternalButton } from '../button/internal';
+import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { getBaseProps } from '../internal/base-component';
 import PanelResizeHandle from '../internal/components/panel-resize-handle';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
@@ -260,7 +261,7 @@ export function SplitPanelImplementation({
           ariaLabel={ariaLabel}
           closeBehavior={closeBehavior}
         >
-          {children}
+          <BuiltInErrorBoundary>{children}</BuiltInErrorBoundary>
         </SplitPanelContentSide>
       )}
 
@@ -280,7 +281,7 @@ export function SplitPanelImplementation({
           closeBehavior={closeBehavior}
           hasCustomElements={hasCustomElements}
         >
-          {children}
+          <BuiltInErrorBoundary>{children}</BuiltInErrorBoundary>
         </SplitPanelContentBottom>
       )}
       {isPreferencesOpen && (
