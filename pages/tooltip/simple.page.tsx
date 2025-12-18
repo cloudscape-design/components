@@ -44,6 +44,10 @@ export default function TooltipSimple() {
   const linkRef = useRef<HTMLDivElement>(null);
   const codeRef = useRef<HTMLDivElement>(null);
 
+  // Password input
+  const [showPassword, setShowPassword] = useState(false);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
   return (
     <article>
       <h1>Tooltip</h1>
@@ -434,6 +438,55 @@ export default function TooltipSimple() {
                 )}
               </div>
             </SpaceBetween>
+          </section>
+
+          <section id="aria-describedby-example">
+            <h3>ARIA Described-by Example</h3>
+            <div
+              style={{ display: 'inline-block' }}
+              onMouseEnter={() => setShowPassword(true)}
+              onMouseLeave={() => setShowPassword(false)}
+            >
+              <label htmlFor="password-input" style={{ display: 'block', marginBottom: '4px' }}>
+                Password:
+              </label>
+              <input
+                ref={passwordRef}
+                id="password-input"
+                type="password"
+                placeholder="Enter password"
+                style={{
+                  padding: '8px',
+                  border: '1px solid #ccc',
+                  borderRadius: '4px',
+                }}
+                onFocus={() => setShowPassword(true)}
+                onBlur={() => setShowPassword(false)}
+              />
+              {showPassword && (
+                <Tooltip
+                  content={
+                    <div>
+                      <p>
+                        <strong>Password Rules:</strong>
+                      </p>
+                      <ul style={{ margin: 0, paddingLeft: '16px' }}>
+                        <li>Minimum of 8 characters</li>
+                        <li>
+                          Include at least one lowercase letter, one uppercase letter, one number and one special
+                          character
+                        </li>
+                        <li>Unique to this website</li>
+                      </ul>
+                    </div>
+                  }
+                  getTrack={() => passwordRef.current}
+                  position="bottom"
+                  onEscape={() => setShowPassword(false)}
+                  trackKey="password-rules"
+                />
+              )}
+            </div>
           </section>
         </SpaceBetween>
       </ScreenshotArea>

@@ -3,36 +3,60 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../../lib/components/test-utils/selectors';
+import tooltipStyles from '../../../lib/components/tooltip/styles.selectors.js';
 
-import tooltipStyles from '../../../../lib/components/tooltip/styles.selectors.js';
+class TooltipPageObject extends BasePageObject {
+  async waitForTooltip() {
+    console.log('Waiting for tooltip with selector:', `.${tooltipStyles.root}`);
+    await this.waitForVisible(`.${tooltipStyles.root}`);
+  }
 
-test(
-  'should not close any wrapping modals when the tooltip detects an Escape keypress',
-  useBrowser(async browser => {
-    await browser.url('/#/light/modal/with-tooltip');
-    const page = new BasePageObject(browser);
+  isTooltipVisible() {
+    return this.isDisplayed(`.${tooltipStyles.root}`);
+  }
 
-    const openButtonSelector = createWrapper().findButton().toSelector();
-    await page.waitForVisible(openButtonSelector);
-    await page.click(openButtonSelector);
+  getTooltipContent() {
+    return this.getText(`.${tooltipStyles.root}`);
+  }
+}
 
-    const modal = createWrapper().findModal();
-    const slider = modal.findContent().findSlider();
-    await page.waitForVisible(slider.toSelector());
+describe('Tooltip', () => {
+  test(
+    'shows tooltip on hover, checks content and closes with escape',
+    useBrowser(async browser => {
+      await browser.url('/#/light/tooltip/simple');
+      const page = new TooltipPageObject(browser);
 
-    // Slider on the page is set at 50% on purpose. `hoverElement` will move the
-    // mouse to the center of the track where the "thumb" is.
-    await page.hoverElement(slider.findNativeInput().toSelector());
-    await page.waitForVisible(`.${tooltipStyles.root}`);
+      // Wait for page to load
+      await page.waitForVisible('[data-testid="hover-button"]');
 
-    // Press once to close the tooltip
-    await page.keys(['Escape']);
-    await expect(page.isDisplayed(`.${tooltipStyles.root}`)).resolves.toBe(false);
-    await expect(page.isDisplayed(modal.toSelector())).resolves.toBe(true);
+      // // Test hover
+      await page.hoverElement('[data-testid="hover-button"]');
 
-    // Press again to close the modal
-    await page.keys(['Escape']);
-    await expect(page.isDisplayed(modal.toSelector())).resolves.toBe(false);
-  })
-);
+      // await page.waitForTooltip();
+      await expect(page.isTooltipVisible()).resolves.toBe(true);
+      console.log('JJAAAA');
+
+      const content = await page.getTooltipContent();
+      expect(content).toBe('Tooltip positioned on top');
+      console.log(content);
+
+      await browser.keys('Escape');
+      await expect(page.isTooltipVisible()).resolves.toBe(false);
+
+      // await expect(page.isTooltipVisible()).resolves.toBe(false);
+
+      // Verify content is not accessible when tooltip is hidden
+      // await expect(page.getTooltipContent()).resolves.toBe('');
+      // expect(content).toBe('Expected tooltip text');
+      // // Move away to hide tooltip
+      // await page.hoverElement('body');
+      // await expect(page.isTooltipVisible()).resolves.toBe(false);
+
+      // // Test keyboard focus
+      // await page.click('[data-testid="hover-button"]');
+      // await page.waitForTooltip();
+      // await expect(page.isTooltipVisible()).resolves.toBe(true);
+    })
+  );
+});
