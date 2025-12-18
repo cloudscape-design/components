@@ -27,7 +27,7 @@ describe('Multiselect renderOption', () => {
     expect(elementWrapper).toHaveTextContent('Custom 0');
   });
 
-  test('receives correct item properties for child option', () => {
+  test('receives correct item properties for item option', () => {
     const renderOption = jest.fn(() => <div>Custom</div>);
     const childOption = { label: 'Test', value: '1' };
     const wrapper = renderMultiselect({
@@ -48,7 +48,7 @@ describe('Multiselect renderOption', () => {
     );
   });
 
-  test('receives correct item properties for parent option', () => {
+  test('receives correct item properties for group option', () => {
     const renderOption = jest.fn(() => <div>Custom</div>);
     const groupOption = { label: 'Group', value: 'g1', options: [{ label: 'Child', value: 'c1' }] };
     const wrapper = renderMultiselect({
@@ -155,6 +155,30 @@ describe('Multiselect renderOption', () => {
         item: expect.objectContaining({
           type: 'item',
           selected: true,
+        }),
+      })
+    );
+  });
+
+  test('receives correct parent attribute for child item in group', () => {
+    const renderOption = jest.fn(() => <div>Custom</div>);
+    const groupOption = { label: 'Parent Group', value: 'g1', options: [{ label: 'Child Item', value: 'c1' }] };
+    const wrapper = renderMultiselect({
+      options: [groupOption],
+      renderOption,
+    });
+    wrapper.openDropdown();
+
+    // Verify that the child item receives the correct parent attribute
+    expect(renderOption).toHaveBeenCalledWith(
+      expect.objectContaining({
+        item: expect.objectContaining({
+          type: 'item',
+          option: expect.objectContaining({ label: 'Child Item', value: 'c1' }),
+          parent: expect.objectContaining({
+            type: 'group',
+            option: expect.objectContaining(groupOption),
+          }),
         }),
       })
     );
