@@ -14306,6 +14306,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
             "type": "React.ReactNode",
           },
           {
+            "name": "edit-gen-ai",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
             "name": "ellipsis",
             "optional": true,
             "type": "React.ReactNode",
@@ -14546,6 +14551,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
             "type": "React.ReactNode",
           },
           {
+            "name": "search-gen-ai",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
             "name": "security",
             "optional": true,
             "type": "React.ReactNode",
@@ -14642,6 +14652,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
           },
           {
             "name": "suggestions",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "suggestions-gen-ai",
             "optional": true,
             "type": "React.ReactNode",
           },
