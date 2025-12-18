@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Components definition for alert matches the snapshot: alert 1`] = `
 {
@@ -25546,6 +25546,369 @@ need to introduce friction to the switching of tabs.",
       "name": "keyboardActivationMode",
       "optional": true,
       "type": "string",
+    },
+    {
+      "inlineType": {
+        "name": "TabsProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "ContainerProps.Style",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "paddingBlock",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "paddingInline",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "content",
+                  "optional": true,
+                  "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "inlineType": {
+                          "name": "{ borderColor?: string | undefined; borderWidth?: string | undefined; }",
+                          "properties": [
+                            {
+                              "name": "borderColor",
+                              "optional": true,
+                              "type": "string",
+                            },
+                            {
+                              "name": "borderWidth",
+                              "optional": true,
+                              "type": "string",
+                            },
+                          ],
+                          "type": "object",
+                        },
+                        "name": "divider",
+                        "optional": false,
+                        "type": "{ borderColor?: string | undefined; borderWidth?: string | undefined; }",
+                      },
+                      {
+                        "inlineType": {
+                          "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                          "properties": [
+                            {
+                              "name": "paddingBlock",
+                              "optional": true,
+                              "type": "string",
+                            },
+                            {
+                              "name": "paddingInline",
+                              "optional": true,
+                              "type": "string",
+                            },
+                          ],
+                          "type": "object",
+                        },
+                        "name": "root",
+                        "optional": false,
+                        "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "footer",
+                  "optional": true,
+                  "type": "{ root: { paddingBlock?: string | undefined; paddingInline?: string | undefined; }; divider: { borderColor?: string | undefined; borderWidth?: string | undefined; }; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "paddingBlock",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "paddingInline",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "header",
+                  "optional": true,
+                  "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "background",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderColor",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderRadius",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderWidth",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "boxShadow",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "root",
+                  "optional": true,
+                  "type": "{ background?: string | undefined; borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; boxShadow?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "container",
+            "optional": true,
+            "type": "ContainerProps.Style",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "{ color?: string | undefined; width?: string | undefined; borderRadius?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "borderRadius",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "color",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "width",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "activeIndicator",
+                  "optional": true,
+                  "type": "{ color?: string | undefined; width?: string | undefined; borderRadius?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "{ active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "borderColor",
+                  "optional": true,
+                  "type": "{ active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; }",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderWidth",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "FocusRingStyle",
+                    "properties": [
+                      {
+                        "name": "borderColor",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderRadius",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderWidth",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "focusRing",
+                  "optional": true,
+                  "type": "FocusRingStyle",
+                },
+                {
+                  "name": "fontSize",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "fontWeight",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "tab",
+            "optional": true,
+            "type": "{ backgroundColor?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; borderColor?: { active?: string | undefined; default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; ... 8 more .....",
+          },
+          {
+            "inlineType": {
+              "name": "{ color?: string | undefined; width?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "color",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "width",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "tabSeparator",
+            "optional": true,
+            "type": "{ color?: string | undefined; width?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "TabsProps.Style",
     },
     {
       "description": "Specifies the tabs to display. Each tab object has the following properties:

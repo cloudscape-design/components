@@ -45,3 +45,22 @@ export function assertNever(_value: never) {
   /* istanbul ignore next: this code is not intended to be visited */
   return null;
 }
+
+/**
+ * Utility type for focus ring styling properties.
+ * Used across components to provide consistent focus ring customization.
+ *
+ * @example
+ * ```
+ * export interface Style {
+ *   root?: {
+ *     focusRing?: FocusRingStyle;
+ *   };
+ * }
+ * ```
+ */
+export interface FocusRingStyle {
+  borderColor?: string;
+  borderRadius?: string;
+  borderWidth?: string;
+}
