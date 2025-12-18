@@ -28,7 +28,6 @@ export default function InternalTooltipExamples() {
       <Box padding="l">
         <SpaceBetween size="l">
           <Header variant="h1">Tooltip</Header>
-          <DisabledActionsExample />
           <TruncatedTextExample />
           <IconOnlyButtonsExample />
           <FileInputItemExample />
@@ -46,108 +45,6 @@ export default function InternalTooltipExamples() {
         </SpaceBetween>
       </Box>
     </>
-  );
-}
-
-function DisabledActionsExample() {
-  const deleteWrapperRef = useRef<HTMLDivElement>(null);
-  const saveWrapperRef = useRef<HTMLDivElement>(null);
-  const downloadWrapperRef = useRef<HTMLDivElement>(null);
-  const [showDelete, setShowDelete] = useState(false);
-  const [showSave, setShowSave] = useState(false);
-  const [showDownload, setShowDownload] = useState(false);
-
-  return (
-    <Container header={<Header variant="h2">Disabled Actions with Explanations</Header>}>
-      <ScreenshotArea>
-        <SpaceBetween direction="horizontal" size="s">
-          <div
-            ref={deleteWrapperRef}
-            onMouseEnter={() => setShowDelete(true)}
-            onMouseLeave={() => setShowDelete(false)}
-            style={{ display: 'inline-block' }}
-          >
-            <Button
-              aria-disabled="true"
-              iconName="remove"
-              onClick={e => e.preventDefault()}
-              nativeButtonAttributes={{
-                onFocus: () => setShowDelete(true),
-                onBlur: () => setShowDelete(false),
-              }}
-            >
-              Delete
-            </Button>
-            {showDelete && (
-              <Tooltip
-                content="You don't have permission to delete this resource"
-                getTrack={() => deleteWrapperRef.current}
-                position="top"
-                onEscape={() => setShowDelete(false)}
-                trackKey="delete-disabled"
-              />
-            )}
-          </div>
-
-          <div
-            ref={saveWrapperRef}
-            onMouseEnter={() => setShowSave(true)}
-            onMouseLeave={() => setShowSave(false)}
-            style={{ display: 'inline-block' }}
-          >
-            <Button
-              aria-disabled="true"
-              variant="primary"
-              iconName="upload"
-              onClick={e => e.preventDefault()}
-              nativeButtonAttributes={{
-                onFocus: () => setShowSave(true),
-                onBlur: () => setShowSave(false),
-              }}
-            >
-              Save
-            </Button>
-            {showSave && (
-              <Tooltip
-                content="No changes to save"
-                getTrack={() => saveWrapperRef.current}
-                position="top"
-                onEscape={() => setShowSave(false)}
-                trackKey="save-disabled"
-              />
-            )}
-          </div>
-
-          <div
-            ref={downloadWrapperRef}
-            onMouseEnter={() => setShowDownload(true)}
-            onMouseLeave={() => setShowDownload(false)}
-            style={{ display: 'inline-block' }}
-          >
-            <Button
-              aria-disabled="true"
-              iconName="download"
-              onClick={e => e.preventDefault()}
-              nativeButtonAttributes={{
-                onFocus: () => setShowDownload(true),
-                onBlur: () => setShowDownload(false),
-              }}
-            >
-              Download Report
-            </Button>
-            {showDownload && (
-              <Tooltip
-                content="Report generation in progress. Please wait..."
-                getTrack={() => downloadWrapperRef.current}
-                position="top"
-                onEscape={() => setShowDownload(false)}
-                trackKey="download-disabled"
-              />
-            )}
-          </div>
-        </SpaceBetween>
-      </ScreenshotArea>
-    </Container>
   );
 }
 
