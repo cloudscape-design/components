@@ -56,6 +56,7 @@ const pluralizationMap = {
   NavigableGroup: 'NavigableGroups',
   Pagination: 'Paginations',
   AppLayoutToolbar: 'AppLayoutToolbars',
+  PanelLayout: 'PanelLayouts',
   PieChart: 'PieCharts',
   Popover: 'Popovers',
   ProgressBar: 'ProgressBars',

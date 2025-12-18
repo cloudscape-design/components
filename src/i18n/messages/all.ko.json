@@ -242,6 +242,10 @@
     "ariaLabels.pageLabel": "전체 페이지 중 {pageNumber}페이지",
     "ariaLabels.previousPageLabel": "이전 페이지"
   },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "패널 크기 조정 핸들",
+    "i18nStrings.resizeHandleTooltipText": "드래그하거나 선택하여 크기 조정"
+  },
   "pie-chart": {
     "i18nStrings.detailsValue": "값",
     "i18nStrings.detailsPercentage": "백분율",

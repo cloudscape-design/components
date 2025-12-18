@@ -242,6 +242,10 @@
     "ariaLabels.pageLabel": "صفحة رقم {pageNumber} من إجمالي عدد الصفحات",
     "ariaLabels.previousPageLabel": "الصفحة السابقة"
   },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "مقبض تغيير حجم اللوحة",
+    "i18nStrings.resizeHandleTooltipText": "قم بالسحب أو التحديد لتغيير الحجم"
+  },
   "pie-chart": {
     "i18nStrings.detailsValue": "عمود القيمة",
     "i18nStrings.detailsPercentage": "النسبة المئوية",

@@ -242,6 +242,10 @@
     "ariaLabels.pageLabel": "Seite {pageNumber} aller Seiten",
     "ariaLabels.previousPageLabel": "Vorherige Seite"
   },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "Größe des Panels ändern",
+    "i18nStrings.resizeHandleTooltipText": "Zum Ändern der Größe ziehen oder auswählen"
+  },
   "pie-chart": {
     "i18nStrings.detailsValue": "Wert",
     "i18nStrings.detailsPercentage": "Prozentsatz",
