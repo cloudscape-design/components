@@ -76,6 +76,7 @@ export default function TooltipSimple() {
               nativeButtonAttributes={{
                 onFocus: () => setShowInteractive(true),
                 onBlur: () => setShowInteractive(false),
+                'aria-describedby': `tooltip-position-${interactivePosition}`,
               }}
               data-testid="hover-button"
             >
@@ -109,6 +110,7 @@ export default function TooltipSimple() {
                 nativeButtonAttributes={{
                   onFocus: () => setShowTop(true),
                   onBlur: () => setShowTop(false),
+                  'aria-describedby': 'tooltip-top',
                 }}
               >
                 Short
@@ -137,6 +139,7 @@ export default function TooltipSimple() {
                 nativeButtonAttributes={{
                   onFocus: () => setShowBottom(true),
                   onBlur: () => setShowBottom(false),
+                  'aria-describedby': 'tooltip-bottom',
                 }}
               >
                 Medium
@@ -165,13 +168,14 @@ export default function TooltipSimple() {
                 nativeButtonAttributes={{
                   onFocus: () => setShowLeft(true),
                   onBlur: () => setShowLeft(false),
+                  'aria-describedby': 'tooltip-left',
                 }}
               >
                 Long
               </Button>
               {showLeft && (
                 <Tooltip
-                  content="This is a longer tooltip that contains more information and will likely wrap to multiple lines depending on the available space"
+                  content="This is a longer tooltip..."
                   getTrack={() => leftRef.current}
                   position="left"
                   onEscape={() => setShowLeft(false)}
@@ -186,13 +190,14 @@ export default function TooltipSimple() {
               ref={rightRef}
               onMouseEnter={() => setShowRight(true)}
               onMouseLeave={() => setShowRight(false)}
+              onFocus={() => setShowRight(true)}
+              onBlur={() => setShowRight(false)}
               style={{ display: 'inline-block' }}
             >
               <Button
                 variant="primary"
                 nativeButtonAttributes={{
-                  onFocus: () => setShowRight(true),
-                  onBlur: () => setShowRight(false),
+                  'aria-describedby': 'tooltip-right',
                 }}
               >
                 Very Long
@@ -229,6 +234,7 @@ export default function TooltipSimple() {
                   nativeButtonAttributes={{
                     onFocus: () => setShowIconEdit(true),
                     onBlur: () => setShowIconEdit(false),
+                    'aria-describedby': 'tooltip-icon-edit',
                   }}
                 />
                 {showIconEdit && (
@@ -254,6 +260,7 @@ export default function TooltipSimple() {
                   nativeButtonAttributes={{
                     onFocus: () => setShowIconDelete(true),
                     onBlur: () => setShowIconDelete(false),
+                    'aria-describedby': 'tooltip-icon-delete',
                   }}
                 />
                 {showIconDelete && (
@@ -279,6 +286,7 @@ export default function TooltipSimple() {
                   nativeButtonAttributes={{
                     onFocus: () => setShowIconSettings(true),
                     onBlur: () => setShowIconSettings(false),
+                    'aria-describedby': 'tooltip-icon-settings',
                   }}
                 />
                 {showIconSettings && (
@@ -305,6 +313,7 @@ export default function TooltipSimple() {
               onBlur={() => setShowDisabled(false)}
               tabIndex={0}
               style={{ display: 'inline-block' }}
+              aria-describedby="tooltip-disabled"
             >
               <Button disabled={true} iconName="upload">
                 Save
@@ -329,6 +338,7 @@ export default function TooltipSimple() {
               onMouseEnter={() => setShowTruncated(true)}
               onMouseLeave={() => setShowTruncated(false)}
               style={{ maxWidth: '200px' }}
+              aria-describedby="tooltip-truncated"
             >
               <div
                 style={{
@@ -371,6 +381,7 @@ export default function TooltipSimple() {
                   onBlur={() => setShowLink(false)}
                   style={{ color: '#0073bb', textDecoration: 'underline', cursor: 'pointer' }}
                   onClick={e => e.preventDefault()}
+                  aria-describedby="tooltip-link-tooltip"
                 >
                   Documentation Link
                 </a>
@@ -401,6 +412,7 @@ export default function TooltipSimple() {
                 onBlur={() => setShowCode(false)}
                 tabIndex={0}
                 style={{ display: 'inline-block' }}
+                aria-describedby="tooltip-code-tooltip"
               >
                 <span
                   style={{
@@ -463,6 +475,7 @@ export default function TooltipSimple() {
                 }}
                 onFocus={() => setShowPassword(true)}
                 onBlur={() => setShowPassword(false)}
+                aria-describedby="tooltip-password-rules"
               />
               {showPassword && (
                 <Tooltip
