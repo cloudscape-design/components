@@ -143,6 +143,7 @@ function ActiveDrawer() {
         </div>
         {toolsContent && (
           <div
+            key={TOOLS_DRAWER_ID}
             className={clsx(
               styles['drawer-content'],
               activeDrawerId !== TOOLS_DRAWER_ID && styles['drawer-content-hidden']
@@ -152,7 +153,9 @@ function ActiveDrawer() {
           </div>
         )}
         {activeDrawerId !== TOOLS_DRAWER_ID && (
-          <div className={styles['drawer-content']}>{activeDrawerId && activeDrawer?.content}</div>
+          <div key={activeDrawerId} className={styles['drawer-content']}>
+            {activeDrawerId && activeDrawer?.content}
+          </div>
         )}
       </div>
     </aside>
