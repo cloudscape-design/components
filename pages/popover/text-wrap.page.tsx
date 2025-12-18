@@ -5,6 +5,7 @@ import React from 'react';
 import Popover, { PopoverProps } from '~components/popover';
 import PopoverBody, { PopoverBodyProps } from '~components/popover/body';
 
+import FocusTarget from '../common/focus-target';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -59,6 +60,7 @@ export default function () {
   return (
     <article>
       <h1>Popover text wrapping</h1>
+      <FocusTarget />
       <ScreenshotArea>
         <PermutationsView
           permutations={triggerPermutations}
