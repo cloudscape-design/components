@@ -29,16 +29,16 @@ describe('Select renderOption', () => {
 
   test('receives correct item properties for item option', () => {
     const renderOption = jest.fn(() => <div>Custom</div>);
-    const childOption = { label: 'Test', value: '1' };
+    const itemOption = { label: 'Test', value: '1' };
     const wrapper = renderSelect({
-      options: [childOption],
+      options: [itemOption],
       renderOption,
     });
     wrapper.openDropdown();
     expect(renderOption).toHaveBeenCalledWith(
       expect.objectContaining({
         item: expect.objectContaining({
-          option: expect.objectContaining(childOption),
+          option: expect.objectContaining(itemOption),
           selected: false,
           highlighted: false,
           disabled: false,
