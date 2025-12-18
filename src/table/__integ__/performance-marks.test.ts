@@ -13,15 +13,17 @@ function setupTest(
   }) => Promise<void>
 ) {
   return useBrowser(async browser => {
-    if (process.env.REACT_VERSION === '18') {
-      return;
-    }
     const page = new BasePageObject(browser);
     await browser.url(`#/light/table/performance-marks${!inViewport ? '?outsideOfViewport=true' : ''}`);
     const getMarks = async () => {
+      let awsuiMarks: PerformanceMark[] = [];
       await new Promise(r => setTimeout(r, 200));
-      const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);
-      return marks.filter(m => m.detail?.source === 'awsui');
+      await page.waitForAssertion(async () => {
+        const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);
+        awsuiMarks = marks.filter(m => m.detail?.source === 'awsui');
+        expect(awsuiMarks).not.toHaveLength(0);
+      });
+      return awsuiMarks;
     };
     const isElementPerformanceMarkExisting = (id: string) =>
       page.isExisting(`[data-analytics-performance-mark="${id}"]`);

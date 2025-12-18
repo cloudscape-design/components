@@ -208,6 +208,7 @@ export default () => {
 const SERVER_DELAY = 1500;
 const ROOT_PAGE_SIZE = 10;
 const NESTED_PAGE_SIZE = 2;
+
 function useTableData() {
   const settings = usePageSettings();
   const delay = settings.useServerMock ? SERVER_DELAY : 0;
@@ -223,24 +224,13 @@ function useTableData() {
     },
     [delay, settings.manualServerMock]
   );
+  const [response, setResponse] = useState<{ loading: boolean; error: boolean; instances: readonly Instance[] }>({
+    loading: settings.useServerMock,
+    error: false,
+    instances: settings.useServerMock ? [] : allInstances,
+  });
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-
-  // Imitate server-side delay when fetching items for the first time.
-  const [readyInstances, setReadyInstances] = useState(settings.useServerMock ? [] : allInstances);
-  useEffect(() => {
-    setLoading(true);
-    setError(false);
-    return getServerResponse(() => {
-      setReadyInstances(allInstances);
-      setLoading(false);
-      setError(settings.emulateServerError);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getServerResponse, setLoading, setError, setReadyInstances]);
-
-  const collectionResult = useCollection(readyInstances, {
+  const collectionResult = useCollection(allInstances, {
     pagination: settings.usePagination ? { pageSize: ROOT_PAGE_SIZE } : undefined,
     sorting: {},
     filtering: {},
@@ -267,19 +257,17 @@ function useTableData() {
       : undefined,
   });
 
-  // Imitate server-side delay when items update.
+  // Imitate server-side delay when fetching items.
   const memoItems = useEqualsMemo(collectionResult.items);
-  const [readyItems, setReadyItems] = useState(memoItems);
+  const [delayedItems, setDelayedItems] = useState(memoItems);
+  const readyItems = settings.manualServerMock ? memoItems : delayedItems;
   useEffect(() => {
-    setLoading(true);
-    setError(false);
+    setResponse(prev => ({ ...prev, loading: true, error: false }));
     return getServerResponse(() => {
-      setLoading(false);
-      setReadyItems(memoItems);
-      setError(settings.emulateServerError);
+      setResponse(() => ({ loading: false, error: settings.emulateServerError, instances: memoItems }));
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getServerResponse, memoItems, setLoading, setError, setReadyItems]);
+  }, [getServerResponse, memoItems, setDelayedItems]);
 
   // Decorate path options to only show the last node and not the full path.
   collectionResult.propertyFilterProps.filteringOptions = collectionResult.propertyFilterProps.filteringOptions.map(
@@ -358,9 +346,9 @@ function useTableData() {
 
   return {
     ...collectionResult,
-    error: settings.useServerMock ? error : false,
-    loading: settings.useServerMock ? loading : false,
-    items: settings.useServerMock && error ? [] : paginatedItems,
+    error: settings.useServerMock ? response.error : false,
+    loading: settings.useServerMock ? response.loading : false,
+    items: settings.useServerMock && response.error ? [] : paginatedItems,
     actions: {
       clearSelection: () => {
         collectionResult.actions.setSelectedItems([]);

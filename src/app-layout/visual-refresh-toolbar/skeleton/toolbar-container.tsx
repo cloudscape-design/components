@@ -51,7 +51,11 @@ export const ToolbarSkeletonStructure = React.forwardRef<HTMLElement, ToolbarSke
   ({ ownBreadcrumbs, discoveredBreadcrumbs }, ref) => (
     <ToolbarSlot ref={ref}>
       <ToolbarContainer>
-        <ToolbarBreadcrumbsSection ownBreadcrumbs={ownBreadcrumbs} discoveredBreadcrumbs={discoveredBreadcrumbs} />
+        <ToolbarBreadcrumbsSection
+          ownBreadcrumbs={ownBreadcrumbs}
+          discoveredBreadcrumbs={discoveredBreadcrumbs}
+          includeTestUtils={true}
+        />
         <div className={toolbarStyles['universal-toolbar-drawers']} />
       </ToolbarContainer>
     </ToolbarSlot>

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { TokenCategory } from '@cloudscape-design/theming-build';
+import { ReferenceTokens, TokenCategory } from '@cloudscape-design/theming-build';
 
 import { StyleDictionary } from './interfaces.js';
 
@@ -62,6 +62,30 @@ export const expandMotionDictionary = (
     acc[key] = expandMotionEntry(dictionary[key]!);
     return acc;
   }, {} as StyleDictionary.ExpandedMotionScopeDictionary);
+};
+
+export const expandReferenceTokens = (referenceTokens: ReferenceTokens) => {
+  if (!referenceTokens.color) {
+    return referenceTokens;
+  }
+
+  const expandedColor = Object.entries(referenceTokens.color).reduce(
+    (acc: any, [colorType, palette]: [string, any]) => {
+      if (!palette) {
+        return acc;
+      }
+
+      acc[colorType] = Object.entries(palette).reduce((paletteAcc: any, [step, value]: [string, any]) => {
+        paletteAcc[step] = expandColorEntry(value);
+        return paletteAcc;
+      }, {});
+
+      return acc;
+    },
+    {}
+  );
+
+  return { ...referenceTokens, color: expandedColor };
 };
 
 export const pickState = (tokenCategory: TokenCategory<string, Record<string, string>>, state: string) => {

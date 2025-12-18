@@ -48,6 +48,36 @@ test('renders loading state', () => {
   expect(createWrapper(container).findDrawer()!.findContent()).toBeNull();
 });
 
+describe('footer', () => {
+  test('does not render footer by default', () => {
+    const wrapper = renderDrawer(<Drawer>test content</Drawer>);
+    expect(wrapper.findFooter()).toBeNull();
+  });
+
+  test('renders footer when footer prop is provided', () => {
+    const wrapper = renderDrawer(<Drawer footer={<div>Footer content</div>}>test content</Drawer>);
+    expect(wrapper.findFooter()!.getElement()).toHaveTextContent('Footer content');
+  });
+
+  test('footer does not interfere with header rendering', () => {
+    const wrapper = renderDrawer(
+      <Drawer header="Header text" footer={<div>Footer content</div>}>
+        Body content
+      </Drawer>
+    );
+    expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Header text');
+    expect(wrapper.findFooter()!.getElement()).toHaveTextContent('Footer content');
+    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Body content');
+  });
+
+  test('footer does not render in loading state', () => {
+    const wrapper = renderDrawer(
+      <Drawer loading={true} footer={<div>Footer content</div>} i18nStrings={{ loadingText: 'Loading...' }} />
+    );
+    expect(wrapper.findFooter()).toBeNull();
+  });
+});
+
 describe('i18n', () => {
   test('supports providing loadingText from i18n provider', () => {
     const { container } = render(

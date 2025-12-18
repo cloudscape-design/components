@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ButtonProps } from '../button/interfaces';
+import { ContainerProps } from '../container/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { FocusRingStyle } from '../internal/types';
 
 export interface TabsProps extends BaseComponentProps {
   /**
@@ -100,6 +102,11 @@ export interface TabsProps extends BaseComponentProps {
    * need to introduce friction to the switching of tabs.
    */
   keyboardActivationMode?: 'automatic' | 'manual';
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: TabsProps.Style;
 }
 export namespace TabsProps {
   export type Variant = 'default' | 'container' | 'stacked';
@@ -190,5 +197,45 @@ export namespace TabsProps {
      * with role="application" to provide further information on the purpose of this component
      */
     tabsWithActionsAriaRoleDescription?: string;
+  }
+
+  export interface Style {
+    container?: ContainerProps.Style;
+    tab?: {
+      backgroundColor?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      borderColor?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      color?: {
+        active?: string;
+        default?: string;
+        disabled?: string;
+        hover?: string;
+      };
+      fontSize?: string;
+      fontWeight?: string;
+      focusRing?: FocusRingStyle;
+      paddingBlock?: string;
+      paddingInline?: string;
+      activeIndicator?: {
+        color?: string;
+        width?: string;
+        borderRadius?: string;
+      };
+    };
+    tabSeparator?: {
+      color?: string;
+      width?: string;
+    };
   }
 }

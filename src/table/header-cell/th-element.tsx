@@ -36,8 +36,8 @@ export interface TableThElementProps {
   tableRole: TableRole;
   children: React.ReactNode;
   variant: TableProps.Variant;
+  tableVariant?: TableProps.Variant;
   ariaLabel?: string;
-  tableVariant?: string;
 }
 
 export function TableThElement({
