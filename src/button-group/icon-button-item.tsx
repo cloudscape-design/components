@@ -64,13 +64,7 @@ const IconButtonItem = forwardRef(
             className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
             getTrack={() => containerRef.current}
             trackKey={item.id}
-            content={
-              canShowFeedback
-                ? typeof item.popoverFeedback === 'string'
-                  ? item.popoverFeedback
-                  : item.text
-                : item.text
-            }
+            content={canShowFeedback && item.popoverFeedback ? item.popoverFeedback : item.text}
             onEscape={onTooltipDismiss}
           />
         )}
