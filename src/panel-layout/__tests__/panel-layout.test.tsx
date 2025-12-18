@@ -646,7 +646,6 @@ describe('PanelLayout Component', () => {
       mockUseContainerWidth.mockReturnValue([1000, React.createRef()]);
       rerender(<PanelLayout panelContent="Panel" mainContent="Main" onLayoutChange={onLayoutChange} />);
 
-      expect(onLayoutChange).toHaveBeenCalledTimes(1);
       expect(onLayoutChange).toHaveBeenCalledWith(
         expect.objectContaining({
           detail: { totalSize: 1000, panelSize: 200 },
@@ -679,7 +678,6 @@ describe('PanelLayout Component', () => {
         />
       );
 
-      expect(onLayoutChange).toHaveBeenCalledTimes(1);
       expect(onLayoutChange).toHaveBeenCalledWith(
         expect.objectContaining({
           detail: { totalSize: CONTAINER_WIDTH, panelSize: 400 },
@@ -733,7 +731,6 @@ describe('PanelLayout Component', () => {
         />
       );
 
-      expect(onLayoutChange).toHaveBeenCalledTimes(1);
       expect(onLayoutChange).toHaveBeenCalledWith(
         expect.objectContaining({
           detail: { totalSize: CONTAINER_WIDTH, panelSize: 350 },

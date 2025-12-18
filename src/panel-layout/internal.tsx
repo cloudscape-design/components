@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import { useResize } from '../app-layout/visual-refresh-toolbar/drawer/use-resize';
 import { getBaseProps } from '../internal/base-component';
@@ -76,13 +76,12 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
     const actualMinSize = minPanelSize ?? 0;
     const actualPanelSize = Math.max(Math.min(panelSize, actualMaxSize), actualMinSize);
 
-    const notifiedContainerWidth = React.useRef(containerWidth);
-    const notifiedPanelSize = React.useRef(actualPanelSize);
-    if (notifiedContainerWidth.current !== containerWidth || notifiedPanelSize.current !== actualPanelSize) {
-      notifiedContainerWidth.current = containerWidth;
-      notifiedPanelSize.current = actualPanelSize;
-      fireNonCancelableEvent(onLayoutChange, { totalSize: containerWidth, panelSize: actualPanelSize });
-    }
+    const stableLayoutChangeEvent = useStableCallback((details: PanelLayoutProps.PanelResizeDetail) =>
+      fireNonCancelableEvent(onLayoutChange, details)
+    );
+    useEffect(() => {
+      stableLayoutChangeEvent({ totalSize: containerWidth, panelSize: actualPanelSize });
+    }, [containerWidth, actualPanelSize, stableLayoutChangeEvent]);
 
     const resizeHandlePosition = panelPosition === 'side-end' ? 'side' : panelPosition;
     const resizeProps = useResize({
