@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
@@ -76,9 +76,13 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
     const actualMinSize = minPanelSize ?? 0;
     const actualPanelSize = Math.max(Math.min(panelSize, actualMaxSize), actualMinSize);
 
-    useEffect(() => {
+    const notifiedContainerWidth = React.useRef(containerWidth);
+    const notifiedPanelSize = React.useRef(actualPanelSize);
+    if (notifiedContainerWidth.current !== containerWidth || notifiedPanelSize.current !== actualPanelSize) {
+      notifiedContainerWidth.current = containerWidth;
+      notifiedPanelSize.current = actualPanelSize;
       fireNonCancelableEvent(onLayoutChange, { totalSize: containerWidth, panelSize: actualPanelSize });
-    }, [containerWidth, actualPanelSize, onLayoutChange]);
+    }
 
     const resizeHandlePosition = panelPosition === 'side-end' ? 'side' : panelPosition;
     const resizeProps = useResize({
@@ -118,6 +122,21 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
         {mainContent}
       </div>
     );
+    const handle = (
+      <div className={styles.handle}>
+        <PanelResizeHandle
+          ref={resizeHandleRef}
+          className={testStyles['resize-handle']}
+          position={resizeHandlePosition}
+          ariaLabel={i18nStrings?.resizeHandleAriaLabel}
+          tooltipText={i18nStrings?.resizeHandleTooltipText}
+          ariaValuenow={resizeProps.relativeSize}
+          onKeyDown={resizeProps.onKeyDown}
+          onDirectionClick={resizeProps.onDirectionClick}
+          onPointerDown={resizeProps.onPointerDown}
+        />
+      </div>
+    );
 
     return (
       <div
@@ -132,21 +151,7 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
           style={display === 'all' ? { inlineSize: `${actualPanelSize}px` } : undefined}
         >
           {panelPosition === 'side-start' && wrappedPanelContent}
-          {resizable && display === 'all' && (
-            <div className={styles.handle}>
-              <PanelResizeHandle
-                ref={resizeHandleRef}
-                className={testStyles['resize-handle']}
-                position={resizeHandlePosition}
-                ariaLabel={i18nStrings?.resizeHandleAriaLabel}
-                tooltipText={i18nStrings?.resizeHandleTooltipText}
-                ariaValuenow={resizeProps.relativeSize}
-                onKeyDown={resizeProps.onKeyDown}
-                onDirectionClick={resizeProps.onDirectionClick}
-                onPointerDown={resizeProps.onPointerDown}
-              />
-            </div>
-          )}
+          {resizable && display === 'all' && handle}
           {panelPosition === 'side-end' && wrappedPanelContent}
         </div>
         {panelPosition === 'side-start' && wrappedMainContent}

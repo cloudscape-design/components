@@ -642,9 +642,6 @@ describe('PanelLayout Component', () => {
         <PanelLayout panelContent="Panel" mainContent="Main" onLayoutChange={onLayoutChange} />
       );
 
-      expect(onLayoutChange).toHaveBeenCalledTimes(1);
-      onLayoutChange.mockClear();
-
       // Simulate container width change
       mockUseContainerWidth.mockReturnValue([1000, React.createRef()]);
       rerender(<PanelLayout panelContent="Panel" mainContent="Main" onLayoutChange={onLayoutChange} />);
@@ -670,14 +667,6 @@ describe('PanelLayout Component', () => {
           onLayoutChange={onLayoutChange}
         />
       );
-
-      expect(onLayoutChange).toHaveBeenCalledTimes(1);
-      expect(onLayoutChange).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: { totalSize: CONTAINER_WIDTH, panelSize: 300 },
-        })
-      );
-      onLayoutChange.mockClear();
 
       // Change panelSize prop
       rerender(
@@ -727,9 +716,6 @@ describe('PanelLayout Component', () => {
         />
       );
 
-      expect(onLayoutChange).toHaveBeenCalledTimes(1);
-      onLayoutChange.mockClear();
-
       // Simulate user resize - this triggers onPanelResize
       act(() => {
         capturedOnResize!(350);
@@ -751,56 +737,6 @@ describe('PanelLayout Component', () => {
       expect(onLayoutChange).toHaveBeenCalledWith(
         expect.objectContaining({
           detail: { totalSize: CONTAINER_WIDTH, panelSize: 350 },
-        })
-      );
-    });
-
-    test('is called with clamped panel size when below minPanelSize', () => {
-      const onLayoutChange = jest.fn();
-
-      renderPanelLayout({
-        panelSize: 50,
-        minPanelSize: 150,
-        onPanelResize: () => {},
-        onLayoutChange,
-      });
-
-      expect(onLayoutChange).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: { totalSize: CONTAINER_WIDTH, panelSize: 150 },
-        })
-      );
-    });
-
-    test('is called with clamped panel size when above maxPanelSize', () => {
-      const onLayoutChange = jest.fn();
-
-      renderPanelLayout({
-        panelSize: 600,
-        maxPanelSize: 400,
-        onPanelResize: () => {},
-        onLayoutChange,
-      });
-
-      expect(onLayoutChange).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: { totalSize: CONTAINER_WIDTH, panelSize: 400 },
-        })
-      );
-    });
-
-    test('is called with clamped panel size when above container width', () => {
-      const onLayoutChange = jest.fn();
-
-      renderPanelLayout({
-        panelSize: 1000,
-        onPanelResize: () => {},
-        onLayoutChange,
-      });
-
-      expect(onLayoutChange).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: { totalSize: CONTAINER_WIDTH, panelSize: CONTAINER_WIDTH },
         })
       );
     });
