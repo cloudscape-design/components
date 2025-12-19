@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
+import { FeatureNotificationsPayload } from '../../../internal/plugins/widget/interfaces';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { OnChangeParams } from '../../utils/use-drawers';
@@ -68,6 +69,7 @@ export interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   toolbarProps: ToolbarProps;
   featurePromptRef?: RefObject<FeaturePromptProps.Ref>;
+  featureNotificationsData?: FeatureNotificationsPayload<unknown> | null;
 }
 
 export function AppLayoutToolbarImplementation({
@@ -76,6 +78,7 @@ export function AppLayoutToolbarImplementation({
   // not testable in a single-version setup
   toolbarProps = {},
   featurePromptRef,
+  featureNotificationsData,
 }: AppLayoutToolbarImplementationProps) {
   const {
     breadcrumbs,
@@ -258,6 +261,7 @@ export function AppLayoutToolbarImplementation({
               onActiveGlobalBottomDrawerChange={onActiveGlobalBottomDrawerChange}
               activeGlobalBottomDrawerId={activeGlobalBottomDrawerId}
               featurePromptRef={featurePromptRef}
+              featureNotificationsData={featureNotificationsData}
             />
           </div>
         )}
