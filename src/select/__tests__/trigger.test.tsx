@@ -165,4 +165,99 @@ describe('Trigger component', () => {
       expect(buttonTriggerEl).toHaveFocus();
     });
   });
+
+  describe('Custom content with renderOption', () => {
+    const mockRenderOption = jest.fn();
+    const selectedOption = {
+      value: 'custom-option',
+      label: 'Custom Option',
+      description: 'A custom option for testing',
+    };
+
+    beforeEach(() => {
+      mockRenderOption.mockClear();
+    });
+
+    test('should call renderOption with trigger item when triggerVariant is option', () => {
+      mockRenderOption.mockReturnValue(<div data-testid="custom-trigger-content">Custom Trigger Content</div>);
+
+      const wrapper = renderComponent({
+        ...defaultProps,
+        selectedOption,
+        triggerVariant: 'option',
+        renderOption: mockRenderOption,
+      });
+
+      expect(mockRenderOption).toHaveBeenCalledWith({
+        filterText: undefined,
+        item: {
+          type: 'trigger',
+          option: selectedOption,
+        },
+      });
+
+      const buttonTriggerEl = wrapper.getElement();
+      expect(buttonTriggerEl.querySelector('[data-testid="custom-trigger-content"]')).toBeTruthy();
+    });
+
+    test('should render custom content in trigger when renderOption returns JSX', () => {
+      const customContent = (
+        <div data-testid="custom-trigger">
+          <span>
+            Prefix: {selectedOption.label} - {selectedOption.description}
+          </span>
+        </div>
+      );
+      mockRenderOption.mockReturnValue(customContent);
+
+      const wrapper = renderComponent({
+        ...defaultProps,
+        selectedOption,
+        triggerVariant: 'option',
+        renderOption: mockRenderOption,
+      });
+
+      const buttonTriggerEl = wrapper.getElement();
+      const customTriggerEl = buttonTriggerEl.querySelector('[data-testid="custom-trigger"]');
+
+      expect(customTriggerEl).toBeTruthy();
+      expect(customTriggerEl).toHaveTextContent('Prefix: Custom Option - A custom option for testing');
+    });
+
+    test('should fall back to default option rendering when renderOption returns null', () => {
+      mockRenderOption.mockReturnValue(null);
+
+      const wrapper = renderComponent({
+        ...defaultProps,
+        selectedOption,
+        triggerVariant: 'option',
+        renderOption: mockRenderOption,
+      });
+
+      const buttonTriggerEl = wrapper.getElement();
+      expect(buttonTriggerEl).toHaveTextContent('Custom Option');
+      expect(mockRenderOption).toHaveBeenCalledWith({
+        filterText: undefined,
+        item: {
+          type: 'trigger',
+          option: selectedOption,
+        },
+      });
+    });
+
+    test('should not call renderOption when triggerVariant is label', () => {
+      mockRenderOption.mockReturnValue(<div>Should not render</div>);
+
+      const wrapper = renderComponent({
+        ...defaultProps,
+        selectedOption,
+        triggerVariant: 'label',
+        renderOption: mockRenderOption,
+      });
+
+      expect(mockRenderOption).not.toHaveBeenCalled();
+      const buttonTriggerEl = wrapper.getElement();
+      expect(buttonTriggerEl).toHaveTextContent('Custom Option');
+    });
+  });
 });

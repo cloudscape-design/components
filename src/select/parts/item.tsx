@@ -9,15 +9,18 @@ import InternalIcon from '../../icon/internal.js';
 import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import Option from '../../internal/components/option';
-import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
+import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
 import SelectableItem from '../../internal/components/selectable-item';
 import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { SelectProps } from '../interfaces';
 
 import styles from './styles.css.js';
 
-export interface ItemProps {
+export interface ItemProps<T = SelectProps.SelectOptionItemRenderer> {
+  index: number;
+  virtualIndex?: number;
   option: DropdownOption;
   highlighted?: boolean;
   selected?: boolean;
@@ -33,10 +36,56 @@ export interface ItemProps {
   highlightType?: HighlightType['type'];
   withScrollbar?: boolean;
   sticky?: boolean;
+  renderOption?: T;
+  parentProps?: ItemParentProps;
 }
+
+export interface ItemParentProps {
+  index: number;
+  virtualIndex?: number;
+  option: DropdownOption;
+  disabled: boolean;
+}
+const toSelectOptionGroupItem = (props: ItemParentProps): SelectProps.SelectOptionGroupItem => {
+  return {
+    type: 'group',
+    index: props.virtualIndex ?? props.index,
+    option: props.option.option as OptionGroup,
+    disabled: props.disabled,
+  };
+};
+
+const toSelectOptionItem = (props: {
+  index: number;
+  virtualIndex?: number;
+  option: DropdownOption;
+  disabled: boolean;
+  selected: boolean;
+  highlighted: boolean;
+  parentProps?: ItemParentProps;
+}): SelectProps.SelectOptionItem => {
+  return {
+    type: 'item',
+    index: props.virtualIndex ?? props.index,
+    option: props.option.option as OptionDefinition,
+    selected: props.selected,
+    highlighted: props.highlighted,
+    disabled: props.disabled,
+    parent: props.parentProps
+      ? toSelectOptionGroupItem({
+          index: props.parentProps?.index,
+          virtualIndex: props.parentProps?.virtualIndex,
+          option: props.parentProps?.option,
+          disabled: props.disabled,
+        })
+      : null,
+  };
+};
 
 const Item = (
   {
+    index,
+    virtualIndex,
     option,
     highlighted,
     selected,
@@ -52,6 +101,8 @@ const Item = (
     highlightType,
     withScrollbar,
     sticky,
+    renderOption,
+    parentProps,
     ...restProps
   }: ItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -71,8 +122,39 @@ const Item = (
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
 
+  const getSelectItemProps = (option: DropdownOption): SelectProps.SelectItem => {
+    if (option.type === 'parent') {
+      return toSelectOptionGroupItem({
+        option: option,
+        index: index,
+        virtualIndex: virtualIndex,
+        disabled: !!disabled,
+      });
+    } else {
+      return toSelectOptionItem({
+        option: option,
+        index: index,
+        virtualIndex: virtualIndex,
+        disabled: !!disabled,
+        highlighted: !!highlighted,
+        selected: !!selected,
+        parentProps: parentProps,
+      });
+    }
+  };
+
+  const renderOptionWrapper = (option: DropdownOption) => {
+    if (!renderOption) {
+      return null;
+    }
+
+    return renderOption({ item: getSelectItemProps(option), filterText: filteringValue });
+  };
+  const renderResult = renderOptionWrapper(option);
+
   return (
     <SelectableItem
+      disableContentStyling={!!renderResult}
       ariaSelected={Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
@@ -95,24 +177,25 @@ const Item = (
       {...baseProps}
     >
       <div className={clsx(styles.item, !isParent && wrappedOption.labelTag && styles['show-label-tag'])}>
-        {hasCheckbox && !isParent && (
+        {!renderResult && hasCheckbox && !isParent && (
           <div className={styles.checkbox}>
             <CheckboxIcon checked={selected || false} disabled={option.disabled} />
           </div>
         )}
         <Option
+          customContent={renderResult}
           option={{ ...wrappedOption, disabled }}
           highlightedOption={highlighted}
           selectedOption={selected}
           highlightText={filteringValue}
           isGroupOption={isParent}
         />
-        {!hasCheckbox && !isParent && selected && (
+        {!renderResult && !hasCheckbox && !isParent && selected && (
           <div className={styles['selected-icon']}>
             <InternalIcon name="check" />
           </div>
         )}
-        {isDisabledWithReason && (
+        {!renderResult && isDisabledWithReason && (
           <>
             {descriptionEl}
             {highlighted && canShowTooltip && (
