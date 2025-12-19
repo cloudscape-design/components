@@ -29,7 +29,7 @@
   box-shadow: $box-shadow;
 }
 
-@mixin container-focus($border-radius: awsui.$border-radius-container, $type: outset) {
+@mixin container-focus($border-radius: awsui.$border-radius-container) {
   // This mixin is different to `focus-highlight` because it needs to supports overflowing
   // content. Using a pseudo element does not take the width or height of the overflowing
   // children.
@@ -41,7 +41,7 @@
   border-start-end-radius: $border-radius;
   border-end-start-radius: $border-radius;
   border-end-end-radius: $border-radius;
-  box-shadow: $type foundation.$box-shadow-focused;
+  box-shadow: foundation.$box-shadow-focused;
 }
 
 @mixin focus-highlight(
