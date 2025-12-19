@@ -153,10 +153,6 @@ function FileInputItemExample() {
     <Container header={<Header variant="h2">ButtonGroup - FileInputItem (Internal Tooltips)</Header>}>
       <ScreenshotArea>
         <SpaceBetween size="m">
-          <Box color="text-status-info" fontSize="body-s">
-            <strong>Keyboard Navigation:</strong> ButtonGroup is a composite widget. Press Tab to focus the group, then
-            use Arrow keys to navigate between items within the group. This is standard ARIA behavior.
-          </Box>
           <ButtonGroup
             variant="icon"
             ariaLabel="File actions"
@@ -268,10 +264,6 @@ function TokenExample() {
     <Container header={<Header variant="h2">Token (Inline with Tooltip)</Header>}>
       <ScreenshotArea>
         <SpaceBetween size="m">
-          <Box color="text-status-info" fontSize="body-s">
-            <strong>Note:</strong> Hover or focus on long tokens. Tooltip shows full text when truncated. Requires
-            variant=&quot;inline&quot; and tooltipContent prop.
-          </Box>
           <SpaceBetween direction="horizontal" size="xs">
             <div style={{ maxWidth: '200px' }}>
               <Token
@@ -327,10 +319,6 @@ function FileTokenGroupExample() {
     <Container header={<Header variant="h2">FileTokenGroup - FileToken (Truncated Filename)</Header>}>
       <ScreenshotArea>
         <SpaceBetween size="m">
-          <Box color="text-status-info" fontSize="body-s">
-            <strong>Note:</strong> FileTokenGroup automatically shows tooltips for truncated filenames. Hover over long
-            filenames to see the full name in a tooltip.
-          </Box>
           <div style={{ maxWidth: '500px' }}>
             <FileTokenGroup
               items={items}
