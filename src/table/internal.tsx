@@ -47,6 +47,7 @@ import { useProgressiveLoadingProps } from './progressive-loading/progressive-lo
 import { ResizeTracker } from './resizer';
 import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
 import { TableBodySelectionCell } from './selection/selection-cell';
+import { useGroupSelection } from './selection/use-group-selection';
 import { useStickyColumns } from './sticky-columns';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import { StickyScrollbar } from './sticky-scrollbar';
@@ -76,7 +77,7 @@ const selectionColumnId = Symbol('selection-column-id');
 
 type InternalTableProps<T> = SomeRequired<
   TableProps<T>,
-  'items' | 'selectedItems' | 'variant' | 'firstIndex' | 'cellVerticalAlign'
+  'items' | 'selectedItems' | 'selectionInverted' | 'variant' | 'firstIndex' | 'cellVerticalAlign'
 > &
   InternalBaseComponentProps & {
     __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
@@ -111,6 +112,7 @@ const InternalTable = React.forwardRef(
       loadingText,
       selectionType,
       selectedItems,
+      selectionInverted,
       isItemDisabled,
       ariaLabels,
       onSelectionChange,
@@ -144,6 +146,7 @@ const InternalTable = React.forwardRef(
       renderLoaderLoading,
       renderLoaderError,
       renderLoaderEmpty,
+      renderLoaderCounter,
       cellVerticalAlign,
       __funnelSubStepProps,
       ...rest
@@ -300,10 +303,11 @@ const InternalTable = React.forwardRef(
       visibleColumns,
     });
 
-    const { isItemSelected, getSelectAllProps, getItemSelectionProps } = useSelection({
+    const selectionProps = {
       items: allItems,
       trackBy,
       selectedItems,
+      selectionInverted,
       selectionType,
       isItemDisabled,
       onSelectionChange,
@@ -313,9 +317,24 @@ const InternalTable = React.forwardRef(
         selectionGroupLabel: undefined,
       },
       loading,
+      getExpandableItemProps,
+      getLoadingStatus,
       setLastUserAction,
-    });
-    const isRowSelected = (row: TableRow<T>) => row.type === 'data' && isItemSelected(row.item);
+    };
+    const normalSelection = useSelection(selectionProps);
+    const groupSelection = useGroupSelection(selectionProps);
+    const { isItemSelected, getSelectAllProps, getItemSelectionProps, getLoaderSelectionProps } =
+      selectionType === 'group' ? groupSelection : normalSelection;
+    const isRowSelected = (row: TableRow<T>) => {
+      if (row.type === 'data') {
+        return isItemSelected(row.item);
+      }
+      if (selectionType !== 'group') {
+        return false;
+      }
+      // Group loader is selected when its parent is selected.
+      return !row.item ? selectionInverted : isItemSelected(row.item);
+    };
 
     if (isDevelopment) {
       if (resizableColumns) {
@@ -607,7 +626,7 @@ const InternalTable = React.forwardRef(
                                 className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
                                 onFocus={({ currentTarget }) => {
                                   // When an element inside table row receives focus we want to adjust the scroll.
-                                  // However, that behaviour is unwanted when the focus is received as result of a click
+                                  // However, that behavior is unwanted when the focus is received as result of a click
                                   // as it causes the click to never reach the target element.
                                   if (!currentTarget.contains(getMouseDownTarget())) {
                                     stickyHeaderRef.current?.scrollToRow(currentTarget);
@@ -700,7 +719,14 @@ const InternalTable = React.forwardRef(
                             renderLoaderLoading,
                             renderLoaderError,
                             renderLoaderEmpty,
+                            renderLoaderCounter,
                           });
+
+                          const loaderSelectionProps = getLoaderSelectionProps && getLoaderSelectionProps(row.item);
+                          if (loaderSelectionProps) {
+                            loaderSelectionProps.indeterminate = false;
+                          }
+
                           return (
                             loaderContent && (
                               <tr
@@ -708,14 +734,16 @@ const InternalTable = React.forwardRef(
                                 className={styles.row}
                                 {...rowRoleProps}
                               >
-                                {getItemSelectionProps && (
+                                {selectionType ? (
                                   <TableBodySelectionCell
                                     {...sharedCellProps}
                                     columnId={selectionColumnId}
                                     verticalAlign={cellVerticalAlign}
                                     tableVariant={computedVariant}
+                                    selectionControlProps={selectionType === 'group' ? loaderSelectionProps : undefined}
+                                    isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
                                   />
-                                )}
+                                ) : null}
                                 {visibleColumnDefinitions.map((column, colIndex) => (
                                   <TableLoaderCell
                                     key={getColumnKey(column, colIndex)}
@@ -723,6 +751,7 @@ const InternalTable = React.forwardRef(
                                     wrapLines={false}
                                     columnId={column.id ?? colIndex}
                                     colIndex={colIndex + colIndexOffset}
+                                    isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
                                     isRowHeader={colIndex === 0}
                                     level={row.level}
                                     item={row.item}
