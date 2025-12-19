@@ -79,10 +79,10 @@ export interface DrawersApiPublic {
   openDrawer(drawerId: string, params?: OpenCloseDrawerParams): void;
   closeDrawer(drawerId: string, params?: OpenCloseDrawerParams): void;
   resizeDrawer(drawerId: string, size: number): void;
+  clearRegisteredDrawersForTesting(): void;
 }
 
 export interface DrawersApiInternal {
-  clearRegisteredDrawers(): void;
   onDrawersRegistered(listener: DrawersRegistrationListener): () => void;
   onDrawerOpened(listener: DrawersToggledListener): () => void;
   onDrawerClosed(listener: DrawersToggledListener): () => void;
@@ -147,7 +147,7 @@ export class DrawersController {
     };
   };
 
-  clearRegisteredDrawers = () => {
+  clearRegisteredDrawersForTesting = () => {
     this.drawers = [];
   };
 
@@ -226,11 +226,11 @@ export class DrawersController {
     api.openDrawer ??= this.openDrawer;
     api.closeDrawer ??= this.closeDrawer;
     api.resizeDrawer ??= this.resizeDrawer;
+    api.clearRegisteredDrawersForTesting ??= this.clearRegisteredDrawersForTesting;
     return api as DrawersApiPublic;
   }
 
   installInternal(internalApi: Partial<DrawersApiInternal> = {}): DrawersApiInternal {
-    internalApi.clearRegisteredDrawers ??= this.clearRegisteredDrawers;
     internalApi.onDrawersRegistered ??= this.onDrawersRegistered;
     internalApi.onDrawerOpened ??= this.onDrawerOpened;
     internalApi.onDrawerClosed ??= this.onDrawerClosed;

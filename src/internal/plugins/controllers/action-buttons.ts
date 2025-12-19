@@ -26,10 +26,10 @@ type ActionRegistrationListener = (action: Array<ActionConfig>) => void;
 
 export interface ActionsApiPublic {
   registerAction(config: ActionConfig): void;
+  clearRegisteredActionsForTesting(): void;
 }
 
 export interface ActionsApiInternal {
-  clearRegisteredActions(): void;
   onActionRegistered(listener: ActionRegistrationListener): () => void;
 }
 
@@ -47,7 +47,7 @@ export class ActionButtonsController {
     this.scheduleUpdate();
   };
 
-  clearRegisteredActions = () => {
+  clearRegisteredActionsForTesting = () => {
     this.actions = [];
   };
 
@@ -61,11 +61,11 @@ export class ActionButtonsController {
 
   installPublic(api: Partial<ActionsApiPublic> = {}): ActionsApiPublic {
     api.registerAction ??= this.registerAction;
+    api.clearRegisteredActionsForTesting ??= this.clearRegisteredActionsForTesting;
     return api as ActionsApiPublic;
   }
 
   installInternal(internalApi: Partial<ActionsApiInternal> = {}): ActionsApiInternal {
-    internalApi.clearRegisteredActions ??= this.clearRegisteredActions;
     internalApi.onActionRegistered ??= this.onActionRegistered;
     return internalApi as ActionsApiInternal;
   }
