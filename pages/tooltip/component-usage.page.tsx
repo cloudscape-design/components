@@ -29,7 +29,6 @@ export default function InternalTooltipExamples() {
         <SpaceBetween size="l">
           <Header variant="h1">Tooltip</Header>
           <TruncatedTextExample />
-          <IconOnlyButtonsExample />
           <FileInputItemExample />
           <ButtonExample />
           <SelectItemExample />
@@ -76,11 +75,11 @@ function TruncatedTextExample() {
                 borderRadius: '4px',
               }}
             >
-              my-very-long-filename-document-final-v2.pdf
+              this-is-a-example-filename-document-final-v2.pdf
             </div>
             {show1 && (
               <Tooltip
-                content="my-very-long-filename-document-final-v2.pdf"
+                content=" this-is-a-example-filename-document-final-v2.pdf"
                 getTrack={() => ref1.current}
                 onEscape={() => setShow1(false)}
                 trackKey="file1"
@@ -143,57 +142,6 @@ function TruncatedTextExample() {
               />
             )}
           </div>
-        </SpaceBetween>
-      </ScreenshotArea>
-    </Container>
-  );
-}
-
-function IconOnlyButtonsExample() {
-  const refs = {
-    edit: useRef<HTMLDivElement>(null),
-    copy: useRef<HTMLDivElement>(null),
-    delete: useRef<HTMLDivElement>(null),
-    settings: useRef<HTMLDivElement>(null),
-  };
-  const [show, setShow] = useState({ edit: false, copy: false, delete: false, settings: false });
-
-  return (
-    <Container header={<Header variant="h2">Icon-Only Actions</Header>}>
-      <ScreenshotArea>
-        <SpaceBetween direction="horizontal" size="xs">
-          {[
-            { key: 'edit', icon: 'edit', label: 'Edit item' },
-            { key: 'copy', icon: 'copy', label: 'Copy to clipboard' },
-            { key: 'delete', icon: 'remove', label: 'Delete item' },
-            { key: 'settings', icon: 'settings', label: 'Open settings' },
-          ].map(({ key, icon, label }) => (
-            <div
-              key={key}
-              ref={refs[key as keyof typeof refs]}
-              onMouseEnter={() => setShow({ ...show, [key]: true })}
-              onMouseLeave={() => setShow({ ...show, [key]: false })}
-              style={{ display: 'inline-block' }}
-            >
-              <Button
-                variant="icon"
-                iconName={icon as any}
-                nativeButtonAttributes={{
-                  onFocus: () => setShow({ ...show, [key]: true }),
-                  onBlur: () => setShow({ ...show, [key]: false }),
-                }}
-              />
-              {show[key as keyof typeof show] && (
-                <Tooltip
-                  content={label}
-                  getTrack={() => refs[key as keyof typeof refs].current}
-                  position="top"
-                  onEscape={() => setShow({ ...show, [key]: false })}
-                  trackKey={key}
-                />
-              )}
-            </div>
-          ))}
         </SpaceBetween>
       </ScreenshotArea>
     </Container>

@@ -8,6 +8,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { ButtonProps } from '../button/interfaces.js';
 import { InternalButton } from '../button/internal.js';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events/index.js';
+import InternalLiveRegion from '../live-region/internal.js';
 import Tooltip from '../tooltip/internal.js';
 import { ButtonGroupProps, InternalIconButton } from './interfaces.js';
 
@@ -64,7 +65,10 @@ const IconButtonItem = forwardRef(
             className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
             getTrack={() => containerRef.current}
             trackKey={item.id}
-            content={canShowFeedback && item.popoverFeedback ? item.popoverFeedback : item.text}
+            content={
+              (showFeedback && <InternalLiveRegion tagName="span">{item.popoverFeedback}</InternalLiveRegion>) ||
+              item.text
+            }
             onEscape={onTooltipDismiss}
           />
         )}
