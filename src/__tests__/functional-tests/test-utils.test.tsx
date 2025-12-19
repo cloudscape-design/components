@@ -33,6 +33,7 @@ const componentWithMultipleRootElements = ['top-navigation', 'app-layout', 'app-
 const componentsWithExceptions = [
   'annotation-context',
   'icon-provider',
+  'tooltip',
   'error-boundary',
   ...componentWithMultipleRootElements,
 ];

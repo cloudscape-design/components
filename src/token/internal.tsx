@@ -8,9 +8,9 @@ import { useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/com
 
 import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
-import Tooltip from '../internal/components/tooltip';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import LiveRegion from '../live-region/internal';
+import Tooltip from '../tooltip/internal.js';
 import DismissButton from './dismiss-button';
 import { TokenProps } from './interfaces';
 
@@ -158,14 +158,13 @@ function InternalToken({
       {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
         <Tooltip
           data-testid="token-tooltip"
-          trackRef={labelContainerRef}
-          value={
+          getTrack={() => labelContainerRef.current}
+          content={
             <LiveRegion>
               <span data-testid="tooltip-live-region-content">{tooltipContent}</span>
             </LiveRegion>
           }
-          size="medium"
-          onDismiss={() => {
+          onEscape={() => {
             setShowTooltip(false);
           }}
         />
