@@ -5,7 +5,7 @@ import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import { act, render } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
-import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import awsuiPlugins from '../../../lib/components/internal/plugins';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { useRuntimeDrawerContext } from '../runtime-drawer/use-runtime-drawer-context';
 import { describeEachAppLayout, getGlobalDrawersTestUtils, testDrawer } from './utils';
@@ -29,7 +29,7 @@ function delay() {
 }
 
 beforeEach(() => {
-  awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
+  awsuiPlugins.appLayout.clearRegisteredDrawersForTesting();
 });
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({

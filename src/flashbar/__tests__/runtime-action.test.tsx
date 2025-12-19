@@ -5,7 +5,6 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
 import awsuiPlugins from '../../../lib/components/internal/plugins';
-import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { ActionConfig } from '../../../lib/components/internal/plugins/controllers/action-buttons';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 
@@ -26,7 +25,7 @@ function delay() {
 }
 
 afterEach(() => {
-  awsuiPluginsInternal.flashbar.clearRegisteredActions();
+  awsuiPlugins.flashbar.clearRegisteredActionsForTesting();
 });
 
 test('renders runtime action button initially', async () => {
