@@ -7,12 +7,13 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 import FeaturePrompt, { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
 import { useMobile } from '../../../internal/hooks/use-mobile';
+import { FeatureNotificationsPayload } from '../../../internal/plugins/widget/interfaces';
 import { splitItems } from '../../drawer/drawers-helpers';
 import OverflowMenu from '../../drawer/overflow-menu';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
-import { RuntimeContentPart } from '../../runtime-drawer';
 import { OnChangeParams, TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
+import { RuntimeContentPart } from '../drawer/feature-notifications-drawer-content';
 import { InternalDrawer } from '../interfaces';
 import TriggerButton from './trigger-button';
 
@@ -53,6 +54,7 @@ interface DrawerTriggersProps {
   onSplitPanelToggle: (() => void) | undefined;
   disabled: boolean;
   featurePromptRef?: RefObject<FeaturePromptProps.Ref>;
+  featureNotificationsData?: FeatureNotificationsPayload<unknown> | null;
 }
 
 export function DrawerTriggers({
@@ -78,6 +80,7 @@ export function DrawerTriggers({
   bottomDrawersFocusRef,
   bottomDrawers,
   featurePromptRef,
+  featureNotificationsData,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
@@ -131,10 +134,9 @@ export function DrawerTriggers({
   const globalDrawersStartIndex = drawers.length;
   const hasOpenDrawer = !!activeDrawerId || (splitPanelPosition === 'side' && splitPanelOpen);
   const splitPanelResolvedPosition = splitPanelToggleProps?.position;
-  const featureNotificationsDrawer = allDrawers.find(drawer => drawer?.__features);
   let mostRecentFeature = null;
-  if (featureNotificationsDrawer) {
-    mostRecentFeature = featureNotificationsDrawer.__features![0];
+  if (featureNotificationsData) {
+    mostRecentFeature = featureNotificationsData.features![0];
   }
 
   const exitExpandedMode = () => {
@@ -144,21 +146,17 @@ export function DrawerTriggers({
   };
 
   const getFeatureNotificationTriggerRef = () => {
-    if (!featureNotificationsDrawer) {
+    if (!featureNotificationsData) {
       return null;
     }
 
-    if (featureNotificationLocalTriggerRef.current) {
-      return featureNotificationLocalTriggerRef.current;
-    }
-
-    return globalDrawersFocusControl?.refs[featureNotificationsDrawer.id]?.toggle?.current;
+    return featureNotificationLocalTriggerRef.current;
   };
   const featureNotificationTriggerRef = getFeatureNotificationTriggerRef() as HTMLButtonElement;
 
   return (
     <>
-      {!!mostRecentFeature && featurePromptRef && featureNotificationsDrawer?.__mountFeatureItem && (
+      {!!mostRecentFeature && featurePromptRef && featureNotificationsData && (
         <FeaturePrompt
           ref={featurePromptRef}
           onShow={() => {
@@ -174,14 +172,11 @@ export function DrawerTriggers({
             featureNotificationTriggerRef!.dataset!.awsuiSuppressTooltip = 'false';
           }}
           header={
-            <RuntimeContentPart
-              mountContent={featureNotificationsDrawer.__mountFeatureItem!}
-              content={mostRecentFeature.header}
-            />
+            <RuntimeContentPart mountContent={featureNotificationsData?.mountItem} content={mostRecentFeature.header} />
           }
           content={
             <RuntimeContentPart
-              mountContent={featureNotificationsDrawer.__mountFeatureItem!}
+              mountContent={featureNotificationsData?.mountItem}
               content={mostRecentFeature.content}
             />
           }
@@ -234,7 +229,7 @@ export function DrawerTriggers({
           {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
             const isForPreviousActiveDrawer = previousActiveLocalDrawerId?.current === item.id;
             const selected = !expandedDrawerId && item.id === activeDrawerId;
-            const isFeatureNotificationsDrawer = featureNotificationsDrawer?.id === item.id;
+            const isFeatureNotificationsDrawer = featureNotificationsData?.id === item.id;
             return (
               <TriggerButton
                 ariaLabel={item.ariaLabels?.triggerButton}

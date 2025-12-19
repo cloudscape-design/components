@@ -1,14 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
 import awsuiPlugins from '../../../internal/plugins';
-import { WidgetMessage } from '../../../internal/plugins/widget/interfaces';
-import { InternalDrawer } from '../interfaces';
+import { FeatureNotificationsPayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
+import RuntimeFeaturesNotificationDrawer from '../drawer/feature-notifications-drawer-content';
 
 interface UseFeatureNotificationsProps {
-  drawers: Array<InternalDrawer>;
   activeDrawersIds: Array<string>;
 }
 
@@ -20,17 +19,18 @@ const delay = () =>
     }, 200);
   });
 
-export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatureNotificationsProps) {
+export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotificationsProps) {
   const [markAllAsRead, setMarkAllAsRead] = useState(false);
-  const [suppressedFeaturePrompt, setSuppressedFeaturePrompt] = useState(false);
-  const featureNotificationsDrawer = drawers.find(drawer => !!drawer.__features);
+  const [featureNotificationsData, setFeatureNotificationsData] = useState<FeatureNotificationsPayload<unknown> | null>(
+    null
+  );
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
 
   useEffect(() => {
-    if (!featureNotificationsDrawer || markAllAsRead) {
+    if (!featureNotificationsData || markAllAsRead) {
       return;
     }
-    const id = featureNotificationsDrawer.id;
+    const id = featureNotificationsData.id;
     if (activeDrawersIds.includes(id)) {
       // TODO make a request to continuum and mark all notifications as read
       awsuiPlugins.appLayout.updateDrawer({ id, badge: false });
@@ -41,18 +41,17 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
     // const features = featureNotificationsDrawer?.__features;
     // call continuum to determine if all notifications were read, if not, show the badge and trigger the feature prompt
     delay().then(() => {
-      if (!suppressedFeaturePrompt) {
+      if (!featureNotificationsData.suppressFeaturePrompt) {
         featurePromptRef.current?.show();
       }
-      if (!featureNotificationsDrawer.badge) {
-        awsuiPlugins.appLayout.updateDrawer({ id, badge: true });
-      }
+      awsuiPlugins.appLayout.updateDrawer({ id, badge: true });
     });
-  }, [featureNotificationsDrawer, activeDrawersIds, markAllAsRead, suppressedFeaturePrompt]);
+  }, [featureNotificationsData, activeDrawersIds, markAllAsRead]);
 
   function featureNotificationsMessageHandler(event: WidgetMessage) {
     if (event.type === 'registerFeatureNotifications') {
       const payload = event.payload;
+      setFeatureNotificationsData(payload);
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
       const features = payload.features
@@ -65,7 +64,6 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
               }
         )
         .sort((a, b) => b.releaseDate.getTime() - a.releaseDate.getTime());
-      setSuppressedFeaturePrompt(payload.suppressFeaturePrompt ?? false);
       // TODO pass correct properties
       awsuiPlugins.appLayout.registerDrawer({
         id: payload.id,
@@ -84,9 +82,13 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
         mountContent: () => {},
         unmountContent: () => {},
 
-        __features: features,
-        __mountFeatureItem: payload.mountItem,
-        __featuresPageLink: payload.featuresPageLink,
+        __content: (
+          <RuntimeFeaturesNotificationDrawer
+            features={features}
+            featuresPageLink={payload.featuresPageLink}
+            mountItem={payload.mountItem}
+          />
+        ),
       });
       return;
     }
@@ -103,5 +105,6 @@ export function useFeatureNotifications({ drawers, activeDrawersIds }: UseFeatur
   return {
     featurePromptRef,
     featureNotificationsMessageHandler,
+    featureNotificationsData,
   };
 }

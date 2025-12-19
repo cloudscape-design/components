@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useRef } from 'react';
 
-import Box from '../../box/internal';
 import { ButtonGroupProps, ItemRuntime } from '../../button-group/interfaces';
-import { InternalDrawer } from '../../drawer/internal';
 import { IconProps } from '../../icon/interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
 import {
@@ -12,14 +10,7 @@ import {
   DrawerStateChangeParams,
 } from '../../internal/plugins/controllers/drawers';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
-import {
-  DrawerPayload as RuntimeAiDrawerConfig,
-  Feature,
-  MountContentPart,
-} from '../../internal/plugins/widget/interfaces';
-import { formatDate } from '../../internal/utils/date-time';
-import Link from '../../link/internal';
-import List from '../../list/internal';
+import { DrawerPayload as RuntimeAiDrawerConfig, Feature } from '../../internal/plugins/widget/interfaces';
 import { AppLayoutProps } from '../interfaces';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 
@@ -72,78 +63,6 @@ function RuntimeDrawerWrapper({ mountContent, unmountContent, id }: RuntimeConte
   return <div ref={ref} className={styles['runtime-content-wrapper']} data-awsui-runtime-drawer-root-id={id}></div>;
 }
 
-interface RuntimeContentPartProps<T> {
-  mountContent: MountContentPart<T>;
-  content: T;
-}
-
-export function RuntimeContentPart<T>({ content, mountContent }: RuntimeContentPartProps<T>) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const container = ref.current!;
-    const destructor = mountContent(container, content);
-
-    return () => {
-      destructor?.();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return <div ref={ref} />;
-}
-
-function RuntimeFeaturesNotificationDrawer<T>({
-  features,
-  mountItem,
-  featuresPageLink,
-}: {
-  features: Array<Feature<T>>;
-  mountItem: MountContentPart<T>;
-  featuresPageLink?: string;
-}) {
-  return (
-    // TODO i18n strings
-    <InternalDrawer header="Latest feature releases" disableContentPaddings={true}>
-      <Box
-        padding={{ top: 'm', left: 'xl', right: 'xl', bottom: 'm' }}
-        className={styles['runtime-feature-notifications-drawer-content']}
-      >
-        <List
-          items={features}
-          renderItem={item => ({
-            id: item.id,
-            content: <RuntimeContentPart mountContent={mountItem} content={item.header} />,
-            secondaryContent: (
-              <>
-                {!!item.releaseDate && (
-                  <Box margin={{ top: 'xs' }} fontSize="body-s" color="text-body-secondary">
-                    {formatDate(item.releaseDate)}
-                  </Box>
-                )}
-                {!!item.contentCategory && (
-                  <Box margin={{ top: 'xs' }}>
-                    <RuntimeContentPart mountContent={mountItem} content={item.contentCategory} />
-                  </Box>
-                )}
-                <Box margin={{ top: 'xs' }}>
-                  <RuntimeContentPart mountContent={mountItem} content={item.content} />
-                </Box>
-              </>
-            ),
-          })}
-        />
-
-        {!!featuresPageLink && (
-          <Box padding={{ top: 's' }} className={styles['runtime-feature-notifications-footer']}>
-            <Link href={featuresPageLink}>See all feature releases</Link>
-          </Box>
-        )}
-      </Box>
-    </InternalDrawer>
-  );
-}
-
 interface RuntimeContentHeaderProps {
   mountHeader: (container: HTMLElement) => void;
   unmountHeader?: (container: HTMLElement) => void;
@@ -190,30 +109,6 @@ const convertRuntimeTriggerToReactNode = (runtimeTrigger?: string) => {
   return <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: runtimeTrigger }} />;
 };
 
-const renderContent = (runtimeConfig: RuntimeDrawerConfig) => {
-  const { mountContent, unmountContent, __features, __featuresPageLink, __mountFeatureItem, ...runtimeDrawer } =
-    runtimeConfig;
-
-  if (__features && __features.length > 0 && __mountFeatureItem) {
-    return (
-      <RuntimeFeaturesNotificationDrawer
-        features={__features}
-        featuresPageLink={__featuresPageLink}
-        mountItem={__mountFeatureItem}
-      />
-    );
-  }
-
-  return (
-    <RuntimeDrawerWrapper
-      key={runtimeDrawer.id}
-      mountContent={mountContent}
-      unmountContent={unmountContent}
-      id={runtimeDrawer.id}
-    />
-  );
-};
-
 export const mapRuntimeConfigToDrawer = (
   runtimeConfig: RuntimeDrawerConfig
 ): AppLayoutProps.Drawer & {
@@ -221,7 +116,7 @@ export const mapRuntimeConfigToDrawer = (
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
 } => {
-  const { trigger, ...runtimeDrawer } = runtimeConfig;
+  const { trigger, mountContent, unmountContent, __content, ...runtimeDrawer } = runtimeConfig;
 
   return {
     ...runtimeDrawer,
@@ -236,7 +131,14 @@ export const mapRuntimeConfigToDrawer = (
           }),
         }
       : undefined,
-    content: renderContent(runtimeConfig),
+    content: __content ?? (
+      <RuntimeDrawerWrapper
+        key={runtimeDrawer.id}
+        mountContent={mountContent}
+        unmountContent={unmountContent}
+        id={runtimeDrawer.id}
+      />
+    ),
     onResize: event => {
       fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
     },
