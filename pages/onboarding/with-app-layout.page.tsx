@@ -96,7 +96,10 @@ export default function OnboardingDemoPage() {
   }, []);
 
   const onFeedbackClick = useCallback(() => {
-    window.prompt('Please enter your feedback here:');
+    // Guard for SSR
+    if (typeof window !== 'undefined') {
+      window.prompt('Please enter your feedback here:');
+    }
   }, []);
 
   return (
@@ -127,7 +130,7 @@ export default function OnboardingDemoPage() {
                       i18nStrings={tutorialPanelStrings}
                       tutorials={tutorials}
                       onFeedbackClick={onFeedbackClick}
-                      downloadUrl={window.location.href}
+                      downloadUrl={typeof window !== 'undefined' ? window.location.href : ''}
                     />
                   ),
                 },
