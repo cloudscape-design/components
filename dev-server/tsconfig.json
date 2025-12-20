@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2020", "DOM"],
+    "target": "ES2019",
+    "declaration": false,
+    "declarationMap": false,
+    "rootDir": ".",
+    "incremental": true,
+    "jsx": "react",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "checkJs": false,
+    "paths": {
+      "~components": ["../lib/components"],
+      "~components/*": ["../lib/components/*"],
+      "~design-tokens": ["../lib/design-tokens"]
+    },
+    "types": ["node", "vite/client"]
+  },
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.mjs"]
+}

@@ -55,6 +55,10 @@ export default function ThemedStrokeWidthPage() {
 
   // Reload page once after initial load to fix theme application
   useLayoutEffect(() => {
+    // Guard for SSR
+    if (typeof window === 'undefined' || typeof sessionStorage === 'undefined') {
+      return;
+    }
     const hasReloaded = sessionStorage.getItem('themed-stroke-width-reloaded');
     if (!hasReloaded) {
       sessionStorage.setItem('themed-stroke-width-reloaded', 'true');
