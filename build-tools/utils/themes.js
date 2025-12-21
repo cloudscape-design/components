@@ -10,7 +10,15 @@ const themes = [
     packageJson: { name: '@cloudscape-design/components' },
     designTokensOutput: 'index',
     designTokensDir: 'design-tokens',
-    designTokensPackageJson: { name: '@cloudscape-design/design-tokens' },
+    designTokensPackageJson: {
+      name: '@cloudscape-design/design-tokens',
+      exports: {
+        '.': './index.js',
+        './index.js': './index.js',
+        './index.scss': './index.scss',
+        './dark-mode-prefers.css': './dark-mode-prefers.css',
+      },
+    },
     outputPath: path.join(workspace.targetPath, 'components'),
     primaryThemePath: './classic/index.js',
     secondaryThemePaths: ['./visual-refresh-secondary/index.js'],
