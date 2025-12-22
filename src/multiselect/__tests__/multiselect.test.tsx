@@ -7,6 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
@@ -532,6 +533,25 @@ describe.each([true, false])('footer live announcements [expandToViewport=%s]', 
     wrapper.openDropdown();
     expect(createWrapper().findLiveRegion()!.getElement()).toHaveTextContent('Test error text');
   });
+});
+
+test('Shifts focus to the filter on retry failed request', () => {
+  const { wrapper } = renderMultiselect(
+    <TestI18nProvider messages={{ select: { recoveryText: 'Custom recovery text' } }}>
+      <Multiselect
+        selectedOptions={[]}
+        options={defaultOptions}
+        onChange={() => {}}
+        onLoadItems={() => {}}
+        errorText="Error fetching items"
+        statusType="error"
+        filteringType="auto"
+      />
+    </TestI18nProvider>
+  );
+  wrapper.openDropdown();
+  wrapper.findErrorRecoveryButton()!.click();
+  expect(wrapper.findFilteringInput()!.findNativeInput()!.getElement()).toHaveFocus();
 });
 
 test('fires a change event when user selects a group option from the dropdown', () => {

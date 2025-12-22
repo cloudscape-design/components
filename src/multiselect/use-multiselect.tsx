@@ -190,6 +190,7 @@ export function useMultiselect({
     getOptionProps,
     highlightOption,
     announceSelected,
+    focusActiveRef,
   } = useSelect({
     selectedOptions,
     updateSelectedOption,
@@ -233,7 +234,10 @@ export function useMultiselect({
     isNoMatch,
     noMatch,
     filteringResultsText: filteredText,
-    onRecoveryClick: handleRecoveryClick,
+    onRecoveryClick: () => {
+      handleRecoveryClick();
+      focusActiveRef();
+    },
     errorIconAriaLabel: errorIconAriaLabel,
     hasRecoveryCallback: !!onLoadItems,
   });

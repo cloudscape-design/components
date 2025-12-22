@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { RefObject } from 'react';
+import React, { RefObject, useCallback } from 'react';
 import { useEffect, useRef } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -337,14 +337,18 @@ export function useSelect({
     hasFilter,
   ]);
 
+  const focusActiveRef = useCallback(() => {
+    // dropdown-fit calculations ensure that the dropdown will fit inside the current
+    // viewport, so prevent the browser from trying to scroll it into view (e.g. if
+    // scroll-padding-top is set on a parent)
+    activeRef.current?.focus({ preventScroll: true });
+  }, [activeRef]);
+
   useEffect(() => {
     if (isOpen && !embedded) {
-      // dropdown-fit calculations ensure that the dropdown will fit inside the current
-      // viewport, so prevent the browser from trying to scroll it into view (e.g. if
-      // scroll-padding-top is set on a parent)
-      activeRef.current?.focus({ preventScroll: true });
+      focusActiveRef();
     }
-  }, [isOpen, activeRef, embedded]);
+  }, [isOpen, activeRef, embedded, focusActiveRef]);
 
   useForwardFocus(externalRef, triggerRef as React.RefObject<HTMLElement>);
   const highlightedGroupSelected =
@@ -366,5 +370,6 @@ export function useSelect({
     selectOption,
     announceSelected,
     dialogId,
+    focusActiveRef,
   };
 }
