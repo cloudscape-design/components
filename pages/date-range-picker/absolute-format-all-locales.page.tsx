@@ -13,6 +13,7 @@ const rtlLocales = new Set(['ar', 'he']);
 
 export default function DateRangePickerScenario() {
   const { props, settings, setSettings } = useDateRangePickerSettings({ rangeSelectorMode: 'absolute-only' });
+
   return (
     <SimplePage
       title="Date range picker: all locales for absolute format"
