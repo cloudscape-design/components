@@ -223,12 +223,11 @@ export interface I18nFormatArgTypes {
     "i18nStrings.loadingText": never;
   }
   "error-boundary": {
-    "i18nStrings.headerText"?: never;
-    "i18nStrings.descriptionText"?: {
-      hasFeedback: boolean;
-      Feedback: (chunks: React.ReactNode[]) => React.ReactNode; 
-    };
-    "i18nStrings.refreshActionText"?: never;
+    "i18nStrings.headerText": never;
+    "i18nStrings.descriptionText": {
+      "hasFeedback": string;
+    }
+    "i18nStrings.refreshActionText": never;
   }
   "file-token-group": {
     "i18nStrings.limitShowFewer": never;

@@ -1,14 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalBox from '../box/internal';
-import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getBaseProps } from '../internal/base-component';
 import { ContainerHeaderContextProvider } from '../internal/context/container-header';
@@ -44,12 +41,6 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
 
   __funnelSubStepProps?: ReturnType<typeof useFunnelSubStep>['funnelSubStepProps'];
   __subStepRef?: ReturnType<typeof useFunnelSubStep>['subStepRef'];
-
-  /**
-   * React key attached to the content wrapper. It is used to force content re-mount but not container re-mount, which
-   * is necessary for components that use container as a root node internally so that their test-utils wrapper is not detached.
-   */
-  __contentKey?: string;
 }
 
 export function InternalContainerAsSubstep(props: InternalContainerProps) {
@@ -87,7 +78,6 @@ export default function InternalContainer({
   __disableStickyMobile = true,
   __funnelSubStepProps,
   __subStepRef,
-  __contentKey,
   ...restProps
 }: InternalContainerProps) {
   const isMobile = useMobile();
@@ -153,75 +143,62 @@ export default function InternalContainer({
       <div
         id={contentId}
         ref={__subStepRef}
-        key={__contentKey}
         className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}
       >
-        {/* We use a wrapper around the boundary to preserve container's paddings. */}
-        <BuiltInErrorBoundary wrapper={content => <InternalBox padding="m">{content}</InternalBox>}>
-          {header && (
-            <ContainerHeaderContextProvider>
-              <StickyHeaderContext.Provider value={{ isStuck, isStuckAtBottom }}>
-                <div
-                  className={clsx(
-                    isRefresh && styles.refresh,
-                    styles.header,
-                    analyticsSelectors.header,
-                    styles[`header-variant-${variant}`],
-                    {
-                      [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
-                      [styles['header-sticky-enabled']]: isSticky,
-                      [styles['header-dynamic-height']]: hasDynamicHeight,
-                      [styles['header-stuck']]: isStuck,
-                      [styles['with-paddings']]: !disableHeaderPaddings,
-                      [styles['with-hidden-content']]: !children || __hiddenContent,
-                      [styles['header-with-media']]: hasMedia,
-                      [styles['header-full-page']]: __fullPage && isRefresh,
-                    }
-                  )}
-                  ref={headerMergedRef}
-                  style={{
-                    ...stickyStyles.style,
-                    ...getHeaderStyles(style),
-                  }}
-                >
-                  {isStuck && !isMobile && isRefresh && __fullPage && <div className={styles['header-cover']}></div>}
-                  {header}
-                </div>
-              </StickyHeaderContext.Provider>
-            </ContainerHeaderContextProvider>
-          )}
-          <div className={clsx(styles.content, fitHeight && styles['content-fit-height'])}>
-            <div
-              className={clsx(styles['content-inner'], testStyles['content-inner'], {
-                [styles['with-paddings']]: !disableContentPaddings,
-                [styles['with-header']]: !!header,
-              })}
-              style={getContentStyles(style)}
-            >
-              {/* We use a wrapper around the boundary to preserve paddings in case they were disabled by the consumer.
-              That is needed because the consumer-defined paddings that normally come with the content can no longer
-              apply since the content failed to render. */}
-              <BuiltInErrorBoundary
-                wrapper={content => (
-                  <InternalBox padding={disableContentPaddings ? 'm' : undefined}>{content}</InternalBox>
+        {header && (
+          <ContainerHeaderContextProvider>
+            <StickyHeaderContext.Provider value={{ isStuck, isStuckAtBottom }}>
+              <div
+                className={clsx(
+                  isRefresh && styles.refresh,
+                  styles.header,
+                  analyticsSelectors.header,
+                  styles[`header-variant-${variant}`],
+                  {
+                    [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
+                    [styles['header-sticky-enabled']]: isSticky,
+                    [styles['header-dynamic-height']]: hasDynamicHeight,
+                    [styles['header-stuck']]: isStuck,
+                    [styles['with-paddings']]: !disableHeaderPaddings,
+                    [styles['with-hidden-content']]: !children || __hiddenContent,
+                    [styles['header-with-media']]: hasMedia,
+                    [styles['header-full-page']]: __fullPage && isRefresh,
+                  }
                 )}
+                ref={headerMergedRef}
+                style={{
+                  ...stickyStyles.style,
+                  ...getHeaderStyles(style),
+                }}
               >
-                {children}
-              </BuiltInErrorBoundary>
-            </div>
+                {isStuck && !isMobile && isRefresh && __fullPage && <div className={styles['header-cover']}></div>}
+                {header}
+              </div>
+            </StickyHeaderContext.Provider>
+          </ContainerHeaderContextProvider>
+        )}
+        <div className={clsx(styles.content, fitHeight && styles['content-fit-height'])}>
+          <div
+            className={clsx(styles['content-inner'], testStyles['content-inner'], {
+              [styles['with-paddings']]: !disableContentPaddings,
+              [styles['with-header']]: !!header,
+            })}
+            style={getContentStyles(style)}
+          >
+            {children}
           </div>
-          {footer && (
-            <div
-              className={clsx(styles.footer, {
-                [styles['with-divider']]: !__disableFooterDivider,
-                [styles['with-paddings']]: !disableFooterPaddings,
-              })}
-              style={getFooterStyles(style)}
-            >
-              {footer}
-            </div>
-          )}
-        </BuiltInErrorBoundary>
+        </div>
+        {footer && (
+          <div
+            className={clsx(styles.footer, {
+              [styles['with-divider']]: !__disableFooterDivider,
+              [styles['with-paddings']]: !disableFooterPaddings,
+            })}
+            style={getFooterStyles(style)}
+          >
+            {footer}
+          </div>
+        )}
       </div>
     </div>
   );
