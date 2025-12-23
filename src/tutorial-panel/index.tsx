@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 'use client';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { hotspotContext } from '../annotation-context/context';
@@ -28,6 +28,16 @@ export default function TutorialPanel({
 
   const baseProps = getBaseProps(restProps);
   const context = useContext(hotspotContext);
+  const headerRef = useRef<HTMLHeadingElement>(null);
+  const previousTutorialRef = useRef(context.currentTutorial);
+
+  // Restore focus to the tutorial panel header when exiting a tutorial
+  useEffect(() => {
+    if (!context.currentTutorial && previousTutorialRef.current) {
+      headerRef.current?.focus({ preventScroll: true });
+    }
+    previousTutorialRef.current = context.currentTutorial;
+  }, [context.currentTutorial]);
 
   return (
     <>
@@ -47,6 +57,7 @@ export default function TutorialPanel({
             loading={loading}
             onStartTutorial={context.onStartTutorial}
             downloadUrl={downloadUrl}
+            headerRef={headerRef}
           />
         )}
       </div>
