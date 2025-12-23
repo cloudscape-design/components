@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import {
   HotspotContext as HotspotContextType,
@@ -194,20 +194,6 @@ describe('tutorial detail view', () => {
     const completedScreen = createWrapper(container).findTutorialPanel()!.find('[role="status"]')!.getElement();
     expect(completedScreen).toHaveTextContent('COMPLETION_SCREEN_TITLE');
     expect(completedScreen).toHaveTextContent('COMPLETED_SCREEN_DESCRIPTION_TEST');
-  });
-
-  test('restores focus to panel header when exiting tutorial', async () => {
-    const { container, rerender } = renderTutorialPanelWithContext({}, { currentTutorial: getTutorials()[0] });
-
-    rerender(
-      <HotspotContext.Provider value={getContext({ currentTutorial: null })}>
-        <TutorialPanel i18nStrings={i18nStrings} downloadUrl="DOWNLOAD_URL" tutorials={getTutorials()} />
-      </HotspotContext.Provider>
-    );
-
-    await waitFor(() => {
-      expect(container.querySelector('[tabindex="-1"]')).toHaveFocus();
-    });
   });
 });
 
