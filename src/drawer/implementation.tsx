@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { useRuntimeDrawerContext } from '../app-layout/runtime-drawer/use-runtime-drawer-context';
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
-import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -45,7 +44,7 @@ export function DrawerImplementation({
   const footerRef = useRef<HTMLDivElement>(null);
 
   const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: __internalRootRef as RefObject<HTMLElement> });
-  const hasAdditionalDrawerAction = !!runtimeDrawerContext?.isExpandable;
+  const hasAdditioalDrawerAction = !!runtimeDrawerContext?.isExpandable;
   const { isSticky: isFooterSticky } = useStickyFooter({
     drawerRef: __internalRootRef as RefObject<HTMLElement>,
     footerRef,
@@ -70,7 +69,7 @@ export function DrawerImplementation({
           className={clsx(
             styles.header,
             runtimeDrawerContext && styles['with-runtime-context'],
-            hasAdditionalDrawerAction && styles['with-additional-action']
+            hasAdditioalDrawerAction && styles['with-additional-action']
           )}
         >
           {header}
@@ -84,7 +83,7 @@ export function DrawerImplementation({
           !disableContentPaddings && styles['content-with-paddings']
         )}
       >
-        <BuiltInErrorBoundary>{children}</BuiltInErrorBoundary>
+        {children}
       </div>
       {footer && (
         <div

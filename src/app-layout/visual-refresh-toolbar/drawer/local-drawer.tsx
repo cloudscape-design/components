@@ -136,7 +136,6 @@ export function AppLayoutDrawerImplementation({
               />
             </div>
             <div
-              key={TOOLS_DRAWER_ID}
               className={clsx(
                 styles['drawer-content'],
                 activeDrawerId !== TOOLS_DRAWER_ID && styles['drawer-content-hidden']
@@ -146,7 +145,7 @@ export function AppLayoutDrawerImplementation({
               {toolsContent}
             </div>
             {activeDrawerId !== TOOLS_DRAWER_ID && (
-              <div key={activeDrawerId} className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
+              <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
                 {activeDrawer?.content}
               </div>
             )}

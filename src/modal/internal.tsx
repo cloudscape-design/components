@@ -7,9 +7,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { Portal, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalBox from '../box/internal';
 import { InternalButton } from '../button/internal';
-import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import InternalHeader from '../header/internal';
 import { useInternalI18n } from '../i18n/context';
 import { PerformanceMetrics } from '../internal/analytics';
@@ -285,25 +283,21 @@ function PortaledModal({
                       </span>
                     </InternalHeader>
                   </div>
-                  <BuiltInErrorBoundary
-                    wrapper={content => <InternalBox padding={{ bottom: 'm', horizontal: 'l' }}>{content}</InternalBox>}
+                  <div
+                    ref={__subStepRef}
+                    {...__subStepFunnelProps}
+                    className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}
                   >
-                    <div
-                      ref={__subStepRef}
-                      {...__subStepFunnelProps}
-                      className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}
-                    >
-                      {children}
-                      <div ref={stickySentinelRef} />
-                    </div>
-                    {footer && (
-                      <ButtonContext.Provider value={{ onClick: onButtonClick }}>
-                        <div ref={footerRef} className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>
-                          {footer}
-                        </div>
-                      </ButtonContext.Provider>
-                    )}
-                  </BuiltInErrorBoundary>
+                    {children}
+                    <div ref={stickySentinelRef} />
+                  </div>
+                  {footer && (
+                    <ButtonContext.Provider value={{ onClick: onButtonClick }}>
+                      <div ref={footerRef} className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>
+                        {footer}
+                      </div>
+                    </ButtonContext.Provider>
+                  )}
                 </div>
               </div>
             </FocusLock>

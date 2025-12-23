@@ -31,9 +31,6 @@ const defaultProps: Record<string, Record<string, any>> = {
     value: '',
     onChange: () => {},
   },
-  'error-boundary': {
-    onError: () => {},
-  },
   's3-resource-selector': {
     resource: { uri: '' },
     fetchBuckets: () => Promise.resolve([]),

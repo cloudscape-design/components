@@ -28,7 +28,6 @@ const pluralizationMap = {
   DatePicker: 'DatePickers',
   DateRangePicker: 'DateRangePickers',
   Drawer: 'Drawers',
-  ErrorBoundary: 'ErrorBoundaries',
   ExpandableSection: 'ExpandableSections',
   FileDropzone: 'FileDropzones',
   FileInput: 'FileInputs',
