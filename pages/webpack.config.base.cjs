@@ -61,15 +61,23 @@ module.exports = ({
         {
           test: /\.tsx?$/,
           loader: 'ts-loader',
-          include: path.resolve(__dirname),
+          include: [
+            path.resolve(__dirname),
+            path.resolve(__dirname, '../', 'node_modules/@cloudscape-design/build-tools'),
+          ],
           exclude: /__tests__/,
           options: {
+            allowTsInNodeModules: true,
             compilerOptions: {
+              rootDir: path.resolve(__dirname, '../'),
               baseUrl: '.',
               paths: {
                 '~components': [componentsPath],
                 '~components/*': [`${componentsPath}/*`],
                 '~design-tokens': [designTokensPath],
+                '@cloudscape-design/build-tools/test-pages-util/*': [
+                  '../node_modules/@cloudscape-design/build-tools/src/test-pages-util/*',
+                ],
                 ...(globalStylesPath ? { '@cloudscape-design/global-styles': [globalStylesPath] } : {}),
                 ...(react18
                   ? {
