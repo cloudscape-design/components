@@ -73,10 +73,7 @@ const VirtualListOpen = forwardRef(
               menuEl: menuRefObject?.current,
             });
           } else {
-            // Fix for AWSUI-61506.  Defer scroll to next frame to ensure
-            // virtual items are measured after re-render.  When called from
-            // parent's useEffect, measurements may not be ready yet.
-            requestAnimationFrame(() => scrollToIndex(index));
+            scrollToIndex(index);
           }
         }
         previousHighlightedIndex.current = index;
@@ -84,7 +81,7 @@ const VirtualListOpen = forwardRef(
       [firstOptionSticky, highlightType.moveFocus, scrollToIndex]
     );
 
-    const stickySize = firstOptionSticky ? (virtualItems[0]?.size ?? 0) : 0;
+    const stickySize = firstOptionSticky ? virtualItems[0].size : 0;
     const withScrollbar = !!width && width.inner < width.outer;
 
     const idPrefix = useUniqueId('select-list-');
