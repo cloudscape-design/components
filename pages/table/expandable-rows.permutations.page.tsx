@@ -3,11 +3,12 @@
 import React from 'react';
 import { range } from 'lodash';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import { Box, Input, Link } from '~components';
 import Table, { TableProps } from '~components/table';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { ariaLabels } from './expandable-rows/common';
 import { columnLabel } from './shared-configs';

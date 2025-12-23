@@ -4,6 +4,9 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import { DatePicker, FormField, TimeInput } from '~components';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
@@ -11,8 +14,6 @@ import { usePropertyFilterI18n } from '~components/property-filter/i18n-utils';
 import { InternalFilteringProperty } from '~components/property-filter/interfaces';
 import { TokenEditor, TokenEditorProps } from '~components/property-filter/token-editor';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings } from './common-props';
 

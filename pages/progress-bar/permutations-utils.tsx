@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ProgressBarProps } from '~components/progress-bar';
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
 
-import createPermutations from '../utils/permutations';
+import { ProgressBarProps } from '~components/progress-bar';
 
 const repeat = (text: string, times: number): string => {
   const returnArray = [];

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import { SimplePage } from '../app/templates';
-import PermutationsView from '../utils/permutations-view';
 import { permutations, RadioButtonPermutation } from './common';
 import customStyle from './custom-style';
 

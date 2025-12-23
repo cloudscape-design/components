@@ -3,10 +3,11 @@
 
 import React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const toggleFeedbackGroup: ButtonGroupProps.Group = {

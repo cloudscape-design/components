@@ -4,11 +4,12 @@
 import React from 'react';
 import MockDate from 'mockdate';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import { Box, DatePicker, DatePickerProps, SpaceBetween } from '~components';
 
 import { locales } from '../date-input/common';
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
 // Mock the date in order to have the current day styling in place for screenshot testing.
