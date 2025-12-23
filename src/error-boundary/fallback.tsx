@@ -52,23 +52,14 @@ function DefaultHeaderContent({ i18nStrings }: { i18nStrings: ErrorBoundaryProps
 }
 
 function DefaultDescriptionContent({
-  i18nStrings: { descriptionText, components: { Feedback } = {} } = {},
+  i18nStrings: { descriptionText } = {},
 }: {
   i18nStrings: ErrorBoundaryProps.I18nStrings;
 }) {
   const i18n = useInternalI18n('error-boundary');
 
   // Dependencies for the intl-format function, where the pseudo-tags are declared as functions from parsed chunks.
-  const formatArgs = Feedback
-    ? {
-        hasFeedback: true,
-        Feedback: (chunks: React.ReactNode[]) => (
-          <span className={testUtilStyles['feedback-action']}>
-            <Feedback>{chunks[0] ?? ''}</Feedback>
-          </span>
-        ),
-      }
-    : { hasFeedback: false, Feedback: () => <></> };
+  const formatArgs = { hasFeedback: false };
 
   // This ensures that the description string provided via i18nStrings also supports the <Feedback> injection,
   // because the i18n() helper propagates the second argument as is, without applying intl-format to it.
