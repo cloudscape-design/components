@@ -28,7 +28,8 @@ interface TutorialListProps {
   onStartTutorial: HotspotContext['onStartTutorial'];
   i18nStrings: TutorialPanelProps['i18nStrings'];
   downloadUrl: TutorialPanelProps['downloadUrl'];
-  headerRef?: React.MutableRefObject<HTMLHeadingElement | null>;
+  headerRef?: (node: HTMLDivElement | null) => void;
+  headerId?: string;
 }
 
 export default function TutorialList({
@@ -38,6 +39,7 @@ export default function TutorialList({
   onStartTutorial,
   downloadUrl,
   headerRef,
+  headerId,
 }: TutorialListProps) {
   checkSafeUrl('TutorialPanel', downloadUrl);
 
@@ -47,8 +49,19 @@ export default function TutorialList({
     <>
       <InternalSpaceBetween size="s">
         <InternalSpaceBetween size="m">
-          <div ref={headerRef} tabIndex={-1}>
-            <InternalBox variant="h2" fontSize={isRefresh ? 'heading-m' : 'heading-l'} padding={{ bottom: 'n' }}>
+          <div
+            ref={headerRef}
+            tabIndex={-1}
+            role="region"
+            aria-labelledby={headerId}
+            className={styles['tutorial-header-region']}
+          >
+            <InternalBox
+              variant="h2"
+              fontSize={isRefresh ? 'heading-m' : 'heading-l'}
+              padding={{ bottom: 'n' }}
+              id={headerId}
+            >
               {i18nStrings.tutorialListTitle}
             </InternalBox>
           </div>

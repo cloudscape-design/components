@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 'use client';
-import React, { useContext, useRef } from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 import clsx from 'clsx';
+
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { hotspotContext } from '../annotation-context/context';
 import { getBaseProps } from '../internal/base-component';
@@ -28,7 +30,26 @@ export default function TutorialPanel({
 
   const baseProps = getBaseProps(restProps);
   const context = useContext(hotspotContext);
-  const headerRef = useRef<HTMLHeadingElement>(null);
+
+  // should focus on the header (on exiting tutorial, we have to know and
+  // focus on header for accessiblity reasons)
+  const shouldFocusRef = useRef(false);
+  const headerId = useUniqueId('tutorial-header-');
+
+  const headerCallbackRef = useCallback((node: HTMLDivElement | null) => {
+    if (node && shouldFocusRef.current) {
+      node.focus({ preventScroll: true });
+      shouldFocusRef.current = false;
+    }
+  }, []);
+
+  const handleExitTutorial = useCallback(
+    (e: any) => {
+      shouldFocusRef.current = true;
+      context.onExitTutorial(e);
+    },
+    [context]
+  );
 
   return (
     <>
@@ -37,10 +58,7 @@ export default function TutorialPanel({
           <TutorialDetailView
             i18nStrings={i18nStrings}
             tutorial={context.currentTutorial}
-            onExitTutorial={e => {
-              context.onExitTutorial(e);
-              requestAnimationFrame(() => headerRef.current?.focus({ preventScroll: true }));
-            }}
+            onExitTutorial={handleExitTutorial}
             currentStepIndex={context.currentStepIndex}
             onFeedbackClick={onFeedbackClick}
           />
@@ -51,7 +69,8 @@ export default function TutorialPanel({
             loading={loading}
             onStartTutorial={context.onStartTutorial}
             downloadUrl={downloadUrl}
-            headerRef={headerRef}
+            headerRef={headerCallbackRef}
+            headerId={headerId}
           />
         )}
       </div>
