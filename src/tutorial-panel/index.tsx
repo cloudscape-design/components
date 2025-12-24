@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 'use client';
-import React, { useContext } from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 import clsx from 'clsx';
+
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { hotspotContext } from '../annotation-context/context';
 import { getBaseProps } from '../internal/base-component';
@@ -29,6 +31,26 @@ export default function TutorialPanel({
   const baseProps = getBaseProps(restProps);
   const context = useContext(hotspotContext);
 
+  // should focus on the header (on exiting tutorial, we have to know and
+  // focus on header for accessiblity reasons)
+  const shouldFocusRef = useRef(false);
+  const headerId = useUniqueId('tutorial-header-');
+
+  const headerCallbackRef = useCallback((node: HTMLDivElement | null) => {
+    if (node && shouldFocusRef.current) {
+      node.focus({ preventScroll: true });
+      shouldFocusRef.current = false;
+    }
+  }, []);
+
+  const handleExitTutorial = useCallback(
+    (e: any) => {
+      shouldFocusRef.current = true;
+      context.onExitTutorial(e);
+    },
+    [context]
+  );
+
   return (
     <>
       <div {...baseProps} className={clsx(baseProps.className, styles['tutorial-panel'])} ref={__internalRootRef}>
@@ -36,7 +58,7 @@ export default function TutorialPanel({
           <TutorialDetailView
             i18nStrings={i18nStrings}
             tutorial={context.currentTutorial}
-            onExitTutorial={context.onExitTutorial}
+            onExitTutorial={handleExitTutorial}
             currentStepIndex={context.currentStepIndex}
             onFeedbackClick={onFeedbackClick}
           />
@@ -47,6 +69,8 @@ export default function TutorialPanel({
             loading={loading}
             onStartTutorial={context.onStartTutorial}
             downloadUrl={downloadUrl}
+            headerRef={headerCallbackRef}
+            headerId={headerId}
           />
         )}
       </div>
