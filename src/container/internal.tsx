@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -39,6 +40,8 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
    */
   variant?: ContainerProps['variant'] | 'embedded' | 'full-page' | 'cards';
 
+  __expanded?: boolean;
+  __usedAsExpandableSection?: boolean;
   __funnelSubStepProps?: ReturnType<typeof useFunnelSubStep>['funnelSubStepProps'];
   __subStepRef?: ReturnType<typeof useFunnelSubStep>['subStepRef'];
 }
@@ -78,6 +81,8 @@ export default function InternalContainer({
   __disableStickyMobile = true,
   __funnelSubStepProps,
   __subStepRef,
+  __expanded = false,
+  __usedAsExpandableSection = false,
   ...restProps
 }: InternalContainerProps) {
   const isMobile = useMobile();
@@ -107,6 +112,36 @@ export default function InternalContainer({
 
   const hasMedia = !!media?.content;
   const mediaPosition = media?.position ?? 'top';
+
+  const footerDisplay = __usedAsExpandableSection
+    ? footer && (
+        <CSSTransition in={__expanded} timeout={30} classNames={{ enter: styles['expandable-container-footer-enter'] }}>
+          <div
+            className={clsx(
+              styles['expandable-container-footer'],
+              {
+                [styles['with-divider']]: !__disableFooterDivider,
+                [styles['with-paddings']]: !disableFooterPaddings,
+              },
+              __expanded && styles['expandable-container-footer-expanded']
+            )}
+            style={getFooterStyles(style)}
+          >
+            {footer}
+          </div>
+        </CSSTransition>
+      )
+    : footer && (
+        <div
+          className={clsx(styles.footer, {
+            [styles['with-divider']]: !__disableFooterDivider,
+            [styles['with-paddings']]: !disableFooterPaddings,
+          })}
+          style={getFooterStyles(style)}
+        >
+          {footer}
+        </div>
+      );
 
   return (
     <div
@@ -188,17 +223,7 @@ export default function InternalContainer({
             {children}
           </div>
         </div>
-        {footer && (
-          <div
-            className={clsx(styles.footer, {
-              [styles['with-divider']]: !__disableFooterDivider,
-              [styles['with-paddings']]: !disableFooterPaddings,
-            })}
-            style={getFooterStyles(style)}
-          >
-            {footer}
-          </div>
-        )}
+        {footerDisplay}
       </div>
     </div>
   );
