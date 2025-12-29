@@ -168,7 +168,15 @@ module.exports = ({
       replaceModule(/~design-tokens/, designTokensPath),
       replaceModule(
         /@cloudscape-design\/build-tools\/src\/test-pages-util/,
-        path.resolve(__dirname, '../lib/dev-pages/pages/shared-utils')
+        (() => {
+          const resolved = path.resolve(__dirname, '../lib/dev-pages/pages/shared-utils');
+          console.log(`\n=== MODULE REPLACEMENT ===`);
+          console.log(`Pattern: @cloudscape-design/build-tools/src/test-pages-util`);
+          console.log(`Resolved to: ${resolved}`);
+          console.log(`Directory exists: ${require('fs').existsSync(resolved)}`);
+          console.log(`=========================\n`);
+          return resolved;
+        })()
       ),
       globalStylesPath
         ? replaceModule(/@cloudscape-design\/global-styles\/index\.css/, `${globalStylesPath}/${globalStylesIndex}.css`)
