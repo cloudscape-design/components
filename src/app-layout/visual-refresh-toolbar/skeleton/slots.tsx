@@ -7,6 +7,8 @@ import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/impleme
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
 import { BreadcrumbsSlotContext } from '../contexts';
 
+import testutilStyles from '../../test-classes/styles.css.js';
+import toolbarStyles from '../toolbar/styles.css.js';
 import styles from './styles.css.js';
 
 interface ToolbarSlotProps {
@@ -18,7 +20,7 @@ interface ToolbarSlotProps {
 export const ToolbarSlot = React.forwardRef<HTMLElement, ToolbarSlotProps>(({ className, style, children }, ref) => (
   <section
     ref={ref as React.Ref<any>}
-    className={clsx(styles['toolbar-container'], className)}
+    className={clsx(styles['toolbar-container'], toolbarStyles['universal-toolbar'], testutilStyles.toolbar, className)}
     style={{
       insetBlockStart: style?.insetBlockStart ?? 0,
       ...style,
