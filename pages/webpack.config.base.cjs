@@ -26,6 +26,7 @@ module.exports = ({
   globalStylesIndex = 'index',
   moduleReplacements,
   react18,
+  sharedUtilsPath = '../lib/dev-pages/pages/shared-utils',
 } = {}) => {
   const mode = process.env.NODE_ENV;
   return {
@@ -193,7 +194,7 @@ module.exports = ({
       replaceModule(
         /@cloudscape-design\/build-tools\/src\/test-pages-util/,
         (() => {
-          const resolved = path.resolve(__dirname, '../lib/dev-pages/pages/shared-utils');
+          const resolved = path.resolve(__dirname, sharedUtilsPath);
           console.log(`\n=== MODULE REPLACEMENT ===`);
           console.log(`Pattern: @cloudscape-design/build-tools/src/test-pages-util`);
           console.log(`Resolved to: ${resolved}`);
