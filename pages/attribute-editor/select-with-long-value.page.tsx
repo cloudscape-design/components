@@ -56,7 +56,7 @@ export default function AttributeEditorSelect() {
           definition={[
             {
               label: 'Key',
-              control: item => <Input value={item.key} placeholder="Enter key" />,
+              control: item => <Input value={item.key} placeholder="Enter key" onChange={() => {}} />,
             },
             {
               label: 'Long select',
