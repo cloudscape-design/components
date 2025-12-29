@@ -82,7 +82,9 @@ module.exports = ({
                 '~components': [componentsPath],
                 '~components/*': [`${componentsPath}/*`],
                 '~design-tokens': [designTokensPath],
-                '@cloudscape-design/build-tools/src/test-pages-util': ['lib/dev-pages/pages/shared-utils'],
+                '@cloudscape-design/build-tools/src/test-pages-util': [
+                  path.resolve(__dirname, '../', 'lib', 'dev-pages', 'pages', 'shared-utils'),
+                ],
                 ...(globalStylesPath ? { '@cloudscape-design/global-styles': [globalStylesPath] } : {}),
                 ...(react18
                   ? {
@@ -164,8 +166,30 @@ module.exports = ({
       new HtmlWebpackPlugin({
         template: path.join(__dirname, './app/index.html'),
       }),
-      replaceModule(/~components/, componentsPath),
-      replaceModule(/~design-tokens/, designTokensPath),
+      replaceModule(
+        /~components/,
+        (() => {
+          const resolved = componentsPath;
+          console.log(`\n=== MODULE REPLACEMENT ===`);
+          console.log(`Pattern: ~components`);
+          console.log(`Resolved to: ${resolved}`);
+          console.log(`Directory exists: ${require('fs').existsSync(resolved)}`);
+          console.log(`=========================\n`);
+          return resolved;
+        })()
+      ),
+      replaceModule(
+        /~design-tokens/,
+        (() => {
+          const resolved = designTokensPath;
+          console.log(`\n=== MODULE REPLACEMENT ===`);
+          console.log(`Pattern: ~design-tokens`);
+          console.log(`Resolved to: ${resolved}`);
+          console.log(`Directory exists: ${require('fs').existsSync(resolved)}`);
+          console.log(`=========================\n`);
+          return resolved;
+        })()
+      ),
       replaceModule(
         /@cloudscape-design\/build-tools\/src\/test-pages-util/,
         (() => {
