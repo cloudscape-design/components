@@ -8,6 +8,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
 import { InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { ButtonDropdownItemWrapper } from '../../../lib/components/test-utils/dom/button-dropdown';
 import { isItemGroup, isLinkItem } from '../utils/utils';
 
 import categoryStyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';
@@ -20,6 +21,11 @@ const renderButtonDropdown = (props: ButtonDropdownProps) => {
   const renderResult = render(<ButtonDropdown {...props} />);
   return createWrapper(renderResult.container).findButtonDropdown()!;
 };
+
+const findIcon = (wrapper: ElementWrapper | ButtonDropdownItemWrapper) => wrapper.findByClassName(iconStyles.icon);
+
+const findAllIcons = (wrapper: ElementWrapper | ButtonDropdownItemWrapper) =>
+  wrapper.findAllByClassName(iconStyles.icon);
 
 const checkRenderedGroup = (
   renderedItem: ElementWrapper,
@@ -373,7 +379,7 @@ const items: ButtonDropdownProps.Items = [
       const wrapper = renderButtonDropdown({ ...props, items: simpleItems });
 
       wrapper.openDropdown();
-      expect(wrapper.findItemById('i1')!.findIcon()).toBeFalsy();
+      expect(findIcon(wrapper.findItemById('i1')!)).toBeFalsy();
     });
 
     describe('should render icons', () => {
@@ -434,7 +440,7 @@ const items: ButtonDropdownProps.Items = [
         const wrapper = renderButtonDropdown({ ...props, items: items });
 
         wrapper.openDropdown();
-        expect(wrapper.findItemById('i1')!.findAllIcons()).toHaveLength(2);
+        expect(findAllIcons(wrapper.findItemById('i1')!)).toHaveLength(2);
       });
 
       test.each([true, false])('in category headers when expandableGroups is %s', expandableGroups => {
@@ -467,11 +473,11 @@ const items: ButtonDropdownProps.Items = [
         wrapper.openDropdown();
 
         if (expandableGroups) {
-          expect(wrapper.findExpandableCategoryById('category1')!.findIcon()).toBeTruthy();
-          expect(wrapper.findExpandableCategoryById('category2')!.findIcon()).toBeTruthy();
-          expect(wrapper.findExpandableCategoryById('category3')!.findIcon()).toBeTruthy();
+          expect(findIcon(wrapper.findExpandableCategoryById('category1')!)).toBeTruthy();
+          expect(findIcon(wrapper.findExpandableCategoryById('category2')!)).toBeTruthy();
+          expect(findIcon(wrapper.findExpandableCategoryById('category3')!)).toBeTruthy();
         } else {
-          expect(wrapper.findOpenDropdown()!.findAllIcons()).toHaveLength(3);
+          expect(findAllIcons(wrapper.findOpenDropdown()!)).toHaveLength(3);
         }
       });
     });
@@ -509,13 +515,25 @@ describe('Internal ButtonDropdown badge property', () => {
 
     const item1 = wrapper.findItemById('i1')!;
     expect(item1.getElement()).toHaveTextContent('Option 1');
-    expect(item1.getElement()).toHaveTextContent('Description 1');
-    expect(item1.getElement()).toHaveTextContent('Ctrl+D 1');
+    expect(item1.findText()!.getElement().textContent).toBe('Option 1');
+    expect(item1.findSecondaryText()!.getElement().textContent).toBe('Description 1');
+    expect(item1.findLabelTag()!.getElement().textContent).toBe('Ctrl+D 1');
 
     const item2 = wrapper.findItemById('i2')!;
     expect(item2.getElement()).toHaveTextContent('Option 2');
-    expect(item2.getElement()).toHaveTextContent('Description 2');
-    expect(item2.getElement()).toHaveTextContent('Ctrl+D 2');
+    expect(item2.findText()!.getElement().textContent).toBe('Option 2');
+    expect(item2.findSecondaryText()!.getElement().textContent).toBe('Description 2');
+    expect(item2.findLabelTag()!.getElement().textContent).toBe('Ctrl+D 2');
+  });
+
+  it('should return null when secondaryText and labelTag are not present', () => {
+    const items = [{ id: 'i1', text: 'Option 1' }];
+    const wrapper = renderButtonDropdown({ items });
+    wrapper.openDropdown();
+
+    const item = wrapper.findItemById('i1')!;
+    expect(item.findSecondaryText()).toBeNull();
+    expect(item.findLabelTag()).toBeNull();
   });
 });
 

@@ -45,7 +45,7 @@ test(
   'can click in-menu item',
   setup({}, async page => {
     await page.click(actionsMenu.toSelector());
-    await page.click(actionsMenu.findItemById('edit').toSelector());
+    await page.click(actionsMenu.findItemById('edit')!.toSelector());
     await expect(page.getText('#log')).resolves.toBe('edit');
   })
 );
@@ -105,7 +105,7 @@ test(
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
 
     await page.click(actionsMenu.toSelector());
-    await page.click(actionsMenu.findItemById('cut').toSelector());
+    await page.click(actionsMenu.findItemById('cut')!.toSelector());
     await page.click(createWrapper().find('#log').toSelector());
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
   })
@@ -165,7 +165,7 @@ test(
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
 
     // No tooltip is shown after menu closes.
-    await page.click(actionsMenu.findItemById('edit').toSelector());
+    await page.click(actionsMenu.findItemById('edit')!.toSelector());
     await expect(page.isExisting(actionsMenu.findOpenDropdown().toSelector())).resolves.toBe(false);
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
 
@@ -183,7 +183,7 @@ test(
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
 
     // No tooltip is shown after menu closes with item selection.
-    await page.click(actionsMenu.findItemById('edit').toSelector());
+    await page.click(actionsMenu.findItemById('edit')!.toSelector());
     await page.keys(['ArrowDown', 'ArrowDown', 'Enter']);
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
 
