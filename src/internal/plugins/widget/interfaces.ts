@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ButtonGroupProps } from '../../../button-group/interfaces';
+import { ButtonGroupProps, ItemRuntime } from '../../../button-group/interfaces';
 import { NonCancelableEventHandler } from '../../events';
 
 interface Message<Type, Payload> {
@@ -48,7 +48,7 @@ export interface DrawerPayload {
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   mountHeader?: (container: HTMLElement) => void;
   unmountHeader?: (container: HTMLElement) => void;
-  headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
+  headerActions?: ReadonlyArray<ItemRuntime>;
   onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
   onToggleFocusMode?: NonCancelableEventHandler<{ isExpanded: boolean }>;
   position?: 'side' | 'bottom';

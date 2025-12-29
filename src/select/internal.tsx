@@ -122,6 +122,7 @@ const InternalSelect = React.forwardRef(
       highlightOption,
       selectOption,
       announceSelected,
+      focusActiveRef,
     } = useSelect({
       selectedOptions: selectedOption ? [selectedOption] : [],
       updateSelectedOption: option => fireNonCancelableEvent(onChange, { selectedOption: option }),
@@ -197,7 +198,10 @@ const InternalSelect = React.forwardRef(
       noMatch,
       filteringResultsText: filteredText,
       errorIconAriaLabel,
-      onRecoveryClick: handleRecoveryClick,
+      onRecoveryClick: () => {
+        handleRecoveryClick();
+        focusActiveRef();
+      },
       hasRecoveryCallback: !!onLoadItems,
     });
 

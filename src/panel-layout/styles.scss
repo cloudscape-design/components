@@ -1,0 +1,63 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+// Our standard focus rings don't work for this use-case because the element
+// is scrollable. This renders a ring inside the element, that is sticky and
+// overlays the content and scrollbars as expected.
+@mixin container-inner-focus-ring {
+  $width: 2px;
+  border-start-start-radius: calc(#{awsui.$border-radius-control-default-focus-ring} + #{$width});
+  border-start-end-radius: calc(#{awsui.$border-radius-control-default-focus-ring} + #{$width});
+  border-end-start-radius: calc(#{awsui.$border-radius-control-default-focus-ring} + #{$width});
+  border-end-end-radius: calc(#{awsui.$border-radius-control-default-focus-ring} + #{$width});
+  outline: $width solid awsui.$color-border-item-focused;
+  outline-offset: calc(-1 * #{$width});
+}
+
+.root {
+  @include styles.styles-reset;
+  block-size: 100%;
+  overflow: hidden;
+  display: flex;
+}
+
+.panel {
+  display: flex;
+  flex-shrink: 0;
+  > .handle {
+    display: flex;
+    align-items: center;
+  }
+  > .panel-content {
+    overflow-y: auto;
+    overflow-x: visible;
+    flex-grow: 1;
+    @include focus-visible.when-visible {
+      @include container-inner-focus-ring;
+    }
+  }
+  .display-main-only > & {
+    display: none;
+  }
+  .display-panel-only > & {
+    flex: 1;
+  }
+}
+
+.content {
+  overflow-y: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  .display-panel-only > & {
+    display: none;
+  }
+  @include focus-visible.when-visible {
+    @include container-inner-focus-ring;
+  }
+}

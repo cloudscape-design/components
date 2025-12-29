@@ -14,6 +14,7 @@ const permutations = createPermutations<DrawerProps>([
     disableContentPaddings: [true, false],
     header: [null, <h2 key="header">Header</h2>],
     children: [null, <>Dummy content</>],
+    footer: [null, <>Footer content</>],
   },
   { loading: [true], i18nStrings: [{ loadingText: 'Loading' }, {}] },
 ]);

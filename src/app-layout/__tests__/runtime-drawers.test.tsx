@@ -9,7 +9,7 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 import { Button } from '../../../lib/components';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
-import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import awsuiPlugins from '../../../lib/components/internal/plugins';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import * as awsuiWidgetInternal from '../../../lib/components/internal/plugins/widget/core';
 import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget/index';
@@ -32,7 +32,7 @@ import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-too
 import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
 
 beforeEach(() => {
-  awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
+  awsuiPlugins.appLayout.clearRegisteredDrawersForTesting();
   awsuiWidgetInternal.clearInitialMessages();
   activateAnalyticsMetadata(true);
 });
@@ -1219,6 +1219,34 @@ describe('toolbar mode only features', () => {
 
           findDrawerHeaderActionById('add', renderProps)!.click();
           expect(onHeaderActionClick).toHaveBeenCalledWith({ id: 'add' });
+        });
+
+        test('propagates iconSvg / pressedIconSvg as html content for headerActions', async () => {
+          registerDrawer({
+            ...drawerDefaults,
+            id: 'global-drawer',
+            headerActions: [
+              {
+                type: 'icon-button',
+                id: 'add',
+                iconSvg: `<rect data-testid="custom-icon" />`,
+                text: 'Add',
+              },
+              {
+                type: 'icon-toggle-button',
+                id: 'add',
+                pressed: true,
+                iconSvg: `<rect data-testid="custom-icon-non-pressed" />`,
+                pressedIconSvg: `<rect data-testid="custom-icon-pressed" />`,
+                text: 'Add',
+              },
+            ],
+          });
+          const renderProps = await renderComponent(<AppLayout />);
+          const { wrapper } = renderProps;
+          findDrawerTriggerById('global-drawer', renderProps)!.click();
+          expect(wrapper.find('[data-testid="custom-icon"]')).toBeTruthy();
+          expect(wrapper.find('[data-testid="custom-icon-pressed"]')).toBeTruthy();
         });
       });
     });

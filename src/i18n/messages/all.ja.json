@@ -130,6 +130,9 @@
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "コピー"
   },
+  "date-picker": {
+    "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {日付を選択} other {日付を選択してください。選択された日付は {selectedDate} です}}"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "相対モード",
     "i18nStrings.absoluteModeTitle": "絶対モード",
@@ -171,6 +174,11 @@
   },
   "drawer": {
     "i18nStrings.loadingText": "コンテンツのロード中"
+  },
+  "error-boundary": {
+    "i18nStrings.headerText": "予期しないエラー、コンテンツを表示できませんでした",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {更新してもう一度お試しください。この問題は現在追跡中ですが、<Feedback>詳しい情報はこちら</Feedback>で共有できます。} other {更新してもう一度お試しください。}}",
+    "i18nStrings.refreshActionText": "ページを更新"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "少なく表示",
@@ -233,6 +241,10 @@
     "ariaLabels.nextPageLabel": "次のページ",
     "ariaLabels.pageLabel": "全ページ中 {pageNumber} ページ",
     "ariaLabels.previousPageLabel": "前のページ"
+  },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "パネルのサイズ変更ハンドル",
+    "i18nStrings.resizeHandleTooltipText": "ドラッグまたは選択してリサイズする"
   },
   "pie-chart": {
     "i18nStrings.detailsValue": "値",

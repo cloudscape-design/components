@@ -16,6 +16,16 @@
 .drawer {
   @include styles.styles-reset;
   word-wrap: break-word;
+
+  &.with-footer {
+    display: flex;
+    flex-direction: column;
+    min-block-size: 100%;
+
+    > .content {
+      flex: 1;
+    }
+  }
 }
 
 .header {
@@ -71,6 +81,21 @@
   padding-inline-start: awsui.$space-panel-side-left;
   padding-inline-end: awsui.$space-panel-side-right;
   padding-block-end: awsui.$space-panel-content-bottom;
+}
+
+.footer {
+  background-color: awsui.$color-background-container-content;
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
+  padding-block: awsui.$space-panel-content-top;
+  padding-inline: awsui.$space-panel-side-left awsui.$space-panel-side-right;
+
+  &.is-sticky {
+    position: sticky;
+    inset-block-end: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
+    z-index: 810;
+  }
 }
 
 .test-utils-drawer-content {

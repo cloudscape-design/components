@@ -66,7 +66,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       );
       expect(wrapper.findToolbar()).toBeFalsy();
       expect(wrapper.findNavigation()).toBeFalsy();
-      expect(wrapper.findBreadcrumbs()).toBeFalsy();
+      expect(wrapper.findBreadcrumbs()).toBeTruthy(); // Needed for SSR
       expect(wrapper.find(getFunnelKeySelector('funnel-name'))).toBeTruthy();
       expect(wrapper.findNotifications()).toBeFalsy();
       expect(wrapper.findTools()).toBeFalsy();

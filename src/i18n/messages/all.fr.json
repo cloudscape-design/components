@@ -130,6 +130,9 @@
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Copier"
   },
+  "date-picker": {
+    "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Sélectionner la date} other {Sélectionnez la date, la date sélectionnée est le {selectedDate}}}"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Mode relatif",
     "i18nStrings.absoluteModeTitle": "Mode absolu",
@@ -171,6 +174,11 @@
   },
   "drawer": {
     "i18nStrings.loadingText": "Chargement du contenu en cours"
+  },
+  "error-boundary": {
+    "i18nStrings.headerText": "Erreur inattendue, le contenu n'a pas pu s'afficher",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Actualisez pour réessayer. Nous suivons ce problème mais vous pouvez fournir <Feedback>plus d'informations ici</Feedback>.} other {Actualisez pour réessayer.}}",
+    "i18nStrings.refreshActionText": "Actualiser la page"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Afficher moins",
@@ -233,6 +241,10 @@
     "ariaLabels.nextPageLabel": "Page suivante",
     "ariaLabels.pageLabel": "Page {pageNumber} de toutes les pages",
     "ariaLabels.previousPageLabel": "Page précédente"
+  },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "Poignée de redimensionnement du panneau",
+    "i18nStrings.resizeHandleTooltipText": "Faites glisser ou sélectionnez pour redimensionner"
   },
   "pie-chart": {
     "i18nStrings.detailsValue": "Valeur",

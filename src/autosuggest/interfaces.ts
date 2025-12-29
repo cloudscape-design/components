@@ -117,7 +117,7 @@ export interface AutosuggestProps
    * Overrides the element that is announced to screen readers
    * when the highlighted option changes. By default, this announces
    * the option's name and properties, and its selected state if
-   * the `selectedLabel` property is defined.
+   * the `selectedAriaLabel` property is defined.
    * The highlighted option is provided, and its group (if groups
    * are used and it differs from the group of the previously highlighted option).
    *

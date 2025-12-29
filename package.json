@@ -175,7 +175,7 @@
     {
       "path": "lib/components/internal/widget-exports.js",
       "brotli": false,
-      "limit": "1000 kB",
+      "limit": "1100 kB",
       "ignore": "react-dom"
     }
   ],

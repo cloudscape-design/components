@@ -248,6 +248,7 @@ exports[`test-utils selectors 1`] = `
   ],
   "drawer": [
     "awsui_drawer_1sxt8",
+    "awsui_footer_1sxt8",
     "awsui_header-actions_1sxt8",
     "awsui_header_1sxt8",
     "awsui_test-utils-drawer-content_1sxt8",
@@ -457,6 +458,12 @@ exports[`test-utils selectors 1`] = `
     "awsui_button_fvjdu",
     "awsui_page-number_fvjdu",
     "awsui_root_fvjdu",
+  ],
+  "panel-layout": [
+    "awsui_content_119z0",
+    "awsui_panel_119z0",
+    "awsui_resize-handle_119z0",
+    "awsui_root_119z0",
   ],
   "pie-chart": [
     "awsui_inner-content_1edmh",

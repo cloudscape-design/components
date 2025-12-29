@@ -130,6 +130,9 @@
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Salin"
   },
+  "date-picker": {
+    "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Pilih tanggal} other {Pilih tanggal, tanggal yang dipilih adalah {selectedDate}}}"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Mode relatif",
     "i18nStrings.absoluteModeTitle": "Mode absolut",
@@ -171,6 +174,11 @@
   },
   "drawer": {
     "i18nStrings.loadingText": "Memuat konten"
+  },
+  "error-boundary": {
+    "i18nStrings.headerText": "Kesalahan tak terduga, konten gagal ditampilkan",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Refresh untuk mencoba lagi. Kami sedang melacak masalah ini, tetapi Anda dapat membagikan <Feedback>informasi selengkapnya di sini</Feedback>.} other {Refresh untuk mencoba lagi.}}",
+    "i18nStrings.refreshActionText": "Segarkan halaman"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Tampilkan lebih sedikit",
@@ -233,6 +241,10 @@
     "ariaLabels.nextPageLabel": "Halaman berikutnya",
     "ariaLabels.pageLabel": "Halaman {pageNumber} dari semua halaman",
     "ariaLabels.previousPageLabel": "Halaman sebelumnya"
+  },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "Handel pengubahan ukuran panel",
+    "i18nStrings.resizeHandleTooltipText": "Seret atau pilih untuk mengubah ukuran"
   },
   "pie-chart": {
     "i18nStrings.detailsValue": "Nilai",

@@ -29,6 +29,7 @@ const SelectableItem = (
     isSelectAll,
     virtualPosition,
     padBottom,
+    disableContentStyling,
     isNextSelected,
     isPreviousSelected,
     useInteractiveGroups,
@@ -65,6 +66,10 @@ const SelectableItem = (
     [styles['after-header']]: !!afterHeader,
     [styles['with-scrollbar']]: withScrollbar,
     [styles['visual-refresh']]: isVisualRefresh,
+  });
+
+  const contentClassNames = clsx(styles['option-content'], analyticsSelectors['option-content'], {
+    [styles['selectable-item-content']]: !disableContentStyling,
   });
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -130,7 +135,7 @@ const SelectableItem = (
         ? {}
         : getAnalyticsMetadataAttribute(getAnalyticsSelectActionMetadata({ isChild, value, ...restProps })))}
     >
-      <div className={clsx(styles['option-content'], analyticsSelectors['option-content'])} ref={contentRef}>
+      <div className={contentClassNames} ref={contentRef}>
         {content}
       </div>
       <div className={styles['measure-strut']} ref={ref} />

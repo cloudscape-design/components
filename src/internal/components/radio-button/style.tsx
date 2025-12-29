@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { SYSTEM } from '../internal/environment';
-import { getComputedAbstractSwitchState } from '../internal/utils/style';
-import { RadioGroupProps } from './interfaces';
+import { RadioGroupProps } from '../../../radio-group/interfaces';
+import { SYSTEM } from '../../environment';
+import { getComputedAbstractSwitchState } from '../../utils/style';
 
 export function getOuterCircleStyle(
   style: RadioGroupProps.Style | undefined,

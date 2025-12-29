@@ -130,6 +130,9 @@
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Copiar"
   },
+  "date-picker": {
+    "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Elegir fecha} other {Elegir fecha; la fecha seleccionada es {selectedDate}}}"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Modo relativo",
     "i18nStrings.absoluteModeTitle": "Modo absoluto",
@@ -171,6 +174,11 @@
   },
   "drawer": {
     "i18nStrings.loadingText": "Cargando contenido"
+  },
+  "error-boundary": {
+    "i18nStrings.headerText": "Error inesperado. No se pudo mostrar el contenido",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Actualice para intentarlo de nuevo. Estamos siguiendo este problema, pero puede compartir <Feedback>más información aquí</Feedback>.} other {Actualice para intentarlo de nuevo.}}",
+    "i18nStrings.refreshActionText": "Actualizar página"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostrar menos",
@@ -233,6 +241,10 @@
     "ariaLabels.nextPageLabel": "Página siguiente",
     "ariaLabels.pageLabel": "Página {pageNumber} de todas las páginas",
     "ariaLabels.previousPageLabel": "Página anterior"
+  },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "Controlador de cambio del tamaño del panel",
+    "i18nStrings.resizeHandleTooltipText": "Arrastre o seleccione para cambiar el tamaño"
   },
   "pie-chart": {
     "i18nStrings.detailsValue": "Valor",

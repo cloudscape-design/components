@@ -20,6 +20,15 @@ $trigger-underline-offset: 0.25em;
   &.no-wrap {
     white-space: nowrap;
   }
+
+  // When the trigger text is set to be ellipsized, render the focus ring on the root element instead of the trigger,
+  // to prevent it from being cropped by its `overflow: hidden` rule.
+  // We do this in only this case because when the trigger has multiple lines of texts its height can differ from the root element.
+  &:has(.trigger-type-text-inline.overflow-ellipsis:focus, .trigger-type-text.overflow-ellipsis:focus) {
+    @include focus-visible.when-visible-unfocused {
+      @include styles.focus-highlight(1px);
+    }
+  }
 }
 
 .root-filtering-token {
@@ -77,8 +86,10 @@ $trigger-underline-offset: 0.25em;
     outline: none;
   }
 
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(1px);
+  &:not(.overflow-ellipsis) {
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(1px);
+    }
   }
 }
 

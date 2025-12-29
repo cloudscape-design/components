@@ -24,7 +24,7 @@ export interface TheadProps {
   sortingDescending: boolean | undefined;
   sortingDisabled: boolean | undefined;
   variant: TableProps.Variant;
-  tableVariant?: string;
+  tableVariant?: TableProps.Variant;
   wrapLines: boolean | undefined;
   resizableColumns: boolean | undefined;
   getSelectAllProps?: () => SelectionProps;

@@ -4,6 +4,7 @@ import merge from 'lodash/merge.js';
 
 import { ReferenceTokens } from '@cloudscape-design/theming-build';
 
+import { expandReferenceTokens } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { referenceTokens as vrReferenceTokens, tokens as parentTokens } from '../visual-refresh/color-palette.js';
 
@@ -52,7 +53,7 @@ const tokens: StyleDictionary.ColorPaletteDictionary = {
 };
 
 // Reference tokens for classic theme
-const referenceTokens: ReferenceTokens = merge({}, vrReferenceTokens, {
+const referenceTokens: ReferenceTokens = {
   color: {
     primary: {
       50: tokens.colorBlue50,
@@ -102,10 +103,12 @@ const referenceTokens: ReferenceTokens = merge({}, vrReferenceTokens, {
       1000: tokens.colorBlue1000,
     },
   },
-});
+};
+
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge({}, parentTokens, tokens);
+const expandedReferenceTokens: ReferenceTokens = expandReferenceTokens(merge({}, vrReferenceTokens, referenceTokens));
 
 export { expandedTokens as tokens };
-export { referenceTokens };
+export { expandedReferenceTokens as referenceTokens };
 
 export const mode: StyleDictionary.ModeIdentifier = 'color';

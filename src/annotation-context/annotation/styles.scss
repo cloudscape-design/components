@@ -58,6 +58,11 @@
     content: '';
     position: absolute;
     inset: calc(-1 * #{awsui.$space-xxs});
+
+    // By default, elements later in the DOM order have a higher precedence.
+    // This increases the z-index just to cancel out that rule, so that elements
+    // immediately following the button are also overlapped by this click target.
+    z-index: 1;
   }
 
   &:focus {
