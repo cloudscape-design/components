@@ -69,10 +69,14 @@ module.exports = ({
         {
           test: /\.tsx?$/,
           loader: 'ts-loader',
-          include: path.resolve(__dirname),
+          include: [
+            path.resolve(__dirname),
+            path.resolve(__dirname, '../', 'lib', 'dev-pages', 'pages', 'shared-utils'),
+          ],
           exclude: /__tests__/,
           options: {
             compilerOptions: {
+              rootDir: path.resolve(__dirname, '../'),
               baseUrl: '.',
               paths: {
                 '~components': [componentsPath],
