@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import { Box, Toggle } from '~components';
 import LineChart, { LineChartProps } from '~components/line-chart';
 import {
@@ -22,8 +25,6 @@ import {
   multipleBarsData,
   negativeData,
 } from '../mixed-line-bar-chart/common';
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const timeLatencyData = latencyData.map(({ time, p90 }) => ({ x: time, y: p90 }));

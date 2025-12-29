@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import Checkbox, { CheckboxProps } from '~components/checkbox';
 import Link from '~components/link';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<CheckboxProps>([

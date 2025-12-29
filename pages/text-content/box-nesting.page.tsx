@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import Box, { BoxProps } from '~components/box';
 import TextContent from '~components/text-content';
 
-import createPermutations from '../utils/permutations';
 import ScreenshotArea from '../utils/screenshot-area';
 
 import styles from './style.scss';

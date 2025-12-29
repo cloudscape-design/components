@@ -3,11 +3,12 @@
 
 import React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import { DateRangePicker, DateRangePickerProps } from '~components';
 
 import { PermutationsPage } from '../app/templates';
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import { isValid, placeholders } from './common';
 
 const permutations = createPermutations<DateRangePickerProps>([

@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import Alert, { AlertProps } from '~components/alert';
 import Button from '~components/button';
 import ExpandableSection from '~components/expandable-section';
 import Link from '~components/link';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings } from './common';
 

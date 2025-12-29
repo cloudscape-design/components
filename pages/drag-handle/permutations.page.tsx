@@ -3,10 +3,11 @@
 
 import React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import DragHandle, { DragHandleProps } from '~components/internal/components/drag-handle';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<DragHandleProps>([

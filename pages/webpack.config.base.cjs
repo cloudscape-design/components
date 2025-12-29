@@ -13,7 +13,10 @@ const isLocal = !process.env.CI;
 const noop = () => ({ apply: () => {} });
 
 const replaceModule = (from, to) =>
-  new NormalModuleReplacementPlugin(from, resource => (resource.request = resource.request.replace(from, to)));
+  new NormalModuleReplacementPlugin(from, resource => {
+    console.log(`Replacing module: ${resource.request} -> ${resource.request.replace(from, to)}`);
+    resource.request = resource.request.replace(from, to);
+  });
 
 module.exports = ({
   outputPath = 'pages/lib/static/',
@@ -42,6 +45,11 @@ module.exports = ({
         // The NormalModuleReplacementPlugin does not work there
         // https://github.com/webpack-contrib/sass-loader/issues/489
         '~design-tokens': designTokensPath,
+        // '@cloudscape-design/build-tools/src/test-pages-util': (() => {
+        //   const resolved = path.resolve(__dirname, 'lib/dev-pages/pages/shared-utils');
+        //   console.log(`Alias resolved: @cloudscape-design/build-tools/src/test-pages-util -> ${resolved}`);
+        //   return resolved;
+        // })(),
         ...(react18
           ? {
               '~mount': path.resolve(__dirname, './app/mount/react18.ts'),
@@ -70,6 +78,7 @@ module.exports = ({
                 '~components': [componentsPath],
                 '~components/*': [`${componentsPath}/*`],
                 '~design-tokens': [designTokensPath],
+                '@cloudscape-design/build-tools/src/test-pages-util': ['lib/dev-pages/pages/shared-utils'],
                 ...(globalStylesPath ? { '@cloudscape-design/global-styles': [globalStylesPath] } : {}),
                 ...(react18
                   ? {
@@ -153,6 +162,10 @@ module.exports = ({
       }),
       replaceModule(/~components/, componentsPath),
       replaceModule(/~design-tokens/, designTokensPath),
+      replaceModule(
+        /@cloudscape-design\/build-tools\/src\/test-pages-util/,
+        path.resolve(__dirname, '../lib/dev-pages/pages/shared-utils')
+      ),
       globalStylesPath
         ? replaceModule(/@cloudscape-design\/global-styles\/index\.css/, `${globalStylesPath}/${globalStylesIndex}.css`)
         : noop,

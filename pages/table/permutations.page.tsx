@@ -3,6 +3,9 @@
 import React from 'react';
 import range from 'lodash/range';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import FormField from '~components/form-field';
 import Header from '~components/header';
 import Input from '~components/input';
@@ -14,8 +17,6 @@ import {
   i18nStrings as propertyFilterI18nStrings,
   labels as propertyFilterLabels,
 } from '../property-filter/common-props';
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { ARIA_LABELS } from './shared-configs';
 

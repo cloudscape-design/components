@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import { ButtonDropdown } from '~components';
 import FormField from '~components/form-field';
 import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
 import Select from '~components/select';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { columnDefinitions, filteringProperties, i18nStrings, labels } from './common-props';
 import { allItems, TableItem } from './table.data';

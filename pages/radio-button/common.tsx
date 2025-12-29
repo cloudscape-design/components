@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import RadioButton, { RadioButtonProps } from '~components/radio-button';
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
 
-import createPermutations from '../utils/permutations';
+import RadioButton, { RadioButtonProps } from '~components/radio-button';
 
 const shortText = 'Short text';
 

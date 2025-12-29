@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import FileTokenGroup, { FileTokenGroupProps } from '~components/file-token-group';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const file1 = new File([new Blob(['demo content 1'])], 'demo file 1', { type: 'image/*' });

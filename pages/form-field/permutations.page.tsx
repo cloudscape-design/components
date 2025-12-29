@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import Checkbox from '~components/checkbox';
 import FormField, { FormFieldProps } from '~components/form-field';
 import Icon from '~components/icon';
@@ -10,8 +13,6 @@ import Link from '~components/link';
 import RadioGroup from '~components/radio-group';
 import Textarea from '~components/textarea';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
 /* eslint-disable react/jsx-key */

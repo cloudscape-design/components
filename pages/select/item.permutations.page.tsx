@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import { DropdownOption } from '~components/internal/components/option/interfaces';
 import Item from '~components/select/parts/item';
 import { ItemProps } from '~components/select/parts/item';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const complexOption: DropdownOption = {

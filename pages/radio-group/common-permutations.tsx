@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import Link from '~components/link';
 import { RadioGroupProps } from '~components/radio-group';
 
 import { longText } from '../radio-button/common';
-import createPermutations from '../utils/permutations';
 
 const permutations = createPermutations<RadioGroupProps>([
   {
