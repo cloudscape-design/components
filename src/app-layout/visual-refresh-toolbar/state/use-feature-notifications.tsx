@@ -21,10 +21,15 @@ const delay = () =>
 
 export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotificationsProps) {
   const [markAllAsRead, setMarkAllAsRead] = useState(false);
+  const [featurePromptDismissed, setFeaturePromptDismissed] = useState(false);
   const [featureNotificationsData, setFeatureNotificationsData] = useState<FeatureNotificationsPayload<unknown> | null>(
     null
   );
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
+
+  featurePromptRef.current?.onDismiss(() => {
+    setFeaturePromptDismissed(true);
+  });
 
   useEffect(() => {
     if (!featureNotificationsData || markAllAsRead) {
@@ -41,12 +46,12 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
     // const features = featureNotificationsDrawer?.__features;
     // call continuum to determine if all notifications were read, if not, show the badge and trigger the feature prompt
     delay().then(() => {
-      if (!featureNotificationsData.suppressFeaturePrompt) {
+      if (!featureNotificationsData.suppressFeaturePrompt && !featurePromptDismissed) {
         featurePromptRef.current?.show();
       }
       awsuiPlugins.appLayout.updateDrawer({ id, badge: true });
     });
-  }, [featureNotificationsData, activeDrawersIds, markAllAsRead]);
+  }, [featureNotificationsData, activeDrawersIds, markAllAsRead, featurePromptDismissed]);
 
   function featureNotificationsMessageHandler(event: WidgetMessage) {
     if (event.type === 'registerFeatureNotifications') {

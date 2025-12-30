@@ -41,6 +41,7 @@ function InternalFeaturePrompt(
   const [show, setShow] = useState(false);
 
   const popoverBodyRef = useRef<HTMLDivElement | null>(null);
+  const onDismissCallbackRef = useRef<() => void | null>();
 
   useImperativeHandle(ref, () => ({
     dismiss: () => {
@@ -49,6 +50,11 @@ function InternalFeaturePrompt(
     show: () => {
       setShow(true);
       fireNonCancelableEvent(onShow);
+    },
+    onDismiss: (callback?: () => void) => {
+      if (callback) {
+        onDismissCallbackRef.current = callback;
+      }
     },
   }));
 
@@ -75,12 +81,14 @@ function InternalFeaturePrompt(
               onDismiss={() => {
                 setShow(false);
                 fireNonCancelableEvent(onDismiss);
+                onDismissCallbackRef?.current?.();
               }}
               variant="annotation"
               overflowVisible="content"
               onBlur={() => {
                 setShow(false);
                 fireNonCancelableEvent(onDismiss);
+                onDismissCallbackRef?.current?.();
               }}
             >
               {content}
