@@ -167,6 +167,7 @@ export default function Tabs({
         {...baseProps}
         className={clsx(baseProps.className, styles.root)}
         __internalRootRef={__internalRootRef}
+        __contentKey={activeTabId}
         disableContentPaddings={true}
         variant={variant === 'stacked' ? 'stacked' : 'default'}
         fitHeight={fitHeight}
