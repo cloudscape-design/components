@@ -148,7 +148,7 @@ export function AppLayoutToolbarImplementation({
   return (
     <ToolbarSlot
       ref={ref}
-      className={clsx(aiDrawer?.trigger && styles['with-ai-drawer'], {
+      className={clsx((aiDrawer?.trigger || !!activeAiDrawerId) && styles['with-ai-drawer'], {
         [testutilStyles['mobile-bar']]: isMobile,
       })}
       style={{
