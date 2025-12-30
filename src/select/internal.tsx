@@ -68,6 +68,7 @@ const InternalSelect = React.forwardRef(
       autoFocus,
       __inFilteringToken,
       __internalRootRef,
+      renderOption,
       ...restProps
     }: InternalSelectProps,
     externalRef: React.Ref<SelectProps.Ref>
@@ -164,6 +165,7 @@ const InternalSelect = React.forwardRef(
 
     const trigger = (
       <Trigger
+        renderOption={renderOption}
         ref={triggerRef}
         placeholder={placeholder}
         disabled={disabled}
@@ -267,6 +269,7 @@ const InternalSelect = React.forwardRef(
                 <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
               ) : null
             }
+            renderOption={renderOption}
             menuProps={menuProps}
             getOptionProps={getOptionProps}
             filteredOptions={filteredOptions}
