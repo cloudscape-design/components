@@ -35,7 +35,8 @@
 }
 
 .field {
-  min-inline-size: 0;
+  // needed for select truncation and to prevent fields from clashing
+  min-inline-size: 40px;
 }
 
 .additional-info {
