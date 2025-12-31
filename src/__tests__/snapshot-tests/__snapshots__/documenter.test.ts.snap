@@ -11365,6 +11365,156 @@ It should contain the only \`h2\` used in the drawer.",
 }
 `;
 
+exports[`Components definition for error-boundary matches the snapshot: error-boundary 1`] = `
+{
+  "dashCaseName": "error-boundary",
+  "events": [],
+  "functions": [],
+  "name": "ErrorBoundary",
+  "properties": [
+    {
+      "description": "Optional identifier for the error boundary instance.
+
+When provided, the identifier is included in the \`onError\` callback payload.
+In the rendered output, the boundary wraps its content in a \`<div>\` with the
+attribute \`data-awsui-boundary-id={errorBoundaryId}\` to support debugging.",
+      "name": "errorBoundaryId",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Localized strings and components used in the fallback UI.
+
+* \`headerText\` (string): Header text displayed in the fallback view.
+* \`descriptionText\` (string): Description text displayed in the fallback view. Supports embedding inline
+  feedback actions by including \`<Feedback>\` pseudo-tags when \`components.Feedback\` is provided.
+* \`refreshActionText\` (string): Text for the default refresh action button.
+* \`components.Feedback\` (React.ComponentType<I18nFeedbackProps>): A component used to render
+  inline feedback actions within the description text.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "ErrorBoundaryProps.I18nStrings",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "{ Feedback?: React.ComponentType<ErrorBoundaryProps.I18nFeedbackProps> | undefined; }",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "React.ComponentType<ErrorBoundaryProps.I18nFeedbackProps>",
+                    "type": "union",
+                    "values": [
+                      "React.ComponentClass<ErrorBoundaryProps.I18nFeedbackProps, any>",
+                      "React.FunctionComponent<ErrorBoundaryProps.I18nFeedbackProps>",
+                    ],
+                  },
+                  "name": "Feedback",
+                  "optional": true,
+                  "type": "React.ComponentType<ErrorBoundaryProps.I18nFeedbackProps>",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "components",
+            "optional": true,
+            "type": "{ Feedback?: React.ComponentType<ErrorBoundaryProps.I18nFeedbackProps> | undefined; }",
+          },
+          {
+            "name": "descriptionText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "headerText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "refreshActionText",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ErrorBoundaryProps.I18nStrings",
+    },
+    {
+      "description": "Callback invoked when an error is intercepted by the boundary.
+Use this function to record, log, or report errors (for example, to telemetry or monitoring systems).
+
+The callback receives a \`detail\` object containing:
+* \`error\` (Error): The thrown error instance.
+* \`errorInfo\` (React.ErrorInfo): Additional metadata captured by React.
+* \`errorBoundaryId\` (optional, string): The boundary identifier, if defined.",
+      "inlineType": {
+        "name": "(detail: ErrorBoundaryProps.OnErrorDetail) => void",
+        "parameters": [
+          {
+            "name": "detail",
+            "type": "ErrorBoundaryProps.OnErrorDetail",
+          },
+        ],
+        "returnType": "void",
+        "type": "function",
+      },
+      "name": "onError",
+      "optional": false,
+      "type": "(detail: ErrorBoundaryProps.OnErrorDetail) => void",
+    },
+    {
+      "description": "Optional custom renderer for the fallback UI displayed when an error occurs.
+
+The function receives the default slots derived from i18n configuration:
+* \`header\` (ReactNode): The fallback header text.
+* \`description\` (ReactNode): The fallback description text.
+* \`action\` (ReactNode): The fallback action element (a refresh button by default).
+
+Return a React node to fully override the default fallback presentation.",
+      "inlineType": {
+        "name": "(props: ErrorBoundaryProps.FallbackProps) => React.ReactNode",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "ErrorBoundaryProps.FallbackProps",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderFallback",
+      "optional": true,
+      "type": "((props: ErrorBoundaryProps.FallbackProps) => React.ReactNode)",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Controls how nested error boundaries behave.
+
+Several components—such as app layout, container, and modal include built-in
+error boundaries. These boundaries activate automatically when they detect
+an ancestor boundary, inheriting configuration from the closest one.
+
+When \`suppressNested\` is set to \`true\`, nested built-in or standalone
+boundaries are disabled. In this mode, all errors originating from within
+the boundary’s content are captured exclusively by this boundary.",
+      "name": "suppressNested",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Child content rendered when no error has been captured.",
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for expandable-section matches the snapshot: expandable-section 1`] = `
 {
   "dashCaseName": "expandable-section",
@@ -36127,6 +36277,76 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "name": "findAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findFeedbackAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findRefreshAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "ErrorBoundaryWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -45906,6 +46126,51 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
         },
       ],
       "name": "DrawerWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findFeedbackAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findRefreshAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "ErrorBoundaryWrapper",
     },
     {
       "methods": [
