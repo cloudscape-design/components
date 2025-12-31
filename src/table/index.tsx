@@ -21,6 +21,7 @@ const Table = React.forwardRef(
     {
       items = [],
       selectedItems = [],
+      selectionInverted = false,
       variant = 'container',
       contentDensity = 'comfortable',
       cellVerticalAlign = 'middle',
@@ -56,6 +57,7 @@ const Table = React.forwardRef(
           inlineEdit: props.columnDefinitions.some(def => !!def.editConfig),
           disabledInlineEdit: props.columnDefinitions.some(def => !!def.editConfig?.disabledReason),
           hasSortableColumns: props.columnDefinitions.some(def => def.sortingField || def.sortingComparator),
+          hasCellCounters: props.columnDefinitions.some(dev => !!dev.counter),
           hasHiddenColumns,
           hasStickyColumns,
           hasFilterSlot: !!props.filter,
@@ -93,6 +95,7 @@ const Table = React.forwardRef(
     const tableProps: Parameters<typeof InternalTable<T>>[0] = {
       items,
       selectedItems,
+      selectionInverted,
       variant,
       contentDensity,
       firstIndex,
