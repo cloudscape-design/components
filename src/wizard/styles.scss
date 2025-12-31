@@ -5,7 +5,6 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .root {
@@ -96,7 +95,7 @@
           grid-column: 2;
         }
 
-        @include focus-visible.when-visible {
+        &:focus-visible {
           @include styles.link-focus;
         }
       }
@@ -272,7 +271,7 @@
 .form-header-component {
   &-wrapper {
     outline: none;
-    @include focus-visible.when-visible {
+    &:focus-visible {
       @include styles.link-focus;
     }
   }

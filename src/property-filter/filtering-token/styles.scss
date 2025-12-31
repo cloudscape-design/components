@@ -3,7 +3,6 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 @use '../../token/constants' as constants;
@@ -118,7 +117,7 @@ $border-radius-inner-token: calc(#{awsui.$border-radius-token} / 2);
   background-color: transparent;
   border-inline-start: awsui.$border-width-button solid constants.$token-border-color;
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.focus-highlight(awsui.$space-filtering-token-dismiss-button-focus-outline-gutter);
   }
 
