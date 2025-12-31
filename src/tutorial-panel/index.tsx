@@ -8,6 +8,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { hotspotContext } from '../annotation-context/context';
 import { getBaseProps } from '../internal/base-component';
+import { NonCancelableCustomEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import TutorialDetailView from './components/tutorial-detail-view';
@@ -44,7 +45,7 @@ export default function TutorialPanel({
   }, []);
 
   const handleExitTutorial = useCallback(
-    (e: any) => {
+    (e: NonCancelableCustomEvent<TutorialPanelProps.TutorialDetail>) => {
       shouldFocusRef.current = true;
       context.onExitTutorial(e);
     },
