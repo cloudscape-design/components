@@ -232,6 +232,7 @@ export const getDropdownPosition = ({
   stretchHeight = false,
   isMobile = false,
   stretchBeyondTriggerWidth = false,
+  forcePosition,
 }: {
   triggerElement: HTMLElement;
   dropdownElement: HTMLElement;
@@ -242,6 +243,7 @@ export const getDropdownPosition = ({
   stretchHeight?: boolean;
   isMobile?: boolean;
   stretchBeyondTriggerWidth?: boolean;
+  forcePosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 }): DropdownPosition => {
   // Determine the space available around the dropdown that it can grow in
   const availableSpace = getAvailableSpace({
@@ -262,19 +264,24 @@ export const getDropdownPosition = ({
   let insetInlineStart: number | null = null;
   let inlineSize = idealWidth;
 
-  //1. Can it be positioned with ideal width to the right?
-  if (idealWidth <= availableSpace.inlineEnd) {
-    dropInlineStart = false;
-    //2. Can it be positioned with ideal width to the left?
-  } else if (idealWidth <= availableSpace.inlineStart) {
-    dropInlineStart = true;
-    //3. Fit into biggest available space either on left or right
+  // Handle forced horizontal position
+  if (forcePosition) {
+    dropInlineStart = forcePosition.endsWith('-left');
   } else {
-    dropInlineStart = availableSpace.inlineStart > availableSpace.inlineEnd;
-    inlineSize = Math.max(availableSpace.inlineStart, availableSpace.inlineEnd, minWidth);
+    //1. Can it be positioned with ideal width to the right?
+    if (idealWidth <= availableSpace.inlineEnd) {
+      dropInlineStart = false;
+      //2. Can it be positioned with ideal width to the left?
+    } else if (idealWidth <= availableSpace.inlineStart) {
+      dropInlineStart = true;
+      //3. Fit into biggest available space either on left or right
+    } else {
+      dropInlineStart = availableSpace.inlineStart > availableSpace.inlineEnd;
+      inlineSize = Math.max(availableSpace.inlineStart, availableSpace.inlineEnd, minWidth);
+    }
   }
 
-  if (preferCenter) {
+  if (preferCenter && !forcePosition) {
     const spillOver = (idealWidth - triggerInlineSize) / 2;
 
     // availableSpace always includes the trigger width, but we want to exclude that
@@ -287,8 +294,9 @@ export const getDropdownPosition = ({
     }
   }
 
-  const dropBlockStart =
-    availableSpace.blockEnd < dropdownElement.offsetHeight && availableSpace.blockStart > availableSpace.blockEnd;
+  const dropBlockStart = forcePosition
+    ? forcePosition.startsWith('top-')
+    : availableSpace.blockEnd < dropdownElement.offsetHeight && availableSpace.blockStart > availableSpace.blockEnd;
   const availableHeight = dropBlockStart ? availableSpace.blockStart : availableSpace.blockEnd;
   // Try and crop the bottom item when all options can't be displayed, affordance for "there's more"
   const croppedHeight = Math.max(stretchHeight ? availableHeight : Math.floor(availableHeight / 31) * 31 + 16, 15);
@@ -361,7 +369,8 @@ export const calculatePosition = (
   stretchHeight: boolean,
   isMobile: boolean,
   minWidth?: number,
-  stretchBeyondTriggerWidth?: boolean
+  stretchBeyondTriggerWidth?: boolean,
+  forcePosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 ): [DropdownPosition, LogicalDOMRect] => {
   // cleaning previously assigned values,
   // so that they are not reused in case of screen resize and similar events
@@ -393,6 +402,7 @@ export const calculatePosition = (
         stretchHeight,
         isMobile,
         stretchBeyondTriggerWidth,
+        forcePosition,
       });
   const triggerBox = getLogicalBoundingClientRect(triggerElement);
   return [position, triggerBox];
