@@ -91,6 +91,8 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
 
   const cellsRef = useRef(new Map<PropertyKey, HTMLElement>());
   const stickyCellsRef = useRef(new Map<PropertyKey, HTMLElement>());
+  // Cache measured widths from real cells to avoid getBoundingClientRect() during render
+  const measuredWidthsRef = useRef(new Map<PropertyKey, number>());
   const getCell = (columnId: PropertyKey): null | HTMLElement => cellsRef.current.get(columnId) ?? null;
   const setCell = useCallback((sticky: boolean, columnId: PropertyKey, node: null | HTMLElement) => {
     const ref = sticky ? stickyCellsRef : cellsRef;
@@ -109,10 +111,10 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
       }
 
       if (sticky) {
+        // Use cached measured width to avoid getBoundingClientRect() during render.
+        // The cache is populated by updateColumnWidths() which runs outside the render path.
         return {
-          width:
-            cellsRef.current.get(column.id)?.getBoundingClientRect().width ||
-            (columnWidths?.get(column.id) ?? column.width),
+          width: measuredWidthsRef.current.get(column.id) || columnWidths?.get(column.id) || column.width,
         };
       }
 
@@ -140,13 +142,25 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   // Imperatively sets width style for a cell avoiding React state.
   // This allows setting the style as soon container's size change is observed.
   const updateColumnWidths = useStableCallback(() => {
+    // First pass: set widths on real cells
     for (const { id } of visibleColumns) {
       const element = cellsRef.current.get(id);
       if (element) {
         setElementWidths(element, getColumnStyles(false, id));
       }
     }
-    // Sticky column widths must be synchronized once all real column widths are assigned.
+    // Second pass: measure real cell widths and cache them for sticky columns.
+    // This avoids calling getBoundingClientRect() during render.
+    for (const { id } of visibleColumns) {
+      const element = cellsRef.current.get(id);
+      if (element) {
+        const width = element.getBoundingClientRect().width;
+        if (width > 0) {
+          measuredWidthsRef.current.set(id, width);
+        }
+      }
+    }
+    // Third pass: set sticky column widths using cached measurements
     for (const { id } of visibleColumns) {
       const element = stickyCellsRef.current.get(id);
       if (element) {
