@@ -19,66 +19,70 @@ describe('intl', () => {
   });
   describe('setDayIndex', () => {
     test('sets the day to the same day of the week', () => {
-      const date = new Date('2023-06-14'); // Wednesday, June 14, 2023
+      const date = new Date(2023, 5, 14); // Wednesday, June 14, 2023 in local time
       intl.setDayIndex(date, 3); // 3 is Wednesday
       expect(date.getDay()).toBe(3);
-      expect(date.toISOString()).toBe('2023-06-14T00:00:00.000Z');
+      expect(date.getDate()).toBe(14);
     });
 
     test('sets the day to a later day in the same week', () => {
-      const date = new Date('2023-06-14'); // Wednesday, June 14, 2023
+      const date = new Date(2023, 5, 14); // Wednesday, June 14, 2023 in local time
       intl.setDayIndex(date, 5); // 5 is Friday
       expect(date.getDay()).toBe(5);
-      expect(date.toISOString()).toBe('2023-06-16T00:00:00.000Z');
+      expect(date.getDate()).toBe(16);
     });
 
     test('sets the day to an earlier day in the same week', () => {
-      const date = new Date('2023-06-14'); // Wednesday, June 14, 2023
+      const date = new Date(2023, 5, 14); // Wednesday, June 14, 2023 in local time
       intl.setDayIndex(date, 1); // 1 is Monday
       expect(date.getDay()).toBe(1);
-      expect(date.toISOString()).toBe('2023-06-12T00:00:00.000Z');
+      expect(date.getDate()).toBe(12);
     });
 
     test('handles week boundary (Sunday to Saturday)', () => {
-      const date = new Date('2023-06-11'); // Sunday, June 11, 2023
+      const date = new Date(2023, 5, 11); // Sunday, June 11, 2023 in local time
       intl.setDayIndex(date, 6); // 6 is Saturday
       expect(date.getDay()).toBe(6);
-      expect(date.toISOString()).toBe('2023-06-17T00:00:00.000Z');
+      expect(date.getDate()).toBe(17);
     });
 
     test('handles week boundary (Saturday to Sunday)', () => {
-      const date = new Date('2023-06-17'); // Saturday, June 17, 2023
+      const date = new Date(2023, 5, 17); // Saturday, June 17, 2023 in local time
       intl.setDayIndex(date, 0); // 0 is Sunday
       expect(date.getDay()).toBe(0);
-      expect(date.toISOString()).toBe('2023-06-11T00:00:00.000Z');
+      expect(date.getDate()).toBe(11);
     });
 
     test('handles month boundary', () => {
-      const date = new Date('2023-06-30'); // Friday, June 30, 2023
+      const date = new Date(2023, 5, 30); // Friday, June 30, 2023 in local time
       intl.setDayIndex(date, 0); // 0 is Sunday
       expect(date.getDay()).toBe(0);
-      expect(date.toISOString()).toBe('2023-06-25T00:00:00.000Z');
+      expect(date.getDate()).toBe(25);
     });
 
     test('handles year boundary', () => {
-      const date = new Date('2023-12-31'); // Sunday, December 31, 2023
+      const date = new Date(2023, 11, 31); // Sunday, December 31, 2023 in local time
       intl.setDayIndex(date, 2); // 2 is Tuesday
       expect(date.getDay()).toBe(2);
-      expect(date.toISOString()).toBe('2024-01-02T00:00:00.000Z');
+      expect(date.getFullYear()).toBe(2024);
+      expect(date.getMonth()).toBe(0); // January
+      expect(date.getDate()).toBe(2);
     });
 
     test('handles leap year', () => {
-      const date = new Date('2024-02-28'); // Wednesday, February 28, 2024
+      const date = new Date(2024, 1, 28); // Wednesday, February 28, 2024 in local time
       intl.setDayIndex(date, 4); // 4 is Thursday
       expect(date.getDay()).toBe(4);
-      expect(date.toISOString()).toBe('2024-02-29T00:00:00.000Z');
+      expect(date.getDate()).toBe(29);
     });
 
     test('maintains the time component', () => {
-      const date = new Date('2023-06-14T15:30:45'); // Wednesday, June 14, 2023, 15:30:45
+      const date = new Date(2023, 5, 14, 15, 30, 45); // Wednesday, June 14, 2023, 15:30:45 in local time
       intl.setDayIndex(date, 5); // 5 is Friday
       expect(date.getDay()).toBe(5);
-      expect(date.toISOString()).toBe('2023-06-16T15:30:45.000Z');
+      expect(date.getHours()).toBe(15);
+      expect(date.getMinutes()).toBe(30);
+      expect(date.getSeconds()).toBe(45);
     });
   });
 
@@ -128,93 +132,93 @@ describe('intl', () => {
       RenderMonthAndYearSpy.mockRestore();
     });
     test('renders month and year in English (US)', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.renderMonthAndYear('en-US', date)).toBe('June 2023');
     });
 
     test('renders month and year in English (UK)', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.renderMonthAndYear('en-GB', date)).toBe('June 2023');
     });
 
     test('renders month and year in Spanish', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.renderMonthAndYear('es-ES', date)).toBe('junio de 2023');
     });
 
     test('renders month and year in French', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.renderMonthAndYear('fr-FR', date)).toBe('juin 2023');
     });
 
     test('renders month and year in German', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.renderMonthAndYear('de-DE', date)).toBe('Juni 2023');
     });
 
     test('renders month and year in Japanese', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.renderMonthAndYear('ja-JP', date)).toBe('2023年6月');
     });
 
     test('handles different months', () => {
-      expect(intl.renderMonthAndYear('en-US', new Date('2023-01-01'))).toBe('January 2023');
-      expect(intl.renderMonthAndYear('en-US', new Date('2023-12-31'))).toBe('December 2023');
+      expect(intl.renderMonthAndYear('en-US', new Date(2023, 0, 15))).toBe('January 2023');
+      expect(intl.renderMonthAndYear('en-US', new Date(2023, 11, 15))).toBe('December 2023');
     });
 
     test('handles different years', () => {
-      expect(intl.renderMonthAndYear('en-US', new Date('2020-06-15'))).toBe('June 2020');
-      expect(intl.renderMonthAndYear('en-US', new Date('2025-06-15'))).toBe('June 2025');
+      expect(intl.renderMonthAndYear('en-US', new Date(2020, 5, 15))).toBe('June 2020');
+      expect(intl.renderMonthAndYear('en-US', new Date(2025, 5, 15))).toBe('June 2025');
     });
 
     test('handles leap years', () => {
-      expect(intl.renderMonthAndYear('en-US', new Date('2024-02-29'))).toBe('February 2024');
+      expect(intl.renderMonthAndYear('en-US', new Date(2024, 1, 29))).toBe('February 2024');
     });
   });
 
   describe('renderYear', () => {
     test('renders year in English (US)', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.renderYear('en-US', date)).toBe('2023');
     });
 
     test('renders year in English (UK)', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.renderYear('en-GB', date)).toBe('2023');
     });
 
     test('renders year in Spanish', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.renderYear('es-ES', date)).toBe('2023');
     });
 
     test('renders year in French', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.renderYear('fr-FR', date)).toBe('2023');
     });
 
     test('renders year in German', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.renderYear('de-DE', date)).toBe('2023');
     });
 
     test('renders year in Japanese', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.renderYear('ja-JP', date)).toBe('2023年');
     });
 
     test('handles different years', () => {
-      expect(intl.renderYear('en-US', new Date('2020-01-01'))).toBe('2020');
-      expect(intl.renderYear('en-US', new Date('2025-12-31'))).toBe('2025');
+      expect(intl.renderYear('en-US', new Date(2020, 5, 15))).toBe('2020');
+      expect(intl.renderYear('en-US', new Date(2025, 5, 15))).toBe('2025');
     });
 
     test('handles leap years', () => {
-      expect(intl.renderYear('en-US', new Date('2024-02-29'))).toBe('2024');
+      expect(intl.renderYear('en-US', new Date(2024, 1, 29))).toBe('2024');
     });
 
     test('ignores month and day', () => {
-      const date1 = new Date('2023-01-01');
-      const date2 = new Date('2023-12-31');
+      const date1 = new Date(2023, 0, 15);
+      const date2 = new Date(2023, 11, 15);
       expect(intl.renderYear('en-US', date1)).toBe(intl.renderYear('en-US', date2));
     });
   });
@@ -225,52 +229,52 @@ describe('intl', () => {
     });
 
     test('renders full date label in English (US)', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 (Thursday) in local time
       expect(intl.getDateLabel('en-US', date)).toBe('Thursday, June 15, 2023');
     });
 
     test('renders short date label in English (US)', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.getDateLabel('en-US', date, 'short')).toBe('June 15, 2023');
     });
 
     test('renders full date label in Spanish', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.getDateLabel('es-ES', date)).toBe('jueves, 15 de junio de 2023');
     });
 
     test('renders short date label in Spanish', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.getDateLabel('es-ES', date, 'short')).toBe('15 de junio de 2023');
     });
 
     test('renders full date label in French', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.getDateLabel('fr-FR', date)).toBe('jeudi 15 juin 2023');
     });
 
     test('renders full date label in German', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.getDateLabel('de-DE', date)).toBe('Donnerstag, 15. Juni 2023');
     });
 
     test('renders full date label in Japanese', () => {
-      const date = new Date('2023-06-15');
+      const date = new Date(2023, 5, 15); // June 15, 2023 in local time
       expect(intl.getDateLabel('ja-JP', date)).toBe('2023年6月15日木曜日');
     });
 
     test('handles different dates', () => {
-      expect(intl.getDateLabel('en-US', new Date('2023-01-01'))).toBe('Sunday, January 1, 2023');
-      expect(intl.getDateLabel('en-US', new Date('2023-12-31'))).toBe('Sunday, December 31, 2023');
+      expect(intl.getDateLabel('en-US', new Date(2023, 0, 1))).toBe('Sunday, January 1, 2023');
+      expect(intl.getDateLabel('en-US', new Date(2023, 11, 31))).toBe('Sunday, December 31, 2023');
     });
 
     test('handles leap years', () => {
-      expect(intl.getDateLabel('en-US', new Date('2024-02-29'))).toBe('Thursday, February 29, 2024');
+      expect(intl.getDateLabel('en-US', new Date(2024, 1, 29))).toBe('Thursday, February 29, 2024');
     });
   });
 
   describe('renderTimeLabel', () => {
-    const testDate = new Date('2023-06-15T14:30:45');
+    const testDate = new Date(2023, 5, 15, 14, 30, 45); // June 15, 2023 14:30:45 in local time
 
     test('renders time with default format in English (US)', () => {
       expect(intl.renderTimeLabel('en-US', testDate)).toMatch(/^2:30:45 PM$/);
@@ -313,17 +317,17 @@ describe('intl', () => {
     });
 
     test('handles midnight correctly in English (US)', () => {
-      const midnightDate = new Date('2023-06-15T00:00:00');
+      const midnightDate = new Date(2023, 5, 15, 0, 0, 0); // June 15, 2023 00:00:00 in local time
       expect(intl.renderTimeLabel('en-US', midnightDate, 'hh:mm')).toMatch(/^12:00 AM$/);
     });
 
     test('handles noon correctly in English (US)', () => {
-      const noonDate = new Date('2023-06-15T12:00:00');
+      const noonDate = new Date(2023, 5, 15, 12, 0, 0); // June 15, 2023 12:00:00 in local time
       expect(intl.renderTimeLabel('en-US', noonDate, 'hh:mm')).toMatch(/^12:00 PM$/);
     });
 
     test('handles single-digit hours correctly', () => {
-      const singleDigitHourDate = new Date('2023-06-15T09:05:00');
+      const singleDigitHourDate = new Date(2023, 5, 15, 9, 5, 0); // June 15, 2023 09:05:00 in local time
       expect(intl.renderTimeLabel('en-US', singleDigitHourDate, 'hh:mm')).toMatch(/^09:05 AM$/);
     });
   });
@@ -331,7 +335,7 @@ describe('intl', () => {
   describe('renderDateAnnouncement', () => {
     test('renders date with day granularity', () => {
       const result = intl.renderDateAnnouncement({
-        date: new Date('2023-06-15'),
+        date: new Date(2023, 5, 15), // June 15, 2023 in local time
         isCurrent: false,
         locale: 'en-US',
       });
@@ -340,7 +344,7 @@ describe('intl', () => {
 
     test('renders date with month granularity', () => {
       const result = intl.renderDateAnnouncement({
-        date: new Date('2023-06-15'),
+        date: new Date(2023, 5, 15), // June 15, 2023 in local time
         isCurrent: false,
         locale: 'en-US',
         granularity: 'month',
@@ -350,7 +354,7 @@ describe('intl', () => {
 
     test('appends current label when isCurrent is true', () => {
       const result = intl.renderDateAnnouncement({
-        date: new Date('2023-06-15'),
+        date: new Date(2023, 5, 15), // June 15, 2023 in local time
         isCurrent: true,
         locale: 'en-US',
         currentLabel: 'Current selection',
@@ -360,7 +364,7 @@ describe('intl', () => {
 
     test('does not append current label when isCurrent is false', () => {
       const result = intl.renderDateAnnouncement({
-        date: new Date('2023-06-15'),
+        date: new Date(2023, 5, 15), // June 15, 2023 in local time
         isCurrent: false,
         locale: 'en-US',
         currentLabel: 'Current selection',
@@ -370,7 +374,7 @@ describe('intl', () => {
 
     test('does not append current label when currentLabel is not provided', () => {
       const result = intl.renderDateAnnouncement({
-        date: new Date('2023-06-15'),
+        date: new Date(2023, 5, 15), // June 15, 2023 in local time
         isCurrent: true,
         locale: 'en-US',
       });
@@ -379,7 +383,7 @@ describe('intl', () => {
 
     test('uses day granularity by default', () => {
       const result = intl.renderDateAnnouncement({
-        date: new Date('2023-06-15'),
+        date: new Date(2023, 5, 15), // June 15, 2023 in local time
         isCurrent: false,
         locale: 'en-US',
       });
